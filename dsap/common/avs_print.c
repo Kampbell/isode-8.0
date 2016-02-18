@@ -52,7 +52,7 @@ int  format;
 
 	if ((format == READOUT) && (avs->avseq_av.av_syntax == oc_sntx))
 		(*oc_avsprint)(ps,avs,format);
-	else 
+	else
 		avs_print_aux (ps,avs,format," & ");
 	ps_print (ps,"\n");
 }
@@ -63,7 +63,7 @@ PS   ps;
 int  format;
 char *sep;
 {
-register AV_Sequence eptr;
+	register AV_Sequence eptr;
 
 	if (avs == NULLAV)
 		return;
@@ -72,9 +72,9 @@ register AV_Sequence eptr;
 	avs_comp_print (ps,avs,format);
 	avs_count++;
 
-		for(eptr = avs->avseq_next; eptr != NULLAV; eptr = eptr->avseq_next, avs_count++) {
-			ps_print (ps,sep);
-			AttrV_print (ps,&eptr->avseq_av,format);
-			}
+	for(eptr = avs->avseq_next; eptr != NULLAV; eptr = eptr->avseq_next, avs_count++) {
+		ps_print (ps,sep);
+		AttrV_print (ps,&eptr->avseq_av,format);
+	}
 }
 

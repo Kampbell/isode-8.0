@@ -20,7 +20,7 @@
  *								*
  *    Use of this module is subject to the restrictions of the  *
  *    ISODE license agreement.					*
- *								*    
+ *								*
  ****************************************************************
 */
 /* HULA */
@@ -39,15 +39,15 @@ static char *myservice = "addtest";
 static char *mycontext = "addtest context";
 static char *mypci     = "addtest pci";
 
-					/* OPERATIONS */
+/* OPERATIONS */
 int	op_addit ();
 
 static struct dispatch dispatches[] = {
-    "addit", operation_ADD_addit, op_addit,
-    NULL
+	"addit", operation_ADD_addit, op_addit,
+	NULL
 };
 
-					/* TYPES */
+/* TYPES */
 extern int  errno;
 char	*getlocalhost();
 
@@ -59,12 +59,12 @@ char	*getlocalhost();
 main (argc, argv, envp)
 int	argc;
 char  **argv,
-      **envp;
+	  **envp;
 {
-    ryresponder (argc, argv, getlocalhost(), myservice, mycontext, mypci,
-		  dispatches, table_ADD_Operations, NULLIFP, NULLIFP);
+	ryresponder (argc, argv, getlocalhost(), myservice, mycontext, mypci,
+				 dispatches, table_ADD_Operations, NULLIFP, NULLIFP);
 
-    exit (0);			/* NOTREACHED */
+	exit (0);			/* NOTREACHED */
 }
 
 
@@ -80,33 +80,33 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-    register struct type_ADD_Sum *psum;
-    register struct type_ADD_Addends *paddends;
+	register struct type_ADD_Sum *psum;
+	register struct type_ADD_Addends *paddends;
 
-    if (rox -> rox_nolinked == 0) {
-	advise (NULLCP, LOG_INFO,
-		"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-		sd, ryo -> ryo_name, rox -> rox_linkid);
-	return ureject (sd, ROS_IP_LINKED, rox, roi);
-    }
-    if (debug)
-	advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
-		sd, ryo -> ryo_name);
+	if (rox -> rox_nolinked == 0) {
+		advise (NULLCP, LOG_INFO,
+				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+				sd, ryo -> ryo_name, rox -> rox_linkid);
+		return ureject (sd, ROS_IP_LINKED, rox, roi);
+	}
+	if (debug)
+		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
+				sd, ryo -> ryo_name);
 
-    if ((psum = (struct type_ADD_Sum *) calloc (1, sizeof *psum)) == NULL
-	|| in == NULL )
-	return error (sd, error_ADD_cantadd, (caddr_t) NULL,
-		    rox, roi);
+	if ((psum = (struct type_ADD_Sum *) calloc (1, sizeof *psum)) == NULL
+			|| in == NULL )
+		return error (sd, error_ADD_cantadd, (caddr_t) NULL,
+					  rox, roi);
 
-    paddends = (struct type_ADD_Addends *)in;
-    psum->parm = paddends->addend1 + paddends->addend2;
+	paddends = (struct type_ADD_Addends *)in;
+	psum->parm = paddends->addend1 + paddends->addend2;
 
-    if (RyDsResult (sd, rox -> rox_id, (caddr_t)psum, ROS_NOPRIO, roi) == NOTOK)
-	ros_adios (&roi -> roi_preject, "RESULT");
+	if (RyDsResult (sd, rox -> rox_id, (caddr_t)psum, ROS_NOPRIO, roi) == NOTOK)
+		ros_adios (&roi -> roi_preject, "RESULT");
 
-    free_ADD_Sum (psum);
+	free_ADD_Sum (psum);
 
-    return OK;
+	return OK;
 }
 
 
@@ -119,10 +119,10 @@ caddr_t	param;
 struct RoSAPinvoke *rox;
 struct RoSAPindication *roi;
 {
-    if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
-	ros_adios (&roi -> roi_preject, "ERROR");
+	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
+		ros_adios (&roi -> roi_preject, "ERROR");
 
-    return OK;
+	return OK;
 }
 
 /*    U-REJECT */
@@ -133,8 +133,8 @@ int	sd,
 struct RoSAPinvoke *rox;
 struct RoSAPindication *roi;
 {
-    if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
-	ros_adios (&roi -> roi_preject, "U-REJECT");
+	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
+		ros_adios (&roi -> roi_preject, "U-REJECT");
 
-    return OK;
+	return OK;
 }

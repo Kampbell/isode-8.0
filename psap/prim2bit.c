@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2bit.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/prim2bit.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -35,31 +35,30 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2bit.c,v 9.0 1992/
 PE	prim2bit (pe)
 register PE	pe;
 {
-    int	    i;
-    register PElementData bp;
-    register PElementLen len;
-    register PE	    p;
+	int	    i;
+	register PElementData bp;
+	register PElementLen len;
+	register PE	    p;
 
-    switch (pe -> pe_form) {
+	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:	/* very paranoid... */
-	    if ((bp = pe -> pe_prim) && (len = pe -> pe_len)) {
-		if ((i = *bp & 0xff) > 7)
-		    return pe_seterr (pe, PE_ERR_BITS, NULLPE);
-		pe -> pe_nbits = ((len - 1) * 8) - i;
-	    }
-	    else
+		if ((bp = pe -> pe_prim) && (len = pe -> pe_len)) {
+			if ((i = *bp & 0xff) > 7)
+				return pe_seterr (pe, PE_ERR_BITS, NULLPE);
+			pe -> pe_nbits = ((len - 1) * 8) - i;
+		} else
+			pe -> pe_nbits = 0;
+		break;
+
+	case PE_FORM_CONS:
 		pe -> pe_nbits = 0;
-	    break;
+		for (p = pe -> pe_cons; p; p = p -> pe_next) {
+			if (prim2bit (p) == NULLPE)
+				return NULLPE;
+			pe -> pe_nbits += p -> pe_nbits;
+		}
+		break;
+	}
 
-	case PE_FORM_CONS: 
-	    pe -> pe_nbits = 0;
-	    for (p = pe -> pe_cons; p; p = p -> pe_next) {
-		if (prim2bit (p) == NULLPE)
-		    return NULLPE;
-		pe -> pe_nbits += p -> pe_nbits;
-	    }
-	    break;
-    }
-
-    return pe;
+	return pe;
 }

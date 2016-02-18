@@ -30,11 +30,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/rdn_str.c,v 9.0
 RDN str2rdn_aux (str)
 char * str;
 {
-AttributeType at;
-char * ptr;
-char * save, val;
-RDN rdn;
-unsigned last_heap;
+	AttributeType at;
+	char * ptr;
+	char * save, val;
+	RDN rdn;
+	unsigned last_heap;
 
 	/* look for "type = value" */
 
@@ -92,9 +92,9 @@ unsigned last_heap;
 RDN str2rdn (str)
 char * str;
 {
-register char *ptr;
-register char *save,val;
-RDN rdn = NULLRDN, newrdn;
+	register char *ptr;
+	register char *save,val;
+	RDN rdn = NULLRDN, newrdn;
 
 	/* look for "rdn % rdn % rdn" */
 

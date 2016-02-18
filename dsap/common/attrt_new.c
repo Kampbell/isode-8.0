@@ -29,11 +29,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_new.c,v 9
 AttributeType AttrT_new (name)
 register char * name;
 {
-oid_table * Current;
-extern oid_table_attr attrOIDTable [];
-oid_table_attr  *res;
-extern attrNumEntries;
-char * get_oid ();
+	oid_table * Current;
+	extern oid_table_attr attrOIDTable [];
+	oid_table_attr  *res;
+	extern attrNumEntries;
+	char * get_oid ();
 
 	while ( isascii(*name) && isspace (*name))
 		name++;
@@ -43,7 +43,7 @@ char * get_oid ();
 		char * ptr;
 		OID oid;
 
-		if ((ptr = get_oid (name)) == NULLCP) 
+		if ((ptr = get_oid (name)) == NULLCP)
 			return (NULLTABLE_ATTR);
 
 		Current = &attrOIDTable[attrNumEntries].oa_ot;

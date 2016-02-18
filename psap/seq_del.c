@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/seq_del.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/seq_del.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -36,22 +36,20 @@ int	seq_del (pe, i)
 register PE	pe;
 register int	i;
 {
-    int	    offset;
-    register PE	   *p,
-		    q;
+	int	    offset;
+	register PE	   *p,
+			 q;
 
-    for (p = &pe -> pe_cons, offset = 0;
-	    q = *p;
-	    p = &q -> pe_next, offset = q -> pe_offset)
-	if (q -> pe_offset == i) {
-	    if (((*p) = q -> pe_next) == NULLPE)
-		pe -> pe_cardinal = offset + 1;
-	    pe_free (q);
-	    return OK;
-	}
-	else
-	    if (q -> pe_offset > i)
-		break;
-	
-    return pe_seterr (pe, PE_ERR_MBER, NOTOK);
+	for (p = &pe -> pe_cons, offset = 0;
+			q = *p;
+			p = &q -> pe_next, offset = q -> pe_offset)
+		if (q -> pe_offset == i) {
+			if (((*p) = q -> pe_next) == NULLPE)
+				pe -> pe_cardinal = offset + 1;
+			pe_free (q);
+			return OK;
+		} else if (q -> pe_offset > i)
+			break;
+
+	return pe_seterr (pe, PE_ERR_MBER, NOTOK);
 }

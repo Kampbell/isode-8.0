@@ -47,23 +47,23 @@ extern DN mydsadn;
 extern struct di_block * di_alloc();
 
 do_ds_read (arg, error, result, binddn, target, di_p, dsp, quipu_ctx, authtype)
-    struct ds_read_arg          *arg;
-    struct ds_read_result       *result;
-    struct DSError              *error;
-    DN                          binddn;
-    DN                          target;
-    struct di_block		**di_p;
-    char			dsp;
-    char 			quipu_ctx;
-    char 			authtype;
+struct ds_read_arg          *arg;
+struct ds_read_result       *result;
+struct DSError              *error;
+DN                          binddn;
+DN                          target;
+struct di_block		**di_p;
+char			dsp;
+char 			quipu_ctx;
+char 			authtype;
 {
-Entry  entryptr;
-int retval;
+	Entry  entryptr;
+	int retval;
 #ifdef NOTUSED
-int authenticated;
+	int authenticated;
 #endif
-DN realtarget;
-char authp;
+	DN realtarget;
+	char authp;
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_read"));
 
@@ -81,22 +81,21 @@ char authp;
 		return (DS_ERROR_REMOTE);
 	}
 
-	switch(find_entry(target,&(arg->rda_common),binddn,NULLDNSEQ,FALSE,&(entryptr), error, di_p, OP_READ))
-	{
+	switch(find_entry(target,&(arg->rda_common),binddn,NULLDNSEQ,FALSE,&(entryptr), error, di_p, OP_READ)) {
 	case DS_OK:
-	    /* Filled out entryptr - carry on */
-	    break;
+		/* Filled out entryptr - carry on */
+		break;
 	case DS_CONTINUE:
-	    /* Filled out di_p - what do we do with it ?? */
-	    return(DS_CONTINUE);
+		/* Filled out di_p - what do we do with it ?? */
+		return(DS_CONTINUE);
 
 	case DS_X500_ERROR:
-	    /* Filled out error - what do we do with it ?? */
-	    return(DS_X500_ERROR);
+		/* Filled out error - what do we do with it ?? */
+		return(DS_X500_ERROR);
 	default:
-	    /* SCREAM */
-	    LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_read() - find_entry failed"));
-	    return(DS_ERROR_LOCAL);
+		/* SCREAM */
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_read() - find_entry failed"));
+		return(DS_ERROR_LOCAL);
 	}
 
 	realtarget = get_copy_dn (entryptr);
@@ -107,7 +106,7 @@ char authp;
 
 	if (!manager(binddn))
 		authp = entryptr->e_authp ? entryptr->e_authp->ap_readandcompare
-		    : AP_SIMPLE;
+				: AP_SIMPLE;
 	else
 		authp = AP_SIMPLE;
 
@@ -122,11 +121,10 @@ char authp;
 	/* Strong authentication  */
 	/* If it's there, check it, even if you won't believe it anyway */
 	if ((retval = check_security_parms((caddr_t) arg,
-			_ZReadArgumentDataDAS,
-			&_ZDAS_mod,
-			arg->rda_common.ca_security,
-			arg->rda_common.ca_sig, &binddn)) != 0)
-	{
+									   _ZReadArgumentDataDAS,
+									   &_ZDAS_mod,
+									   arg->rda_common.ca_security,
+									   arg->rda_common.ca_sig, &binddn)) != 0) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = retval;
 		dn_free (realtarget);
@@ -134,15 +132,15 @@ char authp;
 	}
 
 #ifdef NOTUSED
-	if ((strong_policy & POLICY_ACCESS_READ) && 
-		(arg->rda_common.ca_sig != (struct signature *) 0))
+	if ((strong_policy & POLICY_ACCESS_READ) &&
+			(arg->rda_common.ca_sig != (struct signature *) 0))
 		authenticated = 1;
 #endif
 
 	/* entry has got a full list of attributes,  eventually
 	   select one required */
 	if (check_acl ((authtype % 3) >= authp ? binddn : NULLDN, ACL_READ,
-	    entryptr->e_acl->ac_entry, realtarget) == NOTOK) {
+				   entryptr->e_acl->ac_entry, realtarget) == NOTOK) {
 		if (dsp && (check_acl (binddn,ACL_READ,entryptr->e_acl->ac_entry, realtarget) == OK)) {
 			error->dse_type = DSE_SECURITYERROR;
 			error->ERR_SECURITY.DSE_sc_problem = DSE_SC_AUTHENTICATION;
@@ -160,19 +158,19 @@ char authp;
 
 		/* Its a 7.0 or better DSA.
 		 * pseudo attributes asked for.
-		 * special routing req'd 
-                 */
+		 * special routing req'd
+		         */
 
 		if (dn_cmp (realtarget, mydsadn) == 0) {
 			/* Its me - generate result */
 
 			if ((result->rdr_entry.ent_attr = dsa_eis_select (
-				arg->rda_eis,entryptr, dsp ? NULLDN : binddn,
-				quipu_ctx, realtarget)) != NULLATTR)
+												  arg->rda_eis,entryptr, dsp ? NULLDN : binddn,
+												  quipu_ctx, realtarget)) != NULLATTR)
 				goto out;
 
-			if ( arg->rda_eis.eis_allattributes || arg->rda_eis.eis_select == NULLATTR) 
-			    goto out;
+			if ( arg->rda_eis.eis_allattributes || arg->rda_eis.eis_select == NULLATTR)
+				goto out;
 
 			error->dse_type = DSE_ATTRIBUTEERROR;
 			error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn (entryptr);
@@ -195,15 +193,15 @@ char authp;
 			(*di_p)->di_entry = entryptr;
 			entryptr->e_refcount++;
 			(*di_p)->di_state = DI_COMPLETE;
-			
+
 			return DS_CONTINUE;
 		}
-			   
-	} 
+
+	}
 
 	if (cant_use_cache (entryptr,binddn,arg->rda_eis,realtarget)) {
-		int res =  referral_dsa_info(realtarget,NULLDNSEQ,FALSE,entryptr,error,di_p, 
-			arg->rda_common.ca_servicecontrol.svc_options & SVC_OPT_PREFERCHAIN);
+		int res =  referral_dsa_info(realtarget,NULLDNSEQ,FALSE,entryptr,error,di_p,
+									 arg->rda_common.ca_servicecontrol.svc_options & SVC_OPT_PREFERCHAIN);
 		dn_free (realtarget);
 		return res;
 	}
@@ -219,16 +217,17 @@ char authp;
 	if ((result->rdr_entry.ent_attr = eis_select (arg->rda_eis,entryptr, dsp ? NULLDN : binddn, quipu_ctx, realtarget)) == NULLATTR)
 		if ( !arg->rda_eis.eis_allattributes && arg->rda_eis.eis_select != NULLATTR) {
 			error->dse_type = DSE_ATTRIBUTEERROR;
-                        error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn (entryptr);
-                        error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_what =DSE_AT_NOSUCHATTRIBUTE;
-	                error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_type = AttrT_cpy(arg->rda_eis.eis_select->attr_type);
-                        error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_value = NULLAttrV;
-                        error->ERR_ATTRIBUTE.DSE_at_plist.dse_at_next = DSE_AT_NOPROBLEM;
+			error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn (entryptr);
+			error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_what =DSE_AT_NOSUCHATTRIBUTE;
+			error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_type = AttrT_cpy(arg->rda_eis.eis_select->attr_type);
+			error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_value = NULLAttrV;
+			error->ERR_ATTRIBUTE.DSE_at_plist.dse_at_next = DSE_AT_NOPROBLEM;
 			dn_free (realtarget);
 			return (DS_ERROR_REMOTE);
 		}
 
-out:;
+out:
+	;
 	result->rdr_entry.ent_dn = realtarget;
 	result->rdr_entry.ent_iscopy = entryptr->e_data;
 	result->rdr_entry.ent_age = (time_t) 0;
@@ -248,16 +247,16 @@ DN dn;
 EntryInfoSelection eis;
 DN target;
 {
-register Attr_Sequence as;
-char dfltacl = FALSE;
+	register Attr_Sequence as;
+	char dfltacl = FALSE;
 
-	if (dn == NULLDN) 
+	if (dn == NULLDN)
 		return FALSE;
 
 	if ((ptr->e_data == E_DATA_MASTER) || (ptr->e_data == E_TYPE_SLAVE))
 		return FALSE;
 
-	/* see if more than cached data is required */	
+	/* see if more than cached data is required */
 
 	if (eis.eis_allattributes) {
 		struct acl_attr * aa;
@@ -265,31 +264,31 @@ char dfltacl = FALSE;
 		/* look for attr acl */
 		/* see if any attributes use can see */
 
-		if (check_acl (NULLDN,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK) 
-			if (check_acl (dn,ACL_READ,ptr->e_acl->ac_default,target) == OK) 
+		if (check_acl (NULLDN,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK)
+			if (check_acl (dn,ACL_READ,ptr->e_acl->ac_default,target) == OK)
 				return TRUE;
 
 		if (ptr->e_acl->ac_attributes == NULLACL_ATTR)
 			return FALSE;
 
 		for ( aa = ptr->e_acl->ac_attributes; aa!=NULLACL_ATTR; aa=aa->aa_next)
-			for ( oidptr=aa->aa_types;oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next)
+			for ( oidptr=aa->aa_types; oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next)
 				/* The attribute is in the attribute ACL list */
 				/* Would a referral help the DUA ? */
-				if (check_acl (NULLDN,ACL_READ,aa->aa_acl,target) == NOTOK) 
-					if (check_acl (dn,ACL_READ,aa->aa_acl,target) == OK) 
+				if (check_acl (NULLDN,ACL_READ,aa->aa_acl,target) == NOTOK)
+					if (check_acl (dn,ACL_READ,aa->aa_acl,target) == OK)
 						return TRUE;
 
 	} else {
 		/* for each attribute in eis.eis_select, see is user
 		   entitled to it. */
 
-		if (check_acl (NULLDN,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK) 
-			if (check_acl (dn,ACL_READ,ptr->e_acl->ac_default,target) == OK) 
+		if (check_acl (NULLDN,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK)
+			if (check_acl (dn,ACL_READ,ptr->e_acl->ac_default,target) == OK)
 				dfltacl = TRUE;
 
 		for(as=eis.eis_select; as != NULLATTR; as=as->attr_link) {
-			if (entry_find_type (ptr, as->attr_type) == NULLATTR) 
+			if (entry_find_type (ptr, as->attr_type) == NULLATTR)
 				if (attribute_not_cached (ptr,dn,grab_oid(as->attr_type),target,ACL_READ,dfltacl))
 					return TRUE;
 
@@ -306,64 +305,63 @@ DN target;
 int level;
 char dfltacl;
 {
-register struct acl_attr * aa;
-register struct oid_seq * oidptr;
+	register struct acl_attr * aa;
+	register struct oid_seq * oidptr;
 
-	/* see if more than cached data is required */	
+	/* see if more than cached data is required */
 	if (ptr->e_acl->ac_attributes == NULLACL_ATTR)
 		return (dfltacl);
 
 	for ( aa = ptr->e_acl->ac_attributes; aa!=NULLACL_ATTR; aa=aa->aa_next)
-		for ( oidptr=aa->aa_types;oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next)
+		for ( oidptr=aa->aa_types; oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next)
 			if (oid_cmp (oidptr->oid_oid,at) == 0) {
 				/* The attribute is in the attribute ACL list */
 				/* Would a referral help the DUA ? */
-				if (check_acl (NULLDN,level,aa->aa_acl,target) == NOTOK) 
-					if (check_acl (dn,level,aa->aa_acl,target) == OK) 
+				if (check_acl (NULLDN,level,aa->aa_acl,target) == NOTOK)
+					if (check_acl (dn,level,aa->aa_acl,target) == OK)
 						return TRUE;
 				return FALSE;
-			}	
+			}
 	return (dfltacl);
 
 }
 
 
-static Attr_Sequence  dsa_control_info()
-{
-extern int slave_edbs;
-extern int master_edbs;
-extern int local_master_size;
-extern int local_slave_size;
-extern int local_cache_size;
-char buffer [LINESIZE];
-Attr_Sequence as;
+static Attr_Sequence  dsa_control_info() {
+	extern int slave_edbs;
+	extern int master_edbs;
+	extern int local_master_size;
+	extern int local_slave_size;
+	extern int local_cache_size;
+	char buffer [LINESIZE];
+	Attr_Sequence as;
 
 	(void) sprintf (buffer,"%d Master entries (in %d EDBs), %d Slave entries (in %d EDBs), %d Cached entries",
-		local_master_size,master_edbs,local_slave_size,slave_edbs,local_cache_size);
+					local_master_size,master_edbs,local_slave_size,slave_edbs,local_cache_size);
 
 	as=as_comp_alloc();
 	as->attr_acl = NULLACL_INFO;
 	as->attr_type = at_control;
 	as->attr_link = NULLATTR;
-        if ((as->attr_value = str2avs (buffer,as->attr_type)) == NULLAV) {
-                as_free (as);
-                return (NULLATTR);
+	if ((as->attr_value = str2avs (buffer,as->attr_type)) == NULLAV) {
+		as_free (as);
+		return (NULLATTR);
 	}
 
 	return (as);
 }
 
 dsa_read_control (arg,result)
-    struct ds_read_arg          *arg;
-    struct ds_read_result       *result;
+struct ds_read_arg          *arg;
+struct ds_read_result       *result;
 {
 
-	if ((arg->rda_eis.eis_allattributes) || 
-		(arg->rda_eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY))
+	if ((arg->rda_eis.eis_allattributes) ||
+			(arg->rda_eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY))
 		return FALSE;
 
 	if ((arg->rda_eis.eis_select == NULLATTR)
-	   || (arg->rda_eis.eis_select->attr_link != NULLATTR))
+			|| (arg->rda_eis.eis_select->attr_link != NULLATTR))
 		return FALSE;
 
 	if (AttrT_cmp (at_control,arg->rda_eis.eis_select->attr_type) != 0)
@@ -391,7 +389,7 @@ need_pseudo_dsa (eptr,arg)
 Entry eptr;
 struct ds_read_arg *arg;
 {
-Attr_Sequence as;
+	Attr_Sequence as;
 
 	if (quipu_ctx_supported (eptr) <= 2)
 		return FALSE;
@@ -410,6 +408,6 @@ Attr_Sequence as;
 			return TRUE;
 	}
 
-	return FALSE;  
+	return FALSE;
 }
 

@@ -31,7 +31,7 @@ extern LLog * log_dsap;
 DN  dn_comp_cpy (dn)
 register DN  dn;
 {
-register DN ptr;
+	register DN ptr;
 	if (dn==NULLDN) {
 		return (NULLDN);
 	}
@@ -44,8 +44,8 @@ register DN ptr;
 DN  dn_cpy (dn)
 register DN  dn;
 {
-DN start;
-register DN eptr,ptr,ptr2;
+	DN start;
+	register DN eptr,ptr,ptr2;
 
 	if (dn == NULLDN) {
 		return (NULLDN);

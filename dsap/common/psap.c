@@ -44,7 +44,7 @@ struct PSAPaddr * psap;
 struct PSAPaddr * psap_cpy (a)
 struct PSAPaddr * a;
 {
-struct PSAPaddr * r;
+	struct PSAPaddr * r;
 
 	r = (struct PSAPaddr *) smalloc (sizeof (struct PSAPaddr));
 	bzero ((char *) r,sizeof (struct PSAPaddr));
@@ -57,19 +57,19 @@ struct PSAPaddr * r;
 psap_dup (r,a)
 struct PSAPaddr * r, * a;
 {
-    *r = *a;    /* struct copy */
+	*r = *a;    /* struct copy */
 }
 
 static psap_cmp (r,a)
 struct PSAPaddr *r, *a;
 {
-    return (bcmp ((char *) r, (char *) a, sizeof *a) ? (-1) : 0);
+	return (bcmp ((char *) r, (char *) a, sizeof *a) ? (-1) : 0);
 }
 
 static PE psap_enc (p)
 struct PSAPaddr *p;
 {
-PE ret_pe;
+	PE ret_pe;
 
 	if (build_DSE_PSAPaddr (&ret_pe,0,0,NULLCP,p) == NOTOK ) {
 		ret_pe = NULLPE;
@@ -81,24 +81,24 @@ PE ret_pe;
 static struct PSAPaddr * psap_dec (pe)
 PE pe;
 {
-struct PSAPaddr *psap;
+	struct PSAPaddr *psap;
 
 	psap = (struct PSAPaddr *) smalloc (sizeof *psap);
-	
+
 	if (parse_DSE_PSAPaddr (pe,1,NULLIP,NULLVP,psap) == NOTOK) {
 		free ((char *)psap);
 		return (NULLPA);
 	}
-		
+
 	return (psap);
 }
 
 static struct PSAPaddr * psap_parse (s)
 char * s;
 {
-struct PSAPaddr *pa;
-struct PSAPaddr *psap;
-	
+	struct PSAPaddr *pa;
+	struct PSAPaddr *psap;
+
 	psap = (struct PSAPaddr *) calloc (1,sizeof (struct PSAPaddr));
 	if (pa=str2paddr(s)) {
 		*psap = *pa;  /* struct copy */
@@ -122,12 +122,11 @@ int format;
 
 }
 
-psap_syntax ()
-{
+psap_syntax () {
 	(void) add_attribute_syntax ("presentationAddress",
-		(IFP) psap_enc,		(IFP) psap_dec,
-		(IFP) psap_parse,	psap_print,
-		(IFP) psap_cpy,		psap_cmp,
-		psap_free,		NULLCP,
-		NULLIFP,		TRUE );
+								 (IFP) psap_enc,		(IFP) psap_dec,
+								 (IFP) psap_parse,	psap_print,
+								 (IFP) psap_cpy,		psap_cmp,
+								 psap_free,		NULLCP,
+								 NULLIFP,		TRUE );
 }

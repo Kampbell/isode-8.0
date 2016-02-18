@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind2.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind2.c,v 9.0 1992/06/16 12:14:05 isode Rel $
  *
  *
@@ -45,8 +45,7 @@ struct DSAPindication	* di;
 	result = RoUnBindResult (sd, NULLPE, rni);
 	watch_dog_reset();
 
-	if (result == NOTOK)
-	{
+	if (result == NOTOK) {
 		(void) ronot2dsaplose (di, "D-UNBIND.ACCEPT", rni);
 		return (NOTOK);
 	}
@@ -72,8 +71,7 @@ struct DSAPindication	* di;
 	result = RoUnBindReject (sd, status, reason, rni);
 	watch_dog_reset ();
 
-	if (result == NOTOK)
-	{
+	if (result == NOTOK) {
 		(void) ronot2dsaplose (di, "D-UNBIND.REJECT", rni);
 		return (NOTOK);
 	}

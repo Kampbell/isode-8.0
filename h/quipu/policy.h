@@ -1,6 +1,6 @@
 /* policy.h - representation of security policy */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/quipu/RCS/policy.h,v 9.0 1992/06/16 12:23:11 isode Rel $
  *
  *
@@ -24,16 +24,16 @@
 #include "psap.h"
 
 struct security_policy {
-        OID oid;
-        int p_type;
+	OID oid;
+	int p_type;
 #define POLICY_PARM_ABSENT      0
 #define POLICY_PARM_UNKNOWN     1
 #define POLICY_PARM_NUMERIC     2
 #define POLICY_PARM_ACCESS      3
-        union {
-                int numeric;
+	union {
+		int numeric;
 		unsigned access;
-        } un;
+	} un;
 };
 
 #define NULLPOLICY ((struct security_policy *) 0)

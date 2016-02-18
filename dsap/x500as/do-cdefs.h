@@ -1,4 +1,4 @@
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/x500as/RCS/do-cdefs.h,v 9.0 1992/06/16 12:14:33 isode Rel $
  *
  *
@@ -25,7 +25,7 @@
 #include "quipu/entry.h"
 #include "quipu/common.h"
 #include "quipu/dsargument.h"
- 
+
 #else
 
 #include <isode/quipu/util.h>

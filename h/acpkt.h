@@ -1,6 +1,6 @@
 /* acpkt.h - include file for association control providers (AcS-PROVIDER) */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/acpkt.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -152,12 +152,12 @@ int	apdu2info ();
 /*  */
 
 struct assocblk {
-    struct assocblk *acb_forw;	/* doubly-linked list */
-    struct assocblk *acb_back;	/*   .. */
+	struct assocblk *acb_forw;	/* doubly-linked list */
+	struct assocblk *acb_back;	/*   .. */
 
-    int	    acb_fd;		/* session/presentation descriptor */
+	int	    acb_fd;		/* session/presentation descriptor */
 
-    short   acb_flags;		/* our state */
+	short   acb_flags;		/* our state */
 #define	ACB_NULL	0x0000
 #define	ACB_CONN	0x0001	/* connected */
 #define	ACB_FINN	0x0002	/* other side wants to finish */
@@ -178,65 +178,65 @@ struct assocblk {
 #define	ACB_STICKY	0x4000	/* ROS using RTS (ugh!) */
 #define	ACB_RELEASE	0x8000	/* release in progress */
 
-    struct SSAPref acb_connect;	/* session connection reference */
+	struct SSAPref acb_connect;	/* session connection reference */
 
-    int	    acb_requirements;	/* session requirements */
-    int	    acb_owned;		/* session tokens we own */
-    int	    acb_avail;		/* session tokens available */
-    int	    acb_settings;	/* initial settings */
-    int	    acb_ssdusize;	/* largest atomic SSDU */
+	int	    acb_requirements;	/* session requirements */
+	int	    acb_owned;		/* session tokens we own */
+	int	    acb_avail;		/* session tokens available */
+	int	    acb_settings;	/* initial settings */
+	int	    acb_ssdusize;	/* largest atomic SSDU */
 
-    IFP	    acb_uabort;		/* disconnect underlying service */
+	IFP	    acb_uabort;		/* disconnect underlying service */
 
-/* ACSE */
-    int	    acb_sversion;	/* session service version number */
-    int	    acb_id;		/* ACSE context id */
-    OID	    acb_context;	/* application context name */
-    int	    acb_offset;		/* offset to ACSE PCI */
-				/* negative means at END */
-    PE	    acb_retry;		/* final acpkt */
-    
-/* RTSE */
-    int	    acb_rtsid;		/* RTSE context id */
-    int	    acb_ckpoint;	/* checkpoint size */
-    int	    acb_window;		/* window size */
-    int	    acb_actno;		/* sending activity serial number */
-    long    acb_ssn;		/* highest serial number sent */
-    int	    acb_ack;		/* highest serial number acknowledged */
+	/* ACSE */
+	int	    acb_sversion;	/* session service version number */
+	int	    acb_id;		/* ACSE context id */
+	OID	    acb_context;	/* application context name */
+	int	    acb_offset;		/* offset to ACSE PCI */
+	/* negative means at END */
+	PE	    acb_retry;		/* final acpkt */
 
-    IFP	    acb_pturnrequest;	/* RT-TURN-PLEASE.REQUEST */
-    IFP	    acb_gturnrequest;	/* RT-TURN-GIVE.REQUEST */
-    IFP	    acb_transferequest;	/* RT-TRANSER.REQUEST */
-    IFP	    acb_rtwaitrequest;	/* RT-WAIT.REQUEST */
-    IFP	    acb_rtsetindications;/* define vectors for INDICATION events */
-    IFP	    acb_rtselectmask;	/* map association descriptors for select () */
-    IFP	    acb_rtpktlose;	/* protocol-level abort */
+	/* RTSE */
+	int	    acb_rtsid;		/* RTSE context id */
+	int	    acb_ckpoint;	/* checkpoint size */
+	int	    acb_window;		/* window size */
+	int	    acb_actno;		/* sending activity serial number */
+	long    acb_ssn;		/* highest serial number sent */
+	int	    acb_ack;		/* highest serial number acknowledged */
 
-    int	    acb_priority;	/* priority of please turn */
-    struct AcSAPfinish acb_finish;
+	IFP	    acb_pturnrequest;	/* RT-TURN-PLEASE.REQUEST */
+	IFP	    acb_gturnrequest;	/* RT-TURN-GIVE.REQUEST */
+	IFP	    acb_transferequest;	/* RT-TRANSER.REQUEST */
+	IFP	    acb_rtwaitrequest;	/* RT-WAIT.REQUEST */
+	IFP	    acb_rtsetindications;/* define vectors for INDICATION events */
+	IFP	    acb_rtselectmask;	/* map association descriptors for select () */
+	IFP	    acb_rtpktlose;	/* protocol-level abort */
 
-    char   *acb_realbase;	/* APDU in transit */
-    char   *acb_base;		/*   .. */
-    int	    acb_len;		/*   .. */
-    
-    IFP	    acb_uptrans;	/* upcall for up-transfer */
-    IFP	    acb_downtrans;	/* upcall for down-transfer */
+	int	    acb_priority;	/* priority of please turn */
+	struct AcSAPfinish acb_finish;
 
-    IFP	    acb_rtsindication;	/* rts event handler */
+	char   *acb_realbase;	/* APDU in transit */
+	char   *acb_base;		/*   .. */
+	int	    acb_len;		/*   .. */
 
-/* ROSE */
-    int	    acb_rosid;		/* ROSE (SASE) context id */
-    IFP	    acb_putosdu;	/* osdu2acb */
-    IFP	    acb_rowaitrequest;	/* RO-WAIT.REQUEST */
-    IFP	    acb_ready;		/* get HDX permission */
-    IFP	    acb_rosetindications;/* define vectors for INDICATION events */
-    IFP	    acb_roselectmask;	/* map association descriptors for select () */
-    IFP	    acb_ropktlose;	/* protocol-level abort */
-    PE	    (*acb_getosdu) ();	/* for users of THORN... */
+	IFP	    acb_uptrans;	/* upcall for up-transfer */
+	IFP	    acb_downtrans;	/* upcall for down-transfer */
 
-    PE	    acb_apdu;		/* APDU buffered */
-    
-    IFP	    acb_rosindication;	/* ros event handler */
+	IFP	    acb_rtsindication;	/* rts event handler */
+
+	/* ROSE */
+	int	    acb_rosid;		/* ROSE (SASE) context id */
+	IFP	    acb_putosdu;	/* osdu2acb */
+	IFP	    acb_rowaitrequest;	/* RO-WAIT.REQUEST */
+	IFP	    acb_ready;		/* get HDX permission */
+	IFP	    acb_rosetindications;/* define vectors for INDICATION events */
+	IFP	    acb_roselectmask;	/* map association descriptors for select () */
+	IFP	    acb_ropktlose;	/* protocol-level abort */
+	PE	    (*acb_getosdu) ();	/* for users of THORN... */
+
+	PE	    acb_apdu;		/* APDU buffered */
+
+	IFP	    acb_rosindication;	/* ros event handler */
 };
 #define	NULLACB		((struct assocblk *) 0)
 
@@ -258,7 +258,7 @@ struct assocblk *newacblk (), *findacblk ();
 
 #ifndef	ACSE
 
-				/* PConnect Types */
+/* PConnect Types */
 #define	PCONN_DTS	0	/* Data Transfer Syntax */
 #define	PCONN_DATA	1	/* User Data */
 #define	  PCONN_DATA_CK	0	/*   Checkpoint Size */
@@ -274,7 +274,7 @@ struct assocblk *newacblk (), *findacblk ();
 #define	    PCONN_AP_DFLT 1
 
 
-				/* PAccept Types */
+/* PAccept Types */
 #define	PACC_DTS	0	/* Data Transfer Syntax */
 #define	PACC_DATA	1	/* User Data */
 #define   PACC_DATA_CK  0	/*   Checkpoint Size */
@@ -284,28 +284,28 @@ struct assocblk *newacblk (), *findacblk ();
 #define   PACC_DATA_CN  2	/*   Connection Data */
 
 
-				/* PRefuse Types */
+/* PRefuse Types */
 #define	PREF_REASON	0	/* Refuse Reason */
 
 
-				/* Data Transfer Syntax Types */
+/* Data Transfer Syntax Types */
 #define	DTS_SYNTAX	0	/* IMPLICIT INTEGER */
 #define SYN_X409	0	/* x.409 */
 
 
-				/* Connection Data Types */
+/* Connection Data Types */
 #define CN_OPEN		0	/* Open */
 #define	CN_RECOVER	1	/* Recover */
 
 
-				/* Refuse codes */
+/* Refuse codes */
 #define	REFUSE_BUSY	0	/* Busy */
 #define	REFUSE_RECOVER	1	/* Cannot recover */
 #define	REFUSE_VALIDATE	2	/* Validation failure */
 #define	REFUSE_MODE	3	/* Unacceptable dialogue mode */
 
 
-				/* Abort codes */
+/* Abort codes */
 #define	ABORT_LSP	0	/* Local system problem */
 #define	ABORT_INV	1	/* Invalid parameter */
 #define	ABORT_ACT	2	/* Unrecognized activity */

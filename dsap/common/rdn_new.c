@@ -30,7 +30,7 @@ RDN  rdn_comp_new (at,av)
 AttributeType  at;
 AttributeValue av;
 {
-register RDN ptr;
+	register RDN ptr;
 	ptr = rdn_comp_alloc ();
 	bzero ((char *)ptr, sizeof (*ptr));
 	ptr->rdn_at = at;

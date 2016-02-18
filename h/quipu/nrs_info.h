@@ -1,6 +1,6 @@
 /* nrs_info.h - attribute structure for representing NRS information */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/quipu/RCS/nrs_info.h,v 9.0 1992/06/16 12:23:11 isode Rel $
  *
  *
@@ -26,8 +26,7 @@
 
 #include "psap.h"
 
-struct str_seq
-{
+struct str_seq {
 	char		* ss_str;
 	struct str_seq	* ss_next;
 };
@@ -57,8 +56,7 @@ struct str_seq
 #define	NRS_Address_Space_Id_TELEX	2
 #define	NRS_Address_Space_Id_OSI_CONS	3
 
-struct addr_info
-{
+struct addr_info {
 	int			  addr_info_type;
 #define	ADDR_INFO_DTE_ONLY			1
 #define	ADDR_INFO_DTE_APPLIC_INFO		2
@@ -88,15 +86,13 @@ struct addr_info
 	struct str_seq	* applic_relay;
 };
 
-struct nrs_routes
-{
+struct nrs_routes {
 	PE			  cost;
 	struct addr_info	* addr_info;
 	struct nrs_routes	* next;
 };
 
-struct nrs_info
-{
+struct nrs_info {
 	int			  context;
 	int			  addr_sp_id;
 	struct nrs_routes	* routes;

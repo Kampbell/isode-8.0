@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftampass.c,v 9.0 1992/06/16 12:14:55 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam/RCS/ftampass.c,v 9.0 1992/06/16 12:14:55 isode Rel $
  *
  *
@@ -37,16 +37,17 @@ register struct ftamblk *fsb;
 register struct FTAMpasswords *fp;
 struct FTAMindication *fti;
 {
-    register struct type_FTAM_Access__Passwords *fpm;
+	register struct type_FTAM_Access__Passwords *fpm;
 
-    if ((fpm = (struct type_FTAM_Access__Passwords *)
-		    calloc (1, sizeof *fpm)) == NULL) {
-no_mem: ;
-	(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
-	if (fpm)
-	    free_FTAM_Access__Passwords (fpm);
-	return NULL;
-    }
+	if ((fpm = (struct type_FTAM_Access__Passwords *)
+			   calloc (1, sizeof *fpm)) == NULL) {
+no_mem:
+		;
+		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		if (fpm)
+			free_FTAM_Access__Passwords (fpm);
+		return NULL;
+	}
 
 #define	dopass(s,t,u) \
 { \
@@ -59,18 +60,18 @@ no_mem: ;
 	goto no_mem; \
 }
 
-    dopass (read__password, fp_read, fp_readlen);
-    dopass (insert__password, fp_insert, fp_insertlen);
-    dopass (replace__password, fp_replace, fp_replacelen);
-    dopass (extend__password, fp_extend, fp_extendlen);
-    dopass (erase__password, fp_erase, fp_eraselen);
-    dopass (read__attribute__password, fp_readattr, fp_readattrlen);
-    dopass (change__attribute__password, fp_chngattr, fp_chngattrlen);
-    dopass (delete__password, fp_delete, fp_deletelen);
+	dopass (read__password, fp_read, fp_readlen);
+	dopass (insert__password, fp_insert, fp_insertlen);
+	dopass (replace__password, fp_replace, fp_replacelen);
+	dopass (extend__password, fp_extend, fp_extendlen);
+	dopass (erase__password, fp_erase, fp_eraselen);
+	dopass (read__attribute__password, fp_readattr, fp_readattrlen);
+	dopass (change__attribute__password, fp_chngattr, fp_chngattrlen);
+	dopass (delete__password, fp_delete, fp_deletelen);
 
 #undef	dopass
 
-    return fpm;
+	return fpm;
 }
 
 /*  */
@@ -81,11 +82,11 @@ register struct type_FTAM_Access__Passwords *fpm;
 register struct FTAMpasswords *fp;
 struct FTAMindication *fti;
 {
-    register struct qbuf *qb;
+	register struct qbuf *qb;
 
-    bzero ((char *) fp, sizeof *fp);
+	bzero ((char *) fp, sizeof *fp);
 
-/* both choices of this structure are qbuf's, so... */
+	/* both choices of this structure are qbuf's, so... */
 #define	dopass(s,t,u) \
 { \
     qb = fpm -> s -> un.graphic; \
@@ -95,20 +96,21 @@ struct FTAMindication *fti;
     fp -> u = qb -> qb_len; \
 }
 
-    dopass (read__password, fp_read, fp_readlen);
-    dopass (insert__password, fp_insert, fp_insertlen);
-    dopass (replace__password, fp_replace, fp_replacelen);
-    dopass (extend__password, fp_extend, fp_extendlen);
-    dopass (erase__password, fp_erase, fp_eraselen);
-    dopass (read__attribute__password, fp_readattr, fp_readattrlen);
-    dopass (change__attribute__password, fp_chngattr, fp_chngattrlen);
-    dopass (delete__password, fp_delete, fp_deletelen);
+	dopass (read__password, fp_read, fp_readlen);
+	dopass (insert__password, fp_insert, fp_insertlen);
+	dopass (replace__password, fp_replace, fp_replacelen);
+	dopass (extend__password, fp_extend, fp_extendlen);
+	dopass (erase__password, fp_erase, fp_eraselen);
+	dopass (read__attribute__password, fp_readattr, fp_readattrlen);
+	dopass (change__attribute__password, fp_chngattr, fp_chngattrlen);
+	dopass (delete__password, fp_delete, fp_deletelen);
 
 #undef	dopass
 
-    return OK;
+	return OK;
 
-no_mem: ;
-    FPFREE (fp);
-    return ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+no_mem:
+	;
+	FPFREE (fp);
+	return ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 }

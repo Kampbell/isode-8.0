@@ -54,21 +54,21 @@ static int runAsRoot = 0;  /* we started with effective uid of root */
 /*		below)						*/
 /*--------------------------------------------------------------*/
 int initUserId(uid, gid, user)
-    int uid, gid;
-    char *user;
+int uid, gid;
+char *user;
 {
-    if (geteuid() == 0) {
-	runAsRoot++;
-	if (setregid (gid, gid) < 0) {
-	    sprintf (rfaErrStr, "Can't set group-id %d for %s", gid, user);
-	    return NOTOK;
+	if (geteuid() == 0) {
+		runAsRoot++;
+		if (setregid (gid, gid) < 0) {
+			sprintf (rfaErrStr, "Can't set group-id %d for %s", gid, user);
+			return NOTOK;
+		}
+		if(setreuid (-1, uid) < 0) {
+			sprintf (rfaErrStr, "Can't set user-id %d for %s", uid, user);
+			return NOTOK;
+		}
 	}
-	if(setreuid (-1, uid) < 0) {
-	    sprintf (rfaErrStr, "Can't set user-id %d for %s", uid, user);
-	    return NOTOK;
-    	}
-    }
-    return OK;
+	return OK;
 }
 
 
@@ -76,122 +76,120 @@ int initUserId(uid, gid, user)
 /*  getFileOwner                                                */
 /*--------------------------------------------------------------*/
 int getFileOwner (fn, uidp, gidp)
-    char *fn;
-    int *uidp, *gidp;
+char *fn;
+int *uidp, *gidp;
 {
-    struct stat st;
+	struct stat st;
 
-    if (stat(makeFN(fn), &st) == -1)
-	return NOTOK;
+	if (stat(makeFN(fn), &st) == -1)
+		return NOTOK;
 
-    *uidp = st.st_uid;
-    *gidp = st.st_gid;
-    return OK;
+	*uidp = st.st_uid;
+	*gidp = st.st_gid;
+	return OK;
 }
 
 /*--------------------------------------------------------------*/
 /*  changeFileOwner                                             */
 /*--------------------------------------------------------------*/
 int changeFileOwner(fn, rfa)
-    char *fn;
-    struct RfaInfo *rfa;
+char *fn;
+struct RfaInfo *rfa;
 {
-    struct group *gr;
-    struct passwd *pw;
-    int changedUID = 0;
-    int rc = OK;
-    int fuid, fgid;
+	struct group *gr;
+	struct passwd *pw;
+	int changedUID = 0;
+	int rc = OK;
+	int fuid, fgid;
 
-    if (getFileOwner(fn, &fuid, &fgid) == NOTOK) {
-	sprintf(rfaErrStr, "can't change owner/group of %s\n", fn);
-	return NOTOK;
-    }
-    if ((doChgrp || doChown) && runAsRoot) 
-	if (setreuid(-1, 0) != -1)
-	    changedUID++;
-		
-    if (doChgrp) 
-	if ((gr = getgrnam(rfa->ri_group)) == NULL) {
-	    sprintf(rfaErrStr, "can't change group to %s (invalid group)", 
-			rfa->ri_group); 
-	    rc = NOTOK;
-	} else
-	    if (fgid != gr->gr_gid) 
-		if (chown(makeFN(fn), -1, gr->gr_gid) == -1)  {
-		    if (runAsRoot) {
-			setreuid(-1, fuid);
-			if (chown(makeFN(fn), -1, gr->gr_gid) == -1)  {
-			    sprintf(rfaErrStr, "can't change group to %s (%s)",
-				    rfa->ri_group, sys_errname(errno)); 
-			    rc = NOTOK;
-			}
-		    } else {
-			sprintf(rfaErrStr, "can't change group to %s (%s)",
-				rfa->ri_group, sys_errname(errno)); 
+	if (getFileOwner(fn, &fuid, &fgid) == NOTOK) {
+		sprintf(rfaErrStr, "can't change owner/group of %s\n", fn);
+		return NOTOK;
+	}
+	if ((doChgrp || doChown) && runAsRoot)
+		if (setreuid(-1, 0) != -1)
+			changedUID++;
+
+	if (doChgrp)
+		if ((gr = getgrnam(rfa->ri_group)) == NULL) {
+			sprintf(rfaErrStr, "can't change group to %s (invalid group)",
+					rfa->ri_group);
 			rc = NOTOK;
-		    }
-		}
-    if (doChown && runAsRoot)
-	if ((pw = getpwnam(rfa->ri_owner)) == NULL)  {
-	    sprintf(rfaErrStr, "can't change owner to %s (invalid user-name)", 
-			rfa->ri_owner); 
-	    rc = NOTOK;
-	} else
-	    if (fuid != pw->pw_uid) 
-		if (chown(makeFN(fn), pw->pw_uid, -1) == -1)  {
-		    sprintf(rfaErrStr, "can't change owner to %s (%s)",
-			    rfa->ri_owner, sys_errname(errno)); 
-		    rc = NOTOK;
-		}
-    
-    if (changedUID) 
-	setreuid(-1, getuid());
+		} else if (fgid != gr->gr_gid)
+			if (chown(makeFN(fn), -1, gr->gr_gid) == -1)  {
+				if (runAsRoot) {
+					setreuid(-1, fuid);
+					if (chown(makeFN(fn), -1, gr->gr_gid) == -1)  {
+						sprintf(rfaErrStr, "can't change group to %s (%s)",
+								rfa->ri_group, sys_errname(errno));
+						rc = NOTOK;
+					}
+				} else {
+					sprintf(rfaErrStr, "can't change group to %s (%s)",
+							rfa->ri_group, sys_errname(errno));
+					rc = NOTOK;
+				}
+			}
+	if (doChown && runAsRoot)
+		if ((pw = getpwnam(rfa->ri_owner)) == NULL)  {
+			sprintf(rfaErrStr, "can't change owner to %s (invalid user-name)",
+					rfa->ri_owner);
+			rc = NOTOK;
+		} else if (fuid != pw->pw_uid)
+			if (chown(makeFN(fn), pw->pw_uid, -1) == -1)  {
+				sprintf(rfaErrStr, "can't change owner to %s (%s)",
+						rfa->ri_owner, sys_errname(errno));
+				rc = NOTOK;
+			}
 
-    return rc;
+	if (changedUID)
+		setreuid(-1, getuid());
+
+	return rc;
 }
 
 /*--------------------------------------------------------------*/
 /*  changeFileMode                                              */
 /*--------------------------------------------------------------*/
 int changeFileMode(fn, mode, errmsg)
-    char *fn;
-    int mode;
-    char *errmsg;
+char *fn;
+int mode;
+char *errmsg;
 {
-    int changedUID = 0;
-    int rc = OK;
-    int fuid, fgid;
+	int changedUID = 0;
+	int rc = OK;
+	int fuid, fgid;
 
-    if (getFileOwner(fn, &fuid, &fgid) == NOTOK) {
-	sprintf(rfaErrStr, "can't %s of file %s", errmsg, fn);
-	return NOTOK;
-    }
-
-    if (fuid != getuid())
-	if (runAsRoot && (setreuid(-1, 0) != -1) && (fuid != getuid()))
-		changedUID++;
-
-    /*-- clear set uid on execution bit --*/
-    if (doClearSUID)
-	mode &= ~S_ISUID;
-
-    if (chmod(makeFN(fn), mode & 07777) == -1) 
-	if (runAsRoot) {
-	    setreuid(-1, fuid);
-	    if (chmod(makeFN(fn), mode & 07777) == -1)  {
-		sprintf(rfaErrStr, "can't %s of file %s (%s)", errmsg, fn,
-			sys_errname(errno)); 
-		rc = NOTOK;
-	    }
-	} else {
-	    sprintf(rfaErrStr, "can't %s of file %s (%s)", errmsg, fn,
-		    sys_errname(errno)); 
-	    rc = NOTOK;
+	if (getFileOwner(fn, &fuid, &fgid) == NOTOK) {
+		sprintf(rfaErrStr, "can't %s of file %s", errmsg, fn);
+		return NOTOK;
 	}
 
-    if (changedUID) 
-	setreuid(-1, getuid());
-    return rc;
+	if (fuid != getuid())
+		if (runAsRoot && (setreuid(-1, 0) != -1) && (fuid != getuid()))
+			changedUID++;
+
+	/*-- clear set uid on execution bit --*/
+	if (doClearSUID)
+		mode &= ~S_ISUID;
+
+	if (chmod(makeFN(fn), mode & 07777) == -1)
+		if (runAsRoot) {
+			setreuid(-1, fuid);
+			if (chmod(makeFN(fn), mode & 07777) == -1)  {
+				sprintf(rfaErrStr, "can't %s of file %s (%s)", errmsg, fn,
+						sys_errname(errno));
+				rc = NOTOK;
+			}
+		} else {
+			sprintf(rfaErrStr, "can't %s of file %s (%s)", errmsg, fn,
+					sys_errname(errno));
+			rc = NOTOK;
+		}
+
+	if (changedUID)
+		setreuid(-1, getuid());
+	return rc;
 }
 
 
@@ -199,70 +197,70 @@ int changeFileMode(fn, mode, errmsg)
 /*  makeFileReadOnly						*/
 /*--------------------------------------------------------------*/
 int makeFileReadOnly(fn, rfa)
-    struct RfaInfo *rfa;
-    char *fn;
+struct RfaInfo *rfa;
+char *fn;
 {
-    if (doChmod && (rfa->ri_mode & 0222)) {
-	rfa->ri_mode &= ~0222;
-	return changeFileMode(fn, rfa->ri_mode, "clear write permission");
-    }
-    return OK;
+	if (doChmod && (rfa->ri_mode & 0222)) {
+		rfa->ri_mode &= ~0222;
+		return changeFileMode(fn, rfa->ri_mode, "clear write permission");
+	}
+	return OK;
 }
 
 /*--------------------------------------------------------------*/
 /*  makeFileReadWrite						*/
 /*--------------------------------------------------------------*/
 int makeFileReadWrite(fn, rfa)
-    struct RfaInfo *rfa;
-    char *fn;
+struct RfaInfo *rfa;
+char *fn;
 {
-    if (doChmod) {
-	rfa->ri_mode |= 0220;
-	return changeFileMode(fn, rfa->ri_mode, "set write permission");
-    }
-    return OK;
+	if (doChmod) {
+		rfa->ri_mode |= 0220;
+		return changeFileMode(fn, rfa->ri_mode, "set write permission");
+	}
+	return OK;
 }
 
 /*--------------------------------------------------------------*/
 /*  changeTime - change local time if eff. uid is root		*/
 /*--------------------------------------------------------------*/
 int changeTime (dt)
-    time_t dt;
+time_t dt;
 {
-    struct timeval tv;
-    int rc = OK;
-    int changedUID = 0;
+	struct timeval tv;
+	int rc = OK;
+	int changedUID = 0;
 
-    if (runAsRoot) 
-	if (setreuid(-1, 0) == -1)  {
-	    sprintf(rfaErrStr, "can't switch to user ID of ROOT");
-	} else
-	    changedUID++;
-    else {
-	sprintf (rfaErrStr, "can't set time myself, using 'rfatime'");
-	return NOTOK;
-    }
-
-    if (dt > 0) {
-	/*--- clock "jumps" forwards ---*/
-	gettimeofday(&tv, (struct timezone *)NULL);
-	tv.tv_sec += dt;
-	if (settimeofday(&tv, (struct timezone *)NULL) == -1) {
-	    sprintf(rfaErrStr, "can't set time : %s ", sys_errname(errno));
-	    rc = NOTOK;
+	if (runAsRoot)
+		if (setreuid(-1, 0) == -1)  {
+			sprintf(rfaErrStr, "can't switch to user ID of ROOT");
+		} else
+			changedUID++;
+	else {
+		sprintf (rfaErrStr, "can't set time myself, using 'rfatime'");
+		return NOTOK;
 	}
-    } else {
-	tv.tv_sec = dt;
-	tv.tv_usec = 0L;
-	if (adjtime(&tv, (struct timeval *)NULL) == -1) {
-	    sprintf(rfaErrStr, "can't set time : %s", sys_errname(errno));
-	    rc = NOTOK;
+
+	if (dt > 0) {
+		/*--- clock "jumps" forwards ---*/
+		gettimeofday(&tv, (struct timezone *)NULL);
+		tv.tv_sec += dt;
+		if (settimeofday(&tv, (struct timezone *)NULL) == -1) {
+			sprintf(rfaErrStr, "can't set time : %s ", sys_errname(errno));
+			rc = NOTOK;
+		}
+	} else {
+		tv.tv_sec = dt;
+		tv.tv_usec = 0L;
+		if (adjtime(&tv, (struct timeval *)NULL) == -1) {
+			sprintf(rfaErrStr, "can't set time : %s", sys_errname(errno));
+			rc = NOTOK;
+		}
 	}
-    }
 
-    if (changedUID) 
-	setreuid(-1, getuid());
+	if (changedUID)
+		setreuid(-1, getuid());
 
-    return rc;
+	return rc;
 }
 

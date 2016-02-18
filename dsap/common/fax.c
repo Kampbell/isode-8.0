@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/fax.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/fax.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -25,7 +25,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/fax.c,v 9.0 199
  */
 
 
-/* 
+/*
 	SYNTAX:
 		fax ::= <printablestring> [ <parameters> ]
 		parameters ::= <parm> | <parm> $ <parameters>
@@ -48,20 +48,20 @@ extern LLog * log_dsap;
 /*  */
 
 struct pair {
-    char   *p_name;
-    int	    p_value;
+	char   *p_name;
+	int	    p_value;
 };
 
 static struct pair pairs[] = {
-    "twoDimensional", 8,
-    "fineResolution", 9,
-    "unlimitedLength", 20,
-    "b4Length", 21,
-    "a3Width", 22,
-    "b4Width", 23,
-    "uncompressed", 30,
+	"twoDimensional", 8,
+	"fineResolution", 9,
+	"unlimitedLength", 20,
+	"b4Length", 21,
+	"a3Width", 22,
+	"b4Width", 23,
+	"uncompressed", 30,
 
-    NULL
+	NULL
 };
 
 /*  */
@@ -69,12 +69,12 @@ static struct pair pairs[] = {
 static	fax_free (f)
 register struct fax *f;
 {
-    free (f -> number);
+	free (f -> number);
 
-    if (f -> bits)
-	pe_free (f -> bits);
+	if (f -> bits)
+		pe_free (f -> bits);
 
-    free ((char *) f);
+	free ((char *) f);
 }
 
 /*  */
@@ -82,14 +82,14 @@ register struct fax *f;
 static struct fax *fax_cpy (a)
 register struct fax *a;
 {
-    register struct fax *f;
+	register struct fax *f;
 
-    f = (struct fax *) smalloc (sizeof *f);
+	f = (struct fax *) smalloc (sizeof *f);
 
-    f -> number = strdup (a -> number);
-    f -> bits = a -> bits ? pe_cpy (a -> bits) : NULLPE;
+	f -> number = strdup (a -> number);
+	f -> bits = a -> bits ? pe_cpy (a -> bits) : NULLPE;
 
-    return f;
+	return f;
 }
 
 /*  */
@@ -98,18 +98,17 @@ static int  fax_cmp (a, b)
 register struct fax *a;
 register struct fax *b;
 {
-    int	    i;
+	int	    i;
 
-    if (a == (struct fax *) NULL)
-	return (b ? -1 : 0);
-    else
-	if  (b == (struct fax *) NULL)
-	    return 1;
+	if (a == (struct fax *) NULL)
+		return (b ? -1 : 0);
+	else if  (b == (struct fax *) NULL)
+		return 1;
 
-    if (i = telcmp (a -> number, b -> number))
-	return i;
+	if (i = telcmp (a -> number, b -> number))
+		return i;
 
-    return pe_cmp (a -> bits, b -> bits);
+	return pe_cmp (a -> bits, b -> bits);
 }
 
 /*  */
@@ -119,51 +118,50 @@ register PS ps;
 register struct fax *f;
 int	format;
 {
-    register int   i;
-    register struct pair *p;
-    register PE    pe;
+	register int   i;
+	register struct pair *p;
+	register PE    pe;
 
-    if (format == READOUT) {
-	ps_printf (ps, "%s", f -> number);
+	if (format == READOUT) {
+		ps_printf (ps, "%s", f -> number);
 
-	if ((pe = f -> bits) && (i = pe -> pe_nbits) > 0) {
-	    char    *cp = " {";
+		if ((pe = f -> bits) && (i = pe -> pe_nbits) > 0) {
+			char    *cp = " {";
 
-	    while (i-- >= 0)
-		if (bit_test (pe, i) > OK) {
-		    for (p = pairs; p -> p_name; p++)
-			if (p -> p_value == i)
-			    break;
-		    if (p -> p_name)
-			ps_printf (ps, "%s %s", cp, p -> p_name);
-		    else
-			ps_printf (ps, "%s %d", cp, i);
-		    cp = ",";
+			while (i-- >= 0)
+				if (bit_test (pe, i) > OK) {
+					for (p = pairs; p -> p_name; p++)
+						if (p -> p_value == i)
+							break;
+					if (p -> p_name)
+						ps_printf (ps, "%s %s", cp, p -> p_name);
+					else
+						ps_printf (ps, "%s %d", cp, i);
+					cp = ",";
+				}
+
+			if (*cp == ',')
+				ps_print (ps, " }");
 		}
+	} else {
+		ps_printf (ps, "%s", f -> number);
 
-	    if (*cp == ',')
-		ps_print (ps, " }");
-	}
-    }
-    else {
-	ps_printf (ps, "%s", f -> number);
+		if ((pe = f -> bits) && (i = pe -> pe_nbits) > 0) {
+			char    *cp = " $";
 
-	if ((pe = f -> bits) && (i = pe -> pe_nbits) > 0) {
-	    char    *cp = " $";
-
-	    while (i-- >= 0)
-		if (bit_test (pe, i) > OK) {
-		    for (p = pairs; p -> p_name; p++)
-			if (p -> p_value == i)
-			    break;
-		    if (p -> p_name)
-			ps_printf (ps, "%s %s", cp, p -> p_name);
-		    else
-			ps_printf (ps, "%s %d", cp, i);
-		    cp = "";
+			while (i-- >= 0)
+				if (bit_test (pe, i) > OK) {
+					for (p = pairs; p -> p_name; p++)
+						if (p -> p_value == i)
+							break;
+					if (p -> p_name)
+						ps_printf (ps, "%s %s", cp, p -> p_name);
+					else
+						ps_printf (ps, "%s %d", cp, i);
+					cp = "";
+				}
 		}
 	}
-    }
 }
 
 /*  */
@@ -171,76 +169,79 @@ int	format;
 static struct fax *str2fax (str)
 register char  *str;
 {
-    int	    value;
-    register char  *ptr,
-		  **ap;
-    char   *vec[NVEC + 1];
-    register struct fax *f;
-    register struct pair *p;
+	int	    value;
+	register char  *ptr,
+			 **ap;
+	char   *vec[NVEC + 1];
+	register struct fax *f;
+	register struct pair *p;
 
-    f = (struct fax *) smalloc (sizeof *f);
+	f = (struct fax *) smalloc (sizeof *f);
 
-    if (ptr = index (str, '$'))
-	*ptr = NULL;
-    if ((int)strlen (str) > UB_TELEPHONE_NUMBER) {
-	parse_error ("fax phone number too big",NULLCP);
-	free ((char *) f);
-        return ((struct fax *) NULL);
-    }
+	if (ptr = index (str, '$'))
+		*ptr = NULL;
+	if ((int)strlen (str) > UB_TELEPHONE_NUMBER) {
+		parse_error ("fax phone number too big",NULLCP);
+		free ((char *) f);
+		return ((struct fax *) NULL);
+	}
 
-    FAST_TIDY(str);
-    f -> number = strdup(str);
-    f -> bits = NULLPE;
+	FAST_TIDY(str);
+	f -> number = strdup(str);
+	f -> bits = NULLPE;
 
-    if (!ptr)
+	if (!ptr)
+		return f;
+
+	*ptr++ = '$';
+	ptr = strdup (ptr);
+
+	bzero ((char *) vec, sizeof vec);
+	(void) str2vec (ptr, vec);
+
+	for (ap = vec; *ap; ap++) {
+		if (sscanf (*ap, "%d", &value) == 1 && value >= 0)
+			goto got_value;
+
+		for (p = pairs; p -> p_name; p++)
+			if (lexequ (p -> p_name, *ap) == 0)
+				break;
+		if (! p -> p_name) {
+			parse_error ("unknown G3fax non-basic parameter: '%s'", *ap);
+
+you_lose:
+			;
+			free (ptr);
+			free (f -> number);
+			if (f -> bits)
+				pe_free (f -> bits);
+			free ((char *) f);
+
+			return ((struct fax *) NULL);
+		}
+		value = p -> p_value;
+
+got_value:
+		;
+		if ((f -> bits == NULLPE
+				&& (f -> bits = prim2bit (pe_alloc (PE_CLASS_UNIV,
+										  PE_FORM_PRIM,
+										  PE_PRIM_BITS)))
+				== NULLPE)
+				|| bit_on (f -> bits, value) == NOTOK) {
+no_allocate:
+			;
+			parse_error ("unable to allocate G3fax non-basic parameter",NULLCP);
+			goto you_lose;
+		}
+	}
+
+	if (bit2prim (f -> bits) == NULLPE)
+		goto no_allocate;
+
+	free (ptr);
+
 	return f;
-
-    *ptr++ = '$';
-    ptr = strdup (ptr);
-
-    bzero ((char *) vec, sizeof vec);
-    (void) str2vec (ptr, vec);
-
-    for (ap = vec; *ap; ap++) {
-	if (sscanf (*ap, "%d", &value) == 1 && value >= 0)
-	    goto got_value;
-
-	for (p = pairs; p -> p_name; p++)
-	    if (lexequ (p -> p_name, *ap) == 0)
-		break;
-	if (! p -> p_name) {
-	    parse_error ("unknown G3fax non-basic parameter: '%s'", *ap);
-
-you_lose: ;
-	    free (ptr);
-	    free (f -> number);
-	    if (f -> bits)
-		pe_free (f -> bits);
-	    free ((char *) f);
-
-	    return ((struct fax *) NULL);
-	}
-	value = p -> p_value;
-
-got_value: ;
-	if ((f -> bits == NULLPE
-		    && (f -> bits = prim2bit (pe_alloc (PE_CLASS_UNIV,
-							PE_FORM_PRIM,
-							PE_PRIM_BITS)))
-			    == NULLPE)
-		|| bit_on (f -> bits, value) == NOTOK) {
-no_allocate: ;
-	    parse_error ("unable to allocate G3fax non-basic parameter",NULLCP);
-	    goto you_lose;
-	}
-    }
-
-    if (bit2prim (f -> bits) == NULLPE)
-	goto no_allocate;
-
-    free (ptr);
-
-    return f;
 }
 
 /*  */
@@ -248,16 +249,16 @@ no_allocate: ;
 static PE  fax_enc (f)
 struct fax *f;
 {
-    PE	pe = NULLPE;
+	PE	pe = NULLPE;
 
-    f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
+	f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
 
-    (void) encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
+	(void) encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
 
-    if (f -> fax_bits)
-	    free (f -> fax_bits);
+	if (f -> fax_bits)
+		free (f -> fax_bits);
 
-    return pe;
+	return pe;
 }
 
 /*  */
@@ -265,35 +266,35 @@ struct fax *f;
 static struct fax *fax_dec (pe)
 PE	pe;
 {
-    struct fax *f;
+	struct fax *f;
 
-    if (decode_SA_FacsimileTelephoneNumber (pe, 1, NULLIP, NULLVP, &f)
-	    == NOTOK) {
-	return ((struct fax *) NULL);
-    }
+	if (decode_SA_FacsimileTelephoneNumber (pe, 1, NULLIP, NULLVP, &f)
+			== NOTOK) {
+		return ((struct fax *) NULL);
+	}
 
-    if ((int)strlen (f->number) > UB_TELEPHONE_NUMBER) {
-	LLOG(log_dsap,LLOG_EXCEPTIONS,("fax number string too big"));
-        return ((struct fax *) NULL);
-    }
+	if ((int)strlen (f->number) > UB_TELEPHONE_NUMBER) {
+		LLOG(log_dsap,LLOG_EXCEPTIONS,("fax number string too big"));
+		return ((struct fax *) NULL);
+	}
 
-    if ( f -> fax_bits ) {
-	    f -> bits = strb2bitstr ( f -> fax_bits, f -> fax_len, 
-			      PE_CLASS_UNIV, PE_PRIM_BITS);
+	if ( f -> fax_bits ) {
+		f -> bits = strb2bitstr ( f -> fax_bits, f -> fax_len,
+								  PE_CLASS_UNIV, PE_PRIM_BITS);
 
-	    free ( f -> fax_bits );
-    }
+		free ( f -> fax_bits );
+	}
 
-    return f;
+	return f;
 }
 
 /*  */
 
 fax_syntax () {
-    (void) add_attribute_syntax ("FacsimileTelephoneNumber",
-				 (IFP) fax_enc,	(IFP) fax_dec,
-				 (IFP) str2fax,	fax_print,
-				 (IFP) fax_cpy,	fax_cmp,
-				 fax_free,	NULLCP,
-				 NULLIFP,	TRUE);
+	(void) add_attribute_syntax ("FacsimileTelephoneNumber",
+								 (IFP) fax_enc,	(IFP) fax_dec,
+								 (IFP) str2fax,	fax_print,
+								 (IFP) fax_cpy,	fax_cmp,
+								 fax_free,	NULLCP,
+								 NULLIFP,	TRUE);
 }

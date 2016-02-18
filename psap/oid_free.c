@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/oid_free.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/oid_free.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -35,11 +35,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/oid_free.c,v 9.0 1992/
 int	oid_free (oid)
 register OID oid;
 {
-    if (oid == NULLOID)
-	return;
+	if (oid == NULLOID)
+		return;
 
-    if (oid -> oid_elements)
-	free ((char *) oid -> oid_elements);
+	if (oid -> oid_elements)
+		free ((char *) oid -> oid_elements);
 
-    free ((char *) oid);
+	free ((char *) oid);
 }

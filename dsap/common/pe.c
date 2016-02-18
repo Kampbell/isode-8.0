@@ -38,11 +38,11 @@ PS     ps;
 PE     pe;
 int     format;
 {
-register char * ptr, *s;
-register int i, j;
-PS sps;
-static char hex[] = "0123456789abcdef";
-char buffer [LINESIZE];
+	register char * ptr, *s;
+	register int i, j;
+	PS sps;
+	static char hex[] = "0123456789abcdef";
+	char buffer [LINESIZE];
 
 	if ( format == FILEOUT) {
 		(void) pe2ps (ps,pe);
@@ -68,15 +68,15 @@ char buffer [LINESIZE];
 
 	ptr = sps->ps_base;
 	for (i=0, j=0; i<sps->ps_byteno; i++) {
-/*
-		ps_printf (sps2,fmt,*ptr++ & 255);
-*/
+		/*
+				ps_printf (sps2,fmt,*ptr++ & 255);
+		*/
 		*s++ = hex [((*ptr & 255)/16) % 16];
 		*s++ = hex [(*ptr++ & 255) % 16];
 		j += 2;
 		if ( j >= EDB_LINEWRAP ) {
-		        *s++ = '\\';
-		        *s++ = '\n';
+			*s++ = '\\';
+			*s++ = '\n';
 			(void) ps_write (ps, (PElementData)buffer, j);
 			s = buffer;
 			j = 0;
@@ -91,43 +91,44 @@ char buffer [LINESIZE];
 PE asn2pe (str)
 char * str;
 {
-char * ptr;
-char * pe_ptr;
-register int i,j;
-PS sps;
-void StripSpace ();
-PE pe;
-extern char hex2nib[];
+	char * ptr;
+	char * pe_ptr;
+	register int i,j;
+	PS sps;
+	void StripSpace ();
+	PE pe;
+	extern char hex2nib[];
 #ifdef oldcode
-int val;
+	int val;
 #endif
 
 	StripSpace (str);
 
 	j = strlen (str);
 	if (j % 2 == 1) {
-	    LLOG (log_dsap,LLOG_EXCEPTIONS,
-		("asn2pe: not an even number of bytes `%s'", str));
-	    j--;
+		LLOG (log_dsap,LLOG_EXCEPTIONS,
+			  ("asn2pe: not an even number of bytes `%s'", str));
+		j--;
 	}
 	pe_ptr = (char *) smalloc (j+10);
 	ptr = pe_ptr;
 
 	for ( i=0 ; i<j; ) {
-	    if (!isascii(*str) || !isxdigit(*str)) { /* skip bad chars */
-		str ++, i++;
-		continue;
-	    }
-	    *ptr = hex2nib[*str++ & 0x7f] << 4;
-	    *ptr |= hex2nib[*str++ & 0x7f];
-	    *ptr++ &= 0xff;
-	    i += 2;
+		if (!isascii(*str) || !isxdigit(*str)) { /* skip bad chars */
+			str ++, i++;
+			continue;
+		}
+		*ptr = hex2nib[*str++ & 0x7f] << 4;
+		*ptr |= hex2nib[*str++ & 0x7f];
+		*ptr++ &= 0xff;
+		i += 2;
 #ifdef oldcode
-	    (void) sscanf (str,"%2x",&val);
+		(void) sscanf (str,"%2x",&val);
 
-	    *ptr++ = val & 0xff;
-	    str++; str++;
-	    i+=2;
+		*ptr++ = val & 0xff;
+		str++;
+		str++;
+		i+=2;
 #endif
 	}
 

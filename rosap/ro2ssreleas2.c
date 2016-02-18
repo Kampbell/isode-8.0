@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssreleas2.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/ro2ssreleas2.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -42,21 +42,21 @@ int	RoEndResponse (sd, roi)
 int	sd;
 struct RoSAPindication *roi;
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	register struct assocblk   *acb;
 
-    missingP (roi);
+	missingP (roi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rosapFsig (acb, sd);
+	rosapFsig (acb, sd);
 
-    result = RoEndResponseAux (acb, roi);
+	result = RoEndResponseAux (acb, roi);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 
 }
 
@@ -66,19 +66,19 @@ static int  RoEndResponseAux (acb, roi)
 register struct assocblk   *acb;
 struct RoSAPindication *roi;
 {
-    int     result;
-    struct SSAPindication   sis;
-    register struct SSAPindication *si = &sis;
-    register struct SSAPabort *sa = &si -> si_abort;
+	int     result;
+	struct SSAPindication   sis;
+	register struct SSAPindication *si = &sis;
+	register struct SSAPabort *sa = &si -> si_abort;
 
-    if (SRelResponse (acb -> acb_fd, SC_ACCEPT, NULLCP, 0, si) == NOTOK)
-	result = ss2roslose (acb, roi, "SRelResponse", sa);
-    else {
-	acb -> acb_fd = NOTOK;
-	result = OK;
-    }
+	if (SRelResponse (acb -> acb_fd, SC_ACCEPT, NULLCP, 0, si) == NOTOK)
+		result = ss2roslose (acb, roi, "SRelResponse", sa);
+	else {
+		acb -> acb_fd = NOTOK;
+		result = OK;
+	}
 
-    freeacblk (acb);
+	freeacblk (acb);
 
-    return result;
+	return result;
 }

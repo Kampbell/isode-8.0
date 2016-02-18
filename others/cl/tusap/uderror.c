@@ -18,7 +18,7 @@
  *    Acquisition, use, and distribution of this module and     *
  *    related materials are subject to the restrictions of a    *
  *    license agreement.					*
- *								*    
+ *								*
  *    This software is for prototype purposes only.		*
  *								*
  ****************************************************************
@@ -27,7 +27,7 @@
 
 
 
-/*  
+/*
  *  Cause the message array to get allocated
  */
 

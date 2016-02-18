@@ -45,7 +45,7 @@ RDN  rdn;
 PS   ps;
 int  format;
 {
-register RDN eptr;
+	register RDN eptr;
 
 	if (rdn ==  NULLRDN) {
 		if (format == READOUT)
@@ -55,10 +55,10 @@ register RDN eptr;
 
 	rdn_comp_print (ps,rdn,format);
 
-		for (eptr=rdn->rdn_next; eptr!=NULLRDN; eptr=eptr->rdn_next) {
-			ps_print (ps,"%"); 
-			rdn_comp_print (ps,eptr,format);
-		}
+	for (eptr=rdn->rdn_next; eptr!=NULLRDN; eptr=eptr->rdn_next) {
+		ps_print (ps,"%");
+		rdn_comp_print (ps,eptr,format);
+	}
 
 }
 

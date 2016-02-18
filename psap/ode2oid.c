@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ode2oid.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/ode2oid.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -49,7 +49,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ode2oid.c,v 9.0 1992/0
 /*  */
 #define ODECACHESIZE 10
 static struct la_cache {
-	char	*descriptor;	
+	char	*descriptor;
 	int	ref;
 	OID	oid;
 } Cache[ODECACHESIZE];
@@ -57,96 +57,93 @@ static struct la_cache {
 static void preloadcache (str)
 char	*str;
 {
-    struct la_cache *cp = &Cache[0];
-    register struct isobject *io;
+	struct la_cache *cp = &Cache[0];
+	register struct isobject *io;
 
-    (void) setisobject (0);
-    while (io = getisobject ()) {
-	if (strcmp (str, io -> io_descriptor) == 0 ||
-	    strcmp (DFLT_ASN, io -> io_descriptor) == 0 ||
-	    strcmp (AC_ASN, io -> io_descriptor) == 0 ||
-	    strcmp (BER, io -> io_descriptor) == 0 ||
-	    strcmp (RT_ASN, io -> io_descriptor) == 0) {
-	    if ((cp -> oid = oid_cpy (&io -> io_identity)) == NULLOID ||
-		(cp -> descriptor = malloc ((unsigned) (strlen (io -> io_descriptor) + 1)))
-		== NULLCP) {
-		if (cp -> oid) {
-		    oid_free (cp -> oid);
-		    cp -> oid = NULLOID;
+	(void) setisobject (0);
+	while (io = getisobject ()) {
+		if (strcmp (str, io -> io_descriptor) == 0 ||
+				strcmp (DFLT_ASN, io -> io_descriptor) == 0 ||
+				strcmp (AC_ASN, io -> io_descriptor) == 0 ||
+				strcmp (BER, io -> io_descriptor) == 0 ||
+				strcmp (RT_ASN, io -> io_descriptor) == 0) {
+			if ((cp -> oid = oid_cpy (&io -> io_identity)) == NULLOID ||
+					(cp -> descriptor = malloc ((unsigned) (strlen (io -> io_descriptor) + 1)))
+					== NULLCP) {
+				if (cp -> oid) {
+					oid_free (cp -> oid);
+					cp -> oid = NULLOID;
+				}
+			} else {
+				(void) strcpy (cp -> descriptor, io -> io_descriptor);
+				cp -> ref = 1;
+				cp ++;
+			}
 		}
-	    }
-	    else {
-		(void) strcpy (cp -> descriptor, io -> io_descriptor);
-		cp -> ref = 1;
-		cp ++;
-	    }
 	}
-    }
-    (void) endisobject ();
+	(void) endisobject ();
 }
 
 OID	ode2oid (descriptor)
 char   *descriptor;
 {
-    register struct isobject *io;
-    int i, least;
-    struct la_cache *cp, *cpn;
-    static char firsttime = 0;
+	register struct isobject *io;
+	int i, least;
+	struct la_cache *cp, *cpn;
+	static char firsttime = 0;
 
-    if (firsttime == 0) {
-	preloadcache (descriptor);
-	firsttime = 1;
-    }
-
-    least = Cache[0].ref;
-    for (cpn = cp = &Cache[0], i = 0; i < ODECACHESIZE; i++, cp++) {
-	if (cp -> ref < least) {
-	    least = cp -> ref;
-	    cpn = cp;
+	if (firsttime == 0) {
+		preloadcache (descriptor);
+		firsttime = 1;
 	}
-	if (cp -> ref <= 0)
-		continue;
-	if (strcmp (descriptor, cp -> descriptor) == 0) {
-	    cp -> ref ++;
-	    return cp -> oid;
+
+	least = Cache[0].ref;
+	for (cpn = cp = &Cache[0], i = 0; i < ODECACHESIZE; i++, cp++) {
+		if (cp -> ref < least) {
+			least = cp -> ref;
+			cpn = cp;
+		}
+		if (cp -> ref <= 0)
+			continue;
+		if (strcmp (descriptor, cp -> descriptor) == 0) {
+			cp -> ref ++;
+			return cp -> oid;
+		}
 	}
-    }
 
-    if ((io = getisobjectbyname (descriptor)) == NULL)
-	return NULLOID;
+	if ((io = getisobjectbyname (descriptor)) == NULL)
+		return NULLOID;
 
-    if (cpn -> oid)
-	    oid_free (cpn -> oid);
-    if (cpn -> descriptor)
-	    free (cpn -> descriptor);
+	if (cpn -> oid)
+		oid_free (cpn -> oid);
+	if (cpn -> descriptor)
+		free (cpn -> descriptor);
 
-    cpn -> ref = 1;
-    if ((cpn -> oid = oid_cpy (&io -> io_identity)) == NULLOID ||
-	(cpn -> descriptor = malloc ((unsigned) (strlen (descriptor) + 1))) == NULLCP) {
-	if (cpn -> oid) {
-	    oid_free (cpn -> oid);
-	    cpn -> oid = NULLOID;
-	}
-        cpn -> ref = 0;
-    }
-    else
-	(void) strcpy (cpn -> descriptor, descriptor);
+	cpn -> ref = 1;
+	if ((cpn -> oid = oid_cpy (&io -> io_identity)) == NULLOID ||
+			(cpn -> descriptor = malloc ((unsigned) (strlen (descriptor) + 1))) == NULLCP) {
+		if (cpn -> oid) {
+			oid_free (cpn -> oid);
+			cpn -> oid = NULLOID;
+		}
+		cpn -> ref = 0;
+	} else
+		(void) strcpy (cpn -> descriptor, descriptor);
 
-    return (&io -> io_identity);
+	return (&io -> io_identity);
 }
 
-#ifdef DEBUG 
-free_oid_cache()
-{
-    struct la_cache *cp;
-    int i;
+#ifdef DEBUG
+free_oid_cache() {
+	struct la_cache *cp;
+	int i;
 
-    for (cp = &Cache[0], i = 0; i < ODECACHESIZE; i++, cp++) {
-	if (cp->descriptor)
-	    free (cp->descriptor);
+	for (cp = &Cache[0], i = 0; i < ODECACHESIZE; i++, cp++) {
+		if (cp->descriptor)
+			free (cp->descriptor);
 
-	if (cp->oid)
-	    oid_free(cp->oid);
-    }
+		if (cp->oid)
+			oid_free(cp->oid);
+	}
 }
 #endif

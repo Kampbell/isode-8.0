@@ -26,7 +26,7 @@
  *    Acquisition, use, and distribution of this module and     *
  *    related materials are subject to the restrictions of a    *
  *    license agreement.					*
- *								*    
+ *								*
  *    This software is for prototype purposes only.		*
  *								*
  ****************************************************************
@@ -49,55 +49,53 @@ char	              **hptr;
 struct TSAPdisconnect *td;
 {
 
-    char   *vptr,
-           *liptr;
+	char   *vptr,
+		   *liptr;
 
-    int	   n;
+	int	   n;
 
 
-    /*
-     *  Format the ISO T-UNITDATA header
-     */
+	/*
+	 *  Format the ISO T-UNITDATA header
+	 */
 
- 	if ((vptr =  malloc ((unsigned) (3 + 7 + 
-			   (2 + tb -> tb_initiating.ta_selectlen)
- 			 + (2 + tb -> tb_initiating.ta_selectlen) 
-			 + 3))) == NULL)
-	    return DR_CONGEST;
+	if ((vptr =  malloc ((unsigned) (3 + 7 +
+									 (2 + tb -> tb_initiating.ta_selectlen)
+									 + (2 + tb -> tb_initiating.ta_selectlen)
+									 + 3))) == NULL)
+		return DR_CONGEST;
 
 	*hptr = vptr;
 	liptr = vptr++;
-        *vptr++ = TPDU_UD;
+	*vptr++ = TPDU_UD;
 	*liptr = 1;
 
- 	if (tb -> tb_initiating.ta_selectlen > 0) 
-	    {
-	    *vptr++ = VDAT_TSAP_CLI;
-	    *vptr++ = tb -> tb_initiating.ta_selectlen;
-	    bcopy (tb -> tb_initiating.ta_selector, 
-		   vptr, 
-		   tb -> tb_initiating.ta_selectlen);
-	    vptr += tb -> tb_initiating.ta_selectlen;
-	    *liptr += 2 + tb -> tb_initiating.ta_selectlen;
-	    }
+	if (tb -> tb_initiating.ta_selectlen > 0) {
+		*vptr++ = VDAT_TSAP_CLI;
+		*vptr++ = tb -> tb_initiating.ta_selectlen;
+		bcopy (tb -> tb_initiating.ta_selector,
+			   vptr,
+			   tb -> tb_initiating.ta_selectlen);
+		vptr += tb -> tb_initiating.ta_selectlen;
+		*liptr += 2 + tb -> tb_initiating.ta_selectlen;
+	}
 
-	if (tb -> tb_responding.ta_selectlen > 0) 
-	    {
-	    *vptr++ = VDAT_TSAP_SRV;
-	    *vptr++ = tb -> tb_responding.ta_selectlen;
-	    bcopy (tb -> tb_responding.ta_selector, 
-		   vptr, 
-                   tb -> tb_responding.ta_selectlen);
-	    vptr += tb -> tb_responding.ta_selectlen;
-	    *liptr += 2 + tb -> tb_responding.ta_selectlen;
-	    }
+	if (tb -> tb_responding.ta_selectlen > 0) {
+		*vptr++ = VDAT_TSAP_SRV;
+		*vptr++ = tb -> tb_responding.ta_selectlen;
+		bcopy (tb -> tb_responding.ta_selector,
+			   vptr,
+			   tb -> tb_responding.ta_selectlen);
+		vptr += tb -> tb_responding.ta_selectlen;
+		*liptr += 2 + tb -> tb_responding.ta_selectlen;
+	}
 
 
 	/*
 	 *  LI field doesn't include itself so bump up the actual
 	 */
 
-        return ( (*liptr) + 1 );
+	return ( (*liptr) + 1 );
 }
 
 
@@ -116,61 +114,59 @@ register struct TSAPunitdata *tud;
 struct TSAPdisconnect *td;
 
 {
-    int		code;
-    char	*vptr;			/* to variable data */
-    int	   	len, vlen, savelen;
+	int		code;
+	char	*vptr;			/* to variable data */
+	int	   	len, vlen, savelen;
 
 
-    vptr = (char*) tud -> tud_qbuf.qb_data;     
+	vptr = (char*) tud -> tud_qbuf.qb_data;
 
-    /* 
-     *  Get LI.
-     */
+	/*
+	 *  Get LI.
+	 */
 
-    vlen = *vptr;
-    savelen = vlen;
+	vlen = *vptr;
+	savelen = vlen;
 
-    /*
-     *  Check for valid unitdata TPDU.
-     */
+	/*
+	 *  Check for valid unitdata TPDU.
+	 */
 
-    vptr++;
+	vptr++;
 
-    if (*vptr++ != TPDU_UD)
-	return DR_PROTOCOL;
+	if (*vptr++ != TPDU_UD)
+		return DR_PROTOCOL;
 
-    len = 0;
-    vlen--;
+	len = 0;
+	vlen--;
 
-    for (; vlen > 0; vptr += len, vlen -= len)
-	{
-	int	ilen;
+	for (; vlen > 0; vptr += len, vlen -= len) {
+		int	ilen;
 
-	if (vlen < 2)
-	    return DR_LENGTH;
-   	
-	code = *vptr++ & 0xff;
-	len = *vptr++ & 0xff;
-	if ((vlen -= 2) < len)
-	    return NOTOK;
+		if (vlen < 2)
+			return DR_LENGTH;
 
-	switch (code) 
-	    {
-	    case VDAT_TSAP_SRV:
-	        if ((ilen = len) > sizeof tud -> tud_called)
-		    ilen = sizeof tud -> tud_called;
-		    bcopy (vptr, 
-			   &tud -> tud_called, 
-			   ilen);
-		 break;
+		code = *vptr++ & 0xff;
+		len = *vptr++ & 0xff;
+		if ((vlen -= 2) < len)
+			return NOTOK;
 
-	     case VDAT_TSAP_CLI:
-	         if ((ilen = len) > sizeof tud -> tud_calling)
-		     ilen = sizeof tud -> tud_calling;
-		     bcopy (vptr, 
-			    &tud -> tud_calling,
-			    ilen);
-		  break;
+		switch (code) {
+		case VDAT_TSAP_SRV:
+			if ((ilen = len) > sizeof tud -> tud_called)
+				ilen = sizeof tud -> tud_called;
+			bcopy (vptr,
+				   &tud -> tud_called,
+				   ilen);
+			break;
+
+		case VDAT_TSAP_CLI:
+			if ((ilen = len) > sizeof tud -> tud_calling)
+				ilen = sizeof tud -> tud_calling;
+			bcopy (vptr,
+				   &tud -> tud_calling,
+				   ilen);
+			break;
 
 		case VDAT_OPTIONS:
 		case VDAT_ALTERNATE:
@@ -184,27 +180,27 @@ struct TSAPdisconnect *td;
 		case VDAT_PRIORITY:
 		case VDAT_DELAY:
 		case VDAT_TTR:
-		    break;
+			break;
 
-		default: 
-		    return NOTOK;
+		default:
+			return NOTOK;
 
-	   }
+		}
 
-    }
+	}
 
-    /*
-     * Update the pointer to the user data.
-     */
+	/*
+	 * Update the pointer to the user data.
+	 */
 
-    tud -> tud_qbuf.qb_data  = (char*) vptr;
+	tud -> tud_qbuf.qb_data  = (char*) vptr;
 
-   /*
-    *  LI field doesn't include itself so bump up the actual
-    *  length in savelen to return.
-    */
+	/*
+	 *  LI field doesn't include itself so bump up the actual
+	 *  length in savelen to return.
+	 */
 
-    return (savelen + 1);
+	return (savelen + 1);
 
 }
 

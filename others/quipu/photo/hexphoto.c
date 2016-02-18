@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/hexphoto.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/hexphoto.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -33,10 +33,10 @@ decode_t4 (picture,persons_name, len)
 char    *picture;
 char    *persons_name;
 {
-int i;
+	int i;
 
 	if (len == 0) len = photolen (picture);
-	
+
 	for (i=0; i<len; i++)
 		(void) fprintf (stderr,"%02x",*picture++ & 255);
 
@@ -45,22 +45,22 @@ int i;
 static	photolen (s1)
 char * s1;
 {
-int length=0,cnt,i;
-char * temp;
+	int length=0,cnt,i;
+	char * temp;
 
-       if (*s1 == 0x03) {
-       /* we have a coded picture */
+	if (*s1 == 0x03) {
+		/* we have a coded picture */
 
-	    temp = s1;
-	    temp++;
-	    cnt = *temp++ & 0x7f;  /*assume len > 127 for now */
-	    for (i=0; i<cnt; i++) 
-		length = (length << 8) | (*temp++ & 0xff) ;
+		temp = s1;
+		temp++;
+		cnt = *temp++ & 0x7f;  /*assume len > 127 for now */
+		for (i=0; i<cnt; i++)
+			length = (length << 8) | (*temp++ & 0xff) ;
 
-	    length += 2 + cnt;
-	    return (length);
+		length += 2 + cnt;
+		return (length);
 
-       } else 
-	    return (-1);
+	} else
+		return (-1);
 
 }

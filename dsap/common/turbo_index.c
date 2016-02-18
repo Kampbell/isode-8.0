@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/turbo_index.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/turbo_index.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -62,7 +62,7 @@ Index_node	*a;
 Index_node	*b;
 {
 	return( AttrV_cmp( (AttributeValue) a->in_value,
-	    (AttributeValue) b->in_value ) );
+					   (AttributeValue) b->in_value ) );
 }
 
 static sindex_cmp( a, b )
@@ -93,7 +93,7 @@ Index_node	*node;
 int		len;
 {
 	return(strncmp(val,
-	    (char *) (((AttributeValue) node->in_value)->av_struct), len));
+				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
 
 substring_prefix_tel_cmp( val, node, len )
@@ -102,7 +102,7 @@ Index_node	*node;
 int		len;
 {
 	return(telncmp(val,
-	    (char *) (((AttributeValue) node->in_value)->av_struct), len));
+				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
 
 substring_prefix_case_cmp( val, node, len )
@@ -111,7 +111,7 @@ Index_node	*node;
 int		len;
 {
 	return(lexnequ(val,
-	    (char *) (((AttributeValue) node->in_value)->av_struct), len));
+				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
 
 indexav_cmp( av, node )
@@ -121,8 +121,7 @@ Index_node	*node;
 	return( AttrV_cmp( av, (AttributeValue) node->in_value ) );
 }
 
-Index_node *new_indexnode()
-{
+Index_node *new_indexnode() {
 	Index_node	*new;
 
 	new = (Index_node *) malloc( sizeof(Index_node) );
@@ -142,7 +141,7 @@ Index_node	*dup;
 	int	low, mid, high;
 	Entry	tmp1, tmp2;
 
-	/* 
+	/*
 	 * Check for duplicates.  If there are over 20 elements we do
 	 * a binary search, otherwise a simple linear one.  This is just
 	 * a guess.  It seems to work pretty well, though.
@@ -190,8 +189,8 @@ Index_node	*dup;
 		else
 			node->in_max *= 2;
 		node->in_entries =
-		    (struct entry **) realloc((char *)node->in_entries, 
-		    (unsigned) (sizeof(struct entry *) * node->in_max));
+			(struct entry **) realloc((char *)node->in_entries,
+									  (unsigned) (sizeof(struct entry *) * node->in_max));
 	}
 	node->in_num++;
 
@@ -264,18 +263,18 @@ th_prefix( a, b )
 DN      a;
 DN      b;
 {
-        for ( ; a && b; a = a->dn_parent, b = b->dn_parent )
-                if ( dn_comp_cmp( a, b ) == NOTOK )
-                        return( 2 );    /* neither is prefix */
+	for ( ; a && b; a = a->dn_parent, b = b->dn_parent )
+		if ( dn_comp_cmp( a, b ) == NOTOK )
+			return( 2 );    /* neither is prefix */
 
-        if ( a == NULLDN && b == NULLDN )
-                return( 0 );            /* they are equal */
-        else if ( a == NULLDN && b->dn_parent == NULLDN )
-                return( -2 );           /* b is a child is a */
-        else if ( a == NULLDN )
-                return( -1 );           /* a is a prefix of b */
-        else
-                return( 1 );            /* b is a prefix of a */
+	if ( a == NULLDN && b == NULLDN )
+		return( 0 );            /* they are equal */
+	else if ( a == NULLDN && b->dn_parent == NULLDN )
+		return( -2 );           /* b is a child is a */
+	else if ( a == NULLDN )
+		return( -1 );           /* a is a prefix of b */
+	else
+		return( 1 );            /* b is a prefix of a */
 }
 
 static Index *new_index( dn )
@@ -314,7 +313,7 @@ int		ps;
 	(void) printf( "\t(%s)\n",n->in_value );
 	for ( i = 0; i < n->in_num; i++ )
 		(void) printf( "\t\t%s\n",
-		    n->in_entries[i]->e_name->rdn_av.av_struct);
+					   n->in_entries[i]->e_name->rdn_av.av_struct);
 	return( OK );
 }
 
@@ -337,26 +336,26 @@ struct entry	*e;
 
 	if ( pindex->i_nonlocalaliases == (struct entry **) 0 ) {
 		pindex->i_nonlocalaliases = (struct entry **) malloc(
-		    sizeof(struct entry *) * 2 );
+										sizeof(struct entry *) * 2 );
 		pindex->i_nonlocalaliases[ 0 ] = (struct entry *) 0;
 	}
 
 	/* first, check for duplicates */
 	for ( i = 0, tmp = pindex->i_nonlocalaliases;
-	    *tmp != (struct entry *) 0; 
-	    tmp++, i++ ) {
+			*tmp != (struct entry *) 0;
+			tmp++, i++ ) {
 		if ( *tmp == e )
 			return;
 	}
 
 	pindex->i_nonlocalaliases = (struct entry **) realloc(
-	    (char *)pindex->i_nonlocalaliases, (unsigned) sizeof(struct entry *) * (i + 2) );
+									(char *)pindex->i_nonlocalaliases, (unsigned) sizeof(struct entry *) * (i + 2) );
 
 	pindex->i_nonlocalaliases[ i ] = e;
 	pindex->i_nonlocalaliases[ i + 1 ] = NULLENTRY;
 }
 
-/* 
+/*
  * addnonleafkids - add entry e to the list of nonlocal kids kept
  * in index index.
  */
@@ -378,15 +377,15 @@ struct entry	*e;
 
 	/* first, check for duplicates */
 	for ( i = 0, tmp = pindex->i_nonleafkids; *tmp != NULLENTRY;
-	    tmp++, i++ ) {
+			tmp++, i++ ) {
 		if ( *tmp == e ) {
 			return;
 		}
 	}
 
 	pindex->i_nonleafkids = (struct entry **) realloc(
-	    (char *) pindex->i_nonleafkids,
-	    (unsigned) (sizeof(struct entry *) * (i + 2)) );
+								(char *) pindex->i_nonleafkids,
+								(unsigned) (sizeof(struct entry *) * (i + 2)) );
 
 	pindex->i_nonleafkids[ i ] = e;
 	pindex->i_nonleafkids[ i + 1 ] = NULLENTRY;
@@ -451,7 +450,7 @@ Index		*pindex;
 
 	for ( j = i + 1; pindex->i_nonlocalaliases[ j ]; j++ )
 		pindex->i_nonlocalaliases[ j - 1 ] =
-		    pindex->i_nonlocalaliases[ j ];
+			pindex->i_nonlocalaliases[ j ];
 	pindex->i_nonlocalaliases[ j - 1 ] = NULLENTRY;
 
 	return;
@@ -494,7 +493,7 @@ AV_Sequence	values;
 		imem = (Index_node *) malloc( sizeof(Index_node) );
 		imem->in_value = (caddr_t) AttrV_cpy( &av->avseq_av );
 		imem->in_entries = (struct entry **) malloc( sizeof(struct
-		    entry *) );
+						   entry *) );
 		imem->in_entries[ 0 ] = (struct entry *) e;
 		imem->in_num = 1;
 		imem->in_max = 1;
@@ -508,7 +507,7 @@ AV_Sequence	values;
 
 		/* a return of OK means it was the first one inserted */
 		if ( avl_insert( &pindex[ i ].i_root, (caddr_t) imem, index_cmp,
-		    index_dup ) == OK ) {
+						 index_dup ) == OK ) {
 			pindex[ i ].i_count++;
 			imem = NULLINDEXNODE;
 
@@ -533,7 +532,7 @@ AV_Sequence	values;
 			free( savestr );
 			imem->in_value = (caddr_t) save;
 			imem->in_entries = (struct entry **) malloc(
-			    sizeof(struct entry *) );
+								   sizeof(struct entry *) );
 			imem->in_entries[ 0 ] = (struct entry *) e;
 			imem->in_num = 1;
 			imem->in_max = 1;
@@ -542,7 +541,7 @@ AV_Sequence	values;
 		/* insert into the reverse index, if appropriate */
 		if ( substr ) {
 			if ( avl_insert( &pindex[ i ].i_rroot, (caddr_t) imem,
-			    index_cmp, index_dup ) == OK ) {
+							 index_cmp, index_dup ) == OK ) {
 				pindex[ i ].i_rcount++;
 				imem = NULLINDEXNODE;
 
@@ -557,19 +556,19 @@ AV_Sequence	values;
 			continue;
 
 		for ( word = first_word((char *) av->avseq_av.av_struct);
-		    word; word = next_word( word ) ) {
+				word; word = next_word( word ) ) {
 			code = NULL;
 			soundex( word, &code );
 			imem = (Index_node *) malloc( sizeof(Index_node) );
 			imem->in_value = (caddr_t) code;
 			imem->in_entries = (struct entry **) malloc(
-			    sizeof(struct entry *) );
+								   sizeof(struct entry *) );
 			imem->in_entries[ 0 ] = (struct entry *) e;
 			imem->in_num = 1;
 			imem->in_max = 1;
 
 			if ( avl_insert( &pindex[i].i_sroot, (caddr_t) imem, sindex_cmp,
-			    index_dup ) == OK ) {
+							 index_dup ) == OK ) {
 				pindex[ i ].i_scount++;
 			} else {
 				free( (char *) imem->in_value );
@@ -582,8 +581,8 @@ AV_Sequence	values;
 
 /*
  * turbo_add2index -- search through the given entry's attribute list for
- * attrs to optimize. if an attr to optimize is found, we add that attribute 
- * along with a pointer to the corresponding entry to the appropriate 
+ * attrs to optimize. if an attr to optimize is found, we add that attribute
+ * along with a pointer to the corresponding entry to the appropriate
  * attribute index.
  */
 
@@ -618,19 +617,19 @@ Entry	e;		/* the entry these attrs belong to */
 		/* sibling index */
 		if ( sibindex ) {
 			(void) turbo_attr_insert( sibindex, e, as->attr_type,
-			    as->attr_value );
+									  as->attr_value );
 		}
 
 		savedn = NULLDN;
 		while ( dn->dn_parent != NULLDN ) {
 			if ( subindex = get_subtree_index( dn ) ) {
 				(void) turbo_attr_insert( subindex, e,
-				    as->attr_type, as->attr_value );
+										  as->attr_type, as->attr_value );
 			}
 
 			for ( prevdn = NULLDN, tmpdn = dn;
-			    tmpdn->dn_parent != NULLDN;
-			    prevdn = tmpdn, tmpdn = tmpdn->dn_parent )
+					tmpdn->dn_parent != NULLDN;
+					prevdn = tmpdn, tmpdn = tmpdn->dn_parent )
 				;	/* NULL */
 			tmpdn->dn_parent = savedn;
 			savedn = tmpdn;
@@ -665,8 +664,8 @@ Entry	e;		/* the entry these attrs belong to */
 				add_nonleafkid(e, subindex);
 		}
 		for ( prevdn = NULLDN, tmpdn = dn;
-		    tmpdn->dn_parent != NULLDN;
-		    prevdn = tmpdn, tmpdn = tmpdn->dn_parent )
+				tmpdn->dn_parent != NULLDN;
+				prevdn = tmpdn, tmpdn = tmpdn->dn_parent )
 			;	/* NULL */
 		tmpdn->dn_parent = savedn;
 		savedn = tmpdn;
@@ -710,8 +709,8 @@ AV_Sequence	values;
 
 	/* delete all values */
 	for ( av = values; av != NULLAV; av = av->avseq_next ) {
-		node = (Index_node *) avl_find( pindex[ i ].i_root, 
-		    (caddr_t) &av->avseq_av, (IFP)indexav_cmp );
+		node = (Index_node *) avl_find( pindex[ i ].i_root,
+										(caddr_t) &av->avseq_av, (IFP)indexav_cmp );
 
 		if ( node == NULLINDEXNODE ) {
 			LLOG( log_dsap, LLOG_EXCEPTIONS, ("Optimized attribute value not found! (%s)\n", attr->oa_ot.ot_name) );
@@ -731,7 +730,7 @@ AV_Sequence	values;
 
 		if ( --(node->in_num) == 0 ) {
 			imem = (Index_node *) avl_delete( &pindex[ i ].i_root,
-			    (caddr_t) &av->avseq_av, indexav_cmp );
+											  (caddr_t) &av->avseq_av, indexav_cmp );
 			( void ) AttrV_free( (AttributeValue) imem->in_value );
 			( void ) free( (char *) imem->in_entries );
 			( void ) free( (char *) imem );
@@ -739,10 +738,10 @@ AV_Sequence	values;
 		} else {
 			for ( k = j; k < node->in_num; k++ )
 				node->in_entries[ k ] =
-				    node->in_entries[ k + 1 ];
+					node->in_entries[ k + 1 ];
 			node->in_entries = (struct entry **)
-			    realloc( (char *) node->in_entries, (unsigned) node->in_num
-			    * sizeof(struct entry *) );
+							   realloc( (char *) node->in_entries, (unsigned) node->in_num
+										* sizeof(struct entry *) );
 		}
 
 		/* if there's a soundex index, delete from that too */
@@ -750,7 +749,7 @@ AV_Sequence	values;
 			continue;
 
 		for ( word = first_word((char *)av->avseq_av.av_struct);
-		    word != NULL; word = next_word( word ) ) {
+				word != NULL; word = next_word( word ) ) {
 			code = NULL;
 			soundex( word, &code );
 
@@ -761,7 +760,7 @@ AV_Sequence	values;
 			 */
 
 			if ((imem = (Index_node *) avl_find(pindex[i].i_sroot,
-			    code, index_soundex_cmp)) == NULLINDEXNODE) {
+												code, index_soundex_cmp)) == NULLINDEXNODE) {
 				free(code);
 				continue;
 			}
@@ -783,8 +782,8 @@ AV_Sequence	values;
 
 			if ( --(imem->in_num) == 0 ) {
 				imem = (Index_node *)
-				    avl_delete( &pindex[ i ].i_sroot,
-				    (caddr_t) code, index_soundex_cmp );
+					   avl_delete( &pindex[ i ].i_sroot,
+								   (caddr_t) code, index_soundex_cmp );
 
 				free( (char *) imem->in_value );
 				free( (char *) imem->in_entries );
@@ -792,11 +791,11 @@ AV_Sequence	values;
 			} else {
 				for ( k = j; k < imem->in_num; k++ )
 					imem->in_entries[ k ] =
-					    imem->in_entries[ k+1 ];
+						imem->in_entries[ k+1 ];
 
 				imem->in_entries = (struct entry **)
-				    realloc( (char *) imem->in_entries,
-				    (unsigned) imem->in_num * sizeof(struct entry *) );
+								   realloc( (char *) imem->in_entries,
+											(unsigned) imem->in_num * sizeof(struct entry *) );
 			}
 			free(code);
 		}
@@ -838,19 +837,19 @@ Entry	e;
 		/* sibling index */
 		if ( sibindex ) {
 			(void) turbo_attr_delete( sibindex, e, as->attr_type,
-			    as->attr_value );
+									  as->attr_value );
 		}
 
 		savedn = NULLDN;
 		while ( dn->dn_parent != NULLDN ) {
 			if ( subindex = get_subtree_index( dn ) ) {
 				(void) turbo_attr_delete( subindex, e,
-				    as->attr_type, as->attr_value );
+										  as->attr_type, as->attr_value );
 			}
 
 			for ( prevdn = NULLDN, tmpdn = dn;
-			    tmpdn->dn_parent != NULLDN;
-			    prevdn = tmpdn, tmpdn = tmpdn->dn_parent )
+					tmpdn->dn_parent != NULLDN;
+					prevdn = tmpdn, tmpdn = tmpdn->dn_parent )
 				;	/* NULL */
 			tmpdn->dn_parent = savedn;
 			savedn = tmpdn;
@@ -861,7 +860,7 @@ Entry	e;
 
 	/* now delete references in nonleafkids and nonlocalaliases... */
 	if ( sibindex && e->e_alias
-	    && th_prefix( sibindex->i_dn, e->e_alias ) != -2 )
+			&& th_prefix( sibindex->i_dn, e->e_alias ) != -2 )
 		delete_nonlocalalias( e, sibindex );
 
 	if ( nonleaf == 0 && e->e_alias == NULLDN ) {
@@ -884,8 +883,8 @@ Entry	e;
 				delete_nonleafkid( e, subindex );
 		}
 		for ( prevdn = NULLDN, tmpdn = dn;
-		    tmpdn->dn_parent != NULLDN;
-		    prevdn = tmpdn, tmpdn = tmpdn->dn_parent )
+				tmpdn->dn_parent != NULLDN;
+				prevdn = tmpdn, tmpdn = tmpdn->dn_parent )
 			;	/* NULL */
 		tmpdn->dn_parent = savedn;
 		savedn = tmpdn;
@@ -918,8 +917,8 @@ AttributeType	attr;
 }
 
 /*
- * turbo_optimize -- add attribute attr to the list of attributes to be 
- * optimized this routine creates an empty index and arranges for the 
+ * turbo_optimize -- add attribute attr to the list of attributes to be
+ * optimized this routine creates an empty index and arranges for the
  * attribute to be optimized during loading.
  */
 
@@ -938,11 +937,11 @@ char	*attr;
 
 	if ( turbo_index_types == (AttributeType *) 0 )
 		turbo_index_types = (AttributeType *) malloc(
-		    sizeof(AttributeType *));
+								sizeof(AttributeType *));
 	else
 		turbo_index_types = (AttributeType *) realloc(
-		    (char *) turbo_index_types, (unsigned) (turbo_index_num + 1) *
-		    sizeof(AttributeType *));
+								(char *) turbo_index_types, (unsigned) (turbo_index_num + 1) *
+								sizeof(AttributeType *));
 
 	if ( turbo_index_types == (AttributeType *) 0 )
 		fatal(66, "turbo_optimize: malloc failed!\n");

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind2.c,v 9.0 1992/06/16 12:36:36 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ronot/RCS/ronotunbind2.c,v 9.0 1992/06/16 12:36:36 isode Rel $
  *
  *
@@ -65,8 +65,7 @@ struct RoNOTindication	* rni;
 
 	pe = acf->acf_info[0];
 	acf->acf_info[0] = NULLPE;
-	if (decode_RONOT_UnBindArgumentValue (pe, 1, NULLIP, NULLVP, &(acf->acf_info[0])) != OK)
-	{
+	if (decode_RONOT_UnBindArgumentValue (pe, 1, NULLIP, NULLVP, &(acf->acf_info[0])) != OK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RO-UNBIND.INDICATION: decode_RONOT_UnBindArgumentValue failed"));
 		acf->acf_ninfo = 0;
 		pe_free (pe);
@@ -95,31 +94,25 @@ struct RoNOTindication	* rni;
 	struct AcSAPabort	* aca = &(aci->aci_abort);
 
 
-	if (unbindrespe != NULLPE)
-	{
-		if (encode_RONOT_UnBindResultValue (user_data_p, 1, 0, NULLCP, unbindrespe) == NOTOK)
-		{ 
+	if (unbindrespe != NULLPE) {
+		if (encode_RONOT_UnBindResultValue (user_data_p, 1, 0, NULLCP, unbindrespe) == NOTOK) {
 			LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindResult: encode_RONOT_UnBindResultValue failed"));
 			return (ronotlose (rni, RBI_ENC_UNBIND_RES, NULLCP, NULLCP));
 		}
 		(*user_data_p)->pe_context = unbindrespe->pe_context;
 		ndata = 1;
-	}
-	else
-	{
+	} else {
 		(*user_data_p) = NULLPE;
 		ndata = 0;
 	}
 
 	result = AcRelResponse (sd, ACS_ACCEPT, ACF_NORMAL, user_data_p, ndata, aci);
 
-	if ((*user_data_p) != NULLPE)
-	{
+	if ((*user_data_p) != NULLPE) {
 		pe_free ((*user_data_p));
 	}
 
-	if (result == NOTOK)
-	{
+	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindResult: AcRelResponse failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
 		(void) acs2ronotlose (rni, "RO-UNBIND.RESULT", aca);
@@ -148,31 +141,25 @@ struct RoNOTindication	* rni;
 	struct AcSAPabort	* aca = &(aci->aci_abort);
 
 
-	if (unbinderrpe != NULLPE)
-	{
-		if (encode_RONOT_UnBindErrorValue (user_data_p, 1, 0, NULLCP, unbinderrpe) == NOTOK)
-		{ 
+	if (unbinderrpe != NULLPE) {
+		if (encode_RONOT_UnBindErrorValue (user_data_p, 1, 0, NULLCP, unbinderrpe) == NOTOK) {
 			LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindError: encode_RONOT_UnBindErrorValue failed"));
 			return (ronotlose (rni, RBI_ENC_UNBIND_ERR, NULLCP, NULLCP));
 		}
 		(*user_data_p)->pe_context = unbinderrpe->pe_context;
 		ndata = 1;
-	}
-	else
-	{
+	} else {
 		(*user_data_p) = NULLPE;
 		ndata = 0;
 	}
 
 	result = AcRelResponse (sd, ACS_REJECT, ACR_NOTFINISHED, user_data_p, ndata, aci);
 
-	if ((*user_data_p) != NULLPE)
-	{
+	if ((*user_data_p) != NULLPE) {
 		pe_free ((*user_data_p));
 	}
 
-	if (result == NOTOK)
-	{
+	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindError: AcRelResponse failed"));
 		(void) acs2ronotlose (rni, "RO-UNBIND.ERROR", aca);
 		ACAFREE (aca);
@@ -201,8 +188,7 @@ struct RoNOTindication	* rni;
 
 	result = AcRelResponse (sd, status, reason, NULLPEP, 0, aci);
 
-	if (result == NOTOK)
-	{
+	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindReject: AcRelResponse failed"));
 		(void) acs2ronotlose (rni, "RO-UNBIND.ERROR", aca);
 		ACAFREE (aca);

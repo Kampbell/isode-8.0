@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isohost.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/isohost.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -41,44 +41,44 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isohost.c,v 9.0 1992
 /*  */
 
 char   *getlocalhost () {
-    register char   *cp;
+	register char   *cp;
 #ifdef	TCP
-    register struct hostent *hp;
+	register struct hostent *hp;
 #endif
 #ifdef	SYS5
-    struct utsname uts;
+	struct utsname uts;
 #endif
-    static char buffer[BUFSIZ];
+	static char buffer[BUFSIZ];
 
-    if (buffer[0])
-	return buffer;
+	if (buffer[0])
+		return buffer;
 
-    isodetailor (NULLCP, 0);
-    if (*isodename)
-	(void) strcpy (buffer, isodename);
-    else {
+	isodetailor (NULLCP, 0);
+	if (*isodename)
+		(void) strcpy (buffer, isodename);
+	else {
 #if	!defined(SOCKETS) && !defined(SYS5)
-	(void) strcpy (buffer, "localhost");
+		(void) strcpy (buffer, "localhost");
 #endif
 #ifdef	SOCKETS
-	(void) gethostname (buffer, sizeof buffer);
+		(void) gethostname (buffer, sizeof buffer);
 #endif
 #ifdef	SYS5
-	(void) uname (&uts);
-	(void) strcpy (buffer, uts.nodename);
+		(void) uname (&uts);
+		(void) strcpy (buffer, uts.nodename);
 #endif
 
 #ifdef	TCP
-	if (hp = gethostbyname (buffer))
-	    (void) strcpy (buffer, hp -> h_name);
-	else
-	    SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
-		  ("%s: unknown host", buffer));
+		if (hp = gethostbyname (buffer))
+			(void) strcpy (buffer, hp -> h_name);
+		else
+			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
+				  ("%s: unknown host", buffer));
 #endif
 
-	if (cp = index (buffer, '.'))
-	    *cp = NULL;
-    }
+		if (cp = index (buffer, '.'))
+			*cp = NULL;
+	}
 
-    return buffer;
+	return buffer;
 }

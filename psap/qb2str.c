@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb2str.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/qb2str.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -35,32 +35,30 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb2str.c,v 9.0 1992/06
 char   *qb2str (q)
 register struct qbuf *q;
 {
-    register int    len;
-    register char  *b,
-                   *d;
-    register struct qbuf   *p;
+	register int    len;
+	register char  *b,
+			 *d;
+	register struct qbuf   *p;
 
-    p = q -> qb_forw, len = 0;
-    do {
-	len += p -> qb_len;
+	p = q -> qb_forw, len = 0;
+	do {
+		len += p -> qb_len;
 
-	p = p -> qb_forw;
-    }
-    while (p != q);
-    q -> qb_len = len;
+		p = p -> qb_forw;
+	} while (p != q);
+	q -> qb_len = len;
 
-    if ((b = d = malloc ((unsigned) (len + 1))) == NULL)
-	return NULLCP;
+	if ((b = d = malloc ((unsigned) (len + 1))) == NULL)
+		return NULLCP;
 
-    p = q -> qb_forw;
-    do {
-	bcopy (p -> qb_data, d, p -> qb_len);
-	d += p -> qb_len;
+	p = q -> qb_forw;
+	do {
+		bcopy (p -> qb_data, d, p -> qb_len);
+		d += p -> qb_len;
 
-	p = p -> qb_forw;
-    }
-    while (p != q);
-    *d = NULL;
+		p = p -> qb_forw;
+	} while (p != q);
+	*d = NULL;
 
-    return b;
+	return b;
 }

@@ -1,6 +1,6 @@
 /* tp4.h - TP4 abstractions */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/tp4.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -35,17 +35,17 @@
 #include <netiso/tp_user.h>
 
 union sockaddr_osi {
-    struct sockaddr_iso    osi_sockaddr;
-    char osi_bigaddr[104];
+	struct sockaddr_iso    osi_sockaddr;
+	char osi_bigaddr[104];
 };
 
 union osi_control_msg {
-    struct {
-	struct cmsghdr ocm_cmhdr;
-	char	ocm_cmdata[128 - sizeof (struct cmsghdr)];
-    }    ocm_control;
+	struct {
+		struct cmsghdr ocm_cmhdr;
+		char	ocm_cmdata[128 - sizeof (struct cmsghdr)];
+	}    ocm_control;
 
-    char ocm_data[128];
+	char ocm_data[128];
 };
 
 int	gen2tp4 (), tp42gen ();
@@ -101,13 +101,13 @@ int	start_clts_server ();
 
 
 struct tp4pkt {
-    union {
-	TP_MSG		  tp_msg;
-	TP_MSG_CONNECT	  tp_connect;
-	TP_MSG_DATA	  tp_data;
-	TP_MSG_X_DATA	  tp_x_data;
-	TP_MSG_DISCONNECT tp_disconnect;
-    } tp_un;
+	union {
+		TP_MSG		  tp_msg;
+		TP_MSG_CONNECT	  tp_connect;
+		TP_MSG_DATA	  tp_data;
+		TP_MSG_X_DATA	  tp_x_data;
+		TP_MSG_DISCONNECT tp_disconnect;
+	} tp_un;
 #define tp4_event	tp_un.tp_msg.tp_event
 #define tp4_called 	tp_un.tp_connect.dst_address
 #define tp4_calling 	tp_un.tp_connect.src_address

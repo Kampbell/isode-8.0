@@ -42,16 +42,16 @@ PS psa;
 Entry edb;
 {
 	switch (edb->e_data) {
-		case E_DATA_MASTER:
-			ps_print (psa,"MASTER\n");
-			break;
-		case E_TYPE_SLAVE :
-			ps_print (psa,"SLAVE\n");
-			break;
-		default:
-			ps_print (psa,"CACHE\n");
-			break;
-		}
+	case E_DATA_MASTER:
+		ps_print (psa,"MASTER\n");
+		break;
+	case E_TYPE_SLAVE :
+		ps_print (psa,"SLAVE\n");
+		break;
+	default:
+		ps_print (psa,"CACHE\n");
+		break;
+	}
 	if (edb->e_parent != NULLENTRY)
 		ps_printf (psa,"%s\n",edb->e_parent->e_edbversion);
 	else
@@ -74,13 +74,13 @@ static entry_block_print (psa,block)
 PS psa;
 Entry block;
 {
-Entry ptr;
+	Entry ptr;
 
 	header_print (psa,block);
 
 	if (block != NULLENTRY) {
-		for ( ptr = (Entry) avl_getfirst(block->e_parent->e_children); ptr != NULLENTRY; 
-		      ptr = (Entry) avl_getnext()) {
+		for ( ptr = (Entry) avl_getfirst(block->e_parent->e_children); ptr != NULLENTRY;
+				ptr = (Entry) avl_getnext()) {
 			if (ptr->e_data != E_TYPE_CONSTRUCTOR) {
 				entry_print (psa,ptr);
 				ps_print (psa,"\n");
@@ -93,11 +93,11 @@ write_edb (ptr,filename)
 Entry ptr;
 char * filename;
 {
-int um;
-FILE * fptr;
-PS entryps;
-extern char * parse_file;
-extern int errno;
+	int um;
+	FILE * fptr;
+	PS entryps;
+	extern char * parse_file;
+	extern int errno;
 
 	um = umask (0177);
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
@@ -134,7 +134,7 @@ extern int errno;
 		return NOTOK;
 	}
 #if     defined(SYS5) && !defined(SVR4)
-        sync ();
+	sync ();
 #else
 	if (fsync (fileno(fptr)) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb fsync error: %d",errno));
@@ -154,9 +154,8 @@ extern int errno;
 
 #else
 
-write_edb()
-{
-LLOG (log_dsap,LLOG_FATAL,("write_edb implementation error"));
+write_edb() {
+	LLOG (log_dsap,LLOG_FATAL,("write_edb implementation error"));
 }
 
 #endif /* NOT TURBO_DISK */

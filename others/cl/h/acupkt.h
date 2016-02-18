@@ -70,14 +70,14 @@ int	apdu2_info ();
 /*  */
 
 struct assocblk {
-    struct assocblk *acb_forw;	/* doubly-linked list */
-    struct assocblk *acb_back;	/*   .. */
+	struct assocblk *acb_forw;	/* doubly-linked list */
+	struct assocblk *acb_back;	/*   .. */
 
-    int	    acb_fd;		/* session/presentation descriptor */
+	int	    acb_fd;		/* session/presentation descriptor */
 
-    short   acb_flags;		/* our state */
-/*  state flags match connection oriented control block */
-/*  necessary for ROS */
+	short   acb_flags;		/* our state */
+	/*  state flags match connection oriented control block */
+	/*  necessary for ROS */
 #define	ACB_NULL	0x0000
 #define	ACB_CONN	0x0001	/* connected */
 #define	ACB_FINN	0x0002	/* other side wants to finish */
@@ -98,35 +98,35 @@ struct assocblk {
 
 #define ACB_AUDT	0x8000  /* ROS maps to A.UNIT.DATA */
 
-    int	    acb_ssdusize;	/* largest atomic SSDU */
-    IFP	    acb_uabort;		/* disconnect underlying service */
+	int	    acb_ssdusize;	/* largest atomic SSDU */
+	IFP	    acb_uabort;		/* disconnect underlying service */
 
-/* ACSE */
-    int	    acb_sversion;	/* session service version number */
-    int	    acb_id;		/* ACSE context id */
-    OID	    acb_context;	/* application context name */
-    int	    acb_offset;		/* offset to ACSE PCI */
-				/* negative means at END */
-    OID	    acb_audtpci;	/* identifier for AUDT PCI */ 		
-    AEI     acb_callingtitle;	/* local user title */
-    AEI     acb_calledtitle;    /* remote user title */
-    int     acb_binding;	/* static bind vs dynamic reconnect */
+	/* ACSE */
+	int	    acb_sversion;	/* session service version number */
+	int	    acb_id;		/* ACSE context id */
+	OID	    acb_context;	/* application context name */
+	int	    acb_offset;		/* offset to ACSE PCI */
+	/* negative means at END */
+	OID	    acb_audtpci;	/* identifier for AUDT PCI */
+	AEI     acb_callingtitle;	/* local user title */
+	AEI     acb_calledtitle;    /* remote user title */
+	int     acb_binding;	/* static bind vs dynamic reconnect */
 #define BIND_STATIC    0        /* fixed called addr */
 #define BIND_DYNAMIC   1        /* reconnect called to last calling addr */
 
-/* ROSE */
-    int	    acb_rosid;		/* ROSE (SASE) context id */
-    IFP	    acb_putosdu;	/* osdu2acb */
-    IFP	    acb_rowaitrequest;	/* RO-WAIT.REQUEST */
-    IFP	    acb_ready;		/* get HDX permission */
-    IFP	    acb_rosetindications;/* define vectors for INDICATION events */
-    IFP	    acb_roselectmask;	/* map association descriptors for select () */
-    IFP	    acb_ropktlose;	/* protocol-level abort */
-    PE	    (*acb_getosdu) ();	/* for users of THORN... */
+	/* ROSE */
+	int	    acb_rosid;		/* ROSE (SASE) context id */
+	IFP	    acb_putosdu;	/* osdu2acb */
+	IFP	    acb_rowaitrequest;	/* RO-WAIT.REQUEST */
+	IFP	    acb_ready;		/* get HDX permission */
+	IFP	    acb_rosetindications;/* define vectors for INDICATION events */
+	IFP	    acb_roselectmask;	/* map association descriptors for select () */
+	IFP	    acb_ropktlose;	/* protocol-level abort */
+	PE	    (*acb_getosdu) ();	/* for users of THORN... */
 
-    PE	    acb_apdu;		/* APDU buffered */
-    
-    IFP	    acb_rosindication;	/* ros event handler */
+	PE	    acb_apdu;		/* APDU buffered */
+
+	IFP	    acb_rosindication;	/* ros event handler */
 };
 #define	NULLACB		((struct assocblk *) 0)
 int     freeacublk ();

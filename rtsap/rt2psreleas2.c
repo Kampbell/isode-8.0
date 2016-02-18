@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psreleas2.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rtsap/RCS/rt2psreleas2.c,v 9.0 1992/06/16 12:37:45 isode Rel $
  *
  *
@@ -41,21 +41,21 @@ int	sd,
 PE	data;
 struct RtSAPindication *rti;
 {
-    SBV	    smask;
-    int	    result;
-    register struct assocblk *acb;
+	SBV	    smask;
+	int	    result;
+	register struct assocblk *acb;
 
-    missingP (rti);
+	missingP (rti);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rtsapFsig (acb, sd);
+	rtsapFsig (acb, sd);
 
-    result = RtCloseResponseAux (acb, reason, data, rti);
+	result = RtCloseResponseAux (acb, reason, data, rti);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -66,24 +66,24 @@ int	reason;
 PE	data;
 register struct RtSAPindication *rti;
 {
-    int	    result;
-    struct AcSAPindication acis;
-    register struct AcSAPindication *aci = &acis;
-    register struct AcSAPabort *aca = &aci -> aci_abort;
+	int	    result;
+	struct AcSAPindication acis;
+	register struct AcSAPindication *aci = &acis;
+	register struct AcSAPabort *aca = &aci -> aci_abort;
 
-    if (!(acb -> acb_flags & ACB_ACS))
-	return rtsaplose (rti, RTS_OPERATION, NULLCP,
-		    "not an association descriptor for RTS");
+	if (!(acb -> acb_flags & ACB_ACS))
+		return rtsaplose (rti, RTS_OPERATION, NULLCP,
+						  "not an association descriptor for RTS");
 
-    if (data)
-	data -> pe_context = acb -> acb_rtsid;
+	if (data)
+		data -> pe_context = acb -> acb_rtsid;
 
-    acb -> acb_flags &= ~ACB_STICKY;
-    if (AcRelResponse (acb -> acb_fd, ACS_ACCEPT, reason, &data, data ? 1 : 0,
-	    aci) == NOTOK)
-	result = acs2rtslose (acb, rti, "AcRelResponse", aca);
-    else
-	result = OK;
+	acb -> acb_flags &= ~ACB_STICKY;
+	if (AcRelResponse (acb -> acb_fd, ACS_ACCEPT, reason, &data, data ? 1 : 0,
+					   aci) == NOTOK)
+		result = acs2rtslose (acb, rti, "AcRelResponse", aca);
+	else
+		result = OK;
 
-    return result;
+	return result;
 }

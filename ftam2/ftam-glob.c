@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-glob.c,v 9.0 1992/06/16 12:15:43 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam2/RCS/ftam-glob.c,v 9.0 1992/06/16 12:15:43 isode Rel $
  *
  *
@@ -86,7 +86,7 @@ static int (*matchdir) () = matchldir;
 static
 char **
 glob(v)
-	register char *v;
+register char *v;
 {
 	char agpath[BUFSIZ];
 	char *agargv[GAVSIZ];
@@ -103,9 +103,12 @@ glob(v)
 		return (copyblk(vv));
 
 	globerr = 0;
-	gpath = agpath; gpathp = gpath; *gpathp = 0;
+	gpath = agpath;
+	gpathp = gpath;
+	*gpathp = 0;
 	lastgpathp = &gpath[sizeof agpath - 2];
-	ginit(agargv); globcnt = 0;
+	ginit(agargv);
+	globcnt = 0;
 	collect(v);
 	free(v);
 	if (globcnt == 0 && (gflag&1)) {
@@ -117,16 +120,19 @@ glob(v)
 
 static
 ginit(agargv)
-	char **agargv;
+char **agargv;
 {
 
-	agargv[0] = 0; gargv = agargv; sortbas = agargv; gargc = 0;
+	agargv[0] = 0;
+	gargv = agargv;
+	sortbas = agargv;
+	gargc = 0;
 	gnleft = NCARGS - 4;
 }
 
 static
 collect(as)
-	register char *as;
+register char *as;
 {
 	if (eq(as, "{") || eq(as, "{}")) {
 		Gcat(as, "");
@@ -137,19 +143,20 @@ collect(as)
 
 static
 acollect(as)
-	register char *as;
+register char *as;
 {
 	register int ogargc = gargc;
 
-	gpathp = gpath; *gpathp = 0; globbed = 0;
+	gpathp = gpath;
+	*gpathp = 0;
+	globbed = 0;
 	expand(as);
 	if (gargc != ogargc)
 		sort();
 }
 
 static
-sort()
-{
+sort() {
 	register char **p1, **p2, *c;
 	char **Gvp = &gargv[gargc];
 
@@ -166,11 +173,11 @@ sort()
 
 static
 expand(as)
-	char *as;
+char *as;
 {
 	register char *cs,
-		      *sgpathp,
-		      *oldcs;
+			 *sgpathp,
+			 *oldcs;
 	char   *csstr;
 	struct stat stb;
 
@@ -219,12 +226,12 @@ endit:
 	*gpathp = 0;
 
 	if (csstr)
-	    free (csstr);
+		free (csstr);
 }
 
 static
 matchldir(pattern)
-	char *pattern;
+char *pattern;
 {
 	char	pat[MAXPATHLEN];
 	struct stat stb;
@@ -254,7 +261,7 @@ matchldir(pattern)
 		}
 	}
 	if (errno)
-	    globerr = "corrupted directory";
+		globerr = "corrupted directory";
 	(void) closedir(dirp);
 	return;
 
@@ -266,7 +273,7 @@ patherr2:
 
 static
 execbrc(p, s)
-	char *p, *s;
+char *p, *s;
 {
 	char restbuf[BUFSIZ + 2];
 	register char *pe, *pm, *pl;
@@ -276,69 +283,69 @@ execbrc(p, s)
 	for (lm = restbuf; *p != '{'; *lm++ = *p++)
 		continue;
 	for (pe = ++p; *pe; pe++)
-	switch (*pe) {
+		switch (*pe) {
 
-	case '{':
-		brclev++;
-		continue;
-
-	case '}':
-		if (brclev == 0)
-			goto pend;
-		brclev--;
-		continue;
-
-	case '[':
-		for (pe++; *pe && *pe != ']'; pe++)
+		case '{':
+			brclev++;
 			continue;
-		continue;
-	}
+
+		case '}':
+			if (brclev == 0)
+				goto pend;
+			brclev--;
+			continue;
+
+		case '[':
+			for (pe++; *pe && *pe != ']'; pe++)
+				continue;
+			continue;
+		}
 pend:
 	brclev = 0;
 	for (pl = pm = p; pm <= pe; pm++)
-	switch (*pm & (QUOTE|TRIM)) {
+		switch (*pm & (QUOTE|TRIM)) {
 
-	case '{':
-		brclev++;
-		continue;
+		case '{':
+			brclev++;
+			continue;
 
-	case '}':
-		if (brclev) {
-			brclev--;
+		case '}':
+			if (brclev) {
+				brclev--;
+				continue;
+			}
+			goto doit;
+
+		case ','|QUOTE:
+		case ',':
+			if (brclev)
+				continue;
+doit:
+			savec = *pm;
+			*pm = 0;
+			(void) strcpy(lm, pl);
+			(void) strcat(restbuf, pe + 1);
+			*pm = savec;
+			if (s == 0) {
+				sgpathp = gpathp;
+				expand(restbuf);
+				gpathp = sgpathp;
+				*gpathp = 0;
+			} else if (amatch(s, restbuf))
+				return (1);
+			sort();
+			pl = pm + 1;
+			if (brclev)
+				return (0);
+			continue;
+
+		case '[':
+			for (pm++; *pm && *pm != ']'; pm++)
+				continue;
+			if (!*pm)
+				pm--;
 			continue;
 		}
-		goto doit;
-
-	case ','|QUOTE:
-	case ',':
-		if (brclev)
-			continue;
-doit:
-		savec = *pm;
-		*pm = 0;
-		(void) strcpy(lm, pl);
-		(void) strcat(restbuf, pe + 1);
-		*pm = savec;
-		if (s == 0) {
-			sgpathp = gpathp;
-			expand(restbuf);
-			gpathp = sgpathp;
-			*gpathp = 0;
-		} else if (amatch(s, restbuf))
-			return (1);
-		sort();
-		pl = pm + 1;
-		if (brclev)
-			return (0);
-		continue;
-
-	case '[':
-		for (pm++; *pm && *pm != ']'; pm++)
-			continue;
-		if (!*pm)
-			pm--;
-		continue;
-	}
 	if (brclev)
 		goto doit;
 	return (0);
@@ -346,7 +353,7 @@ doit:
 
 static
 match(s, p)
-	char *s, *p;
+char *s, *p;
 {
 	register int c;
 	register char *sentp;
@@ -364,7 +371,7 @@ match(s, p)
 
 static
 amatch(s, p)
-	register char *s, *p;
+register char *s, *p;
 {
 	register int scc;
 	int ok, lc;
@@ -392,9 +399,8 @@ amatch(s, p)
 				if (cc == '-') {
 					if (lc <= scc && scc <= *p++)
 						ok++;
-				} else
-					if (scc == (lc = cc))
-						ok++;
+				} else if (scc == (lc = cc))
+					ok++;
 			}
 			if (cc == 0)
 				if (ok)
@@ -439,7 +445,7 @@ slash:
 			while (*s)
 				addpath(*s++);
 			addpath('/');
-			if ((*chkdir) (gpath, &stb)) 
+			if ((*chkdir) (gpath, &stb))
 				if (*p == 0) {
 					Gcat(gpath, "");
 					globcnt++;
@@ -457,12 +463,12 @@ chkldir (path, st)
 char   *path;
 struct stat *st;
 {
-    return (stat (path, st) == 0 && (st -> st_mode & S_IFMT) == S_IFDIR);
+	return (stat (path, st) == 0 && (st -> st_mode & S_IFMT) == S_IFDIR);
 }
 
 static
 Gmatch(s, p)
-	register char *s, *p;
+register char *s, *p;
 {
 	register int scc;
 	int ok, lc;
@@ -484,9 +490,8 @@ Gmatch(s, p)
 				if (cc == '-') {
 					if (lc <= scc && scc <= *p++)
 						ok++;
-				} else
-					if (scc == (lc = cc))
-						ok++;
+				} else if (scc == (lc = cc))
+					ok++;
 			}
 			if (cc == 0)
 				if (ok)
@@ -522,7 +527,7 @@ Gmatch(s, p)
 
 static
 Gcat(s1, s2)
-	register char *s1, *s2;
+register char *s1, *s2;
 {
 	register int len = strlen(s1) + strlen(s2) + 1;
 
@@ -538,7 +543,7 @@ Gcat(s1, s2)
 
 static
 addpath(c)
-	char c;
+char c;
 {
 
 	if (gpathp >= lastgpathp)
@@ -551,8 +556,8 @@ addpath(c)
 
 static
 rscan(t, f)
-	register char **t;
-	int (*f)();
+register char **t;
+int (*f)();
 {
 	register char *p, c;
 
@@ -570,8 +575,8 @@ rscan(t, f)
 #ifdef	notdef
 static
 scan(t, f)
-	register char **t;
-	int (*f)();
+register char **t;
+int (*f)();
 {
 	register char *p, c;
 
@@ -583,7 +588,7 @@ scan(t, f)
 
 static
 tglob(c)
-	register char c;
+register char c;
 {
 
 	if (any(c, globchars))
@@ -594,7 +599,7 @@ tglob(c)
 #ifdef	notdef
 static
 trim(c)
-	char c;
+char c;
 {
 
 	return (c & TRIM);
@@ -603,7 +608,7 @@ trim(c)
 
 static
 letter(c)
-	register char c;
+register char c;
 {
 
 	return (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_');
@@ -611,7 +616,7 @@ letter(c)
 
 static
 digit(c)
-	register char c;
+register char c;
 {
 
 	return (c >= '0' && c <= '9');
@@ -619,8 +624,8 @@ digit(c)
 
 static
 any(c, s)
-	register int c;
-	register char *s;
+register int c;
+register char *s;
 {
 
 	while (*s)
@@ -629,7 +634,7 @@ any(c, s)
 	return(0);
 }
 blklen(av)
-	register char **av;
+register char **av;
 {
 	register int i = 0;
 
@@ -640,8 +645,8 @@ blklen(av)
 
 char **
 blkcpy(oav, bv)
-	char **oav;
-	register char **bv;
+char **oav;
+register char **bv;
 {
 	register char **av = oav;
 
@@ -651,7 +656,7 @@ blkcpy(oav, bv)
 }
 
 blkfree(av0)
-	char **av0;
+char **av0;
 {
 	register char **av = av0;
 
@@ -663,7 +668,7 @@ blkfree(av0)
 static
 char *
 strspl(cp, dp)
-	register char *cp, *dp;
+register char *cp, *dp;
 {
 	register char *ep = malloc((unsigned)(strlen(cp) + strlen(dp) + 1));
 
@@ -677,10 +682,10 @@ strspl(cp, dp)
 static
 char **
 copyblk(v)
-	register char **v;
+register char **v;
 {
 	register char **nv = (char **)malloc((unsigned)((blklen(v) + 1) *
-						sizeof(char **)));
+										 sizeof(char **)));
 	if (nv == (char **)0)
 		fatal("out of memory");
 
@@ -690,7 +695,7 @@ copyblk(v)
 static
 char *
 strend(cp)
-	register char *cp;
+register char *cp;
 {
 
 	while (*cp)
@@ -705,7 +710,7 @@ strend(cp)
  */
 static
 getldir(hdir)
-	char *hdir;
+char *hdir;
 {
 	register struct passwd *pp = getpwnam(hdir);
 
@@ -730,26 +735,26 @@ char   *xglob1val (v, remote)
 char   *v;
 int	remote;
 {
-    register char **gp;
-    char   *cp,
-           *gb[2];
+	register char **gp;
+	char   *cp,
+		   *gb[2];
 
-    gb[0] = v;
-    gb[1] = NULLCP;
+	gb[0] = v;
+	gb[1] = NULLCP;
 
-    if ((gp = xglob (gb, remote)) == NULLVP)
-	return NULLCP;
+	if ((gp = xglob (gb, remote)) == NULLVP)
+		return NULLCP;
 
-    if (gp[1]) {
-	advise (NULLCP, "%s: ambiguous", v);
-	blkfree (gp);
-	return NULLCP;
-    }
+	if (gp[1]) {
+		advise (NULLCP, "%s: ambiguous", v);
+		blkfree (gp);
+		return NULLCP;
+	}
 
-    cp = *gp;
-    free ((char *) gp);
+	cp = *gp;
+	free ((char *) gp);
 
-    return cp;
+	return cp;
 }
 
 /*  */
@@ -758,100 +763,97 @@ char  **xglob (v, remote)
 char  **v;
 int	remote;
 {
-    register int    i;
-    register char  *cp,
-		  **gp,
-                  **vp;
-    char   *loses;
+	register int    i;
+	register char  *cp,
+			 **gp,
+			 **vp;
+	char   *loses;
 
-    xglobbed = 0;
+	xglobbed = 0;
 
-    if (!globbing) {
-	register char *dp;
+	if (!globbing) {
+		register char *dp;
 
-	for (gp = vp = copyblk (v); *gp; gp++) {
-	    cp = remote ? str2file (*gp) : *gp;
-	    if ((dp = malloc ((unsigned) (strlen (cp) + 1))) == NULLCP)
-		fatal ("out of memory");
-	    (void) strcpy (dp, cp);
-	    *gp = dp;
+		for (gp = vp = copyblk (v); *gp; gp++) {
+			cp = remote ? str2file (*gp) : *gp;
+			if ((dp = malloc ((unsigned) (strlen (cp) + 1))) == NULLCP)
+				fatal ("out of memory");
+			(void) strcpy (dp, cp);
+			*gp = dp;
+		}
+
+		return vp;
 	}
+
+	if (remote) {
+		switch (realstore) {
+		case RFS_UNKNOWN:
+			advise (NULLCP, "%s", rs_unknown);
+			return NULLVP;
+
+		case RFS_UNIX:
+			home = "~";
+			chkdir = chkrdir;
+			gethdir = getrdir;
+			matchdir = matchrdir;
+			break;
+
+		default:
+			advise (NULLCP, "%s", rs_support);
+			return NULLVP;
+		}
+	} else {
+		home = myhome;
+		chkdir = chkldir;
+		gethdir = getldir;
+		matchdir = matchldir;
+	}
+
+	for (i = 0, loses = NULL, vp = NULLVP; cp = *v++; ) {
+		if ((gp = glob (remote ? str2file (cp) : cp)) == NULLVP) {
+			if (!loses && globerr)
+				loses = globerr;
+			continue;
+		}
+
+		if (vp) {
+			register int    j;
+			register char **xp,
+					 **yp;
+
+			if ((j = blklen (gp)) > 1)
+				xglobbed++;
+
+			if ((vp = (char **) realloc ((char *) vp,
+										 ((unsigned) (i + j + 1)) * sizeof *vp))
+					== NULLVP)
+				fatal ("out of memory");
+
+			for (xp = vp + i, yp = gp; *xp = *yp; xp++, yp++)
+				continue;
+			i += j;
+
+			free ((char *) gp);
+		} else if ((i = blklen (vp = gp)) > 1)
+			xglobbed++;
+	}
+
+	if (vp == NULLVP || *vp == NULLCP) {
+		if (!loses)
+			loses = "no files match specification";
+		advise (NULLCP, "%s", loses);
+
+		if (vp) {
+			blkfree (vp);
+			vp = NULLVP;
+		}
+	}
+
+	if (vp && debug)
+		for (gp = vp; *gp; gp++)
+			(void) printf ("%d: \"%s\"\n", gp - vp, *gp);
 
 	return vp;
-    }
-
-    if (remote) {
-	switch (realstore) {
-	    case RFS_UNKNOWN: 
-		advise (NULLCP, "%s", rs_unknown);
-		return NULLVP;
-
-	    case RFS_UNIX: 
-		home = "~";
-		chkdir = chkrdir;
-		gethdir = getrdir;
-		matchdir = matchrdir;
-		break;
-
-	    default: 
-		advise (NULLCP, "%s", rs_support);
-		return NULLVP;
-	}
-    }
-    else {
-	home = myhome;
-	chkdir = chkldir;
-	gethdir = getldir;
-	matchdir = matchldir;
-    }
-
-    for (i = 0, loses = NULL, vp = NULLVP; cp = *v++; ) {
-	if ((gp = glob (remote ? str2file (cp) : cp)) == NULLVP) {
-	    if (!loses && globerr)
-		loses = globerr;
-	    continue;
-	}
-
-	if (vp) {
-	    register int    j;
-	    register char **xp,
-			  **yp;
-
-	    if ((j = blklen (gp)) > 1)
-		xglobbed++;
-
-	    if ((vp = (char **) realloc ((char *) vp,
-				    ((unsigned) (i + j + 1)) * sizeof *vp))
-		    == NULLVP)
-		fatal ("out of memory");
-
-	    for (xp = vp + i, yp = gp; *xp = *yp; xp++, yp++)
-		continue;
-	    i += j;
-
-	    free ((char *) gp);
-	}
-	else
-	    if ((i = blklen (vp = gp)) > 1)
-		xglobbed++;
-    }
-
-    if (vp == NULLVP || *vp == NULLCP) {
-	if (!loses)
-	    loses = "no files match specification";
-	advise (NULLCP, "%s", loses);
-
-	if (vp) {
-	    blkfree (vp);
-	    vp = NULLVP;
-	}
-    }
-
-    if (vp && debug)
-	for (gp = vp; *gp; gp++)
-	    (void) printf ("%d: \"%s\"\n", gp - vp, *gp);
-
-    return vp;
 }
 
 /*  */
@@ -859,63 +861,63 @@ int	remote;
 static	matchrdir (pattern)
 char   *pattern;
 {
-    register char  *cp;
-    char    cwd[MAXPATHLEN],
-	    pat[MAXPATHLEN];
-    struct FADUidentity faduids;
-    register struct FADUidentity *faduid = &faduids;
-    register struct filent *fi, *gi;
-    
-    (void) strcpy (pat, pattern);
+	register char  *cp;
+	char    cwd[MAXPATHLEN],
+			pat[MAXPATHLEN];
+	struct FADUidentity faduids;
+	register struct FADUidentity *faduid = &faduids;
+	register struct filent *fi, *gi;
 
-    switch (isdir (gpath, cwd, 1)) {
+	(void) strcpy (pat, pattern);
+
+	switch (isdir (gpath, cwd, 1)) {
 	case NOTOK:
 	case OK:
-	    if (!globbed)
-		globerr = "Bad directory components";
-	    return;
+		if (!globbed)
+			globerr = "Bad directory components";
+		return;
 
 	default:
-	    if (cwd[0] == NULL)
-		(void) strcpy (cwd, gpath);
-	    cp = cwd + strlen (cwd) - 1;
-	    if (*cp == '/')
-		*cp = NULL;
-	    else {
-		*++cp = '/';
-		*++cp = NULL;
-	    }
-	    cp = cwd;
-	    break;
-    }
-    
-    faduid -> fa_type = FA_FIRSTLAST;
-    faduid -> fa_firstlast = FA_FIRST;
-
-    (void) fdffnx (NOTOK, (struct PSAPdata *) 0, 1);
-    (void) getvf (cp, NULLCP, faduid, &vfs[VFS_FDF], fdffnx);
-
-    fi = gi = filents, filents = NULL;
-    (void) fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
-
-    {
-	register int len = strlen (cp);
-
-	for (fi = gi; fi; fi = fi -> fi_next)
-	    if (strncmp (fi -> fi_name, cp, len) == 0)
-		fi -> fi_entry = fi -> fi_name + len;
-    }
-
-    for (fi = gi; fi; fi = fi -> fi_next) {
-	matchoid = fi -> fi_oid;
-	if (match (fi -> fi_entry, pat)) {
-	    Gcat (gpath, fi -> fi_entry);
-	    globcnt++;
+		if (cwd[0] == NULL)
+			(void) strcpy (cwd, gpath);
+		cp = cwd + strlen (cwd) - 1;
+		if (*cp == '/')
+			*cp = NULL;
+		else {
+			*++cp = '/';
+			*++cp = NULL;
+		}
+		cp = cwd;
+		break;
 	}
-    }
 
-    filents = gi;
-    (void) fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
+	faduid -> fa_type = FA_FIRSTLAST;
+	faduid -> fa_firstlast = FA_FIRST;
+
+	(void) fdffnx (NOTOK, (struct PSAPdata *) 0, 1);
+	(void) getvf (cp, NULLCP, faduid, &vfs[VFS_FDF], fdffnx);
+
+	fi = gi = filents, filents = NULL;
+	(void) fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
+
+	{
+		register int len = strlen (cp);
+
+		for (fi = gi; fi; fi = fi -> fi_next)
+			if (strncmp (fi -> fi_name, cp, len) == 0)
+				fi -> fi_entry = fi -> fi_name + len;
+	}
+
+	for (fi = gi; fi; fi = fi -> fi_next) {
+		matchoid = fi -> fi_oid;
+		if (match (fi -> fi_entry, pat)) {
+			Gcat (gpath, fi -> fi_entry);
+			globcnt++;
+		}
+	}
+
+	filents = gi;
+	(void) fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
 }
 
 /*  */
@@ -926,7 +928,7 @@ static	chkrdir (path, st)
 char   *path;
 struct stat *st;
 {
-    return (oid_cmp (vfs[VFS_FDF].vf_oid, matchoid) == 0);
+	return (oid_cmp (vfs[VFS_FDF].vf_oid, matchoid) == 0);
 }
 
 /*  */
@@ -934,11 +936,11 @@ struct stat *st;
 static getrdir (hdir)
 char    *hdir;
 {
-    char    buffer[BUFSIZ];
+	char    buffer[BUFSIZ];
 
-    (void) sprintf (buffer, "~%s", hdir);
+	(void) sprintf (buffer, "~%s", hdir);
 
-    return (isdir (buffer, hdir, 1) != DONE);
+	return (isdir (buffer, hdir, 1) != DONE);
 }
 
 /*  */
@@ -946,7 +948,7 @@ char    *hdir;
 static int  fatal (s)
 char   *s;
 {
-    adios (NULLCP, "%s", s);
+	adios (NULLCP, "%s", s);
 }
 
 /*  */
@@ -954,24 +956,24 @@ char   *s;
 int	f_echo (vec)
 char  **vec;
 {
-    char  **gb,
-          **gp,
-		   *gs;
+	char  **gb,
+		  **gp,
+		  *gs;
 
-    if (*++vec && (gp = gb = xglob (vec, 1))) {
-	char   *cp;
+	if (*++vec && (gp = gb = xglob (vec, 1))) {
+		char   *cp;
 
-	for (cp = ""; *gp; gp++, cp = " "){
-		gs = rindex (*gp, '/');
-		if (gs == NULL)
-	    	(void) printf ("%s%s", cp, *gp);
-		else
-	    	(void) printf ("%s%s", cp, ++gs);
+		for (cp = ""; *gp; gp++, cp = " ") {
+			gs = rindex (*gp, '/');
+			if (gs == NULL)
+				(void) printf ("%s%s", cp, *gp);
+			else
+				(void) printf ("%s%s", cp, ++gs);
+		}
+		(void) printf ("\n");
+
+		blkfree (gb);
 	}
-	(void) printf ("\n");
 
-	blkfree (gb);
-    }
-
-    return OK;
+	return OK;
 }

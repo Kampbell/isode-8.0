@@ -55,16 +55,16 @@ static CMD_TABLE pdm_table [] = {
 	"TELEPHONE",	9,
 	"UNKNOWN",	-1,
 	0,		-1
-	};
+};
 
 
 static pdmfree (pdm)
 struct pref_deliv * pdm;
 {
-        struct pref_deliv *next;
-	
+	struct pref_deliv *next;
+
 	for (; pdm != (struct pref_deliv *) NULL; pdm = next)  {
-	        next = pdm -> pd_next;
+		next = pdm -> pd_next;
 		free ((char *) pdm);
 	}
 }
@@ -74,8 +74,8 @@ struct pref_deliv * a, *b;
 {
 	/* matching here is a bit dubious !!! */
 
-        for (; (a != (struct pref_deliv *) NULL) && (b != (struct pref_deliv *) NULL) ;
-			a = a->pd_next, b=b->pd_next) 
+	for (; (a != (struct pref_deliv *) NULL) && (b != (struct pref_deliv *) NULL) ;
+			a = a->pd_next, b=b->pd_next)
 		if ( a->deliv != b->deliv )
 			return (a->deliv > b->deliv ? 1 : -1);
 
@@ -83,23 +83,23 @@ struct pref_deliv * a, *b;
 		return ( a > b ? 1 : -1 );
 	else
 		return (0);
-	
+
 }
 
 static struct pref_deliv * pdmcpy (a)
 struct pref_deliv * a;
 {
-struct pref_deliv * b, *c, *result = (struct pref_deliv *) NULL;
+	struct pref_deliv * b, *c, *result = (struct pref_deliv *) NULL;
 
 	c = result; /* to keep lint happy */
 
-        for (; a != (struct pref_deliv *) NULL; a = a->pd_next) {
-	        b = (struct pref_deliv *) smalloc (sizeof (struct pref_deliv));
+	for (; a != (struct pref_deliv *) NULL; a = a->pd_next) {
+		b = (struct pref_deliv *) smalloc (sizeof (struct pref_deliv));
 		b -> deliv = a -> deliv;
-		
-		if (result == (struct pref_deliv *) NULL) 
+
+		if (result == (struct pref_deliv *) NULL)
 			result = b;
-		else 
+		else
 			c->pd_next = b;
 		c = b;
 	}
@@ -111,49 +111,49 @@ struct pref_deliv * b, *c, *result = (struct pref_deliv *) NULL;
 static struct pref_deliv* pdmparse (str)
 char * str;
 {
-struct pref_deliv * result = (struct pref_deliv *) NULL;
-struct pref_deliv * a, *b;
-char * ptr;
-char * mark = NULLCP;
+	struct pref_deliv * result = (struct pref_deliv *) NULL;
+	struct pref_deliv * a, *b;
+	char * ptr;
+	char * mark = NULLCP;
 
-   b = result; /* to keep lint happy */
+	b = result; /* to keep lint happy */
 
-   for (;;) {
-	mark = NULLCP;
-	a = (struct pref_deliv *) smalloc (sizeof (struct pref_deliv));
+	for (;;) {
+		mark = NULLCP;
+		a = (struct pref_deliv *) smalloc (sizeof (struct pref_deliv));
 
-	if ( (ptr=index (str,'$')) != NULLCP) {
-		*ptr-- = 0;
-		if (isspace (*ptr)) {
-			*ptr = 0;
-			mark = ptr;
+		if ( (ptr=index (str,'$')) != NULLCP) {
+			*ptr-- = 0;
+			if (isspace (*ptr)) {
+				*ptr = 0;
+				mark = ptr;
+			}
+			ptr++;
 		}
-		ptr++;
+
+		if ((a -> deliv = cmd_srch (str,pdm_table)) == -1) {
+			parse_error ("Unknown method %s",str);
+			return ((struct pref_deliv *) NULL);
+		}
+
+		if (result == (struct pref_deliv *) NULL)
+			result = a;
+		else
+			b->pd_next = a;
+		b = a;
+
+		if (ptr != NULLCP) {
+			*ptr++ = '$';
+			if (mark != NULLCP)
+				*mark = ' ';
+			str = (SkipSpace(ptr));
+			ptr = str;
+		} else
+			break;
 	}
+	a -> pd_next = (struct pref_deliv *) NULL ;
 
-	if ((a -> deliv = cmd_srch (str,pdm_table)) == -1) {
-		parse_error ("Unknown method %s",str);
-		return ((struct pref_deliv *) NULL);
-	}
-
-	if (result == (struct pref_deliv *) NULL) 
-		result = a;
-	else 
-		b->pd_next = a;
-	b = a;
-
-	if (ptr != NULLCP) {
-		*ptr++ = '$';
-		if (mark != NULLCP)
-			*mark = ' ';
-		str = (SkipSpace(ptr));	
-		ptr = str;
-	} else
-		break;
-   }
-   a -> pd_next = (struct pref_deliv *) NULL ;
-
-   return (result);
+	return (result);
 }
 
 static pdmprint (ps,pdm,format)
@@ -161,13 +161,13 @@ PS ps;
 struct pref_deliv * pdm;
 int format;
 {
-char * prefix = NULLCP;
+	char * prefix = NULLCP;
 
 	for (; pdm != (struct pref_deliv *) NULL; pdm = pdm->pd_next) {
 		if (prefix != NULLCP)
 			ps_print (ps,prefix);
 
-			
+
 		ps_print (ps,rcmd_srch (pdm->deliv,pdm_table));
 
 		if (format == READOUT)
@@ -181,9 +181,9 @@ char * prefix = NULLCP;
 static PE pdmenc (m)
 struct pref_deliv * m;
 {
-PE ret_pe;
+	PE ret_pe;
 
-        (void) encode_SA_PreferredDeliveryMethod (&ret_pe,0,0,NULLCP,m);
+	(void) encode_SA_PreferredDeliveryMethod (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -191,21 +191,20 @@ PE ret_pe;
 static struct pref_deliv * pdmdec (pe)
 PE pe;
 {
-struct pref_deliv * m;
+	struct pref_deliv * m;
 
 	if (decode_SA_PreferredDeliveryMethod (pe,1,NULLIP,NULLVP,&m) == NOTOK)
 		return ((struct pref_deliv *) NULL);
 	return (m);
 }
 
-pref_deliv_syntax ()
-{
+pref_deliv_syntax () {
 	(void) add_attribute_syntax ("DeliveryMethod",
-		(IFP) pdmenc,	(IFP) pdmdec,
-		(IFP) pdmparse,pdmprint,
-		(IFP) pdmcpy,	pdmcmp,
-		pdmfree,	NULLCP,
-		NULLIFP,	TRUE);
+								 (IFP) pdmenc,	(IFP) pdmdec,
+								 (IFP) pdmparse,pdmprint,
+								 (IFP) pdmcpy,	pdmcmp,
+								 pdmfree,	NULLCP,
+								 NULLIFP,	TRUE);
 
 }
 

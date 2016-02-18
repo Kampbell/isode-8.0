@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/showattr.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/showattr.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -49,7 +49,7 @@ static char ignore_unknown = FALSE;
 showattribute (at)
 AttributeType at;
 {
-Attr_Sequence  eptr;
+	Attr_Sequence  eptr;
 
 	if (! show_all_flag) {
 		if ( ! check_want_attr (at))
@@ -57,10 +57,10 @@ Attr_Sequence  eptr;
 	} else if ( ! check_want_tmp_attr (at))
 		return;
 
-	for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) {	
+	for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) {
 		/* Tiptoe through the list of types until one matches, and then print value. */
 		if (AttrT_cmp (eptr->attr_type,at) == 0) {
-			if (value_flag) 
+			if (value_flag)
 				if (key_flag)
 					as_comp_print (RPS,eptr,print_format);
 				else
@@ -70,28 +70,27 @@ Attr_Sequence  eptr;
 				ps_print (RPS, "\n");
 			}
 			break;
-		} 
+		}
 	}
-		
+
 	if (eptr == NULLATTR)
 		if (key_flag)
 			ps_printf (OPT, "%-21s - (No such attribute in this entry)\n", at->oa_ot.ot_name);
 		else
 			ps_printf (OPT, "No value\n");
-		
+
 }
 
-show_unknown ()
-{
+show_unknown () {
 	ignore_unknown = TRUE;
 }
 
 check_want_attr (at)
 AttributeType at;
 {
-Attr_Sequence as;
+	Attr_Sequence as;
 
-	if (at == NULLTABLE_ATTR) 
+	if (at == NULLTABLE_ATTR)
 		return (ignore_unknown);
 
 	if (at->oa_syntax == 0)
@@ -107,10 +106,10 @@ Attr_Sequence as;
 check_want_tmp_attr (at)
 AttributeType at;
 {
-Attr_Sequence as;
-Attr_Sequence as2;
-extern Attr_Sequence tmp_ignore;
-extern Attr_Sequence as_flag;
+	Attr_Sequence as;
+	Attr_Sequence as2;
+	extern Attr_Sequence tmp_ignore;
+	extern Attr_Sequence as_flag;
 
 	if (at->oa_syntax == 0)
 		return (ignore_unknown || show_all_flag);
@@ -119,7 +118,7 @@ extern Attr_Sequence as_flag;
 		if (AttrT_cmp (at,as->attr_type) == 0) {
 			/* may be explicitly wanted... */
 			for (as2=as_flag; as2 != NULLATTR; as2=as2->attr_link)
-				if (AttrT_cmp (as2->attr_type,as->attr_type) == 0) 
+				if (AttrT_cmp (as2->attr_type,as->attr_type) == 0)
 					return (TRUE);
 			return (FALSE);
 		}
@@ -130,8 +129,8 @@ extern Attr_Sequence as_flag;
 new_ignore (ptr)
 char * ptr;
 {
-AttributeType at;
-Attr_Sequence newas;
+	AttributeType at;
+	Attr_Sequence newas;
 
 	if ((at = str2AttrT (ptr)) == NULLAttrT)
 		return;

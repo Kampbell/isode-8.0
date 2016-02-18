@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 1992/06/16 12:05:59 isode Rel $
  *
  *
@@ -38,58 +38,57 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 199
 
 #ifndef	lint
 static int  _acsaplose ();
-#endif 
+#endif
 
 #ifndef	lint
 int	acpktlose (va_alist)
-va_dcl
-{
-    int	    reason,
-    	    result;
-    PE	    pe;
-    register struct assocblk *acb;
-    register struct AcSAPindication *aci;
-    struct PSAPindication   pis;
-    struct type_ACS_ABRT__apdu pdus;
-    register struct type_ACS_ABRT__apdu *pdu = &pdus;
-    va_list ap;
+va_dcl {
+	int	    reason,
+	result;
+	PE	    pe;
+	register struct assocblk *acb;
+	register struct AcSAPindication *aci;
+	struct PSAPindication   pis;
+	struct type_ACS_ABRT__apdu pdus;
+	register struct type_ACS_ABRT__apdu *pdu = &pdus;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    acb = va_arg (ap, struct assocblk *);
-    aci = va_arg (ap, struct AcSAPindication *);
-    reason = va_arg (ap, int);
+	acb = va_arg (ap, struct assocblk *);
+	aci = va_arg (ap, struct AcSAPindication *);
+	reason = va_arg (ap, int);
 
-    result = _acsaplose (aci, reason, ap);
+	result = _acsaplose (aci, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    if (acb == NULLACB || acb -> acb_fd == NOTOK)
+	if (acb == NULLACB || acb -> acb_fd == NOTOK)
+		return result;
+
+	if (acb -> acb_sversion == 1) {
+		if (PUAbortRequest (acb -> acb_fd, NULLPEP, 0, &pis) != NOTOK)
+			acb -> acb_fd = NOTOK;
+
+		return result;
+	}
+
+	pdu -> abort__source = int_ACS_abort__source_acse__service__provider;
+	pdu -> user__information = NULL;
+
+	pe = NULLPE;
+	if (encode_ACS_ABRT__apdu (&pe, 1, 0, NULLCP, pdu) != NOTOK) {
+		pe -> pe_context = acb -> acb_id;
+
+		PLOGP (acsap_log,ACS_ACSE__apdu, pe, "ABRT-apdu", 0);
+
+		if (PUAbortRequest (acb -> acb_fd, &pe, 1, &pis) != NOTOK)
+			acb -> acb_fd = NOTOK;
+	}
+	if (pe)
+		pe_free (pe);
+
 	return result;
-
-    if (acb -> acb_sversion == 1) {
-	if (PUAbortRequest (acb -> acb_fd, NULLPEP, 0, &pis) != NOTOK)
-	    acb -> acb_fd = NOTOK;
-
-	return result;
-    }
-    
-    pdu -> abort__source = int_ACS_abort__source_acse__service__provider;
-    pdu -> user__information = NULL;
-
-    pe = NULLPE;
-    if (encode_ACS_ABRT__apdu (&pe, 1, 0, NULLCP, pdu) != NOTOK) {
-	pe -> pe_context = acb -> acb_id;
-
-	PLOGP (acsap_log,ACS_ACSE__apdu, pe, "ABRT-apdu", 0);
-
-	if (PUAbortRequest (acb -> acb_fd, &pe, 1, &pis) != NOTOK)
-	    acb -> acb_fd = NOTOK;
-    }
-    if (pe)
-	pe_free (pe);
-
-    return result;
 }
 #else
 /* VARARGS5 */
@@ -99,9 +98,9 @@ struct assocblk *acb;
 struct AcSAPindication *aci;
 int	reason;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return acpktlose (acb, aci, reason, what, fmt);
+	return acpktlose (acb, aci, reason, what, fmt);
 }
 #endif
 
@@ -109,23 +108,22 @@ char   *what,
 
 #ifndef	lint
 int	acsaplose (va_alist)
-va_dcl
-{
-    int	    reason,
-	    result;
-    struct AcSAPindication *aci;
-    va_list ap;
+va_dcl {
+	int	    reason,
+	result;
+	struct AcSAPindication *aci;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    aci = va_arg (ap, struct AcSAPindication *);
-    reason = va_arg (ap, int);
+	aci = va_arg (ap, struct AcSAPindication *);
+	reason = va_arg (ap, int);
 
-    result = _acsaplose (aci, reason, ap);
+	result = _acsaplose (aci, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return result;
+	return result;
 }
 #else
 /* VARARGS4 */
@@ -134,9 +132,9 @@ int	acsaplose (aci, reason, what, fmt)
 struct AcSAPindication *aci;
 int	reason;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return acsaplose (aci, reason, what, fmt);
+	return acsaplose (aci, reason, what, fmt);
 }
 #endif
 
@@ -148,23 +146,23 @@ register struct AcSAPindication *aci;
 int     reason;
 va_list	ap;
 {
-    register char  *bp;
-    char    buffer[BUFSIZ];
-    register struct AcSAPabort *aca;
+	register char  *bp;
+	char    buffer[BUFSIZ];
+	register struct AcSAPabort *aca;
 
-    if (aci) {
-	bzero ((char *) aci, sizeof *aci);
-	aci -> aci_type = ACI_ABORT;
-	aca = &aci -> aci_abort;
+	if (aci) {
+		bzero ((char *) aci, sizeof *aci);
+		aci -> aci_type = ACI_ABORT;
+		aca = &aci -> aci_abort;
 
-	asprintf (bp = buffer, ap);
-	bp += strlen (bp);
+		asprintf (bp = buffer, ap);
+		bp += strlen (bp);
 
-	aca -> aca_source = ACA_LOCAL;
-	aca -> aca_reason = reason;
-	copyAcSAPdata (buffer, bp - buffer, aca);
-    }
+		aca -> aca_source = ACA_LOCAL;
+		aca -> aca_reason = reason;
+		copyAcSAPdata (buffer, bp - buffer, aca);
+	}
 
-    return NOTOK;
+	return NOTOK;
 }
 #endif

@@ -34,125 +34,122 @@ void user_tailor(), main_bind(), cnnct_bind(), interact(), help_init();
 void exit();
 
 main(argc, argv)
-     unsigned int     argc;
-     char    *argv[];
+unsigned int     argc;
+char    *argv[];
 {
-    print_parse_errors = FALSE;
-    quipu_syntaxes();
+	print_parse_errors = FALSE;
+	quipu_syntaxes();
 
 #ifdef USE_PP
-  pp_quipu_init (argv[0]);
+	pp_quipu_init (argv[0]);
 #endif
 
-    namestr[0] = '\0';
-    passwd[0] = '\0';
+	namestr[0] = '\0';
+	passwd[0] = '\0';
 
-    read_args(argc, &argv);
-    dsap_init((int *) 0, &argv);
+	read_args(argc, &argv);
+	dsap_init((int *) 0, &argv);
 
 #ifdef USE_PP
-  pp_quipu_run ();
+	pp_quipu_run ();
 #endif
 
-    initwidgets();
-    setsignals();
+	initwidgets();
+	setsignals();
 
-    user_tailor(); 
-    main_bind();
-    cnnct_bind();
-    help_init();
-    interact();
-    return(0);
+	user_tailor();
+	main_bind();
+	cnnct_bind();
+	help_init();
+	interact();
+	return(0);
 }
 
 void read_args(argc, avptr)
-     unsigned int argc;
-     char ***avptr;
+unsigned int argc;
+char ***avptr;
 {
-  register char **av;
-  register char *cp;
+	register char **av;
+	register char *cp;
 
-  if (argc <= 1) return;
+	if (argc <= 1) return;
 
-  av = *avptr;
-  av++;
+	av = *avptr;
+	av++;
 
-  while ((cp = *av) && (*cp == '-')) {
-    switch (*++cp) {
-    case 'u':
-      if (*++av != NULLCP) (void) strcpy(namestr, *av);
-      break;
-    case 'p':
-      if (*++av != NULLCP) (void) strcpy(passwd, *av);
-      break;
-    case 'T':
-      if (*++av != NULLCP) oidtable = *av;
-      break;
-    case 'c':
-      if (*++av != NULLCP) myname = *av;
-      break;
-    case 't':
-      if (lexequ(*av, "-test") != 0) {
-        if (*++av != NULLCP) tailfile = *av;
-      } else {
-        testing = TRUE;
-      }
-      break;
-    }
-    av++;
-  }
+	while ((cp = *av) && (*cp == '-')) {
+		switch (*++cp) {
+		case 'u':
+			if (*++av != NULLCP) (void) strcpy(namestr, *av);
+			break;
+		case 'p':
+			if (*++av != NULLCP) (void) strcpy(passwd, *av);
+			break;
+		case 'T':
+			if (*++av != NULLCP) oidtable = *av;
+			break;
+		case 'c':
+			if (*++av != NULLCP) myname = *av;
+			break;
+		case 't':
+			if (lexequ(*av, "-test") != 0) {
+				if (*++av != NULLCP) tailfile = *av;
+			} else {
+				testing = TRUE;
+			}
+			break;
+		}
+		av++;
+	}
 }
 
-void setsignals()
-{
-  int     i;
+void setsignals() {
+	int     i;
 
-  for (i=0; i<18; i++)
-    (void) signal(i, SIG_DFL);
+	for (i=0; i<18; i++)
+		(void) signal(i, SIG_DFL);
 }
 
 void eprint(str)
-     char    *str;
+char    *str;
 {
-  tprint(str);
+	tprint(str);
 }
 
-void sd_quit()
-{
-  quit("\n", 0);
+void sd_quit() {
+	quit("\n", 0);
 }
 
 void quit(error, sig)
-     char    *error;
-     int     sig;
+char    *error;
+int     sig;
 {
-  endwidgets();
-  (void) ds_unbind();
-  hide_picture();
-  (void) printf(error);
-  exit(sig);
+	endwidgets();
+	(void) ds_unbind();
+	hide_picture();
+	(void) printf(error);
+	exit(sig);
 }
 
 void int_quit(sig)
-     int sig;
+int sig;
 {
-  quit("\n", sig);
+	quit("\n", sig);
 }
 
 
 advise (va_alist)
-     va_dcl
-{
-  int     code;
-  va_list ap;
-  extern LLog * log_dsap;
-  
-  va_start (ap);
-  
-  code = va_arg (ap, int);
-  
-  (void) _ll_log (log_dsap, code, ap);
-  
-  va_end (ap);
+va_dcl {
+	int     code;
+	va_list ap;
+	extern LLog * log_dsap;
+
+	va_start (ap);
+
+	code = va_arg (ap, int);
+
+	(void) _ll_log (log_dsap, code, ap);
+
+	va_end (ap);
 }
 

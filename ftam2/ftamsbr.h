@@ -1,6 +1,6 @@
 /* ftamsbr.h - include file for FTAM initiator/responder subroutines */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam2/RCS/ftamsbr.h,v 9.0 1992/06/16 12:15:43 isode Rel $
  *
  *
@@ -106,7 +106,7 @@
 
 	FADUs are batched to the P-DATA service.  This means that the
 	octet-aligned option is used.  Hence, the outer ASN.1 wrapper
-	consists of  
+	consists of
 
 	    [APPLICATION 1] IMPLICIT
 		SEQUENCE OF {	-- 4 octets for the outer structure
@@ -140,11 +140,11 @@
 /*  */
 
 struct vfsmap {
-    char   *vf_entry;		/* document entry */
-    OID	    vf_oid;		/* object identifier */
-    caddr_t vf_parameter;	/* parameter, filled-in by vf_peek */
+	char   *vf_entry;		/* document entry */
+	OID	    vf_oid;		/* object identifier */
+	caddr_t vf_parameter;	/* parameter, filled-in by vf_peek */
 
-    int     vf_flags;		/* flags */
+	int     vf_flags;		/* flags */
 #define	VF_NULL	0x00
 #define	VF_OK	0x01		/* negotiated */
 #define	VF_WARN	0x02		/* warn if loses */
@@ -153,25 +153,25 @@ struct vfsmap {
 #define VF_ALIASED  0x08            /* document type may be aliased */
 #endif /* COMPAT_OLD_NBS9OID */
 
-    int	    vf_id;		/* presentation context */
+	int	    vf_id;		/* presentation context */
 
-    int	    vf_mode;		/* st.st_mode & S_IFMT bits */
-    IFP	    vf_peek;		/* sees if really this type of file */
-    char    vf_stat;		/* stat character for 'ls' */
+	int	    vf_mode;		/* st.st_mode & S_IFMT bits */
+	IFP	    vf_peek;		/* sees if really this type of file */
+	char    vf_stat;		/* stat character for 'ls' */
 
-    int	    vf_simplify;	/* the next document type to try */
+	int	    vf_simplify;	/* the next document type to try */
 #define	VFS_XXX	(-1)
 
-    int	    vf_context;		/* access context */
-				/* really should have entire constraint set */
+	int	    vf_context;		/* access context */
+	/* really should have entire constraint set */
 
-    int	    vf_mandatory;	/* > 0 parameter required
+	int	    vf_mandatory;	/* > 0 parameter required
 				   < 0 parameter optional
 				  == 0 parameter illegal */
-    IFP	    vf_check;		/*   .. check */
-    int	    vf_number;		/* encode/decode index */
+	IFP	    vf_check;		/*   .. check */
+	int	    vf_number;		/* encode/decode index */
 
-    char  *vf_text;		/* textual description */
+	char  *vf_text;		/* textual description */
 };
 
 struct vfsmap *st2vfs ();

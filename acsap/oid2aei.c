@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/oid2aei.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/acsap/RCS/oid2aei.c,v 9.0 1992/06/16 12:05:59 isode Rel $
  *
  *
@@ -36,15 +36,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/oid2aei.c,v 9.0 1992/
 AEI	oid2aei (oid)
 OID	oid;
 {
-    static AEInfo aeinfo;
-    AEI	    aei = &aeinfo;
-    static PE pe = NULLPE;
+	static AEInfo aeinfo;
+	AEI	    aei = &aeinfo;
+	static PE pe = NULLPE;
 
-    if (pe)
-	pe_free (pe);
+	if (pe)
+		pe_free (pe);
 
-    bzero ((char *) aei, sizeof *aei);
-    aei -> aei_ap_title = pe = obj2prim (oid, PE_CLASS_UNIV, PE_PRIM_OID);
+	bzero ((char *) aei, sizeof *aei);
+	aei -> aei_ap_title = pe = obj2prim (oid, PE_CLASS_UNIV, PE_PRIM_OID);
 
-    return aei;
+	return aei;
 }

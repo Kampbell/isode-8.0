@@ -15,7 +15,7 @@
  * Revision 9.0  1992/06/16  14:38:53  isode
  * Release 8.0
  *
- * 
+ *
  */
 
 
@@ -81,8 +81,8 @@ int	argcmp();
  */
 struct namelist *
 expand(list, wh)
-	struct namelist *list;
-	int wh;
+struct namelist *list;
+int wh;
 {
 	register struct namelist *nl, *prev;
 	register int n;
@@ -139,7 +139,7 @@ expand(list, wh)
 }
 
 expstr(s)
-	char *s;
+char *s;
 {
 	register char *cp, *cp1;
 	register struct namelist *tp;
@@ -179,7 +179,7 @@ expstr(s)
 		if (tp != NULL) {
 			for (; tp != NULL; tp = tp->n_next) {
 				(void) sprintf(buf, "%s%s%s",
-					       s, tp->n_name, tail);
+							   s, tp->n_name, tail);
 				expstr(buf);
 			}
 			return;
@@ -241,7 +241,7 @@ expstr(s)
 
 static
 argcmp(a1, a2)
-	char **a1, **a2;
+char **a1, **a2;
 {
 
 	return (strcmp(*a1, *a2));
@@ -252,7 +252,7 @@ argcmp(a1, a2)
  * expand into a list, after searching directory
  */
 expsh(s)
-	char *s;
+char *s;
 {
 	register char *cp;
 	register char *spathp, *oldcp;
@@ -289,7 +289,7 @@ endit:
 }
 
 matchdir(pattern)
-	char *pattern;
+char *pattern;
 {
 	struct stat stb;
 	register struct dirent *dp;
@@ -329,7 +329,7 @@ patherr2:
 }
 
 execbrc(p, s)
-	char *p, *s;
+char *p, *s;
 {
 	char restbuf[BUFSIZ + 2];
 	register char *pe, *pm, *pl;
@@ -408,7 +408,7 @@ doit:
 }
 
 match(s, p)
-	char *s, *p;
+char *s, *p;
 {
 	register int c;
 	register char *sentp;
@@ -425,7 +425,7 @@ match(s, p)
 }
 
 amatch(s, p)
-	register char *s, *p;
+register char *s, *p;
 {
 	register int scc;
 	int ok, lc;
@@ -453,9 +453,8 @@ amatch(s, p)
 				if (cc == '-') {
 					if (lc <= scc && scc <= *p++)
 						ok++;
-				} else
-					if (scc == (lc = cc))
-						ok++;
+				} else if (scc == (lc = cc))
+					ok++;
 			}
 			if (cc == 0) {
 				yyerror("Missing ']'");
@@ -513,7 +512,7 @@ slash:
 }
 
 smatch(s, p)
-	register char *s, *p;
+register char *s, *p;
 {
 	register int scc;
 	int ok, lc;
@@ -535,9 +534,8 @@ smatch(s, p)
 				if (cc == '-') {
 					if (lc <= scc && scc <= *p++)
 						ok++;
-				} else
-					if (scc == (lc = cc))
-						ok++;
+				} else if (scc == (lc = cc))
+					ok++;
 			}
 			if (cc == 0) {
 				yyerror("Missing ']'");
@@ -571,7 +569,7 @@ smatch(s, p)
 }
 
 Cat(s1, s2)
-	register char *s1, *s2;
+register char *s1, *s2;
 {
 	int len = strlen(s1) + strlen(s2) + 1;
 	register char *s;
@@ -591,7 +589,7 @@ Cat(s1, s2)
 }
 
 addpath(c)
-	char c;
+char c;
 {
 
 	if (pathp >= lastpathp)

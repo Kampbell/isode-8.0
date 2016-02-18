@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/encode.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/encode.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -77,87 +77,85 @@ char *  inbuf;
 int eolnskip;
 
 {
-    bit_string ref_line;            /* Reference line */
-    bit_string t4_line;             /* Output encoded line */
-    bit_string code_line;           /* Line we are codeing  */
+	bit_string ref_line;            /* Reference line */
+	bit_string t4_line;             /* Output encoded line */
+	bit_string code_line;           /* Line we are codeing  */
 
-    short   i,j;                      /* Loop variable */
-    int	    run_buf [LINEBUF], run_buf2 [LINEBUF];
+	short   i,j;                      /* Loop variable */
+	int	    run_buf [LINEBUF], run_buf2 [LINEBUF];
 
-    if (a3Width)
-	    forcesize = 2432;
-    if (b4Width)
-	    forcesize = 2048;
-    if (standardwidth)
-	    forcesize = 1728;
+	if (a3Width)
+		forcesize = 2432;
+	if (b4Width)
+		forcesize = 2048;
+	if (standardwidth)
+		forcesize = 1728;
 
-    if (k_param > 1)
-	twoDimensional = 1;
+	if (k_param > 1)
+		twoDimensional = 1;
 
-    ref_line.run_top = run_buf;
-    code_line.run_top = run_buf2;
-   
-    code_line.dbuf_top = inbuf;
-    t4_line.dbuf_top = malloc ((unsigned int)((PIC_LINESIZE * NUMLINES) + 28));
+	ref_line.run_top = run_buf;
+	code_line.run_top = run_buf2;
 
-    set_input  (&code_line);
-    set_output (&t4_line);
+	code_line.dbuf_top = inbuf;
+	t4_line.dbuf_top = malloc ((unsigned int)((PIC_LINESIZE * NUMLINES) + 28));
 
-    /* Repeat this loop once for every input line expected */
+	set_input  (&code_line);
+	set_output (&t4_line);
 
-    for (i = 0; i < NUMLINES; i++) {
+	/* Repeat this loop once for every input line expected */
 
-	if (code_line.run_top == run_buf) { /*swap buffers*/
-       	    ref_line.run_top = run_buf;
-	    code_line.run_top = run_buf2;
-       	} else {
-       	    ref_line.run_top = run_buf2;
-       	    code_line.run_top = run_buf;
-       	}
-       	
-	/* reset pointers */
+	for (i = 0; i < NUMLINES; i++) {
 
-	code_line.run_pos = code_line.run_top;
-	ref_line.run_pos = ref_line.run_top;
-       
-	/* fill buffer for coding line */
-       
-	get_runs (&code_line);
-	code_line.run_pos = code_line.run_top;
+		if (code_line.run_top == run_buf) { /*swap buffers*/
+			ref_line.run_top = run_buf;
+			code_line.run_top = run_buf2;
+		} else {
+			ref_line.run_top = run_buf2;
+			code_line.run_top = run_buf;
+		}
 
-	put_eoln (&t4_line);
+		/* reset pointers */
 
-	if (k_param > 1) {
-	    if (i % k_param == 0) {
-	        set_bit (&t4_line);		/* tag bit, 1-d line follows */
-		code_one (&code_line, &t4_line);
-            }
-	    else {
-	        clr_bit (&t4_line);		/* tag bit, 2-d line follows */
-		code_two (&ref_line, &code_line, &t4_line);
-            }
-        }
-	else
-	    code_one (&code_line, &t4_line);
+		code_line.run_pos = code_line.run_top;
+		ref_line.run_pos = ref_line.run_top;
 
-	/* skip any extra eoln bit in orig data */
+		/* fill buffer for coding line */
 
-	for (j = 0; j < eolnskip; j++)
-	    (void) get_bit (&code_line);
+		get_runs (&code_line);
+		code_line.run_pos = code_line.run_top;
 
-    }
+		put_eoln (&t4_line);
 
-    /* now finish with 6 EOL's, as per T.4 */
+		if (k_param > 1) {
+			if (i % k_param == 0) {
+				set_bit (&t4_line);		/* tag bit, 1-d line follows */
+				code_one (&code_line, &t4_line);
+			} else {
+				clr_bit (&t4_line);		/* tag bit, 2-d line follows */
+				code_two (&ref_line, &code_line, &t4_line);
+			}
+		} else
+			code_one (&code_line, &t4_line);
 
-    for (i = 0; i < 5; ++i) {
-	put_eoln (&t4_line);
-	if (k_param > 1) set_bit (&t4_line);
-    }
-   
-    /* flush buffers, write preamble */
+		/* skip any extra eoln bit in orig data */
 
-    flush_output (&t4_line);
-    return (t4_line.dbuf_top);
+		for (j = 0; j < eolnskip; j++)
+			(void) get_bit (&code_line);
+
+	}
+
+	/* now finish with 6 EOL's, as per T.4 */
+
+	for (i = 0; i < 5; ++i) {
+		put_eoln (&t4_line);
+		if (k_param > 1) set_bit (&t4_line);
+	}
+
+	/* flush buffers, write preamble */
+
+	flush_output (&t4_line);
+	return (t4_line.dbuf_top);
 }
 
 
@@ -181,49 +179,49 @@ bit_string * lineptr;           /* input line */
 bit_string * t4_lineptr;        /* output line */
 
 {
-    char            colour = WHITE; /* the colour of the current bit */
-    full_code       code;           /* the code for the characters run_length */
-    int             old_pos = 1;    /* the number of bits of the same colur read in */
-    int             len = 0;
-    int             tlen;
+	char            colour = WHITE; /* the colour of the current bit */
+	full_code       code;           /* the code for the characters run_length */
+	int             old_pos = 1;    /* the number of bits of the same colur read in */
+	int             len = 0;
+	int             tlen;
 
-    if (forcesize) {
-	len = (forcesize - PIC_LINESIZE)/ 2;
-	code = get_code ( len, WHITE);
-	if (code.make.length != 0)
-	    put_code (t4_lineptr,code.make);         /* the make code */
-	put_code (t4_lineptr, code.term);            /* the terminal code */
-	code = get_code (0,BLACK);
-	put_code (t4_lineptr, code.term);
-    }
-
-    do {
-
-	/* get code for next run = pos of current change - pos of last change */
-	tlen = *++lineptr->run_pos - old_pos;
-	len += tlen;
-	code = get_code (tlen,colour);
-
-	if (code.make.length != 0)
-	    put_code (t4_lineptr,code.make);         /* the make code */
-	put_code (t4_lineptr, code.term);            /* the terminal code */
-	colour = 1 - colour;
-	old_pos =  *lineptr->run_pos;
-
-    } while (*lineptr->run_pos <= PIC_LINESIZE);
-
-    if (forcesize) { 
-	if (colour == BLACK) {
-		code = get_code (0,colour);
+	if (forcesize) {
+		len = (forcesize - PIC_LINESIZE)/ 2;
+		code = get_code ( len, WHITE);
+		if (code.make.length != 0)
+			put_code (t4_lineptr,code.make);         /* the make code */
+		put_code (t4_lineptr, code.term);            /* the terminal code */
+		code = get_code (0,BLACK);
 		put_code (t4_lineptr, code.term);
 	}
-	colour = 1 - colour;
 
-	code = get_code ( forcesize - len, colour);
-	if (code.make.length != 0)
-	    put_code (t4_lineptr,code.make);         /* the make code */
-	put_code (t4_lineptr, code.term);            /* the terminal code */
-    }
+	do {
+
+		/* get code for next run = pos of current change - pos of last change */
+		tlen = *++lineptr->run_pos - old_pos;
+		len += tlen;
+		code = get_code (tlen,colour);
+
+		if (code.make.length != 0)
+			put_code (t4_lineptr,code.make);         /* the make code */
+		put_code (t4_lineptr, code.term);            /* the terminal code */
+		colour = 1 - colour;
+		old_pos =  *lineptr->run_pos;
+
+	} while (*lineptr->run_pos <= PIC_LINESIZE);
+
+	if (forcesize) {
+		if (colour == BLACK) {
+			code = get_code (0,colour);
+			put_code (t4_lineptr, code.term);
+		}
+		colour = 1 - colour;
+
+		code = get_code ( forcesize - len, colour);
+		if (code.make.length != 0)
+			put_code (t4_lineptr,code.make);         /* the make code */
+		put_code (t4_lineptr, code.term);            /* the terminal code */
+	}
 }
 
 
@@ -255,60 +253,58 @@ bit_string * code_lineptr;      /* line to encode */
 bit_string * t4_lineptr;        /* output line    */
 
 {
-    char    colour = WHITE;
-    char    ref_colour = WHITE;
+	char    colour = WHITE;
+	char    ref_colour = WHITE;
 
-    a0 = 0;
-    code_lineptr->run_pos = code_lineptr->run_top;
+	a0 = 0;
+	code_lineptr->run_pos = code_lineptr->run_top;
 
-    do {
+	do {
 
-	/* find a1 */
+		/* find a1 */
 
-	while (*code_lineptr->run_pos > a0)
-	    --code_lineptr->run_pos;
+		while (*code_lineptr->run_pos > a0)
+			--code_lineptr->run_pos;
 
-	while (*code_lineptr->run_pos <= a0 && *code_lineptr->run_pos < STOP)
-	    ++code_lineptr->run_pos;
+		while (*code_lineptr->run_pos <= a0 && *code_lineptr->run_pos < STOP)
+			++code_lineptr->run_pos;
 
-	a1 = *code_lineptr->run_pos;
+		a1 = *code_lineptr->run_pos;
 
-	/* find b1 and b2 */
+		/* find b1 and b2 */
 
-	while (*ref_lineptr->run_pos > a0) {
-	    ref_colour = 1 - ref_colour;
-	    --ref_lineptr->run_pos;
-        }
+		while (*ref_lineptr->run_pos > a0) {
+			ref_colour = 1 - ref_colour;
+			--ref_lineptr->run_pos;
+		}
 
-	while (*ref_lineptr->run_pos <= a0 && *ref_lineptr->run_pos < STOP ) {
-	    ref_colour = 1 - ref_colour;
-	    ++ref_lineptr->run_pos;
-        }
+		while (*ref_lineptr->run_pos <= a0 && *ref_lineptr->run_pos < STOP ) {
+			ref_colour = 1 - ref_colour;
+			++ref_lineptr->run_pos;
+		}
 
-	if (ref_colour == colour && *ref_lineptr->run_pos < STOP) {
-	    ref_lineptr->run_pos++;
-	    ref_colour = 1 - ref_colour;
-        }
+		if (ref_colour == colour && *ref_lineptr->run_pos < STOP) {
+			ref_lineptr->run_pos++;
+			ref_colour = 1 - ref_colour;
+		}
 
-	b1 = *ref_lineptr->run_pos;
-	if (b1 >= STOP)
-	    b2 = STOP;
-	else
-	    b2 = *(ref_lineptr->run_pos + 1);
+		b1 = *ref_lineptr->run_pos;
+		if (b1 >= STOP)
+			b2 = STOP;
+		else
+			b2 = *(ref_lineptr->run_pos + 1);
 
-	/* select mode and code it */
+		/* select mode and code it */
 
-	if (a1 > b2) {
-	    pass_mode (t4_lineptr);
-        }
-	else if (abs (a1 - b1) <= 3) {
-	    vertical_mode (t4_lineptr);
-	    colour = 1 - colour;
-        }
-	else
-	    horizontal_mode (code_lineptr,t4_lineptr,colour);
+		if (a1 > b2) {
+			pass_mode (t4_lineptr);
+		} else if (abs (a1 - b1) <= 3) {
+			vertical_mode (t4_lineptr);
+			colour = 1 - colour;
+		} else
+			horizontal_mode (code_lineptr,t4_lineptr,colour);
 
-    } while (a0 < STOP);
+	} while (a0 < STOP);
 }
 
 
@@ -324,10 +320,10 @@ pass_mode (t4_lineptr)
 bit_string * t4_lineptr;
 
 {
-    static code_word code = {4,0x0200};
+	static code_word code = {4,0x0200};
 
-    put_code (t4_lineptr,code);
-    a0 = b2;
+	put_code (t4_lineptr,code);
+	a0 = b2;
 }
 
 
@@ -345,18 +341,18 @@ vertical_mode (t4_lineptr)
 bit_string * t4_lineptr;
 
 {
-    static code_word code [7] = {
-	{7,0x080  },    /* -3 */
-	{6,0x100  },    /* -2 */
-	{3,0x800  },    /* -1 */
-	{1,0x1000 },    /*  0 */
-	{3,0xc00  },    /*  1 */
-	{6,0x180  },    /*  2 */
-	{7,0xc0   },    /*  3 */
-    };
+	static code_word code [7] = {
+		{7,0x080  },    /* -3 */
+		{6,0x100  },    /* -2 */
+		{3,0x800  },    /* -1 */
+		{1,0x1000 },    /*  0 */
+		{3,0xc00  },    /*  1 */
+		{6,0x180  },    /*  2 */
+		{7,0xc0   },    /*  3 */
+	};
 
-    put_code (t4_lineptr, code[a1 - b1 + 3]);
-    a0 = a1;
+	put_code (t4_lineptr, code[a1 - b1 + 3]);
+	a0 = a1;
 }
 
 
@@ -378,36 +374,36 @@ bit_string * code_lineptr;
 char    colour;
 
 {
-    int a2;
-    static code_word h_code = {3,0x0400};
-    full_code code;
+	int a2;
+	static code_word h_code = {3,0x0400};
+	full_code code;
 
-    if (a0 == 0)    /* special case at start of line */
-        a0 = 1;
+	if (a0 == 0)    /* special case at start of line */
+		a0 = 1;
 
-    /* find a2 */
+	/* find a2 */
 
-    a2 = *(++code_lineptr->run_pos);
-    if (a2 >= STOP)
-        code_lineptr->run_pos--;
+	a2 = *(++code_lineptr->run_pos);
+	if (a2 >= STOP)
+		code_lineptr->run_pos--;
 
-    put_code (t4_lineptr, h_code);       /* code for horiz mode */
+	put_code (t4_lineptr, h_code);       /* code for horiz mode */
 
-    /* get & put first run */
+	/* get & put first run */
 
-    code = get_code (a1 - a0, colour);
-    if (code.make.length != 0)
-        put_code (t4_lineptr, code.make);
-    put_code (t4_lineptr, code.term);
+	code = get_code (a1 - a0, colour);
+	if (code.make.length != 0)
+		put_code (t4_lineptr, code.make);
+	put_code (t4_lineptr, code.term);
 
-    /* get & put second run */
+	/* get & put second run */
 
-    code = get_code (a2 - a1, 1 - colour);
-    if (code.make.length != 0)
-        put_code (t4_lineptr, code.make);
-    put_code (t4_lineptr, code.term);
+	code = get_code (a2 - a1, 1 - colour);
+	if (code.make.length != 0)
+		put_code (t4_lineptr, code.make);
+	put_code (t4_lineptr, code.term);
 
-    a0 = a2;
+	a0 = a2;
 }
 
 
@@ -422,19 +418,19 @@ bit_string *    lineptr;
 code_word       code;
 {
 
-    int		i;
-    short	mask;
+	int		i;
+	short	mask;
 
-    mask = MSB_MASK;     /* set mask to first bit of pattern */
+	mask = MSB_MASK;     /* set mask to first bit of pattern */
 
-    for (i=0; i< code.length ; i++) {
-	if ((code.pattern  & mask) == WHITE)
-	    clr_bit (lineptr);
-	else
-	    set_bit (lineptr);
+	for (i=0; i< code.length ; i++) {
+		if ((code.pattern  & mask) == WHITE)
+			clr_bit (lineptr);
+		else
+			set_bit (lineptr);
 
-	mask >>=  1;
-    }
+		mask >>=  1;
+	}
 }
 
 
@@ -451,12 +447,12 @@ put_eoln (lineptr)
 bit_string    * lineptr;
 
 {
-    int i;
+	int i;
 
-    for (i=0 ; i< 11; i++)
-        clr_bit (lineptr);
+	for (i=0 ; i< 11; i++)
+		clr_bit (lineptr);
 
-    set_bit (lineptr);
+	set_bit (lineptr);
 }
 
 
@@ -475,19 +471,19 @@ get_runs (lineptr)
 bit_string * lineptr;
 
 {
-    register i;
-    char     colour = WHITE;
+	register i;
+	char     colour = WHITE;
 
-    *lineptr->run_pos++ = 0;
+	*lineptr->run_pos++ = 0;
 
-    for (i = 1; i <= PIC_LINESIZE; i++)
-        if (get_bit (lineptr) != colour) {
-    	    *(lineptr->run_pos++) = i;
-	    colour = 1 - colour;
-        }
+	for (i = 1; i <= PIC_LINESIZE; i++)
+		if (get_bit (lineptr) != colour) {
+			*(lineptr->run_pos++) = i;
+			colour = 1 - colour;
+		}
 
-    *lineptr->run_pos++ = STOP;
-    *lineptr->run_pos = STOP;
+	*lineptr->run_pos++ = STOP;
+	*lineptr->run_pos = STOP;
 }
 
 /* ROUTINE:     set_output;
@@ -499,9 +495,9 @@ bit_string * lineptr;
 set_output (lineptr)
 bit_string * lineptr;
 {
-    lineptr->dbuf_top += 28; /* leave room for ASN.1 preamble */
-    lineptr->dbuf = lineptr->dbuf_top;
-    lineptr->mask = BIT_MASK;
+	lineptr->dbuf_top += 28; /* leave room for ASN.1 preamble */
+	lineptr->dbuf = lineptr->dbuf_top;
+	lineptr->mask = BIT_MASK;
 }
 
 
@@ -519,142 +515,136 @@ bit_string * lineptr;
 flush_output (lineptr)
 bit_string * lineptr;
 {
-    long length, len;
-    int  count, i;
+	long length, len;
+	int  count, i;
 
-    if ( lineptr->mask != BIT_MASK )     /* writes last char if necessary */
-        *lineptr->dbuf++ = lineptr->pos;
+	if ( lineptr->mask != BIT_MASK )     /* writes last char if necessary */
+		*lineptr->dbuf++ = lineptr->pos;
 
-    if ( nopreamble ) {
+	if ( nopreamble ) {
+		optlen = lineptr->dbuf - lineptr->dbuf_top;
+		return;
+	}
+
+	/* set byte which indicates unused bits in last byte of image data */
+
+	if ( !oldformat )
+		*(--lineptr->dbuf_top) = 0x00;
+
+	/* set image length */
+
+	len = length = lineptr->dbuf - lineptr->dbuf_top;
+
+	if (length <= 127)	{	/* short form length */
+		*(--lineptr->dbuf_top) = length;
+	} else {
+
+		/* see how many bytes needed for length */
+
+		count = 0;
+
+		while (len != 0) {
+			len >>= 8;
+			count++;
+		}
+
+		/* go back and write this info */
+
+		for (i = 0; i < count; i++)
+			*(--lineptr->dbuf_top) = (length >> (8 * i));
+
+		*(--lineptr->dbuf_top) = 0x80 + count; 	/* length marker*/
+	}
+
+	/* set BIT STRING identifier */
+
+	*(--lineptr->dbuf_top) = 0x03;
+
+	if ( oldformat ) {
+		optlen = lineptr->dbuf - lineptr->dbuf_top;
+		return;
+	}
+
+	/* set length of BIT STRING sequence */
+
+	len = length = lineptr->dbuf - lineptr->dbuf_top;
+
+	if (length <= 127)	{	/* short form length */
+		*(--lineptr->dbuf_top) = length;
+	} else {
+
+		/* see how many bytes needed for length */
+
+		count = 0;
+
+		while (len != 0) {
+			len >>= 8;
+			count++;
+		}
+
+		/* go back and write this info */
+
+		for (i = 0; i < count; i++)
+			*(--lineptr->dbuf_top) = (length >> (8 * i));
+
+		*(--lineptr->dbuf_top) = 0x80 + count; 	/* length marker*/
+	}
+
+	/* set SEQUENCE identifier */
+
+	*(--lineptr->dbuf_top) = 0x30;
+
+	/* set SET which includes g3NonBasicParams */
+
+	*(--lineptr->dbuf_top) = uncompressed ? 0x02 : 0x00;
+
+	*(--lineptr->dbuf_top) = 0;
+	if (unlimitedLength) *lineptr->dbuf_top |= 0x08;
+	if (b4Length)        *lineptr->dbuf_top |= 0x04;
+	if (a3Width)         *lineptr->dbuf_top |= 0x02;
+	if (b4Width)         *lineptr->dbuf_top |= 0x01;
+
+	*(--lineptr->dbuf_top) = 0;
+	if (twoDimensional) *lineptr->dbuf_top |= 0x80;
+	if (fineResolution) *lineptr->dbuf_top |= 0x40;
+
+	*(--lineptr->dbuf_top) = 0x00;	/* first byte of BIT STRING */
+	*(--lineptr->dbuf_top) = 0x01;	/* count of unused bits */
+	*(--lineptr->dbuf_top) = 5;		/* BIT STRING length */
+	*(--lineptr->dbuf_top) = 0x81;	/* [1] IMPLICIT G3NonBasicParams */
+	*(--lineptr->dbuf_top) = 7;		/* length of SET */
+	*(--lineptr->dbuf_top) = 0x31;	/* SET */
+
+	/* set length of entire sequence */
+
+	len = length = lineptr->dbuf - lineptr->dbuf_top;
+
+	if (length <= 127)	{	/* short form length */
+		*(--lineptr->dbuf_top) = length;
+	} else {
+
+		/* see how many bytes needed for length */
+
+		count = 0;
+
+		while (len != 0) {
+			len >>= 8;
+			count++;
+		}
+
+		/* go back and write this info */
+
+		for (i = 0; i < count; i++)
+			*(--lineptr->dbuf_top) = (length >> (8 * i));
+
+		*(--lineptr->dbuf_top) = 0x80 + count; 	/* length marker*/
+	}
+
+	/* set [3] IMPLICIT G3Fax identifier */
+
+	*(--lineptr->dbuf_top) = 0xa3;
+
 	optlen = lineptr->dbuf - lineptr->dbuf_top;
-	return;
-    }
-
-    /* set byte which indicates unused bits in last byte of image data */
-
-    if ( !oldformat )
-        *(--lineptr->dbuf_top) = 0x00;
-
-    /* set image length */
-
-    len = length = lineptr->dbuf - lineptr->dbuf_top;
-   
-    if (length <= 127)	{	/* short form length */
-	*(--lineptr->dbuf_top) = length; 
-    }
-    else {
-
-	/* see how many bytes needed for length */
-
-	count = 0;
-
-   	while (len != 0) 
-   		{
-   		len >>= 8; 
-   		count++;
-   		}
-   	
-   	/* go back and write this info */
-    
-   	for (i = 0; i < count; i++) 
-   		*(--lineptr->dbuf_top) = (length >> (8 * i));
-    		
-   	*(--lineptr->dbuf_top) = 0x80 + count; 	/* length marker*/
-    }
-
-    /* set BIT STRING identifier */
-
-    *(--lineptr->dbuf_top) = 0x03;
-
-    if ( oldformat ) {
-	optlen = lineptr->dbuf - lineptr->dbuf_top;
-	return;
-    }
-
-    /* set length of BIT STRING sequence */
-
-    len = length = lineptr->dbuf - lineptr->dbuf_top;
-
-    if (length <= 127)	{	/* short form length */
-	*(--lineptr->dbuf_top) = length; 
-    }
-    else {
-
-	/* see how many bytes needed for length */
-
-	count = 0;
-
-   	while (len != 0) 
-   		{
-   		len >>= 8; 
-   		count++;
-   		}
-   	
-   	/* go back and write this info */
-    
-   	for (i = 0; i < count; i++) 
-   		*(--lineptr->dbuf_top) = (length >> (8 * i));
-    		
-   	*(--lineptr->dbuf_top) = 0x80 + count; 	/* length marker*/
-    }
-
-    /* set SEQUENCE identifier */
-
-    *(--lineptr->dbuf_top) = 0x30;
-
-    /* set SET which includes g3NonBasicParams */
-
-    *(--lineptr->dbuf_top) = uncompressed ? 0x02 : 0x00;
-
-    *(--lineptr->dbuf_top) = 0;
-    if (unlimitedLength) *lineptr->dbuf_top |= 0x08;
-    if (b4Length)        *lineptr->dbuf_top |= 0x04;
-    if (a3Width)         *lineptr->dbuf_top |= 0x02;
-    if (b4Width)         *lineptr->dbuf_top |= 0x01;
-
-    *(--lineptr->dbuf_top) = 0;
-    if (twoDimensional) *lineptr->dbuf_top |= 0x80;
-    if (fineResolution) *lineptr->dbuf_top |= 0x40;
-
-    *(--lineptr->dbuf_top) = 0x00;	/* first byte of BIT STRING */
-    *(--lineptr->dbuf_top) = 0x01;	/* count of unused bits */
-    *(--lineptr->dbuf_top) = 5;		/* BIT STRING length */
-    *(--lineptr->dbuf_top) = 0x81;	/* [1] IMPLICIT G3NonBasicParams */
-    *(--lineptr->dbuf_top) = 7;		/* length of SET */
-    *(--lineptr->dbuf_top) = 0x31;	/* SET */
-
-    /* set length of entire sequence */
-
-    len = length = lineptr->dbuf - lineptr->dbuf_top;
-
-    if (length <= 127)	{	/* short form length */
-	*(--lineptr->dbuf_top) = length; 
-    }
-    else {
-
-	/* see how many bytes needed for length */
-
-	count = 0;
-
-   	while (len != 0) 
-   		{
-   		len >>= 8; 
-   		count++;
-   		}
-   	
-   	/* go back and write this info */
-    
-   	for (i = 0; i < count; i++) 
-   		*(--lineptr->dbuf_top) = (length >> (8 * i));
-    		
-   	*(--lineptr->dbuf_top) = 0x80 + count; 	/* length marker*/
-    }
-
-    /* set [3] IMPLICIT G3Fax identifier */
-
-    *(--lineptr->dbuf_top) = 0xa3;
-
-    optlen = lineptr->dbuf - lineptr->dbuf_top;
 }
 
 
@@ -666,7 +656,7 @@ bit_string * lineptr;
 set_input (lineptr)
 bit_string * lineptr;
 {
-    lineptr->mask = BIT_MASK;
-    lineptr->dbuf = lineptr->dbuf_top;
-    lineptr->pos = *lineptr->dbuf++;
+	lineptr->mask = BIT_MASK;
+	lineptr->dbuf = lineptr->dbuf_top;
+	lineptr->pos = *lineptr->dbuf++;
 }

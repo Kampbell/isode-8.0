@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/seq_addon.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/seq_addon.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -34,14 +34,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/seq_addon.c,v 9.0 1992
 
 int	seq_addon (pe, last, new)
 PE	pe,
-        last,
-        new;
+ last,
+ new;
 {
-    if (pe == NULLPE)
-	return NOTOK;
-    if (last == NULLPE)
-	return seq_add (pe, new, -1);
-    new -> pe_offset = pe -> pe_cardinal++;
-    last -> pe_next = new;
-    return OK;
+	if (pe == NULLPE)
+		return NOTOK;
+	if (last == NULLPE)
+		return seq_add (pe, new, -1);
+	new -> pe_offset = pe -> pe_cardinal++;
+	last -> pe_next = new;
+	return OK;
 }

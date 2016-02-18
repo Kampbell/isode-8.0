@@ -1,6 +1,6 @@
 /* fpkt.h - include file for FTAM provider (FS-PROVIDER) */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/fpkt.h,v 5.0 88/07/21 14:38:50 mrose Rel $
  *
  *
@@ -188,12 +188,12 @@ int	ftamlose (), fpktlose (), ftamoops ();
 /*  */
 
 struct ftamblk {
-    struct ftamblk *fsb_forw;	/* doubly-linked list */
-    struct ftamblk *fsb_back;	/*   .. */
+	struct ftamblk *fsb_forw;	/* doubly-linked list */
+	struct ftamblk *fsb_back;	/*   .. */
 
-    int	    fsb_fd;		/* association descriptor */
+	int	    fsb_fd;		/* association descriptor */
 
-    short   fsb_flags;		/* our state */
+	short   fsb_flags;		/* our state */
 #define	FSB_NULL	0x0000
 #define	FSB_CONN	0x0001	/* connected */
 #define	FSB_FINN	0x0002	/* other side wants to finish */
@@ -204,7 +204,7 @@ struct ftamblk {
 #define	FSB_CANCEL	0x0040	/* this side started F-CANCEL */
 #define	FSB_COLLIDE	0x0080	/* collision */
 
-    short   fsb_state;		/* more state */
+	short   fsb_state;		/* more state */
 #define	FSB_INITIALIZED	0	/*   initialized */
 #define	FSB_MANAGEMENT	1	/*   management */
 #define	FSB_BULKBEGIN	2	/*   bulk data begin */
@@ -217,43 +217,43 @@ struct ftamblk {
 #define	FSB_DATAFIN1	9	/*   data transfer done */
 #define	FSB_DATAFIN2	10	/*     .. */
 #define	FSB_DATACANCEL	11	/*   cancel in progress */
-    
-    int	    fsb_group;		/* group flags */
 
-    int	    fsb_srequirements;	/* session requirements */
-    int	    fsb_owned;		/* session tokens we own */
-    int	    fsb_avail;		/* session tokens available */
-    int	    fsb_settings;	/* initial and resync settings */
-    long    fsb_ssn;		/* serial number */
-    struct SSAPref fsb_connect;	/* session connection reference */
-    int	    fsb_ssdusize;	/* largest atomic SSDU */
+	int	    fsb_group;		/* group flags */
 
-    int	    fsb_id;		/* FTAM context id */
-    int	    fsb_prequirements;	/* presentation requirements */
-    struct PSAPctxlist fsb_contexts;/* presentation contexts */
-    struct FTAMcontentlist fsb_contents; /* FTAM document types */
+	int	    fsb_srequirements;	/* session requirements */
+	int	    fsb_owned;		/* session tokens we own */
+	int	    fsb_avail;		/* session tokens available */
+	int	    fsb_settings;	/* initial and resync settings */
+	long    fsb_ssn;		/* serial number */
+	struct SSAPref fsb_connect;	/* session connection reference */
+	int	    fsb_ssdusize;	/* largest atomic SSDU */
 
-    OID	    fsb_context;	/* application context */
+	int	    fsb_id;		/* FTAM context id */
+	int	    fsb_prequirements;	/* presentation requirements */
+	struct PSAPctxlist fsb_contexts;/* presentation contexts */
+	struct FTAMcontentlist fsb_contents; /* FTAM document types */
 
-    int	    fsb_level;		/* service-level */
-    int	    fsb_class;		/* service-class */
-    int	    fsb_units;		/* functional-units */
-				/* mandatory functional-units */
+	OID	    fsb_context;	/* application context */
+
+	int	    fsb_level;		/* service-level */
+	int	    fsb_class;		/* service-class */
+	int	    fsb_units;		/* functional-units */
+	/* mandatory functional-units */
 #define	FUNITS_TRANSFER	(FUNIT_GROUPING)
 #define	FUNITS_ACCESS	(FUNIT_READ | FUNIT_WRITE | FUNIT_ACCESS)
 #define	FUNITS_MANAGE	(FUNIT_LIMITED | FUNIT_ENHANCED | FUNIT_GROUPING)
 #define	FUNITS_TM	(FUNIT_GROUPING)
 #define	FUNITS_UNCONS	(0)
 
-    int	    fsb_attrs;		/* attribute-groups */
+	int	    fsb_attrs;		/* attribute-groups */
 
-    IFP	    fsb_indication;	/* event handler */
-    
-    int	    fsb_cancelaction;	/* handle CANCEL collisions */
-    struct FTAMdiagnostic *fsb_canceldiags;
-    int	    fsb_cancelndiag;
-    
-    IFP	    fsb_trace;		/* user-defined tracing function */
+	IFP	    fsb_indication;	/* event handler */
+
+	int	    fsb_cancelaction;	/* handle CANCEL collisions */
+	struct FTAMdiagnostic *fsb_canceldiags;
+	int	    fsb_cancelndiag;
+
+	IFP	    fsb_trace;		/* user-defined tracing function */
 };
 #define	NULLFSB		((struct ftamblk *) 0)
 
@@ -269,17 +269,17 @@ struct ftamblk *newfsblk (), *findfsblk ();
 /*  */
 
 struct pair {
-    int	    p_mask;
-    int	    p_bitno;
+	int	    p_mask;
+	int	    p_bitno;
 };
 
 extern struct pair funit_pairs[],
-		   fattr_pairs[],
-		   faction_pairs[];
+		fattr_pairs[],
+		faction_pairs[];
 
 /*  */
 
-					/* Application wide types */
+/* Application wide types */
 #define	FTAM_AET	0	/* Application-Entity-Title */
 #define	FTAM_STATE	1	/* State-Result */
 #define	FTAM_ACTION	2	/* Action-Result */
@@ -303,7 +303,7 @@ extern struct pair funit_pairs[],
 #define	FTAM_C2CONTROL	20	/* Commitmenet-Control */
 
 
-					/* FTAM Regime PDUs */
+/* FTAM Regime PDUs */
 #define	F_INITIALIZE_REQ	0	/* F-INITIALIZE-Request */
 #define	F_INITIALIZE_RSP	1	/* F-INITIALIZE-Response */
 #define	  STATE_DEFAULT		FSTATE_SUCCESS
@@ -328,7 +328,7 @@ extern struct pair funit_pairs[],
 #define	F_U_ABORT_REQ		4
 #define	F_P_ABORT_REQ		5
 
-				/* File PDUs */
+/* File PDUs */
 #define	F_SELECT_REQ		6
 #define	F_SELECT_RSP		7
 #define	F_DESELECT_REQ		8

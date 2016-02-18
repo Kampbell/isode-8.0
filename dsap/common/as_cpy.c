@@ -32,7 +32,7 @@ extern LLog * log_dsap;
 Attr_Sequence  as_comp_cpy (as)
 Attr_Sequence  as;
 {
-Attr_Sequence ptr;
+	Attr_Sequence ptr;
 
 	if (as==NULLATTR) {
 		return (NULLATTR);
@@ -55,9 +55,9 @@ Attr_Sequence ptr;
 Attr_Sequence  as_cpy (as)
 Attr_Sequence  as;
 {
-Attr_Sequence start;
-Attr_Sequence ptr,ptr2;
-register Attr_Sequence eptr;
+	Attr_Sequence start;
+	Attr_Sequence ptr,ptr2;
+	register Attr_Sequence eptr;
 
 	if (as == NULLATTR) {
 		return (NULLATTR);

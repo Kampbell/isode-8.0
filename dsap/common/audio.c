@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/audio.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/audio.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -59,20 +59,20 @@ PS ps;
 struct qbuf * qb;
 int format;
 {
-int     pd[2];
-char    buffer [LINESIZE];
-char	execvector [LINESIZE];
-struct qbuf   *p;
+	int     pd[2];
+	char    buffer [LINESIZE];
+	char	execvector [LINESIZE];
+	struct qbuf   *p;
 
-int	pid;
-int	childpid;
+	int	pid;
+	int	childpid;
 #ifdef SVR4
-int	status;
+	int	status;
 #else
-union wait status;
+	union wait status;
 #endif
 
-SFP	pstat;
+	SFP	pstat;
 
 
 	if (format != READOUT) {
@@ -113,13 +113,13 @@ SFP	pstat;
 		(void) execl (execvector,execvector,NULLCP);
 
 		while (read (0, buffer, sizeof buffer) > 0)
-		    continue;
+			continue;
 		(void) printf ("ERROR: can't execute '%s'",execvector);
 
 		(void) fflush (stdout);
 		/* safety catch */
 		_exit (-1);
-		/* NOTREACHED */
+	/* NOTREACHED */
 
 	default:
 		(void) close (pd[0]);
@@ -137,35 +137,34 @@ SFP	pstat;
 #ifdef SVR4
 		while ((pid = wait (&status)) != NOTOK
 #else
-		while ((pid = wait (&status.w_status)) != NOTOK 
+		while ((pid = wait (&status.w_status)) != NOTOK
 #endif
-		       && childpid != pid)
+				&& childpid != pid)
 
-		    		continue;
+			continue;
 
 		(void) signal (SIGPIPE, pstat);
-		
+
 		return;
-	} 
+	}
 #endif
 }
 
 static struct qbuf *audio_parse (str)
 char   *str;
 {
-    if (file_attr_length)
-	    return str2qb (str, file_attr_length, 1);
-    else
-	    return str2qb (str, strlen (str), 1);
+	if (file_attr_length)
+		return str2qb (str, file_attr_length, 1);
+	else
+		return str2qb (str, strlen (str), 1);
 }
 
-audio_syntax ()
-{
-    (void) add_attribute_syntax ("audio",
-				 (IFP)r_octenc,		(IFP) r_octsdec,
-				 (IFP)audio_parse,	audio_print,
-				 (IFP)qb_cpy,		qb_cmp,
-				 qb_free,		NULLCP,
-				 NULLIFP,		TRUE);
+audio_syntax () {
+	(void) add_attribute_syntax ("audio",
+								 (IFP)r_octenc,		(IFP) r_octsdec,
+								 (IFP)audio_parse,	audio_print,
+								 (IFP)qb_cpy,		qb_cmp,
+								 qb_free,		NULLCP,
+								 NULLIFP,		TRUE);
 
 }

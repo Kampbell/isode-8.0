@@ -10,7 +10,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntpd.c,v 9.0 199
  * Revision 9.0  1992/06/16  14:45:01  isode
  * Release 8.0
  *
- * 
+ *
  */
 
 
@@ -117,14 +117,14 @@ char *argv[];
 
 	while ((cc = getopt(argc, argv, "a:c:dD:lstnp:")) != EOF) {
 		switch (cc) {
-		    case 'a':
+		case 'a':
 			if (strcmp(optarg, "any") == 0)
 				WayTooBig = 10e15;
 			else
 				WayTooBig = atof(optarg);
 			break;
 
-		    case 'd':
+		case 'd':
 #ifdef	DEBUG
 			debug++;
 #else
@@ -132,7 +132,7 @@ char *argv[];
 #endif
 			break;
 
-		    case 'D':
+		case 'D':
 #ifdef	DEBUG
 			debug = atoi(optarg);
 #else
@@ -140,40 +140,40 @@ char *argv[];
 #endif
 			break;
 
-		    case 's':
+		case 's':
 			doset = 0;
 			break;
 
-		    case 't':
+		case 't':
 #ifdef	SETTICKADJ
 			dotickadj++;
 #else
 			adios (NULLCP, "%s: not compiled to set tickadj",
-			       myname);
+				   myname);
 #endif
 			break;
 
-		    case 'n':
+		case 'n':
 #ifdef	NOSWAP
 			noswap = 1;
 #else
 			adios (NULLCP, "%s: not compiled for noswap",
-			       myname);
+				   myname);
 #endif
 			break;
 
-		    case 'l':
+		case 'l':
 			logstats = 1;
 			break;
 
-		    case 'c':
+		case 'c':
 			conf = optarg;
 			break;
 
-		    case 'p':
+		case 'p':
 			servport = htons (atoi(optarg));
 			break;
-		    default:
+		default:
 			adios (NULLCP, "ntpd: -%c: unknown option", cc);
 			break;
 		}
@@ -186,7 +186,7 @@ char *argv[];
 			servport = htons (NTP_PORT);
 		else	servport = sp -> s_port;
 	}
-		
+
 
 
 	peer_list.head = peer_list.tail = NULL;
@@ -211,8 +211,7 @@ char *argv[];
 	return 0;
 }
 
-doit ()
-{
+doit () {
 	struct timeval tvt;
 	fd_set readfds, writefds;
 	int	vecp;
@@ -232,13 +231,13 @@ doit ()
 		FD_SET(addrs[i].fd, &globmask);
 		if (addrs[i].if_flags & IFF_BROADCAST)
 			TRACE (2, ("Addr %d: %s fd %d %s broadcast %s",
-				   i, addrs[i].name, addrs[i].fd,
-				   paddr (&addrs[i].addr),
-				   ntoa (&addrs[i].bcast)));
+					   i, addrs[i].name, addrs[i].fd,
+					   paddr (&addrs[i].addr),
+					   ntoa (&addrs[i].bcast)));
 		else
 			TRACE (2, ("Addr %d: %s fd %d %s", i,
-				   addrs[i].name, addrs[i].fd,
-				   paddr (&addrs[i].addr)));
+					   addrs[i].name, addrs[i].fd,
+					   paddr (&addrs[i].addr)));
 	}
 
 	(void) signal(SIGINT, finish);
@@ -267,7 +266,7 @@ doit ()
 		readfds = globmask;
 		writefds = globwmask;
 		TRACE (7, ("wait nfds %d, fds 0x%x 0x%x", selfds,
-			   readfds.fds_bits[0], writefds.fds_bits[0]));
+				   readfds.fds_bits[0], writefds.fds_bits[0]));
 
 		if (ticked) {
 			ticked = 0;
@@ -275,8 +274,8 @@ doit ()
 		}
 
 		(void) TNetAcceptAux (&vecp, vec, &newfd, NULLTA,
-				      selfds, &readfds,
-				      &writefds, NULLFD, (1<<CLOCK_ADJ), td);
+							  selfds, &readfds,
+							  &writefds, NULLFD, (1<<CLOCK_ADJ), td);
 
 		(void) gettimeofday(&tv, (struct timezone *) 0);
 		if (tv.tv_sec - tvt.tv_sec >= (1 << CLOCK_ADJ))
@@ -290,15 +289,15 @@ doit ()
 				continue;
 
 			if (!FD_ISSET(addrs[i].fd, &readfds) &&
-			    !FD_ISSET (addrs[i].fd, &writefds))
+					!FD_ISSET (addrs[i].fd, &writefds))
 				continue;
 			TRACE (3, ("Activity on if %d fd=%d (%s)",
-				   i, addrs[i].fd, addrs[i].name));
+					   i, addrs[i].fd, addrs[i].name));
 			if (addrs[i].flags & INTF_PENDING) {
 				struct ntp_peer *p = find_peer (i);
 				if (p)
 					(void) make_osi_conn (find_peer(i),
-							      osiaddress);
+										  osiaddress);
 				continue;
 			}
 			if (addrs[i].flags & INTF_ACCEPTING) {
@@ -307,19 +306,19 @@ doit ()
 			}
 			addrs[i].uses++;
 			switch (addrs[i].addr.type) {
-			    case AF_INET:
+			case AF_INET:
 				if (recv_inet (&addrs[i], &tv) == -1)
 					continue;
 				break;
 
-			    case AF_OSI:
+			case AF_OSI:
 				if (recv_osi (&addrs[i], &tv) == -1)
 					continue;
 				break;
 
-			    default:
+			default:
 				TRACE (1, ("Address family %d not supported",
-						addrs[i].addr.type));
+						   addrs[i].addr.type));
 				continue;
 			}
 		}
@@ -330,14 +329,14 @@ doit ()
 
 struct ntp_peer *
 check_peer(dst, sock)
-	struct Naddr *dst;
-	int sock;
+struct Naddr *dst;
+int sock;
 {
 	register struct ntp_peer *peer = peer_list.head;
 
 	while (peer != NULL) {
 		if (addr_compare (&peer->src, dst) &&
-		    ((peer->sock == sock) || (peer->sock == -1)))
+				((peer->sock == sock) || (peer->sock == -1)))
 			return peer;
 		peer = peer->next;
 	}
@@ -347,18 +346,18 @@ check_peer(dst, sock)
 #ifdef	DEBUG
 void
 dump_pkt(dst, pkt, peer)
-	struct Naddr *dst;
-	struct ntpdata *pkt;
-	struct ntp_peer *peer;
+struct Naddr *dst;
+struct ntpdata *pkt;
+struct ntp_peer *peer;
 {
 	struct Naddr clock_host;
 
 	(void) printf("Packet: %s\n", paddr (dst));
 
 	(void) printf("Leap %d, version %d, mode %d, poll %d, precision %d stratum %d",
-	       (int)(pkt->status & LEAPMASK) >> 6, (int)(pkt->status & VERSIONMASK) >> 3,
-	       pkt->status & MODEMASK, pkt->ppoll, pkt->precision,
-	       pkt->stratum);
+				  (int)(pkt->status & LEAPMASK) >> 6, (int)(pkt->status & VERSIONMASK) >> 3,
+				  pkt->status & MODEMASK, pkt->ppoll, pkt->precision,
+				  pkt->stratum);
 	switch (pkt->stratum) {
 	case 0:
 	case 1:
@@ -371,39 +370,39 @@ dump_pkt(dst, pkt, peer)
 		break;
 	}
 	(void) printf("Synch Dist is %04X.%04X  Synch Dispersion is %04X.%04X\n",
-	       ntohs((u_short) pkt->distance.int_part),
-	       ntohs((u_short) pkt->distance.fraction),
-	       ntohs((u_short) pkt->dispersion.int_part),
-	       ntohs((u_short) pkt->dispersion.fraction));
+				  ntohs((u_short) pkt->distance.int_part),
+				  ntohs((u_short) pkt->distance.fraction),
+				  ntohs((u_short) pkt->dispersion.int_part),
+				  ntohs((u_short) pkt->dispersion.fraction));
 	(void) printf("Reference Timestamp is %08lx.%08lx\n",
-	       ntohl(pkt->reftime.int_part),
-	       ntohl(pkt->reftime.fraction));
+				  ntohl(pkt->reftime.int_part),
+				  ntohl(pkt->reftime.fraction));
 	(void) printf("Originate Timestamp is %08lx.%08lx\n",
-	       ntohl(pkt->org.int_part),
-	       ntohl(pkt->org.fraction));
+				  ntohl(pkt->org.int_part),
+				  ntohl(pkt->org.fraction));
 	(void) printf("Receive Timestamp is   %08lx.%08lx\n",
-	       ntohl(pkt->rec.int_part),
-	       ntohl(pkt->rec.fraction));
+				  ntohl(pkt->rec.int_part),
+				  ntohl(pkt->rec.fraction));
 	(void) printf("Transmit Timestamp is  %08lx.%08lx\n",
-	       ntohl(pkt->xmt.int_part),
-	       ntohl(pkt->xmt.fraction));
+				  ntohl(pkt->xmt.int_part),
+				  ntohl(pkt->xmt.fraction));
 	if(peer != NULL)
 		(void) printf("Input Timestamp is     %08lx.%08lx\n",
-		       ntohl(peer->rec.int_part),
-		       ntohl(peer->rec.fraction));
+					  ntohl(peer->rec.int_part),
+					  ntohl(peer->rec.fraction));
 	(void) putchar('\n');
 }
 #endif
 
 void
 make_new_peer(peer)
-	struct ntp_peer *peer;
+struct ntp_peer *peer;
 {
 	int i;
 	void	double_to_s_fixed ();
 
 	/*
-	 * initialize peer data fields 
+	 * initialize peer data fields
 	 */
 	bzero ((char *)peer, sizeof (*peer));
 	peer->src.type = peer->src.inet_ad.sin_family = AF_INET;
@@ -426,8 +425,8 @@ make_new_peer(peer)
  *  This procedure is called to delete a peer from our list of peers.
  */
 demobilize(l, peer)
-	struct list *l;
-	struct ntp_peer *peer;
+struct list *l;
+struct ntp_peer *peer;
 {
 	extern struct ntp_peer dummy_peer;
 
@@ -445,7 +444,7 @@ demobilize(l, peer)
 
 #ifdef	DEBUG
 	if ((peer->next == NULL && peer->prev == NULL) ||
-	    l->tail == NULL || l->head == NULL)
+			l->tail == NULL || l->head == NULL)
 		abort();
 #endif
 
@@ -476,12 +475,12 @@ demobilize(l, peer)
 	peer->prev->next = peer->next;
 	peer->next->prev = peer->prev;
 
- dropit:
+dropit:
 #ifdef	DEBUG
 	/* just some sanity checking */
-	if ((l->members < 0) || 
-	    (l->members && l->tail == NULL) ||
-	    (l->members == 0 && l->tail != NULL)) {
+	if ((l->members < 0) ||
+			(l->members && l->tail == NULL) ||
+			(l->members == 0 && l->tail != NULL)) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "List hosed (demobilize)");
 		abort();
 	}
@@ -494,8 +493,8 @@ demobilize(l, peer)
 }
 
 enqueue(l, peer)
-	register struct list *l;
-	struct ntp_peer *peer;
+register struct list *l;
+struct ntp_peer *peer;
 {
 	l->members++;
 	if (l->tail == NULL) {
@@ -566,9 +565,9 @@ int	n;
 		/* woof, woof - barking dogs bite! */
 		sys.leap = ALARM;
 		if (clock_watchdog < NTP_MAXAGE + n) {
-			advise (LLOG_EXCEPTIONS, NULLCP, 
-			       "logical clock adjust timeout (%d seconds)",
-			       NTP_MAXAGE);
+			advise (LLOG_EXCEPTIONS, NULLCP,
+					"logical clock adjust timeout (%d seconds)",
+					NTP_MAXAGE);
 		}
 	}
 
@@ -586,11 +585,11 @@ struct ntp_peer *peer;
 	peer->stopwatch = 0;
 	if (peer->flags & PEER_FL_CONREQ) {
 		switch (peer -> flags & PEER_FL_CONNSTATE) {
-		    case 0:
+		case 0:
 			peer -> timer = 1 << (MAX(MIN((int)peer->ppoll,
-						      MIN((int)peer->hpoll,
-							  NTP_MAXPOLL)),
-						  NTP_MINPOLL));
+										  MIN((int)peer->hpoll,
+											  NTP_MAXPOLL)),
+									  NTP_MINPOLL));
 			if (peer->backoff == 0)
 				peer -> backoff = BACKOFF_COUNT;
 			else {
@@ -602,15 +601,15 @@ struct ntp_peer *peer;
 			if (make_osi_conn (peer, osiaddress) == NOTOK)
 				return;
 			break;
-		    case PEER_FL_CONNECTED:
+		case PEER_FL_CONNECTED:
 			break;
-		    case PEER_FL_CONINP1:
-		    case PEER_FL_CONINP2:
+		case PEER_FL_CONINP1:
+		case PEER_FL_CONINP2:
 			return;
-		    default:
+		default:
 			advise (LLOG_EXCEPTIONS, NULLCP,
-				"Bad state flags %d",
-				peer -> flags & PEER_FL_CONNSTATE);
+					"Bad state flags %d",
+					peer -> flags & PEER_FL_CONNSTATE);
 			return;
 		}
 	}
@@ -659,10 +658,10 @@ char *config;
 		if (fscanf(fp, "%lf", &j) == 1 && j > -1.0 && j < 1.0) {
 			drift_comp = j;
 			advise (LLOG_NOTICE, NULLCP,
-			       "Drift compensation value initialized to %f", j);
+					"Drift compensation value initialized to %f", j);
 		} else {
 			advise (LLOG_EXCEPTIONS, NULLCP,
-			       "init_ntp: bad drift compensation value");
+					"init_ntp: bad drift compensation value");
 		}
 		(void) fclose(fp);
 	}
@@ -725,49 +724,49 @@ int	argc;
 	struct ntp_peer *peer;
 
 	switch (result = cmd_srch (argv[0], config_tbl)) {
-	    case TBL_PRIORITY:
+	case TBL_PRIORITY:
 		if (argc > 1)
 			priority = atoi (argv[1]);
 		else	return NOTOK;
 		break;
 
-	    case TBL_MAXPEERS:
+	case TBL_MAXPEERS:
 		if (argc > 1)
 			sys.maxpeers = atoi (argv[1]);
 		else	return NOTOK;
 		break;
 
-	    case TBL_TRUSTING:
+	case TBL_TRUSTING:
 		if (argc < 2)
 			return NOTOK;
 		trusting = ynorint (argv[1]);
 		break;
 
-	    case TBL_OSILISTEN:
+	case TBL_OSILISTEN:
 		if (argc < 2)
 			return NOTOK;
 		osiaddress = strdup (argv[1]);
 		break;
 
-	    case TBL_LOGCLOCK:
+	case TBL_LOGCLOCK:
 		if (argc < 2)
 			return NOTOK;
 		logstats = ynorint (argv[1]);
 		break;
 
-	    case TBL_LOGFILE:
+	case TBL_LOGFILE:
 		if (argc < 2)
 			return NOTOK;
 		pgm_log -> ll_file = strdup (argv[1]);
 		break;
 
-	    case TBL_DRIFTFILE:
+	case TBL_DRIFTFILE:
 		if (argc < 2)
 			return NOTOK;
 		driftcomp_file = strdup (argv[1]);
 		break;
 
-	    case TBL_WAYTOOBIG:
+	case TBL_WAYTOOBIG:
 		if (argc < 2)
 			return NOTOK;
 		if (lexequ (argv[1], "any") == 0)
@@ -775,7 +774,7 @@ int	argc;
 		else	WayTooBig = atof (argv[1]);
 		break;
 
-	    case TBL_DEBUGLEVEL:
+	case TBL_DEBUGLEVEL:
 		if (argc < 2)
 			return NOTOK;
 #ifdef DEBUG
@@ -783,18 +782,18 @@ int	argc;
 #endif
 		break;
 
-	    case TBL_STRATUM:
+	case TBL_STRATUM:
 		advise (LLOG_NOTICE, NULLCP,
-			"Obsolete command 'stratum'");
+				"Obsolete command 'stratum'");
 		break;
 
-	    case TBL_PRECISION:
+	case TBL_PRECISION:
 		if (argc < 2)
 			return NOTOK;
 		sys.precision = atoi (argv[1]);
 		break;
-		
-	    case TBL_TICKADJ:
+
+	case TBL_TICKADJ:
 		if (argc < 2)
 			return NOTOK;
 #ifdef	SETTICKADJ
@@ -802,7 +801,7 @@ int	argc;
 #endif
 		break;
 
-	    case TBL_SETTICKADJ:
+	case TBL_SETTICKADJ:
 		if (argc < 2)
 			return NOTOK;
 #ifdef SETTICKADJ
@@ -810,13 +809,13 @@ int	argc;
 #endif
 		break;
 
-	    case TBL_NOSWAP:
+	case TBL_NOSWAP:
 #ifdef NOSWAP
 		noswap = 1;
 #endif
 		break;
 
-	    case TBL_BROADCAST:
+	case TBL_BROADCAST:
 		if (argc < 2)
 			return NOTOK;
 #ifdef BROADCAST_NTP
@@ -825,19 +824,19 @@ int	argc;
 				break;
 		if (i == nintf) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
-				"config: %s not a known interface", argv[1]);
+					"config: %s not a known interface", argv[1]);
 			return NOTOK;
 		}
 		if ((addrs[i].if_flags & IFF_BROADCAST) == 0) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
-				"config: %s doesn't support broadcast",
-				argv[1]);
+					"config: %s doesn't support broadcast",
+					argv[1]);
 			return NOTOK;
 		}
 		if (peer = check_peer(&addrs[i].bcast, -1)) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
-				"config file: duplicate broadcast for %s",
-				argv[1]);
+					"config file: duplicate broadcast for %s",
+					argv[1]);
 			return NOTOK;
 		}
 		peer = (struct ntp_peer *) malloc(sizeof(struct ntp_peer));
@@ -851,15 +850,15 @@ int	argc;
 #endif				/* BROADCAST_NTP */
 		break;
 
-	    case TBL_PEER:
-	    case TBL_PASSIVE:
-	    case TBL_SERVER:
+	case TBL_PEER:
+	case TBL_PASSIVE:
+	case TBL_SERVER:
 		if (argc < 2)
 			return NOTOK;
 
 		if (GetHostName(argv[1], &addr) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
-				"%s: unknown host", argv[1]);
+					"%s: unknown host", argv[1]);
 			return NOTOK;
 		}
 		for (i=0; i<nintf; i++)
@@ -869,33 +868,33 @@ int	argc;
 		peer = check_peer(&addr, -1);
 		if (peer != NULL) {
 			advise (LLOG_NOTICE, NULLCP,
-				"Duplicate peer %s in in config file",
-				paddr (&addr));
+					"Duplicate peer %s in in config file",
+					paddr (&addr));
 			return NOTOK;
 		}
 		peer = (struct ntp_peer *)
-			malloc(sizeof(struct ntp_peer));
+			   malloc(sizeof(struct ntp_peer));
 		if (peer == NULL)
 			adios ("failed", "malloc");
 
 		make_new_peer(peer);
 		peer->flags = PEER_FL_CONFIG;
 		switch (result) {
-		    case TBL_PEER: /* "peer" */
+		case TBL_PEER: /* "peer" */
 			peer->hmode = MODE_SYM_ACT;
 			peer->stopwatch = random () % (1 << NTP_MINPOLL);
 			peer->flags |= PEER_FL_SYNC;
 			break;
-		    case TBL_SERVER: /* "server" */
+		case TBL_SERVER: /* "server" */
 			peer->hmode = MODE_CLIENT;
 			peer->stopwatch = random () % (1 << NTP_MINPOLL);
 			peer->flags |= PEER_FL_SYNC;
 			break;
-		    case TBL_PASSIVE: /* "passive" */
+		case TBL_PASSIVE: /* "passive" */
 			peer->hmode = MODE_SYM_PAS;
 			peer->flags |= PEER_FL_SYNC;
 			break;
-		    default:
+		default:
 			(void) printf("can't happen\n");
 			abort();
 		}
@@ -907,11 +906,11 @@ int	argc;
 		other_peer_fields (peer, argv + 2, argc - 2);
 		enqueue(&peer_list, peer);
 		TRACE (2, ("Peer %s mode %d",
-			   paddr(&peer->src),
-			   peer->hmode));
+				   paddr(&peer->src),
+				   peer->hmode));
 		break;
 
-	    case TBL_REFCLOCK:
+	case TBL_REFCLOCK:
 		if (argc < 6)
 			return NOTOK;
 #ifdef REFCLOCK
@@ -928,19 +927,19 @@ int	argc;
 			if((i = init_clock(argv[1], clk_type)) < 0) {
 				/* If we could not initialize clock line */
 				advise (LLOG_EXCEPTIONS, NULLCP,
-					"Could not init reference source %s (type %s)",
-					argv[1], clk_type);
+						"Could not init reference source %s (type %s)",
+						argv[1], clk_type);
 				return NOTOK;
 			}
 			peer = (struct ntp_peer *)
-				calloc(1, sizeof(struct ntp_peer));
+				   calloc(1, sizeof(struct ntp_peer));
 			if (peer == NULL) {
 				(void) close(i);
 				return NOTOK;
 			}
 			make_new_peer(peer);
 			(void) strncpy(peer->refid.rid_string,
-				       ref_clock, 4);
+						   ref_clock, 4);
 			peer->refid.rid_string[4] = 0;
 			peer->refid.rid_type = RID_STRING;
 			peer->flags = PEER_FL_CONFIG|PEER_FL_REFCLOCK;
@@ -953,20 +952,20 @@ int	argc;
 			clear(peer);
 			enqueue(&peer_list, peer);
 			TRACE (2, ("Refclock %s mode %d refid %.4s stratum %d precision %d",
-				   argv[1], peer->hmode,
-				   peer->refid.rid_string,
-				   stratum, prec));
+					   argv[1], peer->hmode,
+					   peer->refid.rid_string,
+					   stratum, prec));
 			transmit(peer);	/* head start for REFCLOCK */
 		}
 #endif REFCLOCK
 		break;
-	    case TBL_KEEPALLPEERS:
+	case TBL_KEEPALLPEERS:
 		if (argc < 2)
 			return NOTOK;
 		keepallpeers = ynorint (argv[1]);
 		break;
 
-	    default:
+	default:
 		return NOTOK;
 	}
 	return OK;
@@ -979,8 +978,8 @@ CMD_TABLE tbl_peer_flags[] = {
 #define TBLPEER_AUTH	2
 	"auth",		TBLPEER_AUTH,
 	NULLCP,		-1
-	};
-	
+};
+
 other_peer_fields (peer, argv, argc)
 struct ntp_peer *peer;
 char	**argv;
@@ -988,14 +987,14 @@ int	argc;
 {
 	while (argc > 0) {
 		switch (cmd_srch (argv[0], tbl_peer_flags)) {
-		    case TBLPEER_VERSION:
+		case TBLPEER_VERSION:
 			peer -> vers = atoi(argv[1]);
 			if (peer -> vers < 1 || peer -> vers > 2)
 				adios (NULLCP, "Bad version %d",
-				       peer -> vers);
+					   peer -> vers);
 			break;
 
-		    case TBLPEER_AUTH:
+		case TBLPEER_AUTH:
 			advise (LLOG_NOTICE, "auth code not done yet");
 			break;
 		}
@@ -1036,7 +1035,7 @@ init_kern_vars() {
 	}
 
 	for (i = 0; i < 3; i++) {
-#ifdef SYS5		
+#ifdef SYS5
 		(void) strcpy (nl[i].n_name, knames[i]);
 #else
 		nl[i].n_name = knames[i];
@@ -1053,17 +1052,17 @@ init_kern_vars() {
 
 		if ((where = nl[i].n_value) == 0) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
-				"Unknown kernal var %s", nl[i].n_name);
+					"Unknown kernal var %s", nl[i].n_name);
 			continue;
 		}
 		if (lseek(kmem, where, L_SET) == -1) {
 			advise (LLOG_EXCEPTIONS, "", "lseek for %s fails",
-			       nl[i].n_name);
+					nl[i].n_name);
 			continue;
 		}
 		if (read(kmem, (char *)kern_vars[i], sizeof(int)) != sizeof(int)) {
 			advise (LLOG_EXCEPTIONS, "", "read for %s fails",
-			       nl[i].n_name);
+					nl[i].n_name);
 
 			*kern_vars[i] = 0;
 		}
@@ -1071,7 +1070,7 @@ init_kern_vars() {
 #ifdef	SETTICKADJ
 	/*
 	 *  If desired value of tickadj is not specified in the configuration
-	 *  file, compute a "reasonable" value here, based on the assumption 
+	 *  file, compute a "reasonable" value here, based on the assumption
 	 *  that we don't have to slew more than 2ms every 4 seconds.
 	 *
 	 *  TODO: the 500 needs to be parameterized.
@@ -1080,9 +1079,9 @@ init_kern_vars() {
 		tickadj = 500/kern_hz;
 
 	TRACE (1, ("kernel vars: tickadj = %d, hz = %d, tick = %d",
-		   kern_tickadj, kern_hz, kern_tick));
+			   kern_tickadj, kern_hz, kern_tick));
 	TRACE (1, ("desired tickadj = %d, dotickadj = %d", tickadj,
-		   dotickadj));
+			   dotickadj));
 
 	if (dotickadj && tickadj && (tickadj != kern_tickadj)) {
 		(void) close(kmem);
@@ -1093,15 +1092,15 @@ init_kern_vars() {
 				tickadj = 0;
 			}
 			if (tickadj && write(kmem, (char *)&tickadj,
-					     sizeof(tickadj)) !=
-			    sizeof(tickadj)) {
+								 sizeof(tickadj)) !=
+					sizeof(tickadj)) {
 				advise (LLOG_EXCEPTIONS, memory, "tickadj set fails");
 				tickadj = 0;
-			} 
+			}
 			if (tickadj && tickadj != kern_tickadj)
 				advise (LLOG_NOTICE, NULLCP,
-				       "System tickadj SET to %d",
-				       tickadj);
+						"System tickadj SET to %d",
+						tickadj);
 		} else {
 			advise (LLOG_EXCEPTIONS, memory, "Can't open");
 		}
@@ -1127,8 +1126,8 @@ init_kern_vars() {
 			sys.precision = -10;
 		else sys.precision = -11;
 		advise (LLOG_NOTICE, NULLCP,
-			"sys.precision set to %d from sys clock of %d HZ",
-		       sys.precision, kern_hz);
+				"sys.precision set to %d from sys clock of %d HZ",
+				sys.precision, kern_hz);
 	}
 }
 
@@ -1136,18 +1135,18 @@ init_kern_vars() {
 /*
  * Given host or net name or internet address in dot notation assign the
  * internet address in byte format. source is ../routed/startup.c with minor
- * changes to detect syntax errors. 
+ * changes to detect syntax errors.
  *
  * We now try to interpret the name as in address before we go off and bother
  * the domain name servers.
  *
  * Unfortunately the library routine inet_addr() does not detect mal formed
- * addresses that have characters or byte values > 255. 
+ * addresses that have characters or byte values > 255.
  */
 
 GetHostName(name, addr)
-	char *name;
-	struct Naddr *addr;
+char *name;
+struct Naddr *addr;
 {
 	long HostAddr;
 	struct hostent *hp;
@@ -1164,9 +1163,8 @@ GetHostName(name, addr)
 			return NOTOK;
 		}
 		name = cp;
-			
-	}
-	else 
+
+	} else
 		addr->type = AF_INET;
 
 	if (addr->type == AF_INET && (HostAddr = inet_addr(name)) != -1) {
@@ -1180,7 +1178,7 @@ GetHostName(name, addr)
 		if (hp->h_addrtype != AF_INET)
 			return NOTOK;
 		bcopy((char *) hp->h_addr, (char *) &addr->inet_ad.sin_addr,
-		      hp->h_length);
+			  hp->h_length);
 		addr->inet_ad.sin_family = hp->h_addrtype;
 		addr->inet_ad.sin_port = servport;
 		return OK;
@@ -1205,8 +1203,8 @@ hourly() {
 	extern int peer_switches, peer_sw_inhibited;
 
 	(void) sprintf(buf, "stats: dc %f comp %f peersw %d inh %d",
-		       drift_comp, compliance, peer_switches,
-		       peer_sw_inhibited);
+				   drift_comp, compliance, peer_switches,
+				   peer_sw_inhibited);
 
 	if (sys.peer == NULL) {
 		(void) strcat(buf, " UNSYNC");
@@ -1214,16 +1212,16 @@ hourly() {
 	} else if (sys.peer->flags & PEER_FL_REFCLOCK) {
 		p = strlen(buf);
 		(void) sprintf(buf + p, " off %f SYNC %.4s %d",
-			       sys.peer->estoffset,
-			       sys.peer->refid.rid_string,
-			       sys.peer->stratum);
+					   sys.peer->estoffset,
+					   sys.peer->refid.rid_string,
+					   sys.peer->stratum);
 #endif
 	} else {
 		p = strlen(buf);
 		(void) sprintf(buf + p, " off %f SYNC %s %d",
-			       sys.peer->estoffset,
-			       paddr (&sys.peer->src),
-			       sys.peer->stratum);
+					   sys.peer->estoffset,
+					   paddr (&sys.peer->src),
+					   sys.peer->stratum);
 	}
 	advise (LLOG_NOTICE, NULLCP, buf);
 	/*
@@ -1236,13 +1234,13 @@ hourly() {
 		drifts[drift_count % 5] = drift_comp;
 		/* works out to be 70 bytes */
 		(void) sprintf(buf,
-		     "%+12.10f %+12.10f %+12.10f %+12.10f %+12.10f %4d\n",
-			       drifts[drift_count % 5],
-			       drifts[(drift_count+4) % 5],
-			       drifts[(drift_count+3) % 5],
-			       drifts[(drift_count+2) % 5],
-			       drifts[(drift_count+1) % 5],
-			       drift_count + 1);
+					   "%+12.10f %+12.10f %+12.10f %+12.10f %+12.10f %4d\n",
+					   drifts[drift_count % 5],
+					   drifts[(drift_count+4) % 5],
+					   drifts[(drift_count+3) % 5],
+					   drifts[(drift_count+2) % 5],
+					   drifts[(drift_count+1) % 5],
+					   drift_count + 1);
 
 		(void) lseek(drift_fd, 0L, L_SET);
 		if (write(drift_fd, buf, strlen(buf)) < 0) {
@@ -1278,7 +1276,7 @@ int sig;
 /* ARGSUSED */
 static SFD
 finish(sig)
-	int sig;
+int sig;
 {
 	exit(1);
 }
@@ -1314,7 +1312,7 @@ char *name, *type;
 #endif PSTI
 	else {
 		advise (LLOG_EXCEPTIONS, NULLCP,
-			"Unknown reference clock type (%s)", type);
+				"Unknown reference clock type (%s)", type);
 		return(-1);
 	}
 	if (cfd >= 0) {
@@ -1340,8 +1338,7 @@ struct timeval **tvpp, **otvpp;
 }
 #endif
 
-create_listeners ()
-{
+create_listeners () {
 	(void) create_sockets(servport);
 
 	create_osilisten (osiaddress);
@@ -1353,23 +1350,22 @@ struct Naddr *addr;
 	static char buf[128];
 
 	switch (addr -> type) {
-	    case AF_UNSPEC:
+	case AF_UNSPEC:
 		return "None";
 
-	    case AF_INET:
+	case AF_INET:
 		return ntoa (&addr -> inet_ad);
-		
-	    case AF_OSI:
+
+	case AF_OSI:
 		return paddr2str (&addr -> psap_ad, NULLNA);
 
-	    default:
+	default:
 		(void) sprintf (buf, "Unknown address type %d", addr -> type);
 		return buf;
 	}
 }
 
-envinit ()
-{
+envinit () {
 	int s;
 
 	if (!debug) {
@@ -1390,15 +1386,14 @@ envinit ()
 		}
 #endif
 		ll_hdinit (pgm_log, myname);
-	}
-	else	{
+	} else	{
 		pgm_log -> ll_events = LLOG_ALL;
 		ll_dbinit (pgm_log, myname);
 	}
 
 	advise (LLOG_NOTICE, NULLCP,
-		"%s starting: version $Revision: 9.0 $ patchlevel %d",
-		myname, PATCHLEVEL);
+			"%s starting: version $Revision: 9.0 $ patchlevel %d",
+			myname, PATCHLEVEL);
 
 #ifdef SYS5
 	(void) nice (priority);
@@ -1417,56 +1412,54 @@ envinit ()
 
 #ifndef	lint
 void	adios (va_alist)
-va_dcl
-{
-    va_list ap;
-    extern LLog *pgm_log;
+va_dcl {
+	va_list ap;
+	extern LLog *pgm_log;
 
-    va_start (ap);
-    
-    _ll_log (pgm_log, LLOG_FATAL, ap);
+	va_start (ap);
 
-    va_end (ap);
+	_ll_log (pgm_log, LLOG_FATAL, ap);
 
-    _exit (1);
+	va_end (ap);
+
+	_exit (1);
 }
 #else
 /* VARARGS2 */
 
 void	adios (what, fmt)
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    adios (what, fmt);
+	adios (what, fmt);
 }
 #endif
 
 
 #ifndef	lint
 void	advise (va_alist)
-va_dcl
-{
-    int	    code;
-    extern LLog    *pgm_log;
-    va_list ap;
+va_dcl {
+	int	    code;
+	extern LLog    *pgm_log;
+	va_list ap;
 
-    va_start (ap);
-    
-    code = va_arg (ap, int);
+	va_start (ap);
 
-    _ll_log (pgm_log, code, ap);
+	code = va_arg (ap, int);
 
-    va_end (ap);
+	_ll_log (pgm_log, code, ap);
+
+	va_end (ap);
 }
 #else
 /* VARARGS3 */
 
 void	advise (code, what, fmt)
 char   *what,
-       *fmt;
+	   *fmt;
 int	code;
 {
-    advise (code, what, fmt);
+	advise (code, what, fmt);
 }
 #endif
 
@@ -1476,16 +1469,16 @@ struct Naddr *pa1, *pa2;
 	if (pa1 -> type != pa2 -> type)
 		return 0;
 	switch (pa1 -> type) {
-	    case AF_INET:
+	case AF_INET:
 		if (pa1 -> inet_ad.sin_addr.s_addr !=
-		    pa2 -> inet_ad.sin_addr.s_addr)
+				pa2 -> inet_ad.sin_addr.s_addr)
 			return 0;
 		if (pa1 -> inet_ad.sin_port != pa2 -> inet_ad.sin_port)
 			return 0;
 		return 1;
-	    case AF_OSI:
+	case AF_OSI:
 		return psapaddr_cmp (&pa1 -> psap_ad, &pa2 -> psap_ad);
-	    default:
+	default:
 		return 0;
 	}
 }
@@ -1504,8 +1497,7 @@ struct PSAPaddr *pa1, *pa2;
 	return 0;
 }
 
-struct ntp_peer *find_peer (n)
-{
+struct ntp_peer *find_peer (n) {
 	struct ntp_peer *peer;
 
 	for (peer = peer_list.head; peer; peer = peer->next)
@@ -1530,7 +1522,7 @@ int	*n;
 		addrs = (struct intf *) malloc (sizeof *ap);
 	else
 		addrs = (struct intf *)realloc ((char *)addrs,
-						(unsigned)(nintf+1) * sizeof *ap);
+										(unsigned)(nintf+1) * sizeof *ap);
 	if (addrs == NULL)
 		adios ("memory", "out of");
 	ap = &addrs[nintf];

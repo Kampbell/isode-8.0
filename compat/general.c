@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/general.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/general.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -48,30 +48,30 @@ int	_general_stub () {};
 #ifndef	lint
 
 struct qelem {
-    struct qelem   *q_forw;
-    struct qelem   *q_back;
-    char	    q_data[1];	/* extensible */
+	struct qelem   *q_forw;
+	struct qelem   *q_back;
+	char	    q_data[1];	/* extensible */
 };
 
 
 insque (elem, pred)
 struct qelem   *elem,
-	       *pred;
+		*pred;
 {
-    if (pred -> q_forw)
-	pred -> q_forw -> q_back = elem;
-    elem -> q_forw = pred -> q_forw;
-    elem -> q_back = pred;
-    pred -> q_forw = elem;
+	if (pred -> q_forw)
+		pred -> q_forw -> q_back = elem;
+	elem -> q_forw = pred -> q_forw;
+	elem -> q_back = pred;
+	pred -> q_forw = elem;
 }
 
 
 remque (elem)
 struct qelem   *elem;
 {
-    if (elem -> q_forw)
-	elem -> q_forw -> q_back = elem -> q_back;
-    elem -> q_back -> q_forw = elem -> q_forw;
+	if (elem -> q_forw)
+		elem -> q_forw -> q_back = elem -> q_back;
+	elem -> q_back -> q_forw = elem -> q_forw;
 }
 
 #endif
@@ -90,26 +90,26 @@ extern int errno;
 
 int     dup2 (d1, d2)
 register int    d1,
-                d2;
+		 d2;
 {
-    int     d;
+	int     d;
 
-    if (d1 == d2)
-	return OK;
+	if (d1 == d2)
+		return OK;
 
-    (void) close (d2);
+	(void) close (d2);
 #ifdef	F_DUPFD
-    if ((d = fcntl (d1, F_DUPFD, d2)) == NOTOK)
-	return NOTOK;
+	if ((d = fcntl (d1, F_DUPFD, d2)) == NOTOK)
+		return NOTOK;
 #else
-    if ((d = dup2_aux (d1, d2)) == NOTOK)
-	return NOTOK;
+	if ((d = dup2_aux (d1, d2)) == NOTOK)
+		return NOTOK;
 #endif
-    if (d == d2)
-	return OK;
+	if (d == d2)
+		return OK;
 
-    errno = 0;
-    return NOTOK;
+	errno = 0;
+	return NOTOK;
 }
 
 
@@ -118,17 +118,17 @@ dup2_aux (d1, d2)
 int	d1,
 	d2;
 {
-    int     fd,
-	    result;
+	int     fd,
+			result;
 
-    if ((fd = dup (d1)) == NOTOK || fd == d2)
-	return fd;
+	if ((fd = dup (d1)) == NOTOK || fd == d2)
+		return fd;
 
-    result = dup2_aux (d1, d2);
+	result = dup2_aux (d1, d2);
 
-    (void) close (fd);
+	(void) close (fd);
 
-    return result;
+	return result;
 }
 #endif
 #endif
@@ -140,15 +140,27 @@ int	d1,
 /* ROS and HP-UX don't seem to have these in libc.a */
 
 #undef	ntohs
-u_short	ntohs (netshort) u_short netshort; { return netshort; }
+u_short	ntohs (netshort) u_short netshort;
+{
+	return netshort;
+}
 
 #undef	htons
-u_short	htons (hostshort) u_short hostshort; { return hostshort; }
+u_short	htons (hostshort) u_short hostshort;
+{
+	return hostshort;
+}
 
 #undef	ntohl
-u_long	ntohl (netlong) u_long netlong; { return netlong; }
+u_long	ntohl (netlong) u_long netlong;
+{
+	return netlong;
+}
 
 #undef	htonl
-u_long	htonl (hostlong) u_long hostlong; { return hostlong; }
+u_long	htonl (hostlong) u_long hostlong;
+{
+	return hostlong;
+}
 
 #endif

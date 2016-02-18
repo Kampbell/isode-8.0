@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/template.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/template.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -37,7 +37,7 @@ char * name;
 	/* Initialise a window to recieve a photo of 'name' */
 
 	/* return 0 if sucessful -1 if not */
-        (void) fprintf (stderr,"PHOTO: not implemented yet");
+	(void) fprintf (stderr,"PHOTO: not implemented yet");
 	return (-1);
 }
 

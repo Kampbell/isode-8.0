@@ -12,27 +12,27 @@ typedef short bool;
 typedef enum {rfc822, greybook} mailtype;
 
 typedef enum {
-  Okay, 
-  timelimit, 
-  timelimit_w_partial,
-  listsizelimit,
-  adminlimit,
-  adminlimit_w_partial,
-  nothingfound, 
-  localdsaerror,
-  remotedsaerror,
-  duaerror,
-  attributerror,
-  namerror,
-  security,
-  updaterror,
-  serviceerror,
-  error_string_given
-  } dsEnqError;
+	Okay,
+	timelimit,
+	timelimit_w_partial,
+	listsizelimit,
+	adminlimit,
+	adminlimit_w_partial,
+	nothingfound,
+	localdsaerror,
+	remotedsaerror,
+	duaerror,
+	attributerror,
+	namerror,
+	security,
+	updaterror,
+	serviceerror,
+	error_string_given
+} dsEnqError;
 
 typedef struct dsErrorStruct {
-  dsEnqError error;
-  char *err_mess;
+	dsEnqError error;
+	char *err_mess;
 } dsErrorStruct;
 
 #define RESBUF 20000

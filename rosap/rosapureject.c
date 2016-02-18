@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapureject.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/rosapureject.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -39,63 +39,63 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapureject.c,v 9.0 
 int	RoURejectRequest (sd, invokeID, reason, priority, roi)
 int	sd;
 int    *invokeID,
-	reason,
-	priority;
+	   reason,
+	   priority;
 struct RoSAPindication *roi;
 {
-    SBV	    smask;
-    int     result;
-    PElementID id;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	PElementID id;
+	register struct assocblk   *acb;
 
-    switch (reason) {
+	switch (reason) {
 	case ROS_IP_DUP: 	/* Invoke Problem */
-	case ROS_IP_UNRECOG: 
-	case ROS_IP_MISTYPED: 
-	case ROS_IP_LIMIT: 
-	    id = REJECT_INVOKE;
-	    reason -= REJECT_INVOKE_BASE;
-	    break;
+	case ROS_IP_UNRECOG:
+	case ROS_IP_MISTYPED:
+	case ROS_IP_LIMIT:
+		id = REJECT_INVOKE;
+		reason -= REJECT_INVOKE_BASE;
+		break;
 
 	case ROS_IP_RELEASE:
 	case ROS_IP_UNLINKED:
 	case ROS_IP_LINKED:
 	case ROS_IP_CHILD:
-	    id = REJECT_COMPLETE;
-	    reason -= REJECT_INVOKE_BASE;
-	    break;
+		id = REJECT_COMPLETE;
+		reason -= REJECT_INVOKE_BASE;
+		break;
 
 	case ROS_RRP_UNRECOG: 	/* Return Result Problem */
-	case ROS_RRP_UNEXP: 
-	case ROS_RRP_MISTYPED: 
-	    id = REJECT_RESULT;
-	    reason -= REJECT_RESULT_BASE;
-	    break;
+	case ROS_RRP_UNEXP:
+	case ROS_RRP_MISTYPED:
+		id = REJECT_RESULT;
+		reason -= REJECT_RESULT_BASE;
+		break;
 
 	case ROS_REP_UNRECOG: 	/* Return Error Problem */
-	case ROS_REP_UNEXP: 
-	case ROS_REP_RECERR: 
-	case ROS_REP_UNEXPERR: 
-	case ROS_REP_MISTYPED: 
-	    id = REJECT_ERROR;
-	    reason -= REJECT_ERROR_BASE;
-	    break;
+	case ROS_REP_UNEXP:
+	case ROS_REP_RECERR:
+	case ROS_REP_UNEXPERR:
+	case ROS_REP_MISTYPED:
+		id = REJECT_ERROR;
+		reason -= REJECT_ERROR_BASE;
+		break;
 
-	default: 
-	    return rosaplose (roi, ROS_PARAMETER, NULLCP,
-		    "bad value for reason parameter");
-    }
-    missingP (roi);
+	default:
+		return rosaplose (roi, ROS_PARAMETER, NULLCP,
+						  "bad value for reason parameter");
+	}
+	missingP (roi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rosapPsig (acb, sd);
+	rosapPsig (acb, sd);
 
-    result = RoURejectRequestAux (acb, invokeID, reason, id, priority, roi);
+	result = RoURejectRequestAux (acb, invokeID, reason, id, priority, roi);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -103,43 +103,43 @@ struct RoSAPindication *roi;
 int	RoURejectRequestAux (acb, invokeID, reason, id, priority, roi)
 register struct assocblk   *acb;
 int    *invokeID,
-	reason,
-	priority;
+	   reason,
+	   priority;
 PElementID id;
 struct RoSAPindication *roi;
 {
-    register PE pe,
-		p;
+	register PE pe,
+			 p;
 
-    if (id == REJECT_COMPLETE)
-	if (acb -> acb_flags & ACB_ACS)
-	    id = REJECT_INVOKE;
-	else
-	    return rosaplose (roi, ROS_PARAMETER, NULLCP,
-			"bad value for reason parameter");
+	if (id == REJECT_COMPLETE)
+		if (acb -> acb_flags & ACB_ACS)
+			id = REJECT_INVOKE;
+		else
+			return rosaplose (roi, ROS_PARAMETER, NULLCP,
+							  "bad value for reason parameter");
 
-    if (acb -> acb_ready
-	    && !(acb -> acb_flags & ACB_TURN)
-	    && (*acb -> acb_ready) (acb, priority, roi) == NOTOK)
-	return NOTOK;
+	if (acb -> acb_ready
+			&& !(acb -> acb_flags & ACB_TURN)
+			&& (*acb -> acb_ready) (acb, priority, roi) == NOTOK)
+		return NOTOK;
 
-/* begin Reject APDU */
-    if ((pe = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, APDU_REJECT)) == NULLPE
-	    || ((acb -> acb_flags & ACB_ACS)
-		    ? (p = pe, 0)
-		    : set_add (pe, p = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS,
-			PE_CONS_SEQ)) == NOTOK)
-	    || seq_add (p, invokeID ? int2prim (*invokeID)
-				  : pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
-						PE_PRIM_NULL), -1) == NOTOK
-	    || seq_add (p, num2prim ((integer) reason, PE_CLASS_CONT, id), -1)
-		    == NOTOK) {
-	if (pe)
-	    pe_free (pe);
-	freeacblk (acb);
-	return rosaplose (roi, ROS_CONGEST, NULLCP, "out of memory");
-    }
-/* end Reject APDU */
+	/* begin Reject APDU */
+	if ((pe = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, APDU_REJECT)) == NULLPE
+			|| ((acb -> acb_flags & ACB_ACS)
+				? (p = pe, 0)
+				: set_add (pe, p = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS,
+								   PE_CONS_SEQ)) == NOTOK)
+			|| seq_add (p, invokeID ? int2prim (*invokeID)
+						: pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
+									PE_PRIM_NULL), -1) == NOTOK
+			|| seq_add (p, num2prim ((integer) reason, PE_CLASS_CONT, id), -1)
+			== NOTOK) {
+		if (pe)
+			pe_free (pe);
+		freeacblk (acb);
+		return rosaplose (roi, ROS_CONGEST, NULLCP, "out of memory");
+	}
+	/* end Reject APDU */
 
-    return (*acb -> acb_putosdu) (acb, pe, NULLPE, priority, roi);
+	return (*acb -> acb_putosdu) (acb, pe, NULLPE, priority, roi);
 }

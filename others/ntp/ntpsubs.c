@@ -23,7 +23,7 @@ extern int errno;
  */
 double
 ul_fixed_to_double(t)
-	struct l_fixedpt *t;
+struct l_fixedpt *t;
 {
 	double a, b;
 #ifdef	GENERIC_UNS_BUG
@@ -61,7 +61,7 @@ ul_fixed_to_double(t)
 #if	0
 double
 l_fixed_to_double(t)
-	struct l_fixedpt *t;
+struct l_fixedpt *t;
 {
 	double a,b;
 
@@ -98,7 +98,7 @@ l_fixed_to_double(t)
  */
 double
 s_fixed_to_double(t)
-	struct s_fixedpt *t;
+struct s_fixedpt *t;
 {
 	double a;
 
@@ -117,8 +117,8 @@ s_fixed_to_double(t)
 
 void
 double_to_l_fixed(t, value)
-	struct l_fixedpt *t;
-	double value;
+struct l_fixedpt *t;
+double value;
 {
 	double temp;
 
@@ -142,8 +142,8 @@ double_to_l_fixed(t, value)
 
 void
 double_to_s_fixed(t, value)
-	struct s_fixedpt *t;
-	double value;
+struct s_fixedpt *t;
+double value;
 {
 	double temp;
 
@@ -172,8 +172,8 @@ double_to_s_fixed(t, value)
 #ifdef	SUN_FLT_BUG
 void
 tstamp(stampp, tvp)
-	struct l_fixedpt *stampp;
-	struct timeval *tvp;
+struct l_fixedpt *stampp;
+struct timeval *tvp;
 {
 	int tt;
 	double dd;
@@ -186,8 +186,8 @@ tstamp(stampp, tvp)
 #else
 void
 tstamp(stampp, tvp)
-	struct l_fixedpt *stampp;
-	struct timeval *tvp;
+struct l_fixedpt *stampp;
+struct timeval *tvp;
 {
 	stampp->int_part = ntohl((u_long) (JAN_1970 + tvp->tv_sec));
 	stampp->fraction = ntohl((u_long) ((float) tvp->tv_usec * 4294.967295));
@@ -207,8 +207,8 @@ struct sockaddr_in *nsin;
 	static char bufs[8][64];
 
 	(void) sprintf (bufs[i], ntohs (nsin->sin_port) ?
-			"INET %s/%d" : "INET %s", inet_ntoa (nsin->sin_addr),
-			ntohs(nsin->sin_port));
+					"INET %s/%d" : "INET %s", inet_ntoa (nsin->sin_addr),
+					ntohs(nsin->sin_port));
 	return bufs[i];
 }
 

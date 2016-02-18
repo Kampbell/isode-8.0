@@ -23,51 +23,51 @@ char *val;
 {
 	if (!name) return;
 
-  	while(table && strcmp(name, table->name)) {
+	while(table && strcmp(name, table->name)) {
 		table = table->next;
 	}
 	if (table) {
 		free(table->val);
 		if (val) {
-		  	table->val = 
-			  (char *) malloc((unsigned) strlen(val) + 1);
+			table->val =
+				(char *) malloc((unsigned) strlen(val) + 1);
 			(void) strcpy(table->val, val);
 		} else
-		  	table->val = (char *) 0;
+			table->val = (char *) 0;
 	} else {
 		table = (table_entry) malloc(sizeof(table_entry));
 		table->next = NULLSYM;
 		table->name = (char *) malloc((unsigned) strlen(name) + 1);
 		(void) strcpy(table->name, name);
-                if (val) {
-                        table->val = 
-			  (char *) malloc((unsigned) strlen(val) + 1);
-                        (void) strcpy(table->val, val);
-	        } else
-                        table->val = 0;
+		if (val) {
+			table->val =
+				(char *) malloc((unsigned) strlen(val) + 1);
+			(void) strcpy(table->val, val);
+		} else
+			table->val = 0;
 	}
 }
-		
+
 char *
 get_symbol_value(table, name)
 table_entry table;
 char *name;
 {
-  	while(table && strcmp(name, table->name)) table = table->next;
-  	if (table)
-	  	return table->val;
+	while(table && strcmp(name, table->name)) table = table->next;
+	if (table)
+		return table->val;
 	return (char *) 0;
 }
-	  	
+
 
 free_table(table)
 table_entry table;
 {
-  	table_entry  entry;
+	table_entry  entry;
 
-  	while(table) {
-	  	if (table->val)
-		  	free(table->val);
+	while(table) {
+		if (table->val)
+			free(table->val);
 		free(table->name);
 		entry = table;
 		table = table->next;

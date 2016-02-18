@@ -9,13 +9,13 @@
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University, Computer Science.
- * 
+ *
  *
  * $Log: docmd.c,v $
  * Revision 9.0  1992/06/16  14:38:53  isode
  * Release 8.0
  *
- * 
+ *
  */
 
 /*
@@ -59,9 +59,9 @@ SFD	lostconn();
  * Do the commands in cmds (initialized by yyparse).
  */
 docmds(dhosts, argc, argv)
-	char **dhosts;
-	int argc;
-	char **argv;
+char **dhosts;
+int argc;
+char **argv;
 {
 	register struct cmd *c;
 	register struct namelist *f;
@@ -80,11 +80,11 @@ docmds(dhosts, argc, argv)
 					goto fndhost;
 			continue;
 		}
-	fndhost:
+fndhost:
 		if (argc) {
 			for (cpp = argv; *cpp; cpp++) {
 				if (c->c_label != NULL &&
-				    strcmp(c->c_label, *cpp) == 0) {
+						strcmp(c->c_label, *cpp) == 0) {
 					cpp = NULL;
 					goto found;
 				}
@@ -95,7 +95,7 @@ docmds(dhosts, argc, argv)
 			continue;
 		} else
 			cpp = NULL;
-	found:
+found:
 		switch (c->c_type) {
 		case ARROW:
 			doarrow(cpp, c->c_files, c->c_name, c->c_cmds);
@@ -114,10 +114,10 @@ docmds(dhosts, argc, argv)
  * Process commands for sending files to other machines.
  */
 doarrow(filev, files, rhost, scmds)
-	char **filev;
-	struct namelist *files;
-	char *rhost;
-	struct subcmd *scmds;
+char **filev;
+struct namelist *files;
+char *rhost;
+struct subcmd *scmds;
 {
 	register struct namelist *f;
 	register struct subcmd *sc;
@@ -154,14 +154,14 @@ doarrow(filev, files, rhost, scmds)
 				(void) fclose(lfp);
 			continue;
 		}
-	found:
+found:
 		n = 0;
 		for (sc = scmds; sc != NULL; sc = sc->sc_next) {
 			if (sc->sc_type != INSTALL)
 				continue;
 			n++;
 			install(f->n_name, sc->sc_name,
-				sc->sc_name == NULL ? 0 : ddir, sc->sc_options);
+					sc->sc_name == NULL ? 0 : ddir, sc->sc_options);
 			opts = sc->sc_options;
 		}
 		if (n == 0)
@@ -206,10 +206,10 @@ extern	char target[], *tp;
  * Process commands for comparing files to time stamp files.
  */
 dodcolon(filev, files, stamp, scmds)
-	char **filev;
-	struct namelist *files;
-	char *stamp;
-	struct subcmd *scmds;
+char **filev;
+struct namelist *files;
+char *stamp;
+struct subcmd *scmds;
 {
 	register struct subcmd *sc;
 	register struct namelist *f;
@@ -253,7 +253,7 @@ dodcolon(filev, files, stamp, scmds)
 					goto found;
 			continue;
 		}
-	found:
+found:
 		tp = NULL;
 		cmptime(f->n_name);
 	}
@@ -271,7 +271,7 @@ dodcolon(filev, files, stamp, scmds)
  * Compare the mtime of file to the list of time stamps.
  */
 cmptime(name)
-	char *name;
+char *name;
 {
 	struct stat stb;
 
@@ -319,7 +319,7 @@ cmptime(name)
 }
 
 rcmptime(st)
-	struct stat *st;
+struct stat *st;
 {
 	register DIR *d;
 	register struct dirent *dp;
@@ -341,7 +341,7 @@ rcmptime(st)
 			continue;
 		if (len + 1 + (int)strlen(dp->d_name) >= BUFSIZ - 1) {
 			advise (NULLCP, "%s/%s name too long",
-				target, dp->d_name);
+					target, dp->d_name);
 			continue;
 		}
 		tp = otp;
@@ -363,9 +363,9 @@ rcmptime(st)
  * stamp file.
  */
 notify(file, rhost, to, lmod)
-	char *file, *rhost;
-	register struct namelist *to;
-	time_t lmod;
+char *file, *rhost;
+register struct namelist *to;
+time_t lmod;
 {
 	register int fd, len;
 	FILE *pf, *popen();
@@ -425,7 +425,7 @@ notify(file, rhost, to, lmod)
 	(void) putc('\n', pf);
 	if (rhost != NULL)
 		(void) fprintf(pf, "Subject: files updated by idist from %s to %s\n",
-			host, rhost);
+					   host, rhost);
 	else
 		(void) fprintf(pf, "Subject: files updated after %s\n", ctime(&lmod));
 	(void) putc('\n', pf);
@@ -440,8 +440,8 @@ notify(file, rhost, to, lmod)
  * Return true if name is in the list.
  */
 inlist(list, file)
-	struct namelist *list;
-	char *file;
+struct namelist *list;
+char *file;
 {
 	register struct namelist *nl;
 
@@ -455,7 +455,7 @@ inlist(list, file)
  * Return TRUE if file is in the exception list.
  */
 except(file)
-	char *file;
+char *file;
 {
 	register struct	subcmd *sc;
 	register struct	namelist *nl;
@@ -486,7 +486,7 @@ except(file)
 
 char *
 colon(cp)
-	register char *cp;
+register char *cp;
 {
 
 	while (*cp) {

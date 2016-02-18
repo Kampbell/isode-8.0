@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydsresult.c,v 9.0 1992/06/16 12:37:29 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosy/RCS/rydsresult.c,v 9.0 1992/06/16 12:37:29 isode Rel $
  *
  *
@@ -56,58 +56,57 @@ int	id,
 caddr_t out;
 struct RoSAPindication *roi;
 {
-    int	    result;
-    PE	    pe;
-    register struct opsblk *opb;
-    register struct RyOperation *ryo;
+	int	    result;
+	PE	    pe;
+	register struct opsblk *opb;
+	register struct RyOperation *ryo;
 
-    missingP (roi);
+	missingP (roi);
 
-    if ((opb = findopblk (sd, id, OPB_RESPONDER)) == NULLOPB)
-	return rosaplose (roi, ROS_PARAMETER, NULLCP,
-		"invocation %d not in progress on association %d",
-		id, sd);
+	if ((opb = findopblk (sd, id, OPB_RESPONDER)) == NULLOPB)
+		return rosaplose (roi, ROS_PARAMETER, NULLCP,
+						  "invocation %d not in progress on association %d",
+						  id, sd);
 
-    ryo = opb -> opb_ryo;
-    if (!ryo -> ryo_result)
-	return rosaplose (roi, ROS_PARAMETER, NULLCP,
-		"result not permitted with operation %s/%d",
-		ryo -> ryo_name, ryo -> ryo_op);
+	ryo = opb -> opb_ryo;
+	if (!ryo -> ryo_result)
+		return rosaplose (roi, ROS_PARAMETER, NULLCP,
+						  "result not permitted with operation %s/%d",
+						  ryo -> ryo_name, ryo -> ryo_op);
 
 #ifdef PEPSY_DEFINITIONS
-    if (ryo -> ryo_res_mod) {
+	if (ryo -> ryo_res_mod) {
 #else
-    if (ryo -> ryo_res_encode) {
+	if (ryo -> ryo_res_encode) {
 #endif
 #ifdef	notdef
-	missingP (out);
+		missingP (out);
 #endif
-	PY_pepy[0] = 0;
+		PY_pepy[0] = 0;
 #ifdef PEPSY_DEFINITIONS
-	if (enc_f (ryo -> ryo_res_index, ryo -> ryo_res_mod, &pe, 1, NULL,
-		   NULLCP, out) == NOTOK)
+		if (enc_f (ryo -> ryo_res_index, ryo -> ryo_res_mod, &pe, 1, NULL,
+				   NULLCP, out) == NOTOK)
 #else
-	if ((*ryo -> ryo_res_encode) (&pe, 1, NULL, NULLCP, out) == NOTOK)
+		if ((*ryo -> ryo_res_encode) (&pe, 1, NULL, NULLCP, out) == NOTOK)
 #endif
-	    return rosaplose (roi, ROS_CONGEST, NULLCP,
-	     "error encoding result for invocation %d of operation %s/%d [%s]",
-		    opb -> opb_id, ryo -> ryo_name, ryo -> ryo_op, PY_pepy);
-    }
-    else {
-	if (out)
-	    return rosaplose (roi, ROS_PARAMETER, NULLCP,
-		    "result value not permitted with operation %s/%d",
-		    ryo -> ryo_name, ryo -> ryo_op);
+			return rosaplose (roi, ROS_CONGEST, NULLCP,
+							  "error encoding result for invocation %d of operation %s/%d [%s]",
+							  opb -> opb_id, ryo -> ryo_name, ryo -> ryo_op, PY_pepy);
+	} else {
+		if (out)
+			return rosaplose (roi, ROS_PARAMETER, NULLCP,
+							  "result value not permitted with operation %s/%d",
+							  ryo -> ryo_name, ryo -> ryo_op);
 
-	pe = NULLPE;
-    }
+		pe = NULLPE;
+	}
 
-    if ((result = RoResultRequest (sd, id, ryo -> ryo_op, pe, priority, roi))
-	    != NOTOK)
-	freeopblk (opb);
+	if ((result = RoResultRequest (sd, id, ryo -> ryo_op, pe, priority, roi))
+			!= NOTOK)
+		freeopblk (opb);
 
-    if (pe)
-	pe_free (pe);
+	if (pe)
+		pe_free (pe);
 
-    return result;
+	return result;
 }

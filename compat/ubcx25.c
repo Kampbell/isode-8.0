@@ -52,22 +52,22 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ubcx25.c,v 9.0 1992/
 int     start_x25_client (local)
 struct NSAPaddr *local;
 {
-    int     sd, pgrp;
+	int     sd, pgrp;
 
-    if (local != NULLNA)
-	local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
-    if ((sd = socket (AF_CCITT, SOCK_STREAM, 0)) == NOTOK) {
-	SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("socket"));
-	return NOTOK; /* Error can be found in errno */
-    }
+	if (local != NULLNA)
+		local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
+	if ((sd = socket (AF_CCITT, SOCK_STREAM, 0)) == NOTOK) {
+		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("socket"));
+		return NOTOK; /* Error can be found in errno */
+	}
 
-    pgrp = getpid();
-    if (ioctl(sd, SIOCSPGRP, &pgrp)) {
-	SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("SIOCSPGRP"));
-	return NOTOK; /* Error can be found in errno */
-    }
+	pgrp = getpid();
+	if (ioctl(sd, SIOCSPGRP, &pgrp)) {
+		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("SIOCSPGRP"));
+		return NOTOK; /* Error can be found in errno */
+	}
 
-    return sd;
+	return sd;
 }
 
 /*  */
@@ -75,66 +75,66 @@ struct NSAPaddr *local;
 int     start_x25_server (local, backlog, opt1, opt2)
 struct NSAPaddr *local;
 int     backlog,
-	opt1,
-	opt2;
+		opt1,
+		opt2;
 {
-    int     sd, pgrp;
+	int     sd, pgrp;
 #ifdef	notyet
 #ifdef	BSD43
-    int	    onoff;
+	int	    onoff;
 #endif
 #endif
-    CONN_DB     zsck;
-    CONN_DB     *sck = &zsck;
+	CONN_DB     zsck;
+	CONN_DB     *sck = &zsck;
 
-    if ((sd = socket (AF_CCITT, SOCK_STREAM, 0)) == NOTOK) {
-	SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("socket"));
-	return NOTOK; /* Can't get an X.25 socket */
-    }
-
-    pgrp = getpid();
-    if (ioctl(sd, SIOCSPGRP, &pgrp)) {
-	SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("SIOCSPGRP"));
-	return NOTOK; /* Error can be found in errno */
-    }
-
-    if (local != NULLNA) {
-	local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
-	if (local -> na_dtelen == 0) {
-	    (void) strcpy (local -> na_dte, x25_local_dte);
-	    local -> na_dtelen = strlen(x25_local_dte);
-	    if (local -> na_pidlen == 0 && *x25_local_pid)
-		local -> na_pidlen =
-		    str2sel (x25_local_pid, -1, local -> na_pid, NPSIZE);
+	if ((sd = socket (AF_CCITT, SOCK_STREAM, 0)) == NOTOK) {
+		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("socket"));
+		return NOTOK; /* Can't get an X.25 socket */
 	}
-    }
 
-    (void) gen2if (local, sck, ADDR_LISTEN);
-    if (bind (sd, sck, sizeof(CONN_DB)) == NOTOK) {
-	SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-	(void) close_x25_socket (sd);
-	return NOTOK;
-    }
+	pgrp = getpid();
+	if (ioctl(sd, SIOCSPGRP, &pgrp)) {
+		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("SIOCSPGRP"));
+		return NOTOK; /* Error can be found in errno */
+	}
+
+	if (local != NULLNA) {
+		local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
+		if (local -> na_dtelen == 0) {
+			(void) strcpy (local -> na_dte, x25_local_dte);
+			local -> na_dtelen = strlen(x25_local_dte);
+			if (local -> na_pidlen == 0 && *x25_local_pid)
+				local -> na_pidlen =
+					str2sel (x25_local_pid, -1, local -> na_pid, NPSIZE);
+		}
+	}
+
+	(void) gen2if (local, sck, ADDR_LISTEN);
+	if (bind (sd, sck, sizeof(CONN_DB)) == NOTOK) {
+		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
+		(void) close_x25_socket (sd);
+		return NOTOK;
+	}
 
 
 #ifdef	notyet		/* not sure if these are supported... */
 #ifndef	BSD43
-    if (opt1)
-	(void) setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
-    if (opt2)
-	(void) setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
+	if (opt1)
+		(void) setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
+	if (opt2)
+		(void) setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
 #else
-    onoff = 1;
-    if (opt1)
-	(void) setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
-    if (opt2)
-	(void) setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
+	onoff = 1;
+	if (opt1)
+		(void) setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
+	if (opt2)
+		(void) setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
 #endif
 
-    (void) listen (sd, backlog);
+	(void) listen (sd, backlog);
 
-    return sd;
+	return sd;
 }
 
 /*  */
@@ -143,50 +143,49 @@ int     join_x25_client (fd, remote)
 int     fd;
 struct NSAPaddr *remote;
 {
-    CONN_DB     sck;
-    int     len = sizeof sck;
-    int         nfd;
+	CONN_DB     sck;
+	int     len = sizeof sck;
+	int         nfd;
 
-    if((nfd = accept (fd, (struct sockaddr *) &sck, &len)) == NOTOK)
-	return NOTOK;
-    (void) if2gen (remote, &sck, ADDR_REMOTE);
-    return nfd;
+	if((nfd = accept (fd, (struct sockaddr *) &sck, &len)) == NOTOK)
+		return NOTOK;
+	(void) if2gen (remote, &sck, ADDR_REMOTE);
+	return nfd;
 }
 
 int     join_x25_server (fd, remote)
 int     fd;
 struct NSAPaddr *remote;
 {
-    CONN_DB zsck;
-    CONN_DB *sck = &zsck;
+	CONN_DB zsck;
+	CONN_DB *sck = &zsck;
 
-    if (remote == NULLNA || remote -> na_stack != NA_X25)
-    {
-	SLOG (compat_log, LLOG_EXCEPTIONS, NULLCP,
-	      ("Invalid type na%d", remote->na_stack));
-	return NOTOK;
-    }
-    (void) gen2if (remote, sck, ADDR_REMOTE);
-    return connect (fd, sck, sizeof (CONN_DB));
+	if (remote == NULLNA || remote -> na_stack != NA_X25) {
+		SLOG (compat_log, LLOG_EXCEPTIONS, NULLCP,
+			  ("Invalid type na%d", remote->na_stack));
+		return NOTOK;
+	}
+	(void) gen2if (remote, sck, ADDR_REMOTE);
+	return connect (fd, sck, sizeof (CONN_DB));
 }
 
 int     read_x25_socket (fd, buffer, len)
 int     fd, len;
 char    *buffer;
 {
-    static u_char mode;
-    static struct iovec iov[2] = {
-	(char *)&mode, 1,
-	"", 0
-    };
-    char        *p = buffer;
-    int         cc, count = 0, total = len;
+	static u_char mode;
+	static struct iovec iov[2] = {
+		(char *)&mode, 1,
+		"", 0
+	};
+	char        *p = buffer;
+	int         cc, count = 0, total = len;
 
-    do {
-	iov[1].iov_base = p;
-	iov[1].iov_len = total > X25_PACKETSIZE ? X25_PACKETSIZE : total;
+	do {
+		iov[1].iov_base = p;
+		iov[1].iov_len = total > X25_PACKETSIZE ? X25_PACKETSIZE : total;
 
-	switch (cc = readv (fd, iov, 2)) {
+		switch (cc = readv (fd, iov, 2)) {
 		/*
 		 * for the -1,0 & 1 cases these returns should be ok
 		 * if it's the first time through, then they are valid anyway
@@ -195,25 +194,25 @@ char    *buffer;
 		 * protocol badly.
 		 */
 
-	    case NOTOK:
-	    case 0:
-		return cc;
+		case NOTOK:
+		case 0:
+			return cc;
 
-	    case 1:
-		SLOG (compat_log, LLOG_EXCEPTIONS, NULLCP,
-		      ("strange return from read_x25_socket"));
-		return NOTOK;
+		case 1:
+			SLOG (compat_log, LLOG_EXCEPTIONS, NULLCP,
+				  ("strange return from read_x25_socket"));
+			return NOTOK;
 
-	    default:
-		cc --;          /* discount the info byte */
-		count += cc;
-		p += cc;
-		total -= cc;
-	}
-    } while (len > 0 && (mode & X25_MBIT));
-    DLOG (compat_log, LLOG_DEBUG, ("X25 read, total %d/%d", count, len));
+		default:
+			cc --;          /* discount the info byte */
+			count += cc;
+			p += cc;
+			total -= cc;
+		}
+	} while (len > 0 && (mode & X25_MBIT));
+	DLOG (compat_log, LLOG_DEBUG, ("X25 read, total %d/%d", count, len));
 
-    return count;
+	return count;
 }
 
 #ifdef UBC_X25_WRITEV
@@ -230,75 +229,73 @@ int     write_x25_socket (fd, buffer, len)
 int     fd, len;
 char    *buffer;
 {
-    static u_char mode;
-    static struct iovec iov[2] = {
-	(char *)&mode, 1,
-	"", 0
+	static u_char mode;
+	static struct iovec iov[2] = {
+		(char *)&mode, 1,
+		"", 0
 	};
-    int cc;
-    char        *p = buffer;
-    int         count, total = 0;
+	int cc;
+	char        *p = buffer;
+	int         count, total = 0;
 
-    do {
-	count = len > X25_PACKETSIZE ? X25_PACKETSIZE : len;
-	mode = len > X25_PACKETSIZE ? X25_MBIT : 0;
-	iov[1].iov_base = p;
-	iov[1].iov_len = count;
-	switch (cc = writev (fd, iov, 2))
-	{
-	    case NOTOK:
-	    case 0:
-		return cc;
+	do {
+		count = len > X25_PACKETSIZE ? X25_PACKETSIZE : len;
+		mode = len > X25_PACKETSIZE ? X25_MBIT : 0;
+		iov[1].iov_base = p;
+		iov[1].iov_len = count;
+		switch (cc = writev (fd, iov, 2)) {
+		case NOTOK:
+		case 0:
+			return cc;
 
-	    case 1:
-		SLOG (compat_log, LLOG_EXCEPTIONS, NULLCP,
-		      ("strange return from write_x25_socket"));
-		return NOTOK;
+		case 1:
+			SLOG (compat_log, LLOG_EXCEPTIONS, NULLCP,
+				  ("strange return from write_x25_socket"));
+			return NOTOK;
 
-	    default:
-		cc --;
-		len -= cc;
-		p += cc;
-		total += cc;
-	}
-    } while (len > 0);
-    DLOG (compat_log, LLOG_DEBUG, ("X25 write, total %d/%d", total, len));
-    return total;
+		default:
+			cc --;
+			len -= cc;
+			p += cc;
+			total += cc;
+		}
+	} while (len > 0);
+	DLOG (compat_log, LLOG_DEBUG, ("X25 write, total %d/%d", total, len));
+	return total;
 }
 #else
 int     write_x25_socket (fd, buffer, len)
 int     fd, len;
 char    *buffer;
 {
-    char        mybuffer[X25_PACKETSIZE+1];
-    char        *p = buffer;
-    int         count, total = 0;
-    int         cc;
+	char        mybuffer[X25_PACKETSIZE+1];
+	char        *p = buffer;
+	int         count, total = 0;
+	int         cc;
 
-    do {
-	count = len > X25_PACKETSIZE ? X25_PACKETSIZE : len;
-	mybuffer[0] = len > X25_PACKETSIZE ? X25_MBIT : 0;
-	bcopy (p, &mybuffer[1], count);
-	switch (cc = write (fd, mybuffer, count + 1))
-	{
-	    case NOTOK:
-	    case 0:
-		return cc;
+	do {
+		count = len > X25_PACKETSIZE ? X25_PACKETSIZE : len;
+		mybuffer[0] = len > X25_PACKETSIZE ? X25_MBIT : 0;
+		bcopy (p, &mybuffer[1], count);
+		switch (cc = write (fd, mybuffer, count + 1)) {
+		case NOTOK:
+		case 0:
+			return cc;
 
-	    case 1:
-		SLOG (compat_log, LLOG_EXCEPTIONS, NULLCP,
-		      ("strange return from write_x25_socket"));
-		return NOTOK;
+		case 1:
+			SLOG (compat_log, LLOG_EXCEPTIONS, NULLCP,
+				  ("strange return from write_x25_socket"));
+			return NOTOK;
 
-	    default:
-		cc --;
-		len -= cc;
-		p += cc;
-		total += cc;
-	}
-    } while (len > 0);
-    DLOG (compat_log, LLOG_DEBUG, ("X25 write, total %d/%d", total, len));
-    return total;
+		default:
+			cc --;
+			len -= cc;
+			p += cc;
+			total += cc;
+		}
+	} while (len > 0);
+	DLOG (compat_log, LLOG_DEBUG, ("X25 write, total %d/%d", total, len));
+	return total;
 }
 #endif
 

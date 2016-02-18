@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/manage/RCS/del_alias.c,v 9.0 1992/06/16 12:44:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/manage/RCS/del_alias.c,v 9.0 1992/06/16 12:44:45 isode Rel $
  *
  *
@@ -45,14 +45,14 @@ char	      **argv;
 {
 	DN		dnptr, aoj_dn, oj_dn, save_dn;
 	DN		trail = NULLDN ;
-extern	DN		str2dn_aux() ;
-extern	DN		sequence_dn () ;
+	extern	DN		str2dn_aux() ;
+	extern	DN		sequence_dn () ;
 	PS		str_ps ;
 	char	       *str_buffer ;
 	char		alias = FALSE ;
 	int		mod_failed = 0 ;
 	AV_Sequence	aliObjNameAVS ;
-        struct          entrymod               *emnew ;
+	struct          entrymod               *emnew ;
 	struct		DSError			compare_error;
 	struct		ds_compare_result	compare_result;
 	struct		ds_compare_arg		compare_arg;
@@ -87,15 +87,13 @@ extern	DN		sequence_dn () ;
 	if ((argc = service_control (OPT, argc, argv, &remove_arg.rma_common)) == -1)
 		return ;
 
-	if (argc > 2)
-	{
+	if (argc > 2) {
 		ps_printf (OPT,"Too many arguments. Aborting...\n");
 		Usage (argv[0]);
 		return ;
 	}
 
-	if (argc == 1)
-	{
+	if (argc == 1) {
 		ps_printf (OPT,"Delete what???\n") ;
 		Usage (argv[0]) ;
 		return ;
@@ -104,49 +102,34 @@ extern	DN		sequence_dn () ;
 	(void)strcpy(objectname,argv[1]) ;
 	contact_compare[1] = argv[1] ;
 
-	if (service_control (OPT, 6, contact_compare, &compare_arg.cma_common) == -1)
-	{
+	if (service_control (OPT, 6, contact_compare, &compare_arg.cma_common) == -1) {
 		ps_print(OPT, "Problems with compare service control flags.\n") ;
 		return ;
 	}
 
 	/* Turn a sequence number back into a DN */
-	if (*objectname >= '0' && *objectname <= '9')
-	{
+	if (*objectname >= '0' && *objectname <= '9') {
 		/* First convert the number into a dn */
 		oj_dn = dn_cpy(sequence_dn(atoi(objectname))) ;
-	}
-	else
-	{
-		if (*objectname == '.')
-		{
+	} else {
+		if (*objectname == '.') {
 			ps_print(OPT, "..@ gives me a headache. Ambiguous. Aborting.\n") ;
 			return ;
 		}
-		if (*objectname == '@')
-		{
+		if (*objectname == '@') {
 			oj_dn = dn_cpy(str2dn(objectname + 1)) ;
-		}
-		else
-		{
+		} else {
 			/*oj_dn = dn_cpy(dn) ;
 			 *dn_append(oj_dn, dn_cpy(str2dn(objectname))) ;
 			 */
 			save_dn = str2dn_aux(objectname,&alias) ;
-			if (save_dn != NULLDN)
-			{
-				if (alias)
-				{
+			if (save_dn != NULLDN) {
+				if (alias) {
 					oj_dn = dn_cpy(save_dn);
-				} 
-				else
-				{
-					if (dn == NULLDN)
-					{
+				} else {
+					if (dn == NULLDN) {
 						oj_dn = dn_cpy(save_dn) ;
-					}
-					else
-					{
+					} else {
 						oj_dn = dn_cpy(dn) ;
 						dn_append (oj_dn,dn_cpy(save_dn));
 					}
@@ -156,8 +139,7 @@ extern	DN		sequence_dn () ;
 		}
 	}
 
-	if (get_ava (&compare_arg.cma_purported, "objectClass", "alias") != OK)
-	{
+	if (get_ava (&compare_arg.cma_purported, "objectClass", "alias") != OK) {
 		ps_print(OPT, "Oops, 'objectClass=alias' is a bad attribute!\n") ;
 		ps_print(OPT, "This is very bad...\n") ;
 		return ;
@@ -170,42 +152,33 @@ extern	DN		sequence_dn () ;
 	if (rebind () != OK)
 		return ;
 
-	while (ds_compare (&compare_arg, &compare_error, &compare_result) != DS_OK)
-	{
-		if (dish_error (OPT, &compare_error) == 0)
-		{
+	while (ds_compare (&compare_arg, &compare_error, &compare_result) != DS_OK) {
+		if (dish_error (OPT, &compare_error) == 0) {
 			return ;
 		}
 		compare_arg.cma_object = compare_error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
 
-	if (compare_result.cmr_matched == FALSE)
-	{
+	if (compare_result.cmr_matched == FALSE) {
 		ps_printf(OPT, "Sorry, object is not an alias. Aborting.\n") ;
 		return ;
 	}
 
 	call_showentry(5, contact_showentry) ;
 
-	if (current_entry == NULLENTRY)
-	{
+	if (current_entry == NULLENTRY) {
 		(void)fprintf(stderr, "we have no current entry. No wonder!\n") ;
-	}
-	else
-	{
+	} else {
 		Attr_Sequence eptr ;
 		AttributeType a_t = AttrT_new("aliasedObjectName") ;
 
-		for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) 
-		{
-			if ( AttrT_cmp (eptr->attr_type, a_t) == 0 )
-			{
+		for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) {
+			if ( AttrT_cmp (eptr->attr_type, a_t) == 0 ) {
 				aliObjNameAVS = avs_cpy(eptr->attr_value);
 			}
 		}
 	}
-	if (aliObjNameAVS == NULLAV)
-	{
+	if (aliObjNameAVS == NULLAV) {
 		ps_print(OPT, "Can't find 'aliasedObjectName' attribute type.\n") ;
 		ps_print(OPT, "Are you sure that this is an alias? Aborting.\n") ;
 		return ;
@@ -215,13 +188,11 @@ extern	DN		sequence_dn () ;
 	 * convert it into a DN, so we can modify it.
 	 */
 
-	if ((str_ps = ps_alloc(str_open)) == NULLPS)
-	{
+	if ((str_ps = ps_alloc(str_open)) == NULLPS) {
 		ps_printf(OPT, "Ps alloc for your string failed.\n") ;
 		return ;
 	}
-	if (str_setup (str_ps, str_buffer, 998, 1) == NOTOK)
-	{
+	if (str_setup (str_ps, str_buffer, 998, 1) == NOTOK) {
 		ps_printf (OPT, "str_setup: %s", ps_error (str_ps -> ps_errno));
 		ps_free (str_ps);
 		return ;
@@ -243,8 +214,7 @@ extern	DN		sequence_dn () ;
 	 * and delete that attribute from the other end of the alias.
 	 */
 
-	if (service_control(OPT, 1, contact_modify, &mod_arg.mea_common) == -1)
-	{
+	if (service_control(OPT, 1, contact_modify, &mod_arg.mea_common) == -1) {
 		ps_printf(OPT, "Del_alias: Badly wrong. Service controls for modify in error...\n") ;
 		return ;
 	}
@@ -261,32 +231,23 @@ extern	DN		sequence_dn () ;
 	(void)strcpy(contact_showentry[4], "-dontdereferencealias") ;
 
 	call_showentry(5, contact_showentry) ;
-	if (current_entry == NULLENTRY)
-	{
+	if (current_entry == NULLENTRY) {
 		(void)fprintf(stderr, "we have no current entry. No wonder!\n") ;
-	}
-	else
-	{
+	} else {
 		Attr_Sequence eptr ;
 		AttributeType a_t = AttrT_new("seeAlso") ;
 
 		emnew->em_type = -1 ;
-		for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) 
-		{
-			if ( AttrT_cmp (eptr->attr_type, a_t) == 0 )
-			{
-				if (emnew->em_type == -1)
-				{
+		for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) {
+			if ( AttrT_cmp (eptr->attr_type, a_t) == 0 ) {
+				if (emnew->em_type == -1) {
 					emnew->em_type = EM_REMOVEATTRIBUTE ;
-				}
-				else
-				{
+				} else {
 					emnew->em_type = EM_REMOVEVALUES ;
 				}
 			}
 		}
-		if (emnew->em_type == -1)
-		{
+		if (emnew->em_type == -1) {
 			ps_print(OPT, "INVALID set of entries for the alias object\n") ;
 			ps_print(OPT, "Aborting...\n") ;
 			return ;
@@ -298,13 +259,11 @@ extern	DN		sequence_dn () ;
 		AttributeValue	new_AV = AttrV_alloc() ;
 
 		str_buffer = (char *) malloc ((unsigned)1000) ;
-		if ((str_ps = ps_alloc(str_open)) == NULLPS)
-		{
+		if ((str_ps = ps_alloc(str_open)) == NULLPS) {
 			ps_printf(OPT, "Ps alloc for your string failed.\n") ;
 			return ;
 		}
-		if (str_setup (str_ps, str_buffer, 998, 1) == NOTOK)
-		{
+		if (str_setup (str_ps, str_buffer, 998, 1) == NOTOK) {
 			ps_printf (OPT, "str_setup: %s", ps_error (str_ps -> ps_errno));
 			ps_free (str_ps);
 			return ;
@@ -324,11 +283,9 @@ extern	DN		sequence_dn () ;
 
 	if (rebind () != OK)
 		return ;
-			
-	while (ds_modifyentry (&mod_arg, &mod_error) != DS_OK)
-	{
-		if (dish_error (OPT, &mod_error) == 0)
-		{
+
+	while (ds_modifyentry (&mod_arg, &mod_error) != DS_OK) {
+		if (dish_error (OPT, &mod_error) == 0) {
 			ps_print(OPT, "Unable to modify ") ;
 			dn_print(OPT, aoj_dn, EDBOUT) ;
 			ps_print(OPT, "\nContinuing to delete alias...") ;
@@ -336,8 +293,7 @@ extern	DN		sequence_dn () ;
 		}
 		mod_arg.mea_object = mod_error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-	if (!mod_failed)
-	{
+	if (!mod_failed) {
 		ps_print (RPS, "Modified ");
 		dn_print (RPS, aoj_dn, EDBOUT);
 		ps_print (RPS, "\n");
@@ -355,20 +311,19 @@ extern	DN		sequence_dn () ;
 	if (rebind () != OK)
 		return ;
 
-	while (ds_removeentry (&remove_arg, &error) != DS_OK) 
-	{
+	while (ds_removeentry (&remove_arg, &error) != DS_OK) {
 		if (dish_error (OPT, &error) == 0)
 			return ;
 		remove_arg.rma_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
-	} 
-		
+	}
+
 	ps_print (RPS, "Removed ");
 	dn_print (RPS, dn, EDBOUT);
 	delete_cache (dn);
 	for (dnptr = dn; dnptr->dn_parent != NULLDN; dnptr = dnptr->dn_parent)
 		trail = dnptr;
 
-	if (trail != NULLDN) 
+	if (trail != NULLDN)
 		trail->dn_parent = NULLDN;
 	else
 		dn = NULLDN;

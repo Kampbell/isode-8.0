@@ -38,7 +38,7 @@ struct subordinate      *subp;
 	if(subp == NULLSUBORD)
 		return;
 	subords_free(subp->sub_next);
-        rdn_free(subp->sub_rdn); 
+	rdn_free(subp->sub_rdn);
 	free((char *)subp);
 }
 

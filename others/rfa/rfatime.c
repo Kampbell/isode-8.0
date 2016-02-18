@@ -38,43 +38,43 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/rfatime.c,v 9.0 
 extern int errno;
 
 main(ac, av)
-    int ac;
-    char **av;
+int ac;
+char **av;
 {
 
-    struct timeval tv;
-    time_t dt;
-    int err;
+	struct timeval tv;
+	time_t dt;
+	int err;
 
 
-    if (ac < 2) {
-	fprintf(stderr,
-		"*** can't set time : options for rfatime missing ***\n");
-	exit(-1);
-    }
-    if ((dt = atol(av[1])) == 0L) {
-	fprintf(stderr,"*** can't set time : invalid time delta %s ***\n",
-		av[1]);
-	exit(-2);
-    }
-    if (dt > 0) {
-	/*--- clock "jumps" forwards ---*/
-	gettimeofday(&tv, NULL);
-	tv.tv_sec += dt;
-	if (settimeofday(&tv, NULL) == -1) {
-	    err = errno;
-	    fprintf(stderr,"*** can't set time : %s ***\n", sys_errname(errno));
-	    exit(err);
+	if (ac < 2) {
+		fprintf(stderr,
+				"*** can't set time : options for rfatime missing ***\n");
+		exit(-1);
 	}
-    } else {
-	tv.tv_sec = dt;
-	tv.tv_usec = 0L;
-	if (adjtime(&tv, NULL) == -1) {
-	    err = errno;
-	    fprintf(stderr,"*** can't set time : %s ***\n", sys_errname(errno));
-	    exit(err);
+	if ((dt = atol(av[1])) == 0L) {
+		fprintf(stderr,"*** can't set time : invalid time delta %s ***\n",
+				av[1]);
+		exit(-2);
 	}
-    }
-    exit(0);
+	if (dt > 0) {
+		/*--- clock "jumps" forwards ---*/
+		gettimeofday(&tv, NULL);
+		tv.tv_sec += dt;
+		if (settimeofday(&tv, NULL) == -1) {
+			err = errno;
+			fprintf(stderr,"*** can't set time : %s ***\n", sys_errname(errno));
+			exit(err);
+		}
+	} else {
+		tv.tv_sec = dt;
+		tv.tv_usec = 0L;
+		if (adjtime(&tv, NULL) == -1) {
+			err = errno;
+			fprintf(stderr,"*** can't set time : %s ***\n", sys_errname(errno));
+			exit(err);
+		}
+	}
+	exit(0);
 }
 

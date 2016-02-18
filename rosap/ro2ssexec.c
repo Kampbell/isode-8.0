@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssexec.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/ro2ssexec.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -43,79 +43,79 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssexec.c,v 9.0 199
 int	RoExec (ss, roi, arg1, arg2, hook, setperms)
 struct SSAPstart *ss;
 char   *arg1,
-       *arg2;
+	   *arg2;
 struct RoSAPindication *roi;
 IFP	hook,
 	setperms;
 {
-    int     result,
-            result2;
-    register struct isoservent *is;
-    register PE	    pe;
-    struct SSAPref ref;
-    struct SSAPindication   sis;
-    register struct SSAPindication *si = &sis;
-    struct type_OACS_PConnect	*pcon;
+	int     result,
+			result2;
+	register struct isoservent *is;
+	register PE	    pe;
+	struct SSAPref ref;
+	struct SSAPindication   sis;
+	register struct SSAPindication *si = &sis;
+	struct type_OACS_PConnect	*pcon;
 
-    missingP (ss);
-    missingP (roi);
-    missingP (arg1);
-    missingP (arg2);
+	missingP (ss);
+	missingP (roi);
+	missingP (arg1);
+	missingP (arg2);
 
-    if ((pe = ssdu2pe (ss -> ss_data, ss -> ss_cc, NULLCP, &result)) == NULLPE
-	    || parse_OACS_PConnect (pe, 1, NULLIP, NULLVP, &pcon) == NOTOK) {
-	if (pe)
-	    pe_free (pe);
-	if (result == PS_ERR_NMEM) {
-    congest: ;
-	    result = SC_CONGESTION, result2 = ROS_CONGEST;
+	if ((pe = ssdu2pe (ss -> ss_data, ss -> ss_cc, NULLCP, &result)) == NULLPE
+			|| parse_OACS_PConnect (pe, 1, NULLIP, NULLVP, &pcon) == NOTOK) {
+		if (pe)
+			pe_free (pe);
+		if (result == PS_ERR_NMEM) {
+congest:
+			;
+			result = SC_CONGESTION, result2 = ROS_CONGEST;
+		} else
+			result = SC_REJECTED, result2 = ROS_PROTOCOL;
+		goto out;
 	}
-	else
-	    result = SC_REJECTED, result2 = ROS_PROTOCOL;
-	goto out;
-    }
 
-    PLOGP (rosap_log,OACS_PConnect, pe, "PConnect", 1);
+	PLOGP (rosap_log,OACS_PConnect, pe, "PConnect", 1);
 
-    pe_free (pe);
+	pe_free (pe);
 
-    if (pcon -> pUserData -> member_OACS_2 -> offset
-	    != type_OACS_ConnectionData_open) {
-	result = SC_REJECTED, result2 = ROS_ADDRESS;
-	goto out;
-    }	
-    if (is = getisoserventbyport ("rosap", 
-	    (u_short) htons ((u_short) pcon -> pUserData -> applicationProtocol))) {
-	*is -> is_tail++ = arg1;
-	*is -> is_tail++ = arg2;
-	*is -> is_tail = NULL;
-    }
-    else {
-	result = SC_REJECTED, result2 = ROS_ADDRESS;
-	goto out;
-    }
+	if (pcon -> pUserData -> member_OACS_2 -> offset
+			!= type_OACS_ConnectionData_open) {
+		result = SC_REJECTED, result2 = ROS_ADDRESS;
+		goto out;
+	}
+	if (is = getisoserventbyport ("rosap",
+								  (u_short) htons ((u_short) pcon -> pUserData -> applicationProtocol))) {
+		*is -> is_tail++ = arg1;
+		*is -> is_tail++ = arg2;
+		*is -> is_tail = NULL;
+	} else {
+		result = SC_REJECTED, result2 = ROS_ADDRESS;
+		goto out;
+	}
 
-    switch (hook ? (*hook) (is, roi) : OK) {
-	case NOTOK: 
-	    return NOTOK;
+	switch (hook ? (*hook) (is, roi) : OK) {
+	case NOTOK:
+		return NOTOK;
 
-	case DONE: 
-	    return OK;
+	case DONE:
+		return OK;
 
-	case OK: 
-	    if (setperms)
-		(void) (*setperms) (is);
-	    (void) execv (*is -> is_vec, is -> is_vec);/* fall */
-	    SLOG (rosap_log, LLOG_FATAL, *is -> is_vec, ("unable to exec"));
-	default: 
-	    goto congest;
-    }
+	case OK:
+		if (setperms)
+			(void) (*setperms) (is);
+		(void) execv (*is -> is_vec, is -> is_vec);/* fall */
+		SLOG (rosap_log, LLOG_FATAL, *is -> is_vec, ("unable to exec"));
+	default:
+		goto congest;
+	}
 
-out: ;
-    SSFREE (ss);
+out:
+	;
+	SSFREE (ss);
 
-    bzero ((char *) &ref, sizeof ref);
-    (void) SConnResponse (ss -> ss_sd, &ref, NULLSA,
-		result, 0, 0, SERIAL_NONE, NULLCP, 0, si);
-    return rosaplose (roi, result2, NULLCP, NULLCP);
+	bzero ((char *) &ref, sizeof ref);
+	(void) SConnResponse (ss -> ss_sd, &ref, NULLSA,
+						  result, 0, 0, SERIAL_NONE, NULLCP, 0, si);
+	return rosaplose (roi, result2, NULLCP, NULLCP);
 }

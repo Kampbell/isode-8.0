@@ -1,6 +1,6 @@
 /* internet.h - TCP/IP abstractions */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/internet.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -41,7 +41,7 @@
 #else
 
 #ifdef SVR4	/* Has a different defn for NULLVP */
-#ifdef NULLVP 
+#ifdef NULLVP
 #undef NULLVP
 #endif
 #endif /* SVR4 */
@@ -148,18 +148,18 @@ int	start_udp_server ();
 
 #ifdef	EXOS
 struct hostent {
-    char   *h_name;		/* official name */
-    char  **h_aliases;		/* alias list */
-    int     h_addrtype;		/* address type: AF_INET */
-    int     h_length;		/* address length: sizeof (u_long) == 4 */
-    char   *h_addr;		/* address value: (struct in_addr *) */
+	char   *h_name;		/* official name */
+	char  **h_aliases;		/* alias list */
+	int     h_addrtype;		/* address type: AF_INET */
+	int     h_length;		/* address length: sizeof (u_long) == 4 */
+	char   *h_addr;		/* address value: (struct in_addr *) */
 };
 
 struct servent {
-    char   *s_name;		/* official name */
-    char  **s_aliases;		/* alias list */
-    int     s_port;		/* port number */
-    char   *s_proto;		/* protocol beneath service */
+	char   *s_name;		/* official name */
+	char  **s_aliases;		/* alias list */
+	int     s_port;		/* port number */
+	char   *s_proto;		/* protocol beneath service */
 };
 
 

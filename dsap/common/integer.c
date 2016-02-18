@@ -43,9 +43,9 @@ int *x;
 static int * intdec (pe)
 PE pe;
 {
-int * x;
+	int * x;
 
-        if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_INT))
+	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_INT))
 		return (0);
 
 	x = (int *) smalloc (sizeof (int));
@@ -63,12 +63,12 @@ PE pe;
 	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_ENUM))
 		return 0;
 	x = (int *) smalloc (sizeof (int));
-        *x = prim2enum(pe);
+	*x = prim2enum(pe);
 
-        return x;
+	return x;
 }
 
-	
+
 
 /* ARGSUSED */
 static intprint (ps,x,format)
@@ -82,11 +82,11 @@ int * x,format;
 static int * intdup (x)
 int *x;
 {
-int *y;
+	int *y;
 
 	y = (int *) smalloc (sizeof (int));
 	*y = *x;
-	
+
 	return (y);
 }
 #define enumdup intdup
@@ -108,8 +108,8 @@ int * x;
 static int * intparse (str)
 char * str;
 {
-int atoi();
-int * x;
+	int atoi();
+	int * x;
 
 	x = (int *) smalloc (sizeof (int));
 	*x = atoi (str);
@@ -118,19 +118,18 @@ int * x;
 }
 #define enumparse intparse
 
-integer_syntax ()
-{
+integer_syntax () {
 	(void) add_attribute_syntax ("integer",
-		(IFP) intenc,	(IFP) intdec,
-		(IFP) intparse,	intprint,
-		(IFP) intdup,	intcmp,
-		intfree,	NULLCP,
-		NULLIFP,	FALSE);
+								 (IFP) intenc,	(IFP) intdec,
+								 (IFP) intparse,	intprint,
+								 (IFP) intdup,	intcmp,
+								 intfree,	NULLCP,
+								 NULLIFP,	FALSE);
 
 	(void) add_attribute_syntax("enumerated",
-				    (IFP) enumenc, 	(IFP)enumdec,
-				    (IFP) enumparse,	enumprint,
-				    (IFP) enumdup,	enumcmp,
-				    enumfree,		NULLCP,
-				    NULLIFP,		FALSE);
+								(IFP) enumenc, 	(IFP)enumdec,
+								(IFP) enumparse,	enumprint,
+								(IFP) enumdup,	enumcmp,
+								enumfree,		NULLCP,
+								NULLIFP,		FALSE);
 }

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapwait.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rtsap/RCS/rtsapwait.c,v 9.0 1992/06/16 12:37:45 isode Rel $
  *
  *
@@ -38,21 +38,21 @@ int	sd;
 int	secs;
 struct RtSAPindication *rti;
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	register struct assocblk   *acb;
 
-    missingP (rti);
+	missingP (rti);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rtsapPsig (acb, sd);
+	rtsapPsig (acb, sd);
 
-    result = RtWaitRequestAux (acb, secs, 0, rti);
+	result = RtWaitRequestAux (acb, secs, 0, rti);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -60,22 +60,22 @@ struct RtSAPindication *rti;
 int	RtWaitRequestAux (acb, secs, trans, rti)
 register struct assocblk   *acb;
 int     secs,
-        trans;
+		trans;
 register struct RtSAPindication *rti;
 {
-    if (!trans && (acb -> acb_flags & ACB_PLEASE)) {
-	acb -> acb_flags &= ~ACB_PLEASE;
+	if (!trans && (acb -> acb_flags & ACB_PLEASE)) {
+		acb -> acb_flags &= ~ACB_PLEASE;
 
-	rti -> rti_type = RTI_TURN;
-	{
-	    register struct RtSAPturn  *rtu = &rti -> rti_turn;
+		rti -> rti_type = RTI_TURN;
+		{
+			register struct RtSAPturn  *rtu = &rti -> rti_turn;
 
-	    rtu -> rtu_please = 1;
-	    rtu -> rtu_priority = acb -> acb_priority;
+			rtu -> rtu_please = 1;
+			rtu -> rtu_priority = acb -> acb_priority;
+		}
+
+		return DONE;
 	}
 
-	return DONE;
-    }
-
-    return (*acb -> acb_rtwaitrequest) (acb, secs, trans, rti);
+	return (*acb -> acb_rtwaitrequest) (acb, secs, trans, rti);
 }

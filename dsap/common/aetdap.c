@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/aetdap.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/aetdap.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -42,44 +42,43 @@ static char password[DBA_MAX_PASSWD_LEN] = "";
 
 /*  */
 
-static bind_to_dsa ()
-{
-  struct ds_bind_arg bindarg;
-  struct ds_bind_arg bindresult;
-  struct ds_bind_error binderr;
+static bind_to_dsa () {
+	struct ds_bind_arg bindarg;
+	struct ds_bind_arg bindresult;
+	struct ds_bind_error binderr;
 
-  bindarg.dba_version = DBA_VERSION_V1988;
-  bindarg.dba_dn = username;
-  if (bindarg.dba_passwd_len = strlen (password))
-      (void) strcpy (bindarg.dba_passwd, password);
+	bindarg.dba_version = DBA_VERSION_V1988;
+	bindarg.dba_dn = username;
+	if (bindarg.dba_passwd_len = strlen (password))
+		(void) strcpy (bindarg.dba_passwd, password);
 
-  if (ds_bind (&bindarg,&binderr,&bindresult) != DS_OK) {
-	PY_advise (NULLCP, "unable to bind to directory (%s)",
-		   binderr.dbe_type == DBE_TYPE_SECURITY ? "security error"
-		   					 : "DSA unavailable");
+	if (ds_bind (&bindarg,&binderr,&bindresult) != DS_OK) {
+		PY_advise (NULLCP, "unable to bind to directory (%s)",
+				   binderr.dbe_type == DBE_TYPE_SECURITY ? "security error"
+				   : "DSA unavailable");
 
-    	return FALSE;
-    }
+		return FALSE;
+	}
 
-    return TRUE;
+	return TRUE;
 }
 
 /*  */
 
 static struct mapping {
-    char   *m_key;
-    char   *m_value;
+	char   *m_key;
+	char   *m_value;
 }	sac2cn[] = {
-    "iso ftam", 	"filestore",
-    "iso vt",		"terminal",
-    "iso cmip",		"mib",
-    "isode passwd lookup demo",
-			"passwdstore",
-    "isode shell",	"shell",
-    "IRP Z39.50",	"Z39.50",
-    "pp qmgr interface","pp qmgr",
+	"iso ftam", 	"filestore",
+	"iso vt",		"terminal",
+	"iso cmip",		"mib",
+	"isode passwd lookup demo",
+	"passwdstore",
+	"isode shell",	"shell",
+	"IRP Z39.50",	"Z39.50",
+	"pp qmgr interface","pp qmgr",
 
-    NULL
+	NULL
 };
 
 
@@ -87,53 +86,54 @@ static struct mapping {
 
 static PE  name2value_dap (name, context, ontty, userdn, passwd, real_name)
 char   *name,
-       *context,
-       *userdn,
-       *passwd;
+	   *context,
+	   *userdn,
+	   *passwd;
 int	ontty;
 PE     *real_name;
 {
-char buffer[BUFSIZ];
-DN dn;
-AttributeType at;
-extern char * oidtable;
-extern PE grab_pe();
-PE res_pe;
-static struct ds_read_arg read_arg = 
-	{
+	char buffer[BUFSIZ];
+	DN dn;
+	AttributeType at;
+	extern char * oidtable;
+	extern PE grab_pe();
+	PE res_pe;
+	static struct ds_read_arg read_arg = {
 		default_common_args,
 		NULLDN,   /* read_arg DN */
-		{       /* entry info selection */
+		{
+			/* entry info selection */
 			FALSE,
 			NULLATTR,
 			EIS_ATTRIBUTESANDVALUES
 		}
 	};
-struct DSError  error;
-struct ds_read_result result;
+	struct DSError  error;
+	struct ds_read_result result;
 
 	*real_name = NULLPE;
 
-    {
-	char *qualifier = NULLCP;
-	register struct mapping *m;
+	{
+		char *qualifier = NULLCP;
+		register struct mapping *m;
 
-	for (m = sac2cn; m -> m_key; m++)
-	    if (strcmp (m -> m_key, context) == 0) {
-		qualifier = m -> m_value;
-		break;
-	    }
+		for (m = sac2cn; m -> m_key; m++)
+			if (strcmp (m -> m_key, context) == 0) {
+				qualifier = m -> m_value;
+				break;
+			}
 
-	if (qualifier == NULLCP)
-	    qualifier = context ? context: "default";
-	(void) sprintf (buffer, "%s@cn=%s", name, qualifier);
-    }
+		if (qualifier == NULLCP)
+			qualifier = context ? context: "default";
+		(void) sprintf (buffer, "%s@cn=%s", name, qualifier);
+	}
 
 	name = buffer;
 
 	if ( (dn=str2dn (name)) == NULLDN) {
 		PY_advise (NULLCP, "build of DN failed: %s", name);
-out: ;
+out:
+		;
 		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
 		return NULLPE;
 	}
@@ -141,21 +141,21 @@ out: ;
 	if ( (at = AttrT_new (DSAADDRESS_OID)) == NULLAttrT) {
 		dn_free (dn);
 		PY_advise (NULLCP, "build of attribute failed: %s",
-			   DSAADDRESS_OID);
+				   DSAADDRESS_OID);
 		goto out;
 	}
 
 	if (username)
-	    dn_free (username), username = NULLDN;
+		dn_free (username), username = NULLDN;
 	if (userdn) {
-	    if ((username = str2dn (userdn)) == NULLDN) {
-		PY_advise (NULLCP, "invalid DN for binding: \"%s\"", userdn);
-		goto out;
-	    }
+		if ((username = str2dn (userdn)) == NULLDN) {
+			PY_advise (NULLCP, "invalid DN for binding: \"%s\"", userdn);
+			goto out;
+		}
 	}
 	password[0] = NULL;
 	if (passwd)
-	    (void) strcpy (password, passwd);
+		(void) strcpy (password, passwd);
 
 	if (! bound) {
 		if (!bind_to_dsa ()) {
@@ -186,7 +186,7 @@ out: ;
 		(void) encode_IF_DistinguishedName (real_name,1,0,NULLCP,dn);
 		if (result.rdr_entry.ent_attr == NULLATTR) {
 			PY_advise (NULLCP, "No '%s' attribute in entry '%s'",
-				 DSAADDRESS_OID, name);
+					   DSAADDRESS_OID, name);
 			if (unbind) {
 				bound = FALSE;
 				(void) ds_unbind();
@@ -214,16 +214,16 @@ out: ;
 set_lookup_dap (flag)
 char flag;		/* if TRUE always unbind */
 {
-extern char * oidtable;
+	extern char * oidtable;
 
 	if ((unbind = flag) && bound) {
-	    bound = FALSE;
-	    ds_unbind ();
+		bound = FALSE;
+		ds_unbind ();
 	}
 
 	acsap_lookup = name2value_dap;
 
 	string_syntaxes();
 	if (dsap_tai_init () != OK || load_oid_table (oidtable) != OK)
-	    LLOG (addr_log,LLOG_EXCEPTIONS,("DAP initialization failed"));
+		LLOG (addr_log,LLOG_EXCEPTIONS,("DAP initialization failed"));
 }

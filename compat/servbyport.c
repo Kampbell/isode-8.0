@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbyport.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/servbyport.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -40,30 +40,29 @@ struct isoservent *getisoserventbyport (provider, port)
 char   *provider;
 unsigned short port;
 {
-    register struct isoservent *is;
+	register struct isoservent *is;
 
-    isodetailor (NULLCP, 0);
-    DLOG (addr_log, LLOG_TRACE,
-	   ("getisoserventbyport \"%s\" %d", provider, (int) ntohs (port)));
+	isodetailor (NULLCP, 0);
+	DLOG (addr_log, LLOG_TRACE,
+		  ("getisoserventbyport \"%s\" %d", provider, (int) ntohs (port)));
 
-    (void) setisoservent (0);
-    while (is = getisoservent ())
-	if (sizeof (port) == is -> is_selectlen
-		&& port == is -> is_port
-		&& strcmp (provider, is -> is_provider) == 0)
-	    break;
-    (void) endisoservent ();
+	(void) setisoservent (0);
+	while (is = getisoservent ())
+		if (sizeof (port) == is -> is_selectlen
+				&& port == is -> is_port
+				&& strcmp (provider, is -> is_provider) == 0)
+			break;
+	(void) endisoservent ();
 
-    if (is) {
+	if (is) {
 #ifdef	DEBUG
-	if (addr_log -> ll_events & LLOG_DEBUG)
-	    _printsrv (is);
+		if (addr_log -> ll_events & LLOG_DEBUG)
+			_printsrv (is);
 #endif
-    }
-    else
-	SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
-	      ("lookup of local service %s/%d failed",
-	       provider, (int) ntohs (port)));
+	} else
+		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
+			  ("lookup of local service %s/%d failed",
+			   provider, (int) ntohs (port)));
 
-    return is;
+	return is;
 }

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2set.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/prim2set.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -35,16 +35,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2set.c,v 9.0 1992/
 PE	prim2set (pe)
 register PE	pe;
 {
-    register int    i;
-    register PE	    p;
+	register int    i;
+	register PE	    p;
 
-    if (pe -> pe_form != PE_FORM_CONS)
-	return pe_seterr (pe, PE_ERR_CONS, NULLPE);
+	if (pe -> pe_form != PE_FORM_CONS)
+		return pe_seterr (pe, PE_ERR_CONS, NULLPE);
 
-    for (i = 0, p = pe -> pe_cons; p; p = p -> pe_next)
-	p -> pe_offset = i++;
+	for (i = 0, p = pe -> pe_cons; p; p = p -> pe_next)
+		p -> pe_offset = i++;
 
-    pe -> pe_cardinal = i;
+	pe -> pe_cardinal = i;
 
-    return pe;
+	return pe;
 }

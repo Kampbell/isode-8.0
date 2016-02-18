@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapselect.c,v 9.0 1992/06/16 12:29:42 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap2/RCS/psapselect.c,v 9.0 1992/06/16 12:29:42 isode Rel $
  *
  *
@@ -39,37 +39,37 @@ fd_set *mask;
 int    *nfds;
 struct PSAPindication *pi;
 {
-    SBV     smask;
-    register struct psapblk *pb;
-    struct SSAPindication   sis;
-    register struct SSAPabort  *sa = &sis.si_abort;
+	SBV     smask;
+	register struct psapblk *pb;
+	struct SSAPindication   sis;
+	register struct SSAPabort  *sa = &sis.si_abort;
 
-    missingP (mask);
-    missingP (nfds);
-    missingP (pi);
+	missingP (mask);
+	missingP (nfds);
+	missingP (pi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    if ((pb = findpblk (sd)) == NULL) {
-	(void) sigiomask (smask);
-	return psaplose (pi, PC_PARAMETER, NULLCP,
-			    "invalid presentation descriptor");
-    }
-
-    if (SSelectMask (pb -> pb_fd, mask, nfds, &sis) == NOTOK)
-	switch (sa -> sa_reason) {
-	    case SC_WAITING: 
+	if ((pb = findpblk (sd)) == NULL) {
 		(void) sigiomask (smask);
-		return psaplose (pi, PC_WAITING, NULLCP, NULLCP);
-
-	    default: 
-		(void) ss2pslose (pb, pi, "SSelectMask", sa);
-		freepblk (pb);
-		(void) sigiomask (smask);
-		return NOTOK;
+		return psaplose (pi, PC_PARAMETER, NULLCP,
+						 "invalid presentation descriptor");
 	}
 
-    (void) sigiomask (smask);
+	if (SSelectMask (pb -> pb_fd, mask, nfds, &sis) == NOTOK)
+		switch (sa -> sa_reason) {
+		case SC_WAITING:
+			(void) sigiomask (smask);
+			return psaplose (pi, PC_WAITING, NULLCP, NULLCP);
 
-    return OK;
+		default:
+			(void) ss2pslose (pb, pi, "SSelectMask", sa);
+			freepblk (pb);
+			(void) sigiomask (smask);
+			return NOTOK;
+		}
+
+	(void) sigiomask (smask);
+
+	return OK;
 }

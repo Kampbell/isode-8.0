@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/serror.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/serror.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -41,11 +41,11 @@ extern  char *sys_errlist[];
 char   *sys_errname (i)
 int	i;
 {
-    static char buffer[30];
+	static char buffer[30];
 
-    if (0 < i && i < sys_nerr)
-	return sys_errlist[i];
-    (void) sprintf (buffer, "Error %d", i);
+	if (0 < i && i < sys_nerr)
+		return sys_errlist[i];
+	(void) sprintf (buffer, "Error %d", i);
 
-    return buffer;
+	return buffer;
 }

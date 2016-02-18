@@ -39,13 +39,12 @@
 #include "quipu/remove.h"
 #include "quipu/ds_error.h"
 
-typedef struct simple_creds
-	{
+typedef struct simple_creds {
 	DN      usc_dn;
 	int     usc_passwd_len;
 	char    *usc_passwd;
 	char    *usc_time1;
-        char    *usc_time2;
-	} USC;
+	char    *usc_time2;
+} USC;
 
 #endif

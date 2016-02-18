@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2real.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/prim2real.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  * Contributed by Julian Onions, Nottingham University.
@@ -36,7 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2real.c,v 9.0 1992
 /*  */
 
 static double decode_binary (), decode_decimal ();
-       
+
 double	prim2real (pe)
 register PE 	pe;
 {
@@ -46,7 +46,7 @@ register PE 	pe;
 		return 0.0;
 	if (pe -> pe_prim == NULLPED)
 		return pe_seterr (pe, PE_ERR_PRIM, NOTOK);
-		
+
 	if (pe -> pe_len > sizeof (double) + 1)
 		return pe_seterr (pe, PE_ERR_OVER, NOTOK);
 
@@ -56,19 +56,19 @@ register PE 	pe;
 		return decode_binary (pe);
 
 	switch (*(pe -> pe_prim) & PE_REAL_FLAGS) {
-	    case PE_REAL_DECENC:
+	case PE_REAL_DECENC:
 		return decode_decimal (pe);
 
-	    case PE_REAL_SPECENC:
+	case PE_REAL_SPECENC:
 		if (pe -> pe_len > 1)
 			return pe_seterr (pe, PE_ERR_OVER, NOTOK);
 
 		switch (*(pe -> pe_prim)) {
-		    case PE_REAL_MINUSINF:
+		case PE_REAL_MINUSINF:
 			return HUGE;
-		    case PE_REAL_PLUSINF:
+		case PE_REAL_PLUSINF:
 			return -HUGE;
-		    default:
+		default:
 			return pe_seterr (pe, PE_ERR_NOSUPP, NOTOK);
 		}
 	}
@@ -88,18 +88,18 @@ PE	pe;
 	dp = pe -> pe_prim;
 	sign = (*dp & PE_REAL_B_S) ?  -1 : 1;
 	switch (*dp & PE_REAL_B_BASE) {
-	    case PE_REAL_B_B2:
+	case PE_REAL_B_B2:
 		base = 2;
 		break;
 
-	    case PE_REAL_B_B8:
+	case PE_REAL_B_B8:
 		base = 8;
 		break;
 
-	    case PE_REAL_B_B16:
+	case PE_REAL_B_B16:
 		base = 16;
 		break;
-	    default:
+	default:
 		return pe_seterr(pe, PE_ERR_NOSUPP, NOTOK);
 	}
 
@@ -107,16 +107,16 @@ PE	pe;
 
 	exponent = (dp[1] & 0x80) ? (-1) : 0;
 	switch (*dp++ & PE_REAL_B_EXP) {
-	    case PE_REAL_B_EF3:
+	case PE_REAL_B_EF3:
 		exponent = (exponent << 8) | (*dp++ & 0xff);
-		/* fall */
-	    case PE_REAL_B_EF2:
+	/* fall */
+	case PE_REAL_B_EF2:
 		exponent = (exponent << 8) | (*dp++ & 0xff);
-		/* fall */
-	    case PE_REAL_B_EF1:
+	/* fall */
+	case PE_REAL_B_EF1:
 		exponent = (exponent << 8) | (*dp++ & 0xff);
 		break;
-	    case PE_REAL_B_EF4:
+	case PE_REAL_B_EF4:
 		i = *dp++ & 0xff;
 		if (i > sizeof(int))
 			return pe_seterr (pe, PE_ERR_OVER, NOTOK);
@@ -128,7 +128,7 @@ PE	pe;
 		di *= 1 << 8;	;
 		di += (int)(*dp++ & 0xff);
 	}
-	
+
 	mantissa = sign * di * (1 << factor);
 	return mantissa * pow ((double)base, (double)exponent);
 }

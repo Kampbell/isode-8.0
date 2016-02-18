@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/filter.c,v 9.0 1992/06/16 12:45:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/filter.c,v 9.0 1992/06/16 12:45:59 isode Rel $
  *
  *
@@ -35,9 +35,8 @@ struct ds_search_result sresult;
 struct DSError serror;
 
 struct s_filter *
-andfilter()
-{
-struct s_filter * fp;
+andfilter() {
+	struct s_filter * fp;
 
 	fp = filter_alloc();
 	fp->flt_type = FILTER_AND;
@@ -46,9 +45,8 @@ struct s_filter * fp;
 }
 
 struct s_filter *
-orfilter()
-{
-struct s_filter * fp;
+orfilter() {
+	struct s_filter * fp;
 
 	fp = filter_alloc();
 	fp->flt_type = FILTER_OR;
@@ -56,21 +54,21 @@ struct s_filter * fp;
 	return fp;
 }
 
-struct s_filter * 
+struct s_filter *
 eqfilter(matchtype, type, value)
 int matchtype;
 char * type, * value;
 {
-struct s_filter * fp;
-AttributeType at;
+	struct s_filter * fp;
+	AttributeType at;
 
 	fp = filter_alloc();
 	fp->flt_type = FILTER_ITEM;
-        fp->FUITEM.fi_type = matchtype;
-        at = fp->FUITEM.fi_un.fi_un_ava.ava_type =
-                str2AttrT(type);
-        fp->FUITEM.fi_un.fi_un_ava.ava_value =
-                str2AttrV(value, at->oa_syntax);
+	fp->FUITEM.fi_type = matchtype;
+	at = fp->FUITEM.fi_un.fi_un_ava.ava_type =
+			 str2AttrT(type);
+	fp->FUITEM.fi_un.fi_un_ava.ava_value =
+		str2AttrV(value, at->oa_syntax);
 	fp->flt_next = NULLFILTER;
 	return fp;
 }
@@ -80,33 +78,33 @@ subsfilter(substrtype, type, value)
 int substrtype;
 char * type, * value;
 {
-struct s_filter * fp;
-AttributeType at;
+	struct s_filter * fp;
+	AttributeType at;
 
 	fp = filter_alloc();
-        fp->flt_type = FILTER_ITEM;
-        fp->FUITEM.fi_type = FILTERITEM_SUBSTRINGS;
+	fp->flt_type = FILTER_ITEM;
+	fp->FUITEM.fi_type = FILTERITEM_SUBSTRINGS;
 	at = fp->FUITEM.fi_un.fi_un_ava.ava_type =
-		str2AttrT(type);
+			 str2AttrT(type);
 	switch (substrtype) {
-		case LEADSUBSTR:
-			fp->FUITEM.UNSUB.fi_sub_initial =
-		                avs_comp_new(str2AttrV(value, at->oa_syntax));
-		        fp->FUITEM.UNSUB.fi_sub_any = NULLAV;
-		        fp->FUITEM.UNSUB.fi_sub_final = NULLAV;
-			break;
-		case TRAILSUBSTR:
-			fp->FUITEM.UNSUB.fi_sub_final =
-		                avs_comp_new(str2AttrV(value, at->oa_syntax));
-		        fp->FUITEM.UNSUB.fi_sub_any = NULLAV;
-		        fp->FUITEM.UNSUB.fi_sub_initial = NULLAV;
-			break;
-		case ANYSUBSTR:
-			fp->FUITEM.UNSUB.fi_sub_any =
-		                avs_comp_new(str2AttrV(value, at->oa_syntax));
-		        fp->FUITEM.UNSUB.fi_sub_initial = NULLAV;
-		        fp->FUITEM.UNSUB.fi_sub_final = NULLAV;
-			break;
+	case LEADSUBSTR:
+		fp->FUITEM.UNSUB.fi_sub_initial =
+			avs_comp_new(str2AttrV(value, at->oa_syntax));
+		fp->FUITEM.UNSUB.fi_sub_any = NULLAV;
+		fp->FUITEM.UNSUB.fi_sub_final = NULLAV;
+		break;
+	case TRAILSUBSTR:
+		fp->FUITEM.UNSUB.fi_sub_final =
+			avs_comp_new(str2AttrV(value, at->oa_syntax));
+		fp->FUITEM.UNSUB.fi_sub_any = NULLAV;
+		fp->FUITEM.UNSUB.fi_sub_initial = NULLAV;
+		break;
+	case ANYSUBSTR:
+		fp->FUITEM.UNSUB.fi_sub_any =
+			avs_comp_new(str2AttrV(value, at->oa_syntax));
+		fp->FUITEM.UNSUB.fi_sub_initial = NULLAV;
+		fp->FUITEM.UNSUB.fi_sub_final = NULLAV;
+		break;
 	}
 	fp->flt_next = NULLFILTER;
 	return fp;
@@ -116,12 +114,12 @@ struct s_filter *
 presfilter(type)
 char * type;
 {
-struct s_filter * fp;
+	struct s_filter * fp;
 
-        fp = filter_alloc();
-        fp->flt_type = FILTER_ITEM;
-        fp->FUITEM.fi_type = FILTERITEM_PRESENT;
-        fp->FUITEM.UNTYPE = str2AttrT(type);
-        fp->flt_next = NULLFILTER;
-        return fp;
+	fp = filter_alloc();
+	fp->flt_type = FILTER_ITEM;
+	fp->FUITEM.fi_type = FILTERITEM_PRESENT;
+	fp->FUITEM.UNTYPE = str2AttrT(type);
+	fp->flt_next = NULLFILTER;
+	return fp;
 }

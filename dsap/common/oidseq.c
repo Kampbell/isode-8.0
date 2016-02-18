@@ -35,8 +35,8 @@ extern int oidformat;
 oid_seq_free (ptr)
 struct oid_seq * ptr;
 {
-register struct oid_seq * loop;
-register struct oid_seq * next;
+	register struct oid_seq * loop;
+	register struct oid_seq * next;
 
 	for (loop=ptr; loop!=NULLOIDSEQ; loop=next) {
 		next = loop->oid_next;
@@ -48,8 +48,8 @@ register struct oid_seq * next;
 oid_seq_free_aux (ptr)
 struct oid_seq * ptr;
 {
-register struct oid_seq * loop;
-register struct oid_seq * next;
+	register struct oid_seq * loop;
+	register struct oid_seq * next;
 
 	for (loop=ptr; loop!=NULLOIDSEQ; loop=next) {
 		next = loop->oid_next;
@@ -61,7 +61,7 @@ struct oid_seq *oid_seq_merge (a,b)
 struct oid_seq *a;
 struct oid_seq *b;
 {
-register struct oid_seq  *aptr, *bptr, *result, *trail;
+	register struct oid_seq  *aptr, *bptr, *result, *trail;
 
 	if ( a == NULLOIDSEQ )
 		return (b);
@@ -70,29 +70,29 @@ register struct oid_seq  *aptr, *bptr, *result, *trail;
 
 	/* start sequence off, make sure 'a' is the first */
 	switch (oid_cmp (a->oid_oid,b->oid_oid)) {
-		case 0: /* equal */
-			result = a;
-			oid_free (b->oid_oid);
-			free ((char *) b);
-			aptr = a->oid_next;
-			bptr = b->oid_next;
-			break;
-		case -1:
-			result = b;
-			aptr = a;
-			bptr = b->oid_next;
-			break;
-		case 1:
-			result = a;
-			aptr = a->oid_next;
-			bptr = b;
-			break;
-		}
+	case 0: /* equal */
+		result = a;
+		oid_free (b->oid_oid);
+		free ((char *) b);
+		aptr = a->oid_next;
+		bptr = b->oid_next;
+		break;
+	case -1:
+		result = b;
+		aptr = a;
+		bptr = b->oid_next;
+		break;
+	case 1:
+		result = a;
+		aptr = a->oid_next;
+		bptr = b;
+		break;
+	}
 
 	trail = result;
 	while (  (aptr != NULLOIDSEQ) && (bptr != NULLOIDSEQ) ) {
 
-	   switch (oid_cmp (aptr->oid_oid,bptr->oid_oid)) {
+		switch (oid_cmp (aptr->oid_oid,bptr->oid_oid)) {
 		case 0: /* equal */
 			trail->oid_next = aptr;
 			trail = aptr;
@@ -111,7 +111,7 @@ register struct oid_seq  *aptr, *bptr, *result, *trail;
 			trail = aptr;
 			aptr = aptr->oid_next;
 			break;
-	    }
+		}
 	}
 	if (aptr == NULLOIDSEQ)
 		trail->oid_next = bptr;
@@ -124,50 +124,46 @@ register struct oid_seq  *aptr, *bptr, *result, *trail;
 oid_seq_cmp (a,b)
 struct oid_seq  *a, *b;
 {
-    struct oid_seq	* aa1;
-    struct oid_seq	* aa2;
+	struct oid_seq	* aa1;
+	struct oid_seq	* aa2;
 
-    if((a == NULLOIDSEQ) && (b == NULLOIDSEQ))
+	if((a == NULLOIDSEQ) && (b == NULLOIDSEQ))
+		return(0);
+
+	if(a == NULLOIDSEQ)
+		return(-1);
+
+	if(b == NULLOIDSEQ)
+		return(1);
+
+	for(aa1=a; aa1 != NULLOIDSEQ; aa1=aa1->oid_next) {
+		for(aa2=b; aa2 != NULLOIDSEQ; aa2=aa2->oid_next) {
+			if(oid_cmp(aa1->oid_oid, aa2->oid_oid) == 0)
+				break;
+		}
+		if(aa2 == NULLOIDSEQ)
+			return(1);
+	}
+
+	for(aa2=b; aa2 != NULLOIDSEQ; aa2=aa2->oid_next) {
+		for(aa1=a; aa1 != NULLOIDSEQ; aa1=aa1->oid_next) {
+			if(oid_cmp(aa1->oid_oid, aa2->oid_oid) == 0)
+				break;
+		}
+		if(aa1 == NULLOIDSEQ)
+			return(-1);
+	}
+
 	return(0);
-
-    if(a == NULLOIDSEQ)
-	return(-1);
-
-    if(b == NULLOIDSEQ)
-	return(1);
-
-    for(aa1=a; aa1 != NULLOIDSEQ; aa1=aa1->oid_next)
-    {
-	for(aa2=b; aa2 != NULLOIDSEQ; aa2=aa2->oid_next)
-	{
-	    if(oid_cmp(aa1->oid_oid, aa2->oid_oid) == 0)
-		break;
-	}
-	if(aa2 == NULLOIDSEQ)
-	    return(1);
-    }
-
-    for(aa2=b; aa2 != NULLOIDSEQ; aa2=aa2->oid_next)
-    {
-	for(aa1=a; aa1 != NULLOIDSEQ; aa1=aa1->oid_next)
-	{
-	    if(oid_cmp(aa1->oid_oid, aa2->oid_oid) == 0)
-		break;
-	}
-	if(aa1 == NULLOIDSEQ)
-	    return(-1);
-    }
-
-    return(0);
 }
 
 struct oid_seq * oid_seq_cpy (a)
 struct oid_seq * a;
 {
-register struct oid_seq * b;
-register struct oid_seq * c;
-register struct oid_seq * d;
-struct oid_seq * result;
+	register struct oid_seq * b;
+	register struct oid_seq * c;
+	register struct oid_seq * d;
+	struct oid_seq * result;
 
 	result = oid_seq_alloc ();
 	result -> oid_oid = oid_cpy (a->oid_oid);
@@ -189,12 +185,12 @@ PS ps;
 register struct oid_seq * ptr;
 int format;
 {
-register int i = 4;
+	register int i = 4;
 
 	ps_printf (ps,"%s",oid2name (ptr->oid_oid,oidformat));
 	for ( ptr=ptr->oid_next; ptr!= NULLOIDSEQ; ptr=ptr->oid_next,i++)
 		if ( format == READOUT ) {
-			if (i > 3){
+			if (i > 3) {
 				i = 0;
 				ps_print (ps,",\n\t\t\t");
 			} else
@@ -207,12 +203,12 @@ register int i = 4;
 struct oid_seq * str2oidseq (str)
 char * str;
 {
-register char *ptr;
-register char *save,val;
-struct oid_seq * ois = NULLOIDSEQ;
-struct oid_seq * newois;
-OID oid;
-char * SkipSpace();
+	register char *ptr;
+	register char *save,val;
+	struct oid_seq * ois = NULLOIDSEQ;
+	struct oid_seq * newois;
+	OID oid;
+	char * SkipSpace();
 
 	while ( (ptr = index (str,'$')) != 0) {
 		save = ptr++;

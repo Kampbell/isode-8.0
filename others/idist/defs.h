@@ -8,7 +8,7 @@
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science.
- * 
+ *
  *
  * $Log: defs.h,v $
  * Revision 9.0  1992/06/16  12:42:00  isode
@@ -66,7 +66,7 @@
 
 #define	MAILCMD	 "/usr/lib/sendmail -oi -t"
 
-	/* defines for yacc */
+/* defines for yacc */
 #define EQUAL	1
 #define LP	2
 #define RP	3
@@ -83,15 +83,15 @@
 #define SPECIAL	14
 #define OPTION	15
 
-	/* lexical definitions */
+/* lexical definitions */
 #define	QUOTE 	0200		/* used internally for quoted characters */
 #define	TRIM	0177		/* Mask to strip quote bit */
 
-	/* table sizes */
+/* table sizes */
 #define HASHSIZE	1021
 #define INMAX	3500
 
-	/* option flags */
+/* option flags */
 #define VERIFY	0x1
 #define WHOLE	0x2
 #define YOUNGER	0x4
@@ -104,13 +104,13 @@
 #endif UW
 #define QUERYM	0x100
 
-	/* expand type definitions */
+/* expand type definitions */
 #define E_VARS	0x1
 #define E_SHELL	0x2
 #define E_TILDE	0x4
 #define E_ALL	0x7
 
-	/* actions for lookup() */
+/* actions for lookup() */
 #define LOOKUP	0
 #define INSERT	1
 #define REPLACE	2

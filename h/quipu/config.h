@@ -1,6 +1,6 @@
 /* config.h - compile time configuration parameters */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/quipu/RCS/config.h,v 9.0 1992/06/16 12:23:11 isode Rel $
  *
  *
@@ -21,13 +21,13 @@
  */
 
 
-/* 
+/*
  * OPTIONS:-
  *
  * #define PDU_DUMP
  * 		If this is defined, and "dish" is invoke with
  *		dish -pdu foobar
- *		Then a directory "foobar" will be created, and 
+ *		Then a directory "foobar" will be created, and
  *		it will contain logs of all the X500 PDUs sent
  *
  * #define NO_STATS
@@ -38,7 +38,7 @@
  * 		If and EDB entry contains a FILE attribute, check that
  *		the corresponding file exists
  *
- * #define QUIPU_MALLOC	
+ * #define QUIPU_MALLOC
  * 		Use a version of malloc optimised for the memory
  * 		resident Quipu DSA database.
  *
@@ -71,7 +71,7 @@
  *
  */
 
- 
+
 # ifndef QUIPU_CONFIG
 # define QUIPU_CONFIG
 
@@ -79,10 +79,10 @@
 #define	USE_BUILTIN_OIDS	1
 #endif
 
-# define PDU_DUMP   
+# define PDU_DUMP
 # define QUIPU_MALLOC
 # define TURBO_INDEX
 # define SOUNDEX_PREFIX
 # define HAVE_PROTECTED
 
-# endif 
+# endif

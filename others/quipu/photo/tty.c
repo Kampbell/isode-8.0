@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/tty.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/tty.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -36,7 +36,7 @@ char * strcpy ();
 
 char    buffer[500][500];
 int     lineno = 0,
-        pos = 0;
+		pos = 0;
 extern int PIC_LINESIZE;
 extern int NUMLINES;
 int     scale = 8;
@@ -55,7 +55,7 @@ photo_start (name)
 char   *name;
 {
 	char   *ptr,
-	       *getenv ();
+		   *getenv ();
 
 
 	if ((ptr = getenv ("photo_invert")) != (char *) NULL)
@@ -67,7 +67,7 @@ char   *name;
 			equal = 1;
 		else if (strcmp (ptr, "edge") == 0) {
 			int     i,
-			        j;
+					j;
 
 			for (i = 1; i < PIC_LINESIZE; i++)
 				for (j = 1; j < NUMLINES; j++)
@@ -99,8 +99,8 @@ photo_end (name)
 char   *name;
 {
 	int     i,
-	        j,
-	        k;
+			j,
+			k;
 	int     numlev;
 	int     total = 0;
 	int     totlevel = 0;
@@ -166,18 +166,18 @@ char   *name;
 					for (j = lineno; j < (2 * scale) + lineno; j++)
 						cnt += ebuf[i][j];
 
-/* Need to select a grey level on the strength of the edge
- *
- *				cnt *= 4;
- *				if (cnt == (scalediv * 16))
- *					cnt = (scalediv * 16) -1;
- *
- * Just set "strong" edge cells "on" for now ...
- */
+				/* Need to select a grey level on the strength of the edge
+				 *
+				 *				cnt *= 4;
+				 *				if (cnt == (scalediv * 16))
+				 *					cnt = (scalediv * 16) -1;
+				 *
+				 * Just set "strong" edge cells "on" for now ...
+				 */
 				if (cnt > (scalediv * 2) )
 					cnt = (scalediv * 16) -1;
-				else 
-					cnt = 0;	
+				else
+					cnt = 0;
 
 				if (invert)
 					(void) putc (mapping[(cnt / scalediv)],stdout);
@@ -233,9 +233,9 @@ photo_line_end (line)
 bit_string *line;
 {
 	int     i,
-	        j,
-	        k,
-	        cnt;
+			j,
+			k,
+			cnt;
 
 	if (scale == 1) {
 		(void) putc ('\n',stdout);

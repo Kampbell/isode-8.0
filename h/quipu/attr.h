@@ -32,7 +32,7 @@
 #define TRUE 1
 #endif
 
-	/* FIRST SECTION DEFINES STRUCTURES FOR ADDRESSING */
+/* FIRST SECTION DEFINES STRUCTURES FOR ADDRESSING */
 
 typedef oid_table_attr * attrType;
 typedef oid_table_attr * AttributeType;
@@ -40,8 +40,8 @@ typedef oid_table_attr * AttributeType;
 #define NULLAttrT (AttributeType) NULL
 #define AttrT_alloc()
 #define AttrT_cmp(x,y)	( x == y ? 0 : ( x > y ? -1 : 1 ))
-#define AttrT_decode(x) 
-#define AttrT_free(x) 
+#define AttrT_decode(x)
+#define AttrT_free(x)
 #define AttrT_cpy(x) x
 #define grab_oid(x)  (x ? x->oa_ot.ot_oid : NULLOID)
 
@@ -52,7 +52,7 @@ AttributeType AttrT_new();
 
 typedef struct {
 	short    av_syntax;             /* Specifies the syntax of the      */
-					/* attribute  that follows.         */
+	/* attribute  that follows.         */
 	caddr_t  av_struct;
 } attrVal, * AttributeValue;
 
@@ -76,7 +76,7 @@ struct file_syntax {
 	char	fs_mode;
 	char	fs_ref;
 	AttributeValue fs_attr;
-}; 
+};
 #define FS_DEFAULT 0x01 	/* default file name */
 #define FS_CREATE  0x02		/* created thus remove file */
 #define FS_TMP     0x04		/* DSA created tmp file */
@@ -94,13 +94,13 @@ struct file_syntax {
 
 typedef struct {
 	char *	s_sntx;		/* String defining syntax */
-	IFP	s_encode;	
+	IFP	s_encode;
 	IFP	s_decode;
 	IFP	s_parse;
 	IFP	s_print;
 	IFP	s_copy;
 	IFP	s_compare;
-	IFP	s_free;	
+	IFP	s_free;
 	char *	s_pe_print;	/* process to handle raw PE */
 	IFP	s_approx;	/* approx match routine */
 	char 	s_multiline;	/* if true print each value on new line */

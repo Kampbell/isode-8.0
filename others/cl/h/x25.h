@@ -1,6 +1,6 @@
 /* x25.h - X.25 abstractions */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/x25.h,v 5.0 88/07/21 14:39:42 mrose Rel $
  *
  * Contributed by John Pavel, Department of Trade and Industry/National
@@ -24,7 +24,7 @@
 #ifndef	_X25_
 #define	_X25_
 
-/* 
+/*
  *
  * #defines for generic addressing & TSEL encoded addresses.
  *

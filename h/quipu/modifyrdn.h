@@ -29,10 +29,10 @@
 #include "quipu/dap.h"
 
 struct ds_modifyrdn_arg {
-    CommonArgs mra_common;
-    DN mra_object;
-    RDN mra_newrdn;
-    char deleterdn;             /* set to TRUE or FLASE                 */
+	CommonArgs mra_common;
+	DN mra_object;
+	RDN mra_newrdn;
+	char deleterdn;             /* set to TRUE or FLASE                 */
 };
 
 #endif

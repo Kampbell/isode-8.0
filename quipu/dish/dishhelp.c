@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/dishhelp.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/dishhelp.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -40,7 +40,7 @@ struct {
 	char            serv;
 	char	        other;
 	char 	       *use;
-	
+
 } help_info[MAXARG];
 int num_help = 0;
 
@@ -61,60 +61,60 @@ char 	       *use;
 
 dish_help_init () {
 	add_dish_help (
-	"dish",		"[-pipe] [-noconnect] [-user <name>]\n[-password [<password>]] [-call <dsa name>] [-fast]\n[-simple] [-protected] [-strong] [-noauthentication]", FALSE, FALSE,
-			"Directory Shell," );
+		"dish",		"[-pipe] [-noconnect] [-user <name>]\n[-password [<password>]] [-call <dsa name>] [-fast]\n[-simple] [-protected] [-strong] [-noauthentication]", FALSE, FALSE,
+		"Directory Shell," );
 	add_dish_help (
-	"showentry", 	"[-[no]cache] [-[no]name] [-[no]move]", TRUE,TRUE,
-			"show an entry, read it if not cached," );
+		"showentry", 	"[-[no]cache] [-[no]name] [-[no]move]", TRUE,TRUE,
+		"show an entry, read it if not cached," );
 	add_dish_help (
-	"list", 	"[-nocache] [-noshow] [-[no]move]", TRUE,FALSE,
-			"list children of the current node" );
+		"list", 	"[-nocache] [-noshow] [-[no]move]", TRUE,FALSE,
+		"list children of the current node" );
 	add_dish_help (
-	"search", 	"[-baseobject] [-singlelevel] [-subtree]\n[-filter <filter>]\n[-[no]relative] [-[no]searchaliases] [-[no]partial] [-hitone]\n[-fred [-expand] [-full] [-summary] [-nofredseq] [-subdisplay]]", TRUE, TRUE,
-			"search the tree for an object," );
+		"search", 	"[-baseobject] [-singlelevel] [-subtree]\n[-filter <filter>]\n[-[no]relative] [-[no]searchaliases] [-[no]partial] [-hitone]\n[-fred [-expand] [-full] [-summary] [-nofredseq] [-subdisplay]]", TRUE, TRUE,
+		"search the tree for an object," );
 	add_dish_help (
-	"moveto", 	"[-[no]pwd] [-[no]check] [-sequence <name>] [-nosequence] <position>", FALSE, FALSE,
-			"move to position in the DIT" );
+		"moveto", 	"[-[no]pwd] [-[no]check] [-sequence <name>] [-nosequence] <position>", FALSE, FALSE,
+		"move to position in the DIT" );
 	add_dish_help (
-	"modify", 	"[-draft <draft> [-noedit]] [-newdraft]\n[-add <attr type>=<attr value>] [-remove <attr type>=<attr value>] ", TRUE, FALSE,
-			"modify an existing node," );
+		"modify", 	"[-draft <draft> [-noedit]] [-newdraft]\n[-add <attr type>=<attr value>] [-remove <attr type>=<attr value>] ", TRUE, FALSE,
+		"modify an existing node," );
 	add_dish_help (
-	"showname", 	"[-[no]compact] [-[no]ufn] [-[no]cache]", TRUE,TRUE,
-			"show the name of an entry," );
+		"showname", 	"[-[no]compact] [-[no]ufn] [-[no]cache]", TRUE,TRUE,
+		"show the name of an entry," );
 	add_dish_help (
-	"compare", 	"-attribute <attributeType '=' attributeValue>\n[-[no]print]", TRUE,FALSE,
-			"compare attribute with the supplied value," );
+		"compare", 	"-attribute <attributeType '=' attributeValue>\n[-[no]print]", TRUE,FALSE,
+		"compare attribute with the supplied value," );
 	add_dish_help (
-	"add", 		"[-draft <draft> [-noedit]] [-template <draft>] [-newdraft]\n [-objectclass <objectclass>]", TRUE,FALSE,
-			"add a new node," );
+		"add", 		"[-draft <draft> [-noedit]] [-template <draft>] [-newdraft]\n [-objectclass <objectclass>]", TRUE,FALSE,
+		"add a new node," );
 	add_dish_help (
-	"delete", 	"", TRUE,FALSE,
-			"delete an object," );
+		"delete", 	"", TRUE,FALSE,
+		"delete an object," );
 	add_dish_help (
-	"modifyrdn", 	"-name <attributeType '=' attributeValue> [-[no]delete]", TRUE, FALSE,
-			"modify the name of a node," );
+		"modifyrdn", 	"-name <attributeType '=' attributeValue> [-[no]delete]", TRUE, FALSE,
+		"modify the name of a node," );
 	add_dish_help (
-	"squid",	"[-sequence <name>] [-alias <position>] [-version]\n[-user] [-syntax] [-fred]",FALSE, FALSE,
-			"status of dish," );
+		"squid",	"[-sequence <name>] [-alias <position>] [-version]\n[-user] [-syntax] [-fred]",FALSE, FALSE,
+		"status of dish," );
 	add_dish_help (
-	"bind",		"[-noconnect] [[-user] <name>]\n[-password [<password>]] [-[no]refer]\n[-call <dsa name>]\n[-simple] [-protected] [-strong] [-noauthentication]", FALSE, FALSE,
-			"connect to the directory," );
+		"bind",		"[-noconnect] [[-user] <name>]\n[-password [<password>]] [-[no]refer]\n[-call <dsa name>]\n[-simple] [-protected] [-strong] [-noauthentication]", FALSE, FALSE,
+		"connect to the directory," );
 	add_dish_help (
-	"unbind", 	"[-noquit]", FALSE, FALSE,
-			"disconnect from the directory," );
+		"unbind", 	"[-noquit]", FALSE, FALSE,
+		"disconnect from the directory," );
 	add_dish_help (
-	"fred",		"[-display <name>]\n[-dm2dn [-list] [-phone] [-photo] <domain-or-mailbox>]\n[-expand [-full] <DN>]\n[-ufn [-list,][-mailbox,][-phone,][-photo,]<name...>]\n[-ufnrc <list...>]", FALSE, FALSE,
- 			"back-end to fred," );
+		"fred",		"[-display <name>]\n[-dm2dn [-list] [-phone] [-photo] <domain-or-mailbox>]\n[-expand [-full] <DN>]\n[-ufn [-list,][-mailbox,][-phone,][-photo,]<name...>]\n[-ufnrc <list...>]", FALSE, FALSE,
+		"back-end to fred," );
 	add_dish_help (
-	"dsacontrol", 	"[-[un]lock <entry>] [-dump <directory>]\n[-tailor <string>] [-abort] [-restart] [-info]\n[-refresh <entry>] [-resync <entry>] [-slave [<entry>]]", FALSE, FALSE,
-			"control the operation of the DSA (managers only)," );
+		"dsacontrol", 	"[-[un]lock <entry>] [-dump <directory>]\n[-tailor <string>] [-abort] [-restart] [-info]\n[-refresh <entry>] [-resync <entry>] [-slave [<entry>]]", FALSE, FALSE,
+		"control the operation of the DSA (managers only)," );
 }
 
 Usage (rtn)
 char           *rtn;
 {
 	extern DN       dn,
-	                savename;
+		   savename;
 	int             i;
 
 	dn_free (dn);
@@ -156,18 +156,17 @@ char           *rtn;
 	ps_print (OPT,"Sorry - No help available\n");
 }
 
-print_other (aps,x) 
+print_other (aps,x)
 PS aps;
 char x;
 {
 	if (x == FALSE)
 		return;
-		
+
 	ps_print (aps,"\n[-[no]types <attribute-type> *] [-[no]all]\n[-[no]value] [-[no]show] \n[-[no]key] [-edb]\n[-proc <syntax> <process>]");
 }
 
-print_service ()
-{
+print_service () {
 	ps_print (RPS,"[-sequence <name>] [-nosequence]\n");
 	ps_print (RPS,"[-[no]preferchain] [-[no]chaining]\n");
 	ps_print (RPS,"[-[dont]usecopy] [-[dont]dereferencealias]\n");
@@ -179,8 +178,7 @@ print_service ()
 
 }
 
-call_help ()
-{
+call_help () {
 	int             i;
 
 	ps_print (RPS, "The following commands are recognised...\n\n");

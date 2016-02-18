@@ -30,9 +30,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/sys_tai.c,v 9.0 1992/
 #include "cmd_srch.h"
 
 extern char *isodelogpath,
-	    *treedir,
-	    *dsaoidtable,
-	    *mydsaname;
+	   *treedir,
+	   *dsaoidtable,
+	   *mydsaname;
 
 char	    *authfile = NULLCP;
 
@@ -110,8 +110,7 @@ extern unsigned str2permission();
 #define AUTHFILE	 50
 #define FASTSTART	 51
 
-static  CMD_TABLE  cmdtab[] =
-{
+static  CMD_TABLE  cmdtab[] = {
 	"LOGDIR",       MLOGDIR,
 	"DSAPLOG",      SYSLOG,
 	"OIDTABLE",     OIDTAB,
@@ -162,8 +161,7 @@ static  CMD_TABLE  cmdtab[] =
 	0,              -1,
 };
 
-static  CMD_TABLE  authtab[] =
-{
+static  CMD_TABLE  authtab[] = {
 	"NONE",		0,
 	"DN",		1,
 	"SIMPLE",	2,
@@ -186,8 +184,7 @@ char    **argv;
 		return(NOTOK);
 	arg = argv[1];
 
-	switch(cmd_srch(argv[0], cmdtab))
-	{
+	switch(cmd_srch(argv[0], cmdtab)) {
 	case MLOGDIR:
 		DLOG (log_dsap,LLOG_TRACE,( "Tailor LOGDIR %s", arg));
 		isodelogpath = strdup (arg);
@@ -212,19 +209,18 @@ char    **argv;
 		DLOG (log_dsap,LLOG_TRACE,( "Tailor OIDFMT=%s", arg));
 		oidformat = atoi (arg);
 		break;
-	case ROOTDIR:
-	    { 
+	case ROOTDIR: {
 		unsigned int i;
 		treedir = strdup(arg);
-		i = strlen(treedir);	
+		i = strlen(treedir);
 		if ( treedir[i - 1] != '/' ) {
-		    treedir = realloc (treedir, i + 1);	
-		    treedir[i] = '/';
-		    treedir[i + 1] = 0;
+			treedir = realloc (treedir, i + 1);
+			treedir[i] = '/';
+			treedir[i + 1] = 0;
 		}
 		DLOG (log_dsap,LLOG_TRACE,( "Tailor Rootdir %s", treedir));
-	    }
-		break;
+	}
+	break;
 	case MYDSANAME:
 		DLOG (log_dsap,LLOG_TRACE,( "Tailor Myname %s", arg));
 		mydsaname = strdup(arg);
@@ -341,14 +337,14 @@ char    **argv;
 		allowrelay (arg);
 		break;
 	case PARENT:
- 		DLOG (log_dsap,LLOG_TRACE,( "Tailor parent name %s, address %s", arg,argv[2]));
- 		add_str_parent (arg,argv[2]);
+		DLOG (log_dsap,LLOG_TRACE,( "Tailor parent name %s, address %s", arg,argv[2]));
+		add_str_parent (arg,argv[2]);
 		break;
 	case ISODE_TAILOR:
 		DLOG (log_dsap,LLOG_TRACE,( "Tailor Isode %s%s",arg,argv[2]));
 		if (argc != 3)
-			LLOG (log_dsap,LLOG_EXCEPTIONS,( 
-			      "Invalid isode option in quiputailor"));
+			LLOG (log_dsap,LLOG_EXCEPTIONS,(
+					  "Invalid isode option in quiputailor"));
 		else
 			(void) isodesetvar(arg,strdup(argv[2]),0);
 		break;
@@ -369,34 +365,34 @@ char    **argv;
 		authfile = strdup(arg);
 		break;
 	case FASTSTART:
-                if (lexequ(arg, "on") == 0)
-                        quipu_faststart = TRUE;
-                else
-                        quipu_faststart = FALSE;
-                DLOG(log_dsap, LLOG_TRACE, ("Tailor fast_start %s", arg));
-                break;
+		if (lexequ(arg, "on") == 0)
+			quipu_faststart = TRUE;
+		else
+			quipu_faststart = FALSE;
+		DLOG(log_dsap, LLOG_TRACE, ("Tailor fast_start %s", arg));
+		break;
 #ifdef TURBO_INDEX
-        case OPTIMIZED_ONLY:
-                if (lexequ(arg, "on") == 0)
-                        optimized_only = TRUE;
-                else
-                        optimized_only = FALSE;
-                DLOG(log_dsap, LLOG_TRACE, ("Tailor optimized only %s", arg));
-                break;
+	case OPTIMIZED_ONLY:
+		if (lexequ(arg, "on") == 0)
+			optimized_only = TRUE;
+		else
+			optimized_only = FALSE;
+		DLOG(log_dsap, LLOG_TRACE, ("Tailor optimized only %s", arg));
+		break;
 	case OPTIMIZE_ATTR:
 		turbo_optimize(arg);
-                DLOG(log_dsap, LLOG_TRACE, (" Tailor optimize (%s)", arg));
-                break;
-        case INDEX_SUBTREE:
-                index_subtree(arg);
-                DLOG(log_dsap, LLOG_TRACE, ("Tailor index subtree %s", arg));
-                break;
-        case INDEX_SIBLINGS:
+		DLOG(log_dsap, LLOG_TRACE, (" Tailor optimize (%s)", arg));
+		break;
+	case INDEX_SUBTREE:
+		index_subtree(arg);
+		DLOG(log_dsap, LLOG_TRACE, ("Tailor index subtree %s", arg));
+		break;
+	case INDEX_SIBLINGS:
 		index_siblings(arg);
-                DLOG(log_dsap, LLOG_TRACE, ("Tailor index siblings %s", arg));
-                break;
+		DLOG(log_dsap, LLOG_TRACE, ("Tailor index siblings %s", arg));
+		break;
 #endif
-	    default:
+	default:
 		return NOTOK;
 	}
 	return (OK);

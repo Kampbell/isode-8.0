@@ -1,4 +1,4 @@
-/* 
+/*
  * $Header: /xtel/isode/isode/pepsy/RCS/pepy-refs.h,v 9.0 1992/06/16 12:24:03 isode Rel $
  *
  *
@@ -34,65 +34,65 @@
 #define NUMOPT		8
 
 struct pepy_refs {
-    integer		t_int;
-    integer		t_enum;
-    struct qbuf		*t_qbuf;
-    char		*t_string;
-    char		*t_ostring;
-    char		*t_bstring;
-    int			t_blen;
-    int			t_olen;
-    char		t_bool;
-    double		t_real;
-    OID			t_oid;
-    PE			t_pe;
-    PE			t_any;
-    struct pepy_refs1	*t_def;
-    struct pepy_refs1	*t_opt;
-    char	opt_set[NBITS2NCHARS(NUMOPT)]
-	};
+	integer		t_int;
+	integer		t_enum;
+	struct qbuf		*t_qbuf;
+	char		*t_string;
+	char		*t_ostring;
+	char		*t_bstring;
+	int			t_blen;
+	int			t_olen;
+	char		t_bool;
+	double		t_real;
+	OID			t_oid;
+	PE			t_pe;
+	PE			t_any;
+	struct pepy_refs1	*t_def;
+	struct pepy_refs1	*t_opt;
+	char	opt_set[NBITS2NCHARS(NUMOPT)]
+};
 
 struct pepy_refs1 {
-    integer		t_int;
-    integer		t_int1;
-    integer		t_enum;
-    integer		t_enum1;
-    struct qbuf		*t_qbuf;
-    struct qbuf		*t_qbuf1;
-    char		*t_string;
-    char		*t_string1;
-    char		*t_ostring;
-    char		*t_ostring1;
-    char		*t_bstring;
-    int			t_blen;
-    char		*t_bstring1;
-    int			t_blen1;
-    int			t_olen;
-    int			t_olen1;
-    char		t_bool;
-    char		t_bool1;
-    double		t_real;
-    double		t_real1;
-    OID			t_oid;
-    OID			t_oid1;
-    PE			t_pe;
-    PE			t_pe1;
-    PE			t_any;
-    char	opt_set[NBITS2NCHARS(NUMOPT)]
-	};
+	integer		t_int;
+	integer		t_int1;
+	integer		t_enum;
+	integer		t_enum1;
+	struct qbuf		*t_qbuf;
+	struct qbuf		*t_qbuf1;
+	char		*t_string;
+	char		*t_string1;
+	char		*t_ostring;
+	char		*t_ostring1;
+	char		*t_bstring;
+	int			t_blen;
+	char		*t_bstring1;
+	int			t_blen1;
+	int			t_olen;
+	int			t_olen1;
+	char		t_bool;
+	char		t_bool1;
+	double		t_real;
+	double		t_real1;
+	OID			t_oid;
+	OID			t_oid1;
+	PE			t_pe;
+	PE			t_pe1;
+	PE			t_any;
+	char	opt_set[NBITS2NCHARS(NUMOPT)]
+};
 
 struct rep_elem {
 	int		r_int;
 	char		*r_ostring;
 	char		*r_bstring;
 	struct rep_elem	*r_next;
-    };
+};
 #define NULLREP_ELEM	(struct rep_elem *)0
 
 struct rep_int {
 	int		i;
 	struct rep_int	*r;
-	};
+};
 #define NULLREP_INT	(struct rep_int *)0
 
 

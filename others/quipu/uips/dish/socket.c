@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/socket.c,v 9.0 1992/06/16 12:44:21 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/socket.c,v 9.0 1992/06/16 12:44:21 isode Rel $
  *
  *
@@ -39,40 +39,39 @@ struct sockaddr_in *isock;
 int	pid,
 	islocal;
 {
-    int    myppid;
-char * getenv ();
-char * ptr, * prnt;
-static char buffer [BUFSIZ];
-static char parent [BUFSIZ];
-int     portno;
-char   *dp;
-register struct hostent *hp;
+	int    myppid;
+	char * getenv ();
+	char * ptr, * prnt;
+	static char buffer [BUFSIZ];
+	static char parent [BUFSIZ];
+	int     portno;
+	char   *dp;
+	register struct hostent *hp;
 
 	if ((myppid = pid) == 0)
-	    myppid = getppid ();
+		myppid = getppid ();
 
-        if (pid != 0 || (ptr = getenv ("DISHPROC")) == NULLCP) {
+	if (pid != 0 || (ptr = getenv ("DISHPROC")) == NULLCP) {
 		char	*cp;
 
 		portno = (myppid & 0xffff) | 0x8000;
 		if (!islocal) {
-		    if ((hp = gethostbystring (cp = getlocalhost ()))
-			    == NULL) {
-            		(void) fprintf (stderr,"%s: unknown host", cp);
-			return (-1);
-		    }
-		    (void) sprintf (buffer, "%s %d",
-				    inet_ntoa (*(struct in_addr *)
-								hp -> h_addr),
-				    portno);
-		}
-		else
-		    (void) sprintf (buffer, "127.0.0.1 %d", portno);
+			if ((hp = gethostbystring (cp = getlocalhost ()))
+					== NULL) {
+				(void) fprintf (stderr,"%s: unknown host", cp);
+				return (-1);
+			}
+			(void) sprintf (buffer, "%s %d",
+							inet_ntoa (*(struct in_addr *)
+									   hp -> h_addr),
+							portno);
+		} else
+			(void) sprintf (buffer, "127.0.0.1 %d", portno);
 
 		(void) setenv ("DISHPROC", ptr = buffer);
-        }
+	}
 
-        if (pid !=0 || (prnt = getenv ("DISHPARENT")) == NULLCP) {
+	if (pid !=0 || (prnt = getenv ("DISHPARENT")) == NULLCP) {
 		(void) sprintf (parent, "%d", myppid);
 		(void) setenv ("DISHPARENT", prnt = parent);
 	}
@@ -107,9 +106,8 @@ register struct hostent *hp;
 #else	/* USE UNIX NAMED PIPES */
 
 
-void dummy ()
-{
-;
+void dummy () {
+	;
 }
 
 #endif

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/pa2str.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/pa2str.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -38,60 +38,60 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/pa2str.c,v 9.0 1992/
 char   *pa2str (px)
 register struct PSAPaddr *px;
 {
-    register char *bp;
-    struct PSAPaddr pas;
-    register struct PSAPaddr *pa = &pas;
-    register struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
-    static char buffer[BUFSIZ];
+	register char *bp;
+	struct PSAPaddr pas;
+	register struct PSAPaddr *pa = &pas;
+	register struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
+	static char buffer[BUFSIZ];
 
-    bp = buffer;
+	bp = buffer;
 
-    *pa = *px;	/* struct copy */
-    if (ta -> ta_selectlen > 0
-	    && ta -> ta_selectlen < sizeof ta -> ta_selector) {
-	register char *dp,
-		      *ep;
-	register struct TSAPaddr *tz;
-	register int n, m;
+	*pa = *px;	/* struct copy */
+	if (ta -> ta_selectlen > 0
+			&& ta -> ta_selectlen < sizeof ta -> ta_selector) {
+		register char *dp,
+				 *ep;
+		register struct TSAPaddr *tz;
+		register int n, m;
 
-	/* does this look like an encoded TSEL? */
-	m = ta -> ta_selectlen;
-	n = ta -> ta_selector[0];
-	if (m > 4 &&
-	    ta -> ta_selector[0] == ta -> ta_selector[1] &&
-	    n > 2 && n <= m - 2) 
-	{						/* encoded! */
-	    tz = &px -> pa_addr.sa_addr;
-	    bzero ((char *)ta, sizeof *ta);
-	    if ((ta -> ta_selectlen = m - n - 2) > 0)
-		    bcopy (&tz -> ta_selector[n+2], ta -> ta_selector,
-			   ta -> ta_selectlen);
-	    if (norm2na (&tz -> ta_selector[2], n, ta -> ta_addrs) != OK) {
-		    *pa = *px;
-		    goto normal;
-	    }
-	    ta -> ta_naddr = 1;
-	    goto bridge;
+		/* does this look like an encoded TSEL? */
+		m = ta -> ta_selectlen;
+		n = ta -> ta_selector[0];
+		if (m > 4 &&
+				ta -> ta_selector[0] == ta -> ta_selector[1] &&
+				n > 2 && n <= m - 2) {
+			/* encoded! */
+			tz = &px -> pa_addr.sa_addr;
+			bzero ((char *)ta, sizeof *ta);
+			if ((ta -> ta_selectlen = m - n - 2) > 0)
+				bcopy (&tz -> ta_selector[n+2], ta -> ta_selector,
+					   ta -> ta_selectlen);
+			if (norm2na (&tz -> ta_selector[2], n, ta -> ta_addrs) != OK) {
+				*pa = *px;
+				goto normal;
+			}
+			ta -> ta_naddr = 1;
+			goto bridge;
+		}
+		for (ep = (dp = ta -> ta_selector) + ta -> ta_selectlen, *ep = NULL;
+				dp < ep;
+				dp++)
+			if (!isprint ((u_char) *dp) && *dp != ' ')
+				break;
+		if (dp >= ep && (tz = str2taddr (ta -> ta_selector))) {
+			pa -> pa_addr.sa_addr = *tz;	    /* struct copy */
+bridge:
+			(void) sprintf (bp, "%s through TS bridge at ",
+							paddr2str (pa, NULLNA));
+			bp += strlen (bp);
+
+			bzero ((char *) pa, sizeof *pa);
+			*ta = px -> pa_addr.sa_addr;    /* struct copy */
+			ta -> ta_selectlen = 0;
+		}
 	}
-	for (ep = (dp = ta -> ta_selector) + ta -> ta_selectlen, *ep = NULL;
-	         dp < ep;
-	         dp++)
-	    if (!isprint ((u_char) *dp) && *dp != ' ')
-		break;
-	if (dp >= ep && (tz = str2taddr (ta -> ta_selector))) {
-	    pa -> pa_addr.sa_addr = *tz;	    /* struct copy */
-	bridge:
-	    (void) sprintf (bp, "%s through TS bridge at ",
-			    paddr2str (pa, NULLNA));
-	    bp += strlen (bp);
-
-	    bzero ((char *) pa, sizeof *pa);
-	    *ta = px -> pa_addr.sa_addr;    /* struct copy */
-	    ta -> ta_selectlen = 0;
-	}
-    }
 normal:
-    (void) strcpy (bp, paddr2str (pa, NULLNA));
+	(void) strcpy (bp, paddr2str (pa, NULLNA));
 
-    return buffer;
+	return buffer;
 }

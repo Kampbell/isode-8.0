@@ -2,7 +2,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/malloc_test.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/RCS/malloc_test.c,v 9.0 1992/06/16 12:34:01 isode Rel $
  *
  *
@@ -59,8 +59,7 @@ char	**argv;
 	printf("Total memory growth is %d\n", finish - start );
 }
 
-attempt_restart()
-{
+attempt_restart() {
 	finish = (int) sbrk(0);
 	printf("trouble...sbrk is %d, total growth is %d\n", finish, finish - start);
 	exit(1);

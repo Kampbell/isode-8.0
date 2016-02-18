@@ -2,7 +2,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/turbo/RCS/edb2dbm.c,v 9.0 1992/06/16 12:36:15 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/turbo/RCS/edb2dbm.c,v 9.0 1992/06/16 12:36:15 isode Rel $
  *
  *
@@ -139,9 +139,9 @@ char	**argv;
 char * TidyString (a)
 register char * a;
 {
-register char * b;
-char * c;
-register int i = 0;
+	register char * b;
+	char * c;
+	register int i = 0;
 
 	if (!*a)
 		return (a);

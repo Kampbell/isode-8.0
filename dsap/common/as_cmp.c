@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/as_cmp.c,v 9.0 
 as_cmp_comp (a,b)
 Attr_Sequence  a,b;
 {
-int i;
+	int i;
 	if (( i= AttrT_cmp (a->attr_type,b->attr_type)) != 0)
 		return (i);
 
@@ -39,7 +39,7 @@ int i;
 as_cmp (a,b)
 Attr_Sequence  a,b;
 {
-int i;
+	int i;
 	for (; (a != NULLATTR) && (b != NULLATTR) ; a = a->attr_link, b = b->attr_link)
 		if ( (i =as_cmp_comp (a,b)) != 0)
 			return (i);

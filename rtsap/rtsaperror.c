@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaperror.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rtsap/RCS/rtsaperror.c,v 9.0 1992/06/16 12:37:45 isode Rel $
  *
  *
@@ -34,25 +34,25 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaperror.c,v 9.0 19
 
 
 static char *reject_err0[] = {
-    "Busy",
-    "Cannot recover",
-    "Validation failure",
-    "Unacceptable dialogue mode",
-    "Rejected by responder",
-    "Address unknown",
-    "Connect request refused on this network connection", 
-    "Session disconnect",
-    "Protocol error",
-    "Congestion at RtSAP",
-    "Remote system problem",
-    "Presentation disconnect",
-    "ACS disconnect",
-    "Peer aborted association",
-    "Invalid parameter",
-    "Invalid operation",
-    "Timer expired",
-    "Indications waiting",
-    "Transfer failure"
+	"Busy",
+	"Cannot recover",
+	"Validation failure",
+	"Unacceptable dialogue mode",
+	"Rejected by responder",
+	"Address unknown",
+	"Connect request refused on this network connection",
+	"Session disconnect",
+	"Protocol error",
+	"Congestion at RtSAP",
+	"Remote system problem",
+	"Presentation disconnect",
+	"ACS disconnect",
+	"Peer aborted association",
+	"Invalid parameter",
+	"Invalid operation",
+	"Timer expired",
+	"Indications waiting",
+	"Transfer failure"
 };
 
 static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
@@ -62,11 +62,11 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 char   *RtErrString (code)
 register int code;
 {
-    static char buffer[50];
+	static char buffer[50];
 
-    if (code < reject_err0_cnt)
-	return reject_err0[code];
+	if (code < reject_err0_cnt)
+		return reject_err0[code];
 
-    (void) sprintf (buffer, "unknown error code 0x%x", code);
-    return buffer;
+	(void) sprintf (buffer, "unknown error code 0x%x", code);
+	return buffer;
 }

@@ -20,7 +20,7 @@
  *								*
  *    Use of this module is subject to the restrictions of the  *
  *    ISODE license agreement.					*
- *								*    
+ *								*
  ****************************************************************
 */
 /* addtestc.c - add 2 numbers network trivial service -- initiator */
@@ -40,18 +40,18 @@ struct passwd *getpwuid ();
 
 /*    DATA */
 
-static char *myservice = "addtest";	
+static char *myservice = "addtest";
 static char *mycontext = "addtest context";
 static char *mypci =     "addtest pci";
 
 
 extern int length;
 
-					/* ARGUMENTS */
+/* ARGUMENTS */
 int	addit_arg (), do_help (), do_quit ();
-					/* RESULTS */
+/* RESULTS */
 int	addit_result ();
-					/* ERRORS */
+/* ERRORS */
 int	addtest_error ();
 
 char    *getlocalhost();
@@ -59,22 +59,22 @@ char    *getlocalhost();
 
 static struct dispatch dispatches[] = {
 
-    "addtest",	operation_ADD_addit,
-    addit_arg, free_ADD_Addends,
-    addit_result, addtest_error,    
-    "the sum of two addends",
-    
-    "help", 0,
-    do_help, NULLIFP,
-    NULLIFP, NULLIFP,
-    "print this information",
+	"addtest",	operation_ADD_addit,
+	addit_arg, free_ADD_Addends,
+	addit_result, addtest_error,
+	"the sum of two addends",
 
-    "quit", 0,
-    do_quit, NULLIFP,
-    NULLIFP, NULLIFP,
-    "terminate the virtual association and exit",
+	"help", 0,
+	do_help, NULLIFP,
+	NULLIFP, NULLIFP,
+	"print this information",
 
-    NULL
+	"quit", 0,
+	do_quit, NULLIFP,
+	NULLIFP, NULLIFP,
+	"terminate the virtual association and exit",
+
+	NULL
 };
 
 
@@ -87,12 +87,12 @@ char   *ctime ();
 main (argc, argv, envp)
 int	argc;
 char  **argv,
-      **envp;
+	  **envp;
 {
-    ryinitiator (argc, argv, myservice, mycontext, mypci,
-		 table_ADD_Operations, dispatches, do_quit);
+	ryinitiator (argc, argv, myservice, mycontext, mypci,
+				 table_ADD_Operations, dispatches, do_quit);
 
-    exit (0);			/* NOTREACHED */
+	exit (0);			/* NOTREACHED */
 }
 
 
@@ -106,15 +106,15 @@ struct dispatch *ds;
 char  **args;
 struct type_ADD_Addends **ppaddends;
 {
-    struct type_ADD_Addends *paddends;
+	struct type_ADD_Addends *paddends;
 
-    if ((paddends = (struct type_ADD_Addends *) calloc (1, sizeof *paddends))
-	    == NULL)
-	adios (NULLCP, "out of memory");
-    paddends->addend1 = 3;
-    paddends->addend2 = 2;
-    *ppaddends = paddends; 
-    return OK;
+	if ((paddends = (struct type_ADD_Addends *) calloc (1, sizeof *paddends))
+			== NULL)
+		adios (NULLCP, "out of memory");
+	paddends->addend1 = 3;
+	paddends->addend2 = 2;
+	*ppaddends = paddends;
+	return OK;
 }
 
 /*  */
@@ -127,11 +127,11 @@ register struct dispatch *ds;
 char  **args;
 caddr_t *dummy;
 {
-    printf ("\nCommands are:\n");
-    for (ds = dispatches; ds -> ds_name; ds++)
-	printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
+	printf ("\nCommands are:\n");
+	for (ds = dispatches; ds -> ds_name; ds++)
+		printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
 
-    return NOTOK;
+	return NOTOK;
 }
 
 /*  */
@@ -144,13 +144,13 @@ struct dispatch *ds;
 char  **args;
 caddr_t *dummy;
 {
-struct AcSAPindication acis;
-struct AcSAPindication *aci = &acis;
+	struct AcSAPindication acis;
+	struct AcSAPindication *aci = &acis;
 
-/* should do the AcUnitDataUnbind(); */
-    if (AcUnitDataUnbind ( sd, aci ) != OK )
-	printf ("\n could not unbind\n");
-    exit (0);
+	/* should do the AcUnitDataUnbind(); */
+	if (AcUnitDataUnbind ( sd, aci ) != OK )
+		printf ("\n could not unbind\n");
+	exit (0);
 }
 
 
@@ -161,14 +161,14 @@ struct AcSAPindication *aci = &acis;
 
 static int  addit_result (sd, id, dummy, result, roi)
 int	sd,
-    	id,
-    	dummy;
+	id,
+	dummy;
 register struct type_ADD_Sum *result;
 struct RoSAPindication *roi;
 {
-    printf ("\n sum = %d\n", result->parm ); 
-    printf ("\n");
-    return OK;
+	printf ("\n sum = %d\n", result->parm );
+	printf ("\n");
+	return OK;
 }
 
 
@@ -179,26 +179,26 @@ struct RoSAPindication *roi;
 static int  addtest_error (sd, id, error, parameter, roi)
 int	sd,
 	id,
-    	error;
+	error;
 char *parameter; /*???*/
 struct RoSAPindication *roi;
-{    
-    register struct RyError *rye;
+{
+	register struct RyError *rye;
 
-    if (error == RY_REJECT) {
-	advise (NULLCP, "%s", RoErrString ((int) parameter));
+	if (error == RY_REJECT) {
+		advise (NULLCP, "%s", RoErrString ((int) parameter));
+		return OK;
+	}
+
+	if (rye = finderrbyerr (table_ADD_Errors, error))
+		advise (NULLCP, "%s",  rye -> rye_name);
+	else
+		advise (NULLCP, "Error %d", error);
+
+	/*
+	    if (parameter)
+		print_ia5list(parameter);
+	*/
+
 	return OK;
-    }
-
-    if (rye = finderrbyerr (table_ADD_Errors, error))
-	advise (NULLCP, "%s",  rye -> rye_name);
-    else
-	advise (NULLCP, "Error %d", error);
-
-/*
-    if (parameter)
-	print_ia5list(parameter);
-*/
-
-    return OK;
 }

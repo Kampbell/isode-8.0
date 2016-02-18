@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/int2strb.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/int2strb.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -36,13 +36,13 @@ char   *int2strb (n, len)
 register int    n;
 int     len;
 {
-    register int    i;
-    static char buffer[sizeof (int) + 1];
+	register int    i;
+	static char buffer[sizeof (int) + 1];
 
-    bzero (buffer, sizeof (buffer));
-    for (i = 0; i < len; i++)
-	if (n & (1 << i))
-	    buffer[i / 8] |= (1 << (7 - (i % 8)));
+	bzero (buffer, sizeof (buffer));
+	for (i = 0; i < len; i++)
+		if (n & (1 << i))
+			buffer[i / 8] |= (1 << (7 - (i % 8)));
 
-    return buffer;
+	return buffer;
 }

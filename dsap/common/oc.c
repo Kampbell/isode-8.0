@@ -32,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/oc.c,v 9.0 1992
 #include "tailor.h"
 
 extern LLog * log_dsap;
-extern short oc_sntx; 
+extern short oc_sntx;
 extern IFP oc_hier;
 extern IFP oc_avsprint;
 
@@ -41,9 +41,9 @@ static add_hierarchy ();
 objectclass * oc_add (oid)
 OID oid;
 {
-oid_table * Current;
-extern objectclass ocOIDTable[];
-extern int ocNumEntries;
+	oid_table * Current;
+	extern objectclass ocOIDTable[];
+	extern int ocNumEntries;
 
 	Current = &ocOIDTable[ocNumEntries].oc_ot;
 	if (oid == NULLOID)
@@ -62,11 +62,11 @@ extern int ocNumEntries;
 objectclass * str2oc (str)
 char * str;
 {
-char * ptr;
-char * get_oid ();
-objectclass *oc;
+	char * ptr;
+	char * get_oid ();
+	objectclass *oc;
 
-	if ((oc = name2oc (str)) != NULLOBJECTCLASS) 
+	if ((oc = name2oc (str)) != NULLOBJECTCLASS)
 		return (oc);
 
 	/* unknown object class -- need to add to table */
@@ -81,7 +81,7 @@ objectclass *oc;
 static AV_Sequence new_oc_avs (oc)
 objectclass * oc;
 {
-AV_Sequence avs;
+	AV_Sequence avs;
 
 	avs = avs_comp_alloc();
 	avs->avseq_next = NULLAV;
@@ -93,9 +93,9 @@ AV_Sequence avs;
 static AV_Sequence str2oc_hier (str)
 char * str;
 {
-AV_Sequence avs = NULLAV;
-objectclass * oc;
-char * ptr, *save, val;
+	AV_Sequence avs = NULLAV;
+	objectclass * oc;
+	char * ptr, *save, val;
 
 	str = SkipSpace (str);
 
@@ -134,8 +134,8 @@ add_oc_avs (oc,avsp)
 objectclass * oc;
 AV_Sequence *avsp;
 {
-AV_Sequence loop;
-objectclass *ocp;
+	AV_Sequence loop;
+	objectclass *ocp;
 
 	/* see if we already have oc in heirarchy ... */
 
@@ -151,9 +151,9 @@ static add_hierarchy (oc,avsp)
 objectclass * oc;
 AV_Sequence *avsp;
 {
-struct oc_seq * oidseq;
+	struct oc_seq * oidseq;
 
-	for (oidseq = oc->oc_hierachy; 
+	for (oidseq = oc->oc_hierachy;
 			oidseq != NULLOCSEQ; oidseq = oidseq->os_next) {
 		add_oc_avs (oidseq->os_oc,avsp);
 		add_hierarchy (oidseq->os_oc,avsp);
@@ -164,8 +164,8 @@ struct oc_seq * oidseq;
 static in_hierarchy (a,b)
 AV_Sequence a, b;
 {
-struct oc_seq * oidseq;
-objectclass *oca, *ocb;
+	struct oc_seq * oidseq;
+	objectclass *oca, *ocb;
 
 	if ((a == NULLAV) || (a->avseq_av.av_syntax != oc_sntx) || (a->avseq_av.av_struct == NULL))
 		return (FALSE);
@@ -176,8 +176,8 @@ objectclass *oca, *ocb;
 	oca = (objectclass *) a->avseq_av.av_struct;
 	ocb = (objectclass *) b->avseq_av.av_struct;
 
-	for (oidseq = ocb->oc_hierachy; 
-			oidseq != NULLOCSEQ; oidseq = oidseq->os_next) 
+	for (oidseq = ocb->oc_hierachy;
+			oidseq != NULLOCSEQ; oidseq = oidseq->os_next)
 		if (objclass_cmp(oca,oidseq->os_oc) == 0)
 			return (TRUE);
 
@@ -189,9 +189,9 @@ PS ps;
 AV_Sequence avs;
 int format;
 {
-AV_Sequence newavs;
-char found;
-char printed = FALSE;
+	AV_Sequence newavs;
+	char found;
+	char printed = FALSE;
 
 	if (avs == NULLAV)
 		return;
@@ -208,7 +208,7 @@ char printed = FALSE;
 			}
 
 		if (found == FALSE) {
-			if (printed == TRUE) 
+			if (printed == TRUE)
 				ps_print (ps," & ");
 			AttrV_print (ps,&avs->avseq_av,format);
 			printed = TRUE;
@@ -238,7 +238,7 @@ check_in_oc (oid,avs)
 OID oid;
 AV_Sequence avs;
 {
-objectclass * oc;
+	objectclass * oc;
 
 	for (; avs != NULLAV; avs = avs->avseq_next) {
 		oc = (objectclass *) avs->avseq_av.av_struct;
@@ -268,10 +268,10 @@ objectclass *oc;
 static objectclass * oc_dec (pe)
 PE pe;
 {
-OID oid;
-objectclass *oc;
+	OID oid;
+	objectclass *oc;
 
-        if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_OID))
+	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_OID))
 		return NULLOBJECTCLASS;
 
 	if ((oid = prim2oid (pe)) == NULLOID)
@@ -290,7 +290,7 @@ PS ps;
 objectclass * oc;
 int format;
 {
-extern int oidformat;
+	extern int oidformat;
 
 	if ( format != READOUT)
 		ps_printf (ps,"%s",oc2name (oc,OIDPART));
@@ -298,15 +298,14 @@ extern int oidformat;
 		ps_printf (ps,"%s",oc2name (oc,oidformat));
 }
 
-objectclass_syntax ()
-{
+objectclass_syntax () {
 
 	oc_sntx = add_attribute_syntax ("objectclass",
-		(IFP) oc_enc,	(IFP) oc_dec,
-		(IFP) str2oc,	oc_print,
-		(IFP) oc_cpy,	objectclass_cmp,
-		oc_free,	NULLCP,
-		NULLIFP,	FALSE );
+									(IFP) oc_enc,	(IFP) oc_dec,
+									(IFP) str2oc,	oc_print,
+									(IFP) oc_cpy,	objectclass_cmp,
+									oc_free,	NULLCP,
+									NULLIFP,	FALSE );
 
 	oc_hier = (IFP) str2oc_hier;
 	oc_avsprint = (IFP) oc_print_avs;

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/dishlib.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/dishlib.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -69,9 +69,9 @@ char		*TidyString();
 char 		search_result;		/* another horrid global ! */
 
 extern int call_list (), call_compare (), call_search (),
-           call_add (), call_delete (), call_showentry (), call_showname (),
-           call_showattribute (), call_unbind (), call_help (), call_ds (),
-           unknown_cmd (), dsa_control (), call_modify (), call_modifyrdn (),
+	   call_add (), call_delete (), call_showentry (), call_showname (),
+	   call_showattribute (), call_unbind (), call_help (), call_ds (),
+	   unknown_cmd (), dsa_control (), call_modify (), call_modifyrdn (),
 	   call_quit (), call_bind (), call_moveto (), call_fred ();
 
 static struct {
@@ -94,8 +94,7 @@ int len;
 	num_cmd++;
 }
 
-dish_cmd_init ()
-{
+dish_cmd_init () {
 	add_dish_command ("list", 	call_list,		1);
 	add_dish_command ("compare", 	call_compare,		1);
 	add_dish_command ("search", 	call_search,		2);
@@ -109,7 +108,7 @@ dish_cmd_init ()
 	add_dish_command ("unbind", 	call_unbind,		1);
 	add_dish_command ("moveto", 	call_moveto,		3);
 	add_dish_command ("dsacontrol", dsa_control,		2);
-	add_dish_command ("quit", 	call_quit,		1); /* quick way out for interactive program */	
+	add_dish_command ("quit", 	call_quit,		1); /* quick way out for interactive program */
 	add_dish_command ("squid",	call_ds,		2);
 	add_dish_command ("?", 		call_help,		1);
 	add_dish_command ("help", 	call_help,		1);
@@ -134,10 +133,10 @@ extern LLog *log_dsap;
 
 #ifndef	NO_STATS
 static	LLog	_dad_log = {
-    "dad.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,
-    LLOG_NONE, -1, LLOGCLS | LLOGCRT | LLOGZER, NOTOK
+	"dad.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,
+	LLOG_NONE, -1, LLOGCLS | LLOGCRT | LLOGZER, NOTOK
 };
-	LLog   *dad_log = &_dad_log;
+LLog   *dad_log = &_dad_log;
 #endif
 
 char no_rcfile;
@@ -170,42 +169,42 @@ char          **argv;
 #endif
 	no_rcfile = FALSE;
 	for (i=1; i<argc; i++) {
-	    if (test_arg (argv[i],"-dad",1)) {
-		cache_time = 15 * 60;
-		connect_time = 5 * 60;
-		dad_flag = TRUE;
+		if (test_arg (argv[i],"-dad",1)) {
+			cache_time = 15 * 60;
+			connect_time = 5 * 60;
+			dad_flag = TRUE;
 #ifndef	NO_STATS
-		ll_hdinit (dad_log, argv[0]);
+			ll_hdinit (dad_log, argv[0]);
 #endif
-		shuffle_up (argc--, argv, i);
-		continue;
-	    }
-	    if (test_arg (argv[i],"-fast",1)) {
-		no_rcfile = TRUE;
-		shuffle_up (argc--, argv, i);
-		continue;
-	    }
-	    if (test_arg (argv[i],"-help",1)) {
-		if ((opt = ps_alloc (std_open)) == NULLPS)
-			fatal (-62, "ps_alloc failed");
-		if (std_setup (opt, stderr) == NOTOK)
-			fatal (-63, "std_setup failed");
+			shuffle_up (argc--, argv, i);
+			continue;
+		}
+		if (test_arg (argv[i],"-fast",1)) {
+			no_rcfile = TRUE;
+			shuffle_up (argc--, argv, i);
+			continue;
+		}
+		if (test_arg (argv[i],"-help",1)) {
+			if ((opt = ps_alloc (std_open)) == NULLPS)
+				fatal (-62, "ps_alloc failed");
+			if (std_setup (opt, stderr) == NOTOK)
+				fatal (-63, "std_setup failed");
 
-		if ((rps = ps_alloc (std_open)) == NULLPS)
-			fatal (-64, "ps_alloc 2 failed");
-		if (std_setup (rps, stdout) == NOTOK)
-			fatal (-65, "std_setup 2 failed");
+			if ((rps = ps_alloc (std_open)) == NULLPS)
+				fatal (-64, "ps_alloc 2 failed");
+			if (std_setup (rps, stdout) == NOTOK)
+				fatal (-65, "std_setup 2 failed");
 
-		help_arg ("dish");
-		exit (0);
-	    }
-	    if (test_arg(argv[i],"-tailor",1)) {
-		shuffle_up (argc--, argv, i);
-		if (i == argc) 
-			fatal (-66,"Tailor file name missing");
-		tailfile = argv[i];
-		shuffle_up (argc--, argv, i);
-	    }
+			help_arg ("dish");
+			exit (0);
+		}
+		if (test_arg(argv[i],"-tailor",1)) {
+			shuffle_up (argc--, argv, i);
+			if (i == argc)
+				fatal (-66,"Tailor file name missing");
+			tailfile = argv[i];
+			shuffle_up (argc--, argv, i);
+		}
 	}
 
 	if ( (argc >1) && (test_arg (argv[1], "-pipe",3))) {
@@ -250,13 +249,13 @@ char          **argv;
 #ifndef NO_STATS
 	ll_hdinit (log_stat,vec[0]);
 #endif
-	
+
 	check_known_oids();
 
 	if (user_tailor () != OK) {
-		
+
 		(void) fprintf (stderr, "Tailoring failed\n");
-		
+
 		if (frompipe)
 			exit_pipe ();
 
@@ -268,7 +267,7 @@ char          **argv;
 #endif
 
 	if (! frompipe) {
-	
+
 #ifndef NO_STATS
 		char buf [LINESIZE];
 		*buf = 0;
@@ -277,11 +276,11 @@ char          **argv;
 			(void) strcat (buf,argv[i]);
 			(void) strcat (buf," ");
 			if (test_arg (argv[i], "-password",2) && ++i < argc)
-			    (void) strcat (buf, "????");
+				(void) strcat (buf, "????");
 		}
-		LLOG (log_stat,LLOG_NOTICE,("%s",buf)); 
+		LLOG (log_stat,LLOG_NOTICE,("%s",buf));
 #endif
-		if (setjmp (dish_env)) 
+		if (setjmp (dish_env))
 			exit (-66);
 
 		if (call_bind (argc,argv) != OK)
@@ -304,36 +303,32 @@ char          **argv;
 
 #ifdef GNUREADLINE
 
-void gnu_gets_setup ()
-{
-   extern int           rl_bind_key ();
-   extern int               *rl_insert ();
-   rl_bind_key ( '\t', rl_insert );
+void gnu_gets_setup () {
+	extern int           rl_bind_key ();
+	extern int               *rl_insert ();
+	rl_bind_key ( '\t', rl_insert );
 }
 
 static char *gnu_gets ( buf, len )
-      char                   *buf;
-      int                    len;
+char                   *buf;
+int                    len;
 {
-   extern char          *readline ();
-   static char       *gets_line;
-   gets_line = readline ( "Dish -> " );
-   if ( gets_line && *gets_line )
-      add_history ( gets_line );
-   if ( gets_line )
-   {
-      strncpy ( buf, gets_line, strlen(gets_line) + 1 );
-      free ( gets_line );
-      return buf;
-   }
-   else
-      return (char *) NULL;
+	extern char          *readline ();
+	static char       *gets_line;
+	gets_line = readline ( "Dish -> " );
+	if ( gets_line && *gets_line )
+		add_history ( gets_line );
+	if ( gets_line ) {
+		strncpy ( buf, gets_line, strlen(gets_line) + 1 );
+		free ( gets_line );
+		return buf;
+	} else
+		return (char *) NULL;
 }
 #endif
 
 
-do_dish ()
-{
+do_dish () {
 	char	       *brkset;
 	char           *command;
 	char		cmd_buf [LINESIZE];
@@ -379,10 +374,10 @@ do_dish ()
 				continue;
 
 
-			(void) signal (SIGALRM, SIG_IGN);	
-				/* unset alarm */
-		        if (dad_flag)
-			    cache_time = 15 * 60;
+			(void) signal (SIGALRM, SIG_IGN);
+			/* unset alarm */
+			if (dad_flag)
+				cache_time = 15 * 60;
 #ifdef SOCKETS
 			command = inbuf;
 #else
@@ -435,19 +430,19 @@ do_dish ()
 				test_rc_file (opt);
 		} else {
 			do {
-			    set_alarm ();
+				set_alarm ();
 #ifdef GNUREADLINE
-			    if (gnu_gets ( inbuf, sizeof inbuf ) == 0)
-				call_quit(0, NULLVP);
-#else
-			    (void) printf ("Dish -> ");
-			    (void) fflush (stdout);
-			    while (fgets (inbuf, sizeof inbuf, stdin) == 0)
-				    if (errno != EINTR)
+				if (gnu_gets ( inbuf, sizeof inbuf ) == 0)
 					call_quit(0, NULLVP);
+#else
+				(void) printf ("Dish -> ");
+				(void) fflush (stdout);
+				while (fgets (inbuf, sizeof inbuf, stdin) == 0)
+					if (errno != EINTR)
+						call_quit(0, NULLVP);
 #endif
-			    for (ptr = inbuf; isspace (*ptr); ptr++)
-				continue;
+				for (ptr = inbuf; isspace (*ptr); ptr++)
+					continue;
 			} while (*ptr == 0);
 			(void) signal (SIGALRM, SIG_IGN); /* unset alarm */
 			command = TidyString(inbuf);
@@ -457,25 +452,25 @@ do_dish ()
 		savename = dn_cpy (dn);
 		hide_picture();
 		dish_state = BUSY;
-		
+
 		ptr = command;
 		while (*ptr)
 			if (isspace (*ptr))
- 				break;
+				break;
 			else
 				ptr++;
 
 		if (*ptr == 0) {
 			noarg = TRUE;
 		} else {
-			*ptr = 0;	
+			*ptr = 0;
 			noarg = FALSE;
 		}
- 	        for (x = 0; Commands[x].command != 0; x++)
+		for (x = 0; Commands[x].command != 0; x++)
 			if (test_arg (command, Commands[x].command, Commands[x].unique))
 				break;
 
-		if (! noarg)	
+		if (! noarg)
 			*ptr++ = ' ';
 
 		if (* Commands[x].defaults != 0) {
@@ -488,12 +483,11 @@ do_dish ()
 		}
 
 		if (strncmp (command, "fred -ufn ",
-			     sizeof "fred -ufn " - 1) == 0) {
-		    command[4] = command[9] = ',';
-		    brkset = ",";
-		}
-		else
-		    brkset = " \t";
+					 sizeof "fred -ufn " - 1) == 0) {
+			command[4] = command[9] = ',';
+			brkset = ",";
+		} else
+			brkset = " \t";
 		if ((no_of_args = sstr2arg (command, MAXARGS, vector, brkset)) == NOTOK)
 			ps_printf (OPT, "Too many arguments... Can't cope.\n");
 		else {
@@ -520,42 +514,42 @@ do_dish ()
 				(void) strcat (buf," ");
 
 				if (test_arg (vector[y], "-password",2) && y+1 < no_of_args) {
-				    (void) strcat (buf, "????");
-				    y++;
-				    continue;
+					(void) strcat (buf, "????");
+					y++;
+					continue;
 				}
 #endif
 				if (test_arg (vector[y],"-help",1)) {
 					if (vector[0] != NULLCP)
-					   	help_arg (vector[0]);
+						help_arg (vector[0]);
 					else
 						unknown_cmd(0,NULLVP);
 					help_flag = TRUE;
 				}
 			}
 #ifndef NO_STATS
-			LLOG (log_stat,LLOG_NOTICE,("%s",buf)); 
+			LLOG (log_stat,LLOG_NOTICE,("%s",buf));
 			if (dad_flag
-			        && buf[0]
-			        && strncmp (buf, "moveto ",
-					    sizeof "moveto " -1))
-			    (void) ll_log (dad_log, LLOG_NOTICE, NULLCP,
-					   "%s", buf);
+					&& buf[0]
+					&& strncmp (buf, "moveto ",
+								sizeof "moveto " -1))
+				(void) ll_log (dad_log, LLOG_NOTICE, NULLCP,
+							   "%s", buf);
 #endif
 			if ( ! help_flag)
-			       (*Commands[x].handler) (no_of_args, vector);
+				(*Commands[x].handler) (no_of_args, vector);
 		}
 
 		/* if from pipe, return results */
-tidy_up:;		
+tidy_up:
+		;
 
 		if (frompipe && !remote_prob) {
 #ifdef	SOCKETS
-		    if (rps -> ps_byteno > 0) {
-			(void) ps_flush (rps);
-		    } else
-			if (opt -> ps_byteno > 0)
-			    (void) ps_flush (opt);
+			if (rps -> ps_byteno > 0) {
+				(void) ps_flush (rps);
+			} else if (opt -> ps_byteno > 0)
+				(void) ps_flush (opt);
 #else
 			if (opt->ps_byteno == 0) {
 				*rps->ps_ptr = 0;
@@ -590,7 +584,7 @@ char **argv;
 {
 	/* can only get called if run interactively - dont worry about pipe */
 	(void) signal (SIGINT, SIG_DFL);
-	
+
 	DLOG (log_dsap, LLOG_DEBUG, ("Dish:- Exiting Dish successfully..."));
 	if (bound)
 		(void) ds_unbind ();
@@ -607,7 +601,7 @@ set_cmd_default (cmd, dflt)
 char * cmd;
 char * dflt;
 {
-int x;
+	int x;
 
 	for (x = 0; Commands[x].command != 0; x++)
 		if (strcmp (cmd, Commands[x].command) == 0) {
@@ -632,7 +626,7 @@ int sd;
 	if (dish_state == IDLE)
 		ps_printf (OPT, "\n");
 	else {
-	    	ps_printf (OPT, "(Interrupted)\n");
+		ps_printf (OPT, "(Interrupted)\n");
 		dish_state = IDLE;
 	}
 
@@ -640,17 +634,16 @@ int sd;
 }
 
 void    advise (va_alist)
-va_dcl
-{
-    int     code;
-    va_list ap;
-    extern LLog    *log_dsap;
+va_dcl {
+	int     code;
+	va_list ap;
+	extern LLog    *log_dsap;
 
-    va_start (ap);
+	va_start (ap);
 
-    code = va_arg (ap, int);
+	code = va_arg (ap, int);
 
-    (void) _ll_log (log_dsap, code, ap);
+	(void) _ll_log (log_dsap, code, ap);
 
-    va_end (ap);
+	va_end (ap);
 }

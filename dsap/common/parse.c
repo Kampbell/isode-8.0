@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/parse.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/parse.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -159,8 +159,7 @@ GDBM_FILE	db;
 	return save;
 }
 
-char *getnextline ()
-{
+char *getnextline () {
 	return getline (save_db);
 }
 
@@ -174,12 +173,12 @@ char *getnextline ()
 #define PARSE_INCR 5
 #define MAXLINE    3
 */
-    static char *parse_buffer = NULLCP;
-    static int	parse_len = 0;
-    static char	*buf;
-    static int	buflen;
-    static int	curlen;
-    static int	size;
+static char *parse_buffer = NULLCP;
+static int	parse_len = 0;
+static char	*buf;
+static int	buflen;
+static int	curlen;
+static int	size;
 
 /*
  * get a physical line - handle arbitary long physical line
@@ -188,45 +187,45 @@ static char *
 getphyline (file)
 FILE * file;
 {
-    extern int parse_line;
-    char * ptr;
+	extern int parse_line;
+	char * ptr;
 
-    buf = parse_buffer;
-    buflen = parse_len;
-    curlen = 0;
+	buf = parse_buffer;
+	buflen = parse_len;
+	curlen = 0;
 
-    for (;;) {
-	if ( buflen <= MAXLINE) {
-	    if (parse_len <= 0) {
-		buflen = parse_len = PARSE_INCR;
-		buf = parse_buffer = smalloc(PARSE_INCR);
-	    } else {
-		parse_len += PARSE_INCR;
-		buflen += PARSE_INCR;
-		if ((parse_buffer = realloc(parse_buffer, (unsigned)parse_len)) == NULLCP)
-		    exit (2);	/* ??? */
-		buf = parse_buffer + curlen;
-	    }
+	for (;;) {
+		if ( buflen <= MAXLINE) {
+			if (parse_len <= 0) {
+				buflen = parse_len = PARSE_INCR;
+				buf = parse_buffer = smalloc(PARSE_INCR);
+			} else {
+				parse_len += PARSE_INCR;
+				buflen += PARSE_INCR;
+				if ((parse_buffer = realloc(parse_buffer, (unsigned)parse_len)) == NULLCP)
+					exit (2);	/* ??? */
+				buf = parse_buffer + curlen;
+			}
+		}
+
+		if (fgets (buf, buflen,file) == NULLCP)
+			return (NULLCP);
+
+		size = strlen(buf);
+		ptr = buf + size - 1;
+		if ( *ptr == '\n') {
+			*ptr = '\0';
+			size--;
+			break;
+		}
+		buf += size;
+		buflen -= size;
+		curlen += size;
+
 	}
 
-	if (fgets (buf, buflen,file) == NULLCP)
-	    return (NULLCP);
-
-	size = strlen(buf);
-	ptr = buf + size - 1;
-	if ( *ptr == '\n') {
-	    *ptr = '\0';
-	    size--;
-	    break;
-	}
-	buf += size;
-	buflen -= size;
-	curlen += size;
-
-    }
-
-    parse_line++;
-    return (parse_buffer);
+	parse_line++;
+	return (parse_buffer);
 
 }
 
@@ -240,67 +239,66 @@ catphyline (file, str)
 FILE * file;
 char	*str;
 {
-    extern int parse_line;
-    char * ptr;
+	extern int parse_line;
+	char * ptr;
 
-    if (str && str > parse_buffer) {
-	/* size will be negative if a long line has been trimmed back
-	 * beyond the last buffer length
-	 */
-	size = str - buf;	/* saves us calling strlen here */
-	buf += size;
-	buflen -= size;
-	curlen += size;
-    } else {
-	buf = parse_buffer;
-	buflen = parse_len;
-	curlen = 0;
-    }
-
-    for (;;) {
-	if ( buflen <= MAXLINE) {
-	    if (parse_len <= 0) {
-		buflen = parse_len = PARSE_INCR;
-		buf = parse_buffer = smalloc(PARSE_INCR);
-	    } else {
-		parse_len += PARSE_INCR;
-		buflen += PARSE_INCR;
-		if ((parse_buffer = realloc(parse_buffer, (unsigned)parse_len)) == NULLCP)
-		    exit (2);	/* ??? */
-		buf = parse_buffer + curlen;
-	    }
+	if (str && str > parse_buffer) {
+		/* size will be negative if a long line has been trimmed back
+		 * beyond the last buffer length
+		 */
+		size = str - buf;	/* saves us calling strlen here */
+		buf += size;
+		buflen -= size;
+		curlen += size;
+	} else {
+		buf = parse_buffer;
+		buflen = parse_len;
+		curlen = 0;
 	}
 
-	if (fgets (buf, buflen,file) == NULLCP)
-	    return (NULLCP);
+	for (;;) {
+		if ( buflen <= MAXLINE) {
+			if (parse_len <= 0) {
+				buflen = parse_len = PARSE_INCR;
+				buf = parse_buffer = smalloc(PARSE_INCR);
+			} else {
+				parse_len += PARSE_INCR;
+				buflen += PARSE_INCR;
+				if ((parse_buffer = realloc(parse_buffer, (unsigned)parse_len)) == NULLCP)
+					exit (2);	/* ??? */
+				buf = parse_buffer + curlen;
+			}
+		}
 
-	size = strlen(buf);
-	ptr = buf + size - 1;
-	if ( *ptr == '\n') {
-	    *ptr = '\0';
-	    size--;
-	    break;
+		if (fgets (buf, buflen,file) == NULLCP)
+			return (NULLCP);
+
+		size = strlen(buf);
+		ptr = buf + size - 1;
+		if ( *ptr == '\n') {
+			*ptr = '\0';
+			size--;
+			break;
+		}
+		buf += size;
+		buflen -= size;
+		curlen += size;
+
 	}
-	buf += size;
-	buflen -= size;
-	curlen += size;
 
-    }
-
-    parse_line++;
-    return (parse_buffer);
+	parse_line++;
+	return (parse_buffer);
 
 }
 
-free_phylinebuf()
-{
-    free (parse_buffer);
-    parse_buffer = NULLCP;
-    parse_len = 0;
-    buf = NULLCP;
-    buflen = 0;
-    curlen = 0;
-    size = 0;
+free_phylinebuf() {
+	free (parse_buffer);
+	parse_buffer = NULLCP;
+	parse_len = 0;
+	buf = NULLCP;
+	buflen = 0;
+	curlen = 0;
+	size = 0;
 
 }
 
@@ -314,32 +312,32 @@ char * getline (file)
 #endif
 FILE * file;
 {
-    int		len;
-    int		ocurlen;
-    char	*p;
-    char	*npart;
+	int		len;
+	int		ocurlen;
+	char	*p;
+	char	*npart;
 
-    savefile = file;
+	savefile = file;
 
-    do {
-	if ((p = getphyline(file)) == NULLCP)
-	    return (NULLCP);
+	do {
+		if ((p = getphyline(file)) == NULLCP)
+			return (NULLCP);
 
-    } while (*SkipSpace (buf) == '#');
+	} while (*SkipSpace (buf) == '#');
 
-    len = curlen + size;
+	len = curlen + size;
 
-    npart = p;
-    while ((npart = unesc_cont(npart, len))) {/* continued line keep going */
-	ocurlen = npart - p;
-	if ((p = catphyline(file, npart)) == NULLCP)
-	    return (NULLCP);
-	len = curlen + size - ocurlen;
-	npart = p + ocurlen;
-    }
+	npart = p;
+	while ((npart = unesc_cont(npart, len))) {/* continued line keep going */
+		ocurlen = npart - p;
+		if ((p = catphyline(file, npart)) == NULLCP)
+			return (NULLCP);
+		len = curlen + size - ocurlen;
+		npart = p + ocurlen;
+	}
 
-    FAST_TIDY(p);
-    return p;
+	FAST_TIDY(p);
+	return p;
 
 }
 
@@ -365,20 +363,20 @@ unesc_cont(ptr, len)
 char	*ptr;
 int	len;
 {
-    char	*p;
-    int		cnt;
+	char	*p;
+	int		cnt;
 
-    for (cnt = 0, p = ptr + len - 1; p >= ptr; p--) {
-	if (*p != CONT_CHAR)
-	    break;
-       cnt++;
-    }
-    if (cnt) {
-	p += (cnt / 2) + 1;
-	*p = '\0';
-    }
+	for (cnt = 0, p = ptr + len - 1; p >= ptr; p--) {
+		if (*p != CONT_CHAR)
+			break;
+		cnt++;
+	}
+	if (cnt) {
+		p += (cnt / 2) + 1;
+		*p = '\0';
+	}
 
-    return (cnt % 2 ? p : NULLCP);
+	return (cnt % 2 ? p : NULLCP);
 
 }
 
@@ -392,38 +390,38 @@ FILE	*fp;
 char	*line;
 int	wl;
 {
-    int		len;	/* length of line left */
-    int		pos;	/* position we are going to break line at */
-    int		m;	/* number of CONT_CHARs at end of string */
-    int		n;	/* number of CONT_CHARs we can put on this line */
-    int		i;
+	int		len;	/* length of line left */
+	int		pos;	/* position we are going to break line at */
+	int		m;	/* number of CONT_CHARs at end of string */
+	int		n;	/* number of CONT_CHARs we can put on this line */
+	int		i;
 
-    len = strlen(line);
-    while (len > 0) {
-	if (len < wl)
-	    pos = len;
-	else
-	    pos = wl;
-	
-	m = cnt_escp(line, pos);
+	len = strlen(line);
+	while (len > 0) {
+		if (len < wl)
+			pos = len;
+		else
+			pos = wl;
 
-	if (m > 0) {
-	    if (pos + 2*m <= wl) {	/* can fit them in the line */
-		n = m;	/* need an extra escape for each one */
-	    } else  {
-		n = (wl - 1 - pos + m)/2;
-		pos -= m - n;
-		n++;	/* Need an extra one to make the line continue */
-	    }
-	} else
-	    n = 0;
-	for (i = pos; i > 0; i--, line++)
-	    (void) putc(*line, fp);
-	for (i = n; i > 0; i--)
-	    (void) putc(CONT_CHAR, fp);
-	(void) putc('\n', fp);
-	len -= pos;
-    }
+		m = cnt_escp(line, pos);
+
+		if (m > 0) {
+			if (pos + 2*m <= wl) {	/* can fit them in the line */
+				n = m;	/* need an extra escape for each one */
+			} else  {
+				n = (wl - 1 - pos + m)/2;
+				pos -= m - n;
+				n++;	/* Need an extra one to make the line continue */
+			}
+		} else
+			n = 0;
+		for (i = pos; i > 0; i--, line++)
+			(void) putc(*line, fp);
+		for (i = n; i > 0; i--)
+			(void) putc(CONT_CHAR, fp);
+		(void) putc('\n', fp);
+		len -= pos;
+	}
 }
 /*
  * write no more than wl characters of the line out escaping any
@@ -434,65 +432,65 @@ PS	ps;
 char	*line;
 int	wl;
 {
-    int		len;	/* length of line left */
-    int		pos;	/* position we are going to break line at */
-    int		m;	/* number of CONT_CHARs at end of string */
-    int		n;	/* number of CONT_CHARs we can put on this line */
-    int		i;
+	int		len;	/* length of line left */
+	int		pos;	/* position we are going to break line at */
+	int		m;	/* number of CONT_CHARs at end of string */
+	int		n;	/* number of CONT_CHARs we can put on this line */
+	int		i;
 
-    len = strlen(line);
-    while (len > 0) {
-	if (len < wl)
-	    pos = len;
-	else
-	    pos = wl;
-	
-	m = cnt_escp(line, pos);
+	len = strlen(line);
+	while (len > 0) {
+		if (len < wl)
+			pos = len;
+		else
+			pos = wl;
 
-	if (m > 0) {
-	    if (pos + 2*m <= wl) {	/* can fit them in the line */
-		n = m;	/* need an extra escape for each one */
-	    } else  {
-		n = (wl - 1 - pos + m)/2;
-		pos -= m - n;
-		n++;	/* Need an extra one to make the line continue */
-	    }
-	} else
-	    n = 0;
-	(void) ps_write(ps, (PElementData)line, pos);
-	if (n > 0) {
-	    char nbuf[MAXLINE];
+		m = cnt_escp(line, pos);
 
-	    /* unlikely this will ever be run but just in case */
-	    while (n + 1 > MAXLINE) {
-		for (i = MAXLINE - 2; i >= 0; i--)
-		    nbuf[i] = CONT_CHAR;
-		nbuf[MAXLINE - 1] = '\n';
+		if (m > 0) {
+			if (pos + 2*m <= wl) {	/* can fit them in the line */
+				n = m;	/* need an extra escape for each one */
+			} else  {
+				n = (wl - 1 - pos + m)/2;
+				pos -= m - n;
+				n++;	/* Need an extra one to make the line continue */
+			}
+		} else
+			n = 0;
 		(void) ps_write(ps, (PElementData)line, pos);
-		n -= MAXLINE;
-	    }
-	    for (i = n - 1; i >= 0; i--)
-		nbuf[i] = CONT_CHAR;
-	    nbuf[n] = '\n';
-	    (void) ps_write(ps, (PElementData)line, pos);
+		if (n > 0) {
+			char nbuf[MAXLINE];
+
+			/* unlikely this will ever be run but just in case */
+			while (n + 1 > MAXLINE) {
+				for (i = MAXLINE - 2; i >= 0; i--)
+					nbuf[i] = CONT_CHAR;
+				nbuf[MAXLINE - 1] = '\n';
+				(void) ps_write(ps, (PElementData)line, pos);
+				n -= MAXLINE;
+			}
+			for (i = n - 1; i >= 0; i--)
+				nbuf[i] = CONT_CHAR;
+			nbuf[n] = '\n';
+			(void) ps_write(ps, (PElementData)line, pos);
+		}
+		len -= pos;
 	}
-	len -= pos;
-    }
 }
 
 cnt_escp(ptr, len)
 register char	*ptr;
 int	len;
 {
-    register char	*p;
-    register int		cnt;
+	register char	*p;
+	register int		cnt;
 
-    for (cnt = 0, p = ptr + len - 1; p >= ptr; p--) {
-	if (*p != CONT_CHAR)
-	    break;
-       cnt++;
-    }
-    return (cnt);
+	for (cnt = 0, p = ptr + len - 1; p >= ptr; p--) {
+		if (*p != CONT_CHAR)
+			break;
+		cnt++;
+	}
+	return (cnt);
 }
 
 char *
@@ -500,15 +498,15 @@ srealloc(p, nsize)
 char	*p;
 int     nsize;
 {
-        register char *ptr;
+	register char *ptr;
 
-        if ((ptr = realloc(p, (unsigned) nsize)) == NULL){
-            LLOG (compat_log,LLOG_FATAL, ("realloc() failure"));
-            abort ();
-            /* NOTREACHED */
-        }
+	if ((ptr = realloc(p, (unsigned) nsize)) == NULL) {
+		LLOG (compat_log,LLOG_FATAL, ("realloc() failure"));
+		abort ();
+		/* NOTREACHED */
+	}
 
-        return(ptr);
+	return(ptr);
 }
 
 #ifdef TURBO_DISK
@@ -516,9 +514,9 @@ int     nsize;
 Attr_Sequence fget_attributes_aux (file)
 FILE * file;
 {
-register Attr_Sequence as = NULLATTR;
-Attr_Sequence as_combine ();
-register char * ptr;
+	register Attr_Sequence as = NULLATTR;
+	Attr_Sequence as_combine ();
+	register char * ptr;
 
 	if ((ptr = fgetline (file)) == NULLCP)
 		return (NULLATTR);
@@ -534,8 +532,8 @@ register char * ptr;
 Attr_Sequence fget_attributes (file)
 FILE * file;
 {
-extern int parse_status;
-extern int parse_line;
+	extern int parse_status;
+	extern int parse_line;
 
 	parse_status = 0;
 	parse_line   = 0;
@@ -552,9 +550,9 @@ GDBM_FILE	file;
 FILE * file;
 #endif
 {
-register Attr_Sequence as = NULLATTR;
-Attr_Sequence as_combine ();
-register char * ptr;
+	register Attr_Sequence as = NULLATTR;
+	Attr_Sequence as_combine ();
+	register char * ptr;
 
 	if ((ptr = getline (file)) == NULLCP)
 		return (NULLATTR);
@@ -574,8 +572,8 @@ GDBM_FILE	file;
 FILE * file;
 #endif
 {
-extern int parse_status;
-extern int parse_line;
+	extern int parse_status;
+	extern int parse_line;
 
 	parse_status = 0;
 	parse_line   = 0;
@@ -593,15 +591,15 @@ FILE * file;
 Entry parent;
 int dtype;
 {
-Entry eptr;
-char * ptr;
-extern RDN parse_rdn;
-struct DSError err;
-extern int print_parse_errors;
-extern int parse_line;
-int save; 
-extern PS opt;
-char check = TRUE;
+	Entry eptr;
+	char * ptr;
+	extern RDN parse_rdn;
+	struct DSError err;
+	extern int print_parse_errors;
+	extern int parse_line;
+	int save;
+	extern PS opt;
+	char check = TRUE;
 
 	DATABASE_HEAP;
 
@@ -609,7 +607,7 @@ char check = TRUE;
 		GENERAL_HEAP;
 		return (NULLENTRY);
 	}
-		
+
 	while (*ptr == 0)
 		if ((ptr = getline (file)) == NULLCP) {
 			GENERAL_HEAP;
@@ -623,7 +621,7 @@ char check = TRUE;
 		parse_error ("invalid rdn %s",ptr);
 		check = FALSE;
 	}
-	
+
 	parse_rdn = eptr->e_name;
 	eptr->e_attributes = get_attributes_aux (file);
 
@@ -634,12 +632,12 @@ char check = TRUE;
 			parse_error ("Error in entry ending line %d...",(char *) save);
 			if (print_parse_errors)
 				ds_error (opt,&err);
-		} 
+		}
 		if (check_schema (eptr,NULLATTR,&err) != OK) {
 			parse_error ("Schema error in entry ending line %d...",(char *) save);
 			if (print_parse_errors)
 				ds_error (opt,&err);
-		} 
+		}
 		parse_line = save;
 	}
 	parse_rdn = NULLRDN;
@@ -648,12 +646,15 @@ char check = TRUE;
 
 	switch (dtype) {
 	case E_TYPE_SLAVE:
-		local_slave_size++; break;
+		local_slave_size++;
+		break;
 	case E_DATA_MASTER:
-		local_master_size++; break;
+		local_master_size++;
+		break;
 	case E_TYPE_CACHE_FROM_MASTER:
 		eptr->e_age = time ((time_t *)0);
-		local_cache_size++; break;
+		local_cache_size++;
+		break;
 	}
 
 	return (eptr);
@@ -669,8 +670,8 @@ FILE * file;
 Entry parent;
 int dtype;
 {
-extern int parse_status;
-extern int parse_line;
+	extern int parse_status;
+	extern int parse_line;
 
 	parse_status = 0;
 	parse_line   = 0;
@@ -682,7 +683,7 @@ extern int parse_line;
 Entry new_constructor (parent)
 Entry parent;
 {
-Entry constructor;
+	Entry constructor;
 
 	if (dsa_mode && parent && (parent->e_leaf == TRUE))
 		return NULLENTRY;	/* Can't invent nodes */
@@ -704,11 +705,11 @@ Entry constructor;
 Entry make_path (dn)
 DN dn;
 {
-Entry ptr;
-register RDN    b_rdn;
-Entry	parent, new;
-Avlnode	*kids;
-int	entryrdn_cmp(), entry_cmp();
+	Entry ptr;
+	register RDN    b_rdn;
+	Entry	parent, new;
+	Avlnode	*kids;
+	int	entryrdn_cmp(), entry_cmp();
 
 	if (database_root == NULLENTRY || database_root->e_children == NULLAVL) {
 		if ((database_root = new_constructor(NULLENTRY)) == NULLENTRY)
@@ -735,14 +736,14 @@ int	entryrdn_cmp(), entry_cmp();
 
 		for(;;) { /* return out */
 			if ((ptr = (Entry) avl_find(kids, (caddr_t) b_rdn, entryrdn_cmp))
-			    == NULLENTRY ) {
+					== NULLENTRY ) {
 				for (; dn != NULLDN; dn = dn->dn_parent) {
 					if ((new = new_constructor(parent)) ==
-					    NULLENTRY)
+							NULLENTRY)
 						return NULLENTRY;
 					new->e_name = rdn_cpy(dn->dn_rdn);
 					(void) avl_insert(&parent->e_children, (caddr_t) new,
-					    entry_cmp, avl_dup_error);
+									  entry_cmp, avl_dup_error);
 					parent = (Entry) avl_find(parent->e_children, (caddr_t) dn->dn_rdn, entryrdn_cmp);
 				}
 				return(parent);
@@ -757,13 +758,13 @@ int	entryrdn_cmp(), entry_cmp();
 			if (ptr->e_children == NULLAVL) {
 				for (; dn!= NULLDN; dn=dn->dn_parent) {
 					if ((new = new_constructor(ptr)) ==
-					    NULLENTRY)
+							NULLENTRY)
 						return NULLENTRY;
 					new->e_name = rdn_cpy(dn->dn_rdn);
 					(void) avl_insert(&ptr->e_children, (caddr_t) new,
-					    entry_cmp, avl_dup_error);
+									  entry_cmp, avl_dup_error);
 					ptr = (Entry) avl_find(ptr->e_children,
-					    (caddr_t) dn->dn_rdn, entryrdn_cmp);
+										   (caddr_t) dn->dn_rdn, entryrdn_cmp);
 				}
 				return(ptr);
 			}

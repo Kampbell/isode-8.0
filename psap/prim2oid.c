@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2oid.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/prim2oid.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -40,72 +40,69 @@ static	OIDentifier oid;
 OID	prim2oid (pe)
 register PE	pe;
 {
-    register unsigned int i,
+	register unsigned int i,
 			 *ip;
-    register PElementData dp,
-			  ep;
-    register OID	o = &oid;
+	register PElementData dp,
+			 ep;
+	register OID	o = &oid;
 
-    if (once_only) {
-	bzero ((char *) o, sizeof *o);
-	once_only = 0;
-    }
+	if (once_only) {
+		bzero ((char *) o, sizeof *o);
+		once_only = 0;
+	}
 
-    if (pe -> pe_form != PE_FORM_PRIM
-	    || (dp = pe -> pe_prim) == NULLPED
-	    || pe -> pe_len == 0)
-	return pe_seterr (pe, PE_ERR_PRIM, NULLOID);
-    ep = dp + pe -> pe_len;
+	if (pe -> pe_form != PE_FORM_PRIM
+			|| (dp = pe -> pe_prim) == NULLPED
+			|| pe -> pe_len == 0)
+		return pe_seterr (pe, PE_ERR_PRIM, NULLOID);
+	ep = dp + pe -> pe_len;
 
-    if (o -> oid_elements) {
-	free ((char *) o -> oid_elements);
-	o -> oid_elements = NULL;
-    }
+	if (o -> oid_elements) {
+		free ((char *) o -> oid_elements);
+		o -> oid_elements = NULL;
+	}
 
-    for (i = 1; dp < ep; i++) {	/* another whacko OSI encoding... */
-	if (*dp == 0x80)
-	    return pe_seterr (pe, PE_ERR_OID, NULLOID);
+	for (i = 1; dp < ep; i++) {	/* another whacko OSI encoding... */
+		if (*dp == 0x80)
+			return pe_seterr (pe, PE_ERR_OID, NULLOID);
 
-	while (*dp++ & 0x80)
-	    if (dp > ep)
-		return pe_seterr (pe, PE_ERR_OID, NULLOID);
-    }
+		while (*dp++ & 0x80)
+			if (dp > ep)
+				return pe_seterr (pe, PE_ERR_OID, NULLOID);
+	}
 
-    if ((ip = (unsigned int *) malloc ((i + 1) * sizeof *ip)) == NULL)
-	return pe_seterr (pe, PE_ERR_NMEM, NULLOID);
-    o -> oid_elements = ip, o -> oid_nelem = i;
-    
-    for (dp = pe -> pe_prim; dp < ep; ) {
-	i = 0;
-	do {
-	    i <<= 7; 
-	    i |= *dp & 0x7f;
-	} while (*dp++ & 0x80);
+	if ((ip = (unsigned int *) malloc ((i + 1) * sizeof *ip)) == NULL)
+		return pe_seterr (pe, PE_ERR_NMEM, NULLOID);
+	o -> oid_elements = ip, o -> oid_nelem = i;
 
-	if (ip != o -> oid_elements)
-	    *ip++ = i;
-	else
-	    if (i < 40)
-		*ip++ = 0, *ip++ = i;
-	    else
-		if (i < 80)
-		    *ip++ = 1, *ip++ = i - 40;
+	for (dp = pe -> pe_prim; dp < ep; ) {
+		i = 0;
+		do {
+			i <<= 7;
+			i |= *dp & 0x7f;
+		} while (*dp++ & 0x80);
+
+		if (ip != o -> oid_elements)
+			*ip++ = i;
+		else if (i < 40)
+			*ip++ = 0, *ip++ = i;
+		else if (i < 80)
+			*ip++ = 1, *ip++ = i - 40;
 		else
-		    *ip++ = 2, *ip++ = i - 80;
-    }
+			*ip++ = 2, *ip++ = i - 80;
+	}
 
-    return o;
+	return o;
 }
 
 /*  */
 
 #ifdef DEBUG
-free_static_oid ()
-{
-    if (!once_only && oid.oid_elements) {
-	free ((char *) oid.oid_elements);
-	oid.oid_elements = NULL;
-    }
+free_static_oid () {
+	if (!once_only && oid.oid_elements) {
+		free ((char *) oid.oid_elements);
+		oid.oid_elements = NULL;
+	}
 }
 #endif
 

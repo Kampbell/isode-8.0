@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/is2saddr.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/acsap/RCS/is2saddr.c,v 9.0 1992/06/16 12:05:59 isode Rel $
  *
  *
@@ -36,25 +36,25 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/is2saddr.c,v 9.0 1992
 
 struct SSAPaddr *is2saddr (host, service, is)
 char   *host,
-       *service;
+	   *service;
 struct isoservent *is;
 {
-    AEI	    aei;
-    struct PSAPaddr *pa;
-    struct SSAPaddr *sa;
+	AEI	    aei;
+	struct PSAPaddr *pa;
+	struct SSAPaddr *sa;
 
-    if ((aei = str2aei (host, service)) == NULLAEI
-	    || (pa = aei2addr (aei)) == NULLPA)
-	return NULLSA;
+	if ((aei = str2aei (host, service)) == NULLAEI
+			|| (pa = aei2addr (aei)) == NULLPA)
+		return NULLSA;
 
-    sa = &pa -> pa_addr;
-    if (is && strcmp (is -> is_provider, "ssap") == 0) {
-	if (is -> is_selectlen > SSSIZE)	/* XXX */
-	    return NULLSA;
+	sa = &pa -> pa_addr;
+	if (is && strcmp (is -> is_provider, "ssap") == 0) {
+		if (is -> is_selectlen > SSSIZE)	/* XXX */
+			return NULLSA;
 
-	bcopy (is -> is_selector, sa -> sa_selector,
-		sa -> sa_selectlen = is -> is_selectlen);
-    }
+		bcopy (is -> is_selector, sa -> sa_selector,
+			   sa -> sa_selectlen = is -> is_selectlen);
+	}
 
-    return sa;
+	return sa;
 }

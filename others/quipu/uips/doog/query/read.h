@@ -7,69 +7,64 @@
 #include "error.h"
 #include "sequence.h"
 
-typedef struct _photo_data
-{
-  int width;
-  int height;
+typedef struct _photo_data {
+	int width;
+	int height;
 
-  unsigned char *bytes;
+	unsigned char *bytes;
 } *photoData;
 
-typedef struct _attr_val_list
-{
-  stringCell attr_name;
-  
-  QBool is_photo;
+typedef struct _attr_val_list {
+	stringCell attr_name;
 
-  stringCell val_list;
-  photoData photo;
+	QBool is_photo;
 
-  struct _attr_val_list *next;
+	stringCell val_list;
+	photoData photo;
+
+	struct _attr_val_list *next;
 } attr_val_list, *attrValList;
 
 #define NULLAVList (attrValList) NULL
 #define av_list_alloc() (attrValList) smalloc(sizeof(attr_val_list))
 
 
-typedef struct _read_results
-{
-  char *base_object;
-  attrValList entry;
-  errorList errors;
+typedef struct _read_results {
+	char *base_object;
+	attrValList entry;
+	errorList errors;
 } read_results, *readResults;
 
 #define NULLReadResults (readResults) NULL
 #define read_res_alloc() (readResults) smalloc(sizeof(read_results))
 
 
-typedef struct _read_rec
-{
-  QCardinal request_id;
+typedef struct _read_rec {
+	QCardinal request_id;
 
-  char *base_object;
+	char *base_object;
 
-  int task_id;
+	int task_id;
 
-  readResults results;
+	readResults results;
 } read_rec, *readRec;
 
 #define NULLReadRec (readRec) NULL
 #define read_rec_alloc() (readRec) smalloc(sizeof(read_rec))
 
 
-typedef struct _read_dn_attr_rec
-{
-  QCardinal request_id;
+typedef struct _read_dn_attr_rec {
+	QCardinal request_id;
 
-  char *base_object;
-  char *read_object;
+	char *base_object;
+	char *read_object;
 
-  int task_id;
+	int task_id;
 
-  stringCell read_attrs;
-  stringCell dn_attr;
+	stringCell read_attrs;
+	stringCell dn_attr;
 
-  readResults results;
+	readResults results;
 } read_dn_attr_rec, *readDnAttrRec;
 
 #define NULLReadDnAttrRec (readDnAttrRec) NULL
@@ -83,10 +78,10 @@ QE_error_code do_read();
 QE_error_code do_dn_attr_read();
 
 request_state process_read_ds_result(),
-	      process_read_ds_error();
+			  process_read_ds_error();
 
 request_state process_read_dn_attr_result(),
-  	      process_read_dn_attr_error();
+			  process_read_dn_attr_error();
 
 readResults get_read_results(), get_read_dn_attr_results();
 

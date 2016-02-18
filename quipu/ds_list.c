@@ -37,51 +37,49 @@ extern Entry database_root;
 static int build_result();
 
 do_ds_list (arg, error, result, binddn, target, di_p, dsp, authtype)
-    register struct ds_list_arg          *arg;
-    register struct ds_list_result       *result;
-    struct DSError                      *error;
-    DN                                  binddn;
-    DN                                  target;
-    struct di_block			**di_p;
-    char				dsp;
-    char				authtype;
+register struct ds_list_arg          *arg;
+register struct ds_list_result       *result;
+struct DSError                      *error;
+DN                                  binddn;
+DN                                  target;
+struct di_block			**di_p;
+char				dsp;
+char				authtype;
 {
-Entry  entryptr;
-int retval;
-DN realtarget;
-int sizelimit;
-int authp;
+	Entry  entryptr;
+	int retval;
+	DN realtarget;
+	int sizelimit;
+	int authp;
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_list"));
 
 	if (!dsp)
 		target = arg->lsa_object;
 
-	switch(find_child_entry(target,&(arg->lsa_common),binddn,NULLDNSEQ,FALSE,&(entryptr),error,di_p))
-	{
+	switch(find_child_entry(target,&(arg->lsa_common),binddn,NULLDNSEQ,FALSE,&(entryptr),error,di_p)) {
 	case DS_OK:
-	    /* Filled out entryptr - carry on */
-	    break;
+		/* Filled out entryptr - carry on */
+		break;
 	case DS_CONTINUE:
-	    /* Filled out di_p - what do we do with it ?? */
-	    return(DS_CONTINUE);
+		/* Filled out di_p - what do we do with it ?? */
+		return(DS_CONTINUE);
 
 	case DS_X500_ERROR:
-	    /* Filled out error - what do we do with it ?? */
-	    return(DS_X500_ERROR);
+		/* Filled out error - what do we do with it ?? */
+		return(DS_X500_ERROR);
 	default:
-	    /* SCREAM */
-	    LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_list() - find_child_entry failed"));
-	    return(DS_ERROR_LOCAL);
+		/* SCREAM */
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_list() - find_child_entry failed"));
+		return(DS_ERROR_LOCAL);
 	}
 
 	/* Strong authentication  */
 	if ((retval = check_security_parms((caddr_t) arg,
-			_ZListArgumentDataDAS,
-			&_ZDAS_mod,
-			arg->lsa_common.ca_security,
-			arg->lsa_common.ca_sig, &binddn)) != 0)
-	{
+									   _ZListArgumentDataDAS,
+									   &_ZDAS_mod,
+									   arg->lsa_common.ca_security,
+									   arg->lsa_common.ca_sig, &binddn)) != 0) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = retval;
 		return (DS_ERROR_REMOTE);
@@ -111,7 +109,7 @@ int authp;
 	/* do authentication policy stuff here */
 	if (!manager(binddn))
 		authp = entryptr->e_authp ?
-		    entryptr->e_authp->ap_listandsearch : AP_SIMPLE;
+				entryptr->e_authp->ap_listandsearch : AP_SIMPLE;
 	else
 		authp = AP_SIMPLE;
 
@@ -119,18 +117,18 @@ int authp;
 	sizelimit = SVC_NOSIZELIMIT;
 	if ( entryptr->e_lacl != NULLAV ) {
 		if ( check_lacl( (authtype % 3) >= authp ? binddn : NULLDN,
-		    realtarget, entryptr->e_lacl, SACL_SINGLELEVEL,
-		    &sizelimit ) == NOTOK ) {
+						 realtarget, entryptr->e_lacl, SACL_SINGLELEVEL,
+						 &sizelimit ) == NOTOK ) {
 			/* security error */
 			error->dse_type = DSE_SECURITYERROR;
 			error->ERR_SECURITY.DSE_sc_problem =
-			    DSE_SC_ACCESSRIGHTS;
+				DSE_SC_ACCESSRIGHTS;
 			dn_free( realtarget );
 			return( DS_ERROR_REMOTE );
 		}
-	} 
+	}
 	if (check_acl ((authtype % 3) >= authp ? binddn : NULLDN,
-	    ACL_READ, entryptr->e_acl->ac_child, realtarget) != OK) {
+				   ACL_READ, entryptr->e_acl->ac_child, realtarget) != OK) {
 		if (dsp && (check_acl (binddn,ACL_READ, entryptr->e_acl->ac_child, realtarget) == OK)) {
 			error->dse_type = DSE_SECURITYERROR;
 			error->ERR_SECURITY.DSE_sc_problem = DSE_SC_AUTHENTICATION;
@@ -151,13 +149,13 @@ int authp;
 		}
 		res = constructor_dsa_info(realtarget,NULLDNSEQ,FALSE,entryptr,error,di_p);
 		dn_free (realtarget);
-		return res;		
+		return res;
 	}
 
 	dn_free (realtarget);
 
 	build_result (arg, entryptr, result, error,
-	    (authtype % 3) >= authp ? binddn : NULLDN , dsp, sizelimit);
+				  (authtype % 3) >= authp ? binddn : NULLDN , dsp, sizelimit);
 	return (DS_OK);
 }
 
@@ -181,68 +179,68 @@ static int build_list(e, dn)
 Entry   e;
 DN      dn;
 {
-        struct subordinate      *sub;
+	struct subordinate      *sub;
 
-        if (g_size != SVC_NOSIZELIMIT && g_count >= g_size)
-                return(NOTOK);
+	if (g_size != SVC_NOSIZELIMIT && g_count >= g_size)
+		return(NOTOK);
 
-        g_dnend->dn_rdn = e->e_name;
+	g_dnend->dn_rdn = e->e_name;
 
 	if (g_dsp) {
-	    /* Only send publicly read data over DSP */
+		/* Only send publicly read data over DSP */
 
-	    if ( e->e_lacl != NULLAV ) {
-		    int	dummy;
+		if ( e->e_lacl != NULLAV ) {
+			int	dummy;
 
-		    if ( check_lacl( NULLDN, g_dn, e->e_lacl, 
-				    SACL_BASEOBJECT, &dummy ) != OK ) {
+			if ( check_lacl( NULLDN, g_dn, e->e_lacl,
+							 SACL_BASEOBJECT, &dummy ) != OK ) {
 
-		         if ( check_lacl( dn, g_dn, e->e_lacl, 
-				    SACL_BASEOBJECT, &dummy ) == OK ) 
-			     /* Would get more over DAP */
-			     g_security = 1;
+				if ( check_lacl( dn, g_dn, e->e_lacl,
+								 SACL_BASEOBJECT, &dummy ) == OK )
+					/* Would get more over DAP */
+					g_security = 1;
 
-			 return( 0 );
-		    }
-	    } else {
-		if (check_acl(NULLDN, ACL_READ, e->e_acl->ac_entry, 
-			      g_dn) != OK) {
-		    if (check_acl(dn, ACL_READ, e->e_acl->ac_entry, 
-				  g_dn) != OK)
-			/* Would get more over DAP */
-			g_security = 1;
-		    return(0);
-		    }
-	    }
+				return( 0 );
+			}
+		} else {
+			if (check_acl(NULLDN, ACL_READ, e->e_acl->ac_entry,
+						  g_dn) != OK) {
+				if (check_acl(dn, ACL_READ, e->e_acl->ac_entry,
+							  g_dn) != OK)
+					/* Would get more over DAP */
+					g_security = 1;
+				return(0);
+			}
+		}
 
 	} else {
 
-	    if ( e->e_lacl != NULLAV ) {
-		    int	dummy;
-		    if ( check_lacl( dn, g_dn, e->e_lacl, SACL_BASEOBJECT,
-			&dummy ) != OK ) 
-			    return( 0 );
+		if ( e->e_lacl != NULLAV ) {
+			int	dummy;
+			if ( check_lacl( dn, g_dn, e->e_lacl, SACL_BASEOBJECT,
+							 &dummy ) != OK )
+				return( 0 );
 
-	    } else if (check_acl(dn, ACL_READ, e->e_acl->ac_entry, g_dn) != OK)
-		    return(0);
+		} else if (check_acl(dn, ACL_READ, e->e_acl->ac_entry, g_dn) != OK)
+			return(0);
 
 	}
-        sub = (struct subordinate *) smalloc(sizeof(struct subordinate));
-        sub->sub_copy = e->e_data;
-        sub->sub_rdn = rdn_cpy(e->e_name);
-        sub->sub_aliasentry = (e->e_alias == NULLDN ? FALSE : TRUE);
-        sub->sub_next = NULLSUBORD;
+	sub = (struct subordinate *) smalloc(sizeof(struct subordinate));
+	sub->sub_copy = e->e_data;
+	sub->sub_rdn = rdn_cpy(e->e_name);
+	sub->sub_aliasentry = (e->e_alias == NULLDN ? FALSE : TRUE);
+	sub->sub_next = NULLSUBORD;
 
-        if (g_sub == NULLSUBORD) {
-                g_sub = sub;
-                g_trail = sub;
-        } else {
-                g_trail->sub_next = sub;
-                g_trail = sub;
-        }
+	if (g_sub == NULLSUBORD) {
+		g_sub = sub;
+		g_trail = sub;
+	} else {
+		g_trail->sub_next = sub;
+		g_trail = sub;
+	}
 
-        g_count++;
-        return(0);
+	g_count++;
+	return(0);
 }
 
 static int build_result( arg, ptr, result, error, binddn, dsp, laclsizelimit )
@@ -254,14 +252,14 @@ DN binddn;
 char dsp;
 int laclsizelimit;
 {
-DN dn;
-DN dnend;
-int size;
-RDN dnrdn;
-extern int admin_size;
-char adminlimit = FALSE;
-int rc;
-Entry akid;
+	DN dn;
+	DN dnend;
+	int size;
+	RDN dnrdn;
+	extern int admin_size;
+	char adminlimit = FALSE;
+	int rc;
+	Entry akid;
 
 	DLOG (log_dsap,LLOG_DEBUG,("building list results"));
 
@@ -273,8 +271,8 @@ Entry akid;
 			laclsizelimit = admin_size;
 
 		if ((size = MIN( laclsizelimit, MIN( admin_size,
-		    arg->lsa_common.ca_servicecontrol.svc_sizelimit)))
-		    == SVC_NOSIZELIMIT) {
+											 arg->lsa_common.ca_servicecontrol.svc_sizelimit)))
+				== SVC_NOSIZELIMIT) {
 			size = MIN( laclsizelimit, admin_size );
 			adminlimit = TRUE;
 		}
@@ -309,22 +307,22 @@ Entry akid;
 	g_count = 0;
 	g_security = 0;
 
-        /*
-         * preorder would be a little faster in case of small size limit,
-         * but inorder is more user-predictable, which is nice, though not
-         * required...
-         */
+	/*
+	 * preorder would be a little faster in case of small size limit,
+	 * but inorder is more user-predictable, which is nice, though not
+	 * required...
+	 */
 
 	rc = avl_apply(ptr->e_children, build_list, (caddr_t) binddn, NOTOK,
-	    AVL_INORDER);
+				   AVL_INORDER);
 
-        /*
-         * build_list has updated g_count and g_sub to contain a count of
-         * the number of entries in the list and the list itself,
-         * respectively.  if avl_apply was not cut short because the size
-         * limit was reached (i.e. instead it ran out of nodes), rc will
-         * be NOTOK.
-         */
+	/*
+	 * build_list has updated g_count and g_sub to contain a count of
+	 * the number of entries in the list and the list itself,
+	 * respectively.  if avl_apply was not cut short because the size
+	 * limit was reached (i.e. instead it ran out of nodes), rc will
+	 * be NOTOK.
+	 */
 
 	size = g_size;
 	result->lsr_subordinates = g_sub;
@@ -333,13 +331,13 @@ Entry akid;
 	if ( rc != AVL_NOMORE )
 		/* stopped look up due to size limit */
 		/* need to send continuation reference */
-		result->lsr_limitproblem = adminlimit ? 
-			LSR_ADMINSIZEEXCEEDED : LSR_SIZELIMITEXCEEDED;
+		result->lsr_limitproblem = adminlimit ?
+								   LSR_ADMINSIZEEXCEEDED : LSR_SIZELIMITEXCEEDED;
 	else
 		result->lsr_limitproblem = LSR_NOLIMITPROBLEM;
 
 	if (g_security)
-	        /* Could force a DAP operation - this is easier ! */
+		/* Could force a DAP operation - this is easier ! */
 		result->lsr_limitproblem = LSR_ADMINSIZEEXCEEDED;
 
 	dnend->dn_rdn = NULLRDN;
@@ -349,12 +347,12 @@ Entry akid;
 
 
 try_cache (arg,result,target)
-    register struct ds_list_arg          *arg;
-    register struct ds_list_result       *result;
-    DN 					 target;
+register struct ds_list_arg          *arg;
+register struct ds_list_result       *result;
+DN 					 target;
 {
-struct list_cache *ptr;
-struct subordinate * subord_cpy();
+	struct list_cache *ptr;
+	struct subordinate * subord_cpy();
 
 	if ((arg->lsa_common.ca_servicecontrol.svc_options & SVC_OPT_DONTUSECOPY) == 0) {
 		if ((ptr = find_list_cache (target,arg->lsa_common.ca_servicecontrol.svc_sizelimit)) != NULLCACHE) {

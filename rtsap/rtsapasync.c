@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapasync.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rtsap/RCS/rtsapasync.c,v 9.0 1992/06/16 12:37:45 isode Rel $
  *
  *
@@ -38,25 +38,25 @@ int	sd;
 IFP	indication;
 struct RtSAPindication *rti;
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	register struct assocblk   *acb;
 
-    _iosignals_set = 1;
+	_iosignals_set = 1;
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rtsapPsig (acb, sd);
+	rtsapPsig (acb, sd);
 
-    if (acb -> acb_flags & ACB_PLEASE) {
+	if (acb -> acb_flags & ACB_PLEASE) {
+		(void) sigiomask (smask);
+
+		return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
+	}
+
+	result = (*acb -> acb_rtsetindications) (acb, indication, rti);
+
 	(void) sigiomask (smask);
 
-	return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
-    }
-
-    result = (*acb -> acb_rtsetindications) (acb, indication, rti);
-
-    (void) sigiomask (smask);
-
-    return result;
+	return result;
 }

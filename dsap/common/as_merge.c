@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/as_merge.c,v 9.
 Attr_Sequence as_merge (a,b)
 Attr_Sequence a,b;
 {
-register Attr_Sequence aptr, bptr, result, trail, tmp;
+	register Attr_Sequence aptr, bptr, result, trail, tmp;
 
 	if ( a == NULLATTR )
 		return (b);
@@ -38,29 +38,29 @@ register Attr_Sequence aptr, bptr, result, trail, tmp;
 
 	/* start sequence off, make sure 'a' is the first */
 	switch (AttrT_cmp (a->attr_type,b->attr_type)) {
-		case 0: /* equal */
-			result = a;
-			a->attr_value = avs_merge (a->attr_value, b->attr_value);
-			aptr = a->attr_link;
-			bptr = b->attr_link;
-			free ((char *) b);
-			break;
-		case -1:
-			result = b;
-			aptr = a;
-			bptr = b->attr_link;
-			break;
-		case 1:
-			result = a;
-			aptr = a->attr_link;
-			bptr = b;
-			break;
-		}
+	case 0: /* equal */
+		result = a;
+		a->attr_value = avs_merge (a->attr_value, b->attr_value);
+		aptr = a->attr_link;
+		bptr = b->attr_link;
+		free ((char *) b);
+		break;
+	case -1:
+		result = b;
+		aptr = a;
+		bptr = b->attr_link;
+		break;
+	case 1:
+		result = a;
+		aptr = a->attr_link;
+		bptr = b;
+		break;
+	}
 
 	trail = result;
 	while (  (aptr != NULLATTR) && (bptr != NULLATTR) ) {
 
-	   switch (AttrT_cmp (aptr->attr_type,bptr->attr_type)) {
+		switch (AttrT_cmp (aptr->attr_type,bptr->attr_type)) {
 		case 0: /* equal */
 			aptr->attr_value = avs_merge (aptr->attr_value, bptr->attr_value);
 			tmp = bptr->attr_link;
@@ -80,7 +80,7 @@ register Attr_Sequence aptr, bptr, result, trail, tmp;
 			trail = aptr;
 			aptr = aptr->attr_link;
 			break;
-	    }
+		}
 	}
 	if (aptr == NULLATTR)
 		trail->attr_link = bptr;
@@ -93,7 +93,7 @@ register Attr_Sequence aptr, bptr, result, trail, tmp;
 Attr_Sequence as_merge_aux (a,b)
 Attr_Sequence a,b;
 {
-register Attr_Sequence aptr, bptr, result, trail, tmp;
+	register Attr_Sequence aptr, bptr, result, trail, tmp;
 
 	if ( a == NULLATTR )
 		return (b);
@@ -102,30 +102,30 @@ register Attr_Sequence aptr, bptr, result, trail, tmp;
 
 	/* start sequence off, make sure 'a' is the first */
 	switch (AttrT_cmp (a->attr_type,b->attr_type)) {
-		case 0: /* equal */
-			result = a;
-			avs_free (a->attr_value);
-			a->attr_value = b->attr_value;
-			aptr = a->attr_link;
-			bptr = b->attr_link;
-			free ((char *) b);
-			break;
-		case -1:
-			result = b;
-			aptr = a;
-			bptr = b->attr_link;
-			break;
-		case 1:
-			result = a;
-			aptr = a->attr_link;
-			bptr = b;
-			break;
-		}
+	case 0: /* equal */
+		result = a;
+		avs_free (a->attr_value);
+		a->attr_value = b->attr_value;
+		aptr = a->attr_link;
+		bptr = b->attr_link;
+		free ((char *) b);
+		break;
+	case -1:
+		result = b;
+		aptr = a;
+		bptr = b->attr_link;
+		break;
+	case 1:
+		result = a;
+		aptr = a->attr_link;
+		bptr = b;
+		break;
+	}
 
 	trail = result;
 	while (  (aptr != NULLATTR) && (bptr != NULLATTR) ) {
 
-	   switch (AttrT_cmp (aptr->attr_type,bptr->attr_type)) {
+		switch (AttrT_cmp (aptr->attr_type,bptr->attr_type)) {
 		case 0: /* equal */
 			avs_free (aptr->attr_value);
 			aptr->attr_value = bptr->attr_value;
@@ -146,7 +146,7 @@ register Attr_Sequence aptr, bptr, result, trail, tmp;
 			trail = aptr;
 			aptr = aptr->attr_link;
 			break;
-	    }
+		}
 	}
 	if (aptr == NULLATTR)
 		trail->attr_link = bptr;
@@ -159,10 +159,10 @@ register Attr_Sequence aptr, bptr, result, trail, tmp;
 Attr_Sequence as_fast_merge (a,b,c,d)
 Attr_Sequence a,b,c,d;
 {
-register Attr_Sequence aptr, bptr, result, trail, tmp;
-static AV_Sequence fast_avs = NULLAV;
-static AV_Sequence fast_tail = NULLAV;
-extern AV_Sequence avs_fast_merge ();
+	register Attr_Sequence aptr, bptr, result, trail, tmp;
+	static AV_Sequence fast_avs = NULLAV;
+	static AV_Sequence fast_tail = NULLAV;
+	extern AV_Sequence avs_fast_merge ();
 
 	if ( a == NULLATTR )
 		return (b);
@@ -177,35 +177,35 @@ extern AV_Sequence avs_fast_merge ();
 
 	/* start sequence off, make sure 'a' is the first */
 	switch (AttrT_cmp (a->attr_type,b->attr_type)) {
-		case 0: /* equal */
-			result = a;
-			a->attr_value = avs_fast_merge (a->attr_value,
-				 b->attr_value, fast_avs, fast_tail);
-			fast_avs = a->attr_value;
-			fast_tail = b->attr_value;
-			aptr = a->attr_link;
-			bptr = b->attr_link;
-			free ((char *) b);
-			break;
-		case -1:
-			result = b;
-			aptr = a;
-			bptr = b->attr_link;
-			break;
-		case 1:
-			result = a;
-			aptr = a->attr_link;
-			bptr = b;
-			break;
-		}
+	case 0: /* equal */
+		result = a;
+		a->attr_value = avs_fast_merge (a->attr_value,
+										b->attr_value, fast_avs, fast_tail);
+		fast_avs = a->attr_value;
+		fast_tail = b->attr_value;
+		aptr = a->attr_link;
+		bptr = b->attr_link;
+		free ((char *) b);
+		break;
+	case -1:
+		result = b;
+		aptr = a;
+		bptr = b->attr_link;
+		break;
+	case 1:
+		result = a;
+		aptr = a->attr_link;
+		bptr = b;
+		break;
+	}
 
 	trail = result;
 	while (  (aptr != NULLATTR) && (bptr != NULLATTR) ) {
 
-	   switch (AttrT_cmp (aptr->attr_type,bptr->attr_type)) {
+		switch (AttrT_cmp (aptr->attr_type,bptr->attr_type)) {
 		case 0: /* equal */
 			aptr->attr_value = avs_fast_merge (aptr->attr_value,
-				 bptr->attr_value, fast_avs, fast_tail);
+											   bptr->attr_value, fast_avs, fast_tail);
 			fast_avs = aptr->attr_value;
 			fast_tail = bptr->attr_value;
 			tmp = bptr->attr_link;
@@ -225,7 +225,7 @@ extern AV_Sequence avs_fast_merge ();
 			trail = aptr;
 			aptr = aptr->attr_link;
 			break;
-	    }
+		}
 	}
 	if (aptr == NULLATTR)
 		trail->attr_link = bptr;

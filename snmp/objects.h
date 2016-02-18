@@ -1,6 +1,6 @@
 /* objects.h - MIB objects */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/snmp/RCS/objects.h,v 9.0 1992/06/16 12:38:11 isode Rel $
  *
  * Contributed by NYSERNet Inc.  This work was partially supported by the
@@ -35,17 +35,17 @@
 /*  */
 
 typedef struct object_syntax {
-    char   *os_name;			/* syntax name */
+	char   *os_name;			/* syntax name */
 
-    IFP	    os_encode;			/* data -> PE */
-    IFP	    os_decode;			/* PE -> data */
-    IFP	    os_free;			/* free data */
+	IFP	    os_encode;			/* data -> PE */
+	IFP	    os_decode;			/* PE -> data */
+	IFP	    os_free;			/* free data */
 
-    IFP	    os_parse;			/* str -> data */
-    IFP	    os_print;			/* data -> tty */
+	IFP	    os_parse;			/* str -> data */
+	IFP	    os_print;			/* data -> tty */
 
-    char  **os_data1;			/* for moresyntax() in snmpi... */
-    int	    os_data2;			/*   .. */
+	char  **os_data1;			/* for moresyntax() in snmpi... */
+	int	    os_data2;			/*   .. */
 }		object_syntax, *OS;
 #define	NULLOS	((OS) 0)
 
@@ -55,42 +55,42 @@ OS	text2syn ();
 /*  */
 
 typedef struct object_type {
-    char   *ot_text;			/* OBJECT DESCRIPTOR */
-    char   *ot_id;			/* OBJECT IDENTIFIER */
-    OID	    ot_name;			/*   .. */
+	char   *ot_text;			/* OBJECT DESCRIPTOR */
+	char   *ot_id;			/* OBJECT IDENTIFIER */
+	OID	    ot_name;			/*   .. */
 
-    OS	    ot_syntax;			/* SYNTAX */
+	OS	    ot_syntax;			/* SYNTAX */
 
-    int	    ot_access;			/* ACCESS */
+	int	    ot_access;			/* ACCESS */
 #define	OT_NONE		0x00
 #define	OT_RDONLY	0x01
 #define	OT_WRONLY	0x02
 #define	OT_RDWRITE	(OT_RDONLY | OT_WRONLY)
 
-    u_long  ot_views;			/* for views */
+	u_long  ot_views;			/* for views */
 
-    int	    ot_status;			/* STATUS */
+	int	    ot_status;			/* STATUS */
 #define	OT_OBSOLETE	0x00
 #define	OT_MANDATORY	0x01
 #define	OT_OPTIONAL	0x02
 #define	OT_DEPRECATED	0x03
 
-    caddr_t ot_info;			/* object information */
-    IFP	    ot_getfnx;			/* get/get-next method */
-    IFP	    ot_setfnx;			/* set method */
+	caddr_t ot_info;			/* object information */
+	IFP	    ot_getfnx;			/* get/get-next method */
+	IFP	    ot_setfnx;			/* set method */
 #define	type_SNMP_PDUs_commit	(-1)
 #define	type_SNMP_PDUs_rollback	(-2)
 
-    caddr_t ot_save;			/* for set method */
+	caddr_t ot_save;			/* for set method */
 
-    caddr_t ot_smux;			/* for SMUX */
+	caddr_t ot_smux;			/* for SMUX */
 
-    struct object_type *ot_chain;	/* hash-bucket for text2obj */
+	struct object_type *ot_chain;	/* hash-bucket for text2obj */
 
-    struct object_type *ot_sibling;	/* linked-list for name2obj */
-    struct object_type *ot_children;	/*   .. */
+	struct object_type *ot_sibling;	/* linked-list for name2obj */
+	struct object_type *ot_children;	/*   .. */
 
-    struct object_type *ot_next;	/* linked-list for get-next */
+	struct object_type *ot_next;	/* linked-list for get-next */
 }		object_type, *OT;
 #define	NULLOT	((OT) 0)
 
@@ -103,9 +103,9 @@ char   *oid2ode_aux ();
 
 
 typedef struct object_instance {
-    OID	    oi_name;			/* instance OID */
+	OID	    oi_name;			/* instance OID */
 
-    OT	    oi_type;			/* prototype */
+	OT	    oi_type;			/* prototype */
 }		object_instance, *OI;
 #define	NULLOI	((OI) 0)
 

@@ -1,6 +1,6 @@
 /* vtpm.h - VTPM: definitions */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/vtpm.h,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *
@@ -41,8 +41,8 @@
 #define	E_ERROR			-1
 #define	E_EOF			-2
 
-#define E_NOEVENT 		1 
-#define E_READ			2 
+#define E_NOEVENT 		1
+#define E_READ			2
 
 #define INPUT			1
 #define OUTPUT			2
@@ -237,7 +237,7 @@
 #define PEPYPARM int *
 
 PE	pre, pwe;
-PE	mkdeliver(); 
+PE	mkdeliver();
 int	fd,
 	readfds,
 	writefds,
@@ -262,7 +262,7 @@ int		vns,
 		allpmde, /* all draft VTE parameters defined */
 		allpmdu, /* all draft VTE parameters defined or undefined */
 		cnw,	 /* collision winner right assigned to this VTPM  */
-		dcno,	 /* no delivery control */	
+		dcno,	 /* no delivery control */
 		dcqua,	 /* quarantine delivery control */
 		dcsim,	 /* simple delivery control     */
 		pmacc,	 /* parameter values acceptable */
@@ -301,10 +301,10 @@ int		vns,
 		del_cont;	/* type of delivery control		*/
 
 
-/* 
+/*
 	profile is name of the profile. This is also used for the draft profile.
 */
-	
+
 int	s1_01(),
 	s1_02B(),
 	s1_02S(),
@@ -320,15 +320,15 @@ int	s1_01(),
 	s1_51T();
 
 int 	s5_400B(),
-	s5_402B(),
-	s5_420B(),
-	s5_422B(),
-	s5_40N(),
-	s5_40T(),
-	s5_42N(),
-	s5_42T(),
-	s5_61(),
-	s5_62();
+		s5_402B(),
+		s5_420B(),
+		s5_422B(),
+		s5_40N(),
+		s5_40T(),
+		s5_42N(),
+		s5_42T(),
+		s5_61(),
+		s5_62();
 
 
 extern struct SSAPref sfs;

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapabort.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapabort.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -42,25 +42,25 @@ char   *data;
 int	cc;
 struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
 
-    missingP (si);
+	missingP (si);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    if ((sb = findsblk (sd)) == NULL) {
+	if ((sb = findsblk (sd)) == NULL) {
+		(void) sigiomask (smask);
+		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid session descriptor");
+	}
+	toomuchP (sb, data, cc, SA_SIZE, "abort");
+
+	result = SUAbortRequestAux (sb, data, cc, si);
+
 	(void) sigiomask (smask);
-	return ssaplose (si, SC_PARAMETER, NULLCP, "invalid session descriptor");
-    }
-    toomuchP (sb, data, cc, SA_SIZE, "abort");
 
-    result = SUAbortRequestAux (sb, data, cc, si);
-
-    (void) sigiomask (smask);
-
-    return result;
+	return result;
 }
 
 /*  */
@@ -71,68 +71,68 @@ char   *data;
 int	cc;
 struct SSAPindication *si;
 {
-    int     result;
-    register struct ssapkt *s;
-    struct TSAPdata txs;
-    register struct TSAPdata   *tx = &txs;
-    struct TSAPdisconnect   tds;
-    register struct TSAPdisconnect *td = &tds;
+	int     result;
+	register struct ssapkt *s;
+	struct TSAPdata txs;
+	register struct TSAPdata   *tx = &txs;
+	struct TSAPdisconnect   tds;
+	register struct TSAPdisconnect *td = &tds;
 
-    sb -> sb_flags &= ~(SB_ED | SB_EDACK | SB_ERACK);
+	sb -> sb_flags &= ~(SB_ED | SB_EDACK | SB_ERACK);
 
-    if ((sb -> sb_flags & SB_EXPD)
-	    && sb -> sb_version >= SB_VRSN2
-	    && cc > 9) {
-	register struct ssapkt *p;
+	if ((sb -> sb_flags & SB_EXPD)
+			&& sb -> sb_version >= SB_VRSN2
+			&& cc > 9) {
+		register struct ssapkt *p;
 
-	if (p = newspkt (SPDU_PR)) {
-	    p -> s_mask |= SMASK_PR_TYPE;
-	    p -> s_pr_type = PR_AB;
-	    result = spkt2sd (p, sb -> sb_fd, 1, si);
-	    freespkt (p);
-	    if (result == NOTOK)
+		if (p = newspkt (SPDU_PR)) {
+			p -> s_mask |= SMASK_PR_TYPE;
+			p -> s_pr_type = PR_AB;
+			result = spkt2sd (p, sb -> sb_fd, 1, si);
+			freespkt (p);
+			if (result == NOTOK)
+				goto out1;
+		}
+	}
+
+	if ((s = newspkt (SPDU_AB)) == NULL) {
+		result = ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 		goto out1;
 	}
-    }
-	
-    if ((s = newspkt (SPDU_AB)) == NULL) {
-	result = ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
-	goto out1;
-    }
 
-    s -> s_mask |= SMASK_SPDU_AB | SMASK_AB_DISC;
-    s -> s_ab_disconnect = AB_DISC_RELEASE | AB_DISC_USER;
+	s -> s_mask |= SMASK_SPDU_AB | SMASK_AB_DISC;
+	s -> s_ab_disconnect = AB_DISC_RELEASE | AB_DISC_USER;
 
-    if (cc > 0) {
-	s -> s_mask |= SMASK_UDATA_PGI;
-	s -> s_udata = data, s -> s_ulen = cc;
-    }
-    else
+	if (cc > 0) {
+		s -> s_mask |= SMASK_UDATA_PGI;
+		s -> s_udata = data, s -> s_ulen = cc;
+	} else
+		s -> s_udata = NULL, s -> s_ulen = 0;
+	result = spkt2sd (s, sb -> sb_fd, sb -> sb_flags & SB_EXPD ? 1 : 0, si);
+	s -> s_mask &= ~SMASK_UDATA_PGI;
 	s -> s_udata = NULL, s -> s_ulen = 0;
-    result = spkt2sd (s, sb -> sb_fd, sb -> sb_flags & SB_EXPD ? 1 : 0, si);
-    s -> s_mask &= ~SMASK_UDATA_PGI;
-    s -> s_udata = NULL, s -> s_ulen = 0;
 
-    freespkt (s);
-    if (result == NOTOK)
-	goto out1;
+	freespkt (s);
+	if (result == NOTOK)
+		goto out1;
 
-    if (ses_ab_timer >= 0)
-	switch (TReadRequest (sb -> sb_fd, tx, ses_ab_timer, td)) {
-	    case OK:
-	    default: 		/* should be an ABORT ACCEPT, but who cares? */
-	        TXFREE (tx);
-		break;
+	if (ses_ab_timer >= 0)
+		switch (TReadRequest (sb -> sb_fd, tx, ses_ab_timer, td)) {
+		case OK:
+		default: 		/* should be an ABORT ACCEPT, but who cares? */
+			TXFREE (tx);
+			break;
 
-	    case NOTOK:
-		if (td -> td_reason != DR_TIMER)
-		    sb -> sb_fd = NOTOK;
-		break;
-	}
-    result = OK;
+		case NOTOK:
+			if (td -> td_reason != DR_TIMER)
+				sb -> sb_fd = NOTOK;
+			break;
+		}
+	result = OK;
 
-out1: ;
-    freesblk (sb);
-    
-    return result;
+out1:
+	;
+	freesblk (sb);
+
+	return result;
 }

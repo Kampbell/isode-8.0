@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/states5.c,v 9.0 1992/06/16 12:41:08 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/states5.c,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *
@@ -34,8 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/states5.c,v 9.0 1992/06/
 
 int
 s5_400B(event, pe)			/* sector 5, state 400B	*/
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case DLQ:
@@ -72,70 +72,70 @@ s5_400B(event, pe)			/* sector 5, state 400B	*/
 /* ARGSUSED */
 int
 s5_402B(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
-		undefined ("402B", event); /* NOTREACHED */
+	undefined ("402B", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
 int
 s5_420B(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
-		undefined ("420B", event); /* NOTREACHED */
+	undefined ("420B", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
 int
 s5_422B(event, pe)			/* sector 5, state 422B	*/
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
-		undefined ("422B", event); /* NOTREACHED */
+	undefined ("422B", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
 int
 s5_40N(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
-		undefined ("40N", event); /* NOTREACHED */
+	undefined ("40N", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
 int
 s5_40T(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
-		undefined ("40T", event); /* NOTREACHED */
+	undefined ("40T", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
 int
 s5_42T(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
-		undefined ("42T", event); /* NOTREACHED */
+	undefined ("42T", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
 int
 s5_42N(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
-		undefined ("42N", event); /* NOTREACHED */
+	undefined ("42N", event); /* NOTREACHED */
 }
 
 
 s5_61(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case BKR:
@@ -146,8 +146,8 @@ s5_61(event, pe)
 }
 int
 s5_62(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case VBRKrsp:

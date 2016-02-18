@@ -49,24 +49,24 @@ extern AttributeType *turbo_index_types;
 #endif
 
 do_ds_addentry (arg, error, binddn, target, di_p, dsp, authtype)
-    struct ds_addentry_arg      *arg;
-    struct DSError              *error;
-    DN                          binddn;
-    DN                          target;
-    struct di_block		**di_p;
-    char 			dsp;
-    char			authtype;
+struct ds_addentry_arg      *arg;
+struct DSError              *error;
+DN                          binddn;
+DN                          target;
+struct di_block		**di_p;
+char 			dsp;
+char			authtype;
 {
-Entry  entryptr,ptr;
-register DN  dntop, dn = NULLDN;
-DN  trail = NULLDN;
-extern Entry database_root;
-ContinuationRef cont_ref_parent ();
-char * new_version ();
-int retval;
-int authp;
-extern int read_only;
-extern int	entry_cmp();
+	Entry  entryptr,ptr;
+	register DN  dntop, dn = NULLDN;
+	DN  trail = NULLDN;
+	extern Entry database_root;
+	ContinuationRef cont_ref_parent ();
+	char * new_version ();
+	int retval;
+	int authp;
+	extern int read_only;
+	extern int	entry_cmp();
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_add"));
 
@@ -86,37 +86,35 @@ extern int	entry_cmp();
 		return (DS_ERROR_REMOTE);
 	}
 
-	switch (find_entry (target,&(arg->ada_common),binddn,NULLDNSEQ,TRUE,&entryptr, error, di_p, OP_ADDENTRY)) 
-	{
+	switch (find_entry (target,&(arg->ada_common),binddn,NULLDNSEQ,TRUE,&entryptr, error, di_p, OP_ADDENTRY)) {
 	case DS_OK:
 		error->dse_type = DSE_UPDATEERROR;
 		error->ERR_UPDATE.DSE_up_problem = DSE_UP_ALREADYEXISTS;
 		return(DS_ERROR_REMOTE);
 	case DS_CONTINUE:
-	    /* Filled out di_p - what do we do with it ?? */
-	    return(DS_CONTINUE);
+		/* Filled out di_p - what do we do with it ?? */
+		return(DS_CONTINUE);
 	case DS_X500_ERROR:
-	    /* Filled out error - what do we do with it ?? */
-	    if ((error->dse_type != DSE_NAMEERROR) || (error->ERR_NAME.DSE_na_problem != DSE_NA_NOSUCHOBJECT)) {
-		return(DS_X500_ERROR);
-	    }
-	    ds_error_free (error);  /* not interested - know it does not exist */
-	    break;
+		/* Filled out error - what do we do with it ?? */
+		if ((error->dse_type != DSE_NAMEERROR) || (error->ERR_NAME.DSE_na_problem != DSE_NA_NOSUCHOBJECT)) {
+			return(DS_X500_ERROR);
+		}
+		ds_error_free (error);  /* not interested - know it does not exist */
+		break;
 	default:
-	    /* SCREAM */
-	    LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_read() - find_entry failed"));
-	    return(DS_ERROR_LOCAL);
+		/* SCREAM */
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_read() - find_entry failed"));
+		return(DS_ERROR_LOCAL);
 	}
 
 	/* object does not exist, so create it */
 
 	/* Strong authentication  */
-	if ((retval = check_security_parms((caddr_t) arg, 
-				_ZAddEntryArgumentDataDAS, 
-				&_ZDAS_mod,
-				arg->ada_common.ca_security,
-				arg->ada_common.ca_sig, &binddn)) != 0)
-	{
+	if ((retval = check_security_parms((caddr_t) arg,
+									   _ZAddEntryArgumentDataDAS,
+									   &_ZDAS_mod,
+									   arg->ada_common.ca_security,
+									   arg->ada_common.ca_sig, &binddn)) != 0) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = retval;
 		return (DS_ERROR_REMOTE);
@@ -133,7 +131,7 @@ extern int	entry_cmp();
 		entryptr = database_root;
 		if (entryptr->e_data != E_DATA_MASTER) {
 			error->dse_type = DSE_REFERRAL;
-        		error->ERR_REFERRAL.DSE_ref_prefix = NULLDN;
+			error->ERR_REFERRAL.DSE_ref_prefix = NULLDN;
 			if ((error->ERR_REFERRAL.DSE_ref_candidates = cont_ref_parent (NULLDN)) == NULLCONTINUATIONREF) {
 				error->dse_type = DSE_SERVICEERROR;
 				error->ERR_SERVICE.DSE_sv_problem = DSE_SV_INVALIDREFERENCE;
@@ -142,23 +140,22 @@ extern int	entry_cmp();
 		}
 	} else {
 		trail->dn_parent = NULLDN;
-		switch(find_child_entry(dntop,&(arg->ada_common),binddn,NULLDNSEQ,TRUE,&(entryptr), error, di_p))
-		{
+		switch(find_child_entry(dntop,&(arg->ada_common),binddn,NULLDNSEQ,TRUE,&(entryptr), error, di_p)) {
 		case DS_OK:
-		    /* Filled out entryptr - carry on */
-		    break;
+			/* Filled out entryptr - carry on */
+			break;
 		case DS_CONTINUE:
-		    /* Filled out di_p - what do we do with it ?? */
-		    /* When add returns DS_CONTINUE the target must be changed */
-		    return(DS_CONTINUE);
+			/* Filled out di_p - what do we do with it ?? */
+			/* When add returns DS_CONTINUE the target must be changed */
+			return(DS_CONTINUE);
 
 		case DS_X500_ERROR:
-		    /* Filled out error - what do we do with it ?? */
-		    return(DS_X500_ERROR);
+			/* Filled out error - what do we do with it ?? */
+			return(DS_X500_ERROR);
 		default:
-		    /* SCREAM */
-		    LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_add() - find_child_entry failed"));
-		    return(DS_ERROR_LOCAL);
+			/* SCREAM */
+			LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_add() - find_child_entry failed"));
+			return(DS_ERROR_LOCAL);
 		}
 	}
 
@@ -183,12 +180,12 @@ extern int	entry_cmp();
 
 	if (!manager(binddn))
 		authp = entryptr->e_authp ? entryptr->e_authp->ap_modification :
-		    AP_SIMPLE;
+				AP_SIMPLE;
 	else
 		authp = AP_SIMPLE;
 
 	if (check_acl ((authtype % 3) >= authp ? binddn : NULLDN, ACL_ADD,
-	    entryptr->e_acl->ac_child,dntop) == NOTOK) {
+				   entryptr->e_acl->ac_child,dntop) == NOTOK) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		dn_free (dntop);
@@ -203,7 +200,7 @@ extern int	entry_cmp();
 	ptr = get_default_entry (entryptr);
 	ptr->e_name = rdn_cpy (dn->dn_rdn);
 	ptr->e_attributes = as_cpy (arg->ada_entry);
- 
+
 	modify_attr (ptr,binddn);
 
 	DLOG (log_dsap,LLOG_TRACE,("add - unravel"));
@@ -241,11 +238,11 @@ extern int	entry_cmp();
 
 	if ( (!ptr->e_leaf) && (!ptr->e_external) && (!ptr->e_children)) {
 		AV_Sequence avs;
-		for (avs = ptr->e_master; avs != NULLAV; avs=avs->avseq_next) 
+		for (avs = ptr->e_master; avs != NULLAV; avs=avs->avseq_next)
 			if (dn_cmp ((DN)avs->avseq_av.av_struct, mydsadn) == 0) {
 				create_null_edb (ptr);
 				break;
-			} 
+			}
 		if (avs == NULLAV)
 			ptr->e_allchildrenpresent = FALSE;
 	}
@@ -254,14 +251,14 @@ extern int	entry_cmp();
 	DATABASE_HEAP;
 	(void) avl_insert(&entryptr->e_children, (caddr_t) ptr, entry_cmp, avl_dup_error);
 	GENERAL_HEAP;
-		
+
 	if (entryptr->e_leaf) {
 
 		/* Turn leaf into non leaf, and add child */
 		/* Temporary until managemnet tools do it */
 
 		Attr_Sequence newas;
-		
+
 		if (entryptr->e_data != E_DATA_MASTER) {
 			DN dn_found;
 			struct dn_seq	* dn_stack = NULLDNSEQ;
@@ -277,7 +274,7 @@ extern int	entry_cmp();
 			case DS_X500_ERROR:
 				return(DS_CONTINUE);
 			default:
-			    	return(DS_ERROR_LOCAL);
+				return(DS_ERROR_LOCAL);
 			}
 			/* NOTREACHED */
 		}
@@ -321,7 +318,7 @@ extern int	entry_cmp();
 		entryptr->e_allchildrenpresent = 2;	/* Subtree ! */
 
 		modify_attr (entryptr,binddn);
-		if (unravel_attribute (entryptr,error) != OK) 
+		if (unravel_attribute (entryptr,error) != OK)
 			fatal (-31,"serious schema error");
 
 #ifdef TURBO_INDEX

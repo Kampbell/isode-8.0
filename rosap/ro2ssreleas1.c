@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssreleas1.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/ro2ssreleas1.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -43,21 +43,21 @@ int	sd;
 int	priority;
 struct RoSAPindication *roi;
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	register struct assocblk   *acb;
 
-    missingP (roi);
+	missingP (roi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rosapPsig (acb, sd);
+	rosapPsig (acb, sd);
 
-    result = RoEndRequestAux (acb, priority, roi);
+	result = RoEndRequestAux (acb, priority, roi);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 
 }
 
@@ -68,44 +68,42 @@ register struct assocblk   *acb;
 int	priority;
 struct RoSAPindication *roi;
 {
-    int     result;
-    struct SSAPindication   sis;
-    register struct SSAPindication *si = &sis;
-    register struct SSAPabort *sa = &si -> si_abort;
-    struct SSAPrelease  srs;
-    register struct SSAPrelease *sr = &srs;
+	int     result;
+	struct SSAPindication   sis;
+	register struct SSAPindication *si = &sis;
+	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPrelease  srs;
+	register struct SSAPrelease *sr = &srs;
 
-    if (acb -> acb_apdu)	/* ACB_CLOSING tested earlier in rosapPsig */
-	return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
+	if (acb -> acb_apdu)	/* ACB_CLOSING tested earlier in rosapPsig */
+		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
-    if (!(acb -> acb_flags & ACB_ROS))
-	return rosaplose (roi, ROS_OPERATION, NULLCP,
-		"not an association descriptor for ROS");
+	if (!(acb -> acb_flags & ACB_ROS))
+		return rosaplose (roi, ROS_OPERATION, NULLCP,
+						  "not an association descriptor for ROS");
 
-    if (!(acb -> acb_flags & ACB_INIT))
-	return rosaplose (roi, ROS_OPERATION, NULLCP, "not initiator");
+	if (!(acb -> acb_flags & ACB_INIT))
+		return rosaplose (roi, ROS_OPERATION, NULLCP, "not initiator");
 
-    if (acb -> acb_ready
-	    && !(acb -> acb_flags & ACB_TURN)
-	    && (*acb -> acb_ready) (acb, priority, roi) == NOTOK)
-	return NOTOK;
+	if (acb -> acb_ready
+			&& !(acb -> acb_flags & ACB_TURN)
+			&& (*acb -> acb_ready) (acb, priority, roi) == NOTOK)
+		return NOTOK;
 
-    if (SRelRequest (acb -> acb_fd, NULLCP, 0, NOTOK, sr, si) == NOTOK) {
-	if (sa -> sa_peer)
-	    return ss2rosabort (acb, sa, roi);
+	if (SRelRequest (acb -> acb_fd, NULLCP, 0, NOTOK, sr, si) == NOTOK) {
+		if (sa -> sa_peer)
+			return ss2rosabort (acb, sa, roi);
 
-	result = ss2roslose (acb, roi, "SRelRequest", sa);
-    }
-    else
-	if (!sr -> sr_affirmative)
-	    result = ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
-		    "other side refused to release connection");
+		result = ss2roslose (acb, roi, "SRelRequest", sa);
+	} else if (!sr -> sr_affirmative)
+		result = ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+							"other side refused to release connection");
 	else {
-	    acb -> acb_fd = NOTOK;
-	    result = OK;
+		acb -> acb_fd = NOTOK;
+		result = OK;
 	}
 
-    freeacblk (acb);
+	freeacblk (acb);
 
-    return result;
+	return result;
 }

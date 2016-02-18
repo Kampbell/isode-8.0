@@ -33,107 +33,109 @@ int two_passes;
 
 /*ARGSUSED*/
 int photo_start(name)
-     char *name;
+char *name;
 {
-  x = y = 0;
-  if (passno == 1)
-    maxx = 0, two_passes = 1;
-  return 0;
+	x = y = 0;
+	if (passno == 1)
+		maxx = 0, two_passes = 1;
+	return 0;
 }
 
 int photo_end(name)
-     char *name;
+char *name;
 {
-  Pixel fore, back;
-  Arg args[MAXARGS];
-  int count;
+	Pixel fore, back;
+	Arg args[MAXARGS];
+	int count;
 
-  if (passno == 1) {
-    passno = 2;
-    px = x = maxx;
-    py = --y;
-  
-    make_photo_widget();
+	if (passno == 1) {
+		passno = 2;
+		px = x = maxx;
+		py = --y;
 
-    dpy = XtDisplay(toplevel);
-    scr = DefaultScreenOfDisplay(dpy);
-    
-    winW = x;
-    winH = y;
+		make_photo_widget();
 
-    photo_pixmap = XCreatePixmap(dpy, XtWindow(PhotoWindow),
-				 (Dimension) x, (Dimension) y, 
-				 DefaultDepthOfScreen(scr));
-    gc = XCreateGC(dpy, photo_pixmap, 0, NULL);
+		dpy = XtDisplay(toplevel);
+		scr = DefaultScreenOfDisplay(dpy);
 
-    count = 0;
-    XtSetArg(args[count], XtNbackground, &back); count++;
-    XtSetArg(args[count], XtNforeground, &fore); count++;
-    XtGetValues(PhotoWindow, args, count);
+		winW = x;
+		winH = y;
 
-    XSetLineAttributes(dpy, gc, 0, LineSolid, CapButt, JoinBevel);
+		photo_pixmap = XCreatePixmap(dpy, XtWindow(PhotoWindow),
+									 (Dimension) x, (Dimension) y,
+									 DefaultDepthOfScreen(scr));
+		gc = XCreateGC(dpy, photo_pixmap, 0, NULL);
 
-    XSetForeground(dpy, gc, (unsigned long) fore);
-    XSetBackground(dpy, gc, (unsigned long) back);
+		count = 0;
+		XtSetArg(args[count], XtNbackground, &back);
+		count++;
+		XtSetArg(args[count], XtNforeground, &fore);
+		count++;
+		XtGetValues(PhotoWindow, args, count);
 
-    if (fore == 0)
-      XSetFunction(dpy, gc, GXset);
-    else
-      XSetFunction(dpy, gc, GXclear);
-    
-    XFillRectangle(dpy, photo_pixmap, gc, 0, 0, 
-		   (unsigned int) winW, (unsigned int) winH);
+		XSetLineAttributes(dpy, gc, 0, LineSolid, CapButt, JoinBevel);
 
-    if (fore == 0)
-      XSetFunction(dpy, gc, GXclear);
-    else
-      XSetFunction(dpy, gc, GXset);
+		XSetForeground(dpy, gc, (unsigned long) fore);
+		XSetBackground(dpy, gc, (unsigned long) back);
 
-    return 0;
-  }
-  if (name && *name) (void) strcpy(photo_name, name);
-  passno = 1;
-  x = y = maxx = 0;
-  return 0;
+		if (fore == 0)
+			XSetFunction(dpy, gc, GXset);
+		else
+			XSetFunction(dpy, gc, GXclear);
+
+		XFillRectangle(dpy, photo_pixmap, gc, 0, 0,
+					   (unsigned int) winW, (unsigned int) winH);
+
+		if (fore == 0)
+			XSetFunction(dpy, gc, GXclear);
+		else
+			XSetFunction(dpy, gc, GXset);
+
+		return 0;
+	}
+	if (name && *name) (void) strcpy(photo_name, name);
+	passno = 1;
+	x = y = maxx = 0;
+	return 0;
 }
 
 /*ARGSUSED*/
 int photo_line_end(line)
-     bit_string *line;
+bit_string *line;
 {
-  /* the end of a line has been reached */
-  /* A bit string is stored in line->dbuf_top */
-  
-  if (passno == 1 && x > maxx)
-    maxx = x;
-  x = 0, y++;
-  
-  return 0;
+	/* the end of a line has been reached */
+	/* A bit string is stored in line->dbuf_top */
+
+	if (passno == 1 && x > maxx)
+		maxx = x;
+	x = 0, y++;
+
+	return 0;
 }
 
 int photo_black(length)
-     int length;
+int length;
 {
-  if (passno == 1) {
-    x += length;
-    return 0;
-  }
-  /* draw a black line of 'length' pixels */
-  return 0;
+	if (passno == 1) {
+		x += length;
+		return 0;
+	}
+	/* draw a black line of 'length' pixels */
+	return 0;
 }
 
 int photo_white(length)
-     int length;
+int length;
 {
-  if (passno == 1) {
-    x += length;
-    return 0;
-  }
-  
-  /* draw a white line of 'length' pixels */
-  XDrawLine (dpy, photo_pixmap, gc, position, 
-	     NUMLINES, length+position-1, NUMLINES);
-  
-  return 0;
+	if (passno == 1) {
+		x += length;
+		return 0;
+	}
+
+	/* draw a white line of 'length' pixels */
+	XDrawLine (dpy, photo_pixmap, gc, position,
+			   NUMLINES, length+position-1, NUMLINES);
+
+	return 0;
 }
 

@@ -9,26 +9,24 @@
 #define MAXTASKS 512
 #define NO_TASK -1
 
-typedef enum
-{
-  SEARCH_TASK,
-  LIST_TASK,
-  READ_TASK,
-  MODIFY_TASK,
-  MODIFY_RDN_TASK,
-  ADD_TASK,
-  REMOVE_TASK,
-  COMPARE_TASK,
-  ABANDON_TASK
+typedef enum {
+	SEARCH_TASK,
+	LIST_TASK,
+	READ_TASK,
+	MODIFY_TASK,
+	MODIFY_RDN_TASK,
+	ADD_TASK,
+	REMOVE_TASK,
+	COMPARE_TASK,
+	ABANDON_TASK
 } task_type;
-  
-typedef struct _ds_task
-{
-  task_type type;
-  int task_id;
-  char *baseobject;
-  QCardinal request_id;
-  struct _ds_task *next;
+
+typedef struct _ds_task {
+	task_type type;
+	int task_id;
+	char *baseobject;
+	QCardinal request_id;
+	struct _ds_task *next;
 } ds_task, *DsTask;
 
 #define NULLDsTask (DsTask) NULL

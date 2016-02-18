@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_expunge.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/pe_expunge.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -34,22 +34,22 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_expunge.c,v 9.0 199
 
 PE	pe_expunge (pe, r)
 PE	pe,
-	r;
+ r;
 {
-    if (r) {
-	if (pe == r)
-	    return r;
+	if (r) {
+		if (pe == r)
+			return r;
 
-	if (pe_extract (pe, r))
-	    if (pe -> pe_realbase && !r -> pe_realbase) {
-		r -> pe_realbase = pe -> pe_realbase;
-		pe -> pe_realbase = NULL;
-	    }
+		if (pe_extract (pe, r))
+			if (pe -> pe_realbase && !r -> pe_realbase) {
+				r -> pe_realbase = pe -> pe_realbase;
+				pe -> pe_realbase = NULL;
+			}
 
-	r -> pe_refcnt++;
-    }
+		r -> pe_refcnt++;
+	}
 
-    pe_free (pe);
+	pe_free (pe);
 
-    return r;
+	return r;
 }

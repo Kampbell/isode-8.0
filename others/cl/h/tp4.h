@@ -1,6 +1,6 @@
 /* tp4.h - TP4 abstractions */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/tp4.h,v 5.0 88/07/21 14:39:38 mrose Rel $
  *
  *
@@ -30,7 +30,7 @@
 #ifdef	TLI
 #include <tiuser.h>
 
-				/* why aren't these in <tiuser.h>? */
+/* why aren't these in <tiuser.h>? */
 
 #define	T_NULL	0x00
 
@@ -59,13 +59,13 @@ int	t_close ();
 
 
 struct tp4pkt {
-    union {
-	TP_MSG		  tp_msg;
-	TP_MSG_CONNECT	  tp_connect;
-	TP_MSG_DATA	  tp_data;
-	TP_MSG_X_DATA	  tp_x_data;
-	TP_MSG_DISCONNECT tp_disconnect;
-    } tp_un;
+	union {
+		TP_MSG		  tp_msg;
+		TP_MSG_CONNECT	  tp_connect;
+		TP_MSG_DATA	  tp_data;
+		TP_MSG_X_DATA	  tp_x_data;
+		TP_MSG_DISCONNECT tp_disconnect;
+	} tp_un;
 #define tp4_event	tp_un.tp_msg.tp_event
 #define tp4_called 	tp_un.tp_connect.dst_address
 #define tp4_calling 	tp_un.tp_connect.src_address

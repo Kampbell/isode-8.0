@@ -1,6 +1,6 @@
 /* rtpkt.h - include file for reliable transfer providers (RtS-PROVIDER) */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/rtpkt.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -88,7 +88,7 @@
 	return rtsaplose (rti, RTS_PARAMETER, NULLCP, \
 			    "mandatory parameter \"%s\" missing", #p); \
 }
-#else 
+#else
 #define missingP(p) \
 { \
     if (p == NULL) \
@@ -179,7 +179,7 @@ int	rt2sspturn (), rt2ssgturn (), rt2sstrans (), rt2sswait (),
 	rt2ssasync (), rt2ssmask (), rt2sslose ();
 
 /*  */
-				/* RTORQ apdu */
+/* RTORQ apdu */
 #define	RTORQ_CKPOINT	0	/* checkpointSize tag */
 #define	  RTORQ_CK_DFLT	0	/*   default */
 #define	RTORQ_WINDOW	1	/* windowSize tag */
@@ -192,7 +192,7 @@ int	rt2sspturn (), rt2ssgturn (), rt2sstrans (), rt2sswait (),
 #define	  RTORQ_CD_OPEN 0	/*   open tag */
 #define	  RTORQ_CD_RCVR	1	/*   recover tag */
 
-				/* RTOAC apdu */
+/* RTOAC apdu */
 #define	RTOAC_CKPOINT	0	/* checkpointSize tag */
 #define	  RTOAC_CK_DFLT	0	/*   default */
 #define	RTOAC_WINDOW	1	/* windowSize tag */
@@ -201,11 +201,11 @@ int	rt2sspturn (), rt2ssgturn (), rt2sstrans (), rt2sswait (),
 #define	  RTOAC_CD_OPEN	0	/*   open tag */
 #define	  RTOAC_CD_RCVR	1	/*   recover tag */
 
-				/* RTORJ apdu */
+/* RTORJ apdu */
 #define	RTORJ_REFUSE	0	/* refuseReason tag */
 #define	RTORJ_USERDATA	1	/* userDataRJ */
 
-				/* RTAB apdu */
+/* RTAB apdu */
 #define	RTAB_REASON	0	/* abortReason tag */
 #define	RTAB_REFLECT	1	/* relectedParameter tag */
 #define	RTAB_USERDATA	2	/* userDataAB */

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mapphone.c,v 9.0 1992/06/16 12:45:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mapphone.c,v 9.0 1992/06/16 12:45:59 isode Rel $
  *
  *
@@ -37,51 +37,47 @@ void
 addToPhoneList(str)
 char *str;
 {
-char * cp;
+	char * cp;
 
-  cp = index(str, ':');
-  if (cp == NULLCP)
-  {
-    (void) fprintf(stderr, "log an error message about parsing of phone numbermappings...\n");
-    return;
-  }
-  *cp = '\0';
-  cp++;
-  addPhoneNode(str, cp);
+	cp = index(str, ':');
+	if (cp == NULLCP) {
+		(void) fprintf(stderr, "log an error message about parsing of phone numbermappings...\n");
+		return;
+	}
+	*cp = '\0';
+	cp++;
+	addPhoneNode(str, cp);
 }
 
 void
 addPhoneNode(from, to)
 char * from, * to;
 {
-struct mapphonelist * mplp;
+	struct mapphonelist * mplp;
 
-  mplp = mapphone_alloc();
-  if (mapphonelp != NULLPHLIST)
-  {
-    tailplp->next = mplp;
-    tailplp = mplp;
-  }
-  else
-    mapphonelp = tailplp = mplp;
-  mplp->mapfrom = copy_string(from);
-  mplp->mapto = copy_string(to);
-  mplp->next = NULLPHLIST;
+	mplp = mapphone_alloc();
+	if (mapphonelp != NULLPHLIST) {
+		tailplp->next = mplp;
+		tailplp = mplp;
+	} else
+		mapphonelp = tailplp = mplp;
+	mplp->mapfrom = copy_string(from);
+	mplp->mapto = copy_string(to);
+	mplp->next = NULLPHLIST;
 }
 
 char *
 mapPhone(from)
 char * from;
 {
-struct mapphonelist * mplp;
-static char tophone[LINESIZE];
+	struct mapphonelist * mplp;
+	static char tophone[LINESIZE];
 
-  for (mplp = mapphonelp; mplp != NULLPHLIST; mplp = mplp->next)
-    if (strncmp(from, mplp->mapfrom, strlen(mplp->mapfrom)) == 0)
-    {
-      (void) strcpy(tophone, mplp->mapto);
-      (void) strcat(tophone, from + strlen(mplp->mapfrom));
-      return tophone;
-    }
-  return from;
+	for (mplp = mapphonelp; mplp != NULLPHLIST; mplp = mplp->next)
+		if (strncmp(from, mplp->mapfrom, strlen(mplp->mapfrom)) == 0) {
+			(void) strcpy(tophone, mplp->mapto);
+			(void) strcat(tophone, from + strlen(mplp->mapfrom));
+			return tophone;
+		}
+	return from;
 }

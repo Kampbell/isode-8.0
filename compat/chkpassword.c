@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/chkpassword.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/chkpassword.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -59,7 +59,7 @@ char   *usrpass;
 	char realm[REALM_SZ];
 	int krbval;
 
-	/* 
+	/*
 	 * check to see if the passwd is `*krb*'
 	 * if it is, use kerberos
 	 */
@@ -76,9 +76,9 @@ char   *usrpass;
 		 * now check the passwd
 		 */
 		krbval = krb_get_pw_in_tkt(usrname, "",
-					   realm, "krbtgt",
-					   realm,
-					   DEFAULT_TKT_LIFE, usrpass);
+								   realm, "krbtgt",
+								   realm,
+								   DEFAULT_TKT_LIFE, usrpass);
 
 		return (krbval == INTK_OK);;
 	}

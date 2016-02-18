@@ -31,8 +31,8 @@ extern LLog * log_dsap;
 dn_append (a,b)
 DN a,b;
 {
-register DN ptr;
-register DN eptr;
+	register DN ptr;
+	register DN eptr;
 
 	if (a == NULLDN)
 		DLOG (log_dsap,LLOG_DEBUG,("appending to null dn!"));

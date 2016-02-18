@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaplose.c,v 9.0 1992/06/16 12:29:42 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap2/RCS/psaplose.c,v 9.0 1992/06/16 12:29:42 isode Rel $
  *
  *
@@ -40,50 +40,48 @@ static int  _psaplose ();
 
 #ifndef	lint
 int	ppktlose (va_alist)
-va_dcl
-{
-    int	    len,
-	    ppdu,
-    	    reason,
-	    result;
-    char   *base;
-    register struct psapblk *pb;
-    PE	    pe;
-    register struct PSAPindication *pi;
-    register struct PSAPabort *pa;
-    struct SSAPindication   sis;
-    struct type_PS_ARP__PPDU pdus;
-    register struct type_PS_ARP__PPDU *pdu = &pdus;
-    va_list ap;
+va_dcl {
+	int	    len,
+	ppdu,
+	reason,
+	result;
+	char   *base;
+	register struct psapblk *pb;
+	PE	    pe;
+	register struct PSAPindication *pi;
+	register struct PSAPabort *pa;
+	struct SSAPindication   sis;
+	struct type_PS_ARP__PPDU pdus;
+	register struct type_PS_ARP__PPDU *pdu = &pdus;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    pb = va_arg (ap, struct psapblk *);
-    pi = va_arg (ap, struct PSAPindication *);
-    reason = va_arg (ap, int);
-    ppdu = va_arg (ap, int);
+	pb = va_arg (ap, struct psapblk *);
+	pi = va_arg (ap, struct PSAPindication *);
+	reason = va_arg (ap, int);
+	ppdu = va_arg (ap, int);
 
-    result = _psaplose (pi, reason, ap);
+	result = _psaplose (pi, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    if ((pa = &pi -> pi_abort) -> pa_cc > 0) {
-	SLOG (psap2_log, LLOG_EXCEPTIONS, NULLCP,
-	      ("ppktlose [%s] %*.*s", PErrString (pa -> pa_reason),
-	       pa -> pa_cc, pa -> pa_cc, pa -> pa_data));
-    }
-    else
-	SLOG (psap2_log, LLOG_EXCEPTIONS, NULLCP,
-	      ("ppktlose [%s]", PErrString (pa -> pa_reason)));
+	if ((pa = &pi -> pi_abort) -> pa_cc > 0) {
+		SLOG (psap2_log, LLOG_EXCEPTIONS, NULLCP,
+		("ppktlose [%s] %*.*s", PErrString (pa -> pa_reason),
+		pa -> pa_cc, pa -> pa_cc, pa -> pa_data));
+	} else
+		SLOG (psap2_log, LLOG_EXCEPTIONS, NULLCP,
+		("ppktlose [%s]", PErrString (pa -> pa_reason)));
 
-    if (pb -> pb_fd == NOTOK)
-	return result;
+	if (pb -> pb_fd == NOTOK)
+		return result;
 
-    switch (reason) {
+	switch (reason) {
 	case PC_NOTSPECIFIED:
-	default: 
-	    reason = int_PS_Abort__reason_reason__not__specified;
-	    break;
+	default:
+		reason = int_PS_Abort__reason_reason__not__specified;
+		break;
 
 	case PC_UNRECOGNIZED:
 	case PC_UNEXPECTED:
@@ -91,32 +89,32 @@ va_dcl
 	case PC_PPPARAM1:
 	case PC_PPPARAM2:
 	case PC_INVALID:
-	    reason -= PC_ABORT_BASE;
-	    break;
-    }
+		reason -= PC_ABORT_BASE;
+		break;
+	}
 
-    pdu -> provider__reason = (struct type_PS_Abort__reason *) &reason;
-    pdu -> event = ppdu != PPDU_NONE
-				? (struct type_PS_Event__identifier *) &ppdu
-				: NULL;
+	pdu -> provider__reason = (struct type_PS_Abort__reason *) &reason;
+	pdu -> event = ppdu != PPDU_NONE
+	? (struct type_PS_Event__identifier *) &ppdu
+	: NULL;
 
-    pe = NULLPE;
-    base = NULL, len = 0;
-    if (encode_PS_ARP__PPDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-	PLOGP (psap2_log,PS_ARP__PPDU, pe, "ARP-PPDU", 0);
+	pe = NULLPE;
+	base = NULL, len = 0;
+	if (encode_PS_ARP__PPDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
+		PLOGP (psap2_log,PS_ARP__PPDU, pe, "ARP-PPDU", 0);
 
-	(void) pe2ssdu (pe, &base, &len);
-    }
-    if (pe)
-	pe_free (pe);
+		(void) pe2ssdu (pe, &base, &len);
+	}
+	if (pe)
+		pe_free (pe);
 
-    if (SUAbortRequest (pb -> pb_fd, base, len, &sis) != NOTOK)
-	pb -> pb_fd = NOTOK;
+	if (SUAbortRequest (pb -> pb_fd, base, len, &sis) != NOTOK)
+		pb -> pb_fd = NOTOK;
 
-    if (base)
-	free (base);
+	if (base)
+		free (base);
 
-    return result;
+	return result;
 }
 #else
 /* VARARGS6 */
@@ -127,9 +125,9 @@ register struct PSAPindication *pi;
 int	reason,
 	ppdu;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return ppktlose (pb, pi, reason, ppdu, what, fmt);
+	return ppktlose (pb, pi, reason, ppdu, what, fmt);
 }
 #endif
 
@@ -137,23 +135,22 @@ char   *what,
 
 #ifndef	lint
 int	psaplose (va_alist)
-va_dcl
-{
-    int     reason,
-    	    result;
-    struct PSAPindication *pi;
-    va_list ap;
+va_dcl {
+	int     reason,
+	result;
+	struct PSAPindication *pi;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    pi = va_arg (ap, struct PSAPindication *);
-    reason = va_arg (ap, int);
+	pi = va_arg (ap, struct PSAPindication *);
+	reason = va_arg (ap, int);
 
-    result = _psaplose (pi, reason, ap);
+	result = _psaplose (pi, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return result;
+	return result;
 }
 #else
 /* VARARGS4 */
@@ -162,9 +159,9 @@ int	psaplose (pi, reason, what, fmt)
 struct PSAPindication *pi;
 int     reason;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return psaplose (pi, reason, what, fmt);
+	return psaplose (pi, reason, what, fmt);
 }
 #endif
 
@@ -176,24 +173,24 @@ register struct PSAPindication *pi;
 int     reason;
 va_list	ap;
 {
-    register char  *bp;
-    char    buffer[BUFSIZ];
-    register struct PSAPabort *pa;
+	register char  *bp;
+	char    buffer[BUFSIZ];
+	register struct PSAPabort *pa;
 
-    if (pi) {
-	bzero ((char *) pi, sizeof *pi);
-	pi -> pi_type = PI_ABORT;
-	pa = &pi -> pi_abort;
+	if (pi) {
+		bzero ((char *) pi, sizeof *pi);
+		pi -> pi_type = PI_ABORT;
+		pa = &pi -> pi_abort;
 
-	asprintf (bp = buffer, ap);
-	bp += strlen (bp);
+		asprintf (bp = buffer, ap);
+		bp += strlen (bp);
 
-	pa -> pa_peer = 0;
-	pa -> pa_reason = reason;
-	pa -> pa_ninfo = 0;
-	copyPSAPdata (buffer, bp - buffer, pa);
-    }
+		pa -> pa_peer = 0;
+		pa -> pa_reason = reason;
+		pa -> pa_ninfo = 0;
+		copyPSAPdata (buffer, bp - buffer, pa);
+	}
 
-    return NOTOK;
+	return NOTOK;
 }
 #endif

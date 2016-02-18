@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_free.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/pe_free.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -36,72 +36,71 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_free.c,v 9.0 1992/0
 int	pe_free (pe)
 register PE	pe;
 {
-    register PE	    p,
-		    q;
-    register struct qbuf *qb,
-                         *qp;
+	register PE	    p,
+			 q;
+	register struct qbuf *qb,
+			*qp;
 
-    if (!pe)
-        abort ();
+	if (!pe)
+		abort ();
 
-    if( pe->pe_refcnt < 0) {
-      DLOG (psap_log, LLOG_DEBUG,
-	    ("WARNING: duplicately free'd pe 0x%x!", pe));
-      return;
-    }
+	if( pe->pe_refcnt < 0) {
+		DLOG (psap_log, LLOG_DEBUG,
+			  ("WARNING: duplicately free'd pe 0x%x!", pe));
+		return;
+	}
 
-    if (pe -> pe_refcnt-- > 0)
-	return;
+	if (pe -> pe_refcnt-- > 0)
+		return;
 
-    switch (pe -> pe_form) {
-	case PE_FORM_PRIM: 
-	case PE_FORM_ICONS: 
-	    if (pe -> pe_prim && !pe -> pe_inline)
-		PEDfree (pe -> pe_prim);
-            else
-		if (pe -> pe_inline && Hqb) {
-		    if(Fqb && (--Qbrefs == 0)) {
-			for (qb = Fqb; qb && (qb != Hqb); qb = qp) {
-			    qp = qb -> qb_forw;
-			    free ((char *) qb);
+	switch (pe -> pe_form) {
+	case PE_FORM_PRIM:
+	case PE_FORM_ICONS:
+		if (pe -> pe_prim && !pe -> pe_inline)
+			PEDfree (pe -> pe_prim);
+		else if (pe -> pe_inline && Hqb) {
+			if(Fqb && (--Qbrefs == 0)) {
+				for (qb = Fqb; qb && (qb != Hqb); qb = qp) {
+					qp = qb -> qb_forw;
+					free ((char *) qb);
+				}
+				if (!qb)
+					abort ();
+				Fqb = Hqb = NULL;
 			}
-			if (!qb)
-			    abort ();
-			Fqb = Hqb = NULL;
-		    }
 		}
-	    break;
-
-	case PE_FORM_CONS: 
-	    for (p = pe -> pe_cons; p; p = q) {
-		q = p -> pe_next;
-		pe_free (p);
-	    }
-	    break;
-
-        default:
-            abort();
-	    /* NOTREACHED */
-    }
-
-    if (pe -> pe_realbase)
-	free (pe -> pe_realbase);
-	
-    pe_frees++;
-    pe -> pe_next = pe_list;
-    pe_list = pe;
-#ifdef	DEBUG
-    if (psap_log -> ll_events & LLOG_DEBUG) {
-	PE     *pep;
-
-	for (pep = &pe_active; p = *pep; pep = &p -> pe_link)
-	    if (p == pe) {
-		*pep = p -> pe_link;
 		break;
-	    }
-	if (!p)
-	    DLOG (psap_log, LLOG_DEBUG,
-		  ("WARNING: free'd pe (0x%x) not on active list", pe));
-    }
+
+	case PE_FORM_CONS:
+		for (p = pe -> pe_cons; p; p = q) {
+			q = p -> pe_next;
+			pe_free (p);
+		}
+		break;
+
+	default:
+		abort();
+		/* NOTREACHED */
+	}
+
+	if (pe -> pe_realbase)
+		free (pe -> pe_realbase);
+
+	pe_frees++;
+	pe -> pe_next = pe_list;
+	pe_list = pe;
+#ifdef	DEBUG
+	if (psap_log -> ll_events & LLOG_DEBUG) {
+		PE     *pep;
+
+		for (pep = &pe_active; p = *pep; pep = &p -> pe_link)
+			if (p == pe) {
+				*pep = p -> pe_link;
+				break;
+			}
+		if (!p)
+			DLOG (psap_log, LLOG_DEBUG,
+				  ("WARNING: free'd pe (0x%x) not on active list", pe));
+	}
 #endif
 }

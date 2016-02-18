@@ -36,8 +36,8 @@ extern int	errno;
 
 DIR *
 opendir( dirname )
-	char		*dirname;	/* name of directory */
-	{
+char		*dirname;	/* name of directory */
+{
 	register DIR	*dirp;		/* -> malloc'ed storage */
 	register int	fd;		/* file descriptor for read */
 	struct stat	sbuf;		/* result of fstat() */
@@ -45,18 +45,17 @@ opendir( dirname )
 	if ( (fd = open( dirname, O_RDONLY )) < 0 )
 		return NULL;		/* errno set by open() */
 
-	if ( fstat( fd, &sbuf ) != 0 || !S_ISDIR( sbuf.st_mode ) )
-		{
+	if ( fstat( fd, &sbuf ) != 0 || !S_ISDIR( sbuf.st_mode ) ) {
 		(void)close( fd );
 		errno = ENOTDIR;
 		return NULL;		/* not a directory */
-		}
+	}
 
 	if ( (dirp = (DIR *)malloc( sizeof(DIR) )) == NULL
-	  || (dirp->dd_buf = (char *)malloc( (unsigned)DIRBUF )) == NULL
+			|| (dirp->dd_buf = (char *)malloc( (unsigned)DIRBUF )) == NULL
 	   )	{
 		register int	serrno = errno;
-					/* errno set to ENOMEM by sbrk() */
+		/* errno set to ENOMEM by sbrk() */
 
 		if ( dirp != NULL )
 			free( (pointer)dirp );
@@ -64,13 +63,15 @@ opendir( dirname )
 		(void)close( fd );
 		errno = serrno;
 		return NULL;		/* not enough memory */
-		}
+	}
 
 	dirp->dd_fd = fd;
 	dirp->dd_loc = dirp->dd_size = 0;	/* refill needed */
 
 	return dirp;
-	}
+}
 #else
-int	_opendir_stub () {;}
+int	_opendir_stub () {
+	;
+}
 #endif

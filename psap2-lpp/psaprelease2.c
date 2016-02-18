@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprelease2.c,v 9.0 1992/06/16 12:31:57 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap2-lpp/RCS/psaprelease2.c,v 9.0 1992/06/16 12:31:57 isode Rel $
  *
  * Contributed by The Wollongong Group, Inc.
@@ -45,31 +45,31 @@ PE     *data;
 int	ndata;
 struct PSAPindication *pi;
 {
-    SBV	    smask;
-    int	    result;
-    register struct psapblk *pb;
+	SBV	    smask;
+	int	    result;
+	register struct psapblk *pb;
 
-    if (status != SC_ACCEPT)
-	return psaplose (pi, PC_PARAMETER, NULLCP,
-			 "must accept release request");
-    if (data == NULL || ndata <= 0 || data[0] == NULLPE || ndata > NPDATA_PS)
-	return psaplose (pi, PC_PARAMETER, NULLCP, "bad release user data");
-    if (data[0] -> pe_context != PCI_ACSE)
-	return psaplose (pi, PC_PARAMETER, NULLCP,
-			 "wrong context for release user data");
-    missingP (pi);
+	if (status != SC_ACCEPT)
+		return psaplose (pi, PC_PARAMETER, NULLCP,
+						 "must accept release request");
+	if (data == NULL || ndata <= 0 || data[0] == NULLPE || ndata > NPDATA_PS)
+		return psaplose (pi, PC_PARAMETER, NULLCP, "bad release user data");
+	if (data[0] -> pe_context != PCI_ACSE)
+		return psaplose (pi, PC_PARAMETER, NULLCP,
+						 "wrong context for release user data");
+	missingP (pi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    psapFsig (pb, sd);
+	psapFsig (pb, sd);
 
-    result = PRelResponseAux (pb, data[0], pi);
+	result = PRelResponseAux (pb, data[0], pi);
 
-    freepblk (pb);
+	freepblk (pb);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -79,39 +79,38 @@ register struct psapblk *pb;
 PE	data;
 struct PSAPindication *pi;
 {
-    int	    result;
-    PE	    pe;
-    PS	    ps;
-    register struct type_PS_ReleaseResponse__PDU *pdu;
+	int	    result;
+	PE	    pe;
+	PS	    ps;
+	register struct type_PS_ReleaseResponse__PDU *pdu;
 
-    if ((pdu = (struct type_PS_ReleaseResponse__PDU *) malloc (sizeof *pdu))
-	    == NULL)
-	return psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
-    pdu -> reference = pb -> pb_reliability == LOW_QUALITY ? pb -> pb_reference
-							   : NULLRF;
-    pdu -> user__data = data;
+	if ((pdu = (struct type_PS_ReleaseResponse__PDU *) malloc (sizeof *pdu))
+			== NULL)
+		return psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+	pdu -> reference = pb -> pb_reliability == LOW_QUALITY ? pb -> pb_reference
+					   : NULLRF;
+	pdu -> user__data = data;
 
-    pe = NULLPE;
-    result = encode_PS_ReleaseResponse__PDU (&pe, 1, 0, NULLCP, pdu);
+	pe = NULLPE;
+	result = encode_PS_ReleaseResponse__PDU (&pe, 1, 0, NULLCP, pdu);
 
-    pdu -> reference = NULL;
-    pdu -> user__data = NULLPE;
-    free_PS_ReleaseResponse__PDU (pdu);
+	pdu -> reference = NULL;
+	pdu -> user__data = NULLPE;
+	free_PS_ReleaseResponse__PDU (pdu);
 
-    if (result != NOTOK) {
-	PLOGP (psap2_log,PS_PDUs, pe, "ReleaseResponse-PDU", 0);
+	if (result != NOTOK) {
+		PLOGP (psap2_log,PS_PDUs, pe, "ReleaseResponse-PDU", 0);
 
-	if ((result = pe2ps (ps = pb -> pb_stream, pe)) == NOTOK)
-	    (void) pslose (pi, ps -> ps_errno);
-	else
-	    result = OK;
-    }
-    else
-	(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
-			 PY_pepy);
+		if ((result = pe2ps (ps = pb -> pb_stream, pe)) == NOTOK)
+			(void) pslose (pi, ps -> ps_errno);
+		else
+			result = OK;
+	} else
+		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+						 PY_pepy);
 
-    if (pe)
-	pe_free (pe);
+	if (pe)
+		pe_free (pe);
 
-    return result;
+	return result;
 }

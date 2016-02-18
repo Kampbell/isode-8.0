@@ -39,7 +39,7 @@ extern int max_conns;
 #define CONNS_RESERVED_X500	10	/* Reserved for normal operations */
 
 /*
-*  If the connection definitions are altered bear in mind that 
+*  If the connection definitions are altered bear in mind that
 *  MAX_CONNS - CONNS_RESERVED_FOR_DI - CONNS_RESERVED_FOR_X500
 *  must be at least 1 to allow get edb ops to happen, and should
 *  probably be at least 2 to allow one get edb operation to block.
@@ -71,8 +71,7 @@ extern int max_conns;
 *  di_oper points to the operation to be alerted from type DI_OPERATION
 *  di_perform points to the operation performing the get dsa info operation
 */
-struct di_block
-{
+struct di_block {
 	DN	  di_dn;	/* Name of dsa this block refers to */
 
 	char	  di_type;	/* Global list, operation list or task list */
@@ -88,11 +87,11 @@ struct di_block
 	struct task_act		* di_task;
 	struct oper_act		* di_oper;
 
-/*
-*  The following are needed to generate chaining arguments from DSAInformation
-*  in the case of chaining (DI_OPERATION); and to generate continuation
-*  references in the case of referring (DI_TASK). Not present for DI_GLOBAL
-*/
+	/*
+	*  The following are needed to generate chaining arguments from DSAInformation
+	*  in the case of chaining (DI_OPERATION); and to generate continuation
+	*  references in the case of referring (DI_TASK). Not present for DI_GLOBAL
+	*/
 	DN			  di_target;
 	int			  di_reftype;
 	int			  di_rdn_resolved;
@@ -111,13 +110,12 @@ struct di_block
 
 /*
 * Operations received over a bound association are represented as a
-* linked list of task blocks. The following task block structure 
+* linked list of task blocks. The following task block structure
 * contains the invocation (including decoded argument) received,
 * representations of the progress of the task and fields to be
 * used for generating the response.
 */
-struct task_act
-{
+struct task_act {
 	int			  tk_prio;
 	char			  tk_state;
 #define TK_ACTIVE		  1	/* Task ready to have work done */
@@ -146,8 +144,7 @@ struct task_act
 };
 #define NULLTASK ((struct task_act *) NULL)
 
-struct oper_act
-{
+struct oper_act {
 	int                       on_id;
 	char                      on_state;
 #define ON_DEFERRED		  1	/* Waiting for DSA INFO */
@@ -163,21 +160,21 @@ struct oper_act
 #define ON_TYPE_SUBTASK		  5
 #define ON_TYPE_SHADOW		  6
 
-/* Specific to ON_TYPE_X500 */
+	/* Specific to ON_TYPE_X500 */
 	struct task_act         *on_task;		/* Task to wake */
 
-/* Specific to ON_TYPE_BIND_COMPARE */
+	/* Specific to ON_TYPE_BIND_COMPARE */
 	struct connection	*on_bind_compare;	/* Bind to wake */
 
-/* Specific to ON_TYPE_GET_DSA_INFO */
+	/* Specific to ON_TYPE_GET_DSA_INFO */
 	struct di_block		* on_wake_list;		/* di_blocks to wake */
 
-/* Specific to ON_TYPE_GET_EDB */
+	/* Specific to ON_TYPE_GET_EDB */
 	Entry			  on_getedb_eptr;	/* previous entry */
 	char			* on_getedb_ver;	/* previous version */
 	char                    on_relay;       /* if TRUE try Relay DSA */
 
-/* Specific to ON_TYPE_SUBTASK */
+	/* Specific to ON_TYPE_SUBTASK */
 	struct ds_search_task	* on_subtask;
 
 	struct di_block		* on_dsas;	/* DSAInfos for chaining */
@@ -194,8 +191,7 @@ struct oper_act
 };
 #define NULLOPER ((struct oper_act *) NULL)
 
-struct conn_start
-{
+struct conn_start {
 	/* Values stored after call to TNetAccept */
 	int			  cs_vecp;
 	char 			* cs_vec[4];
@@ -212,8 +208,7 @@ struct conn_start
 	struct ds_bind_error	  cs_err;
 };
 
-struct conn_connect
-{
+struct conn_connect {
 	/* Bind argument used in conn_request() */
 	struct ds_bind_arg              cc_req;
 
@@ -223,10 +218,9 @@ struct conn_connect
 /*
 * Conn is the structure used to represent external connections
 */
-struct connection
-{
+struct connection {
 	char			  cn_state;
-/* State of the connection */
+	/* State of the connection */
 #define CN_INDICATED		  1
 #define CN_WAITING		  2
 #define CN_CONNECTING1		  3
@@ -237,63 +231,62 @@ struct connection
 #define CN_OPENING		  8
 #define CN_PRE_OPENING		  9
 
-	char			  cn_ctx; 
-/* DS_CTX_* values defined in dsap.h for use by decoders */
+	char			  cn_ctx;
+	/* DS_CTX_* values defined in dsap.h for use by decoders */
 
 	char			  cn_initiator;
 	/* TRUE: this DSA is initiator, FALSE: this DSA is responder */
 
 	/* Information used during initialisation of the connection */
-        union
-        {
+	union {
 		struct conn_start	cn_start_un_start;	/* responder */
 		struct conn_connect	cn_start_un_connect;	/* initiator */
 	} cn_start_un;
 #define cn_start	cn_start_un.cn_start_un_start
 #define cn_connect	cn_start_un.cn_start_un_connect
 
-/*
-	struct ds_bind_arg	* cn_res;
-	struct ds_bind_error		* cn_err;
+	/*
+		struct ds_bind_arg	* cn_res;
+		struct ds_bind_error		* cn_err;
 
-	struct init_activity	  cn_init_act;
-	struct oper_act 	* cn_bind_compare;
-*/
+		struct init_activity	  cn_init_act;
+		struct oper_act 	* cn_bind_compare;
+	*/
 
-        time_t			  cn_last_used;
-/* Time at which this connection was last used */
+	time_t			  cn_last_used;
+	/* Time at which this connection was last used */
 
-        time_t			  cn_last_release;
-/* Time at which this connection release was last attempted */
+	time_t			  cn_last_release;
+	/* Time at which this connection release was last attempted */
 
 	DN			  cn_dn;
-/* Name of the entity at the far end of the connection */
+	/* Name of the entity at the far end of the connection */
 
 	struct PSAPaddr           cn_addr;
-/* Address of the entity at the far end of the connection */
+	/* Address of the entity at the far end of the connection */
 
 	int                       cn_ad;
-/* Descriptor identifying the association on which the connection is based */
+	/* Descriptor identifying the association on which the connection is based */
 
-/*
-	int			  cn_context_id;
-*/
-/* Context identifier of context to be used for user-data. */
+	/*
+		int			  cn_context_id;
+	*/
+	/* Context identifier of context to be used for user-data. */
 
 	int                       cn_op_id;
-/* Used to ensure unique invoke id's are used when invoking operations. */
+	/* Used to ensure unique invoke id's are used when invoking operations. */
 
 	struct task_act		* cn_tasklist;
-/* List of tasks received over this connection. */
+	/* List of tasks received over this connection. */
 
 	struct oper_act		* cn_operlist;
-/* List of operations sent over this connection. */
+	/* List of operations sent over this connection. */
 
 	struct connection       * cn_next;
-/* Rest of list of connections. */
+	/* Rest of list of connections. */
 
 	int 			cn_authen;
-/* Takes a value from bind.h -> level to which the association is authenticated */
+	/* Takes a value from bind.h -> level to which the association is authenticated */
 
 };
 #define NULLCONN ((struct connection *) NULL)

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/oid2ode.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/oid2ode.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -37,22 +37,22 @@ char   *oid2ode_aux (identifier, quoted)
 OID	identifier;
 int	quoted;
 {
-    int	    events;
-    register struct isobject *io;
-    static char buffer[BUFSIZ];
-    
-    events = addr_log -> ll_events;
-    addr_log -> ll_events = LLOG_FATAL;
+	int	    events;
+	register struct isobject *io;
+	static char buffer[BUFSIZ];
 
-    io = getisobjectbyoid (identifier);
+	events = addr_log -> ll_events;
+	addr_log -> ll_events = LLOG_FATAL;
 
-    addr_log -> ll_events = events;
+	io = getisobjectbyoid (identifier);
 
-    if (io) {
-	(void) sprintf (buffer, quoted ? "\"%s\"" : "%s",
-			io -> io_descriptor);
-	return buffer;
-    }
+	addr_log -> ll_events = events;
 
-    return sprintoid (identifier);
+	if (io) {
+		(void) sprintf (buffer, quoted ? "\"%s\"" : "%s",
+						io -> io_descriptor);
+		return buffer;
+	}
+
+	return sprintoid (identifier);
 }

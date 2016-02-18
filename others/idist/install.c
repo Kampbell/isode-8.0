@@ -13,7 +13,7 @@
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science
- * 
+ *
  *
  * $Log: install.c,v $
  * Revision 9.0  1992/06/16  12:42:00  isode
@@ -70,8 +70,8 @@ extern char *getstring ();
  * (i.e., more than one source is being copied to the same destination).
  */
 install(src, dest, destdir, opts)
-	char *src, *dest;
-	int destdir, opts;
+char *src, *dest;
+int destdir, opts;
 {
 	char *rname;
 	char destcopy[BUFSIZ];
@@ -83,12 +83,12 @@ install(src, dest, destdir, opts)
 
 	if (nflag || debug) {
 		(void) printf("%s%s%s%s%s%s %s %s\n",
-		       opts & VERIFY ? "verify":"install",
-		       opts & WHOLE ? " -w" : "",
-		       opts & YOUNGER ? " -y" : "",
-		       opts & COMPARE ? " -b" : "",
-		       opts & REMOVE ? " -R" : "",
-		       opts & QUERYM ? " -Q" : "", src, dest);
+					  opts & VERIFY ? "verify":"install",
+					  opts & WHOLE ? " -w" : "",
+					  opts & YOUNGER ? " -y" : "",
+					  opts & COMPARE ? " -b" : "",
+					  opts & REMOVE ? " -R" : "",
+					  opts & QUERYM ? " -Q" : "", src, dest);
 		if (nflag)
 			return;
 	}
@@ -139,8 +139,8 @@ install(src, dest, destdir, opts)
  * rname is the name of the file on the remote host.
  */
 sendf(rname, opts)
-	char *rname;
-	int opts;
+char *rname;
+int opts;
 {
 	register struct subcmd *sc;
 	struct stat stb;
@@ -202,9 +202,9 @@ sendf(rname, opts)
 			return;
 		}
 		if (transfer (stb.st_mode & S_IFMT, opts,
-			      stb.st_mode & 07777, (off_t)0, (time_t)0,
-			      protoname (), protogroup (),
-			      rname, "") < 0) {
+					  stb.st_mode & 07777, (off_t)0, (time_t)0,
+					  protoname (), protogroup (),
+					  rname, "") < 0) {
 			(void) closedir (d);
 			return;
 		}
@@ -216,11 +216,11 @@ sendf(rname, opts)
 		len = tp - target;
 		while (dp = readdir(d)) {
 			if (!strcmp(dp->d_name, ".") ||
-			    !strcmp(dp->d_name, ".."))
+					!strcmp(dp->d_name, ".."))
 				continue;
 			if (len + 1 + (int)strlen(dp->d_name) >= BUFSIZ - 1) {
 				advise (NULLCP, "%s/%s name too long",
-					target, dp->d_name);
+						target, dp->d_name);
 				continue;
 			}
 			tp = otp;
@@ -247,12 +247,12 @@ sendf(rname, opts)
 				if (*lp -> target == 0)
 					(void) strcpy (buf, lp -> pathname);
 				else	(void) sprintf (buf, "%s/%s",
-							lp -> target,
-							lp -> pathname);
+											lp -> target,
+											lp -> pathname);
 				(void) transfer ((unsigned short)0, opts,
-						 (unsigned short)0, (off_t)0,
-						 (time_t)0, "", "",
-						 rname, buf);
+								 (unsigned short)0, (off_t)0,
+								 (time_t)0, "", "",
+								 rname, buf);
 				return;
 			}
 		}
@@ -260,9 +260,9 @@ sendf(rname, opts)
 		if (debug)
 			(void) printf("readlink = %.*s\n", stb.st_size, buf);
 		if (transfer (stb.st_mode & S_IFMT, opts, stb.st_mode & 07777,
-			      stb.st_size, stb.st_mtime,
-			      protoname (), protogroup (), rname,
-			      buf) < 0)
+					  stb.st_size, stb.st_mtime,
+					  protoname (), protogroup (), rname,
+					  buf) < 0)
 			return;
 		goto done;
 
@@ -289,12 +289,12 @@ sendf(rname, opts)
 			if (*lp -> target == 0)
 				(void) strcpy (buf, lp -> pathname);
 			else	(void) sprintf (buf, "%s/%s",
-						lp -> target,
-						lp -> pathname);
+										lp -> target,
+										lp -> pathname);
 			(void) transfer ((unsigned short)0, opts,
-					 (unsigned short)0, (off_t)0,
-					 (time_t)0, "", "",
-					 rname, buf);
+							 (unsigned short)0, (off_t)0,
+							 (time_t)0, "", "",
+							 rname, buf);
 			return;
 		}
 	}
@@ -304,9 +304,9 @@ sendf(rname, opts)
 		return;
 	}
 	if ( transfer ((unsigned short)S_IFREG, opts, stb.st_mode & 07777,
-		       stb.st_size,
-		       stb.st_mtime, protoname (), protogroup (),
-		       rname, "") < 0) {
+				   stb.st_size,
+				   stb.st_mtime, protoname (), protogroup (),
+				   rname, "") < 0) {
 		(void) close (f);
 		return;
 	}
@@ -347,9 +347,9 @@ dospecial:
 		if (opts & VERIFY)
 			continue;
 		(void) sprintf(buf, "FILE=%s;export FILE;%s",
-			       target, sc->sc_name);
+					   target, sc->sc_name);
 		(void) runspecial (buf);
-		
+
 	}
 }
 
@@ -380,11 +380,11 @@ int	opts;
 		else {
 			if (strncmp (target, basename, strlen(basename)) == 0)
 				lp -> pathname = makestr (target +
-							  strlen(basename) + 1);
+										  strlen(basename) + 1);
 			else
 				lp -> pathname = makestr (target);
 		}
-				
+
 		if (Tdest)
 			lp->target = makestr (Tdest);
 		else
@@ -394,37 +394,37 @@ int	opts;
 }
 
 update(rname, opts, sp)
-	char *rname;
-	int opts;
-	struct stat *sp;
+char *rname;
+int opts;
+struct stat *sp;
 {
 	off_t size;
 	time_t mtime;
 	unsigned short mode;
 	int	retval;
 
-	if (debug) 
+	if (debug)
 		(void) printf("update(%s, %x, %x)\n", rname, opts, sp);
 
 	/*
 	 * Check to see if the file exists on the remote machine.
 	 */
 	switch (retval = rquery (rname, &mtime, &size, &mode)) {
-	    case DONE:  /* file doesn't exist so install it */
+	case DONE:  /* file doesn't exist so install it */
 		if ((opts & QUERYM) && !query ("Install",
-					       (int)(sp ->st_mode & S_IFMT),
-					       NULLCP))
+									   (int)(sp ->st_mode & S_IFMT),
+									   NULLCP))
 			return 0;
 		return(1);
 
-	    case NOTOK:	/* something went wrong! */
+	case NOTOK:	/* something went wrong! */
 		nerrs++;
 		return(0);
 
-	    case OK:
+	case OK:
 		break;
 
-	    default:
+	default:
 		advise (NULLCP, "update: unexpected response %d", retval);
 		return(0);
 	}
@@ -433,8 +433,8 @@ update(rname, opts, sp)
 		return (2);
 
 	if (opts & COMPARE) {
-		if ((opts & QUERYM) && !query ("Compare and update", 
-					       (int) mode, NULLCP))
+		if ((opts & QUERYM) && !query ("Compare and update",
+									   (int) mode, NULLCP))
 			return 0;
 		return(3);
 	}
@@ -452,7 +452,7 @@ update(rname, opts, sp)
 	} else if (sp->st_mtime == mtime && sp->st_size == size)
 		return(0);
 	if ((opts & QUERYM) && !query ("Update",
-				       (int)(sp -> st_mode & S_IFMT), NULLCP))
+								   (int)(sp -> st_mode & S_IFMT), NULLCP))
 		return 0;
 	return(2);
 }
@@ -461,9 +461,9 @@ update(rname, opts, sp)
 
 /*VARARGS2*/
 log(fp, fmt, a1, a2, a3)
-	FILE *fp;
-	char *fmt;
-	int a1, a2, a3;
+FILE *fp;
+char *fmt;
+int a1, a2, a3;
 {
 	/* Print changes locally if not quiet mode */
 	if (!qflag)
@@ -477,8 +477,7 @@ log(fp, fmt, a1, a2, a3)
 /*
  * Remove temporary files and do any cleanup operations before exiting.
  */
-SFD cleanup()
-{
+SFD cleanup() {
 	(void) unlink(utmpfile);
 	exit(1);
 }
@@ -491,23 +490,23 @@ char	*mess, *name;
 	char	*cp;
 
 	switch (mode) {
-	    case S_IFDIR:
+	case S_IFDIR:
 		cp = "directory";
 		break;
-	    case 0:
-	    case S_IFREG:
+	case 0:
+	case S_IFREG:
 		cp = "file";
 		break;
-	    case S_IFLNK:
+	case S_IFLNK:
 		cp = "symbolic link";
 		break;
-	    default:
+	default:
 		cp = "unknown file type";
 		break;
 	}
 
 	(void) sprintf (buf, "%s %s %s? ", mess, cp,
-			name == NULLCP ? target : name);
+					name == NULLCP ? target : name);
 	for (;;) {
 		cp = getstring (buf);
 		if (cp == NULLCP)
@@ -515,7 +514,7 @@ char	*mess, *name;
 		if (*cp == 'y' || *cp == 'Y' || *cp == 'n' || *cp == 'N')
 			break;
 	}
-	
+
 	if (*cp == 'y' || *cp == 'Y')
 		return 1;
 	return 0;

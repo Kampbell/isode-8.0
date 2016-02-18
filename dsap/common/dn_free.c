@@ -35,8 +35,8 @@ DN dn;
 dn_free (dn)
 DN dn;
 {
-register DN eptr;
-register DN next;
+	register DN eptr;
+	register DN next;
 
 	for (eptr = dn; eptr != NULLDN; eptr=next) {
 		next = eptr->dn_parent;

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapresync1.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapresync1.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -61,42 +61,42 @@ char   *data;
 int	cc;
 struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
 
-    switch (type) {
-	case SYNC_RESTART: 
-	    break;
+	switch (type) {
+	case SYNC_RESTART:
+		break;
 
-	case SYNC_ABANDON: 
-	    if (ssn != SERIAL_NONE)
+	case SYNC_ABANDON:
+		if (ssn != SERIAL_NONE)
+			return ssaplose (si, SC_PARAMETER, NULLCP,
+							 "serial number inappropriate");
+		break;
+
+	case SYNC_SET:
+		if (SERIAL_MIN > ssn || ssn > SERIAL_MAX + 1)
+			return ssaplose (si, SC_PARAMETER, NULLCP,
+							 "invalid serial number");
+		break;
+
+	default:
 		return ssaplose (si, SC_PARAMETER, NULLCP,
-			"serial number inappropriate");
-	    break;
+						 "improper choice of type setting");
+	}
+	missingP (si);
 
-	case SYNC_SET: 
-	    if (SERIAL_MIN > ssn || ssn > SERIAL_MAX + 1)
-		return ssaplose (si, SC_PARAMETER, NULLCP,
-			"invalid serial number");
-	    break;
+	smask = sigioblock ();
 
-	default: 
-	    return ssaplose (si, SC_PARAMETER, NULLCP,
-		    "improper choice of type setting");
-    }
-    missingP (si);
+	ssapRsig (sb, sd);
+	toomuchP (sb, data, cc, SN_SIZE, "resync");
 
-    smask = sigioblock ();
+	result = SReSyncRequestAux (sb, type, ssn, settings, data, cc, si);
 
-    ssapRsig (sb, sd);
-    toomuchP (sb, data, cc, SN_SIZE, "resync");
+	(void) sigiomask (smask);
 
-    result = SReSyncRequestAux (sb, type, ssn, settings, data, cc, si);
-
-    (void) sigiomask (smask);
-
-    return result;
+	return result;
 }
 
 /*  */
@@ -110,52 +110,52 @@ char   *data;
 int	cc;
 register struct SSAPindication *si;
 {
-    int     result;
+	int     result;
 
-    if (!(sb -> sb_requirements & SR_RESYNC))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"resynchronize service unavailable");
-
-    if ((sb -> sb_requirements & SR_ACTIVITY)
-	    && !(sb -> sb_flags & SB_Vact))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"no activity in progress");
-
-    if ((sb -> sb_flags & SB_RA)
-	    && SDoCollideAux (sb -> sb_flags & SB_INIT ? 1 : 0, type, ssn,
-		    sb -> sb_rs, sb -> sb_rsn) == NOTOK)
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"resync in progress takes precedence");
-
-    switch (type) {
-	case SYNC_RESTART: 
-	    if (sb -> sb_V_M < ssn || ssn < sb -> sb_V_R)
+	if (!(sb -> sb_requirements & SR_RESYNC))
 		return ssaplose (si, SC_OPERATION, NULLCP,
-			"bad choice for resync ssn, should be in [%d..%d]",
-			sb -> sb_V_R, sb -> sb_V_M);
-	    break;
+						 "resynchronize service unavailable");
 
-	case SYNC_ABANDON: 
-	    ssn = sb -> sb_V_M;
-	    break;
+	if ((sb -> sb_requirements & SR_ACTIVITY)
+			&& !(sb -> sb_flags & SB_Vact))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "no activity in progress");
 
-	case SYNC_SET: 
-	    break;
-    }
+	if ((sb -> sb_flags & SB_RA)
+			&& SDoCollideAux (sb -> sb_flags & SB_INIT ? 1 : 0, type, ssn,
+							  sb -> sb_rs, sb -> sb_rsn) == NOTOK)
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "resync in progress takes precedence");
 
-    dotokens ();
+	switch (type) {
+	case SYNC_RESTART:
+		if (sb -> sb_V_M < ssn || ssn < sb -> sb_V_R)
+			return ssaplose (si, SC_OPERATION, NULLCP,
+							 "bad choice for resync ssn, should be in [%d..%d]",
+							 sb -> sb_V_R, sb -> sb_V_M);
+		break;
 
-    if ((result = SWriteRequestAux (sb, SPDU_RS, data, cc, type, ssn,
-		settings, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
-	freesblk (sb);
-    else {
-	sb -> sb_flags |= SB_RS, sb -> sb_flags &= ~(SB_RA | SB_EDACK | SB_ERACK);
-	sb -> sb_rs = type;
-	sb -> sb_rsn = ssn;
-	sb -> sb_rsettings = sb -> sb_requirements & SR_TOKENS ? settings : 0;
-    }
+	case SYNC_ABANDON:
+		ssn = sb -> sb_V_M;
+		break;
 
-    return result;
+	case SYNC_SET:
+		break;
+	}
+
+	dotokens ();
+
+	if ((result = SWriteRequestAux (sb, SPDU_RS, data, cc, type, ssn,
+									settings, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
+		freesblk (sb);
+	else {
+		sb -> sb_flags |= SB_RS, sb -> sb_flags &= ~(SB_RA | SB_EDACK | SB_ERACK);
+		sb -> sb_rs = type;
+		sb -> sb_rsn = ssn;
+		sb -> sb_rsettings = sb -> sb_requirements & SR_TOKENS ? settings : 0;
+	}
+
+	return result;
 }
 
 #undef	dotoken

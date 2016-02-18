@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/test.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/test.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -49,17 +49,17 @@ char **argv;
 
 	while((opt = getopt(argc, argv, "o:d")) != EOF)
 		switch (opt) {
-		    case 'o':
+		case 'o':
 			oidtable = optarg;
 			break;
-		    case 'd':
+		case 'd':
 			psap_log -> ll_events = LLOG_ALL;
 			psap_log -> ll_stat |= LLOGTTY;
 			break;
-		    default:
-			fprintf (stderr, 
-				 "Usage: %s [-o oidtable] [-d] [type=value]\n",
-				 myname);
+		default:
+			fprintf (stderr,
+					 "Usage: %s [-o oidtable] [-d] [type=value]\n",
+					 myname);
 			exit (1);
 		}
 	argc -= optind;
@@ -68,7 +68,7 @@ char **argv;
 	quipu_syntaxes ();
 	if (load_oid_table (oidtable) == NOTOK) {
 		fprintf (stderr, "%s: can't load oidtable %s\n",
-			 myname, oidtable);
+				 myname, oidtable);
 		exit (1);
 	}
 
@@ -78,8 +78,7 @@ char **argv;
 	if (argc > 0) {
 		while (argc-- > 0)
 			do_parse (*argv++);
-	}
-	else
+	} else
 		for (;;) {
 			(void) fprintf (stderr,"-> ");
 
@@ -134,7 +133,7 @@ char *str;
 
 	pe2pl (opt,pe);
 
-	as_free (as);	
+	as_free (as);
 
 	if (decode_IF_Attribute (pe, 1, NULLIP, NULLVP, &as) == NOTOK) {
 		fprintf (stderr,"decode problem [%s]\n", PY_pepy);
@@ -151,8 +150,8 @@ char *str;
 	as_print (opt,as2,EDBOUT);
 
 	if (ps == NULL
-	    && ((ps = ps_alloc (str_open)) == NULLPS)
-	    || str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
+			&& ((ps = ps_alloc (str_open)) == NULLPS)
+			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
 

@@ -33,16 +33,15 @@ typedef int	bool;			/* Boolean data type */
 
 void
 seekdir( dirp, loc )
-	register DIR	*dirp;		/* stream from opendir() */
-	register off_t	loc;		/* position from telldir() */
-	{
+register DIR	*dirp;		/* stream from opendir() */
+register off_t	loc;		/* position from telldir() */
+{
 	register bool	rewind;		/* "start over when stymied" flag */
 
-	if ( dirp == NULL || dirp->dd_buf == NULL )
-		{
+	if ( dirp == NULL || dirp->dd_buf == NULL ) {
 		errno = EFAULT;
 		return;			/* invalid pointer */
-		}
+	}
 
 	/* A (struct dirent)'s d_off is an invented quantity on 4.nBSD
 	   NFS-supporting systems, so it is not safe to lseek() to it. */
@@ -56,60 +55,59 @@ seekdir( dirp, loc )
 	   doubt that the extra code for that would be worthwhile. */
 
 	if ( dirp->dd_loc >= dirp->dd_size	/* invalid index */
-	  || ((struct dirent *)&dirp->dd_buf[dirp->dd_loc])->d_off > loc
-					/* too far along in buffer */
+			|| ((struct dirent *)&dirp->dd_buf[dirp->dd_loc])->d_off > loc
+			/* too far along in buffer */
 	   )
 		dirp->dd_loc = 0;	/* reset to beginning of buffer */
 	/* else save time by starting at current dirp->dd_loc */
 
-	for ( rewind = true; ; )
-		{
+	for ( rewind = true; ; ) {
 		register struct dirent	*dp;
 
 		/* See whether the matching entry is in the current buffer. */
 
 		if ( (dirp->dd_loc < dirp->dd_size	/* valid index */
-		   || readdir( dirp ) != NULL	/* next buffer read */
-		   && (dirp->dd_loc = 0, true)	/* beginning of buffer set */
-		     )
-		  && (dp = (struct dirent *)&dirp->dd_buf[dirp->dd_loc])->d_off
-			<= loc		/* match possible in this buffer */
+				|| readdir( dirp ) != NULL	/* next buffer read */
+				&& (dirp->dd_loc = 0, true)	/* beginning of buffer set */
+			 )
+				&& (dp = (struct dirent *)&dirp->dd_buf[dirp->dd_loc])->d_off
+				<= loc		/* match possible in this buffer */
 		   )	{
 			for ( /* dp initialized above */ ;
-			      (char *)dp < &dirp->dd_buf[dirp->dd_size];
-			      dp = (struct dirent *)((char *)dp + dp->d_reclen)
-			    )
-				if ( dp->d_off == loc )
-					{	/* found it! */
+											 (char *)dp < &dirp->dd_buf[dirp->dd_size];
+											 dp = (struct dirent *)((char *)dp + dp->d_reclen)
+				)
+				if ( dp->d_off == loc ) {
+					/* found it! */
 					dirp->dd_loc =
 						(char *)dp - dirp->dd_buf;
 					return;
-					}
+				}
 
 			rewind = false;	/* no point in backing up later */
 			dirp->dd_loc = dirp->dd_size;	/* set end of buffer */
-			}
-		else			/* whole buffer past matching entry */
-			if ( !rewind )
-				{	/* no point in searching further */
+		} else			/* whole buffer past matching entry */
+			if ( !rewind ) {
+				/* no point in searching further */
 				errno = EINVAL;
 				return;	/* no entry at specified loc */
-				}
-			else	{	/* rewind directory and start over */
+			} else	{	/* rewind directory and start over */
 				rewind = false;	/* but only once! */
 
 				dirp->dd_loc = dirp->dd_size = 0;
 
 				if ( lseek( dirp->dd_fd, (off_t)0, SEEK_SET )
-					!= 0
+						!= 0
 				   )
 					return;	/* errno already set (EBADF) */
 
 				if ( loc == 0 )
 					return; /* save time */
-				}
-		}
+			}
 	}
+}
 #else
-int	_seekdir_stub () {;}
+int	_seekdir_stub () {
+	;
+}
 #endif

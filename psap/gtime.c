@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/gtime.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/gtime.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -46,7 +46,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/gtime.c,v 9.0 1992/06/
 extern int	dmsize[];
 #else
 int	dmsize[] = {
-    31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+	31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 #endif
 
@@ -60,50 +60,50 @@ int	dmsize[] = {
 long	gtime (tm)
 register struct tm *tm;
 {
-    register int    i,
-                    sec,
-                    mins,
-                    hour,
-                    mday,
-                    mon,
-                    year;
-    register long   result;
+	register int    i,
+			 sec,
+			 mins,
+			 hour,
+			 mday,
+			 mon,
+			 year;
+	register long   result;
 #ifdef	notdef
-    long    local;
-    struct timeb    tb;
+	long    local;
+	struct timeb    tb;
 #endif
 
-    if ((sec = tm -> tm_sec) < 0 || sec > 59
-	    || (mins = tm -> tm_min) < 0 || mins > 59
-	    || (hour = tm -> tm_hour) < 0 || hour > 24
-	    || (mday = tm -> tm_mday) < 1 || mday > 31
-	    || (mon = tm -> tm_mon + 1) < 1 || mon > 12)
-	return ((long) NOTOK);
-    if (hour == 24) {
-	hour = 0;
-	mday++;
-    }
-    year = YEAR (tm -> tm_year);
+	if ((sec = tm -> tm_sec) < 0 || sec > 59
+			|| (mins = tm -> tm_min) < 0 || mins > 59
+			|| (hour = tm -> tm_hour) < 0 || hour > 24
+			|| (mday = tm -> tm_mday) < 1 || mday > 31
+			|| (mon = tm -> tm_mon + 1) < 1 || mon > 12)
+		return ((long) NOTOK);
+	if (hour == 24) {
+		hour = 0;
+		mday++;
+	}
+	year = YEAR (tm -> tm_year);
 
-    result = 0L;
-    for (i = 1970; i < year; i++)
-	result += dysize (i);
-    if (dysize (year) == 366 && mon >= 3)
-	result++;
-    while (--mon)
-	result += dmsize[mon - 1];
-    result += mday - 1;
-    result = 24 * result + hour;
-    result = 60 * result + mins;
-    result = 60 * result + sec;
+	result = 0L;
+	for (i = 1970; i < year; i++)
+		result += dysize (i);
+	if (dysize (year) == 366 && mon >= 3)
+		result++;
+	while (--mon)
+		result += dmsize[mon - 1];
+	result += mday - 1;
+	result = 24 * result + hour;
+	result = 60 * result + mins;
+	result = 60 * result + sec;
 
 #ifdef	notdef
-    (void) ftime (&tb);
-    result += 60 * tb.timezone;
-    local = result;
-    if ((tm = localtime (&local)) && tm -> tm_isdst)
-	result -= 60 * 60;
+	(void) ftime (&tb);
+	result += 60 * tb.timezone;
+	local = result;
+	if ((tm = localtime (&local)) && tm -> tm_isdst)
+		result -= 60 * 60;
 #endif
 
-    return result;
+	return result;
 }

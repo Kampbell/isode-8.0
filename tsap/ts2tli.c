@@ -5,14 +5,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2tli.c,v 9.0 1992/06
 #endif
 
 /*
- * This module written by X-Tel Serviecs Ltd, UK. 
+ * This module written by X-Tel Serviecs Ltd, UK.
  * for Boldon James Limited UK. There donation
  * to the ISODE tree is gratefully received.
  *
  * ICL options later added by X-Tel Serviecs Ltd, UK.
  */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/tsap/RCS/ts2tli.c,v 9.0 1992/06/16 12:40:39 isode Rel $
  *
  *
@@ -102,9 +102,9 @@ extern char *t_errlist[];
 /* Options structure used by Concurrent RTnet-OSI R02 product */
 #ifdef RTnet_R02
 struct opts {
-    int size;
+	int size;
 #   define OPT_SIZE_DEFAULT 0
-    unsigned char class;
+	unsigned char class;
 #   define OPT_TP0_ALTERNATE	0x80
 #   define OPT_TP4		0x40
 #   define OPT_TP2		0x20
@@ -112,11 +112,11 @@ struct opts {
 #   define OPT_MASTER_PRIORITY	0x08
 #   define OPT_EXPEDITED	0x01
 #   define OPT_CLASS_DEFAULT (OPT_TP4 | OPT_TP0_ALTERNATE)
-    struct {
-	unsigned char secondary_priority:4;
-	unsigned char traffic_class:3;
-	unsigned char teletex:1;
-    } qos;
+	struct {
+		unsigned char secondary_priority:4;
+		unsigned char traffic_class:3;
+		unsigned char teletex:1;
+	} qos;
 };
 #define OPTS_SIZE 6
 #endif
@@ -126,12 +126,12 @@ struct opts {
 static char *sys_terrname (te)
 int te;
 {
-    static char tbuf[32];
+	static char tbuf[32];
 
-    if (te > 0 && te <= t_nerr)
-	return t_errlist[te];
-    (void) sprintf (tbuf, "Terrno %d", te);
-    return tbuf;
+	if (te > 0 && te <= t_nerr)
+		return t_errlist[te];
+	(void) sprintf (tbuf, "Terrno %d", te);
+	return tbuf;
 }
 
 static tli_lose (td, fd, reason, str)
@@ -139,34 +139,49 @@ struct TSAPdisconnect *td;
 int fd, reason;
 char *str;
 {
-    int eindex = errno;
-    int tindex = t_errno;
-    (void) tsaplose (td, reason, sys_terrname (t_errno), str);
-    if (fd != NOTOK)
-	(void) t_close (fd);
-    errno = eindex;
-    t_errno = tindex;
-    return NOTOK;
+	int eindex = errno;
+	int tindex = t_errno;
+	(void) tsaplose (td, reason, sys_terrname (t_errno), str);
+	if (fd != NOTOK)
+		(void) t_close (fd);
+	errno = eindex;
+	t_errno = tindex;
+	return NOTOK;
 }
 
 #ifdef RTnet_R02
 static int tp4err2gen(err)
 int err;
 {
-    int ret;
+	int ret;
 
-    switch (err & 0xff) {
-    case 0xfc: ret = DR_CONGEST; break;
-    case 0xf9: ret = DR_PROTOCOL; break;
-    case 0xf6: ret = DR_REFUSED; break;
-    case 0xf3: ret = DR_ADDRESS; break;
-    case 0xf0: ret = DR_PROTOCOL; break;
-    case 0xff: ret = DR_UNKNOWN; break;
-    case 0x00: ret = DR_NORMAL; break;
-    default: ret = err;
-    }
-    DLOG (tsap_log, LLOG_DEBUG, ("tp4err2gen(0x%x): return 0x%x", err, ret));
-    return ret;
+	switch (err & 0xff) {
+	case 0xfc:
+		ret = DR_CONGEST;
+		break;
+	case 0xf9:
+		ret = DR_PROTOCOL;
+		break;
+	case 0xf6:
+		ret = DR_REFUSED;
+		break;
+	case 0xf3:
+		ret = DR_ADDRESS;
+		break;
+	case 0xf0:
+		ret = DR_PROTOCOL;
+		break;
+	case 0xff:
+		ret = DR_UNKNOWN;
+		break;
+	case 0x00:
+		ret = DR_NORMAL;
+		break;
+	default:
+		ret = err;
+	}
+	DLOG (tsap_log, LLOG_DEBUG, ("tp4err2gen(0x%x): return 0x%x", err, ret));
+	return ret;
 }
 #define tp4err_def
 #endif
@@ -182,159 +197,158 @@ int qlen;
 struct TSAPdisconnect *td;
 int context;
 {
-    int fd;
-    char * tli_dev = tli_clts_dev;
-    struct NSAPinfo *ni;
-    int ts = nsap_default_stack;
+	int fd;
+	char * tli_dev = tli_clts_dev;
+	struct NSAPinfo *ni;
+	int ts = nsap_default_stack;
 
-    /* CONS or CLNS ? */
-    if (ta && (ta -> ta_naddr > 0)) 
-	    if (ni = getnsapinfo (ta -> ta_addrs))
-		    ts = ni -> is_stack;
-	    
-    if (ts == NAS_CONS)
-	    tli_dev = tli_cots_dev;
+	/* CONS or CLNS ? */
+	if (ta && (ta -> ta_naddr > 0))
+		if (ni = getnsapinfo (ta -> ta_addrs))
+			ts = ni -> is_stack;
 
-    if ((fd = t_open (tli_dev, O_RDWR, NULL)) == NOTOK)
-           return tli_lose (td, NOTOK, DR_CONGEST, "cannot open TS");
+	if (ts == NAS_CONS)
+		tli_dev = tli_cots_dev;
 
-    if (ta && (ta -> ta_naddr > 0 || ta -> ta_selectlen > 0)) {
-	struct t_bind *bind, *bound;
-	struct TSAPaddr bound_ta;
+	if ((fd = t_open (tli_dev, O_RDWR, NULL)) == NOTOK)
+		return tli_lose (td, NOTOK, DR_CONGEST, "cannot open TS");
 
-	if ((bind = (struct t_bind *)t_alloc (fd, T_BIND, T_ALL)) == NULL)
-	    return tli_lose (td, fd, DR_CONGEST, "can't allocate bind");
-	if ((bound = (struct t_bind *)t_alloc (fd, T_BIND, T_ALL)) == NULL) {
-	    t_free ((char *)bind, T_BIND);
-	    return tli_lose (td, fd, DR_CONGEST, "can't allocate bind");
+	if (ta && (ta -> ta_naddr > 0 || ta -> ta_selectlen > 0)) {
+		struct t_bind *bind, *bound;
+		struct TSAPaddr bound_ta;
+
+		if ((bind = (struct t_bind *)t_alloc (fd, T_BIND, T_ALL)) == NULL)
+			return tli_lose (td, fd, DR_CONGEST, "can't allocate bind");
+		if ((bound = (struct t_bind *)t_alloc (fd, T_BIND, T_ALL)) == NULL) {
+			t_free ((char *)bind, T_BIND);
+			return tli_lose (td, fd, DR_CONGEST, "can't allocate bind");
+		}
+
+		if (gen2tp4 (ta, &bind -> addr, context) == NOTOK) {
+			fd = tli_lose (td, fd, DR_ADDRESS, "invalid address");
+			goto out;
+		}
+		bind->qlen = qlen;
+
+		if (t_bind (fd, bind, bound) == NOTOK) {
+			char buf[TS_SIZE*2+1];
+
+			fd = tli_lose (td, fd, DR_CONGEST, "unable to bind");
+			buf[explode(buf, bind->addr.buf, bind->addr.len)] = '\0';
+			LLOG (tsap_log, LLOG_EXCEPTIONS,
+				  ("fail to bind %s as %s", taddr2str(ta), buf));
+			goto out;
+		}
+
+		/*
+		 * Check that we bound where we asked,
+		 * we could be given someting else.
+		 * Only care about selector
+		 */
+		(void) tp42gen(&bound_ta, &bound->addr);
+		if ((qlen && bound->qlen < 1) ||
+				ta->ta_selectlen != bound_ta.ta_selectlen ||
+				memcmp(ta->ta_selector, bound_ta.ta_selector,
+					   bound_ta.ta_selectlen) != 0) {
+			char buf[BUFSIZ];
+
+			t_unbind(fd);
+			fd = tli_lose (td, fd, DR_CONGEST, "address in use");
+			(void) strcpy(buf, taddr2str(ta));
+			LLOG (tsap_log, LLOG_EXCEPTIONS,
+				  ("tried to bind to %s but got %s", buf, taddr2str(&bound_ta)));
+			goto out;
+		}
+out:
+		t_free ((char *)bind, T_BIND);
+		t_free ((char *)bound, T_BIND);
+	} else {
+		if (t_bind (fd, (struct t_bind *)0, (struct t_bind *)0) == NOTOK)
+			fd = tli_lose (td, fd, DR_CONGEST, "unable to bind to NULL");
 	}
-
-	if (gen2tp4 (ta, &bind -> addr, context) == NOTOK) {
-	    fd = tli_lose (td, fd, DR_ADDRESS, "invalid address");
-	    goto out;
-	}
-	bind->qlen = qlen;
-
-	if (t_bind (fd, bind, bound) == NOTOK) {
-	    char buf[TS_SIZE*2+1];
-
-	    fd = tli_lose (td, fd, DR_CONGEST, "unable to bind");
-	    buf[explode(buf, bind->addr.buf, bind->addr.len)] = '\0';
-	    LLOG (tsap_log, LLOG_EXCEPTIONS,
-		("fail to bind %s as %s", taddr2str(ta), buf));
-	    goto out;
-	}
-
-	/*
-	 * Check that we bound where we asked,
-	 * we could be given someting else.
-	 * Only care about selector
-	 */
-	(void) tp42gen(&bound_ta, &bound->addr);
-	if ((qlen && bound->qlen < 1) ||
-	    ta->ta_selectlen != bound_ta.ta_selectlen ||
-	    memcmp(ta->ta_selector, bound_ta.ta_selector,
-		    bound_ta.ta_selectlen) != 0)
-	{
-	    char buf[BUFSIZ];
-
-	    t_unbind(fd);
-	    fd = tli_lose (td, fd, DR_CONGEST, "address in use");
-	    (void) strcpy(buf, taddr2str(ta));
-	    LLOG (tsap_log, LLOG_EXCEPTIONS,
-		("tried to bind to %s but got %s", buf, taddr2str(&bound_ta)));
-	    goto out;
-	}
-    out:
-	t_free ((char *)bind, T_BIND);
-	t_free ((char *)bound, T_BIND);
-    } else {
-	if (t_bind (fd, (struct t_bind *)0, (struct t_bind *)0) == NOTOK) 
-	    fd = tli_lose (td, fd, DR_CONGEST, "unable to bind to NULL");
-    }
 
 #ifdef DEBUG
-    if (ta)
-       DLOG (tsap_log, LLOG_TRACE, ("bound %d to %s", fd, taddr2str(ta)));
-    else 
-       DLOG (tsap_log, LLOG_TRACE, ("bound %d to NULLTA",fd));
+	if (ta)
+		DLOG (tsap_log, LLOG_TRACE, ("bound %d to %s", fd, taddr2str(ta)));
+	else
+		DLOG (tsap_log, LLOG_TRACE, ("bound %d to NULLTA",fd));
 #endif
 
-    return fd;
+	return fd;
 }
 
 /*
  * Check that the endpoint is suitable.
  * WARNING: do not call this after determining if an actual connection
  * 	supports expedited data (or other options).  It is not defined
- *	whether t_getinfo() return defaults or current values once a 
+ *	whether t_getinfo() return defaults or current values once a
  *	connection is established.
  */
 static int tp4info(tb, td)
 struct tsapblk *tb;
 struct TSAPdisconnect *td;
 {
-    struct t_info info;
-    int	    len;
+	struct t_info info;
+	int	    len;
 
-    if (t_getinfo (tb -> tb_fd, &info) == NOTOK) {
-	return tli_lose (td, NOTOK, DR_CONGEST, "t_getinfo");
-    }
+	if (t_getinfo (tb -> tb_fd, &info) == NOTOK) {
+		return tli_lose (td, NOTOK, DR_CONGEST, "t_getinfo");
+	}
 
-    DLOG (tsap_log, LLOG_DEBUG,
-	("tp4info: addr=%d, opt=%d, tsdu=%d, etsdu=%d, con=%d, dis=%d, serv=%d",
-	info.addr, info.options, info.tsdu, info.etsdu,
-	info.connect, info.discon, info.servtype));
-    switch (len = info.tsdu) {
-    case -2:
-	return tsaplose (td, DR_PARAMETER, NULLCP, "TSDU data not supported");
-    case 0:
-	return tsaplose (td, DR_PARAMETER, NULLCP, "TSDU not packetized");
-    case -1:
-	len = MAXTP4;
-	break;
-    default:
-	break;
-    }
+	DLOG (tsap_log, LLOG_DEBUG,
+		  ("tp4info: addr=%d, opt=%d, tsdu=%d, etsdu=%d, con=%d, dis=%d, serv=%d",
+		   info.addr, info.options, info.tsdu, info.etsdu,
+		   info.connect, info.discon, info.servtype));
+	switch (len = info.tsdu) {
+	case -2:
+		return tsaplose (td, DR_PARAMETER, NULLCP, "TSDU data not supported");
+	case 0:
+		return tsaplose (td, DR_PARAMETER, NULLCP, "TSDU not packetized");
+	case -1:
+		len = MAXTP4;
+		break;
+	default:
+		break;
+	}
 
-    if (info.etsdu == -1 || info.etsdu > 0)
-	tb -> tb_flags |= TB_EXPD;
-    else
-	tb -> tb_flags &= ~TB_EXPD;
-    tb -> tb_tpduslop = TP4SLOP;
-    tb -> tb_tsdusize = len - tb -> tb_tpduslop;
+	if (info.etsdu == -1 || info.etsdu > 0)
+		tb -> tb_flags |= TB_EXPD;
+	else
+		tb -> tb_flags &= ~TB_EXPD;
+	tb -> tb_tpduslop = TP4SLOP;
+	tb -> tb_tsdusize = len - tb -> tb_tpduslop;
 
-    return OK;
+	return OK;
 }
 
 static int tp4getdis(fd, td)
 int fd;
 struct TSAPdisconnect *td;
 {
-    struct t_discon *discon;
+	struct t_discon *discon;
 
-    discon = (struct t_discon *)t_alloc (fd, T_DIS, T_ALL);
-    if (t_rcvdis (fd, discon) == NOTOK) {
-	(void) tli_lose (td, NOTOK, DR_NETWORK, "t_discon");
-	goto out;
-    }
-    if (discon != (struct t_discon *)0) {
-	td -> td_reason = tp4err2gen(discon -> reason);
-	if ((td -> td_cc = discon -> udata.len) > 0) {
-	    if (td -> td_cc > TD_SIZE)
-		td -> td_cc = TD_SIZE; /* discard extra! */
-	    bcopy (discon -> udata.buf, td -> td_data, td -> td_cc);
+	discon = (struct t_discon *)t_alloc (fd, T_DIS, T_ALL);
+	if (t_rcvdis (fd, discon) == NOTOK) {
+		(void) tli_lose (td, NOTOK, DR_NETWORK, "t_discon");
+		goto out;
 	}
-    } else {
-	td -> td_reason = DR_UNKNOWN;
-	td -> td_cc = 0;
-    }
+	if (discon != (struct t_discon *)0) {
+		td -> td_reason = tp4err2gen(discon -> reason);
+		if ((td -> td_cc = discon -> udata.len) > 0) {
+			if (td -> td_cc > TD_SIZE)
+				td -> td_cc = TD_SIZE; /* discard extra! */
+			bcopy (discon -> udata.buf, td -> td_data, td -> td_cc);
+		}
+	} else {
+		td -> td_reason = DR_UNKNOWN;
+		td -> td_cc = 0;
+	}
 
 out:
-    if (discon != (struct t_discon *)0)
-	t_free ((char *)discon, T_DIS);
+	if (discon != (struct t_discon *)0)
+		t_free ((char *)discon, T_DIS);
 
-    return NOTOK;
+	return NOTOK;
 }
 
 /*    UPPER HALF */
@@ -346,131 +360,129 @@ int	expedited,
 	cc;
 struct TSAPdisconnect *td;
 {
-    struct t_call *sndcall;
-    struct t_call *rcvcall;
-    struct TSAPaddr ta;
+	struct t_call *sndcall;
+	struct t_call *rcvcall;
+	struct TSAPaddr ta;
 
-    if ((sndcall =
-	    (struct t_call *) t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL)
-	return tli_lose (td, NOTOK, DR_CONGEST, "t_alloc");
-    if ((rcvcall =
-	    (struct t_call *) t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL)
-    {
-	t_free ((char *)sndcall, T_CALL);
-	return tli_lose (td, NOTOK, DR_CONGEST, "t_alloc");
-    }
+	if ((sndcall =
+				(struct t_call *) t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL)
+		return tli_lose (td, NOTOK, DR_CONGEST, "t_alloc");
+	if ((rcvcall =
+				(struct t_call *) t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL) {
+		t_free ((char *)sndcall, T_CALL);
+		return tli_lose (td, NOTOK, DR_CONGEST, "t_alloc");
+	}
 
 #ifdef RTnet_R02
-    if (!expedited) { /* expedited negotiated by default */
-	struct opts * opts;
-	struct t_optmgmt * def;
+	if (!expedited) { /* expedited negotiated by default */
+		struct opts * opts;
+		struct t_optmgmt * def;
 
-	if ((def =
-	    (struct t_optmgmt *) t_alloc (tb -> tb_fd, T_OPTMGMT, T_ALL))
-	    == NULL)
-	{
-	    t_free ((char *)sndcall, T_CALL);
-	    t_free ((char *)rcvcall, T_CALL);
-	    return tli_lose (td, NOTOK, DR_CONGEST, "t_alloc");
+		if ((def =
+					(struct t_optmgmt *) t_alloc (tb -> tb_fd, T_OPTMGMT, T_ALL))
+				== NULL) {
+			t_free ((char *)sndcall, T_CALL);
+			t_free ((char *)rcvcall, T_CALL);
+			return tli_lose (td, NOTOK, DR_CONGEST, "t_alloc");
+		}
+
+		def->flags = T_DEFAULT;
+		if (t_optmgmt(tb -> tb_fd, def, def) == NOTOK) {
+			t_free ((char *)sndcall, T_CALL);
+			t_free ((char *)rcvcall, T_CALL);
+			t_free ((char *)def, T_OPTMGMT);
+			return tli_lose (td, NOTOK, DR_CONGEST, "t_optmgmt");
+		}
+		opts = (struct opts *) sndcall -> opt.buf;
+
+		/* first copy in hard-coded defaults */
+		opts -> size = OPT_SIZE_DEFAULT;
+		opts -> class = OPT_CLASS_DEFAULT;
+
+		/* then replace with defaults from endpoint if returned */
+		bcopy(def -> opt.buf, sndcall -> opt.buf, def -> opt.len);
+
+		t_free ((char *)def, T_OPTMGMT);
+		if (expedited)
+			opts -> class |= OPT_EXPEDITED;
+		else
+			opts -> class &= ~OPT_EXPEDITED;
+		sndcall -> opt.len = OPTS_SIZE;
 	}
-
-	def->flags = T_DEFAULT;
-	if (t_optmgmt(tb -> tb_fd, def, def) == NOTOK) {
-	    t_free ((char *)sndcall, T_CALL);
-	    t_free ((char *)rcvcall, T_CALL);
-	    t_free ((char *)def, T_OPTMGMT);
-	    return tli_lose (td, NOTOK, DR_CONGEST, "t_optmgmt");
-	}
-	opts = (struct opts *) sndcall -> opt.buf;
-
-	/* first copy in hard-coded defaults */
-	opts -> size = OPT_SIZE_DEFAULT;
-	opts -> class = OPT_CLASS_DEFAULT;
-
-	/* then replace with defaults from endpoint if returned */
-	bcopy(def -> opt.buf, sndcall -> opt.buf, def -> opt.len);
-
-	t_free ((char *)def, T_OPTMGMT);
-	if (expedited)
-	    opts -> class |= OPT_EXPEDITED;
-	else
-	    opts -> class &= ~OPT_EXPEDITED;
-	sndcall -> opt.len = OPTS_SIZE;
-    }
 #endif
 
-    copyTSAPaddrX(&tb -> tb_responding, &ta);
-    if (gen2tp4(&ta, &sndcall -> addr, TLI_CTX_CALL) == NOTOK)
-	return tli_lose (td, NOTOK, DR_ADDRESS, "invalid address");
+	copyTSAPaddrX(&tb -> tb_responding, &ta);
+	if (gen2tp4(&ta, &sndcall -> addr, TLI_CTX_CALL) == NOTOK)
+		return tli_lose (td, NOTOK, DR_ADDRESS, "invalid address");
 
-    toomuchP(data, cc, sndcall -> udata.maxlen, "initial");
-    if (data)
-	bcopy (data, sndcall -> udata.buf, sndcall -> udata.len = (unsigned)cc);
+	toomuchP(data, cc, sndcall -> udata.maxlen, "initial");
+	if (data)
+		bcopy (data, sndcall -> udata.buf, sndcall -> udata.len = (unsigned)cc);
 
 
-    /* use tb_cc to communicate to TRetry if the connect completed here */
-    if (t_connect (tb -> tb_fd, sndcall, rcvcall) == NOTOK) {
-	t_free ((char *)rcvcall, T_CALL);
+	/* use tb_cc to communicate to TRetry if the connect completed here */
+	if (t_connect (tb -> tb_fd, sndcall, rcvcall) == NOTOK) {
+		t_free ((char *)rcvcall, T_CALL);
+		t_free ((char *)sndcall, T_CALL);
+		switch (t_errno) {
+
+		case TNODATA:
+			tb->tb_cc = -1;
+			return CONNECTING_2;
+
+		case TLOOK:
+			switch (t_look(tb -> tb_fd)) {
+			case T_CONNECT:
+				tb->tb_cc = -1;
+				return CONNECTING_2;
+
+			case T_DISCONNECT:
+				return tp4getdis(tb -> tb_fd, td);
+			}
+
+		case TBADADDR:
+			return tli_lose (td, NOTOK, DR_ADDRESS,
+							 "unable to establish connection");
+
+		default:
+			return tli_lose (td, NOTOK, DR_REFUSED,
+							 "unable to establish connection");
+		}
+
+	}
+
 	t_free ((char *)sndcall, T_CALL);
-	switch (t_errno) {
-	
-	case TNODATA:
-	    tb->tb_cc = -1;
-	    return CONNECTING_2;
 
-	case TLOOK:
-	    switch (t_look(tb -> tb_fd)) {
-	    case T_CONNECT:
-		tb->tb_cc = -1;
-		return CONNECTING_2;
+	(void) tp42gen (&ta, &rcvcall -> addr);
+	copyTSAPaddrY(&ta, &tb -> tb_responding);
 
-	    case T_DISCONNECT:
-		return tp4getdis(tb -> tb_fd, td);
-	    }
-
-	case TBADADDR:
-	    return tli_lose (td, NOTOK, DR_ADDRESS,
-			     "unable to establish connection");
-
-	default:
-	    return tli_lose (td, NOTOK, DR_REFUSED,
-			     "unable to establish connection");
-	}
-
-    }
-
-    t_free ((char *)sndcall, T_CALL);
-
-    (void) tp42gen (&ta, &rcvcall -> addr);
-    copyTSAPaddrY(&ta, &tb -> tb_responding);
-
-    if (cc = rcvcall->udata.len) {
-	if (tb->tb_data)
-	    free (tb -> tb_data);
-	if ((tb -> tb_data = malloc ((unsigned) cc)) == NULLCP) {
-	    t_free ((char *)rcvcall, T_CALL);
-	    (void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
-	}
-	bcopy (rcvcall->udata.buf, tb->tb_data, tb->tb_cc = cc);
-    } else
-	tb->tb_cc = 0;
+	if (cc = rcvcall->udata.len) {
+		if (tb->tb_data)
+			free (tb -> tb_data);
+		if ((tb -> tb_data = malloc ((unsigned) cc)) == NULLCP) {
+			t_free ((char *)rcvcall, T_CALL);
+			(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		}
+		bcopy (rcvcall->udata.buf, tb->tb_data, tb->tb_cc = cc);
+	} else
+		tb->tb_cc = 0;
 #ifdef RTnet_R02
-    if (rcvcall -> opt.len >= OPTS_SIZE) {
-	struct opts * opts = (struct opts *) rcvcall -> opt.buf;
-	if (opts -> class & OPT_EXPEDITED)
-	    tb -> tb_flags |= TB_EXPD;
-	else
-	    tb -> tb_flags &= ~TB_EXPD;
-    } else
+	if (rcvcall -> opt.len >= OPTS_SIZE) {
+		struct opts * opts = (struct opts *) rcvcall -> opt.buf;
+		if (opts -> class & OPT_EXPEDITED)
+			tb -> tb_flags |= TB_EXPD;
+		else
+			tb -> tb_flags &= ~TB_EXPD;
+	} else
+		/* assume no expedited */
+		tb -> tb_flags &= ~TB_EXPD;
+#else
 	/* assume no expedited */
 	tb -> tb_flags &= ~TB_EXPD;
-#else
-    /* assume no expedited */
-    tb -> tb_flags &= ~TB_EXPD;
 #endif
-    t_free ((char *)rcvcall, T_CALL);
-	
-    return DONE;
+	t_free ((char *)rcvcall, T_CALL);
+
+	return DONE;
 }
 
 /*  */
@@ -481,92 +493,92 @@ int	async;
 struct TSAPconnect *tc;
 struct TSAPdisconnect *td;
 {
-    struct t_call *call;
+	struct t_call *call;
 
-    if (tb->tb_cc == -1) { /* call not yet connected */
-	struct TSAPaddr ta;
+	if (tb->tb_cc == -1) { /* call not yet connected */
+		struct TSAPaddr ta;
 
-	if (async && tb -> tb_retryfnx) {
-	    switch ((*tb -> tb_retryfnx) (tb, td)) {
-	    case NOTOK:
-		goto out;
-	    case OK:
-		return CONNECTING_2;
+		if (async && tb -> tb_retryfnx) {
+			switch ((*tb -> tb_retryfnx) (tb, td)) {
+			case NOTOK:
+				goto out;
+			case OK:
+				return CONNECTING_2;
 
-	    case DONE:
-		break;
-	    }
-	}
+			case DONE:
+				break;
+			}
+		}
 
-	if ((call = (struct t_call *)
-	    t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL)
-	{
-	    (void) tli_lose (td, NOTOK, DR_CONGEST, "t_alloc ");
-	    goto out;
-	}
+		if ((call = (struct t_call *)
+					t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL) {
+			(void) tli_lose (td, NOTOK, DR_CONGEST, "t_alloc ");
+			goto out;
+		}
 
-	if (t_rcvconnect (tb -> tb_fd, call) == NOTOK) {
-	    t_free ((char *)call, T_CALL);
-	    if (t_errno == TNODATA)
-		return CONNECTING_2;
-	    else if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
-		(void) tp4getdis(tb -> tb_fd, td);
-	    else 
-		(void) tli_lose (td, NOTOK, DR_REFUSED, "t_rcvconnect");
-	    goto out;
-	}
+		if (t_rcvconnect (tb -> tb_fd, call) == NOTOK) {
+			t_free ((char *)call, T_CALL);
+			if (t_errno == TNODATA)
+				return CONNECTING_2;
+			else if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
+				(void) tp4getdis(tb -> tb_fd, td);
+			else
+				(void) tli_lose (td, NOTOK, DR_REFUSED, "t_rcvconnect");
+			goto out;
+		}
 
-	if (async) {
-	    int flags;
-	    if ((flags = fcntl (tb -> tb_fd, F_GETFL, 0)) == NOTOK) {
-		t_free ((char *)call, T_CALL);
-		(void) tsaplose (td, DR_CONGEST, "failed", "fcntl");
-		goto out;
-	    }
-	    
-	    flags &= ~FNDELAY;
-	    (void) fcntl (tb -> tb_fd, F_SETFL, flags);
-	}
+		if (async) {
+			int flags;
+			if ((flags = fcntl (tb -> tb_fd, F_GETFL, 0)) == NOTOK) {
+				t_free ((char *)call, T_CALL);
+				(void) tsaplose (td, DR_CONGEST, "failed", "fcntl");
+				goto out;
+			}
 
-	(void) tp42gen (&ta, &call -> addr);
-	copyTSAPaddrY(&ta, &tb -> tb_responding);
+			flags &= ~FNDELAY;
+			(void) fcntl (tb -> tb_fd, F_SETFL, flags);
+		}
 
-	if (call -> udata.len > 0)
-	    bcopy (call -> udata.buf, tc -> tc_data,
-		   (int)(tc -> tc_cc = call->udata.len));
+		(void) tp42gen (&ta, &call -> addr);
+		copyTSAPaddrY(&ta, &tb -> tb_responding);
+
+		if (call -> udata.len > 0)
+			bcopy (call -> udata.buf, tc -> tc_data,
+				   (int)(tc -> tc_cc = call->udata.len));
 #ifdef RTnet_R02
-	if (call -> opt.len == OPTS_SIZE) {
-	    struct opts * opts = (struct opts *) call -> opt.buf;
-	    if (opts -> class & OPT_EXPEDITED)
-		tb -> tb_flags |= TB_EXPD;
-	    else
-		tb -> tb_flags &= ~TB_EXPD;
-	}
+		if (call -> opt.len == OPTS_SIZE) {
+			struct opts * opts = (struct opts *) call -> opt.buf;
+			if (opts -> class & OPT_EXPEDITED)
+				tb -> tb_flags |= TB_EXPD;
+			else
+				tb -> tb_flags &= ~TB_EXPD;
+		}
 #else
-	tb -> tb_flags &= ~TB_EXPD;
+		tb -> tb_flags &= ~TB_EXPD;
 #endif
-	t_free ((char *)call, T_CALL);
-    } else {
-	if (tc -> tc_cc = tb -> tb_cc)
-	    bcopy (tb -> tb_data, tc -> tc_data, tc -> tc_cc);
-    }
-    tb -> tb_flags |= TB_CONN;
+		t_free ((char *)call, T_CALL);
+	} else {
+		if (tc -> tc_cc = tb -> tb_cc)
+			bcopy (tb -> tb_data, tc -> tc_data, tc -> tc_cc);
+	}
+	tb -> tb_flags |= TB_CONN;
 
-    tc -> tc_expedited = (tb -> tb_flags & TB_EXPD) ? 1 : 0;
-    tc -> tc_sd = tb -> tb_fd;
-    tc -> tc_tsdusize = tb -> tb_tsdusize;
-    copyTSAPaddrX(&tb -> tb_responding, &tc -> tc_responding);
+	tc -> tc_expedited = (tb -> tb_flags & TB_EXPD) ? 1 : 0;
+	tc -> tc_sd = tb -> tb_fd;
+	tc -> tc_tsdusize = tb -> tb_tsdusize;
+	copyTSAPaddrX(&tb -> tb_responding, &tc -> tc_responding);
 #ifdef  MGMT
-    if (tb -> tb_manfnx)
-	(*tb -> tb_manfnx) (OPREQOUT, tb);
+	if (tb -> tb_manfnx)
+		(*tb -> tb_manfnx) (OPREQOUT, tb);
 #endif
 
-    return DONE;
+	return DONE;
 
-out: ;
-    freetblk (tb);
+out:
+	;
+	freetblk (tb);
 
-    return NOTOK;
+	return NOTOK;
 }
 
 /*  */
@@ -577,26 +589,26 @@ char   *cp;
 struct TSAPstart *ts;
 struct TSAPdisconnect *td;
 {
-    int	    i;
+	int	    i;
 
-    DLOG (tsap_log, LLOG_DEBUG, ("TStart: \"%s\"", cp));
-    
-    ts -> ts_expedited = (tb -> tb_flags & TB_EXPD) ? 1 : 0;
-    ts -> ts_sd = tb -> tb_fd;
-    copyTSAPaddrX(&tb -> tb_initiating, &ts -> ts_calling);
-    copyTSAPaddrX(&tb -> tb_responding, &ts -> ts_called);
-    ts -> ts_expedited = (tb -> tb_flags & TB_EXPD) ? 1 : 0;
-    ts -> ts_tsdusize = tb -> tb_tsdusize;
+	DLOG (tsap_log, LLOG_DEBUG, ("TStart: \"%s\"", cp));
 
-    if ( cp && ((i = strlen (cp)) > 0)) {
-	if (i > 2 * TS_SIZE)
-	    return tsaplose (td, DR_CONNECT, NULLCP,
-			     "too much initial user data");
-	ts -> ts_cc = implode ((u_char *) ts -> ts_data, cp, i);
-    } else
-	ts -> ts_cc = 0;
+	ts -> ts_expedited = (tb -> tb_flags & TB_EXPD) ? 1 : 0;
+	ts -> ts_sd = tb -> tb_fd;
+	copyTSAPaddrX(&tb -> tb_initiating, &ts -> ts_calling);
+	copyTSAPaddrX(&tb -> tb_responding, &ts -> ts_called);
+	ts -> ts_expedited = (tb -> tb_flags & TB_EXPD) ? 1 : 0;
+	ts -> ts_tsdusize = tb -> tb_tsdusize;
 
-    return OK;
+	if ( cp && ((i = strlen (cp)) > 0)) {
+		if (i > 2 * TS_SIZE)
+			return tsaplose (td, DR_CONNECT, NULLCP,
+							 "too much initial user data");
+		ts -> ts_cc = implode ((u_char *) ts -> ts_data, cp, i);
+	} else
+		ts -> ts_cc = 0;
+
+	return OK;
 }
 
 /*  */
@@ -618,63 +630,62 @@ int	responding,
 struct QOStype *qos;
 struct TSAPdisconnect *td;
 {
-    struct t_call *call;
-    int result;
-    
-    /* we are going to accept on a new endpoint */
-    if ((result = tp4bind ((struct TSAPaddr *)0, 0, td, TLI_CTX_LISTEN)) == NOTOK)
-	goto reject;
+	struct t_call *call;
+	int result;
 
-    if ((call = (struct t_call *)t_alloc(tb->tb_fd, T_CALL, T_ALL)) == NULL) {
-	(void) tli_lose (td, result, DR_CONGEST, "t_alloc");
-	goto reject;
-    }
+	/* we are going to accept on a new endpoint */
+	if ((result = tp4bind ((struct TSAPaddr *)0, 0, td, TLI_CTX_LISTEN)) == NOTOK)
+		goto reject;
 
-    if (data)			/* user data? */ 
-	bcopy (data, call -> udata.buf, call -> udata.len = (unsigned)cc);
-    call -> sequence = tb -> tb_seq;
+	if ((call = (struct t_call *)t_alloc(tb->tb_fd, T_CALL, T_ALL)) == NULL) {
+		(void) tli_lose (td, result, DR_CONGEST, "t_alloc");
+		goto reject;
+	}
 
-    DLOG (tsap_log, LLOG_TRACE,
-	("t_accept(%d, %d): seq=%d", tb -> tb_fd, result, call -> sequence));
-    if (t_accept (tb -> tb_fd, result, call) == NOTOK) {
-	DLOG (tsap_log, LLOG_DEBUG,
-	    ("t_accept fail: t_errno=%d, t_look=%d",
-	    t_errno, t_look(tb->tb_fd)));
-	if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
-	    (void) tp4getdis(tb -> tb_fd, td);
-	else
-	    (void) tli_lose (td, result, DR_CONGEST, "t_accept");
+	if (data)			/* user data? */
+		bcopy (data, call -> udata.buf, call -> udata.len = (unsigned)cc);
+	call -> sequence = tb -> tb_seq;
+
+	DLOG (tsap_log, LLOG_TRACE,
+		  ("t_accept(%d, %d): seq=%d", tb -> tb_fd, result, call -> sequence));
+	if (t_accept (tb -> tb_fd, result, call) == NOTOK) {
+		DLOG (tsap_log, LLOG_DEBUG,
+			  ("t_accept fail: t_errno=%d, t_look=%d",
+			   t_errno, t_look(tb->tb_fd)));
+		if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
+			(void) tp4getdis(tb -> tb_fd, td);
+		else
+			(void) tli_lose (td, result, DR_CONGEST, "t_accept");
+		t_free ((char *)call, T_CALL);
+		return NOTOK;
+	}
 	t_free ((char *)call, T_CALL);
-	return NOTOK;
-    }
-    t_free ((char *)call, T_CALL);
 
-    /* OK - we have the new call - lets pretend we are back where we were...*/
-    (void) t_close (tb -> tb_fd); /* finished with this - get rid of it! */
-    (void) dup2 (result, tb -> tb_fd);
-    (void) t_close(result);
-    (void) t_sync(tb -> tb_fd);
+	/* OK - we have the new call - lets pretend we are back where we were...*/
+	(void) t_close (tb -> tb_fd); /* finished with this - get rid of it! */
+	(void) dup2 (result, tb -> tb_fd);
+	(void) t_close(result);
+	(void) t_sync(tb -> tb_fd);
 
-    /* Phew - we now have everything as it should be - I hope */
+	/* Phew - we now have everything as it should be - I hope */
 
-    tb -> tb_flags |= TB_CONN;
+	tb -> tb_flags |= TB_CONN;
 #ifdef  MGMT
-    if (tb -> tb_manfnx)
-	(*tb -> tb_manfnx) (OPREQIN, tb);
+	if (tb -> tb_manfnx)
+		(*tb -> tb_manfnx) (OPREQIN, tb);
 #endif
 
-    return OK;
+	return OK;
 
-reject:
-    {
-	/* since we might be here beacuse we could not t_alloc */
-	struct t_call dis;
+reject: {
+		/* since we might be here beacuse we could not t_alloc */
+		struct t_call dis;
 
-	bzero((char *)&dis, sizeof dis);
-	dis.sequence = tb->tb_seq;
-	(void) t_snddis(tb->tb_fd, &dis);
-	return NOTOK;
-    }
+		bzero((char *)&dis, sizeof dis);
+		dis.sequence = tb->tb_seq;
+		(void) t_snddis(tb->tb_fd, &dis);
+		return NOTOK;
+	}
 }
 
 /*  */
@@ -685,158 +696,159 @@ register struct udvec *uv;
 int	expedited;
 struct TSAPdisconnect *td;
 {
-    register int cc;
-    int	async;
-    int	    flags;
+	register int cc;
+	int	async;
+	int	    flags;
 #ifdef	MGMT
-    int	    dlen;
+	int	    dlen;
 #endif
-    register char *bp;
-    register struct qbuf *qb;
-    register struct udvec *xv;
+	register char *bp;
+	register struct qbuf *qb;
+	register struct udvec *xv;
 
-    flags = expedited ? T_EXPEDITED : 0;
-    
+	flags = expedited ? T_EXPEDITED : 0;
+
 #ifdef	MGMT
-    dlen = 0;
-#endif
-
-    if (!expedited && (tb -> tb_flags & TB_QWRITES)) {
-	int	nc;
-
-	cc = 0;
-	for (xv = uv; xv -> uv_base; xv++)
-	    cc += xv -> uv_len;
-#ifdef	MGMT
-	dlen = cc;
+	dlen = 0;
 #endif
 
-	if ((qb = (struct qbuf *) malloc (sizeof *qb + (unsigned) cc))
-		== NULL) {
-	    (void) tsaplose (td, DR_CONGEST, NULLCP,
-		 "unable to malloc %d octets for pseudo-writev, failing...",
-		 cc);
-	    freetblk (tb);
+	if (!expedited && (tb -> tb_flags & TB_QWRITES)) {
+		int	nc;
 
-	    return NOTOK;
-	}
-	qb -> qb_forw = qb -> qb_back = qb;
-	qb -> qb_data = qb -> qb_base, qb -> qb_len = cc;
+		cc = 0;
+		for (xv = uv; xv -> uv_base; xv++)
+			cc += xv -> uv_len;
+#ifdef	MGMT
+		dlen = cc;
+#endif
 
-	bp = qb -> qb_data;
-	for (xv = uv; xv -> uv_base; xv++) {
-	    bcopy (xv -> uv_base, bp, xv -> uv_len);
-	    bp += xv -> uv_len;
-	}
+		if ((qb = (struct qbuf *) malloc (sizeof *qb + (unsigned) cc))
+				== NULL) {
+			(void) tsaplose (td, DR_CONGEST, NULLCP,
+							 "unable to malloc %d octets for pseudo-writev, failing...",
+							 cc);
+			freetblk (tb);
 
-	if (tb -> tb_qwrites.qb_forw != &tb -> tb_qwrites) {
-	    nc = 0;
-	    goto insert;
-	}
+			return NOTOK;
+		}
+		qb -> qb_forw = qb -> qb_back = qb;
+		qb -> qb_data = qb -> qb_base, qb -> qb_len = cc;
 
-	if ((async = fcntl (tb -> tb_fd, F_GETFL, 0)) != NOTOK)
-	    (void) fcntl (tb -> tb_fd, F_SETFL, async | FNDELAY);
-
-	nc = t_snd (tb -> tb_fd, qb -> qb_data, qb -> qb_len, 0);
-	DLOG (tsap_log, LLOG_TRACE,
-	    ("t_snd(fd=%d, buf=0x%x, len=%d, NO_MORE) ret=%d",
-	    tb -> tb_fd, qb -> qb_data, qb -> qb_len, nc));
-
-
-	if (async != NOTOK)
-	    (void) fcntl (tb -> tb_fd, F_SETFL, async);
-
-	if (nc != cc) {
-	    if (nc == NOTOK) {
-		if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT) {
-		    (void) tp4getdis(tb -> tb_fd, td);
-		    goto losing;
-		} else if (t_errno != TFLOW) {
-		    (void) tsaplose (td, DR_CONGEST, "failed", "sendmsg");
-		    goto losing;
+		bp = qb -> qb_data;
+		for (xv = uv; xv -> uv_base; xv++) {
+			bcopy (xv -> uv_base, bp, xv -> uv_len);
+			bp += xv -> uv_len;
 		}
 
-		nc = 0;
-	    }
-	    if ((*tb -> tb_queuePfnx) (tb, 1, td) == NOTOK)
-		goto losing;
+		if (tb -> tb_qwrites.qb_forw != &tb -> tb_qwrites) {
+			nc = 0;
+			goto insert;
+		}
 
-	    qb -> qb_data += nc, qb -> qb_len -= nc;
-insert: ;
-	    insque (qb, tb -> tb_qwrites.qb_back);
-	    DLOG (tsap_log, LLOG_TRACE,
-		  ("queueing blocked write of %d of %d octets", nc, cc));
+		if ((async = fcntl (tb -> tb_fd, F_GETFL, 0)) != NOTOK)
+			(void) fcntl (tb -> tb_fd, F_SETFL, async | FNDELAY);
+
+		nc = t_snd (tb -> tb_fd, qb -> qb_data, qb -> qb_len, 0);
+		DLOG (tsap_log, LLOG_TRACE,
+			  ("t_snd(fd=%d, buf=0x%x, len=%d, NO_MORE) ret=%d",
+			   tb -> tb_fd, qb -> qb_data, qb -> qb_len, nc));
+
+
+		if (async != NOTOK)
+			(void) fcntl (tb -> tb_fd, F_SETFL, async);
+
+		if (nc != cc) {
+			if (nc == NOTOK) {
+				if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT) {
+					(void) tp4getdis(tb -> tb_fd, td);
+					goto losing;
+				} else if (t_errno != TFLOW) {
+					(void) tsaplose (td, DR_CONGEST, "failed", "sendmsg");
+					goto losing;
+				}
+
+				nc = 0;
+			}
+			if ((*tb -> tb_queuePfnx) (tb, 1, td) == NOTOK)
+				goto losing;
+
+			qb -> qb_data += nc, qb -> qb_len -= nc;
+insert:
+			;
+			insque (qb, tb -> tb_qwrites.qb_back);
+			DLOG (tsap_log, LLOG_TRACE,
+				  ("queueing blocked write of %d of %d octets", nc, cc));
+		} else
+			free ((char *) qb);
+		goto done;
+
+losing:
+		;
+		free ((char *) qb);
+		freetblk (tb);
+
+		return NOTOK;
 	}
-	else
-	    free ((char *) qb);
-	goto done;
 
-losing: ;
-	free ((char *) qb);
-	freetblk (tb);
+	while (uv -> uv_base != NULLCP)  {
+		int more, ret;
+		char *d;
 
-	return NOTOK;
-    }
-
-    while (uv -> uv_base != NULLCP)  {
-	int more, ret;
-	char *d;
-
-	/* see if it worth coalescing the bits */
-	for (d = uv -> uv_base, cc = 0, xv = uv;
-	     xv -> uv_base != NULLCP;
-	     xv++)
-	{
-	    /* not sure why one cannot set the more bit on expedited */
-	    if (expedited || (cc + xv -> uv_len) <= TSDU_COPY_LIMIT)
-		cc += xv -> uv_len;
-	    else
-		break;
-	}
-	/* xv now points to first unused bit */
-	if (cc > uv -> uv_len) { /* used more than one bit */
-	    d = malloc(cc);
-	    for (bp = d; uv < xv; uv++) {
-		bcopy(uv -> uv_base, bp, uv -> uv_len);
-		bp += uv -> uv_len;
-	    }
-	} else {
-	    cc = uv -> uv_len;
-	    uv++;
-	    bp = NULLCP;		/* marker to know not to free 'd' */
-	}
-	/* uv now points to first unused bit */
+		/* see if it worth coalescing the bits */
+		for (d = uv -> uv_base, cc = 0, xv = uv;
+				xv -> uv_base != NULLCP;
+				xv++) {
+			/* not sure why one cannot set the more bit on expedited */
+			if (expedited || (cc + xv -> uv_len) <= TSDU_COPY_LIMIT)
+				cc += xv -> uv_len;
+			else
+				break;
+		}
+		/* xv now points to first unused bit */
+		if (cc > uv -> uv_len) { /* used more than one bit */
+			d = malloc(cc);
+			for (bp = d; uv < xv; uv++) {
+				bcopy(uv -> uv_base, bp, uv -> uv_len);
+				bp += uv -> uv_len;
+			}
+		} else {
+			cc = uv -> uv_len;
+			uv++;
+			bp = NULLCP;		/* marker to know not to free 'd' */
+		}
+		/* uv now points to first unused bit */
 
 #ifdef	MGMT
-	dlen += cc;
+		dlen += cc;
 #endif
-	more = (uv -> uv_base != NULLCP);
-	DLOG (tsap_log, LLOG_TRACE,
-	    ("t_snd(fd=%d, buf=0x%x, len=%d, %s%s)",
-		tb -> tb_fd, d, cc,
-		(expedited ? "EXPEDITED, " : ""),
-		(more ? "MORE" : "NO_MORE")));
-	ret = t_snd (tb -> tb_fd, d, cc, flags | (more ? T_MORE : 0));
-	if (bp != NULLCP) /* NB. bp is a market to free 'd'! */
-	    free(d);
-	if (ret == NOTOK) {
-	    if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
-		(void) tp4getdis(tb -> tb_fd, td);
-	    else
-		(void) tsaplose (td, DR_CONGEST, "failed", "sendmsg");
-	    freetblk (tb);
+		more = (uv -> uv_base != NULLCP);
+		DLOG (tsap_log, LLOG_TRACE,
+			  ("t_snd(fd=%d, buf=0x%x, len=%d, %s%s)",
+			   tb -> tb_fd, d, cc,
+			   (expedited ? "EXPEDITED, " : ""),
+			   (more ? "MORE" : "NO_MORE")));
+		ret = t_snd (tb -> tb_fd, d, cc, flags | (more ? T_MORE : 0));
+		if (bp != NULLCP) /* NB. bp is a market to free 'd'! */
+			free(d);
+		if (ret == NOTOK) {
+			if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
+				(void) tp4getdis(tb -> tb_fd, td);
+			else
+				(void) tsaplose (td, DR_CONGEST, "failed", "sendmsg");
+			freetblk (tb);
 
-	    return NOTOK;
+			return NOTOK;
+		}
 	}
-    }
 
-done: ;
+done:
+	;
 #ifdef  MGMT
-    if (tb -> tb_manfnx)
-	(*tb -> tb_manfnx) (USERDT, tb, dlen);
+	if (tb -> tb_manfnx)
+		(*tb -> tb_manfnx) (USERDT, tb, dlen);
 #endif
 
-    return OK;
+	return OK;
 }
 
 /*  */
@@ -845,53 +857,54 @@ static int  TDrain (tb, td)
 register struct tsapblk *tb;
 struct TSAPdisconnect *td;
 {
-    int	    nc,
-	    onoff,
-	    result;
-    register struct qbuf *qb;
+	int	    nc,
+			onoff,
+			result;
+	register struct qbuf *qb;
 
-    if ((onoff = fcntl (tb -> tb_fd, F_GETFL, 0)) != NOTOK)
-	(void) fcntl (tb -> tb_fd, F_SETFL, onoff | FNDELAY);
+	if ((onoff = fcntl (tb -> tb_fd, F_GETFL, 0)) != NOTOK)
+		(void) fcntl (tb -> tb_fd, F_SETFL, onoff | FNDELAY);
 
 
-    while ((qb = tb -> tb_qwrites.qb_forw) != &tb -> tb_qwrites) {
+	while ((qb = tb -> tb_qwrites.qb_forw) != &tb -> tb_qwrites) {
 
-	if ((nc = t_snd (tb -> tb_fd, qb -> qb_data, qb -> qb_len, 0)) !=
-	    qb -> qb_len) {
-	    if (nc == NOTOK) {
-		if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT) {
-		    result = tp4getdis(tb -> tb_fd, td);
-		    goto out;
-		} else if (t_errno != TFLOW) {
-		    result = tsaplose (td, DR_NETWORK, "failed",
-				      "write to network");
-		    goto out;
+		if ((nc = t_snd (tb -> tb_fd, qb -> qb_data, qb -> qb_len, 0)) !=
+				qb -> qb_len) {
+			if (nc == NOTOK) {
+				if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT) {
+					result = tp4getdis(tb -> tb_fd, td);
+					goto out;
+				} else if (t_errno != TFLOW) {
+					result = tsaplose (td, DR_NETWORK, "failed",
+									   "write to network");
+					goto out;
+				}
+
+				nc = 0;
+			}
+
+			qb -> qb_data += nc, qb -> qb_len -= nc;
+			DLOG (tsap_log, LLOG_TRACE,
+				  ("wrote %d of %d octets from blocked write", nc,
+				   qb -> qb_len));
+
+			result = OK;
+			goto out;
 		}
 
-		nc = 0;
-	    }
-
-	    qb -> qb_data += nc, qb -> qb_len -= nc;
-	    DLOG (tsap_log, LLOG_TRACE,
-		  ("wrote %d of %d octets from blocked write", nc,
-		   qb -> qb_len));
-
-	    result = OK;
-	    goto out;
+		DLOG (tsap_log, LLOG_TRACE,
+			  ("finished blocked write of %d octets", qb -> qb_len));
+		remque (qb);
+		free ((char *) qb);
 	}
+	result = DONE;
 
-	DLOG (tsap_log, LLOG_TRACE,
-	      ("finished blocked write of %d octets", qb -> qb_len));
-	remque (qb);
-	free ((char *) qb);
-    }
-    result = DONE;
+out:
+	;
+	if (onoff != NOTOK)
+		(void) fcntl (tb -> tb_fd, F_SETFL, onoff);
 
- out: ;
-    if (onoff != NOTOK)
-	(void) fcntl (tb -> tb_fd, F_SETFL, onoff);
-
-    return result;
+	return result;
 }
 
 /*  */
@@ -905,125 +918,125 @@ struct TSAPdisconnect *td;
 int	async,
 	oob;
 {
-    int	    cc;
-    register struct qbuf *qb;
-    static struct qbuf *spare_qb = 0;
-    int	flags;
+	int	    cc;
+	register struct qbuf *qb;
+	static struct qbuf *spare_qb = 0;
+	int	flags;
 
-    bzero ((char *) tx, sizeof *tx);
-    tx -> tx_qbuf.qb_forw = tx -> tx_qbuf.qb_back = &tx -> tx_qbuf;
+	bzero ((char *) tx, sizeof *tx);
+	tx -> tx_qbuf.qb_forw = tx -> tx_qbuf.qb_back = &tx -> tx_qbuf;
 
-    for (;;) {
-	qb = NULL;
-	if (spare_qb) {
-	    if (spare_qb -> qb_len >= tb -> tb_tsdusize)
-		qb = spare_qb;
-	    else
-		free ((char *)spare_qb);
-	    spare_qb = NULL;
-	}
-	if (qb == NULL && (qb = (struct qbuf *)
-	    malloc ((unsigned) (sizeof *qb + tb -> tb_tsdusize))) == NULL)
-	{
-	    (void) tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
-	    break;
-	} else
-	    qb -> qb_len = tb -> tb_tsdusize;
-	qb -> qb_data = qb -> qb_base;
-
-	if ((cc = t_rcv(tb -> tb_fd, qb -> qb_data, qb -> qb_len, &flags))
-	    == NOTOK) {
-	    switch (t_errno) {
-	    case TNODATA:
-		td -> td_cc = 0;
-		break;
-	    case TLOOK:
-		switch (t_look (tb -> tb_fd)) {
-		case T_DISCONNECT:
-		    (void) tp4getdis(tb -> tb_fd, td);
-		    break;
-		default:
-		    (void) tsaplose (td, DR_CONGEST, NULLCP,
-				     "unexpected event %d",
-				     t_look(tb -> tb_fd));
-		    break;
+	for (;;) {
+		qb = NULL;
+		if (spare_qb) {
+			if (spare_qb -> qb_len >= tb -> tb_tsdusize)
+				qb = spare_qb;
+			else
+				free ((char *)spare_qb);
+			spare_qb = NULL;
 		}
-		goto out;
-	    default:
-		(void) tli_lose (td, NOTOK, DR_CONGEST, "t_rcv");
-		break;
-	    }
-	    break;
-	}
-	DLOG (tsap_log, LLOG_DEBUG,
-	    ("t_rcv(fd=%d, buf=0x%x, len=%d, flags=0x%x) ret=%d",
-	    tb -> tb_fd, qb -> qb_data, qb -> qb_len, flags, cc));
-	if (flags & T_EXPEDITED) {
-	    if (cc > 0) {
-		register struct qbuf *qb2 = tx -> tx_qbuf.qb_back;
+		if (qb == NULL && (qb = (struct qbuf *)
+								malloc ((unsigned) (sizeof *qb + tb -> tb_tsdusize))) == NULL) {
+			(void) tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
+			break;
+		} else
+			qb -> qb_len = tb -> tb_tsdusize;
+		qb -> qb_data = qb -> qb_base;
 
-		/* assume ETSDU will always be less than MAXTP4 */
-		if (qb2 != &tx->tx_qbuf) {
-		    bcopy(qb -> qb_data, qb2 -> qb_len + qb2 -> qb_data, cc);
-		    tx -> tx_cc = (qb2 -> qb_len += cc);
-		    (spare_qb = qb) -> qb_len = tb -> tb_tsdusize;
-		} else {
-		    insque (qb, qb2);
-		    tx -> tx_cc = (qb -> qb_len = cc);
+		if ((cc = t_rcv(tb -> tb_fd, qb -> qb_data, qb -> qb_len, &flags))
+				== NOTOK) {
+			switch (t_errno) {
+			case TNODATA:
+				td -> td_cc = 0;
+				break;
+			case TLOOK:
+				switch (t_look (tb -> tb_fd)) {
+				case T_DISCONNECT:
+					(void) tp4getdis(tb -> tb_fd, td);
+					break;
+				default:
+					(void) tsaplose (td, DR_CONGEST, NULLCP,
+									 "unexpected event %d",
+									 t_look(tb -> tb_fd));
+					break;
+				}
+				goto out;
+			default:
+				(void) tli_lose (td, NOTOK, DR_CONGEST, "t_rcv");
+				break;
+			}
+			break;
 		}
-	    } else
-		(spare_qb = qb) -> qb_len = tb -> tb_tsdusize;
+		DLOG (tsap_log, LLOG_DEBUG,
+			  ("t_rcv(fd=%d, buf=0x%x, len=%d, flags=0x%x) ret=%d",
+			   tb -> tb_fd, qb -> qb_data, qb -> qb_len, flags, cc));
+		if (flags & T_EXPEDITED) {
+			if (cc > 0) {
+				register struct qbuf *qb2 = tx -> tx_qbuf.qb_back;
 
-	    /* would need a pretty wierd implementation, but possible */
-	    if (flags & T_MORE)
-		continue;
-	    tx -> tx_expedited = 1;
+				/* assume ETSDU will always be less than MAXTP4 */
+				if (qb2 != &tx->tx_qbuf) {
+					bcopy(qb -> qb_data, qb2 -> qb_len + qb2 -> qb_data, cc);
+					tx -> tx_cc = (qb2 -> qb_len += cc);
+					(spare_qb = qb) -> qb_len = tb -> tb_tsdusize;
+				} else {
+					insque (qb, qb2);
+					tx -> tx_cc = (qb -> qb_len = cc);
+				}
+			} else
+				(spare_qb = qb) -> qb_len = tb -> tb_tsdusize;
 
-	    return OK;
-	} else
-	    tx -> tx_expedited = 0;
+			/* would need a pretty wierd implementation, but possible */
+			if (flags & T_MORE)
+				continue;
+			tx -> tx_expedited = 1;
 
-	tb -> tb_len += (qb -> qb_len = cc);
-	if (cc > 0) {
-	    register struct qbuf *qb2 = tb -> tb_qbuf.qb_back;
+			return OK;
+		} else
+			tx -> tx_expedited = 0;
 
-	    if (qb2 != &tb->tb_qbuf && qb2->qb_len + cc <= tb->tb_tsdusize) {
-		bcopy(qb -> qb_data, qb2 -> qb_len + qb2 -> qb_data, cc);
-		qb2 -> qb_len += cc;
-		(spare_qb = qb) -> qb_len = tb -> tb_tsdusize;
-	    } else
-		insque (qb, qb2);
-	} else
-	    (spare_qb = qb) -> qb_len = tb -> tb_tsdusize;
+		tb -> tb_len += (qb -> qb_len = cc);
+		if (cc > 0) {
+			register struct qbuf *qb2 = tb -> tb_qbuf.qb_back;
+
+			if (qb2 != &tb->tb_qbuf && qb2->qb_len + cc <= tb->tb_tsdusize) {
+				bcopy(qb -> qb_data, qb2 -> qb_len + qb2 -> qb_data, cc);
+				qb2 -> qb_len += cc;
+				(spare_qb = qb) -> qb_len = tb -> tb_tsdusize;
+			} else
+				insque (qb, qb2);
+		} else
+			(spare_qb = qb) -> qb_len = tb -> tb_tsdusize;
 
 #ifdef	MGMT
-	if (tb -> tb_manfnx)
-	    (*tb -> tb_manfnx) (USERDR, tb, tb -> tb_len);
+		if (tb -> tb_manfnx)
+			(*tb -> tb_manfnx) (USERDR, tb, tb -> tb_len);
 #endif
-	if (flags & T_MORE) {
-	    if (async)
-		return DONE;
-	    continue;
+		if (flags & T_MORE) {
+			if (async)
+				return DONE;
+			continue;
+		}
+		if (tb -> tb_qbuf.qb_forw != &tb -> tb_qbuf) {
+			tx -> tx_qbuf = tb -> tb_qbuf; /* struct copy */
+			tx -> tx_qbuf.qb_forw -> qb_back =
+				tx -> tx_qbuf.qb_back -> qb_forw = &tx -> tx_qbuf;
+			tx -> tx_cc = tb -> tb_len;
+			tb -> tb_qbuf.qb_forw =
+				tb -> tb_qbuf.qb_back = &tb -> tb_qbuf;
+			tb -> tb_len = 0;
+		}
+
+		return OK;
 	}
-	if (tb -> tb_qbuf.qb_forw != &tb -> tb_qbuf) {
-	    tx -> tx_qbuf = tb -> tb_qbuf; /* struct copy */
-	    tx -> tx_qbuf.qb_forw -> qb_back =
-		tx -> tx_qbuf.qb_back -> qb_forw = &tx -> tx_qbuf;
-	    tx -> tx_cc = tb -> tb_len;
-	    tb -> tb_qbuf.qb_forw =
-		tb -> tb_qbuf.qb_back = &tb -> tb_qbuf;
-	    tb -> tb_len = 0;
-	}
+out:
+	;
+	if (qb)
+		free ((char *) qb);
 
-	return OK;
-    }
- out:;
-    if (qb)
-	free ((char *) qb);
+	freetblk (tb);
 
-    freetblk (tb);
-
-    return NOTOK;
+	return NOTOK;
 }
 
 /*  */
@@ -1034,22 +1047,22 @@ char   *data;
 int	cc;
 struct TSAPdisconnect *td;
 {
-    int	    result = OK;
-    struct t_call *call;
+	int	    result = OK;
+	struct t_call *call;
 
-    if ((call = (struct t_call *)t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL)
-	result = tli_lose (td, NOTOK, DR_CONGEST, "t_alloc");
-    else {
-	if (cc)
-	    bcopy (data, call -> udata.buf, call -> udata.len = (unsigned)cc);
-	call -> sequence = tb -> tb_flags & TB_CONN ? -1 : tb -> tb_seq;
-	if (t_snddis (tb -> tb_fd, call) == NOTOK)
-	    result = tli_lose (td, NOTOK, DR_CONGEST, "t_snddis");
-	t_free ((char *)call, T_CALL);
-    }
-    freetblk (tb);
+	if ((call = (struct t_call *)t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL)
+		result = tli_lose (td, NOTOK, DR_CONGEST, "t_alloc");
+	else {
+		if (cc)
+			bcopy (data, call -> udata.buf, call -> udata.len = (unsigned)cc);
+		call -> sequence = tb -> tb_flags & TB_CONN ? -1 : tb -> tb_seq;
+		if (t_snddis (tb -> tb_fd, call) == NOTOK)
+			result = tli_lose (td, NOTOK, DR_CONGEST, "t_snddis");
+		t_free ((char *)call, T_CALL);
+	}
+	freetblk (tb);
 
-    return result;
+	return result;
 }
 /*  */
 
@@ -1060,21 +1073,21 @@ register struct tsapblk *tb;
 int	reason;
 struct TSAPdisconnect *td;
 {
-    struct t_call *call;
+	struct t_call *call;
 
-    SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP, ("TPM error %d", reason));
-    
-    if ((call = (struct t_call *)t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL)
-	SLOG (tsap_log, LLOG_EXCEPTIONS, "TLose",
-              ("unable to allocate"));
-    else {
-	call -> sequence = tb -> tb_flags & TB_CONN ? -1 : tb -> tb_seq;
-	if (t_snddis (tb -> tb_fd, call) == NOTOK)
-	     SLOG (tsap_log, LLOG_EXCEPTIONS, "t_snddis",
-		   ("unable to send"));
+	SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP, ("TPM error %d", reason));
 
-	t_free ((char *)call, T_CALL);
-    }
+	if ((call = (struct t_call *)t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL)
+		SLOG (tsap_log, LLOG_EXCEPTIONS, "TLose",
+			  ("unable to allocate"));
+	else {
+		call -> sequence = tb -> tb_flags & TB_CONN ? -1 : tb -> tb_seq;
+		if (t_snddis (tb -> tb_fd, call) == NOTOK)
+			SLOG (tsap_log, LLOG_EXCEPTIONS, "t_snddis",
+				  ("unable to send"));
+
+		t_free ((char *)call, T_CALL);
+	}
 }
 
 /*    LOWER HALF */
@@ -1090,46 +1103,46 @@ struct NSAPaddr *local_na,
 struct TSAPdisconnect *td;
 int	async;
 {
-    int	    fd,
-	    onoff;
-    struct TSAPaddr tzs;
-    register struct TSAPaddr *tz = &tzs;
-    register struct NSAPaddr *nz = tz -> ta_addrs;
+	int	    fd,
+			onoff;
+	struct TSAPaddr tzs;
+	register struct TSAPaddr *tz = &tzs;
+	register struct NSAPaddr *nz = tz -> ta_addrs;
 
-    bzero ((char *) tz, sizeof *tz);
-    if (local_ta)
-	*tz = *local_ta;	/* struct copy */
-    if (local_na) {
-	*nz = *local_na;	/* struct copy */
-	tz -> ta_naddr = 1;
-    } 
+	bzero ((char *) tz, sizeof *tz);
+	if (local_ta)
+		*tz = *local_ta;	/* struct copy */
+	if (local_na) {
+		*nz = *local_na;	/* struct copy */
+		tz -> ta_naddr = 1;
+	}
 
 #ifdef NOT_ANY_MORE
-    else {
-	struct TSAPaddr *ntz;
-	ntz = str2taddr ("NSAP=38826110000210010100599000");
-					/* should get from isotailor */
-	*nz = *ntz -> ta_addrs;             /* struct copy */
-    }
+	else {
+		struct TSAPaddr *ntz;
+		ntz = str2taddr ("NSAP=38826110000210010100599000");
+		/* should get from isotailor */
+		*nz = *ntz -> ta_addrs;             /* struct copy */
+	}
 #endif
 
-    if ((fd = tp4bind(tz, 0, td, TLI_CTX_CALL)) == NOTOK)
-	return NOTOK;
-    tb -> tb_fd = fd;
+	if ((fd = tp4bind(tz, 0, td, TLI_CTX_CALL)) == NOTOK)
+		return NOTOK;
+	tb -> tb_fd = fd;
 
-    if (tp4info(tb, td) == NOTOK) {
-	t_close(fd);
-	tb -> tb_fd = NOTOK;
-	return NOTOK;
-    }
+	if (tp4info(tb, td) == NOTOK) {
+		t_close(fd);
+		tb -> tb_fd = NOTOK;
+		return NOTOK;
+	}
 
-    (void) tp4init (tb);
+	(void) tp4init (tb);
 
-    if (async)
-	if ((onoff = fcntl (fd, F_GETFL, 0)) != NOTOK)
-	    (void) fcntl (fd, F_SETFL, onoff | FNDELAY);
+	if (async)
+		if ((onoff = fcntl (fd, F_GETFL, 0)) != NOTOK)
+			(void) fcntl (fd, F_SETFL, onoff | FNDELAY);
 
-    return (async ? OK : DONE);
+	return (async ? OK : DONE);
 }
 
 /*  */
@@ -1140,14 +1153,14 @@ static int  retry_tp4_socket (tb, td)
 register struct tsapblk *tb;
 struct TSAPdisconnect *td;
 {
-    fd_set  mask;
+	fd_set  mask;
 
-    FD_ZERO (&mask);
-    FD_SET (tb -> tb_fd, &mask);
-    if (xselect (tb -> tb_fd + 1, &mask, NULLFD, NULLFD, 0) < 1)
-	return OK;
+	FD_ZERO (&mask);
+	FD_SET (tb -> tb_fd, &mask);
+	if (xselect (tb -> tb_fd + 1, &mask, NULLFD, NULLFD, 0) < 1)
+		return OK;
 
-    return DONE;
+	return DONE;
 }
 
 
@@ -1167,14 +1180,14 @@ int fd, seq, exp;
 struct tsapADDR *calling_ta, *called_ta;
 struct TSAPdisconnect *td;
 {
-    struct TSAPaddr calling, called;
-    static char buffer[BUFSIZ];
+	struct TSAPaddr calling, called;
+	static char buffer[BUFSIZ];
 
-    copyTSAPaddrX(called_ta, &called);
-    copyTSAPaddrX(calling_ta, &calling);
-    (void) sprintf (buffer, "%c%d.%d.%d %s %s", NT_TLI, fd, seq, exp,
-	taddr2str(&calling), taddr2str(&called));
-    return buffer;
+	copyTSAPaddrX(called_ta, &called);
+	copyTSAPaddrX(calling_ta, &calling);
+	(void) sprintf (buffer, "%c%d.%d.%d %s %s", NT_TLI, fd, seq, exp,
+					taddr2str(&calling), taddr2str(&called));
+	return buffer;
 }
 
 /*  */
@@ -1184,40 +1197,40 @@ register struct tsapblk *tb;
 char   *buffer;
 struct TSAPdisconnect *td;
 {
-    int	    fd, exp;
-    char calling_buf[BUFSIZ];
-    char called_buf[BUFSIZ];
+	int	    fd, exp;
+	char calling_buf[BUFSIZ];
+	char called_buf[BUFSIZ];
 
-    DLOG (tsap_log, LLOG_DEBUG, ("tp4restore: \"%s\"", buffer));
-    if (sscanf (buffer, "%d.%d.%d %s %s",
-	    &fd, &tb -> tb_seq, &exp,
-	    calling_buf, called_buf) != 5 || fd < 0)
-	return tsaplose (td, DR_PARAMETER, NULLCP,
-			"bad initialization vector \"%s\"", buffer);
+	DLOG (tsap_log, LLOG_DEBUG, ("tp4restore: \"%s\"", buffer));
+	if (sscanf (buffer, "%d.%d.%d %s %s",
+				&fd, &tb -> tb_seq, &exp,
+				calling_buf, called_buf) != 5 || fd < 0)
+		return tsaplose (td, DR_PARAMETER, NULLCP,
+						 "bad initialization vector \"%s\"", buffer);
 
-    tb -> tb_fd = fd;
+	tb -> tb_fd = fd;
 
 #ifdef DEBUG
 
-    /* loopback HACK */
+	/* loopback HACK */
 
-    if ( strcmp (calling_buf,"NULLPA") == 0)
-	    bcopy (called_buf, calling_buf, strlen (called_buf));
+	if ( strcmp (calling_buf,"NULLPA") == 0)
+		bcopy (called_buf, calling_buf, strlen (called_buf));
 
 #endif
 
-    copyTSAPaddrY(str2taddr(calling_buf), &tb -> tb_initiating);
-    copyTSAPaddrY(str2taddr(called_buf), &tb -> tb_responding);
-    t_sync (fd);
-    if (tp4info(tb, td) == NOTOK) {
-	return NOTOK;
-    }
-    if (exp)
-	tb -> tb_flags |= TB_EXPD;
-    else
-	tb -> tb_flags &= ~TB_EXPD;
-    (void) tp4init (tb);
-    return OK;
+	copyTSAPaddrY(str2taddr(calling_buf), &tb -> tb_initiating);
+	copyTSAPaddrY(str2taddr(called_buf), &tb -> tb_responding);
+	t_sync (fd);
+	if (tp4info(tb, td) == NOTOK) {
+		return NOTOK;
+	}
+	if (exp)
+		tb -> tb_flags |= TB_EXPD;
+	else
+		tb -> tb_flags &= ~TB_EXPD;
+	(void) tp4init (tb);
+	return OK;
 }
 
 /*  */
@@ -1226,30 +1239,30 @@ int	tp4init (tb)
 register struct tsapblk *tb;
 {
 
-    tb -> tb_connPfnx = TConnect;
-    tb -> tb_retryPfnx = TRetry;
+	tb -> tb_connPfnx = TConnect;
+	tb -> tb_retryPfnx = TRetry;
 
-    tb -> tb_startPfnx = TStart;
-    tb -> tb_acceptPfnx = TAccept;
+	tb -> tb_startPfnx = TStart;
+	tb -> tb_acceptPfnx = TAccept;
 
-    tb -> tb_writePfnx = TWrite;
-    tb -> tb_readPfnx = TRead;
-    tb -> tb_discPfnx = TDisconnect;
-    tb -> tb_losePfnx = TLose;
+	tb -> tb_writePfnx = TWrite;
+	tb -> tb_readPfnx = TRead;
+	tb -> tb_discPfnx = TDisconnect;
+	tb -> tb_losePfnx = TLose;
 
-    tb -> tb_drainPfnx = TDrain;
+	tb -> tb_drainPfnx = TDrain;
 
 #ifdef  MGMT
-    tb -> tb_manfnx = TManGen;
+	tb -> tb_manfnx = TManGen;
 #endif
 
-    tb -> tb_flags &= ~TB_STACKS;
-    tb -> tb_flags |= TB_TP4;
+	tb -> tb_flags &= ~TB_STACKS;
+	tb -> tb_flags |= TB_TP4;
 
-    tb -> tb_retryfnx = retry_tp4_socket;
+	tb -> tb_retryfnx = retry_tp4_socket;
 
-    tb -> tb_closefnx = close_tp4_socket;
-    tb -> tb_selectfnx = select_tp4_socket;
+	tb -> tb_closefnx = close_tp4_socket;
+	tb -> tb_selectfnx = select_tp4_socket;
 }
 
 /*  */
@@ -1263,12 +1276,12 @@ int	backlog,
 	opt2;
 struct TSAPdisconnect *td;
 {
-    int	    sd;
+	int	    sd;
 
-    if ((sd = tp4bind (local_ta, 100, td, TLI_CTX_LISTEN)) == NOTOK)
-	return NOTOK;
+	if ((sd = tp4bind (local_ta, 100, td, TLI_CTX_LISTEN)) == NOTOK)
+		return NOTOK;
 
-    return sd;
+	return sd;
 }
 
 /*  */
@@ -1282,42 +1295,42 @@ int	*seqp;
 int	*expdp;
 struct TSAPdisconnect *td;
 {
-    struct t_call *call;
-    int sd;
+	struct t_call *call;
+	int sd;
 
-    *ccp = 0;
-    if ((call = (struct t_call *)t_alloc (fd, T_CALL, T_ALL)) == NULL)
-	return tli_lose (td, NOTOK, DR_CONGEST, "t_alloc");
+	*ccp = 0;
+	if ((call = (struct t_call *)t_alloc (fd, T_CALL, T_ALL)) == NULL)
+		return tli_lose (td, NOTOK, DR_CONGEST, "t_alloc");
 
-    DLOG (tsap_log, LLOG_DEBUG, ("t_listen: %d", fd));
-    if (t_listen (fd, call) == NOTOK) {
-	DLOG (tsap_log, LLOG_DEBUG,
-	    ("t_listen fail: t_errno=%d, t_look=%d", t_errno, t_look(fd)));
-	t_free ((char *)call, T_CALL);
-	if (t_errno == TLOOK && t_look(fd) == T_DISCONNECT)
-	    return tp4getdis(fd, td);
-	else
-	    return tli_lose (td, NOTOK, DR_CONGEST, "t_listen");
-    }
-    (void) tp42gen (remote_ta, &call -> addr);
-    *seqp = call -> sequence;
-    if ((*ccp = call -> udata.len) > 0)
-	bcopy (call -> udata.buf, ud, *ccp);
+	DLOG (tsap_log, LLOG_DEBUG, ("t_listen: %d", fd));
+	if (t_listen (fd, call) == NOTOK) {
+		DLOG (tsap_log, LLOG_DEBUG,
+			  ("t_listen fail: t_errno=%d, t_look=%d", t_errno, t_look(fd)));
+		t_free ((char *)call, T_CALL);
+		if (t_errno == TLOOK && t_look(fd) == T_DISCONNECT)
+			return tp4getdis(fd, td);
+		else
+			return tli_lose (td, NOTOK, DR_CONGEST, "t_listen");
+	}
+	(void) tp42gen (remote_ta, &call -> addr);
+	*seqp = call -> sequence;
+	if ((*ccp = call -> udata.len) > 0)
+		bcopy (call -> udata.buf, ud, *ccp);
 #ifdef RTnet_R02
-    if (call -> opt.len >= OPTS_SIZE) {
-	struct opts * opts = (struct opts *) call -> opt.buf;
-	*expdp = (opts -> class & OPT_EXPEDITED) ? 1 : 0;
-    } else
-	*expdp = 0;
+	if (call -> opt.len >= OPTS_SIZE) {
+		struct opts * opts = (struct opts *) call -> opt.buf;
+		*expdp = (opts -> class & OPT_EXPEDITED) ? 1 : 0;
+	} else
+		*expdp = 0;
 #else
-    *expdp = 0;
+	*expdp = 0;
 #endif
-    t_free ((char *)call, T_CALL);
-    sd = dup (fd);
-    t_sync(sd);
-    DLOG (tsap_log, LLOG_TRACE,
-	("t_listen: CON-IND from %s now on %d", taddr2str(remote_ta), sd));
-    return sd;
+	t_free ((char *)call, T_CALL);
+	sd = dup (fd);
+	t_sync(sd);
+	DLOG (tsap_log, LLOG_TRACE,
+		  ("t_listen: CON-IND from %s now on %d", taddr2str(remote_ta), sd));
+	return sd;
 }
 
 /*  */
@@ -1346,7 +1359,7 @@ int context;
 	struct NSAPaddr *na;
 	int space;
 	char * prefix;
-   	
+
 	space = specific -> maxlen;
 
 	cp = specific -> buf;
@@ -1355,7 +1368,7 @@ int context;
 
 	/* If NSAP in debug mode, force same naddr */
 
-	if (generic -> ta_naddr > 0) 
+	if (generic -> ta_naddr > 0)
 		context = TLI_CTX_CALL;
 
 #endif
@@ -1368,11 +1381,12 @@ int context;
 	i = strlen (prefix);
 	space -= i + 1;
 	if (space < 0) {
-	    out_space:;
+out_space:
+		;
 		LLOG (tsap_log, LLOG_EXCEPTIONS, ("gen2tp4: out of buffer space"));
 		return NOTOK;
 	}
-    
+
 	(void) strcat (cp, prefix);
 	cp += strlen(cp);
 	*cp++ = 0x0;
@@ -1435,7 +1449,7 @@ int context;
 
 				/* On failure - carry on, the NSAP may work on its own */
 
-				if ((dte_nsap = getisosnpa (na)) == NULLNA) 
+				if ((dte_nsap = getisosnpa (na)) == NULLNA)
 					LLOG (tsap_log, LLOG_EXCEPTIONS, ("ts2tli: Can't find DTE"));
 				else if (dte_nsap -> na_stack != NA_X25)
 					LLOG (tsap_log, LLOG_EXCEPTIONS, ("ts2tli: No DTE in mapping"));
@@ -1487,25 +1501,25 @@ int context;
 	specific -> len = (unsigned int) (cp - specific -> buf);
 
 #ifdef HEAVY_DEBUG
-{
-	static char hex[] = "0123456789abcdef";
-	char buffer [1024];
-	char *p, *s;
+	{
+		static char hex[] = "0123456789abcdef";
+		char buffer [1024];
+		char *p, *s;
 
-	DLOG (tsap_log, LLOG_TRACE, ("maxlen %d, len %d\n",
-				     specific -> maxlen,
-				     specific -> len));
-	p = specific -> buf;
-	s = buffer;
-	for (i=0; i < specific -> len; i++) {
-		*s++ = hex [((*p & 255)/16) % 16];
-		*s++ = hex [(*p++ & 255) % 16];
-		*s++ = ' ';
+		DLOG (tsap_log, LLOG_TRACE, ("maxlen %d, len %d\n",
+									 specific -> maxlen,
+									 specific -> len));
+		p = specific -> buf;
+		s = buffer;
+		for (i=0; i < specific -> len; i++) {
+			*s++ = hex [((*p & 255)/16) % 16];
+			*s++ = hex [(*p++ & 255) % 16];
+			*s++ = ' ';
+		}
+		*s = 0x0;
+
+		DLOG (tsap_log, LLOG_TRACE, ("%s",buffer));
 	}
-	*s = 0x0;
-
-	DLOG (tsap_log, LLOG_TRACE, ("%s",buffer));
-}
 #endif				/* HEAVY_DEBUG */
 
 	return OK;
@@ -1531,7 +1545,7 @@ int context;
 		if (na -> na_addrlen) {
 			specific -> len += na -> na_addrlen;
 			if ((specific -> len += generic -> ta_selectlen) >
-			    specific -> maxlen)
+					specific -> maxlen)
 				return NOTOK;
 			bcopy (na -> na_address, cp, na -> na_addrlen);
 			cp += na -> na_addrlen;
@@ -1580,12 +1594,12 @@ struct netbuf *specific;
 		p = cp;
 
 		switch ((unsigned char)sel) {
-		    case ICL_TSEL_MARKER:
+		case ICL_TSEL_MARKER:
 			DLOG (tsap_log, LLOG_TRACE, ("tsel supplied"));
 			generic -> ta_selectlen = *cp++;
 			bcopy (cp, generic -> ta_selector, generic -> ta_selectlen);
 			break;
-		    case ICL_NSAP_MARKER:
+		case ICL_NSAP_MARKER:
 			DLOG (tsap_log, LLOG_TRACE, ("nsap supplied"));
 			na -> na_stack = NA_NSAP;
 			na -> na_community = ts_comm_nsap_default;
@@ -1594,7 +1608,7 @@ struct netbuf *specific;
 			bcopy (cp, na -> na_address, na -> na_addrlen);
 			got_nsap = 1;
 			break;
-		    case ICL_DTE_MARKER:
+		case ICL_DTE_MARKER:
 			DLOG (tsap_log, LLOG_TRACE, ("DTE supplied"));
 			if (got_nsap)
 				break;
@@ -1604,13 +1618,13 @@ struct netbuf *specific;
 			na -> na_dtelen = *cp++;
 			bcd2char (cp, na -> na_dte, na -> na_dtelen);
 			break;
-		    case ICL_CUG_MARKER: /* CUG ! */
+		case ICL_CUG_MARKER: /* CUG ! */
 			DLOG (tsap_log, LLOG_TRACE, ("cug supplied"));
 			break;
-		    case ICL_PORT_MARKER: /* PORT */
+		case ICL_PORT_MARKER: /* PORT */
 			DLOG (tsap_log, LLOG_TRACE, ("port supplied"));
 			break;
-		    default:
+		default:
 			/* Does it matter - we've got what we need */
 			DLOG (tsap_log, LLOG_NOTICE, ("unknown address selector %x", sel));
 			break;
@@ -1654,10 +1668,12 @@ struct netbuf *specific;
 int close_tp4_socket (fd)
 int	fd;
 {
-    DLOG (tsap_log, LLOG_TRACE, ("close_tp4_socket(%d)", fd));
-    return t_close (fd);
+	DLOG (tsap_log, LLOG_TRACE, ("close_tp4_socket(%d)", fd));
+	return t_close (fd);
 }
 
 #else
-int	_ts2tli_stub () {;}
+int	_ts2tli_stub () {
+	;
+}
 #endif

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapbind2.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dsapbind2.c,v 9.0 1992/06/16 12:14:05 isode Rel $
  *
  *
@@ -50,8 +50,7 @@ struct DSAPindication	* di;
 	struct ds_bind_arg	* bind_arg;
 
 	watch_dog ("RoBindInit");
-	if (result = RoBindInit (vecp, vec, acs, rni) != OK)
-	{
+	if (result = RoBindInit (vecp, vec, acs, rni) != OK) {
 		watch_dog_reset ();
 		return (ronot2dsaplose (di, "D-BIND.INDICATION", rni));
 	}
@@ -63,11 +62,9 @@ struct DSAPindication	* di;
 
 	ds->ds_sd = acs->acs_sd;
 
-	switch (ds->ds_ctx = select_context (acs->acs_context))
-	{
+	switch (ds->ds_ctx = select_context (acs->acs_context)) {
 	case DS_CTX_X500_DAP:
-		if ((ds->ds_pctx_id = check_dap_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK)
-		{
+		if ((ds->ds_pctx_id = check_dap_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS, ("Unacceptable Abstract Syntaxes for X.500 DAP"));
 			watch_dog ("RoBindReject (DAP)");
 			(void) RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
@@ -77,8 +74,7 @@ struct DSAPindication	* di;
 		break;
 
 	case DS_CTX_X500_DSP:
-		if ((ds->ds_pctx_id = check_dsp_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK)
-		{
+		if ((ds->ds_pctx_id = check_dsp_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS, ("Unacceptable Abstract Syntaxes for X.500 DSP"));
 			watch_dog ("RoBindReject (DSP)");
 			(void) RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
@@ -88,8 +84,7 @@ struct DSAPindication	* di;
 		break;
 
 	case DS_CTX_QUIPU_DSP:
-		if ((ds->ds_pctx_id = check_qsp_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK)
-		{
+		if ((ds->ds_pctx_id = check_qsp_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS, ("Unacceptable Abstract Syntaxes for QUIPU DSP"));
 			watch_dog ("RoBindReject (QSP)");
 			(void) RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
@@ -99,8 +94,7 @@ struct DSAPindication	* di;
 		break;
 
 	case DS_CTX_INTERNET_DSP:
-		if ((ds->ds_pctx_id = check_isp_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK)
-		{
+		if ((ds->ds_pctx_id = check_isp_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS, ("Unacceptable Abstract Syntaxes for Internet DSP"));
 			watch_dog ("RoBindReject (ISP)");
 			(void) RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
@@ -124,8 +118,7 @@ struct DSAPindication	* di;
 	*/
 
 	/* Decode bind argument */
-	if ((acs->acs_ninfo != 1) || (acs->acs_info[0] == NULLPE))
-	{
+	if ((acs->acs_ninfo != 1) || (acs->acs_info[0] == NULLPE)) {
 		watch_dog ("RoBindReject (ninfo)");
 		(void) RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 		watch_dog_reset ();
@@ -133,8 +126,7 @@ struct DSAPindication	* di;
 	}
 
 	if (decode_DAS_DirectoryBindArgument (acs->acs_info[0],
-	    1, NULLCP, NULLIP, &bind_arg) != OK)
-	{
+										  1, NULLCP, NULLIP, &bind_arg) != OK) {
 		watch_dog ("RoBindReject (decode)");
 		(void) RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 		watch_dog_reset ();
@@ -153,8 +145,8 @@ struct DSAPindication	* di;
 /*    D-BIND.RESULT */
 
 int	  DBindResult (sd, context, respondtitle,
-		respondaddr, ctxlist, defctxresult, prequirements,
-		srequirements, isn, settings, ref, bind_res, pctx_id, di)
+				   respondaddr, ctxlist, defctxresult, prequirements,
+				   srequirements, isn, settings, ref, bind_res, pctx_id, di)
 int			  sd;
 OID			  context;
 AEI			  respondtitle;
@@ -176,26 +168,23 @@ struct DSAPindication	* di;
 	struct RoNOTindication	* rni = &(rni_s);
 
 	if (encode_DAS_DirectoryBindResult (&(bindrespe), 1, NULLIP, NULLCP,
-	    bind_res) != OK)
-	{
+										bind_res) != OK) {
 		/* RoBindReject ?? */
 		return (dsaplose (di, DA_RES_ENC, NULLCP, "BIND RESULT"));
 	}
 	bindrespe->pe_context = pctx_id;
 
-        watch_dog ("RoBindResult");
+	watch_dog ("RoBindResult");
 	result = RoBindResult (sd, context, respondtitle,
-		    respondaddr, ctxlist, defctxresult, prequirements,
-		    srequirements, isn, settings, ref, bindrespe, rni);
-        watch_dog_reset();
+						   respondaddr, ctxlist, defctxresult, prequirements,
+						   srequirements, isn, settings, ref, bindrespe, rni);
+	watch_dog_reset();
 
-	if (bindrespe != NULLPE)
-	{
+	if (bindrespe != NULLPE) {
 		pe_free (bindrespe);
 	}
 
-	if (result == NOTOK)
-	{
+	if (result == NOTOK) {
 		/* Have an RoNOTindication, need to return DSAPindication */
 		return (ronot2dsaplose (di, "RO-BIND.RESULT", rni));
 	}
@@ -208,8 +197,8 @@ struct DSAPindication	* di;
 /*    D-BIND.ERROR */
 
 int	  DBindError (sd, context, respondtitle, respondaddr, ctxlist,
-		defctxresult, prequirements, srequirements, isn, settings,
-		ref, bind_err, pctx_id, di)
+				  defctxresult, prequirements, srequirements, isn, settings,
+				  ref, bind_err, pctx_id, di)
 int			  sd;
 OID			  context;
 AEI			  respondtitle;
@@ -231,8 +220,7 @@ struct DSAPindication	* di;
 	struct RoNOTindication	* rni = &(rni_s);
 
 	if (encode_DAS_DirectoryBindError (&(binderrpe), 1, NULLIP, NULLCP,
-	    bind_err) != OK)
-	{
+									   bind_err) != OK) {
 		/* RoBindReject ?? */
 		return (dsaplose (di, DA_ERR_ENC, NULLCP, "BIND ERROR"));
 	}
@@ -240,18 +228,16 @@ struct DSAPindication	* di;
 
 	watch_dog ("RoBindError");
 	result = RoBindError (sd, context,
-		    respondtitle, respondaddr, ctxlist, defctxresult,
-		    prequirements, srequirements, isn, settings, ref,
-		    binderrpe, rni);
+						  respondtitle, respondaddr, ctxlist, defctxresult,
+						  prequirements, srequirements, isn, settings, ref,
+						  binderrpe, rni);
 	watch_dog_reset();
 
-	if (binderrpe != NULLPE)
-	{
+	if (binderrpe != NULLPE) {
 		pe_free (binderrpe);
 	}
 
-	if (result == NOTOK)
-	{
+	if (result == NOTOK) {
 		return (ronot2dsaplose (di, "RO-BIND.ERROR", rni));
 	}
 
@@ -273,12 +259,11 @@ struct DSAPindication	* di;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
 
-        watch_dog ("RoBindReject");
+	watch_dog ("RoBindReject");
 	result = RoBindReject (acs, status, reason, rni);
-        watch_dog_reset();
+	watch_dog_reset();
 
-	if (result == NOTOK)
-	{
+	if (result == NOTOK) {
 		return (ronot2dsaplose (di, "RO-BIND.ERROR", rni));
 	}
 

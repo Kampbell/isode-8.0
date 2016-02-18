@@ -4,7 +4,7 @@
 static char *rcsid = "$Header$";
 #endif
 
-/* 
+/*
  * $Header$
  *
  *

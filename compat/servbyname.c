@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbyname.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/servbyname.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -37,30 +37,29 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbyname.c,v 9.0 1
 
 struct isoservent *getisoserventbyname (entity, provider)
 char *entity,
-     *provider;
+	 *provider;
 {
-    register struct isoservent *is;
+	register struct isoservent *is;
 
-    isodetailor (NULLCP, 0);
-    DLOG (addr_log, LLOG_TRACE,
-	  ("getisoserventbyname \"%s\" \"%s\"", entity, provider));
+	isodetailor (NULLCP, 0);
+	DLOG (addr_log, LLOG_TRACE,
+		  ("getisoserventbyname \"%s\" \"%s\"", entity, provider));
 
-    (void) setisoservent (0);
-    while (is = getisoservent ())
-	if (strcmp (entity, is -> is_entity) == 0
-		&& strcmp (provider, is -> is_provider) == 0)
-	    break;
-    (void) endisoservent ();
+	(void) setisoservent (0);
+	while (is = getisoservent ())
+		if (strcmp (entity, is -> is_entity) == 0
+				&& strcmp (provider, is -> is_provider) == 0)
+			break;
+	(void) endisoservent ();
 
-    if (is) {
+	if (is) {
 #ifdef	DEBUG
-	if (addr_log -> ll_events & LLOG_DEBUG)
-	    _printsrv (is);
+		if (addr_log -> ll_events & LLOG_DEBUG)
+			_printsrv (is);
 #endif
-    }
-    else
-	SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
-	      ("lookup of local service %s/%s failed", provider, entity));
+	} else
+		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
+			  ("lookup of local service %s/%s failed", provider, entity));
 
-    return is;
+	return is;
 }

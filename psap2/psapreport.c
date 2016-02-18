@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapreport.c,v 9.0 1992/06/16 12:29:42 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap2/RCS/psapreport.c,v 9.0 1992/06/16 12:29:42 isode Rel $
  *
  *
@@ -40,49 +40,49 @@ int	reason,
 PE     *data;
 struct PSAPindication *pi;
 {
-    SBV	    smask;
-    int     len,
-	    result;
-    char   *base,
-	   *realbase;
-    register struct psapblk *pb;
-    struct SSAPindication   sis;
-    register struct SSAPabort  *sa = &sis.si_abort;
+	SBV	    smask;
+	int     len,
+			result;
+	char   *base,
+		   *realbase;
+	register struct psapblk *pb;
+	struct SSAPindication   sis;
+	register struct SSAPabort  *sa = &sis.si_abort;
 
-    toomuchP (data, ndata, NPDATA, "report");
-    missingP (pi);
+	toomuchP (data, ndata, NPDATA, "report");
+	missingP (pi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    psapPsig (pb, sd);
+	psapPsig (pb, sd);
 
-    if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
-			     "P-U-EXCEPTION-REPORT user-data", PPDU_NONE))
-	    != OK)
-	goto out2;
+	if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
+							 "P-U-EXCEPTION-REPORT user-data", PPDU_NONE))
+			!= OK)
+		goto out2;
 
-    if ((result = SUReportRequest (sd, reason, base, len, &sis)) == NOTOK)
-	if (SC_FATAL (sa -> sa_reason))
-	    (void) ss2pslose (pb, pi, "SUReportRequest", sa);
-	else {
-	    (void) ss2pslose (NULLPB, pi, "SUReportRequest", sa);
-	    goto out1;
-	}
+	if ((result = SUReportRequest (sd, reason, base, len, &sis)) == NOTOK)
+		if (SC_FATAL (sa -> sa_reason))
+			(void) ss2pslose (pb, pi, "SUReportRequest", sa);
+		else {
+			(void) ss2pslose (NULLPB, pi, "SUReportRequest", sa);
+			goto out1;
+		}
 
-out2: ;
-    if (result == NOTOK)
-	freepblk (pb);
-    else
-	if (result == DONE)
-	    result = NOTOK;
-out1: ;
-    if (realbase)
-	free (realbase);
-    else
-	if (base)
-	    free (base);
+out2:
+	;
+	if (result == NOTOK)
+		freepblk (pb);
+	else if (result == DONE)
+		result = NOTOK;
+out1:
+	;
+	if (realbase)
+		free (realbase);
+	else if (base)
+		free (base);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }

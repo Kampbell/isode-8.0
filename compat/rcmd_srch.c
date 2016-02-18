@@ -36,7 +36,7 @@ char   *rcmd_srch(val, cmd)
 register int   val;
 register CMD_TABLE *cmd;
 {
-	for(;cmd->cmd_key != NULLCP; cmd++)
+	for(; cmd->cmd_key != NULLCP; cmd++)
 		if(val == cmd->cmd_value)
 			return(cmd->cmd_key);
 	return(NULLCP);

@@ -37,9 +37,9 @@ char * str;
 AttributeType at;
 AttributeValue x;
 {
-struct file_syntax * fs;
+	struct file_syntax * fs;
 #ifdef CHECK_FILE_ATTRIBUTES
-struct stat filestat;
+	struct stat filestat;
 #endif
 
 	x->av_syntax = AV_FILE;
@@ -48,38 +48,38 @@ struct stat filestat;
 	fs->fs_attr = NULLAttrV;
 	x->av_struct = (caddr_t) fs;
 	if ((fs->fs_real_syntax = at->oa_syntax) >= AV_WRITE_FILE)
-		fs->fs_real_syntax -= AV_WRITE_FILE; 
+		fs->fs_real_syntax -= AV_WRITE_FILE;
 
 	if (*str != 0 && *str == '/' ) {
 		fs->fs_mode = 0;
 		fs->fs_name = strdup (str);
 	} else {
-		if (dflt_attr_file (at,x,1) == NOTOK) 
+		if (dflt_attr_file (at,x,1) == NOTOK)
 			return (NOTOK);
 
 		if (*str != 0) {
-		    char *p;
+			char *p;
 
-		    if ((p = rindex(fs->fs_name, '/')) == NULLCP)
-			p = fs->fs_name;
-		    else
-			p++;
-		    if (strlen(p) < strlen(str))
-			if ((fs->fs_name =
-			    realloc(fs->fs_name,
-			      (unsigned)((p - fs->fs_name) + strlen(str) + 1)))
-			    == NULLCP)
-				return NOTOK;
-		    (void) strcpy(p, str);
-		    fs->fs_mode = 0;
+			if ((p = rindex(fs->fs_name, '/')) == NULLCP)
+				p = fs->fs_name;
+			else
+				p++;
+			if (strlen(p) < strlen(str))
+				if ((fs->fs_name =
+							realloc(fs->fs_name,
+									(unsigned)((p - fs->fs_name) + strlen(str) + 1)))
+						== NULLCP)
+					return NOTOK;
+			(void) strcpy(p, str);
+			fs->fs_mode = 0;
 
 		} else
-		    fs->fs_mode = FS_DEFAULT;
+			fs->fs_mode = FS_DEFAULT;
 	}
 
 #ifdef CHECK_FILE_ATTRIBUTES
 	/* now check the file is OK */
-	if (stat(fs->fs_name,&filestat) != -1) 
+	if (stat(fs->fs_name,&filestat) != -1)
 		return (OK);
 	else {
 		parse_error ("can't find attribute file %s",fs->fs_name);
@@ -96,7 +96,7 @@ AttributeValue str2file (str,at)
 char * str;
 AttributeType at;
 {
-AttributeValue x;
+	AttributeValue x;
 
 	x = AttrV_alloc();
 	if (str2file_aux (str,at,x) == OK)
@@ -116,18 +116,18 @@ struct file_syntax * fs;
 	if (fs->fs_ref > 0)
 		return;
 
-	if ( (fs->fs_mode & FS_TMP) || 
-	    (!dsa_mode && (fs->fs_mode & FS_CREATE))) {
+	if ( (fs->fs_mode & FS_TMP) ||
+			(!dsa_mode && (fs->fs_mode & FS_CREATE))) {
 		(void) unlink (fs->fs_name);
 		DLOG (log_dsap,LLOG_DEBUG,("Removed photo file '%s'",fs->fs_name));
 		fs->fs_mode &= ~FS_CREATE;
 	}
 
-	if (fs->fs_attr) 
+	if (fs->fs_attr)
 		AttrV_free (fs->fs_attr);
 
 	if (fs->fs_name)
 		free (fs->fs_name);
-		
+
 	free ((char *) fs);
 }

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rystub.c,v 9.0 1992/06/16 12:37:29 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosy/RCS/rystub.c,v 9.0 1992/06/16 12:37:29 isode Rel $
  *
  *
@@ -60,109 +60,110 @@ int	sd;
 register struct RyOperation *ryo;
 int	op,
 	id,
-       *linked,
-    	class;
+	*linked,
+	class;
 caddr_t	in;
 IFP	rfx,
-    	efx;
+	efx;
 struct RoSAPindication *roi;
 {
-    int     firstime,
-	    opclass,
-	    result;
-    SFP	    istat;
+	int     firstime,
+			opclass,
+			result;
+	SFP	    istat;
 
 #ifdef	notdef			/* let RyOpInvoke check these as necessary */
-    missingP (ryo);
-    missingP (in);
-    missingP (rfx);
-    missingP (efx);
+	missingP (ryo);
+	missingP (in);
+	missingP (rfx);
+	missingP (efx);
 #endif
-    missingP (roi);
+	missingP (roi);
 
-    if ((opclass = class) == ROS_INTR) {
-	interrupted = 0;
-	istat = signal (SIGINT, intrser);
+	if ((opclass = class) == ROS_INTR) {
+		interrupted = 0;
+		istat = signal (SIGINT, intrser);
 
-	opclass = ROS_ASYNC;
-    }
-    
-    result = RyOpInvoke (sd, ryo, op, in, (caddr_t *) NULL, rfx, efx,
-			 opclass, id, linked, ROS_NOPRIO, roi);
-    firstime = 1;
+		opclass = ROS_ASYNC;
+	}
 
-again: ;
-    switch (result) {
-	case NOTOK: 
-	    break;
+	result = RyOpInvoke (sd, ryo, op, in, (caddr_t *) NULL, rfx, efx,
+						 opclass, id, linked, ROS_NOPRIO, roi);
+	firstime = 1;
+
+again:
+	;
+	switch (result) {
+	case NOTOK:
+		break;
 
 	case OK:
-	    switch (class) {
+		switch (class) {
 		case ROS_ASYNC:
-		    break;
+			break;
 
 		case ROS_INTR:
-		    if (firstime) {
-			for (;;) {
-			    if (!interrupted) {
-				int	nfds;
-				fd_set	rfds;
+			if (firstime) {
+				for (;;) {
+					if (!interrupted) {
+						int	nfds;
+						fd_set	rfds;
 
-				nfds = 0;
-				FD_ZERO (&rfds);
+						nfds = 0;
+						FD_ZERO (&rfds);
 
 						/* interrupt causes EINTR */
-				if (RoSelectMask (sd, &rfds, &nfds, roi) == OK)
-				    (void) xselect (nfds, &rfds, NULLFD,
-						    NULLFD, NOTOK);
-			    }
-			    if (interrupted) {
-				result = rosaplose (roi, ROS_INTERRUPTED,
-						    NULLCP, NULLCP);
+						if (RoSelectMask (sd, &rfds, &nfds, roi) == OK)
+							(void) xselect (nfds, &rfds, NULLFD,
+											NULLFD, NOTOK);
+					}
+					if (interrupted) {
+						result = rosaplose (roi, ROS_INTERRUPTED,
+											NULLCP, NULLCP);
+						break;
+					}
+					if ((result = RyWait (sd, &id, (caddr_t *) NULL,
+										  OK, roi)) != NOTOK
+							|| roi -> roi_preject.rop_reason
+							!= ROS_TIMER) {
+						firstime = 0;
+						goto again;
+					}
+				}
 				break;
-			    }
-			    if ((result = RyWait (sd, &id, (caddr_t *) NULL,
-						  OK, roi)) != NOTOK
-			            || roi -> roi_preject.rop_reason
-					    != ROS_TIMER) {
-				firstime = 0;
-				goto again;
-			    }
 			}
-			break;
-		    }
-		    /* else fall */
-		    
+		/* else fall */
+
 		default:
-		    switch (roi -> roi_type) {
-		        case ROI_RESULT:
-		        case ROI_ERROR:
-		        case ROI_UREJECT:
-			    result = OK;
-			    break;
+			switch (roi -> roi_type) {
+			case ROI_RESULT:
+			case ROI_ERROR:
+			case ROI_UREJECT:
+				result = OK;
+				break;
 
 			default:
-			    result = rosaplose (roi, ROS_PROTOCOL, NULLCP,
-						"unknown indication type=%d",
-						roi -> roi_type);
-			    break;
-		    }
-		    break;
-	    }
+				result = rosaplose (roi, ROS_PROTOCOL, NULLCP,
+									"unknown indication type=%d",
+									roi -> roi_type);
+				break;
+			}
+			break;
+		}
 
 	case DONE:
-	    break;
+		break;
 
-	default: 
-	    result = rosaplose (roi, ROS_PROTOCOL, NULLCP,
-				"unknown return from RyInvoke=%d", result);
-	    break;
-    }
+	default:
+		result = rosaplose (roi, ROS_PROTOCOL, NULLCP,
+							"unknown return from RyInvoke=%d", result);
+		break;
+	}
 
-    if (class == ROS_INTR)
-	(void) signal (SIGINT, istat);
+	if (class == ROS_INTR)
+		(void) signal (SIGINT, istat);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -173,8 +174,8 @@ static  SFD intrser (sig)
 int	sig;
 {
 #ifndef	BSDSIGS
-    (void) signal (SIGINT, intrser);
+	(void) signal (SIGINT, intrser);
 #endif
 
-    interrupted++;
+	interrupted++;
 }

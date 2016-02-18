@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pl_tables.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/pl_tables.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -33,45 +33,45 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pl_tables.c,v 9.0 1992
 /*    DATA */
 
 char   *pe_classlist[] = {
-    "UNIV",
-    "APPL",
-    "CONT",
-    "PRIV"
+	"UNIV",
+	"APPL",
+	"CONT",
+	"PRIV"
 };
 
 int	pe_maxclass = sizeof pe_classlist / sizeof pe_classlist[0];
 
 
 char   *pe_univlist[] = {
-    "EOC",
-    "BOOL",
-    "INT",
-    "BITS",
-    "OCTS",
-    "NULL",
-    "OID",
-    "ODE",
-    "EXTN",
-    "REAL",
-    "ENUM",
-    "ENCR",
-    NULLCP,
-    NULLCP,
-    NULLCP,
-    NULLCP,
-    "SEQ",
-    "SET",
-    "NUMS",
-    "PRTS",
-    "T61S",
-    "VTXS",
-    "IA5S",
-    "UTCT",
-    "GENT",
-    "GFXS",
-    "VISS",
-    "GENS",
-    "CHRS",
+	"EOC",
+	"BOOL",
+	"INT",
+	"BITS",
+	"OCTS",
+	"NULL",
+	"OID",
+	"ODE",
+	"EXTN",
+	"REAL",
+	"ENUM",
+	"ENCR",
+	NULLCP,
+	NULLCP,
+	NULLCP,
+	NULLCP,
+	"SEQ",
+	"SET",
+	"NUMS",
+	"PRTS",
+	"T61S",
+	"VTXS",
+	"IA5S",
+	"UTCT",
+	"GENT",
+	"GFXS",
+	"VISS",
+	"GENS",
+	"CHRS",
 };
 
 int	pe_maxuniv = sizeof pe_univlist / sizeof pe_univlist[0];

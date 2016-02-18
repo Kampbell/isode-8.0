@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2str.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/prim2str.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -41,63 +41,62 @@ char   *prim2str (pe, len)
 register PE	pe;
 register int   *len;
 {
-    register int    i,
-                    k;
-    int     j;
-    register char  *dp,
-                   *ep,
-                   *fp;
-    register PElementClass class;
-    register PElementID id;
-    register PE	    p;
+	register int    i,
+			 k;
+	int     j;
+	register char  *dp,
+			 *ep,
+			 *fp;
+	register PElementClass class;
+	register PElementID id;
+	register PE	    p;
 
-    *len = 0;
-    switch (pe -> pe_form) {
-	case PE_FORM_PRIM: 
-	    if ((dp = malloc ((unsigned) ((i = pe -> pe_len) + 1))) == NULLCP)
-		return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
-	    bcopy ((char *) pe -> pe_prim, dp, i);
-	    break;
-
-	case PE_FORM_CONS: 
-	    if ((p = pe -> pe_cons) == NULLPE) {
-		if ((dp = malloc ((unsigned) ((i = 0) + 1))) == NULLCP)
-		    return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
-		break;
-	    }
-	    dp = NULLCP, i = 0;
-	    class = p -> pe_class, id = p -> pe_id;
-	    for (p = pe -> pe_cons; p; p = p -> pe_next) {
-		if ((p -> pe_class != class || p -> pe_id != id)
-		        && (p -> pe_class != PE_CLASS_UNIV
-			    	|| p -> pe_id != PE_PRIM_OCTS)) {
-		    if (dp)
-			free (dp);
-		    return pe_seterr (pe, PE_ERR_TYPE, NULLCP);
-		}
-
-		if ((ep = prim2str (p, &j)) == NULLCP) {
-		    if (dp)
-			free (dp);
-		    return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
-		}
-		if (dp) {
-		    if ((fp = realloc (dp, (unsigned) ((k = i + j) + 1)))
-			    == NULLCP) {
-			free (dp);
+	*len = 0;
+	switch (pe -> pe_form) {
+	case PE_FORM_PRIM:
+		if ((dp = malloc ((unsigned) ((i = pe -> pe_len) + 1))) == NULLCP)
 			return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
-		    }
-		    bcopy (ep, fp + i, j);
-		    dp = fp, i = k;
+		bcopy ((char *) pe -> pe_prim, dp, i);
+		break;
+
+	case PE_FORM_CONS:
+		if ((p = pe -> pe_cons) == NULLPE) {
+			if ((dp = malloc ((unsigned) ((i = 0) + 1))) == NULLCP)
+				return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
+			break;
 		}
-		else
-		    dp = ep, i += j;
-	    }
-	    break;
-    }
+		dp = NULLCP, i = 0;
+		class = p -> pe_class, id = p -> pe_id;
+		for (p = pe -> pe_cons; p; p = p -> pe_next) {
+			if ((p -> pe_class != class || p -> pe_id != id)
+					&& (p -> pe_class != PE_CLASS_UNIV
+						|| p -> pe_id != PE_PRIM_OCTS)) {
+				if (dp)
+					free (dp);
+				return pe_seterr (pe, PE_ERR_TYPE, NULLCP);
+			}
 
-    if (dp)
-	dp[*len = i] = NULL;
+			if ((ep = prim2str (p, &j)) == NULLCP) {
+				if (dp)
+					free (dp);
+				return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
+			}
+			if (dp) {
+				if ((fp = realloc (dp, (unsigned) ((k = i + j) + 1)))
+						== NULLCP) {
+					free (dp);
+					return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
+				}
+				bcopy (ep, fp + i, j);
+				dp = fp, i = k;
+			} else
+				dp = ep, i += j;
+		}
+		break;
+	}
 
-    return dp;
+	if (dp)
+		dp[*len = i] = NULL;
+
+	return dp;
 }

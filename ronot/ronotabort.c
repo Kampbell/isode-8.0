@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotabort.c,v 9.0 1992/06/16 12:36:36 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ronot/RCS/ronotabort.c,v 9.0 1992/06/16 12:36:36 isode Rel $
  *
  *
@@ -41,17 +41,16 @@ int			  sd;
 struct RoNOTindication	* rni;
 {
 	int			  result;
-        struct AcSAPindication    aci_s;
-        struct AcSAPindication  * aci = &(aci_s);
-        struct AcSAPabort       * aca = &(aci->aci_abort);
+	struct AcSAPindication    aci_s;
+	struct AcSAPindication  * aci = &(aci_s);
+	struct AcSAPabort       * aca = &(aci->aci_abort);
 
 	LLOG (rosap_log, LLOG_EXCEPTIONS, ("RO-ABORT-BIND.REQUEST called on %d", sd));
 
 	result = AcUAbortRequest (sd, NULLPEP, 0, aci);
 
-	if (result != OK)
-	{
-	        LLOG (rosap_log, LLOG_EXCEPTIONS, ("RO-ABORT-BIND.REQUEST failed on %d", sd));
+	if (result != OK) {
+		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RO-ABORT-BIND.REQUEST failed on %d", sd));
 		return (acs2ronotlose (rni, "RO-ABORT-BIND.REQUEST", aca));
 	}
 

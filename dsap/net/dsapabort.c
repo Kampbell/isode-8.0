@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapabort.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dsapabort.c,v 9.0 1992/06/16 12:14:05 isode Rel $
  *
  *
@@ -42,11 +42,11 @@ int			  sd;
 struct DSAPindication	* di;
 {
 	int			  result;
-        struct RoNOTindication    rni_s;
-        struct RoNOTindication  * rni = &(rni_s);
+	struct RoNOTindication    rni_s;
+	struct RoNOTindication  * rni = &(rni_s);
 
-	LLOG (log_dsap, LLOG_NOTICE, 
-	     ("RO-ABORT-BIND.REQUEST called on %d", sd));
+	LLOG (log_dsap, LLOG_NOTICE,
+		  ("RO-ABORT-BIND.REQUEST called on %d", sd));
 
 	watch_dog ("RoBindUAbort");
 	result = RoBindUAbort (sd, rni);

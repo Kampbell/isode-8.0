@@ -27,9 +27,9 @@
 #include "quipu/name.h"
 
 typedef struct avseqcomp {      /* attribute may have multiple values   */
-				/* respresents SET OF AttributeValue    */
-    attrVal      	avseq_av;
-    struct avseqcomp    *avseq_next;
+	/* respresents SET OF AttributeValue    */
+	attrVal      	avseq_av;
+	struct avseqcomp    *avseq_next;
 } avseqcomp, *AV_Sequence;
 
 #define NULLAV ((AV_Sequence) 0)
@@ -44,15 +44,15 @@ AV_Sequence  avs_merge ();
 AV_Sequence  str2avs ();
 
 typedef struct attrcomp {       /* A sequence of attributes             */
-				/* represents Attribute                 */
-				/* and SET OF Attribute                 */
-    attrType       	attr_type;
-    AV_Sequence         attr_value;
-    struct attrcomp     *attr_link;
-				/* ACL is NOT for use by DUA            */
-				/* this must be done by use of ACL      */
-				/* attribute                            */
-    struct acl_info     *attr_acl;
+	/* represents Attribute                 */
+	/* and SET OF Attribute                 */
+	attrType       	attr_type;
+	AV_Sequence         attr_value;
+	struct attrcomp     *attr_link;
+	/* ACL is NOT for use by DUA            */
+	/* this must be done by use of ACL      */
+	/* attribute                            */
+	struct acl_info     *attr_acl;
 } attrcomp, *Attr_Sequence;
 
 #define NULLATTR ((Attr_Sequence) 0)
@@ -67,25 +67,25 @@ Attr_Sequence  as_merge ();
 Attr_Sequence  str2as();
 
 
-				/* ACL is defined here as it is         */
-				/* referenced.   it is only used by     */
-				/* DSA                                  */
-				/* represents ACLInfo defined by INCA   */
+/* ACL is defined here as it is         */
+/* referenced.   it is only used by     */
+/* DSA                                  */
+/* represents ACLInfo defined by INCA   */
 struct acl_info {
-    int acl_categories;
+	int acl_categories;
 #define ACL_NONE        0
 #define ACL_DETECT      1
 #define ACL_COMPARE     2
 #define ACL_READ        3
 #define ACL_ADD         4
 #define ACL_WRITE       5
-    int  acl_selector_type;
+	int  acl_selector_type;
 #define ACL_ENTRY       1
 #define ACL_OTHER       2
 #define ACL_PREFIX      3
 #define ACL_GROUP       4
-    struct dn_seq       *acl_name;    /* prefix and group only         */
-    struct acl_info     *acl_next;
+	struct dn_seq       *acl_name;    /* prefix and group only         */
+	struct acl_info     *acl_next;
 };
 
 #define NULLACL_INFO (struct acl_info *) NULL
@@ -131,7 +131,7 @@ typedef struct sacl_info {
 	int		 sac_tmplen;	/* for pepsy */
 	char		 sac_scope;
 #define SACL_SUBTREE		0x01
-#define SACL_SINGLELEVEL	0x02	
+#define SACL_SINGLELEVEL	0x02
 #define SACL_BASEOBJECT		0x04
 	int		 sac_access;
 #define SACL_UNSEARCHABLE	1
@@ -153,10 +153,10 @@ struct mailbox {
 };
 
 struct fax {
-    char    *number;
-    PE     bits;
-    char *   fax_bits;
-    int	     fax_len;
+	char    *number;
+	PE     bits;
+	char *   fax_bits;
+	int	     fax_len;
 };
 
 struct postaddr {
@@ -181,7 +181,7 @@ struct teletex {
 };
 
 struct pref_deliv {
-    	int	deliv;
+	int	deliv;
 	struct pref_deliv * pd_next;
 };
 
@@ -194,30 +194,30 @@ struct Guide {
 };
 
 struct Criteria {
-    int     offset;
+	int     offset;
 #define	Criteria_type	1
 #define	Criteria_and	2
 #define	Criteria_or	3
 #define	Criteria_not	4
 
-    union {
-            struct CriteriaItem *type;
-            struct and_or_set {
-                    struct Criteria *and_or_comp;
-                    struct and_or_set *and_or_next;
-            } *and_or;
-            struct Criteria *not;
-    }       un;
+	union {
+		struct CriteriaItem *type;
+		struct and_or_set {
+			struct Criteria *and_or_comp;
+			struct and_or_set *and_or_next;
+		} *and_or;
+		struct Criteria *not;
+	}       un;
 };
 
 struct CriteriaItem {
-    int  offset;
+	int  offset;
 #define	choice_equality		1
 #define	choice_substrings	2
 #define	choice_greaterOrEqual	3
 #define	choice_lessOrEqual	4
 #define	choice_approximateMatch	5
-    AttributeType attrib;
+	AttributeType attrib;
 };
 
 
@@ -231,8 +231,8 @@ struct CriteriaItem {
 #define UB_COUNTRY_CODE		4
 
 typedef struct _InheritAttr {
-	Attr_Sequence 	i_default;	
-	Attr_Sequence 	i_always;	
+	Attr_Sequence 	i_default;
+	Attr_Sequence 	i_always;
 	OID		i_oid;
 } * InheritAttr;
 #define NULLINHERIT ((InheritAttr)NULL)
@@ -245,59 +245,58 @@ struct CIList {
 #define NULLCILIST (struct CIList *)NULL
 
 struct documentStore {
-    int	    ds_method;
+	int	    ds_method;
 #define	DS_UNK	(-1)
 #define	DS_FTP	0
 #define	DS_FTAM	1
 
-    char   *ds_host;
-    char   *ds_dir;
-    char   *ds_file;
+	char   *ds_host;
+	char   *ds_dir;
+	char   *ds_file;
 };
 
 struct dsaQoS {
-    int	dsa_quality;
+	int	dsa_quality;
 #define	DSA_DEFUNCT	0
 #define	DSA_EXPERIMENTAL 1
 #define	DSA_BESTEFFORT	2
 #define	DSA_PILOT	3
 #define	DSA_FULL	4
 
-    char   *dsa_description;
+	char   *dsa_description;
 };
 
 struct attrQoS {
-    int	    attr_level;
+	int	    attr_level;
 #define	ATTR_UNKNOWN	1
 #define	ATTR_EXTERNAL	2
 #define	ATTR_SYSTEM	3
 #define	ATTR_USER	4
 
-    int	    attr_completeness;
-/* same values as dit_namespace */
+	int	    attr_completeness;
+	/* same values as dit_namespace */
 };
 
 struct ditQoS {
-    int	    dit_namespace;
+	int	    dit_namespace;
 #define	DIT_NONE	1
 #define	DIT_SAMPLE	2
 #define	DIT_SELECTED	3
 #define	DIT_SUBSTANTIAL	4
 #define	DIT_FULL	5
 
-    struct attrQoS  *dit_default;
+	struct attrQoS  *dit_default;
 
-    struct attrsQoS {
-	AttributeType	dit_type;
-	struct attrQoS *dit_quality;
-	struct attrsQoS *dit_next;
-    }		   *dit_attrs;
+	struct attrsQoS {
+		AttributeType	dit_type;
+		struct attrQoS *dit_quality;
+		struct attrsQoS *dit_next;
+	}		   *dit_attrs;
 
-    char   *dit_description;
+	char   *dit_description;
 };
 
-struct dsa_control
-{
+struct dsa_control {
 	int	dsa_control_option ;
 #define CONTROL_LOCKDSA 1
 #define CONTROL_SETLOGLEVEL 2
@@ -308,8 +307,7 @@ struct dsa_control
 #define CONTROL_CHANGETAILOR 7
 #define CONTROL_UPDATESLAVEEDBS 8
 
-	union
-	{
+	union {
 		struct	optional_dn	*lockdsa ;
 		struct	qbuf		*setLogLevel ;
 		struct	optional_dn	*refresh ;
@@ -321,39 +319,35 @@ struct dsa_control
 	} un ;
 } ;
 
-struct optional_dn
-{
-  int offset ;
+struct optional_dn {
+	int offset ;
 #define EMPTYDN 1
 #define DN_PRESENT 2
 
-  union
-    {
-      char no_dn ;
-      DN selectedDN ;
-    } un ;
+	union {
+		char no_dn ;
+		DN selectedDN ;
+	} un ;
 } ;
 
-typedef struct quipu_call
-{
+typedef struct quipu_call {
 	int	protocol ;
 #define PROTOCOL_DAP  0
 #define PROTOCOL_DSP  1
 #define PROTOCOL_QUIPUDSP	2
 #define	PROTOCOL_INTERNET_DSP	3
 	int	assoc_id ;
-struct	auth_level * authorizationLevel ;
+	struct	auth_level * authorizationLevel ;
 	char	initiated_by_dsa ;
 	DN	usersDN ;
 	char	*net_address ;
 	char	*start_time ;
 	char	*finish_time ;
-struct	op_list	*pending_ops ;
-struct	op_list	*invoked_ops ;
+	struct	op_list	*pending_ops ;
+	struct	op_list	*invoked_ops ;
 } quipu_call ;
 
-struct	auth_level
-{
+struct	auth_level {
 	int	parm ;
 #define AUTHLEVEL_NONE        1
 #define AUTHLEVEL_IDENTIFIED  2
@@ -362,31 +356,27 @@ struct	auth_level
 #define AUTHLEVEL_STRONG      5
 } ;
 
-struct sub_ch_list
-{
+struct sub_ch_list {
 	int	assoc_id ;
 	int	invok_id ;
 } ;
 
-struct chain_list
-{
+struct chain_list {
 	struct	sub_ch_list	*sub_chained_ops ;
 	struct	chain_list		*next ;
 } ;
 
-struct	ops
-{
+struct	ops {
 	int	invoke_id ;
 	int	operation_id ;
 	DN	base_object ;
 	char	*start_time ;
 	char	*finish_time ;
 
-struct	chain_list	*chained_ops ;
+	struct	chain_list	*chained_ops ;
 } ;
 
-struct op_list
-{
+struct op_list {
 	struct	ops	*operation_list ;
 	struct	op_list *next ;
 } ;

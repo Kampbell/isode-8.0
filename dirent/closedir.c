@@ -22,21 +22,22 @@ extern int	errno;
 
 int
 closedir( dirp )
-	register DIR	*dirp;		/* stream from opendir() */
-	{
+register DIR	*dirp;		/* stream from opendir() */
+{
 	register int	fd;
 
-	if ( dirp == NULL || dirp->dd_buf == NULL )
-		{
+	if ( dirp == NULL || dirp->dd_buf == NULL ) {
 		errno = EFAULT;
 		return -1;		/* invalid pointer */
-		}
+	}
 
 	fd = dirp-> dd_fd;
 	free( (pointer)dirp->dd_buf );
 	free( (pointer)dirp );
 	return close( fd );
-	}
+}
 #else
-int	_closedir_stub () {;}
+int	_closedir_stub () {
+	;
+}
 #endif

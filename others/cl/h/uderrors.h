@@ -19,7 +19,7 @@
 #endif
 
 
-#define UD_BASE 	20	
+#define UD_BASE 	20
 
 #define UDERR_NO_NSAP_ADDRS 	 	(UD_BASE + 0)
 #define UDERR_ILLEGAL_UD_SIZE 	 	(UD_BASE + 1)
@@ -56,50 +56,50 @@ int uderror();
 
 
 
-char *uderror_text[] 
+char *uderror_text[]
 
 #if UDERR_ALLOCATE
-= 
+	=
 
-  {
-  "No NSAP addresses in called parameter.",
-  "Illegal unit data size in request.",
-  "No more memory left for buffer allocation.",
-  "NSAP address not supported.",
-  "Transport service not supported.",
+{
+	"No NSAP addresses in called parameter.",
+	"Illegal unit data size in request.",
+	"No more memory left for buffer allocation.",
+	"NSAP address not supported.",
+	"Transport service not supported.",
 
-  "Zero-length on unit data not allowed.",
-  "Invalid transport descriptor.",
-  "Transport flag not set for connectionless service.",
-  "Mandatory parameter missing.",
-  "Unable to find the port for the TSAP daemon",
+	"Zero-length on unit data not allowed.",
+	"Invalid transport descriptor.",
+	"Transport flag not set for connectionless service.",
+	"Mandatory parameter missing.",
+	"Unable to find the port for the TSAP daemon",
 
-  "Remote Host is not defined",
-  "Local Host is not defined",
-  "Address family mismatch in local and remote addr",
-  "Unable to create local socket for client",
-  "Unable to create local socket for server",
+	"Remote Host is not defined",
+	"Local Host is not defined",
+	"Address family mismatch in local and remote addr",
+	"Unable to create local socket for client",
+	"Unable to create local socket for server",
 
-  "Unable to join server",
-  "Unable to BIND the socket",
-  "Unknown error code",
-  "Invalid session descriptor.",
-  "Too Many vectors in the user udvec.",
+	"Unable to join server",
+	"Unable to BIND the socket",
+	"Unknown error code",
+	"Invalid session descriptor.",
+	"Too Many vectors in the user udvec.",
 
-  "Request to TUnitDataWrite failed.",
-  "Request to TUnitDataRead failed.",
-  "Decode the unitdata spdu from the tsdu failed.",
-  "Unexpected SPDU received.",
-  "Encode the unitdata spdu failed.",
-  "No remnote address specified for re-bind.",
-  "Bad initialization vector."
-  };
+	"Request to TUnitDataWrite failed.",
+	"Request to TUnitDataRead failed.",
+	"Decode the unitdata spdu from the tsdu failed.",
+	"Unexpected SPDU received.",
+	"Encode the unitdata spdu failed.",
+	"No remnote address specified for re-bind.",
+	"Bad initialization vector."
+};
 #else
-  ;
+;
 
 
-#define UDERR_MAX	( (sizeof(uderror_text)) / (sizeof(uderror_text[0])) ) 
- 
+#define UDERR_MAX	( (sizeof(uderror_text)) / (sizeof(uderror_text[0])) )
+
 
 #endif
 

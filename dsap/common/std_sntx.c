@@ -24,8 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/std_sntx.c,v 9.
  *
  */
 
-standard_syntaxes ()
-{
+standard_syntaxes () {
 	string_syntaxes ();
 	cilist_syntax ();
 	dn_syntax ();

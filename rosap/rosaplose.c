@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosaplose.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/rosaplose.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -42,57 +42,55 @@ static int  _rosaplose ();
 
 #ifndef	lint
 int	ropktlose (va_alist)
-va_dcl
-{
-    int	    reason,
-    	    result,
-    	    value;
-    register struct assocblk *acb;
-    register struct RoSAPindication *roi;
-    register struct RoSAPpreject *rop;
-    va_list ap;
+va_dcl {
+	int	    reason,
+	result,
+	value;
+	register struct assocblk *acb;
+	register struct RoSAPindication *roi;
+	register struct RoSAPpreject *rop;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    acb = va_arg (ap, struct assocblk *);
-    roi = va_arg (ap, struct RoSAPindication *);
-    reason = va_arg (ap, int);
+	acb = va_arg (ap, struct assocblk *);
+	roi = va_arg (ap, struct RoSAPindication *);
+	reason = va_arg (ap, int);
 
-    result = _rosaplose (roi, reason, ap);
+	result = _rosaplose (roi, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    if ((rop = &roi -> roi_preject) -> rop_cc > 0) {
-	SLOG (rosap_log, LLOG_EXCEPTIONS, NULLCP,
-	      ("ropktlose [%s] %*.*s", RoErrString (rop -> rop_reason),
-	       rop -> rop_cc, rop -> rop_cc, rop -> rop_data));
-    }
-    else
-	SLOG (rosap_log, LLOG_EXCEPTIONS, NULLCP,
-	      ("ropktlose [%s]", RoErrString (rop -> rop_reason)));
+	if ((rop = &roi -> roi_preject) -> rop_cc > 0) {
+		SLOG (rosap_log, LLOG_EXCEPTIONS, NULLCP,
+		("ropktlose [%s] %*.*s", RoErrString (rop -> rop_reason),
+		rop -> rop_cc, rop -> rop_cc, rop -> rop_data));
+	} else
+		SLOG (rosap_log, LLOG_EXCEPTIONS, NULLCP,
+		("ropktlose [%s]", RoErrString (rop -> rop_reason)));
 
-    if (acb == NULLACB
-	    || acb -> acb_fd == NOTOK
-	    || acb -> acb_ropktlose == NULLIFP)
+	if (acb == NULLACB
+	|| acb -> acb_fd == NOTOK
+	|| acb -> acb_ropktlose == NULLIFP)
+		return result;
+
+	switch (reason) {
+	case ROS_PROTOCOL:
+		value = ABORT_PROTO;
+		break;
+
+	case ROS_CONGEST:
+		value = ABORT_TMP;
+		break;
+
+	default:
+		value = ABORT_LSP;
+		break;
+	}
+
+	(*acb -> acb_ropktlose) (acb, value);
+
 	return result;
-
-    switch (reason) {
-	case ROS_PROTOCOL: 
-	    value = ABORT_PROTO;
-	    break;
-
-	case ROS_CONGEST: 
-	    value = ABORT_TMP;
-	    break;
-
-	default: 
-	    value = ABORT_LSP;
-	    break;
-    }
-
-    (*acb -> acb_ropktlose) (acb, value);
-
-    return result;
 }
 #else
 /* VARARGS5 */
@@ -102,9 +100,9 @@ struct assocblk *acb;
 struct RoSAPindication *roi;
 int     reason;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return ropktlose (acb, roi, reason, what, fmt);
+	return ropktlose (acb, roi, reason, what, fmt);
 }
 #endif
 
@@ -112,33 +110,32 @@ char   *what,
 
 #ifndef	lint
 int	rosapreject (va_alist)
-va_dcl
-{
-    int	    reason,
-    	    result;
-    register struct assocblk *acb;
-    struct RoSAPindication  rois;
-    register struct RoSAPindication *roi;
-    va_list ap;
+va_dcl {
+	int	    reason,
+	result;
+	register struct assocblk *acb;
+	struct RoSAPindication  rois;
+	register struct RoSAPindication *roi;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    acb = va_arg (ap, struct assocblk *);
-    roi = va_arg (ap, struct RoSAPindication *);
-    reason = va_arg (ap, int);
-    
-    result = _rosaplose (roi, reason, ap);
+	acb = va_arg (ap, struct assocblk *);
+	roi = va_arg (ap, struct RoSAPindication *);
+	reason = va_arg (ap, int);
 
-    va_end (ap);
+	result = _rosaplose (roi, reason, ap);
 
-    if (RoURejectRequestAux (acb, NULLIP, reason - REJECT_GENERAL_BASE,
-		REJECT_GENERAL, 0, &rois) == NOTOK
-	    && ROS_FATAL (rois.roi_preject.rop_reason)) {
-	*roi = rois;		/* struct copy */
-	result = NOTOK;
-    }
+	va_end (ap);
 
-    return result;
+	if (RoURejectRequestAux (acb, NULLIP, reason - REJECT_GENERAL_BASE,
+	REJECT_GENERAL, 0, &rois) == NOTOK
+	&& ROS_FATAL (rois.roi_preject.rop_reason)) {
+		*roi = rois;		/* struct copy */
+		result = NOTOK;
+	}
+
+	return result;
 }
 #else
 /* VARARGS5 */
@@ -148,9 +145,9 @@ struct assocblk *acb;
 struct RoSAPindication *roi;
 int     reason;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return rosapreject (acb, roi, reason, what, fmt);
+	return rosapreject (acb, roi, reason, what, fmt);
 }
 #endif
 
@@ -158,23 +155,22 @@ char   *what,
 
 #ifndef	lint
 int	rosaplose (va_alist)
-va_dcl
-{
-    int	    reason,
-	    result;
-    struct RoSAPindication *roi;
-    va_list (ap);
+va_dcl {
+	int	    reason,
+	result;
+	struct RoSAPindication *roi;
+	va_list (ap);
 
-    va_start (ap);
+	va_start (ap);
 
-    roi = va_arg (ap, struct RoSAPindication *);
-    reason = va_arg (ap, int);
+	roi = va_arg (ap, struct RoSAPindication *);
+	reason = va_arg (ap, int);
 
-    result = _rosaplose (roi, reason, ap);
+	result = _rosaplose (roi, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return result;
+	return result;
 }
 #else
 /* VARARGS4 */
@@ -183,9 +179,9 @@ int	rosaplose (roi, reason, what, fmt)
 struct RoSAPindication *roi;
 int	reason;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return rosaplose (roi, reason, what, fmt);
+	return rosaplose (roi, reason, what, fmt);
 }
 #endif
 
@@ -197,22 +193,22 @@ register struct RoSAPindication *roi;
 int     reason;
 va_list	ap;
 {
-    register char  *bp;
-    char    buffer[BUFSIZ];
-    register struct RoSAPpreject *rop;
+	register char  *bp;
+	char    buffer[BUFSIZ];
+	register struct RoSAPpreject *rop;
 
-    if (roi) {
-	bzero ((char *) roi, sizeof *roi);
-	roi -> roi_type = ROI_PREJECT;
-	rop = &roi -> roi_preject;
+	if (roi) {
+		bzero ((char *) roi, sizeof *roi);
+		roi -> roi_type = ROI_PREJECT;
+		rop = &roi -> roi_preject;
 
-	asprintf (bp = buffer, ap);
-	bp += strlen (bp);
+		asprintf (bp = buffer, ap);
+		bp += strlen (bp);
 
-	rop -> rop_reason = reason;
-	copyRoSAPdata (buffer, bp - buffer, rop);
-    }
+		rop -> rop_reason = reason;
+		copyRoSAPdata (buffer, bp - buffer, rop);
+	}
 
-    return NOTOK;
+	return NOTOK;
 }
 #endif

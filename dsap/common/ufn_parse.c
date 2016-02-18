@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/ufn_parse.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/ufn_parse.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -62,12 +62,12 @@ char ufn_abort = FALSE;		/* external to force UFN to abort */
 
 #ifdef	DEBUG
 static	print_search ();
-#endif 
+#endif
 
 DNS DNS_append (a,b)
 DNS a, b;
-{	
-DNS c;
+{
+	DNS c;
 	if (a == NULLDNS)
 		return b;
 
@@ -82,42 +82,42 @@ DNS c;
 static Attr_Sequence read_cache (base)
 DN base;
 {
-Entry ptr;
+	Entry ptr;
 
-	if ((ptr = local_find_entry (base,FALSE)) != NULLENTRY) 
+	if ((ptr = local_find_entry (base,FALSE)) != NULLENTRY)
 		return (ptr->e_attributes);
 
 	return NULLATTR;
 }
 
-static char exact_match (dn,s) 
+static char exact_match (dn,s)
 DN dn;
 char * s;
 {
-RDN rdn;
+	RDN rdn;
 	for (; dn->dn_parent != NULLDN; dn=dn->dn_parent)
 		; /* Nothing */
 
 	for (rdn = dn->dn_rdn; rdn != NULLRDN; rdn=rdn->rdn_next) {
 		if (sub_string (rdn->rdn_av.av_syntax)
-		&& (lexequ((char *)rdn->rdn_av.av_struct,s) == 0))
+				&& (lexequ((char *)rdn->rdn_av.av_struct,s) == 0))
 			return TRUE;
 	}
 	return FALSE;
 }
 
-static char good_match (dn,s) 
+static char good_match (dn,s)
 DN dn;
 char * s;
 {
-Attr_Sequence as;
-AV_Sequence avs;
+	Attr_Sequence as;
+	AV_Sequence avs;
 
 	for (as = read_cache(dn); as != NULLATTR; as=as->attr_link)
 		for (avs=as->attr_value; avs!= NULLAV; avs=avs->avseq_next)
 			if (sub_string (avs->avseq_av.av_syntax)
-				&& (lexequ((char *)avs->avseq_av.av_struct,s) == 0))
-					return TRUE;
+					&& (lexequ((char *)avs->avseq_av.av_struct,s) == 0))
+				return TRUE;
 	return FALSE;
 }
 
@@ -127,10 +127,10 @@ DNS *dlist;
 DNS (* interact) ();
 DNS el;
 {
-DNS exact = NULLDNS;
-DNS good  = NULLDNS;
-DNS bad   = NULLDNS;
-DNS tmp, next = NULLDNS;
+	DNS exact = NULLDNS;
+	DNS good  = NULLDNS;
+	DNS bad   = NULLDNS;
+	DNS tmp, next = NULLDNS;
 
 	if ((dlist == (DNS *)NULL) || (*dlist == NULLDNS))
 		return 2;
@@ -181,23 +181,23 @@ static char present (d,t)
 DN d;
 AttributeType t;
 {
-RDN rdn;
-DN p, q;
+	RDN rdn;
+	DN p, q;
 
 	if (!d)
-	    return FALSE;
+		return FALSE;
 
 	for (p = d; p -> dn_parent; p = p -> dn_parent)
-	    continue;
-	for (;;) {
-	    for (rdn = p -> dn_rdn; rdn; rdn = rdn -> rdn_next)
-		if (AttrT_cmp (rdn->rdn_at,t) == 0)
-			return TRUE;
-	    if (p == d)
-		return FALSE;	/* more work ... */
-	    for (q = d; p != q -> dn_parent; q = q -> dn_parent)
 		continue;
-	    p = q;
+	for (;;) {
+		for (rdn = p -> dn_rdn; rdn; rdn = rdn -> rdn_next)
+			if (AttrT_cmp (rdn->rdn_at,t) == 0)
+				return TRUE;
+		if (p == d)
+			return FALSE;	/* more work ... */
+		for (q = d; p != q -> dn_parent; q = q -> dn_parent)
+			continue;
+		p = q;
 	}
 }
 
@@ -210,23 +210,23 @@ char * s;
 DNS (* interact) ();
 DNS el;
 {
-struct ds_search_arg search_arg;
-static struct ds_search_result result;
-struct DSError err;
-static CommonArgs ca = default_common_args;
-EntryInfo * ptr;
-DNS newdns, r = NULLDNS;
+	struct ds_search_arg search_arg;
+	static struct ds_search_result result;
+	struct DSError err;
+	static CommonArgs ca = default_common_args;
+	EntryInfo * ptr;
+	DNS newdns, r = NULLDNS;
 
 	if (ufn_abort) {
-	    (*res) = NULLDNS;
-	    return FALSE;
+		(*res) = NULLDNS;
+		return FALSE;
 	}
 
 	search_arg.sra_baseobject = base;
 	search_arg.sra_filter = filt;
 	if (subtree)
 		search_arg.sra_subset = SRA_WHOLESUBTREE;
-	else	
+	else
 		search_arg.sra_subset = SRA_ONELEVEL;
 	search_arg.sra_searchaliases = TRUE;
 	search_arg.sra_common = ca; /* struct copy */
@@ -236,33 +236,34 @@ DNS newdns, r = NULLDNS;
 
 #ifdef	DEBUG
 	if (ufn_notify == 2)
-	    print_search (base, subtree, filt);
+		print_search (base, subtree, filt);
 #endif
 	if (ds_search (&search_arg, &err, &result) != DS_OK) {
 		log_ds_error (&err);
 		NOTIFY (("DAP Search returned an error"))
 		if (!ufn_bad_dsa) {
-		    switch (err.dse_type) {
-		        case DSE_REFERRAL:
-		            if (err.ERR_REFERRAL.DSE_ref_candidates 
-			            && err.ERR_REFERRAL.DSE_ref_candidates
-					    -> cr_reftype
+			switch (err.dse_type) {
+			case DSE_REFERRAL:
+				if (err.ERR_REFERRAL.DSE_ref_candidates
+						&& err.ERR_REFERRAL.DSE_ref_candidates
+						-> cr_reftype
 						!= RT_NONSPECIFICSUBORDINATE)
-				goto set_bad_dsa;
-			    break;
+					goto set_bad_dsa;
+				break;
 
 			case DSE_DSAREFERRAL:
-			    if (err.ERR_REFERRAL.DSE_ref_candidates) {
-set_bad_dsa: ;
-				ufn_bad_dsa =
-				    dn_cpy (err.ERR_REFERRAL.DSE_ref_candidates
-					    -> cr_accesspoints -> ap_name);
-			    }
-			    break;
+				if (err.ERR_REFERRAL.DSE_ref_candidates) {
+set_bad_dsa:
+					;
+					ufn_bad_dsa =
+						dn_cpy (err.ERR_REFERRAL.DSE_ref_candidates
+								-> cr_accesspoints -> ap_name);
+				}
+				break;
 
 			default:
-			    break;
-		    }
+				break;
+			}
 		}
 		ds_error_free (&err);
 		filter_free (filt);
@@ -275,27 +276,27 @@ set_bad_dsa: ;
 	dn_free (result.CSR_object);
 
 	if ( (result.CSR_limitproblem != LSR_NOLIMITPROBLEM) || (result.CSR_cr != NULLCONTINUATIONREF)) {
-	        if (!ufn_bad_dsa && result.CSR_cr)
-		    ufn_bad_dsa = dn_cpy (result.CSR_cr -> cr_accesspoints
-					  		-> ap_name);
+		if (!ufn_bad_dsa && result.CSR_cr)
+			ufn_bad_dsa = dn_cpy (result.CSR_cr -> cr_accesspoints
+								  -> ap_name);
 
 		crefs_free (result.CSR_cr);
 
 		if ( ! result.CSR_entries) {
 			NOTIFY (("Search returned partial results"))
 			return FALSE;
-		} 
+		}
 		NOTIFY (("Continuing with partial results !"));
 	}
 
 	if (!result.CSR_entries
-	        && check_dnseq (ufn_partials, base) == NOTOK
-	        && present (base, at_Organisation))
-	    ufn_partials = dn_seq_push (base, ufn_partials);
+			&& check_dnseq (ufn_partials, base) == NOTOK
+			&& present (base, at_Organisation))
+		ufn_partials = dn_seq_push (base, ufn_partials);
 
 	for (ptr = result.CSR_entries; ptr != NULLENTRYINFO; ptr=ptr->ent_next) {
 		cache_entry (ptr, search_arg.sra_eis.eis_allattributes,
-			     search_arg.sra_eis.eis_infotypes);
+					 search_arg.sra_eis.eis_infotypes);
 		newdns = dn_seq_alloc();
 		newdns->dns_next = r;
 		newdns->dns_dn = dn_cpy (ptr->ent_dn);
@@ -317,45 +318,43 @@ DNS (* interact) ();
 DNS el;
 DNS * result;
 {
-    Filter filt, filta, filtb, filtc, filtd, filte, filtf;
+	Filter filt, filta, filtb, filtc, filtd, filte, filtf;
 
-    if (check_3166 (s)) {
-	if ((filta = strfilter (at_CountryName,s,FILTERITEM_EQUALITY)) == NULLFILTER)
-	    return 0;
-	if ((filtb = strfilter (at_FriendlyCountryName,s,FILTERITEM_EQUALITY)) == NULLFILTER)
-	    return 0;
-	filtb -> flt_next = filta;
-	if ((filtc = strfilter (at_Organisation,s,FILTERITEM_EQUALITY)) == NULLFILTER)
-	    return 0;
-	filtc -> flt_next = filtb;
-	filt = joinfilter (filtc, FILTER_OR);
-    }
-    else {
-	if ((filta = strfilter (at_FriendlyCountryName,s,SUBSTRINGS ())) == NULLFILTER)
-	    return 0;
-	if ((filtc = strfilter (at_Organisation,s,SUBSTRINGS ())) == NULLFILTER)
-	    return 0;
-	filtc -> flt_next = filta;
-	if ((filte = strfilter (at_Locality,s,SUBSTRINGS ())) == NULLFILTER)
-	    return 0;
-	filte -> flt_next = filtc;
-	if ((ufn_flags & UFN_APPROX) && !index (s, '*')) {
-	    if ((filtb = strfilter (at_FriendlyCountryName,s,FILTERITEM_APPROX)) == NULLFILTER)
-		return 0;
-	    filtb -> flt_next = filte;
-	    if ((filtd = strfilter (at_Organisation,s,FILTERITEM_APPROX)) == NULLFILTER)
-		return 0;
-	    filtd -> flt_next = filtb;
-	    if ((filtf = strfilter (at_Locality,s,FILTERITEM_APPROX)) == NULLFILTER)
-		return 0;
-	    filtf -> flt_next = filtd;
-	    filt = joinfilter (filtf, FILTER_OR);
+	if (check_3166 (s)) {
+		if ((filta = strfilter (at_CountryName,s,FILTERITEM_EQUALITY)) == NULLFILTER)
+			return 0;
+		if ((filtb = strfilter (at_FriendlyCountryName,s,FILTERITEM_EQUALITY)) == NULLFILTER)
+			return 0;
+		filtb -> flt_next = filta;
+		if ((filtc = strfilter (at_Organisation,s,FILTERITEM_EQUALITY)) == NULLFILTER)
+			return 0;
+		filtc -> flt_next = filtb;
+		filt = joinfilter (filtc, FILTER_OR);
+	} else {
+		if ((filta = strfilter (at_FriendlyCountryName,s,SUBSTRINGS ())) == NULLFILTER)
+			return 0;
+		if ((filtc = strfilter (at_Organisation,s,SUBSTRINGS ())) == NULLFILTER)
+			return 0;
+		filtc -> flt_next = filta;
+		if ((filte = strfilter (at_Locality,s,SUBSTRINGS ())) == NULLFILTER)
+			return 0;
+		filte -> flt_next = filtc;
+		if ((ufn_flags & UFN_APPROX) && !index (s, '*')) {
+			if ((filtb = strfilter (at_FriendlyCountryName,s,FILTERITEM_APPROX)) == NULLFILTER)
+				return 0;
+			filtb -> flt_next = filte;
+			if ((filtd = strfilter (at_Organisation,s,FILTERITEM_APPROX)) == NULLFILTER)
+				return 0;
+			filtd -> flt_next = filtb;
+			if ((filtf = strfilter (at_Locality,s,FILTERITEM_APPROX)) == NULLFILTER)
+				return 0;
+			filtf -> flt_next = filtd;
+			filt = joinfilter (filtf, FILTER_OR);
+		} else
+			filt = joinfilter (filte, FILTER_OR);
 	}
-	else
-	    filt = joinfilter (filte, FILTER_OR);
-    }
 
-    return ufn_search (NULLDN,FALSE,filt,result,s,interact,el);
+	return ufn_search (NULLDN,FALSE,filt,result,s,interact,el);
 }
 
 static intSearch (base,s,interact,el,result)
@@ -365,22 +364,21 @@ DNS (* interact) ();
 DNS el;
 DNS * result;
 {
-Filter filt, filta, filtb, filtc, filtd, filte, filtf, filtg, filth;
+	Filter filt, filta, filtb, filtc, filtd, filte, filtf, filtg, filth;
 
 	if ( present (base,at_OrgUnit) ) {
 		if ((filte = ocfilter ("OrganizationalUnit")) == NULLFILTER)
 			return FALSE;
 
 		if ((filta = strfilter (at_OrgUnit,s,SUBSTRINGS ())) == NULLFILTER)
-		    return 0;
-		if ((ufn_flags & UFN_APPROX) && !index (s, '*')) {
-		    if ((filtb = strfilter (at_OrgUnit,s,FILTERITEM_APPROX)) == NULLFILTER)
 			return 0;
-		    filtb->flt_next = filta;
-		    filt = joinfilter (filtb, FILTER_OR);
-		}
-		else
-		    filt = filta;
+		if ((ufn_flags & UFN_APPROX) && !index (s, '*')) {
+			if ((filtb = strfilter (at_OrgUnit,s,FILTERITEM_APPROX)) == NULLFILTER)
+				return 0;
+			filtb->flt_next = filta;
+			filt = joinfilter (filtb, FILTER_OR);
+		} else
+			filt = filta;
 
 		filte->flt_next = filt;
 
@@ -389,28 +387,27 @@ Filter filt, filta, filtb, filtc, filtd, filte, filtf, filtg, filth;
 		if ((filte = ocfilter ("OrganizationalUnit")) == NULLFILTER)
 			return FALSE;
 		if ((filth = ocfilter ("Locality")) == NULLFILTER) {
-		    filter_free (filte);
-		    return FALSE;
+			filter_free (filte);
+			return FALSE;
 		}
 		filth->flt_next = filte;
 		filtg = joinfilter (filth, FILTER_OR);
 
 		if ((filta = strfilter (at_OrgUnit,s,SUBSTRINGS ())) == NULLFILTER)
-		    return 0;
+			return 0;
 		if ((filtc = strfilter (at_Locality,s,SUBSTRINGS ())) == NULLFILTER)
-		    return 0;
+			return 0;
 		filtc -> flt_next = filta;
 		if ((ufn_flags & UFN_APPROX) && !index (s, '*')) {
-		    if ((filtb = strfilter (at_OrgUnit,s,FILTERITEM_APPROX)) == NULLFILTER)
-			return 0;
-		    filtb -> flt_next = filtc;
-		    if ((filtd = strfilter (at_Locality,s,FILTERITEM_APPROX)) == NULLFILTER)
-			return 0;
-		    filtd -> flt_next = filtb;
-		    filt = joinfilter (filtd, FILTER_OR);
-		}
-		else
-		    filt = joinfilter (filtc, FILTER_OR);
+			if ((filtb = strfilter (at_OrgUnit,s,FILTERITEM_APPROX)) == NULLFILTER)
+				return 0;
+			filtb -> flt_next = filtc;
+			if ((filtd = strfilter (at_Locality,s,FILTERITEM_APPROX)) == NULLFILTER)
+				return 0;
+			filtd -> flt_next = filtb;
+			filt = joinfilter (filtd, FILTER_OR);
+		} else
+			filt = joinfilter (filtc, FILTER_OR);
 
 		filtg->flt_next = filt;
 		filtf = joinfilter (filtg, FILTER_AND);
@@ -419,51 +416,49 @@ Filter filt, filta, filtb, filtc, filtd, filte, filtf, filtg, filth;
 			return FALSE;
 
 		if ((filta = strfilter (at_Organisation,s,SUBSTRINGS ())) == NULLFILTER)
-		    return 0;
-		if ((ufn_flags & UFN_APPROX) && !index (s, '*')) {
-		    if ((filtb = strfilter (at_Organisation,s,FILTERITEM_APPROX)) == NULLFILTER)
 			return 0;
-		    filtb->flt_next = filta;
-		    filt = joinfilter (filtb, FILTER_OR);
-		}
-		else
-		    filt = filta;
+		if ((ufn_flags & UFN_APPROX) && !index (s, '*')) {
+			if ((filtb = strfilter (at_Organisation,s,FILTERITEM_APPROX)) == NULLFILTER)
+				return 0;
+			filtb->flt_next = filta;
+			filt = joinfilter (filtb, FILTER_OR);
+		} else
+			filt = filta;
 
 		filte->flt_next = filt;
 
 		filtf = joinfilter (filte, FILTER_AND);
 	} else {
 		if ((filte = ocfilter ("Organization")) == NULLFILTER)
-		    return FALSE;
+			return FALSE;
 		if ((filth = ocfilter ("Locality")) == NULLFILTER) {
-		    filter_free (filte);
-		    return FALSE;
+			filter_free (filte);
+			return FALSE;
 		}
 		filth -> flt_next = filte;
 		filtg = joinfilter (filth, FILTER_OR);
 
 		if ((filta = strfilter (at_Organisation,s,SUBSTRINGS ())) == NULLFILTER)
-		    return 0;
+			return 0;
 		if ((filtc = strfilter (at_Locality,s,SUBSTRINGS ())) == NULLFILTER)
-		    return 0;
+			return 0;
 		filtc -> flt_next = filta;
 		if ((ufn_flags & UFN_APPROX) && !index (s, '*')) {
-		    if ((filtb = strfilter (at_Organisation,s,FILTERITEM_APPROX)) == NULLFILTER)
-			return 0;
-		    filtb -> flt_next = filtc;
-		    if ((filtd = strfilter (at_Locality,s,FILTERITEM_APPROX)) == NULLFILTER)
-			return 0;
-		    filtd -> flt_next = filtb;
-		    filt = joinfilter (filtd, FILTER_OR);
-		}
-		else
-		    filt = joinfilter (filtc, FILTER_OR);
+			if ((filtb = strfilter (at_Organisation,s,FILTERITEM_APPROX)) == NULLFILTER)
+				return 0;
+			filtb -> flt_next = filtc;
+			if ((filtd = strfilter (at_Locality,s,FILTERITEM_APPROX)) == NULLFILTER)
+				return 0;
+			filtd -> flt_next = filtb;
+			filt = joinfilter (filtd, FILTER_OR);
+		} else
+			filt = joinfilter (filtc, FILTER_OR);
 
 		filtg->flt_next = filt;
 		filtf = joinfilter (filtg, FILTER_AND);
 	}
 
-    return ufn_search (base,FALSE,filtf,result,s,interact,el);
+	return ufn_search (base,FALSE,filtf,result,s,interact,el);
 }
 
 static leafSearch (base,s,subtree,interact,el,result)
@@ -474,43 +469,42 @@ DNS (* interact) ();
 DNS el;
 DNS * result;
 {
-Filter filt, filta, filtb, filtc, filtd, filte, filtf;
+	Filter filt, filta, filtb, filtc, filtd, filte, filtf;
 
 	if ((filta = strfilter (at_CommonName,s,SUBSTRINGS ())) == NULLFILTER)
-	    return 0;
+		return 0;
 	if ((filtc = strfilter (at_Surname,s,SUBSTRINGS ())) == NULLFILTER)
-	    return 0;
+		return 0;
 	filtc -> flt_next = filta;
 	if ((filte = strfilter (at_Userid,s,SUBSTRINGS ())) == NULLFILTER)
-	    return 0;
+		return 0;
 	filte -> flt_next = filtc;
 	if ((ufn_flags & UFN_APPROX) && !index (s, '*')) {
-	    if ((filtb = strfilter (at_CommonName,s,FILTERITEM_APPROX)) == NULLFILTER)
-		return 0;
-	    filtb -> flt_next = filte;
-	    if ((filtd = strfilter (at_Surname,s,FILTERITEM_APPROX)) == NULLFILTER)
-		return 0;
-	    filtd -> flt_next = filtb;
-	    if ((filtf = strfilter (at_Userid,s,FILTERITEM_APPROX)) == NULLFILTER)
-		return 0;
-	    filtf -> flt_next = filtd;
-	    filt = joinfilter (filtf, FILTER_OR);
-	}
-	else
-	    filt = joinfilter (filte, FILTER_OR);
+		if ((filtb = strfilter (at_CommonName,s,FILTERITEM_APPROX)) == NULLFILTER)
+			return 0;
+		filtb -> flt_next = filte;
+		if ((filtd = strfilter (at_Surname,s,FILTERITEM_APPROX)) == NULLFILTER)
+			return 0;
+		filtd -> flt_next = filtb;
+		if ((filtf = strfilter (at_Userid,s,FILTERITEM_APPROX)) == NULLFILTER)
+			return 0;
+		filtf -> flt_next = filtd;
+		filt = joinfilter (filtf, FILTER_OR);
+	} else
+		filt = joinfilter (filte, FILTER_OR);
 
 	return ufn_search (base,subtree,filt,result,s,interact,el);
 }
 
 static keyedSearch (base,t,v,interact,el,result)
 DN base;
-char * t, *v; 
+char * t, *v;
 DNS (* interact) ();
 DNS el;
 DNS * result;
 {
-Filter filt, filta, filtb;
-AttributeType at;
+	Filter filt, filta, filtb;
+	AttributeType at;
 
 	if ((at = AttrT_new (t)) == NULLAttrT) {
 		NOTIFY (("Invalid Key !"));
@@ -522,19 +516,18 @@ AttributeType at;
 	}
 
 	if ((filta = strfilter (at,v,SUBSTRINGS ())) == NULLFILTER)
-	    return 0;
-	if ((ufn_flags & UFN_APPROX) && !index (v, '*')) {
-	    if ((filtb = strfilter (at,v,FILTERITEM_APPROX)) == NULLFILTER)
 		return 0;
-	    filtb -> flt_next = filta;
-	    filt = joinfilter (filtb, FILTER_OR);
-	}
-	else
-	    filt = filta;
+	if ((ufn_flags & UFN_APPROX) && !index (v, '*')) {
+		if ((filtb = strfilter (at,v,FILTERITEM_APPROX)) == NULLFILTER)
+			return 0;
+		filtb -> flt_next = filta;
+		filt = joinfilter (filtb, FILTER_OR);
+	} else
+		filt = filta;
 
 	return ufn_search (base, base && base -> dn_parent
-				      && present (base, at_Organisation),
-			   filt, result, v, interact, el);
+					   && present (base, at_Organisation),
+					   filt, result, v, interact, el);
 }
 
 
@@ -546,11 +539,11 @@ DNS (* interact) ();
 DNS el;
 DNS * result;
 {
-char * s;
-DNS root, x, new = NULLDNS;
-char * ptr;
-int matches;
-int bad_purported = FALSE;
+	char * s;
+	DNS root, x, new = NULLDNS;
+	char * ptr;
+	int matches;
+	int bad_purported = FALSE;
 
 	s = TidyString (v[c-1]);
 
@@ -570,7 +563,7 @@ int bad_purported = FALSE;
 			else
 				return leafSearch (base,s,FALSE,interact,el,result);
 		} else if (base->dn_parent == NULLDN
-			       || !present (base, at_Organisation)) {
+				   || !present (base, at_Organisation)) {
 			/* length == 1 or still in geography */
 			matches = intSearch (base,s,interact,el,result);
 			if (*result != NULLDNS)
@@ -579,8 +572,8 @@ int bad_purported = FALSE;
 				return TRUE;
 			else
 				return leafSearch (base,s,
-						   base -> dn_parent == NULLDN,
-						   interact,el,result);
+								   base -> dn_parent == NULLDN,
+								   interact,el,result);
 		} else {
 			matches = leafSearch (base,s,TRUE,interact,el,result);
 			if (*result != NULLDNS)
@@ -617,10 +610,10 @@ int bad_purported = FALSE;
 
 	if (bad_purported)
 		if (*result == NULLDNS)
-		    return FALSE;
+			return FALSE;
 		else
-		    NOTIFY (("Remote failure: Not all subtrees searched"));
-		
+			NOTIFY (("Remote failure: Not all subtrees searched"));
+
 
 	return matches;
 }
@@ -632,17 +625,17 @@ DNS el;
 DNS (* interact) ();
 DNS * result;
 {
-int res;
+	int res;
 
 	if (el == NULLDNS)
 		return TRUE;
 
 	if ( ! ( res = purportedMatch(el->dns_dn,c,v,interact,el,result)))
 		return FALSE;
-	if (*result != NULLDNS)	
+	if (*result != NULLDNS)
 		return res;
 	if (res == TRUE)
-		return TRUE;		
+		return TRUE;
 
 	return envMatch(c,v,el->dns_next,interact,result);
 
@@ -658,32 +651,30 @@ DNS * result;
 	if (el == NULLEL)
 		return TRUE;
 
-	if ( ( c <= el->Upper) && (c >= el->Lower) ) 
+	if ( ( c <= el->Upper) && (c >= el->Lower) )
 		return envMatch (c,v,el->Dns,interact,result);
 
 	return (friendlyMatch_aux (c,v,el->Next,interact,result));
 
 }
 
-envlist read_envlist()
-{
-char * home, *p, *ptr;
-char ufnrc [LINESIZE];
-char * def, *opened;
-char buffer [LINESIZE];
-envlist env, top = NULLEL, trail = NULLEL;
-DNS dtail = NULLDNS;
-FILE * file;
-DN dn;
-int i = 0;
+envlist read_envlist() {
+	char * home, *p, *ptr;
+	char ufnrc [LINESIZE];
+	char * def, *opened;
+	char buffer [LINESIZE];
+	envlist env, top = NULLEL, trail = NULLEL;
+	DNS dtail = NULLDNS;
+	FILE * file;
+	DN dn;
+	int i = 0;
 
 	if (home = getenv ("UFNRC"))
 		(void) strcpy (ufnrc, home);
-	else 
-		if (home = getenv ("HOME"))
-			(void) sprintf (ufnrc, "%s/.ufnrc", home);
-		else
-			(void) strcpy (ufnrc, "./.ufnrc");
+	else if (home = getenv ("HOME"))
+		(void) sprintf (ufnrc, "%s/.ufnrc", home);
+	else
+		(void) strcpy (ufnrc, "./.ufnrc");
 
 	opened = ufnrc;
 	if ((file = fopen (ufnrc,"r")) == 0) {
@@ -749,7 +740,7 @@ int i = 0;
 		env->Next = NULLEL;
 		if (top == NULLEL)
 			top = env;
-		else 
+		else
 			trail->Next = env;
 		trail = env;
 
@@ -758,11 +749,11 @@ int i = 0;
 			ptr = SkipSpace(ptr);
 			if (*ptr == '+')
 				env->Upper = 32767;	/* ~= infinity */
-			else 
+			else
 				env->Upper = atoi (ptr);	/* how to test error ? */
 		} else
 			env->Upper = 0;
-		
+
 		p = SkipSpace(p);
 
 		env->Lower = atoi (p);		/* how to test error ? */
@@ -785,14 +776,14 @@ DNS (* interact) ();
 DNS * result;
 envlist el;
 {
-static int inited = FALSE;
+	static int inited = FALSE;
 
 	if ( (!ufnas) && !(inited = ufn_init()))
 		return inited;
 	if (ufn_bad_dsa)
-	    dn_free (ufn_bad_dsa), ufn_bad_dsa = NULL;
+		dn_free (ufn_bad_dsa), ufn_bad_dsa = NULL;
 	if (ufn_partials)
-	    dn_seq_free (ufn_partials), ufn_partials = NULL;
+		dn_seq_free (ufn_partials), ufn_partials = NULL;
 
 	PY_pepy[0] = NULL;
 	if (el == NULLEL) {
@@ -807,13 +798,12 @@ static int inited = FALSE;
 	return (friendlyMatch_aux (c,v,el,interact,result));
 }
 
-ufn_init ()
-{
-Attr_Sequence as;
-int result = TRUE;
+ufn_init () {
+	Attr_Sequence as;
+	int result = TRUE;
 
 	if (ufnas)
-	    return result;
+		return result;
 
 	if ((at_ObjectClass = AttrT_new ("ObjectClass")) == NULLAttrT) {
 		result = FALSE;
@@ -879,28 +869,28 @@ DN	dn;
 char	subtree;
 Filter	fi;
 {
-static	PS	nps = NULLPS;
+	static	PS	nps = NULLPS;
 
-    if (nps == NULLPS) {
-	if ((nps = ps_alloc (std_open)) == NULL) {
-	    (void) fprintf (stderr, "ps_alloc(std_open): you lose\n");
-	    return;
+	if (nps == NULLPS) {
+		if ((nps = ps_alloc (std_open)) == NULL) {
+			(void) fprintf (stderr, "ps_alloc(std_open): you lose\n");
+			return;
+		}
+		if (std_setup (nps, stdout) == NOTOK) {
+			(void) fprintf (stderr, "std_setup(stdout): you lose\n");
+			ps_free (nps);
+			nps = NULL;
+			return;
+		}
 	}
-	if (std_setup (nps, stdout) == NOTOK) {
-	    (void) fprintf (stderr, "std_setup(stdout): you lose\n");
-	    ps_free (nps);
-	    nps = NULL;
-	    return;
-	}
-    }
-    
-    ps_printf (nps, "search starting at @");
-    dn_print (nps, dn, EDBOUT);
-    ps_printf (nps, "(%s) for ", subtree ? "subtree" : "singlelevel");
 
-    print_filter (nps, fi, 0);
+	ps_printf (nps, "search starting at @");
+	dn_print (nps, dn, EDBOUT);
+	ps_printf (nps, "(%s) for ", subtree ? "subtree" : "singlelevel");
 
-    ps_print (nps, "\n\n");
-    (void) ps_flush (nps);
+	print_filter (nps, fi, 0);
+
+	ps_print (nps, "\n\n");
+	(void) ps_flush (nps);
 }
 #endif

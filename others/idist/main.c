@@ -40,7 +40,7 @@
 
 #ifndef lint
 char copyright[] =
-"@(#) Copyright (c) 1983 Regents of the University of California.\n\
+	"@(#) Copyright (c) 1983 Regents of the University of California.\n\
  All rights reserved.\n";
 #endif
 
@@ -83,8 +83,8 @@ struct	group *gr;	/* pointer to static area used by getgrent */
 char	*myname = "idist";
 
 main(argc, argv)
-	int argc;
-	char *argv[];
+int argc;
+char *argv[];
 {
 	int cmdargs = 0;
 	char *dhosts[NHOSTS], **hp = dhosts;
@@ -110,31 +110,31 @@ main(argc, argv)
 
 	while ((opt = getopt (argc, argv, "f:m:d:DcnqbuRvwyhiQ")) != EOF)
 		switch (opt) {
-		    case 'f':
+		case 'f':
 			distfile = optarg;
 			if (distfile[0] == '-' && distfile[1] == '\0')
 				fin = stdin;
 			break;
 
-		    case 'm':
+		case 'm':
 			if (hp >= &dhosts[NHOSTS-2])
 				adios (NULLCP, "too many destination hosts");
 			*hp++ = optarg;
 			break;
 
-		    case 'd':
+		case 'd':
 			define(optarg);
 			break;
 
-		    case 'D':
+		case 'D':
 			debug++;
 			break;
 
-		    case 'c':
+		case 'c':
 			cmdargs++;
 			break;
 
-		    case 'n':
+		case 'n':
 			if (options & VERIFY) {
 				advise (NULLCP, "-n overrides -v");
 				options &= ~VERIFY;
@@ -142,23 +142,23 @@ main(argc, argv)
 			nflag++;
 			break;
 
-		    case 'q':
+		case 'q':
 			qflag++;
 			break;
 
-		    case 'b':
+		case 'b':
 			options |= COMPARE;
 			break;
 #ifdef UW
-		    case 'u':
+		case 'u':
 			options |= NOINSTALL;
 			break;
 #endif UW
-		    case 'R':
+		case 'R':
 			options |= REMOVE;
 			break;
 
-		    case 'v':
+		case 'v':
 			if (nflag) {
 				advise (NULLCP, "-n overrides -v");
 				break;
@@ -166,27 +166,27 @@ main(argc, argv)
 			options |= VERIFY;
 			break;
 
-		    case 'w':
+		case 'w':
 			options |= WHOLE;
 			break;
 
-		    case 'y':
+		case 'y':
 			options |= YOUNGER;
 			break;
 
-		    case 'h':
+		case 'h':
 			options |= FOLLOW;
 			break;
 
-		    case 'i':
+		case 'i':
 			options |= IGNLNKS;
 			break;
 
-		    case 'Q':
+		case 'Q':
 			options |= QUERYM;
 			break;
 
-		    default:
+		default:
 			usage();
 			break;
 		}
@@ -217,21 +217,20 @@ main(argc, argv)
 	return(nerrs != 0);
 }
 
-usage()
-{
+usage() {
 	advise (NULLCP,
-		"Usage: %s [-nqbhirvwyD] [-f distfile] [-d var=value] [-m host] [file ...]\n",
-		myname);
+			"Usage: %s [-nqbhirvwyD] [-f distfile] [-d var=value] [-m host] [file ...]\n",
+			myname);
 	adios(NULLCP, "or: %s [-nqbhirvwyD] -c source [...] machine[:dest]\n",
-	      myname);
+		  myname);
 }
 
 /*
  * rcp like interface for distributing files.
  */
 docmdargs(nargs, args)
-	int nargs;
-	char *args[];
+int nargs;
+char *args[];
 {
 	register struct namelist *nl, *prev;
 	register char *cp;
@@ -285,7 +284,7 @@ docmdargs(nargs, args)
  * Print a list of NAME blocks (mostly for debugging).
  */
 prnames(nl)
-	register struct namelist *nl;
+register struct namelist *nl;
 {
 	(void) printf("( ");
 	while (nl != NULL) {

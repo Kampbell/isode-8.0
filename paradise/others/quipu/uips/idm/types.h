@@ -1,6 +1,6 @@
 /* template.c - your comments here */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/types.h,v 8.1 1991/09/13 14:36:41 isode Exp $
  *
  *
@@ -10,8 +10,8 @@
  *
  * Revision 8.0  91/07/17  13:18:49  isode
  * Release 7.0
- * 
- * 
+ *
+ *
  */
 
 /*
@@ -34,15 +34,15 @@
 #define cardinal unsigned int
 
 typedef enum {
-  yes,
-  no,
-  unknown
-  } known;
+	yes,
+	no,
+	unknown
+} known;
 
 typedef enum {
-  RQ_processing,
-  RQ_results_returned,
-  RQ_error_returned
-  } request_state;
+	RQ_processing,
+	RQ_results_returned,
+	RQ_error_returned
+} request_state;
 
 #endif

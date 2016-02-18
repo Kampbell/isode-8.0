@@ -41,7 +41,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/lookup.c,v 9.0
 
 #include "defs.h"
 
-	/* symbol types */
+/* symbol types */
 #define VAR	1
 #define CONST	2
 
@@ -58,7 +58,7 @@ static struct syment *hashtab[HASHSIZE];
  * Define a variable from a command line argument.
  */
 define(name)
-	char *name;
+char *name;
 {
 	register char *cp, *s;
 	register struct namelist *nl;
@@ -122,9 +122,9 @@ define(name)
 
 struct namelist *
 lookup(name, action, value)
-	char *name;
-	int action;
-	struct namelist *value;
+char *name;
+int action;
+struct namelist *value;
 {
 	register unsigned n;
 	register char *cp;

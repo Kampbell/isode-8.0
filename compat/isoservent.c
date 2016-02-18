@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoservent.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/isoservent.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -48,69 +48,69 @@ static struct isoservent    iss;
 int	setisoservent (f)
 int	f;
 {
-    if (servf == NULL)
-	servf = fopen (isodefile (isoservices, 0), "r");
-    else
-	rewind (servf);
-    stayopen |= f;
+	if (servf == NULL)
+		servf = fopen (isodefile (isoservices, 0), "r");
+	else
+		rewind (servf);
+	stayopen |= f;
 
-    return (servf != NULL);
+	return (servf != NULL);
 }
 
 
 int	endisoservent () {
-    if (servf && !stayopen) {
-	(void) fclose (servf);
-	servf = NULL;
-    }
+	if (servf && !stayopen) {
+		(void) fclose (servf);
+		servf = NULL;
+	}
 
-    return 1;
+	return 1;
 }
 
 /*  */
 
 struct isoservent  *getisoservent () {
-    int	    mask,
-	    vecp;
-    register char  *cp;
-    register struct isoservent *is = &iss;
-    static char buffer[BUFSIZ + 1],
-	        file[BUFSIZ];
-    static char *vec[NVEC + NSLACK + 1];
+	int	    mask,
+			vecp;
+	register char  *cp;
+	register struct isoservent *is = &iss;
+	static char buffer[BUFSIZ + 1],
+		   file[BUFSIZ];
+	static char *vec[NVEC + NSLACK + 1];
 
-    if (servf == NULL
-	    && (servf = fopen (isodefile (isoservices, 0), "r")) == NULL)
+	if (servf == NULL
+			&& (servf = fopen (isodefile (isoservices, 0), "r")) == NULL)
+		return NULL;
+
+	bzero ((char *) is, sizeof *is);
+
+	while (fgets (buffer, sizeof buffer, servf) != NULL) {
+		if (*buffer == '#')
+			continue;
+		if (cp = index (buffer, '\n'))
+			*cp = NULL;
+		if ((vecp = str2vecX (buffer, vec, 1 + 1, &mask, NULL, 1)) < 3)
+			continue;
+
+		if ((cp = index (vec[0], '/')) == NULL)
+			continue;
+		*cp++ = NULL;
+
+		is -> is_provider = vec[0];
+		is -> is_entity = cp;
+		is -> is_selectlen = str2sel (vec[1], (mask & (1 << 1)) ? 1 : 0,
+									  is -> is_selector, ISSIZE);
+
+		is -> is_vec = vec + 2;
+		is -> is_tail = vec + vecp;
+
+		if (strcmp (cp = is -> is_vec[0], "tsapd-bootstrap"))
+			(void) strcpy (is -> is_vec[0] = file, isodefile (cp, 1));
+
+		return is;
+	}
+
 	return NULL;
-
-    bzero ((char *) is, sizeof *is);
-
-    while (fgets (buffer, sizeof buffer, servf) != NULL) {
-	if (*buffer == '#')
-	    continue;
-	if (cp = index (buffer, '\n'))
-	    *cp = NULL;
-	if ((vecp = str2vecX (buffer, vec, 1 + 1, &mask, NULL, 1)) < 3)
-	    continue;
-
-	if ((cp = index (vec[0], '/')) == NULL)
-	    continue;
-	*cp++ = NULL;
-
-	is -> is_provider = vec[0];
-	is -> is_entity = cp;
-	is -> is_selectlen = str2sel (vec[1], (mask & (1 << 1)) ? 1 : 0,
-				is -> is_selector, ISSIZE);
-
-	is -> is_vec = vec + 2;
-	is -> is_tail = vec + vecp;
-
-	if (strcmp (cp = is -> is_vec[0], "tsapd-bootstrap"))
-	    (void) strcpy (is -> is_vec[0] = file, isodefile (cp, 1));
-
-	return is;
-    }
-
-    return NULL;
 }
 
 /*  */
@@ -119,16 +119,16 @@ struct isoservent  *getisoservent () {
 _printsrv (is)
 register struct isoservent *is;
 {
-    register int    n = is -> is_tail - is -> is_vec - 1;
-    register char **ap = is -> is_vec;
+	register int    n = is -> is_tail - is -> is_vec - 1;
+	register char **ap = is -> is_vec;
 
-    LLOG (addr_log, LLOG_DEBUG,
-	  ("\tENT: \"%s\" PRV: \"%s\" SEL: %s",
-	   is -> is_entity, is -> is_provider,
-	   sel2str (is -> is_selector, is -> is_selectlen, 1)));
-
-    for (; n >= 0; ap++, n--)
 	LLOG (addr_log, LLOG_DEBUG,
-	      ("\t\t%d: \"%s\"\n", ap - is -> is_vec, *ap));
+		  ("\tENT: \"%s\" PRV: \"%s\" SEL: %s",
+		   is -> is_entity, is -> is_provider,
+		   sel2str (is -> is_selector, is -> is_selectlen, 1)));
+
+	for (; n >= 0; ap++, n--)
+		LLOG (addr_log, LLOG_DEBUG,
+			  ("\t\t%d: \"%s\"\n", ap - is -> is_vec, *ap));
 }
 #endif

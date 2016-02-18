@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/picture.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/picture.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -50,23 +50,23 @@ char    *picture;
 char    *picture_process;
 int 	len;
 {
-int     ret;
-int     pd[2];
-int     pd2[2];
-static char * buffer = NULLCP;
-char    * cp;
-char	* argv[NVEC];
-SFP	pstat;
-ChildList *cl;
+	int     ret;
+	int     pd[2];
+	int     pd2[2];
+	static char * buffer = NULLCP;
+	char    * cp;
+	char	* argv[NVEC];
+	SFP	pstat;
+	ChildList *cl;
 
 	if (buffer == NULLCP)
-		 buffer = smalloc (BUFLEN);
+		buffer = smalloc (BUFLEN);
 
 	/* hide_picture (); */
 
 	if (*picture == '\0')
 		return ("(No data to pass !)");
-	if (picture_process == NULLCP) 
+	if (picture_process == NULLCP)
 		return ("(No external process defined !)");
 
 	(void) sstr2arg (picture_process, NVEC, argv, " \t");
@@ -125,13 +125,12 @@ ChildList *cl;
 			len -= ret;
 		}
 		if (cp > buffer) {
-		    if (*--cp != '\n')
-			cp++;
-		    *cp = NULL;
-		}
-		else
-		    (void) sprintf (buffer, "%s invoked", argv[0]);
-		
+			if (*--cp != '\n')
+				cp++;
+			*cp = NULL;
+		} else
+			(void) sprintf (buffer, "%s invoked", argv[0]);
+
 		(void) close (pd2[0]);
 
 		(void) signal (SIGPIPE, pstat);
@@ -141,31 +140,31 @@ ChildList *cl;
 
 		return (buffer);
 
-	} 
+	}
 
-		/* you're in child process */
-		(void) signal (SIGPIPE, pstat);
+	/* you're in child process */
+	(void) signal (SIGPIPE, pstat);
 
-		if (dup2(pd[0], 0) == -1)
-			_exit (-1);
-		(void) close (pd[0]);
-		(void) close (pd[1]);
-
-		if (dup2(pd2[1], 1) == -1)
-			_exit (-1);
-		(void) close (pd2[0]);
-		(void) close (pd2[1]);
-
-		(void) execv (argv[0],argv);
-
-		while (read (0, buffer, sizeof buffer) > 0)
-		    continue;
-		(void) printf ("ERROR: can't execute '%s'",argv[0]);
-
-		(void) fflush (stdout);
-		/* safety catch */
+	if (dup2(pd[0], 0) == -1)
 		_exit (-1);
-		/* NOTREACHED */
+	(void) close (pd[0]);
+	(void) close (pd[1]);
+
+	if (dup2(pd2[1], 1) == -1)
+		_exit (-1);
+	(void) close (pd2[0]);
+	(void) close (pd2[1]);
+
+	(void) execv (argv[0],argv);
+
+	while (read (0, buffer, sizeof buffer) > 0)
+		continue;
+	(void) printf ("ERROR: can't execute '%s'",argv[0]);
+
+	(void) fflush (stdout);
+	/* safety catch */
+	_exit (-1);
+	/* NOTREACHED */
 }
 
 
@@ -174,16 +173,16 @@ PS ps;
 AttributeValue av;
 char * proc;
 {
-char * ptr;
-PS sps;
-PE pe, grab_pe();
+	char * ptr;
+	PS sps;
+	PE pe, grab_pe();
 
 	(void) ps_flush (ps);
 
 	if ((sps = ps_alloc (str_open)) == NULLPS)
 		return;
 	if (str_setup (sps,NULLCP,LINESIZE,0) == NOTOK) {
-	        ps_free (sps);
+		ps_free (sps);
 		return;
 	}
 
@@ -192,29 +191,28 @@ PE pe, grab_pe();
 
 	ptr = show_picture (sps->ps_base,proc,ps_get_abs(pe));
 	ps_print (ps,ptr);
-	
+
 	pe_free (pe);
 	ps_free (sps);
 
 }
 
 
-hide_picture ()
-{
-    int	    pid;
-    int	status;
+hide_picture () {
+	int	    pid;
+	int	status;
 
-    ChildList *cl, *cl1;
+	ChildList *cl, *cl1;
 
 	cl = rootChildList;
 	while (cl != NULL) {
-	    (void) kill (cl->childpid, SIGTERM);
-	    while ((pid = wait (&status)) != NOTOK && cl->childpid != pid)
-		continue;
+		(void) kill (cl->childpid, SIGTERM);
+		while ((pid = wait (&status)) != NOTOK && cl->childpid != pid)
+			continue;
 
-	    cl1 = cl;
-	    cl = cl->next;
-	    (void) free((char *) cl1);
+		cl1 = cl;
+		cl = cl->next;
+		(void) free((char *) cl1);
 	}
 	rootChildList = NULL;
 }
@@ -232,21 +230,20 @@ int format;
 
 extern int quipu_pe_cmp();
 
-photo_syntax ()
-{
+photo_syntax () {
 	(void) add_attribute_syntax ("photo",
-		(IFP)pe_cpy,	NULLIFP,
-		NULLIFP,	picture_print,
-		(IFP)pe_cpy,	quipu_pe_cmp,
-		pe_free,	NULLCP,
-		NULLIFP,	TRUE );
+								 (IFP)pe_cpy,	NULLIFP,
+								 NULLIFP,	picture_print,
+								 (IFP)pe_cpy,	quipu_pe_cmp,
+								 pe_free,	NULLCP,
+								 NULLIFP,	TRUE );
 
 
 	(void) add_attribute_syntax ("jpeg",
-		(IFP)pe_cpy,	NULLIFP,
-		NULLIFP,	picture_print,
-		(IFP)pe_cpy,	quipu_pe_cmp,
-		pe_free,	NULLCP,
-		NULLIFP,	TRUE );
+								 (IFP)pe_cpy,	NULLIFP,
+								 NULLIFP,	picture_print,
+								 (IFP)pe_cpy,	quipu_pe_cmp,
+								 pe_free,	NULLCP,
+								 NULLIFP,	TRUE );
 
 }

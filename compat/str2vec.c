@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2vec.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/str2vec.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -39,57 +39,55 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2vec.c,v 9.0 1992
 
 int	str2vecX (s, vec, nmask, mask, brk, docomma)
 register char  *s,
-	      **vec,
-    	        brk;
+		 **vec,
+		 brk;
 int	nmask,
-       *mask,
+	*mask,
 	docomma;
 {
-    register int    i;
-    char    comma = docomma ? ',' : ' ';
+	register int    i;
+	char    comma = docomma ? ',' : ' ';
 
-    if (mask)
-	*mask = 0;
+	if (mask)
+		*mask = 0;
 
-    for (i = 0; i <= NVEC;) {
-	vec[i] = NULL;
-	if (brk > 0) {
-	    if (i > 0 && *s == brk)
-		*s++ = NULL;
-	}
-	else
-	    while (isspace ((u_char) *s) || *s == comma)
-		*s++ = NULL;
-	if (*s == NULL)
-	    break;
+	for (i = 0; i <= NVEC;) {
+		vec[i] = NULL;
+		if (brk > 0) {
+			if (i > 0 && *s == brk)
+				*s++ = NULL;
+		} else
+			while (isspace ((u_char) *s) || *s == comma)
+				*s++ = NULL;
+		if (*s == NULL)
+			break;
 
-	if (*s == '"') {
-	    if (i < nmask)
-		*mask |= 1 << i;
-	    for (vec[i++] = ++s; *s != NULL && *s != '"'; s++)
-		if (*s == QUOTE) {
-		    if (*++s == '"')
-			(void) strcpy (s - 1, s);
-		    s--;
+		if (*s == '"') {
+			if (i < nmask)
+				*mask |= 1 << i;
+			for (vec[i++] = ++s; *s != NULL && *s != '"'; s++)
+				if (*s == QUOTE) {
+					if (*++s == '"')
+						(void) strcpy (s - 1, s);
+					s--;
+				}
+			if (*s == '"')
+				*s++ = NULL;
+			continue;
 		}
-	    if (*s == '"')
-		*s++ = NULL;
-	    continue;
-	}
-	if (*s == QUOTE && *++s != '"')
-	    s--;
-	vec[i++] = s;
+		if (*s == QUOTE && *++s != '"')
+			s--;
+		vec[i++] = s;
 
-	if (brk > 0) {
-	    if (*s != brk)
-		for (s++; *s != NULL && *s != brk; s++)
-		    continue;
+		if (brk > 0) {
+			if (*s != brk)
+				for (s++; *s != NULL && *s != brk; s++)
+					continue;
+		} else
+			for (s++; *s != NULL && !isspace ((u_char) *s) && *s != comma; s++)
+				continue;
 	}
-	else
-	    for (s++; *s != NULL && !isspace ((u_char) *s) && *s != comma; s++)
-		continue;
-    }
-    vec[i] = NULL;
+	vec[i] = NULL;
 
-    return i;
+	return i;
 }

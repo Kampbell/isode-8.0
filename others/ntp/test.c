@@ -20,15 +20,15 @@ char	*myname;
 
 double value[8] = {5.1, -5.1, 1.5, -1.5, 0.5, -0.5, -0.05, 0.0};
 main(argc, argv)
-	int argc;
-	char **argv;
+int argc;
+char **argv;
 {
 	myname = argv[0];
 	if (argc > 1 && strcmp(argv[1], "-v") == 0) {
 		exit(test1(1)
-		     + test2(1)
-		     + test3(1)
-		     + test4(1));
+			 + test2(1)
+			 + test3(1)
+			 + test4(1));
 	} else {
 		if (test3(0))
 			exit(3);
@@ -39,8 +39,7 @@ main(argc, argv)
 }
 
 
-test1()
-{
+test1() {
 	int i;
 	double l_fixed_to_double();
 	struct l_fixedpt sample;
@@ -62,8 +61,7 @@ test1()
 	return 0;
 }
 
-test2()
-{
+test2() {
 	struct timeval tp;
 	struct l_fixedpt time_lm;
 
@@ -72,14 +70,14 @@ test2()
 
 	(void) printf("tv_sec:  %d tv_usec:  %d \n", tp.tv_sec, tp.tv_usec);
 	(void) printf("intpart: %lu fraction: %lu \n",
-	       ntohl(time_lm.int_part), ntohl(time_lm.fraction));
+				  ntohl(time_lm.int_part), ntohl(time_lm.fraction));
 	(void) printf("intpart: %lX fraction: %lX \n",
-	       ntohl(time_lm.int_part), ntohl(time_lm.fraction));
+				  ntohl(time_lm.int_part), ntohl(time_lm.fraction));
 	return 0;
 }
 
 test3(v)
-	int v;
+int v;
 {
 	unsigned long ul = 0x80000001;
 	double dbl;
@@ -87,7 +85,7 @@ test3(v)
 #ifdef	GENERIC_UNS_BUG
 	/*
 	 *  Hopefully, we can avoid the unsigned issue altogether.  Make sure
-	 *  that the high-order (sign) bit is zero, and fiddle from there 
+	 *  that the high-order (sign) bit is zero, and fiddle from there
 	 */
 	dbl = (long)((ul >> 1) & 0x7fffffff);
 	dbl *= 2.0;
@@ -103,7 +101,7 @@ test3(v)
 		(void) printf("test3 fails: can't convert from unsigned long to float\n");
 		(void) printf("             (%lu != %15g)\n", ul, dbl);
 		(void) printf(
-  "Try defining VAX_COMPILER_FLT_BUG or GENERIC_UNS_BUG in the Makefile.\n");
+			"Try defining VAX_COMPILER_FLT_BUG or GENERIC_UNS_BUG in the Makefile.\n");
 		return 1;
 	} else {
 		if (v)
@@ -113,7 +111,7 @@ test3(v)
 }
 
 test4(v)
-	int v;
+int v;
 {
 	double dbl = 1024.0 * 1024.0 * 1024.0;	/* 2^30 */
 #ifdef SUN_FLT_BUG
@@ -133,6 +131,6 @@ test4(v)
 	} else {
 		if (v)
 			(void) printf("test4 passes\n");
-			return 0;
+		return 0;
 	}
 }

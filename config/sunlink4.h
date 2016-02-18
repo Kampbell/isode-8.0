@@ -1,6 +1,6 @@
 /* sunlink4.h - site configuration file for SunLink OSI 6.0 on SunOS 4 */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/sunlink4.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

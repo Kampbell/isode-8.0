@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/turbo_disk.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/RCS/turbo_disk.c,v 9.0 1992/06/16 12:34:01 isode Rel $
  *
  *
@@ -82,8 +82,8 @@ int	backup;
 			/* first make a backup of the old one */
 			(void) unlink(bakname);
 			if ( link(turbo_gfname, bakname) != 0 )
-				LLOG (log_dsap, LLOG_EXCEPTIONS, 
-				    ("turbo: could not make backup"));
+				LLOG (log_dsap, LLOG_EXCEPTIONS,
+					  ("turbo: could not make backup"));
 			(void) unlink(turbo_gfname);
 		}
 
@@ -93,8 +93,8 @@ int	backup;
 		db = gdbm_open(turbo_gfname, 0, GDBM_WRITER, 0, 0);
 
 	if ( db == NULL ) {
-		LLOG (log_dsap, LLOG_EXCEPTIONS, 
-		    ("turbo: gdbm_open failed gdbm_errno %d", gdbm_errno));
+		LLOG (log_dsap, LLOG_EXCEPTIONS,
+			  ("turbo: gdbm_open failed gdbm_errno %d", gdbm_errno));
 		return (NULL);
 	}
 
@@ -149,7 +149,7 @@ GDBM_FILE	db;
 
 	if ( (rc = gdbm_store(db, rdn, ent, GDBM_REPLACE)) != 0 ) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
-		    ("turbo: gdbm_store %d, gdbm_errno %d", rc, gdbm_errno));
+			  ("turbo: gdbm_store %d, gdbm_errno %d", rc, gdbm_errno));
 		ps_free(ps);
 		return(NOTOK);
 	}
@@ -190,7 +190,7 @@ Entry	e;
 	}
 
 	if (avl_apply(e->e_children, turbo_write_entry, (caddr_t) db, NOTOK,
-	    AVL_PREORDER) != AVL_NOMORE) {
+				  AVL_PREORDER) != AVL_NOMORE) {
 		(void) gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
@@ -206,7 +206,7 @@ Entry	e;
 /*
  * turbo_write -- write the single entry pointed to by e to the proper
  * edb dbm file.  The edb dbm file is opened by turbo_open, then a new
- * header is written by turbo_write_header, and finally the entry is 
+ * header is written by turbo_write_header, and finally the entry is
  * written with a call to turbo_write_entry.
  */
 
@@ -297,7 +297,7 @@ Entry	e;
 	LLOG (log_dsap, LLOG_TRACE, ("turbo: deleting (%s)", key.dptr));
 	if ( (rc = gdbm_delete(db, key)) != 0 ) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
-		    ("turbo: gdbm_delete %d gdbm_errno %d", rc, gdbm_errno));
+			  ("turbo: gdbm_delete %d gdbm_errno %d", rc, gdbm_errno));
 		ps_free(ps);
 		(void) gdbm_close(db);
 		mem_heap = save_heap;
@@ -354,9 +354,9 @@ Entry		parent;
 	newheader.dsize = strlen(newheader.dptr) + 1;
 
 	if ((rc = gdbm_store(db, turbo_header_key, newheader, GDBM_REPLACE))
-	    != 0) {
+			!= 0) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
-		    ("turbo: gdbm_store %d gdbm_errno %d", rc, gdbm_errno));
+			  ("turbo: gdbm_store %d gdbm_errno %d", rc, gdbm_errno));
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
@@ -366,5 +366,5 @@ Entry		parent;
 
 #else
 
-turbo_delete_dummy (){}
+turbo_delete_dummy () {}
 #endif

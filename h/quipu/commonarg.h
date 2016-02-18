@@ -47,60 +47,59 @@ struct security_parms {
 	int		sp_target;
 };
 
-typedef struct extension
-    {
+typedef struct extension {
 	int		  ext_id;
 	char		  ext_critical;
 	PE		  ext_item;
 	struct extension	* ext_next;
-    } *Extension;
+} *Extension;
 #define NULLEXT		((Extension) 0)
 #define ext_alloc()	(Extension) smalloc(sizeof(struct extension))
 
 typedef struct common_args {    /* Common arguments for operations      */
-    ServiceControl      ca_servicecontrol;
-    DN                  ca_requestor;
-    struct op_progress  ca_progress;
-    int                 ca_aliased_rdns;
+	ServiceControl      ca_servicecontrol;
+	DN                  ca_requestor;
+	struct op_progress  ca_progress;
+	int                 ca_aliased_rdns;
 #define CA_NO_ALIASDEREFERENCED -1
-    struct security_parms * ca_security;
-    struct signature    * ca_sig;
-    struct extension	* ca_extensions;
+	struct security_parms * ca_security;
+	struct signature    * ca_sig;
+	struct extension	* ca_extensions;
 } common_args, CommonArgs;
 #define NULL_COMMONARG ((struct common_args *) NULL)
 
 
 typedef struct common_results {
-    DN          cr_requestor;
-				/* Secuity stuff to go here.  The       */
-				/* is not relevant until this is added  */
-    char        cr_aliasdereferenced;
-				/* set to TRUE or FALSE                 */
+	DN          cr_requestor;
+	/* Secuity stuff to go here.  The       */
+	/* is not relevant until this is added  */
+	char        cr_aliasdereferenced;
+	/* set to TRUE or FALSE                 */
 
-    	/* essentially for pepsy, but may be used for real later */
-    struct security_parms * cr_security;
-    struct alg_id * cr_alg;
-    char * 	cr_tmp;
-    int 	cr_len;
+	/* essentially for pepsy, but may be used for real later */
+	struct security_parms * cr_security;
+	struct alg_id * cr_alg;
+	char * 	cr_tmp;
+	int 	cr_len;
 } common_results, CommonResults;
 
 
 typedef struct entrystruct {   /* Represents EntryInformation           */
-    DN                  ent_dn;
-    Attr_Sequence       ent_attr;
-    char                ent_iscopy;
+	DN                  ent_dn;
+	Attr_Sequence       ent_attr;
+	char                ent_iscopy;
 #define INFO_MASTER 0x001
 #define INFO_COPY   0x002
-				/* This is the only info derivable by   */
-				/* protocol                             */
-				/* INCA also distingusihes local cached */
+	/* This is the only info derivable by   */
+	/* protocol                             */
+	/* INCA also distingusihes local cached */
 #define INFO_CACHE 0x003
-    char                ent_pepsycopy;
-    time_t              ent_age;
-				/* age of chaced info                   */
-    struct entry	*ent_eptr;
-				/* for search acl purposes... yuck!	*/
-    struct entrystruct  *ent_next;
+	char                ent_pepsycopy;
+	time_t              ent_age;
+	/* age of chaced info                   */
+	struct entry	*ent_eptr;
+	/* for search acl purposes... yuck!	*/
+	struct entrystruct  *ent_next;
 } entrystruct, EntryInfo;
 
 #define NULLENTRYINFO ((EntryInfo *) 0)
@@ -108,27 +107,26 @@ typedef struct entrystruct {   /* Represents EntryInformation           */
 #define entryinfo_cmp(x,y)          (((dn_cmp (x.ent_dn ,y.ent_dn) == OK) && (as_cmp (x.ent_attr ,y.ent_attr) == OK)) ? OK : NOTOK)
 
 typedef struct entryinfoselection {
-				/* Rerpesents EntryInformationSelection */
-    char        eis_allattributes;
-				/* if set to TRUE, all attributes       */
-				/* returned, if not as per next arg     */
-    Attr_Sequence eis_select;
-				/* Sequence of attributes used to show  */
-				/* which TYPES are wanted               */
-    int        eis_infotypes;
+	/* Rerpesents EntryInformationSelection */
+	char        eis_allattributes;
+	/* if set to TRUE, all attributes       */
+	/* returned, if not as per next arg     */
+	Attr_Sequence eis_select;
+	/* Sequence of attributes used to show  */
+	/* which TYPES are wanted               */
+	int        eis_infotypes;
 #define EIS_ATTRIBUTETYPESONLY 0
 #define EIS_ATTRIBUTESANDVALUES 1
-}entryinfoselection, EntryInfoSelection;
+} entryinfoselection, EntryInfoSelection;
 
 #define LSR_NOLIMITPROBLEM      -1
 #define LSR_TIMELIMITEXCEEDED   0
 #define LSR_SIZELIMITEXCEEDED   1
 #define LSR_ADMINSIZEEXCEEDED   2
-typedef struct part_outcome
-	{
+typedef struct part_outcome {
 	int             poq_limitproblem;
 	ContinuationRef poq_cref;
 	char		poq_no_ext;
-	} POQ;
+} POQ;
 
 #endif

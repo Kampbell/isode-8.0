@@ -36,8 +36,8 @@ AV_Sequence avs;
 avs_free (avs)
 AV_Sequence avs;
 {
-register AV_Sequence eptr;
-register AV_Sequence next;
+	register AV_Sequence eptr;
+	register AV_Sequence next;
 
 	for(eptr = avs; eptr != NULLAV; eptr = next) {
 		next = eptr->avseq_next;

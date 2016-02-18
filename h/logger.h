@@ -1,6 +1,6 @@
 /* logger.h - logging routines */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/logger.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -29,12 +29,12 @@
 /*  */
 
 typedef struct  ll_struct {
-    char   *ll_file;		/* path name to logging file */
+	char   *ll_file;		/* path name to logging file */
 
-    char   *ll_hdr;		/* text to put in opening line */
-    char   *ll_dhdr;		/* dynamic header - changes */
+	char   *ll_hdr;		/* text to put in opening line */
+	char   *ll_dhdr;		/* dynamic header - changes */
 
-    int	    ll_events;		/* interesting events */
+	int	    ll_events;		/* interesting events */
 #define	LLOG_NONE	0
 #define	LLOG_FATAL	0x01	/*   fatal errors */
 #define	LLOG_EXCEPTIONS	0x02	/*   exceptional events */
@@ -46,12 +46,12 @@ typedef struct  ll_struct {
 #define	LLOG_MASK \
     "\020\01FATAL\02EXCEPTIONS\03NOTICE\04PDUS\05TRACE\06DEBUG"
 
-    int	    ll_syslog;		/* interesting events to send to syslog */
-				/*   takes same values as ll_events */
+	int	    ll_syslog;		/* interesting events to send to syslog */
+	/*   takes same values as ll_events */
 
-    int     ll_msize;		/* max size for log, in Kbytes */
+	int     ll_msize;		/* max size for log, in Kbytes */
 
-    int     ll_stat;		/* assorted switches */
+	int     ll_stat;		/* assorted switches */
 #define	LLOGNIL		0x00
 #define	LLOGCLS		0x01	/*   keep log closed, except when writing */
 #define	LLOGCRT		0x02	/*   create log if necessary */
@@ -61,7 +61,7 @@ typedef struct  ll_struct {
 #define	LLOGHDR		0x20    /*   static header allocated */
 #define	LLOGDHR		0x40    /*   dynamic header allocated */
 
-    int     ll_fd;		/* file descriptor */
+	int     ll_fd;		/* file descriptor */
 } LLog;
 
 /*  */

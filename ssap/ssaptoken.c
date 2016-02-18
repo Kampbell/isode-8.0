@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaptoken.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssaptoken.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -56,21 +56,21 @@ int	sd;
 int	tokens;
 struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
 
-    missingP (si);
+	missingP (si);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ssapXsig (sb, sd);
+	ssapXsig (sb, sd);
 
-    result = SGTokenRequestAux (sb, tokens, si);
+	result = SGTokenRequestAux (sb, tokens, si);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -80,40 +80,39 @@ register struct ssapblk *sb;
 int	tokens;
 struct SSAPindication *si;
 {
-    int     result,
-            settings;
-    register struct ssapkt *s;
+	int     result,
+			settings;
+	register struct ssapkt *s;
 
-    settings = 0;
-    dotokens ();
-    if (settings == 0)
-	return ssaplose (si, SC_PARAMETER, NULLCP, "no tokens to give");
+	settings = 0;
+	dotokens ();
+	if (settings == 0)
+		return ssaplose (si, SC_PARAMETER, NULLCP, "no tokens to give");
 
-    if (sb -> sb_flags & SB_GTC)
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"give control request in progress");
+	if (sb -> sb_flags & SB_GTC)
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "give control request in progress");
 
-    if (settings & ST_DAT_TOKEN)
-	sb -> sb_flags &= ~(SB_EDACK | SB_ERACK);
-    else
-	if (sb -> sb_flags & (SB_EDACK | SB_ERACK))
-	    return ssaplose (si, SC_OPERATION, "exception in progress");
+	if (settings & ST_DAT_TOKEN)
+		sb -> sb_flags &= ~(SB_EDACK | SB_ERACK);
+	else if (sb -> sb_flags & (SB_EDACK | SB_ERACK))
+		return ssaplose (si, SC_OPERATION, "exception in progress");
 
-    if ((s = newspkt (SPDU_GT)) == NULL)
-	return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
-    s -> s_mask |= SMASK_SPDU_GT;
+	if ((s = newspkt (SPDU_GT)) == NULL)
+		return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+	s -> s_mask |= SMASK_SPDU_GT;
 
-    s -> s_mask |= SMASK_GT_TOKEN;
-    s -> s_gt_token = settings & 0xff;
+	s -> s_mask |= SMASK_GT_TOKEN;
+	s -> s_gt_token = settings & 0xff;
 
-    if ((result = spkt2sd (s, sb -> sb_fd, 0, si)) == NOTOK)
-	freesblk (sb);
-    else
-	sb -> sb_owned &= ~s -> s_gt_token;
+	if ((result = spkt2sd (s, sb -> sb_fd, 0, si)) == NOTOK)
+		freesblk (sb);
+	else
+		sb -> sb_owned &= ~s -> s_gt_token;
 
-    freespkt (s);
+	freespkt (s);
 
-    return result;
+	return result;
 }
 
 #undef	dotoken
@@ -142,22 +141,22 @@ int	tokens,
 char   *data;
 struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
 
-    missingP (si);
+	missingP (si);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ssapPsig (sb, sd);
-    toomuchP (sb, data, cc, ST_SIZE, "token");
+	ssapPsig (sb, sd);
+	toomuchP (sb, data, cc, ST_SIZE, "token");
 
-    result = SPTokenRequestAux (sb, tokens, data, cc, si);
+	result = SPTokenRequestAux (sb, tokens, data, cc, si);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -169,39 +168,38 @@ int	tokens,
 char   *data;
 struct SSAPindication *si;
 {
-    int     result,
-            settings;
-    register struct ssapkt *s;
+	int     result,
+			settings;
+	register struct ssapkt *s;
 
-    settings = 0;
-    dotokens ();
-    if (settings == 0)
-	return ssaplose (si, SC_PARAMETER, NULLCP, "no tokens to ask for");
+	settings = 0;
+	dotokens ();
+	if (settings == 0)
+		return ssaplose (si, SC_PARAMETER, NULLCP, "no tokens to ask for");
 
-    if (sb -> sb_flags & SB_GTC)
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"give control request in progress");
+	if (sb -> sb_flags & SB_GTC)
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "give control request in progress");
 
-    if ((s = newspkt (SPDU_PT)) == NULL)
-	return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+	if ((s = newspkt (SPDU_PT)) == NULL)
+		return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 
-    s -> s_mask |= SMASK_PT_TOKEN;
-    s -> s_pt_token = settings & 0xff;
+	s -> s_mask |= SMASK_PT_TOKEN;
+	s -> s_pt_token = settings & 0xff;
 
-    if (cc > 0) {
-	s -> s_mask |= SMASK_UDATA_PGI;
-	s -> s_udata = data, s -> s_ulen = cc;
-    }
-    else
+	if (cc > 0) {
+		s -> s_mask |= SMASK_UDATA_PGI;
+		s -> s_udata = data, s -> s_ulen = cc;
+	} else
+		s -> s_udata = NULL, s -> s_ulen = 0;
+	if ((result = spkt2sd (s, sb -> sb_fd, 0, si)) == NOTOK)
+		freesblk (sb);
+	s -> s_mask &= ~SMASK_UDATA_PGI;
 	s -> s_udata = NULL, s -> s_ulen = 0;
-    if ((result = spkt2sd (s, sb -> sb_fd, 0, si)) == NOTOK)
-	freesblk (sb);
-    s -> s_mask &= ~SMASK_UDATA_PGI;
-    s -> s_udata = NULL, s -> s_ulen = 0;
 
-    freespkt (s);
+	freespkt (s);
 
-    return result;
+	return result;
 }
 
 #undef	dotoken

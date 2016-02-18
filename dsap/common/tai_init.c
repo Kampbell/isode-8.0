@@ -38,8 +38,7 @@ extern  char    *tailfile;
 extern  LLog    *log_dsap;
 
 
-dsap_tai_init()
-{
+dsap_tai_init() {
 	FILE    *fp;
 	char    *cp;
 	char    buf[BUFSIZ];
@@ -55,10 +54,10 @@ dsap_tai_init()
 	while(fgets(buf, sizeof(buf), fp) != NULLCP)
 		if ( (*buf != '#') && (*buf != '\n') )
 			/* not a comment or blank */
-			if (tai_string (buf) == NOTOK) 
+			if (tai_string (buf) == NOTOK)
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("tai_string failed %s",buf));
 
-	
+
 	(void) fclose(fp);
 	return OK;
 }

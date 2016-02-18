@@ -1,6 +1,6 @@
 /* sys54.h - site configuration file for generic SVR4 */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/sys54.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *
@@ -28,7 +28,7 @@
 #define SVR4			/*   Systems V Release 4 */
 
 /* If you have the UCB extensions ...
-#define SVR4_UCB		
+#define SVR4_UCB
 */
 
 #define	VSPRINTF		/* has vprintf(3s) routines */

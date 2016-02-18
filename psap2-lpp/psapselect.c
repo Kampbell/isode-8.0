@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psapselect.c,v 9.0 1992/06/16 12:31:57 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap2-lpp/RCS/psapselect.c,v 9.0 1992/06/16 12:31:57 isode Rel $
  *
  * Contributed by The Wollongong Group, Inc.
@@ -42,35 +42,34 @@ fd_set *mask;
 int    *nfds;
 struct PSAPindication *pi;
 {
-    SBV     smask;
-    int	    reason,
-	    result;
-    register struct psapblk *pb;
+	SBV     smask;
+	int	    reason,
+			result;
+	register struct psapblk *pb;
 
-    missingP (mask);
-    missingP (nfds);
-    missingP (pi);
+	missingP (mask);
+	missingP (nfds);
+	missingP (pi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    if ((pb = findpblk (sd)) == NULL) {
+	if ((pb = findpblk (sd)) == NULL) {
+		(void) sigiomask (smask);
+		return psaplose (pi, PC_PARAMETER, NULLCP,
+						 "invalid presentation descriptor");
+	}
+
+	result = pb -> pb_checkfnx ? (*pb -> pb_checkfnx) (pb, pi) : OK;
+	if (result == NOTOK && (reason = pi -> pi_abort.pa_reason) != PC_TIMER) {
+		if (PC_FATAL (reason))
+			freepblk (pb);
+	} else {
+		FD_SET (pb -> pb_fd, mask);
+		if (pb -> pb_fd > *nfds)
+			*nfds = pb -> pb_fd + 1;
+	}
+
 	(void) sigiomask (smask);
-	return psaplose (pi, PC_PARAMETER, NULLCP,
-			    "invalid presentation descriptor");
-    }
 
-    result = pb -> pb_checkfnx ? (*pb -> pb_checkfnx) (pb, pi) : OK;
-    if (result == NOTOK && (reason = pi -> pi_abort.pa_reason) != PC_TIMER) {
-	if (PC_FATAL (reason))
-	    freepblk (pb);
-    }
-    else {
-	FD_SET (pb -> pb_fd, mask);
-	if (pb -> pb_fd > *nfds)
-	    *nfds = pb -> pb_fd + 1;
-    }
-
-    (void) sigiomask (smask);
-
-    return result;
+	return result;
 }

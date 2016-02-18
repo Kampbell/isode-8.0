@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas2.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/acsap/RCS/acsapreleas2.c,v 9.0 1992/06/16 12:05:59 isode Rel $
  *
  *
@@ -44,108 +44,110 @@ PE     *data;
 int	ndata;
 struct AcSAPindication *aci;
 {
-    SBV	    smask;
-    int     code,
-            result;
-    register struct assocblk   *acb;
-    PE	    pe;
-    struct PSAPindication pis;
-    register struct PSAPabort  *pa = &pis.pi_abort;
-    register struct type_ACS_RLRE__apdu *pdu;
+	SBV	    smask;
+	int     code,
+			result;
+	register struct assocblk   *acb;
+	PE	    pe;
+	struct PSAPindication pis;
+	register struct PSAPabort  *pa = &pis.pi_abort;
+	register struct type_ACS_RLRE__apdu *pdu;
 
-    switch (status) {
-	case ACS_ACCEPT: 
-	    code = SC_ACCEPT;
-	    break;
+	switch (status) {
+	case ACS_ACCEPT:
+		code = SC_ACCEPT;
+		break;
 
-	case ACS_REJECT: 
-	    code = SC_REJECTED;
-	    break;
+	case ACS_REJECT:
+		code = SC_REJECTED;
+		break;
 
-	default: 
-	    return acsaplose (aci, ACS_PARAMETER, NULLCP,
-		    "invalid value for status parameter");
-    }
-    switch (reason) {
-	case ACR_NORMAL: 
-	case ACR_NOTFINISHED: 
-	case ACR_USERDEFINED: 
-	    break;
-
-	default: 
-	    return acsaplose (aci, ACS_PARAMETER, NULLCP,
-		    "invalid value for reason parameter");
-    }
-    toomuchP (data, ndata, NACDATA, "release");
-    if (data) {	    /* XXX: probably should have a more intensive check... */
-	register int    i;
-	register PE    *pep;
-
-	for (pep = data, i = ndata; i > 0; pep++, i--)
-	    if ((*pep) -> pe_context == PE_DFLT_CTX)
+	default:
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
-			"default context not allowed for user-data at slot %d",
-				  pep - data);
-    }
-    missingP (aci);
+						  "invalid value for status parameter");
+	}
+	switch (reason) {
+	case ACR_NORMAL:
+	case ACR_NOTFINISHED:
+	case ACR_USERDEFINED:
+		break;
 
-    smask = sigioblock ();
+	default:
+		return acsaplose (aci, ACS_PARAMETER, NULLCP,
+						  "invalid value for reason parameter");
+	}
+	toomuchP (data, ndata, NACDATA, "release");
+	if (data) {	    /* XXX: probably should have a more intensive check... */
+		register int    i;
+		register PE    *pep;
 
-    acsapFsig (acb, sd);
+		for (pep = data, i = ndata; i > 0; pep++, i--)
+			if ((*pep) -> pe_context == PE_DFLT_CTX)
+				return acsaplose (aci, ACS_PARAMETER, NULLCP,
+								  "default context not allowed for user-data at slot %d",
+								  pep - data);
+	}
+	missingP (aci);
 
-    pe = NULLPE;
-    if ((pdu = (struct type_ACS_RLRE__apdu *) calloc (1, sizeof *pdu))
-	    == NULL) {
-	(void) acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
-	goto out2;
-    }
-    pdu -> optionals |= opt_ACS_RLRE__apdu_reason;
-    pdu -> reason = reason;
-    if (data
-	    && ndata > 0
-	    && (pdu -> user__information = info2apdu (acb, aci, data, ndata))
-		    == NULL)
-	goto out2;
+	smask = sigioblock ();
 
-    result = encode_ACS_RLRE__apdu (&pe, 1, 0, NULLCP, pdu);
+	acsapFsig (acb, sd);
 
-    free_ACS_RLRE__apdu (pdu);
-    pdu = NULL;
+	pe = NULLPE;
+	if ((pdu = (struct type_ACS_RLRE__apdu *) calloc (1, sizeof *pdu))
+			== NULL) {
+		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+		goto out2;
+	}
+	pdu -> optionals |= opt_ACS_RLRE__apdu_reason;
+	pdu -> reason = reason;
+	if (data
+			&& ndata > 0
+			&& (pdu -> user__information = info2apdu (acb, aci, data, ndata))
+			== NULL)
+		goto out2;
 
-    if (result == NOTOK) {
-	(void) acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
-			  PY_pepy);
-	goto out2;
-    }
-    pe -> pe_context = acb -> acb_id;
+	result = encode_ACS_RLRE__apdu (&pe, 1, 0, NULLCP, pdu);
 
-    PLOGP (acsap_log,ACS_ACSE__apdu, pe, "RLRE-apdu", 0);
-
-    if ((result = PRelResponse (acb -> acb_fd, code, &pe, 1, &pis)) == NOTOK) {
-	(void) ps2acslose (acb, aci, "PRelResponse", pa);
-	if (PC_FATAL (pa -> pa_reason))
-	    goto out2;
-	else
-	    goto out1;
-    }
-
-    if (status == ACS_ACCEPT)
-	acb -> acb_fd = NOTOK;
-    else
-	acb -> acb_flags &= ~ACB_FINN;
-
-    result = OK;
-
-out2: ;
-    if (result == NOTOK || status == ACS_ACCEPT)
-	freeacblk (acb);
-out1: ;
-    if (pe)
-	pe_free (pe);
-    if (pdu)
 	free_ACS_RLRE__apdu (pdu);
+	pdu = NULL;
 
-    (void) sigiomask (smask);
+	if (result == NOTOK) {
+		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+						  PY_pepy);
+		goto out2;
+	}
+	pe -> pe_context = acb -> acb_id;
 
-    return result;
+	PLOGP (acsap_log,ACS_ACSE__apdu, pe, "RLRE-apdu", 0);
+
+	if ((result = PRelResponse (acb -> acb_fd, code, &pe, 1, &pis)) == NOTOK) {
+		(void) ps2acslose (acb, aci, "PRelResponse", pa);
+		if (PC_FATAL (pa -> pa_reason))
+			goto out2;
+		else
+			goto out1;
+	}
+
+	if (status == ACS_ACCEPT)
+		acb -> acb_fd = NOTOK;
+	else
+		acb -> acb_flags &= ~ACB_FINN;
+
+	result = OK;
+
+out2:
+	;
+	if (result == NOTOK || status == ACS_ACCEPT)
+		freeacblk (acb);
+out1:
+	;
+	if (pe)
+		pe_free (pe);
+	if (pdu)
+		free_ACS_RLRE__apdu (pdu);
+
+	(void) sigiomask (smask);
+
+	return result;
 }

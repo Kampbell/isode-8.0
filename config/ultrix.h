@@ -1,6 +1,6 @@
 /* ultrix.h - site configuration file for Ultrix version greater than 3.1 */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/ultrix.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapcapd1.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapcapd1.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -41,22 +41,22 @@ char   *data;
 int	cc;
 struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
 
-    missingP (si);
+	missingP (si);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ssapPsig (sb, sd);
-    toomuchP (sb, data, cc, SX_CDSIZE, "capability");
+	ssapPsig (sb, sd);
+	toomuchP (sb, data, cc, SX_CDSIZE, "capability");
 
-    result = SCapdRequestAux (sb, data, cc, si);
+	result = SCapdRequestAux (sb, data, cc, si);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -67,21 +67,21 @@ char   *data;
 int	cc;
 struct SSAPindication *si;
 {
-    int     result;
+	int     result;
 
-    if (!(sb -> sb_requirements & SR_CAPABILITY))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"capability data exchange service unavailable");
-    if (SDoActivityAux (sb, si, 1, 0) == NOTOK)
-	return NOTOK;
-    if (sb -> sb_flags & SB_CD)
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"capability data request in progress");
-    sb -> sb_flags |= SB_CD;
+	if (!(sb -> sb_requirements & SR_CAPABILITY))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "capability data exchange service unavailable");
+	if (SDoActivityAux (sb, si, 1, 0) == NOTOK)
+		return NOTOK;
+	if (sb -> sb_flags & SB_CD)
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "capability data request in progress");
+	sb -> sb_flags |= SB_CD;
 
-    if ((result = SWriteRequestAux (sb, SPDU_CD, data, cc, 0, 0L, 0, NULLSD,
-		NULLSD, NULLSR, si)) == NOTOK)
-	freesblk (sb);
+	if ((result = SWriteRequestAux (sb, SPDU_CD, data, cc, 0, 0L, 0, NULLSD,
+									NULLSD, NULLSR, si)) == NOTOK)
+		freesblk (sb);
 
-    return result;
+	return result;
 }

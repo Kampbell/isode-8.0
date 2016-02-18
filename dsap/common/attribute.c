@@ -66,15 +66,14 @@ extern short acl_sntx;
 extern AV_Sequence oc_avs();
 Attr_Sequence entry_find_type();
 
-check_dsa_known_oids ()
-{
+check_dsa_known_oids () {
 	/* set pointers to special attributes */
 
 	check_known_oids ();
 
 	at_password 	= AttrT_new (PASSWORD_OID);
 	at_control 	= AttrT_new (CONTROL_OID);
-	at_dsa_control	= AttrT_new (DSA_CONTROL_OID); 
+	at_dsa_control	= AttrT_new (DSA_CONTROL_OID);
 	at_acl 		= AttrT_new (ACL_OID);
 	at_applctx 	= AttrT_new (APPLCTX_OID);
 	at_schema 	= AttrT_new (SCHEMA_OID);
@@ -106,65 +105,65 @@ real_unravel_attribute (eptr,error)
 Entry eptr;
 struct DSError * error;
 {
-register Attr_Sequence as;
-Attr_Sequence ias;
-RDN new_rdn, rdn_test;
-AttributeType at;
-AV_Sequence   avs;
-struct acl * acl = (struct acl *) NULL;
-extern oid_cmp ();
-int rdn_print();
+	register Attr_Sequence as;
+	Attr_Sequence ias;
+	RDN new_rdn, rdn_test;
+	AttributeType at;
+	AV_Sequence   avs;
+	struct acl * acl = (struct acl *) NULL;
+	extern oid_cmp ();
+	int rdn_print();
 
 	/* take rdn's and make sure an attribute, if not add it in */
-    for (new_rdn = eptr->e_name; new_rdn != NULLRDN; new_rdn = new_rdn->rdn_next) {
-	if (new_rdn->rdn_at != NULLTABLE_ATTR)
-		new_rdn->rdn_av.av_syntax = new_rdn->rdn_at->oa_syntax;
+	for (new_rdn = eptr->e_name; new_rdn != NULLRDN; new_rdn = new_rdn->rdn_next) {
+		if (new_rdn->rdn_at != NULLTABLE_ATTR)
+			new_rdn->rdn_av.av_syntax = new_rdn->rdn_at->oa_syntax;
 
-	if (new_rdn->rdn_av.av_syntax == 0) {
-		/* Check we know about local RDNs syntax */
-		if (eptr->e_data == E_DATA_MASTER) 
-			/* X.501 9.6.2 ! */
+		if (new_rdn->rdn_av.av_syntax == 0) {
+			/* Check we know about local RDNs syntax */
+			if (eptr->e_data == E_DATA_MASTER)
+				/* X.501 9.6.2 ! */
 #ifndef STRICT_X500
-			/* Allow if it a primative type ! */
-			if ( ((PE)new_rdn->rdn_av.av_struct)->pe_form 
-			    != PE_FORM_PRIM)
+				/* Allow if it a primative type ! */
+				if ( ((PE)new_rdn->rdn_av.av_struct)->pe_form
+						!= PE_FORM_PRIM)
 #endif
-			{
-			LLOG (log_dsap, LLOG_EXCEPTIONS, ("RDN of unknown attribute syntax"));
-			error->dse_type = DSE_UPDATEERROR;
-			error->ERR_UPDATE.DSE_up_problem = DSE_UP_NAMINGVIOLATION;
-			return NOTOK;
-		        }
-	}
+				{
+					LLOG (log_dsap, LLOG_EXCEPTIONS, ("RDN of unknown attribute syntax"));
+					error->dse_type = DSE_UPDATEERROR;
+					error->ERR_UPDATE.DSE_up_problem = DSE_UP_NAMINGVIOLATION;
+					return NOTOK;
+				}
+		}
 
-	for (rdn_test = eptr->e_name; rdn_test != new_rdn; rdn_test = rdn_test->rdn_next)
-		/* check for repeated attribute in RDN */
-		if (AttrT_cmp (new_rdn->rdn_at, rdn_test->rdn_at) == 0) {
-			LLOG (log_dsap, LLOG_EXCEPTIONS, ("RDN with two AVAs of same attribute type"));
-			error->dse_type = DSE_UPDATEERROR;
-			error->ERR_UPDATE.DSE_up_problem = DSE_UP_NAMINGVIOLATION;
-			return NOTOK;
-		}
-			
-	if ((as = as_find_type (eptr->e_attributes,new_rdn->rdn_at)) == NULLATTR) {
-		SET_HEAP (new_rdn->rdn_at);
-		at  = AttrT_cpy (new_rdn->rdn_at);
-		avs = avs_comp_new (AttrV_cpy(&new_rdn->rdn_av));
-		as  = as_comp_new (at, avs, NULLACL_INFO);
-		eptr->e_attributes = as_merge (eptr->e_attributes,as);
-		RESTORE_HEAP;
-	} else {
-		for (avs=as->attr_value; avs!=NULLAV; avs=avs->avseq_next) 
-			if (AttrV_cmp (&new_rdn->rdn_av,&avs->avseq_av) == 0)
-				break;
-		if (avs == NULLAV) {
+		for (rdn_test = eptr->e_name; rdn_test != new_rdn; rdn_test = rdn_test->rdn_next)
+			/* check for repeated attribute in RDN */
+			if (AttrT_cmp (new_rdn->rdn_at, rdn_test->rdn_at) == 0) {
+				LLOG (log_dsap, LLOG_EXCEPTIONS, ("RDN with two AVAs of same attribute type"));
+				error->dse_type = DSE_UPDATEERROR;
+				error->ERR_UPDATE.DSE_up_problem = DSE_UP_NAMINGVIOLATION;
+				return NOTOK;
+			}
+
+		if ((as = as_find_type (eptr->e_attributes,new_rdn->rdn_at)) == NULLATTR) {
 			SET_HEAP (new_rdn->rdn_at);
+			at  = AttrT_cpy (new_rdn->rdn_at);
 			avs = avs_comp_new (AttrV_cpy(&new_rdn->rdn_av));
-			as->attr_value = avs_merge (as->attr_value,avs);
+			as  = as_comp_new (at, avs, NULLACL_INFO);
+			eptr->e_attributes = as_merge (eptr->e_attributes,as);
 			RESTORE_HEAP;
+		} else {
+			for (avs=as->attr_value; avs!=NULLAV; avs=avs->avseq_next)
+				if (AttrV_cmp (&new_rdn->rdn_av,&avs->avseq_av) == 0)
+					break;
+			if (avs == NULLAV) {
+				SET_HEAP (new_rdn->rdn_at);
+				avs = avs_comp_new (AttrV_cpy(&new_rdn->rdn_av));
+				as->attr_value = avs_merge (as->attr_value,avs);
+				RESTORE_HEAP;
+			}
 		}
 	}
-    }
 
 	/* now get special attributes into structure */
 	/* first reset pointers - incase deleted. */
@@ -194,8 +193,8 @@ int rdn_print();
 		set_inheritance (eptr);
 		if ((as = entry_find_type (eptr,at_objectclass)) == NULLATTR) {
 			pslog (log_dsap,LLOG_EXCEPTIONS,
-				"Object class attribute missing",
-				rdn_print, (caddr_t)eptr->e_name);
+				   "Object class attribute missing",
+				   rdn_print, (caddr_t)eptr->e_name);
 			error->dse_type = DSE_UPDATEERROR;
 			error->ERR_UPDATE.DSE_up_problem = DSE_UP_OBJECTCLASSVIOLATION;
 			return (NOTOK);
@@ -204,20 +203,20 @@ int rdn_print();
 	} else {
 		set_inheritance (eptr);
 		eptr->e_oc = as->attr_value;
-	/* order swapped ! */
+		/* order swapped ! */
 	}
 
 	if (as = entry_find_type (eptr,at_acl)) {
 		if (as->attr_value) {	/* How can this be null ? */
-		   eptr->e_acl = (struct acl *) as->attr_value->avseq_av.av_struct;
-		   acl = eptr->e_acl;
-		   if (acl->ac_child == NULLACL_INFO)
-			   acl->ac_child = acl_default ();
-		   if (acl->ac_entry == NULLACL_INFO)
-			   acl->ac_entry = acl_default ();
-		   if (acl->ac_default == NULLACL_INFO)
-			   acl->ac_default = acl_default ();
-	        }
+			eptr->e_acl = (struct acl *) as->attr_value->avseq_av.av_struct;
+			acl = eptr->e_acl;
+			if (acl->ac_child == NULLACL_INFO)
+				acl->ac_child = acl_default ();
+			if (acl->ac_entry == NULLACL_INFO)
+				acl->ac_entry = acl_default ();
+			if (acl->ac_default == NULLACL_INFO)
+				acl->ac_default = acl_default ();
+		}
 	} else
 		eptr->e_acl = NULLACL;
 
@@ -237,8 +236,8 @@ int rdn_print();
 		eptr->e_dsainfo->dsa_addr = (struct PSAPaddr *) as->attr_value->avseq_av.av_struct;
 		if ((as->attr_value->avseq_next) && (eptr->e_data == E_DATA_MASTER))
 			pslog (log_dsap,LLOG_EXCEPTIONS,
-				"WARNING: multi valued presentationAddress (only one will be used)",
-				rdn_print, (caddr_t)eptr->e_name);
+				   "WARNING: multi valued presentationAddress (only one will be used)",
+				   rdn_print, (caddr_t)eptr->e_name);
 
 	}
 
@@ -281,14 +280,14 @@ int rdn_print();
 			eptr->e_allchildrenpresent = FALSE;
 			if (as->attr_value->avseq_next)
 				pslog (log_dsap,LLOG_EXCEPTIONS,
-				       "Multi valued cross reference",
-				       rdn_print, (caddr_t)eptr->e_name);
+					   "Multi valued cross reference",
+					   rdn_print, (caddr_t)eptr->e_name);
 		}
 		if (as = entry_find_type (eptr,at_subord)) {
 			if (eptr->e_external)
 				pslog (log_dsap,LLOG_EXCEPTIONS,
-				       "cross & subordinate reference",
-				       rdn_print, (caddr_t)eptr->e_name);
+					   "cross & subordinate reference",
+					   rdn_print, (caddr_t)eptr->e_name);
 			eptr->e_reference = as->attr_value;
 			eptr->e_reftype = RT_SUBORDINATE;
 			eptr->e_external = TRUE;
@@ -296,14 +295,14 @@ int rdn_print();
 			eptr->e_allchildrenpresent = FALSE;
 			if (as->attr_value->avseq_next)
 				pslog (log_dsap,LLOG_EXCEPTIONS,
-				       "Multi valued subordinate reference",
-				       rdn_print, (caddr_t)eptr->e_name);
+					   "Multi valued subordinate reference",
+					   rdn_print, (caddr_t)eptr->e_name);
 		}
 		if (as = entry_find_type (eptr,at_nssr)) {
 			if (eptr->e_external)
 				pslog (log_dsap,LLOG_EXCEPTIONS,
-				       "NSSR & cross | subordinate reference",
-				       rdn_print, (caddr_t)eptr->e_name);
+					   "NSSR & cross | subordinate reference",
+					   rdn_print, (caddr_t)eptr->e_name);
 			eptr->e_reference = as->attr_value;
 			eptr->e_reftype = RT_NONSPECIFICSUBORDINATE;
 			eptr->e_external = TRUE;
@@ -341,7 +340,7 @@ int rdn_print();
 	/* the default.  */
 	if (acl->ac_attributes == NULLACL_ATTR) {
 		/* the easy case !!! - set every attribute to ac_default */
-		for ( as = eptr->e_attributes; as != NULLATTR; as = as->attr_link) 
+		for ( as = eptr->e_attributes; as != NULLATTR; as = as->attr_link)
 			as->attr_acl = acl->ac_default;
 	} else {
 		register struct acl_attr * aa;
@@ -356,13 +355,13 @@ int rdn_print();
 			once = FALSE;
 
 			for ( aa = acl->ac_attributes; aa!=NULLACL_ATTR; aa=aa->aa_next) {
-				for ( oidptr=aa->aa_types;oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next) {
+				for ( oidptr=aa->aa_types; oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next) {
 					if (oid_cmp (oidptr->oid_oid,grab_oid(as->attr_type)) == 0) {
 						if (once == TRUE)
 							pslog (log_dsap,LLOG_EXCEPTIONS,
-								"WARNING Inconsistent ACL in entry",
-								rdn_print,
-							        (caddr_t)eptr->e_name);
+								   "WARNING Inconsistent ACL in entry",
+								   rdn_print,
+								   (caddr_t)eptr->e_name);
 						else
 							once = TRUE;
 						found_aa = aa;
@@ -370,7 +369,7 @@ int rdn_print();
 				}
 			}
 
-			if (found_aa != NULLACL_ATTR) 
+			if (found_aa != NULLACL_ATTR)
 				/* found the apprioriate acl - add oid to it */
 				as->attr_acl = found_aa->aa_acl;
 			else
@@ -389,16 +388,16 @@ int rdn_print();
 			tmp = (InheritAttr) avs->avseq_av.av_struct;
 			for (as = tmp->i_always; as != NULLATTR; as=as->attr_link) {
 				if (  (AttrT_cmp (as->attr_type,at_acl) == 0)
-				   || (AttrT_cmp (as->attr_type,at_masterdsa) == 0)
-				   || (AttrT_cmp (as->attr_type,at_slavedsa) == 0)
-				   || (AttrT_cmp (as->attr_type,at_relaydsa) == 0)
-				   || (AttrT_cmp (as->attr_type,at_schema) == 0)
-				   || (AttrT_cmp (as->attr_type,at_applctx) == 0)
-				   || (AttrT_cmp (as->attr_type,at_objectclass) == 0)
-				   || (AttrT_cmp (as->attr_type,at_edbinfo) == 0)
-				   || (AttrT_cmp (as->attr_type,at_dsaaddress) == 0)
-				   || (AttrT_cmp (as->attr_type,at_alias) == 0)
-				   || (AttrT_cmp (as->attr_type,at_inherit) == 0)) {
+						|| (AttrT_cmp (as->attr_type,at_masterdsa) == 0)
+						|| (AttrT_cmp (as->attr_type,at_slavedsa) == 0)
+						|| (AttrT_cmp (as->attr_type,at_relaydsa) == 0)
+						|| (AttrT_cmp (as->attr_type,at_schema) == 0)
+						|| (AttrT_cmp (as->attr_type,at_applctx) == 0)
+						|| (AttrT_cmp (as->attr_type,at_objectclass) == 0)
+						|| (AttrT_cmp (as->attr_type,at_edbinfo) == 0)
+						|| (AttrT_cmp (as->attr_type,at_dsaaddress) == 0)
+						|| (AttrT_cmp (as->attr_type,at_alias) == 0)
+						|| (AttrT_cmp (as->attr_type,at_inherit) == 0)) {
 					LLOG(log_dsap,LLOG_EXCEPTIONS,("Inherited system attribute only allowed in default case"));
 					error->dse_type = DSE_ATTRIBUTEERROR;
 					error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn (eptr);
@@ -407,12 +406,12 @@ int rdn_print();
 					error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_value = NULLAttrV;
 					error->ERR_ATTRIBUTE.DSE_at_plist.dse_at_next = DSE_AT_NOPROBLEM;
 					return (DS_ERROR_REMOTE);
-				   }
+				}
 				as->attr_acl = ias->attr_acl;
 				if (as->attr_value == NULLAV) {
 					if ((nas = entry_find_type (eptr,as->attr_type)) == NULLATTR) {
 						LLOG(log_dsap,LLOG_EXCEPTIONS,("Value missing for always inherited attribute type"));
-					        error->dse_type = DSE_ATTRIBUTEERROR;
+						error->dse_type = DSE_ATTRIBUTEERROR;
 						error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn (eptr);
 						error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_what =DSE_AT_NOSUCHATTRIBUTE;
 						error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_type = AttrT_cpy (as->attr_type);
@@ -428,7 +427,7 @@ int rdn_print();
 				if (as->attr_value == NULLAV) {
 					if ((nas = entry_find_type (eptr,as->attr_type)) == NULLATTR) {
 						LLOG(log_dsap,LLOG_EXCEPTIONS,("Value missing for default inherited attribute type"));
-					        error->dse_type = DSE_ATTRIBUTEERROR;
+						error->dse_type = DSE_ATTRIBUTEERROR;
 						error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn (eptr);
 						error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_what =DSE_AT_NOSUCHATTRIBUTE;
 						error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_type = AttrT_cpy (as->attr_type);
@@ -449,19 +448,19 @@ int rdn_print();
 set_inheritance (eptr)
 Entry eptr;
 {
-AV_Sequence avs;
-InheritAttr tmp;
-Attr_Sequence as;
+	AV_Sequence avs;
+	InheritAttr tmp;
+	Attr_Sequence as;
 
 	if ((eptr == NULLENTRY)
-		|| (eptr->e_parent == NULLENTRY)
-		|| (eptr->e_parent->e_inherit == NULLAV))
+			|| (eptr->e_parent == NULLENTRY)
+			|| (eptr->e_parent->e_inherit == NULLAV))
 		return;
 
 	eptr->e_iattr = NULLINHERIT;
 
 	if ((eptr->e_oc == NULLAV) &&
-	   ((as = entry_find_type (eptr,at_objectclass)) != NULLATTR))
+			((as = entry_find_type (eptr,at_objectclass)) != NULLATTR))
 		eptr->e_oc = as->attr_value;
 
 	if (eptr->e_oc == NULLAV)
@@ -490,8 +489,8 @@ Attr_Sequence entry_find_type (a,b)
 Entry a;
 AttributeType b;
 {
-register int i;
-register Attr_Sequence ptr;
+	register int i;
+	register Attr_Sequence ptr;
 
 	/* if Attr_cmp returns <0 no point in continuing due to ordering */
 
@@ -499,7 +498,7 @@ register Attr_Sequence ptr;
 		if (  (i = AttrT_cmp (ptr->attr_type,b)) <= 0)
 			if ( i == 0 )
 				return ptr;
-			else 
+			else
 				break;
 	}
 
@@ -510,7 +509,7 @@ register Attr_Sequence ptr;
 		if (  (i = AttrT_cmp (ptr->attr_type,b)) <= 0)
 			if ( i == 0 )
 				return ptr;
-			else 
+			else
 				break;
 	}
 	for(ptr = a->e_iattr->i_always; ptr != NULLATTR; ptr=ptr->attr_link) {

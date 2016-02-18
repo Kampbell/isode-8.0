@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapmajor1.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapmajor1.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -40,23 +40,23 @@ char   *data;
 int	cc;
 struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
 
-    missingP (ssn);
-    missingP (si);
+	missingP (ssn);
+	missingP (si);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ssapPsig (sb, sd);
-    toomuchP (sb, data, cc, SN_SIZE, "majorsync");
+	ssapPsig (sb, sd);
+	toomuchP (sb, data, cc, SN_SIZE, "majorsync");
 
-    result = SMajSyncRequestAux (sb, ssn, data, cc, MAP_SYNC_NOEND, si);
+	result = SMajSyncRequestAux (sb, ssn, data, cc, MAP_SYNC_NOEND, si);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -69,35 +69,34 @@ int	cc,
 	opts;
 register struct SSAPindication *si;
 {
-    int     result;
+	int     result;
 
-    if (SDoActivityAux (sb, si, 0, 0) == NOTOK)
-	return NOTOK;
+	if (SDoActivityAux (sb, si, 0, 0) == NOTOK)
+		return NOTOK;
 
-    if ((sb -> sb_requirements & SR_ACTIVITY)
-	    && !(sb -> sb_flags & SB_Vact))
-	return ssaplose (si, SC_OPERATION, NULLCP, "no activity in progress");
+	if ((sb -> sb_requirements & SR_ACTIVITY)
+			&& !(sb -> sb_flags & SB_Vact))
+		return ssaplose (si, SC_OPERATION, NULLCP, "no activity in progress");
 
-    if (sb -> sb_flags & SB_MAA)
-	return ssaplose (si, SC_OPERATION, "awaiting your majorsync response");
+	if (sb -> sb_flags & SB_MAA)
+		return ssaplose (si, SC_OPERATION, "awaiting your majorsync response");
 
-    if ((result = SWriteRequestAux (sb, SPDU_MAP, data, cc, opts,
-	    *ssn = sb -> sb_V_M, 0, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
-	freesblk (sb);
-    else {
-	sb -> sb_flags |= SB_MAP;
-	if (opts & MAP_SYNC_NOEND) {
-	    if (sb -> sb_requirements & SR_ACTIVITY)
-		sb -> sb_flags |= SB_Vnextact;
+	if ((result = SWriteRequestAux (sb, SPDU_MAP, data, cc, opts,
+									*ssn = sb -> sb_V_M, 0, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
+		freesblk (sb);
+	else {
+		sb -> sb_flags |= SB_MAP;
+		if (opts & MAP_SYNC_NOEND) {
+			if (sb -> sb_requirements & SR_ACTIVITY)
+				sb -> sb_flags |= SB_Vnextact;
+		} else
+			sb -> sb_flags |= SB_AE, sb -> sb_flags &= ~SB_Vnextact;
+		if (sb -> sb_flags & SB_Vsc) {
+			sb -> sb_V_A = sb -> sb_V_M;
+			sb -> sb_flags &= ~SB_Vsc;
+		}
+		sb -> sb_V_M++;
 	}
-	else
-	    sb -> sb_flags |= SB_AE, sb -> sb_flags &= ~SB_Vnextact;
-	if (sb -> sb_flags & SB_Vsc) {
-	    sb -> sb_V_A = sb -> sb_V_M;
-	    sb -> sb_flags &= ~SB_Vsc;
-	}
-	sb -> sb_V_M++;
-    }
 
-    return result;
+	return result;
 }

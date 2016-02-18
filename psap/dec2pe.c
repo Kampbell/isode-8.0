@@ -1,19 +1,17 @@
 
 # include <stdio.h>
 
-main()
-{	
+main() {
 	unsigned int i;
 	char buf[1];
 	register int result, count;
 
-	while ((result = scanf("%d", &i)) != EOF){
+	while ((result = scanf("%d", &i)) != EOF) {
 		count++;
 		buf[0]=(char) i;
 		if (result) write(1, buf, 1);
-		else
-		{
-		    (void) fprintf(stderr,"Conversion failed at byte number %d\n", count);
+		else {
+			(void) fprintf(stderr,"Conversion failed at byte number %d\n", count);
 			exit(1);
 		}
 	}

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qbuf2pe_f.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/qbuf2pe_f.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -107,11 +107,11 @@ int	*result;
 				break;
 			if (j & pe_id_overshift) {
 #ifdef DEBUG
-			        DLOG (psap_log, LLOG_DEBUG,
-				      ("j is %x d is %x %x %x %x\n",
-				       j, d, *(Qb->qb_data-1),
-				       *(Qb->qb_data-2),
-				       *(Qb->qb_data-3)));
+				DLOG (psap_log, LLOG_DEBUG,
+					  ("j is %x d is %x %x %x %x\n",
+					   j, d, *(Qb->qb_data-1),
+					   *(Qb->qb_data-2),
+					   *(Qb->qb_data-3)));
 #endif
 				*result = PS_ERR_OVERID;
 				return (NULLPE);
@@ -121,7 +121,7 @@ int	*result;
 	id = j;
 
 	DLOG (psap_log, LLOG_DEBUG,
-		("class=%d form=%d id=%d", class, form, id));
+		  ("class=%d form=%d id=%d", class, form, id));
 
 	if ((pe = pe_alloc (class, form, id)) == NULLPE) {
 		*result = PS_ERR_NMEM;
@@ -133,13 +133,13 @@ int	*result;
 	if ((i = c) & PE_LEN_XTND) {
 		if ((i &= PE_LEN_MASK) > sizeof (PElementLen)) {
 #ifdef DEBUG
-		        DLOG (psap_log, LLOG_DEBUG,
-			      ("c (%x) i (%x) %d is %x %x %x %x\n",
-			       c, i, sizeof(PElementLen),
-			       *(Qb->qb_data-1),
-			       *(Qb->qb_data-2),
-			       *(Qb->qb_data-3),
-			       *(Qb->qb_data-4)));
+			DLOG (psap_log, LLOG_DEBUG,
+				  ("c (%x) i (%x) %d is %x %x %x %x\n",
+				   c, i, sizeof(PElementLen),
+				   *(Qb->qb_data-1),
+				   *(Qb->qb_data-2),
+				   *(Qb->qb_data-3),
+				   *(Qb->qb_data-4)));
 			qbprintf();
 #endif
 			*result = PS_ERR_OVERLEN;
@@ -152,11 +152,9 @@ int	*result;
 				j = (j << 8) | (c & 0xff);
 			}
 			len = j;
-		}
-		else
+		} else
 			len = PE_LEN_INDF;
-	}
-	else
+	} else
 		len = i;
 
 	SLOG (psap_log, LLOG_DEBUG, NULLCP, ("len=%d", len));
@@ -165,7 +163,7 @@ int	*result;
 	/* Now get the value.  */
 
 	switch (pe -> pe_form) {
-	case PE_FORM_PRIM: 
+	case PE_FORM_PRIM:
 		if (len == PE_LEN_INDF) {
 			*result = PS_ERR_INDF;
 			goto you_lose;
@@ -180,20 +178,18 @@ int	*result;
 				if (qp->qb_len == len) {
 					if(!(Qb = qp->qb_forw))
 						abort();
-				}
-				else {
+				} else {
 					qp->qb_len -= len;
 					qp->qb_data += len;
 				}
-			}
-			else {
+			} else {
 				if ((pe->pe_prim = PEDalloc (len)) == NULLPED) {
 					*result = PS_ERR_NMEM;
 					goto you_lose;
 				}
 				if (qbuf2data(pe->pe_prim, len) != len) {
 					SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP,
-						    ("bad qbuf lenght=%d",len));
+						  ("bad qbuf lenght=%d",len));
 					*result = PS_ERR_EOF;
 					goto you_lose;
 				}
@@ -201,21 +197,22 @@ int	*result;
 		}
 		break;
 
-	case PE_FORM_CONS: 
-		if ((len == PE_LEN_INDF || len > 0) && 
-			qb_read_cons (&pe -> pe_cons, len, result) == NOTOK)
-				goto you_lose;
+	case PE_FORM_CONS:
+		if ((len == PE_LEN_INDF || len > 0) &&
+				qb_read_cons (&pe -> pe_cons, len, result) == NOTOK)
+			goto you_lose;
 		break;
 	}
 
 	return pe;
 
-you_lose: ;
+you_lose:
+	;
 	if (psap_log -> ll_events & LLOG_PDUS) {
-	    LLOG (psap_log, LLOG_PDUS, ("PE read thus far"));
-	    pe2text (psap_log, pe, 1, *result);
+		LLOG (psap_log, LLOG_PDUS, ("PE read thus far"));
+		pe2text (psap_log, pe, 1, *result);
 	}
-	
+
 	pe_free (pe);
 	return NULLPE;
 }
@@ -235,15 +232,16 @@ register int *cresult;
 	cc = Byteno + len;
 
 	if ((p = qbuf2pe_f (&result)) == NULLPE) {
-no_cons: ;
+no_cons:
+		;
 #ifdef	DEBUG
 		if (len == PE_LEN_INDF)
 			LLOG (psap_log, LLOG_DEBUG,
-			  ("error building indefinite cons, %s",
+				  ("error building indefinite cons, %s",
 				   ps_error (result)));
 		else
 			LLOG (psap_log, LLOG_DEBUG,
-			  ("error building cons, stream at %d, wanted %d: %s",
+				  ("error building cons, stream at %d, wanted %d: %s",
 				   Byteno, cc, ps_error (result)));
 #endif
 
@@ -261,7 +259,7 @@ no_cons: ;
 
 		for(q = p; p = qbuf2pe_f(&result); q = q->pe_next = p) {
 			if (p->pe_class == PE_CLASS_UNIV &&
-						p->pe_id == PE_UNIV_EOC) {
+					p->pe_id == PE_UNIV_EOC) {
 				pe_free (p);
 				return OK;
 			}
@@ -273,8 +271,8 @@ no_cons: ;
 		if (cc < Byteno) {
 #ifdef DEBUG
 			DLOG (psap_log, LLOG_DEBUG,
-			      ("cc %d Byteno %d last length was %d\n",
-			       cc, Byteno));
+				  ("cc %d Byteno %d last length was %d\n",
+				   cc, Byteno));
 			qbprintf();
 #endif
 			*cresult = PS_ERR_LEN;
@@ -308,8 +306,7 @@ PElementLen len;
 		if (qp -> qb_len <= 0) {
 			if(!(Qb = (qp = qp->qb_forw)))
 				abort();
-		}
-		else
+		} else
 			qp->qb_data += i;
 	}
 
@@ -321,16 +318,15 @@ leave:
 /*  */
 
 #ifdef DEBUG
-qbprintf()
-{
+qbprintf() {
 	int len;
 	struct qbuf *qb;
 	char *cp;
 
-	for(qb = Fqb, cp = qb->qb_data;qb != Hqb;qb = qb->qb_forw) {
-		for(len = 0;len < qb->qb_len;cp++, len++) {
-		    (void) ll_printf (psap_log, "%x ", *cp);
-		    if((len % 15) == 0) (void) ll_printf(psap_log, "\n");
+	for(qb = Fqb, cp = qb->qb_data; qb != Hqb; qb = qb->qb_forw) {
+		for(len = 0; len < qb->qb_len; cp++, len++) {
+			(void) ll_printf (psap_log, "%x ", *cp);
+			if((len % 15) == 0) (void) ll_printf(psap_log, "\n");
 		}
 	}
 	(void) ll_sync (psap_log);

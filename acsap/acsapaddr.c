@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapaddr.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/acsap/RCS/acsapaddr.c,v 9.0 1992/06/16 12:05:59 isode Rel $
  *
  *
@@ -45,7 +45,7 @@ struct PSAPaddr *aei2addr_dse ();
 
 #ifndef	NOSTUB
 static char fallback1[BUFSIZ],
-	    fallback2[BUFSIZ];
+	   fallback2[BUFSIZ];
 #endif
 
 static struct PSAPaddr *(*lookup) () = NULL;
@@ -55,98 +55,98 @@ static struct PSAPaddr *(*lookup) () = NULL;
 /* backwards compatibility... */
 
 static struct mapping {
-    char   *m_key;
-    char   *m_value;
+	char   *m_key;
+	char   *m_value;
 }	sac2cn[] = {
-    "iso ftam", 	"filestore",
-    "iso vt",		"terminal",
-    "iso cmip",		"mib",
-    "isode passwd lookup demo",
-			"passwdstore",
-    "isode shell",	"shell",
-    "IRP Z39.50",	"Z39.50",
-    "pp qmgr interface","pp qmgr",
+	"iso ftam", 	"filestore",
+	"iso vt",		"terminal",
+	"iso cmip",		"mib",
+	"isode passwd lookup demo",
+	"passwdstore",
+	"isode shell",	"shell",
+	"IRP Z39.50",	"Z39.50",
+	"pp qmgr interface","pp qmgr",
 
-    NULL
+	NULL
 };
 
 /*  */
 
 AEI	_str2aei (designator, qualifier, context, interactive, userdn,
-		  passwd)
+			  passwd)
 char   *designator,
-       *qualifier,
-       *context,
-       *userdn,
-       *passwd;
+	   *qualifier,
+	   *context,
+	   *userdn,
+	   *passwd;
 int	interactive;
 {
-    AEI	    aei;
-    register struct mapping *m;
+	AEI	    aei;
+	register struct mapping *m;
 
-    if (qualifier == NULLCP) {
-	if (context)
-	    for (m = sac2cn; m -> m_key; m++)
-		if (strcmp (m -> m_key, context) == 0) {
-		    qualifier = m -> m_value;
-		    break;
-		}
+	if (qualifier == NULLCP) {
+		if (context)
+			for (m = sac2cn; m -> m_key; m++)
+				if (strcmp (m -> m_key, context) == 0) {
+					qualifier = m -> m_value;
+					break;
+				}
 
-	if (qualifier == NULLCP)
-	    qualifier = context ? context: "default";
-    }
-
-    if (context == NULLCP) {
-	for (m = sac2cn; m -> m_key; m++)
-	    if (strcmp (m -> m_value, qualifier) == 0) {
-		context = m -> m_key;
-		break;
-	    }
-
-	if (context == NULLCP)
-	    context = qualifier;
-    }
-
-    isodetailor (NULLCP, 0);
-    LLOG (addr_log, LLOG_TRACE,
-	  ("str2aei \"%s\" \"%s\" \"%s\" %d",
-	   designator, qualifier, context, interactive));
-
-    aei = NULL, lookup = NULL;
-    PY_pepy[0] = NULL;
-
-    if (ns_enabled) {
-	if (aei = str2aei_dse (designator, context, interactive, userdn,
-			       passwd)) {
-	    lookup = aei2addr_dse;
-#ifndef	NOSTUB
-	    (void) strcpy (fallback1, designator);
-	    (void) strcpy (fallback2, qualifier);
-	    goto out;
-#endif
+		if (qualifier == NULLCP)
+			qualifier = context ? context: "default";
 	}
+
+	if (context == NULLCP) {
+		for (m = sac2cn; m -> m_key; m++)
+			if (strcmp (m -> m_value, qualifier) == 0) {
+				context = m -> m_key;
+				break;
+			}
+
+		if (context == NULLCP)
+			context = qualifier;
+	}
+
+	isodetailor (NULLCP, 0);
+	LLOG (addr_log, LLOG_TRACE,
+		  ("str2aei \"%s\" \"%s\" \"%s\" %d",
+		   designator, qualifier, context, interactive));
+
+	aei = NULL, lookup = NULL;
+	PY_pepy[0] = NULL;
+
+	if (ns_enabled) {
+		if (aei = str2aei_dse (designator, context, interactive, userdn,
+							   passwd)) {
+			lookup = aei2addr_dse;
+#ifndef	NOSTUB
+			(void) strcpy (fallback1, designator);
+			(void) strcpy (fallback2, qualifier);
+			goto out;
+#endif
+		} else
+			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
+				  ("DSE lookup of service \"%s\" \"%s\" \"%s\" failed",
+				   designator, context, qualifier));
+	}
+
+#ifndef	NOSTUB
+	if (aei = str2aei_stub (designator, qualifier))
+		lookup = aei2addr_stub;
 	else
-	    SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
-		  ("DSE lookup of service \"%s\" \"%s\" \"%s\" failed",
-		   designator, context, qualifier));
-    }
-
-#ifndef	NOSTUB
-    if (aei = str2aei_stub (designator, qualifier))
-	lookup = aei2addr_stub;
-    else
-	SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
-	      ("stub DSE lookup of service \"%s\" \"%s\" \"%s\" failed",
-	       designator, context, qualifier));
+		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
+			  ("stub DSE lookup of service \"%s\" \"%s\" \"%s\" failed",
+			   designator, context, qualifier));
 #endif
 
 #ifndef	NOSTUB
-out: ;
+out:
+	;
 #endif
-    SLOG (addr_log, LLOG_TRACE, NULLCP,
-	  ("str2aei returns %s", aei ? sprintaei (aei) : "NULLAEI"));
+	SLOG (addr_log, LLOG_TRACE, NULLCP,
+		  ("str2aei returns %s", aei ? sprintaei (aei) : "NULLAEI"));
 
-    return aei;
+	return aei;
 }
 
 /*  */
@@ -154,32 +154,31 @@ out: ;
 struct PSAPaddr *aei2addr (aei)
 AEI	aei;
 {
-    struct PSAPaddr *pa;
+	struct PSAPaddr *pa;
 
-    isodetailor (NULLCP, 0);
-    SLOG (addr_log, LLOG_TRACE, NULLCP, ("aei2addr %s", sprintaei (aei)));
+	isodetailor (NULLCP, 0);
+	SLOG (addr_log, LLOG_TRACE, NULLCP, ("aei2addr %s", sprintaei (aei)));
 
-    PY_pepy[0] = NULL;
+	PY_pepy[0] = NULL;
 
-    if (lookup) {
-	pa = (*lookup) (aei);
+	if (lookup) {
+		pa = (*lookup) (aei);
 #ifndef	NOSTUB
-	if (pa == NULLPA
-		&& lookup == aei2addr_dse
-		&& (aei = str2aei_stub (fallback1, fallback2))
-		&& (pa = aei2addr_stub (aei))) {
-	    SLOG (addr_log, LLOG_NOTICE, NULLCP, 
-		   ("fallback use of stub DSE succeeded"));
-	}
+		if (pa == NULLPA
+				&& lookup == aei2addr_dse
+				&& (aei = str2aei_stub (fallback1, fallback2))
+				&& (pa = aei2addr_stub (aei))) {
+			SLOG (addr_log, LLOG_NOTICE, NULLCP,
+				  ("fallback use of stub DSE succeeded"));
+		}
 #endif
 
-	lookup = NULL;
-    }
-    else
-	pa = NULLPA;
+		lookup = NULL;
+	} else
+		pa = NULLPA;
 
-    SLOG (addr_log, LLOG_TRACE, NULLCP,
-	  ("aei2addr returns %s", paddr2str (pa, NULLNA)));
+	SLOG (addr_log, LLOG_TRACE, NULLCP,
+		  ("aei2addr returns %s", paddr2str (pa, NULLNA)));
 
-    return pa;
+	return pa;
 }

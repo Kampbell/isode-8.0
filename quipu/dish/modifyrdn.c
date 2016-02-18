@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/modifyrdn.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/modifyrdn.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -87,12 +87,11 @@ char          **argv;
 		return;
 
 	/* Strong authentication */
-	if (modrdn_arg.mra_common.ca_security != (struct security_parms *) 0)
-	{
-	extern struct SecurityServices *dsap_security;
+	if (modrdn_arg.mra_common.ca_security != (struct security_parms *) 0) {
+		extern struct SecurityServices *dsap_security;
 
-	modrdn_arg.mra_common.ca_sig =
-		(dsap_security->serv_sign)((caddr_t)&modrdn_arg, _ZModifyRDNArgumentDataDAS,&_ZDAS_mod);
+		modrdn_arg.mra_common.ca_sig =
+			(dsap_security->serv_sign)((caddr_t)&modrdn_arg, _ZModifyRDNArgumentDataDAS,&_ZDAS_mod);
 	}
 
 	while (ds_modifyrdn (&modrdn_arg, &error) != DS_OK) {
@@ -101,7 +100,7 @@ char          **argv;
 			return;
 		}
 		modrdn_arg.mra_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
-	} 
+	}
 
 	ps_print (RPS, "Modify done\n");
 	delete_cache (dn);	/* re-cache when next read */

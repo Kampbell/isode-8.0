@@ -88,7 +88,7 @@ char	*getenv();
  * doing a lookup.
  */
 getprent(bp)
-	register char *bp;
+register char *bp;
 {
 	register int c, skip = 0;
 
@@ -128,8 +128,7 @@ getprent(bp)
 	}
 }
 
-endprent()
-{
+endprent() {
 	if (pfp != NULL)
 		(void) fclose(pfp);
 }
@@ -140,15 +139,15 @@ endprent()
  * we just notice escaped newlines.
  */
 tgetent(bp, name)
-	char *bp, *name;
+char *bp, *name;
 {
 	register char *cp;
 	register int c;
 	register int i = 0, cnt = 0;
 	char ibuf[BUFSIZ];
-/*
-	char *cp2;
- */
+	/*
+		char *cp2;
+	 */
 	int tf;
 
 	tbuf = bp;
@@ -194,7 +193,7 @@ tgetent(bp, name)
 			}
 			c = ibuf[i++];
 			if (c == '\n') {
-				if (cp > bp && cp[-1] == '\\'){
+				if (cp > bp && cp[-1] == '\\') {
 					cp--;
 					continue;
 				}
@@ -225,8 +224,7 @@ tgetent(bp, name)
  * entries to say "like an HP2621 but doesn't turn on the labels".
  * Note that this works because of the left to right scan.
  */
-tnchktc()
-{
+tnchktc() {
 	register char *p, *q;
 	char tcname[16];	/* name of similar terminal */
 	char tcbuf[BUFSIZ];
@@ -273,7 +271,7 @@ tnchktc()
  * name (before the first field) stops us.
  */
 tnamatch(np)
-	char *np;
+char *np;
 {
 	register char *Np, *Bp;
 
@@ -300,7 +298,7 @@ tnamatch(np)
  */
 static char *
 tskip(bp)
-	register char *bp;
+register char *bp;
 {
 
 	while (*bp && *bp != ':')
@@ -319,7 +317,7 @@ tskip(bp)
  * Note that we handle octal numbers beginning with 0.
  */
 tgetnum(id)
-	char *id;
+char *id;
 {
 	register int i, base;
 	register char *bp = tbuf;
@@ -352,7 +350,7 @@ tgetnum(id)
  * not given.
  */
 tgetflag(id)
-	char *id;
+char *id;
 {
 	register char *bp = tbuf;
 
@@ -379,7 +377,7 @@ tgetflag(id)
  */
 char *
 tgetstr(id, area)
-	char *id, **area;
+char *id, **area;
 {
 	register char *bp = tbuf;
 
@@ -404,8 +402,8 @@ tgetstr(id, area)
  */
 static char *
 tdecode(str, area)
-	register char *str;
-	char **area;
+register char *str;
+char **area;
 {
 	register char *cp;
 	register int c;

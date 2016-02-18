@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/taddr2str.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/taddr2str.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -37,13 +37,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/taddr2str.c,v 9.0 19
 char   *taddr2str (ta)
 register struct TSAPaddr *ta;
 {
-    struct PSAPaddr pas;
-    register struct PSAPaddr *pa = &pas;
+	struct PSAPaddr pas;
+	register struct PSAPaddr *pa = &pas;
 
-    if (!ta)
-	return NULL;
-    bzero ((char *) pa, sizeof *pa);
-    pa -> pa_addr.sa_addr = *ta;	/* struct copy */
+	if (!ta)
+		return NULL;
+	bzero ((char *) pa, sizeof *pa);
+	pa -> pa_addr.sa_addr = *ta;	/* struct copy */
 
-    return paddr2str (pa, NULLNA);
+	return paddr2str (pa, NULLNA);
 }

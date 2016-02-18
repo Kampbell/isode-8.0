@@ -31,10 +31,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/sys_tai.c,v 9.0
 #include "tailor.h"
 
 extern char *oidtable,
-	    *dsa_address,
-	    *local_dit,
-	    dishinit,
-	    *myname;
+	   *dsa_address,
+	   *local_dit,
+	   dishinit,
+	   *myname;
 
 extern LLog *log_dsap;
 #ifndef NO_STATS
@@ -59,8 +59,7 @@ extern int ch_set;
 #define JPEG		 23
 #define ISODE_TAILOR	 24
 
-static  CMD_TABLE  cmdtab[] =
-{
+static  CMD_TABLE  cmdtab[] = {
 	"DSAPLOG",      SYSLOG,
 	"OIDTABLE",     OIDTAB,
 	"OIDFORMAT",    OIDFMT,
@@ -79,16 +78,14 @@ static  CMD_TABLE  cmdtab[] =
 	0,              -1,
 };
 
-static  CMD_TABLE  oidtab[] =
-{
+static  CMD_TABLE  oidtab[] = {
 	"SHORT",        1,
 	"LONG",         2,
 	"NUMERIC",      3,
 	0,              1,      /* default short */
 };
 
-static CMD_TABLE chtab[] =
-{
+static CMD_TABLE chtab[] = {
 	"ASCII", 0,
 	"US-ASCII", 0,
 	"ISO8859", 1,
@@ -112,8 +109,7 @@ char    **argv;
 
 	arg = argv[1];
 
-	switch(cmd_srch(argv[0], cmdtab))
-	{
+	switch(cmd_srch(argv[0], cmdtab)) {
 	case SYSLOG:
 		DLOG (log_dsap,LLOG_DEBUG,( "Tailor SYSLOG %s", arg));
 		log_tai(log_dsap, &argv[1], argc-1);
@@ -158,7 +154,7 @@ char    **argv;
 				set_av_pe_print (str2syntax("photo"),strdup(proc));
 			}
 		}
-		break;	
+		break;
 	case JPEG:
 		DLOG (log_dsap,LLOG_DEBUG,( "Tailor jpeg=%s", arg));
 		if ((term = getenv ("TERM")) && strcmp (term, arg) == 0) {
@@ -171,7 +167,7 @@ char    **argv;
 				set_av_pe_print (str2syntax("jpeg"),strdup(proc));
 			}
 		}
-		break;	
+		break;
 	case DSAADDR:
 		if (myname == NULLCP) {
 			/* use first 'dsa_address' in tailor file */
@@ -191,8 +187,8 @@ char    **argv;
 	case ISODE_TAILOR:
 		DLOG (log_dsap,LLOG_TRACE,( "Tailor Isode %s%s",arg,argv[2]));
 		if (argc != 3)
-			LLOG (log_dsap,LLOG_EXCEPTIONS,( 
-			      "Invalid isode option in quiputailor"));
+			LLOG (log_dsap,LLOG_EXCEPTIONS,(
+					  "Invalid isode option in quiputailor"));
 		else
 			(void) isodesetvar(arg,strdup(argv[2]),0);
 		break;

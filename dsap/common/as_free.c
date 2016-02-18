@@ -36,8 +36,8 @@ Attr_Sequence as;
 as_free (as)
 Attr_Sequence as;
 {
-register Attr_Sequence eptr;
-register Attr_Sequence next;
+	register Attr_Sequence eptr;
+	register Attr_Sequence next;
 
 	for(eptr = as; eptr != NULLATTR; eptr = next) {
 		next = eptr->attr_link;

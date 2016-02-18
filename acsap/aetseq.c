@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/aetseq.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/acsap/RCS/aetseq.c,v 9.0 1992/06/16 12:05:59 isode Rel $
  *
  *
@@ -40,77 +40,77 @@ static struct isoentity ies;
 
 int	str2aet_seq (designator, qualifier, iep)
 char   *designator,
-       *qualifier;
+	   *qualifier;
 struct isoentity *iep;
 {
-    int     hitdes,
-	    hitqual;
-    char    descriptor[BUFSIZ],
-	    desdflt[BUFSIZ],
-	    qualdflt[BUFSIZ];
-    register struct isoentity  *ie;
-    struct isoentity ids,
-		     iqs;
+	int     hitdes,
+			hitqual;
+	char    descriptor[BUFSIZ],
+			desdflt[BUFSIZ],
+			qualdflt[BUFSIZ];
+	register struct isoentity  *ie;
+	struct isoentity ids,
+			iqs;
 
-    (void) sprintf (objent, "%s-%s", designator, qualifier);
-    (void) sprintf (desdflt, "%s-%s", designator, "default");
-    (void) sprintf (qualdflt, "%s-%s", "default", qualifier);
-    hitdes = hitqual = 0;
-    bzero ((char *) &ids, sizeof ids);
-    bzero ((char *) &iqs, sizeof iqs);
+	(void) sprintf (objent, "%s-%s", designator, qualifier);
+	(void) sprintf (desdflt, "%s-%s", designator, "default");
+	(void) sprintf (qualdflt, "%s-%s", "default", qualifier);
+	hitdes = hitqual = 0;
+	bzero ((char *) &ids, sizeof ids);
+	bzero ((char *) &iqs, sizeof iqs);
 
-    ie = NULL;
+	ie = NULL;
 
-    if (!setisoentity (0))
+	if (!setisoentity (0))
+		return NOTOK;
+	while (_startisoentity (descriptor) == OK) {
+		if (strcmp (descriptor, objent) == 0) {
+			if (_stopisoentity (descriptor, &ies) != OK)
+				continue;
+
+			ie = &ies;
+			break;
+		}
+
+		if (!hitdes && strcmp (descriptor, desdflt) == 0) {
+			if (_stopisoentity (descriptor, &ies) != OK)
+				continue;
+			ies.ie_descriptor = objent;
+
+			hitdes++;
+			ids = ies;		/* struct copy */
+			continue;
+		}
+
+		if (!hitqual && strcmp (descriptor, qualdflt) == 0) {
+			if (_stopisoentity (descriptor, &ies) != OK)
+				continue;
+			ies.ie_descriptor = objent;
+
+			hitqual++;
+			iqs = ies;		/* struct copy */
+			continue;
+		}
+	}
+	(void) endisoentity ();
+
+	if (!ie && hitqual) {
+		ie = &ies;
+		*ie = iqs;		/* struct copy */
+
+		if (hitdes) {
+			bcopy ((char *) ids.ie_addr.pa_addr.sa_addr.ta_addrs,
+				   (char *) ie -> ie_addr.pa_addr.sa_addr.ta_addrs,
+				   sizeof ie -> ie_addr.pa_addr.sa_addr.ta_addrs);
+			ie -> ie_addr.pa_addr.sa_addr.ta_naddr =
+				ids.ie_addr.pa_addr.sa_addr.ta_naddr;
+		}
+	}
+
+	if (ie) {
+		*iep = *ie;	/* struct copy */
+		return OK;
+	}
+
 	return NOTOK;
-    while (_startisoentity (descriptor) == OK) {
-	if (strcmp (descriptor, objent) == 0) {
-	    if (_stopisoentity (descriptor, &ies) != OK)
-		continue;
-
-	    ie = &ies;
-	    break;
-	}
-
-	if (!hitdes && strcmp (descriptor, desdflt) == 0) {
-	    if (_stopisoentity (descriptor, &ies) != OK)
-		continue;
-	    ies.ie_descriptor = objent;
-
-	    hitdes++;
-	    ids = ies;		/* struct copy */
-	    continue;
-	}
-
-	if (!hitqual && strcmp (descriptor, qualdflt) == 0) {
-	    if (_stopisoentity (descriptor, &ies) != OK)
-		continue;
-	    ies.ie_descriptor = objent;
-
-	    hitqual++;
-	    iqs = ies;		/* struct copy */
-	    continue;
-	}
-    }
-    (void) endisoentity ();
-
-    if (!ie && hitqual) {
-	ie = &ies;
-	*ie = iqs;		/* struct copy */
-
-	if (hitdes) {
-	    bcopy ((char *) ids.ie_addr.pa_addr.sa_addr.ta_addrs,
-		   (char *) ie -> ie_addr.pa_addr.sa_addr.ta_addrs,
-		   sizeof ie -> ie_addr.pa_addr.sa_addr.ta_addrs);
-	    ie -> ie_addr.pa_addr.sa_addr.ta_naddr =
-		ids.ie_addr.pa_addr.sa_addr.ta_naddr;
-	}
-    }
-
-    if (ie) {
-	*iep = *ie;	/* struct copy */
-	return OK;
-    }
-    
-    return NOTOK;
 }

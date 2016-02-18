@@ -1,6 +1,6 @@
 /* pepdefs.h */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/pepdefs.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -37,7 +37,7 @@ typedef	struct	{
 	PE	(*md_ducode)();	/* User code for decoding */
 	PE	(*md_pucode)();	/* User code for printing */
 
-	}	modtyp;
+}	modtyp;
 
 #ifndef NULL
 #define NULL	(char *)0

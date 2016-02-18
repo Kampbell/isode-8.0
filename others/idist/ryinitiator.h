@@ -1,6 +1,6 @@
 /* ryinitiator.h - include file for the generic interactive initiator */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/idist/RCS/ryinitiator.h,v 9.0 1992/06/16 12:42:00 isode Rel $
  *
  *
@@ -28,17 +28,17 @@
 
 
 static struct dispatch {
-    char   *ds_name;
-    int	    ds_operation;
+	char   *ds_name;
+	int	    ds_operation;
 
-    IFP	    ds_argument;
-    modtyp *ds_mod;
-    int	    ds_index;
+	IFP	    ds_argument;
+	modtyp *ds_mod;
+	int	    ds_index;
 
-    IFP	    ds_result;
-    IFP	    ds_error;
+	IFP	    ds_result;
+	IFP	    ds_error;
 
-    char   *ds_help;
+	char   *ds_help;
 };
 
 

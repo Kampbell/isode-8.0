@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydsblock.c,v 9.0 1992/06/16 12:37:29 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosy/RCS/rydsblock.c,v 9.0 1992/06/16 12:37:29 isode Rel $
  *
  *
@@ -42,23 +42,23 @@ struct dspblk  *newdsblk (sd, ryo)
 int	sd;
 struct RyOperation *ryo;
 {
-    register struct dspblk *dsb;
+	register struct dspblk *dsb;
 
-    dsb = (struct dspblk   *) calloc (1, sizeof *dsb);
-    if (dsb == NULL)
-	return NULL;
+	dsb = (struct dspblk   *) calloc (1, sizeof *dsb);
+	if (dsb == NULL)
+		return NULL;
 
-    dsb -> dsb_fd = sd;
-    dsb -> dsb_ryo = ryo;
+	dsb -> dsb_fd = sd;
+	dsb -> dsb_ryo = ryo;
 
-    if (once_only == 0) {
-	DSHead -> dsb_forw = DSHead -> dsb_back = DSHead;
-	once_only++;
-    }
+	if (once_only == 0) {
+		DSHead -> dsb_forw = DSHead -> dsb_back = DSHead;
+		once_only++;
+	}
 
-    insque (dsb, DSHead -> dsb_back);
+	insque (dsb, DSHead -> dsb_back);
 
-    return dsb;
+	return dsb;
 }
 
 /*  */
@@ -66,30 +66,30 @@ struct RyOperation *ryo;
 freedsblk (dsb)
 register struct dspblk *dsb;
 {
-    if (dsb == NULL)
-	return;
+	if (dsb == NULL)
+		return;
 
-    remque (dsb);
+	remque (dsb);
 
-    free ((char *) dsb);
+	free ((char *) dsb);
 }
 
 /*  */
 
 struct dspblk   *finddsblk (sd, op)
 register int	sd,
-		op;
+			op;
 {
-    register struct dspblk *dsb;
+	register struct dspblk *dsb;
 
-    if (once_only == 0)
+	if (once_only == 0)
+		return NULL;
+
+	for (dsb = DSHead -> dsb_forw; dsb != DSHead; dsb = dsb -> dsb_forw)
+		if (dsb -> dsb_fd == sd && dsb -> dsb_ryo -> ryo_op == op)
+			return dsb;
+
 	return NULL;
-
-    for (dsb = DSHead -> dsb_forw; dsb != DSHead; dsb = dsb -> dsb_forw)
-	if (dsb -> dsb_fd == sd && dsb -> dsb_ryo -> ryo_op == op)
-	    return dsb;
-
-    return NULL;
 }
 
 /*  */
@@ -97,16 +97,16 @@ register int	sd,
 losedsblk (sd)
 register int	sd;
 {
-    register struct dspblk *dsb,
-                           *ds2;
+	register struct dspblk *dsb,
+			*ds2;
 
-    if (once_only == 0)
-	return;
+	if (once_only == 0)
+		return;
 
-    for (dsb = DSHead -> dsb_forw; dsb != DSHead; dsb = ds2) {
-	ds2 = dsb -> dsb_forw;
+	for (dsb = DSHead -> dsb_forw; dsb != DSHead; dsb = ds2) {
+		ds2 = dsb -> dsb_forw;
 
-	if (dsb -> dsb_fd == sd)
-	    freedsblk (dsb);
-    }
+		if (dsb -> dsb_fd == sd)
+			freedsblk (dsb);
+	}
 }

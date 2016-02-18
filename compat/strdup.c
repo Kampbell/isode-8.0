@@ -34,17 +34,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/strdup.c,v 9.0 1992/
 
 /*  */
 #if !defined(SVR4) || defined(_AIX)
-                      /* strdup in AIX does not seem to use QUIPUs malloc! */
+/* strdup in AIX does not seem to use QUIPUs malloc! */
 
 char   *strdup (str)
 register char   *str;
 {
 	register char *ptr;
 
-	if ((ptr = malloc((unsigned) (strlen (str) + 1))) == NULL){
-	    LLOG (compat_log,LLOG_FATAL, ("strdup malloc() failure"));
-	    abort ();
-	    /* NOTREACHED */
+	if ((ptr = malloc((unsigned) (strlen (str) + 1))) == NULL) {
+		LLOG (compat_log,LLOG_FATAL, ("strdup malloc() failure"));
+		abort ();
+		/* NOTREACHED */
 	}
 
 	(void) strcpy (ptr, str);
@@ -54,7 +54,8 @@ register char   *str;
 
 #else
 
-strdup_stub ()
-{;}
+strdup_stub () {
+	;
+}
 
 #endif

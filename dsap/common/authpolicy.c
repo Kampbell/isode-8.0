@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/authpolicy.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/authpolicy.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -91,7 +91,7 @@ PE	pe;
 	Authpolicy	ap;
 
 	if ( decode_Quipu_AuthenticationPolicySyntax( pe, 1, NULLIP, NULLVP,
-	    &ap ) == NOTOK ) {
+			&ap ) == NOTOK ) {
 		return( NULLAUTHP );
 	}
 
@@ -104,7 +104,7 @@ Authpolicy ap;
 	PE ret_pe;
 
 	(void) encode_Quipu_AuthenticationPolicySyntax( &ret_pe, 0, 0, NULLCP,
-	    ap );
+			ap );
 
 	return( ret_pe );
 }
@@ -184,26 +184,25 @@ int		format;
 {
 	if ( format == READOUT ) {
 		ps_printf( ps, "modification policy: %s\n",
-		    policy[ap->ap_modification] );
+				   policy[ap->ap_modification] );
 		ps_printf( ps, "\t\t\tread and compare policy: %s\n",
-		    policy[ap->ap_readandcompare] );
+				   policy[ap->ap_readandcompare] );
 		ps_printf( ps, "\t\t\tlist and search policy: %s",
-		    policy[ap->ap_listandsearch] );
+				   policy[ap->ap_listandsearch] );
 	} else {
 		ps_printf( ps, "%s # %s # %s", policy[ap->ap_modification],
-		    policy[ap->ap_readandcompare],
-		    policy[ap->ap_listandsearch] );
+				   policy[ap->ap_readandcompare],
+				   policy[ap->ap_listandsearch] );
 	}
 }
 
-authp_syntax()
-{
+authp_syntax() {
 	extern	sfree();
 
 	authp_sntx = add_attribute_syntax ("AuthenticationPolicySyntax",
-		(IFP) authp_enc,	(IFP) authp_decode,
-		(IFP) str2authp,	authp_print,
-		(IFP) authp_cpy,	authp_cmp,
-		sfree,			NULLCP,
-		NULLIFP,		TRUE);
+									   (IFP) authp_enc,	(IFP) authp_decode,
+									   (IFP) str2authp,	authp_print,
+									   (IFP) authp_cpy,	authp_cmp,
+									   sfree,			NULLCP,
+									   NULLIFP,		TRUE);
 }

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/objectbyname.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/objectbyname.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -36,30 +36,29 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/objectbyname.c,v 9.0 1
 struct isobject *getisobjectbyname (descriptor)
 char   *descriptor;
 {
-    register struct isobject   *io;
+	register struct isobject   *io;
 
-    isodetailor (NULLCP, 0);
+	isodetailor (NULLCP, 0);
 #ifdef	DEBUG
-    SLOG (addr_log, LLOG_TRACE, NULLCP,
-	  ("getisobjectbyname \"%s\"", descriptor));
+	SLOG (addr_log, LLOG_TRACE, NULLCP,
+		  ("getisobjectbyname \"%s\"", descriptor));
 #endif
 
-    (void) setisobject (0);
-    while (io = getisobject ())
-	if (strcmp (descriptor, io -> io_descriptor) == 0)
-	    break;
-    (void) endisobject ();
+	(void) setisobject (0);
+	while (io = getisobject ())
+		if (strcmp (descriptor, io -> io_descriptor) == 0)
+			break;
+	(void) endisobject ();
 
-    if (io) {
+	if (io) {
 #ifdef	DEBUG
-	SLOG (addr_log, LLOG_DEBUG, NULLCP,
-	      ("\tODE: \"%s\"\tOID: %s",
-	       io -> io_descriptor, sprintoid (&io -> io_identity)));
+		SLOG (addr_log, LLOG_DEBUG, NULLCP,
+			  ("\tODE: \"%s\"\tOID: %s",
+			   io -> io_descriptor, sprintoid (&io -> io_identity)));
 #endif
-    }
-    else
-	SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
-	      ("lookup of object \"%s\" failed", descriptor));
+	} else
+		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
+			  ("lookup of object \"%s\" failed", descriptor));
 
-    return io;
+	return io;
 }

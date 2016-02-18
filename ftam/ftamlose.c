@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamlose.c,v 9.0 1992/06/16 12:14:55 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam/RCS/ftamlose.c,v 9.0 1992/06/16 12:14:55 isode Rel $
  *
  *
@@ -35,40 +35,39 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamlose.c,v 9.0 1992/
 
 #ifndef	lint
 int	fpktlose (va_alist)
-va_dcl
-{
-    int     observer,
-    	    reason,
-            result,
-            source;
-    struct FTAMindication   ftis;
-    register struct ftamblk *fsb;
-    register struct FTAMindication *fti;
-    va_list	ap;
+va_dcl {
+	int     observer,
+	reason,
+	result,
+	source;
+	struct FTAMindication   ftis;
+	register struct ftamblk *fsb;
+	register struct FTAMindication *fti;
+	va_list	ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    fsb = va_arg (ap, struct ftamblk *);
-    fti = va_arg (ap, struct FTAMindication *);
-    reason = va_arg (ap, int);
+	fsb = va_arg (ap, struct ftamblk *);
+	fti = va_arg (ap, struct FTAMindication *);
+	reason = va_arg (ap, int);
 
-    if (fsb -> fsb_flags & FSB_INIT)
-	observer = EREF_IFPM, source = EREF_RFPM;
-    else
-	observer = EREF_RFPM, source = EREF_IFPM;
+	if (fsb -> fsb_flags & FSB_INIT)
+		observer = EREF_IFPM, source = EREF_RFPM;
+	else
+		observer = EREF_RFPM, source = EREF_IFPM;
 
-    result = _ftamoops (fti, reason, 1, observer, source, ap);
+	result = _ftamoops (fti, reason, 1, observer, source, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    if (fsb -> fsb_fd == NOTOK)
+	if (fsb -> fsb_fd == NOTOK)
+		return result;
+
+	(void) FAbortRequestAux (fsb, type_FTAM_PDU_f__p__abort__request,
+	FACTION_PERM, fti -> fti_abort.fta_diags, 1,
+	&ftis);
+
 	return result;
-
-    (void) FAbortRequestAux (fsb, type_FTAM_PDU_f__p__abort__request,
-			     FACTION_PERM, fti -> fti_abort.fta_diags, 1,
-			     &ftis);
-
-    return result;
 }
 #else
 /* VARARGS5 */
@@ -78,9 +77,9 @@ struct ftamblk *fsb;
 struct FTAMindication *fti;
 int	reason;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return fpktlose (fsb, fti, reason, what, fmt);
+	return fpktlose (fsb, fti, reason, what, fmt);
 }
 #endif
 
@@ -88,25 +87,24 @@ char   *what,
 
 #ifndef	lint
 int	ftamlose (va_alist)
-va_dcl
-{
-    int     fatal,
-    	    reason,
-	    result;
-    struct FTAMindication *fti;
-    va_list	ap;
+va_dcl {
+	int     fatal,
+	reason,
+	result;
+	struct FTAMindication *fti;
+	va_list	ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    fti = va_arg (ap, struct FTAMindication *);
-    reason = va_arg (ap, int);
-    fatal = va_arg (ap, int);
+	fti = va_arg (ap, struct FTAMindication *);
+	reason = va_arg (ap, int);
+	fatal = va_arg (ap, int);
 
-    result = _ftamoops (fti, reason, fatal, EREF_NONE, EREF_NONE, ap);
+	result = _ftamoops (fti, reason, fatal, EREF_NONE, EREF_NONE, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return result;
+	return result;
 }
 #else
 /* VARARGS4 */
@@ -116,9 +114,9 @@ register struct FTAMindication *fti;
 int	reason,
 	fatal;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return ftamlose (fti, reason, fatal, what, fmt);
+	return ftamlose (fti, reason, fatal, what, fmt);
 }
 #endif
 
@@ -126,29 +124,28 @@ char   *what,
 
 #ifndef	lint
 int	ftamoops (va_alist)
-va_dcl
-{
-    int	    reason,
-	    result,
-	    fatal,
-	    observer,
-	    source;
-    struct FTAMindication *fti;
-    va_list ap;
+va_dcl {
+	int	    reason,
+	result,
+	fatal,
+	observer,
+	source;
+	struct FTAMindication *fti;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    fti = va_arg (ap, struct FTAMindication *);
-    reason = va_arg (ap, int);
-    fatal = va_arg (ap, int);
-    observer = va_arg (ap, int);
-    source = va_arg (ap, int);
+	fti = va_arg (ap, struct FTAMindication *);
+	reason = va_arg (ap, int);
+	fatal = va_arg (ap, int);
+	observer = va_arg (ap, int);
+	source = va_arg (ap, int);
 
-    result = _ftamoops (fti, reason, fatal, source, observer, ap);
+	result = _ftamoops (fti, reason, fatal, source, observer, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return result;
+	return result;
 }
 
 
@@ -160,34 +157,34 @@ int	reason,
 	source;
 va_list	ap;
 {
-    register char  *bp;
-    char    buffer[BUFSIZ];
-    register struct FTAMabort  *fta;
-    register struct FTAMdiagnostic *ftd;
+	register char  *bp;
+	char    buffer[BUFSIZ];
+	register struct FTAMabort  *fta;
+	register struct FTAMdiagnostic *ftd;
 
-    if (fti) {
-	bzero ((char *) fti, sizeof *fti);
-	fti -> fti_type = FTI_ABORT;
-	fta = &fti -> fti_abort;
+	if (fti) {
+		bzero ((char *) fti, sizeof *fti);
+		fti -> fti_type = FTI_ABORT;
+		fta = &fti -> fti_abort;
 
-	asprintf (bp = buffer, ap);
-	bp += strlen (bp);
+		asprintf (bp = buffer, ap);
+		bp += strlen (bp);
 
-	fta -> fta_peer = 0;
-	fta -> fta_action = fatal ? FACTION_PERM : FACTION_TRANS;
+		fta -> fta_peer = 0;
+		fta -> fta_action = fatal ? FACTION_PERM : FACTION_TRANS;
 
-	ftd = &fta -> fta_diags[0];
-	ftd -> ftd_type = fatal ? DIAG_PERM : DIAG_TRANS;
-	ftd -> ftd_identifier = reason;
-	ftd -> ftd_observer = observer;
-	ftd -> ftd_source = source;
-	ftd -> ftd_delay = DIAG_NODELAY;
-	copyFTAMdata (buffer, bp - buffer, ftd);
+		ftd = &fta -> fta_diags[0];
+		ftd -> ftd_type = fatal ? DIAG_PERM : DIAG_TRANS;
+		ftd -> ftd_identifier = reason;
+		ftd -> ftd_observer = observer;
+		ftd -> ftd_source = source;
+		ftd -> ftd_delay = DIAG_NODELAY;
+		copyFTAMdata (buffer, bp - buffer, ftd);
 
-	fta -> fta_ndiag = 1;
-    }
+		fta -> fta_ndiag = 1;
+	}
 
-    return NOTOK;
+	return NOTOK;
 }
 #else
 /* VARARGS7 */
@@ -199,8 +196,8 @@ int	reason,
 	observer,
 	source;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return ftamoops (fti, reason, fatal, observer, source, what, fmt);
+	return ftamoops (fti, reason, fatal, observer, source, what, fmt);
 }
 #endif

@@ -63,63 +63,63 @@ cleanup() {}
 /*  errMsg                                                      */
 /*--------------------------------------------------------------*/
 char *errMsg(type)
-    int type;
+int type;
 {
-    if(type == NOTOK)
-	return rfaErrStr;
-    else
-	return sys_errname(errno);
+	if(type == NOTOK)
+		return rfaErrStr;
+	else
+		return sys_errname(errno);
 }
 
 /*--------------------------------------------------------------*/
 /*  getLocalFileRfaInfo						*/
 /*--------------------------------------------------------------*/
 int getLocalRfaInfo(fn, rfap, rfalp, reg)
-    char **fn;
-    struct RfaInfo **rfap, **rfalp;
-    int reg;
+char **fn;
+struct RfaInfo **rfap, **rfalp;
+int reg;
 {
-    int rc;
+	int rc;
 
 
-    /*--- expand symbolic links in fn ---*/
-    if((*fn = getRfaContext(cwd_remote, *fn)) == NULL) {
-	fprintf(err,
-		"*** local file access error : not within RFA subtree %s ***\n"
-		, fsBase);
-	return(NOTOK_OUTOFSUBTREE);
-    }
-    if ((*fn = expandSymLinks(*fn)) == NULL) {
-	fprintf(err, "*** local file access error : %s ***\n", rfaErrStr);
-	return(NOTOK_OUTOFSUBTREE);
-    }
-
-    /*--- get file Info ---*/
-    if ((rc = getRfaInfoList(dirname(*fn), rfalp, basename(*fn), 1)) != OK) {
-	fprintf(err,
-	    "*** local file access error : can't read %s/.rfainfo (%s) ***\n", 
-	    dirname(*fn), errMsg(rc));
-	return(NOTOK_FILEACCESS);
-    }
-
-    if ((*rfap = findRfaInfo(basename(*fn), *rfalp)) == NULL) {
-	releaseRfaInfoList(*fn,*rfalp);
-	*rfalp = NULL;
-	fprintf(err,"*** local file access error : %s does not exist ***\n",
-		*fn);
-	return(NOTOK_FILEACCESS);
-    }
-
-    /*--- check if regular file ---*/
-    if (reg)
-	if (((*rfap)->ri_mode & S_IFMT) != S_IFREG) {
-	    releaseRfaInfoList(*fn,*rfalp);
-	    fprintf(err," *** status error : not a regular file ***\n");
-	    *rfalp = NULL;
-	    return NOTOK_NOTREGULAR;
+	/*--- expand symbolic links in fn ---*/
+	if((*fn = getRfaContext(cwd_remote, *fn)) == NULL) {
+		fprintf(err,
+				"*** local file access error : not within RFA subtree %s ***\n"
+				, fsBase);
+		return(NOTOK_OUTOFSUBTREE);
+	}
+	if ((*fn = expandSymLinks(*fn)) == NULL) {
+		fprintf(err, "*** local file access error : %s ***\n", rfaErrStr);
+		return(NOTOK_OUTOFSUBTREE);
 	}
 
-    return OK;
+	/*--- get file Info ---*/
+	if ((rc = getRfaInfoList(dirname(*fn), rfalp, basename(*fn), 1)) != OK) {
+		fprintf(err,
+				"*** local file access error : can't read %s/.rfainfo (%s) ***\n",
+				dirname(*fn), errMsg(rc));
+		return(NOTOK_FILEACCESS);
+	}
+
+	if ((*rfap = findRfaInfo(basename(*fn), *rfalp)) == NULL) {
+		releaseRfaInfoList(*fn,*rfalp);
+		*rfalp = NULL;
+		fprintf(err,"*** local file access error : %s does not exist ***\n",
+				*fn);
+		return(NOTOK_FILEACCESS);
+	}
+
+	/*--- check if regular file ---*/
+	if (reg)
+		if (((*rfap)->ri_mode & S_IFMT) != S_IFREG) {
+			releaseRfaInfoList(*fn,*rfalp);
+			fprintf(err," *** status error : not a regular file ***\n");
+			*rfalp = NULL;
+			return NOTOK_NOTREGULAR;
+		}
+
+	return OK;
 }
 
 
@@ -127,38 +127,38 @@ int getLocalRfaInfo(fn, rfap, rfalp, reg)
 /*  unlockFile							*/
 /*--------------------------------------------------------------*/
 do_lunlock(fn)
-    char *fn;
+char *fn;
 {
-    int rc;
-    struct RfaInfo *rfalist, *rfa;
+	int rc;
+	struct RfaInfo *rfalist, *rfa;
 
-    /*--- get file Info ---*/
-    if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 1)) != OK) 
-	return rc;
+	/*--- get file Info ---*/
+	if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 1)) != OK)
+		return rc;
 
-    /*--- check if we are master ---*/
-    if (IS_SLAVE(rfa->ri_status)) {
-	releaseRfaInfoList(dirname(fn), rfalist);
-	fprintf(err," *** local file %s is slave version ***\n", fn);
-	return NOTOK_IS_SLAVE;
-    }
-    if (!IS_LOCKED(rfa->ri_status)) {
-	releaseRfaInfoList(dirname(fn), rfalist);
-	fprintf(err," *** local file %s not locked ***\n", fn);
-	return NOTOK_NOTLOCKED;
-    }
-    SET_LOCKINFO(rfa->ri_status, RI_UNLOCKED);
-    rfa->ri_lcksince = NULL;
-    free(rfa->ri_lckname);
-    rfa->ri_lckname = "NONE";
+	/*--- check if we are master ---*/
+	if (IS_SLAVE(rfa->ri_status)) {
+		releaseRfaInfoList(dirname(fn), rfalist);
+		fprintf(err," *** local file %s is slave version ***\n", fn);
+		return NOTOK_IS_SLAVE;
+	}
+	if (!IS_LOCKED(rfa->ri_status)) {
+		releaseRfaInfoList(dirname(fn), rfalist);
+		fprintf(err," *** local file %s not locked ***\n", fn);
+		return NOTOK_NOTLOCKED;
+	}
+	SET_LOCKINFO(rfa->ri_status, RI_UNLOCKED);
+	rfa->ri_lcksince = NULL;
+	free(rfa->ri_lckname);
+	rfa->ri_lckname = "NONE";
 
-    if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
+	if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
+		releaseRfaInfoList(dirname(fn), rfalist);
+		fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
+		return NOTOK_FILEACCESS;
+	}
 	releaseRfaInfoList(dirname(fn), rfalist);
-	fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
-	return NOTOK_FILEACCESS;
-    }
-    releaseRfaInfoList(dirname(fn), rfalist);
-    return OK;
+	return OK;
 }
 
 
@@ -166,99 +166,99 @@ do_lunlock(fn)
 /*  lockFile							*/
 /*--------------------------------------------------------------*/
 do_llock(fn)
-    char *fn;
+char *fn;
 {
-    int res, rc;
-    struct RfaInfo *rfalist, *rfa;
+	int res, rc;
+	struct RfaInfo *rfalist, *rfa;
 
-    /*--- get file Info ---*/
-    if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 1)) != OK) 
-	return rc;
+	/*--- get file Info ---*/
+	if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 1)) != OK)
+		return rc;
 
-    /*--- check if we are master ---*/
-    if (IS_MASTER(rfa->ri_status) || IS_UNREGISTERED(rfa->ri_status)) {
-	if (IS_LOCKED(rfa->ri_status)) {
-	    releaseRfaInfoList(dirname(fn), rfalist);
-	    fprintf(err," *** file already locked by %s since %s ***\n",
-		    rfa->ri_lckname, shortTime(&(rfa->ri_lcksince)));
-	    return NOTOK_LOCKED;
+	/*--- check if we are master ---*/
+	if (IS_MASTER(rfa->ri_status) || IS_UNREGISTERED(rfa->ri_status)) {
+		if (IS_LOCKED(rfa->ri_status)) {
+			releaseRfaInfoList(dirname(fn), rfalist);
+			fprintf(err," *** file already locked by %s since %s ***\n",
+					rfa->ri_lckname, shortTime(&(rfa->ri_lcksince)));
+			return NOTOK_LOCKED;
+		}
+		SET_LOCKINFO(rfa->ri_status, RI_LOCKED);
+		rfa->ri_lckname = strdup(getenv("USER"));
+		(void)time(&(rfa->ri_lcksince));
+		if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
+			releaseRfaInfoList(dirname(fn), rfalist);
+			fprintf(err,
+					"*** local file access error : can't write rfainfo (%s) ***\n",
+					errMsg(rc));
+			return NOTOK_FILEACCESS;
+		}
+		releaseRfaInfoList(dirname(fn), rfalist);
+		fprintf(out, "locked file %s\n",fn);
+		return OK;
 	}
-	SET_LOCKINFO(rfa->ri_status, RI_LOCKED);
-	rfa->ri_lckname = strdup(getenv("USER"));
-	(void)time(&(rfa->ri_lcksince));
-	if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
-	    releaseRfaInfoList(dirname(fn), rfalist);
-	    fprintf(err, 
-	     "*** local file access error : can't write rfainfo (%s) ***\n",
-	     errMsg(rc));
-	    return NOTOK_FILEACCESS;
-	}
-	releaseRfaInfoList(dirname(fn), rfalist);
-	fprintf(out, "locked file %s\n",fn);
-	return OK;
-    }
 
-    /*-- here we will need help from Big-Brother "rfa" --*/
-    return NOTOK_LOCAL_LOCK;
+	/*-- here we will need help from Big-Brother "rfa" --*/
+	return NOTOK_LOCAL_LOCK;
 }
 
 
-main (ac, av) 
+main (ac, av)
 int ac;
 char **av;
 {
-    char c, *cwd, buf[BUFSIZ];
-    char *cmd=NULL;
-    int rc;
+	char c, *cwd, buf[BUFSIZ];
+	char *cmd=NULL;
+	int rc;
 
-    myname = av[0];
+	myname = av[0];
 
-    out = stdout;
-    err = stderr;
+	out = stdout;
+	err = stderr;
 
-    initLog(myname);
+	initLog(myname);
 
-    if (ac < 2) {
-	fprintf(stderr, "USAGE: %s filename [-q]\n", basename(myname));
-	exit (1);
-    }
-    if (ac > 2 && strcmp(av[2], "-q") == 0)
+	if (ac < 2) {
+		fprintf(stderr, "USAGE: %s filename [-q]\n", basename(myname));
+		exit (1);
+	}
+	if (ac > 2 && strcmp(av[2], "-q") == 0)
+		interactive = 0;
+
+	/*--- rfa tailoring ---*/
+	sprintf(buf, "%s/rfatailor", isodetcpath);
+	if (tailor(buf) != OK) {
+		fprintf(stderr, "*** tailoring %s - %s ***\n", buf, rfaErrStr);
+		exit(1);
+	}
+	sprintf(buf, "%s/rfatailor", RFA_TAILDIR);
+	if (tailor(buf) != OK) {
+		fprintf(stderr, "*** tailoring %s - %s ***\n", buf, rfaErrStr);
+		exit(1);
+	}
+	sprintf(buf,"%s/.rfarc", getenv("HOME"));
+	if (tailor(buf) != OK) {
+		fprintf(stderr, "*** tailoring %s - %s ***\n", buf, rfaErrStr);
+		exit(1);
+	}
+
+	/*--- init cwd ---*/
+	(void)getwd(buf);
+	if (strncmp(buf, fsBase, strlen(fsBase)) == 0)
+		strcpy(cwd_remote, buf + strlen(fsBase));
+
 	interactive = 0;
+	commandMode = 1;
+	if (strcmp(basename(myname), "llock") == 0)
+		rc = do_llock(av[1]);
+	else
+		rc = do_lunlock(av[1]);
 
-    /*--- rfa tailoring ---*/
-    sprintf(buf, "%s/rfatailor", isodetcpath);
-    if (tailor(buf) != OK) {
-        fprintf(stderr, "*** tailoring %s - %s ***\n", buf, rfaErrStr);
-        exit(1);
-    }
-    sprintf(buf, "%s/rfatailor", RFA_TAILDIR);
-    if (tailor(buf) != OK) {
-        fprintf(stderr, "*** tailoring %s - %s ***\n", buf, rfaErrStr);
-        exit(1);
-    }
-    sprintf(buf,"%s/.rfarc", getenv("HOME"));
-    if (tailor(buf) != OK) {
-        fprintf(stderr, "*** tailoring %s - %s ***\n", buf, rfaErrStr);
-        exit(1);
-    }
+	if (interactive && (rc == 2))
+		fprintf(stderr,"*** can't LOCK locally, must use RFA command ***\n");
 
-    /*--- init cwd ---*/
-    (void)getwd(buf);
-    if (strncmp(buf, fsBase, strlen(fsBase)) == 0) 
-	strcpy(cwd_remote, buf + strlen(fsBase));
-
-    interactive = 0;
-    commandMode = 1;
-    if (strcmp(basename(myname), "llock") == 0) 
-	rc = do_llock(av[1]);
-    else
-    	rc = do_lunlock(av[1]);
-
-    if (interactive && (rc == 2)) 
-	fprintf(stderr,"*** can't LOCK locally, must use RFA command ***\n");
-
-    exit (rc);
+	exit (rc);
 }
 
-    
+
 

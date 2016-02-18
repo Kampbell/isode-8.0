@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/filteritem.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/filteritem.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -99,14 +99,14 @@ Filter          fltr;
 
 		fltr->FUITEM.UNAVA.ava_type = at;
 		str = TidyString (str);
-		if ((fltr->FUITEM.UNAVA.ava_value = str2AttrV (str, at->oa_syntax)) == NULLAttrV) 
+		if ((fltr->FUITEM.UNAVA.ava_value = str2AttrV (str, at->oa_syntax)) == NULLAttrV)
 			return (NOTOK);
 		return (OK);
 	}
 
 	/*
 	 * We have to parse the string for 'initial', 'final' and 'any'
-	 * components 
+	 * components
 	 */
 
 	fltr->FUITEM.UNSUB.fi_sub_initial = NULLAV;
@@ -163,10 +163,10 @@ Filter          fltr;
 			str = TidyString (str);
 			debug (1, ("ANY(%s) ", str));
 
-			if (*str == 0) 
-			    av = str2AttrV ("\\20", at->oa_syntax);
-			else 
-			    av = str2AttrV (str, at->oa_syntax);
+			if (*str == 0)
+				av = str2AttrV ("\\20", at->oa_syntax);
+			else
+				av = str2AttrV (str, at->oa_syntax);
 
 			if (av == NULLAttrV)
 				return NOTOK;

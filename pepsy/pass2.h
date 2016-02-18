@@ -1,6 +1,6 @@
 /* pass2.h */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/pepsy/RCS/pass2.h,v 9.0 1992/06/16 12:24:03 isode Rel $
  *
  *
@@ -95,7 +95,7 @@ struct	univ_typ	{
 	int	univ_type;	/* Type we can use for its contents */
 #define UNF_EXTMOD	1	/* Use an external module reference */
 #define UNF_HASDATA	2	/* Has data structure - allocate data for it */
-    };
+};
 
 extern struct univ_typ *univtyp();
 

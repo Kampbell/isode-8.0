@@ -1,6 +1,6 @@
 /* photo.h - */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/quipu/RCS/photo.h,v 9.0 1992/06/16 12:23:11 isode Rel $
  *
  *
@@ -22,39 +22,39 @@
 
 
 typedef  struct {
-		char length;            /* number of bits in the pattern  */
-		short pattern;          /* the bit pattern
+	char length;            /* number of bits in the pattern  */
+	short pattern;          /* the bit pattern
 						     (starting at bit 13) */
-		} code_word;
+} code_word;
 
 typedef struct {
-		code_word  make,        /* make up code */
-					/* if make.length  = 0  then there
-							 is no make up code */
+	code_word  make,        /* make up code */
+			   /* if make.length  = 0  then there
+			   		 is no make up code */
 			   term;        /* terminal code */
-		} full_code;
+} full_code;
 
 typedef struct {
-		unsigned char pos;     /* pointer into the string */
-		int   * run_top;       /* run length pointer */
-		int   * run_pos;       /* pointer to above */
-		unsigned char mask;    /* mask to get at one bit of the string */
-		char  * dbuf_top;
-		char  * dbuf;
-		} bit_string;
+	unsigned char pos;     /* pointer into the string */
+	int   * run_top;       /* run length pointer */
+	int   * run_pos;       /* pointer to above */
+	unsigned char mask;    /* mask to get at one bit of the string */
+	char  * dbuf_top;
+	char  * dbuf;
+} bit_string;
 
 typedef struct {
-		char  r_type;           /* descibes type of run */
-		int   run_length;       /* a run_length         */
-		} run_type;
+	char  r_type;           /* descibes type of run */
+	int   run_length;       /* a run_length         */
+} run_type;
 
 
 typedef struct nd {
-		char n_type;            /* describe the type of node */
-		struct nd * one;        /* one branch */
-		struct nd * zero;       /* zero branch */
-		int     value;          /* value arrived at */
-	       } node ;
+	char n_type;            /* describe the type of node */
+	struct nd * one;        /* one branch */
+	struct nd * zero;       /* zero branch */
+	int     value;          /* value arrived at */
+} node ;
 
 
 /* now some constant definitions */

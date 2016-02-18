@@ -33,8 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_seq.c,v 9.0 
 dn_seq_free (dnseq)
 struct dn_seq * dnseq;
 {
-struct dn_seq * ptr;
-struct dn_seq * next;
+	struct dn_seq * ptr;
+	struct dn_seq * next;
 
 	for (ptr=dnseq ; ptr!=NULLDNSEQ; ptr=next ) {
 		next = ptr->dns_next;
@@ -47,9 +47,9 @@ struct dn_seq * next;
 struct dn_seq * dn_seq_cpy (dnseq)
 struct dn_seq * dnseq;
 {
-register struct dn_seq * ptr;
-struct dn_seq * ptr2;
-struct dn_seq * result = NULLDNSEQ;
+	register struct dn_seq * ptr;
+	struct dn_seq * ptr2;
+	struct dn_seq * result = NULLDNSEQ;
 
 
 	for (ptr=dnseq ; ptr!=NULLDNSEQ; ptr=ptr->dns_next ) {
@@ -66,7 +66,7 @@ check_dnseq (dnseq,who)
 struct dn_seq * dnseq;
 DN who;
 {
-register struct dn_seq * ptr;
+	register struct dn_seq * ptr;
 
 	for (ptr=dnseq; ptr!=NULLDNSEQ; ptr=ptr->dns_next) {
 		if (dn_cmp (who,ptr->dns_dn) == OK)
@@ -79,48 +79,44 @@ register struct dn_seq * ptr;
 dn_seq_cmp (a,b)
 struct dn_seq * a, * b;
 {
-    struct dn_seq	* dns1;
-    struct dn_seq	* dns2;
+	struct dn_seq	* dns1;
+	struct dn_seq	* dns2;
 
-    if((a == NULLDNSEQ) && (b == NULLDNSEQ))
-	return(0);
+	if((a == NULLDNSEQ) && (b == NULLDNSEQ))
+		return(0);
 
-    if(a==NULLDNSEQ)
-	return(-1);
+	if(a==NULLDNSEQ)
+		return(-1);
 
-    if(b==NULLDNSEQ)
-	return(1);
+	if(b==NULLDNSEQ)
+		return(1);
 
-    for (dns1=a; dns1!=NULLDNSEQ; dns1=dns1->dns_next)
-    {
-	for (dns2=b; dns2!=NULLDNSEQ; dns2=dns2->dns_next)
-	{
-	    if(dn_cmp (dns1->dns_dn,dns2->dns_dn) == 0)
-		break;
+	for (dns1=a; dns1!=NULLDNSEQ; dns1=dns1->dns_next) {
+		for (dns2=b; dns2!=NULLDNSEQ; dns2=dns2->dns_next) {
+			if(dn_cmp (dns1->dns_dn,dns2->dns_dn) == 0)
+				break;
+		}
+		if(dns2 == NULLDNSEQ)
+			return(1);
 	}
-	if(dns2 == NULLDNSEQ)
-	    return(1);
-    }
 
-    for (dns2=b; dns2!=NULLDNSEQ; dns2=dns2->dns_next)
-    {
-	for (dns1=a; dns1!=NULLDNSEQ; dns1=dns1->dns_next)
-	{
-	    if(dn_cmp (dns1->dns_dn,dns2->dns_dn) == 0)
-		break;
+	for (dns2=b; dns2!=NULLDNSEQ; dns2=dns2->dns_next) {
+		for (dns1=a; dns1!=NULLDNSEQ; dns1=dns1->dns_next) {
+			if(dn_cmp (dns1->dns_dn,dns2->dns_dn) == 0)
+				break;
+		}
+		if(dns1 == NULLDNSEQ)
+			return(-1);
 	}
-	if(dns1 == NULLDNSEQ)
-	    return(-1);
-    }
 
-    return (0);
+	return (0);
 }
 
 check_dnseq_prefix (dnseq,who)
 struct dn_seq * dnseq;
 DN who;
 {
-struct dn_seq * ptr;
+	struct dn_seq * ptr;
 
 	for (ptr=dnseq; ptr!=NULLDNSEQ; ptr=ptr->dns_next) {
 		if (dn_cmp_prefix (ptr->dns_dn,who) == OK)
@@ -135,7 +131,7 @@ PS ps;
 struct dn_seq * dnseq;
 int format;
 {
-        if (dnseq == NULLDNSEQ) 
+	if (dnseq == NULLDNSEQ)
 		return;
 
 	dn_print (ps,dnseq->dns_dn,EDBOUT);
@@ -151,10 +147,10 @@ int format;
 struct dn_seq * str2dnseq (str)
 register char * str;
 {
-register char *ptr;
-register char *save,val;
-struct dn_seq * dns = NULLDNSEQ;
-struct dn_seq * newdns;
+	register char *ptr;
+	register char *save,val;
+	struct dn_seq * dns = NULLDNSEQ;
+	struct dn_seq * newdns;
 
 	while ( (ptr = index (str,'$')) != 0) {
 		save = ptr++;
@@ -181,10 +177,9 @@ struct dn_seq * newdns;
 			parse_error ("invalid # in sequence '%s'",str);
 			dn_seq_free (dns);
 			return (NULLDNSEQ);
-		}
-		else
+		} else
 			*--ptr = 0;
-		}
+	}
 
 	newdns = dn_seq_alloc();
 	if ((newdns->dns_dn = str2dn (str)) == NULLDN) {
@@ -202,47 +197,46 @@ int	  dn_in_dnseq(dn, dnseq)
 DN		  dn;
 struct dn_seq	* dnseq;
 {
-    struct dn_seq	* ptr;
-    register int 	i = 1;
+	struct dn_seq	* ptr;
+	register int 	i = 1;
 
-    for(ptr=dnseq; ptr!=NULLDNSEQ; ptr=ptr->dns_next, i++)
-    {
-	if(dn_cmp(dn, ptr->dns_dn) == 0)
-	    break;
-    }
+	for(ptr=dnseq; ptr!=NULLDNSEQ; ptr=ptr->dns_next, i++) {
+		if(dn_cmp(dn, ptr->dns_dn) == 0)
+			break;
+	}
 
-    if(ptr == NULLDNSEQ)
-	return(FALSE);
+	if(ptr == NULLDNSEQ)
+		return(FALSE);
 
-    return(i);
+	return(i);
 }
 
 struct dn_seq	* dn_seq_push(dn,dnseq)
 DN		  dn;
 struct dn_seq	* dnseq;
 {
-    struct dn_seq * ret;
+	struct dn_seq * ret;
 
-    ret = dn_seq_alloc();
+	ret = dn_seq_alloc();
 
-    ret->dns_dn = dn_cpy(dn);
-    ret->dns_next = dnseq;
+	ret->dns_dn = dn_cpy(dn);
+	ret->dns_next = dnseq;
 
-    return(ret);
+	return(ret);
 }
 
 struct dn_seq	* dn_seq_pop(dnseq)
 struct dn_seq	* dnseq;
 {
-    struct dn_seq * ret;
+	struct dn_seq * ret;
 
-    if(dnseq == NULLDNSEQ)
-	return(NULLDNSEQ);
+	if(dnseq == NULLDNSEQ)
+		return(NULLDNSEQ);
 
-    ret = dnseq->dns_next;
+	ret = dnseq->dns_next;
 
-    dn_free(dnseq->dns_dn);
-    free((char *)dnseq);
+	dn_free(dnseq->dns_dn);
+	free((char *)dnseq);
 
-    return(ret);
+	return(ret);
 }

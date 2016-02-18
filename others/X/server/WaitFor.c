@@ -4,13 +4,13 @@ and the Massachusetts Institute of Technology, Cambridge, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the names of Digital or MIT not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -92,10 +92,10 @@ extern int playback_on;
  *     saved, depending on the hardware).  So, WaitForSomething()
  *     has to handle this also (that's why the select() has a timeout.
  *     For more info on ClientsWithInput, see ReadRequestFromClient().
- *     pClientsReady is a mask, the bits set are 
+ *     pClientsReady is a mask, the bits set are
  *     indices into the o.s. depedent table of available clients.
  *     (In this case, there is no table -- the index is the socket
- *     file descriptor.)  
+ *     file descriptor.)
  *****************/
 
 #ifdef ISOCONN
@@ -114,243 +114,214 @@ static long timeTilFrob = 0;		/* while screen saving */
  * This is a macro if mskcnt <= 4
  */
 ANYSET(src)
-    long	*src;
+long	*src;
 {
-    int i;
+	int i;
 
-    for (i=0; i<mskcnt; i++)
-	if (src[ i ])
-	    return (TRUE);
-    return (FALSE);
+	for (i=0; i<mskcnt; i++)
+		if (src[ i ])
+			return (TRUE);
+	return (FALSE);
 }
 #endif
 
 WaitForSomething(pClientsReady, nready, pNewClients, nnew)
-    ClientPtr *pClientsReady;
-    int *nready;
-    ClientPtr *pNewClients;
-    int *nnew;
+ClientPtr *pClientsReady;
+int *nready;
+ClientPtr *pNewClients;
+int *nnew;
 {
-    int i;
-    struct timeval waittime, *wt;
-    long timeout;
-    long clientsReadable[mskcnt];
-    long clientsWritable[mskcnt];
-    long curclient;
-    int selecterr;
+	int i;
+	struct timeval waittime, *wt;
+	long timeout;
+	long clientsReadable[mskcnt];
+	long clientsWritable[mskcnt];
+	long curclient;
+	int selecterr;
 #ifdef ISOCONN
-    int vecp;
-    char *vec[4];
-    struct TSAPdisconnect tds;
-    struct TSAPdisconnect *td = &tds;
+	int vecp;
+	char *vec[4];
+	struct TSAPdisconnect tds;
+	struct TSAPdisconnect *td = &tds;
 #endif /* ISOCONN */
 
 #ifdef	hpux
 	long	ready_inputs;  /* to tell HIL drivers about input */
 #endif	hpux
 
-    *nready = 0;
-    *nnew = 0;
-    CLEARBITS(clientsReadable);
-    if (! (ANYSET(ClientsWithInput)))
-    {
-	/* We need a while loop here to handle 
-	   crashed connections and the screen saver timeout */
-	while (1)
-        {
-            if (ScreenSaverTime)
-	    {
-                timeout = ScreenSaverTime - TimeSinceLastInputEvent();
-	        if (timeout <= 0) /* may be forced by AutoResetServer() */
-	        {
-		    long timeSinceSave;
+	*nready = 0;
+	*nnew = 0;
+	CLEARBITS(clientsReadable);
+	if (! (ANYSET(ClientsWithInput))) {
+		/* We need a while loop here to handle
+		   crashed connections and the screen saver timeout */
+		while (1) {
+			if (ScreenSaverTime) {
+				timeout = ScreenSaverTime - TimeSinceLastInputEvent();
+				if (timeout <= 0) { /* may be forced by AutoResetServer() */
+					long timeSinceSave;
 
-		    if (clientsDoomed)
-		    {
-		        *nnew = *nready = 0;
-			break;
-		    }
+					if (clientsDoomed) {
+						*nnew = *nready = 0;
+						break;
+					}
 
-		    timeSinceSave = -timeout;
-	            if ((timeSinceSave >= timeTilFrob) && (timeTilFrob >= 0))
-                    {
-		        SaveScreens(SCREEN_SAVER_ON, ScreenSaverActive);
-			if (ScreenSaverInterval)
-			    /* round up to the next ScreenSaverInterval */
-			    timeTilFrob = ScreenSaverInterval *
-				    ((timeSinceSave + ScreenSaverInterval) /
-					    ScreenSaverInterval);
-			else
-			    timeTilFrob = -1;
-		    }
-    	            timeout = timeTilFrob - timeSinceSave;
-    	        }
- 		else
- 		{
-		    if (timeout > ScreenSaverTime)
-		        timeout = ScreenSaverTime;
-	            timeTilFrob = 0;
-		}
-		if (timeTilFrob >= 0)
-		{
-		    waittime.tv_sec = timeout / MILLI_PER_SECOND;
-		    waittime.tv_usec = (timeout % MILLI_PER_SECOND) *
-					    (1000000 / MILLI_PER_SECOND);
-		    wt = &waittime;
-		}
-		else
-		{
-		    wt = NULL;
-		}
-	    }
-            else
-                wt = NULL;
+					timeSinceSave = -timeout;
+					if ((timeSinceSave >= timeTilFrob) && (timeTilFrob >= 0)) {
+						SaveScreens(SCREEN_SAVER_ON, ScreenSaverActive);
+						if (ScreenSaverInterval)
+							/* round up to the next ScreenSaverInterval */
+							timeTilFrob = ScreenSaverInterval *
+										  ((timeSinceSave + ScreenSaverInterval) /
+										   ScreenSaverInterval);
+						else
+							timeTilFrob = -1;
+					}
+					timeout = timeTilFrob - timeSinceSave;
+				} else {
+					if (timeout > ScreenSaverTime)
+						timeout = ScreenSaverTime;
+					timeTilFrob = 0;
+				}
+				if (timeTilFrob >= 0) {
+					waittime.tv_sec = timeout / MILLI_PER_SECOND;
+					waittime.tv_usec = (timeout % MILLI_PER_SECOND) *
+									   (1000000 / MILLI_PER_SECOND);
+					wt = &waittime;
+				} else {
+					wt = NULL;
+				}
+			} else
+				wt = NULL;
 #ifdef MULTI_X_HACK
-	    if (XMulti) {
-		ipc_block_handler();
-		signal(SIGWINDOW,sigwindow_handler);
-	    }
+			if (XMulti) {
+				ipc_block_handler();
+				signal(SIGWINDOW,sigwindow_handler);
+			}
 #endif MULTI_X_HACK
-	    COPYBITS(AllSockets, LastSelectMask);
-	    BlockHandler(&wt, LastSelectMask);
-	    if (NewOutputPending)
-	    	FlushAllOutput();
+			COPYBITS(AllSockets, LastSelectMask);
+			BlockHandler(&wt, LastSelectMask);
+			if (NewOutputPending)
+				FlushAllOutput();
 #ifdef XTESTEXT1
-	    /* XXX how does this interact with new write block handling? */
-	    if (playback_on) {
-		wt = &waittime;
-		XTestComputeWaitTime (&waittime);
-	    }
+			/* XXX how does this interact with new write block handling? */
+			if (playback_on) {
+				wt = &waittime;
+				XTestComputeWaitTime (&waittime);
+			}
 #endif /* XTESTEXT1 */
 
 #ifndef ISOCONN
-	    if (AnyClientsWriteBlocked)
-	    {
-		COPYBITS(ClientsWriteBlocked, clientsWritable);
-		i = select (MAXSOCKS, LastSelectMask, clientsWritable,
-			    (int *) NULL, wt);
-	    }
-	    else
-	    {
-		i = select (MAXSOCKS, LastSelectMask,
-			    (int *) NULL, (int *) NULL, wt);
-	    }
-	    selecterr = errno;
+			if (AnyClientsWriteBlocked) {
+				COPYBITS(ClientsWriteBlocked, clientsWritable);
+				i = select (MAXSOCKS, LastSelectMask, clientsWritable,
+							(int *) NULL, wt);
+			} else {
+				i = select (MAXSOCKS, LastSelectMask,
+							(int *) NULL, (int *) NULL, wt);
+			}
+			selecterr = errno;
 #else /* IS ISOCONN */
-	    if (AnyClientsWriteBlocked)
-	    {
-		int secs = wt->tv_sec;
-		if (secs == 0 && wt->tv_usec != 0)
-			secs = 1;
-		COPYBITS(ClientsWriteBlocked, clientsWritable);
-		i = TNetAccept(&vecp, vec, MAXSOCKS, LastSelectMask,
-			clientsWritable, (int *)NULL, wt->tv_sec, td);
-	    }
-	    else
-	    {
-		int secs = wt->tv_sec;
-		if (secs == 0 && wt->tv_usec != 0)
-			secs = 1;
-		i = TNetAccept(&vecp, vec, MAXSOCKS, LastSelectMask,
-			(int *)NULL, (int *)NULL, secs, td);
-	    }
-/* map errors */
-	    if (i < 0) {
-		if (!DR_FATAL(td->td_reason))
-		    errno = EWOULDBLOCK;
-	    }
-	    selecterr = errno;
+			if (AnyClientsWriteBlocked) {
+				int secs = wt->tv_sec;
+				if (secs == 0 && wt->tv_usec != 0)
+					secs = 1;
+				COPYBITS(ClientsWriteBlocked, clientsWritable);
+				i = TNetAccept(&vecp, vec, MAXSOCKS, LastSelectMask,
+							   clientsWritable, (int *)NULL, wt->tv_sec, td);
+			} else {
+				int secs = wt->tv_sec;
+				if (secs == 0 && wt->tv_usec != 0)
+					secs = 1;
+				i = TNetAccept(&vecp, vec, MAXSOCKS, LastSelectMask,
+							   (int *)NULL, (int *)NULL, secs, td);
+			}
+			/* map errors */
+			if (i < 0) {
+				if (!DR_FATAL(td->td_reason))
+					errno = EWOULDBLOCK;
+			}
+			selecterr = errno;
 #endif /* ISOCONN */
-	    WakeupHandler(i, LastSelectMask);
+			WakeupHandler(i, LastSelectMask);
 #ifdef XTESTEXT1
-	    if (playback_on) {
-		i = XTestProcessInputAction (i, &waittime);
-	    }
+			if (playback_on) {
+				i = XTestProcessInputAction (i, &waittime);
+			}
 #endif /* XTESTEXT1 */
-	    if (i <= 0) /* An error or timeout occurred */
-            {
+			if (i <= 0) { /* An error or timeout occurred */
 #ifdef ISODEBUG
-		if (isodexbug)
-			fprintf(stderr, "WF: TO or ERR %d\n", i);
+				if (isodexbug)
+					fprintf(stderr, "WF: TO or ERR %d\n", i);
 #endif
-		CLEARBITS(clientsWritable);
-		if (i < 0) 
-		    if (selecterr == EBADF)    /* Some client disconnected */
-		    {
-	            	CheckConnections ();
-			if (! ANYSET (AllClients))
-			    return;
-		    }
-		    else if (selecterr != EINTR)
-			ErrorF("WaitForSomething(): select: errno=%d\n",
-			    selecterr);
-    	    }
-	    else
-	    {
- 		if (AnyClientsWriteBlocked && ANYSET (clientsWritable))
- 		{
+				CLEARBITS(clientsWritable);
+				if (i < 0)
+					if (selecterr == EBADF) {  /* Some client disconnected */
+						CheckConnections ();
+						if (! ANYSET (AllClients))
+							return;
+					} else if (selecterr != EINTR)
+						ErrorF("WaitForSomething(): select: errno=%d\n",
+							   selecterr);
+			} else {
+				if (AnyClientsWriteBlocked && ANYSET (clientsWritable)) {
 #ifdef ISODEBUG
-			if (isodexbug)
-			    fprintf(stderr, "WF: write\n");
+					if (isodexbug)
+						fprintf(stderr, "WF: write\n");
 #endif
- 		    NewOutputPending = TRUE;
- 		    ORBITS(OutputPending, clientsWritable, OutputPending);
- 		    UNSETBITS(ClientsWriteBlocked, clientsWritable);
- 		    if (! ANYSET(ClientsWriteBlocked))
- 			AnyClientsWriteBlocked = FALSE;
- 		}
- 
-#ifdef	hpux
-		ready_inputs = (LastSelectMask[0] & EnabledDevices);
+					NewOutputPending = TRUE;
+					ORBITS(OutputPending, clientsWritable, OutputPending);
+					UNSETBITS(ClientsWriteBlocked, clientsWritable);
+					if (! ANYSET(ClientsWriteBlocked))
+						AnyClientsWriteBlocked = FALSE;
+				}
 
-		if (ready_inputs > 0)  store_inputs (ready_inputs);
-			/* call the HIL driver to gather inputs. 	*/
+#ifdef	hpux
+				ready_inputs = (LastSelectMask[0] & EnabledDevices);
+
+				if (ready_inputs > 0)  store_inputs (ready_inputs);
+				/* call the HIL driver to gather inputs. 	*/
 #endif	hpux
 
- 		MASKANDSETBITS(clientsReadable, LastSelectMask, AllClients); 
+				MASKANDSETBITS(clientsReadable, LastSelectMask, AllClients);
 #ifdef ISOCONN
-/*
- * ISODE version says new connections pending accept if vecp > 0 !!
- */
-		if (vecp > 0) {
+				/*
+				 * ISODE version says new connections pending accept if vecp > 0 !!
+				 */
+				if (vecp > 0) {
 #ifdef ISODEBUG
-		    if (isodexbug)
-			    fprintf(stderr, "WF: CX pending\n");
+					if (isodexbug)
+						fprintf(stderr, "WF: CX pending\n");
 #endif
-		    EstablishNewConnections(pNewClients, nnew, vecp, vec);
-		}
+					EstablishNewConnections(pNewClients, nnew, vecp, vec);
+				}
 #else /* ISOCONN */
-		if (LastSelectMask[0] & WellKnownConnections) 
-		    EstablishNewConnections(pNewClients, nnew);
+				if (LastSelectMask[0] & WellKnownConnections)
+					EstablishNewConnections(pNewClients, nnew);
 #endif /* ISOCONN */
-		if (*nnew || (LastSelectMask[0] & EnabledDevices) 
-		    || (ANYSET (clientsReadable)))
-			    break;
-	    }
+				if (*nnew || (LastSelectMask[0] & EnabledDevices)
+						|| (ANYSET (clientsReadable)))
+					break;
+			}
+		}
+	} else {
+		COPYBITS(ClientsWithInput, clientsReadable);
 	}
-    }
-    else
-    {
-       COPYBITS(ClientsWithInput, clientsReadable);
-    }
 
-    if (ANYSET(clientsReadable))
-    {
+	if (ANYSET(clientsReadable)) {
 #ifdef ISODEBUG
-	if (isodexbug)
-		fprintf(stderr, "WF: readable\n");
+		if (isodexbug)
+			fprintf(stderr, "WF: readable\n");
 #endif
-	for (i=0; i<mskcnt; i++)
-	{
-	    while (clientsReadable[i])
-	    {
-		curclient = ffs (clientsReadable[i]) - 1;
-		pClientsReady[(*nready)++] = 
-			ConnectionTranslation[curclient + (32 * i)];
-		clientsReadable[i] &= ~(1 << curclient);
-	    }
-	}	
-    }
+		for (i=0; i<mskcnt; i++) {
+			while (clientsReadable[i]) {
+				curclient = ffs (clientsReadable[i]) - 1;
+				pClientsReady[(*nready)++] =
+					ConnectionTranslation[curclient + (32 * i)];
+				clientsReadable[i] &= ~(1 << curclient);
+			}
+		}
+	}
 }
 
 

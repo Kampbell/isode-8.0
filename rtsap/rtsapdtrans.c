@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapdtrans.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rtsap/RCS/rtsapdtrans.c,v 9.0 1992/06/16 12:37:45 isode Rel $
  *
  *
@@ -38,18 +38,18 @@ int	sd;
 IFP	fnx;
 struct RtSAPindication *rti;
 {
-    SBV	    smask;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	register struct assocblk   *acb;
 
-    missingP (rti);
+	missingP (rti);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rtsapPsig (acb, sd);
+	rtsapPsig (acb, sd);
 
-    acb -> acb_downtrans = fnx;
+	acb -> acb_downtrans = fnx;
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return OK;
+	return OK;
 }

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_alloc.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/ps_alloc.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -69,15 +69,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_alloc.c,v 9.0 1992/
 PS	ps_alloc (io)
 register IFP	io;
 {
-    register PS	    ps;
+	register PS	    ps;
 
-    if ((ps = (PS) calloc (1, sizeof *ps)) == NULLPS)
-	return NULLPS;
+	if ((ps = (PS) calloc (1, sizeof *ps)) == NULLPS)
+		return NULLPS;
 
-    if ((*io) (ps) == NOTOK) {
-	ps_free (ps);
-	return NULLPS;
-    }
+	if ((*io) (ps) == NOTOK) {
+		ps_free (ps);
+		return NULLPS;
+	}
 
-    return ps;
+	return ps;
 }

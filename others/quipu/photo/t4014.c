@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/t4014.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/t4014.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -44,8 +44,7 @@ extern unsigned position;
 
 int y = Y_OFFSET;
 
-SFD photo_quit ()
-{
+SFD photo_quit () {
 	putch (030);	/* Return to non-graphic mode */
 	exit (0);
 }
@@ -87,7 +86,7 @@ char * name;
 photo_black (length)
 int length;
 {
-;
+	;
 }
 
 photo_white (length)

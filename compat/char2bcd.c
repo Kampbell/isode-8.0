@@ -33,26 +33,24 @@ register char   *s;
 int n;
 register u_char *d;
 {
-    register int    c,
-		    i;
+	register int    c,
+			 i;
 
-    for (i = 0; *s && n-- > 0; i++) {
-	if ((c = *s++) >= 'a' && c <= 'f')
-	    c -= 'a' - 0x0a;
-	else
-	    if (c >= 'A' && c <= 'F')
-		c -= 'A' - 0x0a;
-	    else
-		if (c >= '0' && c <= '9')
-		    c -= '0';
+	for (i = 0; *s && n-- > 0; i++) {
+		if ((c = *s++) >= 'a' && c <= 'f')
+			c -= 'a' - 0x0a;
+		else if (c >= 'A' && c <= 'F')
+			c -= 'A' - 0x0a;
+		else if (c >= '0' && c <= '9')
+			c -= '0';
 		else
-		    c = 0;
+			c = 0;
 
-	if (i & 1)
-	    *d++ |= c & 0xf;
-	else
-	    *d = (c & 0xf) << 4;
-    }
+		if (i & 1)
+			*d++ |= c & 0xf;
+		else
+			*d = (c & 0xf) << 4;
+	}
 
-    return i;
+	return i;
 }

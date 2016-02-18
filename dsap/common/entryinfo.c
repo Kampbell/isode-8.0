@@ -34,8 +34,8 @@ entryinfo_comp_free (a,state)
 register EntryInfo *a;
 int state;
 {
-register EntryInfo * einfo, *e2;
-register Attr_Sequence as;
+	register EntryInfo * einfo, *e2;
+	register Attr_Sequence as;
 
 	if (a == NULLENTRYINFO)
 		return;
@@ -43,7 +43,7 @@ register Attr_Sequence as;
 	dn_free (a->ent_dn);
 	if (state == 1) {
 		Attr_Sequence as_tmp = NULLATTR;
-		
+
 		for ( as=a->ent_attr; as!= NULLATTR; as=as_tmp) {
 			as_tmp = as -> attr_link;
 			free ((char *) as);
@@ -90,7 +90,7 @@ register EntryInfo *b;
 entryinfo_append (a,b)
 register EntryInfo *a,*b;
 {
-register EntryInfo *ptr;
+	register EntryInfo *ptr;
 
 	if ( a  == NULLENTRYINFO )
 		return;
@@ -105,18 +105,18 @@ entryinfo_merge (a,b,fast)
 register EntryInfo *a,*b;
 int fast;
 {
-register EntryInfo *ptr;
-EntryInfo *tmp, *prev, *trail;
+	register EntryInfo *ptr;
+	EntryInfo *tmp, *prev, *trail;
 
 	if (( a == NULLENTRYINFO )
-	   || (b == NULLENTRYINFO ))
+			|| (b == NULLENTRYINFO ))
 		return;
 
 	/* Use fast mode if you know there are no duplicates */
 
 	if (fast) {
-		for (ptr=a; ptr->ent_next != NULLENTRYINFO; ptr=ptr->ent_next) 
-		    	; 
+		for (ptr=a; ptr->ent_next != NULLENTRYINFO; ptr=ptr->ent_next)
+			;
 		ptr->ent_next = b;
 		return;
 	}
@@ -124,7 +124,7 @@ EntryInfo *tmp, *prev, *trail;
 	for (ptr=a; ptr != NULLENTRYINFO; ptr=ptr->ent_next) {
 		prev = NULLENTRYINFO;
 		for (tmp=b; tmp != NULLENTRYINFO; tmp=tmp->ent_next) {
-		 	if (dn_cmp (ptr->ent_dn, tmp->ent_dn) == OK) {
+			if (dn_cmp (ptr->ent_dn, tmp->ent_dn) == OK) {
 				/* already got it - throw it away */
 				if (prev == NULLENTRYINFO)
 					b = tmp->ent_next;
@@ -133,7 +133,7 @@ EntryInfo *tmp, *prev, *trail;
 				as_free (tmp->ent_attr);
 				dn_free (tmp->ent_dn);
 				free ((char *)tmp);
-				break;	
+				break;
 			}
 			prev = tmp;
 		}
@@ -148,7 +148,7 @@ PS  ps;
 EntryInfo *entryinfo;
 int format;
 {
-register EntryInfo *einfo;
+	register EntryInfo *einfo;
 
 	for (einfo= entryinfo; einfo!=NULLENTRYINFO; einfo=einfo->ent_next) {
 		dn_print(ps,einfo->ent_dn,EDBOUT);

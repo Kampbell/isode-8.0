@@ -45,7 +45,7 @@ char *x;
 static char * booldec (pe)
 PE pe;
 {
-        if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_BOOL))
+	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_BOOL))
 		return (NULLCP);
 
 	if (prim2flag (pe) == 1)
@@ -64,13 +64,12 @@ char * x;
 	return (NULLCP);
 }
 
-boolean_syntax ()
-{
+boolean_syntax () {
 	(void) add_attribute_syntax ("boolean",
-		(IFP) boolenc,	(IFP) booldec,
-		(IFP) boolget,	strprint,
-		(IFP) strdup,	lexequ,
-		sfree,		NULLCP,
-		NULLIFP,	FALSE);
+								 (IFP) boolenc,	(IFP) booldec,
+								 (IFP) boolget,	strprint,
+								 (IFP) strdup,	lexequ,
+								 sfree,		NULLCP,
+								 NULLIFP,	FALSE);
 }
 

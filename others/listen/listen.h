@@ -1,6 +1,6 @@
 /* listen.h - listen demo definitions */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/listen/RCS/listen.h,v 9.0 1992/06/16 12:42:15 isode Rel $
  *
  *
@@ -32,16 +32,16 @@
 
 
 typedef struct sblk {
-    int	    sb_sd;		/* session-descriptor */
+	int	    sb_sd;		/* session-descriptor */
 
-    struct SSAPref sb_connect;	/* session connection reference */
+	struct SSAPref sb_connect;	/* session connection reference */
 
-    int	    sb_requirements;	/* session requirements */
-    int	    sb_settings;	/* initial settings */
-    int	    sb_owned;		/* session tokens we own */
+	int	    sb_requirements;	/* session requirements */
+	int	    sb_settings;	/* initial settings */
+	int	    sb_owned;		/* session tokens we own */
 
-    long    sb_ssn;		/* session serial number */
-    long    sb_isn;		/* initial serial number */
+	long    sb_ssn;		/* session serial number */
+	long    sb_isn;		/* initial serial number */
 }		*SB;
 
 

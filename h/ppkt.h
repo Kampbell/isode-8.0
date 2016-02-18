@@ -1,6 +1,6 @@
 /* ppkt.h - include file for presentation providers (PS-PROVIDER) */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/ppkt.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  * RFC1085 (LPP) support contributed by the Wollongong Group, Inc.
@@ -150,12 +150,12 @@ int	ppktlose (), psaplose ();
 
 
 struct psapblk {
-    struct psapblk *pb_forw;	/* doubly-linked list */
-    struct psapblk *pb_back;	/*   .. */
+	struct psapblk *pb_forw;	/* doubly-linked list */
+	struct psapblk *pb_back;	/*   .. */
 
-    int	    pb_fd;		/* session descriptor */
+	int	    pb_fd;		/* session descriptor */
 
-    short   pb_flags;		/* our state */
+	short   pb_flags;		/* our state */
 #define	PB_NULL		0x00
 #define	PB_CONN		0x01	/* connected */
 #define	PB_FINN		0x02	/* other side wants to finish */
@@ -165,59 +165,59 @@ struct psapblk {
 #define PB_MAGIC	0x40	/* backwards compat hack */
 
 #ifndef	LPP
-    char   *pb_retry;		/* initial/final ppkt */
-    char   *pb_realbase;
-    int	    pb_len;
+	char   *pb_retry;		/* initial/final ppkt */
+	char   *pb_realbase;
+	int	    pb_len;
 #else
-    PE      pb_retry;
-    PE	    pb_response;
+	PE      pb_retry;
+	PE	    pb_response;
 
-    struct type_PS_SessionConnectionIdentifier *pb_reference;
+	struct type_PS_SessionConnectionIdentifier *pb_reference;
 
-    PS	    pb_stream;
+	PS	    pb_stream;
 
-    int	    pb_reliability;
+	int	    pb_reliability;
 
-    int	    pb_maxtries;
-    int	    pb_tries;
+	int	    pb_maxtries;
+	int	    pb_tries;
 #endif
 
-    int	    pb_ncontext;	/* presentation context set */
-    struct PSAPcontext pb_contexts[NPCTX];
+	int	    pb_ncontext;	/* presentation context set */
+	struct PSAPcontext pb_contexts[NPCTX];
 
-    OID	    pb_asn;		/* default: abstract syntax name */
-    OID	    pb_atn;		/*   ..     abstract transfer name */
-    int	    pb_dctxid;		/*   ..	    id */
-    int	    pb_result;		/* 	    response */
-    
-    OID	    pb_ber;		/* BER */
+	OID	    pb_asn;		/* default: abstract syntax name */
+	OID	    pb_atn;		/*   ..     abstract transfer name */
+	int	    pb_dctxid;		/*   ..	    id */
+	int	    pb_result;		/* 	    response */
 
-    int	    pb_prequirements;	/* presentation requirements */
+	OID	    pb_ber;		/* BER */
 
-    int	    pb_srequirements;	/* our session requirements */
-    int	    pb_urequirements;	/* user's session requirements */
-    int	    pb_owned;		/* session tokens we own */
-    int	    pb_avail;		/* session tokens available */
-    int	    pb_ssdusize;	/* largest atomic SSDU */
+	int	    pb_prequirements;	/* presentation requirements */
+
+	int	    pb_srequirements;	/* our session requirements */
+	int	    pb_urequirements;	/* user's session requirements */
+	int	    pb_owned;		/* session tokens we own */
+	int	    pb_avail;		/* session tokens available */
+	int	    pb_ssdusize;	/* largest atomic SSDU */
 
 #ifdef	LPP
-    struct NSAPaddr pb_initiating;	/* initiator */
+	struct NSAPaddr pb_initiating;	/* initiator */
 #endif
-    struct PSAPaddr pb_responding;	/* responder */
+	struct PSAPaddr pb_responding;	/* responder */
 
-    IFP	    pb_DataIndication;		/* INDICATION handlers */
-    IFP	    pb_TokenIndication;		/*   .. */
-    IFP	    pb_SyncIndication;		/*   .. */
-    IFP	    pb_ActivityIndication;	/*   .. */
-    IFP	    pb_ReportIndication;	/*   .. */
-    IFP	    pb_ReleaseIndication;	/*   .. */
-    IFP	    pb_AbortIndication;		/*   .. */
+	IFP	    pb_DataIndication;		/* INDICATION handlers */
+	IFP	    pb_TokenIndication;		/*   .. */
+	IFP	    pb_SyncIndication;		/*   .. */
+	IFP	    pb_ActivityIndication;	/*   .. */
+	IFP	    pb_ReportIndication;	/*   .. */
+	IFP	    pb_ReleaseIndication;	/*   .. */
+	IFP	    pb_AbortIndication;		/*   .. */
 
 #ifdef	LPP
-    IFP	    pb_retryfnx;
-    IFP     pb_closefnx;
-    IFP	    pb_selectfnx;
-    IFP	    pb_checkfnx;
+	IFP	    pb_retryfnx;
+	IFP     pb_closefnx;
+	IFP	    pb_selectfnx;
+	IFP	    pb_checkfnx;
 #endif
 };
 #define	NULLPB		((struct psapblk *) 0)
@@ -247,8 +247,8 @@ int	ss2pslose (), ss2psabort ();
 
 
 struct pair {
-    int	    p_mask;
-    int	    p_bitno;
+	int	    p_mask;
+	int	    p_bitno;
 };
 
 extern struct pair preq_pairs[], sreq_pairs[];

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydispatch.c,v 9.0 1992/06/16 12:37:29 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosy/RCS/rydispatch.c,v 9.0 1992/06/16 12:37:29 isode Rel $
  *
  *
@@ -55,30 +55,28 @@ int	op;
 IFP	fnx;
 struct RoSAPindication *roi;
 {
-    register struct dspblk *dsb;
+	register struct dspblk *dsb;
 
-    missingP (roi);
+	missingP (roi);
 
-    if ((dsb = finddsblk (sd, op)) == NULLDSB) {
-	missingP (ryo);
-	missingP (fnx);
+	if ((dsb = finddsblk (sd, op)) == NULLDSB) {
+		missingP (ryo);
+		missingP (fnx);
 
-	for (; ryo -> ryo_name; ryo++)
-	    if (ryo -> ryo_op == op)
-		break;
-	if (!ryo -> ryo_name)
-	    return rosaplose (roi, ROS_PARAMETER, NULLCP,
-		    "unknown operation code %d", op);
+		for (; ryo -> ryo_name; ryo++)
+			if (ryo -> ryo_op == op)
+				break;
+		if (!ryo -> ryo_name)
+			return rosaplose (roi, ROS_PARAMETER, NULLCP,
+							  "unknown operation code %d", op);
 
-	if ((dsb = newdsblk (sd, ryo)) == NULLDSB)
-	    return rosaplose (roi, ROS_CONGEST, NULLCP, NULLCP);
-    }
-    else
-	if (ryo)
-	    dsb -> dsb_ryo = ryo;
+		if ((dsb = newdsblk (sd, ryo)) == NULLDSB)
+			return rosaplose (roi, ROS_CONGEST, NULLCP, NULLCP);
+	} else if (ryo)
+		dsb -> dsb_ryo = ryo;
 
-    if ((dsb -> dsb_vector = fnx) == NULLIFP)
-	freedsblk (dsb);
+	if ((dsb -> dsb_vector = fnx) == NULLIFP)
+		freedsblk (dsb);
 
-    return OK;
+	return OK;
 }

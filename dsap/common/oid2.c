@@ -51,10 +51,9 @@ struct mac_buf {                        /* for handling macros */
 
 int NumMacro            = 0;
 
-want_oc_hierarchy ()
-{
-extern IFP oc_load;
-extern IFP oc_macro_add;
+want_oc_hierarchy () {
+	extern IFP oc_load;
+	extern IFP oc_macro_add;
 
 	oc_load = load_obj_hier;
 	oc_macro_add = add_oc_macro;
@@ -80,7 +79,7 @@ static struct oc_seq *oc_seq_merge (a,b)
 struct oc_seq *a;
 struct oc_seq *b;
 {
-register struct oc_seq  *aptr, *bptr, *result, *trail;
+	register struct oc_seq  *aptr, *bptr, *result, *trail;
 
 	if ( a == NULLOCSEQ )
 		return (b);
@@ -89,28 +88,28 @@ register struct oc_seq  *aptr, *bptr, *result, *trail;
 
 	/* start sequence off, make sure 'a' is the first */
 	switch (objclass_cmp (a,b)) {
-		case 0: /* equal */
-			result = a;
-			free ((char *) b);
-			aptr = a->os_next;
-			bptr = b->os_next;
-			break;
-		case -1:
-			result = b;
-			aptr = a;
-			bptr = b->os_next;
-			break;
-		case 1:
-			result = a;
-			aptr = a->os_next;
-			bptr = b;
-			break;
-		}
+	case 0: /* equal */
+		result = a;
+		free ((char *) b);
+		aptr = a->os_next;
+		bptr = b->os_next;
+		break;
+	case -1:
+		result = b;
+		aptr = a;
+		bptr = b->os_next;
+		break;
+	case 1:
+		result = a;
+		aptr = a->os_next;
+		bptr = b;
+		break;
+	}
 
 	trail = result;
 	while (  (aptr != NULLOCSEQ) && (bptr != NULLOCSEQ) ) {
 
-	   switch (objclass_cmp (aptr,bptr)) {
+		switch (objclass_cmp (aptr,bptr)) {
 		case 0: /* equal */
 			trail->os_next = aptr;
 			trail = aptr;
@@ -128,7 +127,7 @@ register struct oc_seq  *aptr, *bptr, *result, *trail;
 			trail = aptr;
 			aptr = aptr->os_next;
 			break;
-	    }
+		}
 	}
 	if (aptr == NULLOCSEQ)
 		trail->os_next = bptr;
@@ -142,10 +141,10 @@ register struct oc_seq  *aptr, *bptr, *result, *trail;
 static get_oc_bits (str)
 register char * str;
 {
-register char * ptr;
-register char * ptr2;
-struct oc_seq * oidseq = NULLOCSEQ, *oidseqptr = oidseq;
-objectclass * oc;
+	register char * ptr;
+	register char * ptr2;
+	struct oc_seq * oidseq = NULLOCSEQ, *oidseqptr = oidseq;
+	objectclass * oc;
 
 	if ((ptr = index (str,SEPERATOR)) == 0) {
 		LLOG (log_dsap,LLOG_FATAL,("must missing"));
@@ -167,7 +166,7 @@ objectclass * oc;
 	}
 	if (*str != 0) {
 		oidseqptr = (struct oc_seq *) smalloc (sizeof (struct oc_seq));
-					/* no logging -> never freed */
+		/* no logging -> never freed */
 		if ((oc = name2oc(str)) == NULLOBJECTCLASS) {
 			LLOG (log_dsap,LLOG_FATAL,("unknown objectclass in hierachy %s",str));
 			return (NOTOK);
@@ -196,10 +195,10 @@ static table_seq undo_macro (top,ptr)
 table_seq top;
 register char * ptr;
 {
-register int i;
-table_seq tab;
-table_seq tab_top;
-table_seq trail = NULLTABLE_SEQ;
+	register int i;
+	table_seq tab;
+	table_seq tab_top;
+	table_seq trail = NULLTABLE_SEQ;
 
 	if (*ptr == 0)
 		return (top);
@@ -223,10 +222,10 @@ table_seq trail = NULLTABLE_SEQ;
 static table_seq table_seq_new (str)
 register char * str;
 {
-register char * ptr;
-table_seq tptr;
-table_seq top = NULLTABLE_SEQ;
-oid_table_attr * at;
+	register char * ptr;
+	table_seq tptr;
+	table_seq top = NULLTABLE_SEQ;
+	oid_table_attr * at;
 
 	if (*str == 0)
 		return (NULLTABLE_SEQ);
@@ -237,7 +236,7 @@ oid_table_attr * at;
 			top = undo_macro (top,str);
 		else {
 			tptr = (table_seq) smalloc (sizeof (*tptr));
-					/* no logging -> never freed */
+			/* no logging -> never freed */
 			tptr->ts_oa = at;
 			tptr->ts_next = top;
 			top = tptr;
@@ -251,7 +250,7 @@ oid_table_attr * at;
 			return (undo_macro (top,str));
 		else {
 			tptr = (table_seq) smalloc (sizeof (*tptr));
-					/* no logging -> never freed */
+			/* no logging -> never freed */
 			tptr->ts_oa = at;
 			tptr->ts_next = top;
 			return (tptr);
@@ -263,22 +262,21 @@ oid_table_attr * at;
 
 
 
-void	dumpalloid ()
-{
-register int i;
-register objectclass      * oc = &ocOIDTable[0];
-register oid_table_attr   * at = &attrOIDTable[0];
-register oid_table        * oi = &OIDTable[0];
- 
-	for (i=0;i<ocNumEntries;i++,oc++)
+void	dumpalloid () {
+	register int i;
+	register objectclass      * oc = &ocOIDTable[0];
+	register oid_table_attr   * at = &attrOIDTable[0];
+	register oid_table        * oi = &OIDTable[0];
+
+	for (i=0; i<ocNumEntries; i++,oc++)
 		(void) printf("\"%s\"\t\t%s\n", oc->oc_ot.ot_name, oc->oc_ot.ot_stroid);
- 
-	for (i=0;i<attrNumEntries;i++,at++)
+
+	for (i=0; i<attrNumEntries; i++,at++)
 		(void) printf("\"%s\"\t\t%s\n", at->oa_ot.ot_name, at->oa_ot.ot_stroid);
- 
-	for (i=0;i<NumEntries;i++,oi++)
+
+	for (i=0; i<NumEntries; i++,oi++)
 		(void) printf("\"%s\"\t\t%s\n", oi->ot_name, oi->ot_stroid);
-  
+
 }
 
 
@@ -292,48 +290,47 @@ char * buf, *ptr;
 void	table_seq_free (ts)
 table_seq ts;
 {
-table_seq tptr;
+	table_seq tptr;
 
 	for ( ; ts != NULLTABLE_SEQ; ts = tptr) {
-		tptr = ts -> ts_next;	
+		tptr = ts -> ts_next;
 		free ((char *) ts);
 	}
 
 }
 
-void	free_oid_table ()
-{
-register int i;
-register objectclass      * oc = &ocOIDTable[0];
-register oid_table_attr   * at = &attrOIDTable[0];
-register oid_table        * oi = &OIDTable[0];
- 
-	for (i=0;i<ocNumEntries;i++,oc++) {
-	        free (oc->oc_ot.ot_stroid);
-	        oid_free (oc->oc_ot.ot_oid);
+void	free_oid_table () {
+	register int i;
+	register objectclass      * oc = &ocOIDTable[0];
+	register oid_table_attr   * at = &attrOIDTable[0];
+	register oid_table        * oi = &OIDTable[0];
+
+	for (i=0; i<ocNumEntries; i++,oc++) {
+		free (oc->oc_ot.ot_stroid);
+		oid_free (oc->oc_ot.ot_oid);
 		if (oc->oc_ot.ot_aliasoid)
 			oid_free (oc->oc_ot.ot_aliasoid);
 		table_seq_free (oc->oc_may);
 		table_seq_free (oc->oc_must);
 		/* Nothing in hierarchy to free */
-	    }
- 
-	for (i=0;i<attrNumEntries;i++,at++) {
-	        free (at->oa_ot.ot_stroid);
+	}
+
+	for (i=0; i<attrNumEntries; i++,at++) {
+		free (at->oa_ot.ot_stroid);
 		if (at->oa_ot.ot_aliasoid)
 			oid_free (at->oa_ot.ot_aliasoid);
-	        oid_free (at->oa_ot.ot_oid);
-	    }
- 
-	for (i=0;i<NumEntries;i++,oi++) {
-	        free (oi->ot_stroid);
+		oid_free (at->oa_ot.ot_oid);
+	}
+
+	for (i=0; i<NumEntries; i++,oi++) {
+		free (oi->ot_stroid);
 		if (oi->ot_aliasoid)
 			oid_free (oi->ot_aliasoid);
-	        oid_free (oi->ot_oid);
-	    }
+		oid_free (oi->ot_oid);
+	}
 
 	free_oid_buckets();
-  
+
 }
 
 

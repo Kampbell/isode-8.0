@@ -51,7 +51,7 @@ void StripSpace (b)
 register char *b;
 /* copy b to a less spaces and comments */
 {
-register char *a;
+	register char *a;
 
 	if (*b == COMMENT ) {
 		*b = 0;
@@ -73,7 +73,7 @@ register char *a;
 			break;
 		else
 			*a++ = *b++;
-		}
+	}
 
 	*a = 0;
 }
@@ -82,7 +82,7 @@ void StripSpace2 (b)
 register char *b;
 /* copy b to a less spaces and comments */
 {
-register char *a;
+	register char *a;
 
 	while (isascii(*b) && (! isspace(*b)) && (*b))
 		b++;
@@ -99,7 +99,7 @@ register char *a;
 			break;
 		else
 			*a++ = *b++;
-		}
+	}
 
 	*a = 0;
 }
@@ -107,9 +107,9 @@ register char *a;
 char * TidyString2 (a)
 register char * a;
 {
-register char * b;
-char * c;
-register int i = 0;
+	register char * b;
+	char * c;
+	register int i = 0;
 
 	/* removing multiple and trailing spaces */
 	c = a, b = a;
@@ -147,9 +147,9 @@ register int i = 0;
 char * TidyString (a)
 register char * a;
 {
-register char * b;
-char * c;
-register int i = 0;
+	register char * b;
+	char * c;
+	register int i = 0;
 
 	if (!*a)
 		return (a);
@@ -210,13 +210,12 @@ PElementID id;
 	}
 
 	return (TRUE);
-	
+
 }
 
 #ifndef lint
 ps_printf (va_alist)
-va_dcl
-{
+va_dcl {
 	PS ps;
 	extern int std_flush ();
 	va_list ap;
@@ -235,12 +234,12 @@ va_dcl
 		if (vfprintf ((FILE *)ps->ps_addr, fmt, ap) == EOF)
 			ps->ps_errno = PS_ERR_IO;
 
-	} else 
+	} else
 #endif
 
 	{
 		char buffer [8192]; 	/* How big should this go !!! */
-		
+
 		_asprintf (buffer,NULLCP,ap);
 
 		ps_print (ps,buffer);
@@ -256,7 +255,7 @@ ps_printf (ps,fmt)
 PS ps;
 char * fmt;
 {
-(void) ps_printf (ps,fmt) ;
+	(void) ps_printf (ps,fmt) ;
 }
 
 #endif
@@ -286,32 +285,31 @@ caddr_t ptr;
 {
 	/* log info to pstream */
 
-    if (!(lp -> ll_events & event))
-	return;
+	if (!(lp -> ll_events & event))
+		return;
 
-    if (ps == NULL
-	    && (((ps = ps_alloc (str_open)) == NULLPS)
-		    || str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK)) {
-	if (ps)
-	    ps_free (ps), ps = NULLPS;
+	if (ps == NULL
+			&& (((ps = ps_alloc (str_open)) == NULLPS)
+				|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK)) {
+		if (ps)
+			ps_free (ps), ps = NULLPS;
 
-	return;
-    }
+		return;
+	}
 
-    (*func) (ps,ptr,EDBOUT);
-    ps_print (ps, " ");
-    *--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	(*func) (ps,ptr,EDBOUT);
+	ps_print (ps, " ");
+	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
 
-    LLOG (lp,event,("%s: %s",str,ps->ps_base));
+	LLOG (lp,event,("%s: %s",str,ps->ps_base));
 
-    ps->ps_cnt = ps->ps_bufsiz;
-    ps->ps_ptr = ps->ps_base;
+	ps->ps_cnt = ps->ps_bufsiz;
+	ps->ps_ptr = ps->ps_base;
 }
 
-stop_listeners ()
-{
-struct TSAPdisconnect	  td_s;
-struct TSAPdisconnect	* td = &(td_s);
+stop_listeners () {
+	struct TSAPdisconnect	  td_s;
+	struct TSAPdisconnect	* td = &(td_s);
 
 	/* close all listeners */
 	(void) TNetClose (NULLTA,td);
@@ -320,15 +318,15 @@ struct TSAPdisconnect	* td = &(td_s);
 quipu_pe_cmp (a,b)
 register PE a,b;
 {
-char *p,*q;
-register int j,i;
+	char *p,*q;
+	register int j,i;
 
 	/* based on ISODE pe_cmp */
 
 	if ( a == NULLPE) {
 		if ( b == NULLPE )
 			return (0);
-		else 
+		else
 			return (1);
 	}
 	if ( b == NULLPE)
@@ -353,10 +351,10 @@ register int j,i;
 			return (-1);
 
 	switch ( a->pe_form ) {
-	    case PE_FORM_ICONS:
-	    	if (a->pe_ilen != a->pe_ilen)
+	case PE_FORM_ICONS:
+		if (a->pe_ilen != a->pe_ilen)
 			return (a->pe_ilen > b->pe_ilen ? 1 : -1);
-	    case PE_FORM_PRIM:
+	case PE_FORM_PRIM:
 		if ( (i=a->pe_len) != b->pe_len)
 			if (  i > b->pe_len )
 				return (1);
@@ -377,12 +375,12 @@ register int j,i;
 		}
 		return (0) ;
 
-	    case PE_FORM_CONS:
+	case PE_FORM_CONS:
 		for (a=a->pe_cons,b=b->pe_cons; a; a=a->pe_next,b=b->pe_next)
 			if ((i = quipu_pe_cmp (a,b)) != 0)
 				return (i);
 		return (b ? 1 : 0);
-	    default:
+	default:
 		return (1);
 
 	}
@@ -391,8 +389,7 @@ register int j,i;
 
 IFP acl_fn = NULLIFP;
 
-struct acl_info * acl_dflt ()
-{
+struct acl_info * acl_dflt () {
 	if (acl_fn == NULLIFP)
 		return ((struct acl_info *) NULL);
 	else

@@ -44,7 +44,7 @@ char    *name;
 
 	isodetailor (name,0);
 
-	if( (fp = fopen(cp = isodefile(dsatailfile, 0), "r")) == (FILE *)NULL){
+	if( (fp = fopen(cp = isodefile(dsatailfile, 0), "r")) == (FILE *)NULL) {
 		LLOG (log_dsap,LLOG_FATAL, ("Cannot open tailor file '%s'", cp));
 		fatal (-46, "Cannot open quiputailor");
 	}

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/get_filter.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/get_filter.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -39,12 +39,12 @@ Filter          get_filter_aux (str)
 char           *str;
 {
 	int             gotit,
-	                bracketed;
+					bracketed;
 	char            ch,
-	                och = '\0';
+					och = '\0';
 	Filter          result,
-	                next,
-	                ptr = NULLFILTER;
+					next,
+					ptr = NULLFILTER;
 
 	result = filter_alloc ();
 	result->FUFILT = NULLFILTER;
@@ -91,12 +91,12 @@ char           *str;
 			str[gotit] = '\0';
 		/* Recurse on the 'first' string */
 		if ((gotit != 0) && (*str != NULL)) {
-		    if ((next = get_filter_aux (str)) == NULLFILTER)
-			    return (NULLFILTER);
-		    if (ptr == NULLFILTER)
-			    ptr = next;
-		    else
-			    filter_append (ptr, next);
+			if ((next = get_filter_aux (str)) == NULLFILTER)
+				return (NULLFILTER);
+			if (ptr == NULLFILTER)
+				ptr = next;
+			else
+				filter_append (ptr, next);
 		}
 		str += gotit + 1;
 
@@ -108,16 +108,15 @@ char           *str;
 			}
 			result->FUFILT = ptr;
 		}
-	}
-	while (gotit >= 0);
+	} while (gotit >= 0);
 	if (och == '\0') {
 		if (*str == '!') {	/* Match a not symbol */
 			result->flt_type = FILTER_NOT;
 			if ((result->FUFILT = get_filter_aux (str + 1)) == NULLFILTER)
 				return (NULLFILTER);
 		} else if (*str != 0)
-		    if (filteritem (str, result) == NOTOK)
-			return (NULLFILTER);
+			if (filteritem (str, result) == NOTOK)
+				return (NULLFILTER);
 	}
 	return (result);
 }
@@ -126,10 +125,10 @@ char           *str;
 Filter          get_filter (str)
 char           *str;
 {
-char * ptr;
-Filter f;
+	char * ptr;
+	Filter f;
 
-	if (*str == 0)	
+	if (*str == 0)
 		return (NULLFILTER);
 
 	ptr = strdup (str);
@@ -142,10 +141,10 @@ Filter f;
 
 getop (str, ch)
 char           *str,
-               *ch;
+			   *ch;
 {
 	int             i,
-	                bracket = 0;
+					bracket = 0;
 
 	for (i = 0; i < (int)strlen (str); i++) {
 		if (bracket == 0 && (str[i] == '&' || str[i] == '|')) {

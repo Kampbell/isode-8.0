@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2qb.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/prim2qb.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -35,64 +35,65 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2qb.c,v 9.0 1992/0
 struct qbuf *prim2qb (pe)
 register PE    pe;
 {
-    register struct qbuf *qb,
-		         *qp;
-    register PE	    p;
-    register PElementClass class;
-    register PElementID id;
+	register struct qbuf *qb,
+			*qp;
+	register PE	    p;
+	register PElementClass class;
+	register PElementID id;
 
-    if ((qb = (struct qbuf *) malloc (sizeof *qb)) == NULL)
-	return pe_seterr (pe, PE_ERR_NMEM, (struct qbuf *) NULL);
-    qb -> qb_forw = qb -> qb_back = qb;
-    qb -> qb_data = NULL, qb -> qb_len = 0;
-	
-    switch (pe -> pe_form) {
+	if ((qb = (struct qbuf *) malloc (sizeof *qb)) == NULL)
+		return pe_seterr (pe, PE_ERR_NMEM, (struct qbuf *) NULL);
+	qb -> qb_forw = qb -> qb_back = qb;
+	qb -> qb_data = NULL, qb -> qb_len = 0;
+
+	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
-	    if ((qp = str2qb ((char *) pe -> pe_prim, (int) pe -> pe_len, 0))
-		    == NULL) {
-		pe -> pe_errno = PE_ERR_NMEM;
-		goto out;
-	    }
-	    qb -> qb_len = qp -> qb_len;
-	    insque (qp, qb);
-	    break;
+		if ((qp = str2qb ((char *) pe -> pe_prim, (int) pe -> pe_len, 0))
+				== NULL) {
+			pe -> pe_errno = PE_ERR_NMEM;
+			goto out;
+		}
+		qb -> qb_len = qp -> qb_len;
+		insque (qp, qb);
+		break;
 
 	case PE_FORM_CONS:
-	    if ((p = pe -> pe_cons) == NULLPE)
+		if ((p = pe -> pe_cons) == NULLPE)
+			break;
+		class = p -> pe_class, id = p -> pe_id;
+		for (p = pe -> pe_cons; p; p = p -> pe_next) {
+			register struct qbuf *qpp,
+					*qbp;
+
+			if ((p -> pe_class != class || p -> pe_id != id)
+					&& (p -> pe_class != PE_CLASS_UNIV
+						|| p -> pe_id != PE_PRIM_OCTS)) {
+				pe -> pe_errno = PE_ERR_TYPE;
+				goto out;
+			}
+			if ((qp = prim2qb (p)) == NULL) {
+				pe -> pe_errno = p -> pe_errno;
+				goto out;
+			}
+
+			for (qpp = qp -> qb_forw; qpp != qp; qpp = qbp) {
+				qbp = qpp -> qb_forw;
+
+				remque (qpp);
+				insque (qpp, qb -> qb_back);
+
+				qb -> qb_len += qpp -> qb_len;
+			}
+			free ((char *) qp);
+		}
 		break;
-	    class = p -> pe_class, id = p -> pe_id;
-	    for (p = pe -> pe_cons; p; p = p -> pe_next) {
-		register struct qbuf *qpp,
-				     *qbp;
+	}
 
-		if ((p -> pe_class != class || p -> pe_id != id)
-		        && (p -> pe_class != PE_CLASS_UNIV
-				|| p -> pe_id != PE_PRIM_OCTS)) {
-		    pe -> pe_errno = PE_ERR_TYPE;
-		    goto out;
-		}
-		if ((qp = prim2qb (p)) == NULL) {
-		    pe -> pe_errno = p -> pe_errno;
-		    goto out;
-		}
+	return qb;
 
-		for (qpp = qp -> qb_forw; qpp != qp; qpp = qbp) {
-		    qbp = qpp -> qb_forw;
+out:
+	;
+	qb_free (qb);
 
-		    remque (qpp);
-		    insque (qpp, qb -> qb_back);
-
-		    qb -> qb_len += qpp -> qb_len;
-		}
-		free ((char *) qp);
-	    }
-	    break;
-    }
-
-    return qb;
-
-out: ;
-    qb_free (qb);
-
-    return NULL;
+	return NULL;
 }

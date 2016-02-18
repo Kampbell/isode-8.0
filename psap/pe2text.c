@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2text.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/pe2text.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -43,26 +43,24 @@ PElementData data;
 PElementLen n;
 int	in_line;
 {
-    register LLog    *lp = (LLog *) ps -> ps_addr;
+	register LLog    *lp = (LLog *) ps -> ps_addr;
 
-    if (lp -> ll_stat & LLOGTTY) {
-	(void) fflush (stdout);
+	if (lp -> ll_stat & LLOGTTY) {
+		(void) fflush (stdout);
 
-	(void) fwrite ((char *) data, sizeof *data, (int) n, stderr);
-	(void) fflush (stderr);
-    }
+		(void) fwrite ((char *) data, sizeof *data, (int) n, stderr);
+		(void) fflush (stderr);
+	}
 
-    if (lp -> ll_fd == NOTOK) {
-	if ((lp -> ll_stat & (LLOGERR | LLOGTTY)) == (LLOGERR | LLOGTTY))
-	    return ((int) n);
-	if (ll_open (lp) == NOTOK)
-	    return NOTOK;
-    }
-    else
-	if (ll_check (lp) == NOTOK)
-	    return NOTOK;
+	if (lp -> ll_fd == NOTOK) {
+		if ((lp -> ll_stat & (LLOGERR | LLOGTTY)) == (LLOGERR | LLOGTTY))
+			return ((int) n);
+		if (ll_open (lp) == NOTOK)
+			return NOTOK;
+	} else if (ll_check (lp) == NOTOK)
+		return NOTOK;
 
-    return write (lp -> ll_fd, (char *) data, (int) n);
+	return write (lp -> ll_fd, (char *) data, (int) n);
 }
 
 /*  */
@@ -70,9 +68,9 @@ int	in_line;
 static int  ll_psopen (ps)
 register PS ps;
 {
-    ps -> ps_writeP = ll_pswrite;
+	ps -> ps_writeP = ll_pswrite;
 
-    return OK;
+	return OK;
 }
 
 #define	ll_psetup(ps, lp)	((ps) -> ps_addr = (caddr_t) (lp), OK)
@@ -85,31 +83,31 @@ register PE pe;
 int	rw,
 	cc;
 {
-    register char   *bp;
-    char   buffer[BUFSIZ];
-    register PS ps;
+	register char   *bp;
+	char   buffer[BUFSIZ];
+	register PS ps;
 
-    bp = buffer;
-    (void) sprintf (bp, "%s PE", rw ? "read" : "wrote");
-    bp += strlen (bp);
-    if (pe -> pe_context != PE_DFLT_CTX) {
-	(void) sprintf (bp, ", context %d", pe -> pe_context);
+	bp = buffer;
+	(void) sprintf (bp, "%s PE", rw ? "read" : "wrote");
 	bp += strlen (bp);
-    }
-    if (cc != NOTOK) {
-	(void) sprintf (bp, ", length %d", cc);
-	bp += strlen (bp);
-    }
-    LLOG (lp, LLOG_ALL, ("%s", buffer));
+	if (pe -> pe_context != PE_DFLT_CTX) {
+		(void) sprintf (bp, ", context %d", pe -> pe_context);
+		bp += strlen (bp);
+	}
+	if (cc != NOTOK) {
+		(void) sprintf (bp, ", length %d", cc);
+		bp += strlen (bp);
+	}
+	LLOG (lp, LLOG_ALL, ("%s", buffer));
 
-    if ((ps = ps_alloc (ll_psopen)) != NULLPS) {
-	if (ll_psetup (ps, lp) != NOTOK)
-	    (void) pe2pl (ps, pe);
+	if ((ps = ps_alloc (ll_psopen)) != NULLPS) {
+		if (ll_psetup (ps, lp) != NOTOK)
+			(void) pe2pl (ps, pe);
 
-	ps_free (ps);
-    }
+		ps_free (ps);
+	}
 
-    (void) ll_printf (lp, "-------\n");
+	(void) ll_printf (lp, "-------\n");
 
-    (void) ll_sync (lp);
+	(void) ll_sync (lp);
 }

@@ -19,34 +19,34 @@ extern int	errno;
 
 struct dirent *
 readdir( dirp )
-	register DIR		*dirp;	/* stream from opendir() */
-	{
+register DIR		*dirp;	/* stream from opendir() */
+{
 	register struct dirent	*dp;	/* -> directory data */
 
-	if ( dirp == NULL || dirp->dd_buf == NULL )
-		{
+	if ( dirp == NULL || dirp->dd_buf == NULL ) {
 		errno = EFAULT;
 		return NULL;		/* invalid pointer */
-		}
+	}
 
 	do	{
 		if ( dirp->dd_loc >= dirp->dd_size )	/* empty or obsolete */
 			dirp->dd_loc = dirp->dd_size = 0;
 
 		if ( dirp->dd_size == 0	/* need to refill buffer */
-		  && (dirp->dd_size =
-			getdents( dirp->dd_fd, dirp->dd_buf, (unsigned)DIRBUF )
-		     ) <= 0
+				&& (dirp->dd_size =
+						getdents( dirp->dd_fd, dirp->dd_buf, (unsigned)DIRBUF )
+				   ) <= 0
 		   )
 			return NULL;	/* EOF or error */
 
 		dp = (struct dirent *)&dirp->dd_buf[dirp->dd_loc];
 		dirp->dd_loc += dp->d_reclen;
-		}
-	while ( dp->d_ino == 0L );	/* don't rely on getdents() */
+	} while ( dp->d_ino == 0L );	/* don't rely on getdents() */
 
 	return dp;
-	}
+}
 #else
-int	_readdir_stub () {;}
+int	_readdir_stub () {
+	;
+}
 #endif

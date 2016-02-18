@@ -16,7 +16,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntp.c,v 9.0 1992
  * This program expects a list of host names.  It will send off a
  * network time protocol packet and print out the replies on the
  * terminal.
- * 
+ *
  * Example:
  *
  *  % ntp umd1.umd.edu
@@ -45,7 +45,7 @@ char *modename[8] = {
 	"Broadcast",
 	"Reserved-1",
 	"Reserved-2"
-	};
+};
 
 #define RETRY_COUNT	2	/* number of times we want to retry */
 #define TIME_OUT        10	/* time to wait for reply, in secs */
@@ -63,8 +63,8 @@ extern int optind;
 char	*myname;
 
 main(argc, argv)
-	int argc;
-	char *argv[];
+int argc;
+char *argv[];
 {
 	struct hostent *hp;
 	struct in_addr clock_host;
@@ -88,7 +88,7 @@ main(argc, argv)
 	sp = getservbyname("ntp", "udp");
 	if (sp == NULL) {
 		(void) fprintf(stderr, "udp/ntp: service unknown; using default %d\n",
-			NTP_PORT);
+					   NTP_PORT);
 		dst.sin_port = htons(NTP_PORT);
 	} else
 		dst.sin_port = sp->s_port;
@@ -120,7 +120,7 @@ main(argc, argv)
 			hp = gethostbyname(argv[host]);
 			if (hp == NULL) {
 				(void) fprintf(stderr, "\nNo such host: %s\n",
-					argv[host]);
+							   argv[host]);
 				continue;
 			}
 			bcopy(hp->h_addr, (char *) &dst.sin_addr,hp->h_length);
@@ -157,10 +157,10 @@ main(argc, argv)
 		}
 
 		/*
-		 * Wait for the reply by watching the file descriptor 
+		 * Wait for the reply by watching the file descriptor
 		 */
 		if ((n = select(FD_SETSIZE, & readfds, (fd_set *) 0,
-				(fd_set *) 0, &timeout)) < 0) {
+						(fd_set *) 0, &timeout)) < 0) {
 			perror("ntp select");
 			exit(1);
 		}
@@ -171,13 +171,13 @@ main(argc, argv)
 				--host;
 			else {
 				(void) fprintf(stderr,"Host %s is not responding\n",
-				       argv[host]);
+							   argv[host]);
 				retry = RETRY_COUNT;
 			}
 			continue;
 		}
 		if ((recvfrom(s, (char *) pkt, sizeof(ntp_data), 0,
-			      (struct sockaddr *) &isock, &dstlen)) < 0) {
+					  (struct sockaddr *) &isock, &dstlen)) < 0) {
 			perror("recvfrom");
 			exit(1);
 		}
@@ -188,10 +188,10 @@ main(argc, argv)
 		if (verbose) {
 			(void) printf("Packet from: [%s]\n", inet_ntoa(isock.sin_addr));
 			(void) printf("Leap %d, version %d, mode %s, poll %d, precision %d stratum %d",
-			       (pkt->status & LEAPMASK) >> 6, 
-			       (pkt->status & VERSIONMASK) >> 3,
-			       modename[pkt->status & MODEMASK],
-			       pkt->ppoll, pkt->precision, pkt->stratum);
+						  (pkt->status & LEAPMASK) >> 6,
+						  (pkt->status & VERSIONMASK) >> 3,
+						  modename[pkt->status & MODEMASK],
+						  pkt->ppoll, pkt->precision, pkt->stratum);
 			switch (pkt->stratum) {
 			case 0:
 			case 1:
@@ -205,38 +205,38 @@ main(argc, argv)
 				break;
 			}
 			(void) printf("Synch Distance is %04X.%04x  %f\n",
-			       ntohs(pkt->distance.int_part),
-			       ntohs(pkt->distance.fraction),
-			       s_fixed_to_double(&pkt->distance));
+						  ntohs(pkt->distance.int_part),
+						  ntohs(pkt->distance.fraction),
+						  s_fixed_to_double(&pkt->distance));
 
 			(void) printf("Synch Dispersion is %04X.%04x  %f\n",
-			       ntohs(pkt->dispersion.int_part),
-			       ntohs(pkt->dispersion.fraction),
-			       s_fixed_to_double(&pkt->dispersion));
+						  ntohs(pkt->dispersion.int_part),
+						  ntohs(pkt->dispersion.fraction),
+						  s_fixed_to_double(&pkt->dispersion));
 
 			net_time = ntohl(pkt->reftime.int_part) - JAN_1970;
 			(void) printf("Reference Timestamp is %08lx.%08lx %s",
-			       ntohl(pkt->reftime.int_part),
-			       ntohl(pkt->reftime.fraction),
-			       ctime(&net_time));
+						  ntohl(pkt->reftime.int_part),
+						  ntohl(pkt->reftime.fraction),
+						  ctime(&net_time));
 
 			net_time = ntohl(pkt->org.int_part) - JAN_1970;
 			(void) printf("Originate Timestamp is %08lx.%08lx %s",
-			       ntohl(pkt->org.int_part),
-			       ntohl(pkt->org.fraction),
-			       ctime(&net_time));
+						  ntohl(pkt->org.int_part),
+						  ntohl(pkt->org.fraction),
+						  ctime(&net_time));
 
 			net_time = ntohl(pkt->rec.int_part) - JAN_1970;
 			(void) printf("Receive Timestamp is   %08lx.%08lx %s",
-			       ntohl(pkt->rec.int_part),
-			       ntohl(pkt->rec.fraction),
-			       ctime(&net_time));
+						  ntohl(pkt->rec.int_part),
+						  ntohl(pkt->rec.fraction),
+						  ctime(&net_time));
 
 			net_time = ntohl(pkt->xmt.int_part) - JAN_1970;
 			(void) printf("Transmit Timestamp is  %08lx.%08lx %s",
-			       ntohl(pkt->xmt.int_part),
-			       ntohl(pkt->xmt.fraction),
-			       ctime(&net_time));
+						  ntohl(pkt->xmt.int_part),
+						  ntohl(pkt->xmt.fraction),
+						  ctime(&net_time));
 		}
 		t1 = ul_fixed_to_double(&pkt->org);
 		t2 = ul_fixed_to_double(&pkt->rec);
@@ -244,17 +244,17 @@ main(argc, argv)
 		t4 = ul_fixed_to_double(&in_timestamp);
 
 		net_time = ntohl(in_timestamp.int_part) - JAN_1970;
-		if (verbose) 
+		if (verbose)
 			(void) printf("Input Timestamp is     %08lx.%08lx %s",
-			       ntohl(in_timestamp.int_part),
-			       ntohl(in_timestamp.fraction), ctime(&net_time));
+						  ntohl(in_timestamp.int_part),
+						  ntohl(in_timestamp.fraction), ctime(&net_time));
 
 		delay = (t4 - t1) - (t3 - t2);
 		offset = (t2 - t1) + (t3 - t4);
 		offset = offset / 2.0;
 		(void) printf("%.20s: delay:%f offset:%f  ",
-		       hp ? hp->h_name : argv[host],
-		       delay, offset);
+					  hp ? hp->h_name : argv[host],
+					  delay, offset);
 		net_time = ntohl(pkt->xmt.int_part) - JAN_1970 + delay;
 		(void) fputs(ctime(&net_time), stdout);
 		(void)fflush(stdout);
@@ -269,7 +269,7 @@ main(argc, argv)
 
 		if (pkt->status & LEAPMASK == ALARM) {
 			(void) fprintf(stderr, "Can't set time from %s - unsynchronized\n",
-				argv[host]);
+						   argv[host]);
 			continue;
 		}
 
@@ -285,5 +285,5 @@ main(argc, argv)
 		} else
 			set = 0;
 	}			/* end of for each host */
-       return 0;
+	return 0;
 }				/* end of main */

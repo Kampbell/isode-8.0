@@ -14,7 +14,7 @@
  * Revision 9.0  1992/06/16  14:38:53  isode
  * Release 8.0
  *
- * 
+ *
  */
 
 #ifndef lint
@@ -98,10 +98,10 @@ struct type_Idist_FileSpec *fs;
 	(void) strcpy (old, new);
 	free (new);
 
-	
+
 	if (symlink (old, linkname) < 0) {
 		if (errno != ENOENT || chkparent (linkname) < 0 ||
-		    symlink (old, linkname) < 0) {
+				symlink (old, linkname) < 0) {
 			nadvise (linkname, "Can't symlink %s to", old);
 			return NOTOK;
 		}
@@ -111,8 +111,8 @@ struct type_Idist_FileSpec *fs;
 		char	tbuf[BUFSIZ];
 
 		if ((i = readlink (target, tbuf, BUFSIZ)) >= 0 &&
-		    i == fs -> filesize &&
-		    strncmp (old, tbuf, (int) fs -> filesize) == 0) {
+				i == fs -> filesize &&
+				strncmp (old, tbuf, (int) fs -> filesize) == 0) {
 			(void) unlink (linkname);
 			return OK;
 		}
@@ -158,7 +158,7 @@ char	*name;
  * Check to see if parent directory exists and create one if not.
  */
 chkparent(name)
-	char *name;
+char *name;
 {
 	register char *cp;
 	struct stat stb;
@@ -169,7 +169,7 @@ chkparent(name)
 	*cp = '\0';
 	if (lstat(name, &stb) < 0) {
 		if (errno == ENOENT && chkparent(name) >= 0 &&
-		    mkdir(name, 0777 & ~oumask) >= 0) {
+				mkdir(name, 0777 & ~oumask) >= 0) {
 			*cp = '/';
 			return(0);
 		}
@@ -192,7 +192,7 @@ struct type_Idist_FileSpec *fs;
 
 	if ((cfile = fopen (name, "w")) == NULL) {
 		if (errno != ENOENT || chkparent (name) < 0 ||
-		    (cfile = fopen (name, "w")) == NULL) {
+				(cfile = fopen (name, "w")) == NULL) {
 			nadvise (name, "Can't create file");
 			return NOTOK;
 		}
@@ -228,7 +228,7 @@ struct type_Idist_FileSpec *fs;
 		int mode = stb.st_mode & S_IFMT;
 		if (mode != S_IFREG && mode != S_IFLNK) {
 			nadvise (NULLCP, "%s: not a regular file",
-				 host, target);
+					 host, target);
 			return NOTOK;
 		}
 		exists = 1;
@@ -269,7 +269,7 @@ struct type_Idist_FileSpec *fs;
 			;
 		tp --;
 	}
-	
+
 	if (bit_on (fs -> fileopts, bit_Idist_Options_verify)) {
 		free (name);
 		return OK;
@@ -282,15 +282,14 @@ struct type_Idist_FileSpec *fs;
 				return OK;
 			}
 			note ("%s remote node %o != local mode %o",
-			      target, stb.st_mode & 07777, fs -> filemode);
+				  target, stb.st_mode & 07777, fs -> filemode);
 			free (name);
 			return OK;
 		}
 		errno = ENOTDIR;
-	}
-	else if (errno == ENOENT && (mkdir(target, (int)fs -> filemode) == 0 ||
-			     chkparent (target) == 0 &&
-			     mkdir (target, (int)fs -> filemode) == 0)) {
+	} else if (errno == ENOENT && (mkdir(target, (int)fs -> filemode) == 0 ||
+								   chkparent (target) == 0 &&
+								   mkdir (target, (int)fs -> filemode) == 0)) {
 		char *owner = qb2str (fs -> fileowner);
 		char *group = qb2str (fs -> filegroup);
 
@@ -327,7 +326,7 @@ char	*str;
 		nadvise (str, "Can't stat file");
 		return NOTOK;
 	}
-	
+
 	switch (stb.st_mode & S_IFMT) {
 	case S_IFREG:
 	case S_IFLNK:
@@ -353,7 +352,7 @@ char	*str;
 
 	while (dp = readdir(d)) {
 		if (strcmp(dp->d_name, ".") == 0 ||
-		    strcmp(dp->d_name, "..") == 0)
+				strcmp(dp->d_name, "..") == 0)
 			continue;
 		(void) sprintf (buf, "%s/%s", str, dp -> d_name);
 		result = i_remove(buf) == OK ? result : NOTOK;
@@ -389,15 +388,14 @@ char	*str;
 	qr = (struct type_Idist_QueryResult *) malloc (sizeof *qr);
 	if (qr == NULL)
 		adios ("memory", "out of");
-	
+
 	if (catname)
 		(void) sprintf (tp, "/%s", str);
 
 	if (lstat (target, &stb) < 0) {
 		if (errno == ENOENT) {
 			qr -> offset = type_Idist_QueryResult_doesntExist;
-		}
-		else {
+		} else {
 			nadvise ("failed", "lstat");
 			free ((	char *) qr);
 			qr = NULL;
@@ -407,15 +405,15 @@ char	*str;
 	}
 	qr -> offset = type_Idist_QueryResult_doesExist;
 	switch (stb.st_mode & S_IFMT) {
-	    case S_IFREG:
-	    case S_IFDIR:
-	    case S_IFLNK:
+	case S_IFREG:
+	case S_IFDIR:
+	case S_IFLNK:
 		qr -> un.doesExist = makefs (stb.st_mode & S_IFMT, 0,
-					     stb.st_mode & 07777, stb.st_size,
-					     stb.st_mtime, "", "", str, "");
+									 stb.st_mode & 07777, stb.st_size,
+									 stb.st_mtime, "", "", str, "");
 		break;
 
-	    default:
+	default:
 		nadvise (NULLCP, "%s: not a file or directory", str);
 		free ((char *)qr);
 		qr = NULL;
@@ -431,7 +429,7 @@ int	len;
 	register struct type_Idist_IA5List *ia5;
 
 	if ((ia5 = (struct type_Idist_IA5List  *) calloc (1, sizeof *ia5))
-	    == NULL)
+			== NULL)
 		return NULL;
 
 	if ((ia5 -> IA5String = str2qb (s, len, 1)) == NULL) {
@@ -442,8 +440,7 @@ int	len;
 	return ia5;
 }
 
-struct type_Idist_FileList *do_listcdir ()
-{
+struct type_Idist_FileList *do_listcdir () {
 	DIR	*d;
 	register struct dirent *dp;
 	struct type_Idist_FileList *base, **flp;
@@ -452,7 +449,7 @@ struct type_Idist_FileList *do_listcdir ()
 
 	base = NULL;
 	flp = &base;
-	
+
 	if ((d = opendir (target)) == NULL) {
 		nadvise (target, "Can't open directory");
 		return NULL;
@@ -460,7 +457,7 @@ struct type_Idist_FileList *do_listcdir ()
 
 	while (dp = readdir (d)) {
 		if (strcmp (dp -> d_name, ".") == 0 ||
-		    strcmp (dp -> d_name, "..") == 0)
+				strcmp (dp -> d_name, "..") == 0)
 			continue;
 		(void) sprintf (buf, "%s/%s", target, dp -> d_name);
 		if (lstat (buf, &stb) < 0) {
@@ -468,21 +465,21 @@ struct type_Idist_FileList *do_listcdir ()
 			continue;
 		}
 		switch (stb.st_mode & S_IFMT) {
-		    case S_IFDIR:
-		    case S_IFLNK:
-		    case S_IFREG:
+		case S_IFDIR:
+		case S_IFLNK:
+		case S_IFREG:
 			break;
-		    default:	/* skip sockets, fifos et al... */
+		default:	/* skip sockets, fifos et al... */
 			continue;
 		}
 		if ((*flp = (struct type_Idist_FileList *)
-		     malloc (sizeof **flp)) == NULL)
+					malloc (sizeof **flp)) == NULL)
 			adios ("memory", "out of");
 
 		(*flp) -> FileSpec = makefs (stb.st_mode & S_IFMT, 0,
-					     stb.st_mode & 07777, stb.st_size,
-					     stb.st_mtime, "", "",
-					     dp->d_name, "");
+									 stb.st_mode & 07777, stb.st_size,
+									 stb.st_mtime, "", "",
+									 dp->d_name, "");
 		(*flp) -> next = NULL;
 		flp = &(*flp) -> next;
 	}
@@ -490,8 +487,7 @@ struct type_Idist_FileList *do_listcdir ()
 	return base;
 }
 
-fixup ()
-{
+fixup () {
 	struct timeval tvp[2];
 	char	*new, *p;
 	char	*owner, *group;
@@ -500,7 +496,7 @@ fixup ()
 	p = qb2str (cfiletype -> filename);
 	new = cannon (p);
 	free (p);
-	
+
 	if (bit_on (cfiletype -> fileopts, bit_Idist_Options_compare)) {
 		if (compare (target, new) == OK) {
 			(void) unlink (new);
@@ -531,7 +527,7 @@ fixup ()
 	}
 	free (owner);
 	free (group);
-	
+
 	if (rename (new, target) < 0) {
 		nadvise (target, "Can't rename %s to", new);
 		return NOTOK;
@@ -579,8 +575,8 @@ char	*f1, *f2;
  * Change owner, group and mode of file.
  */
 chog(file, owner, group, imode)
-	char *file, *owner, *group;
-	integer imode;
+char *file, *owner, *group;
+integer imode;
 {
 	register int i;
 	int uid, gid;
@@ -598,7 +594,7 @@ chog(file, owner, group, imode)
 			if ((pw = getpwnam(owner)) == NULL) {
 				if (mode & 04000) {
 					note("%s: unknown login name, clearing setuid",
-						host, owner);
+						 host, owner);
 					mode &= ~04000;
 					uid = 0;
 				}
@@ -615,7 +611,7 @@ chog(file, owner, group, imode)
 	gid = -1;
 	if (gr == NULL || strcmp(group, gr->gr_name) != 0) {
 		if ((*group == ':' && (getgrgid(gid = atoi(group + 1)) == NULL))
-		   || ((gr = getgrnam(group)) == NULL)) {
+				|| ((gr = getgrnam(group)) == NULL)) {
 			if (mode & 02000) {
 				note("%s: unknown group", group);
 				mode &= ~02000;
@@ -626,8 +622,8 @@ chog(file, owner, group, imode)
 		gid = gr->gr_gid;
 	if (userid && gid >= 0) {
 		if (gr) for (i = 0; gr->gr_mem[i] != NULL; i++)
-			if (!(strcmp(user, gr->gr_mem[i])))
-				goto ok;
+				if (!(strcmp(user, gr->gr_mem[i])))
+					goto ok;
 		mode &= ~02000;
 		gid = -1;
 	}
@@ -640,8 +636,7 @@ ok:
 	return(0);
 }
 
-SFD cleanup ()
-{
+SFD cleanup () {
 	char	*p, *temp;
 
 	if (cfiletype) {

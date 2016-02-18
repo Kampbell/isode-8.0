@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/cache.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/cache.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -46,13 +46,13 @@ Entry local_find_entry_aux ();
 struct subordinate * subord_cpy (x)
 struct subordinate * x;
 {
-struct subordinate * sub;
-struct subordinate * y;
-struct subordinate * top;
+	struct subordinate * sub;
+	struct subordinate * y;
+	struct subordinate * top;
 
 	if (x == NULLSUBORD)
 		return (x);
-	
+
 	top = (struct subordinate *) smalloc (sizeof(struct subordinate));
 	top->sub_copy =  x->sub_copy;
 	top->sub_rdn = rdn_cpy(x->sub_rdn);
@@ -70,7 +70,7 @@ struct subordinate * top;
 		y = sub;
 	}
 
-	return (top);	
+	return (top);
 }
 
 /* ARGSUSED */
@@ -95,13 +95,13 @@ int 		sizelimit;
 	} else {
 		subords_free (cache->list_sub_top);
 		cache->list_subs = subord_cpy (ptr);
-			cache->list_sub_top = cache->list_subs;
+		cache->list_sub_top = cache->list_subs;
 		cache->list_problem = prob;
 	}
 
-	for (i=0, sub=cache->list_subs; 
-		sub != NULLSUBORD; 
-		i++, sub = sub->sub_next);
+	for (i=0, sub=cache->list_subs;
+			sub != NULLSUBORD;
+			i++, sub = sub->sub_next);
 	cache->list_count = i;
 
 }
@@ -109,8 +109,8 @@ int 		sizelimit;
 delete_list_cache (adn)
 DN adn;
 {
-DN dntop, trail = NULLDN;
-struct list_cache *ptr, *lt = NULLCACHE;
+	DN dntop, trail = NULLDN;
+	struct list_cache *ptr, *lt = NULLCACHE;
 
 	if (adn == NULLDN)
 		return;
@@ -125,11 +125,11 @@ struct list_cache *ptr, *lt = NULLCACHE;
 	else
 		trail->dn_parent = NULLDN;
 
-        for (ptr = list_top; ptr != NULLCACHE; ptr = ptr->list_next) {
-                if (dn_cmp (ptr->list_dn, dntop) == 0) {
-			if (lt == NULLCACHE) 
+	for (ptr = list_top; ptr != NULLCACHE; ptr = ptr->list_next) {
+		if (dn_cmp (ptr->list_dn, dntop) == 0) {
+			if (lt == NULLCACHE)
 				list_top = ptr->list_next;
-			else 
+			else
 				lt->list_next = ptr->list_next;
 			subords_free(ptr->list_sub_top);
 			free ((char *)ptr);
@@ -151,31 +151,29 @@ int sizelimit;
 	int i;
 	for (ptr = list_top; ptr != NULLCACHE; ptr = ptr->list_next)
 		if (dn_cmp (ptr->list_dn, dn) == 0)
-			if ((ptr->list_problem == LSR_NOLIMITPROBLEM) 
-				|| ((ptr->list_count >= sizelimit) && (sizelimit != -1)))
-				{
+			if ((ptr->list_problem == LSR_NOLIMITPROBLEM)
+					|| ((ptr->list_count >= sizelimit) && (sizelimit != -1))) {
 				ptr->list_subs = ptr->list_sub_top;
-				if (sizelimit == -1) 	
+				if (sizelimit == -1)
 					return (ptr);
 				/* only want sizelimit of them */
 				for (i=ptr->list_count - sizelimit; i>0; i--)
 					ptr->list_subs = ptr->list_subs->sub_next;
 				return (ptr);
-				}
+			}
 
 	return (NULLCACHE);
 }
 
 
-free_all_list_cache ()
-{
+free_all_list_cache () {
 	struct list_cache *ptr, *pn;
 	for (ptr = list_top; ptr != NULLCACHE; ptr = pn)  {
-	        pn = ptr->list_next;
+		pn = ptr->list_next;
 		dn_free (ptr->list_dn);
 		subords_free (ptr->list_sub_top);
 		free ((char *)ptr);
-	    }
+	}
 }
 
 
@@ -204,12 +202,12 @@ char            vals;
 		;
 
 	if ((current_entry = local_find_entry_aux (current_dn, FALSE)) != NULLENTRY) {
-			
+
 		current_entry->e_age = time((time_t *)0);
-		if ((vals && complete) || 
-		   ((current_entry->e_data == E_TYPE_CACHE_FROM_MASTER) 
-		     && (time((time_t *)0) - current_entry->e_age > cache_timeout))) {
-			
+		if ((vals && complete) ||
+				((current_entry->e_data == E_TYPE_CACHE_FROM_MASTER)
+				 && (time((time_t *)0) - current_entry->e_age > cache_timeout))) {
+
 			as_free (current_entry->e_attributes);
 			current_entry->e_attributes = as_cpy(ptr->ent_attr);
 			current_entry->e_lock = vals;
@@ -219,15 +217,15 @@ char            vals;
 			current_entry->e_attributes = as_merge_aux (current_entry->e_attributes, as_cpy(ptr->ent_attr));
 			if (vals != current_entry->e_lock)
 				current_entry->e_lock = FALSE;
-		} else { 
+		} else {
 			current_entry->e_attributes = as_merge_aux (current_entry->e_attributes, as_cpy(ptr->ent_attr));
 		}
 	} else {
 		if ((current_entry = make_path (current_dn)) == NULLENTRY)
 			return;
-/*
-		current_entry->e_name = rdn_cpy (dnptr->dn_rdn);
-*/
+		/*
+				current_entry->e_name = rdn_cpy (dnptr->dn_rdn);
+		*/
 		current_entry->e_complete = complete;
 		current_entry->e_data = E_TYPE_CACHE_FROM_MASTER;
 		current_entry->e_age = time((time_t *)0);
@@ -257,12 +255,12 @@ DN              adn;
 			local_cache_size--;
 			if (ptr->e_children != NULLAVL) {
 				ptr->e_data = E_TYPE_CONSTRUCTOR;
-				ptr->e_complete = FALSE;	
+				ptr->e_complete = FALSE;
 				as_free (ptr->e_attributes);
 				ptr->e_attributes = NULLATTR;
 			} else {
-                                ( void ) avl_delete( &ptr->e_parent->e_children,
-                                    (caddr_t) ptr->e_name, entryrdn_cmp );
+				( void ) avl_delete( &ptr->e_parent->e_children,
+									 (caddr_t) ptr->e_name, entryrdn_cmp );
 			}
 		}
 	}
@@ -273,29 +271,29 @@ Entry local_find_entry (object,deref)
 DN                      object;
 char deref;
 {
-Entry the_entry;
+	Entry the_entry;
 
 	if ((the_entry = local_find_entry_aux (object,deref)) == NULLENTRY)
 		return NULLENTRY;
 
-	if ((the_entry->e_data == E_TYPE_CACHE_FROM_MASTER) 
-		&& (time((time_t *)0) - the_entry->e_age > cache_timeout)) {
+	if ((the_entry->e_data == E_TYPE_CACHE_FROM_MASTER)
+			&& (time((time_t *)0) - the_entry->e_age > cache_timeout)) {
 		DLOG (log_dsap,LLOG_TRACE,("local find entry - timeout"));
 		return (NULLENTRY);
 	} else
-		return (the_entry); 
+		return (the_entry);
 }
 
 Entry local_find_entry_aux (object,deref)
 DN                      object;
 char deref;
 {
-Entry  the_entry;
-register RDN    b_rdn;
-DN     dn;
-Avlnode	*kids;
+	Entry  the_entry;
+	register RDN    b_rdn;
+	DN     dn;
+	Avlnode	*kids;
 
-	if (database_root == NULLENTRY) 
+	if (database_root == NULLENTRY)
 		return (NULLENTRY);
 
 	if ((dn = object) == NULLDN)
@@ -308,27 +306,27 @@ Avlnode	*kids;
 	b_rdn = dn->dn_rdn;
 
 	for(;;) { /* break or return out */
-		if ((the_entry = (Entry) avl_find(kids, (caddr_t) b_rdn, 
-					 entryrdn_cmp)) == NULLENTRY)
+		if ((the_entry = (Entry) avl_find(kids, (caddr_t) b_rdn,
+										  entryrdn_cmp)) == NULLENTRY)
 			return(NULLENTRY);
 
 		if ( the_entry->e_alias != NULLDN )
 			/* got an alias entry */
 			if (deref) {
 				Entry new_entry;
-				if (dn_cmp (the_entry->e_alias,object) == 0) 
+				if (dn_cmp (the_entry->e_alias,object) == 0)
 					return (NULLENTRY);
 				new_entry = local_find_entry (the_entry->e_alias,deref);
-				if (new_entry == NULLENTRY ) 
+				if (new_entry == NULLENTRY )
 					return (NULLENTRY);
 				the_entry = new_entry;
-			} else if ( dn->dn_parent == NULLDN) 
+			} else if ( dn->dn_parent == NULLDN)
 				return (the_entry);
-			else 
+			else
 				return (NULLENTRY);
 
-		if ( dn->dn_parent == NULLDN) 
-			return (the_entry); 
+		if ( dn->dn_parent == NULLDN)
+			return (the_entry);
 
 		dn = dn->dn_parent;
 		b_rdn = dn->dn_rdn;
@@ -345,9 +343,9 @@ Avlnode	*kids;
 DN get_copy_dn (entryptr)
 Entry entryptr;
 {
-register DN dn;
-register DN dnptr;
-register Entry ptr;
+	register DN dn;
+	register DN dnptr;
+	register Entry ptr;
 
 	if ((entryptr == NULLENTRY) || (entryptr->e_parent == NULLENTRY))
 		return NULLDN;
@@ -383,15 +381,14 @@ struct DSError * error;
 {
 	if (schema_fn == NULLIFP)
 		return (OK);
-	else 
+	else
 		return ((*schema_fn)(eptr,as,error));
 }
 
 
-char * new_version ()
-{
-time_t clock;
-struct UTCtime ut;
+char * new_version () {
+	time_t clock;
+	struct UTCtime ut;
 
 	(void) time (&clock);
 	tm2ut (gmtime (&clock),&ut);

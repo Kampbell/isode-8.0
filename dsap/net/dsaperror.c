@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsaperror.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dsaperror.c,v 9.0 1992/06/16 12:14:05 isode Rel $
  *
  *
@@ -40,40 +40,35 @@ int			  id;
 struct DSError		* err;
 struct DSAPindication	* di;
 {
-    int				  result;
-    PE				  err_pe;
-    struct RoSAPindication	  roi_s;
-    struct RoSAPindication	* roi = &(roi_s);
-    struct RoSAPpreject		* rop = &(roi->roi_preject);
+	int				  result;
+	PE				  err_pe;
+	struct RoSAPindication	  roi_s;
+	struct RoSAPindication	* roi = &(roi_s);
+	struct RoSAPpreject		* rop = &(roi->roi_preject);
 
-    if (DEncodeError (&(err_pe), err) != OK)
-    {
-	LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapErrorRequest: Encoding failed"));
-	return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation error"));
-    }
-
-    watch_dog ("RoErrorRequest (DAP)");
-    result = RoErrorRequest (sd, id, err->dse_type, err_pe, ROS_NOPRIO, roi);
-    watch_dog_reset();
-
-    if (result != OK)
-    {
-	if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER))
-	{
-	    LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapErrorRequest(%d): Fatal rejection",sd));
-	    return (dsaplose (di, DP_INVOKE, NULLCP, "RoErrorRequest failed"));
+	if (DEncodeError (&(err_pe), err) != OK) {
+		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapErrorRequest: Encoding failed"));
+		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation error"));
 	}
-	else
-	{
-	    LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapErrorRequest(): Non-Fatal rejection"));
-	    return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoErrorRequest failed"));
+
+	watch_dog ("RoErrorRequest (DAP)");
+	result = RoErrorRequest (sd, id, err->dse_type, err_pe, ROS_NOPRIO, roi);
+	watch_dog_reset();
+
+	if (result != OK) {
+		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapErrorRequest(%d): Fatal rejection",sd));
+			return (dsaplose (di, DP_INVOKE, NULLCP, "RoErrorRequest failed"));
+		} else {
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapErrorRequest(): Non-Fatal rejection"));
+			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoErrorRequest failed"));
+		}
 	}
-    }
 
-    if (err_pe != NULLPE)
-	pe_free (err_pe);
+	if (err_pe != NULLPE)
+		pe_free (err_pe);
 
-    return (OK);
+	return (OK);
 }
 
 int	  DspErrorRequest (sd, id, err, di)
@@ -82,40 +77,35 @@ int			  id;
 struct DSError		* err;
 struct DSAPindication	* di;
 {
-    int				  result;
-    PE				  err_pe;
-    struct RoSAPindication	  roi_s;
-    struct RoSAPindication	* roi = &(roi_s);
-    struct RoSAPpreject		* rop = &(roi->roi_preject);
+	int				  result;
+	PE				  err_pe;
+	struct RoSAPindication	  roi_s;
+	struct RoSAPindication	* roi = &(roi_s);
+	struct RoSAPpreject		* rop = &(roi->roi_preject);
 
-    if (DEncodeError (&(err_pe), err) != OK)
-    {
-	LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspErrorRequest: Encoding failed"));
-	return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation error"));
-    }
-
-    watch_dog ("RoErrorRequest (DSP)");
-    result = RoErrorRequest (sd, id, err->dse_type, err_pe, ROS_NOPRIO, roi);
-    watch_dog_reset();
-
-    if (result != OK)
-    {
-	if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER))
-	{
-	    LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspErrorRequest(): Fatal rejection"));
-	    return (dsaplose (di, DP_INVOKE, NULLCP, "RoErrorRequest failed"));
+	if (DEncodeError (&(err_pe), err) != OK) {
+		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspErrorRequest: Encoding failed"));
+		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation error"));
 	}
-	else
-	{
-	    LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspErrorRequest(): Non-Fatal rejection"));
-	    return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoErrorRequest failed"));
+
+	watch_dog ("RoErrorRequest (DSP)");
+	result = RoErrorRequest (sd, id, err->dse_type, err_pe, ROS_NOPRIO, roi);
+	watch_dog_reset();
+
+	if (result != OK) {
+		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspErrorRequest(): Fatal rejection"));
+			return (dsaplose (di, DP_INVOKE, NULLCP, "RoErrorRequest failed"));
+		} else {
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspErrorRequest(): Non-Fatal rejection"));
+			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoErrorRequest failed"));
+		}
 	}
-    }
 
-    if (err_pe != NULLPE)
-	pe_free (err_pe);
+	if (err_pe != NULLPE)
+		pe_free (err_pe);
 
-    return (OK);
+	return (OK);
 }
 
 int	  QspErrorRequest (sd, id, err, di)
@@ -124,91 +114,85 @@ int			  id;
 struct DSError		* err;
 struct DSAPindication	* di;
 {
-    int				  result;
-    PE				  err_pe;
-    struct RoSAPindication	  roi_s;
-    struct RoSAPindication	* roi = &(roi_s);
-    struct RoSAPpreject		* rop = &(roi->roi_preject);
+	int				  result;
+	PE				  err_pe;
+	struct RoSAPindication	  roi_s;
+	struct RoSAPindication	* roi = &(roi_s);
+	struct RoSAPpreject		* rop = &(roi->roi_preject);
 
-    if (DEncodeError (&(err_pe), err) != OK)
-    {
-	LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspErrorRequest: Encoding failed"));
-	return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation error"));
-    }
-
-    watch_dog ("RoErrorRequest (QSP)");
-    result = RoErrorRequest (sd, id, err->dse_type, err_pe, ROS_NOPRIO, roi);
-    watch_dog_reset();
-
-    if (result != OK)
-    {
-	if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER))
-	{
-	    LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspErrorRequest(): Fatal rejection"));
-	    return (dsaplose (di, DP_INVOKE, NULLCP, "RoErrorRequest failed"));
+	if (DEncodeError (&(err_pe), err) != OK) {
+		LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspErrorRequest: Encoding failed"));
+		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation error"));
 	}
-	else
-	{
-	    LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspErrorRequest(): Non-Fatal rejection"));
-	    return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoErrorRequest failed"));
+
+	watch_dog ("RoErrorRequest (QSP)");
+	result = RoErrorRequest (sd, id, err->dse_type, err_pe, ROS_NOPRIO, roi);
+	watch_dog_reset();
+
+	if (result != OK) {
+		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspErrorRequest(): Fatal rejection"));
+			return (dsaplose (di, DP_INVOKE, NULLCP, "RoErrorRequest failed"));
+		} else {
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspErrorRequest(): Non-Fatal rejection"));
+			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoErrorRequest failed"));
+		}
 	}
-    }
 
-    if (err_pe != NULLPE)
-	pe_free (err_pe);
+	if (err_pe != NULLPE)
+		pe_free (err_pe);
 
-    return (OK);
+	return (OK);
 }
 
 int             DEncodeError(pep, err)
 PE		*pep;
 struct DSError  *err;
 {
-    int		success;
+	int		success;
 
-    switch(err->dse_type)
-    {
+	switch(err->dse_type) {
 	case    DSE_NOERROR :
-	    LLOG(log_dsap, LLOG_EXCEPTIONS, ("DEncodeError(): no error"));
-	    (*pep) = NULLPE;
-	    success = NOTOK;
-	    break;
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DEncodeError(): no error"));
+		(*pep) = NULLPE;
+		success = NOTOK;
+		break;
 	case    DSE_ABANDON_FAILED :
-	    success = encode_DAS_AbandonFailedParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_abandon_fail));
-	    break;
+		success = encode_DAS_AbandonFailedParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_abandon_fail));
+		break;
 	case    DSE_ATTRIBUTEERROR :
-	    success = encode_DAS_AttributeErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_attribute));
-	    break;
+		success = encode_DAS_AttributeErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_attribute));
+		break;
 	case    DSE_NAMEERROR :
-	    success = encode_DAS_NameErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_name));
-	    break;
+		success = encode_DAS_NameErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_name));
+		break;
 	case    DSE_REFERRAL :
-	    success = encode_DAS_ReferralParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_referral));
-	    break;
+		success = encode_DAS_ReferralParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_referral));
+		break;
 	case    DSE_SECURITYERROR :
-	    success = encode_DAS_SecurityErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_security));
-	    break;
+		success = encode_DAS_SecurityErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_security));
+		break;
 	case    DSE_SERVICEERROR :
-	    success = encode_DAS_ServiceErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_service));
-	    break;
+		success = encode_DAS_ServiceErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_service));
+		break;
 	case    DSE_UPDATEERROR :
-	    success = encode_DAS_UpdateErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_update));
-	    break;
+		success = encode_DAS_UpdateErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_update));
+		break;
 	case    DSE_ABANDONED :
-	    (*pep) = NULLPE;
-	    success = OK;
-	    break;
+		(*pep) = NULLPE;
+		success = OK;
+		break;
 	case    DSE_DSAREFERRAL :
-	    success = encode_DO_DSAReferralParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_referral));
-	    break;
+		success = encode_DO_DSAReferralParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_referral));
+		break;
 	default :
-	    (*pep) = NULLPE;
-	    success = NOTOK;
-	    LLOG(log_dsap, LLOG_EXCEPTIONS, ("DEncodeError(): unknown error %d", err->dse_type));
-	    break;
-    }
+		(*pep) = NULLPE;
+		success = NOTOK;
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DEncodeError(): unknown error %d", err->dse_type));
+		break;
+	}
 
-    return(success);
+	return(success);
 }
 
 

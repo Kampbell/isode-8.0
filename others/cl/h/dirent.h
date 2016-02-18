@@ -9,15 +9,14 @@
 #include	"sys.dirent.h"
 
 #define	DIRBUF		8192		/* buffer size for fs-indep. dirs */
-	/* must in general be larger than the filesystem buffer size */
+/* must in general be larger than the filesystem buffer size */
 
-typedef struct
-	{
+typedef struct {
 	int	dd_fd;			/* file descriptor */
 	int	dd_loc;			/* offset in block */
 	int	dd_size;		/* amount of valid data */
 	char	*dd_buf;		/* -> directory block */
-	}	DIR;			/* stream data from opendir() */
+}	DIR;			/* stream data from opendir() */
 
 #define	opendir		_opendir
 #define	readdir		_readdir

@@ -1,6 +1,6 @@
 /* psap.h - include file for presentation users (PS-USER) */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/psap.h,v 5.0 88/07/21 14:39:13 mrose Rel $
  *
  *
@@ -38,9 +38,9 @@
 /*  */
 
 typedef struct OIDentifier {
-    int	    oid_nelem;		/* number of sub-identifiers */
+	int	    oid_nelem;		/* number of sub-identifiers */
 
-    unsigned int *oid_elements;	/* the (ordered) list of sub-identifiers */
+	unsigned int *oid_elements;	/* the (ordered) list of sub-identifiers */
 }			OIDentifier, *OID;
 #define	NULLOID	((OID) 0)
 
@@ -86,7 +86,7 @@ typedef u_char	  byte, *PElementData;
 /*  */
 
 typedef struct PElement {
-    int	    pe_errno;		/* Error codes */
+	int	    pe_errno;		/* Error codes */
 #define	PE_ERR_NONE	0	/*   No error */
 #define	PE_ERR_OVER	1	/*   Overflow */
 #define	PE_ERR_NMEM	2	/*   Out of memory */
@@ -100,8 +100,8 @@ typedef struct PElement {
 #define	PE_ERR_OID	10	/*   Malformed object identifier */
 #define	PE_ERR_BITS	11	/*   Malformed bitstring */
 
-				/* for the PSAP */
-    int	    pe_context;		/* indirect reference */
+	/* for the PSAP */
+	int	    pe_context;		/* indirect reference */
 #define	PE_DFLT_CTX	0	/*   the default context */
 
 #define	PE_ID_XTND	0x1f	/* distinguished ID for extension bits */
@@ -116,22 +116,22 @@ typedef struct PElement {
 #define	PE_CODE_MASK	0x1f	/* identifier code bits (5-1) + ... */
 #define	PE_CODE_SHIFT	0
 
-    PElementClass	pe_class;
+	PElementClass	pe_class;
 #define	PE_CLASS_UNIV	0x0	/*   Universal */
 #define	PE_CLASS_APPL	0x1	/*   Application-wide */
 #define	PE_CLASS_CONT	0x2	/*   Context-specific */
 #define	PE_CLASS_PRIV	0x3	/*   Private-use */
 
-    PElementForm	pe_form;
+	PElementForm	pe_form;
 #define	PE_FORM_PRIM	0x0	/*   PRIMitive */
 #define	PE_FORM_CONS	0x1	/*   CONStructor */
 #define	PE_FORM_ICONS	0x2	/*   internal: Inline CONStructor */
 
-    PElementID pe_id;		/* should be extensible, 14 bits for now */
-				/* Pseudo Types */
+	PElementID pe_id;		/* should be extensible, 14 bits for now */
+	/* Pseudo Types */
 #define	PE_UNIV_EOC	0x000	/*   End-of-contents */
 
-				/* Built-in Types */
+	/* Built-in Types */
 #define	PE_PRIM_BOOL	0x001	/*   Boolean */
 #define	PE_PRIM_INT	0x002	/*   Integer */
 #define	PE_PRIM_BITS	0x003	/*   Bitstring */
@@ -146,7 +146,7 @@ typedef struct PElement {
 #define	PE_CONS_SEQ	0x010	/*   Sequence */
 #define	PE_CONS_SET	0x011	/*   Set */
 
-				/* Defined Types */
+	/* Defined Types */
 #define	PE_DEFN_NUMS	0x012	/*   Numeric String */
 #define	PE_DEFN_PRTS	0x013	/*   Printable String */
 #define	PE_DEFN_T61S	0x014	/*   T.61 String */
@@ -158,36 +158,36 @@ typedef struct PElement {
 #define	PE_DEFN_VISS	0x01a	/*   Visible string */
 #define	PE_DEFN_GENS	0x01b	/*   General string */
 
-    PElementLen	pe_len;
+	PElementLen	pe_len;
 #define	PE_LEN_XTND	0x80	/* long or indefinite form */
 #define	PE_LEN_SMAX	127	/* largest short form */
 #define	PE_LEN_MASK	0x7f	/* mask to get number of bytes in length */
 #define	PE_LEN_INDF	(-1)	/* indefinite length */
 
-    PElementLen	pe_ilen;
+	PElementLen	pe_ilen;
 
-    union {
-	PElementData	 un_pe_prim;	/* PRIMitive value */
-	struct PElement *un_pe_cons;	/* CONStructor head */
-    }                       pe_un1;
+	union {
+		PElementData	 un_pe_prim;	/* PRIMitive value */
+		struct PElement *un_pe_cons;	/* CONStructor head */
+	}                       pe_un1;
 #define	pe_prim	pe_un1.un_pe_prim
 #define	pe_cons	pe_un1.un_pe_cons
 
-    union {
-	int	    un_pe_cardinal;	/* cardinality of list */
-	int	    un_pe_nbits;	/* number of bits in string */
-    }			    pe_un2;
+	union {
+		int	    un_pe_cardinal;	/* cardinality of list */
+		int	    un_pe_nbits;	/* number of bits in string */
+	}			    pe_un2;
 #define	pe_cardinal	pe_un2.un_pe_cardinal
 #define	pe_nbits	pe_un2.un_pe_nbits
 
-    int	    pe_inline;		/* for "ultra-efficient" PElements */
-    char   *pe_realbase;	/*   .. */
+	int	    pe_inline;		/* for "ultra-efficient" PElements */
+	char   *pe_realbase;	/*   .. */
 
-    int	    pe_offset;		/* offset of element in sequence */
+	int	    pe_offset;		/* offset of element in sequence */
 
-    struct PElement *pe_next;
+	struct PElement *pe_next;
 
-    int	    pe_refcnt;		/* hack for ANYs in pepy */
+	int	    pe_refcnt;		/* hack for ANYs in pepy */
 }			PElement, *PE;
 #define	NULLPE	((PE) 0)
 #define	NULLPEP	((PE *) 0)
@@ -221,18 +221,18 @@ extern char **pe_privlist;
 /*  */
 
 typedef struct UTCtime {
-    int	    ut_year;
-    int	    ut_mon;
-    int	    ut_mday;
-    int	    ut_hour;
-    int	    ut_min;
-    int	    ut_sec;
+	int	    ut_year;
+	int	    ut_mon;
+	int	    ut_mday;
+	int	    ut_hour;
+	int	    ut_min;
+	int	    ut_sec;
 
-    int	    ut_usec;
+	int	    ut_usec;
 
-    int	    ut_zone;
+	int	    ut_zone;
 
-    int	    ut_flags;
+	int	    ut_flags;
 #define	UT_NULL		0x00
 #define	UT_ZONE		0x01
 #define	UT_SEC		0x02
@@ -333,7 +333,7 @@ char   *pe_error ();
 /*  */
 
 typedef struct {
-    int	    ps_errno;		/* Error codes */
+	int	    ps_errno;		/* Error codes */
 #define	PS_ERR_NONE	 0	/*   No error */
 #define	PS_ERR_OVERID	 1	/*   Overflow in ID */
 #define	PS_ERR_OVERLEN	 2	/*   Overflow in length */
@@ -347,23 +347,23 @@ typedef struct {
 #define	PS_ERR_IO	10	/*   I/O error */
 #define	PS_ERR_XXX	11	/*   XXX */
 
-    union {
-	caddr_t un_ps_addr;
-	struct {
-	    char   *st_ps_base;
-	    int	    st_ps_cnt;
-	    char   *st_ps_ptr;
-	    int	    st_ps_bufsiz;
-	}			un_ps_st;
-	struct {
-	    struct udvec *uv_ps_head;
-	    struct udvec *uv_ps_cur;
-	    struct udvec *uv_ps_end;
-	    int	    uv_ps_elems;
-	    int	    uv_ps_slop;
-	    int	    uv_ps_cc;
-	}			un_ps_uv;
-    }                       ps_un;
+	union {
+		caddr_t un_ps_addr;
+		struct {
+			char   *st_ps_base;
+			int	    st_ps_cnt;
+			char   *st_ps_ptr;
+			int	    st_ps_bufsiz;
+		}			un_ps_st;
+		struct {
+			struct udvec *uv_ps_head;
+			struct udvec *uv_ps_cur;
+			struct udvec *uv_ps_end;
+			int	    uv_ps_elems;
+			int	    uv_ps_slop;
+			int	    uv_ps_cc;
+		}			un_ps_uv;
+	}                       ps_un;
 #define	ps_addr	ps_un.un_ps_addr
 #define	ps_base	ps_un.un_ps_st.st_ps_base
 #define	ps_cnt	ps_un.un_ps_st.st_ps_cnt
@@ -376,19 +376,19 @@ typedef struct {
 #define	ps_slop	ps_un.un_ps_uv.uv_ps_slop
 #define	ps_cc	ps_un.un_ps_uv.uv_ps_cc
 
-    caddr_t ps_extra;		/* for George's recursive PStreams */
+	caddr_t ps_extra;		/* for George's recursive PStreams */
 
-    int	    ps_inline;		/* for "ultra-efficient" PStreams */
+	int	    ps_inline;		/* for "ultra-efficient" PStreams */
 
-    int	    ps_scratch;		/* XXX */
+	int	    ps_scratch;		/* XXX */
 
-    int	    ps_byteno;		/* byte position */
+	int	    ps_byteno;		/* byte position */
 
-    IFP	    ps_primeP;
-    IFP	    ps_readP;
-    IFP	    ps_writeP;
-    IFP	    ps_flushP;
-    IFP	    ps_closeP;
+	IFP	    ps_primeP;
+	IFP	    ps_readP;
+	IFP	    ps_writeP;
+	IFP	    ps_flushP;
+	IFP	    ps_closeP;
 }			PStream, *PS;
 #define	NULLPS	((PS) 0)
 
@@ -448,9 +448,9 @@ char   *ps_error ();
 /*  */
 
 struct isobject {
-    char   *io_descriptor;
+	char   *io_descriptor;
 
-    OIDentifier io_identity;
+	OIDentifier io_identity;
 };
 
 int	setisobject (),	endisobject ();

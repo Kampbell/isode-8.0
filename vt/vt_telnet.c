@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vt_telnet.c,v 9.0 1992/06/16 12:41:08 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/vt_telnet.c,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *
@@ -55,8 +55,7 @@ extern do_break;
 extern telnet_profile;
 extern int connected;
 
-vt_newline()	/*Produce Newline update*/
-{
+vt_newline() {	/*Produce Newline update*/
 
 	TEXT_UPDATE ud;
 
@@ -68,8 +67,7 @@ vt_newline()	/*Produce Newline update*/
 	send_queue(ud);
 }
 
-vt_char_erase()		/*Pointer Relative (x=x-1) & erase current*/
-{
+vt_char_erase() {	/*Pointer Relative (x=x-1) & erase current*/
 
 	TEXT_UPDATE ud;
 
@@ -93,8 +91,7 @@ vt_char_erase()		/*Pointer Relative (x=x-1) & erase current*/
 	send_queue(ud);
 }
 
-vt_line_erase()		/*Erase full x-array & pointer to x = 1*/
-{
+vt_line_erase() {	/*Erase full x-array & pointer to x = 1*/
 
 	TEXT_UPDATE ud;
 
@@ -106,30 +103,26 @@ vt_line_erase()		/*Erase full x-array & pointer to x = 1*/
 	ud.updates.do_list.do_cmd.erase.start_erase.ptr_type = 3; /*Start X*/
 	ud.updates.do_list.do_cmd.erase.end_erase.ptr_type = 6; /*End X*/
 	ud.updates.do_list.do_cmd.erase.erase_attr = 0;
-	
+
 	send_queue(ud);
 
 	ud.updates.do_list.do_type = DO_PTR_ABS;
 	ud.updates.do_list.do_cmd.ptr_abs.ptr_type = 3; /*Start X*/
-	
+
 	send_queue(ud);
 }
 
-vt_interrupt()		/*Toggle Bit 1 of DI/KB control object*/
-{
+vt_interrupt() {	/*Toggle Bit 1 of DI/KB control object*/
 
 	TEXT_UPDATE ud;
 	char int_mask;
 	char image;
 
 	int_mask = IP_OBJ;
-	if(my_right == INITIATOR)
-	{
+	if(my_right == INITIATOR) {
 		kb_image ^= IP_OBJ;
 		image = kb_image;
-	}
-	else
-	{
+	} else {
 		di_image ^= IP_OBJ;	/*Toggle the Interrupt Process bit*/
 		image = di_image;
 	}
@@ -171,28 +164,27 @@ vt_echo(echo)
 int	echo;
 {
 
-    if (!telnet_profile) {
-	advise (LLOG_NOTICE,NULLCP,  "not using TELNET profile");
-	return;
-    }
-    if ((ni_image & ECHO_OBJ) != (nego_state & ECHO_OBJ)) {
-	advise (LLOG_NOTICE,NULLCP, 
-		"negotiation in progress, try again later...");
-	return;
-    }
+	if (!telnet_profile) {
+		advise (LLOG_NOTICE,NULLCP,  "not using TELNET profile");
+		return;
+	}
+	if ((ni_image & ECHO_OBJ) != (nego_state & ECHO_OBJ)) {
+		advise (LLOG_NOTICE,NULLCP,
+				"negotiation in progress, try again later...");
+		return;
+	}
 
-    if (echo != ((nego_state & ECHO_OBJ) ? 1 : 0)) {
-	if (echo)
-	    ni_image |= ECHO_OBJ;
-	else
-	    ni_image &= ~ECHO_OBJ;
+	if (echo != ((nego_state & ECHO_OBJ) ? 1 : 0)) {
+		if (echo)
+			ni_image |= ECHO_OBJ;
+		else
+			ni_image &= ~ECHO_OBJ;
 
-	vt_set_nego(ni_image,ECHO_OBJ);/*Set proper UNIX echo state when reponse
+		vt_set_nego(ni_image,ECHO_OBJ);/*Set proper UNIX echo state when reponse
 				  is received. */
-    }
-    else
-	advise (LLOG_NOTICE,NULLCP,  "already using %s echoing",
-		echo ? "remote" : "local");
+	} else
+		advise (LLOG_NOTICE,NULLCP,  "already using %s echoing",
+				echo ? "remote" : "local");
 }
 
 vt_rem_echo(img_addr)	/*Request Remote Echo Mode.  Parameter is pointer
@@ -216,8 +208,7 @@ vt_break(vec)
 char  **vec;
 {
 #ifdef VT_BREAK
-	if(!do_break)
-	{
+	if(!do_break) {
 		advise(LLOG_NOTICE,NULLCP,"VT-BREAK Functional Unit Not Chosen");
 		return OK;
 	}
@@ -256,10 +247,9 @@ char  **vec;
 	char mask;
 	char image;
 
-	if(!telnet_profile)
-	{
-	    advise(LLOG_NOTICE,NULLCP,  "not using TELNET profile");
-	    return NOTOK;
+	if(!telnet_profile) {
+		advise(LLOG_NOTICE,NULLCP,  "not using TELNET profile");
+		return NOTOK;
 	}
 	mask = AYT_OBJ;
 	kb_image ^= AYT_OBJ;	/*Can only be called by User side*/
@@ -306,25 +296,23 @@ int rep_num;
 vt_repertoire (repertoire)
 int	repertoire;
 {
-    if (!telnet_profile) {
-	advise (LLOG_NOTICE,NULLCP,  "not using TELNET profile");
-	return;
-    }
+	if (!telnet_profile) {
+		advise (LLOG_NOTICE,NULLCP,  "not using TELNET profile");
+		return;
+	}
 
-    if (repertoire != transparent) {
-	if (repertoire)
-	    ni_image |= (DISP_BIN|KBD_BIN);
-	else
-	    ni_image &= ~(DISP_BIN|KBD_BIN);
-	vt_set_nego(ni_image,DISP_BIN|KBD_BIN);
-    }
-    else
-	advise (LLOG_NOTICE,NULLCP,  "already using %s repertoire",
-		transparent ? "BINARY" : "ASCII");
+	if (repertoire != transparent) {
+		if (repertoire)
+			ni_image |= (DISP_BIN|KBD_BIN);
+		else
+			ni_image &= ~(DISP_BIN|KBD_BIN);
+		vt_set_nego(ni_image,DISP_BIN|KBD_BIN);
+	} else
+		advise (LLOG_NOTICE,NULLCP,  "already using %s repertoire",
+				transparent ? "BINARY" : "ASCII");
 }
 
-vt_clr_obj()	/*Set TELNET Profile Control Objects to 0*/
-{
+vt_clr_obj() {	/*Set TELNET Profile Control Objects to 0*/
 	kb_image = di_image = 0;
 	nego_state = ni_image = na_image = 0;
 	sync_image = ga_image = 0;

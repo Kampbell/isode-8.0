@@ -1,6 +1,6 @@
 /* bsd43-rt.h - site configuration file for RT PC running 4.3BSD UNIX */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/bsd43-rt.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  * Contributed by Jacob Rekhter, T.J. Watson Research Center, IBM Corp.
@@ -36,7 +36,7 @@
 #define	RT			/* RT/PC */
 
 #if   defined(__STDC__) && defined(__HIGHC__)
-				/* hc thinks it's ANSI C, but it isn't! */
+/* hc thinks it's ANSI C, but it isn't! */
 #undef	__STDC__
 #endif
 

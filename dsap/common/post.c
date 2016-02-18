@@ -51,7 +51,7 @@ struct postaddr * addr;
 {
 	struct postaddr * next;
 	for (; addr != (struct postaddr *) NULL; addr = next) {
-	        next = addr->pa_next;
+		next = addr->pa_next;
 		free (addr->addrcomp);
 		free ( (char *)addr);
 	}
@@ -60,9 +60,9 @@ struct postaddr * addr;
 static addrcmp (a,b)
 struct postaddr * a, *b;
 {
-int res;
-        for (; (a != (struct postaddr *) NULL) && (b != (struct postaddr *) NULL) ;
-			a = a->pa_next, b=b->pa_next) 
+	int res;
+	for (; (a != (struct postaddr *) NULL) && (b != (struct postaddr *) NULL) ;
+			a = a->pa_next, b=b->pa_next)
 		if ((res = lexequ (a->addrcomp, b->addrcomp)) != 0)
 			return (res);
 
@@ -70,24 +70,24 @@ int res;
 		return ( a > b ? 1 : -1 );
 	else
 		return (0);
-	
+
 }
 
 static struct postaddr * addrcpy (a)
 struct postaddr * a;
 {
-struct postaddr * b, *c, *result = (struct postaddr *) NULL;
+	struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 
 	c = result; /* to keep lint quiet ! */
 
-        for (; a != (struct postaddr *) NULL; a = a->pa_next) {
-	        b = (struct postaddr *) smalloc (sizeof (struct postaddr));
+	for (; a != (struct postaddr *) NULL; a = a->pa_next) {
+		b = (struct postaddr *) smalloc (sizeof (struct postaddr));
 		b -> addrtype = a->addrtype;
 		b -> addrcomp = strdup (a->addrcomp);
-		
-		if (result == (struct postaddr *) NULL) 
+
+		if (result == (struct postaddr *) NULL)
 			result = b;
-		else 
+		else
 			c->pa_next = b;
 		c = b;
 	}
@@ -99,128 +99,128 @@ struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 static struct postaddr* addrparse (str)
 char * str;
 {
-struct postaddr * result = (struct postaddr *) NULL;
-struct postaddr * a, *b;
-char * ptr;
-char * mark = NULLCP;
-char t61_str = FALSE;
-extern char t61_flag;
-int i, len;
-char * octparse ();
-char * prtparse ();
+	struct postaddr * result = (struct postaddr *) NULL;
+	struct postaddr * a, *b;
+	char * ptr;
+	char * mark = NULLCP;
+	char t61_str = FALSE;
+	extern char t61_flag;
+	int i, len;
+	char * octparse ();
+	char * prtparse ();
 
-   b = result; /* to keep lint quiet */
+	b = result; /* to keep lint quiet */
 
-   if (t61_flag) {
-	t61_str = TRUE;
-	t61_flag = FALSE;  /* indicate recognition */
-   }
-
-   str = SkipSpace(str);
-
-   for (i=0; i < UB_POSTAL_LINE; i++) {
-	mark = NULLCP;
-	a = (struct postaddr *) smalloc (sizeof (struct postaddr));
-
-	if ( (ptr=index (str,'$')) != NULLCP) {
-		*ptr-- = 0;
-		if (isspace (*ptr)) {
-			*ptr = 0;
-			mark = ptr;
-		}
-		ptr++;
+	if (t61_flag) {
+		t61_str = TRUE;
+		t61_flag = FALSE;  /* indicate recognition */
 	}
 
-	if (t61_str) {
-		a -> addrtype = 1;
-		if ((a -> addrcomp = octparse (str)) == NULLCP)
-			return ((struct postaddr *)NULL);
-		if ((len = (int)strlen (a->addrcomp)) > UB_POSTAL_STRING) {
-#ifndef STRICT_X500
-		   if (len > OLD_UB_POSTAL_STRING) {
-#endif
-			parse_error ("address string too long",NULLCP);
-			return ((struct postaddr *)NULL);
-#ifndef STRICT_X500
-		   } else {
-		        char * tmp;
-			LLOG (log_dsap,LLOG_EXCEPTIONS,
-			   ("Truncating Postal Address component '%s' to 30 chars",a->addrcomp));
-			tmp = a->addrcomp;
-			a->addrcomp = smalloc (UB_POSTAL_STRING + 1);
-			(void) strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
-			a->addrcomp[UB_POSTAL_STRING] = 0;
-			free (tmp);
-		   }
-#endif
+	str = SkipSpace(str);
+
+	for (i=0; i < UB_POSTAL_LINE; i++) {
+		mark = NULLCP;
+		a = (struct postaddr *) smalloc (sizeof (struct postaddr));
+
+		if ( (ptr=index (str,'$')) != NULLCP) {
+			*ptr-- = 0;
+			if (isspace (*ptr)) {
+				*ptr = 0;
+				mark = ptr;
+			}
+			ptr++;
 		}
-	} else {
-		a -> addrtype = 2;
-		if ((a -> addrcomp = prtparse (str)) == NULLCP)
-			return ((struct postaddr *)NULL);
-		if ((len=(int)strlen (a->addrcomp)) > UB_POSTAL_STRING) {
+
+		if (t61_str) {
+			a -> addrtype = 1;
+			if ((a -> addrcomp = octparse (str)) == NULLCP)
+				return ((struct postaddr *)NULL);
+			if ((len = (int)strlen (a->addrcomp)) > UB_POSTAL_STRING) {
 #ifndef STRICT_X500
-		   if (len > OLD_UB_POSTAL_STRING) {
+				if (len > OLD_UB_POSTAL_STRING) {
 #endif
-			parse_error ("address string too long",NULLCP);
-			return ((struct postaddr *)NULL);
+					parse_error ("address string too long",NULLCP);
+					return ((struct postaddr *)NULL);
 #ifndef STRICT_X500
-		   } else {
-		        char * tmp;
-			LLOG (log_dsap,LLOG_EXCEPTIONS,
-			   ("Truncating Postal Address component '%s' to 30 chars",a->addrcomp));
-			tmp = a->addrcomp;
-			a->addrcomp = smalloc (UB_POSTAL_STRING + 1);
-			(void) strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
-			a->addrcomp[UB_POSTAL_STRING] = 0;
-			free (tmp);
-		   }
+				} else {
+					char * tmp;
+					LLOG (log_dsap,LLOG_EXCEPTIONS,
+						  ("Truncating Postal Address component '%s' to 30 chars",a->addrcomp));
+					tmp = a->addrcomp;
+					a->addrcomp = smalloc (UB_POSTAL_STRING + 1);
+					(void) strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
+					a->addrcomp[UB_POSTAL_STRING] = 0;
+					free (tmp);
+				}
 #endif
+			}
+		} else {
+			a -> addrtype = 2;
+			if ((a -> addrcomp = prtparse (str)) == NULLCP)
+				return ((struct postaddr *)NULL);
+			if ((len=(int)strlen (a->addrcomp)) > UB_POSTAL_STRING) {
+#ifndef STRICT_X500
+				if (len > OLD_UB_POSTAL_STRING) {
+#endif
+					parse_error ("address string too long",NULLCP);
+					return ((struct postaddr *)NULL);
+#ifndef STRICT_X500
+				} else {
+					char * tmp;
+					LLOG (log_dsap,LLOG_EXCEPTIONS,
+						  ("Truncating Postal Address component '%s' to 30 chars",a->addrcomp));
+					tmp = a->addrcomp;
+					a->addrcomp = smalloc (UB_POSTAL_STRING + 1);
+					(void) strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
+					a->addrcomp[UB_POSTAL_STRING] = 0;
+					free (tmp);
+				}
+#endif
+			}
 		}
+
+
+		if (result == (struct postaddr *) NULL)
+			result = a;
+		else
+			b->pa_next = a;
+		b = a;
+
+		t61_str = FALSE;
+
+		if (ptr != NULLCP) {
+			*ptr++ = '$';
+			if (mark != NULLCP)
+				*mark = ' ';
+			str = (SkipSpace(ptr));
+			ptr = str;
+
+			if (*ptr++ == '{') {
+				if (( str = index (ptr,'}')) == 0) {
+					parse_error ("close bracket missing '%s'",--ptr);
+					return ((struct postaddr *) NULL);
+				}
+				*str = 0;
+				if (lexequ ("T.61",ptr) != 0) {
+					*str = '}';
+					parse_error ("{T.61} expected '%s'",--ptr);
+					return ((struct postaddr *) NULL);
+				}
+				*str++ = '}';
+				str = (SkipSpace(str));
+				t61_str = TRUE;
+			}
+		} else
+			break;
 	}
-
-
-	if (result == (struct postaddr *) NULL) 
-		result = a;
-	else 
-		b->pa_next = a;
-	b = a;
-
-	t61_str = FALSE;
 
 	if (ptr != NULLCP) {
-		*ptr++ = '$';
-		if (mark != NULLCP)
-			*mark = ' ';
-		str = (SkipSpace(ptr));	
-		ptr = str;
+		parse_error ("Too many address components",NULLCP);
+		return ((struct postaddr *) NULL);
+	}
+	a -> pa_next = (struct postaddr *) NULL ;
 
-		if (*ptr++ == '{') {
-			if (( str = index (ptr,'}')) == 0) {
-	                        parse_error ("close bracket missing '%s'",--ptr);
-        	                return ((struct postaddr *) NULL);
-	                }
-			*str = 0;
-			if (lexequ ("T.61",ptr) != 0) {
-				*str = '}';
-                                parse_error ("{T.61} expected '%s'",--ptr);
-                                return ((struct postaddr *) NULL);
-                        }
-			*str++ = '}';
-			str = (SkipSpace(str));
-			t61_str = TRUE;
-		}
-	} else
-		break;
-   }
-
-   if (ptr != NULLCP) {
-	parse_error ("Too many address components",NULLCP);
-	return ((struct postaddr *) NULL);
-   }
-   a -> pa_next = (struct postaddr *) NULL ;
-
-   return (result);
+	return (result);
 }
 
 
@@ -231,16 +231,16 @@ PS ps;
 struct postaddr * addr;
 int format;
 {
-char * prefix = NULLCP;
+	char * prefix = NULLCP;
 
 	for (; addr != (struct postaddr *) NULL; addr = addr->pa_next) {
 		if (prefix != NULLCP)
-		        if (format != READOUT || postal_indent < 0)
-			    ps_print (ps,prefix);
+			if (format != READOUT || postal_indent < 0)
+				ps_print (ps,prefix);
 			else {
-			    ps_print (ps, "\n");
-			    if (postal_indent > 0)
-				ps_printf (ps, "%*s", postal_indent, "");
+				ps_print (ps, "\n");
+				if (postal_indent > 0)
+					ps_printf (ps, "%*s", postal_indent, "");
 			}
 
 		if (addr->addrtype == 1) {
@@ -252,9 +252,8 @@ char * prefix = NULLCP;
 		if (format == READOUT) {
 			prefix = "\n\t\t\t";
 			if (postal_indent == 0)
-			    postal_indent = 2;
-		}
-		else
+				postal_indent = 2;
+		} else
 			prefix = " $ ";
 	}
 }
@@ -263,9 +262,9 @@ char * prefix = NULLCP;
 static PE addrenc (m)
 struct postaddr * m;
 {
-PE ret_pe;
+	PE ret_pe;
 
-        (void) encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
+	(void) encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -273,32 +272,32 @@ PE ret_pe;
 static struct postaddr * addrdec (pe)
 PE pe;
 {
-struct postaddr * m;
-struct postaddr * a;
-register int i = 0;
-int len;
+	struct postaddr * m;
+	struct postaddr * a;
+	register int i = 0;
+	int len;
 
 	if (decode_SA_PostalAddress (pe,1,NULLIP,NULLVP,&m) == NOTOK)
 		return ((struct postaddr *) NULL);
 
-        for (a=m; a != (struct postaddr *) NULL; a = a->pa_next, i++) {
+	for (a=m; a != (struct postaddr *) NULL; a = a->pa_next, i++) {
 		if ((len=(int)strlen (a->addrcomp)) > UB_POSTAL_STRING) {
 #ifndef STRICT_X500
-		   if (len > OLD_UB_POSTAL_STRING) {
+			if (len > OLD_UB_POSTAL_STRING) {
 #endif
-			parse_error ("address string too long",NULLCP);
-			return ((struct postaddr *)NULL);
+				parse_error ("address string too long",NULLCP);
+				return ((struct postaddr *)NULL);
 #ifndef STRICT_X500
-		   } else {
-		        char * tmp;
-			LLOG (log_dsap,LLOG_NOTICE,
-			   ("Truncating Postal Address component '%s' to 30 chars",a->addrcomp));
-			tmp = a->addrcomp;
-			a->addrcomp = smalloc (UB_POSTAL_STRING + 1);
-			(void) strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
-			a->addrcomp[UB_POSTAL_STRING] = 0;
-			free (tmp);
-		    }
+			} else {
+				char * tmp;
+				LLOG (log_dsap,LLOG_NOTICE,
+					  ("Truncating Postal Address component '%s' to 30 chars",a->addrcomp));
+				tmp = a->addrcomp;
+				a->addrcomp = smalloc (UB_POSTAL_STRING + 1);
+				(void) strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
+				a->addrcomp[UB_POSTAL_STRING] = 0;
+				free (tmp);
+			}
 #endif
 		}
 	}
@@ -312,14 +311,13 @@ int len;
 	return (m);
 }
 
-post_syntax ()
-{
+post_syntax () {
 	(void) add_attribute_syntax ("PostalAddress",
-		(IFP) addrenc,	(IFP) addrdec,
-		(IFP) addrparse,addrprint,
-		(IFP) addrcpy,	addrcmp,
-		addrfree,	NULLCP,
-		NULLIFP,	TRUE);
+								 (IFP) addrenc,	(IFP) addrdec,
+								 (IFP) addrparse,addrprint,
+								 (IFP) addrcpy,	addrcmp,
+								 addrfree,	NULLCP,
+								 NULLIFP,	TRUE);
 
 }
 

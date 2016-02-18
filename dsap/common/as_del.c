@@ -31,7 +31,7 @@ extern LLog * log_dsap;
 as_delnext (as)
 Attr_Sequence  as;
 {
-Attr_Sequence ptr;
+	Attr_Sequence ptr;
 
 	if (as == NULLATTR)
 		DLOG (log_dsap,LLOG_DEBUG,("delnext of null as!"));
@@ -42,7 +42,7 @@ Attr_Sequence ptr;
 		else    {
 			as->attr_link = ptr->attr_link;
 			as_comp_free (ptr);
-			}
 		}
+	}
 }
 

@@ -35,10 +35,10 @@ extern char dsa_mode;
 Attr_Sequence str2as (str)
 register char * str;
 {
-register char * ptr;
-char * save, val;
-AttributeType at;
-Attr_Sequence as;
+	register char * ptr;
+	char * save, val;
+	AttributeType at;
+	Attr_Sequence as;
 
 	if (str == NULLCP)
 		return (NULLATTR);
@@ -58,7 +58,7 @@ Attr_Sequence as;
 
 	val = *save;
 	*save = 0;
-	
+
 	if ((at = AttrT_new (str)) == NULLAttrT) {
 		parse_error ("unknown attribute type '%s'",str);
 		*ptr = '=';
@@ -91,19 +91,19 @@ Attr_Sequence as;
 register char * str;
 char allownull;
 {
-register char * ptr = str;
-char * save, val;
-AV_Sequence avs;
-Attr_Sequence as2,nas;
-AttributeType at;
-int i;
-static Attr_Sequence fast_as = NULLATTR;
-static Attr_Sequence fast_tail = NULLATTR;
-extern Attr_Sequence as_fast_merge();
-extern AV_Sequence avs_fast_merge ();
-extern AV_Sequence fast_str2avs ();
-AV_Sequence fast_avs = NULLAV;
-AV_Sequence fast_avstail = NULLAV;
+	register char * ptr = str;
+	char * save, val;
+	AV_Sequence avs;
+	Attr_Sequence as2,nas;
+	AttributeType at;
+	int i;
+	static Attr_Sequence fast_as = NULLATTR;
+	static Attr_Sequence fast_tail = NULLATTR;
+	extern Attr_Sequence as_fast_merge();
+	extern AV_Sequence avs_fast_merge ();
+	extern AV_Sequence fast_str2avs ();
+	AV_Sequence fast_avs = NULLAV;
+	AV_Sequence fast_avstail = NULLAV;
 
 	if (str == NULLCP)
 		return (as);
@@ -149,7 +149,7 @@ AV_Sequence fast_avstail = NULLAV;
 
 	if (*ptr == 0) {
 		if ((at->oa_syntax == acl_sntx) && dsa_mode) {
-			/* Add default ACL */	
+			/* Add default ACL */
 			struct acl * acl = (struct acl *) NULL;
 
 			acl = acl_alloc();
@@ -169,7 +169,7 @@ AV_Sequence fast_avstail = NULLAV;
 			as = as_fast_merge (as,nas,fast_as,fast_tail);
 			fast_as = as, fast_tail= nas;
 		} else if ((allownull) ||
-		   	   ((at->oa_syntax == acl_sntx) && !dsa_mode)) {
+				   ((at->oa_syntax == acl_sntx) && !dsa_mode)) {
 			nas = as_comp_alloc ();
 			nas->attr_acl  = NULLACL_INFO;
 			nas->attr_link = NULLATTR;
@@ -199,17 +199,15 @@ AV_Sequence fast_avstail = NULLAV;
 			}
 
 			as2->attr_value = avs_fast_merge (as2->attr_value,avs,
-				   fast_avs, fast_avstail);
+											  fast_avs, fast_avstail);
 			fast_avs = as2->attr_value;
 			fast_avstail = avs;
 
 			RESTORE_HEAP;
 
-			return (as);	
-		} 
-		else 
-			if ( i > 0 )
-				break;
+			return (as);
+		} else if ( i > 0 )
+			break;
 	}
 
 	*save = val;

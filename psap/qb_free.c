@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb_free.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/qb_free.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -35,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb_free.c,v 9.0 1992/0
 int	qb_free (qb)
 register struct qbuf *qb;
 {
-    QBFREE (qb);
+	QBFREE (qb);
 
-    free ((char *) qb);
+	free ((char *) qb);
 }

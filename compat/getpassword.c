@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/getpassword.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/getpassword.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -45,90 +45,89 @@ char *getpassword (prompt)
 char *prompt;
 {
 #ifndef	BSD44
-    register int    c;
-    int	    flags,
-	    isopen;
-    register char  *bp,
-		   *ep;
+	register int    c;
+	int	    flags,
+			isopen;
+	register char  *bp,
+			 *ep;
 #if	!defined(SYS5) && !defined(XOS_2)
-    struct sgttyb   sg;
+	struct sgttyb   sg;
 #else
-    struct termio   sg;
+	struct termio   sg;
 #endif
-    SFP	    istat;
-    FILE    *fp;
-    static char buffer[BUFSIZ];
+	SFP	    istat;
+	FILE    *fp;
+	static char buffer[BUFSIZ];
 
 #ifdef SUNLINK_7_0
-    fp = stdin, isopen = 0;	/* will help greatly to work off a script */
+	fp = stdin, isopen = 0;	/* will help greatly to work off a script */
 #else
-    if ((c = open ("/dev/tty", O_RDWR)) != NOTOK && (fp = fdopen (c, "r")))
-	setbuf (fp, NULLCP), isopen = 1;
-    else {
-	if (c != NOTOK)
-	    (void) close (c);
+	if ((c = open ("/dev/tty", O_RDWR)) != NOTOK && (fp = fdopen (c, "r")))
+		setbuf (fp, NULLCP), isopen = 1;
+	else {
+		if (c != NOTOK)
+			(void) close (c);
 
-	fp = stdin, isopen = 0;
-    }
+		fp = stdin, isopen = 0;
+	}
 #endif
 
-    istat = signal (SIGINT, SIG_IGN);
+	istat = signal (SIGINT, SIG_IGN);
 
 #if	!defined(SYS5) && !defined(XOS_2)
-    (void) gtty (fileno (fp), &sg);
-    flags = sg.sg_flags;
-    sg.sg_flags &= ~ECHO;
-    (void) stty (fileno (fp), &sg);
+	(void) gtty (fileno (fp), &sg);
+	flags = sg.sg_flags;
+	sg.sg_flags &= ~ECHO;
+	(void) stty (fileno (fp), &sg);
 #else
-    (void) ioctl (fileno (fp), TCGETA, (char *) &sg);
-    flags = sg.c_lflag;
-    sg.c_lflag &= ~ECHO;
-    (void) ioctl (fileno (fp), TCSETAW, (char *) &sg);
+	(void) ioctl (fileno (fp), TCGETA, (char *) &sg);
+	flags = sg.c_lflag;
+	sg.c_lflag &= ~ECHO;
+	(void) ioctl (fileno (fp), TCSETAW, (char *) &sg);
 #endif
 
 #ifdef SUNLINK_7_0
-    (void) fprintf (stdout, "%s", prompt);
-    (void) fflush (stdout);
+	(void) fprintf (stdout, "%s", prompt);
+	(void) fflush (stdout);
 #else
-    (void) fprintf (stderr, "%s", prompt);
-    (void) fflush (stderr);
+	(void) fprintf (stderr, "%s", prompt);
+	(void) fflush (stderr);
 #endif
 
-    for (ep = (bp = buffer) + sizeof buffer - 1; (c = getc (fp)) != EOF;)
+	for (ep = (bp = buffer) + sizeof buffer - 1; (c = getc (fp)) != EOF;)
 #ifndef	apollo
-	if (c == '\n')
+		if (c == '\n')
 #else
-	if (c == '\n' || c == '\r')
+		if (c == '\n' || c == '\r')
 #endif
-	    break;
-	else
-	    if (bp < ep)
-		*bp++ = c;
-    *bp = NULL;
+			break;
+		else if (bp < ep)
+			*bp++ = c;
+	*bp = NULL;
 
 #ifdef SUNLINK_7_0
-    (void) fprintf (stdout, "\n");
-    (void) fflush (stdout);
+	(void) fprintf (stdout, "\n");
+	(void) fflush (stdout);
 #else
-    (void) fprintf (stderr, "\n");
-    (void) fflush (stderr);
+	(void) fprintf (stderr, "\n");
+	(void) fflush (stderr);
 #endif
 
 #if	!defined(SYS5) && !defined(XOS_2)
-    sg.sg_flags = flags;
-    (void) stty (fileno (fp), &sg);
+	sg.sg_flags = flags;
+	(void) stty (fileno (fp), &sg);
 #else
-    sg.c_lflag = flags;
-    (void) ioctl (fileno (fp), TCSETAW, (char *) &sg);
+	sg.c_lflag = flags;
+	(void) ioctl (fileno (fp), TCSETAW, (char *) &sg);
 #endif
 
-    (void) signal (SIGINT, istat);
+	(void) signal (SIGINT, istat);
 
-    if (isopen)
-	(void) fclose (fp);
+	if (isopen)
+		(void) fclose (fp);
 
-    return buffer;
+	return buffer;
 #else
-    return getpass (prompt);
+	return getpass (prompt);
 #endif
 }

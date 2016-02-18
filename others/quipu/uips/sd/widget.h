@@ -84,43 +84,43 @@ int lowy;
 #define WDGTHGHT	3
 
 typedef struct widget {
-  char	type;		/* Type of widget: see the above definitions */
-  char	*label;		/* text string label for the widget          */
-  
-  /* The former is used by LABEL and COMMAND widgets: the latter by COMMAND */
-  char	callch;		/* Character to activate the COMMAND widget  */
-  void	(*callfn)();	/* Function called by an activated COMMAND  */
-  
-  /* ALL widgets need these fields to be set */
-  int		x,y;		/* Position of the top right of the window  */
-  int		wdth, hght;	/* width and height of the widget window    */
-  
-  /* These are only used by the DIALOG type widgets                  */
-  int		dstrlen;	/* Maximum length of the DIALOG widget str  */
-  char	*dstr;		/* Pointer to the DIALOG string to fill in   */
-  
-  /* These are only used by the TOGGLE type widgets                  */
-  char	tindx;		/* Index into the toggle values              */
-  char	**tvalues;	/* NULL-terminated array of TOGGLE strings   */
-  
-  WINDOW	*wndw;		/* The curses-widget window structure */
+	char	type;		/* Type of widget: see the above definitions */
+	char	*label;		/* text string label for the widget          */
+
+	/* The former is used by LABEL and COMMAND widgets: the latter by COMMAND */
+	char	callch;		/* Character to activate the COMMAND widget  */
+	void	(*callfn)();	/* Function called by an activated COMMAND  */
+
+	/* ALL widgets need these fields to be set */
+	int		x,y;		/* Position of the top right of the window  */
+	int		wdth, hght;	/* width and height of the widget window    */
+
+	/* These are only used by the DIALOG type widgets                  */
+	int		dstrlen;	/* Maximum length of the DIALOG widget str  */
+	char	*dstr;		/* Pointer to the DIALOG string to fill in   */
+
+	/* These are only used by the TOGGLE type widgets                  */
+	char	tindx;		/* Index into the toggle values              */
+	char	**tvalues;	/* NULL-terminated array of TOGGLE strings   */
+
+	WINDOW	*wndw;		/* The curses-widget window structure */
 } WIDGET;
 
 WIDGET *currwidgets;
 char typetoggled;
 
 void initwidgets(), textfresh(), makewidgets(), setwdgtwdth(),
-     killwidgets(), activewidget(), deleteactive(), activeindex(),
-     redraw(), rfrshwidgets(), boxwdgt(), printwdgt(), printbar(),
-     printlabel(), printdialog(), printtoggle(), printcommand(),
-     interact(), docallback(), dialog(), setdialogstr(),
-     toggle(), settogglstrs(), setlabel(), getlabel(), wprint(), tprint(),
-     xprint(), xprintint(), cleartext(), jumpback(), nullfn(), quitfn(),
-     endwidgets();
+	 killwidgets(), activewidget(), deleteactive(), activeindex(),
+	 redraw(), rfrshwidgets(), boxwdgt(), printwdgt(), printbar(),
+	 printlabel(), printdialog(), printtoggle(), printcommand(),
+	 interact(), docallback(), dialog(), setdialogstr(),
+	 toggle(), settogglstrs(), setlabel(), getlabel(), wprint(), tprint(),
+	 xprint(), xprintint(), cleartext(), jumpback(), nullfn(), quitfn(),
+	 endwidgets();
 
 int linec(), gety(), posnwidgets(), getwidgetindex(), getdialogstr(),
-    settogglindx(), gettogglindx(), gettogglstr(), lowesty(), 
-    findactiveinput();
+	settogglindx(), gettogglindx(), gettogglstr(), lowesty(),
+	findactiveinput();
 
 WIDGET *getwidget();
 

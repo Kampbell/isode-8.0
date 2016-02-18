@@ -29,9 +29,9 @@
 #include "quipu/dap.h"
 
 struct ds_addentry_arg {
-    CommonArgs ada_common;
-    DN ada_object;
-    Attr_Sequence ada_entry;
+	CommonArgs ada_common;
+	DN ada_object;
+	Attr_Sequence ada_entry;
 };
 
 #endif

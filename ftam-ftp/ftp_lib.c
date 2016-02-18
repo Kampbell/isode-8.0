@@ -1,6 +1,6 @@
 /* ftp_lib.c - FTP subroutines */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam-ftp/RCS/ftp_lib.c,v 9.0 1992/06/16 12:15:29 isode Rel $
  *
  *
@@ -13,9 +13,9 @@
 /*
  *				  NOTICE
  *
- *	The MITRE Corporation (hereafter MITRE) makes this software available 
- *	on an "as is" basis.  No guarantees, either explicit or implied, are 
- *	given as to performance or suitability.  
+ *	The MITRE Corporation (hereafter MITRE) makes this software available
+ *	on an "as is" basis.  No guarantees, either explicit or implied, are
+ *	given as to performance or suitability.
  *
  */
 
@@ -76,7 +76,7 @@ char *host, *user, *passwd, *acct;
 
 	ftp_init(); /* initialize control state structures */
 	if (hookup(host,FTP_PORT) == NOTOK) return NOTOK;
-		
+
 
 	/* execute login process */
 	if (login(user,passwd,acct) == NOTOK) return NOTOK;
@@ -88,8 +88,7 @@ char *host, *user, *passwd, *acct;
  * ftp_quit: send quit command and shutdown communications link.
  */
 int
-ftp_quit()
-{
+ftp_quit() {
 
 	extern FILE *cout;
 	extern int data;
@@ -109,9 +108,8 @@ ftp_quit()
  * ftp_abort: send abort command
  */
 int
-ftp_abort()
-{
-int n;
+ftp_abort() {
+	int n;
 
 	if (!connected) return NOTOK;
 	n = command("ABOR");
@@ -131,14 +129,14 @@ int n;
  * insensitive scan then falling back on record counts in the case of
  * directories.
  */
-int 
+int
 ftp_exist(filename)
 char *filename;
 {
-int n, count;
-int fd;
-FILE *fp, *fdopen();
-char lineX[BUFSIZ];
+	int n, count;
+	int fd;
+	FILE *fp, *fdopen();
+	char lineX[BUFSIZ];
 
 	ftp_directory = 0;
 
@@ -149,7 +147,7 @@ char lineX[BUFSIZ];
 
 	/* begin list transfer */
 	if ((fd = recvrequest("NLST",filename)) == NOTOK) return NOTOK;
-	if ((fp = fdopen(fd,"r")) == NULL){
+	if ((fp = fdopen(fd,"r")) == NULL) {
 		(void)close(fd);
 		(void) getreply(0);
 		(void)sprintf(ftp_error,"Out of memory");
@@ -170,7 +168,7 @@ char lineX[BUFSIZ];
 	if (count > 1) {
 		ftp_directory = 1;
 		if (verbose)
-		    advise (LLOG_DEBUG, NULLCP, "directory found");
+			advise (LLOG_DEBUG, NULLCP, "directory found");
 	}
 
 	/* if any records in reply, assume that file existed */
@@ -187,7 +185,7 @@ int
 ftp_ls(dir)
 char *dir;
 {
-int fd;
+	int fd;
 
 	if (!connected) return NOTOK;
 
@@ -204,7 +202,7 @@ ftp_delete(file)
 char *file;
 {
 
-	
+
 	if (!connected) return NOTOK;
 
 	/* send delete command, return OK if complete, NOTOK otherwise */
@@ -233,7 +231,7 @@ int
 ftp_rename(from,to)
 char *from, *to;
 {
-int n;
+	int n;
 
 	if (!connected) return NOTOK;
 
@@ -254,7 +252,7 @@ char *file;
 
 	return(sendrequest("STOR",file));
 }
-int 
+int
 ftp_append(file)
 char *file;
 {
@@ -277,34 +275,34 @@ int
 ftp_type(modeX)
 int modeX;
 {
-int n;
-char cmd[10];
+	int n;
+	char cmd[10];
 
 	/* The current transfer type is stored in ``type''.
 	 * The TYPE command is issued if the type changes.
-         * (this cuts down on the number of FTP transactions).
-         */
+	     * (this cuts down on the number of FTP transactions).
+	     */
 	if (!connected) return NOTOK;
 	n = COMPLETE;
 
 	switch(modeX) {
-		/* unstructured binary file */
-		case VFS_UBF:
-			if (type == TYPE_L) break;
-			(void)sprintf(cmd, "TYPE L %s", bytename);
-			type = TYPE_L;
-			n = command(cmd,0);
-			break;
-		/* unstructured text file */
-		case VFS_UTF:
-		/* directory file */
-		case VFS_FDF:
-		default:
-			if (type == TYPE_A) break;
-			(void)sprintf(cmd, "TYPE A");
-			type = TYPE_A;
-			n = command(cmd,0);
-		}
+	/* unstructured binary file */
+	case VFS_UBF:
+		if (type == TYPE_L) break;
+		(void)sprintf(cmd, "TYPE L %s", bytename);
+		type = TYPE_L;
+		n = command(cmd,0);
+		break;
+	/* unstructured text file */
+	case VFS_UTF:
+	/* directory file */
+	case VFS_FDF:
+	default:
+		if (type == TYPE_A) break;
+		(void)sprintf(cmd, "TYPE A");
+		type = TYPE_A;
+		n = command(cmd,0);
+	}
 
 	if (n == COMPLETE) return OK;
 	return NOTOK;
@@ -312,9 +310,8 @@ char cmd[10];
 }
 
 int
-ftp_reply()
-{
-int n;
+ftp_reply() {
+	int n;
 
 	/* process an FTP response */
 
@@ -327,7 +324,7 @@ int
 ftp_create(filename)
 char *filename;
 {
-int fd,n;
+	int fd,n;
 
 	if (!connected) return NOTOK;
 

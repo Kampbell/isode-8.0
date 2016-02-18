@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/showentry.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/showentry.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -72,14 +72,14 @@ char          **argv;
 	vect[0] = "showentry";
 
 	move_flag = FALSE;
- 	fred_flag = FALSE;
- 	fred_expand = FALSE;
+	fred_flag = FALSE;
+	fred_expand = FALSE;
 	fred_list = FALSE;
- 	fred_long = 2;
+	fred_long = 2;
 	fred_phone = FALSE;
 	fred_photo = FALSE;
- 	fred_sequence = TRUE;
- 	fred_subdisplay = FALSE;
+	fred_sequence = TRUE;
+	fred_subdisplay = FALSE;
 	name_flag = FALSE;
 	full_edb_flag = FALSE;
 
@@ -101,13 +101,13 @@ char          **argv;
 		else if (test_arg (argv[x], "-phone",5))
 			fred_phone = TRUE;
 		else if (test_arg (argv[x], "-fredphoto",9))
-		    	fred_photo = dad_flag;
+			fred_photo = dad_flag;
 		else if (test_arg (argv[x], "-nofredseq",9))
 			fred_sequence = FALSE;
 		else if (test_arg (argv[x], "-subdisplay",10))
 			fred_subdisplay = TRUE;
 		else if (test_arg (argv[x], "-fedb",4)) {
-			if (x + 1 == argc) {	
+			if (x + 1 == argc) {
 				ps_printf (opt, "We need a filename for the full edb entry.\n");
 				return;
 			} else {
@@ -119,8 +119,7 @@ char          **argv;
 				}
 			}
 			full_edb_flag = TRUE;
-		      }
-		else
+		} else
 			continue;
 		shuffle_up (argc--,argv,x--);
 
@@ -128,7 +127,7 @@ char          **argv;
 	if ((argc = read_cache (argc, argv)) < 0)
 		return;
 
-	
+
 	if (argc != 1) {
 		ps_printf (OPT,"Unknown option %s\n",argv[1]);
 		Usage (argv[0]);
@@ -141,44 +140,43 @@ char          **argv;
 		return;
 	}
 	if (full_edb_flag) {
-	  (void) mod_template(temp_file_name,0);
-	  return;
+		(void) mod_template(temp_file_name,0);
+		return;
 	}
 
 	if (fred_flag) {
-	    if (fred_long == 2)
-		if ((fred_subdisplay && fred_expand)
-			|| (!fred_subdisplay && !fred_expand))
-		    fred_long = TRUE;
-		else
-		    fred_long = fred_expand;
-	    if (fred_expand)
-		fred_long = fred_subdisplay = TRUE;
+		if (fred_long == 2)
+			if ((fred_subdisplay && fred_expand)
+					|| (!fred_subdisplay && !fred_expand))
+				fred_long = TRUE;
+			else
+				fred_long = fred_expand;
+		if (fred_expand)
+			fred_long = fred_subdisplay = TRUE;
 
-	    if (fred_list
-		    && frompipe
-		    && rps -> ps_byteno == 0
-		    && opt -> ps_byteno == 0) {
-		DN	new_dn = dn_cpy (current_dn);
-		
-		showfredDNs (new_dn, fred_long);
-		dn_free (new_dn);
-	    }
+		if (fred_list
+				&& frompipe
+				&& rps -> ps_byteno == 0
+				&& opt -> ps_byteno == 0) {
+			DN	new_dn = dn_cpy (current_dn);
 
-	    (void) showfred (current_dn, fred_long, fred_subdisplay);
-	}
-	else {
+			showfredDNs (new_dn, fred_long);
+			dn_free (new_dn);
+		}
+
+		(void) showfred (current_dn, fred_long, fred_subdisplay);
+	} else {
 		if (name_flag) {
 			dn_print (RPS,dn,EDBOUT);
 			ps_print (RPS,"\n");
 		}
 
-		if (all_flag) 
+		if (all_flag)
 			eptr = current_entry->e_attributes;
 		else
 			eptr = as_flag;
 
-			if (flag_show)
+		if (flag_show)
 			for (; eptr != NULLATTR; eptr = eptr->attr_link)
 				showattribute (eptr->attr_type);
 	}

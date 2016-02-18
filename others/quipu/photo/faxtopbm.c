@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/faxtopbm.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/faxtopbm.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -47,105 +47,100 @@ static	bit	black, white;
 main (argc, argv, envp)
 int	argc;
 char  **argv,
-      **envp;
+	  **envp;
 {
-    char   *cp;
-    char   *data;
-    int     fd;
-    char   *file;
-    int     len;
-    long    limit;
-    char   *newData;
-    long    size;
+	char   *cp;
+	char   *data;
+	int     fd;
+	char   *file;
+	int     len;
+	long    limit;
+	char   *newData;
+	long    size;
 
-    /* process command options and parameters */
+	/* process command options and parameters */
 
-    black = PBM_BLACK;
-    white = PBM_WHITE;
+	black = PBM_BLACK;
+	white = PBM_WHITE;
 
-    file = NULLCP;
-    fd = fileno (stdin);
+	file = NULLCP;
+	fd = fileno (stdin);
 
-    for (argv++; cp = *argv; argv++) {
-        if (*cp == '-') {
-	    if (cp[1] == NULL) {
-		continue;
-	    }
-	    else if (strcmp (cp, "-reversebits") == 0) {
-		black = PBM_WHITE;
-		white = PBM_BLACK;
-		continue;
-	    }
-	    else if (strcmp (cp, "-2d") == 0) {
-		continue;
-	    }
-	    goto usage;
-        }
-	else if (file) {
-usage: ;
-	    (void) fprintf (stderr, "usage: faxtopbm [-2d] [file]\n");
-	    exit (1);
+	for (argv++; cp = *argv; argv++) {
+		if (*cp == '-') {
+			if (cp[1] == NULL) {
+				continue;
+			} else if (strcmp (cp, "-reversebits") == 0) {
+				black = PBM_WHITE;
+				white = PBM_BLACK;
+				continue;
+			} else if (strcmp (cp, "-2d") == 0) {
+				continue;
+			}
+			goto usage;
+		} else if (file) {
+usage:
+			;
+			(void) fprintf (stderr, "usage: faxtopbm [-2d] [file]\n");
+			exit (1);
+		} else {
+			file = cp;
+		}
 	}
-	else {
-	    file = cp;
+
+	if ( file == NULLCP ) {
+		file = "<stdin>";
+	} else {
+		fd = open (file, O_RDONLY);
+		if ( fd == -1 ) {
+			perror (file);
+			exit (1);
+		}
 	}
-    }
 
-    if ( file == NULLCP ) {
-	file = "<stdin>";
-    }
-    else {
-	fd = open (file, O_RDONLY);
-	if ( fd == -1 ) {
-	    perror (file);
-	    exit (1);
-	}
-    }
+	/* read the entire source file into memory */
 
-    /* read the entire source file into memory */
-
-    data = (char *)malloc ((unsigned int)ALLOCATION_SIZE);
-    if ( !data ) {
-	(void) fputs ("faxtopbm: out of memory\n", stderr);
-	exit (1);
-    }
-    limit = ALLOCATION_SIZE;
-    size = 0L;
-
-    for (;;) {
-	if (size + ALLOCATION_SIZE > limit) {
-	    newData = (char *)realloc (data, (unsigned int)(limit + ALLOCATION_SIZE));
-	    if ( !newData ) {
+	data = (char *)malloc ((unsigned int)ALLOCATION_SIZE);
+	if ( !data ) {
 		(void) fputs ("faxtopbm: out of memory\n", stderr);
 		exit (1);
-	    }
-	    data = newData;
-	    limit += ALLOCATION_SIZE;
 	}
-	len = read (fd, &data[size], (int)ALLOCATION_SIZE);
-	if (len == -1) {
-	    perror (file);
-	    exit (1);
+	limit = ALLOCATION_SIZE;
+	size = 0L;
+
+	for (;;) {
+		if (size + ALLOCATION_SIZE > limit) {
+			newData = (char *)realloc (data, (unsigned int)(limit + ALLOCATION_SIZE));
+			if ( !newData ) {
+				(void) fputs ("faxtopbm: out of memory\n", stderr);
+				exit (1);
+			}
+			data = newData;
+			limit += ALLOCATION_SIZE;
+		}
+		len = read (fd, &data[size], (int)ALLOCATION_SIZE);
+		if (len == -1) {
+			perror (file);
+			exit (1);
+		} else if (len == 0)
+			break;
+		size += len;
 	}
-	else if (len == 0)
-	    break;
-	size += len;
-    }
 
-    if (size < 1) {
-	(void) fprintf (stderr, "%s: is not a fax image\n", file);
-	exit (1);
-    }
+	if (size < 1) {
+		(void) fprintf (stderr, "%s: is not a fax image\n", file);
+		exit (1);
+	}
 
-    if (decode_t4 (data, file, (int)size) == -1
-	    || decode_t4 (data, file, (int)size) == -1) {
-	(void) fprintf (stderr,"\n");
-	exit (-1);
-    }
+	if (decode_t4 (data, file, (int)size) == -1
+			|| decode_t4 (data, file, (int)size) == -1) {
+		(void) fprintf (stderr,"\n");
+		exit (-1);
+	}
 
-    free (data);
+	free (data);
 
-    exit (0);
+	exit (0);
 }
 
 /*    ERRORS */
@@ -154,8 +149,8 @@ static ps_die (ps, s)
 register PS	 ps;
 register char   *s;
 {
-    (void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
-    exit (1);
+	(void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
+	exit (1);
 }
 
 
@@ -163,8 +158,8 @@ static pe_die (pe, s)
 register PE	 pe;
 register char   *s;
 {
-    (void) fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
-    exit (1);
+	(void) fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
+	exit (1);
 }
 
 /*    PHOTO */
@@ -180,11 +175,11 @@ static	bit    *bitrow, *bP;
 photo_start(name)
 char   *name;
 {
-    if (passno == 1)
-	maxx = 0;
-    x = y = 0;
+	if (passno == 1)
+		maxx = 0;
+	x = y = 0;
 
-    return OK;
+	return OK;
 }
 
 
@@ -193,42 +188,41 @@ char   *name;
 photo_end (name)
 char   *name;
 {
-    if (passno == 1) {
-	register int	i;
+	if (passno == 1) {
+		register int	i;
 
-	passno = 2;
-	x = maxx, y--;
+		passno = 2;
+		x = maxx, y--;
 
 #ifdef PBM4PARMS
-	pbm_writepbminit (stdout, maxx, y, 0);
+		pbm_writepbminit (stdout, maxx, y, 0);
 #else
-	pbm_writepbminit (stdout, maxx, y);
+		pbm_writepbminit (stdout, maxx, y);
 #endif
 
-	bitrow = pbm_allocrow (maxx);
+		bitrow = pbm_allocrow (maxx);
 
-	for (i = maxx, bP = bitrow; i-- > 0; )
-	    *bP++ = white;
-	bP = bitrow;
-    }
-    else
-	pbm_freerow (bitrow);
+		for (i = maxx, bP = bitrow; i-- > 0; )
+			*bP++ = white;
+		bP = bitrow;
+	} else
+		pbm_freerow (bitrow);
 
-    return OK;
+	return OK;
 }
 
 
 photo_black (length)
 int	length;
 {
-    if (passno == 2) {
-	register int	i;
+	if (passno == 2) {
+		register int	i;
 
-	for (i = length; i > 0; i--)
-	    *bP++ = black;
-    }
+		for (i = length; i > 0; i--)
+			*bP++ = black;
+	}
 
-    x += length;
+	x += length;
 
 }
 
@@ -236,10 +230,10 @@ int	length;
 photo_white (length)
 int	length;
 {
-    if (passno == 2)
-	bP += length;
+	if (passno == 2)
+		bP += length;
 
-    x += length;
+	x += length;
 
 }
 
@@ -249,23 +243,22 @@ int	length;
 photo_line_end (line)
 caddr_t line;
 {
-    if (passno == 1) {
-	if (x > maxx)
-	    maxx = x;
-    }
-    else {
-	register int	i;
+	if (passno == 1) {
+		if (x > maxx)
+			maxx = x;
+	} else {
+		register int	i;
 
 #ifdef PBM4PARMS
-	pbm_writepbmrow (stdout, bitrow, maxx, 0);
+		pbm_writepbmrow (stdout, bitrow, maxx, 0);
 #else
-	pbm_writepbmrow (stdout, bitrow, maxx);
+		pbm_writepbmrow (stdout, bitrow, maxx);
 #endif
 
-	for (i = maxx, bP = bitrow; i-- > 0; )
-	    *bP++ = white;
-	bP = bitrow;
-    }
+		for (i = maxx, bP = bitrow; i-- > 0; )
+			*bP++ = white;
+		bP = bitrow;
+	}
 
-    x = 0, y++;
+	x = 0, y++;
 }

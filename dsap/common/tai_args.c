@@ -31,8 +31,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/tai_args.c,v 9.
 #include "quipu/attr.h"
 
 extern char *oidtable,
-	    *tailfile,
-	    *myname;
+	   *tailfile,
+	   *myname;
 
 extern LLog *log_dsap;
 
@@ -43,10 +43,10 @@ tai_args (acptr,avptr)
 int *acptr;
 char ***avptr;
 {
-register char ** av;
+	register char ** av;
 
-int cnt;
-register char *cp;
+	int cnt;
+	register char *cp;
 
 	if (acptr == (int *)NULL)
 		return;
@@ -59,19 +59,22 @@ register char *cp;
 
 	while ((cp = *av) && *cp == '-') {
 		switch (*++cp) {
-			case 'T': oidtable = *++av;
-				  cnt++;
-					break;
-			case 'c': myname = *++av;
-				  cnt++;
-					break;
-			case 't': tailfile = *++av;
-				  cnt++;
-					break;
+		case 'T':
+			oidtable = *++av;
+			cnt++;
+			break;
+		case 'c':
+			myname = *++av;
+			cnt++;
+			break;
+		case 't':
+			tailfile = *++av;
+			cnt++;
+			break;
 
-			default:
-				LLOG (log_dsap,LLOG_FATAL,("Usage: %s %s\n",*avptr[0],dsap_usage));
-				fatal(-1,"Usage...");
+		default:
+			LLOG (log_dsap,LLOG_FATAL,("Usage: %s %s\n",*avptr[0],dsap_usage));
+			fatal(-1,"Usage...");
 		}
 		av++;
 		cnt++;

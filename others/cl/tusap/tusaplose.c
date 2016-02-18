@@ -21,23 +21,22 @@
 
 #ifndef	lint
 int	tusaplose (va_alist)
-va_dcl
-{
-    int	    reason,
-    	    result;
-    struct TSAPdisconnect *td;
-    va_list ap;
+va_dcl {
+	int	    reason,
+	result;
+	struct TSAPdisconnect *td;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    td = va_arg (ap, struct TSAPdisconnect *);
-    reason = va_arg (ap, int);
+	td = va_arg (ap, struct TSAPdisconnect *);
+	reason = va_arg (ap, int);
 
-    result = _tusaplose (td, reason, ap);
+	result = _tusaplose (td, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return result;
+	return result;
 
 }
 #else
@@ -47,9 +46,9 @@ int	tusaplose (td, reason, what, fmt)
 struct TSAPdisconnect *td;
 int	reason;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return tusaplose (td, reason, what, fmt);
+	return tusaplose (td, reason, what, fmt);
 }
 #endif
 
@@ -61,19 +60,19 @@ register struct TSAPdisconnect *td;
 int     reason;
 va_list	ap;
 {
-    register char  *bp;
-    char    buffer[BUFSIZ];
+	register char  *bp;
+	char    buffer[BUFSIZ];
 
-    if (td) {
-	bzero ((char *) td, sizeof *td);
+	if (td) {
+		bzero ((char *) td, sizeof *td);
 
-	asprintf (bp = buffer, ap);
-	bp += strlen (bp);
+		asprintf (bp = buffer, ap);
+		bp += strlen (bp);
 
-	td -> td_reason = reason;
-	copyTSAPdata (buffer, bp - buffer, td);
-    }
+		td -> td_reason = reason;
+		copyTSAPdata (buffer, bp - buffer, td);
+	}
 
-    return NOTOK;
+	return NOTOK;
 }
 #endif

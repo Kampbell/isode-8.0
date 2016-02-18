@@ -40,9 +40,9 @@ register CMD_TABLE *cmd;
 {
 	extern char chrcnv[];
 
-	for(;cmd->cmd_key != NULLCP; cmd++)
+	for(; cmd->cmd_key != NULLCP; cmd++)
 		if(chrcnv[*str] == chrcnv[*cmd->cmd_key] &&
-		   lexequ(str, cmd->cmd_key) == 0)
+				lexequ(str, cmd->cmd_key) == 0)
 			return(cmd->cmd_value);
 	return(cmd->cmd_value);
 }

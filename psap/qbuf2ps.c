@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qbuf2ps.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/qbuf2ps.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -40,43 +40,43 @@ PElementData data;
 PElementLen n;
 int	in_line;
 {
-    register int cc,
-		 i;
-    register struct qbuf *qb,
-			 *qp;
+	register int cc,
+			 i;
+	register struct qbuf *qb,
+			*qp;
 
-    if ((qb = (struct qbuf *) ps -> ps_addr) == NULL)
-	return 0;
+	if ((qb = (struct qbuf *) ps -> ps_addr) == NULL)
+		return 0;
 
-    for (qp = NULL, cc = 0; n > 0; data += i, cc += i, n -= i) {
-	if (qp == NULL && (qp = qb -> qb_forw) == qb)
-	    return cc;
+	for (qp = NULL, cc = 0; n > 0; data += i, cc += i, n -= i) {
+		if (qp == NULL && (qp = qb -> qb_forw) == qb)
+			return cc;
 
-	i = min (qp -> qb_len, n);
-	bcopy (qp -> qb_data, (char *) data, i);
+		i = min (qp -> qb_len, n);
+		bcopy (qp -> qb_data, (char *) data, i);
 
-	qp -> qb_data += i, qp -> qb_len -= i;
-	if (qp -> qb_len <= 0) {
-	    remque (qp);
+		qp -> qb_data += i, qp -> qb_len -= i;
+		if (qp -> qb_len <= 0) {
+			remque (qp);
 
-	    free ((char *) qp);
-	    qp = NULL;
+			free ((char *) qp);
+			qp = NULL;
+		}
 	}
-    }
 
-    return cc;
+	return cc;
 }
 
 
 static int  qbuf_close (ps)
 register PS	ps;
 {
-    register struct qbuf   *qb;
+	register struct qbuf   *qb;
 
-    if ((qb = (struct qbuf *) ps -> ps_addr) == NULL)
-	return;
+	if ((qb = (struct qbuf *) ps -> ps_addr) == NULL)
+		return;
 
-    QBFREE (qb);
+	QBFREE (qb);
 }
 
 /*  */
@@ -84,8 +84,8 @@ register PS	ps;
 int	qbuf_open (ps)
 register PS	ps;
 {
-    ps -> ps_readP = qbuf_read;
-    ps -> ps_closeP = qbuf_close;
+	ps -> ps_readP = qbuf_read;
+	ps -> ps_closeP = qbuf_close;
 
-    return OK;
+	return OK;
 }

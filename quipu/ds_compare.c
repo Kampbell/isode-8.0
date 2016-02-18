@@ -38,24 +38,24 @@ extern Attr_Sequence entry_find_type();
 static attribute_not_cached ();
 
 do_ds_compare (arg, error, result, binddn, target, di_p, dsp, authtype)
-    struct ds_compare_arg       *arg;
-    struct ds_compare_result    *result;
-    struct DSError              *error;
-    DN                          binddn;
-    DN                          target;
-    struct di_block		**di_p;	
-    char			dsp;
-    char			authtype;
+struct ds_compare_arg       *arg;
+struct ds_compare_result    *result;
+struct DSError              *error;
+DN                          binddn;
+DN                          target;
+struct di_block		**di_p;
+char			dsp;
+char			authtype;
 {
-Entry  entryptr;
-register Attr_Sequence  as;
-Attr_Sequence ias = NULLATTR;
-register AV_Sequence tmp;
-struct acl_info  * acl;
-register int i;
-int retval;
-DN realtarget;
-int authp;
+	Entry  entryptr;
+	register Attr_Sequence  as;
+	Attr_Sequence ias = NULLATTR;
+	register AV_Sequence tmp;
+	struct acl_info  * acl;
+	register int i;
+	int retval;
+	DN realtarget;
+	int authp;
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_compare"));
 
@@ -69,31 +69,29 @@ int authp;
 		return (DS_ERROR_REMOTE);
 	}
 
-	switch(find_entry(target, &(arg->cma_common), binddn, NULLDNSEQ, FALSE, &(entryptr), error, di_p, OP_COMPARE))
-	{
+	switch(find_entry(target, &(arg->cma_common), binddn, NULLDNSEQ, FALSE, &(entryptr), error, di_p, OP_COMPARE)) {
 	case DS_OK:
-	    /* Filled out entryptr - carry on */
-	    break;
+		/* Filled out entryptr - carry on */
+		break;
 	case DS_CONTINUE:
-	    /* Filled out di_p - what do we do with it ?? */
-	    return(DS_CONTINUE);
+		/* Filled out di_p - what do we do with it ?? */
+		return(DS_CONTINUE);
 
 	case DS_X500_ERROR:
-	    /* Filled out error - what do we do with it ?? */
-	    return(DS_X500_ERROR);
+		/* Filled out error - what do we do with it ?? */
+		return(DS_X500_ERROR);
 	default:
-	    /* SCREAM */
-	    LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_compare() - find_entry failed"));
-	    return(DS_ERROR_LOCAL);
+		/* SCREAM */
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_compare() - find_entry failed"));
+		return(DS_ERROR_LOCAL);
 	}
 
 	/* Strong authentication  */
 	if ((retval = check_security_parms((caddr_t) arg,
-			_ZCompareArgumentDataDAS,
-			&_ZDAS_mod,
-			arg->cma_common.ca_security,
-			arg->cma_common.ca_sig, &binddn)) != 0)
-	{
+									   _ZCompareArgumentDataDAS,
+									   &_ZDAS_mod,
+									   arg->cma_common.ca_security,
+									   arg->cma_common.ca_sig, &binddn)) != 0) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = retval;
 		return (DS_ERROR_REMOTE);
@@ -108,10 +106,10 @@ int authp;
 	}
 
 	authp = entryptr->e_authp ? entryptr->e_authp->ap_readandcompare :
-	    AP_SIMPLE;
+			AP_SIMPLE;
 
 	if (check_acl ((authtype % 3) >= authp ? binddn : NULLDN, ACL_COMPARE,
-	    entryptr->e_acl->ac_entry, realtarget) == NOTOK) {
+				   entryptr->e_acl->ac_entry, realtarget) == NOTOK) {
 		if (dsp && (check_acl (binddn,ACL_COMPARE,entryptr->e_acl->ac_entry, realtarget) == OK)) {
 			error->dse_type = DSE_SECURITYERROR;
 			error->ERR_SECURITY.DSE_sc_problem = DSE_SC_AUTHENTICATION;
@@ -126,46 +124,47 @@ int authp;
 	}
 
 	if ((as = as_find_type (entryptr->e_attributes,arg->cma_purported.ava_type)) == NULLATTR) {
-	    if ((as = entry_find_type (entryptr, arg->cma_purported.ava_type)) == NULLATTR) {
-		if (attribute_not_cached (entryptr,binddn,grab_oid(arg->cma_purported.ava_type),realtarget,ACL_COMPARE)) {
-			int res = referral_dsa_info(realtarget,NULLDNSEQ,FALSE,entryptr,error,di_p,
-					arg->cma_common.ca_servicecontrol.svc_options & SVC_OPT_PREFERCHAIN);
-			dn_free (realtarget);
-			return res;
-		}
+		if ((as = entry_find_type (entryptr, arg->cma_purported.ava_type)) == NULLATTR) {
+			if (attribute_not_cached (entryptr,binddn,grab_oid(arg->cma_purported.ava_type),realtarget,ACL_COMPARE)) {
+				int res = referral_dsa_info(realtarget,NULLDNSEQ,FALSE,entryptr,error,di_p,
+											arg->cma_common.ca_servicecontrol.svc_options & SVC_OPT_PREFERCHAIN);
+				dn_free (realtarget);
+				return res;
+			}
 
-		dn_free (realtarget);
-		error->dse_type = DSE_ATTRIBUTEERROR;
-		error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn(entryptr);
-		error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_what = DSE_AT_NOSUCHATTRIBUTE;
-		error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_type = AttrT_cpy(arg->cma_purported.ava_type);
-		error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_value = NULLAttrV;
-		error->ERR_ATTRIBUTE.DSE_at_plist.dse_at_next = DSE_AT_NOPROBLEM;
-		return (DS_ERROR_REMOTE);
-	    }
+			dn_free (realtarget);
+			error->dse_type = DSE_ATTRIBUTEERROR;
+			error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn(entryptr);
+			error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_what = DSE_AT_NOSUCHATTRIBUTE;
+			error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_type = AttrT_cpy(arg->cma_purported.ava_type);
+			error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_value = NULLAttrV;
+			error->ERR_ATTRIBUTE.DSE_at_plist.dse_at_next = DSE_AT_NOPROBLEM;
+			return (DS_ERROR_REMOTE);
+		}
 	} else {
 		/* see if there is an 'always' attribute */
 		Attr_Sequence ptr;
 		if (entryptr->e_iattr) {
 			for(ptr = entryptr->e_iattr->i_always; ptr != NULLATTR; ptr=ptr->attr_link) {
 				if (  (i = AttrT_cmp (ptr->attr_type,arg->cma_purported.ava_type)) <= 0) {
-					if ( i == 0 ) 
+					if ( i == 0 )
 						ias = ptr;
 					break;
 				}
 			}
 		}
-		   
+
 	}
 
 	result->cmr_object = NULLDN;
 
-again:;
+again:
+	;
 
 	acl =  as->attr_acl;
 
 	if (check_acl ((authtype % 3) >= authtype ? binddn : NULLDN,
-	    ACL_COMPARE, acl,realtarget) == NOTOK) {
+				   ACL_COMPARE, acl,realtarget) == NOTOK) {
 		if (dsp && (check_acl (binddn,ACL_COMPARE, acl, realtarget) == OK)) {
 			error->dse_type = DSE_SECURITYERROR;
 			error->ERR_SECURITY.DSE_sc_problem = DSE_SC_AUTHENTICATION;
@@ -192,28 +191,28 @@ again:;
 		if (result->cmr_object == NULLDN)
 			result->cmr_object = get_copy_dn (entryptr);
 	}
-		
+
 	for (tmp = as->attr_value; tmp != NULLAV; tmp = tmp->avseq_next) {
-	  i = AttrV_cmp (&tmp->avseq_av, arg->cma_purported.ava_value);
-	  switch (i) {
-	    case 0 :
-		result->cmr_matched= TRUE;
-		dn_free (realtarget);
-		return (DS_OK);
-	    case 1:
-	    case -1:
-	    case 2:
-		break;
-	    default:
-		error->dse_type = DSE_ATTRIBUTEERROR;
-		error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn (entryptr);
-		error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_what = DSE_AT_INAPPROPRIATEMATCHING;
-		error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_type = AttrT_cpy(as->attr_type);
-		error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_value = AttrV_cpy(arg->cma_purported.ava_value);
-		error->ERR_ATTRIBUTE.DSE_at_plist.dse_at_next = DSE_AT_NOPROBLEM;
-		dn_free (realtarget);
-		return (NOTOK);
-	  }
+		i = AttrV_cmp (&tmp->avseq_av, arg->cma_purported.ava_value);
+		switch (i) {
+		case 0 :
+			result->cmr_matched= TRUE;
+			dn_free (realtarget);
+			return (DS_OK);
+		case 1:
+		case -1:
+		case 2:
+			break;
+		default:
+			error->dse_type = DSE_ATTRIBUTEERROR;
+			error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn (entryptr);
+			error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_what = DSE_AT_INAPPROPRIATEMATCHING;
+			error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_type = AttrT_cpy(as->attr_type);
+			error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_value = AttrV_cpy(arg->cma_purported.ava_value);
+			error->ERR_ATTRIBUTE.DSE_at_plist.dse_at_next = DSE_AT_NOPROBLEM;
+			dn_free (realtarget);
+			return (NOTOK);
+		}
 	}
 
 	if (ias) {
@@ -251,13 +250,13 @@ OID at;
 DN target;
 int level;
 {
-register struct acl_attr * aa;
-register struct oid_seq * oidptr;
+	register struct acl_attr * aa;
+	register struct oid_seq * oidptr;
 
 	/* FACT: the attribute is not present in the entry.
 	 * PROBLEM: should it be ?
 	 * 	Return TRUE if yes.
-         */
+	     */
 
 #ifdef notanymore 	/* Not readable, but may be comparable ! */
 	if (dn == NULLDN)
@@ -267,23 +266,23 @@ register struct oid_seq * oidptr;
 	if ((ptr->e_data == E_DATA_MASTER) || (ptr->e_data == E_TYPE_SLAVE))
 		return FALSE;
 
-	/* see if more than cached data is required */	
+	/* see if more than cached data is required */
 	if (ptr->e_acl->ac_attributes == NULLACL_ATTR)
 		return FALSE;
 
 	for ( aa = ptr->e_acl->ac_attributes; aa!=NULLACL_ATTR; aa=aa->aa_next)
-		for ( oidptr=aa->aa_types;oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next)
+		for ( oidptr=aa->aa_types; oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next)
 			if (oid_cmp (oidptr->oid_oid,at) == 0) {
 				/* The attribute is in the attribute ACL list */
 				/* Would a referral help the DUA ? */
-				if (check_acl (dn,level,aa->aa_acl,target) == NOTOK) 
+				if (check_acl (dn,level,aa->aa_acl,target) == NOTOK)
 					return FALSE;
-				else 
+				else
 					return TRUE;
-			}	
+			}
 
-	if (check_acl (NULLDN,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK) 
-		if (check_acl (dn,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK) 
+	if (check_acl (NULLDN,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK)
+		if (check_acl (dn,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK)
 			return TRUE;
 
 	return FALSE;

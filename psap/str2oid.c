@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2oid.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/str2oid.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -35,16 +35,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2oid.c,v 9.0 1992/0
 OID	str2oid (s)
 char    *s;
 {
-    int	    i;
-    static struct OIDentifier   oids;
-    static unsigned int elements[NELEM + 1];
+	int	    i;
+	static struct OIDentifier   oids;
+	static unsigned int elements[NELEM + 1];
 
-    if ((i = str2elem (s, elements)) < 1
-	    || elements[0] > 2
-	    || (i > 1 && elements[0] < 2 && elements[1] > 39))
-	return NULLOID;
+	if ((i = str2elem (s, elements)) < 1
+			|| elements[0] > 2
+			|| (i > 1 && elements[0] < 2 && elements[1] > 39))
+		return NULLOID;
 
-    oids.oid_elements = elements, oids.oid_nelem = i;
+	oids.oid_elements = elements, oids.oid_nelem = i;
 
-    return (&oids);
+	return (&oids);
 }

@@ -4,7 +4,7 @@
 static	char *rcsid = "$Header: /xtel/isode/isode/ftam-ftp/RCS/ftp.c,v 9.0 1992/06/16 12:15:29 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam-ftp/RCS/ftp.c,v 9.0 1992/06/16 12:15:29 isode Rel $
  *
  *
@@ -17,9 +17,9 @@ static	char *rcsid = "$Header: /xtel/isode/isode/ftam-ftp/RCS/ftp.c,v 9.0 1992/0
 /*
  *				  NOTICE
  *
- *	The MITRE Corporation (hereafter MITRE) makes this software available 
- *	on an "as is" basis.  No guarantees, either explicit or implied, are 
- *	given as to performance or suitability.  
+ *	The MITRE Corporation (hereafter MITRE) makes this software available
+ *	on an "as is" basis.  No guarantees, either explicit or implied, are
+ *	given as to performance or suitability.
  *
  */
 
@@ -65,22 +65,22 @@ FILE	*cin, *cout;
 int	dataconn();
 
 
-ftp_init()
-{ /* default ftp communication values */
+ftp_init() {
+	/* default ftp communication values */
 
 	(void)strcpy(typename, "ascii"), type = TYPE_A;
-        (void)strcpy(formname, "non-print"), form = FORM_N;
-        (void)strcpy(modename, "stream"), mode = MODE_S;
-        (void)strcpy(structname, "file"), stru = STRU_F;
-        (void)strcpy(bytename, "8"), bytesize = 8;
+	(void)strcpy(formname, "non-print"), form = FORM_N;
+	(void)strcpy(modename, "stream"), mode = MODE_S;
+	(void)strcpy(structname, "file"), stru = STRU_F;
+	(void)strcpy(bytename, "8"), bytesize = 8;
 	ftp_directory = 0;
 	ftp_error = ftp_error_buffer;
 	verbose = isatty (fileno (stderr));
 }
 
 hookup(host, port)
-	char *host;
-	int port;
+char *host;
+int port;
 {
 	register struct hostent *hp;
 	int s, len;
@@ -89,7 +89,7 @@ hookup(host, port)
 	hp = gethostbyname(host);
 	if (hp == NULL) {
 #ifdef	h_addr
-	        static char *addrs = NULL;
+		static char *addrs = NULL;
 #endif
 		static struct hostent def;
 		static struct in_addr defaddr;
@@ -118,25 +118,25 @@ hookup(host, port)
 	s = socket(hp->h_addrtype, SOCK_STREAM, 0);
 	if (s < 0) {
 		(void)sprintf(ftp_error,"ftp: socket %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 		return (NOTOK);
 	}
 	if (bind(s, (struct sockaddr *)&hisctladdr, sizeof (hisctladdr)) < 0) {
 		(void)sprintf(ftp_error,"ftp: bind %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	inaddr_copy (hp, &hisctladdr);
 	hisctladdr.sin_port = htons ((u_short) port);
 	if (connect(s, (struct sockaddr *)&hisctladdr, sizeof (hisctladdr)) < 0) {
 		(void)sprintf(ftp_error,"ftp: connect %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	len = sizeof (myctladdr);
 	if (getsockname(s, (struct sockaddr *)&myctladdr, &len) < 0) {
 		(void)sprintf(ftp_error,"ftp: getsockname %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	cin = fdopen(s, "r");
@@ -158,24 +158,24 @@ bad:
 }
 
 login(user,pass,acct)
-	char *user, *pass, *acct;
+char *user, *pass, *acct;
 {
 	int n;
 
-	if (!user){
+	if (!user) {
 		(void)sprintf(ftp_error, "Username required");
 		return(NOTOK);
 	}
 	n = command("USER %s", user);
-	if (n == CONTINUE){
-		if (!pass){
+	if (n == CONTINUE) {
+		if (!pass) {
 			(void)sprintf(ftp_error, "Password required");
 			return(NOTOK);
 		}
 		n = command("PASS %s", pass);
 	}
 	if (n == CONTINUE) {
-		if (!acct){
+		if (!acct) {
 			(void)sprintf(ftp_error, "Account required");
 			return(NOTOK);
 		}
@@ -190,28 +190,27 @@ login(user,pass,acct)
 
 #ifndef	lint
 command(va_alist)
-va_dcl
-{
-    int	    val;
-    va_list ap;
+va_dcl {
+	int	    val;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    val = _command (ap);
+	val = _command (ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return val;
+	return val;
 }
 
 _command(ap)
 va_list ap;
 {
-    char buffer[BUFSIZ];
+	char buffer[BUFSIZ];
 
 	if (cout == NULL) {
 		(void)sprintf(ftp_error,"No control connection for command %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 		return (NOTOK);
 	}
 
@@ -219,7 +218,7 @@ va_list ap;
 	fprintf (cout, "%s\r\n", buffer);
 	(void) fflush(cout);
 	if (verbose)
-	    advise (LLOG_DEBUG, NULLCP, "<--- %s", buffer);
+		advise (LLOG_DEBUG, NULLCP, "<--- %s", buffer);
 	return (getreply(!strcmp(buffer, "QUIT")));
 }
 #else
@@ -228,14 +227,14 @@ va_list ap;
 command (fmt)
 char   *fmt;
 {
-    return command (fmt);
+	return command (fmt);
 }
 #endif
 
 #include <ctype.h>
 
 getreply(expecteof)
-	int expecteof;
+int expecteof;
 {
 	register int c, n;
 	register int code, dig;
@@ -252,7 +251,7 @@ getreply(expecteof)
 					return (0);
 				lostpeer();
 				advise (LLOG_EXCEPTIONS,NULLCP,"getreply: %s",
-					ftp_error_buffer);
+						ftp_error_buffer);
 				return(1);
 				/* exit(1); */
 			}
@@ -271,8 +270,8 @@ getreply(expecteof)
 			continue;
 		}
 		if (verbose)
-		    advise (LLOG_DEBUG,NULLCP,"---> %s",
-			    ftp_error_buffer);
+			advise (LLOG_DEBUG,NULLCP,"---> %s",
+					ftp_error_buffer);
 		return (n - '0');
 	}
 }
@@ -285,7 +284,7 @@ getreply(expecteof)
  */
 int
 sendrequest(cmd, /* local, */ remote)
-	char *cmd, /* *local, */ *remote;
+char *cmd, /* *local, */ *remote;
 {
 	int dout;
 	int expectingreply = 0;
@@ -295,9 +294,8 @@ sendrequest(cmd, /* local, */ remote)
 	if (remote) {
 		if (command("%s %s", cmd, remote) != PRELIM)
 			goto bad;
-	} else
-		if (command("%s", cmd) != PRELIM)
-			goto bad;
+	} else if (command("%s", cmd) != PRELIM)
+		goto bad;
 	expectingreply++; /* got preliminary reply, expecting final reply */
 	dout = dataconn("w");
 	if (dout == NOTOK)
@@ -307,16 +305,16 @@ sendrequest(cmd, /* local, */ remote)
 bad:
 	if (data >= 0)
 		(void) close(data), data = -1;
-        if (expectingreply) {
-                (void) getreply(0);
-                expectingreply = 0;
-        }
-        return(NOTOK);
+	if (expectingreply) {
+		(void) getreply(0);
+		expectingreply = 0;
+	}
+	return(NOTOK);
 }
 
 int
 recvrequest(cmd, /* local,*/ remote)
-	char *cmd, /* *local,*/ *remote;
+char *cmd, /* *local,*/ *remote;
 {
 	int din;
 	int expectingreply = 0;
@@ -326,9 +324,8 @@ recvrequest(cmd, /* local,*/ remote)
 	if (remote) {
 		if (command("%s %s", cmd, remote) != PRELIM)
 			goto bad;
-	} else
-		if (command("%s", cmd) != PRELIM)
-			goto bad;
+	} else if (command("%s", cmd) != PRELIM)
+		goto bad;
 	expectingreply++;   /* got preliminary reply, expecting final reply */
 	din = dataconn("r");
 	if (din == NOTOK)
@@ -351,8 +348,7 @@ bad:
  */
 int sendport = -1;
 
-initconn()
-{
+initconn() {
 	register char *p, *a;
 	int result, len;
 #ifdef	BSD43
@@ -362,13 +358,13 @@ initconn()
 noport:
 	data_addr = myctladdr;
 	if (sendport)
-		data_addr.sin_port = 0;	/* let system pick one */ 
+		data_addr.sin_port = 0;	/* let system pick one */
 	if (data != -1)
 		(void) close (data);
 	data = socket(AF_INET, SOCK_STREAM, 0);
 	if (data < 0) {
 		(void)sprintf(ftp_error,"ftp: socket %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 		return (NOTOK);
 	}
 	if (!sendport)
@@ -377,32 +373,32 @@ noport:
 #else
 		if (setsockopt(data, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof on) < 0) {
 #endif
-		(void)sprintf(ftp_error,"ftp: setsockopt (reuse address) %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+			(void)sprintf(ftp_error,"ftp: setsockopt (reuse address) %s",
+						  (errno <= sys_nerr)? sys_errlist[errno]:"");
 			goto bad;
 		}
 	if (bind(data, (struct sockaddr *)&data_addr, sizeof (data_addr)) < 0) {
 		(void)sprintf(ftp_error,"ftp: bind %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	if (options & SO_DEBUG &&
 #ifndef	BSD43
-	    setsockopt(data, SOL_SOCKET, SO_DEBUG, (char *) 0, 0) < 0)
+			setsockopt(data, SOL_SOCKET, SO_DEBUG, (char *) 0, 0) < 0)
 #else
-	    setsockopt(data, SOL_SOCKET, SO_DEBUG, (char *) &on, on) < 0)
+			setsockopt(data, SOL_SOCKET, SO_DEBUG, (char *) &on, on) < 0)
 #endif
 		(void)sprintf(ftp_error,"ftp: setsockopt (ignoreg) %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 	len = sizeof (data_addr);
 	if (getsockname(data, (struct sockaddr *)&data_addr, &len) < 0) {
 		(void)sprintf(ftp_error,"ftp: getsockname  %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	if (listen(data, 1) < 0) {
 		(void)sprintf(ftp_error,"ftp: listen  %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	if (sendport) {
@@ -410,9 +406,9 @@ noport:
 		p = (char *)&data_addr.sin_port;
 #define	UC(b)	(((int)b)&0xff)
 		result =
-		    command("PORT %d,%d,%d,%d,%d,%d",
-		      UC(a[0]), UC(a[1]), UC(a[2]), UC(a[3]),
-		      UC(p[0]), UC(p[1]));
+			command("PORT %d,%d,%d,%d,%d,%d",
+					UC(a[0]), UC(a[1]), UC(a[2]), UC(a[3]),
+					UC(p[0]), UC(p[1]));
 		if (result == ERROR && sendport == -1) {
 			sendport = 0;
 			goto noport;
@@ -428,7 +424,7 @@ bad:
 /*ARGSUSED */
 int
 dataconn(modeX)
-	char *modeX;
+char *modeX;
 {
 	struct sockaddr_in from;
 	int s, fromlen = sizeof (from);
@@ -436,7 +432,7 @@ dataconn(modeX)
 	s = accept(data, (struct sockaddr *) &from, &fromlen);
 	if (s < 0) {
 		(void)sprintf(ftp_error,"ftp: accept  %s",
-			(errno <= sys_nerr)? sys_errlist[errno]:"");
+					  (errno <= sys_nerr)? sys_errlist[errno]:"");
 		(void) close(data), data = -1;
 		return (NOTOK);
 	}
@@ -445,20 +441,19 @@ dataconn(modeX)
 	return (data);
 }
 
-lostpeer()
-{
- 
-        if (connected) {
-                if (cout != NULL) {
-                        (void)shutdown(fileno(cout), 1+1);
-                        (void)fclose(cout);
-                        cout = NULL;
-                }
-                if (data >= 0) {
-                        (void) shutdown(data, 1+1);
-                        (void) close(data);
-                        data = -1;
-                }
-                connected = 0;
-        }
+lostpeer() {
+
+	if (connected) {
+		if (cout != NULL) {
+			(void)shutdown(fileno(cout), 1+1);
+			(void)fclose(cout);
+			cout = NULL;
+		}
+		if (data >= 0) {
+			(void) shutdown(data, 1+1);
+			(void) close(data);
+			data = -1;
+		}
+		connected = 0;
+	}
 }

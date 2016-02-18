@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/baduser.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/baduser.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -36,43 +36,43 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/baduser.c,v 9.0 1992
 
 int	baduser (file, user)
 char   *file,
-       *user;
+	   *user;
 {
-    int     hit,
-	    tries;
-    register char  *bp;
-    char    buffer[BUFSIZ];
-    FILE   *fp;
+	int     hit,
+			tries;
+	register char  *bp;
+	char    buffer[BUFSIZ];
+	FILE   *fp;
 
-    hit = 0;
-    for (tries = 0; tries < 2 && !hit; tries++) {
-	switch (tries) {
-	    case 0:
-	        if (file) {
-		    bp = isodefile (file, 0);
-		    break;
-		}
-		tries++;
+	hit = 0;
+	for (tries = 0; tries < 2 && !hit; tries++) {
+		switch (tries) {
+		case 0:
+			if (file) {
+				bp = isodefile (file, 0);
+				break;
+			}
+			tries++;
 		/* and fall */
-	    default:
-		bp = "/etc/ftpusers";
-		break;
+		default:
+			bp = "/etc/ftpusers";
+			break;
+		}
+		if ((fp = fopen (bp, "r")) == NULL)
+			continue;
+
+		while (fgets (buffer, sizeof buffer, fp)) {
+			if (bp = index (buffer, '\n'))
+				*bp = NULL;
+			if (strcmp (buffer, user) == 0) {
+				hit++;
+				break;
+			}
+		}
+
+		(void) fclose (fp);
 	}
-	if ((fp = fopen (bp, "r")) == NULL)
-	    continue;
-
-	while (fgets (buffer, sizeof buffer, fp)) {
-	    if (bp = index (buffer, '\n'))
-		*bp = NULL;
-	    if (strcmp (buffer, user) == 0) {
-		hit++;
-		break;
-	    }
-	}
-
-	(void) fclose (fp);
-    }
 
 
-    return hit;
+	return hit;
 }

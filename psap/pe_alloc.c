@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_alloc.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/pe_alloc.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -81,36 +81,36 @@ PElementClass class;
 PElementForm  form;
 PElementID id;
 {
-    register int    i;
-    register PE	    pe;
+	register int    i;
+	register PE	    pe;
 
-    if (pe = pe_list)
-        pe_list = pe -> pe_next;
-    else {
-        pe_list = (pe = (PE) calloc (PE_LIST_CNT, sizeof *pe));
-        if (pe == NULLPE)
-	    return NULLPE;
+	if (pe = pe_list)
+		pe_list = pe -> pe_next;
+	else {
+		pe_list = (pe = (PE) calloc (PE_LIST_CNT, sizeof *pe));
+		if (pe == NULLPE)
+			return NULLPE;
 
-        for (i = 0; i < (PE_LIST_CNT - 1); i++, pe++)
-	    pe -> pe_next = pe + 1;
+		for (i = 0; i < (PE_LIST_CNT - 1); i++, pe++)
+			pe -> pe_next = pe + 1;
 
-        pe = pe_list;
-        pe_list = pe -> pe_next;
-    }
+		pe = pe_list;
+		pe_list = pe -> pe_next;
+	}
 
-    bzero ((char *)pe, sizeof *pe);
-    pe -> pe_class = class;
-    pe -> pe_form = form;
-    pe -> pe_id = id;
+	bzero ((char *)pe, sizeof *pe);
+	pe -> pe_class = class;
+	pe -> pe_form = form;
+	pe -> pe_id = id;
 
-    if ((i = ++pe_allocs - pe_frees) > pe_most)
-        pe_most = i;
+	if ((i = ++pe_allocs - pe_frees) > pe_most)
+		pe_most = i;
 #ifdef	DEBUG
-    if (psap_log -> ll_events & LLOG_DEBUG) {
-	pe -> pe_link = pe_active;
-	pe_active = pe;
-    }
+	if (psap_log -> ll_events & LLOG_DEBUG) {
+		pe -> pe_link = pe_active;
+		pe_active = pe;
+	}
 #endif
 
-    return pe;
+	return pe;
 }

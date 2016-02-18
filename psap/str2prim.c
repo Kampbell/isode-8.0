@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2prim.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/str2prim.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -38,18 +38,18 @@ register int len;
 PElementClass	class;
 PElementID	id;
 {
-    register PE	    pe;
+	register PE	    pe;
 
-    if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
-	return NULLPE;
+	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
+		return NULLPE;
 
-    if (len && (pe -> pe_prim = PEDalloc (pe -> pe_len = len)) == NULLPED) {
-	pe_free (pe);
-	return NULLPE;
-    }
+	if (len && (pe -> pe_prim = PEDalloc (pe -> pe_len = len)) == NULLPED) {
+		pe_free (pe);
+		return NULLPE;
+	}
 
-    if (s)
-	PEDcpy (s, pe -> pe_prim, len);
+	if (s)
+		PEDcpy (s, pe -> pe_prim, len);
 
-    return pe;
+	return pe;
 }

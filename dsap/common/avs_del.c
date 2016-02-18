@@ -31,7 +31,7 @@ extern LLog * log_dsap;
 avs_delnext (avs)
 AV_Sequence  avs;
 {
-AV_Sequence ptr;
+	AV_Sequence ptr;
 	if (avs == NULLAV)
 		DLOG (log_dsap,LLOG_DEBUG,("delnext of null avs!"));
 	else    {
@@ -41,7 +41,7 @@ AV_Sequence ptr;
 		else    {
 			avs->avseq_next = ptr->avseq_next;
 			avs_comp_free (ptr);
-			}
 		}
+	}
 }
 

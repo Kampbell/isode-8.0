@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/service.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/service.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -66,21 +66,21 @@ PS opt;
 int get_default_service (ca)
 CommonArgs * ca;
 {
-PS opt;
-char buffer [LINESIZE];
-extern int sizelimit;
-extern int timelimit;
-static CommonArgs sca = default_common_args;
+	PS opt;
+	char buffer [LINESIZE];
+	extern int sizelimit;
+	extern int timelimit;
+	static CommonArgs sca = default_common_args;
 
 	*ca = sca;  /* struct copy */
 	ca->ca_servicecontrol.svc_sizelimit = sizelimit;
 	ca->ca_servicecontrol.svc_timelimit = timelimit;
-	
+
 	if ((opt = ps_alloc (str_open)) == NULLPS) {
 		(void) fprintf (stderr,"ps_alloc error\n");
 		return (NOTOK);
 	}
-		
+
 	if (str_setup (opt, buffer, LINESIZE, 1) == NOTOK) {
 		(void) fprintf (stderr,"ps_setup error\n");
 		return (NOTOK);
@@ -104,7 +104,7 @@ static CommonArgs sca = default_common_args;
 
 	ps_free (opt);
 	return (OK);
-	
+
 }
 
 int service_control (opt,argc, argv, ca)
@@ -139,17 +139,17 @@ CommonArgs     *ca;
 
 	for (x = 0; x < argc; x++) {
 		shuffle = do_shuffle;
-		
-		if (test_arg (argv[x], "-preferchain",3)) 
+
+		if (test_arg (argv[x], "-preferchain",3))
 			sc->svc_options |= SVC_OPT_PREFERCHAIN;
-		else if (test_arg (argv[x], "-nopreferchain",5)) 
+		else if (test_arg (argv[x], "-nopreferchain",5))
 			sc->svc_options &= ~SVC_OPT_PREFERCHAIN;
-			
-		else if (test_arg (argv[x], "-localscope",3)) 
+
+		else if (test_arg (argv[x], "-localscope",3))
 			sc->svc_options |= SVC_OPT_LOCALSCOPE;
-		else if (test_arg (argv[x], "-nolocalscope",3)) 
+		else if (test_arg (argv[x], "-nolocalscope",3))
 			sc->svc_options &= (~SVC_OPT_LOCALSCOPE);
-			
+
 		else if (test_arg (argv[x], "-dontusecopy",5)) {
 			copy_flag = FALSE;
 			sc->svc_options |= SVC_OPT_DONTUSECOPY;
@@ -158,36 +158,36 @@ CommonArgs     *ca;
 			sc->svc_options &= (~SVC_OPT_DONTUSECOPY);
 		}
 
-		else if (test_arg (argv[x], "-dontdereferencealias",5)) 
+		else if (test_arg (argv[x], "-dontdereferencealias",5))
 			sc->svc_options |= SVC_OPT_DONTDEREFERENCEALIAS;
-		else if (test_arg (argv[x], "-dereferencealias",3)) 
+		else if (test_arg (argv[x], "-dereferencealias",3))
 			sc->svc_options &= (~SVC_OPT_DONTDEREFERENCEALIAS);
 
-		else if (test_arg (argv[x], "-low",3)) 
+		else if (test_arg (argv[x], "-low",3))
 			sc->svc_prio = SVC_PRIO_LOW;
-		else if (test_arg (argv[x], "-medium",2)) 
+		else if (test_arg (argv[x], "-medium",2))
 			sc->svc_prio = SVC_PRIO_MED;
-		else if (test_arg (argv[x], "-high",1)) 
+		else if (test_arg (argv[x], "-high",1))
 			sc->svc_prio = SVC_PRIO_HIGH;
-			
+
 		else if (test_arg (argv[x], "-timelimit",2)) {
-			if (x + 1 == argc) {	
+			if (x + 1 == argc) {
 				ps_printf (opt, "We need a number for timelimit.\n");
 				return (-1);
 			} else {
 				if (shuffle)
 					shuffle_up (argc--, argv, x);
 				else
-				        x++;
+					x++;
 
 				if ((sc->svc_timelimit = atoi (argv[x])) < -1) {
 					ps_printf (opt, "We need a posative number for timelimit.\n");
 					return (-1);
 				}
 			}
-		} else if (test_arg (argv[x], "-notimelimit",4)) 
+		} else if (test_arg (argv[x], "-notimelimit",4))
 			sc->svc_timelimit = -1;
-			
+
 		else if (test_arg (argv[x], "-sizelimit",3)) {
 			if (x + 1 == argc) {
 				ps_printf (opt, "We need a number for sizelimit.\n");
@@ -203,17 +203,17 @@ CommonArgs     *ca;
 					return (-1);
 				}
 			}
-		} else if (test_arg (argv[x], "-nosizelimit",4)) 
+		} else if (test_arg (argv[x], "-nosizelimit",4))
 			sc->svc_sizelimit = -1;
-			
-		else if (test_arg (argv[x], "-nochaining",4)) 
+
+		else if (test_arg (argv[x], "-nochaining",4))
 			sc->svc_options |= SVC_OPT_CHAININGPROHIBIT;
-		else if (test_arg (argv[x], "-chaining",3)) 
+		else if (test_arg (argv[x], "-chaining",3))
 			sc->svc_options &= (~SVC_OPT_CHAININGPROHIBIT);
-			
-		else if (test_arg (argv[x], "-norefer",5)) 
+
+		else if (test_arg (argv[x], "-norefer",5))
 			chase_flag = 1;
-		else if (test_arg (argv[x], "-refer",3)) 
+		else if (test_arg (argv[x], "-refer",3))
 			chase_flag = 2;
 
 		else if (test_arg(argv[x], "-strong", 3)) {
@@ -221,17 +221,17 @@ CommonArgs     *ca;
 			struct certificate *cert_cpy();
 
 			ca->ca_security = (struct security_parms *)
-				calloc(1, sizeof(struct security_parms));
+							  calloc(1, sizeof(struct security_parms));
 			ca->ca_security->sp_name = NULLDN;
 			ca->ca_security->sp_time = new_version();
 			ca->ca_security->sp_target = '\0';
-			if (dsap_security->serv_mkpath) 
-			  ca->ca_security->sp_path = 
-				(dsap_security->serv_mkpath)();
-			}
+			if (dsap_security->serv_mkpath)
+				ca->ca_security->sp_path =
+					(dsap_security->serv_mkpath)();
+		}
 
 		else if (test_arg (argv[x], "-sequence",3)) {
-			if (x + 1 == argc) {	
+			if (x + 1 == argc) {
 				ps_printf (opt, "We need a sequence name.\n");
 				return (-1);
 			} else {
@@ -240,7 +240,7 @@ CommonArgs     *ca;
 				else
 					x++;
 				if (lexequ (argv[x],"result") == 0) {
-					if (x + 1 == argc) {	
+					if (x + 1 == argc) {
 						ps_printf (opt, "We need a result sequence name.\n");
 						return (-1);
 					}
@@ -252,7 +252,7 @@ CommonArgs     *ca;
 				} else
 					set_sequence (argv[x]);
 			}
-		} else if (test_arg (argv[x], "-nosequence",5)) 
+		} else if (test_arg (argv[x], "-nosequence",5))
 			unset_sequence();
 
 		else if (do_shuffle)
@@ -262,7 +262,7 @@ CommonArgs     *ca;
 			return (-1);
 		}
 
-		if (shuffle) 
+		if (shuffle)
 			shuffle_up (argc--, argv, x--);
 	}
 
@@ -298,13 +298,13 @@ char * ptr;
 set_sequence (str)
 char * str;
 {
-struct dua_sequence *ptr;
+	struct dua_sequence *ptr;
 
 	if (lexequ (str,"reset") == 0) {
-                if (current_sequence == NULL_DS)
-                        return;
-                current_sequence->ds_data = NULL_DE;
-                current_sequence->ds_last = NULL_DE;
+		if (current_sequence == NULL_DS)
+			return;
+		current_sequence->ds_data = NULL_DE;
+		current_sequence->ds_last = NULL_DE;
 		return;
 	}
 
@@ -323,56 +323,55 @@ struct dua_sequence *ptr;
 	current_sequence = ptr;
 }
 
-unset_sequence ()
-{
+unset_sequence () {
 	current_sequence = NULL_DS;
 }
 
 add_sequence (adn)
 DN adn;
 {
-struct dua_seq_entry * ptr;
-register int x=1;
+	struct dua_seq_entry * ptr;
+	register int x=1;
 
 	if (current_sequence == NULL_DS)
 		return (0);
-	
-	for (ptr=current_sequence->ds_data; ptr != NULL_DE; ptr=ptr->de_next,x++) 
+
+	for (ptr=current_sequence->ds_data; ptr != NULL_DE; ptr=ptr->de_next,x++)
 		if (dn_cmp (adn,ptr->de_name) == 0)
 			return (x);
 
 	ptr = de_alloc();
 	ptr->de_name = dn_cpy (adn);
 	ptr->de_next = NULL_DE;
-	if (current_sequence->ds_data == NULL_DE) 
+	if (current_sequence->ds_data == NULL_DE)
 		current_sequence->ds_data = ptr;
 	else
 		current_sequence->ds_last->de_next = ptr;
 	current_sequence->ds_last = ptr;
-		
+
 	return (x);
 }
 
 DN sequence_dn(y)
 int y;
 {
-struct dua_seq_entry * ptr;
-register int x = 1;
+	struct dua_seq_entry * ptr;
+	register int x = 1;
 
 	if (current_sequence == NULL_DS)
 		return (NULLDN);
 
-	for (ptr=current_sequence->ds_data; 
-		(ptr != NULL_DE) && (x<y); 
-		ptr=ptr->de_next,x++) 
-			;		
+	for (ptr=current_sequence->ds_data;
+			(ptr != NULL_DE) && (x<y);
+			ptr=ptr->de_next,x++)
+		;
 
 	if (ptr == NULL_DE)
 		return (NULLDN);
 	if ( x == y )
 		return (ptr->de_name);
 	return (NULLDN);
-			
+
 }
 
 
@@ -381,8 +380,8 @@ PS RPS;
 char * str;
 char	ufn;
 {
-struct dua_seq_entry * ptr;
-register int x = 1;
+	struct dua_seq_entry * ptr;
+	register int x = 1;
 
 	if (str != NULLCP)
 		set_sequence (str);
@@ -393,15 +392,15 @@ register int x = 1;
 	}
 
 	if (strcmp (current_sequence -> ds_name, "default"))
-	    ps_printf (RPS,"Sequence %s contains:-\n",
-		       current_sequence->ds_name);
+		ps_printf (RPS,"Sequence %s contains:-\n",
+				   current_sequence->ds_name);
 
 	for (ptr=current_sequence->ds_data; ptr != NULL_DE; ptr=ptr->de_next, x++) {
 		ps_printf (RPS,"%-3d%s",x,ufn ? " " : " @");
 		if (ufn)
-		    (void) ufn_dn_print_aux (RPS, ptr -> de_name, NULLDN, 0);
+			(void) ufn_dn_print_aux (RPS, ptr -> de_name, NULLDN, 0);
 		else
-		    dn_print (RPS,ptr->de_name,EDBOUT);
+			dn_print (RPS,ptr->de_name,EDBOUT);
 		ps_print (RPS,"\n");
 	}
 }

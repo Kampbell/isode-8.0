@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapselect.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rtsap/RCS/rtsapselect.c,v 9.0 1992/06/16 12:37:45 isode Rel $
  *
  *
@@ -39,27 +39,27 @@ fd_set *mask;
 int    *nfds;
 struct RtSAPindication *rti;
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	register struct assocblk   *acb;
 
-    missingP (mask);
-    missingP (nfds);
-    missingP (rti);
+	missingP (mask);
+	missingP (nfds);
+	missingP (rti);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rtsapPsig (acb, sd);
+	rtsapPsig (acb, sd);
 
-    if (acb -> acb_flags & ACB_PLEASE) {
+	if (acb -> acb_flags & ACB_PLEASE) {
+		(void) sigiomask (smask);
+
+		return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
+	}
+
+	result = (*acb -> acb_rtselectmask) (acb, mask, nfds, rti);
+
 	(void) sigiomask (smask);
 
-	return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
-    }
-
-    result = (*acb -> acb_rtselectmask) (acb, mask, nfds, rti);
-
-    (void) sigiomask (smask);
-
-    return result;
+	return result;
 }

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/search.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/search.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -35,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/search.c,v 9.0 1
 #include "osisec-stub.h"
 
 extern DN       dn,
-		current_dn;
+	   current_dn;
 
 #define	OPT	(!frompipe || rps -> ps_byteno == 0 ? opt : rps)
 #define	RPS	(!frompipe || opt -> ps_byteno == 0 ? rps : opt)
@@ -105,8 +105,8 @@ char          **argv;
 	search_arg.sra_subset = SRA_ONELEVEL;
 	search_arg.sra_common.ca_servicecontrol.svc_sizelimit = sizelimit;
 	search_arg.sra_searchaliases = FALSE;
-	
- 	if ((argc = service_control (OPT, argc, argv, &search_arg.sra_common)) == -1)
+
+	if ((argc = service_control (OPT, argc, argv, &search_arg.sra_common)) == -1)
 		return;
 
 	allow_move = FALSE;
@@ -129,9 +129,9 @@ char          **argv;
 			search_arg.sra_subset = SRA_ONELEVEL;
 		else if (test_arg (argv[x], "-subtree",2))
 			search_arg.sra_subset = SRA_WHOLESUBTREE;
-		else if (test_arg (argv[x], "-relative",3)) 
+		else if (test_arg (argv[x], "-relative",3))
 			rel_flag = TRUE;
-		else if (test_arg (argv[x], "-norelative",5)) 
+		else if (test_arg (argv[x], "-norelative",5))
 			rel_flag = FALSE;
 		else if (test_arg (argv[x], "-partial",2))
 			part_flag = TRUE;
@@ -139,9 +139,9 @@ char          **argv;
 			part_flag = FALSE;
 		else if (test_arg (argv[x], "-hitone",3))
 			hit_one = TRUE;
-		else if (test_arg (argv[x], "-searchaliases",3)) 
+		else if (test_arg (argv[x], "-searchaliases",3))
 			search_arg.sra_searchaliases = TRUE;
-		else if (test_arg (argv[x], "-nosearchaliases",5)) 
+		else if (test_arg (argv[x], "-nosearchaliases",5))
 			search_arg.sra_searchaliases = FALSE;
 		else if (test_arg (argv[x], "-filter",1)) {
 			if (x+1 == argc) {
@@ -167,10 +167,9 @@ char          **argv;
 				ps_printf (OPT,"Need flags to parse argument '%s'!\n",argv[x]);
 				Usage (argv[0]);
 				return;
-			} else 
+			} else
 				save_arg = argv[x];
-		}
-		else if (test_arg (argv[x], "-fred",4))
+		} else if (test_arg (argv[x], "-fred",4))
 			fred_flag = TRUE;
 		else if (test_arg (argv[x], "-expand",4))
 			fred_expand = TRUE;
@@ -186,13 +185,13 @@ char          **argv;
 			fred_subdisplay = TRUE;
 		else
 			continue;  /* a read type flag !!! */
-			
+
 		shuffle_up (argc--,argv,x--);
 	}
 
 	if (fred_flag)
-	    as_flag = as_cpy (fred_long || fred_expand ? fred_full ()
-						       : fred_as ());
+		as_flag = as_cpy (fred_long || fred_expand ? fred_full ()
+						  : fred_as ());
 
 	if (flag_show && (as_flag == NULLATTR))
 		all_flag = TRUE;
@@ -211,7 +210,7 @@ char          **argv;
 			return;
 		}
 	}
-	
+
 	if (search_arg.sra_filter == NULLFILTER) {
 		/* set default */
 		search_arg.sra_filter = filter_alloc ();
@@ -226,9 +225,9 @@ char          **argv;
 	}
 
 	if (fred_flag
-	        && (save_entry = local_find_entry (dn, FALSE))
-	        && save_entry -> e_alias)
-	    dn = dn_cpy (save_entry -> e_alias);
+			&& (save_entry = local_find_entry (dn, FALSE))
+			&& save_entry -> e_alias)
+		dn = dn_cpy (save_entry -> e_alias);
 	search_arg.sra_eis.eis_infotypes = value_flag;
 	search_arg.sra_eis.eis_allattributes = all_flag;
 	search_arg.sra_eis.eis_select = as_flag;
@@ -238,13 +237,12 @@ char          **argv;
 		return;
 
 	/* Strong authentication */
-	if (search_arg.sra_common.ca_security != (struct security_parms *) 0)
-	{
-	extern struct SecurityServices *dsap_security;
+	if (search_arg.sra_common.ca_security != (struct security_parms *) 0) {
+		extern struct SecurityServices *dsap_security;
 
-	search_arg.sra_common.ca_sig =
-		(dsap_security->serv_sign)((caddr_t)&search_arg,
-			 _ZSearchArgumentDataDAS, &_ZDAS_mod);
+		search_arg.sra_common.ca_sig =
+			(dsap_security->serv_sign)((caddr_t)&search_arg,
+									   _ZSearchArgumentDataDAS, &_ZDAS_mod);
 	}
 
 	while (ds_search (&search_arg, &error, &result) != DS_OK) {
@@ -254,11 +252,11 @@ char          **argv;
 	}
 
 	correlate_search_results (&result);
-			
+
 	if (result_sequence)
 		set_sequence (result_sequence);
 
-	if (result.CSR_entries == NULLENTRYINFO) 
+	if (result.CSR_entries == NULLENTRYINFO)
 		ps_printf (aps = OPT, "Search failed to find anything.\n");
 	else {
 		EntryInfo      *ptr;
@@ -266,14 +264,14 @@ char          **argv;
 		ptr = result.CSR_entries;
 		if (hit_one && result.CSR_entries->ent_next != NULLENTRYINFO) {
 #ifndef	SOCKETS
-			if (frompipe)			
-				search_result = NOTOK;	
+			if (frompipe)
+				search_result = NOTOK;
 #else
 			if (frompipe
-			    	&& rps -> ps_byteno == 0
-			    	&& opt -> ps_byteno == 0
-			        && fdx_reset (opt) == OK)   /* MAJOR HACK */
-			    (void) (*opt -> ps_writeP) (opt, "3", 1, 0);
+					&& rps -> ps_byteno == 0
+					&& opt -> ps_byteno == 0
+					&& fdx_reset (opt) == OK)   /* MAJOR HACK */
+				(void) (*opt -> ps_writeP) (opt, "3", 1, 0);
 #endif
 			ps_printf (OPT,"Multiple hits...\n");
 		}
@@ -286,99 +284,97 @@ char          **argv;
 			rel_dn = dn_cpy(dn);
 
 		if (fred_flag) {
-		    int	    i,
-			    nchild = 0;
+			int	    i,
+					nchild = 0;
 
-		    i = 0;
-		    for (ptr = result.CSR_entries;
-			     ptr;
-			     ptr = ptr -> ent_next) {
-			cache_entry (ptr, all_flag, value_flag);
+			i = 0;
+			for (ptr = result.CSR_entries;
+					ptr;
+					ptr = ptr -> ent_next) {
+				cache_entry (ptr, all_flag, value_flag);
 
-			i++;
-		    }
-
-		    if (fred_long == 2)
-			if ((fred_subdisplay && fred_expand)
-				|| (!fred_subdisplay && !fred_expand))
-			    fred_long = i == 1;
-			else
-			    fred_long = fred_expand;
-
-		    if (i > 1) {
-			EntryInfo **base,
-				  **bp,
-				  **ep;
-
-			ps_printf (RPS, "%d matches found.\n", i);
-			(void) ps_flush (RPS);
-
-			if (base = (EntryInfo **) malloc ((unsigned)
-							  (i * sizeof *base))){
-			    ep = base;
-			    for (ptr = result.CSR_entries;
-				     ptr;
-				     ptr = ptr -> ent_next)
-				*ep++ = ptr;
-
-			    qsort ((char *) base, i, sizeof *base, csr_compar);
-
-			    bp = base;
-			    ptr = result.CSR_entries = *bp++;
-			    while (bp < ep) {
-				ptr -> ent_next = *bp;
-				ptr = *bp++;
-			    }
-			    ptr -> ent_next = NULL;
-
-			    free ((char *) base);
-			}
-		    }
-
-		    if (fred_expand)
-			fred_long = fred_subdisplay = TRUE;
-		    for (ptr = result.CSR_entries;
-			     ptr;
-			     ptr = ptr -> ent_next)
-			(void) add_sequence (ptr -> ent_dn);
-		    set_sequence ("default");
-		    for (i = 0, ptr = result.CSR_entries;
-			     ptr;
-			     ptr = ptr -> ent_next, i++) {
-			if (i > 0) {
-			    if (fred_expand)
-				ps_print (RPS, "-------\n");
-			    else
-				if (nchild)
-				    ps_print (RPS, "\n");
-			    (void) ps_flush (RPS);
+				i++;
 			}
 
-			nchild = showfred (ptr -> ent_dn, fred_long,
-					   fred_subdisplay);
-		    }
-		} 
-		else
-		for (ptr = result.CSR_entries; ptr != NULLENTRYINFO; ptr = ptr->ent_next) {
+			if (fred_long == 2)
+				if ((fred_subdisplay && fred_expand)
+						|| (!fred_subdisplay && !fred_expand))
+					fred_long = i == 1;
+				else
+					fred_long = fred_expand;
+
+			if (i > 1) {
+				EntryInfo **base,
+						  **bp,
+						  **ep;
+
+				ps_printf (RPS, "%d matches found.\n", i);
+				(void) ps_flush (RPS);
+
+				if (base = (EntryInfo **) malloc ((unsigned)
+												  (i * sizeof *base))) {
+					ep = base;
+					for (ptr = result.CSR_entries;
+							ptr;
+							ptr = ptr -> ent_next)
+						*ep++ = ptr;
+
+					qsort ((char *) base, i, sizeof *base, csr_compar);
+
+					bp = base;
+					ptr = result.CSR_entries = *bp++;
+					while (bp < ep) {
+						ptr -> ent_next = *bp;
+						ptr = *bp++;
+					}
+					ptr -> ent_next = NULL;
+
+					free ((char *) base);
+				}
+			}
+
+			if (fred_expand)
+				fred_long = fred_subdisplay = TRUE;
+			for (ptr = result.CSR_entries;
+					ptr;
+					ptr = ptr -> ent_next)
+				(void) add_sequence (ptr -> ent_dn);
+			set_sequence ("default");
+			for (i = 0, ptr = result.CSR_entries;
+					ptr;
+					ptr = ptr -> ent_next, i++) {
+				if (i > 0) {
+					if (fred_expand)
+						ps_print (RPS, "-------\n");
+					else if (nchild)
+						ps_print (RPS, "\n");
+					(void) ps_flush (RPS);
+				}
+
+				nchild = showfred (ptr -> ent_dn, fred_long,
+								   fred_subdisplay);
+			}
+		} else
+			for (ptr = result.CSR_entries; ptr != NULLENTRYINFO; ptr = ptr->ent_next) {
 				/* decode it immediately so we only
 				   have to do it once. */
-			cache_entry (ptr, all_flag, value_flag);
-			seqno = add_sequence (ptr->ent_dn);
-			if (seqno != 0)
-				ps_printf (RPS,"%-3d ",seqno);
-			nvec[1] = "-compact";
+				cache_entry (ptr, all_flag, value_flag);
+				seqno = add_sequence (ptr->ent_dn);
+				if (seqno != 0)
+					ps_printf (RPS,"%-3d ",seqno);
+				nvec[1] = "-compact";
 
-			if (name_flag)
-				call_showname (2, nvec);
-			else if (seqno != 0)
-				ps_print (RPS,"\n");
+				if (name_flag)
+					call_showname (2, nvec);
+				else if (seqno != 0)
+					ps_print (RPS,"\n");
 
-			if (flag_show) {
-				eptr = ptr->ent_attr;
-				for (; eptr != NULLATTR; eptr = eptr->attr_link)
-					showattribute (eptr->attr_type);
-			} 
-		}
+				if (flag_show) {
+					eptr = ptr->ent_attr;
+					for (; eptr != NULLATTR; eptr = eptr->attr_link)
+						showattribute (eptr->attr_type);
+				}
+			}
 		if (rel_dn != NULLDN) {
 			dn_free (rel_dn);
 			rel_dn = NULLDN;
@@ -390,7 +386,7 @@ char          **argv;
 	}
 
 	handle_problems (aps,result.CSR_cr,result.CSR_limitproblem,part_flag);
-	
+
 	dn_free (result.CSR_object);
 	crefs_free (result.CSR_cr);
 	filter_free (search_arg.sra_filter);
@@ -398,50 +394,50 @@ char          **argv;
 
 static	int  csr_compar (a, b)
 EntryInfo **a,
-          **b;
+		  **b;
 {
-    int	    i;
-    DN	    adn,
-	    bdn;
-    Entry   ae,
-	    be;
-    static AttributeType at_surName = NULL;
+	int	    i;
+	DN	    adn,
+	 bdn;
+	Entry   ae,
+			be;
+	static AttributeType at_surName = NULL;
 
-    if ((ae = local_find_entry ((*a) -> ent_dn, FALSE))
-	    && (be = local_find_entry ((*b) -> ent_dn, FALSE))) {
-	Attr_Sequence as,
-		      bs;
+	if ((ae = local_find_entry ((*a) -> ent_dn, FALSE))
+			&& (be = local_find_entry ((*b) -> ent_dn, FALSE))) {
+		Attr_Sequence as,
+					  bs;
 
-	if (!at_surName && !(at_surName = AttrT_new ("surName")))
-	    goto check_rdn;
+		if (!at_surName && !(at_surName = AttrT_new ("surName")))
+			goto check_rdn;
 
-	for (as = ae -> e_attributes; as; as = as -> attr_link)
-	    if (AttrT_cmp (as -> attr_type, at_surName) == 0)
-		break;
-	if (!as)
-	    goto check_rdn;
+		for (as = ae -> e_attributes; as; as = as -> attr_link)
+			if (AttrT_cmp (as -> attr_type, at_surName) == 0)
+				break;
+		if (!as)
+			goto check_rdn;
 
-	for (bs = be -> e_attributes; bs; bs = bs -> attr_link)
-	    if (AttrT_cmp (bs -> attr_type, at_surName) == 0)
-		break;
-	if (!bs)
-	    goto check_rdn;
+		for (bs = be -> e_attributes; bs; bs = bs -> attr_link)
+			if (AttrT_cmp (bs -> attr_type, at_surName) == 0)
+				break;
+		if (!bs)
+			goto check_rdn;
 
-	i = AttrV_cmp (&as -> attr_value -> avseq_av,
-		       &bs -> attr_value -> avseq_av);
-    }
-    else {
-check_rdn: ;
+		i = AttrV_cmp (&as -> attr_value -> avseq_av,
+					   &bs -> attr_value -> avseq_av);
+	} else {
+check_rdn:
+		;
 
-	for (adn = (*a) -> ent_dn; adn -> dn_parent; adn = adn -> dn_parent)
-	    continue;
-	for (bdn = (*b) -> ent_dn; bdn -> dn_parent; bdn = bdn -> dn_parent)
-	    continue;
+		for (adn = (*a) -> ent_dn; adn -> dn_parent; adn = adn -> dn_parent)
+			continue;
+		for (bdn = (*b) -> ent_dn; bdn -> dn_parent; bdn = bdn -> dn_parent)
+			continue;
 
-	i = rdn_cmp (adn -> dn_rdn, bdn -> dn_rdn);
-    }
+		i = rdn_cmp (adn -> dn_rdn, bdn -> dn_rdn);
+	}
 
-    return (i == (-1) || i == 1 ? i : 0);
+	return (i == (-1) || i == 1 ? i : 0);
 }
 
 handle_problems (aps,cr,limit,proceed)
@@ -457,18 +453,18 @@ int limit;
 		switch (limit) {
 		case LSR_TIMELIMITEXCEEDED:
 			ps_print (aps, (flag_show
-			      ? "Time limit exceeded"
-			      : "Partial results only--time limit exceeded"));
+							? "Time limit exceeded"
+							: "Partial results only--time limit exceeded"));
 			break;
 		case LSR_SIZELIMITEXCEEDED:
 			ps_print (aps, (flag_show
-			      ? "Size limit exceeded"
-			      : "Partial results only--size limit exceeded"));
+							? "Size limit exceeded"
+							: "Partial results only--size limit exceeded"));
 			break;
 		default: /* admin limit */
 			ps_print (aps, (flag_show
-			      ? "Admin limit exceeded"
-			      : "Partial results only--admin limit exceeded"));
+							? "Admin limit exceeded"
+							: "Partial results only--admin limit exceeded"));
 			break;
 		}
 		ps_print (aps, ")\n");
@@ -491,5 +487,5 @@ int limit;
 			ps_print (aps,")\n");
 		}
 	}
-			
+
 }

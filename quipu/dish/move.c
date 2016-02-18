@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/move.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/move.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -43,28 +43,28 @@ call_moveto (argc,argv)
 int argc;
 char ** argv;
 {
-char pwd_flag = FALSE;
-char check_move = TRUE;
-int x;
+	char pwd_flag = FALSE;
+	char check_move = TRUE;
+	int x;
 
 	if (argc == 1) {
 		Usage (argv[0]);
 		return;
 	}
-	
+
 	move_flag = FALSE;
 
 	for (x = 1; x < argc; x++) {
-		if (test_arg (argv[x],"-pwd",1)) 
+		if (test_arg (argv[x],"-pwd",1))
 			pwd_flag = TRUE;
-		else if (test_arg (argv[x],"-nopwd",3)) 
+		else if (test_arg (argv[x],"-nopwd",3))
 			pwd_flag = FALSE;
-		else if (test_arg (argv[x],"-check",1)) 
+		else if (test_arg (argv[x],"-check",1))
 			check_move = TRUE;
-		else if (test_arg (argv[x],"-nocheck",3)) 
+		else if (test_arg (argv[x],"-nocheck",3))
 			check_move = FALSE;
 		else if (test_arg (argv[x], "-sequence",3)) {
-			if (x + 1 == argc) {	
+			if (x + 1 == argc) {
 				ps_printf (OPT, "We need a sequence name.\n");
 				return;
 			} else {
@@ -96,7 +96,7 @@ int x;
 
 	if (move_flag == TRUE)
 		consolidate_move ();
-		
+
 	if (pwd_flag) {
 		dn_print (RPS, fixed_pos, EDBOUT);
 		ps_print (RPS, "\n");
@@ -104,8 +104,7 @@ int x;
 
 }
 
-consolidate_move ()
-{
+consolidate_move () {
 	if (move_flag) {
 		move_flag = FALSE;
 		dn_free (fixed_pos);
@@ -113,8 +112,7 @@ consolidate_move ()
 	}
 }
 
-set_current_pos ()
-{
+set_current_pos () {
 	move_flag = FALSE;
 	dn_free (dn);
 	dn = dn_cpy (fixed_pos);
@@ -164,9 +162,9 @@ char           *arg;
 
 	len = strlen(arg);
 	if ((arg[0] == '<') && ( arg[len-1] == '>')) {
-	    dn_free(dn);
-	    dn = str2dn(arg);
-	    return (OK);
+		dn_free(dn);
+		dn = str2dn(arg);
+		return (OK);
 	}
 
 	if ((ptr = index (arg,'@')) != NULLCP) {
@@ -189,7 +187,7 @@ char           *arg;
 		dn_free (dn);
 		dn = dn_cpy (fixed_pos);
 	}
-	
+
 	if (strcmp (arg,"..") == 0) {
 		do {
 			DN              dnptr;
@@ -202,7 +200,7 @@ char           *arg;
 			}
 			if (dn->dn_parent == NULLDN) {
 				dn_free (dn);
-		 		dn = NULLDN;
+				dn = NULLDN;
 			} else {
 				for (dnptr = dn; dnptr->dn_parent != NULLDN; dnptr = dnptr->dn_parent)
 					trail = dnptr;
@@ -215,14 +213,14 @@ char           *arg;
 				return (OK);
 			}
 			arg = ++ptr;
-			if ((ptr = index (arg,'@')) != NULLCP) 
+			if ((ptr = index (arg,'@')) != NULLCP)
 				*ptr = 0;
 		} while (strcmp (arg,"..") == 0);
 	}
 
 	if (ptr != NULL)
 		*ptr = '@';
-	
+
 	if ((tmpdn = str2dn_aux (arg,&alias)) != NULLDN) {
 		if (dn == NULLDN)
 			dn = tmpdn;
@@ -239,13 +237,12 @@ char           *arg;
 		print_parse_errors = TRUE;
 		return (NOTOK);
 	}
-		
+
 }
 
-test_move_dn ()
-{
-char * name = "moveto";
-	
+test_move_dn () {
+	char * name = "moveto";
+
 	/* Might do something else here... */
 	/* current policy is to read the entry and cache it ! */
 

@@ -1,6 +1,6 @@
 /* acsap.h - include file for association control users (AcS-USER) */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/acsap.h,v 5.0 88/07/21 14:38:46 mrose Rel $
  *
  *
@@ -35,18 +35,18 @@
 #define	NACDATA		3	/* arbitrary */
 
 struct AcSAPstart {		/* A-CONNECT.INDICATION */
-    int	    acs_sd;		/* association descriptor */
-    
-    OID	    acs_context;	/* application context name */
+	int	    acs_sd;		/* association descriptor */
 
-    AEInfo acs_callingtitle;	/* info on calling application-entity */
-    AEInfo acs_calledtitle;	/* info on called application-entity */
+	OID	    acs_context;	/* application context name */
 
-    struct PSAPstart acs_start;	/* info from P-CONNECT.INDICATION */
+	AEInfo acs_callingtitle;	/* info on calling application-entity */
+	AEInfo acs_calledtitle;	/* info on called application-entity */
 
-				/* initial information from peer */
-    int	    acs_ninfo;		/*   number of elements */
-    PE	    acs_info[NACDATA];	/*   data */
+	struct PSAPstart acs_start;	/* info from P-CONNECT.INDICATION */
+
+	/* initial information from peer */
+	int	    acs_ninfo;		/*   number of elements */
+	PE	    acs_info[NACDATA];	/*   data */
 };
 #define	ACSFREE(acs) { \
     register int ACSI; \
@@ -66,17 +66,17 @@ struct AcSAPstart {		/* A-CONNECT.INDICATION */
 
 
 struct AcSAPconnect {
-    int	    acc_sd;		/* association descriptor */
-    
-    int	    acc_result;		/* result */
+	int	    acc_sd;		/* association descriptor */
+
+	int	    acc_result;		/* result */
 #define	ACS_ACCEPT	0	/*   Accepted */
 #define	ACS_REJECT	(-1)	/*   Release rejected */
-				/*   Rejected by responder: */
+	/*   Rejected by responder: */
 #define	ACS_PERMANENT	1	/*     Permanent */
 #define	ACS_TRANSIENT	2	/*     Transient */
 
-    int	    acc_diagnostic;	/* source-diagnostic */
-				/* service-user */
+	int	    acc_diagnostic;	/* source-diagnostic */
+	/* service-user */
 #define	ACS_USER_NULL	3	/*   null */
 #define	ACS_USER_NOREASON 4	/*   no reason given */
 #define	ACS_CONTEXT	5	/*   application context name not supported*/
@@ -88,12 +88,12 @@ struct AcSAPconnect {
 #define	ACS_CALLED_AP_ID 11	/*   called AP invocation-ID not recognized */
 #define	ACS_CALLED_AE_QUAL 12	/*   called AE qualifier not recognized */
 #define	ACS_CALLED_AE_ID 13	/*   called AE invocation-ID not recognized */
-				/* service-provider */
+	/* service-provider */
 #define	ACS_PROV_NULL	14	/*   null */
 #define	ACS_PROV_NOREASON 15	/*   no reason given */
 #define	ACS_VERSION	16	/*   no common acse version */
 
-				/* begin UNOFFICIAL */
+	/* begin UNOFFICIAL */
 #define	ACS_ADDRESS	17	/* Address unknown */
 #define	ACS_REFUSED	18	/* Connect request refused on this network
 				   connection */
@@ -103,20 +103,20 @@ struct AcSAPconnect {
 #define	ACS_ABORTED	22	/* Peer aborted association */
 #define	ACS_PARAMETER	23	/* Invalid parameter */
 #define	ACS_OPERATION	24	/* Invalid operation */
-				/* end UNOFFICIAL */
+	/* end UNOFFICIAL */
 
 #define	ACS_FATAL(r)	((r) < ACS_PARAMETER)
 #define	ACS_OFFICIAL(r)	((r) < ACS_ADDRESS)
 
-    OID	    acc_context;	/* application context name */
+	OID	    acc_context;	/* application context name */
 
-    AEInfo  acc_respondtitle;	/* info on responding application-entity */
+	AEInfo  acc_respondtitle;	/* info on responding application-entity */
 
-    struct PSAPconnect acc_connect;/* info from P-CONNECT.CONFIRMATION */
+	struct PSAPconnect acc_connect;/* info from P-CONNECT.CONFIRMATION */
 
-				/* initial information from peer */
-    int	    acc_ninfo;		/*   number of elements */
-    PE	    acc_info[NACDATA];	/*   data */
+	/* initial information from peer */
+	int	    acc_ninfo;		/*   number of elements */
+	PE	    acc_info[NACDATA];	/*   data */
 };
 #define	ACCFREE(acc) { \
     register int ACCI; \
@@ -132,18 +132,18 @@ struct AcSAPconnect {
 		(acc) -> acc_info[ACCI] = NULLPE; \
     (acc) -> acc_ninfo = 0; \
 }
-	    
+
 
 
 struct AcSAPfinish {		/* A-RELEASE.INDICATION */
-    int	    acf_reason;		/* reason for release */
+	int	    acf_reason;		/* reason for release */
 #define	ACF_NORMAL	0	/*   normal */
 #define	ACF_URGENT	1	/*   urgent */
 #define	ACF_USERDEFINED	30	/*   user-defined */
 
-				/* release information from peer */
-    int	    acf_ninfo;		/*   number of elements */
-    PE	    acf_info[NACDATA];	/*   data */
+	/* release information from peer */
+	int	    acf_ninfo;		/*   number of elements */
+	PE	    acf_info[NACDATA];	/*   data */
 };
 #define	ACFFREE(acf) \
 { \
@@ -158,17 +158,17 @@ struct AcSAPfinish {		/* A-RELEASE.INDICATION */
 
 
 struct AcSAPrelease {		/* A-RELEASE.CONFIRMATION */
-    int	    acr_affirmative;	/* T   = connection released
+	int	    acr_affirmative;	/* T   = connection released
 				   NIL = request refused */
-    
-    int	    acr_reason;		/* reason for result */
+
+	int	    acr_reason;		/* reason for result */
 #define	ACR_NORMAL	0	/*   normal */
 #define	ACR_NOTFINISHED	1	/*   not finished */
 #define	ACR_USERDEFINED	30	/*   user-defined */
 
-				/* release information from peer */
-    int	    acr_ninfo;		/*   number of elements */
-    PE	    acr_info[NACDATA];	/*   data */
+	/* release information from peer */
+	int	    acr_ninfo;		/*   number of elements */
+	PE	    acr_info[NACDATA];	/*   data */
 };
 #define	ACRFREE(acr) \
 { \
@@ -183,21 +183,21 @@ struct AcSAPrelease {		/* A-RELEASE.CONFIRMATION */
 
 
 struct AcSAPabort {		/* A-{U,P}-ABORT.INDICATION */
-    int	    aca_source;		/* abort source */
+	int	    aca_source;		/* abort source */
 #define	ACA_USER	0	/*   service-user */
 #define	ACA_PROVIDER	1	/*   service-provider */
 #define	ACA_LOCAL	2	/*   local ACPM (UNOFFICIAL) */
 
-    int	    aca_reason;		/* same codes as acc_result */
-    
-				/* abort information from peer */
-    int	    aca_ninfo;		/*   number of elements */
-    PE	    aca_info[NACDATA];	/*   data */
+	int	    aca_reason;		/* same codes as acc_result */
 
-				/* diagnostics from provider */
+	/* abort information from peer */
+	int	    aca_ninfo;		/*   number of elements */
+	PE	    aca_info[NACDATA];	/*   data */
+
+	/* diagnostics from provider */
 #define	ACA_SIZE	512
-    int	    aca_cc;		/*   length */
-    char    aca_data[ACA_SIZE];	/*   data */
+	int	    aca_cc;		/*   length */
+	char    aca_data[ACA_SIZE];	/*   data */
 };
 #define	ACAFREE(aca) \
 { \
@@ -212,14 +212,14 @@ struct AcSAPabort {		/* A-{U,P}-ABORT.INDICATION */
 
 
 struct AcSAPindication {
-    int	    aci_type;		/* the union element present */
+	int	    aci_type;		/* the union element present */
 #define	ACI_FINISH	0x00
 #define	ACI_ABORT	0x01
 
-    union {
-	struct AcSAPfinish aci_un_finish;
-	struct AcSAPabort aci_un_abort;
-    }	aci_un;
+	union {
+		struct AcSAPfinish aci_un_finish;
+		struct AcSAPabort aci_un_abort;
+	}	aci_un;
 #define	aci_finish	aci_un.aci_un_finish
 #define	aci_abort	aci_un.aci_un_abort
 };
@@ -232,8 +232,8 @@ extern char *acsapversion;
 int	AcInit ();		/* A-ASSOCIATE.INDICATION */
 
 int	AcAssocResponse ();	/* A-ASSOCIATE.RESPONSE */
-				/* A-ASSOCIATE.REQUEST
-				   (backwards-compatible) */
+/* A-ASSOCIATE.REQUEST
+   (backwards-compatible) */
 #define	AcAssocRequest(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17) \
 	AcAsynAssocRequest (a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,0)
 int	AcAsynAssocRequest ();	/* A-(ASYN-)ASSOCIATE.REQUEST */

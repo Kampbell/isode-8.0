@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_flush.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/ps_flush.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -35,8 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_flush.c,v 9.0 1992/
 int	ps_flush (ps)
 register PS	ps;
 {
-    if (ps -> ps_flushP)
-	return (*ps -> ps_flushP) (ps);
+	if (ps -> ps_flushP)
+		return (*ps -> ps_flushP) (ps);
 
-    return OK;
+	return OK;
 }

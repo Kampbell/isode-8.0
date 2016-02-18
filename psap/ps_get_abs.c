@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_get_abs.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/ps_get_abs.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -41,43 +41,43 @@ static int  ps_get_len ();
 int	ps_get_abs (pe)
 register PE	pe;
 {
-    register    PElementLen len;
-    register    PE p;
+	register    PElementLen len;
+	register    PE p;
 
-    switch (pe -> pe_form) {
-	case PE_FORM_PRIM: 
-	    len = pe -> pe_len;
-	    break;
+	switch (pe -> pe_form) {
+	case PE_FORM_PRIM:
+		len = pe -> pe_len;
+		break;
 
-	case PE_FORM_CONS: 
-	    len = 0;
-	    for (p = pe -> pe_cons; p; p = p -> pe_next)
-		len += ps_get_abs (p);
+	case PE_FORM_CONS:
+		len = 0;
+		for (p = pe -> pe_cons; p; p = p -> pe_next)
+			len += ps_get_abs (p);
 
-	    switch (ps_len_strategy) {
-		case PS_LEN_SPAG: 
-		default: 
-		    if (len <= PE_LEN_SMAX) {
+		switch (ps_len_strategy) {
+		case PS_LEN_SPAG:
+		default:
+			if (len <= PE_LEN_SMAX) {
+				pe -> pe_len = len;
+				break;
+			}		/* else fall */
+
+		case PS_LEN_INDF:
+			pe -> pe_len = PE_LEN_INDF;
+			len += 2;	/* for EOC */
+			break;
+
+		case PS_LEN_LONG:
 			pe -> pe_len = len;
 			break;
-		    }		/* else fall */
-
-		case PS_LEN_INDF: 
-		    pe -> pe_len = PE_LEN_INDF;
-		    len += 2;	/* for EOC */
-		    break;
-
-		case PS_LEN_LONG: 
-		    pe -> pe_len = len;
-		    break;
-	    }
-	    break;
+		}
+		break;
 
 	case PE_FORM_ICONS:
-	    return pe -> pe_len;
-    }
+		return pe -> pe_len;
+	}
 
-    return (ps_get_id (pe) + ps_get_len (pe) + len);
+	return (ps_get_id (pe) + ps_get_len (pe) + len);
 }
 
 /*  */
@@ -85,15 +85,15 @@ register PE	pe;
 static int  ps_get_id (pe)
 register PE	pe;
 {
-    register int    i;
-    register PElementID id;
+	register int    i;
+	register PElementID id;
 
-    if ((id = pe -> pe_id) < PE_ID_XTND)
-	return 1;
+	if ((id = pe -> pe_id) < PE_ID_XTND)
+		return 1;
 
-    for (i = 1; id != 0; id >>= PE_ID_SHIFT)
-	i++;
-    return i;
+	for (i = 1; id != 0; id >>= PE_ID_SHIFT)
+		i++;
+	return i;
 }
 
 /*  */
@@ -101,13 +101,13 @@ register PE	pe;
 static int  ps_get_len (pe)
 register PE	pe;
 {
-    register int    i;
-    register PElementLen len;
+	register int    i;
+	register PElementLen len;
 
-    if ((len = pe -> pe_len) == PE_LEN_INDF || len <= PE_LEN_SMAX)
-	return 1;
+	if ((len = pe -> pe_len) == PE_LEN_INDF || len <= PE_LEN_SMAX)
+		return 1;
 
-    for (i = 1; len > 0; len >>= 8)
-	i++;
-    return i;
+	for (i = 1; len > 0; len >>= 8)
+		i++;
+	return i;
 }

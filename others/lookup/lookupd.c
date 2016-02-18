@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/lookupd.c,v 9.0 1992/06/16 12:42:23 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/lookup/RCS/lookupd.c,v 9.0 1992/06/16 12:42:23 isode Rel $
  *
  *
@@ -50,15 +50,15 @@ static char *myservice = "passwdstore";
 static char *mycontext = "isode passwd lookup demo";
 
 
-					/* OPERATIONS */
+/* OPERATIONS */
 int	op_lookupUser (), op_lookupUID ();
 
 static struct dispatch dispatches[] = {
-    "lookupUser", operation_PasswordLookup_lookupUser, op_lookupUser,
+	"lookupUser", operation_PasswordLookup_lookupUser, op_lookupUser,
 
-    "lookupUID", operation_PasswordLookup_lookupUID, op_lookupUID,
+	"lookupUID", operation_PasswordLookup_lookupUID, op_lookupUID,
 
-    NULL
+	NULL
 };
 
 /*    MAIN */
@@ -68,13 +68,13 @@ static struct dispatch dispatches[] = {
 main (argc, argv, envp)
 int	argc;
 char  **argv,
-      **envp;
+	  **envp;
 {
-    (void) ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
-			dispatches, table_PasswordLookup_Operations,
-			NULLIFP, NULLIFP);
+	(void) ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
+						dispatches, table_PasswordLookup_Operations,
+						NULLIFP, NULLIFP);
 
-    exit (0);			/* NOTREACHED */
+	exit (0);			/* NOTREACHED */
 }
 
 /*    OPERATIONS */
@@ -86,30 +86,30 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-    int     result;
-    char   *cp;
-    register struct type_PasswordLookup_UserName   *arg =
+	int     result;
+	char   *cp;
+	register struct type_PasswordLookup_UserName   *arg =
 		(struct type_PasswordLookup_UserName   *) in;
 
-    if (rox -> rox_nolinked == 0) {
-	advise (LLOG_EXCEPTIONS, NULLCP,
-		"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-		sd, ryo -> ryo_name, rox -> rox_linkid);
-	return ureject (sd, ROS_IP_LINKED, rox, roi);
-    }
-    if (debug)
-	advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
-		sd, ryo -> ryo_name);
+	if (rox -> rox_nolinked == 0) {
+		advise (LLOG_EXCEPTIONS, NULLCP,
+				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+				sd, ryo -> ryo_name, rox -> rox_linkid);
+		return ureject (sd, ROS_IP_LINKED, rox, roi);
+	}
+	if (debug)
+		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
+				sd, ryo -> ryo_name);
 
-    if ((cp = qb2str (arg)) == NULL)
-	result = error (sd, error_PasswordLookup_congested, (caddr_t) NULL,
-			rox, roi);
-    else {
-	result = lookup (sd, getpwnam (cp), rox, roi);
-	free (cp);
-    }
+	if ((cp = qb2str (arg)) == NULL)
+		result = error (sd, error_PasswordLookup_congested, (caddr_t) NULL,
+						rox, roi);
+	else {
+		result = lookup (sd, getpwnam (cp), rox, roi);
+		free (cp);
+	}
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -121,20 +121,20 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-    register struct type_PasswordLookup_UserID   *arg =
+	register struct type_PasswordLookup_UserID   *arg =
 		(struct type_PasswordLookup_UserID   *) in;
 
-    if (rox -> rox_nolinked == 0) {
-	advise (LLOG_EXCEPTIONS, NULLCP,
-		"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-		sd, ryo -> ryo_name, rox -> rox_linkid);
-	return ureject (sd, ROS_IP_LINKED, rox, roi);
-    }
-    if (debug)
-	advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
-		sd, ryo -> ryo_name);
+	if (rox -> rox_nolinked == 0) {
+		advise (LLOG_EXCEPTIONS, NULLCP,
+				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+				sd, ryo -> ryo_name, rox -> rox_linkid);
+		return ureject (sd, ROS_IP_LINKED, rox, roi);
+	}
+	if (debug)
+		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
+				sd, ryo -> ryo_name);
 
-    return lookup (sd, getpwuid (arg -> parm), rox, roi);
+	return lookup (sd, getpwuid (arg -> parm), rox, roi);
 }
 
 /*  */
@@ -145,52 +145,51 @@ struct passwd *pw;
 struct RoSAPinvoke *rox;
 struct RoSAPindication *roi;
 {
-    int	    result;
+	int	    result;
 
-    if (pw) {
-	register struct type_PasswordLookup_Passwd *res = NULL;
+	if (pw) {
+		register struct type_PasswordLookup_Passwd *res = NULL;
 
-	if (xalloc (res, struct type_PasswordLookup_Passwd *) == NULL
-		|| (res -> name = salloc (pw -> pw_name)) == NULL
-		|| (*pw -> pw_passwd
-			&& (res -> passwd = salloc (pw -> pw_passwd)) == NULL)
-		|| xalloc (res -> uid, struct type_PasswordLookup_UserID *)
-			== NULL
-		|| xalloc (res -> gid, struct type_PasswordLookup_GroupID *)
-			== NULL
+		if (xalloc (res, struct type_PasswordLookup_Passwd *) == NULL
+				|| (res -> name = salloc (pw -> pw_name)) == NULL
+				|| (*pw -> pw_passwd
+					&& (res -> passwd = salloc (pw -> pw_passwd)) == NULL)
+				|| xalloc (res -> uid, struct type_PasswordLookup_UserID *)
+				== NULL
+				|| xalloc (res -> gid, struct type_PasswordLookup_GroupID *)
+				== NULL
 #ifndef _AIX
-		|| (pw -> pw_comment
-			&& (res -> comment = salloc (pw -> pw_comment))
-				== NULL)
+				|| (pw -> pw_comment
+					&& (res -> comment = salloc (pw -> pw_comment))
+					== NULL)
 #endif
-		|| (pw -> pw_gecos
-			&& (res -> gecos = salloc (pw -> pw_gecos)) == NULL)
-		|| (pw -> pw_dir
-			&& (res -> dir = salloc (pw -> pw_dir)) == NULL)
-		|| (pw -> pw_shell
-			&& (res -> shell = salloc (pw -> pw_shell)) == NULL))
-	    result = error (sd, error_PasswordLookup_congested, (caddr_t) NULL,
-		rox, roi);
-	else {
-	    res -> uid -> parm = pw -> pw_uid;
-	    res -> gid -> parm = pw -> pw_gid;
-/* 
-	    res -> quota = pw -> pw_quota;
- */
+				|| (pw -> pw_gecos
+					&& (res -> gecos = salloc (pw -> pw_gecos)) == NULL)
+				|| (pw -> pw_dir
+					&& (res -> dir = salloc (pw -> pw_dir)) == NULL)
+				|| (pw -> pw_shell
+					&& (res -> shell = salloc (pw -> pw_shell)) == NULL))
+			result = error (sd, error_PasswordLookup_congested, (caddr_t) NULL,
+							rox, roi);
+		else {
+			res -> uid -> parm = pw -> pw_uid;
+			res -> gid -> parm = pw -> pw_gid;
+			/*
+				    res -> quota = pw -> pw_quota;
+			 */
 
-	    if (RyDsResult (sd, rox -> rox_id, (caddr_t) res, ROS_NOPRIO, roi)
-		    == NOTOK)
-		ros_adios (&roi -> roi_preject, "RESULT");
-	    result = OK;
-	}
+			if (RyDsResult (sd, rox -> rox_id, (caddr_t) res, ROS_NOPRIO, roi)
+					== NOTOK)
+				ros_adios (&roi -> roi_preject, "RESULT");
+			result = OK;
+		}
 
-	free_PasswordLookup_Passwd (res);
-    }
-    else
-	result = error (sd, error_PasswordLookup_noSuchUser, (caddr_t) NULL,
-		rox, roi);
+		free_PasswordLookup_Passwd (res);
+	} else
+		result = error (sd, error_PasswordLookup_noSuchUser, (caddr_t) NULL,
+						rox, roi);
 
-    return result;
+	return result;
 }
 
 /*    ERROR */
@@ -202,10 +201,10 @@ caddr_t	param;
 struct RoSAPinvoke *rox;
 struct RoSAPindication *roi;
 {
-    if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
-	ros_adios (&roi -> roi_preject, "ERROR");
+	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
+		ros_adios (&roi -> roi_preject, "ERROR");
 
-    return OK;
+	return OK;
 }
 
 /*    U-REJECT */
@@ -216,8 +215,8 @@ int	sd,
 struct RoSAPinvoke *rox;
 struct RoSAPindication *roi;
 {
-    if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
-	ros_adios (&roi -> roi_preject, "U-REJECT");
+	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
+		ros_adios (&roi -> roi_preject, "U-REJECT");
 
-    return OK;
+	return OK;
 }

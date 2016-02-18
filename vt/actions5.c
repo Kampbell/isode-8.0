@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/actions5.c,v 9.0 1992/06/16 12:41:08 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/actions5.c,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *
@@ -39,54 +39,53 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/actions5.c,v 9.0 1992/06
 
 extern int sd;		/*Global Session Descriptor (ISODE) */
 
-		/*  xx1x xxxx = awaiting ack from peer i.e., 420 */
-		/*  xxxx xx1x = awaiting ack from user */
+/*  xx1x xxxx = awaiting ack from peer i.e., 420 */
+/*  xxxx xx1x = awaiting ack from user */
 
-		/* T = got token, N = no got token */
+/* T = got token, N = no got token */
 
 
-		/* 
-		   req: usr==>vtpm
-		   ind: vtpm==>usr
-		*/
+/*
+   req: usr==>vtpm
+   ind: vtpm==>usr
+*/
 int
 ce_104(pe)	/* common event 104 */
 PE pe;
 {
-		/* if (vnt > 0) */
-		if(pe != NULLPE) vdatind(SEQUENCED,pe);
-		vnt = 0;
-		return(OK);
+	/* if (vnt > 0) */
+	if(pe != NULLPE) vdatind(SEQUENCED,pe);
+	vnt = 0;
+	return(OK);
 }
 
 int
-ce_105()	/* common event 105 */
-{
-		/* if (vns > 0)  for(... */
-		if(p_ondq != NULLPE) 
-			(void)p_data(p_ondq);  /* send NDQ	*/
-		vns = 0;
-		return(OK);
+ce_105() {	/* common event 105 */
+	/* if (vns > 0)  for(... */
+	if(p_ondq != NULLPE)
+		(void)p_data(p_ondq);  /* send NDQ	*/
+	vns = 0;
+	return(OK);
 }
 
 
 /* ARGSUSED */
 int
 a5_0(pe)	/*VDATreq-sqtr in states 400B or 402B */
-		/* V data request addressing sequenced trigger co */
+/* V data request addressing sequenced trigger co */
 PE pe;
 {
 	return(ce_105());
-/*
-	==> SAMESTATE;
-*/
+	/*
+		==> SAMESTATE;
+	*/
 }
 
 
 /* ARGSUSED */
 int
 a5_1(pe)	/*VDATreq-n in states 400B, 402B or 40T */
-		/* V data request addressing sequenced trigger co */
+/* V data request addressing sequenced trigger co */
 PE pe;
 {
 
@@ -105,7 +104,7 @@ PE pe;
 	/*
 	vnt++;
 	*/
-	
+
 	return(ce_104(pe));
 	/*
 	==> SAMESTATE
@@ -144,17 +143,16 @@ a5_6(pe)	/* VBRKrsp in state 62 */
 PE pe;
 {
 	(void)p_resync_resp(pe); /* send out break response */
-	if (vsmd && vtok) 
+	if (vsmd && vtok)
 		state = S5_40T;
-	else 
-		if (vsmd) 
-			state = S5_40N;
-		else {
-			vtkp = INITIATOR;
-			if (vtok) 
-				vtkp = ACCEPTOR;
-			state = S5_400B;
-		}
+	else if (vsmd)
+		state = S5_40N;
+	else {
+		vtkp = INITIATOR;
+		if (vtok)
+			vtkp = ACCEPTOR;
+		state = S5_400B;
+	}
 	return(OK);
 }
 
@@ -162,17 +160,16 @@ int
 a5_9(pe)	/*VDELreq in states 400B, 402B */
 PE pe;
 {
-	if (dcno) /* no delivery control */
-	{
-	   advise(LLOG_DEBUG,NULLCP,"a5_9: dcno hasn't been set");
-	   /* ==> SAMESTATE */
-	   return(NOTOK);
+	if (dcno) { /* no delivery control */
+		advise(LLOG_DEBUG,NULLCP,"a5_9: dcno hasn't been set");
+		/* ==> SAMESTATE */
+		return(NOTOK);
 	}
 	(void)ce_105();
 	/* send out dlq */
 	/* this will be replace by the new-fangled pepy schtuff;
 		will use this now for compatability */
-	
+
 	(void)p_data(pe);
 	state = (vra) ? state + 2 : state; /* pretty neeto eh? */
 	return(OK);
@@ -191,19 +188,16 @@ int
 a5_17(pe)	/*VRELreq in states 400B */
 PE pe;
 {
-/*	ce_105(); */
+	/*	ce_105(); */
 	sector = 1;
-	if(vtok)
-	{
+	if(vtok) {
 		state = S1_51Q;		/*Must change state first because
 					  vt_disconnect gets RLR & calls
 					  state machine again. */
 		vt_disconnect();	/*May be only TEMP*/
-	}
-	else
-	{
+	} else {
 		request_token();
-			/*Need call to ISODE to request token*/
+		/*Need call to ISODE to request token*/
 		state = S1_50B;
 	}
 
@@ -223,8 +217,8 @@ a5_31(pe)	/* BKR in 61 */
 PE pe;
 {
 	if (vsmd && vtok) state = S5_40T;
-		else if (vsmd) state = S5_40N;
-			else state = S5_400B;
+	else if (vsmd) state = S5_40N;
+	else state = S5_400B;
 	vbrkcnf(pe);
 	return(OK);
 }
@@ -239,7 +233,7 @@ PE pe;
 	   vbrkind clears queues etc.
 	   and then map the break character to user
 	   and sets vtok to 1
-	   (we should have received the token) 
+	   (we should have received the token)
 	*/
 	state = S5_62;
 	vbrkind(pe);

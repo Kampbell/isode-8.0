@@ -1,6 +1,6 @@
 /* dbc.h - site configuration file for DBC (SunOS 4.1.1) */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/dbc.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

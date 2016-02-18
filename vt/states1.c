@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/states1.c,v 9.0 1992/06/16 12:41:08 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/states1.c,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *
@@ -34,8 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/states1.c,v 9.0 1992/06/
 
 int
 s1_01(event, pe)			/* sector 1, state 01	*/
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case ASQ:
@@ -59,8 +59,8 @@ s1_01(event, pe)			/* sector 1, state 01	*/
 
 int
 s1_02B(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case ASR:
@@ -87,8 +87,8 @@ s1_02B(event, pe)
 
 int
 s1_02S(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case ASR:
@@ -115,8 +115,8 @@ s1_02S(event, pe)
 
 int
 s1_03B(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case VASSrsp:
@@ -143,8 +143,8 @@ s1_03B(event, pe)
 
 int
 s1_03S(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case VASSrsp:
@@ -171,8 +171,8 @@ s1_03S(event, pe)
 
 int
 s1_10B(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case GTQ:
@@ -213,8 +213,8 @@ s1_10B(event, pe)
 
 int
 s1_10N(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case GTQ:
@@ -249,8 +249,8 @@ s1_10N(event, pe)
 
 int
 s1_10T(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case RTQ:
@@ -287,8 +287,8 @@ s1_10T(event, pe)
 
 int
 s1_50B(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case DLQ:
@@ -330,8 +330,8 @@ s1_50B(event, pe)
 
 int
 s1_51Q(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case DLQ:
@@ -366,8 +366,8 @@ s1_51Q(event, pe)
 
 int
 s1_51R(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case VRELrsp:
@@ -394,8 +394,8 @@ s1_51R(event, pe)
 
 int
 s1_51N(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case VRELrsp:
@@ -422,8 +422,8 @@ s1_51N(event, pe)
 
 int
 s1_51T(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	switch (event) {
 	case RLR:

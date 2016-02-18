@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapselect.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapselect.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -39,30 +39,30 @@ fd_set *mask;
 int    *nfds;
 register struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
-    struct TSAPdisconnect   tds;
-    register struct TSAPdisconnect *td = &tds;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
+	struct TSAPdisconnect   tds;
+	register struct TSAPdisconnect *td = &tds;
 
-    missingP (mask);
-    missingP (nfds);
+	missingP (mask);
+	missingP (nfds);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    if ((sb = findsblk (sd)) == NULL) {
+	if ((sb = findsblk (sd)) == NULL) {
+		(void) sigiomask (smask);
+		return ssaplose (si, SC_PARAMETER, NULLCP,
+						 "invalid session descriptor");
+	}
+
+	if ((result = TSelectMask (sb -> sb_fd, mask, nfds, td)) == NOTOK)
+		if (td -> td_reason == DR_WAITING)
+			(void) ssaplose (si, SC_WAITING, NULLCP, NULLCP);
+		else
+			(void) ts2sslose (si, "TSelectMask", td);
+
 	(void) sigiomask (smask);
-	return ssaplose (si, SC_PARAMETER, NULLCP,
-			    "invalid session descriptor");
-    }
 
-    if ((result = TSelectMask (sb -> sb_fd, mask, nfds, td)) == NOTOK)
-	if (td -> td_reason == DR_WAITING)
-	    (void) ssaplose (si, SC_WAITING, NULLCP, NULLCP);
-	else
-	    (void) ts2sslose (si, "TSelectMask", td);
-
-    (void) sigiomask (smask);
-
-    return result;
+	return result;
 }

@@ -2,7 +2,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/turbo/RCS/edbcat.c,v 9.0 1992/06/16 12:36:15 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/turbo/RCS/edbcat.c,v 9.0 1992/06/16 12:36:15 isode Rel $
  *
  *
@@ -34,8 +34,8 @@ int	argc;
 char	**argv;
 {
 	GDBM_FILE	db;
- 	datum		prv, key, content;
- 	char		*p, gfname[1024];
+	datum		prv, key, content;
+	char		*p, gfname[1024];
 
 	if ( argc != 2 ) {
 		(void) printf("usage: %s edbdbmfile\n", argv[0]);
@@ -43,20 +43,20 @@ char	**argv;
 	}
 
 	(void) strcpy(gfname, argv[1]);
-	if ( (p = rindex(argv[1], '.')) == NULL 
-	    || strcmp(p, ".gdbm") != 0 )
+	if ( (p = rindex(argv[1], '.')) == NULL
+			|| strcmp(p, ".gdbm") != 0 )
 		(void) strcat(gfname, ".gdbm");
 
 	if ( (db = gdbm_open(gfname, 0, GDBM_READER, 0, 0)) == NULL ) {
 		(void) fprintf( stderr, "Can't open (%s)\ndbm_error is (%d)\n",
-		    gfname, gdbm_errno );
+						gfname, gdbm_errno );
 		return(1);
 	}
 
 	key.dptr = "HEADER";
 	key.dsize = sizeof("HEADER");
 	content = gdbm_fetch(db, key);
-	if ( content.dptr == NULL ) 
+	if ( content.dptr == NULL )
 		(void) printf("No header!  Continuing...\n");
 	else
 		(void) printf("%s\n", content.dptr);

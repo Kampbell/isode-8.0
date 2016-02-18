@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/checkacl.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/RCS/checkacl.c,v 9.0 1992/06/16 12:34:01 isode Rel $
  *
  *
@@ -96,7 +96,7 @@ char		*inequstr;
 		if ( AttrT_cmp( tmp->ft_type, type ) == 0 ) {
 			/* substring length shorter? */
 			if ( len >= 0 && (len < tmp->ft_len
-			    || tmp->ft_len == -1) ) {
+							  || tmp->ft_len == -1) ) {
 				tmp->ft_len = len;
 			}
 
@@ -106,21 +106,21 @@ char		*inequstr;
 				tmp->ft_numstrs++;
 				if ( tmp->ft_numstrs > 1 ) {
 					tmp->ft_inequstrs = (char **)
-					    realloc( (char *) tmp->ft_inequstrs,
-					    (unsigned)(tmp->ft_numstrs * sizeof(char *)));
+										realloc( (char *) tmp->ft_inequstrs,
+												 (unsigned)(tmp->ft_numstrs * sizeof(char *)));
 				} else {
 					tmp->ft_inequstrs = (char **)
-					    smalloc( sizeof(char *) );
+										smalloc( sizeof(char *) );
 				}
 				tmp->ft_inequstrs[tmp->ft_numstrs - 1] =
-				    inequstr;
+					inequstr;
 
 				/* see if len needs updating */
 				for ( i = 0; i < tmp->ft_numstrs - 1; i++ ) {
 					if ( (plen = common_prefix_len(
-					    inequstr, tmp->ft_inequstrs[i] ))
-					    < tmp->ft_len
-					    || tmp->ft_len == -1) {
+									 inequstr, tmp->ft_inequstrs[i] ))
+							< tmp->ft_len
+							|| tmp->ft_len == -1) {
 						tmp->ft_len = plen;
 					}
 				}
@@ -229,12 +229,12 @@ char			authtype;
 	/* check auth policy allow us to believe binddn */
 	if ( e->e_authp != NULLAUTHP ) {
 		binddn = (authtype % 3) >= e->e_authp->ap_listandsearch ?
-		    binddn : NULLDN;
+				 binddn : NULLDN;
 	}
 
 	/* for each type in the filter */
 	for ( ft = (Ftypelist) local->st_ftypes; ft != NULLFTL;
-	    ft = ft->ft_next ) {
+			ft = ft->ft_next ) {
 
 		/*
 		 * find the most restrictive sacl that applies to this
@@ -251,7 +251,7 @@ char			authtype;
 
 			/* right type? */
 			if ( s->sac_types != NULLOIDSEQ &&
-			    oid_in_seq( ft->ft_type, s->sac_types ) == 0 )
+					oid_in_seq( ft->ft_type, s->sac_types ) == 0 )
 				continue;
 
 			/* right who? */
@@ -269,15 +269,15 @@ char			authtype;
 			if ( save == NULLSACL ) {
 				save = s;
 
-			/* more specific who match */
+				/* more specific who match */
 			} else if ( selector_rank[s->sac_selector] <
-			    selector_rank[save->sac_selector] ) {
+						selector_rank[save->sac_selector] ) {
 				save = s;
 
-			/* same who - more specific attribute */
+				/* same who - more specific attribute */
 			} else if ( selector_rank[s->sac_selector] ==
-			    selector_rank[save->sac_selector]
-			    && save->sac_types == NULLOIDSEQ ) {
+						selector_rank[save->sac_selector]
+						&& save->sac_types == NULLOIDSEQ ) {
 				save = s;
 			}
 		}
@@ -316,7 +316,7 @@ struct ds_search_task	*local;
 
 	save = NULLSACL;
 
-	/* 
+	/*
 	 * For each type that appears in the filter, look through the sacls
 	 * and find the most restrictive one that applies to this type and
 	 * scope.  If an applicable sacl is found, add its restrictions to
@@ -324,7 +324,7 @@ struct ds_search_task	*local;
 	 */
 
 	for ( ft = (Ftypelist) local->st_ftypes; ft != NULLFTL;
-	    ft = ft->ft_next ) {
+			ft = ft->ft_next ) {
 		/* for each set of sacls */
 		for ( avs = e->e_sacl; avs != NULLAV; avs = avs->avseq_next ) {
 			s = (Saclinfo) avs->avseq_av.av_struct;
@@ -335,7 +335,7 @@ struct ds_search_task	*local;
 
 			/* right type? */
 			if ( s->sac_types != NULLOIDSEQ &&
-			    oid_in_seq( ft->ft_type, s->sac_types ) == 0 )
+					oid_in_seq( ft->ft_type, s->sac_types ) == 0 )
 				continue;
 
 			/* right who? */
@@ -353,15 +353,15 @@ struct ds_search_task	*local;
 			if ( save == NULLSACL ) {
 				save = s;
 
-			/* more specific who match */
+				/* more specific who match */
 			} else if ( selector_rank[s->sac_selector] <
-			    selector_rank[save->sac_selector] ) {
+						selector_rank[save->sac_selector] ) {
 				save = s;
 
-			/* same who - more specific attribute */
+				/* same who - more specific attribute */
 			} else if ( selector_rank[s->sac_selector] ==
-			    selector_rank[save->sac_selector]
-			    && save->sac_types == NULLOIDSEQ ) {
+						selector_rank[save->sac_selector]
+						&& save->sac_types == NULLOIDSEQ ) {
 				save = s;
 			}
 		}
@@ -383,7 +383,7 @@ struct ds_search_task	*local;
 			rc->rc_types = td;
 		} else {
 			rc->rc_types = (Typedata) realloc( (char *) rc->rc_types,
-			    (unsigned)(rc->rc_numtypes * sizeof(typedata)) );
+											   (unsigned)(rc->rc_numtypes * sizeof(typedata)) );
 			rc->rc_types[rc->rc_numtypes-1] = *td;
 			free( (char *) td );
 		}
@@ -410,7 +410,7 @@ struct result_count	*a;
 struct result_count	*b;
 {
 	return( a->rc_base < b->rc_base ? -1
-	    : a->rc_base > b->rc_base ? 1 : 0 );
+			: a->rc_base > b->rc_base ? 1 : 0 );
 }
 
 /*
@@ -440,26 +440,26 @@ char			authtype;
 	/* check auth policy allow us to believe binddn */
 	if ( ancestor->e_authp != NULLAUTHP ) {
 		binddn = authtype >= ancestor->e_authp->ap_listandsearch ?
-		    binddn : NULLDN;
+				 binddn : NULLDN;
 	}
 
 	if ( (rc = (struct result_count *) avl_find( (Avlnode *)local->st_sacls,
-	    (caddr_t) ancestor, entry_rc_cmp )) == (struct result_count *) 0 ) {
+			   (caddr_t) ancestor, entry_rc_cmp )) == (struct result_count *) 0 ) {
 
 		/* no running total - make one, possibly a dummy */
 		rc = make_rc( binddn, selfdn, ancestor, scope, local );
 
 		(void) avl_insert( (Avlnode **)&local->st_sacls, (caddr_t) rc,
-		    rc_cmp, avl_dup_error );
+						   rc_cmp, avl_dup_error );
 	}
 
 	rc->rc_count++;
 
 	for ( ft = (Ftypelist) local->st_ftypes; ft != NULLFTL;
-	    ft = ft->ft_next ) {
+			ft = ft->ft_next ) {
 		for ( i = 0; i < rc->rc_numtypes; i++ ) {
 			if ( AttrT_cmp( rc->rc_types[i].td_type,
-			    ft->ft_type ) == 0 )
+							ft->ft_type ) == 0 )
 				break;
 		}
 		if ( i == rc->rc_numtypes ) {
@@ -527,7 +527,7 @@ int			*saclerror;
 	/* check single level sacl if appropriate */
 	if ( scope == SACL_SINGLELEVEL ) {
 		return ( check_one_sacl( binddn, selfdn, e->e_parent, scope,
-		    local, saclerror, authtype ) );
+								 local, saclerror, authtype ) );
 	}
 
 	/*
@@ -537,12 +537,12 @@ int			*saclerror;
 
 	stop = local->st_baseptr->e_parent;
 	for ( ancestor = e; ancestor != database_root && ancestor != stop;
-	    ancestor = ancestor->e_parent ) {
+			ancestor = ancestor->e_parent ) {
 		if ( ancestor->e_sacl == NULLAV )
 			continue;
 
 		if ( check_one_sacl( binddn, selfdn, ancestor, scope, local,
-		    saclerror, authtype ) == NOTOK ) {
+							 saclerror, authtype ) == NOTOK ) {
 			return( NOTOK );
 		}
 	}
@@ -595,7 +595,7 @@ int		*sizelimit;	/* size limit on acl we found		  */
 		default:
 			/* trouble */
 			LLOG( log_dsap, LLOG_EXCEPTIONS,
-			    ("check_lacl: unknown type") );
+				  ("check_lacl: unknown type") );
 			return( NOTOK );
 		}
 		if ( tmp == NULLLISTACL )
@@ -604,7 +604,7 @@ int		*sizelimit;	/* size limit on acl we found		  */
 		/* if it's more restrictive than the current one, save it */
 		if ( save != NULLLISTACL ) {
 			if ( selector_rank[ tmp->sac_selector ]
-			    < selector_rank[ save->sac_selector ] )
+					< selector_rank[ save->sac_selector ] )
 				save = tmp;
 		} else {
 			save = tmp;

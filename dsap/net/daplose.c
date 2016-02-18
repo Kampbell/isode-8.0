@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/daplose.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/net/RCS/daplose.c,v 9.0 1992/06/16 12:14:05 isode Rel $
  *
  *
@@ -41,23 +41,22 @@ static int  _dapreject ();
 
 #ifndef	lint
 int	daplose (va_alist)
-va_dcl
-{
-    int	    reason,
-	    result;
-    struct DAPindication *di;
-    va_list ap;
+va_dcl {
+	int	    reason,
+	result;
+	struct DAPindication *di;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    di = va_arg (ap, struct DAPindication *);
-    reason = va_arg (ap, int);
+	di = va_arg (ap, struct DAPindication *);
+	reason = va_arg (ap, int);
 
-    result = _daplose (di, reason, ap);
+	result = _daplose (di, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return result;
+	return result;
 }
 #else
 /* VARARGS4 */
@@ -66,9 +65,9 @@ int	daplose (di, reason, what, fmt)
 struct DAPindication *di;
 int	reason;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return daplose (di, reason, what, fmt);
+	return daplose (di, reason, what, fmt);
 }
 #endif
 
@@ -80,47 +79,46 @@ register struct DAPindication *di;
 int     reason;
 va_list	ap;
 {
-    register char  *bp;
-    char    buffer[BUFSIZ];
-    struct DAPabort	* da;
+	register char  *bp;
+	char    buffer[BUFSIZ];
+	struct DAPabort	* da;
 
-    if (di) {
-	bzero ((char *) di, sizeof *di);
-	di->di_type = DI_ABORT;
-	da = &(di->di_abort);
-	da->da_reason = reason;
+	if (di) {
+		bzero ((char *) di, sizeof *di);
+		di->di_type = DI_ABORT;
+		da = &(di->di_abort);
+		da->da_reason = reason;
 
-	asprintf (bp = buffer, ap);
-	bp += strlen (bp);
+		asprintf (bp = buffer, ap);
+		bp += strlen (bp);
 
-	copyDAPdata (buffer, bp - buffer, da);
-    }
+		copyDAPdata (buffer, bp - buffer, da);
+	}
 
-    return NOTOK;
+	return NOTOK;
 }
 #endif
 
 #ifndef	lint
 int	dapreject (va_alist)
-va_dcl
-{
-    int	    reason,
-	    id,
-	    result;
-    struct DAPindication *di;
-    va_list ap;
+va_dcl {
+	int	    reason,
+	id,
+	result;
+	struct DAPindication *di;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    di = va_arg (ap, struct DAPindication *);
-    reason = va_arg (ap, int);
-    id = va_arg (ap, int);
+	di = va_arg (ap, struct DAPindication *);
+	reason = va_arg (ap, int);
+	id = va_arg (ap, int);
 
-    result = _dapreject (di, reason, id, ap);
+	result = _dapreject (di, reason, id, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return result;
+	return result;
 }
 #else
 /* VARARGS4 */
@@ -130,9 +128,9 @@ struct DAPindication *di;
 int	reason;
 int	id;
 char   *what,
-       *fmt;
+	   *fmt;
 {
-    return dapreject (di, reason, id, what, fmt);
+	return dapreject (di, reason, id, what, fmt);
 }
 #endif
 
@@ -145,23 +143,23 @@ int     reason;
 int	id;
 va_list	ap;
 {
-    register char  *bp;
-    char    buffer[BUFSIZ];
-    struct DAPpreject	* dp;
+	register char  *bp;
+	char    buffer[BUFSIZ];
+	struct DAPpreject	* dp;
 
-    if (di) {
-	bzero ((char *) di, sizeof *di);
-	di->di_type = DI_PREJECT;
-	dp = &(di->di_preject);
-	dp->dp_id = id;
-	dp->dp_reason = reason;
+	if (di) {
+		bzero ((char *) di, sizeof *di);
+		di->di_type = DI_PREJECT;
+		dp = &(di->di_preject);
+		dp->dp_id = id;
+		dp->dp_reason = reason;
 
-	asprintf (bp = buffer, ap);
-	bp += strlen (bp);
+		asprintf (bp = buffer, ap);
+		bp += strlen (bp);
 
-	copyDAPdata (buffer, bp - buffer, dp);
-    }
+		copyDAPdata (buffer, bp - buffer, dp);
+	}
 
-    return (NOTOK);
+	return (NOTOK);
 }
 #endif

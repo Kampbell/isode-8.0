@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/inherit.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/inherit.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -50,7 +50,7 @@ InheritAttr ptr;
 static InheritAttr inherit_cpy (a)
 InheritAttr a;
 {
-InheritAttr result;
+	InheritAttr result;
 
 	result = (InheritAttr) smalloc (sizeof (*result));
 	result->i_always  = as_cpy (a->i_always);
@@ -63,17 +63,17 @@ static inherit_cmp (a,b)
 InheritAttr a;
 InheritAttr b;
 {
-int res;
+	int res;
 
 	if (a == NULLINHERIT)
 		if (b == NULLINHERIT)
 			return (0);
-		else 
+		else
 			return (-1);
 
 	if ( a->i_oid ) {
 		if ( b->i_oid) {
-			if ( (res = oid_cmp (a->i_oid,b->i_oid)) != 0) 
+			if ( (res = oid_cmp (a->i_oid,b->i_oid)) != 0)
 				return (res);
 		} else
 			return -1;
@@ -119,7 +119,7 @@ int format;
 			}
 		}
 		ps_print (ps,"--------");
-			
+
 	} else {
 		if (inherit->i_oid)
 			ps_printf (ps,"%s $ ",oid2name(inherit->i_oid, OIDPART));
@@ -144,20 +144,20 @@ char * str;
 {
 	/* Recusion ? */
 
-	if ((nextline = index (str,'\n')) != NULLCP) 
+	if ((nextline = index (str,'\n')) != NULLCP)
 		*nextline++ = 0;
 }
 
 char * nextAttributeLine (str)
 char * str;
 {
-char * ptr;
+	char * ptr;
 
 #ifdef TURBO_DISK
-char * fgetnextline();
-extern char fromfile;
+	char * fgetnextline();
+	extern char fromfile;
 #endif
-char * getnextline();
+	char * getnextline();
 
 	if (nextline) {
 		if (nextline == NULLCP)
@@ -189,11 +189,11 @@ Attr_Sequence * asptr;
 char		needsoc;
 char * 		str;
 {
-Attr_Sequence as = NULLATTR;
-Attr_Sequence as_combine ();
-Attr_Sequence as_find_type();
-static AttributeType octype = NULLAttrT;
-char * ptr;
+	Attr_Sequence as = NULLATTR;
+	Attr_Sequence as_combine ();
+	Attr_Sequence as_find_type();
+	static AttributeType octype = NULLAttrT;
+	char * ptr;
 
 	if ((ptr = nextAttributeLine (str)) == NULLCP) {
 		parse_error ("Inherit: EOF unexpected",NULLCP);
@@ -222,34 +222,34 @@ char * ptr;
 				return(NULLCP);
 			}
 			*asptr = as;
-			return (++ptr);	
+			return (++ptr);
 
 		}
 	}
 
 	parse_error ("Inherit: EOF unexpected (2)",NULLCP);
 	return (NULLCP);
-	
+
 }
 
 static InheritAttr str2inherit (str)
 char * str;
 {
-InheritAttr	result;
-char 		*ptr;
-char		needsoc = FALSE;
-char		failed = FALSE;
+	InheritAttr	result;
+	char 		*ptr;
+	char		needsoc = FALSE;
+	char		failed = FALSE;
 
 	setAttributeLine(str);
 
 	result = (InheritAttr) smalloc (sizeof *result);
-	result->i_oid = NULLOID;	
+	result->i_oid = NULLOID;
 	result->i_always = NULLATTR;
 	result->i_default = NULLATTR;
 
 	if ( (ptr=index (str,'$')) != NULLCP) {
 		*ptr-- = 0;
-		if (isspace (*ptr)) 
+		if (isspace (*ptr))
 			*ptr = 0;
 		ptr++;
 		ptr = SkipSpace (++ptr);
@@ -288,14 +288,14 @@ char		failed = FALSE;
 		ptr = getInheritAttrs(&result->i_default, needsoc, ptr);
 	}
 
-	if ((result->i_always == NULLATTR) 
-		&& (result->i_default == NULLATTR)) {
+	if ((result->i_always == NULLATTR)
+			&& (result->i_default == NULLATTR)) {
 		parse_error ("Inherited Attribute syntax incorrect",NULLCP);
 		return NULLINHERIT;
 	}
 
 	ptr = SkipSpace (ptr);
-	if (*ptr != 0) 
+	if (*ptr != 0)
 		parse_error ("Inherit: extra data '%s'",ptr);
 
 	if (failed) {
@@ -309,16 +309,16 @@ char		failed = FALSE;
 			free ((char *)result);
 		return NULLINHERIT;
 	}
-	
+
 	return result;
 }
 
 static PE inherit_enc (m)
 InheritAttr m;
 {
-PE ret_pe;
+	PE ret_pe;
 
-        (void) encode_Quipu_InheritedAttribute (&ret_pe,0,0,NULLCP,m);
+	(void) encode_Quipu_InheritedAttribute (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -326,21 +326,20 @@ PE ret_pe;
 static InheritAttr inherit_dec (pe)
 PE pe;
 {
-InheritAttr m;
+	InheritAttr m;
 
-	if (decode_Quipu_InheritedAttribute (pe,1,NULLIP,NULLVP,&m) == NOTOK) 
+	if (decode_Quipu_InheritedAttribute (pe,1,NULLIP,NULLVP,&m) == NOTOK)
 		return (NULLINHERIT);
 	return (m);
 }
 
-inherit_syntax ()
-{
-extern short inherit_sntx;
+inherit_syntax () {
+	extern short inherit_sntx;
 
 	inherit_sntx = add_attribute_syntax ("InheritedAttribute",
-		(IFP) inherit_enc,	(IFP) inherit_dec,
-		(IFP) str2inherit,	inherit_print,
-		(IFP) inherit_cpy,	inherit_cmp,
-		inherit_free,		NULLCP,
-		NULLIFP,		TRUE);
+										 (IFP) inherit_enc,	(IFP) inherit_dec,
+										 (IFP) str2inherit,	inherit_print,
+										 (IFP) inherit_cpy,	inherit_cmp,
+										 inherit_free,		NULLCP,
+										 NULLIFP,		TRUE);
 }

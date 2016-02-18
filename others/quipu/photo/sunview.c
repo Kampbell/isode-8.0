@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/sunview.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/sunview.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -41,15 +41,14 @@ static int        sx=20,sy=20,x,y;
 extern int PIC_LINESIZE;
 
 
-sigwinched ()
-{ 
+sigwinched () {
 	tool_sigwinch (tool);
 }
 
 photo_start (name)
 char * name;
 {
-char * getenv ();
+	char * getenv ();
 
 	/* Initialise a window to recieve a photo of 'name' */
 
@@ -108,7 +107,7 @@ int length;
 photo_line_end (line)
 bit_string * line;
 {
-struct  pixrect * pix;
+	struct  pixrect * pix;
 
 	/* the end of a line has been reached */
 	/* A bit string is stored in line->dbuf_top */

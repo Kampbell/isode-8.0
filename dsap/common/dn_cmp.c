@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_cmp.c,v 9.0 
 dn_cmp (a,b)
 register DN  a,b;
 {
-int res;
+	int res;
 
 	for (; (a != NULLDN) && (b != NULLDN) ; a = a->dn_parent, b = b->dn_parent)
 		if ( (res = rdn_cmp (a->dn_rdn,b->dn_rdn)) != OK) {
@@ -63,22 +63,22 @@ register DN  a,b;
 dn_order_cmp (a,b)
 register DN  a,b;
 {
-        int     i;
+	int     i;
 
-        for ( ; (a != NULLDN) && (b != NULLDN); a = a->dn_parent,
-            b = b->dn_parent ) {
-                if ( (i = rdn_cmp( a->dn_rdn, b->dn_rdn )) != 0 ) {
-                        return( i );
-                }
-        }
+	for ( ; (a != NULLDN) && (b != NULLDN); a = a->dn_parent,
+			b = b->dn_parent ) {
+		if ( (i = rdn_cmp( a->dn_rdn, b->dn_rdn )) != 0 ) {
+			return( i );
+		}
+	}
 
-        if ( ( a == NULLDN) && (b == NULLDN) ) {
-                return( 0 );
-        } else if ( b ) {       /* b longer, so a is less */
-                return( -1 );
-        } else {                /* a must be longer */
-                return( 1 );
-        }
-        /* NOTREACHED */
+	if ( ( a == NULLDN) && (b == NULLDN) ) {
+		return( 0 );
+	} else if ( b ) {       /* b longer, so a is less */
+		return( -1 );
+	} else {                /* a must be longer */
+		return( 1 );
+	}
+	/* NOTREACHED */
 }
 

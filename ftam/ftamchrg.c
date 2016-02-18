@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamchrg.c,v 9.0 1992/06/16 12:14:55 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam/RCS/ftamchrg.c,v 9.0 1992/06/16 12:14:55 isode Rel $
  *
  *
@@ -37,53 +37,55 @@ register struct ftamblk *fsb;
 register struct FTAMcharging *charging;
 struct FTAMindication *fti;
 {
-    register int    i;
-    register struct fc_charge  *fc;
-    struct type_FTAM_Charging *fpmp;
-    register struct type_FTAM_Charging  *fpm,
-				       **fpc;
-    register struct charge_element *f1;
+	register int    i;
+	register struct fc_charge  *fc;
+	struct type_FTAM_Charging *fpmp;
+	register struct type_FTAM_Charging  *fpm,
+			**fpc;
+	register struct charge_element *f1;
 
-    fpmp = NULL, fpc = &fpmp;
-    for (fc = charging -> fc_charges, i = charging -> fc_ncharge - 1;
-	    i >= 0;
-	    fc++, i--) {
-	if (fc -> fc_resource == NULL || fc -> fc_unit == NULL) {
-	    (void) ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-			     "empty charge at slot %d",
-			     charging -> fc_ncharge - i - 1);
-	    goto out;
+	fpmp = NULL, fpc = &fpmp;
+	for (fc = charging -> fc_charges, i = charging -> fc_ncharge - 1;
+			i >= 0;
+			fc++, i--) {
+		if (fc -> fc_resource == NULL || fc -> fc_unit == NULL) {
+			(void) ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+							 "empty charge at slot %d",
+							 charging -> fc_ncharge - i - 1);
+			goto out;
+		}
+
+		if ((fpm = (struct type_FTAM_Charging *) calloc (1, sizeof *fpm))
+				== NULL) {
+no_mem:
+			;
+			(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+out:
+			;
+			if (fpmp)
+				free_FTAM_Charging (fpmp);
+			return NULL;
+		}
+		*fpc = fpm;
+
+		if ((f1 = (struct charge_element *) calloc (1, sizeof *f1)) == NULL)
+			goto no_mem;
+		fpm -> charge = f1;
+
+		if ((f1 -> resource__identifier = str2qb (fc -> fc_resource,
+										  strlen (fc -> fc_resource),
+										  1))
+				== NULL
+				|| (f1 -> charging__unit = str2qb (fc -> fc_unit,
+										   strlen (fc -> fc_unit), 1))
+				== NULL)
+			goto no_mem;
+		f1 -> charging__value = fc -> fc_value;
+
+		fpc = &fpm -> next;
 	}
 
-	if ((fpm = (struct type_FTAM_Charging *) calloc (1, sizeof *fpm))
-		== NULL) {
-no_mem: ;
-	    (void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
-out: ;
-	    if (fpmp)
-		free_FTAM_Charging (fpmp);
-	    return NULL;
-	}
-	*fpc = fpm;
-
-	if ((f1 = (struct charge_element *) calloc (1, sizeof *f1)) == NULL)
-	    goto no_mem;
-	fpm -> charge = f1;
-
-	if ((f1 -> resource__identifier = str2qb (fc -> fc_resource,
-						  strlen (fc -> fc_resource),
-						  1))
-		    == NULL
-	        || (f1 -> charging__unit = str2qb (fc -> fc_unit,
-						   strlen (fc -> fc_unit), 1))
-			== NULL)
-	    goto no_mem;
-	f1 -> charging__value = fc -> fc_value;
-
-	fpc = &fpm -> next;
-    }
-
-    return fpmp;
+	return fpmp;
 }
 
 /*  */
@@ -94,35 +96,35 @@ register struct type_FTAM_Charging *fpm;
 register struct FTAMcharging *charging;
 struct FTAMindication *fti;
 {
-    register int    i;
-    register struct fc_charge *fc;
-    register struct charge_element *f1;
+	register int    i;
+	register struct fc_charge *fc;
+	register struct charge_element *f1;
 
-    bzero ((char *) charging, sizeof *charging);
+	bzero ((char *) charging, sizeof *charging);
 
-    fc = charging -> fc_charges, i = 0;
-    for (; fpm; fpm = fpm -> next) {
-	if (i >= NFCHRG)
-	    return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-			     "too many charges");
+	fc = charging -> fc_charges, i = 0;
+	for (; fpm; fpm = fpm -> next) {
+		if (i >= NFCHRG)
+			return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+							 "too many charges");
 
-	f1 = fpm -> charge;
-	if ((fc -> fc_resource = qb2str (f1 -> resource__identifier)) == NULL
-	        || (fc -> fc_unit = qb2str (f1 -> charging__unit)) == NULL) {
-	    if (fc -> fc_resource)
-		free (fc -> fc_resource), fc -> fc_resource = NULL;
-	    while (i-- > 0) {
-		fc--;
-		free (fc -> fc_resource), fc -> fc_resource = NULL;
-		free (fc -> fc_unit), fc -> fc_unit = NULL;
-	    }
+		f1 = fpm -> charge;
+		if ((fc -> fc_resource = qb2str (f1 -> resource__identifier)) == NULL
+				|| (fc -> fc_unit = qb2str (f1 -> charging__unit)) == NULL) {
+			if (fc -> fc_resource)
+				free (fc -> fc_resource), fc -> fc_resource = NULL;
+			while (i-- > 0) {
+				fc--;
+				free (fc -> fc_resource), fc -> fc_resource = NULL;
+				free (fc -> fc_unit), fc -> fc_unit = NULL;
+			}
 
-	    return ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+			return ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		}
+		fc -> fc_value = f1 -> charging__value;
+
+		fc++, i++;
 	}
-	fc -> fc_value = f1 -> charging__value;
 
-	fc++, i++;
-    }
-
-    return OK;
+	return OK;
 }

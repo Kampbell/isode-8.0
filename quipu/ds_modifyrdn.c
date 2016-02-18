@@ -40,23 +40,23 @@ extern LLog * log_dsap;
 extern DN mydsadn;
 
 do_ds_modifyrdn (arg, error, binddn, target, di_p, dsp, authtype)
-    register struct ds_modifyrdn_arg     *arg;
-    struct DSError              *error;
-    DN                          binddn;
-    DN                          target;
-    struct di_block		**di_p;
-    char 			dsp;
-    char			authtype;
+register struct ds_modifyrdn_arg     *arg;
+struct DSError              *error;
+DN                          binddn;
+DN                          target;
+struct di_block		**di_p;
+char 			dsp;
+char			authtype;
 {
-Entry  entryptr;
-register RDN rdn;
-Attr_Sequence as;
-AV_Sequence avs;
-RDN modrdn;
-char * new_version ();
-int retval;
-int authp, pauthp;
-extern int read_only;
+	Entry  entryptr;
+	register RDN rdn;
+	Attr_Sequence as;
+	AV_Sequence avs;
+	RDN modrdn;
+	char * new_version ();
+	int retval;
+	int authp, pauthp;
+	extern int read_only;
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_modifyrdn"));
 
@@ -73,22 +73,21 @@ extern int read_only;
 		return (DS_ERROR_REMOTE);
 	}
 
-	switch(find_entry(target,&(arg->mra_common),binddn,NULLDNSEQ,TRUE,&(entryptr), error, di_p, OP_MODIFYRDN))
-	{
+	switch(find_entry(target,&(arg->mra_common),binddn,NULLDNSEQ,TRUE,&(entryptr), error, di_p, OP_MODIFYRDN)) {
 	case DS_OK:
-	    /* Filled out entryptr - carry on */
-	    break;
+		/* Filled out entryptr - carry on */
+		break;
 	case DS_CONTINUE:
-	    /* Filled out di_p - what do we do with it ?? */
-	    return(DS_CONTINUE);
+		/* Filled out di_p - what do we do with it ?? */
+		return(DS_CONTINUE);
 
 	case DS_X500_ERROR:
-	    /* Filled out error - what do we do with it ?? */
-	    return(DS_X500_ERROR);
+		/* Filled out error - what do we do with it ?? */
+		return(DS_X500_ERROR);
 	default:
-	    /* SCREAM */
-	    LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_modifyrdn() - find_entry failed"));
-	    return(DS_ERROR_LOCAL);
+		/* SCREAM */
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_modifyrdn() - find_entry failed"));
+		return(DS_ERROR_LOCAL);
 	}
 
 	if (read_only || entryptr->e_parent->e_lock) {
@@ -106,11 +105,10 @@ extern int read_only;
 
 	/* Strong authentication  */
 	if ((retval = check_security_parms((caddr_t) arg,
-			_ZModifyRDNArgumentDataDAS,
-			&_ZDAS_mod,
-			arg->mra_common.ca_security,
-			arg->mra_common.ca_sig, &binddn)) != 0)
-	{
+									   _ZModifyRDNArgumentDataDAS,
+									   &_ZDAS_mod,
+									   arg->mra_common.ca_security,
+									   arg->mra_common.ca_sig, &binddn)) != 0) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = retval;
 		return (DS_ERROR_REMOTE);
@@ -125,21 +123,21 @@ extern int read_only;
 
 	if (!manager(binddn)) {
 		pauthp = entryptr->e_parent->e_authp ?
-		    entryptr->e_parent->e_authp->ap_modification :
-		    AP_SIMPLE;
+				 entryptr->e_parent->e_authp->ap_modification :
+				 AP_SIMPLE;
 		authp = entryptr->e_authp ? entryptr->e_authp->ap_modification :
-		    AP_SIMPLE;
+				AP_SIMPLE;
 	} else {
 		/* manager -- fool us into accepting the name */
 		pauthp = authp = AP_SIMPLE;
 	}
 
 	if ((check_acl ((authtype % 3) >= authp ? binddn : NULLDN, ACL_WRITE,
-	    entryptr->e_acl->ac_entry, target) == NOTOK)
-	    || ((entryptr->e_parent->e_data != E_TYPE_CONSTRUCTOR)
-	    && (check_acl ((authtype % 3) >= pauthp ? binddn : NULLDN,
-	    ACL_WRITE,entryptr->e_parent->e_acl->ac_child, target)
-	    == NOTOK)) ) {
+					entryptr->e_acl->ac_entry, target) == NOTOK)
+			|| ((entryptr->e_parent->e_data != E_TYPE_CONSTRUCTOR)
+				&& (check_acl ((authtype % 3) >= pauthp ? binddn : NULLDN,
+							   ACL_WRITE,entryptr->e_parent->e_acl->ac_child, target)
+					== NOTOK)) ) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		return (DS_ERROR_REMOTE);
@@ -152,7 +150,7 @@ extern int read_only;
 
 	/* make sure the new name doesn't already exist */
 	if ( (Entry) avl_find( entryptr->e_parent->e_children,
-	    (caddr_t) arg->mra_newrdn, entryrdn_cmp ) != NULLENTRY ) {
+						   (caddr_t) arg->mra_newrdn, entryrdn_cmp ) != NULLENTRY ) {
 		error->dse_type = DSE_UPDATEERROR;
 		error->ERR_UPDATE.DSE_up_problem = DSE_UP_ALREADYEXISTS;
 		return( DS_ERROR_REMOTE );
@@ -185,11 +183,11 @@ extern int read_only;
 #endif
 
 	/* delete the old one from core */
-        if ((entryptr = (Entry) avl_delete( &entryptr->e_parent->e_children,
-            (caddr_t) entryptr->e_name, entryrdn_cmp )) == NULLENTRY ) {
-                LLOG(log_dsap, LLOG_EXCEPTIONS, ("modrdn: entry has disappeared!"));
-                return( DS_ERROR_REMOTE );
-        }
+	if ((entryptr = (Entry) avl_delete( &entryptr->e_parent->e_children,
+										(caddr_t) entryptr->e_name, entryrdn_cmp )) == NULLENTRY ) {
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("modrdn: entry has disappeared!"));
+		return( DS_ERROR_REMOTE );
+	}
 
 #ifdef TURBO_DISK
 	/* delete the old one from disk */
@@ -216,14 +214,14 @@ extern int read_only;
 		}
 
 		/* add the new one to core */
-                if (avl_insert(&entryptr->e_parent->e_children, (caddr_t) entryptr,
-                    entry_cmp, avl_dup_error) != OK) {
-                        LLOG(log_dsap, LLOG_EXCEPTIONS, ("modrdn: can't add new entry!"));
-                        return(DS_ERROR_REMOTE);
-                }
+		if (avl_insert(&entryptr->e_parent->e_children, (caddr_t) entryptr,
+					   entry_cmp, avl_dup_error) != OK) {
+			LLOG(log_dsap, LLOG_EXCEPTIONS, ("modrdn: can't add new entry!"));
+			return(DS_ERROR_REMOTE);
+		}
 
 #ifdef TURBO_INDEX
-                turbo_add2index(entryptr);
+		turbo_add2index(entryptr);
 #endif
 
 
@@ -249,8 +247,8 @@ Attr_Sequence newas;
 struct DSError *error;
 DN requestor,dn;
 {
-register Attr_Sequence as;
-struct acl_info * acl;
+	register Attr_Sequence as;
+	struct acl_info * acl;
 
 	DLOG (log_dsap,LLOG_DEBUG,("add attribute"));
 

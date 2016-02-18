@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/pipe.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/pipe.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -49,10 +49,9 @@ int             fd, wfd;
 #endif
 
 int parent_pid;
-extern int	errno;		
+extern int	errno;
 
-init_pipe ()
-{
+init_pipe () {
 	char parent [BUFSIZ];
 	char   *cp;
 
@@ -78,13 +77,13 @@ init_pipe ()
 		return (NOTOK);
 
 	if ((sd = start_tcp_server (sin, SOMAXCONN, 0, 0)) == NOTOK) {
-	    perror ("start_tcp_server");
-	    return NOTOK;
-        }
+		perror ("start_tcp_server");
+		return NOTOK;
+	}
 #ifdef	FIOCLEX
 	(void) ioctl (sd, FIOCLEX, NULLCP);
 #endif
-#else		
+#else
 
 	if ((cp = getenv ("DISHPROC")) == NULL) {
 		(void) fprintf (stderr, "no DISHPROC in environment\n");
@@ -116,12 +115,12 @@ init_pipe ()
 #endif
 #ifdef	TIOCNOTTY
 	{
-	    int	    xsd;
+		int	    xsd;
 
-	    if ((xsd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-		(void) ioctl (xsd, TIOCNOTTY, NULLCP);
-		(void) close (xsd);
-	    }
+		if ((xsd = open ("/dev/tty", O_RDWR)) != NOTOK) {
+			(void) ioctl (xsd, TIOCNOTTY, NULLCP);
+			(void) close (xsd);
+		}
 	}
 #else
 #ifdef	SYS5
@@ -133,8 +132,7 @@ init_pipe ()
 	return (OK);
 }
 
-exit_pipe ()
-{
+exit_pipe () {
 #ifdef SOCKETS
 	(void) close_tcp_socket (sd);
 #else
@@ -172,31 +170,31 @@ int len;
 	int res;
 #ifdef	SOCKETS
 	register char *cp,
-		      *ep;
+			 *ep;
 #endif
 
 	*buf = '\0';
 #ifdef SOCKETS
 	ep = (cp = buf) + len - 1;
 	for (;;) {
-	    switch (res = recv (sd_current, cp, ep - cp, 0)) {
+		switch (res = recv (sd_current, cp, ep - cp, 0)) {
 		case NOTOK:
-		    perror ("recv");
-		    (void) close (sd_current);
-		    return NOTOK;
+			perror ("recv");
+			(void) close (sd_current);
+			return NOTOK;
 
 		case OK:
-		    break;
+			break;
 
 		default:
-		    cp += res - 1;
-		    if (*cp == '\n')
+			cp += res - 1;
+			if (*cp == '\n')
+				break;
+			if (++cp < ep)
+				continue;
 			break;
-		    if (++cp < ep)
-			continue;
-		    break;
-	    }
-	    break;
+		}
+		break;
 	}
 	*cp = NULL;
 
@@ -219,63 +217,64 @@ int	read_pipe_aux2 (buf, len)
 char  **buf;
 int    *len;
 {
-    int	    cc,
-	    i,
-	    j,
-	    res;
-    register char   *cp,
-		    *dp,
-		    *ep;
-    char    buffer[BUFSIZ];
+	int	    cc,
+			i,
+			j,
+			res;
+	register char   *cp,
+			 *dp,
+			 *ep;
+	char    buffer[BUFSIZ];
 
-    *buf = NULL, *len = 0;
+	*buf = NULL, *len = 0;
 
-    switch (res = read_pipe_aux (buffer, sizeof buffer)) {
-        case NOTOK:
-        case OK:
-	    return res;
+	switch (res = read_pipe_aux (buffer, sizeof buffer)) {
+	case NOTOK:
+	case OK:
+		return res;
 
 	case 1:
-	    *buf = buffer, *len = res;
-	    return res;
-		
+		*buf = buffer, *len = res;
+		return res;
+
 	default:
-	    if (sscanf (buffer + 1, "%d", &cc) != 1 || cc < 0) {
-		(void) fprintf (stderr, "protocol botch\n");
-		return NOTOK;
-	    }
-	    if ((cp = malloc ((unsigned) cc + 1)) == NULL) {
-		perror ("malloc");
-		return NOTOK;
-	    }
-	    *buf = cp, *len = cc;
+		if (sscanf (buffer + 1, "%d", &cc) != 1 || cc < 0) {
+			(void) fprintf (stderr, "protocol botch\n");
+			return NOTOK;
+		}
+		if ((cp = malloc ((unsigned) cc + 1)) == NULL) {
+			perror ("malloc");
+			return NOTOK;
+		}
+		*buf = cp, *len = cc;
 
-	    dp = cp, j = cc;
-	    if (ep = index (buffer + 1, '\n')) {
-		(void) strcpy (dp, ++ep);
-		i = strlen (ep);
-		dp += i, j -= i;
-	    }
-	    break;
-    }
-	
-    for (; j > 0; dp += i, j -= i)
-	switch (i = recv (sd_current, dp, j, 0)) {
-	    case NOTOK:
-	        perror ("recv");
-out: ;
-		free (cp);
-		*buf = NULL, *len = 0;
-		(void) close (sd_current);
-		return NOTOK;
-
-	    case OK:
-		(void) fprintf (stderr, "premature eof from peer\n");
-		goto out;
-
-	    default:
+		dp = cp, j = cc;
+		if (ep = index (buffer + 1, '\n')) {
+			(void) strcpy (dp, ++ep);
+			i = strlen (ep);
+			dp += i, j -= i;
+		}
 		break;
 	}
+
+	for (; j > 0; dp += i, j -= i)
+		switch (i = recv (sd_current, dp, j, 0)) {
+		case NOTOK:
+			perror ("recv");
+out:
+			;
+			free (cp);
+			*buf = NULL, *len = 0;
+			(void) close (sd_current);
+			return NOTOK;
+
+		case OK:
+			(void) fprintf (stderr, "premature eof from peer\n");
+			goto out;
+
+		default:
+			break;
+		}
 	*dp = NULL;
 
 	return res;
@@ -297,14 +296,14 @@ char * buf;
 send_pipe_aux (buf)
 char * buf;
 {
-    send_pipe_aux2 (buf, strlen (buf));
+	send_pipe_aux2 (buf, strlen (buf));
 }
 
 send_pipe_aux2 (buf, i)
 char   *buf;
 int	i;
 {
-int res;
+	int res;
 
 #ifndef	SOCKETS
 	if ((file = open (inbuf, O_WRONLY)) <= 0) {
@@ -346,17 +345,17 @@ struct sockaddr_in *isock;
 
 	if ((ptr = getenv ("DISHPROC")) == NULLCP) {
 #ifdef	notanymore
-	        char   *cp,
+		char   *cp,
 #endif
-		portno = (getppid () & 0xffff) | 0x8000;
+			   portno = (getppid () & 0xffff) | 0x8000;
 #ifdef	notanymore
 		if ((hp = gethostbystring (cp = getlocalhost ())) == NULL) {
 			(void) fprintf (stderr,"%s: unknown host", cp);
 			return (-1);
 		}
 		(void) sprintf (buffer, "%s %d",
-				inet_ntoa (*(struct in_addr *) hp -> h_addr),
-				portno);
+						inet_ntoa (*(struct in_addr *) hp -> h_addr),
+						portno);
 #else
 		(void) sprintf (buffer, "127.0.0.1 %d", portno);
 #endif
@@ -386,8 +385,7 @@ struct sockaddr_in *isock;
 
 #else
 
-reopen_ret ()
-{
+reopen_ret () {
 	(void) close (fd);
 	(void) close (wfd);
 

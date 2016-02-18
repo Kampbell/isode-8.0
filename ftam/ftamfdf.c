@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamfdf.c,v 9.0 1992/06/16 12:14:55 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam/RCS/ftamfdf.c,v 9.0 1992/06/16 12:14:55 isode Rel $
  *
  *
@@ -38,13 +38,13 @@ PE	bits;
 int    *names;
 struct FTAMindication *fti;
 {
-    register struct ftamblk *fsb;
+	register struct ftamblk *fsb;
 
-    if ((fsb = findfsblk (fd)) == NULL)
-	return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
-			 "invalid ftam descriptor");
+	if ((fsb = findfsblk (fd)) == NULL)
+		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
+						 "invalid ftam descriptor");
 
-    return fpm2bits (fsb, fname_pairs, bits, names, fti);
+	return fpm2bits (fsb, fname_pairs, bits, names, fti);
 }
 
 /*  */
@@ -55,15 +55,15 @@ int     names;
 PE     *bits;
 struct FTAMindication *fti;
 {
-    register struct ftamblk *fsb;
+	register struct ftamblk *fsb;
 
-    if ((fsb = findfsblk (fd)) == NULL)
-	return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
-			 "invalid ftam descriptor");
+	if ((fsb = findfsblk (fd)) == NULL)
+		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
+						 "invalid ftam descriptor");
 
-    if ((*bits) = bits2fpm (fsb, fname_pairs, names, fti))
-	return OK;
-    return NOTOK;
+	if ((*bits) = bits2fpm (fsb, fname_pairs, names, fti))
+		return OK;
+	return NOTOK;
 }
 
 /*  */
@@ -74,15 +74,15 @@ struct FTAMattributes *fa;
 struct type_FTAM_Read__Attributes **attrs;
 struct FTAMindication *fti;
 {
-    register struct ftamblk *fsb;
+	register struct ftamblk *fsb;
 
-    if ((fsb = findfsblk (fd)) == NULL)
-	return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
-			 "invalid ftam descriptor");
+	if ((fsb = findfsblk (fd)) == NULL)
+		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
+						 "invalid ftam descriptor");
 
-    if ((*attrs) = attr2fpm (fsb, fa, fti))
-	return OK;
-    return NOTOK;
+	if ((*attrs) = attr2fpm (fsb, fa, fti))
+		return OK;
+	return NOTOK;
 }
 
 /*  */
@@ -93,11 +93,11 @@ struct type_FTAM_Read__Attributes *attrs;
 struct FTAMattributes *fa;
 struct FTAMindication *fti;
 {
-    register struct ftamblk *fsb;
+	register struct ftamblk *fsb;
 
-    if ((fsb = findfsblk (fd)) == NULL)
-	return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
-			 "invalid ftam descriptor");
+	if ((fsb = findfsblk (fd)) == NULL)
+		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
+						 "invalid ftam descriptor");
 
-    return fpm2attr (fsb, attrs, fa, fti);
+	return fpm2attr (fsb, attrs, fa, fti);
 }

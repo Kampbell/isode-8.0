@@ -1,6 +1,6 @@
 /* dap.h - */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/quipu/RCS/dap2.h,v 9.0 1992/06/16 12:23:11 isode Rel $
  *
  *
@@ -50,21 +50,21 @@
 /*  */
 
 struct DAPconnect {
-    int	    dc_sd;		/* association descriptor */
+	int	    dc_sd;		/* association descriptor */
 
-    int     ds_pctx_id;		/* Context identifier of directory access AS */
+	int     ds_pctx_id;		/* Context identifier of directory access AS */
 
-    struct AcSAPconnect dc_connect;/* info from A-CONNECT.CONFIRMATION */
+	struct AcSAPconnect dc_connect;/* info from A-CONNECT.CONFIRMATION */
 
-    int	    dc_result;		/* result */
+	int	    dc_result;		/* result */
 #define DC_RESULT	1
 #define DC_ERROR	2
 #define DC_REJECT	3
 
-    union {
-	struct ds_bind_arg	  dc_bind_res;	/* DC_RESULT */
-	struct ds_bind_error	  dc_bind_err;	/* DC_ERROR */
-    } dc_un;
+	union {
+		struct ds_bind_arg	  dc_bind_res;	/* DC_RESULT */
+		struct ds_bind_error	  dc_bind_err;	/* DC_ERROR */
+	} dc_un;
 };
 #ifndef DCFREE
 #define	DCFREE(dc) { \
@@ -82,20 +82,20 @@ struct DAPconnect {
 #endif
 
 struct DAPrelease {		/* DAP-UNBIND.CONFIRMATION */
-    int	    dr_affirmative;	/* T   = connection released
+	int	    dr_affirmative;	/* T   = connection released
 				   NIL = request refused */
-    
-    int	    dr_reason;		/* reason for result */
-				/* Takes values from acr_reason */
+
+	int	    dr_reason;		/* reason for result */
+	/* Takes values from acr_reason */
 };
 
 struct DAPabort {		/* DAP-ABORT.INDICATION */
-    int	    da_source;		/* abort source */
+	int	    da_source;		/* abort source */
 #define	DA_USER		0	/*   DAP-user */
 #define	DA_PROVIDER	1	/*   DAP-provider */
 #define	DA_LOCAL	2	/*   DAP interface internal error */
 
-    int	    da_reason;		/* reason for failure */
+	int	    da_reason;		/* reason for failure */
 #define DA_NO_REASON	0	/* Ain't no reason to some things */
 #define DA_RONOT	1	/* Error from RONOT provider */
 #define DA_ROS		2	/* Error from ROS provider called */
@@ -106,15 +106,15 @@ struct DAPabort {		/* DAP-ABORT.INDICATION */
 #define DA_RES_DEC	7	/* Error decoding result */
 #define DA_ERR_DEC 	8	/* Error decoding error */
 
-				/* diagnostics from provider */
+	/* diagnostics from provider */
 #define	DA_SIZE	512
-    int	    da_cc;		/*   length */
-    char    da_data[DA_SIZE];	/*   data */
+	int	    da_cc;		/*   length */
+	char    da_data[DA_SIZE];	/*   data */
 };
 
 struct DAPresult {
-    int			  dr_id;
-    struct DSResult	  dr_res;	/* Decoded result and op type */
+	int			  dr_id;
+	struct DSResult	  dr_res;	/* Decoded result and op type */
 };
 #ifndef DRFREE
 #define DRFREE(dr) \
@@ -122,8 +122,8 @@ struct DAPresult {
 #endif
 
 struct DAPerror {
-    int			  de_id;
-    struct DSError	  de_err;	/* Decoded error and error type */
+	int			  de_id;
+	struct DSError	  de_err;	/* Decoded error and error type */
 };
 #ifndef DEFREE
 #define DEFREE(de) \
@@ -131,35 +131,35 @@ struct DAPerror {
 #endif
 
 struct DAPpreject {
-    int		  dp_id;	/* Operation id or -1 */
+	int		  dp_id;	/* Operation id or -1 */
 
-    int		  dp_source;	/* same values as DAPabort.da_source */
+	int		  dp_source;	/* same values as DAPabort.da_source */
 
-    int		  dp_reason;	/* reason for failure */
+	int		  dp_reason;	/* reason for failure */
 #define DP_NO_REASON	0	/* Ain't no reason to some things */
 #define DP_ROS		1	/* ROSE error */
 #define DP_INVOKE	2	/* Failure during invocation */
 #define DP_RESULT	3	/* Failure during result */
 #define DP_ERROR	4	/* Failure during error */
 
-				/* diagnostics from provider */
+	/* diagnostics from provider */
 #define	DP_SIZE	512
-    int	    dp_cc;		/*   length */
-    char    dp_data[DP_SIZE];	/*   data */
+	int	    dp_cc;		/*   length */
+	char    dp_data[DP_SIZE];	/*   data */
 };
 
 struct DAPindication {
-    int	    di_type;
+	int	    di_type;
 #define DI_RESULT	2	/* DAP operation result received */
 #define DI_ERROR	3	/* DAP operation error received */
 #define DI_PREJECT	4	/* DAP operation rejected */
 #define	DI_ABORT	6	/* DAP association lost */
-    union {
-	struct DAPresult	di_un_result;
-	struct DAPerror		di_un_error;
-	struct DAPpreject	di_un_preject;
-	struct DAPabort		di_un_abort;
-    } di_un;
+	union {
+		struct DAPresult	di_un_result;
+		struct DAPerror		di_un_error;
+		struct DAPpreject	di_un_preject;
+		struct DAPabort		di_un_abort;
+	} di_un;
 #define di_result di_un.di_un_result
 #define di_error di_un.di_un_error
 #define di_preject di_un.di_un_preject

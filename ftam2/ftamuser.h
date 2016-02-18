@@ -1,6 +1,6 @@
 /* ftamuser.h - include file for interactive FTAM initiator */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam2/RCS/ftamuser.h,v 9.0 1992/06/16 12:15:43 isode Rel $
  *
  *
@@ -84,19 +84,19 @@ char   *str2file ();
 /*    DISPATCH */
 
 struct dispatch {
-    char   *ds_name;
-    IFP	    ds_fnx;
+	char   *ds_name;
+	IFP	    ds_fnx;
 
-    int	    ds_flags;
+	int	    ds_flags;
 #define	DS_NULL		0x00
 #define	DS_OPEN		0x01	/* association required */
 #define	DS_CLOSE	0x02	/* association avoided */
 #define	DS_MODES	0x04	/* class/units meaningful */
 
-    int	    ds_class;
-    int	    ds_units;
+	int	    ds_class;
+	int	    ds_units;
 
-    char   *ds_help;
+	char   *ds_help;
 };
 
 
@@ -130,12 +130,12 @@ void	ftam_advise (), ftam_chrg (), ftam_diag (), ftam_watch ();
 /*    FILES */
 
 struct filent {
-    char   *fi_name;
-    OID	    fi_oid;
+	char   *fi_name;
+	OID	    fi_oid;
 
-    char   *fi_entry;
+	char   *fi_entry;
 
-    struct filent *fi_next;
+	struct filent *fi_next;
 };
 
 extern int  toomany;

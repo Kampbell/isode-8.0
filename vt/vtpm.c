@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtpm.c,v 9.0 1992/06/16 12:41:08 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/vtpm.c,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *
@@ -80,8 +80,8 @@ struct PSAPfinish *pf;
 
 int
 get_event(dd, pe)
-	int	dd;
-	PE	*pe;
+int	dd;
+PE	*pe;
 {
 	int	result, event;
 	PE	nullpe;
@@ -92,7 +92,7 @@ get_event(dd, pe)
 		if (debug)
 			advise(LLOG_EXCEPTIONS,NULLCP,  "P-READ REQUEST returned NOTOK");
 		if ((pi.pi_type == PI_ABORT) &&
-		    PC_FATAL(pi.pi_abort.pa_reason))
+				PC_FATAL(pi.pi_abort.pa_reason))
 			adios(NULLCP, "PReadRequest returned fatal ABORT");
 
 		return(NOTOK);
@@ -102,12 +102,9 @@ get_event(dd, pe)
 			event = RLQ;
 			nullpe = NULLPE;
 			pe = &nullpe;
-		}
-		else if(pi.pi_type == PI_SYNC)
-		{
+		} else if(pi.pi_type == PI_SYNC) {
 			return( pn_ind(dd, &pi.pi_sync)) ;
-		}
-		else
+		} else
 			adios(NULLCP, "PReadRequest returned DONE, but event unknown (%d)",pi.pi_type);
 		break;
 	case OK:
@@ -121,15 +118,13 @@ get_event(dd, pe)
 		if ((*pe)->pe_class != PE_CLASS_CONT)
 			adios(NULLCP,"read pe of class %d", (*pe)->pe_class);
 		switch((*pe)->pe_id) {
-		case (ASQ_PDU):
-		{
+		case (ASQ_PDU): {
 			if (debug)
 				advise(LLOG_DEBUG,NULLCP,  "got ASQ_PDU");
 
 			event = ASQ;
 		}
-		case ASR_PDU:
-		{
+		case ASR_PDU: {
 			if (debug)
 				advise(LLOG_DEBUG,NULLCP,  "got ASR_PDU");
 
@@ -152,36 +147,33 @@ get_event(dd, pe)
 			event = DLQ;
 			break;
 
-		case NDQ_PDU:
-		{
+		case NDQ_PDU: {
 			if (debug)
 				advise(LLOG_DEBUG,NULLCP,  "got NDQ_PDU");
 
 			event = NDQ_tr;	/*See comment below*/
 
-	/*	We're supposed to find out if the NDQ contains an
-		update to a triggered control object or not to determine
-		what kind of event we have.  Right now we'll assume that
-		we do have such an update in all cases.  Note that this may
-		be a problem if we use quarantine delivery control in the
-		future.
-	  
-		for each update, find out if the update is for a display object
-		or for a control object. if it's a control object get the name 
-		of it and find out if it has a trigger
-	
-	*/
+			/*	We're supposed to find out if the NDQ contains an
+				update to a triggered control object or not to determine
+				what kind of event we have.  Right now we'll assume that
+				we do have such an update in all cases.  Note that this may
+				be a problem if we use quarantine delivery control in the
+				future.
+
+				for each update, find out if the update is for a display object
+				or for a control object. if it's a control object get the name
+				of it and find out if it has a trigger
+
+			*/
 			break;
 		}
 
-		case UDQ_PDU:
-		{
+		case UDQ_PDU: {
 			event = UDQ;
 			break;
 		}
 
-		case HDQ_PDU:
-		{
+		case HDQ_PDU: {
 			if(debug) advise(LLOG_NOTICE,NULLCP,"Got HDQ");
 			event = HDQ;
 			break;
@@ -212,7 +204,7 @@ int (*s0[])() =	{
 
 int (*s1[])() =	{
 	s1_01,			/* states in the first sector  */
-  	s1_02B,
+	s1_02B,
 	s1_02S,
 	s1_03B,
 	s1_03S,
@@ -258,16 +250,16 @@ unsigned	state = 0,
 			sector = 1;
 
 do_event(event, pe)
-	int	event;
-	PE	pe;
+int	event;
+PE	pe;
 {
 	if (debug)
-		advise(LLOG_DEBUG,NULLCP, 
-	       "in do_event, sector is %d, state is %d, event is %d (%s)",
-	       sector, state, event,
-		       event >= 0
-		               && event < sizeof eventname/sizeof eventname[0]
-		           ? eventname[event] : "INVALID");
+		advise(LLOG_DEBUG,NULLCP,
+			   "in do_event, sector is %d, state is %d, event is %d (%s)",
+			   sector, state, event,
+			   event >= 0
+			   && event < sizeof eventname/sizeof eventname[0]
+			   ? eventname[event] : "INVALID");
 	if (sector >= SECTORS || state >= max_state[sector])
 		return(NOTOK);
 	return(sectors[sector][state](event, pe));
@@ -275,40 +267,39 @@ do_event(event, pe)
 
 /* ARGSUSED */
 pn_ind(dd, psync) /* sync indications */
-	int 	dd;
-	struct 	PSAPsync *psync;
+int 	dd;
+struct 	PSAPsync *psync;
 {
-	switch(psync->pn_type)
-	{
-		case SN_MAJORIND:
-			advise(LLOG_DEBUG,NULLCP,  "vt: got SN_MAJORIND");
-			break;
-		case SN_MAJORCNF:
-			advise(LLOG_DEBUG,NULLCP,  "vt: got SN_MAJORCNF");
-			break;
-		case SN_MINORIND:
-			advise(LLOG_DEBUG,NULLCP,  "vt: got SN_MINORIND");
-			break;
-		case SN_MINORCNF:
-			advise(LLOG_DEBUG,NULLCP,  "vt: got SN_MINORCNF");
-			break;
-		case SN_RESETIND:
-/*			advise(LLOG_DEBUG,NULLCP,  "vt: resetind: SN_RESETIND"); */
-			if(psync->pn_options != SYNC_RESTART)
-			  adios(NULLCP,"resetind: bad options params");
-			if(psync->pn_ninfo > 0)
-			   return( do_event(BKQ,psync->pn_info[0]));
-			  else return( do_event(BKQ,NULLPE));
-		case SN_RESETCNF:
-/*			advise(LLOG_DEBUG,NULLCP,  "vt: got SN_RESETCNF\n"); */
-			if(psync->pn_options != SYNC_RESTART)
-			  adios(NULLCP,"resetind: bad options params");
-			if(psync->pn_ninfo > 0)
-			   return( do_event(BKR,psync->pn_info[0]));
-			  else return( do_event(BKR,NULLPE));
-		default:
-			adios(NULLCP,"received bad sync type");
-	 }
+	switch(psync->pn_type) {
+	case SN_MAJORIND:
+		advise(LLOG_DEBUG,NULLCP,  "vt: got SN_MAJORIND");
+		break;
+	case SN_MAJORCNF:
+		advise(LLOG_DEBUG,NULLCP,  "vt: got SN_MAJORCNF");
+		break;
+	case SN_MINORIND:
+		advise(LLOG_DEBUG,NULLCP,  "vt: got SN_MINORIND");
+		break;
+	case SN_MINORCNF:
+		advise(LLOG_DEBUG,NULLCP,  "vt: got SN_MINORCNF");
+		break;
+	case SN_RESETIND:
+		/*			advise(LLOG_DEBUG,NULLCP,  "vt: resetind: SN_RESETIND"); */
+		if(psync->pn_options != SYNC_RESTART)
+			adios(NULLCP,"resetind: bad options params");
+		if(psync->pn_ninfo > 0)
+			return( do_event(BKQ,psync->pn_info[0]));
+		else return( do_event(BKQ,NULLPE));
+	case SN_RESETCNF:
+		/*			advise(LLOG_DEBUG,NULLCP,  "vt: got SN_RESETCNF\n"); */
+		if(psync->pn_options != SYNC_RESTART)
+			adios(NULLCP,"resetind: bad options params");
+		if(psync->pn_ninfo > 0)
+			return( do_event(BKR,psync->pn_info[0]));
+		else return( do_event(BKR,NULLPE));
+	default:
+		adios(NULLCP,"received bad sync type");
+	}
 	PNFREE(psync);
 	return(NOTOK);
 }
@@ -326,17 +317,17 @@ pn_ind(dd, psync) /* sync indications */
 /*									     */
 /*  CLASSIFICATION - utility function for VTPM (used only in processing	     */
 /*			outgoing events that are mapped to P_DATA)	     */
-/*									     */	
+/*									     */
 /*****************************************************************************/
 
 p_data(pdu)
-	PE	pdu;
+PE	pdu;
 {
 
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
 	if (PDataRequest(sd, &pdu, 1, &pi) != OK)
-	    ps_adios (&pi.pi_abort, "P-DATA.REQUEST");
+		ps_adios (&pi.pi_abort, "P-DATA.REQUEST");
 	pe_free(pdu);
 	return(OK);
 }
@@ -356,14 +347,14 @@ p_data(pdu)
 /****************************************************************************/
 
 p_maj_sync_req(pdu)
-	PE	pdu;
+PE	pdu;
 {
 	long ssn;
 
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
 	if (PMajSyncRequest(sd, &ssn, &pdu, 1, &pi) != OK)
-	    ps_adios (&pi.pi_abort, "P-MAJOR-SYNC.REQUEST");
+		ps_adios (&pi.pi_abort, "P-MAJOR-SYNC.REQUEST");
 	return(OK);
 }
 
@@ -382,12 +373,12 @@ p_maj_sync_req(pdu)
 /****************************************************************************/
 
 p_maj_sync_resp(pdu)
-	PE	pdu;
+PE	pdu;
 {
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
 	if (PMajSyncResponse(sd, &pdu, 1, &pi) != OK)
-	    ps_adios (&pi.pi_abort, "P-MAJOR-SYNC.RESPONSE");
+		ps_adios (&pi.pi_abort, "P-MAJOR-SYNC.RESPONSE");
 	return(OK);
 }
 
@@ -406,13 +397,13 @@ p_maj_sync_resp(pdu)
 /***************************************************************************/
 
 p_typed_data(pdu)
-	PE	pdu;
+PE	pdu;
 {
 
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
 	if (PTypedRequest(sd, &pdu, 1, &pi) != OK)
-	    ps_adios (&pi.pi_abort, "P-TYPED-DATA.REQUEST");
+		ps_adios (&pi.pi_abort, "P-TYPED-DATA.REQUEST");
 	return(OK);
 }
 
@@ -429,12 +420,12 @@ p_typed_data(pdu)
 /*****************************************************************************/
 
 p_resync_req(pdu,type)
-	PE	pdu;
-	int type;
+PE	pdu;
+int type;
 {
 
-long ssn = 0; /* should be made a global at some time */
-int settings = ST_INIT_VALUE;
+	long ssn = 0; /* should be made a global at some time */
+	int settings = ST_INIT_VALUE;
 
 #define VTKP_REQ   0x00 /* setting values, see ssap.h */
 #define VTKP_ACC   0x15
@@ -443,8 +434,8 @@ int settings = ST_INIT_VALUE;
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
 	if (PReSyncRequest(sd, type, ssn, settings, &pdu, 1, &pi) != OK)
-/*	if (PReSyncRequest(sd, type, 0, 0, (PE *)NULL, 0, &pi) != OK) */
-	    ps_adios (&pi.pi_abort, "P-RESYNCHRONIZE.REQUEST");
+		/*	if (PReSyncRequest(sd, type, 0, 0, (PE *)NULL, 0, &pi) != OK) */
+		ps_adios (&pi.pi_abort, "P-RESYNCHRONIZE.REQUEST");
 	return(OK);
 }
 
@@ -463,15 +454,15 @@ int settings = ST_INIT_VALUE;
 /****************************************************************************/
 
 p_resync_resp(pdu)
-	PE	pdu;
+PE	pdu;
 {
 
-long ssn = 0; /* should be made a global at some time */
-int settings = ST_INIT_VALUE;
+	long ssn = 0; /* should be made a global at some time */
+	int settings = ST_INIT_VALUE;
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
 	if (PReSyncResponse(sd, ssn, settings, &pdu, 1, &pi) != OK)
-	    ps_adios (&pi.pi_abort, "P-RESYNCHRONIZE.RESPONSE");
+		ps_adios (&pi.pi_abort, "P-RESYNCHRONIZE.RESPONSE");
 	return(OK);
 }
 
@@ -482,18 +473,18 @@ int settings = ST_INIT_VALUE;
 /*	      passed in as a parameter as user data on the AcAssocResponse.)*/
 /*									    */
 /*	PARAMETERS: 	PE - a vt ASR PDU				    */
-/*			status (SUCCESS or FAILURE)		            */	
+/*			status (SUCCESS or FAILURE)		            */
 /*									    */
 /*	RETURNS:		OK					    */
 /****************************************************************************/
 
 asr(pe,status)
-	PE	pe;
-	int	status;
+PE	pe;
+int	status;
 {
 
-/*	include "pe" as user data on the AcAssocResponse
-*/
+	/*	include "pe" as user data on the AcAssocResponse
+	*/
 	struct PSAPctxlist *pl = &ps->ps_ctxlist;
 	int s_requirements;
 	long isn;
@@ -502,8 +493,8 @@ asr(pe,status)
 	if (debug > 2) {
 		for(i=0; i<pl->pc_nctx; i++)
 			advise(LLOG_DEBUG,NULLCP," ctx %d: %d %s %d",
-				i,pl->pc_ctx[i].pc_id,sprintoid(pl->pc_ctx[i].pc_asn),
-				pl->pc_ctx[i].pc_result);
+				   i,pl->pc_ctx[i].pc_id,sprintoid(pl->pc_ctx[i].pc_asn),
+				   pl->pc_ctx[i].pc_result);
 
 	}
 	if (debug) {
@@ -511,13 +502,10 @@ asr(pe,status)
 		advise(LLOG_DEBUG,NULLCP,  "about to call AcAssocResp, sd is %d, pe->pe_id is %d\n", sd, pe->pe_id);
 	}
 
-	if(status == SUCCESS)
-	{
+	if(status == SUCCESS) {
 		status = ACS_ACCEPT;
 		reason = ACS_USER_NULL;
-	}
-	else
-	{
+	} else {
 		status = ACS_PERMANENT;
 		reason = ACS_USER_NOREASON;
 	}
@@ -525,11 +513,11 @@ asr(pe,status)
 	isn = 0;
 	pe -> pe_context = 1;
 	if (AcAssocResponse (sd, status, reason, NULLOID, NULLAEI,
-		NULLPA,
-		&ps->ps_ctxlist,
-		ps->ps_defctxresult, ps->ps_prequirements, s_requirements,isn,
-		ps->ps_settings, &ps->ps_connect, &pe, 1, aci) == NOTOK)
-	    acs_adios (aca, "A-ASSOCIATE.RESPONSE");
+						 NULLPA,
+						 &ps->ps_ctxlist,
+						 ps->ps_defctxresult, ps->ps_prequirements, s_requirements,isn,
+						 ps->ps_settings, &ps->ps_connect, &pe, 1, aci) == NOTOK)
+		acs_adios (aca, "A-ASSOCIATE.RESPONSE");
 
 	if (debug)
 		advise(LLOG_DEBUG,NULLCP,  "sent AcAssociate Response\n");
@@ -550,13 +538,11 @@ int reason;
 	ASR_MSG ud;
 
 	bzero ((char *) &ud, sizeof ud);
-	if(reason)
-	{
+	if(reason) {
 		ud.valid_reason = 1;
 		ud.reason.type = 1;
 		ud.reason.provider_reason = reason;
-	}
-	else ud.valid_reason = 0;
+	} else ud.valid_reason = 0;
 	ud.result = 0;			/*Failure code*/
 	ud.valid_imp = 0;
 	ud.valid_coll = 0;
@@ -564,8 +550,8 @@ int reason;
 	ud.version.bitstring = 0x00;
 	ud.version.bitcount = 5;
 	if(build_ASRPDU_ASRpdu(&asr_pe,1,NULL,NULLCP,(PEPYPARM)&ud) == NOTOK)
-	    adios (NULLCP, "ASR build failure (%s)", PY_pepy);
-	
+		adios (NULLCP, "ASR build failure (%s)", PY_pepy);
+
 	return(asr(asr_pe,FAILURE)); /*Send the PDU thru Association control*/
 }
 
@@ -578,12 +564,11 @@ PE pe;
 {
 	pe -> pe_context = 1;
 	if(AcRelResponse(sd,ACS_ACCEPT,ACR_NORMAL,&pe,1,aci) == NOTOK)
-	    acs_adios (&aci->aci_abort, "A-RELEASE.RESPONSE");
+		acs_adios (&aci->aci_abort, "A-RELEASE.RESPONSE");
 }
 
 
-clear_vte()	/*Clear VT Environment.  */
-{
+clear_vte() {	/*Clear VT Environment.  */
 
 	/*Nothing to do for now since we have no formalized environment
 	  and we exit VTP when association ends.
@@ -591,15 +576,13 @@ clear_vte()	/*Clear VT Environment.  */
 }
 
 
-vgvt_ind()	/*Indication to User that peer has given the token*/
-{
+vgvt_ind() {	/*Indication to User that peer has given the token*/
 
 	/*Don't know how to indicate this to user yet*/
 }
 
 
-vrtq_ind()	/*Indicate to User that peer has requested token*/
-{
+vrtq_ind() {	/*Indicate to User that peer has requested token*/
 
 	/*Don't know how to give indication to user.
 	  Synchronous?  Asynch interrupt??? */
@@ -617,13 +600,12 @@ give_token()	/*Transfer Token to peer.  For VTP, all tokens are given
 	vt_tokens = ST_RLS_TOKEN;
 
 	if(PGTokenRequest(sd,vt_tokens,&vt_pi) == NOTOK
-	       && vt_pi.pi_abort.pa_reason != PC_OPERATION)
-	    ps_adios (&vt_pi.pi_abort, "P-GIVE-TOKENS.REQUEST");
+			&& vt_pi.pi_abort.pa_reason != PC_OPERATION)
+		ps_adios (&vt_pi.pi_abort, "P-GIVE-TOKENS.REQUEST");
 }
 
 
-request_token()		/*Request Tokens from peer*/
-{
+request_token() {	/*Request Tokens from peer*/
 
 	int vt_tokens;
 	struct PSAPindication vt_pi;
@@ -631,12 +613,11 @@ request_token()		/*Request Tokens from peer*/
 	vt_tokens = ST_RLS_TOKEN;
 
 	if(PPTokenRequest(sd,vt_tokens,NULLPEP,0,&vt_pi) == NOTOK
-	       && vt_pi.pi_abort.pa_reason != PC_OPERATION)
-	    ps_adios (&vt_pi.pi_abort, "P-PLEASE-TOKENS.REQUEST");
+			&& vt_pi.pi_abort.pa_reason != PC_OPERATION)
+		ps_adios (&vt_pi.pi_abort, "P-PLEASE-TOKENS.REQUEST");
 }
 
-send_all()	/*TEMP -- Should be supplied by Sector 5 actions*/
-{
+send_all() {	/*TEMP -- Should be supplied by Sector 5 actions*/
 	advise(LLOG_DEBUG,NULLCP,  "send_all dummy routine");
 }
 
@@ -646,11 +627,11 @@ void  acs_adios (aa, event)
 register struct AcSAPabort *aa;
 char   *event;
 {
-    acs_advise (aa, event);
+	acs_advise (aa, event);
 
-    finalbye ();
+	finalbye ();
 
-    _exit (1);
+	_exit (1);
 }
 
 
@@ -658,17 +639,17 @@ static void  acs_advise (aa, event)
 register struct AcSAPabort *aa;
 char   *event;
 {
-    char	buffer[BUFSIZ];
+	char	buffer[BUFSIZ];
 
-    if (aa -> aca_cc > 0)
-	(void) sprintf (buffer, "[%s] %*.*s",
-			AcErrString (aa -> aca_reason),
-			aa -> aca_cc, aa -> aca_cc, aa -> aca_data);
-    else
-	(void) sprintf (buffer, "[%s]", AcErrString (aa -> aca_reason));
+	if (aa -> aca_cc > 0)
+		(void) sprintf (buffer, "[%s] %*.*s",
+						AcErrString (aa -> aca_reason),
+						aa -> aca_cc, aa -> aca_cc, aa -> aca_data);
+	else
+		(void) sprintf (buffer, "[%s]", AcErrString (aa -> aca_reason));
 
-    advise (LLOG_NOTICE,NULLCP,  "%s: %s (source %d)", event, buffer,
-	    aa -> aca_source);
+	advise (LLOG_NOTICE,NULLCP,  "%s: %s (source %d)", event, buffer,
+			aa -> aca_source);
 }
 
 
@@ -676,11 +657,11 @@ static void  ps_adios (pab, event)
 register struct PSAPabort *pab;
 char   *event;
 {
-    ps_advise (pab, event);
+	ps_advise (pab, event);
 
-    finalbye ();
+	finalbye ();
 
-    _exit (1);
+	_exit (1);
 }
 
 
@@ -688,15 +669,15 @@ static void  ps_advise (pab, event)
 register struct PSAPabort *pab;
 char   *event;
 {
-    char    buffer[BUFSIZ];
+	char    buffer[BUFSIZ];
 
-    if (pab -> pa_cc > 0)
-	(void) sprintf (buffer, "[%s] %*.*s",
-		PErrString (pab -> pa_reason),
-		pab -> pa_cc, pab -> pa_cc, pab -> pa_data);
-    else
-	(void) sprintf (buffer, "[%s]", PErrString (pab -> pa_reason));
+	if (pab -> pa_cc > 0)
+		(void) sprintf (buffer, "[%s] %*.*s",
+						PErrString (pab -> pa_reason),
+						pab -> pa_cc, pab -> pa_cc, pab -> pa_data);
+	else
+		(void) sprintf (buffer, "[%s]", PErrString (pab -> pa_reason));
 
-    advise (LLOG_NOTICE,NULLCP,  "%s: %s%s", event, buffer,
-	    pab -> pa_peer ? " (peer initiated)" : "");
+	advise (LLOG_NOTICE,NULLCP,  "%s: %s%s", event, buffer,
+			pab -> pa_peer ? " (peer initiated)" : "");
 }

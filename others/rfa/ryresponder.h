@@ -1,4 +1,4 @@
-/* ryresponder.h - include file for the generic idempotent responder 
+/* ryresponder.h - include file for the generic idempotent responder
  *
  * $Header: /xtel/isode/isode/others/rfa/RCS/ryresponder.h,v 9.0 1992/06/16 12:47:25 isode Rel $
  *
@@ -23,10 +23,10 @@
 
 
 static struct dispatch {
-    char   *ds_name;
-    int	    ds_operation;
+	char   *ds_name;
+	int	    ds_operation;
 
-    IFP	    ds_vector;
+	IFP	    ds_vector;
 };
 
 

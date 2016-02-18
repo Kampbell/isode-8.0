@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/oid_cmp.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/oid_cmp.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -34,34 +34,33 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/oid_cmp.c,v 9.0 1992/0
 
 int	oid_cmp (p, q)
 register OID	p,
-		q;
+			q;
 {
-    if (p == NULLOID)
-	return (q ? -1 : 0);
+	if (p == NULLOID)
+		return (q ? -1 : 0);
 
-    return elem_cmp (p -> oid_elements, p -> oid_nelem,
-		     q -> oid_elements, q -> oid_nelem);
+	return elem_cmp (p -> oid_elements, p -> oid_nelem,
+					 q -> oid_elements, q -> oid_nelem);
 }
 
 /*  */
 
 int	elem_cmp (ip, i, jp, j)
 register int   i,
-	       j;
+		 j;
 register unsigned int *ip,
-		      *jp;
+		 *jp;
 {
-    while (i > 0) {
-	if (j == 0)
-	    return 1;
-	if (*ip > *jp)
-	    return 1;
-	else
-	    if (*ip < *jp)
-		return (-1);
+	while (i > 0) {
+		if (j == 0)
+			return 1;
+		if (*ip > *jp)
+			return 1;
+		else if (*ip < *jp)
+			return (-1);
 
-	ip++, i--;
-	jp++, j--;
-    }
-    return (j == 0 ? 0 : -1);
+		ip++, i--;
+		jp++, j--;
+	}
+	return (j == 0 ? 0 : -1);
 }

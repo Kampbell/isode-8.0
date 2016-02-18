@@ -35,8 +35,8 @@ main ()
 	TUnitDataBind(); 	/* Bind socket to a remote address */
 	TUnitDataUnbind(); 	/* UnBind socket to a remote address */
 	TUnitDataRequest();	/* Unit Data write on unbound socket */
- 	TUnitDataWrite();	/* Write unit data on a bound socket */
- 	TUnitDataRead();	/* Read unit data on a bound socket */
+	TUnitDataWrite();	/* Write unit data on a bound socket */
+	TUnitDataRead();	/* Read unit data on a bound socket */
 	TUnitDataWakeUp();	/* Sync wakeup routine on kill */
 
 }

@@ -7,10 +7,10 @@
 #include "quipu/attr.h"
 
 typedef struct ent_list {
-  char *string_dn;
-  char *sort_key;
-  AttributeType object_class;
-  struct ent_list *next;
+	char *string_dn;
+	char *sort_key;
+	AttributeType object_class;
+	struct ent_list *next;
 } entry_list, *entryList;
 
 #define NULLEntryList (entryList) NULL

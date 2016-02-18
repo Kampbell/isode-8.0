@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapservice.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/rosapservice.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -41,24 +41,24 @@ int	sd;
 IFP	bfunc;
 struct RoSAPindication *roi;
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	register struct assocblk   *acb;
 
-    missingP (bfunc);
-    missingP (roi);
+	missingP (bfunc);
+	missingP (roi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    if ((acb = findacblk (sd)) == NULL) {
+	if ((acb = findacblk (sd)) == NULL) {
+		(void) sigiomask (smask);
+		return rosaplose (roi, ROS_PARAMETER, NULLCP,
+						  "invalid association descriptor");
+	}
+
+	result = (*bfunc) (acb, roi);
+
 	(void) sigiomask (smask);
-	return rosaplose (roi, ROS_PARAMETER, NULLCP,
-		"invalid association descriptor");
-    }
 
-    result = (*bfunc) (acb, roi);
-
-    (void) sigiomask (smask);
-
-    return result;
+	return result;
 }

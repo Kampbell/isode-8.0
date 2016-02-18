@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/faxx.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/faxx.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -73,9 +73,9 @@ char * name;
 {
 	x = y = 0;
 	if (passno == 1) {
-	    maxx = 0;
-	    two_passes = 1;
-        }
+		maxx = 0;
+		two_passes = 1;
+	}
 	return 0;
 }
 
@@ -88,92 +88,90 @@ char * name;
 	char buff[128];
 
 	if (passno == 1) {
-	    passno = 2;
-	    x = maxx;
-	    --y;
+		passno = 2;
+		x = maxx;
+		--y;
 
-	    /* Initialise a window to recieve a photo of 'name' */
+		/* Initialise a window to recieve a photo of 'name' */
 
-	    if (!(dpy= XOpenDisplay((char *) 0))) {
-		(void) printf ("Cannot open X display");
-		return (-1);
-	    }
-	    XSetIOErrorHandler(silentExit);
-	    scr = DefaultScreenOfDisplay(dpy);
-	    winW = x / decimation;
-	    winH = y / decimation;
-	    winX = WidthOfScreen(scr) - winW;
-	    winY = HeightOfScreen(scr) - winH;
+		if (!(dpy= XOpenDisplay((char *) 0))) {
+			(void) printf ("Cannot open X display");
+			return (-1);
+		}
+		XSetIOErrorHandler(silentExit);
+		scr = DefaultScreenOfDisplay(dpy);
+		winW = x / decimation;
+		winH = y / decimation;
+		winX = WidthOfScreen(scr) - winW;
+		winY = HeightOfScreen(scr) - winH;
 
-	    xswa.event_mask = ExposureMask | ButtonReleaseMask | ButtonPressMask;
+		xswa.event_mask = ExposureMask | ButtonReleaseMask | ButtonPressMask;
 
-	    xswa.background_pixel = BlackPixelOfScreen(scr);
-	    xswa.backing_store	= WhenMapped;
+		xswa.background_pixel = BlackPixelOfScreen(scr);
+		xswa.backing_store	= WhenMapped;
 
-	    win = XCreateWindow(dpy, RootWindowOfScreen(scr),
-				winX, winY, winW, winH, 0,
-				DefaultDepthOfScreen(scr), InputOutput,
-				DefaultVisualOfScreen(scr),
-				CWEventMask | CWBackPixel | CWBackingStore, &xswa);
-	    pixmap = XCreatePixmap(dpy, win,
-				   winW,winH, DefaultDepthOfScreen(scr));
-	    if (!pixmap) {
-		(void) fprintf (stderr,"decode_fax: Pixmap failed");
-		return (-1);
-	    }
+		win = XCreateWindow(dpy, RootWindowOfScreen(scr),
+							winX, winY, winW, winH, 0,
+							DefaultDepthOfScreen(scr), InputOutput,
+							DefaultVisualOfScreen(scr),
+							CWEventMask | CWBackPixel | CWBackingStore, &xswa);
+		pixmap = XCreatePixmap(dpy, win,
+							   winW,winH, DefaultDepthOfScreen(scr));
+		if (!pixmap) {
+			(void) fprintf (stderr,"decode_fax: Pixmap failed");
+			return (-1);
+		}
 
-	    /* Set up a graphics context: */
+		/* Set up a graphics context: */
 
-	    gc = XCreateGC(dpy, pixmap, 0, NULL);
+		gc = XCreateGC(dpy, pixmap, 0, NULL);
 
-	    /* Clear pixmap */
+		/* Clear pixmap */
 
-	    XSetForeground(dpy, gc, BlackPixelOfScreen(scr));
-	    XFillRectangle(dpy, pixmap, gc, 0, 0, winW,winH);
+		XSetForeground(dpy, gc, BlackPixelOfScreen(scr));
+		XFillRectangle(dpy, pixmap, gc, 0, 0, winW,winH);
 
-	    XSetForeground(dpy, gc, WhitePixelOfScreen(scr));
-	    XSetBackground(dpy, gc, BlackPixelOfScreen(scr));
+		XSetForeground(dpy, gc, WhitePixelOfScreen(scr));
+		XSetBackground(dpy, gc, BlackPixelOfScreen(scr));
 
-	    XorVal = WhitePixelOfScreen(scr) ^ BlackPixelOfScreen(scr);
-	    
-	    return (0);
-        }
+		XorVal = WhitePixelOfScreen(scr) ^ BlackPixelOfScreen(scr);
+
+		return (0);
+	}
 
 	if (strcmp (name, "unknown") == 0)
-	    name = NULL;
+		name = NULL;
 
 	if (name == NULL) {
-	    (void) printf ("(See X window, pid %d)", getpid());
-	    (void) fflush (stdout);
+		(void) printf ("(See X window, pid %d)", getpid());
+		(void) fflush (stdout);
 	}
-	(void) close (1); 
+	(void) close (1);
 
 	(void) sprintf(buff, name ? "%s" : "%s (%d)",
-		       name ? name : "Photo", getpid());
+				   name ? name : "Photo", getpid());
 	XChangeProperty(dpy, win, XA_WM_NAME, XA_STRING, 8,
-			 PropModeReplace, buff, strlen(buff));
+					PropModeReplace, buff, strlen(buff));
 	XMapWindow(dpy, win);
 	XSetForeground(dpy, gc, XorVal);
-	for (;;)
-	{       XEvent xev;
+	for (;;) {
+		XEvent xev;
 
 		XNextEvent(dpy, &xev);
-		switch (xev.type)
-		{
+		switch (xev.type) {
 		case ButtonPress:
-			if (buttons_down++)
-			{	if (!ignore_action++)
-				{	XSetFunction(dpy, gc, GXcopy);
+			if (buttons_down++) {
+				if (!ignore_action++) {
+					XSetFunction(dpy, gc, GXcopy);
 					XCopyArea(dpy, pixmap, win,
-						gc, 0, 0,
-						PIC_LINESIZE, NUMLINES,
-						0, 0);
+							  gc, 0, 0,
+							  PIC_LINESIZE, NUMLINES,
+							  0, 0);
 				}
-			}
-			else
-			{	XSetFunction(dpy, gc, GXxor);
+			} else {
+				XSetFunction(dpy, gc, GXxor);
 				XFillRectangle(dpy, win, gc,
-					0, 0, PIC_LINESIZE, NUMLINES);
+							   0, 0, PIC_LINESIZE, NUMLINES);
 			}
 			continue;
 		case ButtonRelease:
@@ -185,9 +183,9 @@ char * name;
 		case Expose:
 			XSetFunction(dpy, gc, GXcopy);
 			XCopyArea(dpy, pixmap, win, gc,
-				xev.xexpose.x, xev.xexpose.y,
-				xev.xexpose.width, xev.xexpose.height,
-				xev.xexpose.x, xev.xexpose.y); 
+					  xev.xexpose.x, xev.xexpose.y,
+					  xev.xexpose.width, xev.xexpose.height,
+					  xev.xexpose.x, xev.xexpose.y);
 		default:
 			continue;
 		}
@@ -199,23 +197,23 @@ char * name;
 photo_black (length)
 int length;
 {
-    x += length;
+	x += length;
 }
 
 photo_white (length)
 int length;
 {
-    int x1;
-    int x2;
-    int y1;
+	int x1;
+	int x2;
+	int y1;
 
-    if (passno == 2 && length > 0 && y % decimation == 0) {
-	y1 = y / decimation;
-	x1 = x / decimation;
-	x2 = (x + length - 1) / decimation;
-	XDrawLine (dpy, pixmap, gc, x1, y1, x2, y1);
-    }
-    x += length;
+	if (passno == 2 && length > 0 && y % decimation == 0) {
+		y1 = y / decimation;
+		x1 = x / decimation;
+		x2 = (x + length - 1) / decimation;
+		XDrawLine (dpy, pixmap, gc, x1, y1, x2, y1);
+	}
+	x += length;
 }
 
 
@@ -223,15 +221,15 @@ int length;
 photo_line_end (line)
 bit_string * line;
 {
-    if (passno == 1 && x > maxx)
-	maxx = x;
-    x = 0;
-    ++y;
+	if (passno == 1 && x > maxx)
+		maxx = x;
+	x = 0;
+	++y;
 }
 
 /* ARGSUSED */
 static int *silentExit (dis)
-	Display *dis;
+Display *dis;
 {
 	exit (0);
 }

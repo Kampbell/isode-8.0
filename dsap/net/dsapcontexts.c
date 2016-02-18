@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapcontexts.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dsapcontexts.c,v 9.0 1992/06/16 12:14:05 isode Rel $
  *
  *
@@ -58,23 +58,19 @@ struct PSAPctxlist	* internet_ds_pcdl = &internet_ds_pcdl_s;
 int	  select_context (app_ctx)
 OID			  app_ctx;
 {
-	if(oid_cmp(app_ctx, x500_da_ac) == 0)
-	{
+	if(oid_cmp(app_ctx, x500_da_ac) == 0) {
 		return(DS_CTX_X500_DAP);
 	}
 
-	if(oid_cmp(app_ctx, x500_ds_ac) == 0)
-	{
+	if(oid_cmp(app_ctx, x500_ds_ac) == 0) {
 		return(DS_CTX_X500_DSP);
 	}
 
-	if(oid_cmp(app_ctx, quipu_ds_ac) == 0)
-	{
+	if(oid_cmp(app_ctx, quipu_ds_ac) == 0) {
 		return(DS_CTX_QUIPU_DSP);
 	}
 
-	if(oid_cmp(app_ctx, internet_ds_ac) == 0)
-	{
+	if(oid_cmp(app_ctx, internet_ds_ac) == 0) {
 		return(DS_CTX_INTERNET_DSP);
 	}
 
@@ -86,84 +82,79 @@ int	  judge_ctxlist(req_ctxlist, ok_ctxlist)
 struct PSAPctxlist      * req_ctxlist;
 struct PSAPctxlist      * ok_ctxlist;
 {
-    int			  ctxlist_notok = OK;
-    int                   i;
-    int                   j;
-    OID                   ok_asn;
-    OID                   req_asn;
+	int			  ctxlist_notok = OK;
+	int                   i;
+	int                   j;
+	OID                   ok_asn;
+	OID                   req_asn;
 
-    DLOG (log_dsap, LLOG_TRACE, ("judge_ctxlist"));
+	DLOG (log_dsap, LLOG_TRACE, ("judge_ctxlist"));
 
-    for(i=0; i<req_ctxlist->pc_nctx; i++)
-    {
-	DLOG (log_dsap, LLOG_DEBUG, ("Context (%d): id=%d, %s",
-		i,
-		req_ctxlist->pc_ctx[i].pc_id,
-		oid2ode (req_ctxlist->pc_ctx[i].pc_asn)));
+	for(i=0; i<req_ctxlist->pc_nctx; i++) {
+		DLOG (log_dsap, LLOG_DEBUG, ("Context (%d): id=%d, %s",
+									 i,
+									 req_ctxlist->pc_ctx[i].pc_id,
+									 oid2ode (req_ctxlist->pc_ctx[i].pc_asn)));
 
-	if(req_ctxlist->pc_ctx[i].pc_result == PC_ACCEPT)
-	    req_ctxlist->pc_ctx[i].pc_result = PC_REJECTED;
-    }
-
-    for(j=0; j<ok_ctxlist->pc_nctx; j++)
-    {
-	ok_asn = ok_ctxlist->pc_ctx[j].pc_asn;
-	for(i=0; i<req_ctxlist->pc_nctx; i++)
-	{
-	    if((req_asn = req_ctxlist->pc_ctx[i].pc_asn) == NULLOID) {
-		LLOG (log_dsap,LLOG_EXCEPTIONS,( "Reject: asn is NULLOID"));
-		continue;
-	    }
-
-	    if((oid_cmp(req_asn, ok_asn) == 0))
-		break;
+		if(req_ctxlist->pc_ctx[i].pc_result == PC_ACCEPT)
+			req_ctxlist->pc_ctx[i].pc_result = PC_REJECTED;
 	}
-	if(i < req_ctxlist->pc_nctx) {
-	    req_ctxlist->pc_ctx[i].pc_result = PC_ACCEPT;
-	} else {
-	    LLOG (log_dsap, LLOG_EXCEPTIONS, ("Missing Context: %s", oid2ode (ok_asn)));
-	    ctxlist_notok = NOTOK;
+
+	for(j=0; j<ok_ctxlist->pc_nctx; j++) {
+		ok_asn = ok_ctxlist->pc_ctx[j].pc_asn;
+		for(i=0; i<req_ctxlist->pc_nctx; i++) {
+			if((req_asn = req_ctxlist->pc_ctx[i].pc_asn) == NULLOID) {
+				LLOG (log_dsap,LLOG_EXCEPTIONS,( "Reject: asn is NULLOID"));
+				continue;
+			}
+
+			if((oid_cmp(req_asn, ok_asn) == 0))
+				break;
+		}
+		if(i < req_ctxlist->pc_nctx) {
+			req_ctxlist->pc_ctx[i].pc_result = PC_ACCEPT;
+		} else {
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("Missing Context: %s", oid2ode (ok_asn)));
+			ctxlist_notok = NOTOK;
+		}
 	}
-    }
 
 #ifdef	DEBUG
-    for(i=0; i<req_ctxlist->pc_nctx; i++)
-    {
-	DLOG(log_dsap, LLOG_DEBUG, ("ctx[%d] id = %d, res = %d.", i,
-		req_ctxlist->pc_ctx[i].pc_id,
-		req_ctxlist->pc_ctx[i].pc_result));
+	for(i=0; i<req_ctxlist->pc_nctx; i++) {
+		DLOG(log_dsap, LLOG_DEBUG, ("ctx[%d] id = %d, res = %d.", i,
+									req_ctxlist->pc_ctx[i].pc_id,
+									req_ctxlist->pc_ctx[i].pc_result));
 
-	if(req_ctxlist->pc_ctx[i].pc_result == PC_REJECTED)
-		DLOG (log_dsap, LLOG_DEBUG, ("Context Rejected: id=%d, %s",
-			req_ctxlist->pc_ctx[i].pc_id,
-			oid2ode (req_ctxlist->pc_ctx[i].pc_asn)));
-	    
-    }
+		if(req_ctxlist->pc_ctx[i].pc_result == PC_REJECTED)
+			DLOG (log_dsap, LLOG_DEBUG, ("Context Rejected: id=%d, %s",
+										 req_ctxlist->pc_ctx[i].pc_id,
+										 oid2ode (req_ctxlist->pc_ctx[i].pc_asn)));
+
+	}
 #endif
 
-    return(ctxlist_notok);
+	return(ctxlist_notok);
 }
 
 int	  find_ctx_id(pcdl, ctx_oid)
 struct PSAPctxlist	* pcdl;
 OID			  ctx_oid;
 {
-    int	  i;
+	int	  i;
 
-    DLOG (log_dsap, LLOG_TRACE, ("find_ctx_id"));
+	DLOG (log_dsap, LLOG_TRACE, ("find_ctx_id"));
 
-    for(i=0; i<pcdl->pc_nctx; i++)
-    {
-	if(oid_cmp(ctx_oid, pcdl->pc_ctx[i].pc_asn) == 0)
-	    break;
-    }
+	for(i=0; i<pcdl->pc_nctx; i++) {
+		if(oid_cmp(ctx_oid, pcdl->pc_ctx[i].pc_asn) == 0)
+			break;
+	}
 
-    if(i < pcdl->pc_nctx)
-	return(pcdl->pc_ctx[i].pc_id);
+	if(i < pcdl->pc_nctx)
+		return(pcdl->pc_ctx[i].pc_id);
 
-    LLOG(log_dsap, LLOG_EXCEPTIONS, ("Couldn't find context identifier %s", sprintoid(ctx_oid)));
+	LLOG(log_dsap, LLOG_EXCEPTIONS, ("Couldn't find context identifier %s", sprintoid(ctx_oid)));
 
-    return(NOTOK);
+	return(NOTOK);
 }
 
 int	  check_dap_ctxlist (ctxlist)

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/read.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/read.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -56,7 +56,7 @@ read_cache (argc, argv)
 int             argc;
 char          **argv;
 {
-extern char	doneget;
+	extern char	doneget;
 
 	if (doneget)
 		return (argc);
@@ -90,16 +90,15 @@ CommonArgs     *ca;
 	key_flag = TRUE;
 
 	if (ca)
-	    read_arg.rda_common = *ca;	/* struct copy */
-	else
-	    if ((argc = service_control (OPT, argc, argv, &read_arg.rda_common)) == -1)
+		read_arg.rda_common = *ca;	/* struct copy */
+	else if ((argc = service_control (OPT, argc, argv, &read_arg.rda_common)) == -1)
 		return (-1);
 
 	if ( (argc = set_read_flags (argc,argv)) == -1)
 		return (-1);
 
 	read_arg.rda_eis.eis_infotypes = value_flag;
-	read_arg.rda_eis.eis_allattributes = all_flag;	
+	read_arg.rda_eis.eis_allattributes = all_flag;
 	read_arg.rda_eis.eis_select = as_flag;
 
 	if (!copy_flag)
@@ -108,25 +107,25 @@ CommonArgs     *ca;
 	for (x=1; x< argc; x++) {
 		if (test_arg (argv[x], "-nocache",4))
 			do_read = TRUE;
-		else if (test_arg (argv[x], "-cache",2)) 
+		else if (test_arg (argv[x], "-cache",2))
 			noread_flag = TRUE;
 		else
 			continue;
 		shuffle_up (argc--,argv,x--);
 	}
 
-	if ( ! ali ) 
+	if ( ! ali )
 		read_arg.rda_common.ca_servicecontrol.svc_options |= SVC_OPT_DONTDEREFERENCEALIAS;
 
-        else if ((read_arg.rda_common.ca_servicecontrol.svc_options & SVC_OPT_DONTDEREFERENCEALIAS) == 0)
-                deref = TRUE;
+	else if ((read_arg.rda_common.ca_servicecontrol.svc_options & SVC_OPT_DONTDEREFERENCEALIAS) == 0)
+		deref = TRUE;
 
 	if ((read_entry = local_find_entry (dn, deref)) != NULLENTRY) {
 
 		for (as = as_flag; as!= NULLATTR; as = as->attr_link)
-			if (as_find_type (read_entry->e_attributes, as->attr_type) == NULL) 
+			if (as_find_type (read_entry->e_attributes, as->attr_type) == NULL)
 				do_read = TRUE;
-		
+
 		if (value_flag && (!read_entry->e_lock))
 			do_read = TRUE;
 
@@ -136,7 +135,7 @@ CommonArgs     *ca;
 		current_entry = read_entry;
 		dn_free (current_dn);
 		current_dn = get_copy_dn (read_entry);
-	} else 
+	} else
 		do_read = TRUE;
 
 	if (do_read)
@@ -149,21 +148,20 @@ CommonArgs     *ca;
 		else {
 			struct DSError  error;
 			struct ds_read_result result;
-				
+
 			read_arg.rda_object = dn;
-				
+
 			if (rebind () != OK)
 				return(-2);
-				
-			/* Strong authentication */
-			if (read_arg.rda_common.ca_security != 
-				(struct security_parms *) 0)
-			{
-			extern struct SecurityServices *dsap_security;
 
-			read_arg.rda_common.ca_sig =
-				(dsap_security->serv_sign)((caddr_t)&read_arg,
-					_ZReadArgumentDataDAS, &_ZDAS_mod);
+			/* Strong authentication */
+			if (read_arg.rda_common.ca_security !=
+					(struct security_parms *) 0) {
+				extern struct SecurityServices *dsap_security;
+
+				read_arg.rda_common.ca_sig =
+					(dsap_security->serv_sign)((caddr_t)&read_arg,
+											   _ZReadArgumentDataDAS, &_ZDAS_mod);
 			}
 
 			while (ds_read (&read_arg, &error, &result) != DS_OK) {
@@ -171,20 +169,20 @@ CommonArgs     *ca;
 					return (-2);
 				read_arg.rda_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 			}
-				
+
 			if (result.rdr_entry.ent_attr == NULLATTR) {
 				ps_print (OPT, "No attributes\n");
 				return (-2);
 			}
-				
+
 			if (result.rdr_common.cr_aliasdereferenced) {
 				ps_print (RPS, "(Alias dereferenced)\n");
 			}
-				
+
 			cache_entry (&(result.rdr_entry), read_arg.rda_eis.eis_allattributes, value_flag);
-				
+
 			entryinfo_comp_free (&result.rdr_entry,0);
-				
+
 			return (argc);
 		}
 
@@ -196,9 +194,9 @@ set_read_flags (argc,argv)
 int argc;
 char ** argv;
 {
-register int x;
-AttributeType at;
-extern char allow_move;
+	register int x;
+	AttributeType at;
+	extern char allow_move;
 
 	print_format = READOUT;
 	tmp_ignore = NULLATTR;
@@ -214,22 +212,22 @@ extern char allow_move;
 			value_flag = EIS_ATTRIBUTESANDVALUES;
 		else if (test_arg (argv[x], "-novalue",3))
 			value_flag = EIS_ATTRIBUTETYPESONLY;
-		else if (test_arg (argv[x], "-show",2)) 
+		else if (test_arg (argv[x], "-show",2))
 			flag_show = TRUE;
 		else if (test_arg (argv[x], "-noshow",4))
 			flag_show = FALSE;
-		else if (test_arg(argv[x],"-noname",3)) 
+		else if (test_arg(argv[x],"-noname",3))
 			name_flag = FALSE;
 		else if (test_arg (argv[x],"-name",2))
 			name_flag = TRUE;
-		else if (test_arg (argv[x], "-key",1)) 
+		else if (test_arg (argv[x], "-key",1))
 			key_flag = TRUE;
 		else if (test_arg (argv[x], "-nokey",3))
 			key_flag = FALSE;
 		else if (test_arg (argv[x], "-edb",3))
 			print_format = EDBOUT;
 		else if (test_arg (argv[x], "-sequence",3)) {
-			if (x + 1 == argc) {	
+			if (x + 1 == argc) {
 				ps_printf (OPT, "We need a sequence name.\n");
 				return (-1);
 			} else {
@@ -251,9 +249,9 @@ extern char allow_move;
 				return (-1);
 			}
 			for (x++; x < argc;) {
-				if (*argv[x] == '-') 
+				if (*argv[x] == '-')
 					break;
-				if ((at = AttrT_new (argv[x])) != NULLAttrT) 
+				if ((at = AttrT_new (argv[x])) != NULLAttrT)
 					as_flag = as_merge (as_flag,as_comp_new (AttrT_cpy (at), NULLAV, NULLACL_INFO));
 				else
 					break;
@@ -273,9 +271,9 @@ extern char allow_move;
 				return (-1);
 			}
 			for (x++; x < argc;) {
-				if (*argv[x] == '-') 
+				if (*argv[x] == '-')
 					break;
-				if ((at = AttrT_new (argv[x])) != NULLAttrT) 
+				if ((at = AttrT_new (argv[x])) != NULLAttrT)
 					tmp_ignore = as_merge (tmp_ignore,as_comp_new (AttrT_cpy (at), NULLAV, NULLACL_INFO));
 				else
 					break;
@@ -300,7 +298,7 @@ extern char allow_move;
 		} else if (allow_move) {
 			if (move (argv[x]) != OK)
 				continue;
-		} else 
+		} else
 			continue;
 
 		shuffle_up (argc--,argv,x--);

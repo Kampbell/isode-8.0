@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapminor2.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapminor2.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -42,24 +42,24 @@ char   *data;
 int	cc;
 struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
 
-    if (SERIAL_MIN > ssn || ssn > SERIAL_MAX)
-	return ssaplose (si, SC_PARAMETER, NULLCP, "invalid serial number");
-    missingP (si);
+	if (SERIAL_MIN > ssn || ssn > SERIAL_MAX)
+		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid serial number");
+	missingP (si);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ssapPsig (sb, sd);
-    toomuchP (sb, data, cc, SN_SIZE, "minorsync");
+	ssapPsig (sb, sd);
+	toomuchP (sb, data, cc, SN_SIZE, "minorsync");
 
-    result = SMinSyncResponseAux (sb, ssn, data, cc, si);
+	result = SMinSyncResponseAux (sb, ssn, data, cc, si);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -71,23 +71,23 @@ char   *data;
 int	cc;
 register struct SSAPindication *si;
 {
-    int     result;
+	int     result;
 
-    if (!(sb -> sb_requirements & SR_MINORSYNC))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"minor synchronize service unavailable");
-    if (!(sb -> sb_flags & SB_Vsc))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"no minorsync in progress");
-    if (ssn < sb -> sb_V_A)
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"bad choice for minor ssn, should be >= %ld", sb -> sb_V_A);
+	if (!(sb -> sb_requirements & SR_MINORSYNC))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "minor synchronize service unavailable");
+	if (!(sb -> sb_flags & SB_Vsc))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "no minorsync in progress");
+	if (ssn < sb -> sb_V_A)
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "bad choice for minor ssn, should be >= %ld", sb -> sb_V_A);
 
-    if ((result = SWriteRequestAux (sb, SPDU_MIA, data, cc, 0, ssn, 0, NULLSD,
-		NULLSD, NULLSR, si)) == NOTOK)
-	freesblk (sb);
-    else
-	sb -> sb_V_A = ssn + 1;
+	if ((result = SWriteRequestAux (sb, SPDU_MIA, data, cc, 0, ssn, 0, NULLSD,
+									NULLSD, NULLSR, si)) == NOTOK)
+		freesblk (sb);
+	else
+		sb -> sb_V_A = ssn + 1;
 
-    return result;
+	return result;
 }

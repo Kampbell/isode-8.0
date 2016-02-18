@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapresync2.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapresync2.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -43,22 +43,22 @@ char   *data;
 int	cc;
 struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
 
-    missingP (si);
+	missingP (si);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ssapRsig (sb, sd);
-    toomuchP (sb, data, cc, SN_SIZE, "resync");
+	ssapRsig (sb, sd);
+	toomuchP (sb, data, cc, SN_SIZE, "resync");
 
-    result = SReSyncResponseAux (sb, ssn, settings, data, cc, si);
+	result = SReSyncResponseAux (sb, ssn, settings, data, cc, si);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -71,27 +71,27 @@ char   *data;
 int	cc;
 register struct SSAPindication *si;
 {
-    int	    result;
+	int	    result;
 
-    if (!(sb -> sb_requirements & SR_RESYNC))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"resynchronize service unavailable");
-    if (!(sb -> sb_flags & SB_RA))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"no resync in progress");
+	if (!(sb -> sb_requirements & SR_RESYNC))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "resynchronize service unavailable");
+	if (!(sb -> sb_flags & SB_RA))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "no resync in progress");
 
-    switch (sb -> sb_rs) {
+	switch (sb -> sb_rs) {
 	case SYNC_RESTART:
-	    ssn = sb -> sb_rsn;
-	    break;
+		ssn = sb -> sb_rsn;
+		break;
 
 	case SYNC_ABANDON:
-	    ssn = sb -> sb_V_A;
-	    break;
+		ssn = sb -> sb_V_A;
+		break;
 
 	case SYNC_SET:
-	    break;
-    }
+		break;
+	}
 
 #define	dotoken(requires,shift,bit,type) \
 { \
@@ -127,19 +127,19 @@ register struct SSAPindication *si;
 		    return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "setting of %s token is not your choice"); \
 		break;
-    dotokens ();
+	dotokens ();
 #undef	dotoken
 #undef	dotoken1
 #undef	dotoken2
 
-    if ((result = SWriteRequestAux (sb, SPDU_RA, data, cc, 0, ssn,
-		settings, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
-	freesblk (sb);
-    else {
-	sb -> sb_flags &= ~SB_RA;
-	sb -> sb_V_A = sb -> sb_V_M = ssn;
-	if (sb -> sb_rs != SYNC_RESTART)
-	    sb -> sb_V_R = 0;
+	if ((result = SWriteRequestAux (sb, SPDU_RA, data, cc, 0, ssn,
+									settings, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
+		freesblk (sb);
+	else {
+		sb -> sb_flags &= ~SB_RA;
+		sb -> sb_V_A = sb -> sb_V_M = ssn;
+		if (sb -> sb_rs != SYNC_RESTART)
+			sb -> sb_V_R = 0;
 
 #define	dotoken(requires,shift,bit,type) \
 { \
@@ -159,10 +159,10 @@ register struct SSAPindication *si;
 			sb -> sb_owned &= ~bit; \
 		    break; \
 	    } \
-} 
-	dotokens ();
+}
+		dotokens ();
 #undef	dotoken
-    }
-    
-    return result;
+	}
+
+	return result;
 }

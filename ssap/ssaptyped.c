@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaptyped.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssaptyped.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -39,28 +39,28 @@ char   *data;
 int	cc;
 struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    struct udvec uvs[2];
-    register struct udvec *uv = uvs;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	struct udvec uvs[2];
+	register struct udvec *uv = uvs;
+	register struct ssapblk *sb;
 
-    missingP (data);
-    if (cc <= 0)
-	return ssaplose (si, SC_PARAMETER, NULLCP,
-		    "illegal value for TSSDU length (%d)", cc);
-    missingP (si);
+	missingP (data);
+	if (cc <= 0)
+		return ssaplose (si, SC_PARAMETER, NULLCP,
+						 "illegal value for TSSDU length (%d)", cc);
+	missingP (si);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ssapPsig (sb, sd);
+	ssapPsig (sb, sd);
 
-    uv -> uv_base = data, uv -> uv_len = cc, uv++;
-    uv -> uv_base = NULL;
+	uv -> uv_base = data, uv -> uv_len = cc, uv++;
+	uv -> uv_base = NULL;
 
-    result = SDataRequestAux (sb, SPDU_TD, uvs, 1, 1, si);
+	result = SDataRequestAux (sb, SPDU_TD, uvs, 1, 1, si);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }

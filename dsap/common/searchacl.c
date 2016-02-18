@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/searchacl.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/searchacl.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -37,8 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/searchacl.c,v 9
  * These routines implement the searchACLSyntax.  The EDB representation
  * of this syntax is as follows:
  *
- * SearchACLSyntax ::= <accessselector> '#' <access> '#' <attrs> '#' <scope> 
- *			[ '#' <max-results> '#' <partialresults> 
+ * SearchACLSyntax ::= <accessselector> '#' <access> '#' <attrs> '#' <scope>
+ *			[ '#' <max-results> '#' <partialresults>
  *			[ '#' <minkeylen> ]]
  *
  *
@@ -70,8 +70,7 @@ short lacl_sntx = -1;
 
 extern LLog	*log_dsap;
 
-static Saclinfo sacl_alloc()
-{
+static Saclinfo sacl_alloc() {
 	Saclinfo	new;
 
 	new = (Saclinfo) smalloc( sizeof(saclinfo) );
@@ -106,7 +105,7 @@ Saclinfo p;
 	free( (char *) p );
 }
 
-/* 
+/*
  * selector_rank is used to rank acl selectors from most to least specific.
  */
 
@@ -156,7 +155,7 @@ Saclinfo b;
 
 	if ( a->sac_zeroifexceeded != b->sac_zeroifexceeded )
 		return( a->sac_zeroifexceeded < b->sac_zeroifexceeded ?
-		    -1 : 1 );
+				-1 : 1 );
 
 	return( 0 );
 }
@@ -216,7 +215,7 @@ PE	pe;
 	Saclinfo acl;
 
 	if ( decode_Quipu_SearchACLSyntax( pe, 1, NULLIP, NULLVP, &acl )
-	    == NOTOK ) {
+			== NOTOK ) {
 		return( NULLSACL );
 	}
 
@@ -268,7 +267,7 @@ char	*str;
 	}
 
 	if ( new->sac_selector == ACL_GROUP
-	    || new->sac_selector == ACL_PREFIX) {
+			|| new->sac_selector == ACL_PREFIX) {
 		/* skip past next # */
 		*s++ = save;
 		str = s;
@@ -490,10 +489,10 @@ char	*str;
 }
 
 static char	*sacl_scope[] = {
-			"subtree",
-			"singlelevel",
-			"baseobject"
-		};
+	"subtree",
+	"singlelevel",
+	"baseobject"
+};
 
 sacl_print( ps, acl, format )
 PS		ps;
@@ -509,7 +508,7 @@ int		format;
 	else
 		ps_printf( ps, "%s # ", acl_sel[ acl->sac_selector ] );
 	if ( acl->sac_selector == ACL_GROUP
-	   || acl->sac_selector == ACL_PREFIX ) {
+			|| acl->sac_selector == ACL_PREFIX ) {
 		if ( format == READOUT )
 			ps_printf( ps, "( " );
 		dn_seq_print( ps, acl->sac_name, format );
@@ -575,7 +574,7 @@ int		format;
 	/* max results */
 	if ( format == READOUT )
 		ps_printf( ps, "\n\t\t\t(limit %d matches",
-		    acl->sac_maxresults );
+				   acl->sac_maxresults );
 	else
 		ps_printf( ps, " # %d", acl->sac_maxresults );
 
@@ -587,14 +586,14 @@ int		format;
 			ps_printf( ps, ")" );
 	} else
 		ps_printf( ps, " # %s", acl->sac_zeroifexceeded ?
-		    "nopartialresults" : "partialresults" );
+				   "nopartialresults" : "partialresults" );
 
 	/* min key length */
 	if ( acl->sac_minkeylength != SACL_NOMINLENGTH ) {
 		if ( format == READOUT )
 			ps_printf( ps,
-			    ",\n\t\t\tminimum substring key length is %d",
-			    acl->sac_minkeylength );
+					   ",\n\t\t\tminimum substring key length is %d",
+					   acl->sac_minkeylength );
 		else
 			ps_printf( ps, " # %d", acl->sac_minkeylength );
 	}
@@ -606,7 +605,7 @@ PE	pe;
 	Listacl	acl;
 
 	if ( decode_Quipu_ListACLSyntax( pe, 1, NULLIP, NULLVP, &acl )
-	    == NOTOK ) {
+			== NOTOK ) {
 		return( NULLLISTACL );
 	}
 
@@ -657,7 +656,7 @@ char	*str;
 	}
 
 	if ( new->sac_selector == ACL_GROUP
-	    || new->sac_selector == ACL_PREFIX) {
+			|| new->sac_selector == ACL_PREFIX) {
 		/* skip past next # */
 		*s++ = save;
 		str = s;
@@ -765,7 +764,7 @@ int	format;
 	else
 		ps_printf( ps, "%s # ", acl_sel[ acl->sac_selector ] );
 	if ( acl->sac_selector == ACL_GROUP
-	    || acl->sac_selector == ACL_PREFIX ){
+			|| acl->sac_selector == ACL_PREFIX ) {
 		if ( format == READOUT )
 			ps_printf( ps, "( " );
 		dn_seq_print( ps, acl->sac_name, format );
@@ -805,7 +804,7 @@ int	format;
 	if ( acl->sac_maxresults > 0 ) {
 		if ( format == READOUT )
 			ps_printf( ps, " (limit %d entries)",
-			    acl->sac_maxresults );
+					   acl->sac_maxresults );
 		else
 			ps_printf( ps, " # %d", acl->sac_maxresults );
 	}
@@ -813,22 +812,20 @@ int	format;
 	return;
 }
 
-sacl_syntax()
-{
+sacl_syntax() {
 	sacl_sntx = add_attribute_syntax ("SearchACLSyntax",
-		(IFP) sacl_enc,	(IFP) sacl_decode,
-		(IFP) str2sacl,	sacl_print,
-		(IFP) sacl_cpy,	sacl_cmp,
-		sacl_free,	NULLCP,
-		NULLIFP,	TRUE);
+									  (IFP) sacl_enc,	(IFP) sacl_decode,
+									  (IFP) str2sacl,	sacl_print,
+									  (IFP) sacl_cpy,	sacl_cmp,
+									  sacl_free,	NULLCP,
+									  NULLIFP,	TRUE);
 }
 
-lacl_syntax()
-{
+lacl_syntax() {
 	lacl_sntx = add_attribute_syntax ("ListACLSyntax",
-		(IFP) lacl_enc,	(IFP) lacl_decode,
-		(IFP) str2lacl,	lacl_print,
-		(IFP) lacl_cpy,	lacl_cmp,
-		lacl_free,	NULLCP,
-		NULLIFP,	TRUE);
+									  (IFP) lacl_enc,	(IFP) lacl_decode,
+									  (IFP) str2lacl,	lacl_print,
+									  (IFP) lacl_cpy,	lacl_cmp,
+									  lacl_free,	NULLCP,
+									  NULLIFP,	TRUE);
 }

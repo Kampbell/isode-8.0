@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssthorn.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/ro2ssthorn.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  *
@@ -38,7 +38,7 @@ register struct qbuf *qb;
 int	len;
 int    *result;
 {
-    return qb2pe (qb, len, 2, result);
+	return qb2pe (qb, len, 2, result);
 }
 
 /*    modify underling service */
@@ -47,30 +47,29 @@ int	RoSetThorn (sd, roi)
 int	sd;
 struct RoSAPindication *roi;
 {
-    SBV	    smask;
-    int	    result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int	    result;
+	register struct assocblk   *acb;
 
-    missingP (roi);
+	missingP (roi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    if ((acb = findacblk (sd)) == NULL) {
+	if ((acb = findacblk (sd)) == NULL) {
+		(void) sigiomask (smask);
+		return rosaplose (roi, ROS_PARAMETER, NULLCP,
+						  "invalid association descriptor");
+	}
+
+	if (acb -> acb_flags & ACB_ROS) {
+		acb -> acb_getosdu = qb2Rpe;
+		result = OK;
+	} else
+		result = rosaplose (roi, ROS_OPERATION, NULLCP,
+							"not an association descriptor for ROS");
+
+
 	(void) sigiomask (smask);
-	return rosaplose (roi, ROS_PARAMETER, NULLCP,
-			  "invalid association descriptor");
-    }
 
-    if (acb -> acb_flags & ACB_ROS) {
-	acb -> acb_getosdu = qb2Rpe;
-	result = OK;
-    }
-    else
-	result = rosaplose (roi, ROS_OPERATION, NULLCP,
-			    "not an association descriptor for ROS");
-
-
-    (void) sigiomask (smask);
-
-    return result;
+	return result;
 }

@@ -1,6 +1,6 @@
 /* general.h - general compatibility */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/general.h,v 5.0 88/07/21 14:38:59 mrose Rel $
  *
  *

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/log_tai.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/log_tai.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -88,49 +88,47 @@ int     ac;
 	register char *p;
 	int	 val;
 
-	for(i = 0; i < ac; i++)
-	{
+	for(i = 0; i < ac; i++) {
 		if((p = index(av[i], '=')) == NULLCP)
 			continue;
 		*p++ = NULL;
-		switch(cmd_srch(av[i], log_tbl))
-		{
-			case LG_LEVEL:
-				val = cmd_srch(p,log_lvltbl);
-				if (val != -1)
-					lgptr->ll_events |= val;
-				break;
-			case LG_DSLEVEL:
-				val = cmd_srch (p, log_lvltbl);
-				if (val != -1)
-					lgptr -> ll_syslog &= ~val;
-				break;
-			case LG_SSLEVEL:
-				val = cmd_srch (p, log_lvltbl);
-				if (val != -1)
-					lgptr -> ll_syslog |= val;
-				break;
-			case LG_DLEVEL:
-				val = cmd_srch(p,log_lvltbl);
-				if (val != -1)
-					lgptr->ll_events &= ~ val;
-				break;
-			case LG_FILE:
-				lgptr->ll_file = strdup (p);
-				break;
-			case LG_SFLAGS:
-				val = cmd_srch(p,log_flgtbl);
-				if (val != -1)
-					lgptr->ll_stat |= val;
-				break;
-			case LG_DFLAGS:
-				val = cmd_srch(p,log_flgtbl);
-				if (val != -1)
-					lgptr->ll_stat &= ~ val;
-				break;
-			case LG_SIZE:
-				lgptr->ll_msize = atoi(p);
-				break;
+		switch(cmd_srch(av[i], log_tbl)) {
+		case LG_LEVEL:
+			val = cmd_srch(p,log_lvltbl);
+			if (val != -1)
+				lgptr->ll_events |= val;
+			break;
+		case LG_DSLEVEL:
+			val = cmd_srch (p, log_lvltbl);
+			if (val != -1)
+				lgptr -> ll_syslog &= ~val;
+			break;
+		case LG_SSLEVEL:
+			val = cmd_srch (p, log_lvltbl);
+			if (val != -1)
+				lgptr -> ll_syslog |= val;
+			break;
+		case LG_DLEVEL:
+			val = cmd_srch(p,log_lvltbl);
+			if (val != -1)
+				lgptr->ll_events &= ~ val;
+			break;
+		case LG_FILE:
+			lgptr->ll_file = strdup (p);
+			break;
+		case LG_SFLAGS:
+			val = cmd_srch(p,log_flgtbl);
+			if (val != -1)
+				lgptr->ll_stat |= val;
+			break;
+		case LG_DFLAGS:
+			val = cmd_srch(p,log_flgtbl);
+			if (val != -1)
+				lgptr->ll_stat &= ~ val;
+			break;
+		case LG_SIZE:
+			lgptr->ll_msize = atoi(p);
+			break;
 		}
 	}
 }

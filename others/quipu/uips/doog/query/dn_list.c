@@ -34,37 +34,37 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/doog/query/RC
  *
  */
 QBool dn_list_insert(dn, entry_list_ptr, object_type)
-     char *dn;
-     entryList *entry_list_ptr;
-     AttributeType object_type;
+char *dn;
+entryList *entry_list_ptr;
+AttributeType object_type;
 {
-  entryList element, new_element;
-  register char *sort_key;
-  char *entry_name;
+	entryList element, new_element;
+	register char *sort_key;
+	char *entry_name;
 
-  element = *entry_list_ptr;
+	element = *entry_list_ptr;
 
-  new_element = entry_list_alloc();
-  new_element->string_dn = entry_name = copy_string(dn);
-  new_element->object_class = object_type;
-  
-  /* Sort key is at present the attr value of the RDN.
-     ####### Need to do more for 'cn' attributes. ####### */
-  sort_key = entry_name;
+	new_element = entry_list_alloc();
+	new_element->string_dn = entry_name = copy_string(dn);
+	new_element->object_class = object_type;
 
-  while (*sort_key != '\0') sort_key++;
-  while (*sort_key != '=') sort_key--;
+	/* Sort key is at present the attr value of the RDN.
+	   ####### Need to do more for 'cn' attributes. ####### */
+	sort_key = entry_name;
 
-  sort_key++;
+	while (*sort_key != '\0') sort_key++;
+	while (*sort_key != '=') sort_key--;
 
-  while (isspace(*sort_key)) sort_key++;
+	sort_key++;
 
-  new_element->sort_key = sort_key;
+	while (isspace(*sort_key)) sort_key++;
 
-  new_element->next = element;
-  *entry_list_ptr = new_element;
+	new_element->sort_key = sort_key;
 
-  return TRUE;
+	new_element->next = element;
+	*entry_list_ptr = new_element;
+
+	return TRUE;
 } /* dn_list_insert */
 
 /*
@@ -73,86 +73,77 @@ QBool dn_list_insert(dn, entry_list_ptr, object_type)
  *
  */
 QBool dn_list_add(dn, entry_list_ptr, object_type)
-     char *dn;
-     entryList *entry_list_ptr;
-     AttributeType object_type;
+char *dn;
+entryList *entry_list_ptr;
+AttributeType object_type;
 {
-  entryList element, new_element;
-  register char *sort_key;
-  char *entry_name;
-  int lexcmp;
+	entryList element, new_element;
+	register char *sort_key;
+	char *entry_name;
+	int lexcmp;
 
-  element = *entry_list_ptr;
+	element = *entry_list_ptr;
 
-  new_element = entry_list_alloc();
-  new_element->string_dn = entry_name = copy_string(dn);
-  new_element->object_class = object_type;
-  
-  /* Sort key is at present the attr value of the RDN.
-     ####### Need to do more for 'cn' attributes. ####### */
-  sort_key = entry_name;
+	new_element = entry_list_alloc();
+	new_element->string_dn = entry_name = copy_string(dn);
+	new_element->object_class = object_type;
 
-  while (*sort_key != '\0')
-    sort_key++;
+	/* Sort key is at present the attr value of the RDN.
+	   ####### Need to do more for 'cn' attributes. ####### */
+	sort_key = entry_name;
 
-  while (*sort_key != '=')
-    sort_key--;
+	while (*sort_key != '\0')
+		sort_key++;
 
-  sort_key++;
-  while (isspace(*sort_key))
-    sort_key++;
+	while (*sort_key != '=')
+		sort_key--;
 
-  new_element->sort_key = sort_key;
-  
-  /* If given list is empty, return new_element. */
-  if (element == NULLEntryList)
-    {
-      new_element->next = NULLEntryList;
-      *entry_list_ptr = new_element;
+	sort_key++;
+	while (isspace(*sort_key))
+		sort_key++;
 
-      return TRUE;
-    }
-  
-  /* Check if alphabetically lower than first in list. */
-  lexcmp = lexequ(sort_key, element->sort_key);
+	new_element->sort_key = sort_key;
 
-  if (lexcmp < 0)
-    {
-      new_element->next = element;
-      *entry_list_ptr = new_element;
-    }
-  else if (lexcmp == 0) /* Don't want the same dn twice */
-    {
-      (void) free(entry_name);
-      (void) free((char *) new_element);
+	/* If given list is empty, return new_element. */
+	if (element == NULLEntryList) {
+		new_element->next = NULLEntryList;
+		*entry_list_ptr = new_element;
 
-      return FALSE;
-    }
-  else
-    {
-      /* Insert new entry_list into alphabetical position. */
-      while (element->next != NULLEntryList)
-	{
-	  lexcmp = lexequ(sort_key, element->next->sort_key);
-
-	  if (lexcmp < 0)
-	    break;
-	  else if (lexcmp == 0)
-	    {
-	      (void) free(entry_name);
-	      (void) free((char *) new_element);
-
-	      return FALSE;
-	    }
-	  else
-	    element = element->next;
+		return TRUE;
 	}
 
-      new_element->next = element->next;
-      element->next = new_element;
-    }
-  
-  return TRUE;
+	/* Check if alphabetically lower than first in list. */
+	lexcmp = lexequ(sort_key, element->sort_key);
+
+	if (lexcmp < 0) {
+		new_element->next = element;
+		*entry_list_ptr = new_element;
+	} else if (lexcmp == 0) { /* Don't want the same dn twice */
+		(void) free(entry_name);
+		(void) free((char *) new_element);
+
+		return FALSE;
+	} else {
+		/* Insert new entry_list into alphabetical position. */
+		while (element->next != NULLEntryList) {
+			lexcmp = lexequ(sort_key, element->next->sort_key);
+
+			if (lexcmp < 0)
+				break;
+			else if (lexcmp == 0) {
+				(void) free(entry_name);
+				(void) free((char *) new_element);
+
+				return FALSE;
+			} else
+				element = element->next;
+		}
+
+		new_element->next = element->next;
+		element->next = new_element;
+	}
+
+	return TRUE;
 } /* dn_list_add */
 
 /*
@@ -161,21 +152,20 @@ QBool dn_list_add(dn, entry_list_ptr, object_type)
  *
  */
 void dn_list_free(entry_list_ptr)
-     entryList *entry_list_ptr;
+entryList *entry_list_ptr;
 {
-  entryList next_entry, list = *entry_list_ptr;
+	entryList next_entry, list = *entry_list_ptr;
 
-  while (list != NULLEntryList)
-    {
-      next_entry = list->next;
-      (void) free(list->string_dn);
+	while (list != NULLEntryList) {
+		next_entry = list->next;
+		(void) free(list->string_dn);
 
-      /* Don't have to free sort key as it is a pointer into above string. */
-      (void) free((char *) list);
-      list = next_entry;
-    }
-  
-  *entry_list_ptr = NULLEntryList;
+		/* Don't have to free sort key as it is a pointer into above string. */
+		(void) free((char *) list);
+		list = next_entry;
+	}
+
+	*entry_list_ptr = NULLEntryList;
 } /* dn_list_free */
 
 /*
@@ -184,29 +174,28 @@ void dn_list_free(entry_list_ptr)
  *
  */
 void dn_list_copy(original, copy)
-     entryList original, *copy;
+entryList original, *copy;
 {
-  entryList copylist = NULLEntryList;
-  int sort_key_diff = 0;
+	entryList copylist = NULLEntryList;
+	int sort_key_diff = 0;
 
-  for (*copy = NULLEntryList;
-       original != NULLEntryList;
-       original = original->next)
-    {
-      if (copylist == NULLEntryList)
-	copylist = *copy = entry_list_alloc();
-      else
-	copylist = copylist->next = entry_list_alloc();
-      
-      copylist->next = NULLEntryList;
+	for (*copy = NULLEntryList;
+			original != NULLEntryList;
+			original = original->next) {
+		if (copylist == NULLEntryList)
+			copylist = *copy = entry_list_alloc();
+		else
+			copylist = copylist->next = entry_list_alloc();
 
-      /* sort_key is a pointer into string_dn */
-      sort_key_diff = (int) (original->sort_key - original->string_dn);
-      
-      copylist->sort_key = copylist->string_dn =
-	copy_string(original->string_dn);
-      
-      copylist->sort_key = (char *) (sort_key_diff + copylist->sort_key);
-      copylist->object_class = original->object_class;
-    }
+		copylist->next = NULLEntryList;
+
+		/* sort_key is a pointer into string_dn */
+		sort_key_diff = (int) (original->sort_key - original->string_dn);
+
+		copylist->sort_key = copylist->string_dn =
+								 copy_string(original->string_dn);
+
+		copylist->sort_key = (char *) (sort_key_diff + copylist->sort_key);
+		copylist->object_class = original->object_class;
+	}
 } /* dn_list_copy */

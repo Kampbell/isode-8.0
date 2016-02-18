@@ -39,10 +39,10 @@ dsap_init(acptr,avptr)
 int *acptr;
 char *** avptr;
 {
-char * name;
-char ** ptr;
-int cnt;
-extern int parse_line;
+	char * name;
+	char ** ptr;
+	int cnt;
+	extern int parse_line;
 
 	parse_line = 0;		/* stop 'line 1:' being printed in tailor file errors */
 
@@ -51,9 +51,9 @@ extern int parse_line;
 	else
 		name = **avptr;
 
- 	isodetailor (name, 1);		/* must be called before any isodefile() */
- 	log_dsap -> ll_file = strdup ("dsap.log");
- 	ll_hdinit (log_dsap, name);
+	isodetailor (name, 1);		/* must be called before any isodefile() */
+	log_dsap -> ll_file = strdup ("dsap.log");
+	ll_hdinit (log_dsap, name);
 
 	DLOG (log_dsap,LLOG_TRACE,("Initialisation"));
 
@@ -72,10 +72,10 @@ extern int parse_line;
 		else
 			fatal (-1, "dsa_address not set");
 
-	if (acptr != (int *)NULL) 
+	if (acptr != (int *)NULL)
 		(void) tai_args (&cnt,&ptr);  /* second call IS needed */
 	else
-		(void) tai_args (acptr,avptr);  
+		(void) tai_args (acptr,avptr);
 
 	LLOG (log_dsap,LLOG_NOTICE,("Loading oid table (%s)",oidtable));
 	if (load_oid_table (oidtable) == NOTOK)

@@ -5,7 +5,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ts2ps.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/ts2ps.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -39,43 +39,43 @@ int	ts_read (fd, q)
 int	fd;
 struct qbuf **q;
 {
-    register struct qbuf *qb;
-    struct TSAPdata  txs;
-    register struct TSAPdata *tx = &txs;
-    struct TSAPdisconnect  tds;
-    register struct TSAPdisconnect *td = &tds;
+	register struct qbuf *qb;
+	struct TSAPdata  txs;
+	register struct TSAPdata *tx = &txs;
+	struct TSAPdisconnect  tds;
+	register struct TSAPdisconnect *td = &tds;
 
-    if (TReadRequest (fd, tx, NOTOK, td) == NOTOK) {
-	if (td -> td_reason == DR_NORMAL) {
-	    *q = NULL;
-	    return OK;
+	if (TReadRequest (fd, tx, NOTOK, td) == NOTOK) {
+		if (td -> td_reason == DR_NORMAL) {
+			*q = NULL;
+			return OK;
+		}
+
+		SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP,
+			  (td -> td_cc > 0 ? "ts_read: [%s] %*.*s" : "ts_read: [%s]",
+			   TErrString (td -> td_reason), td -> td_cc, td -> td_cc,
+			   td -> td_data));
+
+		return NOTOK;
 	}
 
-	SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP,
-	      (td -> td_cc > 0 ? "ts_read: [%s] %*.*s" : "ts_read: [%s]",
-	       TErrString (td -> td_reason), td -> td_cc, td -> td_cc,
-	        td -> td_data));
+	qb = &tx -> tx_qbuf;
+	if (qb -> qb_forw -> qb_forw != qb && qb_pullup (qb) == NOTOK) {
+		SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP,
+			  ("ts_read: qb_pullup fails"));
+		TXFREE (tx);
 
-	return NOTOK;
-    }
+		return NOTOK;
+	}
 
-    qb = &tx -> tx_qbuf;
-    if (qb -> qb_forw -> qb_forw != qb && qb_pullup (qb) == NOTOK) {
-	SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP,
-	      ("ts_read: qb_pullup fails"));
+	remque (qb = tx -> tx_qbuf.qb_forw);
+	qb -> qb_forw = qb -> qb_back = qb;
+
+	*q = qb;
+
 	TXFREE (tx);
 
-	return NOTOK;
-    }
-
-    remque (qb = tx -> tx_qbuf.qb_forw);
-    qb -> qb_forw = qb -> qb_back = qb;
-
-    *q = qb;
-
-    TXFREE (tx);
-
-    return qb -> qb_len;
+	return qb -> qb_len;
 }
 
 
@@ -83,17 +83,17 @@ int	ts_write (fd, qb)
 int	fd;
 register struct qbuf *qb;
 {
-    struct TSAPdisconnect  tds;
-    register struct TSAPdisconnect *td = &tds;
-    
-    if (TDataRequest (fd, qb -> qb_data, qb -> qb_len, td) == NOTOK) {
-	SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP,
-	      (td -> td_cc > 0 ? "ts_write: [%s] %*.*s" : "ts_write: [%s]",
-	       TErrString (td -> td_reason), td -> td_cc, td -> td_cc,
-	        td -> td_data));
+	struct TSAPdisconnect  tds;
+	register struct TSAPdisconnect *td = &tds;
 
-	return NOTOK;
-    }
+	if (TDataRequest (fd, qb -> qb_data, qb -> qb_len, td) == NOTOK) {
+		SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP,
+			  (td -> td_cc > 0 ? "ts_write: [%s] %*.*s" : "ts_write: [%s]",
+			   TErrString (td -> td_reason), td -> td_cc, td -> td_cc,
+			   td -> td_data));
 
-    return qb -> qb_len;
+		return NOTOK;
+	}
+
+	return qb -> qb_len;
 }

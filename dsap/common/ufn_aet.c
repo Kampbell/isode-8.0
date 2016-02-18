@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/ufn_aet.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/ufn_aet.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -44,7 +44,7 @@ void	PY_advise ();
 static Filter aet_filter (context)
 char * context;
 {
-Filter a,b;
+	Filter a,b;
 
 	if ((a = ocfilter ("ApplicationEntity")) == NULLFILTER)
 		return NULLFILTER;
@@ -58,7 +58,7 @@ Filter a,b;
 		return NULLFILTER;
 	}
 	b->FUITEM.UNAVA.ava_value = str2AttrV(context,
-		b->FUITEM.UNAVA.ava_type->oa_syntax);
+										  b->FUITEM.UNAVA.ava_type->oa_syntax);
 	if (b->FUITEM.UNAVA.ava_value == NULLAttrV) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("'%s' unknown OID",context));
 		return NULLFILTER;
@@ -73,18 +73,18 @@ char subtree;
 Filter filt;
 DNS * res;
 {
-struct ds_search_arg search_arg;
-static struct ds_search_result result;
-struct DSError err;
-static CommonArgs ca = default_common_args;
-EntryInfo * ptr;
-DNS newdns, r = NULLDNS;
+	struct ds_search_arg search_arg;
+	static struct ds_search_result result;
+	struct DSError err;
+	static CommonArgs ca = default_common_args;
+	EntryInfo * ptr;
+	DNS newdns, r = NULLDNS;
 
 	search_arg.sra_baseobject = base;
 	search_arg.sra_filter = filt;
 	if (subtree)
 		search_arg.sra_subset = SRA_WHOLESUBTREE;
-	else	
+	else
 		search_arg.sra_subset = SRA_ONELEVEL;
 	search_arg.sra_searchaliases = TRUE;
 	search_arg.sra_common = ca; /* struct copy */
@@ -132,20 +132,20 @@ DNS (* interact) ();
 envlist el;
 char * context;
 {
-DNS ufnr = NULLDNS;
-DNS newap = NULLDNS;
-DNS apps = NULLDNS;
-DNS dns, DNS_append();
-Filter filt;
-int ok = TRUE;
+	DNS ufnr = NULLDNS;
+	DNS newap = NULLDNS;
+	DNS apps = NULLDNS;
+	DNS dns, DNS_append();
+	Filter filt;
+	int ok = TRUE;
 
 	if (!ufn_match (c,v,interact,&ufnr,el)) {
 		if (PY_pepy[0]) {
-		    char buffer[BUFSIZ];
+			char buffer[BUFSIZ];
 
-		    (void) sprintf (buffer, "ufn_match failed: %s", PY_pepy);
-		    (void) strcpy (PY_pepy, buffer);
-		    SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
+			(void) sprintf (buffer, "ufn_match failed: %s", PY_pepy);
+			(void) strcpy (PY_pepy, buffer);
+			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
 		}
 		*result = NULLDNS;
 		return FALSE;
@@ -158,7 +158,7 @@ int ok = TRUE;
 		if (aet_search (dns->dns_dn,FALSE,filt,&newap))
 			apps = DNS_append (apps,newap);
 		else
-		    ok = FALSE;
+			ok = FALSE;
 	}
 
 	if ((apps == NULLDNS) && ok) {
@@ -176,10 +176,10 @@ int ok = TRUE;
 	}
 
 	if (!ok && !apps) {
-	    PY_advise (NULLCP,
-		       "search for applicationEntity supporting \"%s\" failed",
-		       context);
-	    SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
+		PY_advise (NULLCP,
+				   "search for applicationEntity supporting \"%s\" failed",
+				   context);
+		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
 	}
 
 	filter_free (filt);

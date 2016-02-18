@@ -57,20 +57,19 @@ time_t	timenow;
 
 static set_context ();
 
-dsa_init ()
-{
-Attr_Sequence as, get_cacheEDB();
-AttributeType manager;
-DN str2dn();
-struct edb_info * dsainfo;
-AV_Sequence avs;
-Entry newentry;
-Entry my_entry;
-int real_unravel_attribute ();
-int real_check_schema ();
-char loadstate = TRUE;
-struct DSError error;
-Entry akid;
+dsa_init () {
+	Attr_Sequence as, get_cacheEDB();
+	AttributeType manager;
+	DN str2dn();
+	struct edb_info * dsainfo;
+	AV_Sequence avs;
+	Entry newentry;
+	Entry my_entry;
+	int real_unravel_attribute ();
+	int real_check_schema ();
+	char loadstate = TRUE;
+	struct DSError error;
+	Entry akid;
 
 	check_dsa_known_oids ();
 
@@ -89,27 +88,27 @@ Entry akid;
 
 	if ((my_entry = load_dsa_cache_entry (mydsadn)) == NULLENTRY) {
 		if (parse_status != 0)
-		     fatal (-3,"Can't load EDB subtree holding my DSA entry");
+			fatal (-3,"Can't load EDB subtree holding my DSA entry");
 
-		if (database_root != NULLENTRY) 
-		     fatal (-4,"Found EDB - but my DSA entry not in it!");
+		if (database_root != NULLENTRY)
+			fatal (-4,"Found EDB - but my DSA entry not in it!");
 
 		fatal (-4,"can't locate my DSA entry in local database!");
 
 	} else if (my_entry->e_data == E_TYPE_CACHE_FROM_MASTER)
 		shadow_myentry ();
 
-	if (get_entry_passwd (my_entry->e_attributes) == NULLCP) 
+	if (get_entry_passwd (my_entry->e_attributes) == NULLCP)
 		/* This is not a fatal error, but some remote operations may fail */
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Can't find my own PASSWORD"));
 
 	if (dsa_real_attr) {
 		if (as_cmp (my_entry->e_attributes,dsa_real_attr) != 0) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,
- ("DSA.real entry inconsistent with EDB -- problem should fix itself later!"));
+				  ("DSA.real entry inconsistent with EDB -- problem should fix itself later!"));
 			as_free (my_entry->e_attributes);
 			my_entry->e_attributes = as_cpy (dsa_real_attr);
-			if (unravel_attribute (my_entry,&error) != OK) 
+			if (unravel_attribute (my_entry,&error) != OK)
 				fatal (-82,"schema error in DSA entry");
 		}
 	} else
@@ -124,48 +123,48 @@ Entry akid;
 
 		if (quipu_ctx_supported(my_entry) < 5) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS,(
-			"Adding QUIPU and/or Internet DSP to application context!!!"));
+					 "Adding QUIPU and/or Internet DSP to application context!!!"));
 			set_context (my_entry);
 		}
 
-		my_entry->e_dsainfo->dsa_version = 
+		my_entry->e_dsainfo->dsa_version =
 			TidyString (strdup (quipuversion));
-		if (as = entry_find_type (my_entry,at_version)) 
+		if (as = entry_find_type (my_entry,at_version))
 			if ( strcmp (
-			     (char *) as->attr_value->avseq_av.av_struct,
-			     my_entry->e_dsainfo->dsa_version) != 0) {
+						(char *) as->attr_value->avseq_av.av_struct,
+						my_entry->e_dsainfo->dsa_version) != 0) {
 
-			if (as->attr_value->avseq_av.av_struct)
-				free (as->attr_value->avseq_av.av_struct);
-			as->attr_value->avseq_av.av_struct = 
-				(caddr_t) strdup (my_entry->e_dsainfo->dsa_version);
-
-			if (as = as_find_type (dsa_real_attr,at_version)) {
 				if (as->attr_value->avseq_av.av_struct)
 					free (as->attr_value->avseq_av.av_struct);
-				as->attr_value->avseq_av.av_struct = 
-				    (caddr_t) strdup (my_entry->e_dsainfo->dsa_version);
+				as->attr_value->avseq_av.av_struct =
+					(caddr_t) strdup (my_entry->e_dsainfo->dsa_version);
+
+				if (as = as_find_type (dsa_real_attr,at_version)) {
+					if (as->attr_value->avseq_av.av_struct)
+						free (as->attr_value->avseq_av.av_struct);
+					as->attr_value->avseq_av.av_struct =
+						(caddr_t) strdup (my_entry->e_dsainfo->dsa_version);
+				}
+
+				if (parse_status == 0)
+					if (my_entry->e_data == E_DATA_MASTER) {
+						if (my_entry->e_parent != NULLENTRY)
+							my_entry->e_parent->e_edbversion = new_version();
+						LLOG (log_dsap,LLOG_NOTICE,("Updating version number"));
+#ifdef TURBO_DISK
+						if (turbo_write(my_entry) != OK)
+							fatal (-33,"self rewrite failed - check database");
+#else
+						akid = (Entry) avl_getone(my_entry->e_parent->e_children);
+						if (journal (akid) != OK)
+							fatal (-33,"self rewrite failed - check database");
+#endif
+					} else {
+						write_dsa_entry(my_entry);
+					}
 			}
 
-			if (parse_status == 0) 
-			 if (my_entry->e_data == E_DATA_MASTER) {
-			    if (my_entry->e_parent != NULLENTRY)
-				my_entry->e_parent->e_edbversion = new_version();
-			    LLOG (log_dsap,LLOG_NOTICE,("Updating version number"));
-#ifdef TURBO_DISK
-				if (turbo_write(my_entry) != OK)
-					fatal (-33,"self rewrite failed - check database");
-#else
-			        akid = (Entry) avl_getone(my_entry->e_parent->e_children);
-			        if (journal (akid) != OK)
-					fatal (-33,"self rewrite failed - check database");
-#endif
-		         } else {
-				write_dsa_entry(my_entry);
-			 }
-		}
-
-	} else 
+	} else
 		fatal (-6,"No edbinfo attribute in my own entry");
 
 	if (parse_status != 0)
@@ -187,7 +186,7 @@ Entry akid;
 		fatal (-7,"DSA Halted");
 
 	if ((akid = (Entry) avl_getone(database_root->e_children))
-	    != NULLENTRY )
+			!= NULLENTRY )
 		database_root->e_data = akid->e_data;
 
 	/* Load cached EDB files - if any */
@@ -205,7 +204,7 @@ Entry akid;
 	}
 
 #ifndef TURBO_DISK
-    	free_phylinebuf();	/* Large buffer used in loading text database */
+	free_phylinebuf();	/* Large buffer used in loading text database */
 #endif
 
 	return (OK);
@@ -215,11 +214,11 @@ Entry akid;
 static Entry load_dsa_cache_entry(dn)
 DN dn;
 {
-DN ptr,trail = NULLDN;
-Entry newentry, res;
-DN tmp;
-DN tmp2;
-int fail = FALSE;
+	DN ptr,trail = NULLDN;
+	Entry newentry, res;
+	DN tmp;
+	DN tmp2;
+	int fail = FALSE;
 
 	tmp = dn_cpy (dn);
 
@@ -228,7 +227,7 @@ int fail = FALSE;
 		dn_free (tmp);
 		if (parse_status != 0)
 			return NULLENTRY;
-		if ((res = local_find_entry_aux (dn,TRUE)) != NULLENTRY) 
+		if ((res = local_find_entry_aux (dn,TRUE)) != NULLENTRY)
 			load_pseudo_attrs (res->e_data);
 		return res;
 	}
@@ -247,10 +246,10 @@ int fail = FALSE;
 			(void) subtree_load (newentry,tmp);
 
 		trail->dn_parent = tmp2;
-	
-		if (parse_status != 0) 
+
+		if (parse_status != 0)
 			fail = TRUE;
-		
+
 	}
 
 	dn_free (tmp);
@@ -267,11 +266,11 @@ int fail = FALSE;
 static set_context (eptr)
 Entry eptr;
 {
-AttributeType at;
-AttributeValue av;
-AV_Sequence avs;
-Attr_Sequence as, entry_find_type();
-extern int	  no_last_mod;
+	AttributeType at;
+	AttributeValue av;
+	AV_Sequence avs;
+	Attr_Sequence as, entry_find_type();
+	extern int	  no_last_mod;
 
 	/* DAP */
 	at = AttrT_new (APPLCTX_OID);
@@ -307,6 +306,6 @@ extern int	  no_last_mod;
 
 	eptr->e_attributes = as_merge (eptr->e_attributes,as);
 
-	if (quipu_ctx_supported(eptr) != 5) 
+	if (quipu_ctx_supported(eptr) != 5)
 		fatal (-1, "Setting application context botch");
 }

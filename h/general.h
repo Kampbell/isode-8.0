@@ -1,6 +1,6 @@
 /* general.h - general compatibility */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/general.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -118,7 +118,7 @@
 #define BSDSTRS
 #undef SWABLIB
 #define BSDLIBC
-#endif 
+#endif
 
 #if defined(_AIX) && defined(SYS5)
 #define BSDSTRS

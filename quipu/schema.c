@@ -41,30 +41,30 @@ check_avs_schema (at,avs_oc)
 AttributeType at;
 AV_Sequence avs_oc;
 {
-table_seq optr;
-AV_Sequence avs;
-objectclass * oc;
+	table_seq optr;
+	AV_Sequence avs;
+	objectclass * oc;
 
 	optr = NULLTABLE_SEQ;
 	for (avs = avs_oc; avs != NULLAV; avs = avs->avseq_next) {
-	    oc = (objectclass *) avs->avseq_av.av_struct;
-	    optr=oc->oc_must;
-	    if ((optr == NULLTABLE_SEQ) && (oc->oc_may == NULLTABLE_SEQ) && (oc->oc_hierachy == NULLOCSEQ)) 
-		return OK;	/* unknown object class */
-	    for (; optr!=NULLTABLE_SEQ;  optr=optr->ts_next) 
-		if (at == optr->ts_oa)
+		oc = (objectclass *) avs->avseq_av.av_struct;
+		optr=oc->oc_must;
+		if ((optr == NULLTABLE_SEQ) && (oc->oc_may == NULLTABLE_SEQ) && (oc->oc_hierachy == NULLOCSEQ))
+			return OK;	/* unknown object class */
+		for (; optr!=NULLTABLE_SEQ;  optr=optr->ts_next)
+			if (at == optr->ts_oa)
 				break;
-	    if (optr != NULLTABLE_SEQ)
-	    	break;
-
-	    for (optr=oc->oc_may; optr!=NULLTABLE_SEQ;  optr=optr->ts_next) 
-		if (at == optr->ts_oa)
+		if (optr != NULLTABLE_SEQ)
 			break;
-	    if (optr != NULLTABLE_SEQ)
-	    	break;
+
+		for (optr=oc->oc_may; optr!=NULLTABLE_SEQ;  optr=optr->ts_next)
+			if (at == optr->ts_oa)
+				break;
+		if (optr != NULLTABLE_SEQ)
+			break;
 	}
 
-	if (optr == NULLTABLE_SEQ) 
+	if (optr == NULLTABLE_SEQ)
 		return (NOTOK);
 
 	return OK;
@@ -77,13 +77,13 @@ Entry eptr;
 Attr_Sequence as;
 struct DSError * error;
 {
-register Attr_Sequence at;
-table_seq optr;
-AV_Sequence avs;
-AV_Sequence avs_oc;
-AV_Sequence tavs = NULLAV;
-objectclass * oc;
-extern OID alias_oc;
+	register Attr_Sequence at;
+	table_seq optr;
+	AV_Sequence avs;
+	AV_Sequence avs_oc;
+	AV_Sequence tavs = NULLAV;
+	objectclass * oc;
+	extern OID alias_oc;
 
 	shadow_entry (eptr);
 
@@ -97,7 +97,7 @@ extern OID alias_oc;
 
 	if ((at = as_find_type (eptr->e_parent->e_attributes,at_schema)) != NULLATTR) {
 		/* what should default be !!! */
-		
+
 		tavs = at->attr_value;
 		/* make sure object class is allowed */
 		if (test_schema (tavs,avs) != OK) {
@@ -110,28 +110,28 @@ extern OID alias_oc;
 
 	/* now check 'must contain' attributes */
 	for (; avs != NULLAV; avs = avs->avseq_next) {
-	    oc = (objectclass *) avs->avseq_av.av_struct;
-	    for (optr=oc->oc_must; optr!=NULLTABLE_SEQ;  optr=optr->ts_next) {
-		at = (as == NULLATTR) ? eptr->e_attributes : as;
-		for (; at!=NULLATTR; at=at->attr_link)
-			if (at->attr_type == optr->ts_oa)
-				break;
+		oc = (objectclass *) avs->avseq_av.av_struct;
+		for (optr=oc->oc_must; optr!=NULLTABLE_SEQ;  optr=optr->ts_next) {
+			at = (as == NULLATTR) ? eptr->e_attributes : as;
+			for (; at!=NULLATTR; at=at->attr_link)
+				if (at->attr_type == optr->ts_oa)
+					break;
 
-		if (at == NULLATTR) {
-			if (eptr->e_iattr) {
-				if (eptr->e_iattr->i_always
-					&& (as_find_type (eptr->e_iattr->i_always,optr->ts_oa)))
-					break;
-				if (eptr->e_iattr->i_default
-					&& (as_find_type (eptr->e_iattr->i_default,optr->ts_oa)))
-					break;
+			if (at == NULLATTR) {
+				if (eptr->e_iattr) {
+					if (eptr->e_iattr->i_always
+							&& (as_find_type (eptr->e_iattr->i_always,optr->ts_oa)))
+						break;
+					if (eptr->e_iattr->i_default
+							&& (as_find_type (eptr->e_iattr->i_default,optr->ts_oa)))
+						break;
+				}
+				LLOG (log_dsap,LLOG_EXCEPTIONS,("'Must' attribute missing '%s'",attr2name(optr->ts_oa,OIDPART)));
+				error->dse_type = DSE_UPDATEERROR;
+				error->ERR_UPDATE.DSE_up_problem = DSE_UP_OBJECTCLASSVIOLATION;
+				return (NOTOK);
 			}
-			LLOG (log_dsap,LLOG_EXCEPTIONS,("'Must' attribute missing '%s'",attr2name(optr->ts_oa,OIDPART)));
-			error->dse_type = DSE_UPDATEERROR;
-			error->ERR_UPDATE.DSE_up_problem = DSE_UP_OBJECTCLASSVIOLATION;
-			return (NOTOK);
 		}
-	   }
 	}
 
 
@@ -143,14 +143,14 @@ extern OID alias_oc;
 
 	at = (as == NULLATTR) ? eptr->e_attributes : as;
 	for (; at!=NULLATTR; at=at->attr_link) {
-		if (check_avs_schema (at->attr_type,avs_oc) == NOTOK) 
-		    /* Allow objectclass - its default from top */
-	           if (at->attr_type != at_objectclass) {
-			LLOG (log_dsap,LLOG_EXCEPTIONS,("attribute '%s' not allowed in the specified objectclass",attr2name(at->attr_type,OIDPART)));
-			error->dse_type = DSE_UPDATEERROR;
-			error->ERR_UPDATE.DSE_up_problem = DSE_UP_OBJECTCLASSVIOLATION;
-			return (NOTOK);
-		}
+		if (check_avs_schema (at->attr_type,avs_oc) == NOTOK)
+			/* Allow objectclass - its default from top */
+			if (at->attr_type != at_objectclass) {
+				LLOG (log_dsap,LLOG_EXCEPTIONS,("attribute '%s' not allowed in the specified objectclass",attr2name(at->attr_type,OIDPART)));
+				error->dse_type = DSE_UPDATEERROR;
+				error->ERR_UPDATE.DSE_up_problem = DSE_UP_OBJECTCLASSVIOLATION;
+				return (NOTOK);
+			}
 	}
 
 	if ((as == NULLATTR) && eptr->e_iattr) {
@@ -182,9 +182,9 @@ Entry eptr;
 AttributeType attr;
 struct DSError * error;
 {
-Attr_Sequence at;
-AV_Sequence avs;
-AV_Sequence tavs = NULLAV;
+	Attr_Sequence at;
+	AV_Sequence avs;
+	AV_Sequence tavs = NULLAV;
 
 	DLOG (log_dsap,LLOG_TRACE,("check schema type"));
 
@@ -224,17 +224,17 @@ test_schema (tree,oc)
 AV_Sequence tree;
 AV_Sequence oc;
 {
-AV_Sequence aptr, tavs;
-struct tree_struct *tptr;
-char found;
-objectclass * oc1;
+	AV_Sequence aptr, tavs;
+	struct tree_struct *tptr;
+	char found;
+	objectclass * oc1;
 
 	if (oc == NULLAV)
 		return (NOTOK);
 
 	for (aptr=oc; aptr!= NULLAV; aptr=aptr->avseq_next) {
 		found = FALSE;
-		for (tavs=tree; tavs!=NULLAV ;tavs=tavs->avseq_next) {
+		for (tavs=tree; tavs!=NULLAV ; tavs=tavs->avseq_next) {
 			tptr = (struct tree_struct *) tavs->avseq_av.av_struct;
 			if (tptr->tree_object == NULLOBJECTCLASS) {
 				/* is this correct behaviour ? */
@@ -257,15 +257,15 @@ objectclass * oc1;
 test_hierarchy (a,b)    /* see if b in oc a */
 objectclass *a, *b;
 {
-struct oc_seq * oidseq;
+	struct oc_seq * oidseq;
 
 	if ( a == b )
 		return OK;
 
-	for (oidseq = a->oc_hierachy; oidseq != NULLOCSEQ; oidseq = oidseq->os_next) 
+	for (oidseq = a->oc_hierachy; oidseq != NULLOCSEQ; oidseq = oidseq->os_next)
 		if (test_hierarchy (oidseq->os_oc,b) == OK)
 			return (OK);
-		
+
 	return (NOTOK);
 }
 
@@ -273,14 +273,14 @@ struct oc_seq * oidseq;
 check_oc_hierarchy (avs)
 AV_Sequence avs;
 {
-AV_Sequence avs1, avs2;
-struct oc_seq * oidseq;
-objectclass *oc1, *oc2;
-char found = FALSE;
-objectclass * str2oc();
-static objectclass * topoc = NULLOBJECTCLASS;
+	AV_Sequence avs1, avs2;
+	struct oc_seq * oidseq;
+	objectclass *oc1, *oc2;
+	char found = FALSE;
+	objectclass * str2oc();
+	static objectclass * topoc = NULLOBJECTCLASS;
 
-	if (topoc == NULLOBJECTCLASS) 
+	if (topoc == NULLOBJECTCLASS)
 		topoc = str2oc (TOP_OC);
 
 	/* Check the OC attribute has all the hierarchy elements */

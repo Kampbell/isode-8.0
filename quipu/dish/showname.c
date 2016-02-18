@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/showname.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/showname.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -60,7 +60,7 @@ char          **argv;
 		} else if (test_arg (argv[x], "-nocompact",3))  {
 			compact = FALSE;
 			argc--;
-		} else if (test_arg (argv[x], "-ufn",3))  { 
+		} else if (test_arg (argv[x], "-ufn",3))  {
 			ufn = TRUE;
 			argc--;
 		} else if (test_arg (argv[x], "-noufn",5))  {
@@ -80,7 +80,7 @@ char          **argv;
 			a = rel_dn;
 			b = current_dn;
 			for (; a != NULLDN && b != NULLDN ; a = a->dn_parent, b = b->dn_parent)
-				if ( dn_comp_cmp (a,b) == NOTOK) 
+				if ( dn_comp_cmp (a,b) == NOTOK)
 					break;
 			if (a == NULLDN)
 				dn_print (RPS,b,RDNOUT);
@@ -98,15 +98,15 @@ char          **argv;
 			ps_print (RPS, "NULL Name\n");
 			return;
 		}
-		if (ufn) {	
+		if (ufn) {
 			ufn_dn_print_aux (RPS,current_dn,NULLDN,0);
 			ps_print (RPS, "\n");
 			return;
 		}
 		if ( print_format == READOUT ) {
-		    dn_rfc_print(RPS,current_dn,"\n");
-		    ps_print (RPS, "\n");
-		    return;
+			dn_rfc_print(RPS,current_dn,"\n");
+			ps_print (RPS, "\n");
+			return;
 		}
 		for (dnptr = current_dn; dnptr != NULLDN; dnptr = dnptr->dn_parent) {
 			rdn_print (RPS,dnptr->dn_rdn,print_format);

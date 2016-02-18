@@ -1,14 +1,14 @@
 /* tailor.h - ISODE tailoring */
 
-/* 
+/*
  * $Header: /a/vulcan/xtel/isode/isode-master/h/RCS/tailor.h,v 8.0 91/07/17 12:33:57 isode Rel $
  *
  *
  * $Log:	tailor.h,v $
  * Revision 8.0  91/07/17  12:33:57  isode
  * Release 7.0
- * 
- * 
+ *
+ *
  */
 
 /*
@@ -64,14 +64,14 @@ extern int	ts_stacks;
 #define	TS_ALL	0xff
 
 struct ts_interim {
-    char   *ts_name;		/* community name, also MACRO name */
-    char   *ts_value;		/*   .. MACRO value */
+	char   *ts_name;		/* community name, also MACRO name */
+	char   *ts_value;		/*   .. MACRO value */
 
-    int	    ts_subnet;		/* internal key */
-    int	    ts_syntax;		/* same values as na_stack */
+	int	    ts_subnet;		/* internal key */
+	int	    ts_syntax;		/* same values as na_stack */
 
-    char    ts_prefix[20];	/* NSAP prefix */
-    int	    ts_length;		/*   .. and length */
+	char    ts_prefix[20];	/* NSAP prefix */
+	int	    ts_length;		/*   .. and length */
 };
 extern struct ts_interim ts_interim[];
 

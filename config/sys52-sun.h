@@ -1,6 +1,6 @@
 /* sys52-sun.h - site configuration file for SUN's SVR2 Compatiblity Package */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/sys52-sun.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

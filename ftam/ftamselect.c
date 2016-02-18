@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamselect.c,v 9.0 1992/06/16 12:14:55 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam/RCS/ftamselect.c,v 9.0 1992/06/16 12:14:55 isode Rel $
  *
  *
@@ -39,36 +39,37 @@ fd_set *mask;
 int    *nfds;
 struct FTAMindication *fti;
 {
-    SBV     smask;
-    register struct ftamblk *fsb;
-    struct PSAPindication   pis;
-    register struct PSAPabort  *pa = &pis.pi_abort;
+	SBV     smask;
+	register struct ftamblk *fsb;
+	struct PSAPindication   pis;
+	register struct PSAPabort  *pa = &pis.pi_abort;
 
-    missingP (mask);
-    missingP (nfds);
-    missingP (fti);
+	missingP (mask);
+	missingP (nfds);
+	missingP (fti);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ftamPsig (fsb, sd);
+	ftamPsig (fsb, sd);
 
-    if (fsb -> fsb_data.px_ninfo > 0)
-	goto waiting;
-    if (PSelectMask (fsb -> fsb_fd, mask, nfds, &pis) == NOTOK)
-	switch (pa -> pa_reason) {
-	    case PC_WAITING: 
-waiting: ;
-		(void) sigiomask (smask);
-		return ftamlose (fti, FS_GEN_WAITING, 0, NULLCP, NULLCP);
+	if (fsb -> fsb_data.px_ninfo > 0)
+		goto waiting;
+	if (PSelectMask (fsb -> fsb_fd, mask, nfds, &pis) == NOTOK)
+		switch (pa -> pa_reason) {
+		case PC_WAITING:
+waiting:
+			;
+			(void) sigiomask (smask);
+			return ftamlose (fti, FS_GEN_WAITING, 0, NULLCP, NULLCP);
 
-	    default: 
-		(void) ps2ftamlose (fsb, fti, "PSelectMask", pa);
-		freefsblk (fsb);
-		(void) sigiomask (smask);
-		return NOTOK;
-	}
+		default:
+			(void) ps2ftamlose (fsb, fti, "PSelectMask", pa);
+			freefsblk (fsb);
+			(void) sigiomask (smask);
+			return NOTOK;
+		}
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return OK;
+	return OK;
 }

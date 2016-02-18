@@ -1,6 +1,6 @@
 /* mine.h */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/pepsy/RCS/mine.h,v 9.0 1992/06/16 12:24:03 isode Rel $
  *
  *
@@ -30,7 +30,7 @@ typedef struct ID_TABLE {
 	int	def_value;
 	int	count;
 	struct ID_TABLE	*next;
-	} id_entry;
+} id_entry;
 
 typedef struct S_TABLE {
 	char	*name;
@@ -39,7 +39,7 @@ typedef struct S_TABLE {
 	char	*field;
 	int	defined;
 	struct S_TABLE *next;
-	} s_table;
+} s_table;
 
 extern	id_entry	*id_table[];
 

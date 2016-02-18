@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/real2prim.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/real2prim.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  * Contributed by Julian Onions, Nottingham University.
@@ -14,7 +14,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/real2prim.c,v 9.0 1992
  * Revision 9.0  1992/06/16  12:25:44  isode
  * Release 8.0
  *
- * 
+ *
  */
 
 /*
@@ -59,8 +59,7 @@ PElementID	id;
 	if (mant < 0.0) {
 		sign = -1;
 		mant = -mant;
-	}
-	else	sign = 1;
+	} else	sign = 1;
 
 	nm = mant;
 	for (i = 0; i < sizeof (double) ; i++) {
@@ -99,26 +98,26 @@ PElementID	id;
 		*--dp = explen & 0xff;
 
 	switch (explen) {
-	    case 1:
+	case 1:
 		explen = PE_REAL_B_EF1;
 		break;
-	    case 2:
+	case 2:
 		explen = PE_REAL_B_EF2;
 		break;
-	    case 3:
+	case 3:
 		explen = PE_REAL_B_EF3;
 		break;
-	    default:
+	default:
 		explen = PE_REAL_B_EF3;
 		break;
 	}
 	*--dp = PE_REAL_BINENC
-		    | PE_REAL_B_B2
-		    | (sign == -1 ? PE_REAL_B_S : 0)
-		    | explen;
+			| PE_REAL_B_B2
+			| (sign == -1 ? PE_REAL_B_S : 0)
+			| explen;
 	return pe;
 }
 
-			
 
-	
+
+

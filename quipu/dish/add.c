@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/add.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/add.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -35,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/add.c,v 9.0 1992
 #include "osisec-stub.h"
 
 #define ORG_PERSON "newPilotPerson & quipuObject"
-	/* this should probably go elsewhere !!! */
+/* this should probably go elsewhere !!! */
 
 extern DN       dn;
 
@@ -73,17 +73,14 @@ char          **argv;
 	char	       *home;
 
 	if (home = getenv ("DISHDRAFT"))
-	    (void) strcpy (fname, home);
-	else
-	    if (dad_flag) {
+		(void) strcpy (fname, home);
+	else if (dad_flag) {
 		(void) strcpy (fname, "/tmp/dishXXXXXX");
 		(void) unlink (mktemp (fname));
-	    }
-	    else
-		if (home = getenv ("HOME"))
-		    (void) sprintf (fname, "%s/.dishdraft", home);
-		else
-		    (void) strcpy (fname, "./.dishdraft");
+	} else if (home = getenv ("HOME"))
+		(void) sprintf (fname, "%s/.dishdraft", home);
+	else
+		(void) strcpy (fname, "./.dishdraft");
 	new_draft = FALSE;
 
 	if ((argc = service_control (OPT, argc, argv, &add_arg.ada_common)) == -1)
@@ -91,8 +88,8 @@ char          **argv;
 
 	for (x = 1; x < argc; x++) {
 		if (test_arg (argv[x], "-template", 1)) {
-		        int	i;
-		        FILE *in, *out;
+			int	i;
+			FILE *in, *out;
 			extern int errno;
 
 			draft_flag = 1;
@@ -102,27 +99,27 @@ char          **argv;
 				return;
 			}
 			if ((in = fopen (argv[x], "r")) == NULL) {
-			    ps_printf (OPT, "unable to open template %s: %s\n",
-				       argv[x], sys_errname (errno));
-			    return;
+				ps_printf (OPT, "unable to open template %s: %s\n",
+						   argv[x], sys_errname (errno));
+				return;
 			}
 			i = umask (0177);
 			out = fopen (fname, "w");
 			(void) umask (i);
 			if (out == NULL) {
-			    ps_printf (OPT, "unable to write draft %s: %s\n",
-				       fname, sys_errname (errno));
-			    (void) fclose (in);
-			    return;
+				ps_printf (OPT, "unable to write draft %s: %s\n",
+						   fname, sys_errname (errno));
+				(void) fclose (in);
+				return;
 			}
 			while ((i = getc (in)) != EOF)
-			    if (putc (i, out) == EOF) {
-				ps_printf (OPT, "error writing draft %s: %s\n",
-					   fname, sys_errname (errno));
-				(void) fclose (in);
-				(void) fclose (out);
-				return;
-			    }
+				if (putc (i, out) == EOF) {
+					ps_printf (OPT, "error writing draft %s: %s\n",
+							   fname, sys_errname (errno));
+					(void) fclose (in);
+					(void) fclose (out);
+					return;
+				}
 			(void) fclose (in);
 			(void) fclose (out);
 		} else if (test_arg (argv[x], "-draft", 1)) {
@@ -140,11 +137,11 @@ char          **argv;
 				return;
 			}
 			O_class = argv[x];
-		} else if (test_arg(argv[x], "-newdraft", 2)) 
+		} else if (test_arg(argv[x], "-newdraft", 2))
 			new_draft = TRUE;
-		else if (test_arg(argv[x], "-noedit", 3)) 
+		else if (test_arg(argv[x], "-noedit", 3))
 			noedit_flag = TRUE;
-		else if (move (argv[x]) == OK) 
+		else if (move (argv[x]) == OK)
 			continue;
 		else {
 			ps_printf (OPT,"Unknown option %s\n",argv[x]);
@@ -154,9 +151,9 @@ char          **argv;
 	}
 
 	if (dad_flag && (draft_flag || noedit_flag)) {
-	    ps_printf (OPT,
-		       "operation not allowed when using directory assistance server!\n");
-	    return;
+		ps_printf (OPT,
+				   "operation not allowed when using directory assistance server!\n");
+		return;
 	}
 
 	if ((!noedit_flag) && (draft_flag != 1)) { /* if no draft - create a template */
@@ -187,7 +184,7 @@ char          **argv;
 	(void) fclose (fd);
 	if (parse_status != 0)
 		return ;
-		
+
 	add_arg.ada_object = dn;
 
 	for (moddn = dn ; moddn->dn_parent != NULLDN; moddn=moddn->dn_parent)
@@ -202,12 +199,11 @@ char          **argv;
 	}
 
 	/* Strong authentication */
-	if (add_arg.ada_common.ca_security != (struct security_parms *) 0)
-	{
-	extern struct SecurityServices *dsap_security;
+	if (add_arg.ada_common.ca_security != (struct security_parms *) 0) {
+		extern struct SecurityServices *dsap_security;
 
-	add_arg.ada_common.ca_sig =
-		(dsap_security->serv_sign)((caddr_t)&add_arg, _ZAddEntryArgumentDataDAS, &_ZDAS_mod);
+		add_arg.ada_common.ca_sig =
+			(dsap_security->serv_sign)((caddr_t)&add_arg, _ZAddEntryArgumentDataDAS, &_ZDAS_mod);
 	}
 
 	while (ds_addentry (&add_arg, &error) != DS_OK) {
@@ -216,7 +212,7 @@ char          **argv;
 			return;
 		}
 		add_arg.ada_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
-	} 
+	}
 	ps_print (RPS, "Added ");
 	dn_print (RPS, dn, EDBOUT);
 	ps_print (RPS, "\n");
@@ -225,18 +221,18 @@ char          **argv;
 	entry_free (entry_ptr);
 
 	make_old (fname,draft_flag);
-	
+
 }
 
 make_old (file, commit)
 char * file;
 char commit;
 {
-char newname[LINESIZE];
+	char newname[LINESIZE];
 
 	if (dad_flag) {
-	    (void) unlink (file);
-	    return;
+		(void) unlink (file);
+		return;
 	}
 
 	if (commit == 0) {
@@ -249,12 +245,12 @@ char newname[LINESIZE];
 Attr_Sequence make_template_as (oc)
 AV_Sequence oc;
 {
-AV_Sequence avs;
-Attr_Sequence newas;
-Attr_Sequence as = NULLATTR;
-table_seq optr;
-AttributeType at;
-objectclass * ocp;
+	AV_Sequence avs;
+	Attr_Sequence newas;
+	Attr_Sequence as = NULLATTR;
+	table_seq optr;
+	AttributeType at;
+	objectclass * ocp;
 
 	for (avs = oc; avs != NULLAV; avs = avs->avseq_next) {
 		ocp = (objectclass *) avs->avseq_av.av_struct;
@@ -264,7 +260,7 @@ objectclass * ocp;
 			as = as_merge (as,newas);
 		}
 	}
-	
+
 	for (avs = oc; avs != NULLAV; avs = avs->avseq_next) {
 		ocp = (objectclass *) avs->avseq_av.av_struct;
 		for (optr=ocp->oc_may; optr!=NULLTABLE_SEQ;  optr=optr->ts_next) {
@@ -313,14 +309,14 @@ char           *objclass;
 	}
 
 	(void) sprintf (obuf, "objectClass=%s", objclass);
-	if ((ocas = str2as (obuf)) == NULLATTR) 
+	if ((ocas = str2as (obuf)) == NULLATTR)
 		return (-1);
 
 	as = make_template_as (ocas->attr_value);
 	as = as_merge (as,ocas);
 
 	as_print (ps,as,EDBOUT);
-	
+
 	as_free (as);
 	ps_free (ps);
 	(void) fclose (fptr);

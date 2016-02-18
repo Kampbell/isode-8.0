@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/conn_finish.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/RCS/conn_finish.c,v 9.0 1992/06/16 12:34:01 isode Rel $
  *
  *
@@ -38,65 +38,61 @@ conn_finish(conn, df)
 struct connection	* conn;
 struct DSAPfinish	* df;
 {
-    int			  result;
-    struct oper_act	* on;
-    extern time_t	  conn_timeout, timenow;
-    struct DSAPindication	  di_s;
-    struct DSAPindication	* di = &(di_s);
+	int			  result;
+	struct oper_act	* on;
+	extern time_t	  conn_timeout, timenow;
+	struct DSAPindication	  di_s;
+	struct DSAPindication	* di = &(di_s);
 
-    DLOG(log_dsap, LLOG_TRACE, ("conn_finish()"));
+	DLOG(log_dsap, LLOG_TRACE, ("conn_finish()"));
 
-    /* Can release be negotiated? */
-    if (conn->cn_start.cs_ds.ds_start.acs_start.ps_srequirements & SR_NEGOTIATED)
-    {
-	/* Should release be rejected? */
-        for(on=conn->cn_operlist; on!=NULLOPER; on=on->on_next_conn)
-	    if (on->on_state == ON_CHAINED)
-		break;
+	/* Can release be negotiated? */
+	if (conn->cn_start.cs_ds.ds_start.acs_start.ps_srequirements & SR_NEGOTIATED) {
+		/* Should release be rejected? */
+		for(on=conn->cn_operlist; on!=NULLOPER; on=on->on_next_conn)
+			if (on->on_state == ON_CHAINED)
+				break;
 
-        if (on != NULLOPER)
-	{
-	    /*
-	    * See if oper has had time to complete
-	    * if so remote DSA has probably lost the operation (never !!!)
-	    * else reject the release
-	    */
+		if (on != NULLOPER) {
+			/*
+			* See if oper has had time to complete
+			* if so remote DSA has probably lost the operation (never !!!)
+			* else reject the release
+			*/
 
-	    if ( timenow - conn->cn_last_used < conn_timeout)
-	    {
-		result = DUnBindReject (conn->cn_ad, ACS_REJECT,
-			    ACR_NOTFINISHED, di);
+			if ( timenow - conn->cn_last_used < conn_timeout) {
+				result = DUnBindReject (conn->cn_ad, ACS_REJECT,
+										ACR_NOTFINISHED, di);
 
-		if (result != OK)
-		{
-		    result = DUAbortRequest (conn->cn_ad, di);
-		    if (result != OK)
-			    force_close (conn->cn_ad, di);
+				if (result != OK) {
+					result = DUAbortRequest (conn->cn_ad, di);
+					if (result != OK)
+						force_close (conn->cn_ad, di);
 
-		    do_ds_unbind(conn);
-		    conn_extract(conn);
-	    	} 
-	        return;
-	    }
+					do_ds_unbind(conn);
+					conn_extract(conn);
+				}
+				return;
+			}
+		}
 	}
-    }
 
-    result = DUnBindAccept (conn->cn_ad, di);
-    if (result != OK) {
-	    result = DUAbortRequest (conn->cn_ad, di);
-	    if (result != OK)
-		    force_close (conn->cn_ad, di);
-    }
-    do_ds_unbind(conn);
-    conn_extract(conn);
+	result = DUnBindAccept (conn->cn_ad, di);
+	if (result != OK) {
+		result = DUAbortRequest (conn->cn_ad, di);
+		if (result != OK)
+			force_close (conn->cn_ad, di);
+	}
+	do_ds_unbind(conn);
+	conn_extract(conn);
 
 }
 
 conn_rel_abort (conn)
 struct connection       * conn;
 {
-    struct DSAPindication      di_s;
-    struct DSAPindication      *di = &di_s;
+	struct DSAPindication      di_s;
+	struct DSAPindication      *di = &di_s;
 
 #ifdef notanymore  /* Just get rid of it! */
 	if (!conn->cn_initiator)

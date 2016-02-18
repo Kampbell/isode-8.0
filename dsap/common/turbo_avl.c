@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/turbo_avl.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/turbo_avl.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -90,7 +90,7 @@ int		depth;
 	/* go right */
 	else if ( cmp > 0 ) {
 		rc = ravl_insert( &((*iroot)->avl_right), data, &tallersub,
-		   fcmp, fdup, depth );
+						  fcmp, fdup, depth );
 		if ( tallersub )
 			switch ( (*iroot)->avl_bf ) {
 			case LH	: /* left high - balance is restored */
@@ -107,15 +107,18 @@ int		depth;
 				case LH	: /* double rotation left */
 					l = r->avl_left;
 					switch ( l->avl_bf ) {
-					case LH	: (*iroot)->avl_bf = EH;
-						  r->avl_bf = RH;
-						  break;
-					case EH	: (*iroot)->avl_bf = EH;
-						  r->avl_bf = EH;
-						  break;
-					case RH	: (*iroot)->avl_bf = LH;
-						  r->avl_bf = EH;
-						  break;
+					case LH	:
+						(*iroot)->avl_bf = EH;
+						r->avl_bf = RH;
+						break;
+					case EH	:
+						(*iroot)->avl_bf = EH;
+						r->avl_bf = EH;
+						break;
+					case RH	:
+						(*iroot)->avl_bf = LH;
+						r->avl_bf = EH;
+						break;
 					}
 					l->avl_bf = EH;
 					ROTATERIGHT( (&r) )
@@ -141,7 +144,7 @@ int		depth;
 	/* go left */
 	else {
 		rc = ravl_insert( &((*iroot)->avl_left), data, &tallersub,
-		   fcmp, fdup, depth );
+						  fcmp, fdup, depth );
 		if ( tallersub )
 			switch ( (*iroot)->avl_bf ) {
 			case LH	: /* left high to start - left balance */
@@ -158,15 +161,18 @@ int		depth;
 				case RH	: /* double rotation right */
 					r = l->avl_right;
 					switch ( r->avl_bf ) {
-					case LH	: (*iroot)->avl_bf = RH;
-						  l->avl_bf = EH;
-						  break;
-					case EH	: (*iroot)->avl_bf = EH;
-						  l->avl_bf = EH;
-						  break;
-					case RH	: (*iroot)->avl_bf = EH;
-						  l->avl_bf = LH;
-						  break;
+					case LH	:
+						(*iroot)->avl_bf = RH;
+						l->avl_bf = EH;
+						break;
+					case EH	:
+						(*iroot)->avl_bf = EH;
+						l->avl_bf = EH;
+						break;
+					case RH	:
+						(*iroot)->avl_bf = EH;
+						l->avl_bf = LH;
+						break;
 					}
 					r->avl_bf = EH;
 					ROTATELEFT( (&l) )
@@ -366,7 +372,7 @@ int	*shorter;
 			*shorter = 1;
 			free( (char *) savenode );
 			return( savedata );
-		/* no right child */
+			/* no right child */
 		} else if ( (*root)->avl_right == 0 ) {
 			*root = (*root)->avl_left;
 			*shorter = 1;
@@ -374,7 +380,7 @@ int	*shorter;
 			return( savedata );
 		}
 
-		/* 
+		/*
 		 * avl_getmin will return to us the smallest node greater
 		 * than the one we are trying to delete.  deleting this node
 		 * from the right subtree is guaranteed to end in one of the
@@ -390,16 +396,16 @@ int	*shorter;
 		minnode->avl_data = savedata;
 
 		savedata = ravl_delete( &(*root)->avl_right, data, fcmp,
-		    &shortersubtree );
+								&shortersubtree );
 
 		if ( shortersubtree )
 			*shorter = right_balance( root );
 		else
 			*shorter = 0;
-	/* go left */
+		/* go left */
 	} else if ( cmp < 0 ) {
 		if ( (savedata = ravl_delete( &(*root)->avl_left, data, fcmp,
-		    &shortersubtree )) == 0 ) {
+									  &shortersubtree )) == 0 ) {
 			*shorter = 0;
 			return( 0 );
 		}
@@ -409,15 +415,15 @@ int	*shorter;
 			*shorter = left_balance( root );
 		else
 			*shorter = 0;
-	/* go right */
+		/* go right */
 	} else {
 		if ( (savedata = ravl_delete( &(*root)->avl_right, data, fcmp,
-		    &shortersubtree )) == 0 ) {
+									  &shortersubtree )) == 0 ) {
 			*shorter = 0;
 			return( 0 );
 		}
 
-		if ( shortersubtree ) 
+		if ( shortersubtree )
 			*shorter = right_balance( root );
 		else
 			*shorter = 0;
@@ -446,8 +452,8 @@ int	stopflag;
 		return( AVL_NOMORE );
 
 	if ( root->avl_left != 0 )
-		if ( avl_inapply( root->avl_left, fn, arg, stopflag ) 
-		    == stopflag )
+		if ( avl_inapply( root->avl_left, fn, arg, stopflag )
+				== stopflag )
 			return( stopflag );
 
 	if ( (*fn)( root->avl_data, arg ) == stopflag )
@@ -469,13 +475,13 @@ int	stopflag;
 		return( AVL_NOMORE );
 
 	if ( root->avl_left != 0 )
-		if ( avl_postapply( root->avl_left, fn, arg, stopflag ) 
-		    == stopflag )
+		if ( avl_postapply( root->avl_left, fn, arg, stopflag )
+				== stopflag )
 			return( stopflag );
 
 	if ( root->avl_right != 0 )
-		if ( avl_postapply( root->avl_right, fn, arg, stopflag ) 
-		    == stopflag )
+		if ( avl_postapply( root->avl_right, fn, arg, stopflag )
+				== stopflag )
 			return( stopflag );
 
 	return( (*fn)( root->avl_data, arg ) );
@@ -494,8 +500,8 @@ int	stopflag;
 		return( stopflag );
 
 	if ( root->avl_left != 0 )
-		if ( avl_preapply( root->avl_left, fn, arg, stopflag ) 
-		    == stopflag )
+		if ( avl_preapply( root->avl_left, fn, arg, stopflag )
+				== stopflag )
 			return( stopflag );
 
 	if ( root->avl_right == 0 )
@@ -527,7 +533,7 @@ int	type;
 		return( avl_postapply( root, fn, arg, stopflag ) );
 	default:
 		DLOG( log_dsap, LLOG_EXCEPTIONS, ("Invalid traversal type %d",
-		    type) );
+										  type) );
 		return( NOTOK );
 	}
 
@@ -566,23 +572,23 @@ int	stopflag;
 
 		if ( root->avl_left != 0 )
 			if ( avl_prefixapply( root->avl_left, data, fmatch,
-			    marg, fcmp, carg, stopflag ) == stopflag )
+								  marg, fcmp, carg, stopflag ) == stopflag )
 				return( stopflag );
 
 		if ( root->avl_right != 0 )
 			return( avl_prefixapply( root->avl_right, data, fmatch,
-			    marg, fcmp, carg, stopflag ) );
+									 marg, fcmp, carg, stopflag ) );
 		else
 			return( AVL_NOMORE );
 
 	} else if ( cmp < 0 ) {
 		if ( root->avl_left != 0 )
 			return( avl_prefixapply( root->avl_left, data, fmatch,
-			    marg, fcmp, carg, stopflag ) );
+									 marg, fcmp, carg, stopflag ) );
 	} else {
 		if ( root->avl_right != 0 )
 			return( avl_prefixapply( root->avl_right, data, fmatch,
-			    marg, fcmp, carg, stopflag ) );
+									 marg, fcmp, carg, stopflag ) );
 	}
 
 	return( AVL_NOMORE );
@@ -620,7 +626,7 @@ IFP	dfree;
 
 /*
  * avl_find -- search avltree root for a node with data data.  the function
- * cmp is used to compare things.  it is called with data as its first arg 
+ * cmp is used to compare things.  it is called with data as its first arg
  * and the current node data as its second.  it should return 0 if they match,
  * < 0 if arg1 is less than arg2 and > 0 if arg1 is greater than arg2.
  */
@@ -662,7 +668,7 @@ int	arg;
 	} else if ( avl_maxlist == slots ) {
 		slots += AVL_GRABSIZE;
 		avl_list = (caddr_t *) realloc( (char *) avl_list,
-		    (unsigned) slots * sizeof(caddr_t));
+										(unsigned) slots * sizeof(caddr_t));
 	}
 
 	avl_list[ avl_maxlist++ ] = data;
@@ -688,8 +694,7 @@ Avlnode	*root;
 	return( avl_list[ avl_nextlist++ ] );
 }
 
-caddr_t avl_getnext()
-{
+caddr_t avl_getnext() {
 	if ( avl_list == 0 )
 		return( 0 );
 
@@ -703,7 +708,6 @@ caddr_t avl_getnext()
 }
 
 
-avl_dup_error()
-{
+avl_dup_error() {
 	return( NOTOK );
 }

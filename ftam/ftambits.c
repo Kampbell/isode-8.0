@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambits.c,v 9.0 1992/06/16 12:14:55 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam/RCS/ftambits.c,v 9.0 1992/06/16 12:14:55 isode Rel $
  *
  *
@@ -38,23 +38,24 @@ struct pair pairs[];
 int	actions;
 struct FTAMindication *fti;
 {
-    register struct pair *pp;
-    register PE	    fpm;
+	register struct pair *pp;
+	register PE	    fpm;
 
-    if ((fpm = prim2bit (pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_BITS)))
-	    == NULLPE) {
-no_mem: ;
-	(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
-	if (fpm)
-	    pe_free (fpm);
-	return NULLPE;
-    }
+	if ((fpm = prim2bit (pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_BITS)))
+			== NULLPE) {
+no_mem:
+		;
+		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		if (fpm)
+			pe_free (fpm);
+		return NULLPE;
+	}
 
-    for (pp = pairs; pp -> p_mask; pp++)
-	if ((actions & pp -> p_mask) && bit_on (fpm, pp -> p_bitno) == NOTOK)
-	    goto no_mem;
+	for (pp = pairs; pp -> p_mask; pp++)
+		if ((actions & pp -> p_mask) && bit_on (fpm, pp -> p_bitno) == NOTOK)
+			goto no_mem;
 
-    return fpm;
+	return fpm;
 }
 
 /*  */
@@ -68,20 +69,20 @@ register PE  fpm;
 int    *actions;
 struct FTAMindication *fti;
 {
-    register int    i;
+	register int    i;
 	register int	bits_set=0;
-    register struct pair *pp;
+	register struct pair *pp;
 
-    i = 0;
-    for (pp = pairs; pp -> p_mask; pp++)
-	if (bit_test (fpm, pp -> p_bitno) > OK) {
-	    i |= pp -> p_mask;
-		bits_set++;
-	}
+	i = 0;
+	for (pp = pairs; pp -> p_mask; pp++)
+		if (bit_test (fpm, pp -> p_bitno) > OK) {
+			i |= pp -> p_mask;
+			bits_set++;
+		}
 
-    *actions = i;
+	*actions = i;
 	if (bits_set == 0)
 		return NOTOK;
 	else
-    	return (bits_set);
+		return (bits_set);
 }

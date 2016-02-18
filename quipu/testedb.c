@@ -2,7 +2,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/testedb.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/RCS/testedb.c,v 9.0 1992/06/16 12:34:01 isode Rel $
  *
  *
@@ -36,14 +36,14 @@ main (argc, argv)
 int argc;
 char *argv[];
 {
-extern IFP unrav_fn;
-extern IFP schema_fn;
-int real_unravel_attribute ();
-int real_check_schema ();
-extern PS opt;
-extern char dsa_mode;
-Entry thedb;
-Avlnode	*treetop;
+	extern IFP unrav_fn;
+	extern IFP schema_fn;
+	int real_unravel_attribute ();
+	int real_check_schema ();
+	extern PS opt;
+	extern char dsa_mode;
+	Entry thedb;
+	Avlnode	*treetop;
 
 
 	dsa_mode = TRUE;
@@ -53,7 +53,7 @@ Avlnode	*treetop;
 
 	quipu_syntaxes();
 	if (load_oid_table ("oidtable") == NOTOK)
-		fatal (-1, "Can't load oid tables");	
+		fatal (-1, "Can't load oid tables");
 	check_dsa_known_oids ();
 
 	(void) ll_close (log_dsap);
@@ -61,7 +61,7 @@ Avlnode	*treetop;
 	log_dsap -> ll_events = LLOG_FATAL | LLOG_EXCEPTIONS;
 
 	if ((treetop = getentry_block (NULLENTRY, argc > 1 ? argv [1] : "./EDB"))
-	    != NULL) {
+			!= NULL) {
 		(void) printf ("EDB ok\n");
 #ifdef DEBUG
 		thedb = get_default_entry(NULLENTRY);
@@ -72,8 +72,8 @@ Avlnode	*treetop;
 		free_isode_alias();
 #endif
 		exit (0);
-	    }
-	
+	}
+
 	(void) printf ("EDB not ok\n");
 
 	return 1;
@@ -87,7 +87,7 @@ int refreshing = FALSE;
 shadow_entry(eptr)
 Entry eptr;
 {
-;
+	;
 }
 
 

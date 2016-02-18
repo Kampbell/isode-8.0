@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/actions1.c,v 9.0 1992/06/16 12:41:08 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/actions1.c,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *
@@ -45,7 +45,7 @@ extern int sd;		/*Global Session Descriptor (ISODE) */
 
 int
 a1_0(pe)	/*NDQ-ntr in states 50B or 51Q (Release awaiting peer)*/
-		/*Also RTQ in state 51T (Release awaiting peer)*/
+/*Also RTQ in state 51T (Release awaiting peer)*/
 PE pe;
 {
 	/*If quarantined data delivery were supported, we would do:
@@ -60,7 +60,7 @@ PE pe;
 }
 
 
-int	
+int
 a1_1(pe)		/*NDQ-tr in states 50B or 51Q (Release Awaiting Peer)*/
 PE pe;
 {
@@ -103,19 +103,16 @@ PE pe;
 			/*If the result element*/
 		{
 			if( (vrsl = prim2num(p)) == NOTOK)
-			    invalid_result ("a1_3", p);
+				invalid_result ("a1_3", p);
 			break;
 		}
 	}
 	if(vrsl < 0)	/*If no result field*/
 		adios(NULLCP, "a1_3: no result field");
-	if(vrsl == FAILURE) 
-	{
+	if(vrsl == FAILURE) {
 		clear_vte();
 		(void) asr(pe,FAILURE);
-	}
-	else
-	{
+	} else {
 		/*Set draft-VTE parameters according to list in primitive
 		/* (SetVTPmV(L) in 9041)
 		/*Set status of draft-VTE parameters above to defined
@@ -125,12 +122,10 @@ PE pe;
 		vena = TRUE;	/*Current VTE agreed to*/
 		waca = TRUE;
 		(void) asr(pe,SUCCESS);
-		if(vrsl == SUCCESS)
-		{
+		if(vrsl == SUCCESS) {
 			sector = 5;
 			state = S5_400B;
-		}
-		else state = S1_10B;
+		} else state = S1_10B;
 	}
 	return(OK);
 }
@@ -149,19 +144,16 @@ PE pe;
 			/*If the result element*/
 		{
 			if( (vrsl = prim2num(p)) == NOTOK)
-			    invalid_result ("a1_4", p);
+				invalid_result ("a1_4", p);
 			break;
 		}
 	}
 	if(vrsl < 0)	/*If no result field*/
 		adios(NULLCP,"a1_4: no result field");
-	if(vrsl == FAILURE) 
-	{
+	if(vrsl == FAILURE) {
 		clear_vte();	/*Discard VTE (DisVTE)*/
 		(void) asr(pe,FAILURE);	/*Send the ASR to peer*/
-	}
-	else
-	{
+	} else {
 		/*Set draft-VTE parameters according to list in primitive
 		/* (SetVTPmV(L) in 9041)
 		/*Set status of draft-VTE parameters above to defined
@@ -170,14 +162,11 @@ PE pe;
 
 		vena = TRUE;	/*Current VTE agreed to*/
 		(void) asr(pe,SUCCESS);
-		if(vrsl == SUCCESS)
-		{
+		if(vrsl == SUCCESS) {
 			sector = 5;
 			if(vtok)state = S5_40T;
 			else state = S5_40N;
-		}
-		else 
-		{
+		} else {
 			if(vtok) state = S1_10T;
 			else state = S1_10N;
 		}
@@ -211,21 +200,18 @@ PE pe;
 /* ARGSUSED */
 int
 a1_7(pe)	/*VRELreq from user in state 10B (Env. not agreed)*/
-		/*GTQ in 50B*/
+/*GTQ in 50B*/
 PE pe;
 {
-	if(vtok)
-	{
+	if(vtok) {
 		vt_disconnect();	/*May be only TEMP*/
 		state = S1_51Q;
-	}
-	else
-	{
+	} else {
 		request_token();
-			/*Need call to ISODE to request token*/
+		/*Need call to ISODE to request token*/
 		state = S1_50B;
 
-/*Probably need to release the NULL PE for VRELreq that got us here*/
+		/*Probably need to release the NULL PE for VRELreq that got us here*/
 
 	}
 	return(OK);
@@ -240,7 +226,7 @@ PE pe;
 	vt_disconnect();	/*May be only TEMP--check function*/
 	state = S1_51T;
 
-/*Release NULL PE from VT USER*/
+	/*Release NULL PE from VT USER*/
 
 	return(OK);
 }
@@ -251,30 +237,28 @@ PE pe;
 {
 
 
-/*	vrsl = -1;
-/*	for(p = first_member(pe); p; p = next_member(pe,p) )
-/*			/*Get Result parameter*/
-/*	{
-/*		if(PE_ID(p->pe_class,p->pe_id) == PE_ID(PE_CLASS_CONT,0) )
-/*		{
-/*			if( (vrsl = prim2num(p)) == NOTOK)
-/*			    invalid_result ("a1_9", p);
-/*			break;
-/*		}
-/*	}
-/*	if(vrsl < 0)
-/*		adios(NULLCP,"a1_9: no result field");
-/*	
-/*	we should look in the pdu and see what the result is, but
-/*	since we know our vt-user is an agreeable fellow, we can
-/*	assume success
-*/
+	/*	vrsl = -1;
+	/*	for(p = first_member(pe); p; p = next_member(pe,p) )
+	/*			/*Get Result parameter*/
+	/*	{
+	/*		if(PE_ID(p->pe_class,p->pe_id) == PE_ID(PE_CLASS_CONT,0) )
+	/*		{
+	/*			if( (vrsl = prim2num(p)) == NOTOK)
+	/*			    invalid_result ("a1_9", p);
+	/*			break;
+	/*		}
+	/*	}
+	/*	if(vrsl < 0)
+	/*		adios(NULLCP,"a1_9: no result field");
+	/*
+	/*	we should look in the pdu and see what the result is, but
+	/*	since we know our vt-user is an agreeable fellow, we can
+	/*	assume success
+	*/
 
 	vrsl = SUCCESS;
-	if(vrsl == SUCCESS)
-	{
-		if(vns > 0)	/*If data left to send*/
-		{
+	if(vrsl == SUCCESS) {
+		if(vns > 0) {	/*If data left to send*/
 			advise(LLOG_NOTICE,NULLCP, "Sending remaining data (a1_9() )");
 			send_all(); /*Send remaining data (NDQseq(Vns)-ntr)*/
 			vns = 0;
@@ -282,23 +266,18 @@ PE pe;
 		send_rlr(pe);	/*Send the RLR which User built*/
 		clear_vte();	/*Erase the Environment*/
 		state = S1_01;
-/*		system("reset");	*/
+		/*		system("reset");	*/
 		finalbye ();
 		advise(LLOG_NOTICE,NULLCP,"association released by terminal service");
 		(void)fflush (stdout);
 		exit(0);
-	}
-	else	/*Result was failure*/
-	{
+	} else {	/*Result was failure*/
 		send_rlr(pe);	/*Send the RLR*/
-		if(vena)	/*If agreement on VTE*/
-		{
+		if(vena) {	/*If agreement on VTE*/
 			sector = 5;
 			if(vsmd) state = S5_40N;	/*If S-Mode*/
 			else state = S5_400B;
-		}
-		else
-		{
+		} else {
 			if(vsmd) state = S1_10N;
 			else state = S1_10B;
 		}
@@ -315,7 +294,7 @@ PE pe;
 	request_token();	/*TEMP -- Need an ISODE call to really do this
 				  since there is no VTP PDU*/
 
-/*Probably need to free the NullPE that triggered this*/
+	/*Probably need to free the NullPE that triggered this*/
 
 	state = S1_10N;		/*Should be here already.  Do this to follow
 				  the spec literally*/
@@ -329,8 +308,8 @@ a1_11(pe)	/*VSNEGreq (User Start Negotiation)*/
 PE pe;
 {
 
-/*MIN not implemented*/
-/*Probably need to send back a negative Acknowledgement*/
+	/*MIN not implemented*/
+	/*Probably need to send back a negative Acknowledgement*/
 
 	return(OK);
 }
@@ -342,8 +321,8 @@ a1_12(pe)	/*VSNEGreq*/
 PE pe;
 {
 
-/*MIN not implemented*/
-/*Probably need to send back a Negative Acknowledgement*/
+	/*MIN not implemented*/
+	/*Probably need to send back a Negative Acknowledgement*/
 
 	return(OK);
 }
@@ -382,40 +361,33 @@ PE pe;
 	PE p;
 
 	vrsl = -1;
-	for(p = first_member(pe); p; p = next_member(pe,p) )
-	{
-		if(PE_ID(p->pe_class,p->pe_id) == PE_ID(PE_CLASS_CONT,2) )
-		{
+	for(p = first_member(pe); p; p = next_member(pe,p) ) {
+		if(PE_ID(p->pe_class,p->pe_id) == PE_ID(PE_CLASS_CONT,2) ) {
 			if( (vrsl = prim2num(p)) == NOTOK)
-			    invalid_result ("a1_15", p);
+				invalid_result ("a1_15", p);
 			break;
 		}
 	}
 	if(vrsl < 0)
 		adios(NULLCP,"a1_15: no result field");
-	if(vrsl == FAILURE)
-	{
+	if(vrsl == FAILURE) {
 		clear_vte();
 		state = S1_01;
 		return(FAILURE);	/*Notify user of ASR (VASScnf)*/
-	}
-	else
-	{
+	} else {
 
-	/*Set draft-VTE param. according to list in primitive or protocol
-	/*element (SetVTPmV(L)).
-	/*Set status of draft-VTE params. listed in primitive or protocol
-	/*element to defined (SetVTPmSDe(L))
-	/*Set current-VTE from draft-VTE (SetCuVTE) */
+		/*Set draft-VTE param. according to list in primitive or protocol
+		/*element (SetVTPmV(L)).
+		/*Set status of draft-VTE params. listed in primitive or protocol
+		/*element to defined (SetVTPmSDe(L))
+		/*Set current-VTE from draft-VTE (SetCuVTE) */
 
 		vena = 1;
 		waci = 1;
-		if(vrsl == SUCCESS)
-		{
+		if(vrsl == SUCCESS) {
 			sector = 5;
 			state = S5_400B;
-		}
-		else state = S1_10B;
+		} else state = S1_10B;
 	}
 	return(SUCCESS);	/*Notify user of ASR (VASScnf)*/
 }
@@ -427,41 +399,33 @@ PE pe;
 	PE p;
 
 	vrsl = -1;
-	for(p = first_member(pe); p; p = next_member(pe,p) )
-	{
-		if(PE_ID(p->pe_class,p->pe_id) == PE_ID(PE_CLASS_CONT,2) )
-		{
+	for(p = first_member(pe); p; p = next_member(pe,p) ) {
+		if(PE_ID(p->pe_class,p->pe_id) == PE_ID(PE_CLASS_CONT,2) ) {
 			if( (vrsl = prim2num(p)) == NOTOK)
-			    invalid_result ("a1_16", p);
+				invalid_result ("a1_16", p);
 			break;
 		}
 	}
 	if(vrsl < 0)
 		adios(NULLCP,"a1_16: no result field");
-	if(vrsl == FAILURE)
-	{
+	if(vrsl == FAILURE) {
 		clear_vte();
 		state = S1_01;
 		return(FAILURE);	/*Notify user of ASR (VASScnf)*/
-	}
-	else
-	{
+	} else {
 
-	/*Set draft-VTE param. according to list in primitive or protocol
-	/*element (SetVTPmV(L)).
-	/*Set status of draft-VTE params. listed in primitive or protocol
-	/*element to defined (SetVTPmSDe(L))
-	/*Set current-VTE from draft-VTE (SetCuVTE) */
+		/*Set draft-VTE param. according to list in primitive or protocol
+		/*element (SetVTPmV(L)).
+		/*Set status of draft-VTE params. listed in primitive or protocol
+		/*element to defined (SetVTPmSDe(L))
+		/*Set current-VTE from draft-VTE (SetCuVTE) */
 
 		vena = 1;
-		if(vrsl == SUCCESS)
-		{
+		if(vrsl == SUCCESS) {
 			sector = 5;
 			if(vtok) state = S5_40T;
 			else state = S5_40N;
-		}
-		else 
-		{
+		} else {
 			if(vtok) state = S1_10T;
 			else state = S1_10N;
 		}
@@ -478,13 +442,11 @@ PE pe;
 	int result;
 
 	result = read_asq(pe);	/*Unpack ASQ*/
-	if(result == PROFILE_NG)
-	{
+	if(result == PROFILE_NG) {
 		(void)send_bad_asr(PROFILE_NG); /*Send Failure ASR with reason*/
 		return(NOTOK);
 	}
-	if(result == 0)
-	{
+	if(result == 0) {
 		(void)send_bad_asr(0);	/*Send failure ASR w/ no reason*/
 		return(NOTOK);
 	}
@@ -511,10 +473,10 @@ PE pe;
 	return(OK);
 }
 
-	
+
 /* ARGSUSED */
 int
-a1_19(pe)	/*GTQ in 10N or VRTQreq in 10T*/ 
+a1_19(pe)	/*GTQ in 10N or VRTQreq in 10T*/
 PE pe;
 {
 	vtok = TRUE;
@@ -523,7 +485,7 @@ PE pe;
 	return(OK);
 }
 
-	
+
 int
 a1_20(pe)	/*RLR (Release Response) in 51Q or 51T (Release Awaiting Peer)*/
 PE pe;
@@ -532,20 +494,18 @@ PE pe;
 	PE p;
 
 	vrsl = -1;
-	for(p = first_member(pe); p; p = next_member(pe,p) )
-	{
+	for(p = first_member(pe); p; p = next_member(pe,p) ) {
 		if(PE_ID(p->pe_class,p->pe_id) == PE_ID(PE_CLASS_CONT,0) )
 			/*If result element*/
 		{
 			if( (vrsl = prim2num(p)) == NOTOK)
-			    invalid_result ("a1_20", p);
+				invalid_result ("a1_20", p);
 			break;
 		}
 	}
 	if(vrsl < 0)	/*if no result field*/
 		adios(NULLCP,"a1_20: no result field");
-	if(vrsl == SUCCESS)
-	{
+	if(vrsl == SUCCESS) {
 		/*VRELcnf -- Confirm the release to user -- for now, use the
 		  original mechanism (closing TELNET) -- should be changed
 		  especially for forms mode*/
@@ -560,17 +520,12 @@ PE pe;
 		}
 		clear_vte();
 		state = S1_01;
-	}
-	else	/*Release Failed*/
-	{
-		if(vena)
-		{
+	} else {	/*Release Failed*/
+		if(vena) {
 			sector = 5;
 			if(vsmd) state = S5_40T;
 			else state = S5_400B;
-		}
-		else
-		{
+		} else {
 			if(vsmd) state = S1_10T;
 			else state = S1_10B;
 		}
@@ -578,28 +533,25 @@ PE pe;
 	return(OK);
 }
 
-			
+
 int
 a1_21(pe)	/*DLQ (Deliver Request) in 50B or 51Q (Release Awaiting Peer)*/
 PE pe;
 {
 	if( (vra = prim2flag(pe)) == NOTOK)
 		adios(NULLCP,"a1_21: incorrect DLQ");
-	if(vra)
-	{
+	if(vra) {
 		vrsl = FAILURE;
 		vrea = COLL_DET;
 		/*VRELcnf required in spec but there's really nothing to tell
 		  the user*/
 	}
-	if(vnt > 0) /*Should not happen unless Quarantine Delivery supported*/
-	{
+	if(vnt > 0) { /*Should not happen unless Quarantine Delivery supported*/
 		/*VDATind-n(Vnt)*/
 		vnt = 0;
 	}
 	vdelind(pe,vra);	/*Also irrelevant without Quarantine*/
-	if(vra)
-	{
+	if(vra) {
 		sector = 5;
 		state = S5_402B;
 	}
@@ -618,8 +570,7 @@ PE pe;
 	/*VRELcnf -- Confirm to user telling of failure due to collision --
 	  but user can't do anything now anyway. */
 
-	if(vnt > 0) /*Shouldn't happen without Quarantine Delivery Ctrl*/
-	{
+	if(vnt > 0) { /*Shouldn't happen without Quarantine Delivery Ctrl*/
 		/*VDATind-n(Vnt)*/
 		vnt = 0;
 	}
@@ -761,7 +712,7 @@ PE pe;
 	if(pe_auq == NULLPE)
 		adios(NULLCP, "a1_102: AUQ build failure (out of memory)");
 	if(AcUAbortRequest(sd,&pe_auq,1,aci) == NOTOK)
-	    acs_adios (&aci -> aci_abort, "A-ABORT.REQUEST");
+		acs_adios (&aci -> aci_abort, "A-ABORT.REQUEST");
 	state = S1_01;
 
 	finalbye ();
@@ -779,12 +730,12 @@ PE pe;
 
 	advise(LLOG_NOTICE,NULLCP,  "Irrecoverable Exception Condition -- Aborting\n");
 	pe_apq = num2prim((integer)1,PE_CLASS_CONT,APQ_PDU);
-			/*1 is value for Local Error.  0 if for Protocol
-			  Error.  Assume 1 for now. */
+	/*1 is value for Local Error.  0 if for Protocol
+	  Error.  Assume 1 for now. */
 	if(pe_apq == NULLPE)
 		adios(NULLCP,"a1_103: APQ build failure (out of memory)");
 	if(AcUAbortRequest(sd,&pe_apq,1,aci) == NOTOK)
-	    acs_adios (&aci -> aci_abort, "A-ABORT.REQUEST");
+		acs_adios (&aci -> aci_abort, "A-ABORT.REQUEST");
 
 	state = S1_01;	/*For completeness*/
 

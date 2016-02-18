@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/std2ps.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/std2ps.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -40,13 +40,13 @@ PElementData data;
 PElementLen n;
 int	in_line;
 {
-    int	    i;
+	int	    i;
 
-    if ((i = fread ((char *) data, sizeof *data, (int) n,
-		    (FILE *) ps -> ps_addr)) == NOTOK)
-	ps -> ps_errno = PS_ERR_IO;
+	if ((i = fread ((char *) data, sizeof *data, (int) n,
+					(FILE *) ps -> ps_addr)) == NOTOK)
+		ps -> ps_errno = PS_ERR_IO;
 
-    return i;
+	return i;
 }
 
 
@@ -58,24 +58,24 @@ PElementData data;
 PElementLen n;
 int	in_line;
 {
-    int	    i;
+	int	    i;
 
 
-    if ((i = fwrite ((char *) data, sizeof *data, (int) n,
-		     (FILE *) ps -> ps_addr)) == NOTOK)
-	ps -> ps_errno = PS_ERR_IO;
+	if ((i = fwrite ((char *) data, sizeof *data, (int) n,
+					 (FILE *) ps -> ps_addr)) == NOTOK)
+		ps -> ps_errno = PS_ERR_IO;
 
-    return i;
+	return i;
 }
 
 
 int  std_flush (ps)
 PS	ps;
 {
-    if (fflush ((FILE *) ps -> ps_addr) != EOF)
-	return OK;
+	if (fflush ((FILE *) ps -> ps_addr) != EOF)
+		return OK;
 
-    return ps_seterr (ps, PS_ERR_IO, NOTOK);
+	return ps_seterr (ps, PS_ERR_IO, NOTOK);
 }
 
 /*  */
@@ -83,9 +83,9 @@ PS	ps;
 int	std_open (ps)
 register PS	ps;
 {
-    ps -> ps_readP = std_read;
-    ps -> ps_writeP = std_write;
-    ps -> ps_flushP = std_flush;
+	ps -> ps_readP = std_read;
+	ps -> ps_writeP = std_write;
+	ps -> ps_flushP = std_flush;
 
-    return OK;
+	return OK;
 }

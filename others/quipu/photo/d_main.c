@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/d_main.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/d_main.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -41,68 +41,67 @@ main (argc, argv)
 int     argc;
 char ** argv;
 {
-    char *data;
-    int   fd;
-    char *file = "<stdin>";
-    int   len;
-    long  limit;
-    char *name;
-    char *newData;
-    long  size;
+	char *data;
+	int   fd;
+	char *file = "<stdin>";
+	int   len;
+	long  limit;
+	char *name;
+	char *newData;
+	long  size;
 
-    if ((name = getenv ("RDN")) == NULL)
-        name = "unknown";
+	if ((name = getenv ("RDN")) == NULL)
+		name = "unknown";
 
-    /* process commmand line options and parameters */
+	/* process commmand line options and parameters */
 
-    if (argc > 1)
-	    name = *(++argv);
+	if (argc > 1)
+		name = *(++argv);
 
-    fd = fileno (stdin);
+	fd = fileno (stdin);
 
-    /* read the entire source file into memory */
+	/* read the entire source file into memory */
 
-    data = (char *)malloc ((unsigned int)ALLOCATION_SIZE);
-    if ( !data ) {
-	(void) fputs ("decode_fax: out of memory\n", stderr);
-	exit (1);
-    }
-    limit = ALLOCATION_SIZE;
-    size = 0L;
-
-    for (;;) {
-	if (size + ALLOCATION_SIZE > limit) {
-	    newData = (char *)realloc (data, (unsigned int) (limit + ALLOCATION_SIZE));
-	    if ( !newData ) {
+	data = (char *)malloc ((unsigned int)ALLOCATION_SIZE);
+	if ( !data ) {
 		(void) fputs ("decode_fax: out of memory\n", stderr);
 		exit (1);
-	    }
-	    data = newData;
-	    limit += ALLOCATION_SIZE;
 	}
-	len = read (fd, &data[size], (int)ALLOCATION_SIZE);
-	if (len == -1) {
-	    perror (file);
-	    exit (1);
-	}
-	else if (len == 0)
-	    break;
-	size += len;
-    }
+	limit = ALLOCATION_SIZE;
+	size = 0L;
 
-    if (size < 1) {
-	(void) fprintf (stderr, "%s: is not a fax image\n", file);
-	exit (1);
-    }
-   if (decode_t4 (data, name, (int)size) == -1) {
-	(void) fprintf (stderr,"\n");
-	exit (-1);
-   }
-   if (two_passes && decode_t4 (data, name, (int)size) == -1) {
-	(void) fprintf (stderr,"\n");
-	exit (-1);
-   }
-   return (0);
+	for (;;) {
+		if (size + ALLOCATION_SIZE > limit) {
+			newData = (char *)realloc (data, (unsigned int) (limit + ALLOCATION_SIZE));
+			if ( !newData ) {
+				(void) fputs ("decode_fax: out of memory\n", stderr);
+				exit (1);
+			}
+			data = newData;
+			limit += ALLOCATION_SIZE;
+		}
+		len = read (fd, &data[size], (int)ALLOCATION_SIZE);
+		if (len == -1) {
+			perror (file);
+			exit (1);
+		} else if (len == 0)
+			break;
+		size += len;
+	}
+
+	if (size < 1) {
+		(void) fprintf (stderr, "%s: is not a fax image\n", file);
+		exit (1);
+	}
+	if (decode_t4 (data, name, (int)size) == -1) {
+		(void) fprintf (stderr,"\n");
+		exit (-1);
+	}
+	if (two_passes && decode_t4 (data, name, (int)size) == -1) {
+		(void) fprintf (stderr,"\n");
+		exit (-1);
+	}
+	return (0);
 }
 
 /*    ERRORS */
@@ -111,8 +110,8 @@ static ps_die (ps, s)
 register PS	 ps;
 register char   *s;
 {
-    (void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
-    exit (1);
+	(void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
+	exit (1);
 }
 
 
@@ -120,6 +119,6 @@ static pe_die (pe, s)
 register PE	 pe;
 register char   *s;
 {
-    (void) fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
-    exit (1);
+	(void) fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
+	exit (1);
 }

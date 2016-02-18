@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/signals.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/signals.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -49,12 +49,12 @@ IFP	signal (sig, func)
 int	sig;
 IFP	func;
 {
-    struct sigvec   sv1,
-    		    sv2;
+	struct sigvec   sv1,
+			sv2;
 
-    sv1.sv_handler = func;
-    sv1.sv_mask = sv1.sv_onstack = 0;
-    return (sigvec (sig, &sv1, &sv2) != NOTOK ? sv2.sv_handler : BADSIG);
+	sv1.sv_handler = func;
+	sv1.sv_mask = sv1.sv_onstack = 0;
+	return (sigvec (sig, &sv1, &sv2) != NOTOK ? sv2.sv_handler : BADSIG);
 }
 #endif
 
@@ -74,9 +74,9 @@ static SFP handler[NSIG];
 static SFD sigser (sig)
 int	sig;
 {
-    (void) signal (sig, sigser);
+	(void) signal (sig, sigser);
 
-    pending |= sigmask (sig);
+	pending |= sigmask (sig);
 }
 
 /*  */
@@ -85,51 +85,49 @@ int	sig;
 int	sigblock (mask)
 int	mask;
 {
-    register int    sig,
-                    smask;
-    long    omask = blocked;
+	register int    sig,
+			 smask;
+	long    omask = blocked;
 
-    if (mask == 0)
-	return blocked;
+	if (mask == 0)
+		return blocked;
 
-    for (sig = 1, smask = sigmask (sig); sig < NSIG; sig++, smask <<= 1)
-	if ((smask & mask) && !(smask & blocked)) {
-	    pending &= ~smask;
-	    handler[sig] = signal (sig, sigser);
-	    blocked |= smask;
-	}
+	for (sig = 1, smask = sigmask (sig); sig < NSIG; sig++, smask <<= 1)
+		if ((smask & mask) && !(smask & blocked)) {
+			pending &= ~smask;
+			handler[sig] = signal (sig, sigser);
+			blocked |= smask;
+		}
 
-    return omask;
+	return omask;
 }
 
 int	sigsetmask (mask)
 int	mask;
 {
-    register int    sig,
-                    smask;
-    long    omask = blocked;
+	register int    sig,
+			 smask;
+	long    omask = blocked;
 
-    for (sig = 1, smask = sigmask (sig); sig < NSIG; sig++, smask <<= 1)
-	if (smask & mask) {
-	    if (smask & blocked)
-		continue;
+	for (sig = 1, smask = sigmask (sig); sig < NSIG; sig++, smask <<= 1)
+		if (smask & mask) {
+			if (smask & blocked)
+				continue;
 
-	    pending &= ~smask;
-	    handler[sig] = signal (sig, sigser);
-	    blocked |= smask;
-	}
-	else
-	    if (smask & blocked) {
-		blocked &= ~smask;
-		(void) signal (sig, handler[sig] != BADSIG ? handler[sig]
-			: SIG_DFL);
-		if (smask & pending) {
-		    pending &= ~smask;
-		    (void) kill (getpid (), sig);
+			pending &= ~smask;
+			handler[sig] = signal (sig, sigser);
+			blocked |= smask;
+		} else if (smask & blocked) {
+			blocked &= ~smask;
+			(void) signal (sig, handler[sig] != BADSIG ? handler[sig]
+						   : SIG_DFL);
+			if (smask & pending) {
+				pending &= ~smask;
+				(void) kill (getpid (), sig);
+			}
 		}
-	    }
 
-    return omask;
+	return omask;
 }
 
 #endif

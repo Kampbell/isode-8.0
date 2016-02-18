@@ -8,19 +8,17 @@
 #define QBool char
 #define QCardinal unsigned int
 
-typedef enum
-{
-  yes,
-  no,
-  unknown,
-  might_not
+typedef enum {
+	yes,
+	no,
+	unknown,
+	might_not
 } known;
 
-typedef enum
-{
-  RQ_processing,
-  RQ_results_returned,
-  RQ_error_returned
+typedef enum {
+	RQ_processing,
+	RQ_results_returned,
+	RQ_error_returned
 } request_state;
 
 #ifndef TRUE

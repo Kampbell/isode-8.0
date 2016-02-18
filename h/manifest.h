@@ -1,6 +1,6 @@
 /* manifest.h - manifest constants */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/manifest.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -24,7 +24,7 @@
 #ifndef	_MANIFEST_
 #define	_MANIFEST_
 
-			/* current ISODE distribution: major*10+minor */
+/* current ISODE distribution: major*10+minor */
 #define	ISODE	80
 
 #ifndef	_CONFIG_
@@ -43,7 +43,7 @@
 #ifdef	BSD42
 #undef	SYS5NLY
 #define	BSDSIGS
-#endif 
+#endif
 
 
 #ifdef	ROS
@@ -192,7 +192,9 @@ typedef INTDEF integer;
 #if	defined(WIN) || defined(WINTLI)
 #include "sys/inet.h"
 #ifndef	NFDBITS
-typedef struct fd_set { int fds_bits[1]; } fd_set;
+typedef struct fd_set {
+	int fds_bits[1];
+} fd_set;
 #endif
 #endif
 
@@ -246,20 +248,20 @@ typedef void   (*VFP) ();
 
 
 struct udvec {			/* looks like a BSD iovec... */
-    caddr_t uv_base;
-    int	    uv_len;
+	caddr_t uv_base;
+	int	    uv_len;
 
-    int	    uv_inline;
+	int	    uv_inline;
 };
 
 
 struct qbuf {
-    struct qbuf *qb_forw;	/* doubly-linked list */
-    struct qbuf *qb_back;	/*   .. */
+	struct qbuf *qb_forw;	/* doubly-linked list */
+	struct qbuf *qb_back;	/*   .. */
 
-    int	    qb_len;		/* length of data */
-    char   *qb_data;		/* current pointer into data */
-    char    qb_base[1];		/* extensible... */
+	int	    qb_len;		/* length of data */
+	char   *qb_data;		/* current pointer into data */
+	char    qb_base[1];		/* extensible... */
 };
 
 #define	QBFREE(qb) \

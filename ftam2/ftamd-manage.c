@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-manage.c,v 9.0 1992/06/16 12:15:43 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam2/RCS/ftamd-manage.c,v 9.0 1992/06/16 12:15:43 isode Rel $
  *
  *
@@ -32,26 +32,26 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-manage.c,v 9.0 
 int	ftam_managementindication (ftg)
 struct FTAMgroup *ftg;
 {
-    struct FTAMgroup    ftms;
-    struct FTAMgroup   *ftm = &ftms;
-    struct FTAMindication   ftis;
-    register struct FTAMindication *fti = &ftis;
+	struct FTAMgroup    ftms;
+	struct FTAMgroup   *ftm = &ftms;
+	struct FTAMindication   ftis;
+	register struct FTAMindication *fti = &ftis;
 
-    ftam_selection (ftg, ftm);
+	ftam_selection (ftg, ftm);
 
-    if (myfd != NOTOK) {
+	if (myfd != NOTOK) {
 #ifndef	BRIDGE
-	unlock ();
-	(void) close (myfd);
+		unlock ();
+		(void) close (myfd);
 #else
-	(void) close (myfd);
-	(void) ftp_reply ();
+		(void) close (myfd);
+		(void) ftp_reply ();
 #endif
-	myfd = NOTOK;
-    }
+		myfd = NOTOK;
+	}
 
-    if (FManageResponse (ftamfd, ftm, fti) == NOTOK)
-	ftam_adios (&fti -> fti_abort, "F-MANAGE.RESPONSE");
+	if (FManageResponse (ftamfd, ftm, fti) == NOTOK)
+		ftam_adios (&fti -> fti_abort, "F-MANAGE.RESPONSE");
 
-    FTGFREE (ftg);
+	FTGFREE (ftg);
 }

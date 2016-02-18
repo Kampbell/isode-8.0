@@ -8,7 +8,7 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntp_adjust.c,v 9
  * This module implemenets the logical Local Clock, as described in section
  * 5. of the NTP specification.
  * based on the ntp 3.4 code, but modified for OSI etc.
- * 
+ *
  * $Log: ntp_adjust.c,v $
  * Revision 9.0  1992/06/16  12:42:48  isode
  * Release 8.0
@@ -28,8 +28,8 @@ extern struct sysdata sys;
 extern	LLog *pgm_log;
 
 double	drift_comp = 0.0,
-	compliance,
-	clock_adjust;
+		compliance,
+		clock_adjust;
 long	update_timer = 0;
 
 int	adj_precision;
@@ -41,8 +41,7 @@ int	firstpass = 1;
 #endif
 
 void
-init_logical_clock()
-{
+init_logical_clock() {
 	if (kern_tickadj)
 		adj_precision = kern_tickadj;
 	else
@@ -62,7 +61,7 @@ init_logical_clock()
  *  a step adjustment if the offset is too large.
  *
  *  The update which is to be performed is left in the external
- *  clock_adjust. 
+ *  clock_adjust.
  *
  *  Returns non-zero if clock was reset rather than slewed.
  *
@@ -72,13 +71,13 @@ init_logical_clock()
 
 int
 adj_logical(offset)
-	double offset;
+double offset;
 {
 	struct timeval tv1, tv2;
 #ifdef	XADJTIME2
 	struct timeval delta, olddelta;
 #endif
-	
+
 	/*
 	 *  Now adjust the logical clock
 	 */
@@ -97,15 +96,14 @@ adj_logical(offset)
 #ifdef	DEBUG
 		if (debug > 2) {
 			steptime = (tv1.tv_sec + tv1.tv_usec/1000000.0) -
-				(tv2.tv_sec + tv2.tv_usec/1000000.0);
+					   (tv2.tv_sec + tv2.tv_usec/1000000.0);
 			TRACE (2, ("adj_logical: %f %f", offset, steptime));
 		}
 #endif
 		if (settimeofday(&tv1, (struct timezone *) 0) < 0) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "Can't set time: %m");
 			return(-1);
-		}
-		else {
+		} else {
 			TRACE (1, ("set time of day"));
 		}
 		clock_adjust = 0.0;
@@ -126,8 +124,8 @@ adj_logical(offset)
 			firstpass = 0;
 		else if (update_timer > 0) {
 			ai = abs(compliance);
-			ai = (double)(1<<CLOCK_COMP) - 
-				(double)(1<<CLOCK_FACTOR) * ai;
+			ai = (double)(1<<CLOCK_COMP) -
+				 (double)(1<<CLOCK_FACTOR) * ai;
 			if (ai < 1.0)		/* max(... , 1.0) */
 				ai = 1.0;
 			drift_comp += offset / (ai * (double)update_timer);
@@ -226,7 +224,7 @@ int	n;
 	delta.tv_sec = 0;
 #endif
 	delta.tv_usec = ((long)(adjustment * 1000000.0) / adj_precision)
-		   * adj_precision;
+					* adj_precision;
 
 	adj_residual = adjustment - (double) delta.tv_usec / 1000000.0;
 
@@ -237,6 +235,6 @@ int	n;
 		advise (LLOG_EXCEPTIONS, NULLCP, "Can't adjust time: %m");
 
 	TRACE (2, ("adj: %ld us  %f %f",
-		   delta.tv_usec, drift_comp, clock_adjust));
+			   delta.tv_usec, drift_comp, clock_adjust));
 }
 #endif

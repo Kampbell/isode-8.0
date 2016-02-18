@@ -1,6 +1,6 @@
 /* template.c - your comments here */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/bind.h,v 9.1 1992/08/25 15:50:26 isode Exp $
  *
  *
@@ -13,8 +13,8 @@
  *
  * Revision 8.0  91/07/17  13:18:36  isode
  * Release 7.0
- * 
- * 
+ *
+ *
  */
 
 /*
@@ -34,11 +34,11 @@
 #include "types.h"
 
 typedef enum {
-  EXTERNAL_AUTH,
-  STRONG_AUTH,
-  PROTECTED_AUTH,
-  SIMPLE_AUTH
-  } auth_bind_type;
+	EXTERNAL_AUTH,
+	STRONG_AUTH,
+	PROTECTED_AUTH,
+	SIMPLE_AUTH
+} auth_bind_type;
 
 int bind_to_ds();
 

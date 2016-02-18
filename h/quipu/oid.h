@@ -27,7 +27,7 @@
 #include "psap.h"
 
 /* Definitions of OID's the DSA needs to know */
-	/* X500 defined attributes */
+/* X500 defined attributes */
 #define OBJECTCLASS_OID "2.5.4.0"
 #define ALIAS_OID	"2.5.4.1"
 #define CN_OID		"2.5.4.3"
@@ -36,8 +36,8 @@
 #define PASSWORD_OID 	"2.5.4.35"
 #define CERTIFICATE_OID	"2.5.4.36"
 
-	/* QUIPU defined attributes */
-#define SCHEMA_OID	"0.9.2342.19200300.99.1.1"	
+/* QUIPU defined attributes */
+#define SCHEMA_OID	"0.9.2342.19200300.99.1.1"
 #define ACL_OID		"0.9.2342.19200300.99.1.2"
 #define EDBINFO_OID	"0.9.2342.19200300.99.1.3"
 #define MASTERDSA_OID	"0.9.2342.19200300.99.1.4"
@@ -58,7 +58,7 @@
 #define OPEN_CALL_OID	"0.9.2342.19200300.99.1.34"
 #define U_RATE_OID	"0.9.2342.19200300.99.1.35"
 
-	/* COSINE/Internet defined attribute */
+/* COSINE/Internet defined attribute */
 #define MANAGER_OID	"0.9.2342.19200300.100.1.10"
 #define LAST_MOD_OID	"0.9.2342.19200300.100.1.23"
 #define MOD_BY_OID	"0.9.2342.19200300.100.1.24"
@@ -66,23 +66,23 @@
 #define LISTACL_OID	"0.9.2342.19200300.100.1.58"
 #define AUTHPOLICY_OID	"0.9.2342.19200300.100.1.59"
 
-	/* Signature Algorithm */
+/* Signature Algorithm */
 #ifdef  OSISEC
 #define SIGALG_OID	SIGALGNAME()
 #else
 #define SIGALG_OID	"0.9.2342.19200300.99.6.3.2"
 #endif
 
-	/* alias objectclass */
+/* alias objectclass */
 #define ALIAS_OC	"2.5.6.1"
 #define TOP_OC		"2.5.6.0"
 
-	/* NON leaf object class */
+/* NON leaf object class */
 #define QUIPU_DSA	"0.9.2342.19200300.99.3.1"
 #define NONLEAFOBJECT	"0.9.2342.19200300.99.3.6"
 #define EXTERNOBJECT	"0.9.2342.19200300.99.3.9"
 
-	/* X500 defined protocol oids */
+/* X500 defined protocol oids */
 #if	USE_BUILTIN_OIDS
 #define DIR_ACCESS_AC	str2oid("2.5.3.1")
 #define DIR_SYSTEM_AC	str2oid("2.5.3.2")
@@ -147,8 +147,8 @@ typedef struct seq_tab {
 #define NULLTABLE_SEQ ((table_seq)0)
 
 struct oc_seq {
-   struct _objclass *os_oc;
-   struct oc_seq    *os_next;
+	struct _objclass *os_oc;
+	struct oc_seq    *os_next;
 };
 #define NULLOCSEQ ((struct oc_seq*) 0)
 

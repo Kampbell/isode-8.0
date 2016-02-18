@@ -86,7 +86,7 @@ extern Visual *_XVIDtoVisual();		/* given visual id, find structure */
 
 /*
  * GetReq - Get the next avilable X request packet in the buffer and
- * return it. 
+ * return it.
  *
  * "name" is the name of the request, e.g. CreatePixmap, OpenFont, etc.
  * "req" is the name of the request pointer.
@@ -143,9 +143,9 @@ extern Visual *_XVIDtoVisual();		/* given visual id, find structure */
 
 
 /*
- * GetResReq is for those requests that have a resource ID 
+ * GetResReq is for those requests that have a resource ID
  * (Window, Pixmap, GContext, etc.) as their single argument.
- * "rid" is the name of the resource. 
+ * "rid" is the name of the resource.
  */
 
 #if defined(__STDC__) && !defined(UNIXCPP)
@@ -174,7 +174,7 @@ extern Visual *_XVIDtoVisual();		/* given visual id, find structure */
 
 /*
  * GetEmptyReq is for those requests that have no arguments
- * at all. 
+ * at all.
  */
 #if defined(__STDC__) && !defined(UNIXCPP)
 #define GetEmptyReq(name, req) \
@@ -234,7 +234,7 @@ extern void Data();
  * "ptr" is the pointer being assigned to.
  * "n" is the number of bytes to allocate.
  *
- * Example: 
+ * Example:
  *    xTextElt *elt;
  *    BufAlloc (xTextElt *, elt, nbytes)
  */
@@ -299,8 +299,8 @@ extern void Data();
 #ifdef ISOCONN
 extern int fd2family[MAXSOCKS];
 
-extern int (*readfn[])(); 
-extern int (*writefn[])(); 
+extern int (*readfn[])();
+extern int (*writefn[])();
 extern int (*readvfn[])();
 extern int (*writevfn[])();
 extern int (*ioctlfn[])();

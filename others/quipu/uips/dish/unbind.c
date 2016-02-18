@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/unbind.c,v 9.0 1992/06/16 12:44:21 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/unbind.c,v 9.0 1992/06/16 12:44:21 isode Rel $
  *
  *
@@ -46,7 +46,7 @@ char	*argv[];
 	struct sockaddr_in	* sin = &sin_buf;
 	char			buffer [BUFSIZ];
 	char 			* ptr;
-	
+
 	if ((sd = start_tcp_client ((struct sockaddr_in *) 0, 0)) == NOTOK) {
 		perror("start_tcp_client");
 		exit(-20);
@@ -124,23 +124,22 @@ main (argc,argv)
 int argc;
 char ** argv;
 {
-int res;
-char buffer [BUFSIZ];
-char sendfile [LINESIZE];
-int i;
-char * ptr;
-void pipe_quit ();
-char * getenv(), *sprintf();
+	int res;
+	char buffer [BUFSIZ];
+	char sendfile [LINESIZE];
+	int i;
+	char * ptr;
+	void pipe_quit ();
+	char * getenv(), *sprintf();
 
 	(void) umask(0);
 	(void) sprintf (retfile,"/tmp/dish%d",getpid());
 	if ( (ptr = getenv ("DISHPROC")) == NULLCP ) {
-	    (void) sprintf (sendfile, "/tmp/dish-%d", getppid ());
-	    (void) setenv ("DISHPROC", sendfile);
-	}
-	else
-	    (void) strcpy (sendfile, ptr);
-	
+		(void) sprintf (sendfile, "/tmp/dish-%d", getppid ());
+		(void) setenv ("DISHPROC", sendfile);
+	} else
+		(void) strcpy (sendfile, ptr);
+
 	setbuf (stdout,NULLCP);
 	setbuf (stderr,NULLCP);
 
@@ -148,7 +147,7 @@ char * getenv(), *sprintf();
 		(void) fprintf (stderr,"Can't create result file %s\n",retfile);
 		exit (-5);
 	}
-	
+
 	for (i=1; i<=15; i++)
 		(void) signal(i,pipe_quit);
 
@@ -164,16 +163,16 @@ char * getenv(), *sprintf();
 	else
 		(void) sprintf (buffer,"%s:%s",retfile,++ptr);
 	*argv++;
-	
+
 	while (argc--) {
 		(void) strcat (buffer," ");
 		(void) strcat (buffer,*argv++);
 	}
-	
+
 	if (( res =write (fd, buffer,strlen (buffer))) == -1) {
 		(void) fprintf (stderr,"Write failed\n");
 		(void) close (fd);
-		(void) unlink (retfile);		
+		(void) unlink (retfile);
 		exit (-2);
 	}
 	(void) close (fd);
@@ -185,10 +184,10 @@ char * getenv(), *sprintf();
 		(void) unlink (retfile);
 		exit (-3);
 	}
-	
+
 	if (( res = read (fd,buffer,BUFSIZ)) == -1) {
 		(void) fprintf (stderr,"Read failed (%d)\n",errno);
-		(void) unlink (retfile);		
+		(void) unlink (retfile);
 		(void) close (fd);
 		exit (-4);
 	}

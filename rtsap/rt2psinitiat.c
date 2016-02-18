@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psinitiat.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rtsap/RCS/rt2psinitiat.c,v 9.0 1992/06/16 12:37:45 isode Rel $
  *
  *
@@ -38,8 +38,8 @@ static int  RtOpenRequestAux ();
 /*    RT-OPEN.REQUEST */
 
 int	RtOpenRequest2 (mode, turn, context, callingtitle, calledtitle,
-	callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,
-	rtc, rti)
+					callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,
+					rtc, rti)
 int	mode,
 	turn;
 OID	context;
@@ -55,56 +55,56 @@ OID	tctx;
 struct RtSAPconnect *rtc;
 struct RtSAPindication *rti;
 {
-    SBV	    smask;
+	SBV	    smask;
 	int result;
 
-    isodetailor (NULLCP, 0);
+	isodetailor (NULLCP, 0);
 
-    switch (mode) {
+	switch (mode) {
 	case RTS_MONOLOGUE:
 	case RTS_TWA:
-	    break;
+		break;
 
 	default:
-	    return rtsaplose (rti, RTS_PARAMETER, NULLCP,
-		    "bad value for mode parameter");
-    }
-    switch (turn) {
+		return rtsaplose (rti, RTS_PARAMETER, NULLCP,
+						  "bad value for mode parameter");
+	}
+	switch (turn) {
 	case RTS_INITIATOR:
 	case RTS_RESPONDER:
-	    break;
+		break;
 
 	default:
-	    return rtsaplose (rti, RTS_PARAMETER, NULLCP,
-		    "bad value for turn parameter");
-    }
-    if (!ctxlist) {
-	static struct PSAPctxlist ctxs;
+		return rtsaplose (rti, RTS_PARAMETER, NULLCP,
+						  "bad value for turn parameter");
+	}
+	if (!ctxlist) {
+		static struct PSAPctxlist ctxs;
 
-	ctxlist = &ctxs;
-	bzero ((char *) ctxlist, sizeof *ctxlist);
-    }
-    missingP (rtc);
-    bzero ((char *) rtc, sizeof *rtc);
-    missingP (rti);
+		ctxlist = &ctxs;
+		bzero ((char *) ctxlist, sizeof *ctxlist);
+	}
+	missingP (rtc);
+	bzero ((char *) rtc, sizeof *rtc);
+	missingP (rti);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    result = RtOpenRequestAux (mode, turn, context, callingtitle, calledtitle,
-	callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,
-	rtc, rti);
+	result = RtOpenRequestAux (mode, turn, context, callingtitle, calledtitle,
+							   callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,
+							   rtc, rti);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 
 /*  */
 
-static int  RtOpenRequestAux (mode, turn, context, callingtitle, calledtitle, 
-	callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,
-	rtc, rti)
+static int  RtOpenRequestAux (mode, turn, context, callingtitle, calledtitle,
+							  callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,
+							  rtc, rti)
 int	mode,
 	turn;
 OID	context;
@@ -120,58 +120,59 @@ OID	tctx;
 struct RtSAPconnect *rtc;
 struct RtSAPindication *rti;
 {
-    register int    i;
-    int	    result,
-	    requirements,
-	    offset,
-	    rtsid,
-	    settings;
-    PE	    pe,
-	    p,
-	    q;
-    register struct assocblk *acb;
-    struct SSAPref *sr;
-    register struct PSAPcontext *pp;
-    register struct AcSAPconnect *acc = &rtc -> rtc_connect;
-    register struct PSAPconnect *pc = &acc -> acc_connect;
-    struct AcSAPindication acis;
-    register struct AcSAPindication *aci = &acis;
-    register struct AcSAPabort *aca = &aci -> aci_abort;
-    struct type_RTS_RTSE__apdus *rtpdu;
-    struct type_RTS_RTOACapdu *prtoac;
+	register int    i;
+	int	    result,
+			requirements,
+			offset,
+			rtsid,
+			settings;
+	PE	    pe,
+	 p,
+	 q;
+	register struct assocblk *acb;
+	struct SSAPref *sr;
+	register struct PSAPcontext *pp;
+	register struct AcSAPconnect *acc = &rtc -> rtc_connect;
+	register struct PSAPconnect *pc = &acc -> acc_connect;
+	struct AcSAPindication acis;
+	register struct AcSAPindication *aci = &acis;
+	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct type_RTS_RTSE__apdus *rtpdu;
+	struct type_RTS_RTOACapdu *prtoac;
 
-/* begin RTORQ APDU */
-    if ((pe = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 16)) == NULLPE) {
-no_mem: ;
-	result = rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
-	goto out1;
-    }
+	/* begin RTORQ APDU */
+	if ((pe = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 16)) == NULLPE) {
+no_mem:
+		;
+		result = rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
+		goto out1;
+	}
 
-    /* Have extra if's here incase DEFAULT_CKPOINT changes. */
-    /* Some compilers give a warning - ignore for now! */
+	/* Have extra if's here incase DEFAULT_CKPOINT changes. */
+	/* Some compilers give a warning - ignore for now! */
 
-    if ((DEFAULT_CKPOINT != PCONN_CK_DFLT
-		&& set_add (pe, num2prim ((integer) DEFAULT_CKPOINT,
-					  PE_CLASS_CONT, RTORQ_CKPOINT))
+	if ((DEFAULT_CKPOINT != PCONN_CK_DFLT
+			&& set_add (pe, num2prim ((integer) DEFAULT_CKPOINT,
+									  PE_CLASS_CONT, RTORQ_CKPOINT))
+			== NOTOK)
+			|| (DEFAULT_WINDOW != PCONN_WD_DFLT
+				&& set_add (pe, num2prim ((integer) DEFAULT_WINDOW,
+										  PE_CLASS_CONT, RTORQ_WINDOW))
 				== NOTOK)
-	    || (DEFAULT_WINDOW != PCONN_WD_DFLT
-			&& set_add (pe, num2prim ((integer) DEFAULT_WINDOW,
-						  PE_CLASS_CONT, RTORQ_WINDOW))
-				== NOTOK)
-	    || set_add (pe, num2prim ((integer) (mode == RTS_TWA ? RTORQ_DM_TWA
-			: RTORQ_DM_MONO), PE_CLASS_CONT, RTORQ_DIALOGUE))
-		    == NOTOK
-	    || set_add (pe, p = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS,
-		    RTORQ_CONNDATA)) == NOTOK
-	    || set_add (p, q = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS,
-		    RTORQ_CD_OPEN)) == NOTOK
-	    || set_add (q, data ? data : pe_alloc (PE_CLASS_CONT,
-		    PE_FORM_PRIM, 0)) == NOTOK)
-	goto no_mem;
-/* end RTORQ APDU */
+			|| set_add (pe, num2prim ((integer) (mode == RTS_TWA ? RTORQ_DM_TWA
+									  : RTORQ_DM_MONO), PE_CLASS_CONT, RTORQ_DIALOGUE))
+			== NOTOK
+			|| set_add (pe, p = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS,
+										  RTORQ_CONNDATA)) == NOTOK
+			|| set_add (p, q = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS,
+										 RTORQ_CD_OPEN)) == NOTOK
+			|| set_add (q, data ? data : pe_alloc (PE_CLASS_CONT,
+						PE_FORM_PRIM, 0)) == NOTOK)
+		goto no_mem;
+	/* end RTORQ APDU */
 
-    requirements = RTS_MYREQUIRE;
-    settings = 0;
+	requirements = RTS_MYREQUIRE;
+	settings = 0;
 #define dotoken(requires,shift,bit,type) \
 { \
     if (requirements & requires) \
@@ -180,162 +181,158 @@ no_mem: ;
 	else \
 	    settings |= ST_RESP_VALUE << shift; \
 }
-    dotokens ();
+	dotokens ();
 #undef	dotoken
 
-    if ((sr = addr2ref (PLocalHostName ())) == NULL) {
-	result = rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
-	goto out1;
-    }
-
-    if (ctxlist -> pc_nctx >= NPCTX) {
-	result = rtsaplose (rti, RTS_PARAMETER, NULLCP,
-			    "too many contexts");
-	goto out1;
-    }
-    {
-	register int ctx;
-	register OID oid;
-
-	if (tctx)
-		oid = tctx;	/* override standard context */
-	else if ((oid = RT_ASN_OID) == NULLOID) {
-	    result = rtsaplose (rti, RTS_PARAMETER, NULLCP,
-				"%s: unknown", RT_ASN);
-	    goto out1;
+	if ((sr = addr2ref (PLocalHostName ())) == NULL) {
+		result = rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
+		goto out1;
 	}
 
-	i = ctxlist -> pc_nctx - 1, ctx = 1;
-	for (pp = ctxlist -> pc_ctx; i >= 0; i--, pp++) {
-	    if (oid_cmp (pp -> pc_asn, oid) == 0) {
+	if (ctxlist -> pc_nctx >= NPCTX) {
+		result = rtsaplose (rti, RTS_PARAMETER, NULLCP,
+							"too many contexts");
+		goto out1;
+	}
+	{
+		register int ctx;
+		register OID oid;
+
+		if (tctx)
+			oid = tctx;	/* override standard context */
+		else if ((oid = RT_ASN_OID) == NULLOID) {
+			result = rtsaplose (rti, RTS_PARAMETER, NULLCP,
+								"%s: unknown", RT_ASN);
+			goto out1;
+		}
+
+		i = ctxlist -> pc_nctx - 1, ctx = 1;
+		for (pp = ctxlist -> pc_ctx; i >= 0; i--, pp++) {
+			if (oid_cmp (pp -> pc_asn, oid) == 0) {
+				rtsid = pp -> pc_id;
+				offset = pp - ctxlist -> pc_ctx;
+
+				pp = NULL;
+				goto ready;
+			}
+			if (ctx <= pp -> pc_id)
+				ctx = pp -> pc_id + 2;
+		}
+		pp -> pc_id = ctx;
+		if ((pp -> pc_asn = oid_cpy (oid)) == NULLOID)
+			goto no_mem;
+		pp -> pc_atn = NULLOID;
+
 		rtsid = pp -> pc_id;
-		offset = pp - ctxlist -> pc_ctx;
+		offset = -1;
 
-		pp = NULL;
-		goto ready;
-	    }
-	    if (ctx <= pp -> pc_id)
-		ctx = pp -> pc_id + 2;
+		ctxlist -> pc_nctx++;
 	}
-	pp -> pc_id = ctx;
-	if ((pp -> pc_asn = oid_cpy (oid)) == NULLOID)
-	    goto no_mem;
-	pp -> pc_atn = NULLOID;
+ready:
+	;
+	pe -> pe_context = rtsid;
 
-	rtsid = pp -> pc_id;
-	offset = -1;
+	PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTORQapdu", 0);
 
-	ctxlist -> pc_nctx++;
-    }
-ready: ;
-    pe -> pe_context = rtsid;
+	result = AcAssocRequest (context, callingtitle, calledtitle, callingaddr,
+							 calledaddr, ctxlist, defctxname, 0, requirements,
+							 SERIAL_NONE, settings, sr, &pe, 1, qos, acc, aci);
 
-    PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTORQapdu", 0);
-
-    result = AcAssocRequest (context, callingtitle, calledtitle, callingaddr,
-	    calledaddr, ctxlist, defctxname, 0, requirements,
-	    SERIAL_NONE, settings, sr, &pe, 1, qos, acc, aci);
-
-    if (pp) {
-	oid_free (pp -> pc_asn);
-	pp -> pc_asn = NULLOID;
-    }
-
-    if (data)
-	(void) pe_extract (pe, data);
-    pe_free (pe);
-    pe = NULLPE;
-
-    if (result == NOTOK) {
-	(void) acs2rtslose (NULLACB, rti, "AcAssocRequest", aca);
-	goto out1;
-    }
-
-    if (acc -> acc_result == ACS_ACCEPT) {
-	if ((acb = findacblk (acc -> acc_sd)) == NULLACB) {
-	    result = rtpktlose (NULLACB, rti, RTS_PROTOCOL, NULLCP, "ACSE mangled");
-	    goto out2;
+	if (pp) {
+		oid_free (pp -> pc_asn);
+		pp -> pc_asn = NULLOID;
 	}
-    }
-    else
-	if (acc -> acc_result == ACS_ABORTED) {
-	    (void) acs2rtsabort (acb = NULLACB, aca, rti);
 
-	    rtc -> rtc_sd = NOTOK;
-	    rtc -> rtc_result = RTS_ABORTED;
+	if (data)
+		(void) pe_extract (pe, data);
+	pe_free (pe);
+	pe = NULLPE;
 
-	    result = OK;
-	    goto out2;
+	if (result == NOTOK) {
+		(void) acs2rtslose (NULLACB, rti, "AcAssocRequest", aca);
+		goto out1;
 	}
-	else
-	    acb = NULLACB;
 
-    if ((pe = acc -> acc_info[0]) == NULLPE) {
+	if (acc -> acc_result == ACS_ACCEPT) {
+		if ((acb = findacblk (acc -> acc_sd)) == NULLACB) {
+			result = rtpktlose (NULLACB, rti, RTS_PROTOCOL, NULLCP, "ACSE mangled");
+			goto out2;
+		}
+	} else if (acc -> acc_result == ACS_ABORTED) {
+		(void) acs2rtsabort (acb = NULLACB, aca, rti);
+
+		rtc -> rtc_sd = NOTOK;
+		rtc -> rtc_result = RTS_ABORTED;
+
+		result = OK;
+		goto out2;
+	} else
+		acb = NULLACB;
+
+	if ((pe = acc -> acc_info[0]) == NULLPE) {
+		if (acc -> acc_result != ACS_ACCEPT) {
+			aca -> aca_reason = acc -> acc_result;
+			(void) acs2rtslose (acb, rti, "AcAssocRequest(pseudo)", aca);
+
+			rtc -> rtc_sd = NOTOK;
+			rtc -> rtc_result = rti -> rti_abort.rta_reason;
+
+			result = OK;
+		} else if (acb)
+			result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP, NULLCP);
+		else
+			result = rtsaplose (rti, RTS_PROTOCOL, NULLCP, NULLCP);
+		goto out2;
+	}
+
 	if (acc -> acc_result != ACS_ACCEPT) {
-	    aca -> aca_reason = acc -> acc_result;
-	    (void) acs2rtslose (acb, rti, "AcAssocRequest(pseudo)", aca);
+		struct type_RTS_RTORJapdu *prtorj;
 
-	    rtc -> rtc_sd = NOTOK;
-	    rtc -> rtc_result = rti -> rti_abort.rta_reason;
+		if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
+			result = pylose ();
+			goto out2;
+		}
 
-	    result = OK;
+		PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTORJapdu", 1);
+
+		if (rtpdu -> offset != type_RTS_RTSE__apdus_rtorj__apdu) {
+			result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+								"Unexpected PDU");
+			free_RTS_RTSE__apdus (rtpdu);
+			goto out2;
+		}
+		prtorj = rtpdu -> un.rtorj__apdu;
+
+		rtc -> rtc_sd = NOTOK;
+		rtc -> rtc_result = RTS_REJECT;
+		(void) pe_extract (pe, rtc -> rtc_data = prtorj -> userDataRJ);
+		if (rtc -> rtc_data)
+			rtc -> rtc_data -> pe_refcnt ++;
+
+		for (i = acc -> acc_ninfo - 1; i >= 0; i--)
+			if (acc -> acc_info[i]) {
+				pe_free (acc -> acc_info[i]);
+				acc -> acc_info[i] = NULLPE;
+			}
+		acc -> acc_ninfo = 0;
+
+		free_RTS_RTSE__apdus (rtpdu);
+		return OK;
 	}
-	else
-	    if (acb)
-		result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP, NULLCP);
-	    else
-		result = rtsaplose (rti, RTS_PROTOCOL, NULLCP, NULLCP);
-	goto out2;
-    }
 
-    if (acc -> acc_result != ACS_ACCEPT) {
-	struct type_RTS_RTORJapdu *prtorj;
-
-	if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
-	    result = pylose ();
-	    goto out2;
+	acb -> acb_flags |= ACB_RTS | ACB_INIT;
+	acb -> acb_uabort = AcUAbortRequest;
+	SetPS2RtService (acb);
+	if (turn == RTS_INITIATOR)
+		acb -> acb_flags |= ACB_TURN;
+	if (mode == RTS_TWA)
+		acb -> acb_flags |= ACB_TWA;
+	acb -> acb_connect = *sr;	/* struct copy */
+	if ((acb -> acb_requirements = pc -> pc_srequirements) != RTS_MYREQUIRE) {
+		result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+							"desired session requirements denied");
+		goto out2;
 	}
-
-	PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTORJapdu", 1);
-
-	if (rtpdu -> offset != type_RTS_RTSE__apdus_rtorj__apdu) {
-	    result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
-				"Unexpected PDU");
-	    free_RTS_RTSE__apdus (rtpdu);
-	    goto out2;
-	}
-	prtorj = rtpdu -> un.rtorj__apdu;
-
-	rtc -> rtc_sd = NOTOK;
-	rtc -> rtc_result = RTS_REJECT;
-	(void) pe_extract (pe, rtc -> rtc_data = prtorj -> userDataRJ);
-	if (rtc -> rtc_data)
-	    rtc -> rtc_data -> pe_refcnt ++;
-
-	for (i = acc -> acc_ninfo - 1; i >= 0; i--) 
-	    if (acc -> acc_info[i]) {
-		pe_free (acc -> acc_info[i]);
-		acc -> acc_info[i] = NULLPE;
-	    }
-	acc -> acc_ninfo = 0;
-
-	free_RTS_RTSE__apdus (rtpdu);
-	return OK;
-    }
-
-    acb -> acb_flags |= ACB_RTS | ACB_INIT;
-    acb -> acb_uabort = AcUAbortRequest;
-    SetPS2RtService (acb);
-    if (turn == RTS_INITIATOR)
-	acb -> acb_flags |= ACB_TURN;
-    if (mode == RTS_TWA)
-	acb -> acb_flags |= ACB_TWA;
-    acb -> acb_connect = *sr;	/* struct copy */
-    if ((acb -> acb_requirements = pc -> pc_srequirements) != RTS_MYREQUIRE) {
-	result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
-		    "desired session requirements denied");
-	goto out2;
-    }
 #define dotoken(requires,shift,bit,type) \
 { \
     if (acb -> acb_requirements & requires) \
@@ -357,94 +354,95 @@ ready: ;
 }
 	dotokens ();
 #undef	dotoken
-    switch (turn) {
+	switch (turn) {
 	case RTS_INITIATOR:
-	    if (acb -> acb_owned == acb -> acb_avail)
-		break;
-	    result = rtsaplose (rti, RTS_PROTOCOL, NULLCP,
-		    "token management botched");
-	    goto out2;
+		if (acb -> acb_owned == acb -> acb_avail)
+			break;
+		result = rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+							"token management botched");
+		goto out2;
 
 	case RTS_RESPONDER:
-	    if (acb -> acb_owned == 0)
-		break;
-	    result = rtsaplose (rti, RTS_PROTOCOL, NULLCP,
-		    "token management botched");
-	    goto out2;
-    }
-    acb -> acb_ssdusize = pc -> pc_ssdusize;
-
-    if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
-	result = pylose ();
-	goto out3;
-    }
-
-    PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTOACapdu", 1);
-
-    if (rtpdu -> offset != type_RTS_RTSE__apdus_rtoac__apdu) {
-	result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
-			    "Unexpected PDU");
-	goto out3;
-    }
-
-    prtoac = rtpdu -> un.rtoac__apdu;
-    acb -> acb_ckpoint = prtoac->checkpointSize;
-    acb -> acb_window = prtoac->windowSize;
-
-    if ((i = offset) < 0)
-	i = pc -> pc_ctxlist.pc_nctx - 1;
-    pp = pc -> pc_ctxlist.pc_ctx + i;
-    if (pp -> pc_id != rtsid) {
-	result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
-			    "RTSE PCI not found");
-	goto out3;
-    }
-    if (pp -> pc_result != PC_ACCEPT) {
-	result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
-			    "RTSE PCI rejected");
-	goto out3;
-    }
-
-    if (offset < 0)
-	pc -> pc_ctxlist.pc_nctx--;
-    acb -> acb_rtsid = rtsid;
-	
-    rtc -> rtc_sd = acb -> acb_fd;
-    rtc -> rtc_result = RTS_ACCEPT;
-    if (prtoac -> connectionDataAC -> offset == type_RTS_ConnectionData_open) {
-	rtc -> rtc_data = prtoac -> connectionDataAC -> un.open;
-	if (rtc -> rtc_data)
-	    rtc -> rtc_data -> pe_refcnt ++;
-    }
-    else
-	rtc -> rtc_data = NULL;
-    (void) pe_extract (pe, rtc -> rtc_data);
-
-    for (i = acc -> acc_ninfo - 1; i >= 0; i--) 
-	if (acc -> acc_info[i]) {
-	    pe_free (acc -> acc_info[i]);
-	    acc -> acc_info[i] = NULLPE;
+		if (acb -> acb_owned == 0)
+			break;
+		result = rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+							"token management botched");
+		goto out2;
 	}
-    acc -> acc_ninfo = 0;
+	acb -> acb_ssdusize = pc -> pc_ssdusize;
 
-    free_RTS_RTSE__apdus (rtpdu);
-    if (tctx) oid_free (tctx);
-    return OK;
+	if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
+		result = pylose ();
+		goto out3;
+	}
+
+	PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTOACapdu", 1);
+
+	if (rtpdu -> offset != type_RTS_RTSE__apdus_rtoac__apdu) {
+		result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+							"Unexpected PDU");
+		goto out3;
+	}
+
+	prtoac = rtpdu -> un.rtoac__apdu;
+	acb -> acb_ckpoint = prtoac->checkpointSize;
+	acb -> acb_window = prtoac->windowSize;
+
+	if ((i = offset) < 0)
+		i = pc -> pc_ctxlist.pc_nctx - 1;
+	pp = pc -> pc_ctxlist.pc_ctx + i;
+	if (pp -> pc_id != rtsid) {
+		result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+							"RTSE PCI not found");
+		goto out3;
+	}
+	if (pp -> pc_result != PC_ACCEPT) {
+		result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+							"RTSE PCI rejected");
+		goto out3;
+	}
+
+	if (offset < 0)
+		pc -> pc_ctxlist.pc_nctx--;
+	acb -> acb_rtsid = rtsid;
+
+	rtc -> rtc_sd = acb -> acb_fd;
+	rtc -> rtc_result = RTS_ACCEPT;
+	if (prtoac -> connectionDataAC -> offset == type_RTS_ConnectionData_open) {
+		rtc -> rtc_data = prtoac -> connectionDataAC -> un.open;
+		if (rtc -> rtc_data)
+			rtc -> rtc_data -> pe_refcnt ++;
+	} else
+		rtc -> rtc_data = NULL;
+	(void) pe_extract (pe, rtc -> rtc_data);
+
+	for (i = acc -> acc_ninfo - 1; i >= 0; i--)
+		if (acc -> acc_info[i]) {
+			pe_free (acc -> acc_info[i]);
+			acc -> acc_info[i] = NULLPE;
+		}
+	acc -> acc_ninfo = 0;
+
+	free_RTS_RTSE__apdus (rtpdu);
+	if (tctx) oid_free (tctx);
+	return OK;
 
 out3:
-    free_RTS_RTSE__apdus (rtpdu);
-out2: ;
-    ACCFREE (acc);
-    if (acb)
-	freeacblk (acb);
-	
-out1: ;
-    if (tctx) oid_free (tctx);
-    if (pe) {
-	if (data)
-	    (void) pe_extract (pe, data);
-	pe_free (pe);
-    }
+	free_RTS_RTSE__apdus (rtpdu);
+out2:
+	;
+	ACCFREE (acc);
+	if (acb)
+		freeacblk (acb);
 
-    return result;
+out1:
+	;
+	if (tctx) oid_free (tctx);
+	if (pe) {
+		if (data)
+			(void) pe_extract (pe, data);
+		pe_free (pe);
+	}
+
+	return result;
 }

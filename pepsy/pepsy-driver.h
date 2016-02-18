@@ -1,4 +1,4 @@
-/* 
+/*
  * $Header: /xtel/isode/isode/pepsy/RCS/pepsy-driver.h,v 9.0 1992/06/16 12:24:03 isode Rel $
  *
  *

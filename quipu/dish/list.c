@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/list.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/list.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -98,13 +98,12 @@ char          **argv;
 		return;
 
 	/* Strong authentication */
-	if (list_arg.lsa_common.ca_security != (struct security_parms *) 0)
-	{
-	extern struct SecurityServices *dsap_security;
+	if (list_arg.lsa_common.ca_security != (struct security_parms *) 0) {
+		extern struct SecurityServices *dsap_security;
 
-	list_arg.lsa_common.ca_sig = 
-		(dsap_security->serv_sign)((caddr_t)&list_arg, _ZListArgumentDataDAS,
-			 &_ZDAS_mod);
+		list_arg.lsa_common.ca_sig =
+			(dsap_security->serv_sign)((caddr_t)&list_arg, _ZListArgumentDataDAS,
+									   &_ZDAS_mod);
 	}
 
 	while (ds_list (&list_arg, &error, &result) != DS_OK) {	/* deal with error */
@@ -122,7 +121,7 @@ char          **argv;
 	print_list_subordinates (result.lsr_subordinates, result.lsr_limitproblem);
 
 	cache_list (result.lsr_subordinates, result.lsr_limitproblem,dn,
-	list_arg.lsa_common.ca_servicecontrol.svc_sizelimit);
+				list_arg.lsa_common.ca_servicecontrol.svc_sizelimit);
 
 	subords_free (result.lsr_subordinates);
 
@@ -133,13 +132,13 @@ print_list_subordinates (ptr, prob)
 struct subordinate *ptr;
 int             prob;
 {
-DN adn;
-DN newdn;
-int seqno;
-extern char * result_sequence;
+	DN adn;
+	DN newdn;
+	int seqno;
+	extern char * result_sequence;
 
 	adn = dn_cpy (dn);
-	newdn = dn_comp_new (rdn_comp_new(NULLAttrT,NULLAttrV));	
+	newdn = dn_comp_new (rdn_comp_new(NULLAttrT,NULLAttrV));
 	if (adn != NULLDN)
 		dn_append (adn,newdn);
 	else {

@@ -1,6 +1,6 @@
 /* tpkt.h - include file for transport providers (TS-PROVIDER) */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/tpkt.h,v 5.0 88/07/21 14:39:39 mrose Rel $
  *
  *
@@ -119,8 +119,8 @@ int	tpktlose (), tsaplose ();
 
 /*  */
 
-				/* network type codes:
-					must be outside [0-9A-Fa-f] */
+/* network type codes:
+	must be outside [0-9A-Fa-f] */
 #define	NT_TCP	'T'		/* TCP */
 #define	NT_X25	'X'		/* X.25 */
 #define	NT_BRG	'G'		/* Bridge */
@@ -136,15 +136,15 @@ int	tpktlose (), tsaplose ();
 
 
 struct tsapblk {
-    struct tsapblk *tb_forw;	/* doubly-linked list */
-    struct tsapblk *tb_back;	/*   .. */
+	struct tsapblk *tb_forw;	/* doubly-linked list */
+	struct tsapblk *tb_back;	/*   .. */
 
-    int     tb_fd;		/* file descriptor */
+	int     tb_fd;		/* file descriptor */
 
 #ifdef HULA
-    u_short tb_flags;           /* our state...expanded for hula */
+	u_short tb_flags;           /* our state...expanded for hula */
 #else
-    char    tb_flags;		/* our state */
+	char    tb_flags;		/* our state */
 #endif
 #define	TB_NULL		0x00
 #define	TB_CONN		0x01	/* connected */
@@ -155,69 +155,69 @@ struct tsapblk {
 #define	TB_CONS		0x20	/*   ..		      is CONS */
 #define	TB_TP0		(TB_TCP | TB_X25 | TB_CONS)
 #define	TB_TP4		0x40	/*   ..		      is TP4 */
-				/* all TP4's use this value as it make
-				   sense to have only one TP4 service
-				   compiled in... */
+	/* all TP4's use this value as it make
+	   sense to have only one TP4 service
+	   compiled in... */
 
 #ifdef HULA
 #ifdef UDP
 #define TB_CLNS         0x0100  /* connectionless */
-#define TB_UDP          0x0200  /* underlying service is UDP */ 
+#define TB_UDP          0x0200  /* underlying service is UDP */
 #endif
 #endif
 
-    char   *tb_magic;		/* generic pointer */
+	char   *tb_magic;		/* generic pointer */
 
-    struct tsapkt *tb_retry;	/* initial tpkt */
+	struct tsapkt *tb_retry;	/* initial tpkt */
 
-    u_short tb_srcref;		/* source reference */
-    u_short tb_dstref;		/* destination reference */
+	u_short tb_srcref;		/* source reference */
+	u_short tb_dstref;		/* destination reference */
 
-    int	    tb_tsdusize;	/* maximum TSDU size */
-    int	    tb_tpduslop;	/*   .. */
+	int	    tb_tsdusize;	/* maximum TSDU size */
+	int	    tb_tpduslop;	/*   .. */
 
-    struct QOStype tb_qos;	/* quality of service */
+	struct QOStype tb_qos;	/* quality of service */
 
-    struct qbuf tb_qbuf;	/* for segmented TSDUs */
-    int	    tb_len;		/*   .. */
-    
-    struct TSAPaddr tb_initiating;/* initiator */
-    struct TSAPaddr tb_responding;/* responder */
+	struct qbuf tb_qbuf;	/* for segmented TSDUs */
+	int	    tb_len;		/*   .. */
 
-    IFP	    tb_retryfnx;	/* resume async connection */
+	struct TSAPaddr tb_initiating;/* initiator */
+	struct TSAPaddr tb_responding;/* responder */
 
-    IFP	    tb_connPfnx;	/* TP connect */
-    IFP	    tb_retryPfnx;	/* TP retry connect */
-    IFP	    tb_startPfnx;	/* TP start accept */
-    IFP	    tb_acceptPfnx;	/* TP accept */
-    IFP	    tb_writePfnx;	/* TP write data */
-    IFP	    tb_readPfnx;	/* TP read data */
-    IFP	    tb_discPfnx;	/* TP disconnect */
-    IFP	    tb_losePfnx;	/* TP loses */
+	IFP	    tb_retryfnx;	/* resume async connection */
 
-    IFP	    tb_initfnx;		/* init for read from network */
-    IFP	    tb_readfnx;		/* read from network */
-    IFP	    tb_writefnx;	/* write to network */
-    IFP	    tb_closefnx;	/* close network */
-    IFP	    tb_selectfnx;	/* select network */
-    IFP	    tb_checkfnx;	/* check network prior to select */
+	IFP	    tb_connPfnx;	/* TP connect */
+	IFP	    tb_retryPfnx;	/* TP retry connect */
+	IFP	    tb_startPfnx;	/* TP start accept */
+	IFP	    tb_acceptPfnx;	/* TP accept */
+	IFP	    tb_writePfnx;	/* TP write data */
+	IFP	    tb_readPfnx;	/* TP read data */
+	IFP	    tb_discPfnx;	/* TP disconnect */
+	IFP	    tb_losePfnx;	/* TP loses */
 
-    IFP	    tb_DataIndication;	/* INDICATION handlers */
-    IFP     tb_DiscIndication;	/*   .. */
+	IFP	    tb_initfnx;		/* init for read from network */
+	IFP	    tb_readfnx;		/* read from network */
+	IFP	    tb_writefnx;	/* write to network */
+	IFP	    tb_closefnx;	/* close network */
+	IFP	    tb_selectfnx;	/* select network */
+	IFP	    tb_checkfnx;	/* check network prior to select */
+
+	IFP	    tb_DataIndication;	/* INDICATION handlers */
+	IFP     tb_DiscIndication;	/*   .. */
 
 #ifdef HULA
-    /*  holding tpdu for dynamic service */
-    int	    tb_holding_tpdu;	/* flag to set if we are holding one */
-    struct TSAPunitdata	  	tb_hold_tpdu;  /* held TUNITDATA */
+	/*  holding tpdu for dynamic service */
+	int	    tb_holding_tpdu;	/* flag to set if we are holding one */
+	struct TSAPunitdata	  	tb_hold_tpdu;  /* held TUNITDATA */
 
-    /* for connectionless service */
+	/* for connectionless service */
 
-    IFP	    tb_UnitDataStart;	/* open datagram socket */
-    IFP     tb_UnitDataRead;    /* TP UNIT DATA read      */
-    IFP     tb_UnitDataWrite;   /* TP UNIT DATA write     */
-    IFP     tb_UnitDataIndication; /* INDICATION handler for n+1 layer */ 
-    IFP     tb_UnitDataSelect;  /* Select routine for async interface */ 
-    IFP	    tb_UnitDataClose;	/* close datagram socket */
+	IFP	    tb_UnitDataStart;	/* open datagram socket */
+	IFP     tb_UnitDataRead;    /* TP UNIT DATA read      */
+	IFP     tb_UnitDataWrite;   /* TP UNIT DATA write     */
+	IFP     tb_UnitDataIndication; /* INDICATION handler for n+1 layer */
+	IFP     tb_UnitDataSelect;  /* Select routine for async interface */
+	IFP	    tb_UnitDataClose;	/* close datagram socket */
 
 #define TUNITDATA_START 1
 #define TUNITDATA_BIND 	2
@@ -239,17 +239,17 @@ struct tsapblk *newtblk (), *findtblk ();
 /*    TPKT datastructure */
 
 struct tsapkt {
-    int		t_errno;
+	int		t_errno;
 
-    struct {
-	u_char    pk_vrsn;
+	struct {
+		u_char    pk_vrsn;
 #define	TPKT_VRSN	3
 
-	u_char    pk_rsrvd;
+		u_char    pk_rsrvd;
 
-	u_short   pk_length;
+		u_short   pk_length;
 #define	TPKT_MAXLEN	0xffff
-    }       t_pkthdr;
+	}       t_pkthdr;
 #define	t_vrsn		t_pkthdr.pk_vrsn
 #define	t_rsrvd		t_pkthdr.pk_rsrvd
 #define	t_length	t_pkthdr.pk_length
@@ -257,8 +257,8 @@ struct tsapkt {
 #define TPKT_HDRLEN(t) (sizeof ((t) -> t_pkthdr) + sizeof ((t) -> t_li) \
 			    + sizeof ((t) -> t_code))
 
-    struct {
-	u_char    tp_li;
+	struct {
+		u_char    tp_li;
 #ifndef	lint
 #ifndef	__STDC__
 #define	TPDU_MINLEN(t,c)	(c/* */_SIZE(t) + sizeof ((t) -> t_code))
@@ -275,7 +275,7 @@ struct tsapkt {
 	((t) -> t_length - sizeof ((t) -> t_pkthdr) \
 			 - sizeof ((t) -> t_li) - (t) -> t_li)
 
-	u_char    tp_code;
+		u_char    tp_code;
 #define	TPDU_CODE(t)	((t) -> t_code & 0xf0)
 #define	TPDU_CR		0xe0	/* CONNECTION REQUEST */
 #define	TPDU_CC		0xd0	/* CONNECTION CONFIRMATION */
@@ -291,13 +291,13 @@ struct tsapkt {
 #ifdef HULA
 #define TPDU_UD		0x40	/* UNITDATA */
 #endif
-	union {
-	    struct {
+		union {
+			struct {
 				/* FIXED part */
-		u_short   un_cr_dstref;
-		u_short   un_cr_srcref;
+				u_short   un_cr_dstref;
+				u_short   un_cr_srcref;
 
-		u_char    un_cr_class;
+				u_char    un_cr_class;
 #define	CR_CLASS(t)	((t) -> t_cr.cr_class & 0xf0)
 #define	CR_CLASS_TP0	0x00	/* class 0 */
 #define	CR_CLASS_TP1	0x10	/*   ..  1 */
@@ -308,18 +308,18 @@ struct tsapkt {
 #define	CR_OPT_EXPL	0x01	/* explicit flow control in class 2 */
 
 				/* VARIABLE part */
-		char	  un_cr_called[TSSIZE];
-		int	  un_cr_calledlen;
-		
-		char	  un_cr_calling[TSSIZE];
-		int	  un_cr_callinglen;
+				char	  un_cr_called[TSSIZE];
+				int	  un_cr_calledlen;
 
-		u_char    un_cr_tpdusize;
+				char	  un_cr_calling[TSSIZE];
+				int	  un_cr_callinglen;
 
-		u_short	  un_cr_options;
+				u_char    un_cr_tpdusize;
 
-		u_char	  un_cr_alternate;
-	    }       un_cr;
+				u_short	  un_cr_options;
+
+				u_char	  un_cr_alternate;
+			}       un_cr;
 #define	cr_dstref	un_cr_dstref
 #define	cr_srcref	un_cr_srcref
 #define	cr_class	un_cr_class
@@ -336,47 +336,47 @@ struct tsapkt {
 #define	cc_options	un_cr_options
 #define	CC_SIZE(t)	5
 
-	    struct {
+			struct {
 				/* FIXED part */
-		u_short   un_dr_dstref;
-		u_short   un_dr_srcref;
-		u_char    un_dr_reason;
-	    }       un_dr;
+				u_short   un_dr_dstref;
+				u_short   un_dr_srcref;
+				u_char    un_dr_reason;
+			}       un_dr;
 #define	dr_dstref	un_dr_dstref
 #define	dr_srcref	un_dr_srcref
 #define	dr_reason	un_dr_reason
 #define	DR_SIZE(t)	5
 
-	    struct {
+			struct {
 				/* FIXED part */
-		u_char   un_dt_nr;
+				u_char   un_dt_nr;
 #define	DT_EOT		0x80
-	    }       un_dt;
+			}       un_dt;
 #define	dt_nr		un_dt_nr
 #define	DT_SIZE(t)	1
 #define	DT_MAGIC	(2 + 1)
 
-/* Expedited service is not allowed in TP0, but for testing purposes,
-   we permit it when the underlying service is TCP.  Note we use a
-   non-standard packet format (identical to the DT format).
- */
+			/* Expedited service is not allowed in TP0, but for testing purposes,
+			   we permit it when the underlying service is TCP.  Note we use a
+			   non-standard packet format (identical to the DT format).
+			 */
 #define	un_ed		un_dt
 #define	ed_nr		un_dt_nr
 #define	ED_SIZE(t)	1
 
-	    struct {
+			struct {
 				/* FIXED part */
-		u_short	   un_er_dstref;
-		u_char	   un_er_reject;
+				u_short	   un_er_dstref;
+				u_char	   un_er_reject;
 #define	ER_REJ_NOTSPECIFIED	0x00	/* Reason not specified */
 #define	ER_REJ_CODE		0x01	/* Invalid parameter code */
 #define	ER_REJ_TPDU		0x02	/* Invalid TPDU type */
 #define	ER_REJ_VALUE		0x03	/* Invalid parameter value */
-	    }	    un_er;
+			}	    un_er;
 #define	er_dstref	un_er_dstref
 #define	er_reject	un_er_reject
 #define	ER_SIZE(t)	3
-	}       tp_un;
+		}       tp_un;
 #define	tp_cr		tp_un.un_cr
 #define	tp_cc		tp_un.un_cc
 #define	tp_dr		tp_un.un_dr
@@ -384,15 +384,15 @@ struct tsapkt {
 #define	tp_ed		tp_un.un_ed
 #define	tp_er		tp_un.un_er
 
-	int		tp_vlen;
-	char	       *tp_vbase;
+		int		tp_vlen;
+		char	       *tp_vbase;
 
-	struct qbuf    *tp_qbuf;	/* fd2tpkt ONLY */
+		struct qbuf    *tp_qbuf;	/* fd2tpkt ONLY */
 
 #define	NTPUV		12		/* really should be
 						MSG_MAXIOVLEN - 4 */
-	struct udvec tp_udvec[NTPUV];	/* tpkt2fd ONLY */
-    }               t_tpdu;
+		struct udvec tp_udvec[NTPUV];	/* tpkt2fd ONLY */
+	}               t_tpdu;
 #define	t_li		t_tpdu.tp_li
 #define	t_code		t_tpdu.tp_code
 #define	t_cr		t_tpdu.tp_un.un_cr
@@ -432,7 +432,7 @@ struct tsapkt  *str2tpkt ();
 
 /*    VARIABLE DATA codes, from ISO8073: */
 
-					/* for CR/CC TPDUs */
+/* for CR/CC TPDUs */
 #define	VDAT_TSAP_SRV	0xc2		/* TSAP ID of the calling TSAP */
 #define	VDAT_TSAP_CLI	0xc1		/* TSAP ID of the called TSAP */
 #define	VDAT_SIZE	0xc0		/* TPDU SIZE */
@@ -466,14 +466,14 @@ struct tsapkt  *str2tpkt ();
 #define	VDAT_DELAY	0x88		/* Transit delay */
 #define	VDAT_TTR	0x8b		/* Reassignment time */
 
-					/* for DR TPDUs */
+/* for DR TPDUs */
 #define	VDAT_ADDITIONAL	0xe0		/* Additional information */
 
-					/* for AK TPDUs */
+/* for AK TPDUs */
 #define	VDAT_SUBSEQ	0x8c		/* Sub-sequence number */
 #define	VDAT_FLOWCTL	0x8b		/* Flow control confirmation */
 
-					/* for ER TPDUs */
+/* for ER TPDUs */
 #define	VDAT_INVALID	0xc1		/* invalid TPDU */
 
 /*  */

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapminor1.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapminor1.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -43,32 +43,32 @@ char   *data;
 int	cc;
 struct SSAPindication *si;
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
 
-    switch (type) {
-	case SYNC_CONFIRM: 
-	case SYNC_NOCONFIRM: 
-	    break;
+	switch (type) {
+	case SYNC_CONFIRM:
+	case SYNC_NOCONFIRM:
+		break;
 
-	default: 
-	    return ssaplose (si, SC_PARAMETER, NULLCP,
-		    "improper choice of type setting");
-    }
-    missingP (ssn);
-    missingP (si);
+	default:
+		return ssaplose (si, SC_PARAMETER, NULLCP,
+						 "improper choice of type setting");
+	}
+	missingP (ssn);
+	missingP (si);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ssapPsig (sb, sd);
-    toomuchP (sb, data, cc, SN_SIZE, "minorsync");
+	ssapPsig (sb, sd);
+	toomuchP (sb, data, cc, SN_SIZE, "minorsync");
 
-    result = SMinSyncRequestAux (sb, type, ssn, data, cc, si);
+	result = SMinSyncRequestAux (sb, type, ssn, data, cc, si);
 
-    (void) sigiomask (smask);
+	(void) sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
@@ -81,38 +81,38 @@ char   *data;
 int	cc;
 register struct SSAPindication *si;
 {
-    int     result;
+	int     result;
 
-    if (!(sb -> sb_requirements & SR_MINORSYNC))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"minor synchronize service unavailable");
+	if (!(sb -> sb_requirements & SR_MINORSYNC))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "minor synchronize service unavailable");
 
-    if ((sb -> sb_requirements & SR_DAT_EXISTS)
-	    && !(sb -> sb_owned & ST_DAT_TOKEN))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"data token not owned by you");
+	if ((sb -> sb_requirements & SR_DAT_EXISTS)
+			&& !(sb -> sb_owned & ST_DAT_TOKEN))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "data token not owned by you");
 
-    if (!(sb -> sb_owned & ST_MIN_TOKEN))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"minorsync token not owned by you");
+	if (!(sb -> sb_owned & ST_MIN_TOKEN))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "minorsync token not owned by you");
 
-    if ((sb -> sb_requirements & SR_ACTIVITY)
-	    && !(sb -> sb_flags & SB_Vact))
-	return ssaplose (si, SC_OPERATION, NULLCP, "no activity in progress");
+	if ((sb -> sb_requirements & SR_ACTIVITY)
+			&& !(sb -> sb_flags & SB_Vact))
+		return ssaplose (si, SC_OPERATION, NULLCP, "no activity in progress");
 
-    if (sb -> sb_flags & SB_MAA)
-	return ssaplose (si, SC_OPERATION, "awaiting your majorsync response");
+	if (sb -> sb_flags & SB_MAA)
+		return ssaplose (si, SC_OPERATION, "awaiting your majorsync response");
 
-    if ((result = SWriteRequestAux (sb, SPDU_MIP, data, cc, type,
-		*ssn = sb -> sb_V_M, 0, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
-	freesblk (sb);
-    else {
-	if (sb -> sb_flags & SB_Vsc) {
-	    sb -> sb_V_A = sb -> sb_V_M;
-	    sb -> sb_flags &= ~SB_Vsc;
+	if ((result = SWriteRequestAux (sb, SPDU_MIP, data, cc, type,
+									*ssn = sb -> sb_V_M, 0, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
+		freesblk (sb);
+	else {
+		if (sb -> sb_flags & SB_Vsc) {
+			sb -> sb_V_A = sb -> sb_V_M;
+			sb -> sb_flags &= ~SB_Vsc;
+		}
+		sb -> sb_V_M++;
 	}
-	sb -> sb_V_M++;
-    }
 
-    return result;
+	return result;
 }

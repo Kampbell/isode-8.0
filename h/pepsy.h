@@ -1,6 +1,6 @@
 /* pepsy.h */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/pepsy.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -46,7 +46,7 @@ typedef struct	{
 /* extract a pointer from the pointer table */
 #define GPTR(mod, ind, type)	  ((type )(mod)->md_ptrtab[ind])
 /* tricky situation with the "type" - it must not contain the brackets of the
- * cast because we supply them here 
+ * cast because we supply them here
  */
 
 /* macros for getting values of default flexibly */
@@ -148,7 +148,7 @@ typedef struct	{
 
 /* Use values 0-3 bottom two bits at the moment */
 /* This has to be changed if the values for the 4 below are changed in ISODE */
-#define FL_CLASS	0xf	
+#define FL_CLASS	0xf
 /* Class specification */
 #define FL_UNIVERSAL	PE_CLASS_UNIV
 #define FL_APPLICATION	PE_CLASS_APPL
@@ -206,7 +206,7 @@ typedef	struct	{
 	int	(*md_pucode)();	/* User code for printing */
 	caddr_t	*md_ptrtab;	/* pointer table */
 
-	}	modtyp;
+}	modtyp;
 #define NULLMODTYP	((modtyp *)0)
 
 

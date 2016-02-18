@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydsurej.c,v 9.0 1992/06/16 12:37:29 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosy/RCS/rydsurej.c,v 9.0 1992/06/16 12:37:29 isode Rel $
  *
  *
@@ -56,18 +56,18 @@ int	id,
 	priority;
 struct RoSAPindication *roi;
 {
-    int     result;
-    register struct opsblk *opb;
+	int     result;
+	register struct opsblk *opb;
 
-    missingP (roi);
+	missingP (roi);
 
-    if ((opb = findopblk (sd, id, OPB_RESPONDER)) == NULLOPB)
-	return rosaplose (roi, ROS_PARAMETER, NULLCP,
-		"invocation %d not in progress on association %d",
-		id, sd);
+	if ((opb = findopblk (sd, id, OPB_RESPONDER)) == NULLOPB)
+		return rosaplose (roi, ROS_PARAMETER, NULLCP,
+						  "invocation %d not in progress on association %d",
+						  id, sd);
 
-    if ((result = RoURejectRequest (sd, &id, reason, priority, roi)) != NOTOK)
-	freeopblk (opb);
+	if ((result = RoURejectRequest (sd, &id, reason, priority, roi)) != NOTOK)
+		freeopblk (opb);
 
-    return result;
+	return result;
 }

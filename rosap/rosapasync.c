@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapasync.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/rosapasync.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -41,24 +41,24 @@ int	sd;
 IFP	indication;
 struct RoSAPindication *roi;
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	register struct assocblk   *acb;
 
-    _iosignals_set = 1;
+	_iosignals_set = 1;
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rosapPsig (acb, sd);
+	rosapPsig (acb, sd);
 
-    if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING)) {
+	if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING)) {
+		(void) sigiomask (smask);
+		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
+	}
+
+	result = (*acb -> acb_rosetindications) (acb, indication, roi);
+
 	(void) sigiomask (smask);
-	return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
-    }
 
-    result = (*acb -> acb_rosetindications) (acb, indication, roi);
-
-    (void) sigiomask (smask);
-
-    return result;
+	return result;
 }

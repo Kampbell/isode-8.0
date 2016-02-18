@@ -39,11 +39,11 @@ extern int	errno;			/* normally done by <errno.h> */
 
 char	*
 getcwd( buf, size )			/* returns pointer to CWD pathname */
-	char		*buf;		/* where to put name (NULL to malloc) */
-	int		size;		/* size of buf[] or malloc()ed memory */
-	{
+char		*buf;		/* where to put name (NULL to malloc) */
+int		size;		/* size of buf[] or malloc()ed memory */
+{
 	static char	dotdots[] =
-"../../../../../../../../../../../../../../../../../../../../../../../../../..";
+		"../../../../../../../../../../../../../../../../../../../../../../../../../..";
 	char 		*dotdot;	/* -> dotdots[.], right to left */
 	DIR		*dirp;		/* -> parent directory stream */
 	struct dirent	*dir;		/* -> directory entry */
@@ -56,18 +56,17 @@ getcwd( buf, size )			/* returns pointer to CWD pathname */
 	register char	*dname;		/* entry name ("" for root) */
 	int		serrno = errno;	/* save entry errno */
 
-	if ( size == 0 )
-		{
+	if ( size == 0 ) {
 		errno = EINVAL;		/* invalid argument */
 		return NULL;
-		}
+	}
 
 	if ( (buffer = buf) == NULL	/* wants us to malloc() the string */
-	  && (buffer = (char *)malloc( (unsigned)size )) == NULL
+			&& (buffer = (char *)malloc( (unsigned)size )) == NULL
 	   )	{
 		errno = ENOMEM;		/* cannot malloc() specified size */
 		return NULL;
-		}
+	}
 
 	if ( stat( ".", dd ) != 0 )	/* prime the pump */
 		goto error;		/* errno already set */
@@ -75,48 +74,44 @@ getcwd( buf, size )			/* returns pointer to CWD pathname */
 	endp = buffer;			/* initially, empty string */
 	bufend = &buffer[size];
 
-	for ( dotdot = &dotdots[sizeof(dotdots)]; dotdot != dotdots; )
-		{
+	for ( dotdot = &dotdots[sizeof(dotdots)]; dotdot != dotdots; ) {
 		dotdot -= 3;		/* include one more "/.." section */
-					/* (first time is actually "..") */
+		/* (first time is actually "..") */
 
 		/* swap stat() info buffers */
 		{
-		register struct stat	*temp = d;
+			register struct stat	*temp = d;
 
-		d = dd;			/* new current dir is old parent dir */
-		dd = temp;
+			d = dd;			/* new current dir is old parent dir */
+			dd = temp;
 		}
 
 		if ( (dirp = opendir( dotdot )) == NULL )	/* new parent */
 			goto error;	/* errno already set */
 
-		if ( fstat( dirp->dd_fd, dd ) != 0 )
-			{
+		if ( fstat( dirp->dd_fd, dd ) != 0 ) {
 			serrno = errno;	/* set by fstat() */
 			(void)closedir( dirp );
 			errno = serrno;	/* in case closedir() clobbered it */
 			goto error;
-			}
+		}
 
-		if ( d->st_dev == dd->st_dev )
-			{		/* not crossing a mount point */
-			if ( d->st_ino == dd->st_ino )
-				{	/* root directory */
+		if ( d->st_dev == dd->st_dev ) {
+			/* not crossing a mount point */
+			if ( d->st_ino == dd->st_ino ) {
+				/* root directory */
 				dname = "";
 				goto append;
-				}
+			}
 
 			do
-				if ( (dir = readdir( dirp )) == NULL )
-					{
+				if ( (dir = readdir( dirp )) == NULL ) {
 					(void)closedir( dirp );
 					errno = ENOENT;	/* missing entry */
 					goto error;
-					}
+				}
 			while ( dir->d_ino != d->st_ino );
-			}
-		else	{		/* crossing a mount point */
+		} else	{		/* crossing a mount point */
 			struct stat	t;	/* info re. test entry */
 			char		name[sizeof(dotdots) + 1 + NAME_MAX];
 
@@ -125,75 +120,70 @@ getcwd( buf, size )			/* returns pointer to CWD pathname */
 			*dname++ = '/';
 
 			do	{
-				if ( (dir = readdir( dirp )) == NULL )
-					{
+				if ( (dir = readdir( dirp )) == NULL ) {
 					(void)closedir( dirp );
 					errno = ENOENT;	/* missing entry */
 					goto error;
-					}
+				}
 
 				(void)strcpy( dname, dir->d_name );
 				/* must fit if NAME_MAX is not a lie */
-				}
-			while ( stat( name, &t ) != 0
-			     || t.st_ino != d->st_ino
-			     || t.st_dev != d->st_dev
-			      );
-			}
+			} while ( stat( name, &t ) != 0
+					  || t.st_ino != d->st_ino
+					  || t.st_dev != d->st_dev
+					);
+		}
 
 		dname = dir->d_name;
 
 		/* append "/" and reversed dname string onto buffer */
-    append:
+append:
 		if ( endp != buffer	/* avoid trailing / in final name */
-		  || dname[0] == '\0'	/* but allow "/" when CWD is root */
+				|| dname[0] == '\0'	/* but allow "/" when CWD is root */
 		   )
 			*endp++ = '/';
 
 		{
-		register char	*app;	/* traverses dname string */
+			register char	*app;	/* traverses dname string */
 
-		for ( app = dname; *app != '\0'; ++app )
-			;
+			for ( app = dname; *app != '\0'; ++app )
+				;
 
-		if ( app - dname >= bufend - endp )
-			{
-			(void)closedir( dirp );
-			errno = ERANGE;	/* won't fit allotted space */
-			goto error;
+			if ( app - dname >= bufend - endp ) {
+				(void)closedir( dirp );
+				errno = ERANGE;	/* won't fit allotted space */
+				goto error;
 			}
 
-		while ( app != dname )
-			*endp++ = *--app;
+			while ( app != dname )
+				*endp++ = *--app;
 		}
 
 		(void)closedir( dirp );
 
-		if ( dname[0] == '\0' )	/* reached root; wrap it up */
-			{
+		if ( dname[0] == '\0' ) {	/* reached root; wrap it up */
 			register char	*startp;	/* -> buffer[.] */
 
 			*endp = '\0';	/* plant null terminator */
 
 			/* straighten out reversed pathname string */
-			for ( startp = buffer; --endp > startp; ++startp )
-				{
+			for ( startp = buffer; --endp > startp; ++startp ) {
 				char	temp = *endp;
 
 				*endp = *startp;
 				*startp = temp;
-				}
+			}
 
 			errno = serrno;	/* restore entry errno */
 			return buffer;
-			}
 		}
+	}
 
 	errno = ENOMEM;			/* actually, algorithm failure */
 
-    error:
+error:
 	if ( buf == NULL )
 		free( buffer );
 
 	return NULL;
-	}
+}

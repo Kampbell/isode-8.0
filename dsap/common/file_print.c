@@ -46,14 +46,14 @@ AttributeValue x;
 char full;
 {
 	/* make default file name */
-char buffer [LINESIZE];
-PS sps;
-char *pathend = NULLCP;
-char val, *_isodefile();
-char *path = NULLCP;
-struct file_syntax * fs;
-unsigned last_heap;
-int save_count;
+	char buffer [LINESIZE];
+	PS sps;
+	char *pathend = NULLCP;
+	char val, *_isodefile();
+	char *path = NULLCP;
+	struct file_syntax * fs;
+	unsigned last_heap;
+	int save_count;
 
 	used_temp = FALSE;
 
@@ -99,13 +99,13 @@ int save_count;
 
 #if	defined(SYS5) && !defined(SVR4)
 
-	   if ((full) && ((int)strlen(buffer) > MAXFILENAMELEN)) {
+	if ((full) && ((int)strlen(buffer) > MAXFILENAMELEN)) {
 		char *nptr, *mptr;
 		char nbuf [LINESIZE];
 		int i;
 
 		nptr = buffer;
-		mptr = nbuf;		
+		mptr = nbuf;
 		used_temp = TRUE;
 
 		for (i=0 ; (*nptr!=0) && (i < MAXFILENAMELEN-6) ; nptr++)
@@ -122,7 +122,7 @@ int save_count;
 
 		fs->fs_mode = 0;
 		return (OK);
-	} 
+	}
 #endif
 
 	if (path != NULLCP)
@@ -142,16 +142,16 @@ PS ps;
 AttributeValue y;
 int format;
 {
-struct file_syntax * fs;
-int um;
-AttributeType save_at;
+	struct file_syntax * fs;
+	int um;
+	AttributeType save_at;
 
 	fs = (struct file_syntax *) y->av_struct;
 
 	if (format != EDBOUT) {
-		if (fs->fs_attr) 
+		if (fs->fs_attr)
 			AttrV_print (ps,fs->fs_attr,format);
-		else 
+		else
 			ps_print (ps,"Internal error, need to load the file!!!");
 	} else {
 		FILE * fptr;
@@ -174,21 +174,21 @@ AttributeType save_at;
 		} else if (! (fs->fs_mode & FS_DEFAULT))
 			ps_print (ps,fs->fs_name);
 
-		if (fs->fs_attr == NULLAttrV)	
+		if (fs->fs_attr == NULLAttrV)
 			/* already exists */
 			return;
 
 		if (fs->fs_mode & FS_CREATE)	/* already written */
-			return;	
+			return;
 
-	        um = umask (0177);
+		um = umask (0177);
 		if ((fptr = fopen (fs->fs_name,"w")) != NULL) {
-		        (void) umask (um);
+			(void) umask (um);
 			if ((fps = ps_alloc (std_open)) == NULLPS) {
 				(void) fclose (fptr);
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("Could not alloc PS file '%s'",fs->fs_name));
 				return;
-			}				
+			}
 			if ((std_setup (fps,fptr)) == NOTOK) {
 				(void) fclose (fptr);
 				ps_free (fps);
@@ -196,7 +196,7 @@ AttributeType save_at;
 				return;
 			}
 		} else {
-		        (void) umask (um);
+			(void) umask (um);
 			LLOG ( log_dsap,LLOG_EXCEPTIONS,("Could not open attribute file '%s'",fs->fs_name));
 			return;
 		}
@@ -219,74 +219,74 @@ void as_write_files (as,where)
 Attr_Sequence as;
 char *where;
 {
-struct file_syntax * fs;
-int um;
-AV_Sequence avs;
-FILE * fptr;
-PS fps;
-char buffer[LINESIZE];
-static unsigned long loopcount = 0;
+	struct file_syntax * fs;
+	int um;
+	AV_Sequence avs;
+	FILE * fptr;
+	PS fps;
+	char buffer[LINESIZE];
+	static unsigned long loopcount = 0;
 
-	for ( ; as != NULLATTR; as = as -> attr_link ) 
+	for ( ; as != NULLATTR; as = as -> attr_link )
 
-	  for ( avs = as -> attr_value ; avs != NULLAV ; 
-		  avs = avs -> avseq_next )
+		for ( avs = as -> attr_value ; avs != NULLAV ;
+				avs = avs -> avseq_next )
 
-	    if ( avs -> avseq_av.av_syntax == AV_FILE ) {
+			if ( avs -> avseq_av.av_syntax == AV_FILE ) {
 
-		fs = (struct file_syntax *) avs->avseq_av.av_struct;
+				fs = (struct file_syntax *) avs->avseq_av.av_struct;
 
-		if (fs->fs_name != NULLCP || fs->fs_attr == NULLAttrV)
-		        continue ;
+				if (fs->fs_name != NULLCP || fs->fs_attr == NULLAttrV)
+					continue ;
 
-		(void) sprintf (buffer,"%s%D_%s",where,loopcount++,
-				as -> attr_type -> oa_ot.ot_name);
+				(void) sprintf (buffer,"%s%D_%s",where,loopcount++,
+								as -> attr_type -> oa_ot.ot_name);
 
-		fs->fs_name = strdup(buffer);
+				fs->fs_name = strdup(buffer);
 
-	        um = umask (0177);
-		if ((fptr = fopen (fs->fs_name,"w")) != NULL) {
-		        (void) umask (um);
-			if ((fps = ps_alloc (std_open)) == NULLPS) {
-				(void) fclose (fptr);
-				LLOG (log_dsap,LLOG_EXCEPTIONS,
-				      ("Could not alloc PS file (tmp) '%s'",
-				       fs->fs_name));
-				free (fs->fs_name);
-				fs->fs_name = NULLCP;
-				return;
-			}				
-			if ((std_setup (fps,fptr)) == NOTOK) {
+				um = umask (0177);
+				if ((fptr = fopen (fs->fs_name,"w")) != NULL) {
+					(void) umask (um);
+					if ((fps = ps_alloc (std_open)) == NULLPS) {
+						(void) fclose (fptr);
+						LLOG (log_dsap,LLOG_EXCEPTIONS,
+							  ("Could not alloc PS file (tmp) '%s'",
+							   fs->fs_name));
+						free (fs->fs_name);
+						fs->fs_name = NULLCP;
+						return;
+					}
+					if ((std_setup (fps,fptr)) == NOTOK) {
+						(void) fclose (fptr);
+						ps_free (fps);
+						LLOG (log_dsap,LLOG_EXCEPTIONS,
+							  ("Could not open PS file (tmp2) '%s'",
+							   fs->fs_name));
+						free (fs->fs_name);
+						fs->fs_name = NULLCP;
+						return;
+					}
+				} else {
+					(void) umask (um);
+					LLOG ( log_dsap,LLOG_EXCEPTIONS,
+						   ("Could not open attribute file (tmp) '%s'",
+							fs->fs_name));
+					return;
+				}
+				AttrV_print (fps,fs->fs_attr,FILEOUT);
+
+				fs->fs_mode &= ~FS_DEFAULT;
+				fs->fs_mode |= FS_CREATE;
+				fs->fs_mode |= FS_TMP;
+
+				AttrV_free (fs->fs_attr);
+				fs->fs_attr = NULLAttrV;
+
 				(void) fclose (fptr);
 				ps_free (fps);
-				LLOG (log_dsap,LLOG_EXCEPTIONS,
-				      ("Could not open PS file (tmp2) '%s'",
-				       fs->fs_name));
-				free (fs->fs_name);
-				fs->fs_name = NULLCP;
-				return;
+
+				DLOG (log_dsap,LLOG_DEBUG,
+					  ("Written photo file (tmp) '%s'",fs->fs_name));
 			}
-		} else {
-		        (void) umask (um);
-			LLOG ( log_dsap,LLOG_EXCEPTIONS,
-			      ("Could not open attribute file (tmp) '%s'",
-			       fs->fs_name));
-			return;
-		}
-		AttrV_print (fps,fs->fs_attr,FILEOUT);
-
-		fs->fs_mode &= ~FS_DEFAULT;
-		fs->fs_mode |= FS_CREATE;
-		fs->fs_mode |= FS_TMP;
-
-		AttrV_free (fs->fs_attr);
-		fs->fs_attr = NULLAttrV;
-
-		(void) fclose (fptr);
-		ps_free (fps);
-
-		DLOG (log_dsap,LLOG_DEBUG,
-		      ("Written photo file (tmp) '%s'",fs->fs_name));
-	    }
 }
 

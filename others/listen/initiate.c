@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/listen/RCS/initiate.c,v 9.0 1992/06/16 12:42:15 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/listen/RCS/initiate.c,v 9.0 1992/06/16 12:42:15 isode Rel $
  *
  *
@@ -39,102 +39,102 @@ static char *mycontext = "isode listen demo";
 main (argc, argv, envp)
 int	argc;
 char  **argv,
-      **envp;
+	  **envp;
 {
-    register struct SSAPaddr *sz;
-    struct SSAPconnect scs;
-    register struct SSAPconnect *sc = &scs;
-    struct SSAPdata sxs;
-    register struct SSAPdata   *sx = &sxs;
-    struct SSAPrelease  srs;
-    register struct SSAPrelease *sr = &srs;
-    struct SSAPindication sis;
-    register struct SSAPindication *si = &sis;
-    register struct SSAPabort *sa = &si -> si_abort;
-    AEI	    aei;
-    struct PSAPaddr *pa;
-    struct sblk outgoing;
-    SB	    sbo = &outgoing;
+	register struct SSAPaddr *sz;
+	struct SSAPconnect scs;
+	register struct SSAPconnect *sc = &scs;
+	struct SSAPdata sxs;
+	register struct SSAPdata   *sx = &sxs;
+	struct SSAPrelease  srs;
+	register struct SSAPrelease *sr = &srs;
+	struct SSAPindication sis;
+	register struct SSAPindication *si = &sis;
+	register struct SSAPabort *sa = &si -> si_abort;
+	AEI	    aei;
+	struct PSAPaddr *pa;
+	struct sblk outgoing;
+	SB	    sbo = &outgoing;
 
-    reportailor (argv[0]);
+	reportailor (argv[0]);
 
-    if (argc != 2)
-	adios (NULLCP, "usage: %s \"host\"", argv[0]);
+	if (argc != 2)
+		adios (NULLCP, "usage: %s \"host\"", argv[0]);
 
-    if ((aei = str2aei (argv[1], mycontext)) == NULLAEI)
-	adios (NULLCP, "%s-%s: unknown application-entity",
-		argv[1], mycontext);
-    if ((pa = aei2addr (aei)) == NULLPA)
-	adios (NULLCP, "address translation failed");
-    sz = &pa -> pa_addr;
+	if ((aei = str2aei (argv[1], mycontext)) == NULLAEI)
+		adios (NULLCP, "%s-%s: unknown application-entity",
+			   argv[1], mycontext);
+	if ((pa = aei2addr (aei)) == NULLPA)
+		adios (NULLCP, "address translation failed");
+	sz = &pa -> pa_addr;
 
-    bzero ((char *) sbo, sizeof *sbo);
-    sbo -> sb_requirements = SR_BASUBSET;
-    sbo -> sb_settings = 0;
+	bzero ((char *) sbo, sizeof *sbo);
+	sbo -> sb_requirements = SR_BASUBSET;
+	sbo -> sb_settings = 0;
 #define dotoken(requires,shift,bit,type) \
 { \
     if (sbo -> sb_requirements & requires) \
 	    sbo -> sb_settings |= ST_INIT_VALUE << shift; \
 }
-    dotokens ();
+	dotokens ();
 #undef  dotoken
-    sbo -> sb_isn = SERIAL_NONE;
+	sbo -> sb_isn = SERIAL_NONE;
 
-    if (SConnRequest (&sbo -> sb_connect, NULLSA, sz, sbo -> sb_requirements,
-	    sbo -> sb_settings, sbo -> sb_isn, NULLCP, 0, NULLQOS, sc, si)
-	    == NOTOK)
-	adios (NULLCP, "S-CONNECT.REQUEST: %s", SErrString (sa -> sa_reason));
-    if (sc -> sc_result != SC_ACCEPT)
-	adios (NULLCP, "connection rejected by peer: %s",
-		SErrString (sc -> sc_result));
-    advise (LLOG_NOTICE, NULLCP,
-	    "S-CONNECT.CONFIRMATION: <%d, %s, %s, %s, %ld, %d>",
-	    sc -> sc_sd, sprintref (&sc -> sc_connect),
-	    saddr2str (&sc -> sc_responding),
-	    sprintb (sc -> sc_requirements, RMASK), sc -> sc_isn,
-	    sc -> sc_ssdusize);
+	if (SConnRequest (&sbo -> sb_connect, NULLSA, sz, sbo -> sb_requirements,
+					  sbo -> sb_settings, sbo -> sb_isn, NULLCP, 0, NULLQOS, sc, si)
+			== NOTOK)
+		adios (NULLCP, "S-CONNECT.REQUEST: %s", SErrString (sa -> sa_reason));
+	if (sc -> sc_result != SC_ACCEPT)
+		adios (NULLCP, "connection rejected by peer: %s",
+			   SErrString (sc -> sc_result));
+	advise (LLOG_NOTICE, NULLCP,
+			"S-CONNECT.CONFIRMATION: <%d, %s, %s, %s, %ld, %d>",
+			sc -> sc_sd, sprintref (&sc -> sc_connect),
+			saddr2str (&sc -> sc_responding),
+			sprintb (sc -> sc_requirements, RMASK), sc -> sc_isn,
+			sc -> sc_ssdusize);
 
-    sbo -> sb_sd = sc -> sc_sd;
-    sbo -> sb_requirements = sc -> sc_requirements;
-    sbo -> sb_settings = sc -> sc_settings;
+	sbo -> sb_sd = sc -> sc_sd;
+	sbo -> sb_requirements = sc -> sc_requirements;
+	sbo -> sb_settings = sc -> sc_settings;
 #define dotoken(requires,shift,bit,type) \
 { \
     if (sbo -> sb_requirements & requires) \
 	if ((sbo -> sb_settings & (ST_MASK << shift)) == ST_INIT_VALUE) \
 	    sbo -> sb_owned |= bit; \
 }
-    dotokens ();
+	dotokens ();
 #undef  dotoken
-    sbo -> sb_ssn = sbo -> sb_isn = sc -> sc_isn;
+	sbo -> sb_ssn = sbo -> sb_isn = sc -> sc_isn;
 
-    SCFREE (sc);
+	SCFREE (sc);
 
-/* do work here */
+	/* do work here */
 
-    if (SRelRequest (sbo -> sb_sd, NULLCP, 0, NOTOK, sr, si) == NOTOK)
-	adios (NULLCP, "S-RELEASE.REQUEST: %s", SErrString (sa -> sa_reason));
-    if (sr -> sr_affirmative) {
-	exit(0);
-	/* NOTREACHED */
-    } else {
-        switch (SReadRequest (sbo -> sb_sd, sx, NOTOK, si)) {
-	    case NOTOK:
-	        adios (NULLCP, "S-READ.REQUEST: %s", SErrString (sa -> sa_reason));
-    
-	    case OK:
-	        adios (NULLCP, "not expecting DATA indication 0x%x", sx -> sx_type);
-    
-	    case DONE:
-	        if (si -> si_type != SI_FINISH)
-		    adios (NULLCP, "not expecting indication 0x%x", si -> si_type);
-	        if (SRelResponse (sbo -> sb_sd, SC_ACCEPT, NULLCP, 0, si)
-			== NOTOK)
-		    adios (NULLCP, "S-RELEASE.RESPONSE: %s",
-			   SErrString (sa -> sa_reason));
-	        break;
-        }
-    }
+	if (SRelRequest (sbo -> sb_sd, NULLCP, 0, NOTOK, sr, si) == NOTOK)
+		adios (NULLCP, "S-RELEASE.REQUEST: %s", SErrString (sa -> sa_reason));
+	if (sr -> sr_affirmative) {
+		exit(0);
+		/* NOTREACHED */
+	} else {
+		switch (SReadRequest (sbo -> sb_sd, sx, NOTOK, si)) {
+		case NOTOK:
+			adios (NULLCP, "S-READ.REQUEST: %s", SErrString (sa -> sa_reason));
 
-    exit (1);
-    return 1;
+		case OK:
+			adios (NULLCP, "not expecting DATA indication 0x%x", sx -> sx_type);
+
+		case DONE:
+			if (si -> si_type != SI_FINISH)
+				adios (NULLCP, "not expecting indication 0x%x", si -> si_type);
+			if (SRelResponse (sbo -> sb_sd, SC_ACCEPT, NULLCP, 0, si)
+					== NOTOK)
+				adios (NULLCP, "S-RELEASE.RESPONSE: %s",
+					   SErrString (sa -> sa_reason));
+			break;
+		}
+	}
+
+	exit (1);
+	return 1;
 }

@@ -80,7 +80,7 @@ Attr_Sequence   eis_select();
 extern Attr_Sequence entry_find_type();
 
 do_ds_search(arg, error, result, dnbind, target, local, refer, di_p,
-	     dsp, quipu_ctx, tktime, entryonly, authtype)
+			 dsp, quipu_ctx, tktime, entryonly, authtype)
 register struct ds_search_arg *arg;
 struct ds_search_result *result;
 struct DSError *error;
@@ -139,11 +139,11 @@ char            authtype;
 
 		/* search acl thangs */
 		(*local)->st_saclheader = (struct thing_header *)
-		    smalloc(sizeof(struct thing_header));
+								  smalloc(sizeof(struct thing_header));
 		(*local)->st_sacls = (caddr_t) NULLAVL;
 		(*local)->st_saclrefcount = 1;
 		(*local)->st_ftypeheader = (struct thing_header *)
-		    smalloc(sizeof(struct thing_header));
+								   smalloc(sizeof(struct thing_header));
 		(*local)->st_ftypes = (caddr_t) NULLFTL;
 		(*local)->st_ftyperefcount = 1;
 		(*local)->st_baseptr = NULLENTRY;
@@ -163,7 +163,8 @@ char            authtype;
 			st_comp_free(*local);
 			*local = NULL_ST;
 			return (DS_ERROR_LOCAL);
-		} if (str_setup(filter_ps, NULLCP, BUFSIZ, 0) == NOTOK) {
+		}
+		if (str_setup(filter_ps, NULLCP, BUFSIZ, 0) == NOTOK) {
 			st_comp_free(*local);
 			*local = NULL_ST;
 			return (DS_ERROR_LOCAL);
@@ -189,7 +190,7 @@ char            authtype;
 			Entry           entryptr;
 #ifdef TURBO_INDEX
 			(*local)->st_optimized =
-			    optimized_filter( arg->sra_filter );
+				optimized_filter( arg->sra_filter );
 #endif
 
 #ifndef NO_STATS
@@ -217,8 +218,8 @@ char            authtype;
 			 */
 
 			if ( !((*local)->st_optimized) && optimized_only
-			    && !ismanager
-			    && arg->sra_subset == SRA_WHOLESUBTREE ) {
+					&& !ismanager
+					&& arg->sra_subset == SRA_WHOLESUBTREE ) {
 				LLOG(log_dsap, LLOG_EXCEPTIONS, ("Non-optimized filter not allowed"));
 				error->dse_type = DSE_SERVICEERROR;
 				error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNWILLINGTOPERFORM;
@@ -229,7 +230,7 @@ char            authtype;
 			(*local)->st_ftypes = (caddr_t) ftlist;
 
 			if ((arg->sra_subset == SRA_ONELEVEL) ||
-			    (arg->sra_subset == SRA_WHOLESUBTREE)) {
+					(arg->sra_subset == SRA_WHOLESUBTREE)) {
 				switch (find_child_entry((*local)->st_baseobject, &(arg->sra_common), dnbind, NULLDNSEQ, FALSE, &(entryptr), error, di_p)) {
 				case DS_OK:
 					/* Filled out entryptr - carry on */
@@ -316,10 +317,10 @@ char            authtype;
 
 			/* Strong authentication  */
 			if ((retval = check_security_parms((caddr_t) arg,
-						    _ZSearchArgumentDataDAS,
-							   &_ZDAS_mod,
-						arg->sra_common.ca_security,
-				   arg->sra_common.ca_sig, &dnbind)) != 0) {
+											   _ZSearchArgumentDataDAS,
+											   &_ZDAS_mod,
+											   arg->sra_common.ca_security,
+											   arg->sra_common.ca_sig, &dnbind)) != 0) {
 				error->dse_type = DSE_SECURITYERROR;
 				error->ERR_SECURITY.DSE_sc_problem = retval;
 				st_comp_free(*local);
@@ -360,7 +361,7 @@ char            authtype;
 						else if (saclerror < 0) {
 							error->dse_type = DSE_SECURITYERROR;
 							error->ERR_SECURITY.DSE_sc_problem =
-							    DSE_SC_ACCESSRIGHTS;
+								DSE_SC_ACCESSRIGHTS;
 							return (DS_X500_ERROR);
 						} else if (saclerror > 0) {
 							result->CSR_limitproblem = LSR_ADMINSIZEEXCEEDED;
@@ -383,11 +384,11 @@ char            authtype;
 		size = (*local)->st_size;
 
 		if (apply_search(arg, error, result, local, refer, ismanager,
-				 authtype, &saclerror) == NOTOK) {
+						 authtype, &saclerror) == NOTOK) {
 			if (saclerror < 0) {
 				error->dse_type = DSE_SECURITYERROR;
 				error->ERR_SECURITY.DSE_sc_problem =
-				    DSE_SC_ACCESSRIGHTS;
+					DSE_SC_ACCESSRIGHTS;
 				st_free(local);
 				st_free_dis(refer,0);
 				st_free(refer);
@@ -406,12 +407,12 @@ char            authtype;
 			st_free_dis(refer,0);
 			st_free(refer);
 			result->CSR_limitproblem =
-			    arg->sra_common.ca_servicecontrol.svc_sizelimit
-			    == SVC_NOSIZELIMIT
-			    || arg->sra_common.ca_servicecontrol.svc_sizelimit
-			    > admin_size
-			    ? LSR_ADMINSIZEEXCEEDED
-			    : LSR_SIZELIMITEXCEEDED;
+				arg->sra_common.ca_servicecontrol.svc_sizelimit
+				== SVC_NOSIZELIMIT
+				|| arg->sra_common.ca_servicecontrol.svc_sizelimit
+				> admin_size
+				? LSR_ADMINSIZEEXCEEDED
+				: LSR_SIZELIMITEXCEEDED;
 			/* should fill out a POQ */
 			return (DS_OK);
 		}
@@ -420,12 +421,12 @@ char            authtype;
 			st_free_dis(refer,0);
 			st_free(refer);
 			result->CSR_limitproblem =
-			    arg->sra_common.ca_servicecontrol.svc_timelimit
-			    == SVC_NOTIMELIMIT
-			    || arg->sra_common.ca_servicecontrol.svc_timelimit
-			    > admin_time
-			    ? LSR_ADMINSIZEEXCEEDED
-			    : LSR_TIMELIMITEXCEEDED;
+				arg->sra_common.ca_servicecontrol.svc_timelimit
+				== SVC_NOTIMELIMIT
+				|| arg->sra_common.ca_servicecontrol.svc_timelimit
+				> admin_time
+				? LSR_ADMINSIZEEXCEEDED
+				: LSR_TIMELIMITEXCEEDED;
 			/* should fill out a POQ */
 			return (DS_OK);
 		}
@@ -492,7 +493,7 @@ int internals;
 			di_desist((*st)->st_di);
 			if (internals)
 				st_comp_free(*st);
-		    }
+		}
 	}
 }
 
@@ -631,18 +632,18 @@ DN              dn;
 		av_syntax = fitem->UNAVA.ava_type->oa_syntax;
 
 		if ((av_syntax == av_acl)
-		    || (av_syntax == av_schema)
-		    || (av_syntax == av_update))
+				|| (av_syntax == av_schema)
+				|| (av_syntax == av_update))
 			return (invalid_matching(fitem->UNAVA.ava_type, error, dn));
 
 		if ((fitem->fi_type == FILTERITEM_GREATEROREQUAL
-		    || fitem->fi_type == FILTERITEM_LESSOREQUAL)
-		    && sub_string(fitem->UNAVA.ava_type->oa_syntax)) {
+				|| fitem->fi_type == FILTERITEM_LESSOREQUAL)
+				&& sub_string(fitem->UNAVA.ava_type->oa_syntax)) {
 			ftype_add( &ftlist, fitem->UNAVA.ava_type, maxlen,
-			    (char *) fitem->UNAVA.ava_value->av_struct );
+					   (char *) fitem->UNAVA.ava_value->av_struct );
 		} else {
 			ftype_add( &ftlist, fitem->UNAVA.ava_type, maxlen,
-			    (char *) NULL );
+					   (char *) NULL );
 		}
 		break;
 	case FILTERITEM_SUBSTRINGS:
@@ -675,7 +676,7 @@ DN              dn;
 			if ( fitem->UNSUB.fi_sub_initial != NULLAV )
 				maxlen = strlen( fitem->UNSUB.fi_sub_initial->avseq_av.av_struct );
 			for ( loopavs = fitem->UNSUB.fi_sub_any;
-			    loopavs != NULLAV; loopavs = loopavs->avseq_next ) {
+					loopavs != NULLAV; loopavs = loopavs->avseq_next ) {
 				tmplen = strlen( loopavs->avseq_av.av_struct );
 				if ( tmplen > maxlen )
 					maxlen = tmplen;
@@ -687,12 +688,12 @@ DN              dn;
 			}
 		}
 		ftype_add( &ftlist, fitem->UNAVA.ava_type, maxlen,
-		    (char *) NULL );
+				   (char *) NULL );
 		break;
 #endif
 	case FILTERITEM_PRESENT:
-		ftype_add( &ftlist, fitem->UNAVA.ava_type, maxlen, 
-		    (char *) NULL );
+		ftype_add( &ftlist, fitem->UNAVA.ava_type, maxlen,
+				   (char *) NULL );
 		break;
 	default:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("check_filter_item protocol error (2)"));
@@ -746,7 +747,7 @@ DN              dn;
 /* APPLY SEARCH TO ONE LEVEL */
 
 static          apply_search(arg, error, result, local, refer, ismanager,
-			authtype, saclerror)
+							 authtype, saclerror)
 struct ds_search_arg *arg;
 struct DSError *error;
 struct ds_search_result *result;
@@ -819,15 +820,15 @@ int		*saclerror;
 				if ((*local)->st_alias) {
 					*saclerror = 0;
 					if ((einfo = filterentry(arg, entryptr,
-					    (*local)->st_bind, authtype, saclerror,
-					    *local, 1)) != NULLENTRYINFO) {
+											 (*local)->st_bind, authtype, saclerror,
+											 *local, 1)) != NULLENTRYINFO) {
 						(*local)->st_size--;
 						if (result->CSR_entries == NULLENTRYINFO)
 							result->CSR_entries = einfo;
 						else
-							entryinfo_merge(result->CSR_entries, 
-							einfo, 
-							!arg->sra_hitalias);
+							entryinfo_merge(result->CSR_entries,
+											einfo,
+											!arg->sra_hitalias);
 					}
 
 					/*
@@ -851,12 +852,12 @@ int		*saclerror;
 	switch ((*local)->st_subset) {
 	case SRA_BASEOBJECT:
 		einfo = filterentry(arg, entryptr, (*local)->st_bind,
-				    authtype, saclerror, *local, 1);
+							authtype, saclerror, *local, 1);
 		break;
 	case SRA_ONELEVEL:
 	case SRA_WHOLESUBTREE:
 		einfo = filterchildren(arg, entryptr, local, refer, ismanager,
-				       authtype, saclerror);
+							   authtype, saclerror);
 		break;
 	default:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("search protocol error"));
@@ -870,7 +871,7 @@ int		*saclerror;
 			result->CSR_entries = einfo;
 		else
 			entryinfo_merge(result->CSR_entries, einfo,
-					!arg->sra_hitalias);
+							!arg->sra_hitalias);
 
 	result->CSR_common.cr_requestor = NULLDN;
 
@@ -903,11 +904,11 @@ struct search_kid_arg *ska;
 		return (NOTOK);
 
 	if ((e->e_alias != NULLDN)
-	    && (do_alias(ska->ska_arg, e, ska->ska_local) == OK))
+			&& (do_alias(ska->ska_arg, e, ska->ska_local) == OK))
 		return (OK);
 
 	eptr = filterentry( ska->ska_arg, e, (*ska->ska_local)->st_bind,
-	    ska->ska_authtype, &saclerror, (*ska->ska_local), 1 );
+						ska->ska_authtype, &saclerror, (*ska->ska_local), 1 );
 
 	if ( saclerror ) {
 		ska->ska_saclerror = saclerror;
@@ -918,8 +919,8 @@ struct search_kid_arg *ska;
 		if (*ska->ska_einfo == NULLENTRYINFO)
 			*ska->ska_einfo = eptr;
 		else
-			entryinfo_merge(*ska->ska_einfo, eptr, 
-					!ska->ska_arg->sra_hitalias);
+			entryinfo_merge(*ska->ska_einfo, eptr,
+							!ska->ska_arg->sra_hitalias);
 
 	if ( size < 0 )
 		return( NOTOK );
@@ -979,7 +980,7 @@ struct search_kid_arg *ska;
 		return (NOTOK);
 
 	if ((e->e_alias != NULLDN)
-	    && (do_alias(ska->ska_arg, e, ska->ska_local) == OK))
+			&& (do_alias(ska->ska_arg, e, ska->ska_local) == OK))
 		return (OK);
 
 #ifdef TURBO_INDEX
@@ -991,7 +992,7 @@ struct search_kid_arg *ska;
 
 	dn = NULLDN;
 	if ( (*ska->ska_local)->st_subset == SRA_WHOLESUBTREE && !isleaf( e )
-	    && get_subtree_index( dn = get_copy_dn( e ) ) ) {
+			&& get_subtree_index( dn = get_copy_dn( e ) ) ) {
 		new_task = st_alloc();
 		new_task->st_save = NULL_ST;
 		new_task->st_baseobject = dn;
@@ -1018,7 +1019,7 @@ struct search_kid_arg *ska;
 #endif
 
 	eptr = filterentry( ska->ska_arg, e, (*ska->ska_local)->st_bind,
-	    ska->ska_authtype, &saclerror, (*ska->ska_local), 1 );
+						ska->ska_authtype, &saclerror, (*ska->ska_local), 1 );
 
 	if ( saclerror ) {
 		ska->ska_saclerror = saclerror;
@@ -1030,7 +1031,7 @@ struct search_kid_arg *ska;
 			*ska->ska_einfo = eptr;
 		else
 			entryinfo_merge(*ska->ska_einfo, eptr,
-					!ska->ska_arg->sra_hitalias);
+							!ska->ska_arg->sra_hitalias);
 
 	if ( size < 0 )
 		return( NOTOK );
@@ -1045,15 +1046,15 @@ struct search_kid_arg *ska;
 
 	if ((*ska->ska_local)->st_subset == SRA_WHOLESUBTREE && (!isleaf(e))) {
 		if (check_acl((*ska->ska_local)->st_bind, ACL_READ,
-			      e->e_acl->ac_child, NULLDN) == OK) {
+					  e->e_acl->ac_child, NULLDN) == OK) {
 			if (((e->e_children != NULLAVL)
-			     && (e->e_allchildrenpresent == FALSE))
-			    || (e->e_children == NULLAVL)) {
+					&& (e->e_allchildrenpresent == FALSE))
+					|| (e->e_children == NULLAVL)) {
 				search_refer(ska->ska_arg, e, ska->ska_local,
-					ska->ska_refer, ska->ska_ismanager);
-/*
-                        } else if (ska->ska_domore) {
-*/
+							 ska->ska_refer, ska->ska_ismanager);
+				/*
+				                        } else if (ska->ska_domore) {
+				*/
 			} else {
 
 				/*
@@ -1066,46 +1067,46 @@ struct search_kid_arg *ska;
 				ska->ska_tmp = 0;
 				ska->ska_domore = TRUE;
 				(void) avl_apply(e->e_children, search_kid2,
-					 (caddr_t) ska, NOTOK, AVL_INORDER);
+								 (caddr_t) ska, NOTOK, AVL_INORDER);
 
 				if (timelimit <= (timenow = time((time_t *) 0)))
 					return (NOTOK);
 
 				if (ska->ska_domore)
 					ska->ska_domore = (ska->ska_tmp <
-						   (SEARCH_DELTA_SIZE / 5));
+									   (SEARCH_DELTA_SIZE / 5));
 				if (!ska->ska_domore)
 					(void) dsa_wait(0);
 			}
-/*
-It doesn't seem to make much sense to do this here with the avl's...
-unless there's some reason calling dsa_wait() won't do the job.
-			} else {
-                                new_task = st_alloc();
-                                new_task->st_save = NULL_ST;
-                                new_task->st_baseobject = get_copy_dn(e);
-				new_task->st_originalbase = dn_cpy((*ska->ska_local)->st_originalbase);
-                                new_task->st_size = 0;
-                                new_task->st_alias = NULLDN;
-				new_task->st_bind = (*ska->ska_local)->st_bind;
-                                new_task->st_subset = SRA_WHOLESUBTREE;
-#ifdef TURBO_INDEX
-                                new_task->st_optimized =
-                                    (*ska->ska_local)->st_optimized;
-#endif
-                                new_task->st_next = (*ska->ska_local)->st_next;
-				new_task->st_entryonly = FALSE;
-				new_task->st_saclheader = 
-				    (*ska->ska_local)->st_saclheader;
-				new_task->st_saclrefcount++;
-				new_task->st_ftypeheader =
-				    (*ska->ska_local)->st_ftypeheader;
-				new_task->st_ftyperefcount++;
-				new_task->st_baseptr =
-				    (*ska->ska_local)->st_baseptr;
-                                (*ska->ska_local)->st_next = new_task;
-                        }
-*/
+			/*
+			It doesn't seem to make much sense to do this here with the avl's...
+			unless there's some reason calling dsa_wait() won't do the job.
+						} else {
+			                                new_task = st_alloc();
+			                                new_task->st_save = NULL_ST;
+			                                new_task->st_baseobject = get_copy_dn(e);
+							new_task->st_originalbase = dn_cpy((*ska->ska_local)->st_originalbase);
+			                                new_task->st_size = 0;
+			                                new_task->st_alias = NULLDN;
+							new_task->st_bind = (*ska->ska_local)->st_bind;
+			                                new_task->st_subset = SRA_WHOLESUBTREE;
+			#ifdef TURBO_INDEX
+			                                new_task->st_optimized =
+			                                    (*ska->ska_local)->st_optimized;
+			#endif
+			                                new_task->st_next = (*ska->ska_local)->st_next;
+							new_task->st_entryonly = FALSE;
+							new_task->st_saclheader =
+							    (*ska->ska_local)->st_saclheader;
+							new_task->st_saclrefcount++;
+							new_task->st_ftypeheader =
+							    (*ska->ska_local)->st_ftypeheader;
+							new_task->st_ftyperefcount++;
+							new_task->st_baseptr =
+							    (*ska->ska_local)->st_baseptr;
+			                                (*ska->ska_local)->st_next = new_task;
+			                        }
+			*/
 		}
 	}
 	return (OK);
@@ -1113,7 +1114,7 @@ unless there's some reason calling dsa_wait() won't do the job.
 
 
 static EntryInfo *filterchildren(arg, entryptr, local, refer, ismanager,
-				authtype, saclerror)
+								 authtype, saclerror)
 struct ds_search_arg *arg;
 Entry           entryptr;
 struct ds_search_task **local, **refer;
@@ -1148,7 +1149,7 @@ int		*saclerror;
 		return (NULLENTRYINFO);
 	}
 	if ((ptr = entryptr->e_children) == NULLAVL
-	    || entryptr->e_allchildrenpresent == FALSE) {
+			|| entryptr->e_allchildrenpresent == FALSE) {
 		search_refer(arg, entryptr, local, refer, ismanager);
 		return (NULLENTRYINFO);
 	}
@@ -1170,12 +1171,12 @@ int		*saclerror;
 
 		/* optimized filter & subtree search & subtree indexed */
 	} else if (arg->sra_subset == SRA_WHOLESUBTREE
-		   && get_subtree_index((*local)->st_baseobject)) {
+			   && get_subtree_index((*local)->st_baseobject)) {
 		(void) turbo_subtree_search(entryptr, &ska);
 
 		/* optimized filter & sibling search & siblings indexed */
 	} else if (arg->sra_subset == SRA_ONELEVEL
-		   && get_sibling_index((*local)->st_baseobject)) {
+			   && get_sibling_index((*local)->st_baseobject)) {
 		(void) turbo_sibling_search(entryptr, &ska);
 
 		/* optimized filter, but no index to search */
@@ -1224,7 +1225,7 @@ struct ds_search_task **local;
 			return( OK );
 	} else if ( arg->sra_subset == SRA_ONELEVEL ) {
 		if ( th_prefix( (*local)->st_originalbase, eptr->e_alias )
-		    == -2 )
+				== -2 )
 			return( OK );
 	}
 
@@ -1259,7 +1260,7 @@ struct ds_search_task **local;
 	switch ((*local)->st_subset) {
 	case SRA_ONELEVEL:
 		new_task->st_entryonly = TRUE;
-		/* fall */
+	/* fall */
 	case SRA_BASEOBJECT:
 		new_task->st_subset = SRA_BASEOBJECT;
 		break;
@@ -1325,7 +1326,7 @@ int             ismanager;
 	case DS_X500_ERROR:
 		/* An error */
 		pslog(log_dsap, LLOG_EXCEPTIONS, "search_refer failed",
-		     (IFP) dn_print, (caddr_t) name);
+			  (IFP) dn_print, (caddr_t) name);
 		log_ds_error(&(error));
 		ds_error_free(&(error));
 		dn_free(name);
@@ -1369,7 +1370,7 @@ int             ismanager;
  */
 
 EntryInfo      *filterentry(arg, entryptr, binddn,
-			    authtype, saclerror, local, dosacl)
+							authtype, saclerror, local, dosacl)
 struct ds_search_arg 	*arg;
 register Entry  	entryptr;
 DN              	binddn;
@@ -1388,19 +1389,19 @@ char			dosacl;
 	}
 
 	if ( check_acl( binddn, ACL_READ, entryptr->e_acl->ac_entry, NULLDN )
-	    == NOTOK )
+			== NOTOK )
 		return( NULLENTRYINFO );
 
 	/*
 	 * Check that the base searchacl allows access.  Also
 	 * check that all ancestor nodes (up to and including the
-	 * search base in a subtree search, just the parent in a 
+	 * search base in a subtree search, just the parent in a
 	 * single-level search) allow the search.  If not, return
 	 * with saclerror set if a zero-if-exceeded flag was exceeded.
 	 */
 
 	if ( dosacl && check_ancestor_sacls( binddn, NULLDN, entryptr,
-	    arg->sra_subset, local, authtype, saclerror ) == NOTOK ) {
+										 arg->sra_subset, local, authtype, saclerror ) == NOTOK ) {
 		return( NULLENTRYINFO );
 	}
 
@@ -1466,10 +1467,10 @@ DN              binddn;
 	for (ptr = fltr; ptr != NULLFILTER; ptr = ptr->flt_next)
 		switch (check_filter(ptr, entryptr, binddn)) {
 		case MAYBE:
-/* Beware of 'Pathological NOT' here.
- * To comply with the December '88 X.500, should just drop through here.
- * For the security to work properly, also set result to MAYBE.
- */
+			/* Beware of 'Pathological NOT' here.
+			 * To comply with the December '88 X.500, should just drop through here.
+			 * For the security to work properly, also set result to MAYBE.
+			 */
 			result = MAYBE;
 			break;
 		case OK:
@@ -1690,7 +1691,7 @@ char            chrmatch[];
 				} else
 					compstr--;
 				while (compstr >= top &&
-				       (*compstr == ' ' || *compstr == '-'))
+						(*compstr == ' ' || *compstr == '-'))
 					compstr--;
 			} else
 				compstr--;
@@ -1840,7 +1841,7 @@ struct ds_search_result *result;
 			big_size <<= 1, big_size |= 1;
 
 	if ((arg->sra_eis.eis_allattributes) ||
-	    (arg->sra_eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY))
+			(arg->sra_eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY))
 		return FALSE;
 
 	if (arg->sra_eis.eis_select == NULLATTR)

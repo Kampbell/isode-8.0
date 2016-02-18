@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ssdu2pe.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/ssdu2pe.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -35,40 +35,38 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ssdu2pe.c,v 9.0 1992/0
 
 PE	ssdu2pe (base, len, realbase, result)
 char   *base,
-       *realbase;
+	   *realbase;
 int	len;
 int    *result;
 {
-    register PE pe;
-    register PS ps;
+	register PE pe;
+	register PS ps;
 
-    if ((ps = ps_alloc (str_open)) == NULLPS) {
-	*result = PS_ERR_NMEM;
-	return NULLPE;
-    }
-    if (str_setup (ps, base, len, 1) == OK) {
-	if (!realbase)
-	    ps -> ps_inline = 0;
-	if (pe = ps2pe (ps)) {
-	    if (realbase)
-		pe -> pe_realbase = realbase;
-
-	    ps -> ps_errno = PS_ERR_NONE;
+	if ((ps = ps_alloc (str_open)) == NULLPS) {
+		*result = PS_ERR_NMEM;
+		return NULLPE;
 	}
-	else
-	    if (ps -> ps_errno == PS_ERR_NONE)
-		ps -> ps_errno = PS_ERR_EOF;
-    }
+	if (str_setup (ps, base, len, 1) == OK) {
+		if (!realbase)
+			ps -> ps_inline = 0;
+		if (pe = ps2pe (ps)) {
+			if (realbase)
+				pe -> pe_realbase = realbase;
 
-    *result = ps -> ps_errno;    
+			ps -> ps_errno = PS_ERR_NONE;
+		} else if (ps -> ps_errno == PS_ERR_NONE)
+			ps -> ps_errno = PS_ERR_EOF;
+	}
 
-    ps -> ps_inline = 1;
-    ps_free (ps);
+	*result = ps -> ps_errno;
+
+	ps -> ps_inline = 1;
+	ps_free (ps);
 
 #ifdef	DEBUG
-    if (pe && (psap_log -> ll_events & LLOG_PDUS))
-	pe2text (psap_log, pe, 1, len);
+	if (pe && (psap_log -> ll_events & LLOG_PDUS))
+		pe2text (psap_log, pe, 1, len);
 #endif
 
-    return pe;
+	return pe;
 }

@@ -33,7 +33,7 @@ extern LLog * log_dsap;
 AV_Sequence avs_merge (a,b)
 AV_Sequence a,b;
 {
-register AV_Sequence aptr, bptr, result, trail, tmp;
+	register AV_Sequence aptr, bptr, result, trail, tmp;
 
 	if ( a == NULLAV )
 		return (b);
@@ -42,36 +42,36 @@ register AV_Sequence aptr, bptr, result, trail, tmp;
 
 	/* start sequence off, make sure 'a' is the first */
 	switch (avs_cmp_comp (a,b)) {
-		default:
-			LLOG (log_dsap,LLOG_EXCEPTIONS,("matching failed in avs_merge")) ;
-			/* continue as if equal */
+	default:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("matching failed in avs_merge")) ;
+	/* continue as if equal */
 
-		case 0: /* equal */
-			result = a;
-			aptr = a->avseq_next;
-			bptr = b->avseq_next;
-			avs_comp_free (b);
-			break;
-		case -1:
-			result = b;
-			aptr = a;
-			bptr = b->avseq_next;
-			break;
-		case 2: /* no compare function defined - treat as if a > b */
-		case 1:
-			result = a;
-			aptr = a->avseq_next;
-			bptr = b;
-			break;
-		}
+	case 0: /* equal */
+		result = a;
+		aptr = a->avseq_next;
+		bptr = b->avseq_next;
+		avs_comp_free (b);
+		break;
+	case -1:
+		result = b;
+		aptr = a;
+		bptr = b->avseq_next;
+		break;
+	case 2: /* no compare function defined - treat as if a > b */
+	case 1:
+		result = a;
+		aptr = a->avseq_next;
+		bptr = b;
+		break;
+	}
 
 	trail = result;
 	while (  (aptr != NULLAV) && (bptr != NULLAV) ) {
 
-	   switch (avs_cmp_comp (aptr,bptr)) {
+		switch (avs_cmp_comp (aptr,bptr)) {
 		default:
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("matching failed in avs_merge (2)")) ;
-			/* continue as if equal */
+		/* continue as if equal */
 
 		case 0: /* equal */
 			trail->avseq_next = aptr;
@@ -92,7 +92,7 @@ register AV_Sequence aptr, bptr, result, trail, tmp;
 			trail = aptr;
 			aptr = aptr->avseq_next;
 			break;
-	    }
+		}
 	}
 	if (aptr == NULLAV)
 		trail->avseq_next = bptr;
@@ -106,7 +106,7 @@ register AV_Sequence aptr, bptr, result, trail, tmp;
 AV_Sequence avs_fast_merge (a,b,c,d)
 AV_Sequence a,b,c,d;
 {
-register AV_Sequence aptr, bptr, result, trail, tmp;
+	register AV_Sequence aptr, bptr, result, trail, tmp;
 
 	if ( a == NULLAV )
 		return (b);
@@ -115,7 +115,7 @@ register AV_Sequence aptr, bptr, result, trail, tmp;
 
 	if (quipu_faststart && (a == c) && d->avseq_next == NULLAV)
 #ifndef TURBO_DISK
-		if (avs_cmp_comp (d,b) == 1) 
+		if (avs_cmp_comp (d,b) == 1)
 #endif
 		{
 			d->avseq_next = b;
@@ -124,36 +124,36 @@ register AV_Sequence aptr, bptr, result, trail, tmp;
 
 	/* start sequence off, make sure 'a' is the first */
 	switch (avs_cmp_comp (a,b)) {
-		default:
-			LLOG (log_dsap,LLOG_EXCEPTIONS,("matching failed in avs_merge")) ;
-			/* continue as if equal */
+	default:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("matching failed in avs_merge")) ;
+	/* continue as if equal */
 
-		case 0: /* equal */
-			result = a;
-			aptr = a->avseq_next;
-			bptr = b->avseq_next;
-			avs_comp_free (b);
-			break;
-		case -1:
-			result = b;
-			aptr = a;
-			bptr = b->avseq_next;
-			break;
-		case 2: /* no compare function defined - treat as if a > b */
-		case 1:
-			result = a;
-			aptr = a->avseq_next;
-			bptr = b;
-			break;
-		}
+	case 0: /* equal */
+		result = a;
+		aptr = a->avseq_next;
+		bptr = b->avseq_next;
+		avs_comp_free (b);
+		break;
+	case -1:
+		result = b;
+		aptr = a;
+		bptr = b->avseq_next;
+		break;
+	case 2: /* no compare function defined - treat as if a > b */
+	case 1:
+		result = a;
+		aptr = a->avseq_next;
+		bptr = b;
+		break;
+	}
 
 	trail = result;
 	while (  (aptr != NULLAV) && (bptr != NULLAV) ) {
 
-	   switch (avs_cmp_comp (aptr,bptr)) {
+		switch (avs_cmp_comp (aptr,bptr)) {
 		default:
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("matching failed in avs_merge (2)")) ;
-			/* continue as if equal */
+		/* continue as if equal */
 
 		case 0: /* equal */
 			trail->avseq_next = aptr;
@@ -174,7 +174,7 @@ register AV_Sequence aptr, bptr, result, trail, tmp;
 			trail = aptr;
 			aptr = aptr->avseq_next;
 			break;
-	    }
+		}
 	}
 	if (aptr == NULLAV)
 		trail->avseq_next = bptr;

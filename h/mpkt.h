@@ -1,6 +1,6 @@
 /* mpkt.h - defines the report format for management */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/mpkt.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -24,7 +24,7 @@
 
 
 struct MReport {
-    u_short type;
+	u_short type;
 #define OPREQIN         1
 #define OPREQOUT        2
 #define USERDT          3
@@ -39,20 +39,20 @@ struct MReport {
 #define	STARTLISTEN	12
 #define	ENDLISTEN	13
 
-    long    id;		/* process id */
-    u_short cid;        /* connection fd */
+	long    id;		/* process id */
+	u_short cid;        /* connection fd */
 
-    union {
-	struct {
-	    int a, b, c, d, e, f;
-	} gp;
+	union {
+		struct {
+			int a, b, c, d, e, f;
+		} gp;
 
-	struct {
-	    int	    tsel_len;
-	    char    tsel[TSSIZE];
-	    struct NSAPaddr nsap;
-	} taddr;
-    } u;
+		struct {
+			int	    tsel_len;
+			char    tsel[TSSIZE];
+			struct NSAPaddr nsap;
+		} taddr;
+	} u;
 };
 
 int	TManGen ();

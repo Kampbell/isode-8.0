@@ -1,6 +1,6 @@
 /* cons.h - CONS abstractions */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/cons.h,v 5.0 88/07/21 14:38:47 mrose Rel $
  *
  * Contributed by Keith Ruttle, CAMTEC Electronics Ltd
@@ -22,7 +22,7 @@
 #ifndef	_CONS_
 #define	_CONS_
 
-/* 
+/*
  *
  * #defines for generic addressing & TSEL encoded addresses.
  *

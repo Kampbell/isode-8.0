@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/is2paddr.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/acsap/RCS/is2paddr.c,v 9.0 1992/06/16 12:05:59 isode Rel $
  *
  *
@@ -36,23 +36,23 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/is2paddr.c,v 9.0 1992
 
 struct PSAPaddr *is2paddr (host, service, is)
 char   *host,
-       *service;
+	   *service;
 struct isoservent *is;
 {
-    AEI	    aei;
-    struct PSAPaddr *pa;
+	AEI	    aei;
+	struct PSAPaddr *pa;
 
-    if ((aei = str2aei (host, service)) == NULLAEI
-	    || (pa = aei2addr (aei)) == NULLPA)
-	return NULLPA;
+	if ((aei = str2aei (host, service)) == NULLAEI
+			|| (pa = aei2addr (aei)) == NULLPA)
+		return NULLPA;
 
-    if (is && strcmp (is -> is_provider, "psap") == 0) {
-	if (is -> is_selectlen > PSSIZE)	/* XXX */
-	    return NULLPA;
+	if (is && strcmp (is -> is_provider, "psap") == 0) {
+		if (is -> is_selectlen > PSSIZE)	/* XXX */
+			return NULLPA;
 
-	bcopy (is -> is_selector, pa -> pa_selector,
-		pa -> pa_selectlen = is -> is_selectlen);
-    }
+		bcopy (is -> is_selector, pa -> pa_selector,
+			   pa -> pa_selectlen = is -> is_selectlen);
+	}
 
-    return pa;
+	return pa;
 }

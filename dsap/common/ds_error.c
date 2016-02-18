@@ -43,7 +43,7 @@ static char * abandon_fail [] = {
 	"No such operation",
 	"Too late",
 	"Cannot abandon"
-	};
+};
 
 static char * at_problem [] = {
 	"No error !!!",
@@ -53,7 +53,7 @@ static char * at_problem [] = {
 	"Inappropriate Matching",
 	"Constraint violation",
 	"Attribute or Value already exists"
-	};
+};
 
 static char * name [] = {
 	"No error !!!",
@@ -61,7 +61,7 @@ static char * name [] = {
 	"Alias problem",
 	"Invalid attribute syntax",
 	"Alias dereference"
-	};
+};
 
 static char * security [] = {
 	"No error !!!",
@@ -71,7 +71,7 @@ static char * security [] = {
 	"Invalid signature",
 	"Protection required",
 	"No information"
-	};
+};
 
 static char * service [] = {
 	"No error !!!",
@@ -87,7 +87,7 @@ static char * service [] = {
 	"Unavailable critical extension",
 	"Out of scope",
 	"DIT error"
-	};
+};
 
 static char * update [] = {
 	"No error !!!",
@@ -98,7 +98,7 @@ static char * update [] = {
 	"Already exists",
 	"Affects multiple DSAs",
 	"Object class modifications Prohibited"
-	};
+};
 
 /* ARGSUSED */
 
@@ -107,102 +107,102 @@ PS	ps;
 struct DSError *err;
 int	format;
 {
-    ds_error (ps, err);
+	ds_error (ps, err);
 }
 
 ds_error (ps,err)
 PS ps;
 struct DSError *err;
 {
-struct DSE_at_problem *at_prob;
+	struct DSE_at_problem *at_prob;
 
-switch (err->dse_type) {
-   case DSE_NOERROR:
-	ps_print (ps,"No error !!!\n");
-	break;
-   case DSE_ABANDON_FAILED:
-	ps_printf (ps,"*** Abandon failure: %s, id %d ***\n" ,abandon_fail[err->ERR_ABANDON_FAIL.DSE_ab_problem], err->ERR_ABANDON_FAIL.DSE_ab_invokeid);
-	break;
-   case DSE_ATTRIBUTEERROR:
-	ps_print (ps,"*** Attribute error ***\n");
-	dn_print (ps,err->ERR_ATTRIBUTE.DSE_at_name, RDNOUT);
-	ps_print (ps,"\n");
-	for (at_prob = &err->ERR_ATTRIBUTE.DSE_at_plist; at_prob != DSE_AT_NOPROBLEM; at_prob = at_prob -> dse_at_next) {
-		ps_print (ps,"Attribute type ");
-		AttrT_print (ps,at_prob->DSE_at_type,READOUT);
-		if (at_prob->DSE_at_value != NULLAttrV) {
-			ps_print (ps,", value ");
-			AttrV_print (ps,at_prob->DSE_at_value,EDBOUT);
+	switch (err->dse_type) {
+	case DSE_NOERROR:
+		ps_print (ps,"No error !!!\n");
+		break;
+	case DSE_ABANDON_FAILED:
+		ps_printf (ps,"*** Abandon failure: %s, id %d ***\n" ,abandon_fail[err->ERR_ABANDON_FAIL.DSE_ab_problem], err->ERR_ABANDON_FAIL.DSE_ab_invokeid);
+		break;
+	case DSE_ATTRIBUTEERROR:
+		ps_print (ps,"*** Attribute error ***\n");
+		dn_print (ps,err->ERR_ATTRIBUTE.DSE_at_name, RDNOUT);
+		ps_print (ps,"\n");
+		for (at_prob = &err->ERR_ATTRIBUTE.DSE_at_plist; at_prob != DSE_AT_NOPROBLEM; at_prob = at_prob -> dse_at_next) {
+			ps_print (ps,"Attribute type ");
+			AttrT_print (ps,at_prob->DSE_at_type,READOUT);
+			if (at_prob->DSE_at_value != NULLAttrV) {
+				ps_print (ps,", value ");
+				AttrV_print (ps,at_prob->DSE_at_value,EDBOUT);
+			}
+			ps_printf (ps," - %s\n", at_problem[at_prob->DSE_at_what]);
 		}
-		ps_printf (ps," - %s\n", at_problem[at_prob->DSE_at_what]);
-	}
-	break;
-   case DSE_NAMEERROR:
-	ps_printf (ps,"*** Name error: %s ***\n( Matched: ",name[err->ERR_NAME.DSE_na_problem]);
-	dn_print (ps,err->ERR_NAME.DSE_na_matched,RDNOUT);
-	ps_print (ps," )\n");
-	break;
-   case DSE_SERVICEERROR:
-	ps_printf (ps,"*** Service error: %s ***\n", service[err->ERR_SERVICE.DSE_sv_problem] );
-	break;
-   case DSE_REFERRAL:
-	if (err->ERR_REFERRAL.DSE_ref_candidates == NULLCONTINUATIONREF) {
-		ps_print (ps,"*** Can't contact remote DSA - Address Unknown ***\n");
+		break;
+	case DSE_NAMEERROR:
+		ps_printf (ps,"*** Name error: %s ***\n( Matched: ",name[err->ERR_NAME.DSE_na_problem]);
+		dn_print (ps,err->ERR_NAME.DSE_na_matched,RDNOUT);
+		ps_print (ps," )\n");
+		break;
+	case DSE_SERVICEERROR:
+		ps_printf (ps,"*** Service error: %s ***\n", service[err->ERR_SERVICE.DSE_sv_problem] );
+		break;
+	case DSE_REFERRAL:
+		if (err->ERR_REFERRAL.DSE_ref_candidates == NULLCONTINUATIONREF) {
+			ps_print (ps,"*** Can't contact remote DSA - Address Unknown ***\n");
+			break;
+		}
+		if (err->ERR_REFERRAL.DSE_ref_candidates->cr_reftype == RT_NONSPECIFICSUBORDINATE) {
+			ps_print (ps,"*** Non Specific Referral (unable to proceede) ***");
+			break;
+		}
+		ps_print (ps,"*** Can't contact remote part of the directory (\"");
+		ufn_dn_print (ps,err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_name,FALSE);
+		ps_printf (ps,"\") ***\n");
+		/*
+			ps_printf (ps,"\" ***\n    (%s)\n", paddr2str (err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_address,NULLNA));
+		*/
+		break;
+	case DSE_DSAREFERRAL:
+		if (err->ERR_REFERRAL.DSE_ref_candidates == NULLCONTINUATIONREF) {
+			ps_print (ps,"*** Referral error - Null reference ***\n");
+			break;
+		}
+		ps_print (ps,"*** DSA Referral error - ");
+		dn_print (ps,err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_name,RDNOUT);
+		ps_printf (ps," - %s ***\n", paddr2str (err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_address,NULLNA));
+		dn_print (ps,err->ERR_REFERRAL.DSE_ref_prefix,RDNOUT);
+		break;
+	case DSE_SECURITYERROR:
+		ps_printf (ps,"*** Security error - %s ***\n",security[err->ERR_SECURITY.DSE_sc_problem]);
+		break;
+	case DSE_UPDATEERROR:
+		ps_printf (ps,"*** Update error - %s ***\n",update[err->ERR_UPDATE.DSE_up_problem]);
+		break;
+	case DSE_ABANDONED:
+		ps_print (ps,"*** Abandoned error ***\n");
+		break;
+	case DSE_REMOTEERROR:
+		dsa_dead = TRUE;
+		ps_print (ps,"*** Problem with DSA ***\n");
+		break;
+	case DSE_LOCALERROR:
+		ps_print (ps,"*** Local problem with DUA ***\n");
+		break;
+	case DSE_INTR_ABANDON_FAILED:
+		ps_print (ps,"*** Abandoned Failed ***\n");
+		break;
+	case DSE_INTR_ABANDONED:
+		ps_print (ps,"*** Abandoned ***\n");
+		break;
+	case DSE_INTRERROR:
+		ps_print (ps,"*** Interrupted ***\n");
+		break;
+	default:
+		dsa_dead = TRUE;
+		ps_printf (ps,"*** Undefined error '%d' ***\n",err->dse_type);
 		break;
 	}
-	if (err->ERR_REFERRAL.DSE_ref_candidates->cr_reftype == RT_NONSPECIFICSUBORDINATE) {
-		ps_print (ps,"*** Non Specific Referral (unable to proceede) ***");
-		break;
-	}
-	ps_print (ps,"*** Can't contact remote part of the directory (\"");
-	ufn_dn_print (ps,err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_name,FALSE);
-	ps_printf (ps,"\") ***\n");
-/*
-	ps_printf (ps,"\" ***\n    (%s)\n", paddr2str (err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_address,NULLNA));
-*/
-	break;
-   case DSE_DSAREFERRAL:
-	if (err->ERR_REFERRAL.DSE_ref_candidates == NULLCONTINUATIONREF) {
-		ps_print (ps,"*** Referral error - Null reference ***\n");
-		break;
-	}
-	ps_print (ps,"*** DSA Referral error - ");
-	dn_print (ps,err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_name,RDNOUT);
-	ps_printf (ps," - %s ***\n", paddr2str (err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_address,NULLNA));
-	dn_print (ps,err->ERR_REFERRAL.DSE_ref_prefix,RDNOUT);
-	break;
-   case DSE_SECURITYERROR:
-	ps_printf (ps,"*** Security error - %s ***\n",security[err->ERR_SECURITY.DSE_sc_problem]);
-	break;
-   case DSE_UPDATEERROR:
-	ps_printf (ps,"*** Update error - %s ***\n",update[err->ERR_UPDATE.DSE_up_problem]);
-	break;
-   case DSE_ABANDONED:
-	ps_print (ps,"*** Abandoned error ***\n");
-	break;
-   case DSE_REMOTEERROR:
-	dsa_dead = TRUE;
-	ps_print (ps,"*** Problem with DSA ***\n");
-	break;
-   case DSE_LOCALERROR:
-	ps_print (ps,"*** Local problem with DUA ***\n");
-	break;
-   case DSE_INTR_ABANDON_FAILED:
-	ps_print (ps,"*** Abandoned Failed ***\n");
-	break;
-   case DSE_INTR_ABANDONED:
-	ps_print (ps,"*** Abandoned ***\n");
-	break;
-   case DSE_INTRERROR:
-	ps_print (ps,"*** Interrupted ***\n");
-	break;
-   default:
-	dsa_dead = TRUE;
-	ps_printf (ps,"*** Undefined error '%d' ***\n",err->dse_type);
-	break;
-   }
 
-ds_error_free (err);
+	ds_error_free (err);
 
 }
 
@@ -210,80 +210,80 @@ ds_error_free (err);
 log_ds_error (err)
 struct DSError *err;
 {
-struct DSE_at_problem *at_prob;
+	struct DSE_at_problem *at_prob;
 
-switch (err->dse_type) {
-   case DSE_NOERROR:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("No error !!!"));
-	break;
-   case DSE_ABANDON_FAILED:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("Abandon failure"));
-	LLOG (log_dsap,LLOG_TRACE,("%s,id %d" ,abandon_fail[err->ERR_ABANDON_FAIL.DSE_ab_problem], err->ERR_ABANDON_FAIL.DSE_ab_invokeid));
-	break;
-   case DSE_ATTRIBUTEERROR:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("Attribute error\n"));
-	pslog (log_dsap,LLOG_TRACE,"...",(IFP)dn_print,
-	       (caddr_t)err->ERR_ATTRIBUTE.DSE_at_name);
-	for (at_prob = &err->ERR_ATTRIBUTE.DSE_at_plist; at_prob != DSE_AT_NOPROBLEM; at_prob = at_prob -> dse_at_next) {
-		LLOG (log_dsap,LLOG_TRACE, (at_problem[at_prob->DSE_at_what]));
-		if (at_prob->DSE_at_value != NULLAttrV) 
-			pslog (log_dsap,LLOG_TRACE,"type", AttrT_print, (caddr_t) at_prob->DSE_at_type);
-	}
-	break;
-   case DSE_NAMEERROR:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("Name error: %s",name[err->ERR_NAME.DSE_na_problem]));
-	pslog (log_dsap,LLOG_EXCEPTIONS,"   Matched",(IFP)dn_print, 
-	       (caddr_t)err->ERR_NAME.DSE_na_matched);
-	break;
-   case DSE_SERVICEERROR:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("Service error: %s ", service[err->ERR_SERVICE.DSE_sv_problem] ));
-	break;
-   case DSE_REFERRAL:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("Referral error"));
-	if (err->ERR_REFERRAL.DSE_ref_candidates == NULLCONTINUATIONREF) {
-		LLOG (log_dsap,LLOG_EXCEPTIONS,("NULL reference in referral error"));
+	switch (err->dse_type) {
+	case DSE_NOERROR:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("No error !!!"));
+		break;
+	case DSE_ABANDON_FAILED:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("Abandon failure"));
+		LLOG (log_dsap,LLOG_TRACE,("%s,id %d" ,abandon_fail[err->ERR_ABANDON_FAIL.DSE_ab_problem], err->ERR_ABANDON_FAIL.DSE_ab_invokeid));
+		break;
+	case DSE_ATTRIBUTEERROR:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("Attribute error\n"));
+		pslog (log_dsap,LLOG_TRACE,"...",(IFP)dn_print,
+			   (caddr_t)err->ERR_ATTRIBUTE.DSE_at_name);
+		for (at_prob = &err->ERR_ATTRIBUTE.DSE_at_plist; at_prob != DSE_AT_NOPROBLEM; at_prob = at_prob -> dse_at_next) {
+			LLOG (log_dsap,LLOG_TRACE, (at_problem[at_prob->DSE_at_what]));
+			if (at_prob->DSE_at_value != NULLAttrV)
+				pslog (log_dsap,LLOG_TRACE,"type", AttrT_print, (caddr_t) at_prob->DSE_at_type);
+		}
+		break;
+	case DSE_NAMEERROR:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("Name error: %s",name[err->ERR_NAME.DSE_na_problem]));
+		pslog (log_dsap,LLOG_EXCEPTIONS,"   Matched",(IFP)dn_print,
+			   (caddr_t)err->ERR_NAME.DSE_na_matched);
+		break;
+	case DSE_SERVICEERROR:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("Service error: %s ", service[err->ERR_SERVICE.DSE_sv_problem] ));
+		break;
+	case DSE_REFERRAL:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("Referral error"));
+		if (err->ERR_REFERRAL.DSE_ref_candidates == NULLCONTINUATIONREF) {
+			LLOG (log_dsap,LLOG_EXCEPTIONS,("NULL reference in referral error"));
+			break;
+		}
+		pslog (log_dsap,LLOG_TRACE,"ap_name",(IFP)dn_print,
+			   (caddr_t)err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_name);
+		break;
+	case DSE_DSAREFERRAL:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("DSA!! Referral error"));
+		if (err->ERR_REFERRAL.DSE_ref_candidates == NULLCONTINUATIONREF) {
+			LLOG (log_dsap,LLOG_EXCEPTIONS,("NULL reference in DSA referral error"));
+			break;
+		}
+		pslog (log_dsap,LLOG_TRACE,"ap_name",(IFP)dn_print,
+			   (caddr_t)err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_name);
+		break;
+	case DSE_SECURITYERROR:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("Security error - %s ",security[err->ERR_SECURITY.DSE_sc_problem]));
+		break;
+	case DSE_UPDATEERROR:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("Update error - %s ",update[err->ERR_UPDATE.DSE_up_problem]));
+		break;
+	case DSE_ABANDONED:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("Abandoned error"));
+		break;
+	case DSE_REMOTEERROR:
+		LLOG (log_dsap, LLOG_EXCEPTIONS,("remote DSA error !!!"));
+		break;
+	case DSE_LOCALERROR:
+		LLOG (log_dsap, LLOG_EXCEPTIONS,("local DUA error !!!"));
+		break;
+	case DSE_INTR_ABANDON_FAILED:
+		LLOG (log_dsap, LLOG_EXCEPTIONS,("Abandon failed !!!"));
+		break;
+	case DSE_INTR_ABANDONED:
+		LLOG (log_dsap, LLOG_EXCEPTIONS,("Abandoned !!!"));
+		break;
+	case DSE_INTRERROR:
+		LLOG (log_dsap, LLOG_EXCEPTIONS,("Interrupted !!!"));
+		break;
+	default:
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("Unknown ds error type (%d)",err->dse_type));
 		break;
 	}
-	pslog (log_dsap,LLOG_TRACE,"ap_name",(IFP)dn_print, 
-	       (caddr_t)err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_name);
-	break;
-   case DSE_DSAREFERRAL:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("DSA!! Referral error"));
-	if (err->ERR_REFERRAL.DSE_ref_candidates == NULLCONTINUATIONREF) {
-		LLOG (log_dsap,LLOG_EXCEPTIONS,("NULL reference in DSA referral error"));
-		break;
-	}
-	pslog (log_dsap,LLOG_TRACE,"ap_name",(IFP)dn_print, 
-	       (caddr_t)err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_name);
-	break;
-   case DSE_SECURITYERROR:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("Security error - %s ",security[err->ERR_SECURITY.DSE_sc_problem]));
-	break;
-   case DSE_UPDATEERROR:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("Update error - %s ",update[err->ERR_UPDATE.DSE_up_problem]));
-	break;
-   case DSE_ABANDONED:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("Abandoned error"));
-	break;
-   case DSE_REMOTEERROR:
-	LLOG (log_dsap, LLOG_EXCEPTIONS,("remote DSA error !!!"));
-	break;
-   case DSE_LOCALERROR:
-	LLOG (log_dsap, LLOG_EXCEPTIONS,("local DUA error !!!"));
-	break;
-   case DSE_INTR_ABANDON_FAILED:
-	LLOG (log_dsap, LLOG_EXCEPTIONS,("Abandon failed !!!"));
-	break;
-   case DSE_INTR_ABANDONED:
-	LLOG (log_dsap, LLOG_EXCEPTIONS,("Abandoned !!!"));
-	break;
-   case DSE_INTRERROR:
-	LLOG (log_dsap, LLOG_EXCEPTIONS,("Interrupted !!!"));
-	break;
-   default:
-	LLOG (log_dsap,LLOG_EXCEPTIONS,("Unknown ds error type (%d)",err->dse_type));
-	break;
-   }
 
 }
 
@@ -291,12 +291,12 @@ switch (err->dse_type) {
 ds_error_free (err)
 struct DSError * err;
 {
-register struct DSE_at_problem *at_prob;
+	register struct DSE_at_problem *at_prob;
 
-if ((struct DSError *)0 == err)
-    return;
+	if ((struct DSError *)0 == err)
+		return;
 
-switch (err->dse_type) {
+	switch (err->dse_type) {
 	case DSE_ATTRIBUTEERROR:
 		dn_free (err->ERR_ATTRIBUTE.DSE_at_name);
 		err->ERR_ATTRIBUTE.DSE_at_name = NULLDN;
@@ -304,11 +304,11 @@ switch (err->dse_type) {
 		if (at_prob->DSE_at_value != NULLAttrV) {
 			AttrV_free (at_prob->DSE_at_value);
 			at_prob->DSE_at_value = NULLAttrV;
-		    }
+		}
 		if (at_prob->DSE_at_type != NULLAttrT) {
 			AttrT_free (at_prob->DSE_at_type);
 			at_prob->DSE_at_type = NULLAttrT;
-		    }
+		}
 
 		for (at_prob = at_prob->dse_at_next; at_prob != DSE_AT_NOPROBLEM; at_prob = at_prob -> dse_at_next) {
 			if (at_prob->DSE_at_value != NULLAttrV)
@@ -325,8 +325,8 @@ switch (err->dse_type) {
 		break;
 	case DSE_REFERRAL:
 		if(err->ERR_REFERRAL.DSE_ref_prefix != NULLDN)
-		    LLOG(log_dsap,LLOG_EXCEPTIONS,("SCREAM! prefix in referral"));
-		/* fall */
+			LLOG(log_dsap,LLOG_EXCEPTIONS,("SCREAM! prefix in referral"));
+	/* fall */
 	case DSE_DSAREFERRAL:
 		dn_free (err->ERR_REFERRAL.DSE_ref_prefix);
 		err->ERR_REFERRAL.DSE_ref_prefix = NULLDN;
@@ -348,30 +348,30 @@ struct ds_bind_error *err;
 int mode;
 {
 
-  switch (err->dbe_type) {
-    case DBE_TYPE_SERVICE:
-	ps_printf(ps, "*** Service error : %s ***\n", 
-		service[err->dbe_value]);
-	if (mode && err->dbe_cc)
-	    ps_printf (ps, "(%s)\n", err->dbe_data);
-	break;
-    case DBE_TYPE_SECURITY:
-	ps_printf(ps, "*** Security error : %s ***\n", 
-		security[err->dbe_value]);
-	break;
-    default:
-	ps_printf(ps, "*** Unrecognised bind error! ***\n");
-	if (mode && err->dbe_cc)
-	    ps_printf (ps, "(%s)\n", err->dbe_data);
-	break;
-  }
+	switch (err->dbe_type) {
+	case DBE_TYPE_SERVICE:
+		ps_printf(ps, "*** Service error : %s ***\n",
+				  service[err->dbe_value]);
+		if (mode && err->dbe_cc)
+			ps_printf (ps, "(%s)\n", err->dbe_data);
+		break;
+	case DBE_TYPE_SECURITY:
+		ps_printf(ps, "*** Security error : %s ***\n",
+				  security[err->dbe_value]);
+		break;
+	default:
+		ps_printf(ps, "*** Unrecognised bind error! ***\n");
+		if (mode && err->dbe_cc)
+			ps_printf (ps, "(%s)\n", err->dbe_data);
+		break;
+	}
 }
 
 ds_bind_error(ps, err)
 PS ps;
 struct ds_bind_error *err;
 {
-    ds_bind_error_aux (ps, err, 0);
+	ds_bind_error_aux (ps, err, 0);
 }
 
 static PS ps = NULLPS;
@@ -380,25 +380,25 @@ char * print_bind_error (err, mode)
 struct ds_bind_error *err;
 int mode;
 {
-    char       *cp;
+	char       *cp;
 
-    if (ps == NULL
-	    && ((ps = ps_alloc (str_open)) == NULLPS)
-		    || str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
-	if (ps)
-	    ps_free (ps), ps = NULLPS;
+	if (ps == NULL
+			&& ((ps = ps_alloc (str_open)) == NULLPS)
+			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
+		if (ps)
+			ps_free (ps), ps = NULLPS;
 
-	return NULLCP;
-    }
+		return NULLCP;
+	}
 
-    ds_bind_error_aux (ps, err, mode);
+	ds_bind_error_aux (ps, err, mode);
 
-    *--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
 
-    cp = ps -> ps_base;
+	cp = ps -> ps_base;
 
-    ps -> ps_base = NULL, ps -> ps_cnt = 0;
-    ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_base = NULL, ps -> ps_cnt = 0;
+	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
 
-    return cp;
+	return cp;
 }

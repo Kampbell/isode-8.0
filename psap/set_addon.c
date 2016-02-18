@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/set_addon.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/set_addon.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -34,15 +34,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/set_addon.c,v 9.0 1992
 
 int	set_addon (pe, last, new)
 PE	pe,
-        last,
-        new;
+ last,
+ new;
 {
-    if (pe == NULLPE)
-	return NOTOK;
-    if (last == NULLPE)
-	return set_add (pe, new);
-    new -> pe_offset = pe -> pe_cardinal++;
-    last -> pe_next = new;
+	if (pe == NULLPE)
+		return NOTOK;
+	if (last == NULLPE)
+		return set_add (pe, new);
+	new -> pe_offset = pe -> pe_cardinal++;
+	last -> pe_next = new;
 
-    return OK;
+	return OK;
 }

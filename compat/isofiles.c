@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isofiles.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/isofiles.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -36,19 +36,19 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isofiles.c,v 9.0 199
 
 char   *_isodefile (path, file)
 char   *path,
-       *file;
+	   *file;
 {
-    static char buffer[BUFSIZ];
+	static char buffer[BUFSIZ];
 
-    isodetailor (NULLCP, 0);	/* not really recursive */
+	isodetailor (NULLCP, 0);	/* not really recursive */
 
-    if (*file == '/'
-	    || (*file == '.'
-		    && (file[1] == '/'
-			    || (file[1] == '.' && file[2] == '/'))))
-	(void) strcpy (buffer, file);
-    else
-	(void) sprintf (buffer, "%s%s", path, file);
+	if (*file == '/'
+			|| (*file == '.'
+				&& (file[1] == '/'
+					|| (file[1] == '.' && file[2] == '/'))))
+		(void) strcpy (buffer, file);
+	else
+		(void) sprintf (buffer, "%s%s", path, file);
 
-    return buffer;
+	return buffer;
 }

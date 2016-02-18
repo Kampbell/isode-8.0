@@ -34,7 +34,7 @@
  *    Acquisition, use, and distribution of this module and     *
  *    related materials are subject to the restrictions of a    *
  *    license agreement.					*
- *								*    
+ *								*
  *    This software is for prototype purposes only.		*
  *								*
  ****************************************************************
@@ -73,7 +73,7 @@ int	TUNITDATAser ();
 
 
 
-/*   
+/*
  ****************************************************************
  *								*
  *  SUnitDataBind	                                        *
@@ -113,162 +113,151 @@ struct SSAPindication 	*si;
 
 {
 
-    int     fd;
-    SBV     smask;
-    int     result;
-    register struct ssapblk *sb;
-    struct  TSAPdisconnect  td;
+	int     fd;
+	SBV     smask;
+	int     result;
+	register struct ssapblk *sb;
+	struct  TSAPdisconnect  td;
 
 #ifdef HULADEBUG
 	printf ("\n     in SUnitDataBind \n");
 #endif
 
-    isodetailor ("ssap");
+	isodetailor ("ssap");
 
-/*
- *  Check for missing parameters.
- */
-
-    missing_udP (si);
-    if (!local && !remote)
-	return susaplose (si,
-			  SC_PARAMETER,
-		  	  NULLCP,
-			  SuErrString (UDERR_MISSING_PARAMETER));
-			  		
-
-/*
- *  Check if we need to create a new socket or just
- *  reuse (essentially "rebind") the current socket 
- *  for the specified address pair.
- */
-
-    if (sd < 0)
-        {	
 	/*
- 	 *  Allocate a new ssap block for this calling/called address pair.
- 	 */
+	 *  Check for missing parameters.
+	 */
+
+	missing_udP (si);
+	if (!local && !remote)
+		return susaplose (si,
+						  SC_PARAMETER,
+						  NULLCP,
+						  SuErrString (UDERR_MISSING_PARAMETER));
+
+
+	/*
+	 *  Check if we need to create a new socket or just
+	 *  reuse (essentially "rebind") the current socket
+	 *  for the specified address pair.
+	 */
+
+	if (sd < 0) {
+		/*
+		 *  Allocate a new ssap block for this calling/called address pair.
+		 */
 #ifdef HULADEBUG
-	printf ("\n     allocating new ssap block \n");
+		printf ("\n     allocating new ssap block \n");
 #endif
 
-    	if ( (sb = newsublk () ) == NULL)
-	    return susaplose (si,
-			      SC_CONGEST,
-			      NULLCP,
-			      SuErrString (UDERR_NO_MEMORY));
-	}
-    else
-	{
-	/* 
- 	 *  Find the correct session block and set the signal mask.
- 	 */ 
+		if ( (sb = newsublk () ) == NULL)
+			return susaplose (si,
+							  SC_CONGEST,
+							  NULLCP,
+							  SuErrString (UDERR_NO_MEMORY));
+	} else {
+		/*
+		 *  Find the correct session block and set the signal mask.
+		 */
 
-    	if ((sb = findsublk (sd)) == NULL)
-	    {
+		if ((sb = findsublk (sd)) == NULL) {
 
-	    /*
-             *  Check for special case where a server has set up a 
-	     *  listen socket and is now binding the address so the 
-	     *  socket exists but no ssap block has been set up.
-	     */
+			/*
+			     *  Check for special case where a server has set up a
+			 *  listen socket and is now binding the address so the
+			 *  socket exists but no ssap block has been set up.
+			 */
 
-	    if (local)
-	        {
+			if (local) {
 #ifdef HULADEBUG
-	        printf ("\n     allocating new ssap block for listen socket\n");
+				printf ("\n     allocating new ssap block for listen socket\n");
 #endif
-    	        if ( (sb = newsublk () ) == NULL)
-	            return susaplose (si, 
-				      SC_CONGEST, 
-				      NULLCP, 
-				      SuErrString(UDERR_NO_MEMORY));
-	        }
-	    else
-	        {
-	        (void) sigsetmask (smask); 
-	  	return susaplose (si,
-				  SC_PARAMETER,
-				  NULLCP,
-				  SuErrString(UDERR_INVALID_SESSION_DESC)); 
+				if ( (sb = newsublk () ) == NULL)
+					return susaplose (si,
+									  SC_CONGEST,
+									  NULLCP,
+									  SuErrString(UDERR_NO_MEMORY));
+			} else {
+				(void) sigsetmask (smask);
+				return susaplose (si,
+								  SC_PARAMETER,
+								  NULLCP,
+								  SuErrString(UDERR_INVALID_SESSION_DESC));
+			}
 		}
-	    }
 
 #ifdef HULADEBUG
-	printf ("\n     re-binding on current ssap block \n");
+		printf ("\n     re-binding on current ssap block \n");
 #endif
 	}
 
 
-    /*
-     *  Set up the addresses if not specified.
-     */
-   
-    if (local == NULLSA)
-        {
-	static struct SSAPaddr salocal;
+	/*
+	 *  Set up the addresses if not specified.
+	 */
 
-	local = &salocal;
-	bzero ((char *) local, sizeof *local);
+	if (local == NULLSA) {
+		static struct SSAPaddr salocal;
+
+		local = &salocal;
+		bzero ((char *) local, sizeof *local);
 	}
 
-    if (remote == NULLSA)
-        {
-	static struct SSAPaddr saremote;
+	if (remote == NULLSA) {
+		static struct SSAPaddr saremote;
 
-	remote = &saremote;
-	bzero ((char *) remote, sizeof *remote);
+		remote = &saremote;
+		bzero ((char *) remote, sizeof *remote);
 	}
 
-    if (local -> sa_selectlen == 0) 
-        {
-	local -> sa_port = htons((u_short)(0x8000 | (getpid() & 0x7fff)));
-	local -> sa_selectlen = sizeof local -> sa_port;
-	}
-    	
-/*
- *  Now bind (or re-bind) the address pair and get back a socket descriptor.
- */
-
-    fd = TUnitDataBind (sd, &local -> sa_addr, &remote -> sa_addr, qos, &td);
-
-    if (fd == NOTOK)
-	{
-	freesublk (sb);
-	return ts2suslose (si, "TUnitDataBind", &td);
+	if (local -> sa_selectlen == 0) {
+		local -> sa_port = htons((u_short)(0x8000 | (getpid() & 0x7fff)));
+		local -> sa_selectlen = sizeof local -> sa_port;
 	}
 
-/*
- *  Now finish setting up the control block.
- */
+	/*
+	 *  Now bind (or re-bind) the address pair and get back a socket descriptor.
+	 */
 
-    sb -> sb_fd = fd;
+	fd = TUnitDataBind (sd, &local -> sa_addr, &remote -> sa_addr, qos, &td);
 
-    sb -> sb_version = SB_VRSN1_CLNS;	/* version 1 connectionless */
+	if (fd == NOTOK) {
+		freesublk (sb);
+		return ts2suslose (si, "TUnitDataBind", &td);
+	}
 
-    sb -> sb_flags = SB_CLNS;		/* connectionless service */
+	/*
+	 *  Now finish setting up the control block.
+	 */
+
+	sb -> sb_fd = fd;
+
+	sb -> sb_version = SB_VRSN1_CLNS;	/* version 1 connectionless */
+
+	sb -> sb_flags = SB_CLNS;		/* connectionless service */
 
 
 #if FALSE
-    sb -> sb_tsdu_us = 0;
+	sb -> sb_tsdu_us = 0;
 #endif
 
-    sb -> sb_initiating = *local;	/* strcut copy */
-    
-    sb -> sb_responding = *remote;	/* struct copy */
+	sb -> sb_initiating = *local;	/* strcut copy */
+
+	sb -> sb_responding = *remote;	/* struct copy */
 
 #if FALSE
-    if (qos)
-	sb -> sb_qos = *qos;	
+	if (qos)
+		sb -> sb_qos = *qos;
 #endif
 
-    return fd;
+	return fd;
 
 }
 
 
 
-  
+
 
 /*  */
 
@@ -293,10 +282,10 @@ struct  SSAPindication *si;
 
 {
 
-register struct ssapblk *sb;
-int	 result;
-SBV      smask;			 	/* signal save mask */
-struct  TSAPdisconnect  td;
+	register struct ssapblk *sb;
+	int	 result;
+	SBV      smask;			 	/* signal save mask */
+	struct  TSAPdisconnect  td;
 
 
 #ifdef HULADEBUG
@@ -304,36 +293,36 @@ struct  TSAPdisconnect  td;
 #endif
 
 
-/* 
- *  Find the correct session block and set the signal mask.
- */ 
+	/*
+	 *  Find the correct session block and set the signal mask.
+	 */
 
-    ssap_udPsig (sb, sd);
+	ssap_udPsig (sb, sd);
 
-/*
- *  Close the transport socket and free its resources.
- */
+	/*
+	 *  Close the transport socket and free its resources.
+	 */
 
-    if ( (result = TUnitDataUnbind (sb -> sb_fd, &td)) != OK )
-	return NOTOK;
-    
-/*
- *  Now free the ssapblk.
- */
+	if ( (result = TUnitDataUnbind (sb -> sb_fd, &td)) != OK )
+		return NOTOK;
+
+	/*
+	 *  Now free the ssapblk.
+	 */
 
 #ifdef HULADEBUG
 	printf ("\n     freeing the ssap block \n");
 #endif
-	
-    freesublk (sb);
 
-    return OK; 
+	freesublk (sb);
+
+	return OK;
 
 }
 
 /*  */
 
-/*   
+/*
  ****************************************************************
  *								*
  *  SuSave		                                        *
@@ -355,69 +344,65 @@ register struct  SSAPindication *si;
 
 {
 
-    register struct ssapblk *sb;
-    struct   TSAPdisconnect tds;
-    struct   TSAPdisconnect *td = &tds;
-    int	     result;	     
-    SBV      smask;			 	/* signal save mask */
+	register struct ssapblk *sb;
+	struct   TSAPdisconnect tds;
+	struct   TSAPdisconnect *td = &tds;
+	int	     result;
+	SBV      smask;			 	/* signal save mask */
 
 
-    missing_udP (vec);
-    missing_udP (si);
+	missing_udP (vec);
+	missing_udP (si);
 
 
-    /*
-     *  Check if we need to create a new socket or just
-     *  reuse an already bound socket.
-     */
-
-    if (sd < 0)
-        {	
 	/*
- 	 *  Allocate a new ssap block for this calling/called address pair.
- 	 */
+	 *  Check if we need to create a new socket or just
+	 *  reuse an already bound socket.
+	 */
 
-    	if ( (sb = newsublk () ) == NULL)
-	    return susaplose (si,
-			      SC_CONGEST,
-			      NULLCP,
-			      SuErrString (UDERR_NO_MEMORY));
+	if (sd < 0) {
+		/*
+		 *  Allocate a new ssap block for this calling/called address pair.
+		 */
+
+		if ( (sb = newsublk () ) == NULL)
+			return susaplose (si,
+							  SC_CONGEST,
+							  NULLCP,
+							  SuErrString (UDERR_NO_MEMORY));
+	} else {
+		/*
+		 *  Find the correct session block and set the signal mask.
+		 */
+
+		if ((sb = findsublk (sd)) == NULL) {
+
+			(void) sigsetmask (smask);
+			return susaplose (si,
+							  SC_PARAMETER,
+							  NULLCP,
+							  SuErrString(UDERR_INVALID_SESSION_DESC));
+		}
+
 	}
-    else
-	{
-	/* 
- 	 *  Find the correct session block and set the signal mask.
- 	 */ 
-
-    	if ((sb = findsublk (sd)) == NULL)
-	    {
-
-	    (void) sigsetmask (smask); 
-	     return susaplose (si,
-			       SC_PARAMETER,
-			       NULLCP,
-			       SuErrString(UDERR_INVALID_SESSION_DESC)); 
-	    }
-
-	}
 
 
-    /*  
-     *  Now pass thru the request to TSAP.
-     */
+	/*
+	 *  Now pass thru the request to TSAP.
+	 */
 
-    if ( (result = TuSave (sd, vecp, vec, td) ) == NOTOK)
-	return ts2suslose ( si, "TuSave", td);
+	if ( (result = TuSave (sd, vecp, vec, td) ) == NOTOK)
+		return ts2suslose ( si, "TuSave", td);
 
-    return result;
+	return result;
 
 }
 
 
 
 /*  */
- 
-/*   
+
+/*
  ****************************************************************
  *								*
  *  SUnitDataRequest                                            *
@@ -443,7 +428,7 @@ struct  SSAPindication *si;
 
 {
 
-int	sd;
+	int	sd;
 
 
 #ifdef HULADEBUG
@@ -451,30 +436,30 @@ int	sd;
 #endif
 
 
-/*
- *  Create the socket on the fly.  We do the bind here because
- *  tsap data writes expect iovecs instead of char data ptr.
- */
+	/*
+	 *  Create the socket on the fly.  We do the bind here because
+	 *  tsap data writes expect iovecs instead of char data ptr.
+	 */
 
-    sd = SUnitDataBind (NOTOK, calling, called, qos, si);
+	sd = SUnitDataBind (NOTOK, calling, called, qos, si);
 
-    if (sd == NOTOK)
-	return NOTOK;
+	if (sd == NOTOK)
+		return NOTOK;
 
-/*  
- *  Now do the S_UNITDATA send.
- */
+	/*
+	 *  Now do the S_UNITDATA send.
+	 */
 
-    if (SUnitDataWrite (sd, data, cc, si) == NOTOK)
-	return NOTOK;
+	if (SUnitDataWrite (sd, data, cc, si) == NOTOK)
+		return NOTOK;
 
-/*
- *  Unbind the socket.
- */
+	/*
+	 *  Unbind the socket.
+	 */
 
-    SUnitDataUnbind (sd, si);
+	SUnitDataUnbind (sd, si);
 
-    return OK;
+	return OK;
 
 }
 
@@ -486,7 +471,7 @@ int	sd;
 /*
  ****************************************************************
  *                                                              *
- *  SUnitDataWrite 						* 
+ *  SUnitDataWrite 						*
  *      							*
  *  This routine implements the ssap unit write interface for   *
  *  writing user data over transport datagram service where     *
@@ -507,16 +492,16 @@ struct  SSAPindication *si;
 
 {
 
-int 	 n, len, j;
-SBV      smask;			 	/* signal save mask */
-int      result; 		 	/* write result     */
-register struct ssapblk *sb;	 	/* ssap ctl blk ptr */
+	int 	 n, len, j;
+	SBV      smask;			 	/* signal save mask */
+	int      result; 		 	/* write result     */
+	register struct ssapblk *sb;	 	/* ssap ctl blk ptr */
 
-register struct ssapkt *s;
-struct TSAPdisconnect   tds;
-register struct TSAPdisconnect *td = &tds;
-struct udvec vvs[3];
-register struct udvec  *vv, *xv;
+	register struct ssapkt *s;
+	struct TSAPdisconnect   tds;
+	register struct TSAPdisconnect *td = &tds;
+	struct udvec vvs[3];
+	register struct udvec  *vv, *xv;
 
 
 #ifdef HULADEBUG
@@ -524,150 +509,147 @@ register struct udvec  *vv, *xv;
 	printf ("\n     writing on socket %d \n", sd);
 #endif
 
-    /*
-     * 	Check for missing parameters.
-     */
+	/*
+	 * 	Check for missing parameters.
+	 */
 
-    missing_udP (data);
-    missing_udP (si);
+	missing_udP (data);
+	missing_udP (si);
 
-    /*
-     *  Check user data.
-     */
+	/*
+	 *  Check user data.
+	 */
 
-    if ( (cc <= 0) || (cc > UD_MAX_DATA) )
-	return susaplose (si,
-			  SC_PARAMETER,
-			  NULLCP,
-		  	  SuErrString(UDERR_ILLEGAL_UD_SIZE));
+	if ( (cc <= 0) || (cc > UD_MAX_DATA) )
+		return susaplose (si,
+						  SC_PARAMETER,
+						  NULLCP,
+						  SuErrString(UDERR_ILLEGAL_UD_SIZE));
 
-    /* 
-     *  Block any signals while we do the write.
-     */
+	/*
+	 *  Block any signals while we do the write.
+	 */
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    /* 
-     *  Find the correct session block and set the signal mask.
-     */ 
+	/*
+	 *  Find the correct session block and set the signal mask.
+	 */
 
-    ssap_udPsig (sb, sd);
-    
-    /*
-     *  Init our working udvec struct.
-     */
+	ssap_udPsig (sb, sd);
 
-    vv = vvs;
-    vvs[0].uv_base = vvs[1].uv_base = vvs[2].uv_base = NULL;
+	/*
+	 *  Init our working udvec struct.
+	 */
 
-    /*
-     *  Allocate a new UNITDATA spkt for this datagram message.
-     */
+	vv = vvs;
+	vvs[0].uv_base = vvs[1].uv_base = vvs[2].uv_base = NULL;
+
+	/*
+	 *  Allocate a new UNITDATA spkt for this datagram message.
+	 */
 
 #ifdef HULADEBUG
 	printf ("\n     allocating new SPKT \n");
 #endif
 
-    if ((s = newspkt (SPDU_UD)) == NULL)
-        return susaplose (si,
-			  SC_CONGEST,
-			  NULLCP,
-			  SuErrString(UDERR_NO_MEMORY));
+	if ((s = newspkt (SPDU_UD)) == NULL)
+		return susaplose (si,
+						  SC_CONGEST,
+						  NULLCP,
+						  SuErrString(UDERR_NO_MEMORY));
 
-    /*
-     *  Set the parameter field values in the spkt for encoding.
-     */
+	/*
+	 *  Set the parameter field values in the spkt for encoding.
+	 */
 
-    s -> s_mask |= (SMASK_SPDU_UD | SMASK_UD_VERSION);
+	s -> s_mask |= (SMASK_SPDU_UD | SMASK_UD_VERSION);
 
-    s -> s_ud_version = sb -> sb_version;
+	s -> s_ud_version = sb -> sb_version;
 
-    if (sb -> sb_initiating.sa_selectlen > 0)
-        {
-	s -> s_mask |= SMASK_UD_CALLING;
-	bcopy (sb -> sb_initiating.sa_selector, s -> s_ud_calling,
-	        s -> s_ud_callinglen = sb -> sb_initiating.sa_selectlen);
+	if (sb -> sb_initiating.sa_selectlen > 0) {
+		s -> s_mask |= SMASK_UD_CALLING;
+		bcopy (sb -> sb_initiating.sa_selector, s -> s_ud_calling,
+			   s -> s_ud_callinglen = sb -> sb_initiating.sa_selectlen);
 	}
-    if (sb -> sb_responding.sa_selectlen > 0)
- 	{
-	s -> s_mask |= SMASK_UD_CALLED;
-	bcopy (sb -> sb_responding.sa_selector, s -> s_ud_called,
-		s -> s_ud_calledlen = sb -> sb_responding.sa_selectlen);
-    	}
+	if (sb -> sb_responding.sa_selectlen > 0) {
+		s -> s_mask |= SMASK_UD_CALLED;
+		bcopy (sb -> sb_responding.sa_selector, s -> s_ud_called,
+			   s -> s_ud_calledlen = sb -> sb_responding.sa_selectlen);
+	}
 
-#ifdef HULADEBUG	
+#ifdef HULADEBUG
 	spkt2text (stdout, s, NULL);
 #endif
 
-    /*
-     *  Format the session protocol data unit.
-     *  The encode routine will put the SPDU header in the base
-     *  portion of the work udvec[0] passed to it.
-     */
+	/*
+	 *  Format the session protocol data unit.
+	 *  The encode routine will put the SPDU header in the base
+	 *  portion of the work udvec[0] passed to it.
+	 */
 
-#ifdef HULADEBUG	
+#ifdef HULADEBUG
 	printf ("\n     formatting the unitdata SPDU \n");
 #endif
 
-     if (spkt2tsdu (s, &vv -> uv_base, &vv -> uv_len) == NOTOK)
-        {
-	susaplose (si, 
-		   SC_PROTOCOL,
-		   NULLCP,
-		   SuErrString (UDERR_ENCODE_UDSPDU_FAILED));
-	freespkt (s);
-	return NOTOK;
+	if (spkt2tsdu (s, &vv -> uv_base, &vv -> uv_len) == NOTOK) {
+		susaplose (si,
+				   SC_PROTOCOL,
+				   NULLCP,
+				   SuErrString (UDERR_ENCODE_UDSPDU_FAILED));
+		freespkt (s);
+		return NOTOK;
 	}
 
 #ifdef HULADEBUG
 	for (j = 0; j < vv->uv_len; j++)
-	    printf ( " %x ", *(vv->uv_base + j) );
-#endif		
+		printf ( " %x ", *(vv->uv_base + j) );
+#endif
 
 
 
-    /*
-     *  Now copy the user data to the work udvec.  The SPDU UD header
-     *  was encoded and put as the 1st base element so put the user
-     *  data as the second element.
-     */
+	/*
+	 *  Now copy the user data to the work udvec.  The SPDU UD header
+	 *  was encoded and put as the 1st base element so put the user
+	 *  data as the second element.
+	 */
 
-    xv = ++vv;
+	xv = ++vv;
 
-    xv -> uv_base = data;
-    xv -> uv_len = cc;
+	xv -> uv_base = data;
+	xv -> uv_len = cc;
 
-    freespkt (s);
+	freespkt (s);
 
-    s = NULL;
+	s = NULL;
 
-   /*
-    *  Do the unit data write over the TSAP unitdata service.
-    */
+	/*
+	 *  Do the unit data write over the TSAP unitdata service.
+	 */
 
 #ifdef HULADEBUG
 	printf ("\n     calling the TSAP unitdata write \n");
 #endif
 
-    if ( (result = TUnitDataWrite (sb -> sb_fd, vvs, td)) == NOTOK)
-        ts2suslose (si, "TUnitDataWrite", td);
+	if ( (result = TUnitDataWrite (sb -> sb_fd, vvs, td)) == NOTOK)
+		ts2suslose (si, "TUnitDataWrite", td);
 
-    /*  
-     *  Free the encoded header.
-     */
-	
-    free (vvs[0].uv_base);
+	/*
+	 *  Free the encoded header.
+	 */
 
-    /*
-    *  Restore the mask.
-    */
+	free (vvs[0].uv_base);
 
-    (void) sigiomask (smask);
+	/*
+	*  Restore the mask.
+	*/
 
-    if (result == NOTOK)
-    	return NOTOK;
-    else
-        return OK;
+	(void) sigiomask (smask);
+
+	if (result == NOTOK)
+		return NOTOK;
+	else
+		return OK;
 
 
 }
@@ -685,7 +667,7 @@ register struct udvec  *vv, *xv;
 /*
  ****************************************************************
  *                                                              *
- *  SUnitDataWriteV 						* 
+ *  SUnitDataWriteV 						*
  *      							*
  *  This routine implements the ssap unit write interface for   *
  *  writing user vextors over transport datagram service where  *
@@ -705,16 +687,16 @@ register struct udvec	*uv;
 
 {
 
-int 	 n, cc, len, j;
-SBV      smask;			 	/* signal save mask */
-int      result; 		 	/* write result     */
-register struct ssapblk *sb;	 	/* ssap ctl blk ptr */
+	int 	 n, cc, len, j;
+	SBV      smask;			 	/* signal save mask */
+	int      result; 		 	/* write result     */
+	register struct ssapblk *sb;	 	/* ssap ctl blk ptr */
 
-register struct ssapkt *s;
-struct TSAPdisconnect   tds;
-register struct TSAPdisconnect *td = &tds;
-struct udvec vvs[NSPUV];
-register struct udvec  *vv, *xv;
+	register struct ssapkt *s;
+	struct TSAPdisconnect   tds;
+	register struct TSAPdisconnect *td = &tds;
+	struct udvec vvs[NSPUV];
+	register struct udvec  *vv, *xv;
 
 
 #ifdef HULADEBUG
@@ -722,198 +704,193 @@ register struct udvec  *vv, *xv;
 	printf ("\n     writing on socket %d \n", sd);
 #endif
 
-    /*
-     * 	Check for missing parameters.
-     */
+	/*
+	 * 	Check for missing parameters.
+	 */
 
-    missing_udP (uv);
-    missing_udP (uv -> uv_base);
+	missing_udP (uv);
+	missing_udP (uv -> uv_base);
 
-    /*
-     *  Check user data.
-     */
+	/*
+	 *  Check user data.
+	 */
 
-    n = 0;
-    for (vv = uv; vv -> uv_base; vv++)
-	n += vv -> uv_len;
+	n = 0;
+	for (vv = uv; vv -> uv_base; vv++)
+		n += vv -> uv_len;
 
 #ifdef HULADEBUG
 	printf ("\n     len of data in vectors = %d \n", n);
 #endif
 
-    if ( (n <= 0) || (n > UD_MAX_DATA) )
-	return susaplose (si,
-			  SC_PARAMETER,
-			  NULLCP,
-			  SuErrString(UDERR_ILLEGAL_UD_SIZE));
+	if ( (n <= 0) || (n > UD_MAX_DATA) )
+		return susaplose (si,
+						  SC_PARAMETER,
+						  NULLCP,
+						  SuErrString(UDERR_ILLEGAL_UD_SIZE));
 
 
-    /* 
-     *  Block any signals while we do the write.
-     */
+	/*
+	 *  Block any signals while we do the write.
+	 */
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    /* 
-     *  Find the correct session block and set the signal mask.
-     */ 
+	/*
+	 *  Find the correct session block and set the signal mask.
+	 */
 
-    ssap_udPsig (sb, sd);
-    
-    /*
-     *  Init our working udvec struct.
-     */
+	ssap_udPsig (sb, sd);
 
-    vv = vvs;
-    vvs[0].uv_base = vvs[1].uv_base = NULL;
+	/*
+	 *  Init our working udvec struct.
+	 */
 
-    /*
-     *  Allocate a new UNITDATA spkt for this datagram message.
-     */
+	vv = vvs;
+	vvs[0].uv_base = vvs[1].uv_base = NULL;
+
+	/*
+	 *  Allocate a new UNITDATA spkt for this datagram message.
+	 */
 
 #ifdef HULADEBUG
 	printf ("\n     allocating new SPKT \n");
 #endif
 
-    if ((s = newspkt (SPDU_UD)) == NULL)
-        return susaplose (si,
-			  SC_CONGEST,
-			  NULLCP,
-			  SuErrString(UDERR_NO_MEMORY));
+	if ((s = newspkt (SPDU_UD)) == NULL)
+		return susaplose (si,
+						  SC_CONGEST,
+						  NULLCP,
+						  SuErrString(UDERR_NO_MEMORY));
 
-    /*
-     *  Set the parameter field values in the spkt for encoding.
-     */
+	/*
+	 *  Set the parameter field values in the spkt for encoding.
+	 */
 
-    s -> s_mask |= (SMASK_SPDU_UD | SMASK_UD_VERSION);
+	s -> s_mask |= (SMASK_SPDU_UD | SMASK_UD_VERSION);
 
-    s -> s_ud_version = sb -> sb_version;
+	s -> s_ud_version = sb -> sb_version;
 
-    if (sb -> sb_initiating.sa_selectlen > 0)
-        {
-	s -> s_mask |= SMASK_UD_CALLING;
-	bcopy (sb -> sb_initiating.sa_selector, s -> s_ud_calling,
-	        s -> s_ud_callinglen = sb -> sb_initiating.sa_selectlen);
+	if (sb -> sb_initiating.sa_selectlen > 0) {
+		s -> s_mask |= SMASK_UD_CALLING;
+		bcopy (sb -> sb_initiating.sa_selector, s -> s_ud_calling,
+			   s -> s_ud_callinglen = sb -> sb_initiating.sa_selectlen);
 	}
-    if (sb -> sb_responding.sa_selectlen > 0)
- 	{
-	s -> s_mask |= SMASK_UD_CALLED;
-	bcopy (sb -> sb_responding.sa_selector, s -> s_ud_called,
-		s -> s_ud_calledlen = sb -> sb_responding.sa_selectlen);
-    	}
+	if (sb -> sb_responding.sa_selectlen > 0) {
+		s -> s_mask |= SMASK_UD_CALLED;
+		bcopy (sb -> sb_responding.sa_selector, s -> s_ud_called,
+			   s -> s_ud_calledlen = sb -> sb_responding.sa_selectlen);
+	}
 
-#ifdef HULADEBUG	
+#ifdef HULADEBUG
 	spkt2text (stdout, s, NULL);
 #endif
 
-    /*
-     *  Format the session protocol data unit.
-     *  The encode routine will put the SPDU header in the base
-     *  portion of the work udvec[0] passed to it.
-     */
+	/*
+	 *  Format the session protocol data unit.
+	 *  The encode routine will put the SPDU header in the base
+	 *  portion of the work udvec[0] passed to it.
+	 */
 
-#ifdef HULADEBUG	
+#ifdef HULADEBUG
 	printf ("\n     formatting the unitdata SPDU \n");
 #endif
 
-     if (spkt2tsdu (s, &vv -> uv_base, &vv -> uv_len) == NOTOK)
-        {
-	susaplose (si,
-		   SC_PROTOCOL,
-		   NULLCP,
-		   SuErrString(UDERR_ENCODE_UDSPDU_FAILED));
-	freespkt (s);
-	return NOTOK;
+	if (spkt2tsdu (s, &vv -> uv_base, &vv -> uv_len) == NOTOK) {
+		susaplose (si,
+				   SC_PROTOCOL,
+				   NULLCP,
+				   SuErrString(UDERR_ENCODE_UDSPDU_FAILED));
+		freespkt (s);
+		return NOTOK;
 	}
 
 #ifdef HULADEBUG
 	for (j = 0; j < vv->uv_len; j++)
-	    printf ( " %x ", *(vv->uv_base + j) );
-#endif		
+		printf ( " %x ", *(vv->uv_base + j) );
+#endif
 
 
 
-    /*
-     *  Now copy the user udvec to the work udvec.  The SPDU UD header
-     *  was encoded and put as the 1st base element so start the copy 
-     *  from there. Note:  we just copy the pointers to the user info.
-     */
+	/*
+	 *  Now copy the user udvec to the work udvec.  The SPDU UD header
+	 *  was encoded and put as the 1st base element so start the copy
+	 *  from there. Note:  we just copy the pointers to the user info.
+	 */
 
-    xv = ++vv;
+	xv = ++vv;
 
 #ifdef HULADEBUG
 	printf ("\n     header len in [1] = %d \n", xv->uv_len);
-#endif	
+#endif
 
-    len = n;
+	len = n;
 
-    for (vv = uv; vv -> uv_base; vv++, xv++)
-	{
-	/*
-	 *  Copy the user base to the work base.
-	 */
-	xv -> uv_base = vv -> uv_base;
-        xv -> uv_len  = vv -> uv_len;
-	len -= vv -> uv_len;
+	for (vv = uv; vv -> uv_base; vv++, xv++) {
+		/*
+		 *  Copy the user base to the work base.
+		 */
+		xv -> uv_base = vv -> uv_base;
+		xv -> uv_len  = vv -> uv_len;
+		len -= vv -> uv_len;
 #ifdef HULADEBUG
-	printf ("\n     in copy...len = %d \n", xv->uv_len);
-#endif	
+		printf ("\n     in copy...len = %d \n", xv->uv_len);
+#endif
 	}
 
-    if (len > 0)
-	{
-	susaplose (si,
-		   SC_PARAMETER,
-		   NULLCP,
-		   SuErrString(UDERR_TOO_MANY_VECTORS));
+	if (len > 0) {
+		susaplose (si,
+				   SC_PARAMETER,
+				   NULLCP,
+				   SuErrString(UDERR_TOO_MANY_VECTORS));
+		freespkt (s);
+		if (vvs[0].uv_base)
+			free (vvs[0].uv_base);
+		return NOTOK;
+	}
+
+	/*
+	 *  Set the last base to NULL (by convention to signal end).
+	 */
+
+	xv -> uv_base = NULL;
+	xv -> uv_len = 0;
+
 	freespkt (s);
-        if (vvs[0].uv_base)
-	    free (vvs[0].uv_base);
-	return NOTOK;
-	}
-	
-    /*
-     *  Set the last base to NULL (by convention to signal end).
-     */
 
-    xv -> uv_base = NULL;
-    xv -> uv_len = 0;
+	s = NULL;
 
-    freespkt (s);
-
-    s = NULL;
-
-   /*
-    *  Do the unit data write over the TSAP unitdata service.
-    */
+	/*
+	 *  Do the unit data write over the TSAP unitdata service.
+	 */
 
 #ifdef HULADEBUG
 	printf ("\n     calling the TSAP unitdata write \n");
 	for (j = 0; j < vvs[0].uv_len; j++)
-	    printf ( " %x ", *((vvs[0].uv_base) + j) );
+		printf ( " %x ", *((vvs[0].uv_base) + j) );
 	for (j = 0; j < 25; j++)
-	    printf ( " %x ", *((vvs[1].uv_base) + j) );
+		printf ( " %x ", *((vvs[1].uv_base) + j) );
 #endif
 
-    if ( (result = TUnitDataWrite (sb -> sb_fd, vvs, td)) == NOTOK)
-        ts2suslose (si, "TUnitDataWrite", td);
+	if ( (result = TUnitDataWrite (sb -> sb_fd, vvs, td)) == NOTOK)
+		ts2suslose (si, "TUnitDataWrite", td);
 
-    /*  
-     *  Free the encoded header.
-     */
-	
-    free (vvs[0].uv_base);
+	/*
+	 *  Free the encoded header.
+	 */
 
-    /*
-    *  Restore the mask.
-    */
+	free (vvs[0].uv_base);
 
-    (void) sigiomask (smask);
+	/*
+	*  Restore the mask.
+	*/
 
-    if (result == NOTOK)
-    	return NOTOK;
-    else
-        return OK;
+	(void) sigiomask (smask);
+
+	if (result == NOTOK)
+		return NOTOK;
+	else
+		return OK;
 
 
 }
@@ -921,7 +898,7 @@ register struct udvec  *vv, *xv;
 
 
 
-/*  */ 
+/*  */
 
 /*
  ****************************************************************
@@ -946,48 +923,48 @@ struct  SSAPindication *si;
 
 {
 
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
-    register struct TSAPunitdata tx;
+	SBV	    smask;
+	int     result;
+	register struct ssapblk *sb;
+	register struct TSAPunitdata tx;
 
 #ifdef HULADEBUG
 	printf ("\n     in SUnitDataRead \n");
 	printf ("\n     reading on socket %d \n", sd);
 #endif
 
-    missing_udP (sud);
-    missing_udP (si);
+	missing_udP (sud);
+	missing_udP (si);
 
-    /* 
-     *  Block any signals while we do the read.
-     */
+	/*
+	 *  Block any signals while we do the read.
+	 */
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    /* 
-     *  Find the correct session block and set the signal mask.
-     */ 
+	/*
+	 *  Find the correct session block and set the signal mask.
+	 */
 
-    ssap_udPsig (sb, sd);
+	ssap_udPsig (sb, sd);
 
-    /* 
-     *  Do the unitdata read. 
-     */
-    
-    result = SUnitDataReadAux (sb, sud, secs, si, SSAP_NOT_ASYNC, &tx);
+	/*
+	 *  Do the unitdata read.
+	 */
 
-    /*
-     *  Restore the mask.
-     */
+	result = SUnitDataReadAux (sb, sud, secs, si, SSAP_NOT_ASYNC, &tx);
 
-    (void) sigiomask (smask);
+	/*
+	 *  Restore the mask.
+	 */
 
-    /*
-     *  Return the result.
-     */
+	(void) sigiomask (smask);
 
-    return result;
+	/*
+	 *  Return the result.
+	 */
+
+	return result;
 
 }
 
@@ -995,7 +972,7 @@ struct  SSAPindication *si;
 
 
 
-/*  */ 
+/*  */
 
 /*
  ****************************************************************
@@ -1022,119 +999,115 @@ register struct TSAPunitdata   *tud;
 
 
 {
-    register struct ssapkt *s;
+	register struct ssapkt *s;
 
 #ifdef HULADEBUG
 	printf ("\n     in SUnitDataReadAux \n");
 #endif
 
-    /*
-     *  Ready the sap unitdata structure for receive.
-     */
+	/*
+	 *  Ready the sap unitdata structure for receive.
+	 */
 
-    bzero ((char *) sud, sizeof *sud);
-    bzero ((char *) si, sizeof *si);
+	bzero ((char *) sud, sizeof *sud);
+	bzero ((char *) si, sizeof *si);
 
-    for ( ; (s = sb2udspkt (sb, si, secs, tud)) != NULL; )
-	{
-	if (!(s -> s_mask & SMASK_SPDU_UD))
-	    break;
-
-	if (sb -> sb_len > 0)
-	    {
-	    switch (s -> s_code)
-	 	{
-		case SPDU_UD:
-		    if (s -> s_mask & SMASK_SPDU_UD)
+	for ( ; (s = sb2udspkt (sb, si, secs, tud)) != NULL; ) {
+		if (!(s -> s_mask & SMASK_SPDU_UD))
 			break;
-		default:
-    		    freespkt (s);
-		    return susaplose (si,
-				      SC_PROTOCOL,
-				      NULLCP,
-				      SuErrString(UDERR_UNEXPECTED_SPDU_TYPE));
-	        }
+
+		if (sb -> sb_len > 0) {
+			switch (s -> s_code) {
+			case SPDU_UD:
+				if (s -> s_mask & SMASK_SPDU_UD)
+					break;
+			default:
+				freespkt (s);
+				return susaplose (si,
+								  SC_PROTOCOL,
+								  NULLCP,
+								  SuErrString(UDERR_UNEXPECTED_SPDU_TYPE));
+			}
 
 #ifdef HULADEBUG
-	printf ("\n     got a UNITDATA SPDU \n");
-	for (secs=0; secs < 25; secs++)
-	    printf (" %x ", *(tud->tud_qbuf.qb_data + secs) );
+			printf ("\n     got a UNITDATA SPDU \n");
+			for (secs=0; secs < 25; secs++)
+				printf (" %x ", *(tud->tud_qbuf.qb_data + secs) );
 #endif
-	    
-	    sb -> sb_code = s -> s_code;
 
-	    /* 
-             *  Format the unitdata indication.
-	     */
+			sb -> sb_code = s -> s_code;
 
-	    sud -> ss_sd = sb -> sb_fd;
+			/*
+			     *  Format the unitdata indication.
+			 */
 
-	    /*  
-             *  Copy the TSAP addresses.
-	     */
+			sud -> ss_sd = sb -> sb_fd;
 
-	    bcopy (&tud -> tud_calling, 
-		   &sud -> ss_calling.sa_addr, 
-		   sizeof (sud -> ss_calling.sa_addr) );
+			/*
+			     *  Copy the TSAP addresses.
+			 */
 
-	    bcopy (&tud -> tud_called,
-		   &sud -> ss_called.sa_addr,
-		   sizeof (sud -> ss_called.sa_addr) );
-			    
+			bcopy (&tud -> tud_calling,
+				   &sud -> ss_calling.sa_addr,
+				   sizeof (sud -> ss_calling.sa_addr) );
 
-	    /*
-             *  Copy the SSAP selectors.
-	     */
+			bcopy (&tud -> tud_called,
+				   &sud -> ss_called.sa_addr,
+				   sizeof (sud -> ss_called.sa_addr) );
 
-       	    sud -> ss_calling.sa_selectlen = s -> s_ud_callinglen;
 
-	    bcopy (s -> s_ud_calling, 
-		   sud -> ss_calling.sa_selector, 		   
-		   s -> s_ud_callinglen);
+			/*
+			     *  Copy the SSAP selectors.
+			 */
 
-       	    sud -> ss_called.sa_selectlen = s -> s_ud_calledlen;
+			sud -> ss_calling.sa_selectlen = s -> s_ud_callinglen;
 
-	    bcopy (s -> s_ud_called,
-		   sud -> ss_called.sa_selector,
-		   s -> s_ud_calledlen);
+			bcopy (s -> s_ud_calling,
+				   sud -> ss_calling.sa_selector,
+				   s -> s_ud_callinglen);
 
-	   /*
-            *  Copy in the data and misc.
-	    */
-		
-	    sud -> ss_ssdusize = UD_MAX_DATA;
-	    sud -> ss_version = s -> s_ud_version;
+			sud -> ss_called.sa_selectlen = s -> s_ud_calledlen;
 
-	    sud -> ss_cc = tud -> tud_qbuf.qb_len;
-	    sud -> ss_data = tud -> tud_qbuf.qb_data;
-	    sud -> ss_base = tud -> tud_base;
+			bcopy (s -> s_ud_called,
+				   sud -> ss_called.sa_selector,
+				   s -> s_ud_calledlen);
 
-	    sb -> sb_len = 0;
+			/*
+			     *  Copy in the data and misc.
+			 */
 
-	    freespkt (s);
+			sud -> ss_ssdusize = UD_MAX_DATA;
+			sud -> ss_version = s -> s_ud_version;
 
-	    return OK;
+			sud -> ss_cc = tud -> tud_qbuf.qb_len;
+			sud -> ss_data = tud -> tud_qbuf.qb_data;
+			sud -> ss_base = tud -> tud_base;
 
-	    }  /* end if > 0 */
+			sb -> sb_len = 0;
 
-	   /*
-	    *  Check if timeout with no data on read.
-	    */
+			freespkt (s);
 
-	    if (si -> si_abort.sa_reason == SC_TIMER)	        
-	        break;
+			return OK;
 
-    	}   /* end for loop */
+		}  /* end if > 0 */
 
-    if (si -> si_abort.sa_reason == SC_TIMER)
-	{
-	sud -> ss_cc = 0;
-	sud -> ss_data = NULL;
-	sud -> ss_base = NULL;
-	return OK;
+		/*
+		 *  Check if timeout with no data on read.
+		 */
+
+		if (si -> si_abort.sa_reason == SC_TIMER)
+			break;
+
+	}   /* end for loop */
+
+	if (si -> si_abort.sa_reason == SC_TIMER) {
+		sud -> ss_cc = 0;
+		sud -> ss_data = NULL;
+		sud -> ss_base = NULL;
+		return OK;
 	}
 
-    return NOTOK;
+	return NOTOK;
 }
 
 
@@ -1146,9 +1119,9 @@ register struct TSAPunitdata   *tud;
 /*    define vectors for INDICATION events */
 
 int	SSetIndications (sd, data, tokens, sync, activity, report, finish,
-		abort, si)
+					 abort, si)
 int	sd;
-IFP	data,	
+IFP	data,
 	tokens,
 	sync,
 	activity,
@@ -1157,45 +1130,45 @@ IFP	data,
 	abort;
 struct SSAPindication *si;
 {
-    SBV     smask;
-    register struct ssapblk *sb;
-    struct TSAPdisconnect   tds;
-    register struct TSAPdisconnect *td = &tds;
+	SBV     smask;
+	register struct ssapblk *sb;
+	struct TSAPdisconnect   tds;
+	register struct TSAPdisconnect *td = &tds;
 
-    if (data || tokens || sync || activity || report || finish || abort) {
-	missingP (data);
-	missingP (tokens);
-	missingP (sync);
-	missingP (activity);
-	missingP (report);
-	missingP (finish);
-	missingP (abort);
-    }
+	if (data || tokens || sync || activity || report || finish || abort) {
+		missingP (data);
+		missingP (tokens);
+		missingP (sync);
+		missingP (activity);
+		missingP (report);
+		missingP (finish);
+		missingP (abort);
+	}
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ssapPsig (sb, sd);
+	ssapPsig (sb, sd);
 
-    if (TSetIndications (sb -> sb_fd, TDATAser, TDISCser, td) == NOTOK)
-	if (td -> td_reason == DR_WAITING)
-	    return ssaplose (si, SC_WAITING, NULLCP, NULLCP);
+	if (TSetIndications (sb -> sb_fd, TDATAser, TDISCser, td) == NOTOK)
+		if (td -> td_reason == DR_WAITING)
+			return ssaplose (si, SC_WAITING, NULLCP, NULLCP);
+		else
+			return ts2sslose (si, "TSetIndications", td);
+
+	if (sb -> sb_DataIndication = data)
+		sb -> sb_flags |= SB_ASYN;
 	else
-	    return ts2sslose (si, "TSetIndications", td);
+		sb -> sb_flags &= ~SB_ASYN;
+	sb -> sb_TokenIndication = tokens;
+	sb -> sb_SyncIndication = sync;
+	sb -> sb_ActivityIndication = activity;
+	sb -> sb_ReportIndication = report;
+	sb -> sb_ReleaseIndication = finish;
+	sb -> sb_AbortIndication = abort;
 
-    if (sb -> sb_DataIndication = data)
-	sb -> sb_flags |= SB_ASYN;
-    else
-	sb -> sb_flags &= ~SB_ASYN;
-    sb -> sb_TokenIndication = tokens;
-    sb -> sb_SyncIndication = sync;
-    sb -> sb_ActivityIndication = activity;
-    sb -> sb_ReportIndication = report;
-    sb -> sb_ReleaseIndication = finish;
-    sb -> sb_AbortIndication = abort;
+	(void) sigiomask (smask);
 
-    (void) sigiomask (smask);
-
-    return OK;
+	return OK;
 }
 
 #endif
@@ -1214,80 +1187,76 @@ int     secs;
 register struct TSAPunitdata   *tud;
 
 {
-    int     			cc;
-    register struct ssapkt   	*s;
-    struct TSAPdisconnect  	tds;
-    register struct TSAPdisconnect *td = &tds;
+	int     			cc;
+	register struct ssapkt   	*s;
+	struct TSAPdisconnect  	tds;
+	register struct TSAPdisconnect *td = &tds;
 
-    /*
-     *  Read the tsap datagram.
-     */
+	/*
+	 *  Read the tsap datagram.
+	 */
 
 #ifdef HULADEBUG
 	printf ("\n     calling TUnitDataRead \n");
 #endif
 
-    if (TUnitDataRead (sb -> sb_fd, tud, secs, td) == NOTOK)
-	{
-	if (td -> td_reason == DR_TIMER)	    
-            si -> si_abort.sa_reason = SC_TIMER;
+	if (TUnitDataRead (sb -> sb_fd, tud, secs, td) == NOTOK) {
+		if (td -> td_reason == DR_TIMER)
+			si -> si_abort.sa_reason = SC_TIMER;
 
-	sb -> sb_len = 0;
-        return ts2suslose (si, "TUnitDataRead", td);
+		sb -> sb_len = 0;
+		return ts2suslose (si, "TUnitDataRead", td);
 	}
 
-    /*
-     *  Decode the SPDU unitdata from the TSDU.
-     */
+	/*
+	 *  Decode the SPDU unitdata from the TSDU.
+	 */
 
 #ifdef HULADEBUG
 	printf ("\n     getting ready to decode the tsdu \n");
 #endif
 
-    if ( ((s = udtsdu2spkt (&tud->tud_qbuf, tud->tud_cc) ) == NULL)
-	    || s -> s_errno != OK)
-	{
-	freespkt (s);
-	TUDFREE (tud);
-	return susaplose (si,
-			  SC_PROTOCOL,
-			  NULLCP,
-			  SuErrString(UDERR_DECODE_UDSPDU_FAILED));
+	if ( ((s = udtsdu2spkt (&tud->tud_qbuf, tud->tud_cc) ) == NULL)
+			|| s -> s_errno != OK) {
+		freespkt (s);
+		TUDFREE (tud);
+		return susaplose (si,
+						  SC_PROTOCOL,
+						  NULLCP,
+						  SuErrString(UDERR_DECODE_UDSPDU_FAILED));
 	}
 
-#ifdef HULADEBUG	
-    spkt2text (stdout, s, NULL);
-#endif
-
-    switch (s -> s_code) 
-	{
-	case SPDU_UD: 
-
-	    /*
- 	     *  Check if data got queued on the qbuf chain.
-	     */
-	
-	    if (tud -> tud_qbuf.qb_forw != &tud -> tud_qbuf)
-	        {
 #ifdef HULADEBUG
-	        printf ("\n     got data in the spkt ... format indication \n");
+	spkt2text (stdout, s, NULL);
 #endif
-		s -> s_qbuf.qb_data = tud -> tud_qbuf.qb_data;
-		s -> s_qbuf.qb_forw -> qb_back =
-			s -> s_qbuf.qb_back -> qb_forw = &s -> s_qbuf;
-		s -> s_qlen = tud -> tud_cc;
-	        }
 
-	    sb -> sb_spdu = s;	
-	    sb -> sb_len = tud -> tud_cc;
-	    return s;
+	switch (s -> s_code) {
+	case SPDU_UD:
+
+		/*
+		 *  Check if data got queued on the qbuf chain.
+		 */
+
+		if (tud -> tud_qbuf.qb_forw != &tud -> tud_qbuf) {
+#ifdef HULADEBUG
+			printf ("\n     got data in the spkt ... format indication \n");
+#endif
+			s -> s_qbuf.qb_data = tud -> tud_qbuf.qb_data;
+			s -> s_qbuf.qb_forw -> qb_back =
+				s -> s_qbuf.qb_back -> qb_forw = &s -> s_qbuf;
+			s -> s_qlen = tud -> tud_cc;
+		}
+
+		sb -> sb_spdu = s;
+		sb -> sb_len = tud -> tud_cc;
+		return s;
 
 	default:
-	    sb -> sb_spdu = NULL;
-	    freespkt (s);
-	    TUDFREE (tud);
-	    return NULL;
-        }
+		sb -> sb_spdu = NULL;
+		freespkt (s);
+		TUDFREE (tud);
+		return NULL;
+	}
 
 }
 
@@ -1316,60 +1285,60 @@ static int  TUNITDATAser (sd, tud)
 int     sd;
 register struct TSAPunitdata   *tx;
 {
-    IFP	    abort;
-    register struct ssapblk *sb;
-    struct SSAPdata sxs;
-    register struct SSAPdata   *sx = &sxs;
-    struct SSAPindication   sis;
-    register struct SSAPindication *si = &sis;
-    register struct SSAPabort  *sa = &si -> si_abort;
+	IFP	    abort;
+	register struct ssapblk *sb;
+	struct SSAPdata sxs;
+	register struct SSAPdata   *sx = &sxs;
+	struct SSAPindication   sis;
+	register struct SSAPindication *si = &sis;
+	register struct SSAPabort  *sa = &si -> si_abort;
 
-    if ((sb = findsublk (sd)) == NULL)
-	return;
-
-    abort = sb -> sb_AbortIndication;
-
-    for (;; tx = NULLTX) {
-	switch (SReadRequestAux (sb, sx, OK, si, 1, tx)) {
-	    case NOTOK: 
-		(*abort) (sd, sa);
+	if ((sb = findsublk (sd)) == NULL)
 		return;
 
-	    case OK: 
-		(*sb -> sb_DataIndication) (sd, sx);
-		break;
+	abort = sb -> sb_AbortIndication;
 
-	    case DONE: 
-		switch (si -> si_type) {
-		    case SI_TOKEN: 
-			(*sb -> sb_TokenIndication) (sd, &si -> si_token);
+	for (;; tx = NULLTX) {
+		switch (SReadRequestAux (sb, sx, OK, si, 1, tx)) {
+		case NOTOK:
+			(*abort) (sd, sa);
+			return;
+
+		case OK:
+			(*sb -> sb_DataIndication) (sd, sx);
 			break;
 
-		    case SI_SYNC: 
-			(*sb -> sb_SyncIndication) (sd, &si -> si_sync);
-			break;
+		case DONE:
+			switch (si -> si_type) {
+			case SI_TOKEN:
+				(*sb -> sb_TokenIndication) (sd, &si -> si_token);
+				break;
 
-		    case SI_ACTIVITY: 
-			(*sb -> sb_ActivityIndication) (sd, &si -> si_activity);
-			break;
+			case SI_SYNC:
+				(*sb -> sb_SyncIndication) (sd, &si -> si_sync);
+				break;
 
-		    case SI_REPORT: 
-			(*sb -> sb_ReportIndication) (sd, &si -> si_report);
-			break;
+			case SI_ACTIVITY:
+				(*sb -> sb_ActivityIndication) (sd, &si -> si_activity);
+				break;
 
-		    case SI_FINISH: 
-			(*sb -> sb_ReleaseIndication) (sd, &si -> si_finish);
-			break;
+			case SI_REPORT:
+				(*sb -> sb_ReportIndication) (sd, &si -> si_report);
+				break;
 
-		    case SI_DATA: /* partially assembled (T)SSDU */
+			case SI_FINISH:
+				(*sb -> sb_ReleaseIndication) (sd, &si -> si_finish);
+				break;
+
+			case SI_DATA: /* partially assembled (T)SSDU */
+				break;
+			}
 			break;
 		}
-		break;
-	}
 
-	if (sb -> sb_spdu == NULL)
-	    break;
-    }
+		if (sb -> sb_spdu == NULL)
+			break;
+	}
 }
 
 #endif

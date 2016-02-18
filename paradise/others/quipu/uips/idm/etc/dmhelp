@@ -1,0 +1,23 @@
+
+------------------------------- help overview -----------------------------
+
+      This is the general description on how to use the
+             Interactive Directory Manager (IDM).
+
+Specific help is available for each prompt by typing ?.  This will
+display a message to help you with the specific question you have.
+
+At any point in IDM (except yes or no prompts), you may type `q' to quit
+from the operation you are executing.  If you are at the initial menu,
+and type `q' again, you will be taken out from the service.
+
+Default values are shown between square brackets []   To accept the default
+value, type <CR>.  For example in the prompt
+`Enter number or q to quit  [1  List all entries]:  '
+Typing <CR> will cause the option 1 (List all entries) to be executed,
+
+If you are in the trouble, typing Cntrl-C will take you to the initial menu
+and from there you may exit by typing q to quit.
+
+------------------------------- end of help -------------------------------
+

@@ -1,0 +1,239 @@
+%!
+/TeXDict 200 dict def 
+TeXDict begin 
+/Resolution 300 def
+/Inch {Resolution mul} def 
+/Mtrx 6 array def
+/@letter
+{ letter initmatrix
+72 Resolution div dup neg scale 
+1.0333 Inch 10.0166 Inch neg translate 
+Mtrx currentmatrix pop 
+} def
+/@note
+{ note initmatrix
+72 Resolution div dup neg scale 
+1.0333 Inch 10.0166 Inch neg translate 
+Mtrx currentmatrix pop
+} def
+/@landscape
+{ letter initmatrix
+90 rotate
+72 Resolution div dup neg scale 
+1 Inch 1.0333 Inch translate
+Mtrx currentmatrix pop
+} def
+/@legal
+{ legal initmatrix
+72 Resolution div dup neg scale 
+0.9833 Inch 12.933 Inch neg translate 
+Mtrx currentmatrix pop
+} def
+/@manualfeed
+{ statusdict /manualfeed true put
+} def
+/@copies
+{ /#copies exch def
+} def
+/@newfont 
+{ /newname exch def
+pop
+newname 7 dict def 
+newname load begin
+/FontType 3 def
+/FontMatrix [1 0 0 -1 0 0] def
+/FontBBox [0 0 1 1] def
+/BitMaps 128 array def
+/BuildChar {CharBuilder} def
+/Encoding 128 array def
+0 1 127 {Encoding exch /.undef put} for
+end
+newname newname load definefont pop
+} def
+/ch-image {ch-data 0 get} def 
+/ch-width {ch-data 1 get} def 
+/ch-height {ch-data 2 get} def 
+/ch-xoff {ch-data 3 get} def 
+/ch-yoff {ch-data 4 get} def 
+/ch-tfmw {ch-data 5 get} def 
+/CharBuilder 
+{ /ch-code exch def 
+/font-dict exch def 
+/ch-data font-dict /BitMaps get ch-code get def 
+ch-data null eq not
+{ ch-tfmw 0 ch-xoff neg ch-yoff neg ch-width ch-xoff sub ch-height ch-yoff sub
+setcachedevice
+ch-width ch-height true [1 0 0 1 ch-xoff ch-yoff]
+{ch-image} imagemask
+}
+if
+} def
+/@sf 
+{ cvn cvx exec setfont
+} def
+/@dc 
+{ /ch-code exch def
+dup 0 get
+length 2 lt
+{ pop [ <00> 1 1 0 0 8.00 ] } if
+/ch-data exch def
+currentfont /BitMaps get ch-code ch-data put
+currentfont /Encoding get ch-code 
+dup (   ) cvs cvn 
+put
+} def
+/@bop0 
+{ 
+} def
+/@bop1 
+{ pop
+erasepage initgraphics 
+Mtrx setmatrix
+/SaveImage save def() pop
+0 0 moveto 
+1 setlinejoin 
+} def
+/@eop 
+{ showpage 
+SaveImage restore() pop
+} def
+/@start 
+{ @letter 
+} def
+/@end 
+{ end
+} def
+/p 
+{ moveto
+} def
+/r 
+{ 0 rmoveto
+} def
+/l 
+{ lineto
+} def
+/rl 
+{ rlineto
+} def
+/rc 
+{ rcurveto
+} def
+/np		
+{ /SaveX currentpoint /SaveY exch def def 
+newpath
+} def
+/st 
+{ stroke
+SaveX SaveY moveto 
+} def
+/f 
+{ fill
+SaveX SaveY moveto 
+} def
+/s 
+{ show
+} def
+/c 
+{ c-string exch 0 exch put
+c-string show
+} def
+/c-string ( ) def
+/ru 
+{ /dy exch neg def 
+/dx exch def
+/x currentpoint /y exch def def 
+newpath x y moveto
+dx 0 rlineto
+0 dy rlineto
+dx neg 0 rlineto
+closepath fill
+x y moveto
+} def
+/ellipse 
+{
+/endangle exch def
+/startangle exch def
+/yrad exch def
+/xrad exch def
+/y exch def
+/x exch def
+/savematrix matrix currentmatrix def
+x y translate
+xrad yrad scale
+0 0 1 startangle endangle arc
+savematrix setmatrix
+} def
+/@SpecialDefaults
+{ /hs 8.5 Inch def
+/vs 11 Inch def
+/ho 0 def
+/vo 0 def
+/hsc 1 def
+/vsc 1 def
+/CLIP false def
+} def
+/@hsize {/hs exch def /CLIP true def} def
+/@vsize {/vs exch def /CLIP true def} def
+/@hoffset {/ho exch def} def
+/@voffset {/vo excl def} def
+/@hscale {/hsc exch def} def
+/@vscale {/vsc exch def} def
+/@setclipper
+{ hsc vsc scale
+CLIP
+{ newpath 0 0 moveto hs 0 rlineto 0 vs rlineto hs neg 0 rlineto closepath clip }
+if
+} def
+/@beginspecial 
+{ gsave /SpecialSave save def
+currentpoint transform initgraphics itransform translate
+@SpecialDefaults 
+@MacSetUp 
+} def
+/@setspecial 
+{
+MacDrwgs
+{md begin /pxt ho def /pyt vo neg def end}
+{ho vo translate @setclipper}
+ifelse
+} def
+/@endspecial 
+{ SpecialSave restore
+grestore
+} def
+/MacDrwgs false def 
+/@MacSetUp
+{ userdict /md known 
+{ userdict /md get type /dicttype eq 
+{ /MacDrwgs true def
+md begin 
+/psu 
+/psu load
+{ /letter {} def 
+/note {} def 
+/legal {} def
+statusdict /waittimeout 300 put
+/page {pop} def 
+/pyt vo neg def 
+/pxt ho def
+}
+concatprocs 
+def
+/od 
+/od load
+{ @setclipper }
+concatprocs
+def
+end }
+if }
+if 
+} def
+/concatprocs
+{ /p2 exch cvlit def 
+/p1 exch cvlit def
+/p p1 length p2 length add array def
+p 0 p1 putinterval 
+p p1 length p2 putinterval
+p cvx
+} def
+end 

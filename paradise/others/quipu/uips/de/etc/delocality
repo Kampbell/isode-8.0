@@ -1,0 +1,17 @@
+This program does not currently allow you to specify a locality within 
+which to search for an organisation.  However, if an organisation cannot
+be found initially (that is if the organisation does not have a national
+registration), a list of possible localities to search will be offered.
+
+Select a locality from this list by typing the number corresponding
+to the locality you wish to search.  If the organisation is within that 
+locality, the search will continue.  If the organisation entry cannot be 
+found within that locality, you will be asked if you wish to search any 
+other localities - at present there is no facility to search several
+localities simultaneously.
+
+*         to list all LOCALITIES in the country being searched
+<CR>      to return to the prompt for a person's NAME.
+control-C to return to the prompt for a person's NAME.
+q         to quit the Directory or (optionally) to return to prompt for a 
+          person's NAME.

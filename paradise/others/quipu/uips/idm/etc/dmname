@@ -1,0 +1,18 @@
+
+         -------------------- help --------------------
+
+	 Enter the name of the person
+
+	 For example: Hugh Smith
+	              Steve Hardcastle-Kille
+		      David Goodman
+
+         Wildcards can also be used:
+
+	 For example: Al*  would match entries:
+	                   Al Stewart
+			   Albert Thompson
+                           Alfred Perera
+
+         ----------------- end of help ----------------
+

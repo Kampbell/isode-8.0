@@ -1,0 +1,13 @@
+
+         -------------------- help --------------------
+
+	 Enter the number of the add option you wish
+
+         1  To add a person by name,  for example: John Smith
+         2  To add a role or position, for example: Secretary
+         3  To add a room, for example: Jeremy Bentham auditorium
+
+         or type q to return to the main menu
+
+         ------------------ end of help ---------------
+

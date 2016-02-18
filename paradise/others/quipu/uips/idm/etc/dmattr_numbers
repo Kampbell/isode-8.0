@@ -1,0 +1,22 @@
+
+         -------------------- help --------------------
+
+	 When a display like this is shown on your screen:
+
+         David Goodman
+           1  Telephone number   +44 81 450 3399
+                                 +44 71-387-7050 x3695
+           2  Electronic mail    D.Goodman@cs.ucl.ac.uk
+           3  Favourite drink    Rose Pouchong tea
+           4  Room number        201
+           5  Personal title     Mr
+
+         select the attribute you wish to modify by entering
+	 the number to the left.
+
+	 For example: 2    to modify the electronic mail address
+	              4    to modify the room number or
+		      new  if the attribute does not already have a value
+	 
+	 ----------------- end of help ----------------
+

@@ -1,0 +1,22 @@
+ISODE 8.0 PATCH #1
+
+This patch file contains a set of patches to ISODE 8.0, which fix a
+number of known operational  problems.  These are 
+
+
+   -	IAED can identify service fix
+   -	ROS.QUIPU gets in a bad way with EDB updates the first time around
+   -	TSAP level fix
+   -	Caching BUG
+   -	Cache search results if all attrs requested.  
+   -	Random core dump during get_edb (initiator)
+   -	Add entry -> needs quipu object adding if non-QUIPU DUA
+   -	Prevent attributes with no values being added to an entry.
+   -	Fixes memory leak in QUIPU, especially during EDB updates.
+
+
+This patch is available under the same conditions as ISODE 8.0.
+
+To apply  change to the ISODE source directory and run:
+
+% patch -p < isode-8-patches

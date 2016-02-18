@@ -1,0 +1,5291 @@
+%!PS-Adobe-1.0
+%%Creator: cheetah.ca.psi.com:mrose (Marshall Rose)
+%%Title: stdin
+%%CreationDate: Mon Mar 11 08:17:30 1991
+%%DocumentFonts: Times-Roman Times-Italic Times-Bold Symbol Times-Roman
+%%Pages: (atend)
+%%EndComments
+% lib/pscat.pro -- prolog for pscat (troff) files
+% Copyright (C) 1985 Adobe Systems, Inc.
+save /pscatsave exch def
+/$pscat 50 dict def
+$pscat begin
+/fm [1 0 0 1 0 0] def
+/xo 0 def /yo 0 def
+/M /moveto load def
+/R /show load def
+/S {exch currentpoint exch pop moveto show}def
+/T {exch currentpoint pop exch moveto show}def
+/U {3 1 roll moveto show}def
+/siz 0 def
+/font 0 def
+/Z {/siz exch def SF}def
+/F {/font exch def SF}def
+/SF{font 0 ne
+    {catfonts font 1 sub get fm 0 siz put fm 3 siz neg put 
+     fm makefont setfont}if}def
+/BP{save/catsv exch def 0 792 translate 72 432 div dup neg scale 
+  xo yo translate 0 0 moveto}def
+/EP{catsv restore showpage}def
+
+% definitions for PPROC callback functions
+% each PPROC is called with the following number on the stack:
+% pointsize charcode railmag pswidth pschar x y wid
+/$pprocs 50 dict def
+/fractm [.65 0 0 .6 0 0] def
+% fractions
+/PS1{gsave $pprocs begin
+    /wid exch def pop pop pop pop pop /ch exch def /size exch def
+    /pair $pprocs ch get def /cf currentfont def
+    cf fractm makefont setfont
+    0 .3 size mul 6 mul 2 copy neg rmoveto pair 0 get show rmoveto
+    currentfont cf setfont (\244) show setfont
+    pair 1 get show grestore wid .06 div 0 rmoveto end}def
+$pprocs begin
+8#34 [(1)(4)] def
+8#36 [(1)(2)] def
+8#46 [(3)(4)] def
+end
+% boxes
+/PS2{gsave /wid exch def pop pop /char exch def pop pop pop /size exch def
+    /len size 3.5 mul def % length of a side
+    len 0 rlineto 0 len neg rlineto len neg 0 rlineto closepath
+    char 3 eq {fill}{size 5 mul .07 mul setlinewidth stroke}ifelse
+    grestore wid .06 div 0 rmoveto}def
+/PS3/PS2 load def		% boxes are the same...
+% circle
+/PS4{gsave /wid exch def pop pop pop pop pop pop /size exch def
+    wid .8333 mul size 2.5 mul neg rmoveto currentpoint	% center
+    newpath size 1.8 mul 0 360 arc size .2 mul setlinewidth stroke
+    grestore wid .06 div 0 rmoveto}def
+/bb{$pprocs begin /wid exch def pop pop pop pop pop pop /size exch 6 mul def
+    /s2 size 2 div def /s4 size 4 div def gsave 
+    currentpoint newpath transform round exch round exch itransform translate
+    size 16 div setlinewidth 2 setlinejoin 0 setgray}def
+$pprocs begin
+/mrr{moveto rlineto rlineto}def
+/be{stroke grestore wid .06 div 0 rmoveto end}def
+end
+% leftfloor
+/PS6 {bb s4 0 0 size s4 size -.8 mul mrr be}def
+% rightfloor
+/PS7 {bb s4 neg 0 0 size s4 size -.8 mul mrr be}def
+% leftceil
+/PS8 {bb s4 0 0 size neg s4 size .2 mul mrr be}def
+% rightceil
+/PS9 {bb s4 neg 0 0 size neg s4 size .2 mul mrr be}def
+% boldvert
+/PS5 {bb 0 0 0 size neg s4 size .2 mul mrr be}def
+% box rule
+/PS32 {bb /sw size 24 div def sw 2 div size 4.5 div moveto
+       0 size neg rlineto sw setlinewidth be}def
+% rule (roman, bold and italic)
+/PS16 {gsave $pprocs begin
+    /wid exch def pop pop pop pop pop pop /size exch 6 mul def
+    /sw size 14 div def currentpoint exch sw 2 div sub exch
+    newpath transform round exch round exch itransform translate
+    0 0 moveto size 2 div 0 rlineto sw setlinewidth be}def
+% lefttopcurl    
+/PS20 {bb s4 size .2 mul moveto 0 size -.55 mul rlineto currentpoint 
+    pop size -.8 mul 2 copy exch s4 add exch s4 arcto pop pop pop pop be}def
+% leftbotcurl
+/PS21 {bb s4 size -.8 mul moveto 0 size .55 mul rlineto currentpoint 
+    pop size .2 mul 2 copy exch s4 add exch s4 arcto pop pop pop pop be}def
+% righttopcurl
+/PS22 {bb s4 size .2 mul moveto 0 size -.55 mul rlineto currentpoint
+     pop size -.8 mul 2 copy exch s4 sub exch s4 arcto pop pop pop pop be}def
+% rightbotcurl
+/PS23 {bb s4 size -.8 mul moveto 0 size .55 mul rlineto currentpoint
+     pop size .2 mul 2 copy exch s4 sub exch s4 arcto pop pop pop pop be}def
+% rightmidcurl
+/PS25 {bb /s3 size -.3 mul def s4 size -.8 mul moveto s4 s3 s2 s3
+    s4 arcto pop pop size add s4 s3 4 2 roll
+    s4 arcto pop pop pop pop s4 size .2 mul lineto be}def
+% leftmidcurl
+/PS24 {bb /s3 size -.3 mul def s4 size -.8 mul moveto s4 s3 0 s3
+    s4 arcto pop pop size add s4 s3 4 2 roll s4 arcto pop pop pop pop 
+    s4 size .2 mul lineto be}def
+/xo 0 def /yo -186 def
+/catfonts [
+	/Times-Roman findfont
+	/Times-Italic findfont
+	/Times-Bold findfont
+	/Symbol findfont
+	/Times-Roman findfont
+	] def
+%%EndProlog
+%%Page: ? 1
+BP
+1 F
+60 Z
+432 165(Upgrading)U
+723(Quipu-6.0)S
+1002(to)S
+1083(Quipu-6.8)S
+1362(Colin)S
+1530(Robbins)S
+1764(X-Tel)S
+1941(Services)S
+2178(Ltd)S
+2295(This)S
+2435(is)S
+2508(a)S
+2568(brief)S
+2715(note)S
+2852(to)S
+2932(describe)S
+3166(the)S
+432 309(T)U
+432 237(difference)U
+677(s)S
+720(between)S
+941(Quipu)S
+1111(6.8)S
+1206(and)S
+1313(the)S
+1407(previous)S
+1634(major)S
+1795(release)S
+1983(of)S
+2053(Quipu)S
+2223(--)S
+2283(Quipu-6.0.)S
+469 309(o)U
+432 381(c)U
+(larify)R
+432 525(v)U
+432 453(the)U
+462 525(ersion)U
+639 597(,)U
+432 669(Q)U
+432 597(numbers)U
+475 669(uipu-)U
+432 813(w)U
+432 741(6.0)U
+475 813(as)U
+432 885(d)U
+(istributed)R
+432 1029(I)U
+432 957(with)U
+452 1029(SODE-)U
+432 1173(Q)U
+432 1101(6.0.)U
+475 1173(uipu-)U
+432 1317(w)U
+432 1245(6.1)U
+475 1317(as)U
+432 1461(u)U
+432 1389(an)U
+462 1461(pgrade)U
+432 1605(Q)U
+432 1533(to)U
+475 1605(uipu)U
+600 1677(d)U
+432 1749(b)U
+432 1677(release)U
+462 1749(y)U
+432 1821(U)U
+(CL)R
+432 1965(s)U
+432 1893(a)U
+455 1965(hort)U
+432 2109(a)U
+432 2037(time)U
+459 2109(fter)U
+432 2181(I)U
+(SODE-)R
+432 2325(Q)U
+432 2253(6.0.)U
+475 2325(uipu-)U
+432 2469(i)U
+432 2397(6.8)U
+449 2469(s)U
+432 2541(p)U
+(art)R
+432 2685(I)U
+432 2613(of)U
+452 2685(SODE-)U
+432 2829(W)U
+432 2757(6.8.)U
+489 2829(hen)U
+432 2973(r)U
+432 2901(I)U
+2973(efer)T
+432 3117(Q)U
+432 3045(to)U
+475 3117(uipu-)U
+432 3261(i)U
+432 3189(6.0)U
+449 3261(n)U
+432 3333(t)U
+(he)R
+432 3405(f)U
+(ollowing)R
+432 3549(t)U
+432 3477(text,)U
+449 3549(his)U
+432 3621(i)U
+(ncludes)R
+432 3765(6)U
+432 3693(Quipu-)U
+462 3765(.1.)U
+432 3909(s)U
+432 3837(You)U
+455 3909(hould)U
+432 4053(a)U
+432 3981(be)U
+459 4053(ble)U
+432 4197(c)U
+432 4125(to)U
+459 4197(ompile)U
+432 4341(i)U
+432 4269(and)U
+449 4341(nstall)U
+432 4485(n)U
+432 4413(the)U
+462 4485(ew)U
+432 4557(c)U
+(ode)R
+432 4701(e)U
+432 4629(and)U
+459 4701(verything)U
+EP
+%%Page: ? 2
+BP
+1 F
+60 Z
+432 93(w)U
+432 21(should)U
+475 93(ork)U
+432 237(b)U
+432 165(as)U
+462 237(efore.)U
+632 309(r)U
+432 381(t)U
+432 309(Howeve)U
+449 381(here)U
+432 525(s)U
+432 453(is)U
+455 525(ome)U
+432 597(t)U
+(ailoring)R
+432 741(c)U
+432 669(you)U
+459 741(an)U
+432 885(t)U
+432 813(do)U
+449 885(o)U
+432 957(i)U
+(ncrease)R
+432 1101(e)U
+432 1029(the)U
+459 1101(f\256ciency)U
+432 1245(y)U
+432 1173(of)U
+462 1245(our)U
+551 1317(,)U
+432 1389(a)U
+432 1317(DSA)U
+459 1389(nd)U
+432 1461(s)U
+(ome)R
+432 1605(f)U
+432 1533(new)U
+452 1605(eature)U
+432 1749(m)U
+432 1677(you)U
+479 1749(ay)U
+515 1821(h)U
+432 1893(t)U
+432 1821(wis)U
+449 1893(o)U
+432 1965(u)U
+(se.)R
+432 2109(W)U
+432 2037(A)U
+489 2109(ORD)U
+432 2253(W)U
+432 2181(OF)U
+489 2253(ARNING:)U
+432 2397(v)U
+432 2325(This)U
+462 2397(ersion)U
+432 2541(Q)U
+432 2469(of)U
+475 2541(uipu)U
+556 2613(s)U
+432 2685(i)U
+432 2613(write)U
+449 2685(ts)U
+432 2757(E)U
+(DB)R
+432 2901(i)U
+432 2829(\256les)U
+449 2901(n)U
+432 3045(s)U
+432 2973(a)U
+455 3045(lightly)U
+623 3117(t)U
+432 3189(f)U
+432 3117(differen)U
+452 3189(ormat)U
+432 3333(6)U
+432 3261(to)U
+462 3333(.0.)U
+532 3405(e)U
+432 3549(6)U
+432 3477(a)U
+432 3405(Onc)U
+462 3549(.8)U
+432 3621(D)U
+(SA)R
+556 3693(s)U
+432 3765(a)U
+432 3693(write)U
+459 3765(n)U
+432 3837(E)U
+(DB)R
+432 3981(t)U
+432 3909(\256le)U
+449 3981(here)U
+432 4125(n)U
+432 4053(is)U
+462 4125(o)U
+432 4197(e)U
+(asy)R
+432 4341(t)U
+432 4269(way)U
+449 4341(o)U
+432 4413(r)U
+(oll)R
+516 4485(k)U
+432 4629(m)U
+432 4557(-)U
+432 4485(bac)U
+479 4629(ake)U
+432 4701(sure)U
+EP
+%%Page: ? 3
+BP
+1 F
+60 Z
+432 21(y)U
+(ou)R
+519 93(e)U
+432 237(b)U
+432 165(a)U
+432 93(hav)U
+462 237(ack)U
+432 453(R)U
+432 309(up.)U
+472 453(obustness)U
+432 597(o)U
+432 525(One)U
+462 597(f)U
+432 669(t)U
+(he)R
+432 741(p)U
+(rimary)R
+432 885(f)U
+432 813(reasons)U
+452 885(or)U
+432 957(h)U
+(aving)R
+432 1101(b)U
+432 1029(this)U
+462 1101(eta)U
+432 1245(i)U
+432 1173(test)U
+449 1245(s)U
+432 1317(b)U
+(ecause)R
+432 1461(n)U
+432 1389(we)U
+462 1461(eed)U
+432 1605(b)U
+432 1533(to)U
+462 1605(e)U
+432 1677(s)U
+(ure)R
+506 1749(n)U
+432 1821(n)U
+432 1749(the)U
+462 1821(ext)U
+559 1893(r)U
+432 1965(v)U
+432 1893(Majo)U
+462 1965(ersion)U
+432 2109(Q)U
+432 2037(\(i.e)U
+475 2109(uipu-)U
+432 2253(i)U
+432 2181(7.0\))U
+449 2253(s)U
+432 2325(r)U
+(obust.)R
+432 2469(f)U
+432 2397(Any)U
+452 2469(ailure)U
+432 2613(t)U
+432 2541(in)U
+449 2613(his)U
+432 2685(v)U
+(ersion)R
+432 2829(Q)U
+432 2757(of)U
+475 2829(uipu)U
+562 2901(d)U
+432 2973(b)U
+432 2901(shoul)U
+462 2973(e)U
+432 3045(i)U
+(nvestigate)R
+694(d)S
+432 3189(r)U
+432 3117(and)U
+452 3189(eported)U
+432 3333(Q)U
+432 3261(to)U
+475 3333(uipu-)U
+432 3405(s)U
+(upport)R
+5 F
+(@)R
+1 F
+(cs.ucl.ac.uk,)R
+432 3549(i)U
+432 3477(if)U
+449 3549(t)U
+432 3621(i)U
+(sn't)R
+432 3693(r)U
+(eported)R
+432 3837(m)U
+432 3765(it)U
+479 3837(ay)U
+432 3981(g)U
+432 3909(not)U
+462 3981(et)U
+432 4053(\256)U
+(xed)R
+432 4269(P)U
+432 4125(!)U
+465 4269(epsy)U
+432 4413(o)U
+432 4341(The)U
+462 4413(ld)U
+432 4485(p)U
+(epy)R
+539 4557(d)U
+432 4629(e)U
+432 4557(base)U
+459 4629(ncoders/decode)U
+834(rs)S
+432 4701(have)U
+EP
+%%Page: ? 4
+BP
+1 F
+60 Z
+432 21(b)U
+(een)R
+432 93(r)U
+(eplace)R
+607(d)S
+432 237(t)U
+432 165(with)U
+449 237(able)U
+556 309(n)U
+432 381(e)U
+432 309(drive)U
+459 381(ncoders/decode)U
+834(rs)S
+432 597(t)U
+432 525(a)U
+432 453(using)U
+449 597(ool)U
+547 669(d)U
+432 741(p)U
+432 669(calle)U
+462 741(epsy,)U
+573 813(n)U
+432 885(b)U
+432 813(writte)U
+462 885(y)U
+432 957(A)U
+(ndrew)R
+636 1029(.)U
+432 1101(T)U
+432 1029(Worsley)U
+469 1101(his)U
+563 1173(s)U
+432 1245(t)U
+432 1173(mean)U
+449 1245(he)U
+432 1317(b)U
+(inaries)R
+432 1533(l)U
+432 1461(a)U
+432 1389(are)U
+449 1533(ot)U
+432 1605(s)U
+(maller)R
+432 1749(c)U
+432 1677(\(and)U
+459 1749(ompile)U
+432 1893(l)U
+432 1821(a)U
+449 1893(ot)U
+432 1965(q)U
+(uicker\).)R
+432 2109(a)U
+432 2037(This)U
+459 2109(lso)U
+432 2181(i)U
+(ncreases)R
+432 2325(e)U
+432 2253(the)U
+459 2325(ncoding/decodi)U
+831(ng)S
+432 2469(I)U
+432 2397(speed.)U
+452 2469(f)U
+432 2541(y)U
+(ou)R
+519 2613(e)U
+432 2685(w)U
+432 2613(hav)U
+475 2685(ritten)U
+432 2829(o)U
+432 2757(your)U
+462 2829(wn)U
+432 2901(D)U
+(UA's)R
+432 3045(t)U
+432 2973(using)U
+449 3045(he)U
+479 3117(d)U
+432 3189(l)U
+432 3117(ol)U
+449 3189(ibdsap)U
+432 3333(c)U
+432 3261(and)U
+459 3333(all)U
+432 3477(o)U
+432 3405(the)U
+462 3477(ld)U
+432 3549(p)U
+(epy)R
+576 3621(e)U
+432 3693(o)U
+432 3621(encod)U
+462 3693(r)U
+432 3765(d)U
+(ecode)R
+603 3837(s)U
+432 3909(d)U
+432 3837(routine)U
+462 3909(irectly,)U
+432 4053(w)U
+432 3981(you)U
+475 4053(ill)U
+516 4125(d)U
+432 4197(t)U
+432 4125(nee)U
+449 4197(o)U
+432 4269(a)U
+(dd)R
+4 F
+864 4341(#)U
+1 F
+(include)R
+4 F
+1231 4413(>)U
+1 F
+432 4557(t)U
+432 4485(to)U
+4 F
+648 4413(<)U
+1 F
+(isode/quipu/syntaxe)R
+1163(s.h)S
+449 4557(he)U
+432 4701(\256)U
+432 4629(.c)U
+465 4701(les)U
+EP
+%%Page: ? 5
+BP
+1 F
+60 Z
+432 93(c)U
+432 21(that)U
+459 93(all)U
+432 237(e)U
+432 165(the)U
+459 237(ncoder)U
+432 381(d)U
+432 309(and)U
+462 381(ecoders.)U
+432 597(L)U
+432 525(Shared)U
+469 597(ibraries)U
+432 741(S)U
+432 669(Under)U
+465 741(unOS4.1)U
+432 885(a)U
+432 813(ISODE)U
+459 885(nd)U
+432 957(Q)U
+(uipu)R
+432 1101(b)U
+432 1029(can)U
+462 1101(e)U
+432 1173(c)U
+(ompiled)R
+432 1317(s)U
+432 1245(with)U
+455 1317(hared)U
+630 1389(,)U
+432 1461(a)U
+432 1389(libraries)U
+459 1461(gain)U
+432 1605(m)U
+432 1533(this)U
+479 1605(akes)U
+432 1749(b)U
+432 1677(the)U
+462 1749(inaries)U
+432 1893(w)U
+432 1821(smaller)U
+475 1893(hich)U
+556 1965(s)U
+432 2037(t)U
+432 1965(seem)U
+449 2037(o)U
+432 2109(h)U
+(elp)R
+432 2181(r)U
+(educe)R
+432 2325(D)U
+432 2253(the)U
+475 2325(SA)U
+432 2397(p)U
+(aging)R
+633 2469(s)U
+432 2541(\()U
+432 2469(problem)U
+452 2541(see)U
+432 2613(c)U
+(on\256g/sunos4.make)R
+432 2757(s)U
+432 2685(to)U
+455 2757(ee)U
+432 2829(h)U
+(ow)R
+432 2973(g)U
+432 2901(to)U
+462 2973(enerate)U
+432 3117(l)U
+432 3045(shared)U
+449 3117(ibraries\).)U
+432 3405(m)U
+432 3333(DSA)U
+479 3405(anages)U
+432 3549(o)U
+432 3477(its)U
+462 3549(wn)U
+556 3621(.)U
+432 3765(D)U
+432 3693(A)U
+432 3621(entry)U
+475 3765(SA)U
+432 3909(m)U
+432 3837(now)U
+479 3909(anages)U
+432 4053(o)U
+432 3981(its)U
+462 4053(wn)U
+526 4125(y)U
+432 4197(i)U
+432 4125(entr)U
+449 4197(n)U
+432 4269(t)U
+(he)R
+432 4341(D)U
+(IT.)R
+432 4485(i)U
+432 4413(This)U
+449 4485(s)U
+432 4557(o)U
+(ne)R
+432 4701(t)U
+432 4629(of)U
+449 4701(he)U
+EP
+%%Page: ? 6
+BP
+1 F
+60 Z
+432 21(m)U
+(ost)R
+432 93(i)U
+(mportant)R
+432 237(t)U
+432 165(changes)U
+449 237(o)U
+432 309(Q)U
+(uipu,)R
+432 453(h)U
+432 381(and)U
+462 453(as)U
+432 597(p)U
+432 525(the)U
+462 597(otential)U
+432 741(c)U
+432 669(for)U
+459 741(ausing)U
+432 885(m)U
+432 813(the)U
+479 885(ost)U
+603 957(!)U
+432 1029(G)U
+432 957(trouble)U
+475 1029(enerally)U
+432 1173(M)U
+432 1101(the)U
+485 1173(ASTER)U
+432 1317(i)U
+432 1245(EDB)U
+449 1317(n)U
+432 1389(w)U
+(hich)R
+432 1533(D)U
+432 1461(you)U
+475 1533(SAs)U
+432 1677(r)U
+432 1605(entry)U
+452 1677(esides)U
+432 1821(n)U
+432 1749(is)U
+462 1821(ot)U
+506 1893(d)U
+432 1965(b)U
+432 1893(hel)U
+462 1965(y)U
+432 2037(y)U
+(our)R
+551 2109(.)U
+432 2181(T)U
+432 2109(DSA)U
+469 2181(his)U
+563 2253(s)U
+432 2325(i)U
+432 2253(mean)U
+449 2325(t)U
+432 2397(i)U
+(s)R
+432 2469(d)U
+(if\256cult)R
+432 2685(D)U
+432 2613(a)U
+432 2541(for)U
+475 2685(SA)U
+432 2829(m)U
+432 2757(to)U
+479 2829(odify)U
+432 2973(o)U
+432 2901(its)U
+462 2973(wn)U
+556 3045(,)U
+432 3117(s)U
+432 3045(entry)U
+455 3117(o)U
+432 3189(f)U
+(or)R
+432 3261(e)U
+(xample)R
+432 3405(c)U
+432 3333(it)U
+459 3405(an't)U
+432 3549(i)U
+432 3477(keep)U
+449 3549(ts)U
+432 3621(v)U
+(ersion)R
+596 3693(r)U
+432 3765(u)U
+432 3693(numbe)U
+462 3765(ptodate.)U
+432 3909(Q)U
+432 3837(With)U
+475 3909(uipu)U
+432 4125(D)U
+432 4053(a)U
+432 3981(6.8,)U
+475 4125(SA)U
+432 4197(h)U
+(olding)R
+432 4341(M)U
+432 4269(the)U
+485 4341(ASTER)U
+432 4485(k)U
+432 4413(EDB)U
+462 4485(nows)U
+432 4629(a)U
+432 4557(that)U
+459 4629(ny)U
+432 4701(D)U
+(SAs)R
+EP
+%%Page: ? 7
+BP
+1 F
+60 Z
+558 21(e)U
+432 93(v)U
+432 21(whos)U
+462 93(ersion)U
+596 165(r)U
+432 237(i)U
+432 165(numbe)U
+449 237(s)U
+432 309(6)U
+(.8)R
+432 453(g)U
+432 381(or)U
+462 453(reater)U
+432 597(t)U
+432 525(wants)U
+449 597(o)U
+432 669(m)U
+(anage)R
+432 813(o)U
+432 741(its)U
+462 813(wn)U
+556 885(.)U
+432 957(T)U
+432 885(entry)U
+469 957(o)U
+432 1029(a)U
+(llow)R
+432 1173(t)U
+432 1101(this)U
+449 1173(o)U
+432 1245(h)U
+(appen,)R
+432 1389(D)U
+432 1317(The)U
+475 1389(SA)U
+432 1461(h)U
+(olding)R
+432 1605(M)U
+432 1533(the)U
+485 1605(ASTER)U
+5 F
+432 1749(")U
+1 F
+432 1677(EDB)U
+457 1749(spot)U
+432 1821(s)U
+(hadows)R
+5 F
+(")R
+1 F
+432 1965(r)U
+432 1893(the)U
+452 1965(emote)U
+432 2109(e)U
+432 2037(DSA)U
+459 2109(ntry.)U
+432 2253(i)U
+432 2181(That)U
+449 2253(s,)U
+432 2325(f)U
+(rom)R
+513 2397(e)U
+432 2469(t)U
+432 2397(tim)U
+449 2469(o)U
+432 2541(t)U
+(ime)R
+432 2685(c)U
+432 2613(it)U
+459 2685(onnects)U
+432 2829(t)U
+432 2757(to)U
+449 2829(he)U
+432 2901(D)U
+(SA)R
+432 3045(q)U
+432 2973(in)U
+462 3045(uestion,)U
+432 3189(i)U
+432 3117(reads)U
+449 3189(ts)U
+432 3261(e)U
+(ntry,)R
+432 3405(w)U
+432 3333(and)U
+475 3405(rites)U
+432 3549(r)U
+432 3477(the)U
+452 3549(esult)U
+432 3693(i)U
+432 3621(back)U
+449 3693(nto)U
+432 3837(M)U
+432 3765(the)U
+485 3837(ASTER)U
+432 3981(\256)U
+432 3909(EDB)U
+465 3981(le.)U
+432 4125(m)U
+432 4053(So)U
+479 4125(odify)U
+660 4197(s)U
+432 4269(o)U
+432 4197(operation)U
+462 4269(n)U
+432 4341(t)U
+(he)R
+432 4413(D)U
+(SAs)R
+432 4557(c)U
+432 4485(entry)U
+459 4557(an)U
+492 4629(w)U
+432 4701(t)U
+432 4629(no)U
+449 4701(ake)U
+EP
+%%Page: ? 8
+BP
+1 F
+60 Z
+533 21(e)U
+432 93(i)U
+432 21(plac)U
+449 93(n)U
+432 165(y)U
+(our)R
+533 237(l)U
+432 309(D)U
+432 237(loca)U
+475 309(SA.)U
+432 453(h)U
+432 381(This)U
+462 453(as)U
+432 597(a)U
+432 525(the)U
+459 597(dvantage)U
+432 741(a)U
+432 669(that)U
+459 741(ttributes)U
+432 885(a)U
+432 813(such)U
+459 885(s)U
+432 957(t)U
+(he)R
+432 1029(v)U
+(ersion)R
+596 1101(r)U
+432 1173(a)U
+432 1101(numbe)U
+459 1173(re)U
+432 1245(k)U
+(ept)R
+432 1389(t)U
+432 1317(up)U
+449 1389(o)U
+432 1461(d)U
+(ate.)R
+546 1533(e)U
+432 1605(i)U
+432 1533(Ther)U
+449 1605(s)U
+432 1749(b)U
+432 1677(a)U
+462 1749(it)U
+432 1965(b)U
+432 1893(a)U
+432 1821(of)U
+462 1965(oot)U
+432 2109(p)U
+432 2037(strap)U
+462 2109(roblem.)U
+432 2253(w)U
+432 2181(You)U
+475 2253(ill)U
+516 2325(d)U
+432 2397(t)U
+432 2325(nee)U
+449 2397(o)U
+432 2469(m)U
+(odify)R
+432 2613(v)U
+432 2541(the)U
+462 2613(ersion)U
+596 2685(r)U
+432 2757(i)U
+432 2685(numbe)U
+449 2757(n)U
+432 2829(y)U
+(our)R
+551 2901(s)U
+432 2973(e)U
+432 2901(DSA)U
+459 2973(ntry)U
+432 3117(t)U
+432 3045(in)U
+449 3117(he)U
+432 3189(M)U
+(ASTER)R
+432 3333(\256)U
+432 3261(EDB)U
+465 3333(rst)U
+513 3405(e)U
+432 3477(t)U
+432 3405(tim)U
+449 3477(o)U
+432 3549(t)U
+(ell)R
+432 3693(y)U
+432 3621(it)U
+462 3693(ou)U
+432 3837(r)U
+432 3765(are)U
+452 3837(unning)U
+432 3981(6)U
+432 3909(Quipu-)U
+462 3981(.8.)U
+432 4125(w)U
+432 4053(You)U
+475 4125(ill)U
+519 4197(e)U
+432 4269(t)U
+432 4197(hav)U
+449 4269(o)U
+432 4341(d)U
+(o)R
+432 4413(t)U
+(his)R
+432 4557(c)U
+432 4485(by)U
+459 4557(onnecting)U
+432 4701(t)U
+432 4629(straight)U
+449 4701(o)U
+EP
+%%Page: ? 9
+BP
+1 F
+60 Z
+432 21(t)U
+(he)R
+432 93(r)U
+(elevant)R
+432 237(D)U
+432 165(remote)U
+475 237(SA)U
+519 309(r)U
+432 381(D)U
+432 309(ove)U
+475 381(AP)U
+432 525(d)U
+432 453(to)U
+462 525(o)U
+432 597(t)U
+(he)R
+432 669(m)U
+(odify.)R
+432 813(y)U
+432 741(If)U
+462 813(ou)U
+432 885(c)U
+(onnect)R
+432 1029(t)U
+432 957(straight)U
+449 1029(o)U
+432 1101(y)U
+(ou)R
+533 1173(l)U
+432 1245(D)U
+432 1173(loca)U
+475 1245(SA)U
+432 1389(k)U
+432 1317(it)U
+462 1389(nows)U
+432 1533(i)U
+432 1461(it)U
+449 1533(s)U
+432 1605(r)U
+(unning)R
+432 1749(s)U
+432 1677(6.8,)U
+455 1749(o)U
+432 1821(w)U
+(ill)R
+432 1893(a)U
+(ssume)R
+432 2037(h)U
+432 1965(it)U
+462 2037(as)U
+432 2109(c)U
+(ontrol)R
+432 2253(t)U
+432 2181(of)U
+449 2253(he)U
+432 2325(v)U
+(ersion)R
+596 2397(r)U
+432 2469(a)U
+432 2397(numbe)U
+459 2469(nd)U
+432 2541(w)U
+(on't)R
+432 2685(y)U
+432 2613(let)U
+462 2685(ou)U
+432 2757(c)U
+(hange)R
+432 2901(T)U
+432 2829(it!)U
+469 2901(here)U
+432 3045(a)U
+432 2973(is)U
+459 3045(nother)U
+432 3189(w)U
+432 3117(problem)U
+475 3189(hen)U
+432 3261(m)U
+(odifying)R
+432 3405(p)U
+432 3333(the)U
+462 3405(resentation)U
+432 3549(o)U
+432 3477(address)U
+462 3549(f)U
+432 3693(D)U
+432 3621(a)U
+475 3693(SA.)U
+432 3837(m)U
+432 3765(You)U
+479 3837(ust)U
+536 3909(e)U
+432 3981(s)U
+432 3909(mak)U
+455 3981(ure)U
+432 4125(D)U
+432 4053(the)U
+475 4125(SA)U
+509 4197(h)U
+432 4269(t)U
+432 4197(wit)U
+449 4269(he)U
+432 4341(M)U
+(ASTER)R
+432 4485(r)U
+432 4413(EDB)U
+452 4485(eads)U
+432 4629(n)U
+432 4557(the)U
+462 4629(ew)U
+432 4701(a)U
+(ddress,)R
+EP
+%%Page: ? 10
+BP
+1 F
+60 Z
+625 21(E)U
+432 93(y)U
+432 21(BEFOR)U
+462 93(ou)U
+432 165(m)U
+(ove)R
+432 309(D)U
+432 237(the)U
+475 309(SA.)U
+432 453(n)U
+432 381(If)U
+462 453(ot)U
+432 597(w)U
+432 525(it)U
+475 597(ill)U
+432 669(a)U
+(lways)R
+597 741(t)U
+432 813(t)U
+432 741(attemp)U
+449 813(o)U
+432 885(c)U
+(onnect)R
+432 1029(t)U
+432 957(to)U
+449 1029(he)U
+432 1101(w)U
+(rong)R
+589 1173(s)U
+432 1245(t)U
+432 1173(addres)U
+449 1245(o)U
+432 1317(s)U
+(hadow)R
+432 1461(e)U
+432 1389(the)U
+459 1461(ntry)U
+432 1533(\()U
+(Alternative)R
+724(ly)S
+432 1677(c)U
+432 1605(you)U
+459 1677(ould)U
+432 1893(t)U
+432 1821(a)U
+432 1749(use)U
+449 1893(s)U
+5 F
+(_)R
+1 F
+(bridge)R
+432 2037(m)U
+432 1965(to)U
+479 2037(ake)U
+432 2181(l)U
+432 2109(it)U
+449 2181(ooks)U
+432 2325(i)U
+432 2253(as)U
+449 2325(f)U
+432 2397(t)U
+(he)R
+479 2469(d)U
+432 2541(a)U
+432 2469(ol)U
+459 2541(ddress)U
+432 2685(w)U
+432 2613(still)U
+475 2685(orks\).)U
+432 2829(p)U
+432 2757(This)U
+462 2829(roblem)U
+432 2973(e)U
+432 2901(did)U
+459 2973(xist)U
+586 3045(,)U
+432 3117(b)U
+432 3045(before)U
+462 3117(ut)U
+432 3261(n)U
+432 3189(is)U
+462 3261(ow)U
+432 3333(m)U
+(ade)R
+575 3405(!)U
+432 3477(I)U
+432 3405(worse)U
+452 3477(f)U
+432 3549(y)U
+(our)R
+432 3693(d)U
+432 3621(DSA)U
+462 3693(oes)U
+432 3837(h)U
+432 3765(not)U
+462 3837(old)U
+432 3981(M)U
+432 3909(the)U
+485 3981(ASTER)U
+432 4125(\256)U
+432 4053(EDB)U
+465 4125(le)U
+482 4197(r)U
+432 4269(i)U
+432 4197(fo)U
+449 4269(ts)U
+432 4341(o)U
+(wn)R
+556 4413(,)U
+432 4485(t)U
+432 4413(entry)U
+449 4485(hen)U
+526 4557(e)U
+432 4629(i)U
+432 4557(ther)U
+449 4629(s)U
+432 4701(a)U
+EP
+%%Page: ? 11
+BP
+1 F
+60 Z
+432 21(f)U
+(undamental)R
+432 165(t)U
+432 93(assumption)U
+449 165(hat)U
+432 309(D)U
+432 237(the)U
+475 309(SA)U
+432 453(d)U
+432 381(that)U
+462 453(oes)U
+432 597(t)U
+432 525(hold)U
+449 597(he)U
+432 669(M)U
+(ASTER)R
+432 813(\256)U
+432 741(EDB)U
+465 813(le)U
+432 957(a)U
+432 885(is)U
+459 957(lso)U
+432 1029(r)U
+(unning)R
+432 1173(n)U
+432 1101(the)U
+462 1173(ew)U
+432 1317(c)U
+432 1245(6.8)U
+459 1317(ode.)U
+432 1461(i)U
+432 1389(If)U
+449 1461(t)U
+432 1533(d)U
+(oes)R
+432 1677(o)U
+432 1605(not)U
+462 1677(perations)U
+432 1821(g)U
+432 1749(WILL)U
+462 1821(o)U
+432 1893(w)U
+(rong.)R
+432 2037(m)U
+432 1965(This)U
+479 2037(eans)U
+432 2181(n)U
+432 2109(the)U
+462 2181(ew)U
+432 2253(Q)U
+(uipu)R
+432 2397(b)U
+432 2325(must)U
+462 2397(e)U
+432 2469(i)U
+(nserted)R
+432 2613(t)U
+432 2541(into)U
+449 2613(he)U
+432 2685(D)U
+(IT)R
+499 2757(p)U
+432 2829(d)U
+432 2757(`to)U
+462 2829(own'.)U
+432 2973(p)U
+432 2901(To)U
+462 2973(erform)U
+432 3117(s)U
+432 3045(this)U
+455 3117(hadowing,)U
+432 3261(D)U
+432 3189(the)U
+475 3261(SA)U
+432 3405(t)U
+432 3333(has)U
+449 3405(o)U
+432 3477(r)U
+(ead)R
+432 3621(o)U
+432 3549(its)U
+462 3621(wn)U
+526 3693(y)U
+432 3765(a)U
+432 3693(entr)U
+459 3765(cross)U
+432 3909(u)U
+432 3837(an)U
+462 3909(n-)U
+432 3981(a)U
+(uthentic)R
+654(ated)S
+432 4125(l)U
+432 4053(DSP)U
+449 4125(ink,)U
+432 4269(i)U
+432 4197(thus)U
+449 4269(t)U
+432 4341(c)U
+(an)R
+492 4413(t)U
+432 4485(r)U
+432 4413(no)U
+452 4485(ead)U
+432 4629(a)U
+432 4557(any)U
+459 4629(ttributes)U
+432 4701(that)U
+EP
+%%Page: ? 12
+BP
+1 F
+60 Z
+432 21(a)U
+(re)R
+432 93(p)U
+(rotected)R
+432 237(A)U
+432 165(by)U
+475 237(CLs.)U
+432 381(a)U
+432 309(So)U
+459 381(ll)U
+432 453(i)U
+(mportant)R
+432 597(i)U
+432 525(attribute)U
+634(s)S
+449 597(n)U
+432 669(t)U
+(he)R
+432 741(D)U
+(SAs)R
+432 885(M)U
+432 813(entry)U
+485 885(UST)U
+432 1029(p)U
+432 957(be)U
+462 1029(ublicall)U
+644(y)S
+432 1173(\()U
+432 1101(readable)U
+452 1173(this)U
+432 1245(i)U
+(ncludes)R
+432 1389(u)U
+432 1317(the)U
+462 1389(nused)U
+432 1461(u)U
+(serPassword)R
+432 1605(I)U
+432 1533(attribute)U
+634(\).)S
+452 1605(f)U
+432 1677(t)U
+(hey)R
+432 1821(n)U
+432 1749(are)U
+462 1821(ot)U
+432 1893(r)U
+(eadable)R
+432 2037(s)U
+432 1965(the)U
+455 2037(hadowing)U
+432 2181(w)U
+432 2109(operation)U
+475 2181(ill)U
+513 2253(.)U
+432 2325(S)U
+432 2253(fail)U
+465 2325(pot)U
+432 2397(S)U
+(hadowing)R
+432 2541(a)U
+432 2469(As)U
+459 2541(n)U
+432 2613(e)U
+(xtension)R
+432 2757(t)U
+432 2685(to)U
+449 2757(he)U
+432 2829(a)U
+(bove,)R
+432 2973(D)U
+432 2901(a)U
+475 2973(SA)U
+432 3117(`)U
+432 3045(can)U
+452 3117(spot)U
+615 3189(')U
+432 3261(o)U
+432 3189(shadow)U
+462 3261(ther)U
+570 3333(s)U
+432 3405(i)U
+432 3333(entrie)U
+449 3405(n)U
+432 3477(t)U
+(he)R
+432 3549(D)U
+(IT.)R
+546 3621(n)U
+432 3693(s)U
+432 3621(Whe)U
+455 3693(earching,)U
+432 3909(l)U
+432 3837(a)U
+432 3765(often)U
+449 3909(arge)U
+432 4053(o)U
+432 3981(part)U
+462 4053(f)U
+432 4125(t)U
+(he)R
+432 4197(t)U
+(ime)R
+432 4341(i)U
+432 4269(is)U
+449 4341(nvolved)U
+432 4485(c)U
+432 4413(with)U
+459 4485(haining)U
+432 4629(t)U
+432 4557(off)U
+449 4629(o)U
+432 4701(o)U
+(ther)R
+EP
+%%Page: ? 13
+BP
+1 F
+60 Z
+551 21(s)U
+432 93(t)U
+432 21(DSA)U
+449 93(o)U
+432 165(s)U
+(earch)R
+593 237(.)U
+432 309(T)U
+432 237(aliases)U
+469 309(o)U
+432 381(e)U
+(nhance)R
+710 453(e)U
+432 525(i)U
+432 453(performanc)U
+449 525(t)U
+432 597(i)U
+(s)R
+432 669(s)U
+(ometimes)R
+432 813(t)U
+432 741(useful)U
+449 813(o)U
+432 885(h)U
+(ave)R
+432 1029(c)U
+432 957(a)U
+459 1029(ached)U
+432 1173(o)U
+432 1101(copy)U
+462 1173(f)U
+432 1245(t)U
+(he)R
+432 1317(a)U
+(lias)R
+432 1389(l)U
+(ocally.)R
+432 1533(a)U
+432 1461(To)U
+459 1533(rrange)U
+432 1677(y)U
+432 1605(this,)U
+462 1677(ou)U
+432 1821(a)U
+432 1749(can)U
+459 1821(dd:)U
+648 1893(shadow)U
+5 F
+(_)R
+1 F
+(attribute)R
+1094 1965(e)U
+432 2109(y)U
+432 2037(to)U
+648 1965(aliasedObje)U
+933(ctNam)S
+462 2109(our)U
+432 2181(q)U
+(uiputailor)R
+432 2325(T)U
+432 2253(\256le.)U
+469 2325(he)U
+432 2469(D)U
+432 2397(the)U
+475 2469(SA)U
+509 2541(l)U
+432 2613(m)U
+432 2541(wil)U
+479 2613(ake)U
+432 2757(i)U
+432 2685(sure)U
+449 2757(t)U
+432 2829(h)U
+(as)R
+432 2973(c)U
+432 2901(a)U
+459 2973(ached)U
+432 3117(o)U
+432 3045(copy)U
+462 3117(f)U
+432 3189(a)U
+(ll)R
+432 3261(D)U
+(Ns)R
+432 3333(r)U
+(eference)R
+657(d)S
+432 3477(a)U
+432 3405(by)U
+459 3477(liasedObjec)U
+744(tName)S
+432 3621(S)U
+432 3549(attribute)U
+634(s.)S
+465 3621(imilarl)U
+627(y)S
+432 3765(m)U
+432 3693(seeAlso,)U
+479 3765(asterDSA)U
+432 3909(a)U
+432 3837(or)U
+459 3909(ny)U
+432 4053(a)U
+432 3981(DN)U
+459 4053(ttribute)U
+432 4197(b)U
+432 4125(can)U
+462 4197(e)U
+432 4269(s)U
+(hadowed.)R
+432 4413(s)U
+432 4341(Spot)U
+455 4413(hadowing)U
+432 4557(a)U
+432 4485(can)U
+459 4557(lso)U
+512 4629(d)U
+432 4701(t)U
+432 4629(use)U
+449 4701(o)U
+EP
+%%Page: ? 14
+BP
+1 F
+60 Z
+432 21(i)U
+(nterface)R
+432 165(Q)U
+432 93(the)U
+475 165(uipu)U
+432 309(t)U
+432 237(world)U
+449 309(o)U
+432 381(t)U
+(he)R
+432 453(n)U
+(on-)R
+552 525(u)U
+432 597(w)U
+432 525(Quip)U
+475 597(orld.)U
+432 741(p)U
+432 669(If)U
+462 741(art)U
+432 885(t)U
+432 813(of)U
+449 885(he)U
+432 957(D)U
+(IT)R
+432 1101(n)U
+432 1029(is)U
+462 1101(ot)U
+432 1173(s)U
+(tored)R
+432 1389(Q)U
+432 1317(a)U
+432 1245(in)U
+475 1389(uipu)U
+432 1533(a)U
+432 1461(DSA,)U
+459 1533(nd)U
+432 1677(n)U
+432 1605(the)U
+462 1677(on)U
+432 1749(Q)U
+(uipu)R
+432 1893(w)U
+432 1821(DSA)U
+475 1893(ants)U
+432 2037(m)U
+432 1965(to)U
+479 2037(aster)U
+432 2181(e)U
+432 2109(an)U
+459 2181(ntry)U
+549 2253(h)U
+432 2325(i)U
+432 2253(whic)U
+449 2325(s)U
+432 2397(h)U
+(eld)R
+432 2613(Q)U
+432 2541(a)U
+432 2469(in)U
+475 2613(uipu)U
+432 2685(M)U
+(ASTER)R
+432 2829(t)U
+432 2757(EDB,)U
+449 2829(he)U
+432 2901(e)U
+(ntry)R
+432 3045(b)U
+432 2973(can)U
+462 3045(e)U
+432 3117(s)U
+(pot)R
+432 3189(s)U
+(hadowed.)R
+432 3333(s)U
+432 3261(You)U
+455 3333(hould)U
+432 3477(q)U
+432 3405(ask)U
+462 3477(uipu-)U
+432 3549(s)U
+(upport)R
+5 F
+(@)R
+1 F
+(cs.ucl.ac.uk)R
+432 3693(d)U
+432 3621(for)U
+462 3693(etails)U
+432 3837(h)U
+432 3765(of)U
+462 3837(ow)U
+432 3981(d)U
+432 3909(to)U
+462 3981(o)U
+432 4053(t)U
+(his.)R
+566 4341(h)U
+432 4413(I)U
+432 4341(Searc)U
+452 4413(ndexes)U
+432 4557(p)U
+432 4485(The)U
+462 4557(erformance)U
+432 4701(s)U
+432 4629(of)U
+455 4701(ubtree)U
+EP
+%%Page: ? 15
+BP
+1 F
+60 Z
+633 21(g)U
+432 93(h)U
+432 21(searchin)U
+462 93(as)U
+432 165(b)U
+(een)R
+432 237(g)U
+(reatly)R
+663 309(,)U
+432 453(s)U
+432 381(a)U
+432 309(improved)U
+455 453(igni\256cant)U
+432 597(o)U
+432 525(part)U
+462 597(f)U
+432 669(t)U
+(his)R
+432 813(b)U
+432 741(has)U
+462 813(een)U
+432 885(o)U
+(btained)R
+432 1029(s)U
+432 957(by)U
+455 1029(ome)U
+432 1173(d)U
+432 1101(code)U
+462 1173(onated)U
+432 1317(T)U
+432 1245(by)U
+469 1317(im)U
+432 1389(H)U
+(owes)R
+432 1533(a)U
+432 1461(to)U
+459 1533(dd)U
+432 1605(A)U
+(VL)R
+523 1677(s)U
+432 1749(a)U
+432 1677(tree)U
+459 1749(nd)U
+432 1821(i)U
+(ndexing)R
+432 1965(Q)U
+432 1893(to)U
+475 1965(uipu.)U
+432 2109(g)U
+432 2037(To)U
+462 2109(et)U
+432 2253(b)U
+432 2181(the)U
+462 2253(est)U
+432 2397(o)U
+432 2325(out)U
+462 2397(f)U
+432 2469(y)U
+(our)R
+551 2541(,)U
+432 2685(b)U
+432 2613(a)U
+432 2541(DSA)U
+462 2685(it)U
+432 2829(t)U
+432 2757(of)U
+449 2829(ailoring)U
+432 2973(n)U
+432 2901(is)U
+462 2973(eeded.)U
+432 3189(n)U
+432 3117(You)U
+462 3189(eed)U
+432 3333(d)U
+432 3261(to)U
+462 3333(e\256ne)U
+432 3477(a)U
+432 3405(which)U
+459 3477(ttributes)U
+432 3621(b)U
+432 3549(should)U
+462 3621(e)U
+432 3693(i)U
+(ndexed,)R
+432 3837(c)U
+432 3765(typicall)U
+614(y)S
+459 3837(ommonName)U
+432 3981(s)U
+432 3909(and)U
+455 3981(urname,)U
+432 4125(a)U
+432 4053(so)U
+459 4125(dd)U
+432 4269(f)U
+432 4197(the)U
+452 4269(ollowing)U
+432 4413(q)U
+432 4341(to)U
+462 4413(uiputailor:)U
+648 4557(i)U
+(ndex)R
+5 F
+(_)R
+1 F
+(attri)R
+910(bute)S
+648 4629(commonName)U
+708 4701(index)U
+5 F
+(_)R
+1 F
+(attri)R
+970(bute)S
+EP
+%%Page: ? 16
+BP
+1 F
+60 Z
+432 237(c)U
+432 165(You)U
+648 21(surname)U
+459 237(an)U
+489 309(d)U
+432 381(o)U
+432 309(ad)U
+462 381(thers)U
+432 525(s)U
+432 453(\(only)U
+455 525(tring)U
+432 597(a)U
+(ttribute)R
+634(s\),)S
+432 741(c)U
+432 669(but)U
+459 741(are)U
+432 813(s)U
+(hould)R
+432 957(t)U
+432 885(be)U
+449 957(aken)U
+432 1101(t)U
+432 1029(not)U
+449 1101(o)U
+432 1173(a)U
+(dd)R
+432 1245(i)U
+(ndexes)R
+432 1317(u)U
+(nnecessarily.)R
+432 1461(i)U
+432 1389(There)U
+449 1461(s)U
+432 1605(b)U
+432 1533(a)U
+462 1605(alance)U
+432 1749(b)U
+432 1677(to)U
+462 1749(e)U
+432 1821(f)U
+(ound)R
+603 1893(n)U
+432 1965(h)U
+432 1893(betwee)U
+462 1965(olding)U
+432 2109(i)U
+432 2037(the)U
+449 2109(ndexs)U
+432 2253(c)U
+432 2181(in)U
+459 2253(ore,)U
+432 2397(t)U
+432 2325(and)U
+449 2397(he)U
+432 2469(a)U
+(ctual)R
+596 2541(.)U
+432 2613(T)U
+432 2541(bene\256t)U
+469 2613(oo)U
+432 2685(m)U
+(any)R
+593 2757(s)U
+432 2829(m)U
+432 2757(indexe)U
+479 2829(akes)U
+432 2973(c)U
+432 2901(the)U
+459 2973(ore)U
+432 3117(l)U
+432 3045(size)U
+449 3117(arge,)U
+432 3261(i)U
+432 3189(and)U
+449 3261(ncreases)U
+432 3405(p)U
+432 3333(paging)U
+462 3405(roblems.)U
+432 3621(i)U
+432 3549(The)U
+449 3621(ndex)U
+432 3765(o)U
+432 3693(is)U
+462 3765(nly)U
+536 3837(e)U
+432 3909(f)U
+432 3837(mad)U
+452 3909(or)U
+432 3981(s)U
+(ubtree)R
+613 4053(s)U
+432 4125(i)U
+432 4053(searche)U
+449 4125(n)U
+432 4197(c)U
+(ertain)R
+432 4341(o)U
+432 4269(parts)U
+462 4341(f)U
+432 4413(t)U
+(he)R
+432 4485(D)U
+(IT,)R
+432 4629(n)U
+432 4557(you)U
+462 4629(eed)U
+432 4701(to)U
+EP
+%%Page: ? 17
+BP
+1 F
+60 Z
+432 21(d)U
+(e\256ne)R
+579 93(.)U
+432 165(T)U
+432 93(which)U
+469 165(ypically)U
+432 309(w)U
+432 237(you)U
+475 309(ill)U
+432 453(d)U
+432 381(just)U
+462 453(o)U
+432 525(t)U
+(his)R
+432 669(t)U
+432 597(for)U
+449 669(he)U
+432 741(w)U
+(hole)R
+432 813(o)U
+(rganisation)R
+432 957(a)U
+432 885(by)U
+459 957(dding)U
+648 1101(index)U
+5 F
+(_)R
+1 F
+(subtree)R
+965 1173(y)U
+648 1245(o)U
+648 1173(c=XX)U
+5 F
+(@)R
+1 F
+(o=)R
+912(M)S
+678 1245(rg)U
+432 1389(q)U
+432 1317(to)U
+462 1389(uipu)U
+560 1461(.)U
+432 1533(H)U
+432 1461(tailor)U
+475 1533(owever)U
+432 1677(s)U
+432 1605(if)U
+455 1677(ome)U
+538 1749(s)U
+432 1821(a)U
+432 1749(OU')U
+459 1821(re)U
+432 1893(a)U
+(lso)R
+432 1965(l)U
+(arge,)R
+432 2109(m)U
+432 2037(you)U
+479 2109(ay)U
+532 2181(t)U
+432 2253(t)U
+432 2181(wan)U
+449 2253(o)U
+432 2325(i)U
+(ndex)R
+432 2469(a)U
+432 2397(them)U
+459 2469(s)U
+432 2541(w)U
+(ell)R
+432 2613(e.g.)U
+648 2757(index)U
+5 F
+(_)R
+1 F
+(subtree)R
+965 2829(y)U
+648 2901(o)U
+648 2829(c=XX)U
+5 F
+(@)R
+1 F
+(o=)R
+912(M)S
+678 2901(rg)U
+5 F
+(@)R
+1 F
+(ou=Large)R
+432 3117(i)U
+432 3045(The)U
+648 2973(OU.)U
+449 3117(ndex)U
+432 3261(o)U
+432 3189(is)U
+462 3261(nly)U
+512 3333(d)U
+432 3405(f)U
+432 3333(use)U
+452 3405(or)U
+432 3477(e)U
+(quality,)R
+707 3549(e)U
+432 3621(a)U
+432 3549(approximat)U
+459 3621(nd)U
+432 3693(i)U
+(nitial)R
+622 3765(g)U
+432 3837(m)U
+432 3765(substrin)U
+479 3837(atching.)U
+432 3981(w)U
+432 3909(General)U
+475 3981(ildcard)U
+432 4125(a)U
+432 4053(matches)U
+459 4125(re)U
+492 4197(t)U
+432 4269(i)U
+432 4197(no)U
+449 4269(mproved)U
+432 4413(i)U
+432 4341(by)U
+449 4413(ndexing,)U
+432 4557(s)U
+432 4485(but)U
+455 4557(hould)U
+432 4701(b)U
+432 4629(still)U
+462 4701(e)U
+EP
+%%Page: ? 18
+BP
+1 F
+60 Z
+432 21(q)U
+(uicker)R
+432 165(Q)U
+432 93(than)U
+475 165(UIPU-)U
+432 309(d)U
+432 237(6.0)U
+462 309(ue)U
+432 453(s)U
+432 381(to)U
+455 453(ome)U
+432 525(s)U
+(cheduling)R
+777 597(.)U
+432 669(\()U
+432 597(improvement)U
+754(s)S
+452 669(NOTE:)U
+432 813(T)U
+432 741(The)U
+469 813(URBO)U
+5 F
+(_)R
+1 F
+(LOAD)R
+432 957(o)U
+432 885(compile)U
+462 957(ption)U
+432 1101(n)U
+432 1029(has)U
+462 1101(ow)U
+516 1173(n)U
+432 1245(r)U
+432 1173(bee)U
+452 1245(emoved,)U
+432 1389(t)U
+432 1317(as)U
+449 1389(he)U
+432 1461(i)U
+(ntroduction)R
+432 1605(A)U
+432 1533(of)U
+475 1605(VL)U
+523 1677(s)U
+432 1749(h)U
+432 1677(tree)U
+462 1749(as)U
+432 1893(s)U
+432 1821(a)U
+455 1893(imilar)U
+432 2037(T)U
+432 1965(effect.)U
+469 2037(URBO)U
+5 F
+(_)R
+1 F
+(DISK)R
+432 2325(I)U
+432 2109(remains\))U
+452 2325(nherited)U
+634 2397(s)U
+432 2469(A)U
+432 2397(attribute)U
+475 2469(ttribute)U
+674 2541(e)U
+432 2613(i)U
+432 2541(inheritanc)U
+449 2613(s)U
+432 2757(m)U
+432 2685(a)U
+479 2757(echanism)U
+432 2901(a)U
+432 2829(where)U
+459 2901(n)U
+432 2973(e)U
+(ntry)R
+432 3117(g)U
+432 3045(can)U
+462 3117(et)U
+432 3189(d)U
+(efault)R
+607 3261(e)U
+432 3333(v)U
+432 3261(attribut)U
+462 3333(alues)U
+432 3477(i)U
+432 3405(from)U
+449 3477(ts)U
+432 3549(p)U
+(arent)R
+432 3693(T)U
+432 3621(entry.)U
+469 3693(his)U
+432 3837(b)U
+432 3765(can)U
+462 3837(e)U
+432 3909(u)U
+(sed)R
+432 4053(m)U
+432 3981(to)U
+479 4053(ake)U
+432 4197(i)U
+432 4125(the)U
+449 4197(n)U
+432 4269(c)U
+(ore)R
+432 4341(d)U
+(atabase)R
+700 4413(y)U
+432 4485(s)U
+432 4413(signi\256cantl)U
+455 4485(maller)U
+432 4629(e)U
+432 4557(\(and)U
+459 4629(asier)U
+432 4701(to)U
+EP
+%%Page: ? 19
+BP
+1 F
+60 Z
+432 21(m)U
+(anage\).)R
+432 165(e)U
+432 93(For)U
+459 165(xample,)U
+432 309(o)U
+432 237(entries)U
+462 309(f)U
+432 381(t)U
+(he)R
+432 453(o)U
+(bject)R
+432 597(`)U
+432 525(class)U
+452 597(person')U
+432 813(p)U
+432 741(a)U
+432 669(for)U
+462 813(articula)U
+644(r)S
+700 885(n)U
+432 957(m)U
+432 885(organisatio)U
+479 957(ight)U
+432 1101(h)U
+432 1029(all)U
+462 1101(ave)U
+432 1245(s)U
+432 1173(the)U
+455 1245(ame)U
+559 1317(l)U
+432 1389(a)U
+432 1317(posta)U
+459 1389(ddress)U
+634 1461(.)U
+432 1533(U)U
+432 1461(attribute)U
+475 1533(sing)U
+432 1605(i)U
+(nheritanc)R
+674(e)S
+432 1749(a)U
+432 1677(this)U
+459 1749(ttribute)U
+432 1893(b)U
+432 1821(can)U
+462 1893(e)U
+432 1965(p)U
+(laced)R
+432 2109(t)U
+432 2037(in)U
+449 2109(he)U
+432 2181(e)U
+(ntry)R
+432 2325(l)U
+432 2253(one)U
+449 2325(evel)U
+576 2397(,)U
+432 2469(a)U
+432 2397(above)U
+459 2469(nd)U
+432 2541(i)U
+(nherited)R
+432 2685(F)U
+432 2613(down.)U
+465 2685(or)U
+432 2757(e)U
+(xample,)R
+432 2901(t)U
+432 2829(if)U
+449 2901(he)U
+432 2973(f)U
+(ollowing)R
+432 3117(a)U
+432 3045(was)U
+459 3117(n)U
+432 3189(a)U
+(ttribute)R
+432 3333(t)U
+432 3261(of)U
+449 3333(he)U
+432 3405(p)U
+(arent)R
+432 3477(entry)U
+648 3549(inheritedAtt)U
+940(ribute)S
+432 3693(p)U
+432 3621(=)U
+462 3693(erson)U
+432 3837(d)U
+432 3765($)U
+3837(efault)T
+432 3909(\()U
+648 3981(postalAddress=)U
+432 4197(G)U
+432 4125($)U
+432 4053(UCL)U
+475 4197(ower)U
+432 4413(L)U
+432 4341($)U
+432 4269(Street)U
+469 4413(ondon)U
+432 4557(W)U
+432 4485($)U
+489 4557(C1E)U
+432 4629(6BT)U
+648 4701(telephoneNumbe)U
+1060(r=)S
+EP
+%%Page: ? 20
+BP
+1 F
+60 Z
+432 93(7)U
+432 21(+44)U
+462 93(1-)U
+522 165(-)U
+432 237(7)U
+432 165(387)U
+462 237(050)U
+648 309(\))U
+432 453(a)U
+432 381(Then)U
+459 453(ll)U
+432 525(e)U
+(ntires)R
+643 597(g)U
+432 669(t)U
+432 597(belongin)U
+449 669(o)U
+432 741(t)U
+(he)R
+432 813(`)U
+(person')R
+674 885(s)U
+432 957(a)U
+432 885(objectcl)U
+624(as)S
+459 957(t)U
+432 1029(t)U
+(he)R
+432 1101(l)U
+(evel)R
+536 1173(w)U
+432 1245(w)U
+432 1173(belo)U
+475 1245(ould)U
+573 1317(t)U
+432 1389(t)U
+432 1317(inheri)U
+449 1389(he)U
+432 1461(p)U
+(ostalAddress)R
+432 1605(T)U
+432 1533(and)U
+469 1605(elephoneNumbe)U
+864(r)S
+432 1749(I)U
+432 1677(attribute)U
+634(s)S
+452 1749(F)U
+432 1821(t)U
+(here)R
+432 1965(n)U
+432 1893(is)U
+462 1965(ot)U
+432 2037(a)U
+(lready)R
+432 2181(v)U
+432 2109(a)U
+462 2181(alue)U
+553 2253(.)U
+432 2325(T)U
+432 2253(there)U
+469 2325(his)U
+432 2469(p)U
+432 2397(is)U
+462 2469(articula)U
+644(rly)S
+432 2613(f)U
+432 2541(useful)U
+452 2613(or)U
+432 2685(a)U
+(ccess)R
+586 2757(l)U
+432 2829(l)U
+432 2757(contro)U
+449 2829(ists.)U
+432 2973(d)U
+432 2901(Full)U
+462 2973(etails)U
+432 3117(g)U
+432 3045(are)U
+462 3117(iven)U
+432 3261(t)U
+432 3189(in)U
+449 3261(he)U
+432 3333(M)U
+(anual.)R
+432 3621(r)U
+432 3549(DSA)U
+452 3621(elay)U
+432 3765(y)U
+432 3693(If)U
+462 3765(our)U
+432 3909(i)U
+432 3837(DSA)U
+449 3909(s)U
+432 3981(n)U
+(ot)R
+432 4053(c)U
+(onnecte)R
+647(d)S
+432 4197(o)U
+432 4125(to)U
+462 4197(ne)U
+432 4341(t)U
+432 4269(of)U
+449 4341(he)U
+432 4413(m)U
+(ajor)R
+629 4485(s)U
+432 4557(\()U
+432 4485(network)U
+452 4557(Internet,)U
+432 4701(i)U
+432 4629(IPSS...\),)U
+449 4701(t)U
+EP
+%%Page: ? 21
+BP
+1 F
+60 Z
+432 21(m)U
+(ay)R
+432 165(t)U
+432 93(from)U
+449 165(ime)U
+432 309(t)U
+432 237(to)U
+449 309(ime)U
+432 453(r)U
+432 381(get)U
+452 453(eference)U
+657(s)S
+432 669(D)U
+432 597(a)U
+432 525(to)U
+475 669(SA)U
+432 813(i)U
+432 741(that)U
+449 813(t)U
+432 885(c)U
+(an)R
+492 957(t)U
+432 1029(c)U
+432 957(no)U
+459 1029(onnect)U
+432 1173(d)U
+432 1101(to)U
+462 1173(irectly,)U
+432 1317(t)U
+432 1245(so)U
+449 1317(he)U
+432 1389(o)U
+(peration)R
+432 1533(n)U
+432 1461(can)U
+462 1533(ot)U
+432 1605(p)U
+(roceed.)R
+432 1749(D)U
+432 1677(The)U
+475 1749(SA)U
+523 1821(y)U
+432 1893(a)U
+432 1821(rela)U
+459 1893(ttribute)U
+432 2037(y)U
+432 1965(in)U
+462 2037(our)U
+551 2109(s)U
+432 2181(e)U
+432 2109(DSA)U
+459 2181(ntry)U
+432 2253(s)U
+(upplies)R
+432 2397(D)U
+432 2325(the)U
+475 2397(N)U
+432 2613(D)U
+432 2541(a)U
+432 2469(of)U
+475 2613(SA\(s\))U
+432 2757(i)U
+432 2685(that)U
+449 2757(s)U
+432 2829(l)U
+(istening)R
+432 2973(b)U
+432 2901(on)U
+462 2973(oth)U
+522 3045(r)U
+432 3117(n)U
+432 3045(you)U
+462 3117(etwork)U
+432 3261(t)U
+432 3189(and)U
+449 3261(he)U
+432 3333(m)U
+(ajor)R
+629 3405(s)U
+432 3477(y)U
+432 3405(network)U
+462 3477(ou)U
+432 3621(n)U
+432 3549(are)U
+462 3621(ot)U
+432 3693(c)U
+(onnecte)R
+647(d)S
+432 3837(T)U
+432 3765(to.)U
+469 3837(here)U
+546 3909(s)U
+432 3981(t)U
+432 3909(need)U
+449 3981(o)U
+432 4053(b)U
+(e)R
+432 4197(a)U
+432 4125(an)U
+459 4197(greement)U
+432 4341(t)U
+432 4269(between)U
+449 4341(he)U
+432 4413(m)U
+(anagers)R
+432 4557(t)U
+432 4485(of)U
+449 4557(he)U
+492 4629(o)U
+432 4701(D)U
+432 4629(tw)U
+475 4701(SAs)U
+EP
+%%Page: ? 22
+BP
+1 F
+60 Z
+596 21(e)U
+432 93(t)U
+432 21(becaus)U
+449 93(he)U
+432 165(r)U
+(elay)R
+432 309(w)U
+432 237(DSA)U
+475 309(ill)U
+432 453(a)U
+432 381(be)U
+459 453(sked)U
+432 597(p)U
+432 525(to)U
+462 597(erform)U
+660 669(s)U
+432 741(o)U
+432 669(operation)U
+462 741(n)U
+432 813(y)U
+(our)R
+583 885(.)U
+432 957(F)U
+432 885(behalf)U
+465 957(or)U
+432 1029(e)U
+(xample,)R
+432 1173(t)U
+432 1101(if)U
+449 1173(he)U
+432 1245(D)U
+(SA)R
+432 1389(h)U
+432 1317(`x')U
+462 1389(as)U
+432 1461(a)U
+(ccess)R
+432 1605(I)U
+432 1533(to)U
+452 1605(PSS)U
+432 1749(I)U
+432 1677(and)U
+452 1749(nternet,)U
+432 1893(D)U
+432 1821(but)U
+475 1893(SA)U
+432 2037(o)U
+432 1965(`y')U
+462 2037(nly)U
+432 2181(I)U
+432 2109(has)U
+452 2181(PSS)U
+586 2253(,)U
+432 2325(D)U
+432 2253(access)U
+475 2325(SA)U
+432 2469(m)U
+432 2397(`y')U
+479 2469(ight)U
+432 2685(r)U
+432 2613(a)U
+432 2541(add)U
+452 2685(elayDSA)U
+432 2829(t)U
+432 2757(attribute)U
+449 2829(o)U
+432 2901(i)U
+(t)R
+432 2973(o)U
+(wn)R
+556 3045(,)U
+432 3117(w)U
+432 3045(entry)U
+475 3117(ith)U
+432 3261(D)U
+432 3189(the)U
+475 3261(N)U
+432 3405(D)U
+432 3333(of)U
+475 3405(SA)U
+432 3549(a)U
+432 3477(`x')U
+459 3549(s)U
+432 3621(t)U
+(he)R
+432 3693(v)U
+(alue.)R
+432 3837(w)U
+432 3765(Then)U
+475 3837(hen)U
+432 3981(`)U
+432 3909(DSA)U
+452 3981(y')U
+506 4053(s)U
+432 4197(r)U
+432 4125(a)U
+432 4053(get)U
+452 4197(eference)U
+432 4341(a)U
+432 4269(to)U
+459 4341(n)U
+432 4413(I)U
+(nternet)R
+432 4557(D)U
+432 4485(based)U
+475 4557(SA,)U
+432 4701(w)U
+432 4629(it)U
+475 4701(ill)U
+EP
+%%Page: ? 23
+BP
+1 F
+60 Z
+533 21(n)U
+432 93(t)U
+432 21(chai)U
+449 93(he)U
+432 165(o)U
+(peration)R
+432 309(D)U
+432 237(the)U
+475 309(SA)U
+432 453(C)U
+432 381(`x'.)U
+472 453(learly,)U
+432 597(e)U
+432 525(if)U
+459 597(very)U
+432 741(c)U
+432 669(DSA)U
+459 741(hooses)U
+432 885(s)U
+432 813(the)U
+455 885(ame)U
+432 1029(D)U
+432 957(relay)U
+475 1029(SA,)U
+432 1173(D)U
+432 1101(that)U
+475 1173(SA)U
+509 1245(l)U
+432 1317(s)U
+432 1245(wil)U
+455 1317(oon)U
+432 1389(b)U
+(ecome)R
+670 1461(d)U
+432 1533(a)U
+432 1461(overloade)U
+459 1533(nd)U
+432 1605(r)U
+(eject)R
+432 1749(a)U
+432 1677(your)U
+459 1749(ssociation)U
+432 1893(w)U
+432 1821(attempt)U
+614(s)S
+475 1893(ith)U
+432 2037(`)U
+432 1965(a)U
+452 2037(busy')U
+432 2181(S)U
+432 2109(error.)U
+465 2181(o)U
+432 2253(s)U
+(ome)R
+432 2397(i)U
+432 2325(care)U
+449 2397(s)U
+432 2469(n)U
+(eeded)R
+432 2613(c)U
+432 2541(in)U
+459 2613(hoosing)U
+432 2757(`)U
+432 2685(the)U
+452 2757(right')U
+432 2901(\()U
+432 2829(DSA)U
+452 2901(We)U
+432 2973(r)U
+(ecognise)R
+432 3117(t)U
+432 3045(that)U
+449 3117(here)U
+546 3189(s)U
+432 3261(t)U
+432 3189(need)U
+449 3261(o)U
+432 3333(b)U
+(e)R
+432 3405(s)U
+(ome)R
+432 3549(o)U
+432 3477(form)U
+462 3549(f)U
+432 3621(`)U
+(relay)R
+432 3693(a)U
+(uthorisation')R
+432 3837(I)U
+432 3765(for)U
+452 3837(SODE-)U
+432 3981(a)U
+432 3909(7.0)U
+459 3981(nd)U
+432 4125(l)U
+432 4053(are)U
+449 4125(ooking)U
+432 4269(p)U
+432 4197(at)U
+462 4269(ossible)U
+669 4341(.)U
+432 4557(N)U
+432 4341(solutions\))U
+475 4557(ULL)U
+575 4629(.)U
+432 4701(Y)U
+432 4629(EDBs)U
+475 4701(ou)U
+EP
+%%Page: ? 24
+BP
+1 F
+60 Z
+432 93(n)U
+432 21(can)U
+462 93(ow)U
+432 165(c)U
+(reate)R
+555 237(L)U
+432 309(E)U
+432 237(NUL)U
+469 309(DB)U
+532 381(,)U
+432 453(t)U
+432 381(\256les)U
+449 453(hat)U
+432 669(\256)U
+432 597(a)U
+432 525(is)U
+465 669(le)U
+506 741(t)U
+432 813(c)U
+432 741(tha)U
+459 813(ontains)U
+432 1029(t)U
+432 957(a)U
+432 885(only)U
+449 1029(wo)U
+496 1101(e)U
+432 1173(h)U
+432 1101(lin)U
+462 1173(eader,)U
+432 1317(n)U
+432 1245(and)U
+462 1317(o)U
+432 1389(e)U
+(ntries.)R
+432 1533(s)U
+432 1461(This)U
+455 1533(hould)U
+432 1677(w)U
+432 1605(make)U
+475 1677(riting)U
+432 1821(t)U
+432 1749(scripts)U
+449 1821(o)U
+432 1893(b)U
+(uild)R
+432 1965(d)U
+(atabases)R
+432 2109(l)U
+432 2037(a)U
+449 2109(ittle)U
+573 2181(.)U
+432 2253(I)U
+432 2181(easier)U
+452 2253(t)U
+432 2325(a)U
+(lso)R
+432 2469(t)U
+432 2397(has)U
+449 2469(he)U
+432 2541(a)U
+(dvantage)R
+432 2685(t)U
+432 2613(that)U
+449 2685(he)U
+499 2757(t)U
+432 2829(e)U
+432 2757(las)U
+459 2829(ntry)U
+432 2973(a)U
+432 2901(from)U
+459 2973(ny)U
+492 3045(e)U
+432 3117(l)U
+432 3045(on)U
+449 3117(evel)U
+432 3261(t)U
+432 3189(in)U
+449 3261(he)U
+432 3333(D)U
+(IT)R
+432 3477(n)U
+432 3405(can)U
+462 3477(ow)U
+432 3621(r)U
+432 3549(be)U
+452 3621(emoved,)U
+432 3765(w)U
+432 3693(this)U
+475 3765(as)U
+432 3837(p)U
+(reviously)R
+432 3981(w)U
+432 3909(greeted)U
+475 3981(ith)U
+432 4053(`)U
+(unwilling)R
+432 4197(p)U
+432 4125(to)U
+462 4197(erform')U
+432 4341(m)U
+432 4269(error)U
+479 4341(essage.)U
+432 4557(E)U
+432 4485(New)U
+469 4557(DB)U
+432 4629(f)U
+(ormat.)R
+432 4701(To)U
+EP
+%%Page: ? 25
+BP
+1 F
+60 Z
+432 21(f)U
+(acilit)R
+574(ate)S
+432 165(l)U
+432 93(faster)U
+449 165(oading)U
+432 309(E)U
+432 237(of)U
+469 309(DB)U
+532 381(,)U
+432 453(t)U
+432 381(\256les)U
+449 453(he)U
+432 525(f)U
+(ormat)R
+432 669(c)U
+432 597(has)U
+459 669(hanged)U
+432 813(\()U
+432 741(slightly)U
+452 813(The)U
+576 885(t)U
+432 957(D)U
+432 885(forma)U
+475 957(ISH)U
+432 1029(p)U
+(resents)R
+432 1173(t)U
+432 1101(to)U
+449 1173(he)U
+432 1245(u)U
+(ser)R
+432 1389(h)U
+432 1317(is,)U
+462 1389(owever)U
+432 1533(s)U
+432 1461(the)U
+455 1533(ame)U
+432 1677(b)U
+432 1605(as)U
+462 1677(efore\).)U
+432 1821(m)U
+432 1749(With)U
+479 1821(ultiple)U
+634 1893(s)U
+432 1965(i)U
+432 1893(attribute)U
+449 1965(nstead)U
+432 2109(r)U
+432 2037(of)U
+452 2109(epeating)U
+432 2253(a)U
+432 2181(the)U
+459 2253(ttribute)U
+432 2397(w)U
+432 2325(type,)U
+475 2397(hich)U
+432 2541(h)U
+432 2469(then)U
+462 2541(as)U
+432 2685(b)U
+432 2613(to)U
+462 2685(e)U
+432 2757(l)U
+(ooked)R
+432 2901(i)U
+432 2829(up)U
+449 2901(n)U
+432 2973(t)U
+(ables,)R
+432 3117(c)U
+432 3045(lines)U
+459 3117(an)U
+432 3261(s)U
+432 3189(be)U
+455 3261(plit)U
+532 3333(g)U
+432 3477(`)U
+432 3405(a)U
+432 3333(usin)U
+5 F
+452 3477(\\)U
+1 F
+(`)R
+432 3549(c)U
+(ontinuati)R
+674(on)S
+432 3693(F)U
+432 3621(charact)U
+607(er.)S
+465 3693(or)U
+432 3765(e)U
+(xample,)R
+656 3837(y)U
+432 3909(t)U
+432 3837(previousl)U
+449 3909(he)U
+432 3981(f)U
+(ollowing)R
+661 4053(d)U
+432 4125(a)U
+432 4053(multival)U
+634(e)S
+459 4125(ttribute)U
+432 4269(r)U
+432 4197(was)U
+452 4269(ecognised:)U
+648 4413(c)U
+(n=)R
+648 4485(C)U
+(olin)R
+825 4557(s)U
+648 4701(C)U
+648 4629(&)U
+648 4557(Robbin)U
+688 4701(olin)U
+EP
+%%Page: ? 26
+BP
+1 F
+60 Z
+648 93(R)U
+648 21(John)U
+688 93(obbins)U
+432 237(w)U
+432 165(as)U
+475 237(ell)U
+432 309(as)U
+648 453(cn=)U
+648 525(C)U
+(olin)R
+825 597(s)U
+648 741(c)U
+648 597(Robbin)U
+675 741(n=)U
+648 813(C)U
+(olin)R
+648 957(R)U
+648 885(John)U
+688 957(obbins)U
+432 1101(t)U
+432 1029(Now,)U
+449 1101(he)U
+432 1173(f)U
+(ollowing)R
+432 1317(a)U
+432 1245(is)U
+459 1317(lso)U
+432 1389(a)U
+(llowed)R
+432 1533(i)U
+432 1461(\(and)U
+449 1533(s)U
+432 1605(m)U
+(ore)R
+566 1677(y)U
+432 1749(u)U
+432 1677(widel)U
+462 1749(sed)U
+432 1893(D)U
+432 1821(by)U
+475 1893(SAs\)...)U
+648 2037(cn=)U
+648 2109(C)U
+(olin)R
+825 2181(s)U
+648 2253(&)U
+648 2181(Robbin)U
+5 F
+695 2253(\\)U
+1 F
+648 2397(C)U
+(olin)R
+648 2541(R)U
+648 2469(John)U
+688 2541(obbins)U
+648 2757(a)U
+648 2685(Listen)U
+675 2757(ddress)U
+432 2901(p)U
+432 2829(Sometimes,)U
+462 2901(articula)U
+644(rly)S
+432 3045(t)U
+432 2973(in)U
+449 3045(he)U
+432 3117(X)U
+(.25)R
+572 3189(,)U
+432 3261(t)U
+432 3189(world)U
+449 3261(he)U
+432 3333(a)U
+(ddress)R
+432 3477(t)U
+432 3405(used)U
+449 3477(o)U
+432 3549(c)U
+(all)R
+432 3693(D)U
+432 3621(a)U
+475 3693(SA)U
+432 3837(n)U
+432 3765(is)U
+462 3837(ot)U
+432 3981(s)U
+432 3909(the)U
+455 3981(ame)U
+432 4125(t)U
+432 4053(as)U
+449 4125(he)U
+432 4197(a)U
+(ddress)R
+432 4341(D)U
+432 4269(the)U
+475 4341(SA)U
+532 4413(t)U
+432 4485(l)U
+432 4413(mus)U
+449 4485(isten)U
+432 4629(S)U
+432 4557(on.)U
+465 4629(o)U
+432 4701(a)U
+EP
+%%Page: ? 27
+BP
+1 F
+60 Z
+432 21(n)U
+(ew)R
+432 93(a)U
+(ttribute)R
+5 F
+432 165(")U
+1 F
+(listenAddress)R
+5 F
+(")R
+1 F
+432 309(h)U
+432 237(attribute)U
+462 309(as)U
+432 381(b)U
+(een)R
+432 453(i)U
+(ntroduced.)R
+432 597(t)U
+432 525(If)U
+449 597(he)U
+432 669(a)U
+(ddress)R
+432 813(D)U
+432 741(your)U
+475 813(SA)U
+549 885(s)U
+432 957(t)U
+432 885(want)U
+449 957(o)U
+432 1029(l)U
+(isten)R
+432 1173(i)U
+432 1101(on)U
+449 1173(s)U
+432 1245(d)U
+(ifferent)R
+432 1389(t)U
+432 1317(to)U
+449 1389(he)U
+432 1461(a)U
+(ddress)R
+432 1605(n)U
+432 1533(it)U
+462 1605(eed)U
+432 1749(p)U
+432 1677(to)U
+462 1749(resent)U
+432 1893(t)U
+432 1821(to)U
+449 1893(he)U
+432 1965(o)U
+(utside)R
+432 2109(u)U
+432 2037(world,)U
+462 2109(se)U
+432 2253(l)U
+432 2181(the)U
+449 2253(istenAddress)U
+432 2397(d)U
+432 2325(to)U
+462 2397(e\256ne)U
+432 2541(a)U
+432 2469(the)U
+459 2541(ddress)U
+432 2685(D)U
+432 2613(the)U
+475 2685(SA)U
+432 2757(s)U
+(hould)R
+432 2901(o)U
+432 2829(listen)U
+462 2901(n,)U
+432 3045(t)U
+432 2973(and)U
+449 3045(he)U
+432 3117(s)U
+(tandard)R
+432 3189(P)U
+(resentationAddress)R
+432 3333(t)U
+432 3261(for)U
+449 3333(he)U
+432 3405(a)U
+(ddress)R
+432 3549(D)U
+432 3477(remote)U
+475 3549(SAs)U
+562 3621(d)U
+432 3693(c)U
+432 3621(shoul)U
+459 3693(all.)U
+432 3837(M)U
+(odify)R
+432 3981(d)U
+432 3909(from)U
+462 3981(ish.)U
+576 4053(d)U
+432 4125(o)U
+432 4053(Instea)U
+462 4125(f)U
+432 4197(a)U
+(lways)R
+616 4269(g)U
+432 4341(a)U
+432 4269(invokin)U
+459 4341(n)U
+432 4413(e)U
+(ditor)R
+432 4557(m)U
+432 4485(to)U
+479 4557(odify)U
+432 4701(e)U
+432 4629(an)U
+459 4701(ntry,)U
+EP
+%%Page: ? 28
+BP
+1 F
+60 Z
+432 93(c)U
+432 21(you)U
+459 93(an)U
+492 165(w)U
+432 237(d)U
+432 165(no)U
+462 237(o)U
+432 381(a)U
+432 309(it)U
+459 381(ll)U
+432 453(f)U
+(rom)R
+432 597(c)U
+432 525(the)U
+459 597(ommand)U
+432 741(w)U
+432 669(line)U
+475 741(ith)U
+432 885(f)U
+432 813(the)U
+452 885(ollowing)U
+683 957(:)U
+432(operations)S
+648 1101(modify)U
+4 F
+648 1245(<)U
+1 F
+648 1173(-add)U
+681 1245(attribute)U
+4 F
+883(>)S
+1 F
+432 1317(or)U
+648 1461(modify)U
+822 1533(e)U
+4 F
+648 1605(<)U
+1 F
+648 1533(-remov)U
+681 1605(attribute)U
+4 F
+883(>)S
+1 F
+648 1821(s)U
+648 1749(Secure)U
+671 1821(earching.)U
+432 1965(Q)U
+432 1893(In)U
+475 1965(uipu-)U
+432 2109(i)U
+432 2037(6.1)U
+449 2109(t)U
+432 2181(w)U
+(as)R
+509 2253(y)U
+432 2325(p)U
+432 2253(onl)U
+462 2325(ossible)U
+432 2469(s)U
+432 2397(to)U
+455 2469(earch)U
+432 2613(p)U
+432 2541(a)U
+462 2613(art)U
+432 2757(t)U
+432 2685(of)U
+449 2757(he)U
+432 2829(D)U
+(IT)R
+432 2973(i)U
+432 2901(if)U
+449 2973(t)U
+432 3045(w)U
+(as)R
+432 3117(p)U
+(ublicly)R
+637 3189(,)U
+432 3261(a)U
+432 3189(readable)U
+459 3261(nd)U
+509 3333(y)U
+432 3405(p)U
+432 3333(onl)U
+462 3405(ublic)U
+610 3477(e)U
+432 3549(a)U
+432 3477(readabl)U
+459 3549(ttributes)U
+432 3693(s)U
+432 3621(were)U
+455 3693(earched.)U
+432 3837(r)U
+432 3765(This)U
+452 3837(estriction)U
+432 3981(n)U
+432 3909(is)U
+462 3981(ow)U
+432 4053(l)U
+(ifted)R
+432 4197(t)U
+432 4125(IF)U
+449 4197(he)U
+432 4269(D)U
+(SA)R
+432 4341(p)U
+(erforming)R
+432 4485(s)U
+432 4413(the)U
+455 4485(earch)U
+432 4629(t)U
+432 4557(holds)U
+449 4629(he)U
+432 4701(e)U
+(ntire)R
+EP
+%%Page: ? 29
+BP
+1 F
+60 Z
+579 21(e)U
+432 93(b)U
+432 21(subtre)U
+462 93(eing)U
+432 165(s)U
+(earched.)R
+432 453(F)U
+452 381(User)U
+465 453(riendly)U
+432 597(T)U
+432 525(Naming)U
+469 597(he)U
+432 669(c)U
+(oncept)R
+432 813(U)U
+432 741(of)U
+475 813(FN)U
+432 957(U)U
+432 885(-)U
+475 957(ser)U
+432 1029(F)U
+(riendly)R
+432 1173(h)U
+432 1101(Naming)U
+462 1173(as)U
+432 1245(b)U
+(een)R
+432 1317(i)U
+(ntroduced)R
+432 1461(s)U
+432 1389(to)U
+455 1461(ome)U
+432 1605(t)U
+432 1533(of)U
+449 1605(he)U
+432 1677(i)U
+(nterface)R
+644(s,)S
+432 1821(a)U
+432 1749(and)U
+459 1821(n)U
+432 1893(e)U
+(xample)R
+432 2037(\()U
+432 1965(tool)U
+452 2037(others/quipu/uips/ufn\))U
+432 2181(b)U
+432 2109(has)U
+462 2181(een)U
+432 2253(w)U
+(ritten)R
+432 2397(d)U
+432 2325(to)U
+462 2397(emonstrate)U
+432 2541(c)U
+432 2469(the)U
+459 2541(apabilit)U
+641(ies.)S
+432 2757(U)U
+432 2685(A)U
+475 2757(FN)U
+432 2973(c)U
+432 2901(a)U
+432 2829(is)U
+459 2973(oncise)U
+432 3045(r)U
+(epresentat)R
+697(ion)S
+432 3189(t)U
+432 3117(used)U
+449 3189(o)U
+432 3261(i)U
+(dentify)R
+432 3405(D)U
+432 3333(a)U
+475 3405(N.)U
+432 3549(e)U
+432 3477(For)U
+459 3549(xample)U
+432 3693(R)U
+5 F
+432 3621(")U
+1 F
+(C)R
+472 3693(obbins,)U
+432 3837(T)U
+432 3765(X-)U
+469 3837(el,)U
+5 F
+515 3909(")U
+1 F
+432 3981(i)U
+432 3909(GB)U
+449 3981(s)U
+432 4053(s)U
+(uf\256cient)R
+432 4197(i)U
+432 4125(to)U
+449 4197(dentify)U
+432 4341(l)U
+432 4269(the)U
+449 4341(ong)U
+432 4413(w)U
+(inded)R
+5 F
+432 4485(")U
+1 F
+(c=GB)R
+5 F
+(@)R
+1 F
+(o=X-)R
+432 4629(S)U
+432 4557(Tel)U
+465 4629(ervices)U
+432 4701(L)U
+(td)R
+5 F
+(@)R
+1 F
+(cn=Colin)R
+EP
+%%Page: ? 30
+BP
+1 F
+60 Z
+432 165(U)U
+432 93(A)U
+432 21(Robbins)U
+5 F
+(")R
+1 F
+(.)R
+475 165(FN)U
+432 309(a)U
+432 237(is)U
+459 309(lso)U
+432 381(c)U
+(ontext)R
+643 453(,)U
+432 525(s)U
+432 453(sensitive)U
+455 525(o)U
+432 741(w)U
+432 669(I)U
+432 597(if)U
+475 741(as)U
+432 813(a)U
+(lready)R
+432 957(i)U
+432 885(located)U
+449 957(n)U
+432 1029(t)U
+(he)R
+432 1173(p)U
+432 1101(GB)U
+462 1173(art)U
+432 1317(t)U
+432 1245(of)U
+449 1317(he)U
+432 1389(D)U
+(IT)R
+432 1533(R)U
+5 F
+432 1461(")U
+1 F
+(C)R
+472 1533(obbins,)U
+432 1677(T)U
+432 1605(X-)U
+469 1677(el)U
+5 F
+(")R
+1 F
+552 1749(d)U
+432 1821(b)U
+432 1749(woul)U
+462 1821(e)U
+432 1893(s)U
+(uf\256cient,)R
+432 2037(i)U
+432 1965(or)U
+449 2037(f)U
+432 2109(u)U
+(nder)R
+432 2253(X)U
+432 2181(the)U
+475 2253(-)U
+496 2325(l)U
+432 2397(p)U
+432 2325(Te)U
+462 2397(art)U
+432 2541(t)U
+432 2469(of)U
+449 2541(he)U
+432 2613(D)U
+(IT)R
+432 2757(R)U
+5 F
+432 2685(")U
+1 F
+(C)R
+472 2757(obbins)U
+5 F
+(")R
+1 F
+432 2901(b)U
+432 2829(would)U
+462 2901(e)U
+432 2973(e)U
+(nough.)R
+432 3117(p)U
+432 3045(A)U
+462 3117(aper)U
+565 3189(g)U
+432 3261(t)U
+432 3189(`Usin)U
+449 3261(he)U
+432 3333(O)U
+(SI)R
+432 3405(D)U
+(irectory)R
+432 3549(a)U
+432 3477(to)U
+459 3549(chieve)U
+432 3693(F)U
+432 3621(User)U
+465 3693(riendly)U
+626 3765(')U
+432 3837(b)U
+432 3765(Naming)U
+462 3837(y)U
+432 3909(S)U
+(.Kille)R
+633 3981(s)U
+432 4053(t)U
+432 3981(describe)U
+449 4053(he)U
+432 4125(a)U
+(pproach)R
+432 4269(f)U
+432 4197(in)U
+452 4269(ull.)U
+432 4413(i)U
+(soentity)R
+432 4557(i)U
+432 4485(&)U
+449 4557(soservice)U
+711 4629(t)U
+432 4701(T)U
+432 4629(replace)U
+607(men)S
+469 4701(he)U
+EP
+%%Page: ? 31
+BP
+1 F
+60 Z
+432 21(d)U
+(irectory)R
+432 165(n)U
+432 93(can)U
+462 165(ow)U
+432 309(u)U
+432 237(be)U
+462 309(sed)U
+432 525(r)U
+432 453(a)U
+432 381(as)U
+452 525(eplace)U
+607(ment)S
+432 669(i)U
+432 597(for)U
+449 669(soentities)U
+432 813(i)U
+432 741(and)U
+449 813(soservices.)U
+432 957(i)U
+432 885(The)U
+449 957(sode-)U
+569 1029(\))U
+432 1101(m)U
+432 1029(gen\(8)U
+479 1101(anual)U
+432 1245(d)U
+432 1173(page)U
+462 1245(escribes)U
+432 1389(t)U
+432 1317(how)U
+449 1389(o)U
+432 1461(s)U
+(et)R
+432 1533(t)U
+(hings)R
+432 1677(a)U
+432 1605(up,)U
+459 1677(nd)U
+432 1749(d)U
+(escribes)R
+3 F
+432 1893(b)U
+1 F
+432 1821(a)U
+3 F
+465 1893(ootsvc)U
+1 F
+432 2037(t)U
+4 F
+432 1965(\322)U
+1 F
+(script)R
+449 2037(o)U
+432 2109(l)U
+(oad)R
+432 2253(D)U
+432 2181(the)U
+475 2253(SA)U
+509 2325(h)U
+432 2397(t)U
+432 2325(wit)U
+449 2397(he)U
+432 2469(r)U
+(elevant)R
+432 2613(T)U
+432 2541(data.)U
+469 2613(here)U
+432 2757(s)U
+432 2685(are)U
+455 2757(ome)U
+566 2829(s)U
+432 2901(i)U
+432 2829(script)U
+449 2901(n)U
+432 2973(o)U
+(thers/quipu/tool)R
+844(s/scripts)S
+432 3117(h)U
+432 3045(to)U
+462 3117(elp)U
+432 3189(m)U
+(anage)R
+432 3333(e)U
+432 3261(such)U
+459 3333(ntries)U
+432 3477(c)U
+432 3405(once)U
+459 3477(reated.)U
+432 3621(a)U
+432 3549(You)U
+459 3621(re)U
+432 3693(s)U
+(trongly)R
+680 3765(d)U
+432 3837(t)U
+432 3765(encourage)U
+449 3837(o)U
+432 3909(r)U
+(egister)R
+432 4053(O)U
+432 3981(your)U
+475 4053(SI)U
+432 4125(a)U
+(pplicat)R
+624(ion)S
+432 4269(t)U
+432 4197(in)U
+449 4269(he)U
+432 4341(d)U
+(irectory)R
+432 4485(u)U
+432 4413(then)U
+462 4485(sing)U
+551 4557(,)U
+432 4629(o)U
+432 4557(UFN)U
+462 4629(perations)U
+432 4701(such)U
+EP
+%%Page: ? 32
+BP
+1 F
+60 Z
+432 21(a)U
+(s)R
+864 93(ftam)U
+648 237(u)U
+5 F
+648 165(")U
+1 F
+(cs,)R
+678 237(cl,)U
+5 F
+731 309(")U
+1 F
+648(GB)S
+864 381(vt)U
+648 525(t)U
+5 F
+648 453(")U
+1 F
+(x-)R
+665 525(el,)U
+648 597(gb)U
+5 F
+(")R
+1 F
+864 669(imisc)U
+648 813(u)U
+5 F
+648 741(")U
+1 F
+(psi,)R
+678 813(s)U
+5 F
+(")R
+1 F
+432 957(s)U
+432 885(will)U
+455 957(tart)U
+432 1101(w)U
+432 1029(to)U
+475 1101(ork.)U
+432 1317(t)U
+432 1245(If)U
+449 1317(he)U
+432 1389(D)U
+(SA)R
+513 1461(s)U
+432 1533(t)U
+432 1461(fail)U
+449 1533(o)U
+432 1605(\256)U
+(nd)R
+432 1749(e)U
+432 1677(a)U
+459 1749(ntity,)U
+432 1893(o)U
+432 1821(the)U
+462 1893(ld)U
+432 1965(i)U
+(soentitie)R
+654(s)S
+432 2109(i)U
+432 2037(\256le)U
+449 2109(s)U
+432 2181(u)U
+(sed)R
+432 2397(b)U
+432 2325(a)U
+432 2253(as)U
+462 2397(ack)U
+432 2613(I)U
+432 2469(up.)U
+452 2613(XI)U
+495 2685(I)U
+432 2757(h)U
+432 2685(IX)U
+462 2757(as)U
+432 2829(b)U
+(ecome)R
+432 2973(o)U
+432 2901(part)U
+462 2973(f)U
+432 3045(t)U
+(he)R
+432 3117(s)U
+(tandard)R
+432 3261(d)U
+432 3189(macro)U
+462 3261(e\256nitions.)U
+432 3405(y)U
+432 3333(If)U
+462 3405(ou)U
+519 3477(e)U
+432 3549(t)U
+432 3477(hav)U
+449 3549(he)U
+496 3621(e)U
+432(lin)S
+648 3765(ts)U
+5 F
+(_)R
+1 F
+(interim:)R
+432 3981(y)U
+432 3909(in)U
+648 3837(IXI)U
+462 3981(our)U
+432 4053(i)U
+(sotailor)R
+432 4197(i)U
+432 4125(\256le,)U
+449 4197(t)U
+432 4269(s)U
+(hould)R
+432 4413(r)U
+432 4341(be)U
+452 4413(emoved.)U
+432 4557(y)U
+432 4485(If)U
+462 4557(ou)U
+432 4701(n)U
+432 4629(do)U
+462 4701(ot)U
+EP
+%%Page: ? 33
+BP
+1 F
+60 Z
+432 21(r)U
+(emove)R
+432 165(l)U
+432 93(the)U
+449 165(ine,)U
+432 309(w)U
+432 237(you)U
+475 309(ill)U
+432 525(h)U
+432 453(a)U
+432 381(get)U
+462 525(armless)U
+432 669(a)U
+432 597(warning)U
+459 669(bout)U
+648 813(duplicate)U
+648 957(f)U
+648 885(pre\256xes)U
+668 957(or)U
+648 1029(c)U
+(ommuniti)R
+910(es)S
+648 1173(a)U
+5 F
+648 1101(")U
+1 F
+(IXI)R
+5 F
+(")R
+1 F
+675 1173(nd)U
+5 F
+648 1245(")U
+1 F
+(IXI)R
+5 F
+(")R
+1 F
+432 1389(s)U
+432 1317(for)U
+455 1389(ome)U
+432 1461(p)U
+(rocesses.)R
+432 1605(s)U
+432 1533(You)U
+455 1605(hould)U
+432 1749(s)U
+432 1677(make)U
+455 1749(ure)U
+432 1893(h)U
+432 1821(you)U
+462 1893(ave)U
+432 2037(i)U
+432 1965(re-)U
+449 2037(nstalled)U
+432 2181(a)U
+432 2109(ALL)U
+459 2181(pplicati)U
+641(ons)S
+432 2325(r)U
+432 2253(that)U
+452 2325(ead)U
+432 2469(i)U
+432 2397(the)U
+449 2469(sotailor)U
+432 2613(r)U
+432 2541(before)U
+452 2613(emoving)U
+432 2757(I)U
+432 2685(this)U
+452 2757(XI)U
+432 2829(d)U
+(e\256nition.)R
+432 2973(i)U
+432 2901(Once)U
+449 2973(s)U
+432 3045(i)U
+(s)R
+432 3117(r)U
+(emoved)R
+432 3261(a)U
+432 3189(old)U
+459 3261(pplicati)U
+641(ons)S
+432 3405(f)U
+432 3333(WILL)U
+452 3405(ail.)U
+432 3549(A)U
+(synch)R
+432 3693(T)U
+432 3621(DUA)U
+469 3693(here)U
+432 3837(a)U
+432 3765(is)U
+459 3837(n)U
+432 3909(\()U
+(undocumented\))R
+432 4053(i)U
+432 3981(asynchronous)U
+449 4053(nterface)U
+432 4197(t)U
+432 4125(to)U
+449 4197(he)U
+432 4269(d)U
+(sap)R
+432 4341(l)U
+(ibrary.)R
+432 4557(m)U
+432 4485(Alias)U
+479 4557(anageme)U
+694(nt)S
+432 4701(m)U
+432 4629(A)U
+479 4701(anageme)U
+694(nt)S
+EP
+%%Page: ? 34
+BP
+1 F
+60 Z
+432 93(o)U
+432 21(version)U
+462 93(f)U
+432 165(d)U
+(ish)R
+432 309(b)U
+432 237(can)U
+462 309(e)U
+432 381(f)U
+(ound)R
+432 525(o)U
+432 453(in)U
+462 525(thers/quipu/uips/m)U
+914(anage.)S
+432 669(h)U
+432 597(This)U
+462 669(as)U
+432 741(a)U
+(dditional)R
+432 885(t)U
+432 813(command)U
+449 885(o)U
+432 957(a)U
+(dd/delet)R
+654(e)S
+432 1101(c)U
+432 1029(and)U
+459 1101(heck)U
+432 1245(e)U
+432 1173(alias)U
+459 1245(ntries)U
+432 1389(t)U
+432 1317(in)U
+449 1389(o)U
+432 1461(D)U
+(IT.)R
+432 1677(s)U
+432 1605(DSA)U
+455 1677(tatistic)U
+617(s)S
+432 1821(T)U
+432 1749(tools)U
+469 1821(here)U
+432 2037(s)U
+432 1965(a)U
+432 1893(is)U
+455 2037(cript)U
+432 2181(o)U
+432 2109(in)U
+462 2181(thers/quipu/tool)U
+844(s/dsastats)S
+432 2325(c)U
+432 2253(which)U
+459 2325(an)U
+432 2397(p)U
+(rocess)R
+432 2541(q)U
+432 2469(the)U
+462 2541(uipu.log)U
+432 2685(p)U
+432 2613(\256le)U
+462 2685(roduced)U
+432 2901(D)U
+432 2829(a)U
+432 2757(by)U
+475 2901(SA)U
+432 3045(p)U
+432 2973(and)U
+462 3045(rovide)U
+432 3189(s)U
+432 3117(some)U
+455 3189(tatistic)U
+617(s)S
+432 3333(t)U
+432 3261(on)U
+449 3333(he)U
+432 3405(D)U
+(SA)R
+432 3477(u)U
+(sage.)R
+432 3693(o)U
+432 3621(DSC)U
+462 3693(thers/quipu/uips/dsc)U
+432 3909(s)U
+432 3837(a)U
+432 3765(provides)U
+455 3909(imple)U
+432 4053(t)U
+432 3981(DUA)U
+449 4053(hat)U
+432 4125(p)U
+(rompts)R
+432 4269(c)U
+432 4197(fom)U
+459 4269(ertain)U
+432 4341(i)U
+(nformation)R
+432 4485(a)U
+432 4413(such)U
+459 4485(s)U
+432 4557(n)U
+(ame)R
+432 4701(o)U
+432 4629(and)U
+462 4701(rganisation,)U
+EP
+%%Page: ? 35
+BP
+1 F
+60 Z
+432 93(r)U
+432 21(and)U
+452 93(eturn)U
+432 237(f)U
+432 165(with)U
+452 237(ull)U
+432 309(n)U
+(ame,)R
+432 453(n)U
+432 381(phone)U
+462 453(umber)U
+432 597(e)U
+432 525(and)U
+459 597(mail)U
+612 669(.)U
+432 813(X)U
+432 669(address)U
+475 813(-)U
+432 885(W)U
+(indows)R
+432 1029(T)U
+432 957(DUA)U
+469 1029(he)U
+432 1173(X)U
+432 1101(two)U
+475 1173(-)U
+432 1245(W)U
+(indow)R
+432 1389(r)U
+432 1317(DUA's)U
+452 1389(eleased)U
+432 1533(B)U
+432 1461(by)U
+472 1533(runel)U
+656 1605(y)U
+432 1677(s)U
+432 1605(Universit)U
+455 1677(hortly)U
+432 1821(I)U
+432 1749(after)U
+452 1821(SODE-)U
+432 1965(h)U
+432 1893(6.0)U
+462 1965(ave)U
+432 2109(i)U
+432 2037(been)U
+449 2109(ntegrated)U
+432 2253(t)U
+432 2181(into)U
+449 2253(his)U
+432 2325(r)U
+(elease,)R
+610 2397(r)U
+432 2469(w)U
+432 2397(togethe)U
+475 2469(ith)U
+432 2613(a)U
+432 2541(`sd')U
+459 2613(n)U
+432 2685(e)U
+(nhanced)R
+432 2829(o)U
+432 2757(version)U
+462 2829(f)U
+432 2901(t)U
+(he)R
+432 2973(`)U
+(widget')R
+667 3045(.)U
+432 3189(T)U
+432 3045(interface)U
+644(s)S
+469 3189(.61)U
+432 3261(s)U
+(trings.)R
+432 3405(s)U
+432 3333(T.61)U
+455 3405(trings)U
+432 3549(b)U
+432 3477(can)U
+462 3549(e)U
+432 3621(r)U
+(epresented)R
+432 3765(m)U
+432 3693(by)U
+479 3765(apping)U
+432 3909(o)U
+432 3837(them)U
+462 3909(nto)U
+432 4053(I)U
+432 3981(an)U
+452 4053(SO)U
+432 4125(8)U
+(859-)R
+432 4269(c)U
+432 4197(1)U
+459 4269(haracte)U
+634(r)S
+432 4413(\()U
+432 4341(set)U
+452 4413(e.g)U
+432 4557(s)U
+432 4485(as)U
+455 4557(upported)U
+432 4701(s)U
+432 4629(by)U
+455 4701(ome)U
+EP
+%%Page: ? 36
+BP
+1 F
+60 Z
+432 93(W)U
+432 21(X-)U
+489 93(indow)U
+432 237(A)U
+432 165(fonts\).)U
+475 237(ccente)U
+630(d)S
+654 309(s)U
+432 381(a)U
+432 309(charact)U
+607(er)S
+459 381(re)U
+432 453(r)U
+(epresented)R
+432 597(t)U
+432 525(by)U
+449 597(wo)U
+432 669(o)U
+(ctets,)R
+432 813(\256)U
+432 741(the)U
+465 813(rst)U
+432 885(i)U
+(ndicati)R
+614(ng)S
+432 1029(a)U
+432 957(the)U
+459 1029(ccent)U
+432 1173(t)U
+432 1101(and)U
+449 1173(he)U
+432 1245(s)U
+(econd)R
+432 1389(b)U
+432 1317(the)U
+462 1389(ase)U
+432 1461(c)U
+(haract)R
+607(er)S
+432 1605(b)U
+432 1533(to)U
+462 1605(e)U
+432 1677(a)U
+(ccent)R
+587(ed.)S
+432 1821(t)U
+432 1749(Note)U
+449 1821(hat)U
+532 1893(e)U
+432 1965(c)U
+432 1893(som)U
+459 1965(ombinations)U
+432 2109(a)U
+432 2037(of)U
+459 2109(ccent)U
+432 2253(c)U
+432 2181(and)U
+459 2253(haracte)U
+634(r)S
+432 2397(n)U
+432 2325(do)U
+462 2397(ot)U
+519 2469(e)U
+432 2541(a)U
+432 2469(hav)U
+459 2541(n)U
+432 2613(e)U
+(quivalent)R
+432 2757(I)U
+432 2685(in)U
+452 2757(SO)U
+432 2829(8)U
+(859-)R
+432 2973(a)U
+432 2901(1,)U
+459 2973(nd)U
+432 3045(h)U
+(ence)R
+576 3117(t)U
+432 3189(b)U
+432 3117(canno)U
+462 3189(e)U
+432 3261(d)U
+(isplayed)R
+432 3405(a)U
+432 3333(on)U
+459 3405(n)U
+432 3477(I)U
+(SO)R
+432 3549(8)U
+(859-)R
+432 3693(d)U
+432 3621(1)U
+3693(evice.)T
+432 3837(f)U
+432 3765(A)U
+452 3837(ew)U
+432 3909(e)U
+(xample)R
+696 3981(.)U
+432(mappings..)S
+532 4053(T.61)U
+432 4125(C)U
+(haracte)R
+647(r)S
+1064(EDB)S
+432 4269(c)U
+432 4197(\256le)U
+459 4269(ode)U
+532 4413(n)U
+432 4485(tilde)U
+5 F
+1018 4557(\\)U
+1 F
+(c4n)R
+432 4701(c)U
+532 4629(e)U
+459 4701(ircum\257ex)U
+5 F
+933(\\)S
+1 F
+(c3e)R
+EP
+%%Page: ? 37
+BP
+1 F
+60 Z
+432 93(g)U
+532 21(a)U
+462 93(rave)U
+5 F
+1149(\\)S
+1 F
+(c1a)R
+432 237(a)U
+532 165(a)U
+459 237(cute)U
+5 F
+1149(\\)S
+1 F
+(c2a)R
+432 453(n)U
+432 381(You)U
+462 453(eed)U
+432 597(t)U
+432 525(to)U
+449 597(ell)U
+432 741(D)U
+432 669(the)U
+475 741(UA)U
+432 885(y)U
+432 813(that)U
+462 885(ou)U
+519 957(e)U
+432 1029(t)U
+432 957(hav)U
+449 1029(he)U
+432 1101(a)U
+(bility)R
+432 1245(d)U
+432 1173(to)U
+462 1245(isplay)U
+432 1389(c)U
+432 1317(the)U
+459 1389(orrect)U
+677 1461(,)U
+432 1533(t)U
+432 1461(charact)U
+607(ers)S
+449 1533(his)U
+432 1677(b)U
+432 1605(can)U
+462 1677(e)U
+432 1749(a)U
+(cheive)R
+617(d)S
+432 1893(o)U
+432 1821(in)U
+462 1893(ne)U
+432 2037(t)U
+432 1965(of)U
+449 2037(wo)U
+432 2109(w)U
+(ays:)R
+432 2181(1)U
+(\))R
+648(In)S
+648 2253(t)U
+(he)R
+648 2325(d)U
+(saptailor)R
+648 2469(y)U
+648 2397(\256le,)U
+678 2469(ou)U
+648 2613(a)U
+648 2541(can)U
+675 2613(dd)U
+748 2685(ch)U
+5 F
+(_)R
+1 F
+(set)R
+432 2973(2)U
+432 2829(or)U
+648 2757(ISO8859)U
+462 2973(\))U
+648(set)S
+648 3117(e)U
+648 3045(the)U
+675 3117(nvironment)U
+648 3261(C)U
+648 3189(variable)U
+688 3261(H)U
+5 F
+(_)R
+1 F
+(SET)R
+5 F
+648 3405(")U
+1 F
+648 3333(to)U
+673 3405(ISO8859)U
+5 F
+(")R
+1 F
+(,)R
+648 3549(u)U
+648 3477(e.g.,)U
+678 3549(sing)U
+748 3621(')U
+648(`csh)S
+748 3693(setenv)U
+648 3837(I)U
+648 3765(CH)U
+5 F
+(_)R
+1 F
+(SET)R
+668 3837(SO8859)U
+432 4053(E)U
+432 3981(Some)U
+469 4053(DB)U
+432 4197(c)U
+432 4125(\256les)U
+459 4197(urrently)U
+432 4341(t)U
+432 4269(have)U
+449 4341(he)U
+432 4413(w)U
+(rong)R
+432 4557(c)U
+432 4485(T.61)U
+459 4557(odes)U
+432 4701(s)U
+432 4629(for)U
+455 4701(ome)U
+EP
+%%Page: ? 38
+BP
+1 F
+60 Z
+610 21(l)U
+432 93(c)U
+432 21(nationa)U
+459 93(haracte)U
+634(rs.)S
+432 237(s)U
+432 165(These)U
+455 237(hould)U
+432 381(b)U
+432 309(now)U
+462 381(e)U
+432 453(r)U
+(eplace)R
+607(d)S
+432 597(t)U
+432 525(with)U
+449 597(he)U
+432 669(c)U
+(orrect)R
+432 813(c)U
+432 741(T.61)U
+459 813(ode.)U
+572 1029(s)U
+432 1101(K)U
+432 1029(Photo)U
+475 1101(evin)U
+562 1173(n)U
+432 1245(h)U
+432 1173(Jorda)U
+462 1245(as)U
+432 1317(g)U
+(iven)R
+432 1461(o)U
+432 1389(the)U
+462 1461(ld)U
+432 1533(g)U
+(3fax)R
+432 1749(m)U
+432 1677(a)U
+432 1605(code)U
+479 1749(ajor,)U
+432 1893(m)U
+432 1821(and)U
+479 1893(uch)U
+573 1965(d)U
+432 2037(o)U
+432 1965(neede)U
+462 2037(verhaul.)U
+432 2181(r)U
+432 2109(This)U
+452 2181(elease)U
+616 2253(s)U
+432 2325(t)U
+432 2253(provide)U
+449 2325(he)U
+432 2397(f)U
+(ramework)R
+432 2541(b)U
+432 2469(for)U
+462 2541(etter)U
+613 2613(g)U
+432 2685(o)U
+432 2613(handlin)U
+462 2685(f)U
+432 2757(p)U
+(hoto)R
+432 2829(a)U
+(ttribute)R
+634(s)S
+432 2973(f)U
+432 2901(in)U
+452 2973(uture)U
+623 3045(.)U
+432 3117(U)U
+432 3045(releases)U
+475 3117(ntil)U
+608 3189(-)U
+432 3261(7)U
+432 3189(ISODE)U
+462 3261(.0)U
+432 3405(y)U
+432 3333(if)U
+462 3405(ou)U
+432 3549(t)U
+432 3477(use)U
+449 3549(he)U
+432 3621(`)U
+(pbmtofax')R
+432 3765(t)U
+432 3693(tool)U
+449 3765(o)U
+432 3837(e)U
+(ncode)R
+432 3981(n)U
+432 3909(any)U
+462 3981(ew)U
+432 4053(p)U
+(hotographs,)R
+432 4197(s)U
+432 4125(you)U
+455 4197(hould)U
+432 4341(t)U
+432 4269(use)U
+449 4341(he)U
+432 4485(o)U
+432 4413(`-)U
+462 4485(ld')U
+432 4629(t)U
+432 4557(\257ag)U
+449 4629(o)U
+432 4701(e)U
+(nsure)R
+EP
+%%Page: ? 39
+BP
+1 F
+60 Z
+432 93(o)U
+432 21(that)U
+462 93(ther)U
+566 165(e)U
+432 237(c)U
+432 165(peopl)U
+459 237(an)U
+432 309(d)U
+(isplay)R
+432 453(p)U
+432 381(the)U
+462 453(ictures)U
+432 597(t)U
+432 525(using)U
+449 597(heir)U
+569 669(1)U
+432 741(b)U
+432 669(6.0/6.)U
+462 741(ased)U
+546 813(.)U
+432 885(T)U
+432 813(code)U
+469 885(his)U
+432 957(o)U
+(ptions)R
+432 1101(n)U
+432 1029(has)U
+462 1101(ot)U
+516 1173(n)U
+432 1245(h)U
+432 1173(bee)U
+462 1245(ard)U
+569 1317(,)U
+432 1389(a)U
+432 1317(wired)U
+459 1389(s)U
+432 1461(y)U
+(ou)R
+506 1533(y)U
+432 1605(w)U
+432 1533(ma)U
+475 1605(ish)U
+432 1749(e)U
+432 1677(to)U
+459 1749(xperiment)U
+432 1893(t)U
+432 1821(with)U
+449 1893(he)U
+432 1965(n)U
+(ew)R
+432 2037(t)U
+(ools.)R
+432 2253(i)U
+432 2181(There)U
+449 2253(s)U
+432 2325(t)U
+(ool)R
+432 2469(c)U
+432 2397(to)U
+459 2469(onvert)U
+432 2613(g)U
+432 2541(the)U
+462 2613(3fax)U
+600 2685(s)U
+432 2757(t)U
+432 2685(picture)U
+449 2757(o)U
+432 2829(p)U
+(ostscript.)R
+761 2973(n)U
+432 3045(Y)U
+432 2973(Authenticat)U
+714(io)S
+475 3045(our)U
+432 3189(c)U
+432 3117(DSA)U
+459 3189(an)U
+492 3261(w)U
+432 3333(i)U
+432 3261(no)U
+449 3333(nsist)U
+432 3477(v)U
+432 3405(on)U
+462 3477(arious)U
+432 3621(o)U
+432 3549(levels)U
+462 3621(f)U
+432 3693(a)U
+(uthentic)R
+654(ation.)S
+432 3837(e)U
+432 3765(For)U
+459 3837(xample,)U
+432 3981(c)U
+432 3909(it)U
+459 3981(an)U
+432 4125(m)U
+432 4053(be)U
+479 4125(ade)U
+432 4269(r)U
+432 4197(to)U
+452 4269(eject)U
+432 4413(o)U
+432 4341(bind)U
+462 4413(perations)U
+432 4557(d)U
+432 4485(that)U
+462 4557(o)U
+432 4629(n)U
+(ot)R
+432 4701(s)U
+(upply)R
+EP
+%%Page: ? 40
+BP
+1 F
+60 Z
+432 93(D)U
+432 21(a)U
+475 93(N.)U
+432 237(i)U
+432 165(This)U
+449 237(s)U
+432 309(s)U
+(et)R
+432 453(t)U
+432 381(via)U
+449 453(he)U
+432 525(`)U
+(authentic)R
+674(ation')S
+432 669(v)U
+432 597(quiputailor)U
+462 669(ariable.)U
+432 813(v)U
+432 741(The)U
+462 813(alue)U
+538 885(')U
+432 957(t)U
+432 885(`DN)U
+449 957(ells)U
+432 1101(r)U
+432 1029(to)U
+452 1101(eject)U
+559 1173(s)U
+432 1245(u)U
+432 1173(bind')U
+462 1245(nless)U
+432 1389(D)U
+432 1317(a)U
+475 1389(N)U
+432 1533(s)U
+432 1461(is)U
+455 1533(upplied,)U
+432 1677(`)U
+432 1605(and)U
+452 1677(simple')U
+432 1821(t)U
+432 1749(insists)U
+449 1821(hat)U
+432 1893(s)U
+(imple)R
+432 1965(a)U
+(uthentic)R
+654(ation)S
+432 2109(t)U
+432 2037(at)U
+449 2109(he)U
+432 2181(v)U
+(ery)R
+526 2253(t)U
+432 2325(i)U
+432 2253(leas)U
+449 2325(s)U
+432 2397(u)U
+(sed.)R
+605 2541(s)U
+432 2613(S)U
+432 2541(Addres)U
+465 2613(electors)U
+432 2757(n)U
+432 2685(Quipu)U
+462 2757(ow)U
+432 2829(c)U
+(hecks)R
+432 2973(t)U
+432 2901(that)U
+449 2973(he)U
+432 3045(P)U
+(SEL,)R
+432 3189(a)U
+432 3117(SSEL)U
+459 3189(nd)U
+432 3261(T)U
+(SEL)R
+606 3333(d)U
+432 3405(b)U
+432 3333(supplie)U
+462 3405(y)U
+432 3549(c)U
+432 3477(a)U
+459 3549(alling)U
+432 3693(m)U
+432 3621(entity)U
+479 3693(atch)U
+432 3837(s)U
+432 3765(the)U
+455 3837(electors)U
+432 3981(i)U
+432 3909(de\256ned)U
+449 3981(n)U
+432 4053(t)U
+(he)R
+432 4125(D)U
+(SAs)R
+432 4197(p)U
+(resentationAddre)R
+877(ss)S
+432 4341(I)U
+432 4269(attribute)U
+634(.)S
+452 4341(f)U
+432 4413(t)U
+(hey)R
+432 4557(n)U
+432 4485(do)U
+462 4557(ot,)U
+432 4701(a)U
+432 4629(the)U
+459 4701(ssociation)U
+EP
+%%Page: ? 41
+BP
+1 F
+60 Z
+432 93(r)U
+432 21(is)U
+452 93(ejecte)U
+594(d)S
+432 309(m)U
+432 237(a)U
+432 165(with)U
+479 309(essage)U
+432 453(t)U
+432 381(of)U
+449 453(he)U
+432 525(f)U
+(orm:)R
+648 597(Session)U
+648 741(n)U
+648 669(entity)U
+678 741(ot)U
+648 813(a)U
+(ttache)R
+820(d)S
+648 957(T)U
+648 885(to)U
+685 957(SAP)U
+792 1101(p)U
+648 1173(c)U
+648 1101(libdsa)U
+675 1173(hanges)U
+432 1317(a)U
+432 1245(There)U
+459 1317(re)U
+432 1461(f)U
+432 1389(a)U
+452 1461(ew)U
+432 1533(c)U
+(hanges)R
+432 1677(t)U
+432 1605(to)U
+449 1677(he)U
+432 1749(d)U
+(sap)R
+432 1821(l)U
+(ibrary)R
+432 1893(p)U
+(rogrammers)R
+432 2037(b)U
+432 1965(should)U
+462 2037(e)U
+432 2109(a)U
+(ware)R
+432 2253(a)U
+432 2181(of.)U
+459 2253(\))U
+648(Calls)S
+648 2397(t)U
+648 2325(to)U
+665 2397(he)U
+4 F
+648 2469(*)U
+5 F
+(_)R
+1 F
+(decode\(\))R
+648 2613(s)U
+648 2541(routine)U
+671 2613(uch)U
+648 2757(d)U
+648 2685(as)U
+678 2757(n)U
+5 F
+(_)R
+1 F
+(decode\(\))R
+648 2901(a)U
+648 2829(and)U
+675 2901(s)U
+5 F
+(_)R
+1 F
+(decode\(\))R
+648 3045(n)U
+648 2973(are)U
+678 3045(o)U
+648 3117(l)U
+(onger)R
+819 3189(.)U
+648(needed)S
+715 3261(e)U
+432(b\))S
+648(Th)S
+648 3333(AttributeType)U
+648 3477(i)U
+648 3405(structure)U
+665 3477(s)U
+648 3549(n)U
+(ow)R
+718 3621(t)U
+648 3765(p)U
+648 3693(a)U
+648 3621(jus)U
+678 3765(ointer)U
+648 3909(t)U
+648 3837(into)U
+665 3909(he)U
+648 3981(O)U
+(ID)R
+648 4053(t)U
+(ables,)R
+648 4197(`)U
+648 4125(thus)U
+668 4197(at)U
+5 F
+(_)R
+1 F
+(table)R
+860(')S
+648 4341(r)U
+648 4269(struct)U
+668 4341(eference)U
+648 4485(n)U
+648 4413(is)U
+678 4485(o)U
+648 4557(l)U
+(onger)R
+819 4629(.)U
+648 4701(S)U
+648 4629(needed)U
+681 4701(o)U
+EP
+%%Page: ? 42
+BP
+1 F
+60 Z
+648 21(c)U
+(ode)R
+648 165(t)U
+648 93(of)U
+665 165(he)U
+648 237(f)U
+(orm)R
+4 F
+648 381(>)U
+3 F
+648 309(at-)U
+681 381(at)U
+5 F
+(_)R
+3 F
+(table.oa)R
+5 F
+(_)R
+3 F
+(syntax)R
+1 F
+648 525(b)U
+4 F
+648 453(\322)U
+1 F
+(should)R
+678 525(e)U
+648 597(r)U
+(eplace)R
+823(d)S
+3 F
+648 741(a)U
+1 F
+648 669(with)U
+3 F
+678 741(t-)U
+4 F
+648 813(>)U
+3 F
+(oa)R
+5 F
+(_)R
+3 F
+(syntax)R
+648 957(a)U
+4 F
+648 885(\322)U
+1 F
+(and)R
+3 F
+678 957(t-)U
+4 F
+648 1029(>)U
+3 F
+(at)R
+5 F
+(_)R
+3 F
+(oid)R
+1 F
+870 1101(d)U
+648 1173(w)U
+4 F
+648 1101(\322)U
+1 F
+(replace)R
+691 1173(ith)U
+4 F
+648 1317(>)U
+3 F
+648 1245(at-)U
+681 1317(oa)U
+5 F
+(_)R
+3 F
+(at.ot)R
+5 F
+(_)R
+3 F
+(oid)R
+1 F
+432 1533(c\))U
+648(A)S
+4 F
+648 1389(\322)U
+1 F
+(.)R
+648 1605(few)U
+648 1677(o)U
+(ther)R
+819 1749(s)U
+648 1821(h)U
+648 1749(routine)U
+678 1821(ave)U
+648 1965(t)U
+648 1893(had)U
+665 1965(heir)U
+648 2037(p)U
+(aramete)R
+870(rs)S
+648 2181(s)U
+648 2109(changed)U
+671 2181(lightly,)U
+648 2325(y)U
+648 2253(so)U
+678 2325(ou)U
+648 2397(s)U
+(hould)R
+648 2541(y)U
+648 2469(run)U
+678 2541(our)U
+648 2613(p)U
+(rograms)R
+648 2757(l)U
+648 2685(through)U
+665 2757(int)U
+648 2829(\()U
+(making)R
+648 2973(y)U
+648 2901(sure)U
+678 2973(ou)U
+648 3045(b)U
+(ring)R
+648 3189(t)U
+648 3117(in)U
+665 3189(he)U
+648 3261(d)U
+(sap)R
+648 3405(i)U
+648 3333(and)U
+665 3405(sode)U
+648 3549(l)U
+648 3477(lint)U
+665 3549(ibraries\))U
+648 3693(c)U
+648 3621(to)U
+675 3693(heck)U
+648 3837(p)U
+648 3765(your)U
+678 3837(rocedure)U
+648 4125(M)U
+648 3909(calls.)U
+701 4125(anual)U
+432 4269(Q)U
+432 4197(The)U
+475 4269(uipu)U
+599 4341(l)U
+432 4413(h)U
+432 4341(Manua)U
+462 4413(as)U
+432 4485(b)U
+(een)R
+432 4557(u)U
+(pdated)R
+432 4701(r)U
+432 4629(to)U
+452 4701(e\257ect)U
+EP
+%%Page: ? 43
+BP
+1 F
+60 Z
+432 93(t)U
+432 21(all)U
+449 93(hese)U
+432 237(f)U
+432 165(new)U
+452 237(eatures.)U
+639 381(.)U
+432 453(T)U
+432 381(Thanks..)U
+469 453(he)U
+432 525(Q)U
+(uipu)R
+432 669(w)U
+432 597(team)U
+475 669(ould)U
+432 813(t)U
+432 741(like)U
+449 813(o)U
+432 885(t)U
+(hank)R
+432 1029(H)U
+432 957(Tim)U
+475 1029(owes,)U
+432 1173(M)U
+432 1101(George)U
+485 1173(ichaelson,)U
+432 1317(W)U
+432 1245(Andrew)U
+489 1317(orsley,)U
+432 1461(F)U
+432 1389(Andrew)U
+465 1461(indlay,)U
+432 1605(B)U
+432 1533(Piete)U
+472 1605(rooks,)U
+432 1749(J)U
+432 1677(Kevin)U
+455 1749(ordan,)U
+432 1893(P)U
+432 1821(Gier)U
+465 1893(ederson,)U
+432 2037(H)U
+432 1965(Juha)U
+475 2037(einanen,)U
+432 2181(J)U
+432 2109(Petri)U
+455 2181(okela,)U
+432 2325(Y)U
+432 2253(Peter)U
+475 2325(ee)U
+432 2469(m)U
+432 2397(and)U
+479 2469(any)U
+556 2541(s)U
+432 2613(p)U
+432 2541(other)U
+462 2613(eople)U
+432 2757(e)U
+432 2685(for)U
+459 2757(nhancing,)U
+432 2901(r)U
+432 2829(bug)U
+452 2901(eporting)U
+432 3045(\256)U
+432 2973(and)U
+465 3045(xing,)U
+432 3189(t)U
+432 3117(and)U
+449 3189(esting)U
+432 3333(a)U
+432 3261(this)U
+459 3333(nd)U
+432 3477(m)U
+432 3405(the)U
+479 3477(any)U
+536 3549(r)U
+432 3621(v)U
+432 3549(othe)U
+462 3621(ersions)U
+432 3765(Q)U
+432 3693(of)U
+475 3765(uipu)U
+432 3909(I)U
+432 3837(since)U
+452 3909(SODE-)U
+432 4053(t)U
+432 3981(6.1)U
+449 4053(o)U
+432 4125(d)U
+(estruction.)R
+432 4341(Colin)U
+EP
+%%Trailer
+pscatsave end restore
+%%Pages: 43

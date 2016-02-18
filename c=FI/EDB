@@ -1,0 +1,206 @@
+SLAVE
+900525134758Z
+o=Hewlett Packard
+masterDSA= c=FI@cn=Ilves
+acl= group # c=FI@o=Tele@cn=Manager # write # child
+acl= others # read # child
+acl= group # c=FI@o=Tele@cn=Manager # write # entry
+acl= others # read # entry
+acl= group # c=FI@o=Tele@cn=Manager # write # default
+acl= others # read # default
+acl= group # c=FI@o=Tele@cn=Manager # write # attributes # accessControlList$userPassword
+acl= others # compare # attributes # accessControlList$userPassword
+treeStructure= applicationEntity & applicationProcess & organizationalUnit & alias & PRMD & quipuNonLeafObject & quipuObject & quipuDSA
+lastModifiedBy= c=FI@o=Tele@cn=Manager
+lastModifiedTime= 900525134758Z
+userPassword= {CRYPT}KS
+o= HP
+o= Hewlett Packard
+objectClass= organization & top & quipuNonLeafObject & quipuObject
+
+o=Tele
+slaveDSA= c=FI@o=Tele@cn=Piranah
+masterDSA= c=FI@cn=Ilves
+acl= others # read # child
+acl= group # c=FI@o=Tele@cn=Manager # write # child
+acl= others # read # entry
+acl= group # c=FI@o=Tele@cn=Manager # write # entry
+acl= others # read # default
+acl= group # c=FI@o=Tele@cn=Manager # write # default
+acl= others # compare # attributes # userPassword$accessControlList
+acl= group # c=FI@o=Tele@cn=Manager # write # attributes # userPassword$accessControlList
+treeStructure= applicationEntity & applicationProcess & organizationalUnit & alias & PRMD & quipuNonLeafObject & quipuObject & quipuDSA
+lastModifiedBy= c=FI@o=Tele@cn=Manager
+lastModifiedTime= 900502124147Z
+userPassword= {CRYPT}NBJOMFW
+description= The national PTT in Finland, headquarters in Helsinki
+o= Tele
+l= Helsinki
+objectClass= organization & top & quipuNonLeafObject & quipuObject
+
+cn=Ilves
+quipuVersion= quipu 6.1 \234 (datanet) of Wed Mar 21 10:33:46 EET 1990
+eDBinfo= c=FI@o=Tele##c=FI@o=Tele@cn=Piranah$cn=Jaguar
+eDBinfo= c=FI#cn=Jaguar#c=FI@o=Tele@cn=Piranah
+eDBinfo= #cn=Jaguar#c=FI@o=Tele@cn=Piranah
+acl= group # c=FI@o=Tele@cn=Manager # write # child
+acl= others # read # child
+acl= group # c=FI@o=Tele@cn=Manager # write # entry
+acl= others # read # entry
+acl= group # c=FI@o=Tele@cn=Manager # write # default
+acl= others # read # default
+acl= group # c=FI@o=Tele@cn=Manager # write # attributes # userPassword$accessControlList
+acl= others # compare # attributes # userPassword$accessControlList
+lastModifiedBy= c=FI@cn=Directory Manager
+lastModifiedTime= 900522063817Z
+manager= c=FI@cn=Directory Manager
+manager= c=FI@o=Tele@cn=Manager
+userPassword= {CRYPT}JOUFP
+seeAlso= c=FI@o=Tele@cn=Piranah
+supportedApplicationContext= X500DSP & X500DAP & quipuDSP
+presentationAddress= '0101'H/TELEX+00728722+RFC-1006+03+131.177.104.142+17003|X121+244231999
+description= The Endangered Ilves
+description= Master DSA for PRMDs Pirkka and Datanet and for ADMD Mailnet
+o= Tele
+l= Tampere, Finland
+cn= Ilves
+objectClass= dSA & applicationEntity & top & quipuObject & quipuDSA
+
+l=Tampere
+acl= others # read # child
+acl= group # c=FI@cn=Directory Manager # write # child
+acl= others # read # entry
+acl= group # c=FI@cn=Directory Manager # write # entry
+acl= others # read # default
+acl= group # c=FI@cn=Directory Manager # write # default
+acl= others # compare # attributes # accessControlList
+lastModifiedBy= c=FI@cn=Directory Manager
+lastModifiedTime= 900525122325Z
+description= The second biggest town in Finland
+stateOrProvinceName= {T.61} H{meen l{{ni
+l= Tampere
+objectClass= locality & top & quipuObject
+
+o=Finnish University and Research Network Project
+masterDSA= cn=jaguar
+acl= others # read # child
+acl= group # c=FI@cn=Directory Manager # write # child
+acl= others # read # entry
+acl= group # c=FI@cn=Directory Manager # write # entry
+acl= others # read # default
+acl= group # c=FI@cn=Directory Manager # write # default
+acl= others # compare # attributes # userPassword$accessControlList
+treeStructure= applicationProcess & organizationalRole & organizationalUnit & alias & quipuNonLeafObject & quipuDSA
+lastModifiedBy= c=FI@cn=Directory Manager
+lastModifiedTime= 900313070530Z
+telephoneNumber= +358-0-4571
+physicalDeliveryOfficeName= Espoo
+postOfficeBox= 40
+postalCode= SF-02101
+postalAddress= POB 40 $ Espoo, Finland SF-02101
+description= Testing a DSA
+o= FUNET
+o= Finnish University and Research Network Project
+stateOrProvinceName= Finland
+l= Espoo, Finland
+objectClass= organization & top & quipuNonLeafObject & quipuObject
+
+cn=Directory Manager
+acl= group # c=FI@cn=Directory Manager # write # entry
+acl= others # read # entry
+acl= group # c=FI@cn=Directory Manager # write # default
+acl= others # read # default
+acl= others # compare # attributes # accessControlList
+lastModifiedBy= c=FI@cn=Directory Manager
+lastModifiedTime= 900302113130Z
+cn= Directory Manager
+aliasedObjectName= c=FI@o=Finnish University and Research Network Project@ou=Tampere University of Technology@cn=Petri Jokela
+objectClass= alias & top & quipuObject
+
+cn=Manager
+acl= others # read # entry
+acl= group # c=FI@cn=Directory Manager # write # entry
+acl= others # read # default
+acl= group # c=FI@cn=Directory Manager # write # default
+acl= others # compare # attributes # accessControlList
+lastModifiedBy= c=FI@cn=Directory Manager
+lastModifiedTime= 900327094314Z
+cn= Manager
+aliasedObjectName= c=FI@o=Finnish University and Research Network Project@ou=Tampere University of Technology@cn=Petri Jokela
+objectClass= alias & top & quipuObject
+
+cn=Rhea
+quipuVersion= quipu 6.0 \231 (etana) of Fri Jan 19 02:59:08 EET 1990
+eDBinfo= c=FI#cn=jaguar#
+eDBinfo= #cn=jaguar#
+eDBinfo= c=FI@o=Tampere University of Technology##
+acl= group # c=FI@o=Tampere University of Technology@cn=Manager # write # entry
+acl= others # read # entry
+acl= group # c=FI@o=Tampere University of Technology@cn=Manager # write # default
+acl= others # read # default
+acl= others # compare # attributes # accessControlList$userPassword
+acl= self # write # attributes # accessControlList$userPassword
+lastModifiedBy= c=FI@o=Tampere University of Technology@cn=Manager
+lastModifiedTime= 900522065702Z
+manager= c=FI@o=Tampere University of Technology@cn=Manager
+userPassword= {CRYPT}QKFB
+seeAlso= c=FI@o=Tampere University of Technology
+supportedApplicationContext= X500DSP & X500DAP & quipuDSP
+presentationAddress= '0101'H/TELEX+00728722+RFC-1006+03+128.214.1.2+17003
+presentationAddress= '233235372f496e7465726e65743d3132382e3231342e312e322b3137303033'H/X121+24432315101521
+description= The Rhea DSA located at Tampere Univ of Technology, Finland holding the TUT bit of the DIT.
+ou= Software Systems Laboratory
+o= Tampere University of Technology
+l= Hervanta, Tampere
+cn= Rhea
+knowledgeInformation= testing
+objectClass= dSA & applicationEntity & top & quipuDSA
+
+o=Tampere University of Technology
+masterDSA= c=FI@cn=Rhea
+acl= group # c=FI@o=Tampere University of Technology@cn=Manager # write # child
+acl= others # read # child
+acl= group # c=FI@o=Tampere Universtity of Technology@cn=Manager # write # entry
+acl= others # read # entry
+acl= group # c=FI@o=Tampere University of Technology@cn=Manager # write # default
+acl= others # read # default
+acl= others # compare # attributes # accessControlList$userPassword
+treeStructure= applicationEntity & applicationProcess & groupOfNames & organizationalUnit & alias & domainRelatedObject & quipuNonLeafObject & quipuDSA
+associatedDomain= tut.fi
+lastModifiedBy= c=fi@cn=manager
+lastModifiedTime= 891027130309Z
+userPassword= {CRYPT}WVW
+telephoneNumber= +358-31-162111
+postOfficeBox= P.O. Box 527
+postalCode= SF-33101
+postalAddress= Tieteenkatu 21
+o= TUT
+o= TTKK
+o= Tampereen teknillinen korkeakoulu
+o= Tampere University of Technology
+streetAddress= Tieteenkatu 21
+stateOrProvinceName= {T.61} H{meen l{{ni
+l= Hervanta, Tampere
+objectClass= organization & top & domainRelatedObject & quipuNonLeafObject & quipuObject
+
+o=Digital Inc
+masterDSA= cn=jaguar
+acl= group # c=FI@cn=Directory Manager # write # child
+acl= others # read # child
+acl= others # read # entry
+acl= group # c=FI@cn=Directory Manager # write # entry
+acl= others # read # default
+acl= group # c=FI@cn=Directory Manager # write # default
+acl= others # compare # attributes # accessControlList
+treeStructure= applicationEntity & applicationProcess & organizationalUnit & quipuNonLeafObject & quipuDSA
+lastModifiedBy= c=FI@cn=Directory Manager
+lastModifiedTime= 891025113352Z
+userPassword= {CRYPT}GJDJWBO
+o= Digital Oy
+o= Digital Inc
+o= Digital
+o= DEC
+stateOrProvinceName= {T.61} Uudenmaan l{{ni
+l= Espoo
+objectClass= organization & top & quipuNonLeafObject & quipuObject
+

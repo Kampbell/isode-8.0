@@ -1,0 +1,14 @@
+
+         -------------------- help --------------------
+
+	 Enter the number of the option you wish
+
+	 1  Read information (this is the default)
+	 2  Add entries (persons, roles and rooms)
+	 3  Update existing entries in the directory
+	 4  Remove entries from the directory
+
+	 or enter q to quit from this service
+
+	 ----------------- end of help ----------------
+

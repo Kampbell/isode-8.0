@@ -1,0 +1,22 @@
+
+         -------------------- help --------------------
+
+         To enter the telex number information:
+
+         First enter the number of the telex
+
+	 Number: 0028722 and press <CR>
+
+	 Then enter the country:
+
+	 Country: G and press <CR>
+
+	 Finally enter the answerback
+
+	 Answerback: UCLPHYS <CR>
+
+         The system will display: Number, Country and
+	 Answerback, so you must enter only the values.
+
+         ------------------ end of help ---------------
+

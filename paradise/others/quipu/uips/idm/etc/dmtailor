@@ -1,0 +1,51 @@
+#vicuna address below
+#dsa_address:TELEX+00728722+RFC-1006+03+128.16.6.8+50987|X121+23421920030041|TELEX+00728722+RFC-1006+04+128.16.6.8+50988|TELEX+00728722+X.25(80)+02+00000511160041|TELEX+00728722+X.25(80)+06+20433450420141
+dsa_address:TELEX+00728722+RFC-1006+03+128.86.8.56+17003
+yes:y
+no:n
+inverseVideo:off
+commonatt:telephoneNumber
+orgatt:telexNumber
+ouatt:telexNumber
+prratt:rfc822Mailbox
+prratt:roomNumber
+rlatt:telephoneNumber
+rmatt:roomNumber
+rmatt:telephoneNumber
+rmatt:description
+mapattname:facsimileTelephoneNumber Fax
+mapattname:rfc822Mailbox Electronic mail
+#mapattname:mhsORAddresses X.400 mail
+mapattname:telephoneNumber Telephone number
+mapattname:personalTitle Personal title
+mapattname:favouriteDrink Favourite drink
+mapattname:roomNumber Room number
+mapattname:postalAddress Postal address
+mapattname:description Description
+# example phone mappings
+#mapphone:+44 71-380-:
+#mapphone:+44 :0
+
+country:AU Australia
+country:AT Austria
+country:BE Belgium
+country:BR Brazil
+country:CA Canada
+country:CH Switzerland
+country:DE Germany
+country:DK Denmark
+country:ES Spain
+country:FI Finland
+country:FR France
+country:GB United Kingdom
+country:IE Ireland
+country:IS Iceland
+country:IN India
+country:IL Israel
+country:IT Italy
+country:NL The Netherlands
+country:NO Norway
+country:NZ New Zealand
+country:PT Portugal
+country:SE Sweden
+country:US United States

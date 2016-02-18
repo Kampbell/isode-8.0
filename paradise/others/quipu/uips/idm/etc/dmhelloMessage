@@ -1,0 +1,18 @@
+You may use this directory service to manage the information on your
+organisation header, change the manager's password and maintain the
+entries under your organisation.
+
+
+?          On-line help is available to explain in detail how to use this
+           Directory Service.  Type ? at any prompt, and the system
+	   will display a help message according to the prompt you are at.
+
+q          You may type q to quit a prompt and go back to a previous prompt.
+           Typing q at the initial menu, will quit from this service.
+
+[default]  When a prompt has a default value, it is shown between brackets [].
+           Press <CR> to accept the value shown.
+
+Control-C  To abandon a query, or entry of current query, Control-C will
+           take the system to the initial menu.
+

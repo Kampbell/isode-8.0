@@ -1,0 +1,16 @@
+
+         -------------------- help --------------------
+
+	 Enter the number of the option you wish
+
+         1  Display name, phone and email of all entries
+	 2  Read information (this is the default)
+	 3  Add entries (persons, roles and rooms)
+	 4  Update existing entries in the directory
+	 5  Remove entries from the directory
+	 6  Allows you to move to another portion of the directory
+
+	 or enter q to quit from this menu
+
+	 ----------------- end of help ----------------
+

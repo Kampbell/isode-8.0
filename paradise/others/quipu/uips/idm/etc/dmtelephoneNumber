@@ -1,0 +1,15 @@
+
+         -------------------- help --------------------
+
+         Please enter the telephone number in the format:
+
+         +44  71 387 7050 ext. 7292
+          ^   ^   ^____^         ^
+          |   |      |           |_ The extension number
+          |   |      |_____________ The local number
+          |   |____________________ The area code
+          |________________________ The country code
+
+
+         ------------------ end of help ---------------
+

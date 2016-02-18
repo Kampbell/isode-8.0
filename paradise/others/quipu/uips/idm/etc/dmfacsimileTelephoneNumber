@@ -1,0 +1,13 @@
+
+         -------------------- help --------------------
+
+	 Enter the fax number in the format:
+
+         For example: +44 71 387 1397
+                       ^   ^   ^____^ 
+                       |   |      |_____ The local number
+                       |   |____________ The area code
+                       |________________ The country code
+
+         ----------------- end of help ----------------
+

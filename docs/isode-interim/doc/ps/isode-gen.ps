@@ -1,0 +1,6979 @@
+%!PS-Adobe-1.0
+%%Creator: cheetah.ca.psi.com:mrose (Marshall Rose)
+%%Title: stdin
+%%CreationDate: Mon Mar 11 08:16:55 1991
+%%DocumentFonts: Times-Roman Times-Italic Times-Bold Symbol Times-Roman
+%%Pages: (atend)
+%%EndComments
+% lib/pscat.pro -- prolog for pscat (troff) files
+% Copyright (C) 1985 Adobe Systems, Inc.
+save /pscatsave exch def
+/$pscat 50 dict def
+$pscat begin
+/fm [1 0 0 1 0 0] def
+/xo 0 def /yo 0 def
+/M /moveto load def
+/R /show load def
+/S {exch currentpoint exch pop moveto show}def
+/T {exch currentpoint pop exch moveto show}def
+/U {3 1 roll moveto show}def
+/siz 0 def
+/font 0 def
+/Z {/siz exch def SF}def
+/F {/font exch def SF}def
+/SF{font 0 ne
+    {catfonts font 1 sub get fm 0 siz put fm 3 siz neg put 
+     fm makefont setfont}if}def
+/BP{save/catsv exch def 0 792 translate 72 432 div dup neg scale 
+  xo yo translate 0 0 moveto}def
+/EP{catsv restore showpage}def
+
+% definitions for PPROC callback functions
+% each PPROC is called with the following number on the stack:
+% pointsize charcode railmag pswidth pschar x y wid
+/$pprocs 50 dict def
+/fractm [.65 0 0 .6 0 0] def
+% fractions
+/PS1{gsave $pprocs begin
+    /wid exch def pop pop pop pop pop /ch exch def /size exch def
+    /pair $pprocs ch get def /cf currentfont def
+    cf fractm makefont setfont
+    0 .3 size mul 6 mul 2 copy neg rmoveto pair 0 get show rmoveto
+    currentfont cf setfont (\244) show setfont
+    pair 1 get show grestore wid .06 div 0 rmoveto end}def
+$pprocs begin
+8#34 [(1)(4)] def
+8#36 [(1)(2)] def
+8#46 [(3)(4)] def
+end
+% boxes
+/PS2{gsave /wid exch def pop pop /char exch def pop pop pop /size exch def
+    /len size 3.5 mul def % length of a side
+    len 0 rlineto 0 len neg rlineto len neg 0 rlineto closepath
+    char 3 eq {fill}{size 5 mul .07 mul setlinewidth stroke}ifelse
+    grestore wid .06 div 0 rmoveto}def
+/PS3/PS2 load def		% boxes are the same...
+% circle
+/PS4{gsave /wid exch def pop pop pop pop pop pop /size exch def
+    wid .8333 mul size 2.5 mul neg rmoveto currentpoint	% center
+    newpath size 1.8 mul 0 360 arc size .2 mul setlinewidth stroke
+    grestore wid .06 div 0 rmoveto}def
+/bb{$pprocs begin /wid exch def pop pop pop pop pop pop /size exch 6 mul def
+    /s2 size 2 div def /s4 size 4 div def gsave 
+    currentpoint newpath transform round exch round exch itransform translate
+    size 16 div setlinewidth 2 setlinejoin 0 setgray}def
+$pprocs begin
+/mrr{moveto rlineto rlineto}def
+/be{stroke grestore wid .06 div 0 rmoveto end}def
+end
+% leftfloor
+/PS6 {bb s4 0 0 size s4 size -.8 mul mrr be}def
+% rightfloor
+/PS7 {bb s4 neg 0 0 size s4 size -.8 mul mrr be}def
+% leftceil
+/PS8 {bb s4 0 0 size neg s4 size .2 mul mrr be}def
+% rightceil
+/PS9 {bb s4 neg 0 0 size neg s4 size .2 mul mrr be}def
+% boldvert
+/PS5 {bb 0 0 0 size neg s4 size .2 mul mrr be}def
+% box rule
+/PS32 {bb /sw size 24 div def sw 2 div size 4.5 div moveto
+       0 size neg rlineto sw setlinewidth be}def
+% rule (roman, bold and italic)
+/PS16 {gsave $pprocs begin
+    /wid exch def pop pop pop pop pop pop /size exch 6 mul def
+    /sw size 14 div def currentpoint exch sw 2 div sub exch
+    newpath transform round exch round exch itransform translate
+    0 0 moveto size 2 div 0 rlineto sw setlinewidth be}def
+% lefttopcurl    
+/PS20 {bb s4 size .2 mul moveto 0 size -.55 mul rlineto currentpoint 
+    pop size -.8 mul 2 copy exch s4 add exch s4 arcto pop pop pop pop be}def
+% leftbotcurl
+/PS21 {bb s4 size -.8 mul moveto 0 size .55 mul rlineto currentpoint 
+    pop size .2 mul 2 copy exch s4 add exch s4 arcto pop pop pop pop be}def
+% righttopcurl
+/PS22 {bb s4 size .2 mul moveto 0 size -.55 mul rlineto currentpoint
+     pop size -.8 mul 2 copy exch s4 sub exch s4 arcto pop pop pop pop be}def
+% rightbotcurl
+/PS23 {bb s4 size -.8 mul moveto 0 size .55 mul rlineto currentpoint
+     pop size .2 mul 2 copy exch s4 sub exch s4 arcto pop pop pop pop be}def
+% rightmidcurl
+/PS25 {bb /s3 size -.3 mul def s4 size -.8 mul moveto s4 s3 s2 s3
+    s4 arcto pop pop size add s4 s3 4 2 roll
+    s4 arcto pop pop pop pop s4 size .2 mul lineto be}def
+% leftmidcurl
+/PS24 {bb /s3 size -.3 mul def s4 size -.8 mul moveto s4 s3 0 s3
+    s4 arcto pop pop size add s4 s3 4 2 roll s4 arcto pop pop pop pop 
+    s4 size .2 mul lineto be}def
+/xo 0 def /yo -186 def
+/catfonts [
+	/Times-Roman findfont
+	/Times-Italic findfont
+	/Times-Bold findfont
+	/Symbol findfont
+	/Times-Roman findfont
+	] def
+%%EndProlog
+%%Page: ? 1
+BP
+1 F
+60 Z
+270 381(ISODE-GEN)U
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+3058(\))S
+3 F
+54 Z
+270 669(NAME)U
+1 F
+60 Z
+486 741(isode\261gen)U
+750(\261)S
+800(generating)S
+1075(the)S
+1169(ISO)S
+1285(Development)S
+1630(Environment)S
+3 F
+54 Z
+270 840(READ)U
+441(THIS)S
+1 F
+60 Z
+486 912(This)U
+622(documentat)S
+904(ion)S
+1010(describes)S
+1263(how)S
+1395(to)S
+1471(con\256gure,)S
+1742(generate)S
+1947(,)S
+1991(and)S
+2107(install)S
+2284(the)S
+2387(ISO)S
+2511(Development)S
+2864(Environ-)S
+486 1083(A)U
+486 984(ment.)U
+529 1083(cquisition,)U
+803(use,)S
+919(and)S
+1027(distribution)S
+1326(of)S
+1397(this)S
+1505(module)S
+1707(and)S
+1815(related)S
+2001(materia)S
+2183(ls)S
+2244(are)S
+2339(subject)S
+2531(to)S
+2599(the)S
+2693(restrictions)S
+2981(of)S
+3051(a)S
+486 1254(Y)U
+486 1155(license)U
+674(agreeme)S
+879(nt.)S
+981(Consult)S
+1188(the)S
+1282(Preface)S
+1483(in)S
+1550(the)S
+2 F
+1644(User's)S
+1823(Manual)S
+1 F
+2030(for)S
+2120(the)S
+2214(full)S
+2318(terms)S
+2472(of)S
+2542(this)S
+2649(agreeme)S
+2854(nt.)S
+529 1254(ou)U
+611(will)S
+727(probably)S
+963(want)S
+1101(to)S
+1169(read)S
+1294(over)S
+1422(this)S
+1530(entire)S
+1689(document)S
+1948(\256rst,)S
+2077(before)S
+2252(typing)S
+2427(any)S
+2535(commands;)S
+2834(e.g.,)S
+2957(there)S
+486 1425(C)U
+486 1326(are)U
+580(optional)S
+798(components)S
+1109(described)S
+1360(later)S
+1488(on)S
+1568(that)S
+1679(require)S
+1870(additional)S
+2132(settings)S
+2336(in)S
+2403(the)S
+2497(con\256guration)S
+2838(\256le.)S
+526 1425(omments)U
+773(concerning)S
+1067(this)S
+1179(release)S
+1372(should)S
+1557(be)S
+1639(directed)S
+1859(to)S
+1931(the)S
+2030(mailbox)S
+2253(``Bug\261ISODE)S
+5 F
+(@)R
+1 F
+(NISC.P)R
+2838(SI.NET''.)S
+486 1569(c)U
+486 1497(Do)U
+3 F
+584(not)S
+1 F
+692(send)S
+827(bug)S
+942(reports)S
+1134(to)S
+1206(the)S
+1305(ISODE)S
+1505(discussion)S
+1779(group.)S
+1978(If)S
+2042(you)S
+2156(want)S
+2297(to)S
+2368(subscribe)S
+2619(to)S
+2690(the)S
+2788(ISODE)S
+2988(dis-)S
+513 1569(ussion)U
+686(group,)S
+861(drop)S
+991(a)S
+1038(note)S
+1162(to)S
+1229(``ISODE-Request)S
+5 F
+(@)R
+1 F
+(NIC.DDN.MIL''.)R
+3 F
+54 Z
+270 1668(SYNOPSIS)U
+1 F
+60 Z
+702 1740(%)U
+772(cd)S
+849(isode\261interim)S
+1453 1812(h)U
+702 1884(%)U
+702 1812(%)U
+772(cp)S
+849(con\256g/)S
+2 F
+(system)R
+1 F
+(.h)R
+1241(h/con\256g.)S
+772 1884(cp)U
+849(con\256g/)S
+2 F
+(system)R
+1 F
+(.make)R
+1342(con\256g/CONFIG.make)S
+702 2028(%)U
+702 1956(%)U
+772(cp)S
+849(con\256g/)S
+4 F
+(*)R
+1 F
+(.local)R
+1199(support/)S
+772 2028(./make)U
+955(everything)S
+1280 2100(g)U
+3 F
+54 Z
+270 2271(DESCRIPTION)U
+4 F
+60 Z
+702 2100(#)U
+1 F
+752(./make)S
+935(inst\261everythin)S
+486 2343(This)U
+622(is)S
+691(a)S
+747(description)S
+1044(of)S
+1123(how)S
+1255(one)S
+1371(can)S
+1484(bring)S
+1640(up)S
+1729(the)S
+1832(ISODE.)S
+2071(It)S
+2136(is)S
+2204(assumed)S
+2439(that)S
+2558(you)S
+2676(have)S
+2818(super\261user)S
+3058 2415(r)U
+486 2487(g)U
+486 2415(privileges)U
+751(in)S
+825(order)S
+979(to)S
+1053(\(re\261\)install)S
+1344(the)S
+1444(software.)S
+1712(Super\261user)S
+2008(privileges)S
+2272(are)S
+2372(not)S
+2475(required)S
+2702(to)S
+2775(con\256gure)S
+3028(o)S
+516 2487(enerate)U
+711(this)S
+818(software.)S
+486 2586(T)U
+(he)R
+603(distribution)S
+904(tape)S
+1028(contains)S
+1252(the)S
+1349(hierarchy)S
+1600(for)S
+1693(the)S
+3 F
+1790(isode\261interim)S
+1 F
+2164(directory.)S
+2440(Bring)S
+2599(the)S
+2695(sources)S
+2897(on\261line)S
+486 2658(by)U
+566(changing)S
+807(to)S
+874(a)S
+921(directory)S
+1159(for)S
+1249(local)S
+1387(sources)S
+1587(and)S
+1694(running)S
+1901(tar,)S
+2000(e.g.,)S
+702 2802(%)U
+772(cd)S
+849(/usr/src/local)S
+1161(/)S
+702 2946(%)U
+702 2874(%)U
+772(tar)S
+856(x)S
+772 2946(cd)U
+849(isode\261interim)S
+3 F
+54 Z
+270 3117(CONFIGURATION)U
+1 F
+60 Z
+486 3189(First,)U
+631(go)S
+711(to)S
+778(the)S
+3 F
+872(con\256g/)S
+1 F
+1062(directory.)S
+486 3504(S)U
+702 3333(%)U
+772(cd)S
+849(con\256g)S
+519 3504(elect)U
+666(the)S
+772(Make\256le)S
+1018(and)S
+1137(include-\256le)S
+1444(skeletons)S
+1700(which)S
+1879(most)S
+2027(closely)S
+2229(match)S
+2408(your)S
+2549(system.)S
+2782(The)S
+2907(current)S
+486 3576(choices)U
+687(are:)S
+2 F
+702 3720(\256le)U
+1008(con\256guration)S
+1 F
+702 3864(a)U
+702 3792(apollo)U
+1008(Apollo)S
+729 3864(ux)U
+1008(A/UX)S
+1174(release)S
+1362(1.1)S
+1523 3936(X)U
+702 4008(b)U
+702 3936(bsd42)U
+1008(generic)S
+1206(4.2BSD)S
+1417(UNI)S
+732 4008(sd43)U
+1008(generic)S
+1206(4.3BSD)S
+1417(UNIX)S
+702 4152(b)U
+702 4080(bsd43\261rt)U
+1008(RT/PC)S
+1195(with)S
+1322(4.3BSD)S
+732 4152(sd44)U
+1008(4.4BSD)S
+1219(UNIX)S
+1388(with)S
+1515(OSI)S
+702 4296(m)U
+702 4224(hpux)U
+1008(HP\261UX)S
+749 4296(ips)U
+1008(MIPS)S
+1167(RISC/OS)S
+1436 4368(x)U
+702 4440(r)U
+702 4368(osx)U
+1008(Olivetti)S
+1213(LSX)S
+1346(30x)S
+722 4440(os)U
+1008(Ridge)S
+1172(Operating)S
+1433(System)S
+270 4728(S)U
+(un)R
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3048(1)S
+EP
+%%Page: ? 2
+BP
+1 F
+60 Z
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+702 669(sunlink3)U
+1008(SunOS)S
+1197(release)S
+1385(3)S
+1435(with)S
+1562(SunLink)S
+1789(OSI/X.25)S
+2040(release)S
+2228(5.2)S
+2273 741(0)U
+702 813(s)U
+702 741(sunlink4)U
+1008(SunOS)S
+1197(release)S
+1385(4)S
+1435(with)S
+1562(SunLink)S
+1789(OSI/X.25)S
+2040(release)S
+2228(6.)S
+725 813(unlink7)U
+1008(SunOS)S
+1197(release)S
+1385(4)S
+1435(with)S
+1562(SunNet)S
+1762(OSI/X.25)S
+2013(release)S
+2201(7.0)S
+702 957(s)U
+702 885(sunos3)U
+1008(SunOS)S
+1197(release)S
+1385(3)S
+725 957(unos4)U
+1008(SunOS)S
+1197(release)S
+1385(4)S
+1593 1029(S)U
+702 1101(s)U
+702 1029(sys52\261exos)U
+1008(SVR2)S
+1174(UNIX)S
+1343(with)S
+1470(EXO)S
+725 1101(ys52\261rt)U
+1008(RT/PC)S
+1195(with)S
+1322(AIX)S
+702 1173(s)U
+(ys52\261sun)R
+1008(SVR2)S
+1174(UNIX)S
+1343(emulati)S
+1525(on)S
+1605(on)S
+1685(SunOS)S
+1874(release)S
+2062(3)S
+702 1317(s)U
+702 1245(sys52\261win)U
+1008(SVR2)S
+1174(UNIX)S
+1343(with)S
+1470(WIN/TCP)S
+725 1317(ys53)U
+1008(generic)S
+1206(SVR3)S
+486 1533(T)U
+702 1389(ultrix)U
+1008(Ultrix)S
+1172(3.1)S
+523 1533(he)U
+600(make\256le)S
+828(skeleton)S
+1049(has)S
+1149(the)S
+1243(extension)S
+3 F
+1494(.make)S
+1 F
+(,)R
+1684(whereas)S
+1901(the)S
+1995(include\261\256le)S
+2300(skeleton)S
+2521(has)S
+2621(the)S
+2715(extension)S
+3 F
+2966(.h)S
+1 F
+(.)R
+3 F
+54 Z
+378 1632(MAKEFILE)U
+1 F
+60 Z
+486 1704(Copy)U
+637(the)S
+732(make\256le)S
+961(skeleton)S
+1183(of)S
+1254(your)S
+1385(choice)S
+1564(to)S
+3 F
+1632(pickle.make)S
+1 F
+(,)R
+1976(where)S
+2143(``pickle'')S
+2391(is)S
+2451(the)S
+2545(name)S
+2696(of)S
+2766(your)S
+2896(system.)S
+486 1776(Now)U
+622(edit)S
+733(this)S
+840(\256le)S
+937(to)S
+1004(set)S
+1091(the)S
+1185(following)S
+2 F
+1439(make)S
+1 F
+1586(variables:)S
+2 F
+702 1920(variable)U
+1027(default)S
+1513(speci\256es)S
+1 F
+2318 1992(\))U
+702 2064(L)U
+702 1992(OPTIONS)U
+1513(options)S
+1710(to)S
+2 F
+1777(cc)S
+1 F
+1851(and)S
+2 F
+1958(lint)S
+1 F
+2059(\(e.g.,)S
+2201(-I../h)S
+739 2064(SOCKET)U
+1513(libraries)S
+1731(to)S
+1798(link)S
+1912(in)S
+1979(\(e.g.,)S
+2121(-lcci\))S
+2239 2136(s)U
+702 2208(S)U
+702 2136(BINDIR)U
+1027(/usr/local/)S
+1269(bin/)S
+1513(where)S
+1680(to)S
+1747(install)S
+1915(user)S
+2035(program)S
+735 2208(BINDIR)U
+1027(/usr/etc/)S
+1513(where)S
+1680(to)S
+1747(install)S
+1915(administrat)S
+2187(or)S
+702 2352(E)U
+1513 2280(programs)U
+739 2352(TCDIR)U
+1027(/usr/etc/)S
+1513(where)S
+1680(to)S
+1747(install)S
+1915(administrat)S
+2187(or)S
+2257(\256les)S
+702 2496(I)U
+702 2424(LOGDIR)U
+1027(/usr/tmp/)S
+1513(where)S
+1680(to)S
+1747(install)S
+1915(log)S
+2012(\256les)S
+722 2496(NCDIR)U
+1027(/usr/include/)S
+1329(isode/)S
+1513(where)S
+1680(to)S
+1747(install)S
+1915(include)S
+2113(\256les)S
+2258 2568(s)U
+702 2640(L)U
+702 2568(LIBDIR)U
+1027(/usr/lib/)S
+1513(where)S
+1680(to)S
+1747(install)S
+1915(object)S
+2083(librarie)S
+739 2640(INTDIR)U
+1027(/usr/lib/lint)S
+1296(/)S
+1513(where)S
+1680(to)S
+1747(install)S
+1915(lint)S
+2016(libraries)S
+2395 2712(s)U
+702 2784(M)U
+702 2712(SYSTEM)U
+1513(directs)S
+1694(how)S
+1817(to)S
+1884(create)S
+2049(loader)S
+2220(librarie)S
+755 2784(ANDIR)U
+1027(/usr/man/)S
+1513(where)S
+1680(to)S
+1747(install)S
+1915(man)S
+2039(pages)S
+2329 2856(s)U
+3 F
+486 3000(N)U
+1 F
+702 2856(MANOPTS)U
+1513(see)S
+1610(compat/i)S
+1822(nst-man.sh)S
+2104(for)S
+2194(detail)S
+3 F
+529 3000(OTE)U
+686(THAT)S
+885(ALL)S
+1037(THESE)S
+1266(DIRECTORIES)S
+1713(MUST)S
+1915(BE)S
+2024(ABSOLUTE)S
+2379(PATH)S
+2575(NAMES)S
+2820(\(i.e.,)S
+2958(start)S
+1 F
+486 3171(F)U
+3 F
+486 3072(and)U
+602(end)S
+715(with)S
+848(a)S
+898(`/'\))S
+1 F
+(.)R
+519 3171(inally,)U
+702 3315(ln)U
+769(pickle.ma)S
+1006(ke)S
+1083(CONFIG.make)S
+486 3459(\()U
+(yes,)R
+637(that's)S
+806(``CONFIG'')S
+1143(in)S
+1225(uppercase)S
+1501(and)S
+1623(``make'')S
+1869(in)S
+1951(lowercase\).)S
+2282(Both)S
+2434(of)S
+2519(these)S
+2678(\256les)S
+2813(are)S
+2922(in)S
+3004(the)S
+3058 3531(f)U
+486 3603(d)U
+3 F
+486 3531(isode\261interimcon\256g/)U
+1 F
+1035(directory.)S
+1316(This)S
+1451(latter)S
+1604(\256le)S
+1708(is)S
+1775(the)S
+1876(one)S
+1990(which)S
+2164(the)S
+2265(software)S
+2499(uses)S
+2629(to)S
+2703(con\256gure)S
+2957(itsel)S
+516 3603(uring)U
+663(generation.)S
+3 F
+54 Z
+378 3702(INCLUDE\261FILE)U
+1 F
+60 Z
+486 3774(Copy)U
+639(the)S
+736(include\261\256le)S
+1044(skeleton)S
+1268(of)S
+1341(your)S
+1474(choice)S
+1654(to)S
+3 F
+1723(pickle.h)S
+1 F
+(,)R
+1962(where)S
+2131(``pickle'')S
+2381(is)S
+2443(the)S
+2539(name)S
+2692(of)S
+2764(your)S
+2896(system.)S
+486 3918(l)U
+486 3846(Now)U
+630(add)S
+745(any)S
+860(additional)S
+1130(de\256nitions)S
+1412(you)S
+1530(like)S
+1648(\(usually)S
+1869(none\).)S
+2068(Consult)S
+2282(the)S
+2383(\256le)S
+3 F
+2487(con\256g/OPTIONS)S
+1 F
+2954(for)S
+3051(a)S
+503 3918(ist.)U
+602 4017(:)U
+486(Now)S
+702 4161(ln)U
+769(pickle.h)S
+982(../h/con\256g.h)S
+486 4305(T)U
+(his)R
+613(latter)S
+758(\256le)S
+855(is)S
+915(the)S
+1009(one)S
+1116(which)S
+1283(the)S
+1377(software)S
+1604(uses)S
+1727(to)S
+1794(con\256gure)S
+2041(itself)S
+2182(during)S
+2359(generation.)S
+3048 4701(2)U
+270(Sun)S
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+EP
+%%Page: ? 3
+BP
+1 F
+60 Z
+270 381(I)U
+(SODE-GEN)R
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+3058(\))S
+3 F
+54 Z
+378 669(ALIASES)U
+627(DATABASE)S
+1 F
+60 Z
+486 741(Typicall)U
+688(y,)S
+760(sites)S
+894(run)S
+1001(with)S
+1135(the)S
+1236(default)S
+1431(aliases)S
+1619(database)S
+1854(used)S
+1991(by)S
+2078(the)S
+2179(OSI)S
+2301(directory.)S
+2580(In)S
+2656(this)S
+2769(case,)S
+2914(simply)S
+486 813(copy)U
+623(the)S
+717(default)S
+905(local)S
+1043(con\256guration)S
+1384(\256le)S
+1481(to)S
+1548(the)S
+3 F
+1642(support/)S
+1 F
+1878(directory:)S
+702 957(%)U
+772(cp)S
+849(aliases.loc)S
+1099(al)S
+1163(../support/)S
+530 1101(I)U
+(f)R
+603(you)S
+726(have)S
+872(local)S
+1022(modi\256cations)S
+1382(you)S
+1504(wish)S
+1649(to)S
+1728(make,)S
+1906(either)S
+2076(copy)S
+2225(in)S
+2304(your)S
+2446(own)S
+2581(\256le)S
+2690(or)S
+2772(edit)S
+2895(the)S
+3001(\256le)S
+3 F
+54 Z
+378 1272(S)U
+60 Z
+530 1173(support/aliases.local)U
+1 F
+1069(as)S
+1139(appropriate.)S
+3 F
+54 Z
+408 1272(ERVICES)U
+666(DATABASE)S
+1 F
+60 Z
+486 1344(T)U
+(ypicall)R
+688(y,)S
+765(sites)S
+904(run)S
+1016(with)S
+1155(the)S
+1261(default)S
+1461(services)S
+1687(database.)S
+1962(In)S
+2044(this)S
+2163(case,)S
+2313(simply)S
+2508(copy)S
+2656(the)S
+2761(default)S
+2960(local)S
+486 1416(con\256guration)U
+827(\256le)S
+924(to)S
+991(the)S
+3 F
+1085(support/)S
+1 F
+1321(directory:)S
+702 1560(%)U
+772(cp)S
+849(services.loca)S
+1159(l)S
+1196(../support/)S
+530 1704(I)U
+(f)R
+603(you)S
+726(have)S
+872(local)S
+1022(modi\256cations)S
+1382(you)S
+1504(wish)S
+1649(to)S
+1728(make,)S
+1906(either)S
+2076(copy)S
+2225(in)S
+2304(your)S
+2446(own)S
+2581(\256le)S
+2690(or)S
+2772(edit)S
+2895(the)S
+3001(\256le)S
+3 F
+54 Z
+378 1875(E)U
+60 Z
+530 1776(support/services.local)U
+1 F
+1103(as)S
+1173(appropriate.)S
+3 F
+54 Z
+414 1875(NTITIES)U
+651(DATABASE)S
+1 F
+60 Z
+486 1947(T)U
+(ypicall)R
+688(y,)S
+765(sites)S
+904(run)S
+1016(with)S
+1155(the)S
+1261(default)S
+1461(applicat)S
+1653(ion)S
+1762(entity)S
+1932(database)S
+2172(used)S
+2314(by)S
+2406(the)S
+2512(stub\261directory)S
+2892(service.)S
+486 2091(t)U
+486 2019(However,)U
+744(once)S
+881(things)S
+1051(are)S
+1148(running,)S
+1373(sites)S
+1503(should)S
+1686(use)S
+1789(the)S
+1885(OSI)S
+2003(Directory)S
+2256(to)S
+2325(keep)S
+2461(track)S
+2604(of)S
+2676(applicat)S
+2868(ion)S
+2967(enti-)S
+503 2091(ies.)U
+625(So,)S
+723(to)S
+790(begin,)S
+959(simply)S
+1143(copy)S
+1280(the)S
+1374(default)S
+1562(local)S
+1700(con\256guration)S
+2041(\256le)S
+2138(to)S
+2205(the)S
+3 F
+2299(support/)S
+1 F
+2535(directory:)S
+486 2379(I)U
+702 2235(%)U
+772(cp)S
+849(entitie)S
+1001(s.local)S
+1177(../support/)S
+506 2379(f)U
+561(you)S
+686(have)S
+835(local)S
+988(modi\256cations)S
+1351(you)S
+1476(wish)S
+1624(to)S
+1706(make,)S
+1887(either)S
+2060(copy)S
+2211(in)S
+2292(your)S
+2436(own)S
+2573(\256le)S
+2684(or)S
+2768(edit)S
+2893(the)S
+3001(\256le)S
+486 2550(I)U
+3 F
+486 2451(support/entities.local)U
+1 F
+1042(as)S
+1112(appropriate.)S
+506 2550(n)U
+583(particula)S
+795(r,)S
+877(if)S
+961(you)S
+1098(are)S
+1219(using)S
+1396(SunNet)S
+1623(OSI,)S
+1781(it)S
+1862(will)S
+2003(be)S
+2106(necessary)S
+2386(to)S
+2479(put)S
+2602(an)S
+2705(entry)S
+2875(in)S
+2968(your)S
+3 F
+486 2622(support/entities.local)U
+1 F
+1042(\256le)S
+1139(of)S
+1209(the)S
+1303(form:)S
+702 2766(myhost)U
+909(default)S
+1137(1.17.4.1.0)S
+4 F
+1437(#)S
+1 F
+(1/NS+mynsap)R
+486 2910(w)U
+(here)R
+657(``myhost'')S
+938(is)S
+1002(the)S
+1100(name)S
+1255(of)S
+1329(the)S
+1427(local)S
+1569(machine,)S
+1812(and)S
+1922(``mynsap'')S
+2212(is)S
+2275(the)S
+2372(NSAP)S
+2547(of)S
+2620(the)S
+2717(local)S
+2858(machine.)S
+486 2982(For)U
+589(SunNet)S
+789(OSI)S
+905(7.0)S
+1000(the)S
+1094(NSAP)S
+1266(is)S
+1326(most)S
+1463(easily)S
+1624(determine)S
+1866(d)S
+1916(by)S
+1996(running)S
+702 3126(%)U
+772(/usr/sunlink/osi/et)S
+1204(c/osirstat)S
+1442(-n)S
+1512(|)S
+1544(grep)S
+5 F
+1671(\303)S
+1 F
+(DA)R
+486 3270(p)U
+(rovided)R
+724(that)S
+838(the)S
+935(SunNet)S
+1138(OSI)S
+1257(osi.routed)S
+1519(program)S
+1746(is)S
+1809(running.)S
+2034(For)S
+2140(earlier)S
+2318(SunLink)S
+2548(OSI)S
+2667(releases)S
+2881(you)S
+2994(can)S
+486 3342(run)U
+702 3486(%)U
+772(cd)S
+849(others/osilookup)S
+702 3630(%)U
+702 3558(%)U
+772(./make)S
+772 3630(xosilookup)U
+1059(localhost)S
+1297(CLIENT)S
+486 3774(p)U
+(roviding)R
+760(that)S
+891(the)S
+1005(SunLink)S
+1251(OSI)S
+1386(\256le)S
+3 F
+1502(/etc/sunlink/osi/hosts)S
+1 F
+2071(has)S
+2190(an)S
+2286(entry)S
+2449(de\256ning)S
+2685(the)S
+2798(service)S
+3008(for)S
+3 F
+486 3918(/)U
+1 F
+486 3846(``localhost'')U
+809(called)S
+979(``CLIENT''.)S
+1333(\(Note)S
+1495(that)S
+1611(in)S
+1683(releases)S
+1898(earlier)S
+2077(than)S
+2205(SunLink)S
+2436(OSI)S
+2556(6.0,)S
+2670(the)S
+2768(\256le)S
+2869(is)S
+2933(called)S
+3 F
+503 3918(usr/etc/osi.hosts)U
+1 F
+(\))R
+958(Note)S
+1105(that)S
+1226(this)S
+1343(entry)S
+1497(is)S
+1567(mandatory)S
+1855(if)S
+1922(you)S
+2042(are)S
+2146(running)S
+2363(SunLink)S
+2600(OSI)S
+2726(release)S
+2924(5.2)S
+3028(or)S
+486 4089(O)U
+486 3990(greater.)U
+529 4089(ne)U
+611(further)S
+800(note)S
+929(for)S
+1024(users)S
+1172(of)S
+1247(a)S
+1298(release)S
+1490(earlier)S
+1669(then)S
+1797(7.0)S
+1896(of)S
+1970(SunLink)S
+2201(OSI:)S
+2338(if)S
+2399(you)S
+2513(intend)S
+2688(to)S
+2759(run)S
+2863(the)S
+2961(stan-)S
+3063 4161(.)U
+486 4233(T)U
+486 4161(dard)U
+620(SunLink)S
+854(OSI)S
+977(listener)S
+1182(\(osi.netd\),)S
+1453(then)S
+1584(you)S
+1701(must)S
+1845(change)S
+2043(the)S
+2144(TSEL)S
+2315(used)S
+2451(by)S
+2 F
+2537(tsapd)S
+1 F
+2693(when)S
+2849(it)S
+2909(listens)S
+523 4233(his)U
+613(is)S
+673(done)S
+810(in)S
+877(two)S
+987(steps:)S
+1144(First,)S
+1289(in)S
+3 F
+1356(support/entities.local)S
+1 F
+(,)R
+1927(change)S
+2118(your)S
+2248(entry)S
+2392(to)S
+2459(read)S
+2583(as:)S
+270 4701(S)U
+702 4377(myhost)U
+909(default)S
+1137(1.17.4.1.0)S
+4 F
+1437(#)S
+1 F
+(2/NS+mynsap)R
+303 4701(un)U
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3048(3)S
+EP
+%%Page: ? 4
+BP
+1 F
+60 Z
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+486 669(Second,)U
+698(in)S
+3 F
+765(support/services.local)S
+1 F
+(,)R
+1353(add)S
+1460(a)S
+1507(line)S
+1618(that)S
+1729(reads)S
+1876(as:)S
+486 957(w)U
+702 813(tsap/session)U
+4 F
+1049(#)S
+1 F
+(2)R
+1169(tsapd-bootstrap)S
+529 957(hich)U
+653(overrides)S
+897(the)S
+991(default)S
+1179(TSEL)S
+1343(in)S
+1410(the)S
+3 F
+1504(support/services.db)S
+1 F
+2022(\256le.)S
+3 F
+54 Z
+378 1056(MACROS)U
+636(DATABASE)S
+1 F
+60 Z
+486 1128(Typicall)U
+688(y,)S
+766(sites)S
+906(run)S
+1019(with)S
+1159(the)S
+1266(default)S
+1467(macros)S
+1674(database.)S
+1950(In)S
+2033(this)S
+2153(case,)S
+2305(simply)S
+2502(copy)S
+2652(the)S
+2759(default)S
+2960(local)S
+486 1200(con\256guration)U
+827(\256le)S
+924(to)S
+991(the)S
+3 F
+1085(support/)S
+1 F
+1321(directory:)S
+702 1344(%)U
+772(cp)S
+849(macros.loca)S
+1139(l)S
+1176(../support/)S
+486 1488(I)U
+(f)R
+561(you)S
+686(have)S
+835(local)S
+988(modi\256cations)S
+1351(you)S
+1476(wish)S
+1624(to)S
+1706(make,)S
+1887(either)S
+2060(copy)S
+2211(in)S
+2292(your)S
+2436(own)S
+2573(\256le)S
+2684(or)S
+2768(edit)S
+2893(the)S
+3001(\256le)S
+3 F
+54 Z
+378 1659(O)U
+60 Z
+486 1560(support/macros.local)U
+1 F
+1045(as)S
+1115(appropriate.)S
+3 F
+54 Z
+420 1659(BJECTS)U
+642(DATABASE)S
+1 F
+60 Z
+486 1731(T)U
+(ypicall)R
+688(y,)S
+767(sites)S
+908(run)S
+1022(with)S
+1162(the)S
+1269(default)S
+1470(objects)S
+1674(database.)S
+1950(In)S
+2033(this)S
+2153(case,)S
+2305(simply)S
+2502(copy)S
+2652(the)S
+2759(default)S
+2960(local)S
+486 1803(con\256guration)U
+827(\256le)S
+924(to)S
+991(the)S
+3 F
+1085(support/)S
+1 F
+1321(directory:)S
+702 1947(%)U
+772(cp)S
+849(objects.loca)S
+1136(l)S
+1173(../support/)S
+530 2091(I)U
+(f)R
+603(you)S
+726(have)S
+872(local)S
+1022(modi\256cations)S
+1382(you)S
+1504(wish)S
+1649(to)S
+1728(make,)S
+1906(either)S
+2076(copy)S
+2225(in)S
+2304(your)S
+2446(own)S
+2581(\256le)S
+2690(or)S
+2772(edit)S
+2895(the)S
+3001(\256le)S
+3 F
+530 2163(support/objects.local)U
+1 F
+1082(as)S
+1152(appropriate.)S
+3 F
+54 Z
+600 2262(N)U
+270(GENERATIO)S
+1 F
+60 Z
+486 2334(Go)U
+579(to)S
+646(the)S
+3 F
+740(isode\261interim)S
+1 F
+1111(directory)S
+486 2622(N)U
+702 2478(%)U
+772(cd)S
+849(..)S
+529 2622(ow)U
+622(reset)S
+756(the)S
+850(dates)S
+994(of)S
+1064(the)S
+1158(con\256guration)S
+1499(\256les)S
+1619(for)S
+1709(the)S
+1803(system.)S
+2025(This)S
+2152(is)S
+2212(done)S
+2349(only)S
+2476(once)S
+2610(per)S
+2707(source-tree:)S
+486 2910(t)U
+702 2766(%)U
+772(./make)S
+955(once-only)S
+503 2910(hen)U
+610(generate)S
+835(the)S
+929(basic)S
+1073(system.)S
+486 3198(I)U
+702 3054(%)U
+772(./make)S
+506 3198(f)U
+547(you)S
+658(are)S
+752(using)S
+902(SunOS,)S
+1106(do)S
+1186(not)S
+1283(use)S
+1383(the)S
+2 F
+1477(make)S
+1 F
+1624(program)S
+1848(supplied)S
+2072(with)S
+2199(the)S
+2293(SunPro)S
+2489(package.)S
+2742(It)S
+2799(is)S
+2859(not,)S
+2971(con-)S
+486 3342(v)U
+486 3270(trary)U
+623(to)S
+693(any)S
+803(claims,)S
+999(compatibl)S
+1241(e)S
+1291(with)S
+1421(the)S
+1518(standard)S
+2 F
+1744(make)S
+1 F
+1893(facilit)S
+2035(y.)S
+2122(Further,)S
+2336(note)S
+2462(that)S
+2575(if)S
+2634(you)S
+2746(are)S
+2842(running)S
+3051(a)S
+516 3342(ersion)U
+693(of)S
+772(SunOS)S
+970(4.0)S
+1074(prior)S
+1220(to)S
+1296(release)S
+1493(4.0.3,)S
+1657(then)S
+1790(you)S
+1909(may)S
+2042(need)S
+2185(to)S
+2261(use)S
+2370(the)S
+2 F
+2473(make)S
+1 F
+2629(program)S
+2862(found)S
+3031(in)S
+3051 3414(e)U
+486 3486(o)U
+3 F
+486 3414(/usr/old/)U
+1 F
+(,)R
+736(if)S
+794(the)S
+889(standard)S
+2 F
+1113(make)S
+1 F
+1260(your)S
+1390(are)S
+1484(using)S
+1634(is)S
+1694(the)S
+1788(SunPro)S
+2 F
+1984(make)S
+1 F
+(.)R
+2166(In)S
+2236(this)S
+2343(case,)S
+2482(you)S
+2592(will)S
+2706(need)S
+2840(to)S
+2907(put)S
+3004(th)S
+516 3486(ld,)U
+598(standard)S
+2 F
+822(make)S
+1 F
+969(in)S
+3 F
+1036(/usr/bin/)S
+1 F
+(,)R
+1288(and)S
+1395(you)S
+1505(can)S
+1609(keep)S
+1743(the)S
+1837(SunPro)S
+2 F
+2033(make)S
+1 F
+2180(in)S
+3 F
+2247(/bin/)S
+1 F
+(.)R
+3058 3585(-)U
+486 3657(t)U
+486 3585(If)U
+549(you)S
+662(are)S
+759(using)S
+912(SVR3,)S
+1096(then)S
+1223(you)S
+1336(will)S
+1452(probably)S
+1688(have)S
+1824(to)S
+1893(type)S
+2019(this)S
+2128(command)S
+2388(before)S
+2564(starting)S
+2767(the)S
+2863(compila)S
+503 3657(ion:)U
+702 3801(%)U
+772(ulimit)S
+937(32768)S
+486 3945(S)U
+(imilarly,)R
+747(you)S
+858(may)S
+983(need)S
+1118(to)S
+1186(increase)S
+1405(the)S
+1500(stacksize)S
+1739(limita)S
+1881(tion)S
+1996(on)S
+2076(other)S
+2220(systems.)S
+2465(For)S
+2568(example,)S
+2808(some)S
+2955(users)S
+486 4017(of)U
+556(the)S
+650(RT,)S
+762(report)S
+926(needing)S
+1137(to)S
+1204(use)S
+702 4161(%)U
+772(limit)S
+907(stacksize)S
+1145(16m)S
+1443 4305(.)U
+270 4701(S)U
+486 4305(in)U
+553(order)S
+700(to)S
+767(get)S
+861(FTAM)S
+1047(to)S
+1114(fully)S
+1248(compile)S
+303 4701(un)U
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3048(4)S
+EP
+%%Page: ? 5
+BP
+1 F
+60 Z
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+486 669(The)U
+2 F
+602(make)S
+1 F
+751(command)S
+1011(from)S
+1150(the)S
+1246(top-level)S
+1483(directory)S
+1723(will)S
+1839(cause)S
+1995(a)S
+2044(complete)S
+2288(generation)S
+2565(of)S
+2637(the)S
+2733(system.)S
+2956(If)S
+3017(all)S
+486 813(s)U
+486 741(goes)U
+623(well,)S
+769(proceed)S
+987(with)S
+1121(the)S
+1222(installat)S
+1414(ion.)S
+1553(If)S
+1620(not,)S
+1739(complain,)S
+2006(as)S
+2083(there)S
+2231(``should)S
+2458(be)S
+2542(no)S
+2629(problems'')S
+2920(at)S
+2991(this)S
+509 813(tep.)U
+638(Some)S
+795(\256les)S
+915(while)S
+1069(compiling)S
+1334(may)S
+1458(produce)S
+1672(a)S
+486 1101(or)U
+556(a)S
+702 957(warning:)U
+936(statement)S
+1188(not)S
+1285(reached)S
+702 1245(type)U
+826(ObjectDescript)S
+1191(or:)S
+1278(Warning:)S
+1526(Can't)S
+1680(\256nd)S
+1793(\256le)S
+1890(DSE.ph)S
+2098(failed)S
+2753 1389(l)U
+486(message.)S
+745(This)S
+872(is)S
+932(normal.)S
+1158(Sometimes)S
+1446(when)S
+1596(building)S
+1817(a)S
+1864(loader)S
+2035(library,)S
+2231(you)S
+2341(might)S
+2502(see)S
+2599(severa)S
+702 1533(ranlib:)U
+880(warning:)S
+1114(../libisode.a\(a)S
+1441(etdbm.o\):)S
+1694(no)S
+1774(symbol)S
+1971(table)S
+2291 1677(:)U
+486(messages.)S
+768(This)S
+895(is)S
+955(also)S
+1072(normal.)S
+1298(You)S
+1421(might)S
+1582(also)S
+1699(see)S
+1796(a)S
+1843(few)S
+1953(messages)S
+2200(like)S
+4 F
+702 1821(***)U
+1 F
+812(Error)S
+959(code)S
+1093(1)S
+1143(\(ignored\))S
+2053 1965(e)U
+486(This)S
+613(is)S
+673(also)S
+790(normal.)S
+1016(As)S
+1102(a)S
+1149(rule,)S
+1278(unless)S
+2 F
+1448(make)S
+1 F
+1595(says)S
+1718(something)S
+1989(lik)S
+4 F
+702 2109(***)U
+1 F
+812(Error)S
+959(code)S
+1093(1)S
+486 2253(or)U
+556(perhaps)S
+702 2397(Exit)U
+486 2541(t)U
+(hen)R
+610(everything)S
+888(is)S
+948(going)S
+1105(just)S
+1212(\256ne!)S
+3 F
+54 Z
+270 2640(TESTING)U
+1 F
+60 Z
+486 2712(Some)U
+653(directorie)S
+885(s)S
+938(may)S
+1072(have)S
+1216(a)S
+1273(resident)S
+1494(test)S
+1608(program,)S
+1857(e.g.,)S
+1989(in)S
+2066(the)S
+3 F
+2170(psap/)S
+1 F
+2336(directory,)S
+2599(there)S
+2749(is)S
+2818(a)S
+2874(program)S
+3063 2784(.)U
+486 2856(I)U
+486 2784(called)U
+2 F
+656(psaptest)S
+1 F
+(.)R
+913(These)S
+1082(programs)S
+1333(are)S
+1431(for)S
+1525(internal)S
+1734(testing)S
+1919(only,)S
+2065(and)S
+2176(are)S
+2274(not)S
+2375(for)S
+2469(use)S
+2573(by)S
+2657(``mere)S
+2842(mortals'')S
+506 2856(f)U
+546(you)S
+656(want)S
+793(to)S
+860(test)S
+964(things,)S
+1146(after)S
+1277(installat)S
+1469(ion)S
+1566(run)S
+2 F
+1666(isode\261test)S
+1 F
+1927(\(see)S
+2044(the)S
+3 F
+2138(USER)S
+2317(PROGRAMS)S
+1 F
+2687(section\).)S
+3 F
+54 Z
+270 2955(INSTALLATION)U
+1 F
+60 Z
+486 3027(You)U
+616(will)S
+737(need)S
+877(to)S
+950(be)S
+1033(the)S
+1133(super\261user)S
+1419(to)S
+1492(install)S
+1666(the)S
+1766(software.)S
+2034(Note)S
+2177(that)S
+2294(installing)S
+2545(the)S
+2645(software)S
+2878(from)S
+3021(an)S
+486 3171(a)U
+486 3099(NFS-mounted)U
+849(partition)S
+1077(requires)S
+1294(that)S
+1408(you)S
+1521(perform)S
+1738(the)S
+1835(installat)S
+2027(ion)S
+2127(as)S
+2199(the)S
+2295(super-user)S
+2567(on)S
+2649(the)S
+2 F
+2745(target)S
+1 F
+2911(system)S
+513 3171(fter)U
+617(changing)S
+858(to)S
+925(the)S
+1019(source)S
+1196(directory)S
+1434(on)S
+1514(the)S
+2 F
+1608(source)S
+1 F
+1788(system.)S
+3 F
+3051 3270(e)U
+1 F
+486 3342(\256)U
+486 3270(In)U
+557(the)S
+652(directions)S
+911(that)S
+1023(follow,)S
+1216(reference)S
+1461(is)S
+1521(made)S
+1672(to)S
+1739(some)S
+1886(of)S
+1956(the)S
+2050(directorie)S
+2282(s)S
+2325(de\256ned)S
+2522(in)S
+2589(the)S
+3 F
+2683(CONFIG.mak)S
+1 F
+519 3342(le.)U
+618(You)S
+741(should)S
+921(substitute)S
+1172(in)S
+1239(the)S
+1333(correct)S
+1521(value,)S
+1687(for)S
+1777(example,)S
+2017(if)S
+2074(the)S
+2168(expression)S
+486 3630(a)U
+702 3486($\(SBINDIR\)tsapd)U
+513 3630(nd)U
+593(if)S
+650(SBINDIR)S
+909(is)S
+969(de\256ned)S
+1166(as)S
+3 F
+1236(/usr/etc/)S
+1 F
+1464(in)S
+1531(the)S
+3 F
+1625(CONFIG.make)S
+1 F
+2040(\256le,)S
+2152(then)S
+2276(you)S
+2386(should)S
+2566(type)S
+486 4017(T)U
+486 3918(instead.)U
+702 3774(/usr/etc/t)U
+914(sapd)S
+523 4017(here)U
+654(are)S
+755(two)S
+872(kinds)S
+1029(of)S
+1106(activit)S
+1258(ies:)S
+1369(once\261only)S
+1647(activit)S
+1799(ies)S
+1893(that)S
+2011(you)S
+2128(perform)S
+2349(the)S
+2450(\256rst)S
+2570(time)S
+2705(the)S
+2805(software)S
+3038(is)S
+486 4188(T)U
+486 4089(installed;)U
+728(and)S
+835(each\261tim)S
+1057(e)S
+1104(activit)S
+1256(ies)S
+1343(that)S
+1454(you)S
+1564(perform)S
+1778(every)S
+1932(time)S
+2060(the)S
+2154(software)S
+2381(is)S
+2441(installed.)S
+523 4188(he)U
+610(\256rst)S
+733(once\261only)S
+1014(activit)S
+1166(y)S
+1226(is)S
+1296(to)S
+1373(verify)S
+1547(that)S
+1668(the)S
+2 F
+1772(tsapd)S
+1 F
+1932(daemon)S
+2153(will)S
+2277(be)S
+2363(run)S
+2472(when)S
+2631(the)S
+2734(machine)S
+2968(goes)S
+486 4260(multi\261user.)U
+799(On)S
+892(Berkeley)S
+1130(UNIX)S
+1299(systems,)S
+1524(add)S
+1631(these)S
+1775(lines)S
+1909(to)S
+1976(the)S
+3 F
+2070(/etc/rc)S
+2232(.local)S
+1 F
+2388(\256le:)S
+702 4404(if)U
+759([)S
+799(\261f)S
+869($\(SBINDIR\)tsapd)S
+1325(];)S
+1382(then)S
+2067 4476(e)U
+782($\(SBINDIR\)tsapd)S
+1238(&)S
+1305(\(echo)S
+1459(\261n)S
+1539(')S
+1579(tsap'\))S
+4 F
+1736(>)S
+1 F
+1789(/dev/consol)S
+EP
+%%Page: ? 6
+BP
+1 F
+60 Z
+270 12(S)U
+(un)R
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3048(5)S
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+702 669(\256)U
+486 813(O)U
+(n)R
+592(other)S
+749(systems,)S
+986(a)S
+1045(similar)S
+1245(procedure)S
+1518(is)S
+1590(followed.)S
+1871(For)S
+1986(example,)S
+2238(on)S
+2330(systems)S
+2552(derived)S
+2765(from)S
+2914(AT&T)S
+486 984(O)U
+486 885(UNIX,)U
+670(the)S
+764(\256le)S
+3 F
+861(/etc/rc)S
+1023(2)S
+1 F
+1073(script)S
+1227(might)S
+1388(be)S
+1465(edited.)S
+529 984(nce)U
+637(you)S
+751(are)S
+849(familia)S
+1021(r)S
+1065(with)S
+1196(the)S
+1294(system,)S
+1500(you)S
+1614(will)S
+1732(likely)S
+1894(want)S
+2035(to)S
+2106(run)S
+2210(the)S
+2308(OSI)S
+2428(Directory)S
+2683(and)S
+2794(use)S
+2897(another)S
+486 1128(g)U
+486 1056(program,)U
+2 F
+741(iaed)S
+1 F
+881(to)S
+964(invoke)S
+1164(local)S
+1318(services.)S
+1583(The)S
+1712(section)S
+3 F
+1918(DIRECTORY)S
+2318(SERVICES)S
+1 F
+2651(discusses)S
+2909(this)S
+3031(in)S
+516 1128(reater)U
+674(detail.)S
+864(\(However,)S
+1139(if)S
+1196(this)S
+1303(is)S
+1363(your)S
+1493(\256rst)S
+1606(time,)S
+1749(don't)S
+1896(skip)S
+2016(ahead.\))S
+3058 1227(r)U
+486 1299(t)U
+486 1227(The)U
+601(next)S
+726(once\261only)S
+998(activit)S
+1150(y)S
+1201(is)S
+1262(to)S
+1330(verify)S
+1495(that)S
+1607(systems)S
+1818(with)S
+1946(a)S
+1994(native)S
+3 F
+2163(/etc/ser)S
+2348(vices)S
+1 F
+2492(\256le)S
+2589(contain)S
+2787(an)S
+2864(entry)S
+3008(fo)S
+503 1299(he)U
+580(tsap)S
+697(service)S
+888(\(if)S
+965(you)S
+1075(have)S
+1209(con\256gured)S
+1486(the)S
+1580(ISODE)S
+1776(to)S
+1843(run)S
+1943(over)S
+2070(TCP\).)S
+2255(If)S
+2315(not,)S
+2427(add)S
+2534(the)S
+2628(line:)S
+486 1587(t)U
+702 1443(tsap)U
+1513(102/tcp)S
+503 1587(o)U
+557(the)S
+3 F
+655(/etc/ser)S
+840(vices)S
+1 F
+988(\256le.)S
+1124(If)S
+1188(your)S
+1322(system)S
+1513(does)S
+1647(not)S
+1748(have)S
+1886(such)S
+2020(a)S
+2071(\256le,)S
+2187(the)S
+2284(software)S
+2514(automati)S
+2726(cally)S
+2867(compen-)S
+486 1758(N)U
+486 1659(sates)U
+623(for)S
+713(this.)S
+529 1758(ext,)U
+645(on)S
+732(Berkeley)S
+977(UNIX)S
+1153(systems,)S
+1385(add)S
+1499(a)S
+1553(line)S
+1671(to)S
+1745(the)S
+3 F
+1846(/usr/lib/crontab)S
+1 F
+2274(\256le)S
+2377(to)S
+2450(invoke)S
+2640(a)S
+2693(shell-script)S
+2987(that)S
+486 1830(will)U
+600(re-cycle)S
+815(the)S
+909(log)S
+1006(\256les.)S
+1161(Usually,)S
+1383(the)S
+1477(line)S
+1588(you)S
+1698(add)S
+1805(looks)S
+1955(something)S
+2226(like)S
+2337(this:)S
+702 1974(0)U
+752(4)S
+4 F
+802(*)S
+852(*)S
+902(*)S
+1 F
+952(su)S
+1025(daemon)S
+4 F
+1236(<)S
+1 F
+1289($\(SBINDIR\)isologs)S
+486 2118(w)U
+(hich)R
+657(says)S
+784(that)S
+898(the)S
+995(shell-script)S
+1286($\(SBINDIR\)isologs)S
+1788(should)S
+1971(be)S
+2051(invoked)S
+2268(at)S
+2335(4am)S
+2462(each)S
+2596(morning.)S
+2858(On)S
+2954(other)S
+3 F
+486 2262(/)U
+1 F
+486 2190(systems,)U
+716(a)S
+768(similar)S
+961(procedure)S
+1227(is)S
+1292(\257lowed.)S
+1532(For)S
+1639(example,)S
+1883(on)S
+1967(systems)S
+2181(derived)S
+2386(from)S
+2527(AT&T)S
+2715(UNIX,)S
+2903(the)S
+3001(\256le)S
+3 F
+503 2262(usr/spool/cron/crontabs/root)U
+1 F
+1254(might)S
+1415(be)S
+1492(edited)S
+1660(followed)S
+1894(by)S
+1974(the)S
+2068(command)S
+486 2577(T)U
+702 2406(%)U
+772(crontab)S
+973(root)S
+523 2577(here)U
+647(are)S
+741(two)S
+851(each\261tim)S
+1073(e)S
+1120(activit)S
+1272(ies:)S
+486 2865(w)U
+4 F
+702 2721(#)U
+1 F
+752(./make)S
+935(inst\261all)S
+529 2865(hich)U
+653(does)S
+783(the)S
+877(installat)S
+1069(ion.)S
+486 2964(T)U
+(he)R
+602(second)S
+791(each\261tim)S
+1013(e)S
+1062(activit)S
+1214(y,)S
+1281(is)S
+1343(that)S
+1456(if)S
+1515(you)S
+1627(are)S
+1723(already)S
+1923(running)S
+2132(the)S
+2228(ISODE,)S
+2441(then)S
+2567(you)S
+2679(will)S
+2794(need)S
+2929(to)S
+2997(kill)S
+3063 3036(.)U
+486 3108(O)U
+486 3036(and)U
+604(restart)S
+786(the)S
+2 F
+891(tsapd)S
+1 F
+1051(\(8c\))S
+1179(daemon,)S
+1416(otherwise)S
+1681(incoming)S
+1939(connections)S
+2257(will)S
+2381(not)S
+2488(be)S
+2575(initial)S
+2717(ized)S
+2848(correctly)S
+529 3108(therwise,)U
+768(start)S
+892(the)S
+986(daemon)S
+1197(now.)S
+1355(From)S
+1505(the)S
+2 F
+1599(CShell)S
+1 F
+(,)R
+1795(the)S
+1889(command)S
+2147(might)S
+2308(be:)S
+486 3396(T)U
+4 F
+702 3252(#)U
+1 F
+752($\(SBINDIR\)tsapd)S
+4 F
+1208(>)S
+1 F
+(&)R
+1308(/dev/null)S
+523 3396(he)U
+603(daemon)S
+817(will)S
+933(automati)S
+1145(cally)S
+1285(detach.)S
+1500(If)S
+1562(you)S
+1674(do)S
+1756(not)S
+1855(redirect)S
+2062(the)S
+2158(daemon's)S
+2414(standard\261error,)S
+2802(then)S
+2928(it)S
+2984(will)S
+486 3567(T)U
+486 3468(not)U
+583(detach,)S
+776(instead)S
+967(printing)S
+1178(messages)S
+1425(as)S
+1495(to)S
+1562(what)S
+1699(actions)S
+1890(it)S
+1944(is)S
+2004(taking.)S
+523 3567(hat's)U
+660(about)S
+814(it.)S
+903(This)S
+1030(will)S
+1144(install)S
+1312(everything.)S
+1625(To)S
+1712(clean-up)S
+1940(the)S
+2034(source)S
+2211(tree)S
+2322(as)S
+2392(well,)S
+2531(then)S
+2655(use:)S
+486 3855(a)U
+702 3711(%)U
+772(./make)S
+955(clean)S
+513 3855(t)U
+564(this)S
+685(point.)S
+878(Note)S
+1028(that)S
+1152(if)S
+1222(you)S
+1345(are)S
+1452(planning)S
+1696(on)S
+1789(generating)S
+2077(or)S
+2160(installing)S
+2418(FTAM)S
+2617(or)S
+2700(VT)S
+2813(or)S
+2896(QUIPU)S
+3048 3927(h)U
+486 3999(t)U
+486 3927(\(described)U
+759(below\),)S
+962(then)S
+1087(you)S
+1198(should)S
+1379(not)S
+1477(clean-up)S
+1706(the)S
+1801(source)S
+1979(tree)S
+2091(until)S
+2223(after)S
+2355(you)S
+2466(are)S
+2561(\256nished)S
+2772(dealing)S
+2971(wit)S
+503 3999(hese.)U
+486 4098(I)U
+(f)R
+548(your)S
+680(system)S
+869(is)S
+931(con\256gured)S
+1210(for)S
+1302(TCP/IP,)S
+1519(and)S
+1628(you)S
+1740(are)S
+1835(not)S
+1933(already)S
+2132(running)S
+2340(an)S
+2418(SNMP)S
+2601(agent,)S
+2768(then)S
+2893(you)S
+3004(are)S
+3 F
+486 4242(M)U
+486 4170(URGED)U
+1 F
+724(to)S
+793(immedia)S
+1005(tely)S
+1118(install)S
+1288(the)S
+1384(SNMP)S
+1568(agent)S
+1721(distributed)S
+2000(with)S
+2128(the)S
+2223(ISODE.)S
+2455(Consult)S
+2663(the)S
+3 F
+2758(NETWORK)S
+543 4242(ANAGEMENT)U
+1 F
+959(section)S
+1150(below.)S
+486 4341(F)U
+(inally,)R
+696(if)S
+757(you)S
+871(are)S
+969(interested)S
+1228(in)S
+1299(discussing)S
+1573(the)S
+1670(ISODE)S
+1869(with)S
+1999(others)S
+2169(running)S
+2379(the)S
+2476(software,)S
+2721(drop)S
+2854(a)S
+2904(note)S
+3031(to)S
+3051 4413(e)U
+270 4701(S)U
+486 4413(the)U
+628(Internet)S
+884(mailbox)S
+1150(``ISODE\261Request)S
+5 F
+(@)R
+1 F
+(NIC.DDN.MIL'',)R
+2140(and)S
+2294(ask)S
+2441(to)S
+2555(be)S
+2679(added)S
+2890(to)S
+3004(th)S
+303 4701(un)U
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3048(6)S
+EP
+%%Page: ? 7
+BP
+1 F
+60 Z
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+486 669(``ISODE)U
+5 F
+(@)R
+1 F
+(NIC.DD)R
+961(N.MIL'')S
+1189(list.)S
+3 F
+54 Z
+270 768(TAILORING)U
+1 F
+60 Z
+486 840(If)U
+552(you)S
+668(create)S
+839(a)S
+892(\256le)S
+995(called)S
+3 F
+1166($\(ETCDIR\)isotailor)S
+1 F
+(,)R
+1719(then)S
+1848(you)S
+1963(can)S
+2072(customize)S
+2342(the)S
+2441(behavior)S
+2677(of)S
+2752(the)S
+2851(programs)S
+3 F
+54 Z
+270 1011(U)U
+1 F
+60 Z
+486 912(which)U
+653(use)S
+753(the)S
+847(ISODE)S
+1043(when)S
+1193(they)S
+1317(start.)S
+1476(Consult)S
+1683(the)S
+3 F
+1777(support/isotailor.5)S
+1 F
+2269(\256le)S
+2366(for)S
+2456(further)S
+2640(information.)S
+3 F
+54 Z
+309 1011(SER)U
+432(PROGRAMS)S
+1 F
+60 Z
+486 1083(B)U
+(y)R
+576(default,)S
+779(two)S
+889(services)S
+1103(are)S
+1197(installed.)S
+486 1182(T)U
+(he)R
+606(\256rst)S
+725(service,)S
+937(having)S
+1127(programs)S
+2 F
+1380(isoc)S
+1 F
+1503(and)S
+2 F
+1616(isod)S
+1 F
+(,)R
+1757(is)S
+1823(used)S
+1959(to)S
+2032(test)S
+2142(out)S
+2245(the)S
+2345(installat)S
+2537(ion)S
+2640(of)S
+2716(the)S
+2816(ISODE)S
+3018(on)S
+486 1254(your)U
+616(system:)S
+702 1398(%)U
+772(./make)S
+955(test)S
+1265 1542(.)U
+486 1641(T)U
+486 1542(which)U
+653(runs)S
+776(the)S
+2 F
+870(isode\261test)S
+1 F
+1131(script)S
+523 1641(he)U
+601(second)S
+789(service,)S
+996(having)S
+1181(programs)S
+2 F
+1429(imisc)S
+1 F
+1577(and)S
+2 F
+1685(ros.imisc)S
+1 F
+(,)R
+1939(is)S
+2000(a)S
+2047(small)S
+2198(demo)S
+2352(service)S
+2543(supporting)S
+2820(things)S
+2987(like)S
+486 1812(T)U
+2 F
+486 1713(\256nger)U
+1 F
+(,)R
+2 F
+661(who)S
+1 F
+781(and)S
+888(so)S
+961(forth.)S
+523 1812(here)U
+654(are)S
+755(additional)S
+1023(programs)S
+1276(in)S
+1349(the)S
+3 F
+1449(others/)S
+1 F
+1652(directory.)S
+1931(These)S
+2101(aren't)S
+2268(integral)S
+2479(parts)S
+2622(of)S
+2698(the)S
+2798(system)S
+2991(and)S
+3 F
+54 Z
+270 1983(R)U
+1 F
+60 Z
+486 1884(assume)U
+683(that)S
+794(the)S
+888(ISODE)S
+1084(is)S
+1144(already)S
+1342(installed.)S
+1602(Use)S
+1715(at)S
+1779(your)S
+1909(own)S
+2032(discretion.)S
+3 F
+54 Z
+309 1983(EGISTERING)U
+669(OSI)S
+780(APPLICATION)S
+1176(SERVICES)S
+1 F
+60 Z
+486 2055(E)U
+(arlier)R
+683(releases)S
+906(of)S
+988(the)S
+1094(ISODE)S
+1302(relied)S
+1472(on)S
+1564(static)S
+1724(tables)S
+1896(to)S
+1974(keep)S
+2119(track)S
+2271(of)S
+2352(the)S
+2457(OSI)S
+2584(applicat)S
+2776(ion)S
+2884(services)S
+3058 2127(-)U
+486 2199(i)U
+486 2127(offered)U
+683(on)S
+766(an)S
+846(end-system.)S
+1178(This)S
+1308(is)S
+1371(a)S
+1421(problemati)S
+1683(c)S
+1733(exercise)S
+1954(in)S
+2023(keeping)S
+2236(local)S
+2376(and)S
+2485(remote)S
+2675(tables)S
+2838(synchron)S
+503 2199(zed.)U
+645(In)S
+718(this)S
+828(release)S
+1019(of)S
+1092(the)S
+1189(ISODE,)S
+1403(the)S
+1499(OSI)S
+1617(Directory)S
+1870(can)S
+1976(be)S
+2055(used)S
+2187(to)S
+2256(manage)S
+2466(this)S
+2575(information,)S
+2897(thereby)S
+3 F
+54 Z
+378 2370(P)U
+1 F
+60 Z
+486 2271(automati)U
+698(ng)S
+778(the)S
+872(synchronization)S
+1277(process.)S
+3 F
+54 Z
+411 2370(reparation)U
+1 F
+60 Z
+486 2442(O)U
+(nce)R
+637(you)S
+751(have)S
+889(installed)S
+1118(the)S
+1216(ISODE,)S
+1431(you)S
+1545(must)S
+1686(bring)S
+1837(up)S
+1921(a)S
+1972(DSA.)S
+2150(The)S
+2268(procedures)S
+2556(for)S
+2649(doing)S
+2809(this)S
+2919(varies,)S
+2 F
+486 2586(M)U
+1 F
+486 2514(depending)U
+760(on)S
+843(your)S
+976(location;)S
+1211(consult)S
+1408(the)S
+1505(section)S
+5 F
+1699(")S
+1 F
+(Setting)R
+1918(up)S
+2001(an)S
+2081(Initial)S
+2248(DSA)S
+5 F
+(")R
+1 F
+2414(in)S
+2483(Volume)S
+2699(5)S
+2751(of)S
+2823(the)S
+2 F
+2919(User's)S
+536 2586(anual)U
+1 F
+(.)R
+486 2685(O)U
+(nce)R
+635(your)S
+767(DSA)S
+908(is)S
+970(running,)S
+1194(you)S
+1305(should)S
+1486(build)S
+1631(the)S
+1726(DMD)S
+1886(for)S
+1977(your)S
+2108(organizati)S
+2350(on.)S
+2466(Underneath)S
+2768(the)S
+2863(entry)S
+3008(for)S
+486 2829(t)U
+486 2757(your)U
+619(organizati)S
+861(on,)S
+959(you)S
+1072(should)S
+1255(select)S
+1416(an)S
+1496(area)S
+1620(where)S
+1790(your)S
+1922(end-system's)S
+2261(applicat)S
+2453(ion)S
+2552(entitie)S
+2704(s)S
+2749(will)S
+2865(reside)S
+3031(in)S
+503 2829(he)U
+584(DIT.)S
+743(For)S
+850(example,)S
+1094(the)S
+1192(OSI)S
+1312(applicat)S
+1504(ion)S
+1605(services)S
+1823(availabl)S
+2015(e)S
+2066(in)S
+2137(PSI's)S
+2290(Santa)S
+2448(Clara)S
+2603(of\256ce)S
+2764(reside)S
+2931(some-)S
+486 2901(where)U
+653(under:)S
+702 3045(c=US)U
+5 F
+782 3117(@)U
+1 F
+(o=Performance)R
+1228(Systems)S
+1448(Internationa)S
+1740(l)S
+5 F
+782 3261(@)U
+782 3189(@)U
+1 F
+(ou=Research)R
+1171(and)S
+1278(Development)S
+837 3261(ou=Santa)U
+1084(Clara)S
+486 3405(N)U
+(ote)R
+624(that)S
+736(this)S
+844(area)S
+966(may)S
+1091(very)S
+1219(well)S
+1344(be)S
+1422(different)S
+1650(than)S
+1774(the)S
+1868(value)S
+2019(of)S
+2089(the)S
+2183(``local)S
+5 F
+(_)R
+1 F
+(DIT'')R
+2531(in)S
+2598(your)S
+2728(dsaptailor)S
+2986(\256le.)S
+486 3549(s)U
+486 3477(In)U
+561(general,)S
+779(all)S
+865(the)S
+964(end-systems)S
+1286(at)S
+1355(a)S
+1407(site)S
+1516(will)S
+1634(have)S
+1772(the)S
+1870(same)S
+5 F
+2018(")S
+1 F
+(local)R
+5 F
+2161(_)S
+1 F
+(DIT)R
+5 F
+(")R
+1 F
+2340(value,)S
+2510(but)S
+2611(each)S
+2746(of)S
+2820(those)S
+2971(end-)S
+509 3549(ystems)U
+705(offering)S
+928(OSI)S
+1053(applicat)S
+1245(ion)S
+1351(services)S
+1574(will)S
+1697(place)S
+1854(those)S
+2010(services)S
+2233(at)S
+2306(a)S
+2362(different)S
+2599(portion)S
+2801(in)S
+2876(the)S
+2978(DIT)S
+486 3720(B)U
+486 3621(\(usually)U
+700(somewhere)S
+994(underneath)S
+1282(the)S
+1376(``local)S
+5 F
+(_)R
+1 F
+(DIT'')R
+1724(value\).)S
+526 3720(y)U
+581(convention,)S
+889(all)S
+975(the)S
+1074(OSI)S
+1195(applicat)S
+1387(ion)S
+1489(services)S
+1708(offered)S
+1907(by)S
+1992(a)S
+2044(given)S
+2203(end-system)S
+2502(are)S
+2601(placed)S
+2784(in)S
+2856(the)S
+2954(same)S
+3063 3792(,)U
+486 3864(`)U
+486 3792(location)U
+711(in)S
+788(the)S
+892(DIT,)S
+1037(under)S
+1204(an)S
+1291(applicat)S
+1483(ionProcess)S
+1773(entry)S
+1927(with)S
+2064(the)S
+2167(short)S
+2316(name)S
+2476(of)S
+2555(the)S
+2658(end-system,)S
+2976(e.g.)S
+506 3864(`cn=cheetah''.)U
+896(So,)S
+994(using)S
+1144(the)S
+1238(example)S
+1463(above,)S
+1642(the)S
+1736(entry)S
+702 4008(c=US)U
+5 F
+782 4080(@)U
+1 F
+(o=Performance)R
+1228(Systems)S
+1448(Internationa)S
+1740(l)S
+5 F
+782 4224(@)U
+782 4152(@)U
+1 F
+(ou=Research)R
+1171(and)S
+1278(Development)S
+837 4224(ou=Santa)U
+1084(Clara)S
+486 4440(w)U
+5 F
+782 4296(@)U
+1 F
+(cn=cheetah)R
+529 4440(ould)U
+656(contain)S
+854(all)S
+935(the)S
+1029(entries)S
+1210(of)S
+1280(interest.)S
+270 4728(S)U
+(un)R
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3048(7)S
+EP
+%%Page: ? 8
+BP
+1 F
+60 Z
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+3 F
+54 Z
+378 669(Once-only)U
+633(Installation)S
+1 F
+60 Z
+486 741(T)U
+(he)R
+2 F
+605(bootsvc)S
+1 F
+814(script)S
+973(will)S
+1092(generate)S
+1322(a)S
+1374(shell)S
+1513(script)S
+1672(that)S
+1788(will)S
+1907(create)S
+2077(an)S
+2158(applicat)S
+2350(ionProcess)S
+2634(entry)S
+2782(and)S
+2893(then)S
+3021(an)S
+3051 813(e)U
+486 885(a)U
+486 813(entry)U
+634(for)S
+728(each)S
+863(of)S
+937(the)S
+1035(OSI)S
+1155(services)S
+1373(provided)S
+1611(by)S
+1695(the)S
+1793(ISODE.)S
+2028(So,)S
+2130(you)S
+2244(must)S
+2385(\256rst)S
+2502(select)S
+2664(the)S
+2762(RDN)S
+2911(for)S
+3004(th)S
+513 885(pplicati)U
+695(onProcess)S
+958(entry.)S
+1223 984(:)U
+486(Run)S
+2 F
+606(bootsvc)S
+1 F
+810(to)S
+877(create)S
+1042(a)S
+1089(script)S
+702 1128(%)U
+772(support/bootsvc)S
+4 F
+1176(<<)S
+1 F
+(aP-name)R
+4 F
+(>>)R
+1539(>)S
+1 F
+1592(run.sh)S
+486 1272(e.g.,)U
+702 1416(%)U
+772(support/bootsvc)S
+1176(cheeta)S
+1331(h)S
+4 F
+1381(>)S
+1 F
+1434(run.sh)S
+486 1515(N)U
+(ote)R
+625(that)S
+738(the)S
+834(\256rst)S
+949(line)S
+1062(of)S
+1134(this)S
+1243(script)S
+1399(is)S
+1461(used)S
+1593(to)S
+1662(de\256ne)S
+1831(the)S
+1927(network)S
+2146(address)S
+2348(where)S
+2 F
+2516(iaed)S
+1 F
+2641(listens)S
+2816(for)S
+2907(incom-)S
+486 1659(e)U
+486 1587(ing)U
+593(connections.)S
+946(By)S
+1046(default,)S
+1259(only)S
+1396(the)S
+1500(address)S
+1710(for)S
+1809(the)S
+1912(Internet)S
+2129(community)S
+2433(\(RFC1006\))S
+2735(is)S
+2804(set.)S
+2935(If)S
+3004(the)S
+513 1659(nd-system)U
+780(is)S
+840(con\256gured)S
+1117(for)S
+1207(other)S
+1351(OSI)S
+1467(communiti)S
+1729(es,)S
+1814(then)S
+1938(this)S
+2045(line)S
+2156(should)S
+2336(be)S
+2413(changed)S
+2634(accordingly,)S
+2954(e.g.,)S
+486 1902(N)U
+702 1803(A=)U
+5 F
+(")R
+1 F
+(Internet=`hostname`|NS+aabbcc)R
+5 F
+(")R
+1 F
+529 1902(ext,)U
+643(start)S
+2 F
+772(dish)S
+1 F
+897(in)S
+969(the)S
+1068(background,)S
+1392(bound)S
+1567(as)S
+1642(the)S
+1741(manager,)S
+1989(move)S
+2148(to)S
+2220(the)S
+2319(location)S
+2539(in)S
+2611(the)S
+2709(DIT)S
+2833(where)S
+3004(the)S
+486 1974(services)U
+700(are)S
+794(to)S
+861(be)S
+938(registered)S
+1196(and)S
+1303(run)S
+1403(the)S
+1497(script,)S
+1666(e.g.,)S
+702 2118(%)U
+772(setenv)S
+946(DISHPROC)S
+5 F
+1261(")S
+1 F
+(127.0.0.1)R
+1531(`expr)S
+1678($$)S
+1758(+)S
+1811(32768`)S
+5 F
+(")R
+1 F
+702 2262(%)U
+702 2190(%)U
+772(bind)S
+899(-u)S
+4 F
+969(<<)S
+1 F
+(DN)R
+1141(of)S
+1211(DSA)S
+1350(Manager)S
+4 F
+(>>)R
+1 F
+772 2262(moveto)U
+5 F
+973(")S
+1 F
+(ou=Research)R
+1332(and)S
+1439(Development)S
+5 F
+(@)R
+1 F
+(ou=Santa)R
+2066(Clara)S
+5 F
+(")R
+1 F
+486 2505(F)U
+702 2334(%)U
+772(sh)S
+845(run.sh)S
+519 2505(ollowing)U
+754(this,)S
+877(you)S
+988(need)S
+1122(to)S
+1189(arrange)S
+1390(for)S
+2 F
+1480(iaed)S
+1 F
+1604(rather)S
+1765(than)S
+2 F
+1889(tsapd)S
+1 F
+2039(to)S
+2106(run)S
+2206(when)S
+2356(the)S
+2450(machine)S
+2675(goes)S
+2805(multi\261user.)S
+486 2577(On)U
+579(Berkeley)S
+817(UNIX)S
+986(systems,)S
+1211(replace)S
+1406(these)S
+1550(lines)S
+1684(to)S
+1751(the)S
+3 F
+1845(/etc/rc)S
+2007(.local)S
+1 F
+2163(\256le:)S
+702 2721(if)U
+759([)S
+799(\261f)S
+869($\(SBINDIR\)tsapd)S
+1325(];)S
+1382(then)S
+2067 2793(e)U
+486 3009(with:)U
+702 2865(\256)U
+782 2793($\(SBINDIR\)tsapd)U
+1238(&)S
+1305(\(echo)S
+1459(\261n)S
+1539(')S
+1579(tsap'\))S
+4 F
+1736(>)S
+1 F
+1789(/dev/consol)S
+702 3153(if)U
+759([)S
+799(\261f)S
+869($\(SBINDIR\)iaed)S
+1299(];)S
+1356(then)S
+782 3225($)U
+(\(SBINDIR\)iaed)R
+1212(-D)S
+1295('ou=Research)S
+1649(and)S
+1756(...)S
+5 F
+(@)R
+1 F
+(cn=services')R
+2180(&)S
+486 3513(O)U
+702 3369(\256)U
+782 3297(\(echo)U
+936(\261n)S
+1016(')S
+1056(iae'\))S
+4 F
+1187(>)S
+1 F
+1240(/dev/console)S
+529 3513(n)U
+579(other)S
+723(systems,)S
+948(a)S
+995(similar)S
+1183(procedure)S
+1444(is)S
+1504(followed.)S
+486 3612(W)U
+(hen)R
+2 F
+652(iaed)S
+1 F
+778(starts,)S
+942(it)S
+998(will)S
+1114(connect)S
+1323(to)S
+1391(the)S
+1486(Directory,)S
+1753(\256nd)S
+1867(the)S
+1962(services)S
+2177(contained)S
+2433(therein,)S
+2637(and)S
+2745(start)S
+2870(listening)S
+486 3783(F)U
+486 3684(as)U
+556(appropriate.)S
+519 3783(inally,)U
+697(when)S
+851(the)S
+949(Directory)S
+1204(software)S
+1435(was)S
+1552(installed,)S
+1796(this)S
+1907(included)S
+2139(a)S
+2190(program)S
+2418(called)S
+2 F
+2587(dased)S
+1 F
+(.)R
+2786(If)S
+2850(you)S
+2964(have)S
+486 3855(not)U
+583(already)S
+781(done)S
+918(so,)S
+1006(edit)S
+1117(the)S
+3 F
+1211($\(ETCDIR\)isotailor)S
+1 F
+1744(\256le)S
+1841(to)S
+1908(have)S
+2042(these)S
+2186(two)S
+2296(lines:)S
+702 3999(ns)U
+5 F
+(_)R
+1 F
+(enable:)R
+980(on)S
+702 4071(n)U
+(s)R
+5 F
+(_)R
+1 F
+(address:)R
+1002(Internet=domain-na)S
+1481(me+17006)S
+486 4215(w)U
+(here)R
+659(``domain-name)S
+1031('')S
+1097(is)S
+1163(the)S
+1263(DNS)S
+1408(name)S
+1565(or)S
+1640(IP-address)S
+1918(of)S
+1993(the)S
+2092(machine)S
+2322(which)S
+2494(is)S
+2559(running)S
+2 F
+2771(dased)S
+1 F
+(.)R
+2971(This)S
+486 4359(a)U
+486 4287(can)U
+592(be)S
+671(a)S
+720(different)S
+950(machine)S
+1177(than)S
+1303(the)S
+1399(one)S
+1508(running)S
+1717(the)S
+1813(DSA,)S
+1969(but)S
+2068(it's)S
+2167(probably)S
+2403(best)S
+2522(to)S
+2590(have)S
+2725(the)S
+2820(local)S
+2959(DSA)S
+513 4359(nd)U
+2 F
+593(dased)S
+1 F
+753(running)S
+960(on)S
+1040(the)S
+1134(same)S
+1278(machine.)S
+270 4701(S)U
+(un)R
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3048(8)S
+EP
+%%Page: ? 9
+BP
+1 F
+60 Z
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+486 669(Next,)U
+642(arrange)S
+847(for)S
+2 F
+941(dased)S
+1 F
+1105(to)S
+1176(be)S
+1257(started)S
+1442(when)S
+1596(the)S
+1694(machine)S
+1923(goes)S
+2057(multi-user.)S
+2364(On)S
+2460(Berkeley)S
+2701(UNIX)S
+2873(systems,)S
+486 741(add)U
+593(these)S
+737(lines)S
+871(to)S
+938(the)S
+3 F
+1032(/etc/rc)S
+1194(.local)S
+1 F
+1350(\256le:)S
+702 885(if)U
+759([)S
+799(\261f)S
+869($\(SBINDIR\)dased)S
+1335(];)S
+1392(then)S
+2087 957(e)U
+486 1173(O)U
+702 1029(\256)U
+782 957($\(SBINDIR\)dased)U
+1248(&)S
+1315(\(echo)S
+1469(\261n)S
+1549(')S
+1589(dase'\))S
+4 F
+1756(>)S
+1 F
+1809(/dev/consol)S
+529 1173(n)U
+579(other)S
+723(systems,)S
+948(a)S
+995(similar)S
+1183(procedure)S
+1444(is)S
+1504(followed.)S
+486 1272(W)U
+(hen)R
+2 F
+652(dased)S
+1 F
+814(starts,)S
+978(it)S
+1034(will)S
+1150(listen)S
+1303(for)S
+1395(incoming)S
+1644(connections)S
+1953(from)S
+2091(initiat)S
+2233(or)S
+2304(ISODE)S
+2501(programs.)S
+2784(\(By)S
+2895(default,)S
+486 1416(s)U
+486 1344(the)U
+582(initiat)S
+724(or)S
+796(programs)S
+1045(aren't)S
+1208(loaded)S
+1391(with)S
+1520(the)S
+1616(user-friendly)S
+1949(nameservic)S
+2224(e)S
+2272(and)S
+2380(the)S
+2475(DAP,)S
+2630(owing)S
+2801(to)S
+2869(the)S
+2964(code)S
+509 1416(ize--instea)U
+761(d,)S
+826(they)S
+950(talk)S
+1061(to)S
+2 F
+1128(dased)S
+1 F
+(.\))R
+486 1515(F)U
+(or)R
+589(your)S
+719(other)S
+863(systems,)S
+1088(edit)S
+1199(the)S
+3 F
+1293($\(ETCDIR\)isotailor)S
+1 F
+1826(\256le)S
+1923(to)S
+1990(have)S
+2124(these)S
+2268(two)S
+2378(lines:)S
+702 1731(n)U
+702 1659(ns)U
+5 F
+(_)R
+1 F
+(enable:)R
+980(on)S
+732 1731(s)U
+5 F
+(_)R
+1 F
+(address:)R
+1002(Internet=domain-na)S
+1481(me+17006)S
+2835 1875(.)U
+486 1974(T)U
+486 1875(where)U
+653(``domain-name)S
+1025('')S
+1085(is)S
+1145(the)S
+1239(DNS)S
+1378(name)S
+1529(or)S
+1599(IP-address)S
+1872(of)S
+1942(the)S
+2036(machine)S
+2261(which)S
+2428(is)S
+2488(running)S
+2 F
+2695(dased)S
+1 F
+523 1974(o)U
+573(test)S
+677(the)S
+771(system:)S
+1114 2118(d)U
+486 2262(I)U
+702 2118(%)U
+772(isode-test)S
+1023(-iae)S
+506 2262(f)U
+546(all)S
+627(goes)S
+757(well,)S
+896(users)S
+1039(should)S
+1219(be)S
+1296(able)S
+1417(to)S
+1484(type)S
+1608(things)S
+1775(such)S
+1905(as)S
+486 2550(a)U
+702 2406(%)U
+772(ftam)S
+903(cheeta)S
+1058(h,sc,psi,us)S
+513 2550(nd)U
+599(``the)S
+739(right)S
+879(thing'')S
+1069(will)S
+1189(happen)S
+1389(\(i.e.,)S
+1524(local)S
+1668(users)S
+1817(can)S
+1926(access)S
+2105(remote)S
+2298(services,)S
+2532(even)S
+2671(if)S
+2733(they)S
+2862(have)S
+3001(not)S
+3 F
+54 Z
+378 2721(A)U
+1 F
+60 Z
+486 2622(been)U
+620(entered)S
+818(into)S
+932(the)S
+1026(entitie)S
+1178(s)S
+1221(database\).)S
+3 F
+54 Z
+417 2721(dding)U
+567(New)S
+687(Services)S
+1 F
+60 Z
+486 2793(T)U
+(he)R
+607(installat)S
+799(ion)S
+903(procedures)S
+1194(need)S
+1335(be)S
+1419(performed)S
+1697(only)S
+1831(once.)S
+2007(If)S
+2074(you)S
+2191(decide)S
+2376(to)S
+2450(disable)S
+2648(a)S
+2702(service,)S
+2914(simply)S
+3048 2865(g)U
+486 2937(N)U
+486 2865(remove)U
+692(the)S
+791(corresponding)S
+1160(entry)S
+1308(from)S
+1449(the)S
+1547(Directory.)S
+1837(To)S
+1928(add)S
+2039(a)S
+2090(new)S
+2214(service,)S
+2424(see)S
+2525(the)S
+2623(Section)S
+2828(``De\256nin)S
+529 2937(ew)U
+619(Services'')S
+883(in)S
+950(the)S
+2 F
+1044(User's)S
+1223(Manual)S
+1 F
+(.)R
+3 F
+54 Z
+270 3036(FTAM/FTP)U
+564(gateway)S
+1 F
+60 Z
+486 3108(Because)U
+709(the)S
+805(FTAM/FTP)S
+1113(gateway)S
+1336(is)S
+1398(meant)S
+1568(to)S
+1637(appear)S
+1820(as)S
+1891(an)S
+1969(FTAM)S
+2156(entity,)S
+2330(the)S
+2425(entry)S
+2570(for)S
+2661(this)S
+2769(service)S
+2961(must)S
+3061 3180(t)U
+486 3252(w)U
+486 3180(be)U
+565(placed)S
+745(in)S
+814(a)S
+863(different)S
+1093(portion)S
+1289(of)S
+1361(the)S
+1457(DIT)S
+1579(than)S
+1705(the)S
+1801(regular)S
+1994(FTAM)S
+2182(service.)S
+2410(As)S
+2498(such,)S
+2644(the)S
+2 F
+2739(bootsvc)S
+1 F
+2944(scrip)S
+529 3252(ill)U
+600(not)S
+697(install)S
+865(this)S
+972(service.)S
+486 3351(H)U
+(ence,)R
+683(if)S
+748(you)S
+866(wish)S
+1007(to)S
+1082(run)S
+1190(such)S
+1328(a)S
+1383(service,)S
+1597(you)S
+1715(will)S
+1837(have)S
+1979(to)S
+2054(install)S
+2230(it)S
+2292(manually.)S
+2580(The)S
+2702(entry)S
+2853(might)S
+3021(be)S
+486 3423(something)U
+757(like)S
+868(this:)S
+702 3567(objectCla)U
+934(ss=)S
+1033(top)S
+1130(&)S
+1197(quipuObject)S
+1515(&)S
+1802(applicat)S
+1994(ionEntity)S
+2239(&)S
+2306(iSODEApplicationEnt)S
+2848(ity)S
+702 3711(p)U
+702 3639(cn=)U
+4 F
+812(<<)S
+1 F
+(whatever)R
+1119(you)S
+1229(want)S
+4 F
+(>>)R
+1 F
+732 3711(resentationAddre)U
+1147(ss=)S
+4 F
+1246(<<)S
+1 F
+(unique)R
+1496(transport)S
+1730(selector)S
+4 F
+(>>)R
+1 F
+(/)R
+4 F
+2001(<<)S
+1 F
+(end-system's)R
+2404(NSAP)S
+4 F
+(>>)R
+1 F
+702 3855(a)U
+702 3783(supportedApplicati)U
+1164(onContext=)S
+1468(iso)S
+1558(ftam)S
+729 3855(cl=)U
+702 3927(e)U
+(xecVect)R
+927(or=)S
+1030(iso.ftam-ftp)S
+486 4071(L)U
+(ook)R
+633(in)S
+700(your)S
+830(part)S
+944(of)S
+1014(the)S
+1108(Directory)S
+1359(to)S
+1426(see)S
+1523(some)S
+1670(examples)S
+1918(of)S
+1988(what)S
+2125(these)S
+2269(entries)S
+2450(look)S
+2577(like.)S
+3 F
+54 Z
+270 4170(FILE)U
+414(TRANSER,)S
+704(ACCESS)S
+935(AND)S
+1070(MANAGEMENT)S
+1 F
+60 Z
+486 4242(In)U
+558(addition,)S
+793(if)S
+852(you)S
+964(are)S
+1060(running)S
+1269(the)S
+1365(ISODE)S
+1563(on)S
+1645(a)S
+1694(Berkeley)S
+1934(or)S
+2006(AT&T)S
+2192(System)S
+2391(V)S
+2456(UNIX)S
+2627(system,)S
+2831(then)S
+2957(there)S
+486 4386(M)U
+486 4314(is)U
+558(also)S
+687(an)S
+776(impleme)S
+988(ntation)S
+1188(of)S
+1270(the)S
+1376(ISO)S
+1504(FTAM.)S
+1737(FTAM,)S
+1950(which)S
+2129(stands)S
+2311(for)S
+2413(File)S
+2539(Transfer,)S
+2790(Access)S
+2991(and)S
+539 4386(anageme)U
+754(nt,)S
+839(is)S
+902(the)S
+999(OSI)S
+1118(\256le)S
+1218(service.)S
+1447(The)S
+1564(impleme)S
+1776(ntation)S
+1967(provided)S
+2204(is)S
+2266(fairly)S
+2419(complete)S
+2663(in)S
+2732(the)S
+2828(context)S
+3028(of)S
+3058 4458(r)U
+270 4746(S)U
+486 4458(the)U
+586(particula)S
+798(r)S
+844(\256le)S
+947(services)S
+1167(it)S
+1227(offers.)S
+1428(It)S
+1491(is)S
+1557(a)S
+1609(minimal)S
+1836(impleme)S
+2048(ntation)S
+2241(in)S
+2313(as)S
+2388(much)S
+2547(as)S
+2622(it)S
+2681(offers)S
+2846(only)S
+2978(fou)S
+303 4746(un)U
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3048(9)S
+EP
+%%Page: ? 10
+BP
+1 F
+60 Z
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+486 669(core)U
+610(services:)S
+841(transfer)S
+1045(of)S
+1115(text)S
+1226(\256les,)S
+1361(transfer)S
+1565(of)S
+1635(binary)S
+1809(\256les,)S
+1944(directory)S
+2182(listings,)S
+2391(and)S
+2498(\256le)S
+2595(manageme)S
+2857(nt.)S
+486 768(To)U
+573(generate)S
+798(FTAM,)S
+999(go)S
+1079(to)S
+1146(the)S
+3 F
+1240(isode\261interim)S
+1 F
+1611(directory)S
+1849(and)S
+1956(type:)S
+702 912(%)U
+772(./make)S
+955(all-ftam)S
+486 1083(T)U
+(his)R
+618(will)S
+737(cause)S
+896(a)S
+948(complete)S
+1195(generation)S
+1475(of)S
+1550(the)S
+1649(FTAM)S
+1840(libraries)S
+2063(and)S
+2175(programs.)S
+2461(If)S
+2525(all)S
+2610(goes)S
+2744(well,)S
+2887(proceed)S
+486 1254(Y)U
+486 1155(with)U
+613(the)S
+707(installat)S
+899(ion.)S
+1031(If)S
+1091(not,)S
+1203(complain)S
+1448(as)S
+1518(there)S
+1659(``should)S
+1879(be)S
+1956(no)S
+2036(problems'')S
+2320(at)S
+2384(this)S
+2491(step.)S
+529 1254(ou)U
+609(will)S
+723(need)S
+857(to)S
+924(be)S
+1001(the)S
+1095(super-user)S
+1365(to)S
+1432(install)S
+1600(FTAM:)S
+486 1542(T)U
+4 F
+702 1398(#)U
+1 F
+752(./make)S
+935(install\261fta)S
+1177(m)S
+523 1542(hat's)U
+667(about)S
+828(it.)S
+924(This)S
+1058(will)S
+1179(install)S
+1354(everything)S
+1639(and)S
+1753(then)S
+1884(clean\261up)S
+2129(the)S
+2230(source)S
+2413(tree.)S
+2565(Note)S
+2708(that)S
+2825(if)S
+2888(you)S
+3004(are)S
+3061 1614(t)U
+486 1686(c)U
+486 1614(planning)U
+726(on)S
+815(generating)S
+1098(or)S
+1176(installing)S
+1429(the)S
+1531(FTAM/FTP)S
+1845(gateway)S
+2074(\(described)S
+2353(below\),)S
+2563(then)S
+2695(you)S
+2813(should)S
+3001(no)S
+513 1686(lean-up)U
+720(the)S
+820(source)S
+1003(tree)S
+1120(until)S
+1257(after)S
+1394(you)S
+1510(are)S
+1610(\256nished)S
+1825(dealing)S
+2028(with)S
+2160(the)S
+2259(gateway.)S
+2520(In)S
+2595(this)S
+2707(case,)S
+2851(or)S
+2926(if)S
+2988(you)S
+486 1758(just)U
+593(want)S
+730(an)S
+807(installat)S
+999(ion)S
+1096(and)S
+1203(no)S
+1283(clean\261up,)S
+1536(then)S
+1660(use:)S
+4 F
+702 1902(#)U
+1 F
+752(./make)S
+935(inst\261ftam)S
+3 F
+54 Z
+270 2145(F)U
+1 F
+60 Z
+486 2046(instead.)U
+3 F
+54 Z
+303 2145(TAM/FTP)U
+564(GATEWAY)S
+1 F
+60 Z
+486 2217(I)U
+(n)R
+562(addition,)S
+801(if)S
+864(you)S
+980(are)S
+1080(running)S
+1293(the)S
+1393(ISODE)S
+1595(on)S
+1681(a)S
+1734(Berkeley)S
+1977(or)S
+2052(AT&T)S
+2241(System)S
+2443(V)S
+2511(UNIX)S
+2685(system,)S
+2892(there)S
+3038(is)S
+3061 2289(:)U
+486 2361(o)U
+486 2289(also)U
+606(an)S
+686(impleme)S
+898(ntation)S
+1089(of)S
+1162(an)S
+1242(FTAM/FTP)S
+1551(applicat)S
+1743(ion)S
+1843(gateway.)S
+2102(The)S
+2219(gateway)S
+2443(is)S
+2506(actuall)S
+2668(y)S
+2721(two)S
+2834(programs)S
+516 2361(ne)U
+595(which)S
+764(acts)S
+880(as)S
+952(an)S
+1031(ftam)S
+1164(responder)S
+1423(and)S
+1532(an)S
+1611(ftp)S
+1700(client,)S
+1872(and)S
+1981(the)S
+2077(other)S
+2223(which)S
+2392(acts)S
+2508(as)S
+2579(an)S
+2657(ftp)S
+2745(server)S
+2913(and)S
+3021(an)S
+486 2505(r)U
+486 2433(ftam)U
+622(initiat)S
+764(or.)S
+874(Note)S
+1016(that)S
+1132(the)S
+1230(gateway)S
+1455(currently)S
+1697(resides)S
+1888(at)S
+1956(a)S
+2007(different)S
+2239(location)S
+2458(than)S
+2586(the)S
+2684(standard)S
+2912(FTAM)S
+506 2505(esponder)U
+751(and)S
+866(FTP)S
+997(server.)S
+1207(\(This)S
+1362(may)S
+1494(be)S
+1579(correcte)S
+1774(d)S
+1832(in)S
+1907(a)S
+1962(future)S
+2133(release.\))S
+2363(Read)S
+2514(the)S
+2615(manual)S
+2820(entries)S
+3008(for)S
+486 2676(T)U
+2 F
+486 2577(ftamd-ftp)U
+1 F
+737(\(8c\))S
+854(and)S
+2 F
+961(ftpd-ftam)S
+1 F
+1212(\(8c\))S
+1329(for)S
+1419(the)S
+1513(details.)S
+523 2676(o)U
+573(generate)S
+798(the)S
+892(FTAM/FTAP)S
+1241(gateway,)S
+1477(go)S
+1557(to)S
+1624(the)S
+3 F
+1718(isode\261interim)S
+1 F
+2089(directory)S
+2327(and)S
+2434(type:)S
+486 2991(T)U
+702 2820(%)U
+772(./make)S
+955(all-ftam)S
+1147(-ftp)S
+523 2991(his)U
+614(will)S
+729(cause)S
+884(a)S
+932(complete)S
+1175(generation)S
+1451(of)S
+1522(the)S
+1616(gateway.)S
+1872(If)S
+1932(all)S
+2013(goes)S
+2143(well,)S
+2282(proceed)S
+2493(with)S
+2620(the)S
+2714(installat)S
+2906(ion.)S
+3038(If)S
+486 3162(Y)U
+486 3063(not,)U
+598(complain)S
+843(as)S
+913(there)S
+1054(``should)S
+1274(be)S
+1351(no)S
+1431(problems'')S
+1715(at)S
+1779(this)S
+1886(step.)S
+529 3162(ou)U
+609(will)S
+723(need)S
+857(to)S
+924(be)S
+1001(the)S
+1095(super-user)S
+1365(to)S
+1432(install)S
+1600(the)S
+1694(FTAM/FTP)S
+2000(gateway:)S
+486 3450(T)U
+4 F
+702 3306(#)U
+1 F
+752(./make)S
+935(install\261fta)S
+1177(m-ftp)S
+523 3450(his)U
+618(will)S
+737(install)S
+910(everything)S
+1193(and)S
+1304(then)S
+1432(clean\261up)S
+1674(the)S
+1772(source)S
+1953(tree.)S
+2103(If)S
+2167(you)S
+2281(just)S
+2392(want)S
+2533(an)S
+2614(installat)S
+2806(ion)S
+2907(and)S
+3018(no)S
+486 3522(clean\261up,)U
+739(then)S
+863(use:)S
+4 F
+702 3666(#)U
+1 F
+752(./make)S
+935(inst\261ftam-ftp)S
+486 3909(R)U
+486 3810(instead.)U
+526 3909(egardless)U
+770(of)S
+840(the)S
+934(command)S
+1192(you)S
+1302(use,)S
+1417(on)S
+1497(4.2BSD-derived)S
+1909(systems,)S
+2134(add)S
+2241(this)S
+2348(line)S
+2459(to)S
+2526(your)S
+3 F
+2656(/etc/ser)S
+2841(vers)S
+1 F
+2968(\256le:)S
+486 4197(O)U
+702 4053(ftp-ftam)U
+960(tcp)S
+1094($\(SBINDIR\)in.ftpd-ftam)S
+529 4197(n)U
+579(4.3BSD-derived)S
+991(systems,)S
+1216(add)S
+1323(this)S
+1430(line)S
+1541(to)S
+1608(your)S
+3 F
+1738(/etc/inetd.conf)S
+1 F
+2121(\256le:)S
+2598 4341(m)U
+270 4701(S)U
+702 4341(ftp-ftam)U
+960(stream)S
+1181(tcp)S
+1315(nowait)S
+1539(root)S
+1696($\(SBINDIR\)in.ftpd-ftam)S
+2355(in.ftpd-fta)S
+303 4701(un)U
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3018(10)S
+EP
+%%Page: ? 11
+BP
+1 F
+60 Z
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+486 669(Finally,)U
+692(add)S
+799(this)S
+906(line)S
+1017(to)S
+1084(your)S
+3 F
+1214(/etc/ser)S
+1399(vices)S
+1 F
+1543(\256le:)S
+1664 813(p)U
+702(ftp-ftam)S
+1513(531/tc)S
+3 F
+54 Z
+798 912(L)U
+270(VIRTUAL)S
+537(TERMINA)S
+1 F
+60 Z
+486 984(In)U
+558(addition,)S
+793(if)S
+852(you)S
+963(are)S
+1058(running)S
+1266(the)S
+1361(ISODE)S
+1558(on)S
+1639(a)S
+1687(Berkeley)S
+1926(UNIX)S
+2096(system,)S
+2299(there)S
+2441(is)S
+2502(also)S
+2620(an)S
+2698(impleme)S
+2910(ntation)S
+3051 1056(e)U
+486 1128(t)U
+486 1056(of)U
+561(the)S
+660(ISO)S
+780(VT.)S
+919(VT)S
+1023(is)S
+1087(the)S
+1185(OSI)S
+1305(terminal)S
+1531(service.)S
+1761(The)S
+1879(impleme)S
+2091(ntation)S
+2283(provided)S
+2521(is)S
+2585(roughly)S
+2796(comparabl)S
+503 1128(o)U
+553(an)S
+630(average)S
+838(telnet)S
+993(impleme)S
+1205(ntation.)S
+486 1227(T)U
+(o)R
+573(generate)S
+798(the)S
+892(VT)S
+992(system,)S
+1194(go)S
+1274(to)S
+1341(the)S
+3 F
+1435(isode\261interim)S
+1 F
+1806(directory)S
+2044(and)S
+2151(type:)S
+486 1542(T)U
+702 1371(%)U
+772(./make)S
+955(all-vt)S
+523 1542(his)U
+621(will)S
+743(cause)S
+905(a)S
+960(complete)S
+1210(generation)S
+1493(of)S
+1571(the)S
+1673(VT)S
+1781(initiat)S
+1923(or)S
+2000(and)S
+2114(responder)S
+2378(programs.)S
+2667(If)S
+2734(all)S
+2822(goes)S
+2959(well,)S
+486 1713(Y)U
+486 1614(proceed)U
+697(with)S
+824(the)S
+918(installat)S
+1110(ion.)S
+1242(If)S
+1302(not,)S
+1414(complain)S
+1659(as)S
+1729(there)S
+1870(``should)S
+2090(be)S
+2167(no)S
+2247(problems'')S
+2531(at)S
+2595(this)S
+2702(step.)S
+529 1713(ou)U
+609(will)S
+723(need)S
+857(to)S
+924(be)S
+1001(the)S
+1095(super-user)S
+1365(to)S
+1432(install)S
+1600(VT:)S
+486 2001(T)U
+4 F
+702 1857(#)U
+1 F
+752(./make)S
+935(install\261vt)S
+523 2001(hat's)U
+668(about)S
+830(it.)S
+927(This)S
+1062(will)S
+1184(install)S
+1360(everything)S
+1646(and)S
+1761(then)S
+1893(clean\261up)S
+2139(the)S
+2241(source)S
+2426(tree.)S
+2579(If)S
+2646(you)S
+2763(just)S
+2877(want)S
+3021(an)S
+486 2073(installat)U
+678(ion)S
+775(and)S
+882(no)S
+962(clean\261up,)S
+1215(then)S
+1339(use:)S
+4 F
+702 2217(#)U
+1 F
+752(./make)S
+935(inst\261vt)S
+3 F
+54 Z
+270 2460(D)U
+1 F
+60 Z
+486 2361(instead.)U
+3 F
+54 Z
+309 2460(IRECTORY)U
+618(SERVICES)S
+1 F
+60 Z
+486 2532(I)U
+(n)R
+564(addition,)S
+805(if)S
+870(you)S
+988(are)S
+1090(running)S
+1305(the)S
+1407(ISODE)S
+1611(on)S
+1699(a)S
+1754(Berkeley)S
+2000(UNIX)S
+2177(or)S
+2255(AT&T)S
+2446(System)S
+2650(V)S
+2720(UNIX)S
+2896(system,)S
+486 2676(a)U
+486 2604(there)U
+628(is)S
+689(also)S
+807(an)S
+885(impleme)S
+1097(ntation)S
+1286(of)S
+1357(the)S
+1451(OSI)S
+1567(Directory,)S
+1833(called)S
+1998(QUIPU.)S
+2235(If)S
+2295(you're)S
+2472(not)S
+2569(interested)S
+2824(in)S
+2891(running)S
+533 2676(Directory,)U
+799(skip)S
+919(this)S
+1026(text)S
+1137(and)S
+1244(go)S
+1324(to)S
+1391(the)S
+1485(section)S
+1676(entitle)S
+1828(d)S
+3 F
+1878(GENERATING)S
+2307(DOCUMENTATION)S
+1 F
+(.)R
+3048 2775(u)U
+486 2847(m)U
+486 2775(Each)U
+635(host)S
+763(using)S
+921(the)S
+1023(OSI)S
+1146(directory)S
+1391(implici)S
+1563(tly)S
+1654(runs)S
+1784(a)S
+1838(Directory)S
+2096(User)S
+2236(Agent)S
+2410(\(DUA\).)S
+2641(Additionally,)S
+2988(yo)S
+533 2847(ay)U
+613(wish)S
+749(to)S
+819(run)S
+922(a)S
+972(Directory)S
+1226(System)S
+1426(Agent)S
+1596(\(DSA\))S
+1777(on)S
+1859(some)S
+2008(hosts.)S
+2188(As)S
+2276(such,)S
+2423(the)S
+2519(instructions)S
+2822(which)S
+2991(fol-)S
+3 F
+54 Z
+378 3018(Q)U
+1 F
+60 Z
+486 2919(low)U
+596(indicate)S
+808(which)S
+975(activit)S
+1127(ies)S
+1214(are)S
+1308(necessary)S
+1562(in)S
+1629(both)S
+1756(instances,)S
+2012(as)S
+2082(appropriate.)S
+3 F
+54 Z
+420 3018(UIPU)U
+570(GENERATION)S
+1 F
+60 Z
+486 3090(T)U
+(o)R
+573(generate)S
+798(QUIPU,)S
+1015(go)S
+1095(to)S
+1162(the)S
+3 F
+1256(isode\261interim)S
+1 F
+1627(directory)S
+1865(and)S
+1972(type:)S
+486 3405(T)U
+702 3234(%)U
+772(./make)S
+955(all-quipu)S
+523 3405(his)U
+614(will)S
+729(cause)S
+884(a)S
+932(complete)S
+1175(generation)S
+1451(of)S
+1522(the)S
+1617(DSAP)S
+1790(library)S
+1972(and)S
+2080(the)S
+2175(DSA.)S
+2350(If)S
+2410(all)S
+2491(goes)S
+2621(well,)S
+2760(proceed)S
+2971(with)S
+3 F
+54 Z
+378 3576(Q)U
+1 F
+60 Z
+486 3477(the)U
+580(installat)S
+772(ion.)S
+904(If)S
+964(not,)S
+1076(complain)S
+1321(as)S
+1391(there)S
+1532(``should)S
+1752(be)S
+1829(no)S
+1909(problems'')S
+2193(at)S
+2257(this)S
+2364(step.)S
+3 F
+54 Z
+420 3576(UIPU)U
+570(INSTALLATION)S
+1 F
+60 Z
+486 3648(Y)U
+(ou)R
+609(will)S
+723(need)S
+857(to)S
+924(be)S
+1001(the)S
+1095(super-user)S
+1365(to)S
+1432(install)S
+1600(QUIPU:)S
+486 3936(T)U
+4 F
+702 3792(#)U
+1 F
+752(./make)S
+935(install\261quipu)S
+523 3936(his)U
+618(will)S
+737(install)S
+910(everything)S
+1193(and)S
+1304(then)S
+1432(clean\261up)S
+1674(the)S
+1772(source)S
+1953(tree.)S
+2103(If)S
+2167(you)S
+2281(just)S
+2392(want)S
+2533(an)S
+2614(installat)S
+2806(ion)S
+2907(and)S
+3018(no)S
+486 4008(clean\261up,)U
+739(then)S
+863(use:)S
+4 F
+702 4152(#)U
+1 F
+752(./make)S
+935(inst\261quipu)S
+486 4296(i)U
+(nstead.)R
+712(After)S
+859(either)S
+1017(command,)S
+1290(there)S
+1431(is)S
+1491(one)S
+1598(once-only)S
+1859(activit)S
+2011(y.)S
+3048 4701(1)U
+270(Sun)S
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3018(1)S
+EP
+%%Page: ? 12
+BP
+1 F
+60 Z
+270 381(I)U
+(SODE-GEN)R
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+3058(\))S
+486 741(o)U
+486 669(The)U
+605(QUIPU)S
+812(DSA)S
+956(is)S
+1021(a)S
+1073(``static)S
+1266(responder''.)S
+1603(This)S
+1735(means)S
+1914(that)S
+2030(it)S
+2088(accept)S
+2243(s)S
+2290(new)S
+2414(associations)S
+2729(and)S
+2840(managing)S
+516 741(ld)U
+588(ones)S
+723(as)S
+798(necessary.)S
+1092(Hence,)S
+1286(if)S
+1348(you)S
+1463(intend)S
+1639(to)S
+1711(run)S
+1816(a)S
+1868(local)S
+2011(DSA,)S
+2170(it)S
+2229(is)S
+2294(necessary)S
+2553(to)S
+2624(start)S
+2752(the)S
+2 F
+2850(ros.quipu)S
+1 F
+3051 813(e)U
+3 F
+486 885(/)U
+1 F
+486 813(daemon)U
+714(when)S
+881(the)S
+992(machine)S
+1234(goes)S
+1380(multi-user.)S
+1699(On)S
+1808(Berkeley)S
+2062(UNIX)S
+2247(systems,)S
+2488(add)S
+2611(these)S
+2771(lines)S
+2921(to)S
+3004(th)S
+3 F
+503 885(etc/rc)U
+648(.local)S
+1 F
+804(\256le:)S
+702 1029(i)U
+(f)R
+759([)S
+799(\261f)S
+869($\(SBINDIR\)ros.quipu)S
+1423(];)S
+1480(then)S
+1902 1101(&)U
+782 1173(\()U
+782 1101(\(cd)U
+879(/usr/etc/qui)S
+1151(pu-db;)S
+1328($\(SBINDIR\)ros.quipu\))S
+802 1173(echo)U
+936(\261n)S
+1016(')S
+1056(quipu'\))S
+4 F
+1253(>)S
+1 F
+1306(/dev/console)S
+486 1389(\()U
+702 1245(\256)U
+506 1389(This)U
+635(assumes)S
+857(your)S
+989(database)S
+1219(is)S
+1281(in)S
+1350(the)S
+1446(directory)S
+3 F
+1686(/usr/etc/quipu-db)S
+1 F
+2151(-)S
+2193(it)S
+2249(need)S
+2385(not)S
+2484(be\))S
+2583(On)S
+2678(other)S
+2824(systems,)S
+3051(a)S
+3 F
+54 Z
+378 1560(Q)U
+1 F
+60 Z
+486 1461(similar)U
+674(procedure)S
+935(is)S
+995(followed.)S
+3 F
+54 Z
+420 1560(UIPU)U
+570(DATABASE)S
+1 F
+60 Z
+486 1632(I)U
+(f)R
+548(you)S
+660(intend)S
+833(to)S
+902(run)S
+1004(a)S
+1053(local)S
+1193(DSA,)S
+1349(then)S
+1475(you)S
+1586(will)S
+1701(need)S
+1836(to)S
+1904(build)S
+2049(a)S
+2097(Directory)S
+2349(database.)S
+2613(\(If)S
+2694(you)S
+2805(are)S
+2900(already)S
+3048 1704(n)U
+3 F
+486 1776(Q)U
+1 F
+486 1704(running)U
+699(QUIPU)S
+906(5.0)S
+1006(or)S
+1081(later,)S
+1229(then)S
+1358(you've)S
+1550(done)S
+1692(this)S
+1804(before)S
+1983(and)S
+2095(so)S
+2173(you)S
+2288(can)S
+2397(skip)S
+2522(to)S
+2594(the)S
+2693(next)S
+2822(section)S
+3018(o)S
+3 F
+533 1776(UIPU)U
+700(TAILORING)S
+1 F
+(.\))R
+1105(The)S
+1219(database)S
+1447(directory,)S
+1700(by)S
+1780(default,)S
+1983(lives)S
+2117(in)S
+2184(the)S
+2278(ETCDIR)S
+2515(area)S
+2636(\(usually)S
+3 F
+2850(/usr/etc/)S
+1 F
+(\))R
+3 F
+486 1920(o)U
+1 F
+486 1848(under)U
+677(the)S
+804(name)S
+988(of)S
+3 F
+1091(quipu-db)S
+1326(/)S
+1 F
+(.)R
+1431(Three)S
+1625(prototype)S
+1909(databases)S
+2193(can)S
+2330(be)S
+2440(found)S
+2633(in)S
+2733(the)S
+2860(directory)S
+3 F
+516 1920(thers/quipu/quipu)U
+978(-db/)S
+1 F
+(.)R
+1140(These)S
+1308(database)S
+1540(\256les)S
+1663(should)S
+1846(be)S
+1926(protected)S
+2174(as)S
+2247(they)S
+2374(contain)S
+2575(Directory)S
+2829(passwords)S
+486 2064(s)U
+486 1992(and)U
+595(other)S
+741(sensitive)S
+974(information.)S
+1316(The)S
+1432(DSA)S
+1573(needs)S
+1732(to)S
+1801(be)S
+1880(able)S
+2003(to)S
+2072(read)S
+2198(this)S
+2307(information,)S
+2629(and)S
+2738(so)S
+2813(performs)S
+3051(a)S
+509 2064(etuid)U
+650(on)S
+730(execution)S
+985(to)S
+1052(the)S
+1146(UID)S
+1272(of)S
+1342(the)S
+1436(owner)S
+1606(of)S
+1676(the)S
+1770(database)S
+1998(directory.)S
+3051 2163(e)U
+486 2235(a)U
+486 2163(Now)U
+629(customize)S
+901(the)S
+1002(chosen)S
+1196(prototype)S
+1454(database)S
+1689(under)S
+3 F
+1853(/usr/etc/quipu-db/)S
+1 F
+(.)R
+2375(The)S
+2496(details)S
+2681(of)S
+2757(this)S
+2870(databas)S
+513 2235(re)U
+581(explained)S
+837(in)S
+905(Volume)S
+1120(5)S
+1171(of)S
+1242(the)S
+1337(users)S
+1481(manual.)S
+1715(However)S
+1956(you)S
+2067(should)S
+2248(be)S
+2326(able)S
+2448(to)S
+2516(derive)S
+2688(a)S
+2735(minimal)S
+2957(data-)S
+486 2379(D)U
+486 2307(base)U
+614(by)S
+695(following)S
+950(the)S
+1045(example)S
+1271(structure)S
+1503(de\256ned)S
+1701(for)S
+1792(University)S
+2067(College)S
+2276(London)S
+2484(in)S
+2552(the)S
+2647(GB)S
+2750(branch)S
+2934(of)S
+3004(the)S
+529 2379(irectory)U
+737(tree.)S
+883(Then)S
+1027(delete)S
+1192(the)S
+1286(example)S
+1511(structure)S
+1742(for)S
+1832(O=University)S
+2182(College)S
+2390(London.)S
+3 F
+54 Z
+378 2478(QUIPU)U
+570(TAILORING)S
+1 F
+60 Z
+486 2550(If)U
+551(you)S
+666(choose)S
+857(to)S
+928(run)S
+1032(a)S
+1083(local)S
+1225(DSA,)S
+1383(now)S
+1510(con\256gure)S
+1761(it.)S
+1854(The)S
+1972(DSA)S
+2115(tailors)S
+2290(itself)S
+2435(at)S
+2503(runtime)S
+2715(by)S
+2799(reading)S
+3004(the)S
+3058 2622(-)U
+486 2694(l)U
+486 2622(\256le)U
+3 F
+586($\(ETCDIR\)qu)S
+954(iputailor)S
+1 F
+(.)R
+1236(A)S
+1302(prototype)S
+1556(of)S
+1629(this)S
+1739(\256le)S
+1839(will)S
+1955(be)S
+2034(installed)S
+2261(during)S
+2440(the)S
+2536(normal)S
+2729(ISODE)S
+2927(instal)S
+503 2694(ation)U
+644(process.)S
+879(Only)S
+1019(one)S
+1126(entry)S
+1270(in)S
+1337(the)S
+1431(\256le)S
+1528(usually)S
+1722(needs)S
+1879(to)S
+1946(be)S
+2023(changed:)S
+486 2982(S)U
+702 2838(mydsaname)U
+1190(CN=toucan)S
+519 2982(ubstitute)U
+747(the)S
+841(name)S
+992(of)S
+1062(the)S
+1156(DSA)S
+1295(as)S
+1365(it)S
+1419(occurs)S
+1596(in)S
+1663(the)S
+1757(Directory)S
+2008(for)S
+2098(``CN=toucan''.)S
+2510(See)S
+2 F
+2617(quiputailor)S
+1 F
+2918(\(5\))S
+3008(for)S
+486 3153(N)U
+486 3054(a)U
+533(description)S
+821(of)S
+891(the)S
+985(full)S
+1089(range)S
+1243(of)S
+1313(tailoring)S
+1538(options)S
+1735(in)S
+1802(the)S
+3 F
+1896($\(ETCDIR\)qu)S
+2264(iputailor)S
+1 F
+2508(\256le.)S
+529 3153(ow)U
+634(con\256gure)S
+893(the)S
+999(various)S
+1208(DUA)S
+1369(programs.)S
+1663(These)S
+1839(tailor)S
+1999(themselves)S
+2299(at)S
+2374(runtime)S
+2593(by)S
+2684(reading)S
+2896(the)S
+3001(\256le)S
+486 3297(p)U
+3 F
+486 3225($\(ETCDIR\)ds)U
+844(aptailor)S
+1 F
+(.)R
+1107(A)S
+1174(prototype)S
+1429(of)S
+1503(this)S
+1614(\256le)S
+1714(will)S
+1831(be)S
+1911(installed)S
+2139(during)S
+2319(the)S
+2416(normal)S
+2610(ISODE)S
+2809(installat)S
+3001(ion)S
+516 3297(rocess.)U
+721(Only)S
+861(one)S
+968(entry)S
+1112(in)S
+1179(the)S
+1273(\256le)S
+1370(usually)S
+1564(needs)S
+1721(to)S
+1788(be)S
+1865(changed:)S
+486 3585(S)U
+702 3441(dsa)U
+5 F
+(_)R
+1 F
+(address)R
+1092(toucan)S
+1293(localHost=17003)S
+519 3585(ubstitute)U
+752(the)S
+851(name)S
+1007(of)S
+1082(your)S
+1217(``primary'')S
+1513(DSA)S
+1657(for)S
+1752(``toucan'')S
+2018(and)S
+2130(its)S
+2211(corresponding)S
+2579(presentation)S
+2898(address)S
+486 3729(i)U
+486 3657(for)U
+577(the)S
+672(``'0101'H/Internet+...'')S
+1259(string.)S
+1452(This)S
+1579(information)S
+1884(can)S
+1988(be)S
+2065(found)S
+2225(in)S
+2292(the)S
+2386(Directory)S
+2637(on)S
+2717(the)S
+2811(host)S
+2931(which)S
+503 3729(s)U
+546(running)S
+753(the)S
+847(DSA.)S
+486 3828(D)U
+(o)R
+584(not)S
+686(confuse)S
+898(the)S
+2 F
+997(dsa)S
+5 F
+(_)R
+2 F
+(address)R
+1 F
+1321(used)S
+1456(in)S
+1528(this)S
+1639(\256le)S
+1740(with)S
+1871(the)S
+2 F
+1969(ns)S
+5 F
+(_)R
+2 F
+(address)R
+1 F
+2262(used)S
+2396(in)S
+2467(the)S
+3 F
+2565($\(ETCDIR\)isotailor)S
+1 F
+3058 3900(-)U
+486 3972(t)U
+486 3900(\256le.)U
+619(These)S
+784(are)S
+879(separate)S
+1098(services)S
+1313(and)S
+1421(must)S
+1559(live)S
+1671(at)S
+1736(different)S
+1964(addresses.)S
+2249(See)S
+2 F
+2356(quiputailor)S
+1 F
+2657(\(5\))S
+2747(for)S
+2837(a)S
+2884(descrip)S
+503 3972(ion)U
+600(of)S
+670(the)S
+764(full)S
+868(range)S
+1022(of)S
+1092(tailoring)S
+1317(options)S
+1514(in)S
+1581(the)S
+3 F
+1675($\(ETCDIR\)ds)S
+2033(aptailor)S
+1 F
+2257(\256le.)S
+3 F
+54 Z
+378 4071(QUIPU)U
+570(ONCE-ONLY)S
+1 F
+60 Z
+486 4143(Having)U
+684(tailored)S
+890(QUIPU,)S
+1107(you)S
+1217(can)S
+1321(now)S
+1444(start)S
+1568(the)S
+1662(DSA.)S
+1836(However,)S
+2091(if)S
+2148(you)S
+2258(are)S
+2352(already)S
+2550(running)S
+2757(QUIPU,)S
+2974(then)S
+486 4314(S)U
+486 4215(you)U
+596(will)S
+710(need)S
+844(to)S
+911(kill)S
+1012(and)S
+1119(restart)S
+1290(the)S
+1384(QUIPU)S
+1586(DSA.)S
+519 4314(tart)U
+620(the)S
+714(DSA)S
+853(now.)S
+1011(From)S
+1161(the)S
+2 F
+1255(CShell)S
+1 F
+(,)R
+1451(the)S
+1545(command)S
+1803(might)S
+1964(be:)S
+270 4746(S)U
+4 F
+702 4458(#)U
+1 F
+752($\(SBINDIR\)ros.quipu)S
+4 F
+1306(>)S
+1 F
+(&)R
+1406(/dev/null)S
+303 4746(un)U
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3018(12)S
+EP
+%%Page: ? 13
+BP
+1 F
+60 Z
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+486 669(The)U
+603(daemon)S
+817(will)S
+933(automati)S
+1145(cally)S
+1285(detach.)S
+1500(If)S
+1562(you)S
+1674(do)S
+1756(not)S
+1855(redirect)S
+2062(the)S
+2158(daemon's)S
+2414(standard\261error,)S
+2802(then)S
+2928(it)S
+2984(will)S
+3 F
+54 Z
+270 840(N)U
+1 F
+60 Z
+486 741(not)U
+583(detach,)S
+776(instead)S
+967(printing)S
+1178(messages)S
+1425(as)S
+1495(to)S
+1562(what)S
+1699(actions)S
+1890(it)S
+1944(is)S
+2004(taking.)S
+3 F
+54 Z
+309 840(ETWORK)U
+576(MANAGEMENT)S
+1 F
+60 Z
+486 912(I)U
+(n)R
+558(addition,)S
+793(if)S
+852(you)S
+963(are)S
+1058(running)S
+1266(the)S
+1361(ISODE)S
+1558(on)S
+1639(a)S
+1687(Berkeley)S
+1926(UNIX)S
+2096(system,)S
+2299(there)S
+2441(is)S
+2502(also)S
+2620(an)S
+2698(impleme)S
+2910(ntation)S
+3048 984(d)U
+486 1056(s)U
+486 984(of)U
+562(the)S
+662(SNMP.)S
+885(Although)S
+1138(this)S
+1251(is)S
+1317(not)S
+1420(the)S
+1519(OSI)S
+1640(network)S
+1862(manageme)S
+2124(nt)S
+2196(service,)S
+2407(Inasmuch)S
+2666(as)S
+2741(the)S
+2840(continue)S
+509 1056(urvival)U
+702(of)S
+774(the)S
+870(Internet)S
+1080(hinges)S
+1259(on)S
+1341(all)S
+1424(nodes)S
+1586(becoming)S
+1846(network)S
+2064(managea)S
+2279(ble,)S
+2389(this)S
+2497(package)S
+2716(was)S
+2830(developed)S
+486 1227(I)U
+486 1128(using)U
+636(the)S
+730(ISODE)S
+926(and)S
+1033(is)S
+1093(being)S
+1247(freely)S
+1408(distributed)S
+1686(with)S
+1813(releases)S
+2024(of)S
+2094(Berkeley)S
+2332(UNIX.)S
+506 1227(t)U
+553(must)S
+700(be)S
+787(stressed)S
+1007(that)S
+1128(this)S
+1245(package)S
+1473(is)S
+1543(not)S
+1650(a)S
+1706(complete)S
+1957(network)S
+2183(manageme)S
+2445(nt)S
+2521(system.)S
+2752(In)S
+2831(particula)S
+3043(r,)S
+486 1371(t)U
+486 1299(whilst)U
+2 F
+662(snmpd)S
+1 F
+846(provides)S
+1081(a)S
+1136(minimal)S
+1366(agent)S
+1525(functionali)S
+1787(ty,)S
+1877(there)S
+2026(are)S
+2128(no)S
+2216(Network)S
+2454(Operation)S
+2723(Center)S
+2912(\(NOC\))S
+503 1371(ools--)U
+2 F
+(snmpi)R
+1 F
+806(is)S
+866(a)S
+913(debugging)S
+1187(aid)S
+1281(only.)S
+486 1470(T)U
+(o)R
+573(generate)S
+798(the)S
+892(SNMP)S
+1074(system,)S
+1276(go)S
+1356(to)S
+1423(the)S
+3 F
+1517(isode\261interim)S
+1 F
+1888(directory)S
+2126(and)S
+2233(type:)S
+486 1785(T)U
+702 1614(%)U
+772(./make)S
+955(all-snmp)S
+523 1785(his)U
+615(will)S
+731(cause)S
+887(a)S
+936(complete)S
+1179(generation)S
+1455(of)S
+1526(the)S
+1621(SNMP)S
+1804(agent)S
+1956(and)S
+2064(the)S
+2159(minimal)S
+2382(SNMP)S
+2565(initiat)S
+2707(or)S
+2778(program.)S
+3038(If)S
+486 1929(s)U
+486 1857(all)U
+570(goes)S
+703(well,)S
+845(proceed)S
+1059(with)S
+1189(the)S
+1286(installat)S
+1478(ion.)S
+1613(If)S
+1676(not,)S
+1791(complain)S
+2039(as)S
+2112(there)S
+2256(``should)S
+2478(be)S
+2557(no)S
+2639(problems'')S
+2925(at)S
+2991(this)S
+509 1929(tep.)U
+486 2028(T)U
+(here)R
+656(are)S
+759(two)S
+878(once\261only)S
+1158(activit)S
+1310(ies)S
+1406(which)S
+1582(must)S
+1728(be)S
+1814(performed)S
+2094(prior)S
+2239(to)S
+2314(installat)S
+2506(ion.)S
+2646(First,)S
+2799(check)S
+2968(your)S
+3 F
+486 2100(/etc/ser)U
+671(vices)S
+1 F
+815(\256le,)S
+927(and)S
+1034(verify)S
+1198(that)S
+1309(these)S
+1453(three)S
+1594(lines)S
+1728(are)S
+1822(present:)S
+702 2244(snmp)U
+1513(161/udp)S
+1680 2316(p)U
+702 2388(s)U
+702 2316(snmp-trap)U
+1513(162/ud)S
+725 2388(mux)U
+1513(199/tcp)S
+486 2631(S)U
+486 2532(If)U
+546(not,)S
+658(add)S
+765(them.)S
+519 2631(econd,)U
+698(add)S
+805(these)S
+949(lines)S
+1083(to)S
+1150(the)S
+3 F
+1244(/etc/rc)S
+1406(.local)S
+1 F
+1562(\256le:)S
+702 2775(if)U
+759([)S
+799(\261f)S
+869($\(SBINDIR\)snmpd)S
+1358(];)S
+1415(then)S
+782 2847($\(SBINDIR\)snmpd)U
+1271(&)S
+1338(\(echo)S
+1492(\261n)S
+1572(')S
+1612(snmp'\))S
+4 F
+1802(>)S
+1 F
+1855(/dev/console)S
+702 2991(i)U
+702 2919(\256)U
+719 2991(f)U
+759([)S
+799(\261f)S
+869($\(SBINDIR\)smux.unixd)S
+1480(\261a)S
+1557(\261f)S
+1627($\(SBINDIR\)snmpd)S
+2116(];)S
+2173(then)S
+2382 3063(e)U
+486 3306(Y)U
+702 3135(\256)U
+782 3063($\(SBINDIR\)smux.unixd)U
+1393(&)S
+1460(\(echo)S
+1614(\261n)S
+1694(')S
+1734(smux-unix'\))S
+4 F
+2051(>)S
+1 F
+2104(/dev/consol)S
+529 3306(ou)U
+609(will)S
+723(need)S
+857(to)S
+924(be)S
+1001(the)S
+1095(super-user)S
+1365(to)S
+1432(install)S
+1600(SNMP:)S
+486 3594(T)U
+4 F
+702 3450(#)U
+1 F
+752(./make)S
+935(install\261snmp)S
+523 3594(his)U
+618(will)S
+737(install)S
+910(everything)S
+1193(and)S
+1304(then)S
+1432(clean\261up)S
+1674(the)S
+1772(source)S
+1953(tree.)S
+2103(If)S
+2167(you)S
+2281(just)S
+2392(want)S
+2533(an)S
+2614(installat)S
+2806(ion)S
+2907(and)S
+3018(no)S
+486 3666(clean\261up,)U
+739(then)S
+863(use:)S
+4 F
+702 3810(#)U
+1 F
+752(./make)S
+935(inst\261snmp)S
+486 4053(R)U
+486 3954(instead.)U
+526 4053(egardless)U
+777(of)S
+854(the)S
+955(command)S
+1220(you)S
+1337(use,)S
+1459(read)S
+1590(the)S
+1691(comments)S
+1966(in)S
+2039(the)S
+3 F
+2139($\(ETCDIR\)sn)S
+2497(mpd.rc)S
+1 F
+2708(\256le)S
+2811(which)S
+2984(will)S
+486 4224(F)U
+486 4125(tell)U
+584(you)S
+694(how)S
+817(to)S
+884(tailor)S
+1032(the)S
+1126(agent)S
+1277(for)S
+1367(your)S
+1497(installat)S
+1689(ion.)S
+519 4224(inally,)U
+693(if)S
+751(you)S
+862(are)S
+957(already)S
+1156(running)S
+1364(the)S
+1459(SNMP,)S
+1657(then)S
+1782(you)S
+1893(will)S
+2008(need)S
+2143(to)S
+2211(kill)S
+2313(and)S
+2421(restart)S
+2593(the)S
+2 F
+2688(snmpd)S
+1 F
+2874(\(8c\))S
+2991(and)S
+3058 4296(-)U
+486 4368(m)U
+486 4296(SMUX)U
+683(UNIX)S
+857(daemons.)S
+1131(\(It)S
+1213(is)S
+1278(best)S
+1400(to)S
+1472(kill)S
+2 F
+1578(smux.unixd)S
+1 F
+1875(\256rst,)S
+2008(and)S
+2119(then)S
+2 F
+2247(snmpd)S
+1 F
+(.\))R
+2462(Otherwise,)S
+2748(start)S
+2876(the)S
+2974(dae)S
+533 4368(ons)U
+636(now.)S
+794(From)S
+944(the)S
+2 F
+1038(CShell)S
+1 F
+(,)R
+1234(the)S
+1328(command)S
+1586(might)S
+1747(be:)S
+3048 4701(3)U
+270(Sun)S
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3018(1)S
+EP
+%%Page: ? 14
+BP
+1 F
+60 Z
+270 381(I)U
+(SODE-GEN)R
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+3058(\))S
+4 F
+702 741(#)U
+702 669(#)U
+1 F
+752($\(SBINDIR\)snmpd)S
+4 F
+1241(>)S
+1 F
+(&)R
+1341(/dev/null)S
+752 741($\(SBINDIR\)smux.unixd)U
+4 F
+1363(>)S
+1 F
+(&)R
+1463(/dev/null)S
+486 885(T)U
+(he)R
+603(daemon)S
+817(will)S
+933(automati)S
+1145(cally)S
+1285(detach.)S
+1500(If)S
+1562(you)S
+1674(do)S
+1756(not)S
+1855(redirect)S
+2062(the)S
+2158(daemon's)S
+2414(standard\261error,)S
+2802(then)S
+2928(it)S
+2984(will)S
+3 F
+54 Z
+270 1056(L)U
+1 F
+60 Z
+486 957(not)U
+583(detach,)S
+776(instead)S
+967(printing)S
+1178(messages)S
+1425(as)S
+1495(to)S
+1562(what)S
+1699(actions)S
+1890(it)S
+1944(is)S
+2004(taking.)S
+3 F
+54 Z
+306 1056(IGHTWEIGHT)U
+696(PRESENTATION)S
+1140(PROTOCOL)S
+1 F
+60 Z
+486 1128(I)U
+(n)R
+558(addition,)S
+793(if)S
+852(you)S
+963(are)S
+1058(running)S
+1266(the)S
+1361(ISODE)S
+1558(on)S
+1639(a)S
+1687(Berkeley)S
+1926(UNIX)S
+2096(system,)S
+2299(there)S
+2441(is)S
+2502(also)S
+2620(an)S
+2698(impleme)S
+2910(ntation)S
+486 1299(T)U
+486 1200(of)U
+556(RFC1085,)S
+824(the)S
+918(lightweight)S
+1213(presentation)S
+1528(protocol)S
+1749(for)S
+1839(TCP/IP-based)S
+2196(internets.)S
+523 1299(o)U
+573(generate)S
+798(the)S
+892(LPP)S
+1015(system,)S
+1217(go)S
+1297(to)S
+1364(the)S
+3 F
+1458(isode\261interim)S
+1 F
+1829(directory)S
+2067(and)S
+2174(type:)S
+486 1614(T)U
+702 1443(%)U
+772(./make)S
+955(all\261lpp)S
+523 1614(his)U
+625(will)S
+751(cause)S
+917(a)S
+976(complete)S
+1230(generation)S
+1517(of)S
+1599(the)S
+1705(LPP)S
+1840(library)S
+2033(and)S
+2151(support)S
+2362(programs.)S
+2655(If)S
+2726(all)S
+2818(goes)S
+2959(well,)S
+486 1785(Y)U
+486 1686(proceed)U
+697(with)S
+824(the)S
+918(installat)S
+1110(ion.)S
+1242(If)S
+1302(not,)S
+1414(complain)S
+1659(as)S
+1729(there)S
+1870(``should)S
+2090(be)S
+2167(no)S
+2247(problems'')S
+2531(at)S
+2595(this)S
+2702(step.)S
+529 1785(ou)U
+622(will)S
+749(need)S
+896(to)S
+976(be)S
+1066(the)S
+1173(super-user)S
+1456(to)S
+1536(install)S
+1717(the)S
+1824(LPP)S
+1960(system.)S
+2195(There)S
+2369(are)S
+2476(two)S
+2598(kinds)S
+2760(of)S
+2842(activit)S
+2994(ies:)S
+486 1929(t)U
+486 1857(once\261only)U
+764(activit)S
+916(ies)S
+1010(that)S
+1128(you)S
+1245(perform)S
+1466(the)S
+1567(\256rst)S
+1687(time)S
+1822(the)S
+1923(software)S
+2157(is)S
+2223(installed;)S
+2471(and)S
+2584(each\261tim)S
+2806(e)S
+2859(activit)S
+3011(ies)S
+503 1929(hat)U
+597(you)S
+707(perform)S
+921(every)S
+1075(time)S
+1203(the)S
+1297(software)S
+1524(is)S
+1584(installed.)S
+3055 2028(s)U
+486 2100(m)U
+486 2028(The)U
+612(\256rst)S
+736(once\261only)S
+1018(activit)S
+1170(y)S
+1231(is)S
+1302(to)S
+1380(verify)S
+1555(that)S
+1677(the)S
+2 F
+1782(lppd)S
+1 F
+1920(daemon)S
+2142(will)S
+2267(be)S
+2355(run)S
+2466(when)S
+2627(the)S
+2732(machine)S
+2968(goe)S
+533 2100(ulti\261user.)U
+799(On)S
+892(Berkeley)S
+1130(UNIX)S
+1299(systems,)S
+1524(add)S
+1631(these)S
+1775(lines)S
+1909(to)S
+1976(the)S
+3 F
+2070(/etc/rc)S
+2232(.local)S
+1 F
+2388(\256le:)S
+702 2244(if)U
+759([)S
+799(\261f)S
+869($\(SBINDIR\)lppd)S
+1305(];)S
+1362(then)S
+782 2316($\(SBINDIR\)lppd)U
+1218(&)S
+1285(\(echo)S
+1439(\261n)S
+1519(')S
+1559(lpp'\))S
+4 F
+1696(>)S
+1 F
+1749(/dev/console)S
+486 2532(O)U
+702 2388(\256)U
+529 2532(n)U
+579(other)S
+723(systems,)S
+948(a)S
+995(similar)S
+1183(procedure)S
+1444(is)S
+1504(followed.)S
+486 2631(T)U
+(he)R
+601(next)S
+726(once\261only)S
+998(activit)S
+1150(y)S
+1201(is)S
+1262(to)S
+1330(verify)S
+1495(that)S
+1607(systems)S
+1818(with)S
+1946(a)S
+1994(native)S
+3 F
+2163(/etc/ser)S
+2348(vices)S
+1 F
+2492(\256le)S
+2589(contain)S
+2787(an)S
+2864(entry)S
+3008(for)S
+3058 2703(f)U
+486 2775(n)U
+486 2703(the)U
+584(miscella)S
+786(ny)S
+870(service.)S
+1100(This)S
+1231(is)S
+1295(used)S
+1429(when)S
+1583(the)S
+1680(ISODE)S
+1879(miscella)S
+2081(neous)S
+2244(services)S
+2461(is)S
+2524(run)S
+2627(using)S
+2780(the)S
+2877(LPP.)S
+3038(I)S
+516 2775(ot,)U
+598(add)S
+705(the)S
+799(line:)S
+702 2919(m)U
+(iscella)R
+904(ny)S
+1027(17002/lpp)S
+486 3063(t)U
+(o)R
+557(the)S
+3 F
+655(/etc/ser)S
+840(vices)S
+1 F
+988(\256le.)S
+1124(If)S
+1188(your)S
+1322(system)S
+1513(does)S
+1647(not)S
+1748(have)S
+1886(such)S
+2020(a)S
+2071(\256le,)S
+2187(the)S
+2284(software)S
+2514(automati)S
+2726(cally)S
+2867(compen-)S
+486 3234(T)U
+486 3135(sates)U
+623(for)S
+713(this.)S
+523 3234(here)U
+647(are)S
+741(two)S
+851(each\261tim)S
+1073(e)S
+1120(activit)S
+1272(ies:)S
+486 3522(T)U
+4 F
+702 3378(#)U
+1 F
+752(./make)S
+935(install\261lpp)S
+523 3522(his)U
+618(will)S
+737(install)S
+910(everything)S
+1193(and)S
+1304(then)S
+1432(clean\261up)S
+1674(the)S
+1772(source)S
+1953(tree.)S
+2103(If)S
+2167(you)S
+2281(just)S
+2392(want)S
+2533(an)S
+2614(installat)S
+2806(ion)S
+2907(and)S
+3018(no)S
+486 3594(clean\261up,)U
+739(then)S
+863(use:)S
+4 F
+702 3738(#)U
+1 F
+752(./make)S
+935(inst\261lpp)S
+486 3981(R)U
+486 3882(instead.)U
+526 3981(egardless)U
+775(of)S
+850(the)S
+949(command)S
+1212(you)S
+1327(use,)S
+1447(the)S
+1546(second)S
+1738(each\261tim)S
+1960(e)S
+2012(activit)S
+2164(y,)S
+2234(is)S
+2299(that)S
+2415(if)S
+2477(you)S
+2591(are)S
+2689(already)S
+2891(running)S
+3058 4053(-)U
+486 4125(n)U
+486 4053(the)U
+584(LPP)S
+711(system,)S
+917(then)S
+1045(you)S
+1159(will)S
+1277(need)S
+1415(to)S
+1486(kill)S
+1591(and)S
+1702(restart)S
+1877(the)S
+2 F
+1975(lppd)S
+1 F
+2112(\(8c\))S
+2233(daemon,)S
+2463(otherwise)S
+2720(incoming)S
+2971(con)S
+516 4125(ections)U
+709(will)S
+825(not)S
+924(be)S
+1003(initial)S
+1145(ized)S
+1268(correctly.)S
+1540(Otherwise,)S
+1824(start)S
+1950(the)S
+2045(daemon)S
+2257(now.)S
+2416(From)S
+2567(the)S
+2 F
+2662(CShell)S
+1 F
+(,)R
+2859(the)S
+2954(com-)S
+486 4197(mand)U
+640(might)S
+801(be:)S
+4 F
+702 4341(#)U
+1 F
+752($\(SBINDIR\)lppd)S
+4 F
+1188(>)S
+1 F
+(&)R
+1288(/dev/null)S
+270 4701(S)U
+(un)R
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3018(14)S
+EP
+%%Page: ? 15
+BP
+1 F
+60 Z
+3058 381(\))U
+270(ISODE-GEN)S
+599(\()S
+629(8)S
+669(\))S
+1269(MAINTENANCE)S
+1728(COMMANDS)S
+2659(ISODE-GEN)S
+2988(\()S
+3018(8)S
+486 669(The)U
+603(daemon)S
+817(will)S
+933(automati)S
+1145(cally)S
+1285(detach.)S
+1500(If)S
+1562(you)S
+1674(do)S
+1756(not)S
+1855(redirect)S
+2062(the)S
+2158(daemon's)S
+2414(standard\261error,)S
+2802(then)S
+2928(it)S
+2984(will)S
+486 840(T)U
+486 741(not)U
+583(detach,)S
+776(instead)S
+967(printing)S
+1178(messages)S
+1425(as)S
+1495(to)S
+1562(what)S
+1699(actions)S
+1890(it)S
+1944(is)S
+2004(taking.)S
+523 840(hat's)U
+660(about)S
+814(it.)S
+3 F
+54 Z
+1116 939(N)U
+270(GENERATING)S
+657(DOCUMENTATIO)S
+1 F
+60 Z
+486 1011(The)U
+602(directory)S
+3 F
+842(doc/)S
+1 F
+971(contains)S
+1194(the)S
+1290(documentat)S
+1572(ion)S
+1671(set)S
+1760(for)S
+1851(this)S
+1959(release.)S
+2183(Consult)S
+2391(the)S
+2486(\256le)S
+3 F
+2584(doc/READ\261ME)S
+1 F
+3008(for)S
+3063 1083(.)U
+486 1155(U)U
+486 1083(a)U
+537(description)S
+829(of)S
+903(each)S
+1038(document.)S
+1335(The)S
+1453(directory)S
+3 F
+1695(doc/ps/)S
+1 F
+1899(contains)S
+2124(PostScript)S
+2395(versions)S
+2618(of)S
+2691(each)S
+2825(document)S
+529 1155(sually)U
+698(it)S
+757(is)S
+822(easier)S
+988(to)S
+1060(print)S
+1199(the)S
+1298(\256les)S
+1423(in)S
+1495(this)S
+1607(directory)S
+1850(than)S
+1979(generate)S
+2209(the)S
+2308(documentat)S
+2590(ion)S
+2692(from)S
+2833(scratch)S
+3028(as)S
+486 1326(I)U
+486 1227(the)U
+580(sources)S
+780(to)S
+847(these)S
+991(documents)S
+1272(are)S
+1366(in)S
+1433(either)S
+1591(LaTeX)S
+1782(\(for)S
+1892(papers\))S
+2089(or)S
+2159(SLiTeX)S
+2373(\(for)S
+2483(presentations\).)S
+506 1326(f)U
+557(you)S
+678(receive)S
+853(d)S
+914(this)S
+1032(distribution)S
+1341(from)S
+1489(the)S
+1594(network,)S
+1837(then)S
+1972(the)S
+2077(directory)S
+3 F
+2326(doc/ps/)S
+1 F
+2536(does)S
+2676(not)S
+2783(contain)S
+2991(any)S
+3058 1398(-)U
+486 1470(a)U
+486 1398(PostScript)U
+756(\256les.)S
+914(There)S
+1078(should)S
+1261(be)S
+1341(a)S
+1391(separate)S
+1612(compressed)S
+2 F
+1919(tar)S
+1 F
+2012(\256le,)S
+2127(containing)S
+2405(only)S
+2534(PostScript)S
+2803(\256les,)S
+2940(avail)S
+513 1470(ble)U
+607(on)S
+687(the)S
+781(machine)S
+1006(where)S
+1173(you)S
+1283(retrieved)S
+1518(this)S
+1625(distribution.)S
+3 F
+54 Z
+270 1569(FILES)U
+1 F
+60 Z
+486 1641(Too)U
+603(numerous)S
+860(to)S
+927(mention.)S
+1180(Honest.)S
+3 F
+54 Z
+270 1740(SEE)U
+390(ALSO)S
+2 F
+60 Z
+486 1812(The)U
+596(ISO)S
+709(Development)S
+1047(Environment:)S
+1398(User's)S
+1577(Manual)S
+3 F
+54 Z
+270 1911(AUTHOR)U
+1 F
+60 Z
+486 1983(Marshall)U
+720(T.)S
+792(Rose)S
+486 2055(w)U
+(ith)R
+613(assistance)S
+874(from)S
+1011(a)S
+1058(cast)S
+1172(of)S
+1242(thousands)S
+1502(\(read)S
+1646(the)S
+3 F
+1740(Preface)S
+1 F
+1955(in)S
+2022(the)S
+2 F
+2116(User's)S
+2295(Manual)S
+1 F
+(\))R
+3048 4701(5)U
+270(Sun)S
+383(Release)S
+591(3.5)S
+1348(Last)S
+1472(change:)S
+1680(09)S
+1760(Mar)S
+1880(1991)S
+3018(1)S
+EP
+%%Trailer
+pscatsave end restore
+%%Pages: 15

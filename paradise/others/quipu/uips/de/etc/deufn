@@ -1,0 +1,16 @@
+UFN stands for user-friendly naming.  The style of querying allows the
+specification of the details of the query all in one go.  A few examples
+should make usage clear:
+
+   ucl,gb
+   p barker,ucl,gb
+   goodman,comp sci, univ coll, england
+   john, univ los angeles, california, us
+
+Name parts are separated by commas.  Note that you do not have to specify the 
+same number of components in each search.  The program tries a variety of
+searches to try to match what you have typed with names of Directory entries.
+If more than one match is found as the search progresses, you will be asked to
+select one entry from a list of possible matches.  Type the number 
+corresponding to an entry to select it.  If you don't select any 
+from the offered list, you may be offered further names to choose from.  

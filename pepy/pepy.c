@@ -25,9 +25,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/pepy.c,v 9.0 1992/06/1
  */
 
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "pepy.h"
 
 /*    DATA */
@@ -308,7 +309,7 @@ static prologue () {
 	}
 	if (aflag)
 		(void) printf ("#define\tadvise\t%s\n\n", aflag);
-	(void) printf ("void\tadvise ();\n");
+	(void) printf ("static void\tadvise (char*what, ...);\n");
 }
 /*    ERRORS */
 
@@ -324,16 +325,16 @@ register char   *s;
 }
 
 #ifndef lint
-warning (va_alist)
-va_dcl {
+warning (char* fmt, ...)
+{
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
 	va_list	ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -370,14 +371,14 @@ register char   *s;
 
 
 #ifndef	lint
-myyerror (va_alist)
-va_dcl {
+myyerror (char* fmt, ...)
+{
 	char    buffer[BUFSIZ];
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -387,17 +388,14 @@ va_dcl {
 
 
 #ifndef	lint
-pyyerror (va_alist)
-va_dcl {
+pyyerror (YP yp, ...)
+{
 	char    buffer[BUFSIZ];
-	register YP	yp;
 	va_list	ap;
 
-	va_start (ap);
+	va_start (ap, yp);
 
-	yp = va_arg (ap, YP);
-
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, yp, ap);
 
 	va_end (ap);
 

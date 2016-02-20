@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaplose.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "rtpkt.h"
 #include "tailor.h"
 
@@ -39,19 +39,17 @@ static int  _rtsaplose ();
 /*  */
 
 #ifndef	lint
-int	rtpktlose (va_alist)
-va_dcl {
+int	rtpktlose (struct assocblk*acb, ...)
+{
 	int	    reason,
 	result,
 	value;
-	register struct assocblk *acb;
 	register struct RtSAPindication *rti;
 	register struct RtSAPabort *rta;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, acb);
 
-	acb = va_arg (ap, struct assocblk *);
 	rti = va_arg (ap, struct RtSAPindication *);
 	reason = va_arg (ap, int);
 
@@ -107,16 +105,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	rtsaplose (va_alist)
-va_dcl {
+int	rtsaplose (struct RtSAPindication*rti, ...)
+{
 	int	    reason,
 	result;
-	struct RtSAPindication *rti;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, rti);
 
-	rti = va_arg (ap, struct RtSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _rtsaplose (rti, reason, ap);

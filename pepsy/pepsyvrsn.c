@@ -1,1 +1,1 @@
-char *pepsyversion = "pepsy 7.3 #6 (vulcan) of Mon Jun 15 17:24:10 BST 1992";
+char *pepsyversion = "pepsy 8.0 #7 (idefix) of ven. 19 févr. 2016 18:42:56";

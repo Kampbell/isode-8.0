@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.0 1992/
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "manifest.h"
 #include "sys.file.h"
 #include <sys/stat.h>
@@ -179,10 +179,8 @@ extern int  errno;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int     argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    failed,
 			vecp;
@@ -288,9 +286,8 @@ static char buffer1[4096];
 static char buffer2[32768];
 
 
-static int  tsapd (vecp, vec)
-int	vecp;
-char  **vec;
+static int 
+tsapd (int vecp, char **vec)
 {
 	char    buffer[BUFSIZ];
 #ifndef	IAE
@@ -1639,13 +1636,13 @@ static  envinit () {
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, ap);
 
 	va_end (ap);
 
@@ -1664,14 +1661,11 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, ...)
+{
 	va_list ap;
 
-	va_start (ap);
-
-	code = va_arg (ap, int);
+	va_start (ap, code);
 
 	_ll_log (pgm_log, code, ap);
 

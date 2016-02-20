@@ -26,7 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isoc.c,v 9.0 1992/0
 
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "rosap.h"
 #include "rtsap.h"
 #include "acsap.h"
@@ -3118,13 +3118,13 @@ register int l;
 static void	_advise ();
 
 
-void	adios (va_alist)
-va_dcl {
+void	adios (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_advise (ap);
+	_advise (what, ap);
 
 	va_end (ap);
 
@@ -3143,13 +3143,13 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
+void	advise char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_advise (ap);
+	_advise (what, ap);
 
 	va_end (ap);
 }

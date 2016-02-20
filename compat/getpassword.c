@@ -33,6 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/getpassword.c,v 9.0 
 #include "manifest.h"
 #include "sys.file.h"
 
+#ifndef CYGWIN
+
 #ifdef	BSD44
 char   *getpass ();
 #endif
@@ -50,7 +52,7 @@ char *prompt;
 			isopen;
 	register char  *bp,
 			 *ep;
-#if	!defined(SYS5) && !defined(XOS_2)
+#if	!defined(CYGWIN) && !defined(SYS5) && !defined(XOS_2)
 	struct sgttyb   sg;
 #else
 	struct termio   sg;
@@ -131,3 +133,4 @@ char *prompt;
 	return getpass (prompt);
 #endif
 }
+#endif

@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/vprint.c,v 9.0 1992/0
 
 #include <ctype.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "UNIV-types.h"
 #include "psap.h"
 #include "pepsy.h"
@@ -69,7 +69,7 @@ static char *vbp = NULL;
 static char *vsp;
 
 IFP   vfnx = (IFP) fprintf;
-FILE *vfp = stdout;
+FILE *vfp =  NULL; //FIXME stdout;
 static PS    vps = NULLPS;
 
 static char   *oct2str (), *newbuf ();
@@ -157,16 +157,16 @@ int	class,
 /*    VPRINT */
 
 #ifndef	lint
-vprint (va_alist)
-va_dcl {
+vprint (char*fmt, ...)
+{
 	char    buffer[BUFSIZ];
 	va_list ap;
 
 	vprint1 ();
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 

@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/logger.c,v 9.0 1992/
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "general.h"
 #include "manifest.h"
 #include "logger.h"
@@ -140,16 +140,14 @@ register LLog *lp;
 /*  */
 
 #ifndef	lint
-int	ll_log (va_alist)
-va_dcl {
+int	ll_log (LLog*lp, ...)
+{
 	int	    event,
 	result;
-	LLog   *lp;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, lp);
 
-	lp = va_arg (ap, LLog *);
 	event = va_arg (ap, int);
 
 	result = _ll_log (lp, event, ap);
@@ -355,15 +353,12 @@ char   *prefix;
 /*  */
 
 #ifndef	lint
-int	ll_printf (va_alist)
-va_dcl {
+int	ll_printf (LLog*lp, ...)
+{
 	int	    result;
-	LLog    *lp;
 	va_list ap;
 
-	va_start (ap);
-
-	lp = va_arg (ap, LLog *);
+	va_start (ap, lp);
 
 	result = _ll_printf (lp, ap);
 
@@ -468,14 +463,14 @@ register LLog *lp;
 /*  */
 
 #ifndef	lint
-char   *ll_preset (va_alist)
-va_dcl {
+char   *ll_preset (char* fmt, ...)
+{
 	va_list ap;
 	static char buffer[BUFSIZ];
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt);
 
 	va_end (ap);
 

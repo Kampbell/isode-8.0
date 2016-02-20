@@ -52,9 +52,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/pepsy.c,v 9.0 1992/06
  */
 
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "pepsydefs.h"
 #include "pass2.h"
 
@@ -352,15 +353,17 @@ register char   *s;
 }
 
 #ifndef lint
-warning (va_alist)
-va_dcl {
+warning (char*fmt, ...)
+{
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
-	va_list	ap;
+	char* other;
+	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
+	other = va_arg(ap, char*);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, other);
 
 	va_end (ap);
 
@@ -396,14 +399,16 @@ register char   *s;
 /*  */
 
 #ifndef	lint
-myyerror (va_alist)
-va_dcl {
+myyerror (char* fmt, ...)
+{
 	char    buffer[BUFSIZ];
+	char* other;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
+	other = va_arg(ap, char*);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, other);
 
 	va_end (ap);
 
@@ -413,17 +418,17 @@ va_dcl {
 
 
 #ifndef	lint
-static	pyyerror (va_alist)
-va_dcl {
+static	pyyerror (YP yp , ...)
+{
 	char    buffer[BUFSIZ];
-	register YP	yp;
-	va_list	ap;
+	va_list ap;
+	char* fmt;
 
-	va_start (ap);
+	va_start (ap, yp);
 
-	yp = va_arg (ap, YP);
+	fmt = va_arg (ap, char*);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, yp, fmt);
 
 	va_end (ap);
 

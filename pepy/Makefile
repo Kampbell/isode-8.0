@@ -81,6 +81,7 @@ $(BINDIR)pepy:	xpepy
 		-@echo ""
 
 pepy:		xpepy
+		cp xpepy.exe pepy.exe
 
 xpepy:		pepyvrsn.o $(PEPYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ pepy.o pepy_do.o pepy_undo.o \
@@ -142,6 +143,7 @@ $(BINDIR)posy:	xposy
 		-@echo ""
 
 posy:		xposy
+		cp xposy.exe posy.exe
 
 xposy:		posy.o pepy_misc.o yacc.o pepyvrsn.o $(PEPYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ posy.o pepy_misc.o yacc.o \

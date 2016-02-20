@@ -25,9 +25,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rosy.c,v 9.0 1992/06/1
  */
 
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #define pepyversion rosyversion
 #include "rosy-defs.h"
 #include "../pepsy/pass2.h"
@@ -314,16 +315,16 @@ register char   *s;
 }
 
 #ifndef lint
-warning (va_alist)
-va_dcl {
+warning (char*fmt, ...)
+{
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
 	va_list	ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -359,14 +360,14 @@ register char   *s;
 /*  */
 
 #ifndef	lint
-myyerror (va_alist)
-va_dcl {
+myyerror (char*what, ...)
+{
 	char    buffer[BUFSIZ];
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, what, ap);
 
 	va_end (ap);
 
@@ -376,16 +377,13 @@ va_dcl {
 
 #ifdef        notyet
 #ifndef       lint
-static        pyyerror (va_alist)
-va_dcl {
+static        pyyerror (YP yp, ...)
+{
 	char    buffer[BUFSIZ];
-	register YP       yp;
 
-	va_start (ap);
+	va_start (ap, yp);
 
-	yp = va_arg (ap, YP);
-
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, yp, ap);
 
 	va_end (ap);
 

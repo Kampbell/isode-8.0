@@ -69,6 +69,7 @@ $(BINDIR)rosy:	xrosy
 		-@echo ""
 
 rosy:		xrosy
+		cp xrosy.exe rosy.exe
 
 xrosy:		rosyvrsn.o $(PEPYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ rosy.o yacc.o pepy_misc.o \

@@ -130,7 +130,8 @@
 	ppktlose (pb, pi, PC_UNRECOGNIZED, (p), NULLCP, "%s", PY_pepy)
 
 
-int	ppktlose (), psaplose ();
+int	ppktlose (struct psapblk*pb, ...);
+int	psaplose (struct PSAPindication*pi, ...);
 
 /*  */
 

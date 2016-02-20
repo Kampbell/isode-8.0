@@ -38,9 +38,8 @@ static nvmatch ();
 
 /*  */
 
-int     setenv (name, value)
-register char  *name,
-		 *value;
+int     setenv (name, value, overwrite)
+const char  *name, *value; int overwrite;
 {
 	register int    i;
 	register char **ep,
@@ -74,7 +73,7 @@ register char  *name,
 /*  */
 
 int	unsetenv (name)
-char   *name;
+const char   *name;
 {
 	char  **ep,
 		  **nep;

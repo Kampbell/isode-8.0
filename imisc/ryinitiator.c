@@ -26,7 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/ryinitiator.c,v 9.0 1
 
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ryinitiator.h"
 
 #undef	TIMER
@@ -537,13 +537,13 @@ char   *event;
 static void	_advise ();
 
 
-void	adios (va_alist)
-va_dcl {
+void	adios (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_advise (ap);
+	_advise (what, ap);
 
 	va_end (ap);
 
@@ -562,13 +562,13 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
+void	advise (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_advise (ap);
+	_advise (what, ap);
 
 	va_end (ap);
 }
@@ -602,13 +602,13 @@ char   *what,
 
 
 #ifndef	lint
-void	ryr_advise (va_alist)
-va_dcl {
+void	ryr_advise (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_advise (ap);
+	_advise (what, ap);
 
 	va_end (ap);
 }

@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaplose.c,v 9.0 1992/
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "tpkt.h"
 #include "mpkt.h"
 #include "tailor.h"
@@ -46,16 +46,15 @@ static int  _tsaplose ();
 #endif
 
 #ifndef	lint
-int	tpktlose (va_alist)
-va_dcl {
+int	tpktlose (struct tsapblk* tb, ...)
+{
 	int	    reason,
 	result;
-	register struct tsapblk *tb;
 	struct TSAPdisconnect   tds;
 	register struct TSAPdisconnect  *td;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, tb);
 
 	tb = va_arg (ap, struct tsapblk *);
 
@@ -125,16 +124,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	tsaplose (va_alist)
-va_dcl {
+int	tsaplose (struct TSAPdisconnect*td, ...)
+{
 	int	    reason,
 	result;
-	struct TSAPdisconnect *td;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, td);
 
-	td = va_arg (ap, struct TSAPdisconnect *);
 	reason = va_arg (ap, int);
 
 	result = _tsaplose (td, reason, ap);

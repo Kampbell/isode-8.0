@@ -65,9 +65,9 @@ register PE 	pe;
 
 		switch (*(pe -> pe_prim)) {
 		case PE_REAL_MINUSINF:
-			return HUGE;
+			return PE_REAL_INFINITY;
 		case PE_REAL_PLUSINF:
-			return -HUGE;
+			return -PE_REAL_INFINITY;
 		default:
 			return pe_seterr (pe, PE_ERR_NOSUPP, NOTOK);
 		}

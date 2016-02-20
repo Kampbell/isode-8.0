@@ -69,7 +69,7 @@ extern char isode_x25_errflag;
 static int  TConnRequestAux ();
 static int  TConnAttempt ();
 
-struct TSAPaddr *newtaddr (), *ta2norm (), *maketsbaddr ();
+static struct TSAPaddr *newtaddr (), *ta2norm (), *maketsbaddr ();
 
 /*    T-(ASYN-)CONNECT.REQUEST */
 

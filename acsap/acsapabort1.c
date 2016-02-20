@@ -36,11 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapabort1.c,v 9.0 1
 
 /*    A-ABORT.REQUEST */
 
-int	AcUAbortRequest (sd, data, ndata, aci)
-int	sd;
-PE     *data;
-int	ndata;
-struct AcSAPindication *aci;
+int 
+AcUAbortRequest (int sd, PE *data, int ndata, struct AcSAPindication *aci)
 {
 	SBV     smask;
 	int     result;

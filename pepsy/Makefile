@@ -76,11 +76,12 @@ inst-pepsy:	$(BINDIR)pepsy
 $(BINDIR)pepsy:	xpepsy
 		-cp $@ zxpepsy
 		-rm -f $@
-		cp xpepsy $@
-		-@ls -gls $@
+		-cp xpepsy $@
+		@ls -gls $@
 		-@echo ""
 
 pepsy:		xpepsy
+		cp xpepsy.exe pepsy.exe
 
 xpepsy:		pepsyvrsn.o $(PEPSYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ $(PEPSY-O) \
@@ -98,7 +99,7 @@ pepsy-yacc.o:	pepsy-yacc.c lex.c
 
 pepsy-yacc.c:	pepsy-yacc.y
 		-@echo "expect 40 shift/reduce and 11 reduce/reduce conflicts"
-		yacc $(YACCFLAGS) pepsy-yacc.y
+		$(YACC) $(YACCFLAGS) pepsy-yacc.y
 		mv y.tab.c $@
 
 pepsy-yacc.y:	yacc.y.gnrc

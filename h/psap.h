@@ -566,14 +566,14 @@ char   *bitstr2strb ();
 
 extern char PY_pepy[];
 
-void	PY_advise ();
+static void	PY_advise (char*what, ...);
 int	PY_pp ();
 
 int	testdebug ();
 
 int	vpush (), vpop ();
 int	vname (), vtag ();
-int	vprint ();
+int	vprint (char*fmt,...);
 int	vstring (), vunknown ();
 
 char   *bit2str ();

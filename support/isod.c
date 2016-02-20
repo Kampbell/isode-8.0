@@ -26,7 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isod.c,v 9.0 1992/0
 
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "rosap.h"
 #include "rtsap.h"
 #include "acsap.h"
@@ -2584,13 +2584,13 @@ char   *event;
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, ap);
 
 	va_end (ap);
 
@@ -2609,14 +2609,11 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, ...)
+{
 	va_list ap;
 
-	va_start (ap);
-
-	code = va_arg (ap, int);
+	va_start (ap, code);
 
 	_ll_log (pgm_log, code, ap);
 

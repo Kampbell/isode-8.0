@@ -31,7 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/util.c,v 9.0 1992/06/
 #include	"pepsy-driver.h"
 #include	"psap.h"
 #include	"pepsy.h"
-#include	 <varargs.h>
+#include	<stdarg.h>
 #include 	"tailor.h"
 #include 	"cmd_srch.h"
 
@@ -57,18 +57,16 @@ PE	pe;
 }
 
 #else
-int	pepsylose (va_alist)
-va_dcl {
+int	pepsylose (modtyp*module, ...)
+{
 	va_list	ap;
-	modtyp	*module;
 	ptpe	*p, *p1;
 	char	*cp;
 	PE	pe;
 	char	buffer[BUFSIZ];
 
-	va_start (ap);
+	va_start (ap, module);
 
-	module = va_arg (ap, modtyp *);
 	p = va_arg (ap, ptpe *);
 	pe = va_arg (ap, PE);
 
@@ -115,18 +113,16 @@ PE	pe;
 }
 
 #else
-int	ppepsylose (va_alist)
-va_dcl {
+int	ppepsylose (modtyp*module, ...)
+{
 	va_list	ap;
-	modtyp	*module;
 	ptpe	*p;
 	char	*cp;
 	PE	pe;
 	char	buffer[BUFSIZ];
 
-	va_start (ap);
+	va_start (ap, module);
 
-	module = va_arg (ap, modtyp *);
 	p = va_arg (ap, ptpe *);
 	pe = va_arg (ap, PE);
 

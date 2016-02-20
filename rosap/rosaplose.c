@@ -31,7 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosaplose.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ropkt.h"
 #include "tailor.h"
 
@@ -41,19 +41,17 @@ static int  _rosaplose ();
 #endif
 
 #ifndef	lint
-int	ropktlose (va_alist)
-va_dcl {
+int	ropktlose (struct assocblk*acb, ...)
+{
 	int	    reason,
 	result,
 	value;
-	register struct assocblk *acb;
 	register struct RoSAPindication *roi;
 	register struct RoSAPpreject *rop;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, acb);
 
-	acb = va_arg (ap, struct assocblk *);
 	roi = va_arg (ap, struct RoSAPindication *);
 	reason = va_arg (ap, int);
 
@@ -95,12 +93,8 @@ va_dcl {
 #else
 /* VARARGS5 */
 
-int	ropktlose (acb, roi, reason, what, fmt)
-struct assocblk *acb;
-struct RoSAPindication *roi;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt)
 {
 	return ropktlose (acb, roi, reason, what, fmt);
 }
@@ -109,18 +103,16 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	rosapreject (va_alist)
-va_dcl {
+int	rosapreject (struct assocblk*acb, ...)
+{
 	int	    reason,
 	result;
-	register struct assocblk *acb;
 	struct RoSAPindication  rois;
 	register struct RoSAPindication *roi;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, acb);
 
-	acb = va_arg (ap, struct assocblk *);
 	roi = va_arg (ap, struct RoSAPindication *);
 	reason = va_arg (ap, int);
 
@@ -140,12 +132,8 @@ va_dcl {
 #else
 /* VARARGS5 */
 
-int	rosapreject (acb, roi, reason, what, fmt)
-struct assocblk *acb;
-struct RoSAPindication *roi;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt)
 {
 	return rosapreject (acb, roi, reason, what, fmt);
 }
@@ -154,16 +142,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	rosaplose (va_alist)
-va_dcl {
+int	rosaplose (RoSAPindication*roi, ...)
+{
 	int	    reason,
 	result;
-	struct RoSAPindication *roi;
-	va_list (ap);
+	va_list ap;
 
-	va_start (ap);
+	va_start (ap, roi);
 
-	roi = va_arg (ap, struct RoSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _rosaplose (roi, reason, ap);
@@ -175,11 +161,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	rosaplose (roi, reason, what, fmt)
-struct RoSAPindication *roi;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
 {
 	return rosaplose (roi, reason, what, fmt);
 }

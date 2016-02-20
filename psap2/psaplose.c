@@ -28,25 +28,24 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaplose.c,v 9.0 1992
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
 
 /*  */
 #ifndef	lint
-static int  _psaplose ();
+static int  _psaplose (struct PSAPindication*pi, int reason, ...);
 #endif
 
 #ifndef	lint
-int	ppktlose (va_alist)
-va_dcl {
+int	ppktlose (struct psapblk*pb, ...)
+{
 	int	    len,
 	ppdu,
 	reason,
 	result;
 	char   *base;
-	register struct psapblk *pb;
 	PE	    pe;
 	register struct PSAPindication *pi;
 	register struct PSAPabort *pa;
@@ -55,9 +54,8 @@ va_dcl {
 	register struct type_PS_ARP__PPDU *pdu = &pdus;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, pb);
 
-	pb = va_arg (ap, struct psapblk *);
 	pi = va_arg (ap, struct PSAPindication *);
 	reason = va_arg (ap, int);
 	ppdu = va_arg (ap, int);
@@ -134,16 +132,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	psaplose (va_alist)
-va_dcl {
+int	psaplose (struct PSAPindication*pi, ...)
+{
 	int     reason,
 	result;
-	struct PSAPindication *pi;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, pi);
 
-	pi = va_arg (ap, struct PSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _psaplose (pi, reason, ap);
@@ -168,13 +164,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _psaplose (pi, reason, ap)	/* what, fmt, args ... */
-register struct PSAPindication *pi;
-int     reason;
-va_list	ap;
+static int  _psaplose (struct PSAPindication*pi, int reason, ...) /*  what, fmt, args ... */
 {
+
 	register char  *bp;
 	char    buffer[BUFSIZ];
+	va_list	ap;
+
+	va_start (ap, reason);
 	register struct PSAPabort *pa;
 
 	if (pi) {

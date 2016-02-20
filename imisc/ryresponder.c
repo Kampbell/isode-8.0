@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/ryresponder.c,v 9.0 1
 
 #include <stdio.h>
 #include <setjmp.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
 #include "tailor.h"
@@ -355,13 +355,13 @@ char   *event;
 /*  */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, ap);
 
 	va_end (ap);
 
@@ -380,14 +380,11 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, ...)
+{
 	va_list ap;
 
-	va_start (ap);
-
-	code = va_arg (ap, int);
+	va_start (ap, code);
 
 	_ll_log (pgm_log, code, ap);
 
@@ -407,13 +404,13 @@ int	code;
 
 
 #ifndef	lint
-void	ryr_advise (va_alist)
-va_dcl {
+void	ryr_advise (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_ll_log (pgm_log, LLOG_NOTICE, ap);
+	_ll_log (pgm_log, LLOG_NOTICE, what, ap);
 
 	va_end (ap);
 }

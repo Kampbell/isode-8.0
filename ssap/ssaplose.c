@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaplose.c,v 9.0 1992/
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "spkt.h"
 #include "tailor.h"
 
@@ -39,11 +39,10 @@ static int  _ssaplose ();
 #endif
 
 #ifndef	lint
-int	spktlose (va_alist)
-va_dcl {
+int	spktlose (int sd, ...)
+{
 	int	    reason,
 	result,
-	sd,
 	secs,
 	value;
 	register struct ssapblk *sb;
@@ -57,9 +56,7 @@ va_dcl {
 	register struct TSAPdisconnect *td = &tds;
 	va_list ap;
 
-	va_start (ap);
-
-	sd = va_arg (ap, int);
+	va_start (ap, sd);
 
 	si = va_arg (ap, struct SSAPindication *);
 	if (si == NULL)
@@ -158,16 +155,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	ssaplose (va_alist)
-va_dcl {
+int	ssaplose (struct SSAPindication*si, ...)
+{
 	int	    reason,
 	result;
-	struct SSAPindication *si;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, si);
 
-	si = va_arg (ap, struct SSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _ssaplose (si, reason, ap);

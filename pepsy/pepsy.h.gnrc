@@ -308,7 +308,9 @@ extern char *yyprfdflt;
 extern int yydebug;
 extern int yylineno;
 
-#ifndef	HPUX
+#if defined(CYGWIN)
+extern char* yytext;
+#elif defined(HPUX)
 extern char yytext[];
 #else
 extern unsigned char yytext[];

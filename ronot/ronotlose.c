@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotlose.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "tailor.h"
 #include "logger.h"
 #include "ronot.h"
@@ -40,16 +40,14 @@ static int  _ronotlose ();
 /*  */
 
 #ifndef	lint
-int	ronotlose (va_alist)
-va_dcl {
+int	ronotlose (struct RoNOTindication*rni, ...)
+{
 	int	    reason,
 	result;
-	struct RoNOTindication *rni;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, rni);
 
-	rni = va_arg (ap, struct RoNOTindication *);
 	reason = va_arg (ap, int);
 
 	result = _ronotlose (rni, reason, ap);

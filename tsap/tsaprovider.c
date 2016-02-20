@@ -583,10 +583,12 @@ struct TSAPdisconnect *td;
 		if (fcntl (tb -> tb_fd, F_SETOWN, getpid ()) == NOTOK)
 			return tsaplose (td, DR_CONGEST, "failed", "fcntl F_SETOWN");
 #else
+#ifndef CYGWIN
 		pgrp = -getpid ();
 		if (ioctl (tb -> tb_fd, SIOCSPGRP, (char *) &pgrp) == NOTOK)
 			return tsaplose (td, DR_CONGEST, "failed", "ioctl SIOCSPGRP %d",
 							 pgrp);
+#endif
 #endif
 		if ((result = fcntl (tb -> tb_fd, F_GETFL, 0x00)) == NOTOK)
 			return tsaplose (td, DR_CONGEST, "failed", "fcntl F_GETFL");

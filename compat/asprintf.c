@@ -28,10 +28,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/asprintf.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "general.h"
 #include "manifest.h"
 
+#ifndef ASPRINTF
 /*    DATA */
 
 extern int errno;
@@ -112,3 +113,4 @@ va_list	ap;
 
 	errno = eindex;
 }
+#endif

@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/prnt.c,v 9.0 1992/06/
 
 #include	<stdio.h>
 #include	<ctype.h>
-#include	<varargs.h>
+#include	<stdarg.h>
 #include	"pepsy-driver.h"
 #include	"psap.h"
 #include	"pepsy.h"

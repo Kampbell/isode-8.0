@@ -24,18 +24,16 @@
 #ifndef	_CONFIG_
 #define	_CONFIG_
 
-#define	SYS5			/* AT&T UNIX */
-#define SVR4			/*   Systems V Release 4 */
-
-/* If you have the UCB extensions ...
-#define SVR4_UCB
-*/
-
+#define	FEDORA
+#define	DEBUG
+#define	STRDUP
+#define	GETCWD
+#define	BSD43
+#define	BSDSIGS
 #define	VSPRINTF		/* has vprintf(3s) routines */
-
 #define GETDENTS
-
 #define	TCP			/* has TCP/IP */
 #define	SOCKETS			/*   provided by sockets */
+//#define ASPRINTF
 
 #endif

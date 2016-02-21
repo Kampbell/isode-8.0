@@ -1,3 +1,4 @@
+#ifdef	FIXME
 /* used by permission */
 
 /*
@@ -121,3 +122,4 @@ caddr_t d1, d2;
 	return(strcmp((*(struct dirent **)d1)->d_name,
 				  (*(struct dirent **)d2)->d_name));
 }
+#endif

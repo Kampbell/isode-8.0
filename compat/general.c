@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/general.c,v 9.0 1992
 
 /* LINTLIBRARY */
 
+#include <errno.h>
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"
@@ -83,9 +84,6 @@ struct qelem   *elem;
 #ifdef	SYS5
 #include <fcntl.h>
 #endif
-
-
-extern int errno;
 
 
 int     dup2 (d1, d2)

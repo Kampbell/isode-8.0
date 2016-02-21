@@ -24,7 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ode2oid.c,v 9.0 1992/0
  *
  */
 
-
+#ifndef FIXME
+#include <psap.h>
+OID	ode2oid (char* descriptor) {
+	return NULLOID;
+}
+#else
 /* LINTLIBRARY */
 
 #include <stdio.h>
@@ -146,4 +151,5 @@ free_oid_cache() {
 			oid_free(cp->oid);
 	}
 }
+#endif
 #endif

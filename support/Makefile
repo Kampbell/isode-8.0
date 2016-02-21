@@ -197,6 +197,8 @@ $(BINDIR)isoc:	xisoc
 		-@echo ""
 
 isoc:		xisoc
+		rm isoc
+		ln xisoc isoc
 
 xisoc:		isoc.o $(TOPDIR)libisode.a
 		$(LDCC) $(LDFLAGS) -o $@ isoc.o $(LIBISODE) $(LSOCKET)

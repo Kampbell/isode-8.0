@@ -271,7 +271,7 @@ extern time_t time ();
 
 
 /*  ntohs etc */
-#ifndef CYGWIN
+#ifndef SWABLIB
 #ifndef	ntohs
 unsigned short	ntohs ();
 #endif

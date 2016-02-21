@@ -25,6 +25,7 @@
 #include	<errno.h>
 #include	"general.h"
 
+#ifndef		GETCWD
 extern int	fstat(), stat();
 
 extern int	errno;			/* normally done by <errno.h> */
@@ -187,3 +188,4 @@ error:
 
 	return NULL;
 }
+#endif

@@ -31,6 +31,7 @@
 /*    SOCKETS */
 
 #include "sys/socket.h"
+#include "asm/socket.h"
 
 #ifndef	SOMAXCONN
 #define	SOMAXCONN	5

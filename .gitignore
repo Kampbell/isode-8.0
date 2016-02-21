@@ -2,6 +2,9 @@ RemoteSystemsTempFiles/
 cproto-4.6/
 config/CONFIG.make
 h/config.h
+*/core.*
+core.*
+*.local
 
 # Compiled #
 ############

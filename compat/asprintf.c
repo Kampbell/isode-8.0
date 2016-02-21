@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/asprintf.c,v 9.0 199
 
 /* LINTLIBRARY */
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include "general.h"
@@ -35,19 +36,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/asprintf.c,v 9.0 199
 #ifndef ASPRINTF
 /*    DATA */
 
-extern int errno;
 
 /*  */
 
-void	asprintf (bp, ap)		/* what, fmt, args, ... */
-char *bp;
-va_list	ap;
+void	asprintf (char*bp, char*what, char* fmt, ...)		/* what, fmt, args, ... */
 {
-	char   *what;
-
-	what = va_arg (ap, char *);
-
-	_asprintf (bp, what, ap);
+	 va_list ap;
+	va_start(ap, fmt);
+	_asprintf (bp, what, fmt, ap);
+	va_end(ap);
 }
 
 #ifdef X25
@@ -55,18 +52,13 @@ unsigned char isode_x25_err[2];
 char isode_x25_errflag = 0;
 #endif
 
-void	_asprintf (bp, what, ap)	/* fmt, args, ... */
-register char *bp;
-char   *what;
-va_list	ap;
+void	_asprintf (char*bp, char*what, char*fmt, va_list ap)	/* fmt, args, ... */
 {
 	register int    eindex;
-	char   *fmt;
 
 	eindex = errno;
 
 	*bp = NULL;
-	fmt = va_arg (ap, char *);
 
 	if (fmt) {
 #ifndef	VSPRINTF

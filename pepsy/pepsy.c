@@ -355,6 +355,8 @@ register char   *s;
 #ifndef lint
 warning (char*fmt, ...)
 {
+	return;
+//FIXME
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char* other;

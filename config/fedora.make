@@ -37,7 +37,7 @@
 # Options
 ###############################################################################
 
-OPTIONS	=	-I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
+OPTIONS	+=	-w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
 
 HDIR	=	$(TOPDIR)h/
 UTILDIR	=	$(TOPDIR)util/
@@ -102,7 +102,7 @@ SHELL	=	/bin/sh
 #
 CC      =	/usr/bin/cc
 LD	=	/usr/bin/ld
-CFLAGS  =       -w $(OPTIONS) $(LOPTIONS) 
+CFLAGS  =       $(OPTIONS) $(LOPTIONS) 
 LIBCFLAGS=      $(CFLAGS)
 LINT    =	/usr/bin/lint
 LFLAGS  =	-s $(OPTIONS)
@@ -113,7 +113,7 @@ ARFLAGS	=
 LN	=	ln
 
 # You won't need -lsocket or -nsl if you have SVR4_UCB defined.
-LSOCKET	=	-lsocket -lnsl $(KRBLIB)
+#LSOCKET	=	-lsocket -lnsl $(KRBLIB)
 
 
 ###############################################################################

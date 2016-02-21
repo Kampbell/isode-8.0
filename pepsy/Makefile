@@ -81,7 +81,7 @@ $(BINDIR)pepsy:	xpepsy
 		-@echo ""
 
 pepsy:		xpepsy
-		cp xpepsy.exe pepsy.exe
+		cp xpepsy pepsy
 
 xpepsy:		pepsyvrsn.o $(PEPSYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ $(PEPSY-O) \

@@ -142,7 +142,7 @@ rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char
 /*  */
 
 #ifndef	lint
-int	rosaplose (RoSAPindication*roi, ...)
+int	rosaplose (struct RoSAPindication*roi, ...)
 {
 	int	    reason,
 	result;

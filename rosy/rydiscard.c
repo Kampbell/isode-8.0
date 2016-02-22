@@ -76,12 +76,8 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-static int  do_response (sd, id, dummy, value, roi)
-int	sd,
-	id,
-	dummy;
-caddr_t value;
-struct RoSAPindication *roi;
+static int 
+do_response (int sd, int id, int dummy, caddr_t value, struct RoSAPindication *roi)
 {
 	return OK;
 }

@@ -147,10 +147,8 @@ static	yyerror_aux ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	register char  *cp,
 			 *sp;
@@ -297,8 +295,8 @@ usage:
 
 /*    ERRORS */
 
-yyerror (s)
-register char   *s;
+int 
+yyerror (register char *s)
 {
 	yyerror_aux (s);
 
@@ -335,15 +333,15 @@ warning (char*fmt, ...)
 #else
 
 /* VARARGS1 */
-warning (fmt)
-char	*fmt;
+int 
+warning (char *fmt)
 {
 	warning (fmt);
 }
 #endif
 
-static	yyerror_aux (s)
-register char   *s;
+static 
+yyerror_aux (register char *s)
 {
 	if (linepos)
 		(void) fprintf (stderr, "\n"), linepos = 0;
@@ -415,7 +413,8 @@ char   *fmt;
 
 /*  */
 
-yywrap () {
+int 
+yywrap (void) {
 	if (linepos)
 		(void) fprintf (stderr, "\n"), linepos = 0;
 
@@ -426,16 +425,13 @@ yywrap () {
 
 /* ARGSUSED */
 
-yyprint (s, f, top)
-char   *s;
-int	f,
-	top;
+int 
+yyprint (char *s, int f, int top)
 {
 }
 
-static  yyprint_aux (s, mode)
-char   *s,
-	   *mode;
+static 
+yyprint_aux (char *s, char *mode)
 {
 	int	    len;
 	static int nameoutput = 0;
@@ -469,7 +465,8 @@ char   *s,
 
 /*    PASS1 */
 
-pass1 () {
+int 
+pass1 (void) {
 	(void) printf ("%s ", mymodule);
 	if (mymoduleid)
 		(void) printf ("%s ", oidprint(mymoduleid));
@@ -581,7 +578,8 @@ register YP	yp;
 
 /*    PASS2 */
 
-pass2 () {
+int 
+pass2 (void) {
 	int	    i;
 	register SY	    sy,
 			 sy2;
@@ -1599,8 +1597,8 @@ int	level;
 	}
 }
 
-static dump_real (r)
-double  r;
+static 
+dump_real (double r)
 {
 #ifndef	BSD44
 	extern char *ecvt ();
@@ -1637,11 +1635,8 @@ double  r;
 
 /*    ACTION HANDLING */
 
-static	act2prf (cp, level, e1, e2)
-char   *cp,
-	   *e1,
-	   *e2;
-int	level;
+static 
+act2prf (char *cp, int level, char *e1, char *e2)
 {
 	register int    i,
 			 j,
@@ -1705,10 +1700,8 @@ out:
 }
 
 
-static	expand (dp, ep, gp)
-register char  *dp,
-		 *ep;
-char  **gp;
+static 
+expand (register char *dp, register char *ep, char **gp)
 {
 	register int    i;
 
@@ -1934,12 +1927,8 @@ register int	level;
 
 /*    SYMBOLS */
 
-static SY  new_symbol (encpref, decpref, prfpref, mod, id)
-register char  *encpref,
-		 *decpref,
-		 *prfpref,
-		 *mod,
-		 *id;
+static SY 
+new_symbol (register char *encpref, register char *decpref, register char *prfpref, register char *mod, register char *id)
 {
 	register SY    sy;
 
@@ -1955,9 +1944,8 @@ register char  *encpref,
 }
 
 
-static SY  add_symbol (s1, s2)
-register SY	s1,
-		 s2;
+static SY 
+add_symbol (register SY s1, register SY s2)
 {
 	register SY	    sy;
 
@@ -2043,8 +2031,8 @@ PElementClass	class;
 
 /*    STRINGS */
 
-char   *new_string (s)
-register char  *s;
+char *
+new_string (register char *s)
 {
 	register char  *p;
 
@@ -2084,10 +2072,8 @@ static struct triple {
 
 /*  */
 
-static char *modsym (module, id, prefix)
-register char  *module,
-		 *id;
-char   *prefix;
+static char *
+modsym (register char *module, register char *id, char *prefix)
 {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
@@ -2120,10 +2106,8 @@ char   *prefix;
  * no underscores between components and dash is translated to only one
  * underscore to be compatiable with pepsy. Hence name Compress MODule SYMbol
  */
-static char *cmodsym (module, id, prefix, realid)
-register char  *module,
-		 *id, *realid;
-char   *prefix;
+static char *
+cmodsym (register char *module, register char *id, char *prefix, register char *realid)
 {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
@@ -2154,10 +2138,8 @@ char   *prefix;
 /* like cmodsym except we put identifier (sym) then the module (mod) hence its
  * name symmod
  */
-static char *csymmod (module, id, prefix)
-register char  *module,
-		 *id;
-char   *prefix;
+static char *
+csymmod (register char *module, register char *id, char *prefix)
 {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
@@ -2184,9 +2166,8 @@ char   *prefix;
 	return buffer;
 }
 
-static	modsym_aux (name, bp)
-register char  *name,
-		 *bp;
+static 
+modsym_aux (register char *name, register char *bp)
 {
 	register char   c;
 
@@ -2205,9 +2186,8 @@ register char  *name,
 	*bp = NULL;
 }
 
-static	cmodsym_aux (name, bp)
-register char  *name,
-		 *bp;
+static 
+cmodsym_aux (register char *name, register char *bp)
 {
 	register char   c;
 

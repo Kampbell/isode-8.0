@@ -166,11 +166,8 @@ int	reason;
 
 /* VARARGS */
 
-int	rosaplose (roi, reason, what, fmt)
-struct RoSAPindication *roi;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
 {
 	return rosaplose (roi, reason, what, fmt);
 }

@@ -170,8 +170,8 @@ again:
 
 /* ARGSUSED */
 
-static  SFD intrser (sig)
-int	sig;
+static SFD 
+intrser (int sig)
 {
 #ifndef	BSDSIGS
 	(void) signal (SIGINT, intrser);

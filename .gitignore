@@ -5,6 +5,7 @@ h/config.h
 */core.*
 core.*
 *.local
+*/*vrsn.c
 
 # Compiled #
 ############

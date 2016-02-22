@@ -152,10 +152,12 @@ int	n;
 
 /*  */
 
-addtable (name, lt, typ)
-char	*name;
-int	lt;
-int	typ;	/* Does it allow implicit's to work or not */
+int 
+addtable (
+    char *name,
+    int lt,
+    int typ	/* Does it allow implicit's to work or not */
+)
 {
 	SYM		sp;
 
@@ -185,7 +187,8 @@ int	lt;
 		}
 }
 
-print_expimp () {
+int 
+print_expimp (void) {
 	SYM		sp;
 	int		ind;
 	OID		oid;
@@ -297,7 +300,8 @@ static struct oidtbl {
 	NULL,
 };
 
-initoidtbl () {
+int 
+initoidtbl (void) {
 	struct oidtbl *op;
 	OID		oid;
 
@@ -348,8 +352,8 @@ OID	oid;
  * look at import list and return any clue found as to handling implicit tags
  * on that type
  */
-chkil(id)
-char	*id;
+int 
+chkil (char *id)
 {
 	SYM sy;
 

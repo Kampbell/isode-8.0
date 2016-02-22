@@ -53,9 +53,8 @@ extern	IFP	set_check_fd ();
 
 /* */
 
-static int  fdx_prime (ps, waiting)
-register PS	ps;
-int	waiting;
+static int 
+fdx_prime (register PS ps, int waiting)
 {
 	register struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
 	register struct ps_inout *pi = &pt -> ps_input;
@@ -67,11 +66,8 @@ int	waiting;
 
 /* ARGSUSED */
 
-static int  fdx_read (ps, data, n, in_line)
-register PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+fdx_read (register PS ps, PElementData data, PElementLen n, int in_line)
 {
 	int	    cc;
 	register struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
@@ -103,11 +99,8 @@ int	in_line;
 
 /* ARGSUSED */
 
-static int  fdx_write (ps, data, n, in_line)
-register PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+fdx_write (register PS ps, PElementData data, PElementLen n, int in_line)
 {
 	int	    cc;
 	register struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;

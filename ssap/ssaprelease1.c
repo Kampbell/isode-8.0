@@ -36,13 +36,8 @@ static int  SRelRetryRequestAux ();
 
 /*    S-RELEASE.REQUEST */
 
-int	SRelRequest (sd, data, cc, secs, sr, si)
-int	sd;
-char   *data;
-int	cc;
-int	secs;
-struct SSAPrelease *sr;
-struct SSAPindication *si;
+int 
+SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -73,13 +68,8 @@ struct SSAPindication *si;
 }
 
 
-static int  SRelRequestAux (sb, data, cc, secs, sr, si)
-register struct ssapblk *sb;
-char   *data;
-int	cc;
-int	secs;
-struct SSAPrelease *sr;
-struct SSAPindication *si;
+static int 
+SRelRequestAux (register struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
 {
 	register struct ssapkt *s;
 
@@ -119,11 +109,8 @@ struct SSAPindication *si;
 
 /*    S-RELEASE-RETRY.REQUEST (pseudo) */
 
-int	SRelRetryRequest (sd, secs, sr, si)
-int	sd;
-int	secs;
-struct SSAPrelease *sr;
-struct SSAPindication *si;
+int 
+SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int	    result;
@@ -149,11 +136,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SRelRetryRequestAux (sb, secs, sr, si)
-register struct ssapblk *sb;
-int	secs;
-struct SSAPrelease *sr;
-struct SSAPindication *si;
+static int 
+SRelRetryRequestAux (register struct ssapblk *sb, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
 {
 	int	    code,
 			result;

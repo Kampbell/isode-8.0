@@ -124,10 +124,8 @@ static	modsym_aux ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	register char  *cp,
 			 *sp;
@@ -288,7 +286,8 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-static prologue () {
+static 
+prologue (void) {
 	char *cp;
 
 	if (cp = index (pepyversion, ')'))
@@ -313,8 +312,8 @@ static prologue () {
 }
 /*    ERRORS */
 
-yyerror (s)
-register char   *s;
+int 
+yyerror (register char *s)
 {
 	yyerror_aux (s);
 
@@ -345,15 +344,15 @@ warning (char* fmt, ...)
 #else
 
 /* VARARGS1 */
-warning (fmt)
-char	*fmt;
+int 
+warning (char *fmt)
 {
 	warning (fmt);
 }
 #endif
 
-yyerror_aux (s)
-register char   *s;
+int 
+yyerror_aux (register char *s)
 {
 	if (linepos)
 		(void) fprintf (stderr, "\n"), linepos = 0;
@@ -419,7 +418,8 @@ char   *fmt;
 
 /*  */
 
-yywrap () {
+int 
+yywrap (void) {
 	if (linepos)
 		(void) fprintf (stderr, "\n"), linepos = 0;
 
@@ -428,10 +428,8 @@ yywrap () {
 
 /*  */
 
-yyprint (s, f, top)
-char    *s;
-int	f;
-int	top;
+int 
+yyprint (char *s, int f, int top)
 {
 	int	    len;
 	static int didf = 0;
@@ -488,12 +486,14 @@ int	top;
 
 /*    PASS1 */
 
-pass1 () {
+int 
+pass1 (void) {
 	if (!bflag)
 		prologue3 ();
 }
 
-static prologue3 () {
+static 
+prologue3 (void) {
 	(void) printf ("\n/* Generated from module %s", mymodule);
 	if (mymoduleid)
 		(void) printf (", Object Identifier %s", sprintoid (mymoduleid));
@@ -527,7 +527,8 @@ register YP	yp;
 
 /*    PASS2 */
 
-pass2 () {
+int 
+pass2 (void) {
 	register SY	    sy;
 	register YP	    yp;
 
@@ -606,7 +607,8 @@ pass2 () {
 	write_ph_file ();
 }
 
-static prologue2 () {
+static 
+prologue2 (void) {
 	(void) printf("\n#ifndef PEPYPARM\n#define PEPYPARM char *\n");
 	(void) printf ("#endif /* PEPYPARM */\n"); /* keep ansi happy ... */
 	(void) printf("extern PEPYPARM NullParm;\n");
@@ -854,13 +856,8 @@ register char  *mod,
 
 /*  */
 
-check_type (type, level, class, form, id, arg)
-register char  *type,
-		 *class,
-		 *form,
-		 *id,
-		 *arg;
-register int	level;
+int 
+check_type (register char *type, register int level, register char *class, register char *form, register char *id, register char *arg)
 {
 	int	    explicit;
 
@@ -1113,7 +1110,8 @@ OID	oid;
 
 /*  */
 
-static	write_ph_file () {
+static 
+write_ph_file (void) {
 	int	    msave;
 	char    file[BUFSIZ];
 	char    fileoid[BUFSIZ];
@@ -1235,7 +1233,8 @@ char *fn,
 #define S8	8
 #define S9	9
 
-static int  pp () {
+static int 
+pp (void) {
 	register int    c,
 			 s;
 	register char  *bp,
@@ -1513,9 +1512,8 @@ register YP	type;
 }
 
 
-static SY  add_symbol (s1, s2)
-register SY	s1,
-		 s2;
+static SY 
+add_symbol (register SY s1, register SY s2)
 {
 	register SY	    sy;
 
@@ -1867,8 +1865,8 @@ register YP	yp;
 
 /*    STRINGS */
 
-char   *new_string (s)
-register char  *s;
+char *
+new_string (register char *s)
 {
 	register char  *p;
 
@@ -1908,10 +1906,8 @@ static struct triple {
 
 /*  */
 
-char *modsym (module, id, direct)
-register char  *module,
-		 *id;
-int direct;
+char *
+modsym (register char *module, register char *id, int direct)
 {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
@@ -1952,9 +1948,8 @@ int direct;
 }
 
 
-static	modsym_aux (name, bp)
-register char  *name,
-		 *bp;
+static 
+modsym_aux (register char *name, register char *bp)
 {
 	register char   c;
 
@@ -1975,7 +1970,8 @@ register char  *name,
 
 /*  */
 
-char *gensym () {
+char *
+gensym (void) {
 	char    buffer[BUFSIZ];
 	static int  i = 0;
 
@@ -1983,7 +1979,8 @@ char *gensym () {
 	return new_string (buffer);
 }
 
-init_new_file () {
+int 
+init_new_file (void) {
 	static int file_no = 0;
 	char	buffer[BUFSIZ];
 
@@ -2002,7 +1999,8 @@ init_new_file () {
 	prologue2 ();
 }
 
-end_file () {
+int 
+end_file (void) {
 	(void) fflush (stdout);
 	if (ferror (stdout))
 		myyerror ("write error - %s", sys_errname (errno));

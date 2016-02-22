@@ -69,9 +69,8 @@ static int	t_test = 1;	/* Iteration of the test */
 
 #define NullParm	((char	*) 0)
 /*ARGSUSED*/
-main(argc, argv)
-int	argc;
-char	**argv;
+int 
+main (int argc, char **argv)
 {
 	int	i;
 	int succ, fail;
@@ -131,8 +130,8 @@ char	**argv;
 /*
  * Perform a test of encoding/decoding on type number tynum
  */
-ed_tst(tynum)
-int	tynum;
+int 
+ed_tst (int tynum)
 {
 	PE	pe;
 	char *parm1, *parm2;
@@ -201,9 +200,8 @@ int	tynum;
 /*
  * fill in some test data for the given type
  */
-char	*
-fill(tynum)
-int	tynum;
+char *
+fill (int tynum)
 {
 	char	*parm;
 	static int count;
@@ -1116,9 +1114,8 @@ int	tynum;
  * compare two structures for differences of fields indicating an
  * error
  */
-tcmp(tynum, parm1, parm2)
-int	tynum;
-char	*parm1, *parm2;
+int 
+tcmp (int tynum, char *parm1, char *parm2)
 {
 	int	d;
 	int	i;
@@ -3464,8 +3461,8 @@ char	*parm1, *parm2;
  * Doesn't work for a qbuf which doesn't have a head ! Don't really know what
  * is the proper form of a queue buf. MArshall's doco doesn't say
  */
-qb_cmp(qb1, qb2)
-struct	qbuf	*qb1, *qb2;
+int 
+qb_cmp (struct qbuf *qb1, struct qbuf *qb2)
 {
 	struct	qbuf	*qp1, *qp2;
 	char	*po1, *po2;
@@ -3522,8 +3519,8 @@ struct	qbuf	*qb1, *qb2;
  * compare two bitstrings. Including the little bits left at the end but
  * not the bits not in the strings
  */
-bit_cmp(b1, b2)
-PE	b1, b2;
+int 
+bit_cmp (PE b1, PE b2)
 {
 	int	len1, len2;
 	register char	*cp1, *cp2;
@@ -3571,9 +3568,8 @@ fail:
 /*
  * compare to strings of given number of bits for equality
  */
-bitstr_cmp(cp1, len1, cp2, len2)
-char	*cp1, *cp2;
-int	len1, len2;
+int 
+bitstr_cmp (char *cp1, int len1, char *cp2, int len2)
 {
 	int i;
 	int	mask;
@@ -3598,8 +3594,8 @@ int	len1, len2;
 /*
  * Generate a randomish list of PElement s for use as ANY or SET  OF ANY ....
  */
-PE
-mkpelist(i) {
+PE 
+mkpelist (int i) {
 	PE pe, fpe = NULL;
 
 	fpe = pe_alloc(PE_CLASS_PRIV, PE_FORM_CONS, (PElementID ) i);
@@ -3615,9 +3611,8 @@ mkpelist(i) {
 /*
  * generate a randomish PElement
  */
-PE
-mkpe(i)
-int	i;
+PE 
+mkpe (int i)
 {
 	int	id, class;
 	PE 	pe;
@@ -3662,9 +3657,8 @@ int	i;
 /*
  * make an OID for testing
  */
-OID
-mkoid(i)
-int	i;
+OID 
+mkoid (int i)
 {
 	OID	oid;
 	int	oid_cnt = i % OID_SIZE;
@@ -3698,8 +3692,7 @@ int	i;
  * for testing EXTERNAL encoding routines
  */
 struct type_UNIV_EXTERNAL *
-mkext(i)
-int	i;
+mkext (int i)
 {
 	int	k;
 	struct type_UNIV_EXTERNAL *p;
@@ -3744,8 +3737,8 @@ int	i;
  * compare two external types to see if they are identical - return zero if
  * they are and non zero if they are different
  */
-ext_cmp(e1, e2)
-register struct      type_UNIV_EXTERNAL *e1, *e2;
+int 
+ext_cmp (register struct type_UNIV_EXTERNAL *e1, register struct type_UNIV_EXTERNAL *e2)
 {
 	if (e1->direct__reference != NULLOID && e2->direct__reference != NULLOID) {
 		if (oid_cmp(e1->direct__reference, e2->direct__reference))
@@ -3804,9 +3797,8 @@ register struct      type_UNIV_EXTERNAL *e1, *e2;
 /*
  * print the PE structure pointed to by pe
  */
-print_pe(pe, n)
-PE      pe;
-int     n;
+int 
+print_pe (PE pe, int n)
 {
 
 	if (pe == NULL)
@@ -3887,9 +3879,8 @@ int     n;
 /*
  * return the string describing that class
  */
-static char   *
-clname(cl)
-int     cl;
+static char *
+clname (int cl)
 {
 	char   *p;
 	static char buf[30];
@@ -3924,9 +3915,8 @@ int     cl;
  * return the string describing that identity or the number itself
  * Assuming a Universal class
  */
-static char   *
-idname(id)
-int     id;
+static char *
+idname (int id)
 {
 	char   *p;
 	static char buf[40];
@@ -4034,8 +4024,8 @@ int     id;
 /*
  * Print out the value of a bits string
  */
-static prntbits(pe)
-PE      pe;
+static 
+prntbits (PE pe)
 {
 	int     len, i;
 
@@ -4056,9 +4046,8 @@ PE      pe;
  * Print out a given length of octets as hex (with the ASCII
  * characters given if they have any
  */
-static pclen(s, len)
-register char *s;
-register int len;
+static 
+pclen (register char *s, register int len)
 {
 	register int cnt = 0;
 
@@ -4078,8 +4067,8 @@ register int len;
 /*
  * print out an octet string
  */
-static prntos(pe)
-PE      pe;
+static 
+prntos (PE pe)
 {
 	struct qbuf *qb;
 
@@ -4101,8 +4090,8 @@ bad:
 /*
  * print out a string which should be printable
  */
-static prntstr(pe)
-PE      pe;
+static 
+prntstr (PE pe)
 {
 	struct qbuf *qb;
 
@@ -4125,9 +4114,8 @@ bad:
  * build a link list of struct rep_int containing the speicified number of
  * elements
  */
-struct rep_int	*
-mkrep_int(cnt)
-int	cnt;
+struct rep_int *
+mkrep_int (int cnt)
 {
 	struct rep_int	*hd, *tl, *p;
 
@@ -4154,9 +4142,8 @@ static char *test_str[] = { "The quick", "brown", "fox jumps over",
  * build a link list of struct rep_elem containing the speicified number of
  * elements
  */
-struct rep_elem	*
-mkrep_elem(cnt)
-int	cnt;
+struct rep_elem *
+mkrep_elem (int cnt)
 {
 	struct rep_elem	*hd, *tl, *p;
 	char	**str;
@@ -4185,8 +4172,8 @@ int	cnt;
  * return non zero if the to lists are different - also
  * prints a message about the difference found
  */
-ri_cmp(p1, p2)
-struct rep_int	*p1, *p2;
+int 
+ri_cmp (struct rep_int *p1, struct rep_int *p2)
 {
 	int	cnt;
 
@@ -4216,8 +4203,8 @@ struct rep_int	*p1, *p2;
  * return non zero if the to lists are different - also
  * prints a message about the difference found
  */
-re_cmp(p1, p2)
-struct rep_elem	*p1, *p2;
+int 
+re_cmp (struct rep_elem *p1, struct rep_elem *p2)
 {
 	int	cnt;
 

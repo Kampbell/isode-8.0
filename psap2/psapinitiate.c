@@ -389,10 +389,8 @@ out1:
 
 /*    P-ASYN-RETRY.REQUEST (pseudo) */
 
-int	PAsynRetryRequest (sd, pc, pi)
-int	sd;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
+int 
+PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 {
 	SBV     smask;
 	int     result;
@@ -444,12 +442,8 @@ struct PSAPindication *pi;
 
 /*  */
 
-static int  PAsynRetryAux (pb, sc, si, pc, pi)
-register struct psapblk *pb;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
+static int 
+PAsynRetryAux (register struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication *si, struct PSAPconnect *pc, struct PSAPindication *pi)
 {
 	int	    i,
 			result;
@@ -783,10 +777,8 @@ out1:
 
 /*    P-ASYN-NEXT.REQUEST (pseudo) */
 
-int	PAsynNextRequest (sd, pc, pi)
-int	sd;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
+int 
+PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 {
 	SBV     smask;
 	int     result;

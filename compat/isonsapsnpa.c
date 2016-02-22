@@ -50,8 +50,8 @@ static CMD_TABLE tbl_communities[] = {
 
 /*  */
 
-int	setisonsapsnpa (f)
-int	f;
+int 
+setisonsapsnpa (int f)
 {
 	if (servf == NULL)
 		servf = fopen (isodefile (isonsapsnpa, 0), "r");
@@ -63,7 +63,8 @@ int	f;
 }
 
 
-int	endisonsapsnpa () {
+int 
+endisonsapsnpa (void) {
 	if (servf && !stayopen) {
 		(void) fclose (servf);
 		servf = NULL;
@@ -74,7 +75,8 @@ int	endisonsapsnpa () {
 
 /*  */
 
-struct NSAPinfo  *getisonsapsnpa () {
+struct NSAPinfo *
+getisonsapsnpa (void) {
 	int	    mask,
 			vecp;
 	register char  *cp;
@@ -137,8 +139,8 @@ struct NSAPinfo  *getisonsapsnpa () {
 	return NULL;
 }
 
-struct NSAPaddr *getisosnpa (nsap)
-struct NSAPaddr *nsap;
+struct NSAPaddr *
+getisosnpa (struct NSAPaddr *nsap)
 {
 	struct NSAPinfo *is;
 	int best = -1;
@@ -166,8 +168,8 @@ struct NSAPaddr *nsap;
 	return NULLNA;
 }
 
-struct NSAPinfo *getnsapinfo (nsap)
-struct NSAPaddr *nsap;
+struct NSAPinfo *
+getnsapinfo (struct NSAPaddr *nsap)
 {
 	struct NSAPinfo *is;
 	int best = -1;

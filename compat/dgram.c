@@ -87,11 +87,8 @@ static struct dgramblk *peers = NULL;
 
 /* ARGSUSED */
 
-int	start_udp_server (sock, backlog, opt1, opt2)
-struct sockaddr_in *sock;
-int	backlog,
-	opt1,
-	opt2;
+int 
+start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 {
 	register int    port;
 	int     sd;
@@ -183,11 +180,8 @@ got_socket:
 
 /* ARGSUSED */
 
-int	start_clts_server (sock, backlog, opt1, opt2)
-union sockaddr_osi *sock;
-int	backlog,
-	opt1,
-	opt2;
+int 
+start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2)
 {
 	int     sd;
 #ifdef	BSD43
@@ -294,10 +288,8 @@ got_socket:
 
 /*  */
 
-int	join_dgram_aux (fd, sock, newfd)
-int	fd,
-	newfd;
-struct sockaddr *sock;
+int 
+join_dgram_aux (int fd, struct sockaddr *sock, int newfd)
 {
 	int	    nfds,
 			sd;
@@ -363,9 +355,8 @@ struct sockaddr *sock;
 
 /*  */
 
-int	read_dgram_socket (fd, q)
-int	fd;
-struct qbuf **q;
+int 
+read_dgram_socket (int fd, struct qbuf **q)
 {
 	int	    nfds;
 	fd_set  ifds,
@@ -405,9 +396,8 @@ struct qbuf **q;
 
 /*  */
 
-int	hack_dgram_socket (fd, sock)
-int	fd;
-struct  sockaddr *sock;
+int 
+hack_dgram_socket (int fd, struct sockaddr *sock)
 {
 	register struct dgramblk *up;
 
@@ -438,9 +428,8 @@ struct  sockaddr *sock;
 }
 
 
-int	write_dgram_socket (fd, qb)
-int	fd;
-register struct qbuf *qb;
+int 
+write_dgram_socket (int fd, register struct qbuf *qb)
 {
 	register struct dgramblk *up;
 
@@ -466,8 +455,8 @@ register struct qbuf *qb;
 
 /*  */
 
-int	close_dgram_socket (fd)
-int	fd;
+int 
+close_dgram_socket (int fd)
 {
 	register struct dgramblk *up,
 			*vp;
@@ -495,12 +484,8 @@ int	fd;
 
 /*  */
 
-int	select_dgram_socket (nfds, rfds, wfds, efds, secs)
-int	nfds;
-fd_set *rfds,
-	   *wfds,
-	   *efds;
-int	secs;
+int 
+select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs)
 {
 	register int    fd;
 	int	    cc,
@@ -640,8 +625,8 @@ int	secs;
 
 /*  */
 
-int	check_dgram_socket (fd)
-int	fd;
+int 
+check_dgram_socket (int fd)
 {
 	int	    nfds;
 	fd_set  ifds;
@@ -662,9 +647,8 @@ int	fd;
 #include "isoaddrs.h"
 
 
-static	inetprint (sin, bp)
-struct sockaddr_in *sin;
-char   *bp;
+static 
+inetprint (struct sockaddr_in *sin, char *bp)
 {
 	(void) sprintf (bp, "Internet=%s+%d+%d", inet_ntoa (sin -> sin_addr),
 					(int) ntohs (sin -> sin_port), NA_TSET_UDP);
@@ -690,9 +674,8 @@ char   *bp;
 #endif
 
 
-static	isoprint (siso, bp)
-register struct sockaddr_iso *siso;
-char   *bp;
+static 
+isoprint (register struct sockaddr_iso *siso, char *bp)
 {
 	int	    didone = 0;
 
@@ -718,12 +701,8 @@ char   *bp;
 }
 
 
-static	hexprint (bp, n, buf, start, stop)
-char   *bp;
-int	n;
-u_char *buf;
-char   *start,
-	   *stop;
+static 
+hexprint (char *bp, int n, u_char *buf, char *start, char *stop)
 {
 	register u_char *in = buf, *top = in + n;
 
@@ -789,6 +768,7 @@ struct sockaddr *sock;
 
 /*  */
 
-int	dgram_dummy () {}
+int 
+dgram_dummy (void) {}
 
 #endif

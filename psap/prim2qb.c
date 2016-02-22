@@ -32,8 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2qb.c,v 9.0 1992/0
 
 /*  */
 
-struct qbuf *prim2qb (pe)
-register PE    pe;
+struct qbuf *
+prim2qb (register PE pe)
 {
 	register struct qbuf *qb,
 			*qp;

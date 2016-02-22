@@ -33,10 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps2pe.c,v 9.0 1992/06/
 
 /*  */
 
-PE	ps2pe_aux (ps, top, all)
-register PS	ps;
-int	top,
-	all;
+PE 
+ps2pe_aux (register PS ps, int top, int all)
 {
 	register PElementLen len;
 	PElementClass   class;
@@ -120,12 +118,8 @@ you_lose:
 static int pe_id_overshift = PE_ID_MASK << (PE_ID_BITS - PE_ID_SHIFT);
 
 
-int  ps_read_id (ps, top, class, form, id)
-register PS	ps;
-int	top;
-register PElementClass *class;
-register PElementForm *form;
-register PElementID *id;
+int 
+ps_read_id (register PS ps, int top, register PElementClass *class, register PElementForm *form, register PElementID *id)
 {
 	byte    c,
 			d;
@@ -170,9 +164,8 @@ register PElementID *id;
 
 /*  */
 
-int  ps_read_len (ps, len)
-register PS	ps;
-register PElementLen   *len;
+int 
+ps_read_len (register PS ps, register PElementLen *len)
 {
 	register int    i;
 	register PElementLen j;
@@ -216,10 +209,8 @@ register PElementLen   *len;
 
 /*  */
 
-int  ps_read_cons (ps, pe, len)
-register PS	ps;
-register PE    *pe;
-register PElementLen len;
+int 
+ps_read_cons (register PS ps, register PE *pe, register PElementLen len)
 {
 	register int    cc;
 	register PE	    p,

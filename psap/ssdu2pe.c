@@ -33,11 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ssdu2pe.c,v 9.0 1992/0
 
 /*  */
 
-PE	ssdu2pe (base, len, realbase, result)
-char   *base,
-	   *realbase;
-int	len;
-int    *result;
+PE 
+ssdu2pe (char *base, int len, char *realbase, int *result)
 {
 	register PE pe;
 	register PS ps;

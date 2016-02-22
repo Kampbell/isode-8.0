@@ -33,11 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapmajor2.c,v 9.0 199
 
 /*    S-MAJOR-SYNC.RESPONSE */
 
-int	SMajSyncResponse (sd, data, cc, si)
-int	sd;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SMajSyncResponse (int sd, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -59,11 +56,8 @@ struct SSAPindication *si;
 
 /*  */
 
-int	SMajSyncResponseAux (sb, data, cc, si)
-register struct ssapblk *sb;
-char   *data;
-int	cc;
-register struct SSAPindication *si;
+int 
+SMajSyncResponseAux (register struct ssapblk *sb, char *data, int cc, register struct SSAPindication *si)
 {
 	int     result;
 

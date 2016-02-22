@@ -66,9 +66,8 @@ static int  pe2pl_aux ();
 
 /*  */
 
-int	pe2pl (ps, pe)
-register PS	ps;
-register PE	pe;
+int 
+pe2pl (register PS ps, register PE pe)
 {
 	int     result;
 
@@ -80,10 +79,8 @@ register PE	pe;
 
 /*  */
 
-static int  pe2pl_aux (ps, pe, level)
-register PS	ps;
-register PE	pe;
-int	level;
+static int 
+pe2pl_aux (register PS ps, register PE pe, int level)
 {
 	register int    i,
 			 ia5,

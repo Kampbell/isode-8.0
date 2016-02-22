@@ -62,11 +62,8 @@ extern	int	xselect_blocking_on_intr;
 
 /*    T-DATA.REQUEST */
 
-int     TDataRequest (sd, data, cc, td)
-int	sd;
-char   *data;
-int	cc;
-struct TSAPdisconnect *td;
+int 
+TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 {
 	SBV     smask,
 			imask;
@@ -106,11 +103,8 @@ struct TSAPdisconnect *td;
 
 /*    T-EXPEDITED-DATA.REQUEST */
 
-int     TExpdRequest (sd, data, cc, td)
-int	sd;
-char   *data;
-int	cc;
-struct TSAPdisconnect *td;
+int 
+TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 {
 	SBV     smask,
 			imask;
@@ -155,10 +149,8 @@ struct TSAPdisconnect *td;
 
 /*    T-WRITE.REQUEST (pseudo; write user data vectors) */
 
-int     TWriteRequest (sd, uv, td)
-int     sd;
-struct udvec *uv;
-struct TSAPdisconnect  *td;
+int 
+TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td)
 {
 	register int    n;
 	SBV     smask,
@@ -197,11 +189,8 @@ struct TSAPdisconnect  *td;
 
 /*    T-READ.REQUEST (pseudo; synchronous read) */
 
-int     TReadRequest (sd, tx, secs, td)
-int	sd;
-register struct TSAPdata *tx;
-int	secs;
-register struct TSAPdisconnect *td;
+int 
+TReadRequest (int sd, register struct TSAPdata *tx, int secs, register struct TSAPdisconnect *td)
 {
 	SBV	    smask,
 			imask;
@@ -275,11 +264,8 @@ out:
 
 /*    T-DISCONNECT.REQUEST */
 
-int     TDiscRequest (sd, data, cc, td)
-int	sd;
-char   *data;
-int	cc;
-register struct TSAPdisconnect *td;
+int 
+TDiscRequest (int sd, char *data, int cc, register struct TSAPdisconnect *td)
 {
 	SBV     smask;
 	int     result;
@@ -307,11 +293,8 @@ register struct TSAPdisconnect *td;
 static	SFD DATAser ();
 
 
-int	TSetIndications (sd, data, disc, td)
-int	sd;
-IFP	data,
-	disc;
-struct TSAPdisconnect *td;
+int 
+TSetIndications (int sd, IFP data, IFP disc, struct TSAPdisconnect *td)
 {
 	SBV	    smask;
 	int     result;
@@ -353,11 +336,8 @@ struct TSAPdisconnect *td;
 
 /*    map transport descriptors for select() */
 
-int	TSelectMask (sd, mask, nfds, td)
-int	sd;
-fd_set *mask;
-int    *nfds;
-register struct TSAPdisconnect *td;
+int 
+TSelectMask (int sd, fd_set *mask, int *nfds, register struct TSAPdisconnect *td)
 {
 	SBV     smask;
 	register struct tsapblk *tb;
@@ -484,9 +464,8 @@ struct sigcontext *sc;
 /*  */
 
 #ifndef	SIGPOLL
-static int  TWakeUp (tb, td)
-register struct tsapblk *tb;
-struct TSAPdisconnect *td;
+static int 
+TWakeUp (register struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	int     i,
 			nfds;
@@ -562,9 +541,8 @@ struct TSAPdisconnect *td;
 #endif
 
 
-static int  TWakeUp (tb, td)
-register struct tsapblk *tb;
-struct TSAPdisconnect *td;
+static int 
+TWakeUp (register struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	int	    result;
 #ifndef	SUNOS4
@@ -632,7 +610,8 @@ struct TSAPdisconnect *td;
 
 /*    INTERNAL */
 
-struct tsapblk   *newtblk () {
+struct tsapblk *
+newtblk (void) {
 	register struct tsapblk *tb;
 
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);
@@ -655,8 +634,8 @@ struct tsapblk   *newtblk () {
 }
 
 
-freetblk (tb)
-register struct tsapblk *tb;
+int 
+freetblk (register struct tsapblk *tb)
 {
 	SBV     smask;
 #ifndef	SIGPOLL
@@ -716,8 +695,8 @@ register struct tsapblk *tb;
 
 /*  */
 
-struct tsapblk   *findtblk (sd)
-register int sd;
+struct tsapblk *
+findtblk (register int sd)
 {
 	register struct tsapblk *tb;
 
@@ -733,9 +712,8 @@ register int sd;
 
 /*  */
 
-int	copyTSAPaddrX (in, out)
-struct tsapADDR *in;
-struct TSAPaddr *out;
+int 
+copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out)
 {
 	bzero ((char *) out, sizeof *out);
 
@@ -749,9 +727,8 @@ struct TSAPaddr *out;
 }
 
 
-int	copyTSAPaddrY (in, out)
-struct TSAPaddr *in;
-struct tsapADDR *out;
+int 
+copyTSAPaddrY (struct TSAPaddr *in, struct tsapADDR *out)
 {
 	bzero ((char *) out, sizeof *out);
 

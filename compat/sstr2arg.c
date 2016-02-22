@@ -51,11 +51,13 @@ extern int errno;
 
 
 
-sstr2arg (srcptr, maxpf, argv, dlmstr)
-register char *srcptr;  /* source data */
-int maxpf;              /* maximum number of permitted fields */
-char *argv[];           /* where to put the pointers */
-char *dlmstr;           /* Delimiting character */
+int 
+sstr2arg (
+    register char *srcptr,  /* source data */
+    int maxpf,              /* maximum number of permitted fields */
+    char *argv[],           /* where to put the pointers */
+    char *dlmstr           /* Delimiting character */
+)
 {
 	char gotquote;		/* currently parsing quoted string */
 	register int ind;

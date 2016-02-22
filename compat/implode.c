@@ -54,10 +54,8 @@ char	hex2nib[0x80] = {
 
 /*  */
 
-int	implode (a, b, n)
-register u_char *a;
-register char  *b;
-register int    n;
+int 
+implode (register u_char *a, register char *b, register int n)
 {
 	register int    i;
 

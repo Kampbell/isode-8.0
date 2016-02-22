@@ -117,13 +117,8 @@ int	ppktlose (struct psapblk*pb, ...)
 #else
 /* VARARGS6 */
 
-int	ppktlose (pb, pi, reason, ppdu, what, fmt)
-register struct psapblk *pb;
-register struct PSAPindication *pi;
-int	reason,
-	ppdu;
-char   *what,
-	   *fmt;
+int 
+ppktlose (register struct psapblk *pb, register struct PSAPindication *pi, int reason, int ppdu, char *what, char *fmt)
 {
 	return ppktlose (pb, pi, reason, ppdu, what, fmt);
 }
@@ -151,11 +146,8 @@ int	psaplose (struct PSAPindication*pi, ...)
 #else
 /* VARARGS4 */
 
-int	psaplose (pi, reason, what, fmt)
-struct PSAPindication *pi;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt)
 {
 	return psaplose (pi, reason, what, fmt);
 }

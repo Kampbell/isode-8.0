@@ -54,9 +54,8 @@ static char *isomacros = "isomacros";
 
 /* this routine should be called with *p_n_colon=0 initially  */
 
-int dec_x25_demsa_invalid_dte(s,p_n_colon)
-char * s;
-int  * p_n_colon;
+int 
+dec_x25_demsa_invalid_dte (char *s, int *p_n_colon)
 /*
 the destination DTE address in case of outgoing calls may be specified by
 a string between one and three components seperated by colons:
@@ -116,8 +115,8 @@ static struct macro *Mbuckets[MBUCKETS];
 
 /*    MACROS */
 
-static struct macro *name2macro (name)
-char   *name;
+static struct macro *
+name2macro (char *name)
 {
 	register struct macro *m;
 
@@ -140,8 +139,8 @@ char   *name;
 
 /*  */
 
-static struct macro *value2macro (value)
-char   *value;
+static struct macro *
+value2macro (char *value)
 {
 	register int   i,
 			 j,
@@ -175,7 +174,8 @@ char   *value;
 
 /*  */
 
-static int  read_macros () {
+static int 
+read_macros (void) {
 	register char *hp;
 	char    buffer[BUFSIZ];
 
@@ -195,8 +195,8 @@ static int  read_macros () {
 
 /*  */
 
-static int  read_file (file)
-char   *file;
+static int 
+read_file (char *file)
 {
 	register char *cp;
 	char    buffer[BUFSIZ + 1],
@@ -223,9 +223,8 @@ char   *file;
 
 /*  */
 
-static int  add_macro (name, value)
-char   *name,
-	   *value;
+static int 
+add_macro (char *name, char *value)
 {
 	int	    i;
 	register char  *cp;
@@ -271,8 +270,8 @@ char   *name,
 
 /*  */
 
-char   *macro2str (name)
-char   *name;
+char *
+macro2str (char *name)
 {
 	register struct macro *m = name2macro (name);
 
@@ -335,8 +334,8 @@ loslab: ; \
 
 /*  */
 
-struct PSAPaddr *str2paddr (str)
-char   *str;
+struct PSAPaddr *
+str2paddr (char *str)
 {
 	register int    state,
 			 *lp;
@@ -822,9 +821,8 @@ next:
 
 /*  */
 
-int	macro2comm (name, ts)
-char   *name;
-register struct ts_interim *ts;
+int 
+macro2comm (char *name, register struct ts_interim *ts)
 {
 	int	    j,
 			len;
@@ -1008,9 +1006,8 @@ out:
 
 /*    PADDR2STR */
 
-static char   *SEL2STR (sel, len)
-char   *sel;
-int	len;
+static char *
+SEL2STR (char *sel, int len)
 {
 	register char  *cp,
 			 *dp,
@@ -1050,10 +1047,8 @@ int	len;
 
 /*  */
 
-char    *_paddr2str (pa, na, compact)
-register struct PSAPaddr *pa;
-register struct NSAPaddr *na;
-int	compact;
+char *
+_paddr2str (register struct PSAPaddr *pa, register struct NSAPaddr *na, int compact)
 {
 	register int   n;
 	int	    first;
@@ -1278,7 +1273,8 @@ bad_pa:
 /*  */
 
 #ifdef DEBUG
-free_macros () {
+int 
+free_macros (void) {
 	register int    i;
 	register struct macro *m,
 			*p;

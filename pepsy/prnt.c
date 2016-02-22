@@ -87,16 +87,18 @@ static vnamelock = 0;
 /*
  * Print out ASN data given in pe using the information given in the tables
  */
-prnt_f(typ, mod, pe, explicit, len, buf)
+int 
+prnt_f (
 /* ARGSUSED */
-int     typ;			/* which type it is */
-modtyp *mod;			/* ASN Module it is from */
-PE      pe;
-int     explicit;	/* nonzero means we are call top level
+    int typ,			/* which type it is */
+    modtyp *mod,			/* ASN Module it is from */
+    PE pe,
+    int explicit,	/* nonzero means we are call top level
 			 * print final \n
 			 */
-int    *len;
-char  **buf;
+    int *len,
+    char **buf
+)
 {
 	ptpe   *p;
 
@@ -136,12 +138,13 @@ char  **buf;
  * offset field which makes it different to pr_type routine which
  * must assume that it has an offset.
  */
-static int
-p_pr_obj(expl, pe, p, mod)
-int     expl;			/* do we look at the tag */
-PE      pe;
-ptpe   *p;
-modtyp *mod;			/* Module it is from */
+static int 
+p_pr_obj (
+    int expl,			/* do we look at the tag */
+    PE pe,
+    ptpe *p,
+    modtyp *mod			/* Module it is from */
+)
 {
 	int     cnt = 0;
 
@@ -204,12 +207,13 @@ bad:
  * Parse a single type. If a basic type parse it, if a compound type
  * call the appropriate parsing routine
  */
-static int
-p_pr_type(expl, pe, p, mod)
-int     expl;			/* do we look at the tag */
-PE      pe;
-ptpe   *p;
-modtyp *mod;			/* Module it is from */
+static int 
+p_pr_type (
+    int expl,			/* do we look at the tag */
+    PE pe,
+    ptpe *p,
+    modtyp *mod			/* Module it is from */
+)
 {
 	int     cnt = 0;
 	integer     i;
@@ -470,11 +474,12 @@ bad:
  * Parse a sequence, calling appropriate routines to parse each sub
  * type
  */
-static int
-p_pr_seq(head, p, mod)
-PE      head;
-ptpe   *p;
-modtyp *mod;			/* Module it is from */
+static int 
+p_pr_seq (
+    PE head,
+    ptpe *p,
+    modtyp *mod			/* Module it is from */
+)
 {
 	PE      pe;
 
@@ -635,11 +640,12 @@ bad:
 /*
  * Parse a set, calling appropriate routines to parse each sub type
  */
-static int
-p_pr_set(head, p, mod)
-PE      head;
-ptpe   *p;
-modtyp *mod;			/* Module it is from */
+static int 
+p_pr_set (
+    PE head,
+    ptpe *p,
+    modtyp *mod			/* Module it is from */
+)
 {
 	PE      pe;
 
@@ -805,11 +811,12 @@ bad:
  * type
  */
 
-static int
-p_pr_seqof(head, p, mod)
-PE      head;
-ptpe   *p;
-modtyp *mod;			/* Module it is from */
+static int 
+p_pr_seqof (
+    PE head,
+    ptpe *p,
+    modtyp *mod			/* Module it is from */
+)
 {
 	PE      pe;
 	ptpe   *start;		/* first entry in list */
@@ -961,11 +968,12 @@ bad:
 /*
  * Parse a setof, calling appropriate routines to parse each sub type
  */
-static int
-p_pr_setof(head, p, mod)
-PE      head;
-ptpe   *p;
-modtyp *mod;			/* Module it is from */
+static int 
+p_pr_setof (
+    PE head,
+    ptpe *p,
+    modtyp *mod			/* Module it is from */
+)
 {
 	PE      pe;
 	ptpe   *start;
@@ -1110,11 +1118,12 @@ bad:
 /*
  * parse a choice field. This means find which choice is taken
  */
-static int
-p_pr_choice(head, p, mod)
-PE      head;
-ptpe   *p;
-modtyp *mod;			/* Module it is from */
+static int 
+p_pr_choice (
+    PE head,
+    ptpe *p,
+    modtyp *mod			/* Module it is from */
+)
 {
 	if (p->pe_type != CHOICE_START && p->pe_type != SCHOICE_START) {
 		return (ppepsylose (mod, p, head, "p_pr_choice:missing CHOICE_START"));
@@ -1167,9 +1176,8 @@ modtyp *mod;			/* Module it is from */
  * Calculate the next ptpe entry in the sequence. Count a sequence as
  * one element
  */
-ptpe   *
-next_ptpe(p)
-ptpe   *p;
+ptpe *
+next_ptpe (ptpe *p)
 {
 	int     level;
 
@@ -1252,11 +1260,12 @@ again:
  * Parse a single type for explicit tag If a basic type parse it, if
  * a compound type call the appropriate parsing routine
  */
-static int
-p_pr_etype(pe, p, mod)
-PE      pe;
-ptpe   *p;
-modtyp *mod;			/* Module it is from */
+static int 
+p_pr_etype (
+    PE pe,
+    ptpe *p,
+    modtyp *mod			/* Module it is from */
+)
 {
 	integer     i;
 	OID     oid;
@@ -1489,10 +1498,13 @@ bad:
  * Is there a match at for this tag and class pair. Return 1 if yes 0
  * if no We will search through contained objects and through choices
  */
-p_ismatch(p, mod, cl, tag)
-ptpe   *p;
-modtyp *mod;			/* Module it is from */
-unsigned int cl, tag;
+int 
+p_ismatch (
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    unsigned int cl,
+    unsigned int tag
+)
 {
 	if (!ISDTYPE(p))
 		return (0);
@@ -1544,11 +1556,8 @@ unsigned int cl, tag;
  * object is a CHOICE there are more than one possible tag that could
  * match and in this case we must try to match each one of them.
  */
-PE
-p_setpresent(head, p, mod)
-PE      head;
-ptpe   *p;
-modtyp *mod;
+PE 
+p_setpresent (PE head, ptpe *p, modtyp *mod)
 {
 	PE      pe;
 	modtyp	*nmod;
@@ -1591,9 +1600,8 @@ modtyp *mod;
 /*
  * set the default value to that value in the structure
  */
-setpval(typ, dflt, mod)
-ptpe   *typ, *dflt;
-modtyp *mod;
+int 
+setpval (ptpe *typ, ptpe *dflt, modtyp *mod)
 {
 	int     len, i;
 	integer intval;
@@ -1697,9 +1705,8 @@ modtyp *mod;
 /*
  * return non zero if we can print out the string
  */
-printable(strptr, len)
-char   *strptr;
-int	len;
+int 
+printable (char *strptr, int len)
 {
 	if (strptr == NULL || *strptr == '\0') {
 		return (0);
@@ -1716,10 +1723,12 @@ int	len;
 /*
  * (Dump) Print out a printable entry in a human recognisable form
  */
-dmp_ptpe(s, p, mod)
-char   *s;
-modtyp *mod;			/* Module it is from */
-ptpe   *p;
+int 
+dmp_ptpe (
+    char *s,
+    ptpe *p,
+    modtyp *mod			/* Module it is from */
+)
 {
 	int     i, j;
 	ptpe  **par, **prev;

@@ -94,12 +94,8 @@ extern int  errno;
 
 /*    UPPER HALF */
 
-static int  TConnect (tb, expedited, data, cc, td)
-register struct tsapblk *tb;
-char    *data;
-int	expedited,
-	cc;
-struct TSAPdisconnect *td;
+static int 
+TConnect (register struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td)
 {
 	int	    result;
 	register struct tp4pkt *t;
@@ -161,11 +157,8 @@ out:
 
 /*  */
 
-static int  TRetry (tb, async, tc, td)
-register struct tsapblk *tb;
-int	async;
-struct TSAPconnect *tc;
-struct TSAPdisconnect *td;
+static int 
+TRetry (register struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 {
 	int	    cc,
 			header_len,
@@ -257,11 +250,8 @@ out:
 
 /*  */
 
-static int  TStart (tb, cp, ts, td)
-register struct tsapblk *tb;
-char   *cp;
-struct TSAPstart *ts;
-struct TSAPdisconnect *td;
+static int 
+TStart (register struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td)
 {
 	int	    cc,
 			i,
@@ -317,13 +307,8 @@ out:
 
 /* ARGSUSED */
 
-static int  TAccept (tb, responding, data, cc, qos, td)
-register struct tsapblk *tb;
-char   *data;
-int	responding,
-	cc;
-struct QOStype *qos;
-struct TSAPdisconnect *td;
+static int 
+TAccept (register struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td)
 {
 	int	    result;
 	register struct tp4pkt *tp;
@@ -373,11 +358,8 @@ struct TSAPdisconnect *td;
 #endif
 
 
-static int  TWrite (tb, uv, expedited, td)
-register struct tsapblk *tb;
-register struct udvec *uv;
-int	expedited;
-struct TSAPdisconnect *td;
+static int 
+TWrite (register struct tsapblk *tb, register struct udvec *uv, int expedited, struct TSAPdisconnect *td)
 {
 	int	    cc,
 			flags,
@@ -584,9 +566,8 @@ out:
 
 /*  */
 
-static int  TDrain (tb, td)
-register struct tsapblk *tb;
-struct TSAPdisconnect *td;
+static int 
+TDrain (register struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	int	    nc,
 			onoff,
@@ -662,12 +643,8 @@ out:
 
 /*  */
 
-static int  TRead (tb, tx, td, async, oob)
-register struct tsapblk *tb;
-register struct TSAPdata *tx;
-struct TSAPdisconnect *td;
-int	async,
-	oob;
+static int 
+TRead (register struct tsapblk *tb, register struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob)
 {
 	int	    cc,
 			header_len;
@@ -760,9 +737,8 @@ int	async,
 
 /*  */
 
-static int ReadDisc(tb, td)
-register struct tsapblk *tb;
-struct TSAPdisconnect *td;
+static int 
+ReadDisc (register struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	TP_MSG_DISCONNECT tps, *tp = &tps;
 	int header_len = sizeof (*tp);
@@ -785,11 +761,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-static int  TDisconnect (tb, data, cc, td)
-register struct tsapblk *tb;
-char   *data;
-int	cc;
-struct TSAPdisconnect *td;
+static int 
+TDisconnect (register struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
 {
 	int	    result;
 	register struct tp4pkt *tp;
@@ -823,10 +796,8 @@ struct TSAPdisconnect *td;
 
 /* ARGSUSED */
 
-static int  TLose (tb, reason, td)
-register struct tsapblk *tb;
-int	reason;
-struct TSAPdisconnect *td;
+static int 
+TLose (register struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
 {
 	register struct tp4pkt *tp;
 
@@ -846,14 +817,8 @@ struct TSAPdisconnect *td;
 
 /* ARGSUSED */
 
-int	tp4open (tb, local_ta, local_na, remote_ta, remote_na, td, async)
-register struct tsapblk *tb;
-struct TSAPaddr *local_ta,
-		*remote_ta;
-struct NSAPaddr *local_na,
-		*remote_na;
-struct TSAPdisconnect *td;
-int	async;
+int 
+tp4open (register struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async)
 {
 	int	    fd,
 			onoff;
@@ -894,9 +859,8 @@ int	async;
 
 /* ARGSUSED */
 
-static int  retry_tp4_socket (tb, td)
-register struct tsapblk *tb;
-struct TSAPdisconnect *td;
+static int 
+retry_tp4_socket (register struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	fd_set  mask;
 
@@ -912,9 +876,8 @@ struct TSAPdisconnect *td;
 
 /* ARGSUSED */
 
-char   *tp4save (fd, td)
-int fd;
-struct TSAPdisconnect *td;
+char *
+tp4save (int fd, struct TSAPdisconnect *td)
 {
 	static char buffer[BUFSIZ];
 
@@ -924,10 +887,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-int	tp4restore (tb, buffer, td)
-register struct tsapblk *tb;
-char   *buffer;
-struct TSAPdisconnect *td;
+int 
+tp4restore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 {
 	int	    fd;
 
@@ -943,8 +904,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-int	tp4init (tb)
-register struct tsapblk *tb;
+int 
+tp4init (register struct tsapblk *tb)
 {
 	tb -> tb_connPfnx = TConnect;
 	tb -> tb_retryPfnx = TRetry;
@@ -978,12 +939,8 @@ register struct tsapblk *tb;
 
 /* ARGSUSED */
 
-int	start_tp4_server (sock, backlog, opt1, opt2, td)
-struct TSAPaddr *sock;
-int	backlog,
-	opt1,
-	opt2;
-struct TSAPdisconnect *td;
+int 
+start_tp4_server (struct TSAPaddr *sock, int backlog, int opt1, int opt2, struct TSAPdisconnect *td)
 {
 	int	    sd;
 	OSI_ADDR	ifaddr;
@@ -1014,10 +971,8 @@ struct TSAPdisconnect *td;
 /* ARGSUSED */
 #endif
 
-int	join_tp4_client (fd, sock, td)
-int	fd;
-struct TSAPaddr *sock;
-struct TSAPdisconnect *td;
+int 
+join_tp4_client (int fd, struct TSAPaddr *sock, struct TSAPdisconnect *td)
 {
 	int	    len,
 			sd;
@@ -1216,5 +1171,6 @@ TP_EVENT code;
 	return tp;
 }
 #else
-int	_ts2sunlink_stub () {}
+int 
+_ts2sunlink_stub (void) {}
 #endif

@@ -151,9 +151,8 @@ int	n;
 
 /*  */
 
-addtable (name, lt)
-char	*name;
-int	lt;
+int 
+addtable (char *name, int lt)
 {
 	SYM		sp;
 
@@ -182,7 +181,8 @@ int	lt;
 		}
 }
 
-print_expimp () {
+int 
+print_expimp (void) {
 	SYM		sp;
 	int		ind;
 	OID		oid;
@@ -282,8 +282,8 @@ YP	yp;
 		}
 }
 
-importedP (name)
-char   *name;
+int 
+importedP (char *name)
 {
 	SYM		sp;
 
@@ -307,7 +307,8 @@ static struct oidtbl {
 	NULL,
 };
 
-initoidtbl () {
+int 
+initoidtbl (void) {
 	struct oidtbl *op;
 	OID		oid;
 

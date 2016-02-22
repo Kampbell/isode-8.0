@@ -52,14 +52,8 @@ static int  SReSyncRequestAux ();
 
 /*  */
 
-int	SReSyncRequest (sd, type, ssn, settings, data, cc, si)
-int	sd;
-int	type,
-	settings;
-long	ssn;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SReSyncRequest (int sd, int type, long ssn, int settings, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -101,14 +95,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SReSyncRequestAux (sb, type, ssn, settings, data, cc, si)
-register struct ssapblk *sb;
-int	type,
-	settings;
-long	ssn;
-char   *data;
-int	cc;
-register struct SSAPindication *si;
+static int 
+SReSyncRequestAux (register struct ssapblk *sb, int type, long ssn, int settings, char *data, int cc, register struct SSAPindication *si)
 {
 	int     result;
 

@@ -35,13 +35,8 @@ static int SReSyncResponseAux ();
 
 /*    S-RESYNCHRONIZE.RESPONSE */
 
-int	SReSyncResponse (sd, ssn, settings, data, cc, si)
-int	sd;
-int	settings;
-long	ssn;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SReSyncResponse (int sd, long ssn, int settings, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -63,13 +58,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int SReSyncResponseAux (sb, ssn, settings, data, cc, si)
-register struct ssapblk *sb;
-long	ssn;
-int	settings;
-char   *data;
-int	cc;
-register struct SSAPindication *si;
+static int 
+SReSyncResponseAux (register struct ssapblk *sb, long ssn, int settings, char *data, int cc, register struct SSAPindication *si)
 {
 	int	    result;
 

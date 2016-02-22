@@ -35,13 +35,8 @@ static int  PRelRetryRequestAux ();
 
 /*    P-RELEASE.REQUEST */
 
-int	PRelRequest (sd, data, ndata, secs, pr, pi)
-int	sd;
-PE     *data;
-int	ndata;
-int	secs;
-struct PSAPrelease *pr;
-struct PSAPindication *pi;
+int 
+PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int	    result;
@@ -89,11 +84,8 @@ out:
 
 /*    P-RELEASE-RETRY.REQUEST (pseudo) */
 
-int	PRelRetryRequest (sd, secs, pr, pi)
-int	sd;
-int	secs;
-struct PSAPrelease *pr;
-struct PSAPindication *pi;
+int 
+PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int	    result;
@@ -119,11 +111,8 @@ struct PSAPindication *pi;
 
 /*  */
 
-static int  PRelRetryRequestAux (pb, secs, pr, pi)
-struct psapblk *pb;
-int	secs;
-struct PSAPrelease *pr;
-struct PSAPindication *pi;
+static int 
+PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi)
 {
 	int	    result;
 	char   *id = pb -> pb_flags & PB_RELEASE ? "SRelRetryRequest"

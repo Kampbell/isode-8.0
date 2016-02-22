@@ -52,8 +52,8 @@ static char calling_dte[NSAP_DTELEN + 1];
 
 /*  */
 
-int     start_x25_client (local)
-struct NSAPaddr *local;
+int 
+start_x25_client (struct NSAPaddr *local)
 {
 	int     sd, pgrp;
 	CONN_DB l_iov;
@@ -79,11 +79,8 @@ struct NSAPaddr *local;
 
 /*  */
 
-int     start_x25_server (local, backlog, opt1, opt2)
-struct NSAPaddr *local;
-int     backlog,
-		opt1,
-		opt2;
+int 
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 {
 	int     sd, pgrp;
 	CONN_DB b_iov;
@@ -131,9 +128,8 @@ int     backlog,
 
 /*  */
 
-int     join_x25_client (fd, remote)
-int     fd;
-struct NSAPaddr *remote;
+int 
+join_x25_client (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB     sck;
 	struct iovec *iov;
@@ -161,9 +157,8 @@ struct NSAPaddr *remote;
 	return nfd;
 }
 
-int     join_x25_server (fd, remote)
-int     fd;
-struct NSAPaddr *remote;
+int 
+join_x25_server (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB zsck;
 	CONN_DB *sck = &zsck;
@@ -250,8 +245,10 @@ char    *buffer;
 	return count;
 }
 #else 	/* CAMTEC_CCL */
-int	_camtec_sunlink_stub2 () {}
+int 
+_camtec_sunlink_stub2 (void) {}
 #endif  /* CAMTEC_CCL */
 #else	/* X25 */
-int	_camtec_sunlink_stub () {}
+int 
+_camtec_sunlink_stub (void) {}
 #endif  /* X25 */

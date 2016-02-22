@@ -37,13 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2vec.c,v 9.0 1992
 
 /*  */
 
-int	str2vecX (s, vec, nmask, mask, brk, docomma)
-register char  *s,
-		 **vec,
-		 brk;
-int	nmask,
-	*mask,
-	docomma;
+int 
+str2vecX (register char *s, register char **vec, int nmask, int *mask, int brk, int docomma)
 {
 	register int    i;
 	char    comma = docomma ? ',' : ' ';

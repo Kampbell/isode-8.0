@@ -110,12 +110,8 @@ int	tpktlose (struct tsapblk* tb, ...)
 #else
 /* VARARGS5 */
 
-int	tpktlose (tb, td, reason, what, fmt)
-struct tsapblk *tb;
-struct TSAPdisconnect *td;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+tpktlose (struct tsapblk *tb, struct TSAPdisconnect *td, int reason, char *what, char *fmt)
 {
 	return tpktlose (tb, td, reason, what, fmt);
 }
@@ -144,11 +140,8 @@ int	tsaplose (struct TSAPdisconnect*td, ...)
 #else
 /* VARARGS4 */
 
-int	tsaplose (td, reason, what, fmt)
-struct TSAPdisconnect *td;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt)
 {
 	return tsaplose (td, reason, what, fmt);
 }
@@ -157,10 +150,12 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _tsaplose (td, reason, ap)	/* what, fmt, args ... */
-register struct TSAPdisconnect *td;
-int     reason;
-va_list	ap;
+static int 
+_tsaplose (	/* what, fmt, args ... */
+    register struct TSAPdisconnect *td,
+    int reason,
+    va_list ap
+)
 {
 	register char  *bp;
 	char    buffer[BUFSIZ];

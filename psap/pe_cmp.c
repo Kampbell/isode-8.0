@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_cmp.c,v 9.0 1992/06
 
 /*  */
 
-int	pe_cmp (p, q)
-register PE	p,
-		 q;
+int 
+pe_cmp (register PE p, register PE q)
 {
 	register int    i;
 

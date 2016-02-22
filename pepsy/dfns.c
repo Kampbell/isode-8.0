@@ -45,10 +45,8 @@ proc_name(), *mymodule;
  * The argument flag indicates whether t is being defined (1) or used
  * (0).
  */
-char   *
-proc_name(t, flag)
-char   *t;
-int     flag;
+char *
+proc_name (char *t, int flag)
 {
 	int     i;
 	static int curr = 0;
@@ -99,9 +97,8 @@ FILE   *fp;
 /*
  * return a copy of the string s with '-' replaced by '_'
  */
-char   *
-notidtoid(s)
-char   *s;
+char *
+notidtoid (char *s)
 {
 
 	char   *t, *r;
@@ -116,9 +113,8 @@ char   *s;
 /*
  * return a copy of the string s
  */
-char   *
-my_new_str(s)
-char   *s;
+char *
+my_new_str (char *s)
 {
 
 	char   *t;
@@ -133,9 +129,8 @@ char   *s;
 /*
  * return the concatenation of the strings s1 and s2
  */
-char   *
-my_strcat(s1, s2)
-char   *s1, *s2;
+char *
+my_strcat (char *s1, char *s2)
 {
 	char   *s3, *s, *t;
 
@@ -154,8 +149,8 @@ char   *s1, *s2;
 /*
  * a simple hash function
  */
-hash_val(s)
-char   *s;
+int 
+hash_val (char *s)
 {
 	int     i, sum;
 	char   *t;
@@ -169,7 +164,8 @@ char   *s;
 /*
  * initialize the table id_table
  */
-init() {
+int 
+init (void) {
 	int     i;
 
 	for (i = 0; i <= TABLESIZE; i++)
@@ -184,9 +180,8 @@ static unsigned int len = 0;
 /*
  * Return in a static buffer the two strings concatenated
  */
-char   *
-concat(s1, s2)
-char   *s1, *s2;
+char *
+concat (char *s1, char *s2)
 {
 	int     tot;
 
@@ -210,12 +205,13 @@ char   *s1, *s2;
  * Generate a free call given the name of the parameter, the module
  * name, and the name of the type
  */
-char   *
-gfree(module, id, parm)
-char   *module;			/* name of module we are in (usually
+char *
+gfree (
+    char *module,			/* name of module we are in (usually
 				 * mymodule) */
-char   *id;			/* name of type we want to free */
-char   *parm;			/* name of the pointer to the data */
+    char *id,			/* name of type we want to free */
+    char *parm			/* name of the pointer to the data */
+)
 {
 	char   *p1 = notidtoid(module);
 	char   *p2 = notidtoid(id);

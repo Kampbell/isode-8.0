@@ -49,9 +49,8 @@ void	PY_advise (char* what, ...)
 #else
 /* VARARGS */
 
-void	PY_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+PY_advise (char *what, char *fmt)
 {
 	PY_advise (what, fmt);
 }

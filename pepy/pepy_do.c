@@ -635,8 +635,8 @@ register char  *id,
 }
 
 
-static char *add_point (arg)
-char *arg;
+static char *
+add_point (char *arg)
 {
 	char    buffer[BUFSIZ];
 
@@ -724,11 +724,8 @@ register char  *narg;
 
 /*  */
 
-do_action (action, level, arg, lineno)
-register char  *action,
-		 *arg;
-register int level;
-int	lineno;
+int 
+do_action (register char *action, register int level, register char *arg, int lineno)
 {
 	register char   c,
 			 d;

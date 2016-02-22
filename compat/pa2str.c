@@ -35,8 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/pa2str.c,v 9.0 1992/
 
 /*    Presentation Address to String */
 
-char   *pa2str (px)
-register struct PSAPaddr *px;
+char *
+pa2str (register struct PSAPaddr *px)
 {
 	register char *bp;
 	struct PSAPaddr pas;

@@ -218,10 +218,8 @@ YT  lookup_tag ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    i;
 	register char  *cp,
@@ -337,8 +335,8 @@ usage:
 
 /*    ERRORS */
 
-yyerror (s)
-register char   *s;
+int 
+yyerror (register char *s)
 {
 	yyerror_aux (s);
 
@@ -376,15 +374,15 @@ warning (char*fmt, ...)
 #else
 
 /* VARARGS1 */
-warning (fmt)
-char	*fmt;
+int 
+warning (char *fmt)
 {
 	warning (fmt);
 }
 #endif
 
-static	yyerror_aux (s)
-register char   *s;
+static 
+yyerror_aux (register char *s)
 {
 	if (linepos)
 		(void) fprintf (stderr, "\n"), linepos = 0;
@@ -460,7 +458,8 @@ char   *fmt;
 
 /*  */
 
-yywrap () {
+int 
+yywrap (void) {
 	if (linepos)
 		(void) fprintf (stderr, "\n"), linepos = 0;
 
@@ -471,10 +470,8 @@ yywrap () {
 
 /* ARGSUSED */
 
-yyprint (s, f, top)
-char    *s;
-int	f;
-int	top;
+int 
+yyprint (char *s, int f, int top)
 {
 	int     len;
 	static int  nameoutput = 0;
@@ -533,7 +530,8 @@ int	top;
 
 /*    PASS1 */
 
-pass1 () {
+int 
+pass1 (void) {
 }
 
 /*  */
@@ -598,7 +596,8 @@ FILE *fp;
 
 /*    PASS2 */
 
-pass2 () {
+int 
+pass2 (void) {
 	register SY	    sy;
 	register YP	    yp;
 
@@ -706,8 +705,8 @@ FILE *fp1, *fp2;
 	}
 }
 
-static void merge_files (stem)
-char *stem;
+static void 
+merge_files (char *stem)
 {
 	FILE *fpin, *fpout;
 	char fname[BUFSIZ];
@@ -2384,8 +2383,8 @@ int	level;
 		/* NOTREACHED */
 	}
 }
-static dump_real (r)
-double	r;
+static 
+dump_real (double r)
 {
 #ifndef	BSD44
 	extern char *ecvt ();
@@ -2639,9 +2638,8 @@ register YP	type;
 }
 
 
-static SY  add_symbol (s1, s2)
-register SY	s1,
-		 s2;
+static SY 
+add_symbol (register SY s1, register SY s2)
 {
 	register SY	    sy;
 
@@ -2960,8 +2958,8 @@ register YT	yt;
 
 /*    STRINGS */
 
-char   *new_string (s)
-register char  *s;
+char *
+new_string (register char *s)
 {
 	register char  *p;
 
@@ -3004,10 +3002,8 @@ static struct triple {
 
 /*  */
 
-char *modsym (module, id, prefix)
-register char  *module,
-		 *id;
-char   *prefix;
+char *
+modsym (register char *module, register char *id, char *prefix)
 {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
@@ -3035,9 +3031,8 @@ char   *prefix;
 }
 
 
-static	modsym_aux (name, bp)
-register char  *name,
-		 *bp;
+static 
+modsym_aux (register char *name, register char *bp)
 {
 	register char   c;
 
@@ -3058,8 +3053,8 @@ register char  *name,
 
 /*  */
 
-static char *gensym (s, a)
-char   *s, *a;
+static char *
+gensym (char *s, char *a)
 {
 	int     i;
 	register char  *p;
@@ -3096,17 +3091,18 @@ char   *s, *a;
 }
 
 /* pepy compatible routines - you know how it is ... */
-init_new_file () {
+int 
+init_new_file (void) {
 	;
 }
 
-end_file () {
+int 
+end_file (void) {
 	;
 }
 
-static char *array (s, flg)
-char	*s;
-int	flg;
+static char *
+array (char *s, int flg)
 {
 	static char buf[BUFSIZ];
 	char	*p;
@@ -3222,7 +3218,8 @@ OID	oid;
 
 /*  */
 
-static	write_ph_file () {
+static 
+write_ph_file (void) {
 	int	    msave;
 	char    file[BUFSIZ];
 	char    fileoid[BUFSIZ];
@@ -3403,8 +3400,7 @@ register YP     yp;
  * return a string with the leading pathname stripped off
  */
 char *
-pstrip(p)
-char *p;
+pstrip (char *p)
 {
 	char *p1;
 
@@ -3473,8 +3469,8 @@ static char *stand_f[] = {
  * include file which should be in the include/isode directory.
  * return nonzero (true) if it is.
  */
-is_stand(file)
-char *file;
+int 
+is_stand (char *file)
 {
 	char	**p;
 	char	*f = pstrip (file);
@@ -3496,8 +3492,10 @@ static int   nextmod = 0;	/* next free slot in external module table */
 /*
  * build up a list of external modules we have referenced
  */
-addextmod(p)
-char	*p;	/* name of external module */
+int 
+addextmod (
+    char *p	/* name of external module */
+)
 {
 
 	if (nextmod >= EXTMODSIZE)

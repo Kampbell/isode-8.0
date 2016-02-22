@@ -58,10 +58,8 @@ extern char * aix_x25_linkname;
  * convert from the generic X25 structure to interface specific
  */
 /* ARGSUSED */
-CONN_DB *gen2if (generic, specific, context)
-struct NSAPaddr *generic;
-CONN_DB         *specific;
-int             context;
+CONN_DB *
+gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context)
 {
 	int     dtelen;
 	char    dte[NSAP_DTELEN + 1];
@@ -448,10 +446,8 @@ int             context;
  * convert from interface specific format to generic X.25 structure
  */
 /* ARGSUSED */
-struct NSAPaddr *if2gen (generic, specific, context)
-struct NSAPaddr *generic;
-CONN_DB         *specific;
-int             context;
+struct NSAPaddr *
+if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context)
 {
 	int     dtelen;
 	char    dte[NSAP_DTELEN + 1];
@@ -726,9 +722,8 @@ int             context;
 extern unsigned char isode_x25_err[2];
 extern char isode_x25_errflag;		/* From asprintf.c ! */
 
-elucidate_x25_err (flags, pkt)
-int flags;
-unsigned char * pkt;
+int 
+elucidate_x25_err (int flags, unsigned char *pkt)
 {
 	char * cp;
 
@@ -1570,5 +1565,6 @@ struct NSAPaddr *nsap;
 #endif
 #endif
 #else
-int	_x25addr_stub () {}
+int 
+_x25addr_stub (void) {}
 #endif

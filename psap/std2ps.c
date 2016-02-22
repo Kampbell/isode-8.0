@@ -34,11 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/std2ps.c,v 9.0 1992/06
 
 /* ARGSUSED */
 
-static int  std_read (ps, data, n, in_line)
-PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+std_read (PS ps, PElementData data, PElementLen n, int in_line)
 {
 	int	    i;
 
@@ -52,11 +49,8 @@ int	in_line;
 
 /* ARGSUSED */
 
-static int  std_write (ps, data, n, in_line)
-PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+std_write (PS ps, PElementData data, PElementLen n, int in_line)
 {
 	int	    i;
 
@@ -69,8 +63,8 @@ int	in_line;
 }
 
 
-int  std_flush (ps)
-PS	ps;
+int 
+std_flush (PS ps)
 {
 	if (fflush ((FILE *) ps -> ps_addr) != EOF)
 		return OK;
@@ -80,8 +74,8 @@ PS	ps;
 
 /*  */
 
-int	std_open (ps)
-register PS	ps;
+int 
+std_open (register PS ps)
 {
 	ps -> ps_readP = std_read;
 	ps -> ps_writeP = std_write;

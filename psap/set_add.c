@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/set_add.c,v 9.0 1992/0
 
 /*  */
 
-int	set_add (pe, r)
-register PE	pe,
-		 r;
+int 
+set_add (register PE pe, register PE r)
 {
 	register int     pe_id;
 	register PE	    *p,

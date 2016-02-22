@@ -55,20 +55,8 @@ static int  SAsynRetryAux2 ();
 
 /*  */
 
-int	SAsynConnRequest (ref, calling, called, requirements, settings, isn,
-					  data, cc, qos, sc, si, async)
-struct SSAPref *ref;
-struct SSAPaddr *calling,
-		*called;
-int	requirements,
-	settings,
-	cc,
-	async;
-long	isn;
-char   *data;
-struct QOStype *qos;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+int 
+SAsynConnRequest (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr *called, int requirements, int settings, long isn, char *data, int cc, struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si, int async)
 {
 	SBV     smask;
 	int     result;
@@ -129,20 +117,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SConnRequestAux (ref, calling, called, requirements, settings, isn,
-							 data, cc, qos, sc, si, async)
-struct SSAPref *ref;
-struct SSAPaddr *calling,
-		*called;
-int	requirements,
-	settings,
-	cc,
-	async;
-long	isn;
-char   *data;
-struct QOStype *qos;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+static int 
+SConnRequestAux (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr *called, int requirements, int settings, long isn, char *data, int cc, struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si, int async)
 {
 	int     result;
 	register struct ssapkt *s;
@@ -252,10 +228,8 @@ out1:
 
 /*    S-ASYN-RETRY.REQUEST (pseudo) */
 
-int	SAsynRetryRequest (sd, sc, si)
-int	sd;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+int 
+SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	SBV     smask;
 	int     result;
@@ -313,10 +287,8 @@ struct SSAPindication *si;
 
 /*    S-ASYN-NEXT.REQUEST (pseudo) */
 
-int	SAsynNextRequest (sd, sc, si)
-int	sd;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+int 
+SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	SBV     smask;
 	int     result;
@@ -409,11 +381,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SAsynRetryAux1 (sb, tc, sc, si)
-register struct ssapblk *sb;
-struct TSAPconnect *tc;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+static int 
+SAsynRetryAux1 (register struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	int	    result;
 	register struct ssapkt *s;
@@ -469,11 +438,8 @@ struct SSAPindication *si;
 	return SAsynRetryAux2 (sb, tc, sc, si);
 }
 
-static int  SAsynRetryAux2 (sb, tc, sc, si)
-register struct ssapblk *sb;
-struct TSAPconnect *tc;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+static int 
+SAsynRetryAux2 (register struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	int	    len,
 			result;

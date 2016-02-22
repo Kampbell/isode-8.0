@@ -45,11 +45,8 @@ register OID	p,
 
 /*  */
 
-int	elem_cmp (ip, i, jp, j)
-register int   i,
-		 j;
-register unsigned int *ip,
-		 *jp;
+int 
+elem_cmp (register unsigned int *ip, register int i, register unsigned int *jp, register int j)
 {
 	while (i > 0) {
 		if (j == 0)

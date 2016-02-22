@@ -41,8 +41,8 @@ char   *getpass ();
 
 /* roll our own since want to get past UNIX's limit of 8 octets... */
 
-char *getpassword (prompt)
-char *prompt;
+char *
+getpassword (char *prompt)
 {
 #ifndef	BSD44
 	register int    c;

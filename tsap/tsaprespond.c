@@ -37,11 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprespond.c,v 9.0 19
 
 /*    T-CONNECT.INDICATION */
 
-int     TInit (vecp, vec, ts, td)
-register int     vecp;
-register char  **vec;
-register struct TSAPstart *ts;
-register struct TSAPdisconnect *td;
+int 
+TInit (register int vecp, register char **vec, register struct TSAPstart *ts, register struct TSAPdisconnect *td)
 {
 	register struct tsapblk *tb;
 
@@ -151,14 +148,8 @@ out:
 
 /*    T-CONNECT.RESPONSE */
 
-int     TConnResponse (sd, responding, expedited, data, cc, qos, td)
-int	sd;
-register struct TSAPaddr *responding;
-int	expedited,
-	cc;
-char   *data;
-struct QOStype *qos;
-register struct TSAPdisconnect *td;
+int 
+TConnResponse (int sd, register struct TSAPaddr *responding, int expedited, char *data, int cc, struct QOStype *qos, register struct TSAPdisconnect *td)
 {
 	int	    result;
 	register struct tsapblk *tb;

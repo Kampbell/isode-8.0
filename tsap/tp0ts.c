@@ -42,12 +42,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tp0ts.c,v 9.0 1992/06/
 
 /*  */
 
-static int  TConnect (tb, expedited, data, cc, td)
-register struct tsapblk *tb;
-char    *data;
-int	expedited,
-	cc;
-struct TSAPdisconnect *td;
+static int 
+TConnect (register struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td)
 {
 	register struct tsapkt *t;
 
@@ -108,11 +104,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-static int  TRetry (tb, async, tc, td)
-register struct tsapblk *tb;
-int	async;
-struct TSAPconnect *tc;
-struct TSAPdisconnect *td;
+static int 
+TRetry (register struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 {
 	int	    len;
 	register struct tsapkt *t;
@@ -261,11 +254,8 @@ out:
 
 /*  */
 
-static int  TStart (tb, cp, ts, td)
-register struct tsapblk *tb;
-char   *cp;
-struct TSAPstart *ts;
-struct TSAPdisconnect *td;
+static int 
+TStart (register struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td)
 {
 	int	    len,
 			result;
@@ -338,13 +328,8 @@ out:
 
 /* ARGSUSED */
 
-static int  TAccept (tb, responding, data, cc, qos, td)
-register struct tsapblk *tb;
-char   *data;
-int	responding,
-	cc;
-struct QOStype *qos;
-struct TSAPdisconnect *td;
+static int 
+TAccept (register struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td)
 {
 	int	    result;
 	register struct tsapkt *t;
@@ -405,11 +390,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-static int  TWrite (tb, uv, expedited, td)
-register struct tsapblk *tb;
-register struct udvec *uv;
-int	expedited;
-struct TSAPdisconnect *td;
+static int 
+TWrite (register struct tsapblk *tb, register struct udvec *uv, int expedited, struct TSAPdisconnect *td)
 {
 	int	    cc,
 			j,
@@ -485,12 +467,8 @@ struct TSAPdisconnect *td;
 
 /* ARGSUSED */
 
-static int  TRead (tb, tx, td, async, oob)
-register struct tsapblk *tb;
-register struct TSAPdata *tx;
-struct TSAPdisconnect *td;
-int	async,
-	oob;
+static int 
+TRead (register struct tsapblk *tb, register struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob)
 {
 	int     eot;
 	register struct tsapkt *t = NULL;
@@ -611,11 +589,8 @@ int	async,
 
 /*  */
 
-static int  TDisconnect (tb, data, cc, td)
-register struct tsapblk *tb;
-char   *data;
-int	cc;
-struct TSAPdisconnect *td;
+static int 
+TDisconnect (register struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
 {
 	int     result;
 #ifdef	TCP
@@ -652,10 +627,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-static	TLose (tb, reason, td)
-register struct tsapblk *tb;
-int	reason;
-struct TSAPdisconnect *td;
+static 
+TLose (register struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
 {
 	struct tsapkt  *t;
 
@@ -732,11 +705,8 @@ extern	int	errno;
 
 /*  */
 
-int	tp0write (tb, t, cp, n)
-register struct tsapblk *tb;
-register struct tsapkt *t;
-char   *cp;
-int	n;
+int 
+tp0write (register struct tsapblk *tb, register struct tsapkt *t, char *cp, int n)
 {
 	register int    cc;
 	register char   *p,
@@ -1003,9 +973,8 @@ out:
 /*  */
 
 #ifdef	NODELAY
-static int  TDrain (tb, td)
-register struct tsapblk *tb;
-struct TSAPdisconnect *td;
+static int 
+TDrain (register struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	int	    nc,
 			onoff,
@@ -1089,8 +1058,8 @@ out:
 
 /*  */
 
-int	tp0init (tb)
-register struct tsapblk *tb;
+int 
+tp0init (register struct tsapblk *tb)
 {
 	tb -> tb_connPfnx = TConnect;
 	tb -> tb_retryPfnx = TRetry;

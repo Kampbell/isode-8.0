@@ -33,12 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapminor2.c,v 9.0 19
 
 /*    P-MINOR-SYNC.RESPONSE */
 
-int	PMinSyncResponse (sd, ssn, data, ndata, pi)
-int	sd;
-long	ssn;
-int	ndata;
-PE     *data;
-struct PSAPindication *pi;
+int 
+PMinSyncResponse (int sd, long ssn, PE *data, int ndata, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int     len,

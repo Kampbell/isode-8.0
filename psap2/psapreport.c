@@ -33,12 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapreport.c,v 9.0 19
 
 /*    P-U-EXCEPTION-REPORT.REQUEST */
 
-int	PUReportRequest (sd, reason, data, ndata, pi)
-int	sd;
-int	reason,
-	ndata;
-PE     *data;
-struct PSAPindication *pi;
+int 
+PUReportRequest (int sd, int reason, PE *data, int ndata, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int     len,

@@ -37,11 +37,8 @@ static PE	qb2pe_aux ();
 
 /*  */
 
-PE	qb2pe (qb, len, depth, result)
-register struct qbuf *qb;
-int	len,
-	depth;
-int	*result;
+PE 
+qb2pe (register struct qbuf *qb, int len, int depth, int *result)
 {
 	char   *sp;
 	register struct qbuf *qp;
@@ -86,11 +83,8 @@ int	*result;
 
 /*  */
 
-static PE  qb2pe_aux (s, len, depth, result)
-register char  *s;
-register int	len;
-int	depth;
-int	*result;
+static PE 
+qb2pe_aux (register char *s, register int len, int depth, int *result)
 {
 	int	    i;
 	register PElementData data;

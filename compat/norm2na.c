@@ -42,10 +42,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/norm2na.c,v 9.0 1992
 
 /*  */
 
-int	norm2na (p, len, na)
-char	*p;
-int	len;
-struct NSAPaddr *na;
+int 
+norm2na (char *p, int len, struct NSAPaddr *na)
 {
 	na -> na_stack = NA_NSAP;
 

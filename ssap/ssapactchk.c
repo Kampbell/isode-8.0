@@ -32,11 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapactchk.c,v 9.0 199
 
 /*  */
 
-int	SDoActivityAux (sb, si, act, rls)
-register struct ssapblk *sb;
-register struct SSAPindication *si;
-int	act,
-	rls;
+int 
+SDoActivityAux (register struct ssapblk *sb, register struct SSAPindication *si, int act, int rls)
 {
 	if (act) {
 		if (!(sb -> sb_requirements & SR_ACT_EXISTS))

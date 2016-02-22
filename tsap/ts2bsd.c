@@ -56,11 +56,8 @@ extern int  errno;
 int tp4_disconnect_reason;
 
 /* Ancillary routines */
-STATIC int sendCmsg(fd, cc, type, data)
-int	fd;
-int	cc;
-int	type;
-char   *data;
+STATIC int 
+sendCmsg (int fd, int cc, int type, char *data)
 {
 	int	    result;
 	register struct msghdr *msg = &msgs;
@@ -83,11 +80,8 @@ char   *data;
 	return sendmsg (fd, msg, 0);
 }
 
-int tp4getCmsg(fd, cc, type, data)
-int	fd;
-int	*cc;
-int	*type;
-char	*data;
+int 
+tp4getCmsg (int fd, int *cc, int *type, char *data)
 {
 	int	    result;
 	register struct msghdr *msg = &msgs;
@@ -132,12 +126,8 @@ char	*data;
 
 /*    UPPER HALF */
 
-STATIC int  TConnect (tb, expedited, data, cc, td)
-register struct tsapblk *tb;
-char    *data;
-int	expedited,
-	cc;
-struct TSAPdisconnect *td;
+STATIC int 
+TConnect (register struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td)
 {
 	int	    len;
 	union sockaddr_osi	sock;
@@ -208,11 +198,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-STATIC int  TRetry (tb, async, tc, td)
-register struct tsapblk *tb;
-int	async;
-struct TSAPconnect *tc;
-struct TSAPdisconnect *td;
+STATIC int 
+TRetry (register struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 {
 	int	    len,
 			onoff,
@@ -342,11 +329,8 @@ out:
 
 /*  */
 
-STATIC int  TStart (tb, cp, ts, td)
-register struct tsapblk *tb;
-char   *cp;
-struct TSAPstart *ts;
-struct TSAPdisconnect *td;
+STATIC int 
+TStart (register struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td)
 {
 	int	    i,
 			len;
@@ -390,13 +374,8 @@ struct TSAPdisconnect *td;
 
 /* ARGSUSED */
 
-STATIC int  TAccept (tb, responding, data, cc, qos, td)
-register struct tsapblk *tb;
-char   *data;
-int	responding,
-	cc;
-struct QOStype *qos;
-struct TSAPdisconnect *td;
+STATIC int 
+TAccept (register struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td)
 {
 	int	    len;
 	struct tp_conn_param tcp;
@@ -447,11 +426,8 @@ struct TSAPdisconnect *td;
 #endif
 
 
-STATIC int  TWrite (tb, uv, expedited, td)
-register struct tsapblk *tb;
-register struct udvec *uv;
-int	expedited;
-struct TSAPdisconnect *td;
+STATIC int 
+TWrite (register struct tsapblk *tb, register struct udvec *uv, int expedited, struct TSAPdisconnect *td)
 {
 	register int cc;
 	int	    flags,
@@ -606,9 +582,8 @@ done:
 
 /*  */
 
-STATIC int  TDrain (tb, td)
-register struct tsapblk *tb;
-struct TSAPdisconnect *td;
+STATIC int 
+TDrain (register struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	int	    nc,
 			onoff,
@@ -672,12 +647,8 @@ out:
 
 /* ARGSUSED */
 
-STATIC int  TRead (tb, tx, td, async, oob)
-register struct tsapblk *tb;
-register struct TSAPdata *tx;
-struct TSAPdisconnect *td;
-int	async,
-	oob;
+STATIC int 
+TRead (register struct tsapblk *tb, register struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob)
 {
 	int	    cc;
 	register struct qbuf *qb;
@@ -836,11 +807,8 @@ int	async,
 
 /*  */
 
-STATIC int  TDisconnect (tb, data, cc, td)
-register struct tsapblk *tb;
-char   *data;
-int	cc;
-struct TSAPdisconnect *td;
+STATIC int 
+TDisconnect (register struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
 {
 	int	    result;
 
@@ -858,10 +826,8 @@ struct TSAPdisconnect *td;
 
 /* ARGSUSED */
 
-STATIC int  TLose (tb, reason, td)
-register struct tsapblk *tb;
-int	reason;
-struct TSAPdisconnect *td;
+STATIC int 
+TLose (register struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
 {
 	register struct msghdr *msg = &msgs;
 	register union osi_control_msg *oc = &ocm;
@@ -886,14 +852,8 @@ struct TSAPdisconnect *td;
 
 /* ARGSUSED */
 
-int	tp4open (tb, local_ta, local_na, remote_ta, remote_na, td, async)
-register struct tsapblk *tb;
-struct TSAPaddr *local_ta,
-		*remote_ta;
-struct NSAPaddr *local_na,
-		*remote_na;
-struct TSAPdisconnect *td;
-int	async;
+int 
+tp4open (register struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async)
 {
 	int	    fd,
 			onoff;
@@ -936,9 +896,8 @@ int	async;
 
 /* ARGSUSED */
 
-STATIC int  retry_tp4_socket (tb, td)
-register struct tsapblk *tb;
-struct TSAPdisconnect *td;
+STATIC int 
+retry_tp4_socket (register struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	fd_set  mask;
 
@@ -954,9 +913,8 @@ struct TSAPdisconnect *td;
 
 /* ARGSUSED */
 
-char   *tp4save (fd, td)
-int fd;
-struct TSAPdisconnect *td;
+char *
+tp4save (int fd, struct TSAPdisconnect *td)
 {
 	static char buffer[BUFSIZ];
 
@@ -966,10 +924,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-int	tp4restore (tb, buffer, td)
-register struct tsapblk *tb;
-char   *buffer;
-struct TSAPdisconnect *td;
+int 
+tp4restore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 {
 	int	    fd, len, ucdlen;
 	union sockaddr_osi	sock;
@@ -1004,8 +960,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-int	tp4init (tb)
-register struct tsapblk *tb;
+int 
+tp4init (register struct tsapblk *tb)
 {
 	tb -> tb_connPfnx = TConnect;
 	tb -> tb_retryPfnx = TRetry;
@@ -1039,12 +995,8 @@ register struct tsapblk *tb;
 
 /* ARGSUSED */
 
-int	start_tp4_server (local_ta, backlog, opt1, opt2, td)
-struct TSAPaddr *local_ta;
-int	backlog,
-	opt1,
-	opt2;
-struct TSAPdisconnect *td;
+int 
+start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td)
 {
 	int	    sd,
 			onoff;
@@ -1092,10 +1044,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-int	join_tp4_client (fd, remote_ta, td)
-int	fd;
-struct TSAPaddr *remote_ta;
-struct TSAPdisconnect *td;
+int 
+join_tp4_client (int fd, struct TSAPaddr *remote_ta, struct TSAPdisconnect *td)
 {
 	int	    len,
 			sd;
@@ -1114,9 +1064,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-STATIC	int  gen2tp4 (generic, specific)
-struct TSAPaddr *generic;
-union sockaddr_osi *specific;
+STATIC int 
+gen2tp4 (struct TSAPaddr *generic, union sockaddr_osi *specific)
 {
 	register char *cp;
 	struct sockaddr_iso	*ifaddr = &specific -> osi_sockaddr;
@@ -1148,9 +1097,8 @@ union sockaddr_osi *specific;
 
 
 
-STATIC	int  gen2tp4X (generic, specific)
-struct tsapADDR *generic;
-union sockaddr_osi *specific;
+STATIC int 
+gen2tp4X (struct tsapADDR *generic, union sockaddr_osi *specific)
 {
 	struct TSAPaddr tas;
 
@@ -1160,9 +1108,8 @@ union sockaddr_osi *specific;
 
 /*  */
 
-int	tp42gen (generic, specific)
-struct TSAPaddr *generic;
-union sockaddr_osi *specific;
+int 
+tp42gen (struct TSAPaddr *generic, union sockaddr_osi *specific)
 {
 	register char *cp;
 	register struct NSAPaddr *na = generic -> ta_addrs;
@@ -1187,9 +1134,8 @@ union sockaddr_osi *specific;
 }
 
 
-int	tp42genX (generic, specific)
-struct tsapADDR *generic;
-union sockaddr_osi *specific;
+int 
+tp42genX (struct tsapADDR *generic, union sockaddr_osi *specific)
 {
 	int	    result;
 	struct TSAPaddr tas;
@@ -1200,5 +1146,6 @@ union sockaddr_osi *specific;
 	return result;
 }
 #else
-int	_ts2bsd_stub () {}
+int 
+_ts2bsd_stub (void) {}
 #endif

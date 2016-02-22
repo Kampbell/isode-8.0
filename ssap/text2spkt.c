@@ -63,10 +63,8 @@ static	type_info ();
 
 
 
-void	spkt2text (lp, s, read)
-register LLog *lp;
-register struct ssapkt *s;
-int	read;
+void 
+spkt2text (register LLog *lp, register struct ssapkt *s, int read)
 {
 	char   *rw = read ? "<--- " : "---> ";
 
@@ -349,12 +347,8 @@ int	read;
 
 /*  */
 
-static	type_id (lp, type, rw, selector, len)
-LLog   *lp;
-char   *type,
-	   *rw;
-char   *selector;
-int	len;
+static 
+type_id (LLog *lp, char *type, char *rw, char *selector, int len)
 {
 	char    buffer[BUFSIZ];
 
@@ -364,23 +358,15 @@ int	len;
 }
 
 
-static	type_ssn (lp, rw, what, ssn)
-LLog   *lp;
-char   *rw,
-	   *what;
-u_long	ssn;
+static 
+type_ssn (LLog *lp, char *rw, char *what, u_long ssn)
 {
 	(void) ll_printf (lp, "%s%s/ %d\n", rw, what, ssn);
 }
 
 
-static	type_bits (lp, rw, s, bits, mask, t)
-LLog   *lp;
-char   *rw,
-	   *s,
-	   *t;
-u_char  bits,
-		mask;
+static 
+type_bits (LLog *lp, char *rw, char *s, int bits, int mask, char *t)
 {
 	(void) ll_printf (lp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
 	if (bits & ~mask)
@@ -398,10 +384,8 @@ u_char  bits,
 	: "reserved"); \
 }
 
-static	type_settings (lp, rw, settings)
-LLog   *lp;
-char   *rw;
-u_char  settings;
+static 
+type_settings (LLog *lp, char *rw, int settings)
 {
 	int     token;
 
@@ -413,21 +397,16 @@ u_char  settings;
 #undef	dotoken
 
 
-static	type_tsdu (lp, rw, init, resp)
-LLog   *lp;
-char   *rw;
-u_short	init,
-		resp;
+static 
+type_tsdu (LLog *lp, char *rw, int init, int resp)
 {
 	(void) ll_printf (lp, "%sTSDU/ INITIATOR: %d, RESPONDER: %d\n",
 					  rw, init, resp);
 }
 
 
-static	type_ref (lp, rw, ref)
-LLog   *lp;
-char   *rw;
-struct SSAPref *ref;
+static 
+type_ref (LLog *lp, char *rw, struct SSAPref *ref)
 {
 	(void) ll_printf (lp, "%sREFERENCE/", rw);
 	if (ref -> sr_vlen)
@@ -444,29 +423,23 @@ struct SSAPref *ref;
 }
 
 
-static	type_vrsn (lp, rw, version)
-LLog   *lp;
-char   *rw;
-u_char	version;
+static 
+type_vrsn (LLog *lp, char *rw, int version)
 {
 	(void) ll_printf (lp, "%sVERSION/ 0x%x\n", rw, version);
 }
 
 
-static	type_reason (lp, rw, reason)
-LLog   *lp;
-char   *rw;
-int	reason;
+static 
+type_reason (LLog *lp, char *rw, int reason)
 {
 	(void) ll_printf (lp, "%sREASON/ 0x%x: %s\n", rw, reason,
 					  SErrString ((int) reason));
 }
 
 
-static	type_prepare (lp, rw, type)
-LLog   *lp;
-char   *rw;
-u_char  type;
+static 
+type_prepare (LLog *lp, char *rw, int type)
 {
 	(void) ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
@@ -490,10 +463,8 @@ u_char  type;
 }
 
 
-static	type_error (lp, rw, reason)
-LLog   *lp;
-char   *rw;
-u_char  reason;
+static 
+type_error (LLog *lp, char *rw, int reason)
 {
 	(void) ll_printf (lp, "%sREASON/ ", rw);
 	switch (reason) {
@@ -523,10 +494,8 @@ u_char  reason;
 }
 
 
-static	type_resync (lp, rw, type)
-LLog   *lp;
-char   *rw;
-u_char  type;
+static 
+type_resync (LLog *lp, char *rw, int type)
 {
 	(void) ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
@@ -547,12 +516,8 @@ u_char  type;
 }
 
 
-static	type_data (lp, type, rw, len, data)
-LLog   *lp;
-char   *type,
-	   *rw,
-	   *data;
-int	len;
+static 
+type_data (LLog *lp, char *type, char *rw, int len, char *data)
 {
 	(void) ll_printf (lp, "%s%s DATA/ ", rw, type);
 	type_info (lp, "%d", len, data);
@@ -560,11 +525,8 @@ int	len;
 }
 
 
-static	type_info (lp, fmt, len, data)
-LLog   *lp;
-char   *fmt,
-	   *data;
-int	len;
+static 
+type_info (LLog *lp, char *fmt, int len, char *data)
 {
 	char    buffer[BUFSIZ];
 
@@ -579,8 +541,8 @@ int	len;
 
 /* ARGSUSED */
 
-void	text2spkt (s)
-struct ssapkt *s;
+void 
+text2spkt (struct ssapkt *s)
 {
 	/* NOT YET IMPLEMENTED */
 }

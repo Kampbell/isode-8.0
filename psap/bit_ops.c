@@ -46,9 +46,8 @@ static PE	ffb_pe ();
 
 /*  */
 
-int	bit_on (pe, i)
-register PE	pe;
-register int	i;
+int 
+bit_on (register PE pe, register int i)
 {
 	int	    mask;
 	register PElementData bp;
@@ -63,9 +62,8 @@ register int	i;
 
 /*  */
 
-int	bit_off (pe, i)
-register PE	pe;
-register int	i;
+int 
+bit_off (register PE pe, register int i)
 {
 	int	    mask;
 	register PElementData bp;
@@ -80,9 +78,8 @@ register int	i;
 
 /*  */
 
-int	bit_test (pe, i)
-register PE	pe;
-register int	i;
+int 
+bit_test (register PE pe, register int i)
 {
 	int	    mask;
 	register PElementData bp;
@@ -95,11 +92,8 @@ register int	i;
 
 /*  */
 
-static PElementData ffb (pe, n, mask, xtnd)
-register PE	pe;
-register int	n,
-			*mask,
-			xtnd;
+static PElementData 
+ffb (register PE pe, register int n, register int *mask, register int xtnd)
 {
 	register int    len,
 			 i;
@@ -159,10 +153,8 @@ register int	n,
 
 /*  */
 
-static PElementData ffb_aux (pe, n, mask)
-register PE	pe;
-register int   *n,
-		 *mask;
+static PElementData 
+ffb_aux (register PE pe, register int *n, register int *mask)
 {
 	register int    i,
 			 nbits;
@@ -190,8 +182,8 @@ register int   *n,
 
 /*  */
 
-static PE	ffb_pe (pe)
-register PE	pe;
+static PE 
+ffb_pe (register PE pe)
 {
 	register PE	    p,
 			 q;

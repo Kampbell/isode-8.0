@@ -34,8 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/nsapcmp.c,v 9.0 1992
 
 /*  */
 
-int nsap_addr_cmp (na1, na2)
-struct NSAPaddr *na1, *na2;
+int 
+nsap_addr_cmp (struct NSAPaddr *na1, struct NSAPaddr *na2)
 {
 	if (na1 -> na_stack != na2 -> na_stack)
 		return NOTOK;
@@ -68,8 +68,8 @@ struct NSAPaddr *na1, *na2;
 	return NOTOK;
 }
 
-int tsap_addr_cmp (ta, tb)
-struct TSAPaddr *ta, *tb;
+int 
+tsap_addr_cmp (struct TSAPaddr *ta, struct TSAPaddr *tb)
 {
 	struct NSAPaddr *na1, *na2;
 	int n1, n2;
@@ -87,8 +87,8 @@ struct TSAPaddr *ta, *tb;
 	return NOTOK;
 }
 
-int ssap_addr_cmp (sa, sb)
-struct SSAPaddr *sa, *sb;
+int 
+ssap_addr_cmp (struct SSAPaddr *sa, struct SSAPaddr *sb)
 {
 	if (sa -> sa_selectlen != sb -> sa_selectlen ||
 			bcmp (sa -> sa_selector, sb -> sa_selector, sa -> sa_selectlen) != 0)
@@ -96,8 +96,8 @@ struct SSAPaddr *sa, *sb;
 	return tsap_addr_cmp (&sa -> sa_addr, &sb -> sa_addr);
 }
 
-int psap_addr_cmp (pa, pb)
-struct PSAPaddr *pa, *pb;
+int 
+psap_addr_cmp (struct PSAPaddr *pa, struct PSAPaddr *pb)
 {
 	if (pa -> pa_selectlen != pb -> pa_selectlen ||
 			bcmp (pa -> pa_selector, pb -> pa_selector, pa -> pa_selectlen) != 0)

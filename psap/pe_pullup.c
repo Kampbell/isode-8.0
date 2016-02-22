@@ -35,8 +35,8 @@ static PElementData	pe_pullup_aux ();
 
 /*  */
 
-int	pe_pullup (pe)
-register PE	pe;
+int 
+pe_pullup (register PE pe)
 {
 	PElementLen	    len;
 	register PElementData dp;
@@ -60,9 +60,8 @@ register PE	pe;
 
 /*  */
 
-static PElementData  pe_pullup_aux (pe, len)
-register PE	pe;
-register int   *len;
+static PElementData 
+pe_pullup_aux (register PE pe, register int *len)
 {
 	register int    i,
 			 k;

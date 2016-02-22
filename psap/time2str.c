@@ -36,9 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/time2str.c,v 9.0 1992/
 
 /*  */
 
-char   *time2str (u, generalized)
-register UTC	u;
-int	generalized;
+char *
+time2str (register UTC u, int generalized)
 {
 	register int    hours,
 			 mins,

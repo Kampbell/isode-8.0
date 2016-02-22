@@ -38,11 +38,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/uvec2ps.c,v 9.0 1992/0
 
 /*  */
 
-static int  uvec_write (ps, data, n, in_line)
-PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+uvec_write (PS ps, PElementData data, PElementLen n, int in_line)
 {
 	register struct udvec *uv;
 
@@ -100,8 +97,8 @@ int	in_line;
 }
 
 
-static int  uvec_flush (ps)
-register PS ps;
+static int 
+uvec_flush (register PS ps)
 {
 	if (ps -> ps_cur) {
 		if (ps -> ps_cur -> uv_base)
@@ -117,8 +114,8 @@ register PS ps;
 }
 
 
-static int  uvec_close (ps)
-register PS ps;
+static int 
+uvec_close (register PS ps)
 {
 	register struct udvec *uv;
 
@@ -137,8 +134,8 @@ register PS ps;
 
 /*  */
 
-int	uvec_open (ps)
-register PS ps;
+int 
+uvec_open (register PS ps)
 {
 	ps -> ps_writeP = uvec_write;
 	ps -> ps_flushP = uvec_flush;
@@ -148,9 +145,8 @@ register PS ps;
 }
 
 
-int	uvec_setup (ps, len)
-register PS   ps;
-int	len;
+int 
+uvec_setup (register PS ps, int len)
 {
 	register struct udvec *uv;
 
@@ -174,8 +170,8 @@ int	len;
 
 /*  */
 
-int	ps_get_plen (pe)
-register PE	pe;
+int 
+ps_get_plen (register PE pe)
 {
 	register PElementLen len;
 	register PE	    p;

@@ -67,9 +67,8 @@ void    print_x25_facilities ();
 
 /* ARGSUSED */
 
-int     start_x25_client (local, priv)
-struct  NSAPaddr *local;
-int     priv;
+int 
+start_x25_client (struct NSAPaddr *local, int priv)
 {
 	int     sd, pgrp;
 
@@ -89,11 +88,8 @@ int     priv;
 
 /*  */
 
-int     start_x25_server (local, backlog, opt1, opt2)
-struct  NSAPaddr *local;
-int     backlog,
-		opt1,
-		opt2;
+int 
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 {
 	CONN_DB	sbuf;
 	CONN_DB	*sock;
@@ -181,9 +177,8 @@ int     backlog,
 
 /*  */
 
-int     join_x25_server (fd, remote)
-register int fd;
-register struct NSAPaddr *remote;
+int 
+join_x25_server (register int fd, register struct NSAPaddr *remote)
 {
 	CONN_DB sbuf;
 	CONN_DB *sock = &sbuf;
@@ -218,9 +213,8 @@ register struct NSAPaddr *remote;
 
 /*  */
 
-int     join_x25_client (fd, remote)
-int     fd;
-struct  NSAPaddr *remote;
+int 
+join_x25_client (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB     sbuf;
 	CONN_DB     *sock = &sbuf;
@@ -248,9 +242,8 @@ struct  NSAPaddr *remote;
 
 /*  */
 
-int fac_ccitt2hp (ccitt, hp)
-CCITT_FACILITY_DB	*ccitt;
-FACILITY_DB		*hp;
+int 
+fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp)
 {
 	register int	i, j;
 	int			returncode = OK;
@@ -311,9 +304,8 @@ FACILITY_DB		*hp;
 }
 
 
-void fac_hp2ccitt (hp, ccitt)
-FACILITY_DB		*hp;
-CCITT_FACILITY_DB	*ccitt;
+void 
+fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt)
 {
 	register int	i;
 
@@ -366,9 +358,8 @@ CCITT_FACILITY_DB	*ccitt;
 }
 
 
-int     set_x25_facilities(sd, coc, caption)
-int     sd, coc;
-char *caption;
+int 
+set_x25_facilities (int sd, int coc, char *caption)
 {
 	FACILITY_DB		facilities;
 	CCITT_FACILITY_DB	ccitt_facilities;
@@ -503,8 +494,8 @@ char *caption;
 
 /*  */
 
-int     log_cause_and_diag(fd)
-int fd;
+int 
+log_cause_and_diag (int fd)
 {
 	char buf [MAX_EVENT_SIZE];
 	int	buflen;
@@ -556,9 +547,8 @@ int fd;
 }
 
 
-void sigurg (sig, code, scp)
-int  sig, code;
-struct sigcontext *scp;
+void 
+sigurg (int sig, int code, struct sigcontext *scp)
 {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
@@ -575,8 +565,8 @@ struct sigcontext *scp;
 		scp->sc_syscall_action = SIG_RESTART;
 }
 
-void setup_sigurg (fd)
-int fd;
+void 
+setup_sigurg (int fd)
 {
 	struct fdl_st *fdlp = fdl;
 
@@ -595,8 +585,8 @@ int fd;
 	fdl = fdlp;
 }
 
-void clear_sigurg (fd)
-int fd;
+void 
+clear_sigurg (int fd)
 {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
@@ -629,10 +619,8 @@ int fd;
 
 #ifdef  DEBUG
 
-static int  log_x25_facilities (fd, coc, caption)
-int     fd;
-int     coc;
-char   *caption;
+static int 
+log_x25_facilities (int fd, int coc, char *caption)
 {
 	FACILITY_DB        hp;
 	CCITT_FACILITY_DB  ccitt;
@@ -650,10 +638,8 @@ char   *caption;
 
 /*  */
 
-static void  print_x25_facilities (hp, coc, caption)
-FACILITY_DB *hp;
-int     coc;
-char   *caption;
+static void 
+print_x25_facilities (FACILITY_DB *hp, int coc, char *caption)
 {
 	int     i, baud;
 
@@ -907,12 +893,14 @@ print_send:
 }
 #endif
 #else
-int _hpuxx25_stub2 () {
+int 
+_hpuxx25_stub2 (void) {
 	;
 }
 #endif
 #else
-int _hpuxx25_stub () {
+int 
+_hpuxx25_stub (void) {
 	;
 }
 #endif

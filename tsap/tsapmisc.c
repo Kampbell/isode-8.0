@@ -88,11 +88,8 @@ register struct TSAPdisconnect *td;
 
 /*    get TSAPs */
 
-int	TGetAddresses (sd, initiating, responding, td)
-int	sd;
-struct TSAPaddr *initiating,
-		*responding;
-register struct TSAPdisconnect *td;
+int 
+TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, register struct TSAPdisconnect *td)
 {
 	SBV	    smask;
 	register struct tsapblk *tb;
@@ -116,10 +113,8 @@ register struct TSAPdisconnect *td;
 /*    define transport manager */
 
 #ifdef	MGMT
-int	TSetManager (sd, fnx, td)
-int	sd;
-IFP	fnx;
-register struct TSAPdisconnect *td;
+int 
+TSetManager (int sd, IFP fnx, register struct TSAPdisconnect *td)
 {
 	SBV	    smask;
 	register struct tsapblk *tb;

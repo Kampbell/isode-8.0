@@ -57,8 +57,8 @@ int	dmsize[] = {
 
 /*  */
 
-long	gtime (tm)
-register struct tm *tm;
+long 
+gtime (register struct tm *tm)
 {
 	register int    i,
 			 sec,

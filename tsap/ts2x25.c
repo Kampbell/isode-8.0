@@ -67,11 +67,8 @@ int fd;
 
 /*    N-CONNECT.REQUEST */
 
-int     x25open (tb, local, remote, td, async)
-register struct tsapblk *tb;
-struct NSAPaddr *local,
-		*remote;
-struct TSAPdisconnect *td;
+int 
+x25open (register struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async)
 {
 	register int    fd;
 	int     onoff;
@@ -171,9 +168,8 @@ done:
 
 /*  */
 
-static int  x25retry (tb, td)
-struct tsapblk *tb;
-struct TSAPdisconnect *td;
+static int 
+x25retry (struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	int     onoff;
 	int     fd = tb -> tb_fd;
@@ -242,9 +238,8 @@ static char *np;
 static int  bl;
 
 
-static int  x25init (fd, t)
-int     fd;
-register struct tsapkt *t;
+static int 
+x25init (int fd, register struct tsapkt *t)
 {
 	register int    cc;
 
@@ -285,10 +280,8 @@ register struct tsapkt *t;
 
 /* ARGSUSED */
 
-static int  read_nsdu_buffer (fd, buffer, cc)
-int     fd;
-register char  *buffer;
-register int    cc;
+static int 
+read_nsdu_buffer (int fd, register char *buffer, register int cc)
 {
 	if (cc > bl)
 		cc = bl;
@@ -305,10 +298,8 @@ register int    cc;
 
 /* ARGSUSED */
 
-char   *x25save (fd, rem, loc, td)
-int     fd;
-struct NSAPaddr *loc, *rem;
-struct TSAPdisconnect *td;
+char *
+x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconnect *td)
 {
 	static char buffer[BUFSIZ];
 	char tbuf1[NASIZE*2+1], tbuf2[NASIZE*2+1];
@@ -350,10 +341,8 @@ struct TSAPdisconnect *td;
 }
 
 
-int     x25restore (tb, buffer, td)
-register struct tsapblk *tb;
-char   *buffer;
-struct TSAPdisconnect *td;
+int 
+x25restore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 {
 	int     fd;
 	char    dte1[NASIZE + 1],
@@ -413,10 +402,8 @@ struct TSAPdisconnect *td;
 }
 
 #ifdef AEF_NSAP
-int     x25nsaprestore (tb, buffer, td)
-register struct tsapblk *tb;
-char   *buffer;
-struct TSAPdisconnect *td;
+int 
+x25nsaprestore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 {
 	int     fd;
 	char    dte1[NASIZE*2 + 1],
@@ -455,8 +442,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-int     XTService (tb)
-register struct tsapblk *tb;
+int 
+XTService (register struct tsapblk *tb)
 {
 #ifndef	UBC_X25
 	int     maxnsdu = MAXNSDU;
@@ -486,7 +473,8 @@ register struct tsapblk *tb;
 	tp0init (tb);
 }
 #else
-int	_ts2x25_stub () {
+int 
+_ts2x25_stub (void) {
 	;
 }
 #endif

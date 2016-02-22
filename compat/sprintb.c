@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sprintb.c,v 9.0 1992
 
 /*  */
 
-char  *sprintb (v, bits)
-register int	v;
-register char  *bits;
+char *
+sprintb (register int v, register char *bits)
 {
 	register int    i,
 			 j;

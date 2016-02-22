@@ -54,7 +54,8 @@ register char   *str;
 
 #else
 
-strdup_stub () {
+int 
+strdup_stub (void) {
 	;
 }
 

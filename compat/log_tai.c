@@ -79,10 +79,12 @@ static CMD_TABLE log_flgtbl[] = {
 
 /*  */
 
-log_tai(lgptr, av, ac) /* for now only alter the level - files etc later */
-LLog    *lgptr;
-char    **av;
-int     ac;
+int 
+log_tai ( /* for now only alter the level - files etc later */
+    LLog *lgptr,
+    char **av,
+    int ac
+)
 {
 	register int i;
 	register char *p;

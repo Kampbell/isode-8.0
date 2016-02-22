@@ -141,12 +141,8 @@ int	spktlose (int sd, ...)
 #else
 /* VARARGS5 */
 
-int	spktlose (sd, si, reason, what, fmt)
-int	sd,
-	reason;
-struct SSAPindication *si;
-char   *what,
-	   *fmt;
+int 
+spktlose (int sd, struct SSAPindication *si, int reason, char *what, char *fmt)
 {
 	return spktlose (sd, si, reason, what, fmt);
 }
@@ -174,11 +170,8 @@ int	ssaplose (struct SSAPindication*si, ...)
 #else
 /* VARARGS4 */
 
-int	ssaplose (si, reason, what, fmt)
-struct SSAPindication *si;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt)
 {
 	return ssaplose (si, reason, what, fmt);
 }
@@ -187,10 +180,12 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _ssaplose (si, reason, ap)	/* what, fmt, args ... */
-register struct SSAPindication *si;
-int	reason;
-va_list	ap;
+static int 
+_ssaplose (	/* what, fmt, args ... */
+    register struct SSAPindication *si,
+    int reason,
+    va_list ap
+)
 {
 	register char  *bp;
 	char    buffer[BUFSIZ];

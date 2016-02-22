@@ -34,9 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/cmd_srch.c,v 9.0 199
 
 /* map a string onto a value */
 
-cmd_srch(str, cmd)
-register char   *str;
-register CMD_TABLE *cmd;
+int 
+cmd_srch (register char *str, register CMD_TABLE *cmd)
 {
 	extern char chrcnv[];
 

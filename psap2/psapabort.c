@@ -35,11 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapabort.c,v 9.0 199
 
 /*    P-U-ABORT.REQUEST */
 
-int	PUAbortRequest (sd, data, ndata, pi)
-int	sd;
-PE     *data;
-int	ndata;
-struct PSAPindication *pi;
+int 
+PUAbortRequest (int sd, PE *data, int ndata, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int	    len,

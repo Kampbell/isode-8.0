@@ -51,10 +51,8 @@ static int  SPTokenRequestAux ();
 
 /*  */
 
-int	SGTokenRequest (sd, tokens, si)
-int	sd;
-int	tokens;
-struct SSAPindication *si;
+int 
+SGTokenRequest (int sd, int tokens, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -75,10 +73,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SGTokenRequestAux (sb, tokens, si)
-register struct ssapblk *sb;
-int	tokens;
-struct SSAPindication *si;
+static int 
+SGTokenRequestAux (register struct ssapblk *sb, int tokens, struct SSAPindication *si)
 {
 	int     result,
 			settings;
@@ -134,12 +130,8 @@ struct SSAPindication *si;
 
 /*  */
 
-int	SPTokenRequest (sd, tokens, data, cc, si)
-int	sd;
-int	tokens,
-	cc;
-char   *data;
-struct SSAPindication *si;
+int 
+SPTokenRequest (int sd, int tokens, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -161,12 +153,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SPTokenRequestAux (sb, tokens, data, cc, si)
-register struct ssapblk *sb;
-int	tokens,
-	cc;
-char   *data;
-struct SSAPindication *si;
+static int 
+SPTokenRequestAux (register struct ssapblk *sb, int tokens, char *data, int cc, struct SSAPindication *si)
 {
 	int     result,
 			settings;

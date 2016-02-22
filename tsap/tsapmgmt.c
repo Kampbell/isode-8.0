@@ -90,11 +90,8 @@ va_dcl {
 #define SendMReport()		write_udp_socket (ManSoc, &data)
 
 
-static int  TManGenAux (type, tb, a, b)
-unsigned int type;
-struct tsapblk * tb;
-int	a;
-struct TSAPaddr *b;
+static int 
+TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b)
 {
 	if (pid == NOTOK)
 		return NOTOK;
@@ -176,7 +173,8 @@ struct TSAPaddr *b;
 
 /*  */
 
-static int  ManInit () {
+static int 
+ManInit (void) {
 	struct sockaddr_in sin;
 	register struct sockaddr_in *sock = &sin;
 	register struct servent *sp;
@@ -203,5 +201,6 @@ static int  ManInit () {
 	return OK;
 }
 #else
-int	_tsapmgmt_stub () {}
+int 
+_tsapmgmt_stub (void) {}
 #endif

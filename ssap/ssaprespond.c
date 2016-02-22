@@ -35,11 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprespond.c,v 9.0 19
 
 static int  refuse ();
 
-int	SInit (vecp, vec, ss, si)
-int	vecp;
-char  **vec;
-struct SSAPstart *ss;
-struct SSAPindication *si;
+int 
+SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 {
 	int	    len;
 	register struct ssapblk *sb;
@@ -286,18 +283,8 @@ out1:
 
 /*  */
 
-int	SConnResponse (sd, ref, responding, status, requirements, settings,
-				   isn, data, cc, si)
-int	sd;
-struct SSAPref *ref;
-struct SSAPaddr *responding;
-int	status,
-	requirements,
-	settings,
-	cc;
-long	isn;
-char   *data;
-struct SSAPindication *si;
+int 
+SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int status, int requirements, int settings, long isn, char *data, int cc, struct SSAPindication *si)
 {
 	int     result,
 			please;
@@ -454,10 +441,8 @@ out1:
 
 /*  */
 
-static int  refuse (sb, s, si)
-register struct ssapblk *sb;
-register struct ssapkt *s;
-register struct SSAPindication *si;
+static int 
+refuse (register struct ssapblk *sb, register struct ssapkt *s, register struct SSAPindication *si)
 {
 	int     result;
 	struct TSAPdata txs;

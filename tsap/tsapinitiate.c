@@ -73,17 +73,8 @@ static struct TSAPaddr *newtaddr (), *ta2norm (), *maketsbaddr ();
 
 /*    T-(ASYN-)CONNECT.REQUEST */
 
-int     TAsynConnRequest (calling, called, expedited, data, cc, qos,
-						  tc, td, async)
-struct TSAPaddr *calling,
-		*called;
-int	expedited,
-	cc,
-	async;
-char   *data;
-struct QOStype *qos;
-struct TSAPconnect *tc;
-struct TSAPdisconnect *td;
+int 
+TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async)
 {
 	register int  n;
 	SBV     smask;
@@ -122,17 +113,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-static int  TConnRequestAux (calling, called, expedited, data, cc, qos,
-							 tc, td, async)
-struct TSAPaddr *calling,
-		*called;
-char    *data;
-int	expedited,
-	cc,
-	async;
-struct QOStype *qos;
-register struct TSAPconnect *tc;
-register struct TSAPdisconnect *td;
+static int 
+TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, register struct TSAPconnect *tc, register struct TSAPdisconnect *td, int async)
 {
 	int	    result;
 	register struct tsapblk *tb;
@@ -209,10 +191,8 @@ out:
 
 /*  */
 
-static int  TConnAttempt (tb, td, async)
-struct tsapblk *tb;
-struct TSAPdisconnect *td;
-int	async;
+static int 
+TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async)
 {
 	register int   n;
 	int	    didone,
@@ -343,10 +323,8 @@ int	async;
 
 /*    T-ASYN-RETRY.REQUEST (pseudo) */
 
-int	TAsynRetryRequest (sd, tc, td)
-int	sd;
-struct TSAPconnect *tc;
-struct TSAPdisconnect *td;
+int 
+TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 {
 	SBV     smask;
 	int     result;
@@ -425,10 +403,8 @@ struct TSAPdisconnect *td;
 
 /*    T-ASYN-NEXT.REQUEST (pseudo) */
 
-int	TAsynNextRequest (sd, tc, td)
-int	sd;
-struct TSAPconnect *tc;
-struct TSAPdisconnect *td;
+int 
+TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 {
 	SBV     smask;
 	int     result;
@@ -497,10 +473,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-static struct TSAPaddr *newtaddr (ta, na, n)
-register struct TSAPaddr *ta;
-register struct NSAPaddr *na;
-int	n;
+static struct TSAPaddr *
+newtaddr (register struct TSAPaddr *ta, register struct NSAPaddr *na, int n)
 {
 	static struct TSAPaddr tzs;
 	register struct TSAPaddr *tz = &tzs;
@@ -519,8 +493,8 @@ int	n;
 
 /*  */
 
-struct TSAPaddr *ta2norm (ta)
-register struct TSAPaddr *ta;
+struct TSAPaddr *
+ta2norm (register struct TSAPaddr *ta)
 {
 	register int    n,
 			 *ip;
@@ -572,10 +546,8 @@ register struct TSAPaddr *ta;
 
 /*  */
 
-static struct TSAPaddr *maketsbaddr (cp, na, ta)
-char *cp;
-struct NSAPaddr *na;
-struct TSAPaddr *ta;
+static struct TSAPaddr *
+maketsbaddr (char *cp, struct NSAPaddr *na, struct TSAPaddr *ta)
 {
 	static struct TSAPaddr newta;
 	register struct TSAPaddr *nta = &newta;

@@ -58,7 +58,8 @@ int	e_actions, d_actions, p_actions; /* number of actions of each type */
 
 FILE   *ffopen();
 
-peri_pass2() {
+int 
+peri_pass2 (void) {
 	char *inc;	/* *_pre_defs.h file */
 
 	if (!sflag)
@@ -93,8 +94,8 @@ peri_pass2() {
  *			module. contains references to all the tables.
  *		lint declaractions for the "pepy" functions
  */
-gen_tablefile(inc)
-char	*inc;
+int 
+gen_tablefile (char *inc)
 {
 
 	int     nentries;
@@ -203,8 +204,8 @@ char	*inc;
 /*
  * generate the *-types.h file
  */
-gen_typesfile(inc)
-char	*inc;
+int 
+gen_typesfile (char *inc)
 {
 	char   *buf;
 #ifdef ACT_CODE
@@ -568,7 +569,8 @@ FILE   *fp;
 /*
  * print the table id_table
  */
-print_table() {
+int 
+print_table (void) {
 	int     i;
 	id_entry *t;
 
@@ -651,8 +653,7 @@ extern struct univ_typ *simptyp();
  * should be processed
  */
 struct univ_typ *
-univtyp(name)
-char   *name;
+univtyp (char *name)
 {
 	int     low, high, i;
 	struct univ_typ *p;
@@ -687,8 +688,8 @@ char   *name;
  * numbers are greater then all letters lower case are greater then
  * upper case There must be a better way !
  */
-scmp(s1, s2)
-char   *s1, *s2;
+int 
+scmp (char *s1, char *s2)
 {
 	while (*s1 == *s2 && *s2)
 		s1++, s2++;
@@ -720,9 +721,8 @@ char   *s1, *s2;
 /*
  * lookup a symbol and return a pointer to it
  */
-SY
-syfind(name)
-char   *name;
+SY 
+syfind (char *name)
 {
 	SY      sy;
 
@@ -976,8 +976,8 @@ static int 	ptr_max = 0;
 /*
  * add the given pointer to the pointer table and return its index
  */
-addptr(p)
-char	*p;
+int 
+addptr (char *p)
 {
 	int	ind;
 	register int i;
@@ -1053,9 +1053,8 @@ FILE	*fp;
  * remove a level of indirection from the given type. If possible. if not
  * return NULLCP, otherwise return the new type in a temporary buffer
  */
-char	*
-rm_indirect(p)
-char	*p;
+char *
+rm_indirect (char *p)
 {
 	static char	buf[STRSIZE];
 	int		i;
@@ -1081,10 +1080,8 @@ char	*p;
  * expression for the bit number.
  * if it fails return NULLCP
  */
-char	*
-getfldbit(p, pstr)
-register char *p;
-char **pstr;
+char *
+getfldbit (register char *p, char **pstr)
 {
 	static char buf[STRSIZE];
 
@@ -1121,9 +1118,8 @@ char **pstr;
 }
 
 /* return a pointer after the current batch of white space if any */
-char	*
-skipspace(p)
-char	*p;
+char *
+skipspace (char *p)
 {
 	if (p == NULLCP)
 		return (NULLCP);
@@ -1138,9 +1134,8 @@ char	*p;
  * extract the field from the C arguement and return it in a static buffer
  * else return NULLCP
  */
-char	*
-getfield(p)
-register char *p;
+char *
+getfield (register char *p)
 {
 	static char buf[STRSIZE];
 	char	*buf1;
@@ -1189,11 +1184,8 @@ register char *p;
 /*
  * get an identifier into the given buffer [A-Za-z_] are legal chars
  */
-char	*
-getid(p, buf, len)
-register char	*p;
-register char	*buf;
-register int	len;
+char *
+getid (register char *p, register char *buf, register int len)
 {
 	char	*fbuf;
 
@@ -1221,11 +1213,8 @@ register int	len;
  * get an identifier into the given buffer - '.' are considered part of an
  * identifier - should really be called get field reference
  */
-char	*
-getidordot(p, buf, len)
-register char	*p;
-register char	*buf;
-register int	len;
+char *
+getidordot (register char *p, register char *buf, register int len)
 {
 	char	*fbuf;
 
@@ -1265,8 +1254,8 @@ static char *noindstr[] = {
  * determine if the given field means no indirection wanted and so return 1
  * else return 0
  */
-noindirect(f)
-char	*f;
+int 
+noindirect (char *f)
 {
 	char *p, **ps;
 	int		l;
@@ -1536,9 +1525,8 @@ YP	yp;
 /*
  * produce a string giving the type of a symbol, in a static buffer
  */
-char	*
-sym2type(sy)
-SY	sy;
+char *
+sym2type (SY sy)
 {
 	static char buffer[STRSIZE];
 

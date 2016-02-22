@@ -59,8 +59,8 @@ static struct la_cache {
 	OID	oid;
 } Cache[ODECACHESIZE];
 
-static void preloadcache (str)
-char	*str;
+static void 
+preloadcache (char *str)
 {
 	struct la_cache *cp = &Cache[0];
 	register struct isobject *io;
@@ -89,8 +89,8 @@ char	*str;
 	(void) endisobject ();
 }
 
-OID	ode2oid (descriptor)
-char   *descriptor;
+OID 
+ode2oid (char *descriptor)
 {
 	register struct isobject *io;
 	int i, least;
@@ -139,7 +139,8 @@ char   *descriptor;
 }
 
 #ifdef DEBUG
-free_oid_cache() {
+int 
+free_oid_cache (void) {
 	struct la_cache *cp;
 	int i;
 

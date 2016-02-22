@@ -38,8 +38,8 @@ extern  const char * const sys_errlist[];
 
 /*  */
 
-char   *sys_errname (i)
-int	i;
+char *
+sys_errname (int i)
 {
 	static char buffer[30];
 

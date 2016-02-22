@@ -42,10 +42,8 @@ static ps_die ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	char   *cp;
 	register PE pe;
@@ -208,9 +206,8 @@ doit:
 
 /*    ERRORS */
 
-static ps_die (ps, s)
-register PS	 ps;
-register char   *s;
+static 
+ps_die (register PS ps, register char *s)
 {
 	(void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);

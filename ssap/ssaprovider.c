@@ -46,23 +46,15 @@ static int	TDATAser (), TDISCser ();
 
 /*    S-DATA.REQUEST */
 
-int	SDataRequest (sd, data, cc, si)
-int	sd;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SDataRequest (int sd, char *data, int cc, struct SSAPindication *si)
 {
 	return SSendRequest (sd, data, cc, 1, 1, si);
 }
 
 
-int	SSendRequest (sd, data, cc, begin, end, si)
-int	sd;
-char   *data;
-int	cc,
-	begin,
-	end;
-struct SSAPindication *si;
+int 
+SSendRequest (int sd, char *data, int cc, int begin, int end, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -92,11 +84,8 @@ struct SSAPindication *si;
 
 /*    S-WRITE.REQUEST (pseudo; write user data vectors) */
 
-int	SWriteRequest (sd, typed, uv, si)
-int	sd;
-int	typed;
-struct udvec *uv;
-struct SSAPindication *si;
+int 
+SWriteRequest (int sd, int typed, struct udvec *uv, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -121,13 +110,8 @@ struct SSAPindication *si;
 #define	NSPUV	12	/* really should be MSG_MAXIOVLEN - 4 */
 
 
-int	SDataRequestAux (sb, code, uv, begin, end, si)
-register struct ssapblk *sb;
-int	code;
-register struct udvec *uv;
-int	begin,
-	end;
-struct SSAPindication *si;
+int 
+SDataRequestAux (register struct ssapblk *sb, int code, register struct udvec *uv, int begin, int end, struct SSAPindication *si)
 {
 	int     cc,
 			j,
@@ -257,11 +241,8 @@ out1:
 
 /*    S-READ.REQUEST (pseudo; synchronous read) */
 
-int	SReadRequest (sd, sx, secs, si)
-int	sd;
-struct SSAPdata *sx;
-int	secs;
-struct SSAPindication *si;
+int 
+SReadRequest (int sd, struct SSAPdata *sx, int secs, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -296,13 +277,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SReadRequestAux (sb, sx, secs, si, async, tx)
-register struct ssapblk *sb;
-register struct SSAPdata *sx;
-int	secs;
-struct SSAPindication *si;
-int	async;
-struct TSAPdata *tx;
+static int 
+SReadRequestAux (register struct ssapblk *sb, register struct SSAPdata *sx, int secs, struct SSAPindication *si, int async, struct TSAPdata *tx)
 {
 	int     eot;
 	char    tokens;
@@ -1272,12 +1248,8 @@ out:
 
 /* a decision tree (ugh!) */
 
-int	SDoCollideAux (init, localop, localssn, remoteop, remotessn)
-int     init,
-		localop,
-		remoteop;
-long    localssn,
-		remotessn;
+int 
+SDoCollideAux (int init, int localop, long localssn, int remoteop, long remotessn)
 {
 	SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP,
 		  ("collide: local<%d,%ld,%s> remote<%d,%ld,%s>",
@@ -1320,17 +1292,8 @@ long    localssn,
 
 /*    define vectors for INDICATION events */
 
-int	SSetIndications (sd, data, tokens, sync, activity, report, finish,
-					 abort, si)
-int	sd;
-IFP	data,
-	tokens,
-	sync,
-	activity,
-	report,
-	finish,
-	abort;
-struct SSAPindication *si;
+int 
+SSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish, IFP abort, struct SSAPindication *si)
 {
 	SBV     smask;
 	register struct ssapblk *sb;
@@ -1378,11 +1341,8 @@ struct SSAPindication *si;
 
 /*    TSAP interface */
 
-int	spkt2sd (s, sd, expedited, si)
-register struct ssapkt *s;
-int     sd,
-		expedited;
-register struct SSAPindication *si;
+int 
+spkt2sd (register struct ssapkt *s, int sd, int expedited, register struct SSAPindication *si)
 {
 	int     i,
 			len,
@@ -1425,11 +1385,8 @@ register struct SSAPindication *si;
 
 /*  */
 
-struct ssapkt   *sb2spkt (sb, si, secs, ty)
-register struct ssapblk *sb;
-register struct SSAPindication *si;
-int     secs;
-register struct TSAPdata   *ty;
+struct ssapkt *
+sb2spkt (register struct ssapblk *sb, register struct SSAPindication *si, int secs, register struct TSAPdata *ty)
 {
 	int     cc;
 	register struct ssapkt   *s,
@@ -1636,9 +1593,8 @@ bad2:
 
 /*  */
 
-static int  TDATAser (sd, tx)
-int     sd;
-register struct TSAPdata   *tx;
+static int 
+TDATAser (int sd, register struct TSAPdata *tx)
 {
 	IFP	    abort;
 	register struct ssapblk *sb;
@@ -1698,9 +1654,8 @@ register struct TSAPdata   *tx;
 
 /*  */
 
-static int TDISCser (sd, td)
-int	sd;
-register struct TSAPdisconnect *td;
+static int 
+TDISCser (int sd, register struct TSAPdisconnect *td)
 {
 	IFP	    abort;
 	register struct ssapblk *sb;
@@ -1722,10 +1677,8 @@ register struct TSAPdisconnect *td;
 
 /*  */
 
-int	ts2sslose (si, event, td)
-register struct SSAPindication *si;
-char   *event;
-register struct TSAPdisconnect *td;
+int 
+ts2sslose (register struct SSAPindication *si, char *event, register struct TSAPdisconnect *td)
 {
 	int     reason;
 	char   *cp,
@@ -1770,7 +1723,8 @@ register struct TSAPdisconnect *td;
 
 /*    INTERNAL */
 
-struct ssapblk  *newsblk () {
+struct ssapblk *
+newsblk (void) {
 	register struct ssapblk *sb;
 
 	sb = (struct ssapblk   *) calloc (1, sizeof *sb);
@@ -1792,8 +1746,8 @@ struct ssapblk  *newsblk () {
 }
 
 
-int	freesblk (sb)
-register struct ssapblk *sb;
+int 
+freesblk (register struct ssapblk *sb)
 {
 	if (sb == NULL)
 		return;
@@ -1833,8 +1787,8 @@ register struct ssapblk *sb;
 
 /*  */
 
-struct ssapblk   *findsblk (sd)
-register int sd;
+struct ssapblk *
+findsblk (register int sd)
 {
 	register struct ssapblk *sb;
 

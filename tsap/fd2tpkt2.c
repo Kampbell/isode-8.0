@@ -35,10 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/RCS/fd2tpkt.c,v 8.2 1992/02/26 13:48:
 static int  fd2tpktaux ();
 static int  readx ();
 
-struct tsapkt *fd2tpkt (fd, initfnx, readfnx)
-int	fd;
-IFP	initfnx,
-	readfnx;
+struct tsapkt *
+fd2tpkt (int fd, IFP initfnx, IFP readfnx)
 {
 	register struct tsapkt *t;
 
@@ -63,11 +61,8 @@ IFP	initfnx,
 
 /*  */
 
-static int  fd2tpktaux (fd, t, initfnx, readfnx)
-int	fd;
-register struct tsapkt *t;
-IFP	initfnx,
-	readfnx;
+static int 
+fd2tpktaux (int fd, register struct tsapkt *t, IFP initfnx, IFP readfnx)
 {
 	register int    code,
 			 len,
@@ -319,11 +314,8 @@ IFP	initfnx,
 
 /*  */
 
-static int  readx (fd, buffer, n, readfnx)
-int	fd;
-char    *buffer;
-int	n;
-IFP	readfnx;
+static int 
+readx (int fd, char *buffer, int n, IFP readfnx)
 {
 	register int    i,
 			 cc;
@@ -348,10 +340,8 @@ IFP	readfnx;
 
 /*  */
 
-int	tpkt2fd (tb, t, writefnx)
-register struct tsapblk *tb;
-register struct tsapkt *t;
-IFP	writefnx;
+int 
+tpkt2fd (register struct tsapblk *tb, register struct tsapkt *t, IFP writefnx)
 {
 	int     i,
 			ilen,
@@ -497,8 +487,8 @@ IFP	writefnx;
 
 /*  */
 
-struct tsapkt *newtpkt (code)
-int	code;
+struct tsapkt *
+newtpkt (int code)
 {
 	register struct tsapkt *t;
 
@@ -513,8 +503,8 @@ int	code;
 }
 
 
-int	freetpkt (t)
-register struct tsapkt *t;
+int 
+freetpkt (register struct tsapkt *t)
 {
 	if (t == NULL)
 		return;

@@ -52,11 +52,8 @@ static fre_choice();
  * first time freeing all the "children" of the data structure - then
  * the second time free the structure itself
  */
-fre_obj(parm, p, mod, dofree)
-modtyp *mod;
-ptpe    *p;
-char   *parm;
-int	dofree;
+int 
+fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree)
 {
 	char   *malptr = NULL;	/* Have we seen a malloc */
 	int	    ndofree = dofree;	/* Does the function below deallocate space */
@@ -103,11 +100,13 @@ int	dofree;
  * fall back to this so we can put the code to free something just
  * here once and it will handle all the cases else where
  */
-fre_type(parm, p, mod, dofree)
-char   *parm;
-ptpe    *p;
-modtyp *mod;			/* Module it is from */
-int	dofree;
+int 
+fre_type (
+    char *parm,
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    int dofree
+)
 {
 
 	if (parm == 0)
@@ -323,11 +322,13 @@ again:
 /*
  * free elements of a sequential type. e.g. sequence or set
  */
-static fre_seq(parm, p, mod, dofree)
-char   *parm;
-ptpe    *p;
-modtyp *mod;			/* Module it is from */
-int	dofree;
+static 
+fre_seq (
+    char *parm,
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    int dofree
+)
 {
 	/*    int    *popt = NULL;	Pointer to optional field */
 	char   *malptr = NULL;	/* Have we seen a malloc */
@@ -461,11 +462,13 @@ int	dofree;
  * free all the fields in a SET OF/SEQUENCE OF type structure. We
  * must follow the linked list until the end
  */
-static fre_seqof(parm, p, mod, dofree)
-char   *parm;
-ptpe    *p;
-modtyp *mod;			/* Module it is from */
-int	dofree;
+static 
+fre_seqof (
+    char *parm,
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    int dofree
+)
 {
 	ptpe    *start;		/* first entry in list */
 	char   *oparm;
@@ -594,11 +597,13 @@ int	dofree;
  * which item is present and then call the appropriate routine to
  * free it
  */
-static fre_choice(parm, p, mod, dofree)
-char   *parm;
-ptpe    *p;
-modtyp *mod;			/* Module it is from */
-int	dofree;
+static 
+fre_choice (
+    char *parm,
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    int dofree
+)
 {
 	int     cnt;
 	char   *malptr = NULL;	/* Have we seen a malloc */
@@ -659,9 +664,8 @@ int	dofree;
  * Basically we have to stop FN_CALL being tested by hasdata which will call
  * the decoding function which is illegal and gives rubbish.
  */
-callsfn(p, mod)
-ptpe	*p;
-modtyp	*mod;
+int 
+callsfn (ptpe *p, modtyp *mod)
 {
 
 	while (p->pe_type != PE_END) {

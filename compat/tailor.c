@@ -493,8 +493,8 @@ static char   *tailor_value ();
 
 /*  */
 
-char  *isodesetailor (file)
-char  *file;
+char *
+isodesetailor (char *file)
 {
 	char   *ofile = isotailor;
 
@@ -506,9 +506,8 @@ char  *file;
 
 /*  */
 
-void	isodetailor (myname, wantuser)
-char   *myname;
-int	wantuser;
+void 
+isodetailor (char *myname, int wantuser)
 {
 	register char *hp,
 			 *mp;
@@ -542,8 +541,8 @@ int	wantuser;
 
 /*  */
 
-static int  tailor_read (file)
-char   *file;
+static int 
+tailor_read (char *file)
 {
 	register char  *bp,
 			 *cp;
@@ -591,10 +590,8 @@ char   *file;
 
 /*  */
 
-int	isodesetvar (name, value, dynamic)
-char   *name,
-	   *value;
-int	dynamic;
+int 
+isodesetvar (char *name, char *value, int dynamic)
 {
 	register struct bind   *b;
 
@@ -611,8 +608,8 @@ int	dynamic;
 
 /*  */
 
-void	isodexport (myname)
-char   *myname;
+void 
+isodexport (char *myname)
 {
 	compat_log -> ll_events = events_value (ll_pairs, compatdebug, "compatlevel");
 	addr_log -> ll_events = events_value (ll_pairs, addrdebug, "addrlevel");
@@ -927,8 +924,8 @@ char   *myname;
 #define	QUOTE	'\\'
 
 
-static char *tailor_value (s)
-register char   *s;
+static char *
+tailor_value (register char *s)
 {
 	register int    i,
 			 r;
@@ -988,10 +985,8 @@ register char   *s;
 
 /*  */
 
-static int  events_value (pairs, s, var)
-struct pair *pairs;
-char   *s,
-	   *var;
+static int 
+events_value (struct pair *pairs, char *s, char *var)
 {
 	int     value;
 	register char  *cp,
@@ -1020,7 +1015,8 @@ char   *s,
 /*  */
 
 #ifdef DEBUG
-tailorfree () {
+int 
+tailorfree (void) {
 	register struct bind   *b;
 
 	for (b = binds; b -> b_key; b++)
@@ -1050,8 +1046,8 @@ tailorfree () {
 }
 
 
-ll_hdfree (lp)
-register LLog *lp;
+int 
+ll_hdfree (register LLog *lp)
 {
 	if (lp -> ll_stat & LLOGHDR)
 		free (lp -> ll_hdr);

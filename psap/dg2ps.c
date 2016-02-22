@@ -52,9 +52,8 @@ extern	IFP	set_check_fd ();
 
 /*  */
 
-static int  dg_prime (ps, waiting)
-register PS	ps;
-int	waiting;
+static int 
+dg_prime (register PS ps, int waiting)
 {
 	struct qbuf *qb;
 	register struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
@@ -99,11 +98,8 @@ int	waiting;
 
 /* ARGSUSED */
 
-static int  dg_read (ps, data, n, in_line)
-register PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+dg_read (register PS ps, PElementData data, PElementLen n, int in_line)
 {
 	int	    cc;
 	register struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
@@ -123,11 +119,8 @@ int	in_line;
 
 /* ARGSUSED */
 
-static int  dg_write (ps, data, n, in_line)
-register PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+dg_write (register PS ps, PElementData data, PElementLen n, int in_line)
 {
 	register struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
 	register struct ps_inout *po = &pt -> ps_output;
@@ -142,8 +135,8 @@ int	in_line;
 }
 
 
-static int  dg_flush (ps)
-register PS	ps;
+static int 
+dg_flush (register PS ps)
 {
 	register struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
 	register struct ps_inout *po = &pt -> ps_output;
@@ -159,8 +152,8 @@ register PS	ps;
 }
 
 
-static int  dg_close (ps)
-register PS	ps;
+static int 
+dg_close (register PS ps)
 {
 	register struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
 
@@ -180,9 +173,8 @@ register PS	ps;
 }
 
 
-static int  dg_check (fd, data)
-int	fd;
-caddr_t	data;
+static int 
+dg_check (int fd, caddr_t data)
 {
 	int	    n;
 	PS	    ps = (PS) data;
@@ -196,8 +188,8 @@ caddr_t	data;
 
 /*  */
 
-int	dg_open (ps)
-register PS	ps;
+int 
+dg_open (register PS ps)
 {
 	ps -> ps_primeP = dg_prime;
 	ps -> ps_readP = dg_read;
@@ -209,13 +201,8 @@ register PS	ps;
 }
 
 
-int	dg_setup (ps, fd, size, rfx, wfx, cfx)
-register PS	ps;
-int	fd,
-	size;
-IFP	rfx,
-	wfx,
-	cfx;
+int 
+dg_setup (register PS ps, int fd, int size, IFP rfx, IFP wfx, IFP cfx)
 {
 	register struct ps_dg *pt;
 	register struct ps_inout *po;

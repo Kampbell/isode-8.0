@@ -35,12 +35,8 @@ static int  SMinSyncResponseAux ();
 
 /*    S-MINOR-SYNC.RESPONSE */
 
-int	SMinSyncResponse (sd, ssn, data, cc, si)
-int	sd;
-long	ssn;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SMinSyncResponse (int sd, long ssn, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -64,12 +60,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SMinSyncResponseAux (sb, ssn, data, cc, si)
-register struct ssapblk *sb;
-long	ssn;
-char   *data;
-int	cc;
-register struct SSAPindication *si;
+static int 
+SMinSyncResponseAux (register struct ssapblk *sb, long ssn, char *data, int cc, register struct SSAPindication *si)
 {
 	int     result;
 

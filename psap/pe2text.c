@@ -37,11 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2text.c,v 9.0 1992/0
 
 /* ARGSUSED */
 
-static int  ll_pswrite (ps, data, n, in_line)
-PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line)
 {
 	register LLog    *lp = (LLog *) ps -> ps_addr;
 
@@ -65,8 +62,8 @@ int	in_line;
 
 /*  */
 
-static int  ll_psopen (ps)
-register PS ps;
+static int 
+ll_psopen (register PS ps)
 {
 	ps -> ps_writeP = ll_pswrite;
 
@@ -77,11 +74,8 @@ register PS ps;
 
 /*  */
 
-void	pe2text (lp, pe, rw, cc)
-register LLog *lp;
-register PE pe;
-int	rw,
-	cc;
+void 
+pe2text (register LLog *lp, register PE pe, int rw, int cc)
 {
 	register char   *bp;
 	char   buffer[BUFSIZ];

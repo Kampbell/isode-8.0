@@ -50,11 +50,8 @@ static int  process ();
 
 /* ARGSUSED */
 
-int	PY_pp (argc, argv, envp, pfx)
-int	argc;
-char  **argv,
-	  **envp;
-IFP	pfx;
+int 
+PY_pp (int argc, char **argv, char **envp, IFP pfx)
 {
 	register int    status = 0;
 	register char  *cp;
@@ -172,9 +169,8 @@ static void  adios (char*what, ...)
 #else
 /* VARARGS */
 
-static void  adios (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -217,9 +213,8 @@ static void  _advise (char*what, ...)
 #else
 /* VARARGS */
 
-static void  advise (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }

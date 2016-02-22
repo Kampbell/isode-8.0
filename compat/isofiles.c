@@ -34,9 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isofiles.c,v 9.0 199
 
 /*  */
 
-char   *_isodefile (path, file)
-char   *path,
-	   *file;
+char *
+_isodefile (char *path, char *file)
 {
 	static char buffer[BUFSIZ];
 

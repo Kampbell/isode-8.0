@@ -33,14 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapmajor2.c,v 9.0 19
 
 /*    P-{MAJOR-SYNC,ACTIVITY-END}.RESPONSE */
 
-int	PMajSyncResponseAux (sd, data, ndata, pi, dtype, sfunc, stype)
-int	sd;
-int	ndata;
-PE     *data;
-struct PSAPindication *pi;
-char   *dtype,
-	   *stype;
-IFP	sfunc;
+int 
+PMajSyncResponseAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype)
 {
 	SBV	    smask;
 	int     len,

@@ -44,10 +44,8 @@ static	type_data ();
 #define	TPKT_TYPE(e)	(void) ll_printf (lp, "%sCODE/ %s\n", rw, e)
 
 
-void	tpkt2text (lp, t, isread)
-register LLog *lp;
-register struct tsapkt *t;
-int	isread;
+void 
+tpkt2text (register LLog *lp, register struct tsapkt *t, int isread)
 {
 	char   *rw = isread ? "<--- " : "---> ";
 	register struct udvec *uv;
@@ -120,12 +118,8 @@ int	isread;
 
 /*  */
 
-static	type_id (lp, type, rw, selector, len)
-LLog   *lp;
-char   *type,
-	   *rw;
-char   *selector;
-int	len;
+static 
+type_id (LLog *lp, char *type, char *rw, char *selector, int len)
 {
 	char    buffer[BUFSIZ];
 
@@ -135,12 +129,8 @@ int	len;
 }
 
 
-static	type_data (lp, type, rw, len, data)
-LLog   *lp;
-char   *type,
-	   *rw,
-	   *data;
-int	len;
+static 
+type_data (LLog *lp, char *type, char *rw, int len, char *data)
 {
 	char    buffer[BUFSIZ];
 	char *cp;
@@ -161,8 +151,8 @@ int	len;
 
 /*  */
 
-void	text2tpkt (t)
-register struct tsapkt *t;
+void 
+text2tpkt (register struct tsapkt *t)
 {
 	char buffer[80],                            /* Working input buffer */
 		 *bptr;                                 /* Pointer to our buffer */

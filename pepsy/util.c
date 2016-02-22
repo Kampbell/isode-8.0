@@ -47,11 +47,8 @@ extern void exit();
 #ifdef lint
 /* VARARGS4 */
 
-int	pepsylose (module, p, pe, str)
-modtyp	*module;
-ptpe	*p;
-char	*str;
-PE	pe;
+int 
+pepsylose (modtyp *module, ptpe *p, PE pe, char *str)
 {
 	return pepsylose (module, p, pe, str);
 }
@@ -103,11 +100,8 @@ int	pepsylose (modtyp*module, ...)
 #ifdef lint
 /* VARARGS4 */
 
-int	ppepsylose (module, p, pe, str)
-modtyp	*module;
-ptpe	*p;
-char	*str;
-PE	pe;
+int 
+ppepsylose (modtyp *module, ptpe *p, PE pe, char *str)
 {
 	return ppepsylose (module, p, pe, str);
 }
@@ -158,8 +152,8 @@ int	ppepsylose (modtyp*module, ...)
  * print out the message and if the arguement is greater than 0
  * terminate
  */
-ferr(n, mesg)
-char   *mesg;
+int 
+ferr (int n, char *mesg)
 {
 	(void) printf(mesg);
 	if (n > 0)
@@ -169,9 +163,8 @@ char   *mesg;
  * print out the message and number and if the arguement is greater
  * than 0 terminate
  */
-ferrd(n, mesg, d)
-char   *mesg;
-int     d;
+int 
+ferrd (int n, char *mesg, int d)
 {
 	(void) printf(mesg, d);
 	if (n > 0)
@@ -186,10 +179,12 @@ int     d;
 #define TYP_PRINT	2
 #define TYP_LAST	2
 
-dmp_tpe(s, p, mod)
-char   *s;
-modtyp *mod;			/* Module it is from */
-ptpe    *p;
+int 
+dmp_tpe (
+    char *s,
+    ptpe *p,
+    modtyp *mod			/* Module it is from */
+)
 {
 	int     typ, i, j;
 	ptpe   **par, **prev;
@@ -314,8 +309,7 @@ static CMD_TABLE pepsy_type_tbl[] = {
 };
 
 char *
-pr_petype (type)
-int	type;
+pr_petype (int type)
 {
 	static char nbuf[30];
 	char *p;
@@ -325,8 +319,8 @@ int	type;
 	return p;
 }
 
-pr_entry(p)
-ptpe    *p;
+int 
+pr_entry (ptpe *p)
 {
 	(void) printf ("%s, ", pr_petype (p -> pe_type));
 	(void) printf("%d, %d, %d}\n", p->pe_ucode, p->pe_tag, p->pe_flags);
@@ -336,16 +330,16 @@ ptpe    *p;
 /*
  * null function for what evr purposes
  */
-f_null() {
+int 
+f_null (void) {
 }
 
 /*
  * compare a given number of bits pointed to by the two character
  * pointers return 0 if they are the same non zero otherwise
  */
-bitscmp(p1, p2, len)
-register char *p1, *p2;
-int     len;
+int 
+bitscmp (register char *p1, register char *p2, int len)
 {
 	register int i;
 	register unsigned int mask;
@@ -369,10 +363,8 @@ int     len;
  * compare an octet string and a qb and return 0 if they are the same
  * and non zero otherwise
  */
-ostrcmp(p, len, qb)
-register char *p;
-register int len;
-register struct qbuf *qb;
+int 
+ostrcmp (register char *p, register int len, register struct qbuf *qb)
 {
 	register struct qbuf *qp;
 
@@ -400,11 +392,14 @@ register struct qbuf *qb;
 /*
  * Is data present for the optional item? 1 for yes 0 for no
  */
-hasdata(parm, p, mod, popt, optcnt)
-PEPYPARM parm;
-ptpe    *p;
-modtyp *mod;			/* Module it is from */
-int    *popt, *optcnt;
+int 
+hasdata (
+    PEPYPARM parm,
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    int *popt,
+    int *optcnt
+)
 {
 	int	val;
 
@@ -459,10 +454,13 @@ next:
  * structure and if so return greater than zero (meaning don't encode this
  * item). On error return NOTOK
  */
-same(typ, dflt, parm, mod)
-ptpe    *typ, *dflt;
-char   *parm;
-modtyp *mod;			/* Module it is from */
+int 
+same (
+    ptpe *typ,
+    ptpe *dflt,
+    char *parm,
+    modtyp *mod			/* Module it is from */
+)
 {
 	int     val;
 	int	len;
@@ -637,9 +635,8 @@ o1string:
  * Calculate the next tpe entry in the sequence. Count a sequence as
  * one element
  */
-ptpe    *
-next_tpe(p)
-ptpe    *p;
+ptpe *
+next_tpe (ptpe *p)
 {
 	int     level;
 
@@ -724,10 +721,13 @@ again:
  * Is there a match at for this tag and class pair. Return 1 if yes 0
  * if no We will search through contained objects and through choices
  */
-ismatch(p, mod, cl, tag)
-ptpe    *p;
-modtyp *mod;			/* Module it is from */
-unsigned int cl, tag;
+int 
+ismatch (
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    unsigned int cl,
+    unsigned int tag
+)
 {
 	while (!ISDTYPE(p) && p->pe_type != PE_END)
 		p++;
@@ -777,9 +777,8 @@ unsigned int cl, tag;
  * find the data entry that goes with this DFLT_F entry
  * bascially skip over any ETAGS that (an arbitary number but almost always 1)
  */
-ptpe	*
-fdflt_f(p)
-register ptpe	*p;
+ptpe *
+fdflt_f (register ptpe *p)
 {
 	if (p->pe_type != DFLT_F)
 		ferr(1, "fdlt_f:Internal Error missing DFLT_F\n");
@@ -795,9 +794,8 @@ register ptpe	*p;
 /*
  * find the DFLT_B entry
  */
-ptpe	*
-fdflt_b(p)
-register ptpe	*p;
+ptpe *
+fdflt_b (register ptpe *p)
 {
 	for (p++; p->pe_type != PE_END; p++) {
 		if (p->pe_type == DFLT_B)

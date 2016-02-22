@@ -50,10 +50,8 @@ char   *crypt ();
 /* ARGSUSED */
 #endif
 
-int	chkpassword ( usrname, pwpass, usrpass )
-char   *usrname;
-char   *pwpass;
-char   *usrpass;
+int 
+chkpassword (char *usrname, char *pwpass, char *usrpass)
 {
 #ifdef	KRB_PASSWD
 	char realm[REALM_SZ];

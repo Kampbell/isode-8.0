@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/bitstr2strb.c,v 9.0 19
 
 /*  */
 
-char   *bitstr2strb (pe, k)
-PE	pe;
-int    *k;
+char *
+bitstr2strb (PE pe, int *k)
 {
 	register int    i,
 			 j,

@@ -94,8 +94,8 @@ static     int	enc_buf_len;
 
 /*  */
 
-int     start_x25_client (local)
-struct NSAPaddr *local;
+int 
+start_x25_client (struct NSAPaddr *local)
 {
 	int     sd, pgrp;
 
@@ -124,22 +124,8 @@ struct NSAPaddr *local;
 
 /*  */
 
-int     start_x25_server (local, backlog, opt1, opt2)
-struct NSAPaddr *local;
-int     backlog,
-		/*
-		 * in Ultrix  X.25 socket functions like turn off/on packet
-		 * assembly and call acceptance are done with setsockopt.
-		 * it looks like other X.25 socket interfaces are using
-		 * "traditional" features like SO_KEEPALIVE, and this
-		 * is being passed down in the call from tsap/tsaplisten.c
-		 * but I really don't think it applies here.
-		 *
-		 * thus, the following two arguments are ignored in this
-		 * module.
-		 */
-		opt1,
-		opt2;
+int 
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 {
 	int     sd, pgrp;
 	CONN_DB     zsck;
@@ -199,9 +185,8 @@ int     backlog,
 
 /*  */
 
-int     join_x25_client (fd, remote)
-int     fd;
-struct NSAPaddr *remote;
+int 
+join_x25_client (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB		zsck;
 	CONN_DB		*sck = &zsck;
@@ -270,9 +255,8 @@ struct NSAPaddr *remote;
 	return nfd;
 }
 
-int     join_x25_server (fd, remote)
-int     fd;
-struct NSAPaddr *remote;
+int 
+join_x25_server (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB zsck;
 	CONN_DB *sck = &zsck;
@@ -356,8 +340,8 @@ int	fd;
 	close(fd);
 }
 
-log_call_status(fd)
-int	fd;
+int 
+log_call_status (int fd)
 {
 	struct	X25PortStatus	sbuf;
 	struct	X25PortStatus	*stats = &sbuf;
@@ -458,9 +442,8 @@ int	fd;
 	return;
 }
 
-log_call_clear(fd, type)
-int	fd;
-int	type;
+int 
+log_call_clear (int fd, int type)
 {
 	struct	X25ClearData	cbuf;
 	struct	X25ClearData	*cdata = &cbuf;
@@ -556,10 +539,8 @@ int	type;
 
 #ifdef  DEBUG
 
-static int  log_x25_facilities (fd, coc, caption)
-int     fd;
-int     coc;
-char   *caption;
+static int 
+log_x25_facilities (int fd, int coc, char *caption)
 {
 	int	stat;
 
@@ -582,11 +563,8 @@ char   *caption;
 
 /*  */
 
-void	*
-epl_prtstr (fmt, val, vallen)
-char	*fmt;
-char	*val;
-int	vallen;
+void *
+epl_prtstr (char *fmt, char *val, int vallen)
 {
 	static char	abuf[128];
 	static char	tbuf[128];
@@ -609,11 +587,8 @@ int	vallen;
 	return tbuf;
 }
 
-void	*
-epl_prtbool (fmt, val, vallen)
-char	*fmt;
-short	*val;
-int	vallen;
+void *
+epl_prtbool (char *fmt, short *val, int vallen)
 {
 	static char	*true = "true";
 	static char	*false = "false";
@@ -624,11 +599,8 @@ int	vallen;
 		return (false);
 }
 
-void	*
-epl_prtint (fmt, val, vallen)
-char	*fmt;
-short	*val;
-int	vallen;
+void *
+epl_prtint (char *fmt, short *val, int vallen)
 {
 	static char	tbuf[128];
 
@@ -636,11 +608,8 @@ int	vallen;
 	return tbuf;
 }
 
-void	*
-epl_prtlst (fmt, val, vallen)
-char	*fmt;
-short	*val;
-int	vallen;
+void *
+epl_prtlst (char *fmt, short *val, int vallen)
 {
 	static char	*list = "[LIST]";
 
@@ -697,10 +666,8 @@ static struct {
 	0,	 0, 0,
 };
 
-print_x25_facilities (fd, coc, caption)
-int	fd;
-int     coc;
-char   *caption;
+int 
+print_x25_facilities (int fd, int coc, char *caption)
 {
 	int		numitems,stat,baud,i,j;
 	char	cbuf[128];
@@ -822,10 +789,8 @@ char *s;
 	}
 }
 
-compose_text(xudatap,pid,cudf)
-char *  xudatap;
-char *  pid;
-char *  cudf;
+int 
+compose_text (char *xudatap, char *pid, char *cudf)
 {
 	strcpy(xudatap,pid);
 	strcat(xudatap,DELIMITER);
@@ -1017,8 +982,8 @@ int event_received;
 /* an incoming call will spawn the process who accepts the call */
 /* you will have to change the listeners (DAEMONS)              */
 
-int     start_x25_client (local)
-struct NSAPaddr *local;
+int 
+start_x25_client (struct NSAPaddr *local)
 {
 	int     error;
 	int     our_sd;
@@ -1075,11 +1040,8 @@ struct NSAPaddr *local;
 
 /*  */
 
-int     start_x25_server (local, backlog, opt1, opt2)
-struct NSAPaddr *local;
-int     backlog,
-		opt1,
-		opt2;
+int 
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 {
 	X25vc   vci;
 	X25vc * vcip = &vci;
@@ -1305,9 +1267,8 @@ int     backlog,
 /*  */
 
 
-int    join_x25_client (sd, rremote)
-int    sd;
-struct NSAPaddr *rremote;
+int 
+join_x25_client (int sd, struct NSAPaddr *rremote)
 {
 	int error;
 	X25vc  vci;
@@ -1334,9 +1295,8 @@ struct NSAPaddr *rremote;
 
 }
 
-int     join_x25_server (sd, rremote)
-int    sd;
-struct NSAPaddr *rremote;
+int 
+join_x25_server (int sd, struct NSAPaddr *rremote)
 {
 
 	X25vc   vci;
@@ -1431,8 +1391,8 @@ loop:
 
 /* standard  case of running and waiting listener */
 
-int     start_x25_client (local)
-struct NSAPaddr *local;
+int 
+start_x25_client (struct NSAPaddr *local)
 {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
@@ -1488,11 +1448,8 @@ struct NSAPaddr *local;
 
 /*  */
 
-int     start_x25_server (local, backlog, opt1, opt2)
-struct NSAPaddr *local;
-int     backlog,
-		opt1,
-		opt2;
+int 
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
@@ -1605,9 +1562,8 @@ int     backlog,
 /*  */
 
 
-int    join_x25_client (sd, rremote)
-int    sd;
-struct NSAPaddr *rremote;
+int 
+join_x25_client (int sd, struct NSAPaddr *rremote)
 {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
@@ -1812,9 +1768,8 @@ struct NSAPaddr *rremote;
 
 }
 
-int     join_x25_server (sd, rremote)
-int    sd;
-struct NSAPaddr *rremote;
+int 
+join_x25_server (int sd, struct NSAPaddr *rremote)
 {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
@@ -2027,12 +1982,14 @@ int     sd;
 
 #endif 	/* ULTRIX_X25_DEMSA */
 #else   /* ULTRIX_X25 */
-int     _ultrix25_stub2 () {
+int 
+_ultrix25_stub2 (void) {
 	;
 }
 #endif  /* ULTRIX_X25 */
 #else	/* X25 */
-int	_ultrix25_stub () {
+int 
+_ultrix25_stub (void) {
 	;
 }
 #endif  /* X25 */

@@ -84,8 +84,8 @@ typedef union N_indication_t {
 static fd_set	inprogress;
 
 
-char * npierr2str(n)
-int n;
+char *
+npierr2str (int n)
 {
 	static char buf[20];
 	switch (n) {
@@ -148,8 +148,8 @@ int n;
 }
 
 
-char *npiev2str(n)
-int n;
+char *
+npiev2str (int n)
 {
 	static char buf[10];
 
@@ -217,11 +217,8 @@ int n;
 }
 
 
-int 	get_prim(fd, control, data, flags, expected, size, close_fd)
-int		fd;
-struct strbuf	*control, *data;
-int *		flags;
-int		expected, size, close_fd;
+int 
+get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, int expected, int size, int close_fd)
 {
 	N_error_ack_t * err;
 	int res;
@@ -269,8 +266,8 @@ int		expected, size, close_fd;
 }
 
 
-int     start_x25_client (local)
-struct NSAPaddr *local;
+int 
+start_x25_client (struct NSAPaddr *local)
 {
 	int     sd;
 
@@ -289,11 +286,8 @@ struct NSAPaddr *local;
 }
 
 
-int     start_x25_server (local, backlog, opt1, opt2)
-struct NSAPaddr *local;
-int     backlog,
-		opt1,
-		opt2;
+int 
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 {
 	int     sd;
 	int	    flags;
@@ -367,9 +361,8 @@ int     backlog,
 }
 
 
-int     join_x25_client (fd, remote, local)
-int     fd;
-struct NSAPaddr *remote, *local;
+int 
+join_x25_client (int fd, struct NSAPaddr *remote, struct NSAPaddr *local)
 {
 	int			flags;
 	char		pbuf[CONTROL_BUF_SIZE];
@@ -456,9 +449,8 @@ struct NSAPaddr *remote, *local;
 }
 
 
-int     join_x25_server (fd, remote)
-int     fd;
-struct NSAPaddr *remote;
+int 
+join_x25_server (int fd, struct NSAPaddr *remote)
 {
 	struct {
 		N_conn_req_t req;
@@ -711,7 +703,9 @@ int fd;
 }
 
 #else
-int _ccurx25_stub () {}
+int 
+_ccurx25_stub (void) {}
 #endif  /* CCUR_X25 */
-int _ccurx25_stub2 () {}
+int 
+_ccurx25_stub2 (void) {}
 #endif  /* X25 */

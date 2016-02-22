@@ -55,9 +55,8 @@ extern int  errno;
 /* For real networking, nothing is better than 4BSD! */
 
 
-int	start_tcp_client (sock, priv)
-struct sockaddr_in *sock;
-int	priv;
+int 
+start_tcp_client (struct sockaddr_in *sock, int priv)
 {
 	register int    port;
 	int     eindex,
@@ -112,11 +111,8 @@ got_socket:
 
 /*  */
 
-int	start_tcp_server (sock, backlog, opt1, opt2)
-struct sockaddr_in *sock;
-int	backlog,
-	opt1,
-	opt2;
+int 
+start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 {
 	register int    port;
 	int     eindex,
@@ -343,9 +339,8 @@ int	fd;
    and we must prematurely bind the sockets to IP addresses. */
 
 
-start_tcp_client (sock, priv)
-struct sockaddr_in *sock;
-int	priv;
+int 
+start_tcp_client (struct sockaddr_in *sock, int priv)
 {
 	register int    port;
 	int     sd;
@@ -384,11 +379,8 @@ int	priv;
 
 /*  */
 
-int	start_tcp_server (sock, backlog, opt1, opt2)
-struct sockaddr_in *sock;
-int	backlog,
-	opt1,
-	opt2;
+int 
+start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 {
 	register int    port;
 	int     sd;
@@ -434,8 +426,8 @@ static char *empty = NULL;
 static char *addrs[2] = { NULL };
 #endif
 
-struct hostent *gethostbystring (s)
-char   *s;
+struct hostent *
+gethostbystring (char *s)
 {
 	register struct hostent *h;
 #ifndef	DG
@@ -475,10 +467,8 @@ long	rhost ();
 char   *raddr ();
 
 
-struct hostent *gethostbyaddr (addr, len, type)
-char   *addr;
-int	len,
-	type;
+struct hostent *
+gethostbyaddr (char *addr, int len, int type)
 {
 	long    iaddr;
 	char   *name;
@@ -505,8 +495,8 @@ int	len,
 }
 
 
-struct hostent *gethostbyname (name)
-char   *name;
+struct hostent *
+gethostbyname (char *name)
 {
 	static long iaddr;
 	static char buffer[BUFSIZ];
@@ -599,9 +589,8 @@ static struct servent   services[] = {
 
 
 
-struct servent *getservbyname (name, proto)
-register char   *name,
-		 *proto;
+struct servent *
+getservbyname (register char *name, register char *proto)
 {
 	register struct servent *s;
 
@@ -623,8 +612,8 @@ register char   *name,
 
 #define	s2a(b)	(((int) (b)) & 0xff)
 
-char   *inet_ntoa (in)
-struct in_addr in;
+char *
+inet_ntoa (struct in_addr in)
 {
 	register char  *s = (char *) &in;
 	static char addr[4 * 3 + 3 + 1];
@@ -636,8 +625,8 @@ struct in_addr in;
 }
 
 
-u_long	inet_addr (cp)
-char   *cp;
+u_long 
+inet_addr (char *cp)
 {
 	register int    base;
 	register char   c;
@@ -707,8 +696,8 @@ char   *cp;
 	return htonl (val);
 }
 
-u_long	inet_network (cp)
-char   *cp;
+u_long 
+inet_network (char *cp)
 {
 	register int    base;
 	register char   c;

@@ -40,8 +40,8 @@ int Len;
 
 /*  */
 
-int	pe2qb_f (pe)
-register PE	pe;
+int 
+pe2qb_f (register PE pe)
 {
 	register PE	    p;
 	register int elm_len;

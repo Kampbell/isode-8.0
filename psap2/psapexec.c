@@ -35,13 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapexec.c,v 9.0 1992
 
 /*    SERVER only */
 
-int	PExec (ss, pi, arg1, arg2, hook, setperms)
-struct SSAPstart *ss;
-struct PSAPindication *pi;
-char   *arg1,
-	   *arg2;
-IFP	hook,
-	setperms;
+int 
+PExec (struct SSAPstart *ss, struct PSAPindication *pi, char *arg1, char *arg2, IFP hook, IFP setperms)
 {
 	int	    len,
 			result,

@@ -87,8 +87,8 @@ static int pl_read ();
 
 /*  */
 
-PE	pl2pe (ps)
-register PS	ps;
+PE 
+pl2pe (register PS ps)
 {
 	struct PList    pls;
 	register PL	    pl = &pls;
@@ -106,9 +106,8 @@ register PS	ps;
 
 /*  */
 
-static PE  pl2pe_aux (ps, pl)
-register PS	ps;
-register PL	pl;
+static PE 
+pl2pe_aux (register PS ps, register PL pl)
 {
 	PElementClass   class;
 	PElementID	    id;
@@ -151,10 +150,8 @@ you_lose:
 
 /*  */
 
-static int pl_read_class (ps, pl, class)
-register PS	ps;
-register PL	pl;
-register PElementClass *class;
+static int 
+pl_read_class (register PS ps, register PL pl, register PElementClass *class)
 {
 	register int    i;
 
@@ -172,11 +169,8 @@ register PElementClass *class;
 
 /*  */
 
-static int pl_read_id (ps, pl, class, id)
-register PS	ps;
-register PL	pl;
-register PElementClass class;
-register PElementID *id;
+static int 
+pl_read_id (register PS ps, register PL pl, int class, register PElementID *id)
 {
 	register int    i;
 	register char **list;
@@ -217,10 +211,8 @@ register PElementID *id;
 
 /*  */
 
-static int  pl_read_name (name, list, n)
-register char *name,
-		 **list;
-register int   n;
+static int 
+pl_read_name (register char *name, register char **list, register int n)
 {
 	register int    i;
 	register char  *bp;
@@ -234,10 +226,8 @@ register int   n;
 
 /*  */
 
-static int  pl_read_cons (ps, pl, pe)
-register PS	ps;
-register PL	pl;
-register PE    *pe;
+static int 
+pl_read_cons (register PS ps, register PL pl, register PE *pe)
 {
 	register PE	    p,
 			 q;
@@ -266,10 +256,8 @@ register PE    *pe;
 
 /*  */
 
-static int  pl_read_prim (ps, pl, pe)
-register PS	ps;
-register PL	pl;
-register PE	pe;
+static int 
+pl_read_prim (register PS ps, register PL pl, register PE pe)
 {
 	register int    i,
 			 len,
@@ -308,9 +296,8 @@ out:
 /*  */
 
 #ifdef	XXX
-static int  pl_read_lex (ps, pl)
-register PS	ps;
-register PL	pl;
+static int 
+pl_read_lex (register PS ps, register PL pl)
 {
 	int     i = pl_read_lex_aux (ps, pl);
 
@@ -462,9 +449,8 @@ register PL	pl;
 
 /*  */
 
-static int pl_read (ps, c)
-register PS	ps;
-register byte  *c;
+static int 
+pl_read (register PS ps, register byte *c)
 {
 	if (ps -> ps_scratch) {
 		*c = ps -> ps_scratch;

@@ -36,11 +36,8 @@ static int  SUAbortRequestAux ();
 
 /*    S-U-ABORT.REQUEST */
 
-int	SUAbortRequest (sd, data, cc, si)
-int	sd;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SUAbortRequest (int sd, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -65,11 +62,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SUAbortRequestAux (sb, data, cc, si)
-register struct ssapblk *sb;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+static int 
+SUAbortRequestAux (register struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
 	register struct ssapkt *s;

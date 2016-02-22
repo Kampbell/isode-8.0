@@ -38,8 +38,8 @@ static int  ps_get_len ();
 
 /*  */
 
-int	ps_get_abs (pe)
-register PE	pe;
+int 
+ps_get_abs (register PE pe)
 {
 	register    PElementLen len;
 	register    PE p;
@@ -82,8 +82,8 @@ register PE	pe;
 
 /*  */
 
-static int  ps_get_id (pe)
-register PE	pe;
+static int 
+ps_get_id (register PE pe)
 {
 	register int    i;
 	register PElementID id;
@@ -98,8 +98,8 @@ register PE	pe;
 
 /*  */
 
-static int  ps_get_len (pe)
-register PE	pe;
+static int 
+ps_get_len (register PE pe)
 {
 	register int    i;
 	register PElementLen len;

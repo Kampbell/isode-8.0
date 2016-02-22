@@ -32,10 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/num2prim.c,v 9.0 1992/
 
 /*  */
 
-PE	num2prim (i, class, id)
-register integer i;
-PElementClass	class;
-PElementID	id;
+PE 
+num2prim (register integer i, int class, int id)
 {
 	register integer mask,
 			 sign,

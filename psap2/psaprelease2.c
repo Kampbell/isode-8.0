@@ -33,12 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaprelease2.c,v 9.0 
 
 /*    P-RELEASE.RESPONSE */
 
-int	PRelResponse (sd, status, data, ndata, pi)
-int	sd;
-int	status;
-PE     *data;
-int	ndata;
-struct PSAPindication *pi;
+int 
+PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int	    len,

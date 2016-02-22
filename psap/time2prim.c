@@ -32,11 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/time2prim.c,v 9.0 1992
 
 /*  */
 
-PE	time2prim (u, generalized, class, id)
-register UTC	u;
-int	generalized;
-PElementClass	class;
-PElementID	id;
+PE 
+time2prim (register UTC u, int generalized, int class, int id)
 {
 	register int    len;
 	register char  *bp;

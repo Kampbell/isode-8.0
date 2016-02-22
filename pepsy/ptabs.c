@@ -1121,8 +1121,8 @@ char	*t, *f;
 	prte_off(fp, p1, yp, t, f, idx);
 }
 
-int addsptr (s)
-char *s;
+int 
+addsptr (char *s)
 {
 	char buf[BUFSIZ];
 

@@ -40,10 +40,8 @@ int  ps_write_len ();
 
 /*  */
 
-int	pe2ps_aux (ps, pe, eval)
-register PS	ps;
-register PE	pe;
-int	eval;
+int 
+pe2ps_aux (register PS ps, register PE pe, int eval)
 {
 	int     result;
 
@@ -65,10 +63,8 @@ int	eval;
 }
 
 
-static int  pe2ps_aux2 (ps, pe, eval)
-register PS	ps;
-register PE	pe;
-int	eval;
+static int 
+pe2ps_aux2 (register PS ps, register PE pe, int eval)
 {
 	register PE	    p;
 
@@ -108,9 +104,8 @@ int	eval;
 
 /*  */
 
-int  ps_write_id (ps, pe)
-register PS	ps;
-register PE	pe;
+int 
+ps_write_id (register PS ps, register PE pe)
 {
 	byte    buffer[1 + sizeof (PElementID)];
 	register byte  *bp = buffer;
@@ -153,9 +148,8 @@ register PE	pe;
 /* probably should integrate the non-PE_LEN_SMAX case with the algorithm in
    num2prim() for a single, unified routine */
 
-int  ps_write_len (ps, pe)
-register PS	ps;
-register PE	pe;
+int 
+ps_write_len (register PS ps, register PE pe)
 {
 	byte    buffer[1 + sizeof (PElementLen)];
 	register byte  *bp = buffer,

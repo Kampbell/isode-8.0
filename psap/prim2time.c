@@ -39,9 +39,8 @@ static long	get_usec ();
 
 /*  */
 
-UTC	prim2time (pe, generalized)
-register PE	pe;
-int	generalized;
+UTC 
+prim2time (register PE pe, int generalized)
 {
 	int     len;
 	register char  *cp;
@@ -70,9 +69,8 @@ int	generalized;
 
 /*  */
 
-UTC	str2utct (cp, len)
-register char  *cp;
-register int	len;
+UTC 
+str2utct (register char *cp, register int len)
 {
 	int     year,
 			hours,
@@ -124,9 +122,8 @@ register int	len;
 
 /*  */
 
-UTC	str2gent (cp, len)
-char   *cp;
-int	len;
+UTC 
+str2gent (char *cp, int len)
 {
 	int     hours,
 			mins;
@@ -235,9 +232,8 @@ get_zone:
 
 /* not perfect, but what is? */
 
-static long  get_usec (cp, len)
-char  **cp;
-int    *len;
+static long 
+get_usec (char **cp, int *len)
 {
 	register int    j;
 	register long   i;

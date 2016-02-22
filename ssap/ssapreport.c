@@ -35,12 +35,8 @@ static int  SUReportRequestAux ();
 
 /*    S-U-EXCEPTION-REPORT.REQUEST */
 
-int	SUReportRequest (sd, reason, data, cc, si)
-int	sd;
-int	reason;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SUReportRequest (int sd, int reason, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
@@ -64,12 +60,8 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SUReportRequestAux (sb, reason, data, cc, si)
-register struct ssapblk *sb;
-int	reason;
-char   *data;
-int	cc;
-register struct SSAPindication *si;
+static int 
+SUReportRequestAux (register struct ssapblk *sb, int reason, char *data, int cc, register struct SSAPindication *si)
 {
 	int	    result;
 

@@ -60,9 +60,8 @@ static int  log_x25_facilities ();
 
 /* ARGSUSED */
 
-int     start_x25_client (local, priv)
-struct  NSAPaddr *local;
-int     priv;
+int 
+start_x25_client (struct NSAPaddr *local, int priv)
 {
 	int     sd;
 
@@ -88,11 +87,8 @@ int     priv;
 
 /*  */
 
-int     start_x25_server (local, backlog, opt1, opt2)
-struct  NSAPaddr *local;
-int     backlog,
-		opt1,
-		opt2;
+int 
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 {
 	CONN_DB     sbuf,
 				xbuf;
@@ -195,9 +191,8 @@ int     backlog,
 
 /*  */
 
-int     join_x25_server (fd, remote)
-register int fd;
-register struct NSAPaddr *remote;
+int 
+join_x25_server (register int fd, register struct NSAPaddr *remote)
 {
 	CONN_DB sbuf;
 	CONN_DB *sock = &sbuf;
@@ -245,9 +240,8 @@ register struct NSAPaddr *remote;
 
 /*  */
 
-int     join_x25_client (fd, remote)
-int     fd;
-struct  NSAPaddr *remote;
+int 
+join_x25_client (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB     sbuf;
 	CONN_DB     *sock = &sbuf;
@@ -308,9 +302,8 @@ int	sun_fixed_thruput = 0;
    localised as is normally the case.  */
 
 /* ARGSUSED */
-int     set_x25_facilities(sd, coc, caption)
-int     sd, coc;
-char *caption;
+int 
+set_x25_facilities (int sd, int coc, char *caption)
 {
 	FACILITY_DB facilities;
 
@@ -392,8 +385,8 @@ char *caption;
 
 /*  */
 
-int     log_cause_and_diag(fd)
-int fd;
+int 
+log_cause_and_diag (int fd)
 {
 	X25_CAUSE_DIAG      diag;
 
@@ -410,10 +403,8 @@ int fd;
 
 #ifdef  DEBUG
 
-static int  log_x25_facilities (fd, coc, caption)
-int     fd;
-int     coc;
-char   *caption;
+static int 
+log_x25_facilities (int fd, int coc, char *caption)
 {
 	FACILITY_DB f;
 
@@ -429,10 +420,8 @@ char   *caption;
 
 /*  */
 
-static void  print_x25_facilities (f, coc, caption)
-FACILITY_DB f;
-int     coc;
-char   *caption;
+static void 
+print_x25_facilities (FACILITY_DB f, int coc, char *caption)
 {
 	int     baud;
 
@@ -676,8 +665,10 @@ print_send:
 }
 #endif
 #else
-int	_sunlink_stub2 () {}
+int 
+_sunlink_stub2 (void) {}
 #endif
 #else
-int	_sunlink_stub () {}
+int 
+_sunlink_stub (void) {}
 #endif

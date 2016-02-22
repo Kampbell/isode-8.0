@@ -81,11 +81,8 @@ static int  doFINISH ();
 
 /*    P-[*-]DATA.REQUEST */
 
-int	PDataRequest (sd, data, ndata, pi)
-int	sd;
-PE     *data;
-int	ndata;
-struct PSAPindication *pi;
+int 
+PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi)
 {
 	return PDataRequestAux (sd, data, ndata, pi, "user", SDataRequest,
 							"SDataRequest", "P-DATA user-data", PPDU_TD);
@@ -93,16 +90,8 @@ struct PSAPindication *pi;
 
 /*  */
 
-int	PDataRequestAux (sd, data, ndata, pi, dtype, sfunc, stype, text, ppdu)
-int	sd;
-PE     *data;
-int	ndata;
-struct PSAPindication *pi;
-char   *dtype,
-	   *stype,
-	   *text;
-IFP	sfunc;
-int	ppdu;
+int 
+PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype, char *text, int ppdu)
 {
 	SBV	    smask;
 	int     i,
@@ -177,11 +166,8 @@ out1:
 
 /*    P-READ.REQUEST (pseudo) */
 
-int	PReadRequest (sd, px, secs, pi)
-int	sd;
-struct PSAPdata *px;
-int	secs;
-struct PSAPindication *pi;
+int 
+PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int     result;
@@ -203,11 +189,8 @@ struct PSAPindication *pi;
 
 /*  */
 
-static int  PReadRequestAux (pb, px, secs, pi)
-register struct psapblk *pb;
-struct PSAPdata *px;
-int	secs;
-register struct PSAPindication *pi;
+static int 
+PReadRequestAux (register struct psapblk *pb, struct PSAPdata *px, int secs, register struct PSAPindication *pi)
 {
 	int	    result;
 	struct SSAPdata sxs;
@@ -263,11 +246,8 @@ register struct PSAPindication *pi;
 
 /*  */
 
-static int  doDATA (pb, sx, px, pi)
-register struct psapblk *pb;
-register struct SSAPdata *sx;
-register struct PSAPdata  *px;
-struct PSAPindication *pi;
+static int 
+doDATA (register struct psapblk *pb, register struct SSAPdata *sx, register struct PSAPdata *px, struct PSAPindication *pi)
 {
 	int     ppdu,
 			result;
@@ -320,10 +300,8 @@ out:
 
 /*  */
 
-static int  doTOKEN (pb, st, pi)
-register struct psapblk *pb;
-register struct SSAPtoken *st;
-struct PSAPindication *pi;
+static int 
+doTOKEN (register struct psapblk *pb, register struct SSAPtoken *st, struct PSAPindication *pi)
 {
 	int	    result;
 	register struct PSAPtoken  *pt = &pi -> pi_token;
@@ -344,10 +322,8 @@ struct PSAPindication *pi;
 
 /*  */
 
-static int  doSYNC (pb, sn, pi)
-register struct psapblk *pb;
-register struct SSAPsync *sn;
-struct PSAPindication *pi;
+static int 
+doSYNC (register struct psapblk *pb, register struct SSAPsync *sn, struct PSAPindication *pi)
 {
 	int	    result;
 	register struct PSAPsync   *pn = &pi -> pi_sync;
@@ -378,10 +354,8 @@ struct PSAPindication *pi;
 
 /*  */
 
-static int  doACTIVITY (pb, sv, pi)
-register struct psapblk *pb;
-register struct SSAPactivity *sv;
-struct PSAPindication *pi;
+static int 
+doACTIVITY (register struct psapblk *pb, register struct SSAPactivity *sv, struct PSAPindication *pi)
 {
 	int	    result;
 	register struct PSAPactivity   *pv = &pi -> pi_activity;
@@ -409,10 +383,8 @@ struct PSAPindication *pi;
 
 /*  */
 
-static int  doREPORT (pb, sp, pi)
-register struct psapblk *pb;
-register struct SSAPreport *sp;
-struct PSAPindication *pi;
+static int 
+doREPORT (register struct psapblk *pb, register struct SSAPreport *sp, struct PSAPindication *pi)
 {
 	int	    result;
 	register struct PSAPreport *pp = &pi -> pi_report;
@@ -432,10 +404,8 @@ struct PSAPindication *pi;
 
 /*  */
 
-static int  doFINISH (pb, sf, pi)
-register struct psapblk *pb;
-register struct SSAPfinish *sf;
-struct PSAPindication *pi;
+static int 
+doFINISH (register struct psapblk *pb, register struct SSAPfinish *sf, struct PSAPindication *pi)
 {
 	int	    result;
 	register struct PSAPfinish *pf = &pi -> pi_finish;
@@ -457,10 +427,8 @@ struct PSAPindication *pi;
 
 /*  */
 
-int	ss2psabort (pb, sa, pi)
-register struct psapblk *pb;
-register struct SSAPabort *sa;
-struct PSAPindication *pi;
+int 
+ss2psabort (register struct psapblk *pb, register struct SSAPabort *sa, struct PSAPindication *pi)
 {
 	int	    result,
 			ppdu;
@@ -550,17 +518,8 @@ out:
 #define	e(i)	(data ? (i) : NULLIFP)
 
 
-int	PSetIndications (sd, data, tokens, sync, activity, report, finish,
-					 abort, pi)
-int	sd;
-IFP	data,
-	tokens,
-	sync,
-	activity,
-	report,
-	finish,
-	abort;
-struct PSAPindication *pi;
+int 
+PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish, IFP abort, struct PSAPindication *pi)
 {
 	SBV     smask;
 	register struct psapblk *pb;
@@ -618,11 +577,8 @@ struct PSAPindication *pi;
 
 /*    SSAP interface */
 
-int	ss2pslose (pb, pi, event, sa)
-register struct psapblk *pb;
-register struct PSAPindication *pi;
-char   *event;
-register struct SSAPabort *sa;
+int 
+ss2pslose (register struct psapblk *pb, register struct PSAPindication *pi, char *event, register struct SSAPabort *sa)
 {
 	int     reason;
 	char   *cp,
@@ -699,9 +655,8 @@ register struct SSAPabort *sa;
 
 /*  */
 
-static int  DATAser (sd, sx)
-int     sd;
-register struct SSAPdata   *sx;
+static int 
+DATAser (int sd, register struct SSAPdata *sx)
 {
 	IFP	    abort;
 	register struct psapblk *pb;
@@ -724,9 +679,8 @@ register struct SSAPdata   *sx;
 
 /*  */
 
-static int  TOKENser (sd, st)
-int     sd;
-register struct SSAPtoken *st;
+static int 
+TOKENser (int sd, register struct SSAPtoken *st)
 {
 	IFP	    abort;
 	register struct psapblk *pb;
@@ -747,9 +701,8 @@ register struct SSAPtoken *st;
 
 /*  */
 
-static int  SYNCser (sd, sn)
-int     sd;
-register struct SSAPsync   *sn;
+static int 
+SYNCser (int sd, register struct SSAPsync *sn)
 {
 	IFP	    abort;
 	register struct psapblk *pb;
@@ -770,9 +723,8 @@ register struct SSAPsync   *sn;
 
 /*  */
 
-static int  ACTIVITYser (sd, sv)
-int     sd;
-register struct SSAPactivity   *sv;
+static int 
+ACTIVITYser (int sd, register struct SSAPactivity *sv)
 {
 	IFP	    abort;
 	register struct psapblk *pb;
@@ -793,9 +745,8 @@ register struct SSAPactivity   *sv;
 
 /*  */
 
-static int  REPORTser (sd, sp)
-int     sd;
-register struct SSAPreport   *sp;
+static int 
+REPORTser (int sd, register struct SSAPreport *sp)
 {
 	IFP	    abort;
 	register struct psapblk *pb;
@@ -816,9 +767,8 @@ register struct SSAPreport   *sp;
 
 /*  */
 
-static int  FINISHser (sd, sf)
-int     sd;
-register struct SSAPfinish   *sf;
+static int 
+FINISHser (int sd, register struct SSAPfinish *sf)
 {
 	IFP	    abort;
 	register struct psapblk *pb;
@@ -839,9 +789,8 @@ register struct SSAPfinish   *sf;
 
 /*  */
 
-static int  ABORTser (sd, sa)
-int     sd;
-register struct SSAPabort   *sa;
+static int 
+ABORTser (int sd, register struct SSAPabort *sa)
 {
 	IFP	    abort;
 	register struct psapblk *pb;
@@ -860,7 +809,8 @@ register struct SSAPabort   *sa;
 
 /*    INTERNAL */
 
-struct psapblk  *newpblk () {
+struct psapblk *
+newpblk (void) {
 	register struct psapblk *pb;
 
 	pb = (struct psapblk   *) calloc (1, sizeof *pb);
@@ -880,8 +830,8 @@ struct psapblk  *newpblk () {
 }
 
 
-int	freepblk (pb)
-register struct psapblk *pb;
+int 
+freepblk (register struct psapblk *pb)
 {
 	register int    i;
 	register struct PSAPcontext *qp;
@@ -927,8 +877,8 @@ register struct psapblk *pb;
 
 /*  */
 
-struct psapblk   *findpblk (sd)
-register int sd;
+struct psapblk *
+findpblk (register int sd)
 {
 	register struct psapblk *pb;
 
@@ -944,12 +894,8 @@ register int sd;
 
 /*  */
 
-struct type_PS_User__data *info2ppdu (pb, pi, data, ndata, ppdu)
-register struct psapblk *pb;
-struct PSAPindication *pi;
-PE     *data;
-int	ndata,
-	ppdu;
+struct type_PS_User__data *
+info2ppdu (register struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, int ppdu)
 {
 	register int    i,
 			 j;
@@ -1115,13 +1061,8 @@ out:
 
 /*  */
 
-int	ppdu2info (pb, pi, info, data, ndata, ppdu)
-register struct psapblk *pb;
-struct PSAPindication *pi;
-struct type_PS_User__data *info;
-PE     *data;
-int    *ndata,
-	   ppdu;
+int 
+ppdu2info (register struct psapblk *pb, struct PSAPindication *pi, struct type_PS_User__data *info, PE *data, int *ndata, int ppdu)
 {
 	register int    i,
 			 j;
@@ -1232,16 +1173,8 @@ int    *ndata,
 /* ARGSUSED */
 #endif
 
-int	info2ssdu (pb, pi, data, ndata, realbase, base, len, text, ppdu)
-register struct psapblk *pb;
-struct PSAPindication *pi;
-PE     *data;
-int	ndata;
-char  **realbase,
-	  **base;
-int    *len;
-char   *text;
-int	ppdu;
+int 
+info2ssdu (register struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, char **realbase, char **base, int *len, char *text, int ppdu)
 {
 	int	    result;
 	PE	    pe;
@@ -1338,15 +1271,8 @@ serialize:
 /* ARGSUSED */
 #endif
 
-int	ssdu2info (pb, pi, base, len, data, ndata, text, ppdu)
-register struct psapblk *pb;
-struct PSAPindication *pi;
-char   *base;
-int     len;
-PE     *data;
-int    *ndata;
-char   *text;
-int	ppdu;
+int 
+ssdu2info (register struct psapblk *pb, struct PSAPindication *pi, char *base, int len, PE *data, int *ndata, char *text, int ppdu)
 {
 	int    result;
 	register PE	    pe;
@@ -1474,15 +1400,8 @@ punch_it:
 /* ARGSUSED */
 #endif
 
-int	qbuf2info (pb, pi, qb, len, data, ndata, text, ppdu)
-register struct psapblk *pb;
-struct PSAPindication *pi;
-struct qbuf *qb;
-int     len;
-PE     *data;
-int    *ndata;
-char   *text;
-int	ppdu;
+int 
+qbuf2info (register struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, int len, PE *data, int *ndata, char *text, int ppdu)
 {
 	int	    result;
 	register PE	    pe;
@@ -1603,10 +1522,8 @@ out:
 
 /*  */
 
-struct qbuf *info2qb (pe, qp, pi)
-register PE pe;
-register struct qbuf *qp;
-struct PSAPindication *pi;
+struct qbuf *
+info2qb (register PE pe, register struct qbuf *qp, struct PSAPindication *pi)
 {
 	int           len, qlen;
 	register struct qbuf *qb;
@@ -1660,9 +1577,8 @@ out_f:
 
 /*  */
 
-int	qb2info (qb, pe)
-register struct qbuf *qb;
-PE     *pe;
+int 
+qb2info (register struct qbuf *qb, PE *pe)
 {
 	int	    result;
 #ifdef	DEBUG
@@ -1702,9 +1618,8 @@ PE     *pe;
 
 /*  */
 
-struct type_PS_Identifier__list *silly_list (pb, pi)
-register struct psapblk *pb;
-struct PSAPindication *pi;
+struct type_PS_Identifier__list *
+silly_list (register struct psapblk *pb, struct PSAPindication *pi)
 {
 	register int    j;
 	register struct PSAPcontext *qp;

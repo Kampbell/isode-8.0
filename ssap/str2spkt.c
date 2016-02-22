@@ -33,8 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/str2spkt.c,v 9.0 1992/
 
 /*  */
 
-char   *spkt2str (s)
-struct ssapkt *s;
+char *
+spkt2str (struct ssapkt *s)
 {
 	int     i,
 			len;
@@ -81,8 +81,8 @@ struct ssapkt *s;
 
 /*  */
 
-struct ssapkt *str2spkt (buffer)
-char  *buffer;
+struct ssapkt *
+str2spkt (char *buffer)
 {
 	int	    cc;
 	char    packet[CONNECT_MAX + BUFSIZ];

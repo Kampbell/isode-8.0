@@ -32,19 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapwrite.c,v 9.0 1992
 
 /*  */
 
-int	SWriteRequestAux (sb, code, data, cc, type, ssn, settings,
-					  id, oid, ref, si)
-register struct ssapblk *sb;
-int     code;
-char   *data;
-int     cc,
-		type,
-		settings;
-long	ssn;
-struct SSAPactid   *id,
-		*oid;
-struct SSAPref *ref;
-struct SSAPindication  *si;
+int 
+SWriteRequestAux (register struct ssapblk *sb, int code, char *data, int cc, int type, long ssn, int settings, struct SSAPactid *id, struct SSAPactid *oid, struct SSAPref *ref, struct SSAPindication *si)
 {
 	int     result;
 	register struct ssapkt *s,

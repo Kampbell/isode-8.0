@@ -64,8 +64,8 @@ static fd_set in_rfds, in_wfds, in_efds;
 static fd_set out_rfds, out_wfds, out_efds;
 static int out_n;
 
-void rhandler(fd)
-int fd;
+void 
+rhandler (int fd)
 {
 	if ( FD_ISSET(fd,&in_rfds) ) {
 		FD_SET(fd,&out_rfds);
@@ -73,8 +73,8 @@ int fd;
 	}
 }
 
-void whandler(fd)
-int fd;
+void 
+whandler (int fd)
 {
 	if ( FD_ISSET(fd,&in_wfds) ) {
 		FD_SET(fd,&out_wfds);
@@ -82,8 +82,8 @@ int fd;
 	}
 }
 
-void xhandler(fd)
-int fd;
+void 
+xhandler (int fd)
 {
 	if ( FD_ISSET(fd,&in_efds) ) {
 		FD_SET(fd,&out_efds);
@@ -94,12 +94,8 @@ int fd;
 #endif
 #endif
 
-int	selsocket (nfds, rfds, wfds, efds, secs)
-int	nfds;
-fd_set *rfds,
-	   *wfds,
-	   *efds;
-int	secs;
+int 
+selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs)
 {
 	int     n;
 	fd_set  ifds,

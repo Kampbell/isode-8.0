@@ -49,8 +49,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ubcx25.c,v 9.0 1992/
 
 /*  */
 
-int     start_x25_client (local)
-struct NSAPaddr *local;
+int 
+start_x25_client (struct NSAPaddr *local)
 {
 	int     sd, pgrp;
 
@@ -72,11 +72,8 @@ struct NSAPaddr *local;
 
 /*  */
 
-int     start_x25_server (local, backlog, opt1, opt2)
-struct NSAPaddr *local;
-int     backlog,
-		opt1,
-		opt2;
+int 
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 {
 	int     sd, pgrp;
 #ifdef	notyet
@@ -139,9 +136,8 @@ int     backlog,
 
 /*  */
 
-int     join_x25_client (fd, remote)
-int     fd;
-struct NSAPaddr *remote;
+int 
+join_x25_client (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB     sck;
 	int     len = sizeof sck;
@@ -153,9 +149,8 @@ struct NSAPaddr *remote;
 	return nfd;
 }
 
-int     join_x25_server (fd, remote)
-int     fd;
-struct NSAPaddr *remote;
+int 
+join_x25_server (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB zsck;
 	CONN_DB *sck = &zsck;
@@ -300,8 +295,10 @@ char    *buffer;
 #endif
 
 #else   /* UBC_X25 */
-int     _ubcx25_stub2 () {}
+int 
+_ubcx25_stub2 (void) {}
 #endif  /* UBC_X25 */
 #else	/* X25 */
-int	_ubcx25_stub () {}
+int 
+_ubcx25_stub (void) {}
 #endif  /* X25 */

@@ -71,8 +71,8 @@ static int pending = 0;
 
 static SFP handler[NSIG];
 
-static SFD sigser (sig)
-int	sig;
+static SFD 
+sigser (int sig)
 {
 	(void) signal (sig, sigser);
 
@@ -82,8 +82,8 @@ int	sig;
 /*  */
 #ifndef SVR4_UCB
 
-int	sigblock (mask)
-int	mask;
+int 
+sigblock (int mask)
 {
 	register int    sig,
 			 smask;
@@ -102,8 +102,8 @@ int	mask;
 	return omask;
 }
 
-int	sigsetmask (mask)
-int	mask;
+int 
+sigsetmask (int mask)
 {
 	register int    sig,
 			 smask;

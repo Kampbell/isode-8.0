@@ -33,11 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapselect.c,v 9.0 19
 
 /*    map presentation descriptors for select() */
 
-int	PSelectMask (sd, mask, nfds, pi)
-int	sd;
-fd_set *mask;
-int    *nfds;
-struct PSAPindication *pi;
+int 
+PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi)
 {
 	SBV     smask;
 	register struct psapblk *pb;

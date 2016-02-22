@@ -72,9 +72,8 @@ static int pe_id_overshift = PE_ID_MASK << (PE_ID_BITS - PE_ID_SHIFT);
 
 /*  */
 
-PE
-qbuf2pe_f (result)
-int	*result;
+PE 
+qbuf2pe_f (int *result)
 {
 	register PE	pe;
 	register struct qbuf *qp;
@@ -219,10 +218,8 @@ you_lose:
 
 /*  */
 
-static	int  qb_read_cons (pe, len, cresult)
-register PE	*pe;
-register PElementLen len;
-register int *cresult;
+static int 
+qb_read_cons (register PE *pe, register PElementLen len, register int *cresult)
 {
 	register int    cc;
 	register PE    p, q;
@@ -288,9 +285,8 @@ no_cons:
 
 /*  */
 
-static	qbuf2data(data, len)
-PElementData data;
-PElementLen len;
+static 
+qbuf2data (PElementData data, PElementLen len)
 {
 	register struct qbuf *qp;
 	register int i, cc;
@@ -318,7 +314,8 @@ leave:
 /*  */
 
 #ifdef DEBUG
-qbprintf() {
+int 
+qbprintf (void) {
 	int len;
 	struct qbuf *qb;
 	char *cp;

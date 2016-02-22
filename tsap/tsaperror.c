@@ -144,8 +144,8 @@ static char *cons_err1[] = {
 
 /*  */
 
-char *TErrString(code)
-register int	code;
+char *
+TErrString (register int code)
 {
 	register int    fcode;
 	static char buffer[60];

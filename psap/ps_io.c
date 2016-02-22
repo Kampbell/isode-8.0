@@ -32,12 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_io.c,v 9.0 1992/06/
 
 /*  */
 
-int	ps_io (ps, io, data, n, in_line)
-register PS	ps;
-register IFP	io;
-register PElementData data;
-register PElementLen n;
-int	in_line;
+int 
+ps_io (register PS ps, register IFP io, register PElementData data, register PElementLen n, int in_line)
 {
 	register int    cc;
 

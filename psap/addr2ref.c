@@ -34,8 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/addr2ref.c,v 9.0 1992/
 static int  stuff ();
 /*  */
 
-struct SSAPref *addr2ref (addr)
-register char   *addr;
+struct SSAPref *
+addr2ref (register char *addr)
 {
 	int     result;
 	long    clock;
@@ -71,10 +71,8 @@ register char   *addr;
 
 /*  */
 
-static int  stuff (pe, dbase, dlen)
-register PE pe;
-register char *dbase;
-register u_char *dlen;
+static int 
+stuff (register PE pe, register char *dbase, register u_char *dlen)
 {
 	int     len;
 	char   *base;

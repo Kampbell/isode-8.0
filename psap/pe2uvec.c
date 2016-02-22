@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2uvec.c,v 9.0 1992/0
 
 /*  */
 
-int	pe2uvec (pe, uv)
-register PE pe;
-struct udvec **uv;
+int 
+pe2uvec (register PE pe, struct udvec **uv)
 {
 	int	    cc;
 #ifdef	DEBUG

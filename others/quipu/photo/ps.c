@@ -33,8 +33,8 @@ static int x, y;
 
 extern int two_passes;
 
-photo_start (name)
-char * name;
+int 
+photo_start (char *name)
 {
 	x = 0;
 	y = HEIGHT;
@@ -44,8 +44,8 @@ char * name;
 }
 
 
-photo_end (name)
-char * name;
+int 
+photo_end (char *name)
 {
 	/* Decoding has finished - display the image */
 
@@ -53,16 +53,16 @@ char * name;
 	return 0;
 }
 
-photo_black (length)
-int length;
+int 
+photo_black (int length)
 {
 	if (length > 0)
 		(void) printf ("%d %d moveto %d %d lineto stroke\n", x, y, x + length - 1, y);
 	x += length;
 }
 
-photo_white (length)
-int length;
+int 
+photo_white (int length)
 {
 	x += length;
 }

@@ -93,10 +93,8 @@ static	log_utmp ();
 
 /* ARGSUSED  */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    eof,
 			status,
@@ -418,8 +416,8 @@ were_out_of_here:
 
 /*    ARGINIT */
 
-static	arginit (vec)
-char  **vec;
+static 
+arginit (char **vec)
 {
 	register char  *ap;
 
@@ -503,9 +501,8 @@ char  **vec;
 
 /*    INTERACTIVE */
 
-int	getline (prompt, buffer)
-char   *prompt,
-	   *buffer;
+int 
+getline (char *prompt, char *buffer)
 {
 	register int    i;
 	register char  *cp,
@@ -697,8 +694,8 @@ again:
 #else
 /* VARARGS */
 
-int	ask (fmt)
-char   *fmt;
+int 
+ask (char *fmt)
 {
 	return ask (fmt);
 }
@@ -706,9 +703,8 @@ char   *fmt;
 
 /*  */
 
-int	str2vecY (buffer, vec)
-char   *buffer,
-	   **vec;
+int 
+str2vecY (char *buffer, char **vec)
 {
 	int	    i;
 	register char *cp,
@@ -755,8 +751,8 @@ normal:
 
  */
 
-static	rcmap (isock)
-struct sockaddr_in *isock;
+static 
+rcmap (struct sockaddr_in *isock)
 {
 	u_long	hostaddr,
 			netmask,
@@ -841,9 +837,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -882,9 +877,8 @@ va_list	ap;
 #else
 /* VARARGS */
 
-void	advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }

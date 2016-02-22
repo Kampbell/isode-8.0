@@ -37,9 +37,8 @@ extern int      errno;
 
 #include "internet.h"
 
-main(argc,argv)
-int	argc;
-char	*argv[];
+int 
+main (int argc, char *argv[])
 {
 	int 			sd,res,status;
 	struct sockaddr_in	sin_buf;
@@ -120,9 +119,8 @@ char	*argv[];
 char retfile [LINESIZE];
 int fd;
 
-main (argc,argv)
-int argc;
-char ** argv;
+int 
+main (int argc, char **argv)
 {
 	int res;
 	char buffer [BUFSIZ];
@@ -206,8 +204,8 @@ char ** argv;
 		exit (-1);
 }
 
-void pipe_quit (sig)
-int     sig;
+void 
+pipe_quit (int sig)
 {
 	(void) unlink (retfile);
 	(void) fprintf (stderr,"(signal %d) exiting...\n",sig);

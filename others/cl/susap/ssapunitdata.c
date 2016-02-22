@@ -103,13 +103,8 @@ int	TUNITDATAser ();
  ****************************************************************
  */
 
-int	SUnitDataBind (sd, local, remote, qos, si)
-
-int    			sd;
-struct SSAPaddr 	*local;
-struct SSAPaddr 	*remote;
-struct QOStype  	*qos;
-struct SSAPindication 	*si;
+int 
+SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct QOStype *qos, struct SSAPindication *si)
 
 {
 
@@ -275,10 +270,8 @@ struct SSAPindication 	*si;
  ****************************************************************
  */
 
-int     SUnitDataUnbind (sd, si)
-
-int	sd;
-struct  SSAPindication *si;
+int 
+SUnitDataUnbind (int sd, struct SSAPindication *si)
 
 {
 
@@ -335,12 +328,8 @@ struct  SSAPindication *si;
  ****************************************************************
  */
 
-int	SuSave (sd, vecp, vec, si)
-
-int	 	 sd;
-register int     vecp;
-register char  **vec;
-register struct  SSAPindication *si;
+int 
+SuSave (int sd, register int vecp, register char **vec, register struct SSAPindication *si)
 
 {
 
@@ -416,14 +405,8 @@ register struct  SSAPindication *si;
  ****************************************************************
  */
 
-int     SUnitDataRequest (calling, called, data, cc, qos, si)
-
-struct SSAPaddr *calling,
-		*called;
-register char	*data;
-int		cc;
-struct QOStype  *qos;
-struct  SSAPindication *si;
+int 
+SUnitDataRequest (struct SSAPaddr *calling, struct SSAPaddr *called, register char *data, int cc, struct QOStype *qos, struct SSAPindication *si)
 
 
 {
@@ -483,12 +466,8 @@ struct  SSAPindication *si;
  ****************************************************************
  */
 
-int     SUnitDataWrite (sd, data, cc, si)
-
-int 	 	sd;
-register char	*data;
-int		cc;
-struct  SSAPindication *si;
+int 
+SUnitDataWrite (int sd, register char *data, int cc, struct SSAPindication *si)
 
 {
 
@@ -679,10 +658,8 @@ struct  SSAPindication *si;
  ****************************************************************
  */
 
-int     SUnitDataWriteV (sd, uv, si)
-
-int 	 sd;
-register struct udvec	*uv;
+int 
+SUnitDataWriteV (int sd, register struct udvec *uv, int si)
 
 
 {
@@ -914,12 +891,8 @@ register struct udvec	*uv;
  ****************************************************************
  */
 
-int	SUnitDataRead (sd, sud, secs, si)
-
-int	sd;
-struct  SuSAPstart     *sud;
-int	secs;
-struct  SSAPindication *si;
+int 
+SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *si)
 
 {
 
@@ -988,14 +961,8 @@ struct  SSAPindication *si;
  ****************************************************************
  */
 
-static int  SUnitDataReadAux (sb, sud, secs, si, async, tud)
-
-register struct ssapblk *sb;
-register struct SuSAPstart *sud;
-int	secs;
-struct SSAPindication *si;
-int	async;
-register struct TSAPunitdata   *tud;
+static int 
+SUnitDataReadAux (register struct ssapblk *sb, register struct SuSAPstart *sud, int secs, struct SSAPindication *si, int async, register struct TSAPunitdata *tud)
 
 
 {
@@ -1179,12 +1146,8 @@ struct SSAPindication *si;
 
 /*  */
 
-struct ssapkt   *sb2udspkt (sb, si, secs, tud)
-
-register struct ssapblk *sb;
-register struct SSAPindication *si;
-int     secs;
-register struct TSAPunitdata   *tud;
+struct ssapkt *
+sb2udspkt (register struct ssapblk *sb, register struct SSAPindication *si, int secs, register struct TSAPunitdata *tud)
 
 {
 	int     			cc;
@@ -1281,9 +1244,8 @@ register struct TSAPunitdata   *tud;
  ****************************************************************
  */
 
-static int  TUNITDATAser (sd, tud)
-int     sd;
-register struct TSAPunitdata   *tx;
+static int 
+TUNITDATAser (int sd, int tud)
 {
 	IFP	    abort;
 	register struct ssapblk *sb;

@@ -47,10 +47,8 @@ static int  doPStoken ();
 
 /*  */
 
-int	rt2pspturn (acb, priority, rti)
-register struct assocblk *acb;
-int	priority;
-register struct RtSAPindication *rti;
+int 
+rt2pspturn (register struct assocblk *acb, int priority, register struct RtSAPindication *rti)
 {
 	int     result;
 	PE	    pe;
@@ -86,9 +84,8 @@ register struct RtSAPindication *rti;
 
 /*  */
 
-int	rt2psgturn (acb, rti)
-register struct assocblk *acb;
-register struct RtSAPindication *rti;
+int 
+rt2psgturn (register struct assocblk *acb, register struct RtSAPindication *rti)
 {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
@@ -115,11 +112,8 @@ register struct RtSAPindication *rti;
 
 /*  */
 
-int	rt2pstrans (acb, data, secs, rti)
-register struct assocblk *acb;
-register PE	data;
-int	secs;
-register struct RtSAPindication *rti;
+int 
+rt2pstrans (register struct assocblk *acb, register PE data, int secs, register struct RtSAPindication *rti)
 {
 	register int    cc,
 			 size;
@@ -336,11 +330,8 @@ out:
 
 /*  */
 
-int	rt2pswait (acb, secs, trans, rti)
-register struct assocblk *acb;
-int     secs,
-		trans;
-register struct RtSAPindication *rti;
+int 
+rt2pswait (register struct assocblk *acb, int secs, int trans, register struct RtSAPindication *rti)
 {
 	int     result;
 	struct PSAPdata pxs;
@@ -411,10 +402,8 @@ register struct RtSAPindication *rti;
 #define	e(i)	(indication ? (i) : NULLIFP)
 
 
-int	rt2psasync (acb, indication, rti)
-register struct assocblk   *acb;
-IFP	indication;
-struct RtSAPindication *rti;
+int 
+rt2psasync (register struct assocblk *acb, IFP indication, struct RtSAPindication *rti)
 {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
@@ -447,11 +436,8 @@ struct RtSAPindication *rti;
 
 /*    map association descriptors for select() */
 
-int	rt2psmask (acb, mask, nfds, rti)
-register struct assocblk   *acb;
-fd_set *mask;
-int    *nfds;
-struct RtSAPindication *rti;
+int 
+rt2psmask (register struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti)
 {
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
@@ -473,9 +459,8 @@ struct RtSAPindication *rti;
 
 /*    protocol-level abort */
 
-int	rt2pslose (acb, result)
-register struct assocblk   *acb;
-int	result;
+int 
+rt2pslose (register struct assocblk *acb, int result)
 {
 	PE	    pe;
 	struct AcSAPindication  acis;
@@ -496,11 +481,8 @@ int	result;
 
 /*    AcSAP interface */
 
-int	acs2rtslose (acb, rti, event, aca)
-register struct assocblk *acb;
-register struct RtSAPindication *rti;
-char   *event;
-register struct AcSAPabort *aca;
+int 
+acs2rtslose (register struct assocblk *acb, register struct RtSAPindication *rti, char *event, register struct AcSAPabort *aca)
 {
 	int     reason;
 	char   *cp,
@@ -557,10 +539,8 @@ register struct AcSAPabort *aca;
 
 /*  */
 
-int	acs2rtsabort (acb, aca, rti)
-register struct assocblk *acb;
-register struct AcSAPabort *aca;
-struct RtSAPindication *rti;
+int 
+acs2rtsabort (register struct assocblk *acb, register struct AcSAPabort *aca, struct RtSAPindication *rti)
 {
 	int     result;
 	PE	    pe;
@@ -652,10 +632,8 @@ out:
 
 /*    PSAP interface */
 
-static int  doPSdata (acb, px, rti)
-register struct assocblk   *acb;
-register struct PSAPdata *px;
-struct RtSAPindication *rti;
+static int 
+doPSdata (register struct assocblk *acb, register struct PSAPdata *px, struct RtSAPindication *rti)
 {
 	unsigned int    i;
 	register char  *dp;
@@ -747,11 +725,8 @@ out:
 
 /*  */
 
-static int  doPStoken (acb, pt, trans, rti)
-register struct assocblk   *acb;
-register struct PSAPtoken *pt;
-int	trans;
-struct RtSAPindication *rti;
+static int 
+doPStoken (register struct assocblk *acb, register struct PSAPtoken *pt, int trans, struct RtSAPindication *rti)
 {
 	register PE	    pe;
 	struct PSAPindication   pis;
@@ -842,10 +817,8 @@ out:
 
 /*  */
 
-static int  doPSsync (acb, pn, rti)
-register struct assocblk   *acb;
-register struct PSAPsync *pn;
-struct RtSAPindication *rti;
+static int 
+doPSsync (register struct assocblk *acb, register struct PSAPsync *pn, struct RtSAPindication *rti)
 {
 	struct PSAPindication   pis;
 	register struct PSAPindication *pi = &pis;
@@ -897,10 +870,8 @@ out:
 
 /*  */
 
-static int  doPSactivity (acb, pv, rti)
-register struct assocblk   *acb;
-register struct PSAPactivity *pv;
-struct RtSAPindication *rti;
+static int 
+doPSactivity (register struct assocblk *acb, register struct PSAPactivity *pv, struct RtSAPindication *rti)
 {
 	int     result;
 	register PE	    pe;
@@ -1049,10 +1020,8 @@ out:
 
 /*  */
 
-static int  doPSreport (acb, pp, rti)
-register struct assocblk   *acb;
-register struct PSAPreport *pp;
-struct RtSAPindication *rti;
+static int 
+doPSreport (register struct assocblk *acb, register struct PSAPreport *pp, struct RtSAPindication *rti)
 {
 	struct PSAPindication   pis;
 	register struct PSAPindication *pi = &pis;
@@ -1101,10 +1070,8 @@ out1:
 
 /*  */
 
-static int  doPSfinish (acb, pf, rti)
-register struct assocblk   *acb;
-struct PSAPfinish *pf;
-struct RtSAPindication *rti;
+static int 
+doPSfinish (register struct assocblk *acb, struct PSAPfinish *pf, struct RtSAPindication *rti)
 {
 	struct AcSAPindication acis;
 	register struct AcSAPabort *aca = &acis.aci_abort;
@@ -1144,10 +1111,8 @@ out:
 
 /*  */
 
-static int  doPSabort (acb, pa, rti)
-register struct assocblk   *acb;
-register struct PSAPabort *pa;
-struct RtSAPindication *rti;
+static int 
+doPSabort (register struct assocblk *acb, register struct PSAPabort *pa, struct RtSAPindication *rti)
 {
 	struct AcSAPindication  acis;
 	register struct AcSAPabort *aca = &acis.aci_abort;
@@ -1169,9 +1134,8 @@ struct RtSAPindication *rti;
 
 /*  */
 
-static int  psDATAser (sd, px)
-int	sd;
-register struct PSAPdata *px;
+static int 
+psDATAser (int sd, register struct PSAPdata *px)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -1188,9 +1152,8 @@ register struct PSAPdata *px;
 
 /*  */
 
-static int  psTOKENser (sd, pt)
-int	sd;
-register struct PSAPtoken *pt;
+static int 
+psTOKENser (int sd, register struct PSAPtoken *pt)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -1207,9 +1170,8 @@ register struct PSAPtoken *pt;
 
 /*  */
 
-static int  psSYNCser (sd, pn)
-int	sd;
-register struct PSAPsync *pn;
+static int 
+psSYNCser (int sd, register struct PSAPsync *pn)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -1226,9 +1188,8 @@ register struct PSAPsync *pn;
 
 /*  */
 
-static int  psACTIVITYser (sd, pv)
-int	sd;
-register struct PSAPactivity *pv;
+static int 
+psACTIVITYser (int sd, register struct PSAPactivity *pv)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -1245,9 +1206,8 @@ register struct PSAPactivity *pv;
 
 /*  */
 
-static int  psREPORTser (sd, pp)
-int	sd;
-register struct PSAPreport *pp;
+static int 
+psREPORTser (int sd, register struct PSAPreport *pp)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -1264,9 +1224,8 @@ register struct PSAPreport *pp;
 
 /*  */
 
-static int  psFINISHser (sd, pf)
-int	sd;
-struct PSAPfinish *pf;
+static int 
+psFINISHser (int sd, struct PSAPfinish *pf)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -1284,9 +1243,8 @@ struct PSAPfinish *pf;
 
 /*  */
 
-static int  psABORTser (sd, pa)
-int	sd;
-register struct PSAPabort *pa;
+static int 
+psABORTser (int sd, register struct PSAPabort *pa)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -1304,11 +1262,8 @@ register struct PSAPabort *pa;
 
 /*  */
 
-int	ps2rtslose (acb, rti, event, pa)
-register struct assocblk *acb;
-register struct RtSAPindication *rti;
-char   *event;
-register struct PSAPabort *pa;
+int 
+ps2rtslose (register struct assocblk *acb, register struct RtSAPindication *rti, char *event, register struct PSAPabort *pa)
 {
 	int     reason;
 	char   *cp,

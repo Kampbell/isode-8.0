@@ -221,9 +221,8 @@ static char buffer1[4096];
 static char buffer2[32768];
 
 
-static int  tsapud (vecp, vec)
-int	vecp;
-char  **vec;
+static int 
+tsapud (int vecp, char **vec)
 {
 	char    buffer[BUFSIZ];
 	register struct isoservent *is;
@@ -294,10 +293,8 @@ out:
 
 /*  */
 
-static void  ts_advise (td, code, event)
-register struct TSAPdisconnect *td;
-int	code;
-char   *event;
+static void 
+ts_advise (register struct TSAPdisconnect *td, int code, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -314,8 +311,8 @@ char   *event;
 
 /*  */
 
-static	arginit (vec)
-char	**vec;
+static 
+arginit (char **vec)
 {
 	int	    rflag;
 	register char  *ap;
@@ -408,7 +405,8 @@ char	**vec;
 
 /*  */
 
-static  envinit () {
+static 
+envinit (void) {
 	int     i,
 			sd;
 
@@ -489,9 +487,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -516,10 +513,8 @@ va_dcl {
 }
 
 
-static void  _advise (code, what, ap)
-int	code;
-char   *what;
-va_list	ap;
+static void 
+_advise (int code, char *what, va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -538,10 +533,8 @@ va_list	ap;
 #else
 /* VARARGS */
 
-void	advise (what, code, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (char *what, int code, char *fmt)
 {
 	advise (what, code, fmt);
 }

@@ -99,8 +99,8 @@ Filter search_filter;
 FILE *config_file;
 char *file_names[MAXTYPES];
 
-char *get_strioid(ptr)
-register char *ptr;
+char *
+get_strioid (register char *ptr)
 {
 	register char *end_ptr;
 
@@ -116,7 +116,8 @@ register char *ptr;
 	return ptr;
 }
 
-void user_tailor() {
+void 
+user_tailor (void) {
 	char           *part1;
 	char           *part2;
 	char           *getenv ();
@@ -414,14 +415,16 @@ void user_tailor() {
 	(void) fclose(config_file);
 }
 
-void main_help() {
+void 
+main_help (void) {
 	cleartext();
 	killwidgets(mainwdgts);
 	setwidgets(dethelpwdgts,-1);
 	help_cncs();
 }
 
-void main_bind() {
+void 
+main_bind (void) {
 	cleartext();
 	if (*passwd != 0)
 		(void) strcpy(bindpass,"******");
@@ -429,11 +432,13 @@ void main_bind() {
 		bindpass[0] = '\0';
 }
 
-void cnnct_quit () {
+void 
+cnnct_quit (void) {
 	quit("Exiting sd.\n", 0);
 }
 
-void cnnct_bind() {
+void 
+cnnct_bind (void) {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -517,7 +522,8 @@ void cnnct_bind() {
 	text_state = TEXT;
 }
 
-void rd_start() {
+void 
+rd_start (void) {
 	struct ds_read_arg read_arg;
 	struct ds_read_result   result;
 	struct DSError          error;
@@ -588,7 +594,8 @@ void rd_start() {
 	}
 }
 
-void back_start() {
+void 
+back_start (void) {
 	if (!back_buf_num) {
 		cleartext();
 		tprint("History Buffer Empty!\n");
@@ -608,7 +615,8 @@ void back_start() {
 	scrollbar('\0');
 }
 
-void widen() {
+void 
+widen (void) {
 	register char *str, *sptr;
 	int count = 0;
 	str_seq first;
@@ -651,7 +659,8 @@ void widen() {
 	}
 }
 
-void set_default_type() {
+void 
+set_default_type (void) {
 	int count, lastindx;
 	WIDGET *wdgt, *vwdgt;
 	DN base_name;
@@ -715,7 +724,8 @@ void set_default_type() {
 
 /* These are the functions called by the list level widgets */
 
-void list_start() {
+void 
+list_start (void) {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -863,7 +873,8 @@ char * cptr;
 	(void) strcpy(cptr, buffer);
 }
 
-void srch_start() {
+void 
+srch_start (void) {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -1107,8 +1118,8 @@ caddr_t ptr;
 	} while (*sptr != '\0');
 }
 
-void quipu_error(err)
-struct DSError *err;
+void 
+quipu_error (struct DSError *err)
 {
 	switch(err->dse_type) {
 	case DSE_LOCALERROR:
@@ -1138,7 +1149,8 @@ struct DSError *err;
 	}
 }
 
-void returnmain() {
+void 
+returnmain (void) {
 	QUITFN();
 	setwidgets (mainwdgts,-1);
 	rd_start();
@@ -1207,8 +1219,8 @@ WIDGET *wdgt;
 	*srchvalue = '\0';
 }
 
-void scrollbar(command)
-char command;
+void 
+scrollbar (int command)
 {
 	register char *str;
 	char *base_rdn;
@@ -1303,9 +1315,8 @@ char command;
 	return;
 }
 
-void make_friendly(fstr, str)
-char *fstr;
-register char *str;
+void 
+make_friendly (char *fstr, register char *str)
 {
 	register char *end_ptr;
 	char save;
@@ -1335,13 +1346,14 @@ register char *str;
 	}
 }
 
-void goto_addr() {
+void 
+goto_addr (void) {
 	set_default_type();
 	rd_start();
 }
 
-int isleafnode(name)
-char *name;
+int 
+isleafnode (char *name)
 {
 	struct ds_list_arg list_arg;
 	struct ds_list_result   list_result;
@@ -1400,9 +1412,8 @@ int size;
 	ps_free(ps);
 }
 
-int issubstr(str, substr)
-char *str;
-char *substr;
+int 
+issubstr (char *str, char *substr)
 {
 	register char *sptr;
 	char c;
@@ -1426,8 +1437,8 @@ char *substr;
 	}
 }
 
-int indexstring(string, substring)
-char *string, *substring;
+int 
+indexstring (char *string, char *substring)
 {
 	register char *sub, *str;
 	char c, s;
@@ -1452,8 +1463,8 @@ char *string, *substring;
 	}
 }
 
-void rfc2jnt(string)
-char *string;
+void 
+rfc2jnt (char *string)
 {
 	char reversed[STRINGLEN];
 	char front[STRINGLEN];
@@ -1493,8 +1504,8 @@ char *string;
 	}
 }
 
-struct attrcomp *sort_attrs(entry_attrs)
-struct attrcomp *entry_attrs;
+struct attrcomp *
+sort_attrs (struct attrcomp *entry_attrs)
 {
 	struct attrcomp *last, *next, *curr, *first, *firstn;
 
@@ -1537,16 +1548,16 @@ struct attrcomp *entry_attrs;
 }
 
 
-char *GetSurname(name)
-register char *name;
+char *
+GetSurname (register char *name)
 {
 	while (*name != '\0') name++;
 	while (*name != ' ' && *name != '=') name--;
 	return ++name;
 }
 
-char *GetWholeRelName(name)
-register char *name;
+char *
+GetWholeRelName (register char *name)
 {
 	while (*name!= '\0') name++;
 	while (*name != '=') name--;

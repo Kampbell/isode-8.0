@@ -109,7 +109,8 @@ char	Password[LINESIZE] ;
 char	Local[LINESIZE] ;
 char	filterstring[LINESIZE] ;
 
-main() {
+int 
+main (void) {
 	struct  passwd  *pw_entry ;
 	struct  passwd  *getpwuid() ;
 	struct	stat	buf ;
@@ -509,16 +510,16 @@ main() {
 	return(0);
 }
 
-void
-advise() {
+void 
+advise (void) {
 }
 
-void
-set_sequence() {
+void 
+set_sequence (void) {
 }
 
-void
-unset_sequence() {
+void 
+unset_sequence (void) {
 }
 
 dish_error (ps,error)
@@ -568,9 +569,8 @@ int y;
 
 }
 
-struct entrymod * ems_append (a,b)
-struct entrymod *a;
-struct entrymod *b;
+struct entrymod *
+ems_append (struct entrymod *a, struct entrymod *b)
 {
 	struct entrymod *ptr;
 
@@ -641,8 +641,8 @@ AttributeType ent_mod_at;
 	return (em);
 }
 
-ems_part_free(emp)
-struct entrymod *emp;
+int 
+ems_part_free (struct entrymod *emp)
 {
 	if(emp == NULLMOD)
 		return;

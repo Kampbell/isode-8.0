@@ -39,9 +39,8 @@ extern	PS	opt;
 extern	PS	rps;
 extern	Entry	current_entry ;
 
-call_del_alias (argc, argv)
-int		argc;
-char	      **argv;
+int 
+call_del_alias (int argc, char **argv)
 {
 	DN		dnptr, aoj_dn, oj_dn, save_dn;
 	DN		trail = NULLDN ;

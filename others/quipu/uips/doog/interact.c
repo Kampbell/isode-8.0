@@ -53,7 +53,8 @@ QCardinal requests_made = 0, requests_failed = 0;
 
 jmp_buf env;
 
-void interact() {
+void 
+interact (void) {
 	char commandline[LINESIZE];
 
 	(void) setjmp(env);
@@ -69,7 +70,8 @@ void interact() {
 	}
 }
 
-void intquit() {
+void 
+intquit (void) {
 	char input[LINESIZE];
 
 	while (1) {
@@ -87,15 +89,15 @@ void intquit() {
 }
 
 /* ARGSUSED */
-void quitfn(params)
-char *params;
+void 
+quitfn (char *params)
 {
 	uprint("\nOK, exiting.\n");
 	exit(0);
 }
 
-void ufnsearch(params)
-char *params;
+void 
+ufnsearch (char *params)
 {
 	char *str;
 
@@ -282,8 +284,8 @@ known is_leaf;
 	_request_complete(request_id);
 }
 
-void readentry(params)
-char *params;
+void 
+readentry (char *params)
 {
 	fd_set association, writefds, exceptfds;
 	int assoc_des;
@@ -445,8 +447,8 @@ entryList entries;
 }
 
 /* ARGSUSED */
-void printcommands(params)
-char *params;
+void 
+printcommands (char *params)
 {
 	char buffer[LINESIZE];
 
@@ -472,8 +474,8 @@ char *params;
 	uprint("help, ?\t\t\tView commands.\n");
 }
 
-void callcommand(commandline)
-char *commandline;
+void 
+callcommand (char *commandline)
 {
 	char *params;
 
@@ -516,8 +518,8 @@ ufnResults results;
 }
 
 /* ARGSUSED */
-void looklist(params)
-char *params;
+void 
+looklist (char *params)
 {
 	(void) signal(SIGINT, abort_command);
 
@@ -573,23 +575,26 @@ entryList *returnlist;
 	return TRUE;
 }
 
-void nullfn() {
+void 
+nullfn (void) {
 }
 
-void abort_query() {
+void 
+abort_query (void) {
 	uprint("\nQuery interrupted.\n");
 	abort_request(request_id);
 	longjmp(env, 0);
 }
 
-void abort_command() {
+void 
+abort_command (void) {
 	uprint("\nCommand interrupted.\n");
 	longjmp(env, 0);
 }
 
 
-static void uprint(printstring)
-char *printstring;
+static void 
+uprint (char *printstring)
 {
 	(void) fprintf(stderr, "%s", printstring);
 }

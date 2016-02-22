@@ -50,10 +50,8 @@ static PE build_bind_arg ();
 static int check_accept ();
 static int handle_reject ();
 
-static int  TMagic (vecp, vec, td)
-int     *vecp;
-char   **vec;
-struct TSAPdisconnect *td;
+static int 
+TMagic (int *vecp, char **vec, struct TSAPdisconnect *td)
 {
 	int     sd;
 	struct TSAPstart tss;
@@ -74,8 +72,8 @@ struct TSAPdisconnect *td;
 	return OK;
 }
 
-void create_osilisten (addr)
-char	*addr;
+void 
+create_osilisten (char *addr)
 {
 	int result_func (), query_func ();
 	struct RoSAPindication  rois;
@@ -116,8 +114,8 @@ extern struct sysdata sys;
 static void process_packet_osi ();
 static void terminate ();
 
-int transmit_osi (peer)
-struct ntp_peer *peer;
+int 
+transmit_osi (struct ntp_peer *peer)
 {
 	struct RoSAPindication  rois;
 	register struct RoSAPindication *roi = &rois;
@@ -359,11 +357,8 @@ struct RoSAPindication *roi;
 
 /* 3.4.3 Packet procedure */
 
-static void process_packet_osi (dst, pkt, tvp, peer)
-struct Naddr *dst;
-struct type_NTP_Packet *pkt;
-struct timeval *tvp;
-struct ntp_peer *peer;
+static void 
+process_packet_osi (struct Naddr *dst, struct type_NTP_Packet *pkt, struct timeval *tvp, struct ntp_peer *peer)
 {
 	double t1, t2, t3, t4, offset, delay;
 	short duplicate, bogus;
@@ -463,8 +458,8 @@ struct ntp_peer *peer;
 	clock_update(peer);		/* call clock update procedure */
 }
 
-struct l_fixedpt gstamp (ts)
-struct type_NTP_TimeStamp *ts;
+struct l_fixedpt 
+gstamp (struct type_NTP_TimeStamp *ts)
 {
 	static struct l_fixedpt fp;
 
@@ -473,8 +468,8 @@ struct type_NTP_TimeStamp *ts;
 	return fp;
 }
 
-struct s_fixedpt gfixed (ts)
-struct type_NTP_SmallFixed *ts;
+struct s_fixedpt 
+gfixed (struct type_NTP_SmallFixed *ts)
 {
 	static struct s_fixedpt fp;
 
@@ -518,8 +513,8 @@ struct type_NTP_ClockIdentifier *ci;
 }
 
 
-struct type_NTP_TimeStamp *sstamp (ts)
-struct l_fixedpt *ts;
+struct type_NTP_TimeStamp *
+sstamp (struct l_fixedpt *ts)
 {
 	struct type_NTP_TimeStamp *nts;
 
@@ -529,8 +524,8 @@ struct l_fixedpt *ts;
 	return nts;
 }
 
-struct type_NTP_SmallFixed *sfixed (ts)
-struct s_fixedpt *ts;
+struct type_NTP_SmallFixed *
+sfixed (struct s_fixedpt *ts)
 {
 	struct type_NTP_SmallFixed *nts;
 
@@ -578,9 +573,8 @@ Refid	*rid;
 }
 
 
-int	recv_osi (ap, tvp)
-struct intf *ap;
-struct timeval *tvp;
+int 
+recv_osi (struct intf *ap, struct timeval *tvp)
 {
 	caddr_t out;
 	struct RoSAPindication  rois;
@@ -604,10 +598,8 @@ struct timeval *tvp;
 	return 0;
 }
 
-static void ros_indication (fd, ap, roi)
-int	fd;
-struct intf *ap;
-register struct RoSAPindication *roi;
+static void 
+ros_indication (int fd, struct intf *ap, register struct RoSAPindication *roi)
 {
 	int	    result;
 
@@ -672,9 +664,8 @@ register struct RoSAPindication *roi;
 	}
 }
 
-static void terminate (ap, roi)
-struct intf *ap;
-struct RoSAPindication *roi;
+static void 
+terminate (struct intf *ap, struct RoSAPindication *roi)
 {
 	struct AcSAPindication  acsis;
 	extern struct list peer_list;
@@ -702,10 +693,8 @@ struct RoSAPindication *roi;
 			"Connection on %d if %d TERMINATED", ap -> fd, fd);
 }
 
-void iso_init (vecp, vec, fd)
-int vecp;
-char **vec;
-int fd;
+void 
+iso_init (int vecp, char **vec, int fd)
 {
 	struct intf *ap;
 	int	acount;
@@ -732,8 +721,8 @@ int fd;
 	TRACE (1, ("Incoming Connection pending on %d", fd));
 }
 
-iso_accept (ap)
-struct intf *ap;
+int 
+iso_accept (struct intf *ap)
 {
 	int     result,
 			i,
@@ -930,11 +919,8 @@ struct intf *ap;
 	return OK;
 }
 
-static int bindfailed (ap, acs, type, msg)
-struct intf *ap;
-struct AcSAPstart *acs;
-int	type;
-char	*msg;
+static int 
+bindfailed (struct intf *ap, struct AcSAPstart *acs, int type, char *msg)
 {
 	PE	pe;
 	register struct PSAPstart *ps = &acs -> acs_start;
@@ -976,9 +962,8 @@ char	*msg;
 char	*mycontext = "ntp";
 char	*mypci = "ntp pci";
 
-int make_osi_conn (peer, addr)
-struct ntp_peer *peer;
-char	*addr;
+int 
+make_osi_conn (struct ntp_peer *peer, char *addr)
 {
 	int	result = NOTOK;
 	struct intf *ap;
@@ -1074,10 +1059,8 @@ char	*addr;
 }
 
 /* ARGSUSED */
-static int acsap_initial (peer, addr, roi)
-struct ntp_peer *peer;
-char *addr;
-struct RoSAPindication *roi;
+static int 
+acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindication *roi)
 {
 	int	    sd;
 	struct SSAPref sfs;
@@ -1176,10 +1159,8 @@ struct RoSAPindication *roi;
 	return NOTOK;
 }
 
-static int check_accept (acc, ap, peer)
-struct AcSAPconnect *acc;
-struct intf *ap;
-struct ntp_peer *peer;
+static int 
+check_accept (struct AcSAPconnect *acc, struct intf *ap, struct ntp_peer *peer)
 {
 	struct RoSAPindication rois;
 	struct RoSAPindication *roi = &rois;
@@ -1273,9 +1254,8 @@ struct ntp_peer *peer;
 }
 
 
-static int acsap_retry (peer, roi)
-struct ntp_peer *peer;
-struct RoSAPindication *roi;
+static int 
+acsap_retry (struct ntp_peer *peer, struct RoSAPindication *roi)
 {
 	struct AcSAPconnect accs;
 	register struct AcSAPconnect   *acc = &accs;
@@ -1311,9 +1291,8 @@ struct RoSAPindication *roi;
 	return NOTOK;
 }
 
-static int handle_reject (acc, ap)
-struct AcSAPconnect *acc;
-struct intf *ap;
+static int 
+handle_reject (struct AcSAPconnect *acc, struct intf *ap)
 {
 	if (acc -> acc_ninfo > 0) {
 		struct type_NTP_BindError *binderr;
@@ -1372,9 +1351,8 @@ struct intf *ap;
 	return NOTOK;
 }
 
-void    ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_advise (register struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -1389,9 +1367,8 @@ char   *event;
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
-void    acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (register struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -1407,9 +1384,8 @@ char   *event;
 			aca -> aca_source);
 }
 
-static double
-ul2_fixed_to_double(t)
-struct type_NTP_TimeStamp *t;
+static double 
+ul2_fixed_to_double (struct type_NTP_TimeStamp *t)
 {
 	double a, b;
 #ifdef	GENERIC_UNS_BUG
@@ -1440,9 +1416,8 @@ struct type_NTP_TimeStamp *t;
 	return (a + b);
 }
 
-static double
-ul_fixed_to_doublep(t)
-struct l_fixedpt *t;
+static double 
+ul_fixed_to_doublep (struct l_fixedpt *t)
 {
 	double a, b;
 #ifdef	GENERIC_UNS_BUG
@@ -1474,10 +1449,8 @@ struct l_fixedpt *t;
 }
 
 #ifdef	SUN_FLT_BUG
-static void
-tstamp_osi (stampp, tvp)
-struct l_fixedpt *stampp;
-struct timeval *tvp;
+static void 
+tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp)
 {
 	int tt;
 	double dd;
@@ -1488,10 +1461,8 @@ struct timeval *tvp;
 	stampp->fraction = tt << 1;
 }
 #else
-static void
-tstamp_osi (stampp, tvp)
-struct l_fixedpt *stampp;
-struct timeval *tvp;
+static void 
+tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp)
 {
 	stampp->int_part = JAN_1970 + tvp->tv_sec;
 	stampp->fraction = (float) tvp->tv_usec * 4294.967295;
@@ -1532,8 +1503,8 @@ Refid refid;
 }
 
 
-struct type_NTP_ClockInfo *peer2clock (peer)
-struct ntp_peer *peer;
+struct type_NTP_ClockInfo *
+peer2clock (struct ntp_peer *peer)
 {
 	struct type_NTP_ClockInfo *ci;
 	char	*cp;

@@ -104,11 +104,8 @@ static int TPid = NOTOK;
  ****************************************************************
  */
 
-int	TUnitDataListen (listen, qos, td)
-
-struct TSAPaddr *listen;
-struct QOStype  *qos;
-struct TSAPdisconnect *td;
+int 
+TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdisconnect *td)
 
 {
 
@@ -250,13 +247,8 @@ struct TSAPdisconnect *td;
  ****************************************************************
  */
 
-int	TUnitDataBind (sd, calling, called, qos, td)
-
-int			sd;
-struct TSAPaddr 	*calling,
-		*called;
-struct QOStype  	*qos;
-struct TSAPdisconnect 	*td;
+int 
+TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, struct TSAPdisconnect *td)
 
 
 {
@@ -486,11 +478,8 @@ struct TSAPdisconnect 	*td;
  ****************************************************************
  */
 
-int	TUnitDataUnbind (sd, td)
-
-
-int	sd;
-struct TSAPdisconnect *td;
+int 
+TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
 
 {
 
@@ -544,12 +533,8 @@ struct TSAPdisconnect *td;
  ****************************************************************
  */
 
-int	TuSave (sd, vecp, vec, td)
-
-int	 	 sd;
-register int     vecp;
-register char  **vec;
-register struct  TSAPdisconnect *td;
+int 
+TuSave (int sd, register int vecp, register char **vec, register struct TSAPdisconnect *td)
 
 {
 
@@ -670,13 +655,8 @@ register struct  TSAPdisconnect *td;
  ****************************************************************
  */
 
-int     TUnitDataRequest (calling, called, qos, uv, td)
-
-struct TSAPaddr *calling,
-		*called;
-struct QOStype  *qos;
-register struct udvec	*uv;
-struct TSAPdisconnect   *td;
+int 
+TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, register struct udvec *uv, struct TSAPdisconnect *td)
 
 
 
@@ -738,11 +718,8 @@ struct TSAPdisconnect   *td;
  ****************************************************************
  */
 
-int     TUnitDataWrite (sd, uv, td)
-
-int 	 sd;
-register struct udvec	*uv;
-register struct TSAPdisconnect td;
+int 
+TUnitDataWrite (int sd, register struct udvec *uv, register struct TSAPdisconnect td)
 
 
 {
@@ -940,12 +917,8 @@ register struct TSAPdisconnect td;
  ****************************************************************
  */
 
-int     TUnitDataRead (sd, tud, secs, td)
-
-int	sd;
-register struct TSAPunitdata *tud;
-int	secs;
-struct TSAPdisconnect	     *td;
+int 
+TUnitDataRead (int sd, register struct TSAPunitdata *tud, int secs, struct TSAPdisconnect *td)
 
 {
 
@@ -1202,11 +1175,8 @@ int    *nfds;
  */
 
 
-static int  UNITDATAser (sig, code, sc)
-
-int	sig;
-long	code;
-struct sigcontext *sc;
+static int 
+UNITDATAser (int sig, long code, struct sigcontext *sc)
 
 {
 
@@ -1294,9 +1264,8 @@ struct sigcontext *sc;
 
 #ifndef	SIGPOLL
 
-static int  TUnitDataWakeUp (tb)
-
-register struct tsapblk *tb;
+static int 
+TUnitDataWakeUp (register struct tsapblk *tb)
 
 {
 	int     i,
@@ -1434,11 +1403,8 @@ register struct tsapblk *tb;
 
 /*  */
 
-int newtuaddr (ta, na, tdest)
-
-register struct TSAPaddr *ta;
-register struct NSAPaddr *na;
-register struct TSAPaddr *tdest;
+int 
+newtuaddr (register struct TSAPaddr *ta, register struct NSAPaddr *na, register struct TSAPaddr *tdest)
 
 {
 	register struct NSAPaddr *ndest = tdest -> ta_addrs;
@@ -1473,9 +1439,8 @@ register struct TSAPaddr *tdest;
 
 /*  */
 
-static struct TSAPaddr *newtuaddr (ta, na)
-register struct TSAPaddr *ta;
-register struct NSAPaddr *na;
+static struct TSAPaddr *
+newtuaddr (register struct TSAPaddr *ta, register struct NSAPaddr *na)
 {
 	static struct TSAPaddr tzs;
 	register struct TSAPaddr *tz = &tzs;

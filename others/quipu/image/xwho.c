@@ -124,10 +124,8 @@ static struct host *hosts;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    nfds;
 	fd_set  rfds;
@@ -154,8 +152,8 @@ char  **argv,
 
 /*    ARGINIT */
 
-arginit (vec)
-char  **vec;
+int 
+arginit (char **vec)
 {
 	int	    n,
 			nhosts;
@@ -273,7 +271,8 @@ char  **vec;
 
 /*    XWINDOWS */
 
-static	update_X () {
+static 
+update_X (void) {
 	register struct host   *hp;
 	register struct face   *fp;
 	XGCValues gcvalues;
@@ -353,7 +352,8 @@ static	update_X () {
 
 /*  */
 
-static int  service_X () {
+static int 
+service_X (void) {
 	int	    wh,
 			ww;
 	register Window w;
@@ -430,7 +430,8 @@ static int  service_X () {
 
 /*  */
 
-static init_X () {
+static 
+init_X (void) {
 	char    def[BUFSIZ];
 
 	myframe.bdrwidth = bwidth;
@@ -477,7 +478,8 @@ static init_X () {
 
 /*  */
 
-static	layout_X () {
+static 
+layout_X (void) {
 	int     h;
 	register struct face   *fp;
 	register struct host   *hp;
@@ -559,14 +561,15 @@ static	layout_X () {
 
 /*  */
 
-static	display_top () {
+static 
+display_top (void) {
 	if (debug)
 		(void) fprintf (stderr, "top window\n");
 }
 
 
-static	display_host (hp)
-register struct host *hp;
+static 
+display_host (register struct host *hp)
 {
 	if (debug)
 		(void) fprintf (stderr, "%s:\n", hp -> h_name);
@@ -577,8 +580,8 @@ register struct host *hp;
 
 /*  */
 
-static	display_face (fp)
-register struct face *fp;
+static 
+display_face (register struct face *fp)
 {
 	int     sx,
 			sy,
@@ -619,23 +622,22 @@ register struct face *fp;
 
 /*  */
 
-static int facecmp (f1, f2)
-struct face **f1,
-		**f2;
+static int 
+facecmp (struct face **f1, struct face **f2)
 {
 	return strcmp ((*f1) -> f_name, (*f2) -> f_name);
 }
 
 
-static int hostcmp (h1, h2)
-struct host **h1,
-		**h2;
+static int 
+hostcmp (struct host **h1, struct host **h2)
 {
 	return strcmp ((*h1) -> h_name, (*h2) -> h_name);
 }
 
 
-static	read_X () {
+static 
+read_X (void) {
 	int	    fd,
 			n;
 	long    now;
@@ -809,8 +811,8 @@ out:
 
 /*  */
 
-static int  display_this_host (n)
-register char *n;
+static int 
+display_this_host (register char *n)
 {
 	register char **ap;
 

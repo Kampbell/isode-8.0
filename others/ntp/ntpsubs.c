@@ -21,9 +21,8 @@ extern int errno;
 /*
  *  The nice thing here is that the quantity is NEVER signed.
  */
-double
-ul_fixed_to_double(t)
-struct l_fixedpt *t;
+double 
+ul_fixed_to_double (struct l_fixedpt *t)
 {
 	double a, b;
 #ifdef	GENERIC_UNS_BUG
@@ -59,9 +58,8 @@ struct l_fixedpt *t;
  */
 
 #if	0
-double
-l_fixed_to_double(t)
-struct l_fixedpt *t;
+double 
+l_fixed_to_double (struct l_fixedpt *t)
 {
 	double a,b;
 
@@ -96,9 +94,8 @@ struct l_fixedpt *t;
 /*
  *  Here we have to worry about the high order bit being signed
  */
-double
-s_fixed_to_double(t)
-struct s_fixedpt *t;
+double 
+s_fixed_to_double (struct s_fixedpt *t)
 {
 	double a;
 
@@ -115,10 +112,8 @@ struct s_fixedpt *t;
 	return (a);
 }
 
-void
-double_to_l_fixed(t, value)
-struct l_fixedpt *t;
-double value;
+void 
+double_to_l_fixed (struct l_fixedpt *t, double value)
 {
 	double temp;
 
@@ -140,10 +135,8 @@ double value;
 	}
 }
 
-void
-double_to_s_fixed(t, value)
-struct s_fixedpt *t;
-double value;
+void 
+double_to_s_fixed (struct s_fixedpt *t, double value)
 {
 	double temp;
 
@@ -170,10 +163,8 @@ double value;
 	problem.  Reported it to Bob O'Brien of SMI
 */
 #ifdef	SUN_FLT_BUG
-void
-tstamp(stampp, tvp)
-struct l_fixedpt *stampp;
-struct timeval *tvp;
+void 
+tstamp (struct l_fixedpt *stampp, struct timeval *tvp)
 {
 	int tt;
 	double dd;
@@ -184,10 +175,8 @@ struct timeval *tvp;
 	stampp->fraction = ntohl((tt << 1));
 }
 #else
-void
-tstamp(stampp, tvp)
-struct l_fixedpt *stampp;
-struct timeval *tvp;
+void 
+tstamp (struct l_fixedpt *stampp, struct timeval *tvp)
 {
 	stampp->int_part = ntohl((u_long) (JAN_1970 + tvp->tv_sec));
 	stampp->fraction = ntohl((u_long) ((float) tvp->tv_usec * 4294.967295));
@@ -200,8 +189,7 @@ struct timeval *tvp;
  */
 
 char *
-ntoa (nsin)
-struct sockaddr_in *nsin;
+ntoa (struct sockaddr_in *nsin)
 {
 	static int i = 0;
 	static char bufs[8][64];

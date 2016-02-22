@@ -89,10 +89,8 @@ char   *getenv ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	char    buffer[BUFSIZ],
 			*vec[NVEC + 1];
@@ -126,9 +124,8 @@ char  **argv,
 
 /*  */
 
-static	fetch_face (host, user)
-char   *host,
-	   *user;
+static 
+fetch_face (char *host, char *user)
 {
 	if ((myim = fetch_image (user, host)) == NULL && recording)
 		LLOG (pgm_log, LLOG_NOTICE,
@@ -140,8 +137,8 @@ char   *host,
 
 /*  */
 
-static int  getline (buffer)
-char   *buffer;
+static int 
+getline (char *buffer)
 {
 	register int    i;
 	register char  *cp,
@@ -177,8 +174,8 @@ char   *buffer;
 
 /*    ARGINIT */
 
-static	arginit (vec)
-char  **vec;
+static 
+arginit (char **vec)
 {
 	int	    n;
 	register char  *ap,
@@ -255,7 +252,8 @@ char  **vec;
 
 /*  */
 
-static	envinit () {
+static 
+envinit (void) {
 	int     i,
 			pid;
 
@@ -278,7 +276,8 @@ static	envinit () {
 
 /*  */
 
-static	display_X () {
+static 
+display_X (void) {
 	if (mywindow == NULL) {
 		int	bwidth;
 		char   *opt,
@@ -372,7 +371,8 @@ static	display_X () {
 
 /*  */
 
-static	Redisplay () {
+static 
+Redisplay (void) {
 	int     sx,
 			sy,
 			dx,
@@ -415,7 +415,8 @@ static	Redisplay () {
 
 /*  */
 
-static int  ALRMser () {
+static int 
+ALRMser (void) {
 	if (mywindow && mapped) {
 		if (parent)
 			XClearWindow (DISP, mywindow);
@@ -431,8 +432,8 @@ static int  ALRMser () {
 
 /* ARGSUSED */
 
-static int  XWINser (io)
-int	io;
+static int 
+XWINser (int io)
 {
 	int	    ww,
 			wh;
@@ -505,8 +506,8 @@ unmap:
 
 /*    SOCKET */
 
-int	startsocket (portno)
-int	portno;
+int 
+startsocket (int portno)
 {
 	struct sockaddr_in in_socket;
 	register struct sockaddr_in *isock = &in_socket;
@@ -524,8 +525,8 @@ int	portno;
 
 /*  */
 
-int	readsocket (buffer)
-char   *buffer;
+int 
+readsocket (char *buffer)
 {
 	int     cc;
 

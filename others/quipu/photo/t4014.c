@@ -50,8 +50,8 @@ SFD photo_quit () {
 }
 
 /* ARGSUSED */
-photo_start (name)
-char * name;
+int 
+photo_start (char *name)
 {
 	putch (035);	/* Enter graphic mode */
 
@@ -67,8 +67,8 @@ char * name;
 
 
 /* ARGSUSED */
-photo_end (name)
-char * name;
+int 
+photo_end (char *name)
 {
 	/* Decoding has finished - display the photo */
 	move (0,Y_OFFSET - 100);
@@ -83,14 +83,14 @@ char * name;
 }
 
 /* ARGSUSED */
-photo_black (length)
-int length;
+int 
+photo_black (int length)
 {
 	;
 }
 
-photo_white (length)
-int length;
+int 
+photo_white (int length)
 {
 	line ((position*SCALE)+X_OFFSET,y,((length+position-1)*SCALE)+X_OFFSET,y);
 }

@@ -38,10 +38,8 @@ static int  RtUAbortRequestAux ();
 
 /*    RT-U-ABORT.REQUEST */
 
-int	RtUAbortRequest (sd, data, rti)
-int	sd;
-PE	data;
-struct RtSAPindication *rti;
+int 
+RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int	    result;
@@ -62,10 +60,8 @@ struct RtSAPindication *rti;
 
 /*  */
 
-static int  RtUAbortRequestAux (acb, data, rti)
-register struct assocblk *acb;
-PE	data;
-register struct RtSAPindication *rti;
+static int 
+RtUAbortRequestAux (register struct assocblk *acb, PE data, register struct RtSAPindication *rti)
 {
 	int	    result;
 	PE	    pe,

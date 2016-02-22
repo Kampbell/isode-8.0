@@ -77,10 +77,8 @@ PE	grab_pe ();
 
 /*  */
 
-void	init_aka (pgm, stayopen, dit)
-char   *pgm,
-	   *dit;
-int	stayopen;
+void 
+init_aka (char *pgm, int stayopen, char *dit)
 {
 	char   *cp;
 	register struct aka *ak;
@@ -121,9 +119,8 @@ int	stayopen;
 
 /*  */
 
-static struct aka *mbox2ak (local, domain)
-char   *local,
-	   *domain;
+static struct aka *
+mbox2ak (char *local, char *domain)
 {
 	register struct aka *ak,
 			*am;
@@ -173,8 +170,8 @@ static int dlevel = 0;
 struct dn_seq *dm2dn_seq_aux ();
 
 
-static struct dn_seq *dm2dn_seq (dm)
-char   *dm;
+static struct dn_seq *
+dm2dn_seq (char *dm)
 {
 	register char *dp;
 
@@ -425,7 +422,8 @@ free_filter:
 
 /*  */
 
-static	do_bind () {
+static 
+do_bind (void) {
 	struct ds_bind_arg bind_arg,
 			bind_result;
 	register struct ds_bind_arg *ba = &bind_arg,
@@ -460,9 +458,8 @@ static struct type_IMAGE_Image *im = NULL;
 
 /*  */
 
-struct type_IMAGE_Image *fetch_image (local, domain)
-char   *local,
-	   *domain;
+struct type_IMAGE_Image *
+fetch_image (char *local, char *domain)
 {
 	PE	    pe;
 	PS	    ps;
@@ -531,8 +528,8 @@ out:
 
 /* ARGSUSED */
 
-photo_start (name)
-char   *name;
+int 
+photo_start (char *name)
 {
 	if (passno == 1)
 		maxx = 0;
@@ -544,8 +541,8 @@ char   *name;
 
 /* ARGSUSED */
 
-photo_end (name)
-char   *name;
+int 
+photo_end (char *name)
 {
 	int	    len;
 	register struct qbuf *qb,
@@ -590,8 +587,8 @@ char   *name;
 }
 
 
-photo_black (length)
-int	length;
+int 
+photo_black (int length)
 {
 	if (passno == 2) {
 		register int    i,
@@ -615,8 +612,8 @@ int	length;
 }
 
 
-photo_white (length)
-int	length;
+int 
+photo_white (int length)
 {
 	x += length;
 
@@ -657,9 +654,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -679,8 +675,8 @@ va_dcl {
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void 
+_advise (va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -699,9 +695,8 @@ va_list	ap;
 #else
 /* VARARGS */
 
-void	advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }

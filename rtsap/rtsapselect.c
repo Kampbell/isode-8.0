@@ -33,11 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapselect.c,v 9.0 1
 
 /*    map association descriptors for select() */
 
-int	RtSelectMask (sd, mask, nfds, rti)
-int	sd;
-fd_set *mask;
-int    *nfds;
-struct RtSAPindication *rti;
+int 
+RtSelectMask (int sd, fd_set *mask, int *nfds, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int     result;

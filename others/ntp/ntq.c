@@ -29,9 +29,8 @@ void	ros_adios (), ros_advise (), acs_adios (), acs_advise (),
 		advise (), adios ();
 PE	build_bind_arg ();
 
-main (argc, argv)
-int	argc;
-char	**argv;
+int 
+main (int argc, char **argv)
 {
 	extern char	*optarg;
 	extern int	optind;
@@ -61,8 +60,8 @@ char	**argv;
 }
 
 
-ntp_monitor (host)
-char	*host;
+int 
+ntp_monitor (char *host)
 {
 	int	sd;
 
@@ -76,8 +75,8 @@ char	*host;
 	}
 }
 
-int	mk_connect (addr)
-char	*addr;
+int 
+mk_connect (char *addr)
 {
 	int sd;
 	struct SSAPref sfs;
@@ -153,8 +152,8 @@ char	*addr;
 	return sd;
 }
 
-int ac_failed (acc)
-struct AcSAPconnect *acc;
+int 
+ac_failed (struct AcSAPconnect *acc)
 {
 	if (acc -> acc_ninfo > 0) {
 		struct type_NTP_BindError *binderr;
@@ -205,8 +204,8 @@ struct AcSAPconnect *acc;
 }
 
 
-send_request (sd)
-int	sd;
+int 
+send_request (int sd)
 {
 	struct RoSAPindication rois;
 	register struct RoSAPindication *roi = &rois;
@@ -235,12 +234,8 @@ int	sd;
 }
 
 /* ARGSUSED */
-int query_result (sd, id, dummy, result, roi)
-int     sd,
-		id,
-		dummy;
-register struct type_NTP_ClockInfoList *result;
-struct RoSAPindication *roi;
+int 
+query_result (int sd, int id, int dummy, register struct type_NTP_ClockInfoList *result, struct RoSAPindication *roi)
 {
 	struct type_NTP_ClockInfo *clock;
 	char	*p, c;
@@ -289,12 +284,8 @@ struct RoSAPindication *roi;
 
 
 /* ARGSUSED */
-query_error (sd, id, error, parameter, roi)
-int     sd,
-		id,
-		error;
-register struct type_IMISC_IA5List *parameter;
-struct RoSAPindication *roi;
+int 
+query_error (int sd, int id, int error, register struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi)
 {
 	register struct RyError *rye;
 
@@ -336,9 +327,8 @@ static PE build_bind_arg () {
 	return pe;
 }
 
-void    ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_adios (register struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -346,9 +336,8 @@ char   *event;
 }
 
 
-void    ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_advise (register struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -363,9 +352,8 @@ char   *event;
 
 /* ^L */
 
-void    acs_adios (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_adios (register struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -373,9 +361,8 @@ char   *event;
 }
 
 
-void    acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (register struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -409,9 +396,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void    adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -448,9 +434,8 @@ va_list ap;
 #else
 /* VARARGS */
 
-void    advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }
@@ -471,9 +456,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void    ryr_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
 	ryr_advise (what, fmt);
 }

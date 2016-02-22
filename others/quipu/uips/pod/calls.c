@@ -99,8 +99,8 @@ FILE *config_file;
 char *file_names[MAXTYPES];
 char dua_help_dir[SMALLSTRING];
 
-char *get_strioid(ptr)
-register char *ptr;
+char *
+get_strioid (register char *ptr)
 {
 	register char *end_ptr;
 
@@ -116,8 +116,8 @@ register char *ptr;
 	return ptr;
 }
 
-void put_dn_and_password(dn, password, name)
-char *dn, *password, *name;
+void 
+put_dn_and_password (char *dn, char *password, char *name)
 {
 	str_seq alias_list = alias_seq;
 	int seq_num;
@@ -139,7 +139,8 @@ char *dn, *password, *name;
 	}
 }
 
-void user_tailor() {
+void 
+user_tailor (void) {
 	char *part1, *part2;
 	char *getenv(), *TidyString(), *SkipSpace();
 	char *config_dir = "/.duaconfig",
@@ -487,8 +488,8 @@ void user_tailor() {
 	(void) fclose(config_file);
 }
 
-void parse_duarc(options_path)
-char *options_path;
+void 
+parse_duarc (char *options_path)
 {
 	char *SkipSpace(), *TidyString();
 	char *p, *part1, *part2, *part3;
@@ -551,7 +552,8 @@ char *options_path;
 	}
 }
 
-char *cnnct_bind() {
+char *
+cnnct_bind (void) {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -620,7 +622,8 @@ Click on this window to exit.");
 	return NULLCP;
 }
 
-void set_default_type() {
+void 
+set_default_type (void) {
 	int count;
 	register DN base_name;
 	DN d_name;
@@ -680,8 +683,8 @@ char * cptr;
 	(void) strcpy(cptr, buffer);
 }
 
-void make_friendly(fstr, str)
-char *fstr, *str;
+void 
+make_friendly (char *fstr, char *str)
 {
 	char *end, *start;
 	char save;
@@ -735,8 +738,8 @@ char *fstr, *str;
 }
 
 
-static void make_friendly_aux(fstr, rdn)
-char *fstr, *rdn;
+static void 
+make_friendly_aux (char *fstr, char *rdn)
 {
 	char *start, *end, *string;
 	char save;
@@ -807,9 +810,8 @@ char *fstr, *rdn;
 }
 
 
-void make_friendly_rdn(friendly, object, base)
-char *friendly;
-char *object, *base;
+void 
+make_friendly_rdn (char *friendly, char *object, char *base)
 {
 	register char *front;
 	char save;
@@ -850,7 +852,8 @@ char *object, *base;
 		make_friendly(friendly, object);
 }
 
-goto_addr() {
+int 
+goto_addr (void) {
 	char *str;
 	int count = 0;
 	void add_to_history();
@@ -872,14 +875,15 @@ goto_addr() {
 	}
 }
 
-clear_dnseq() {
+int 
+clear_dnseq (void) {
 	free_seq(dnseq);
 	dnseq = NULLDS;
 	dn_number = 0;
 }
 
-int is_dit_leaf(name)
-char *name;
+int 
+is_dit_leaf (char *name)
 {
 	struct ds_list_arg      list_arg;
 	struct ds_list_result   list_result;
@@ -940,16 +944,16 @@ char *name;
 	}
 }
 
-char *GetSurname(name)
-register char *name;
+char *
+GetSurname (register char *name)
 {
 	while (*name != '\0') name++;
 	while (*name != ' ' && *name != '=') name--;
 	return ++name;
 }
 
-char *GetWholeRelName(name)
-register char *name;
+char *
+GetWholeRelName (register char *name)
 {
 	while (*name!= '\0') name++;
 	while (*name != '=') name--;

@@ -74,12 +74,14 @@ static  struct psapblk   *PuHead = &psapque;
 
 /*  */
 /*----------------------------------------------------------------------------*/
-int	ppdu2data (pb, pi, ps, info)
+int 
+ppdu2data (
 /*----------------------------------------------------------------------------*/
-register struct psapblk *pb;
-struct PSAPindication *pi;
-struct PuSAPstart *ps;
-struct type_PS_User__data *info;
+    register struct psapblk *pb,
+    struct PSAPindication *pi,
+    struct PuSAPstart *ps,
+    struct type_PS_User__data *info
+)
 {
 	register int    i, j;
 	int	    nctx, ctx, result;
@@ -478,11 +480,8 @@ out:
 /*----------------------------------------------------------------------------*/
 /*    SSAP interface */
 /*----------------------------------------------------------------------------*/
-int	ss2pulose (pb, pi, event, sa)
-register struct psapblk *pb;
-register struct PSAPindication *pi;
-char   *event;
-register struct SSAPabort *sa;
+int 
+ss2pulose (register struct psapblk *pb, register struct PSAPindication *pi, char *event, register struct SSAPabort *sa)
 {
 	int     reason;
 	char   *cp,
@@ -572,11 +571,8 @@ va_dcl {
 }
 #else
 /* VARARGS */
-int	pusaplose (pi, reason, what, fmt)
-struct PSAPindication *pi;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+pusaplose (struct PSAPindication *pi, int reason, char *what, char *fmt)
 {
 	return pusaplose (pi, reason, what, fmt);
 }
@@ -584,11 +580,13 @@ char   *what,
 
 #ifndef	lint
 /*----------------------------------------------------------------------------*/
-static int  _pusaplose (pi, reason, ap)	/* what, fmt, args ... */
+static int 
+_pusaplose (	/* what, fmt, args ... */
 /*----------------------------------------------------------------------------*/
-register struct PSAPindication *pi;
-int     reason;
-va_list	ap;
+    register struct PSAPindication *pi,
+    int reason,
+    va_list ap
+)
 {
 	register char  *bp;
 	char    buffer[BUFSIZ];
@@ -651,9 +649,11 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
 /*  */
 /*---------------------------------------------------------------------------*/
-char   *PuErrString (code)
+char *
+PuErrString (
 /*---------------------------------------------------------------------------*/
-register int code;
+    register int code
+)
 {
 	static char buffer[BUFSIZ];
 
@@ -666,7 +666,8 @@ register int code;
 
 /*   INTERNAL */
 /*----------------------------------------------------------------------------*/
-struct psapblk  *newpublk ()
+struct psapblk *
+newpublk (void)
 /*----------------------------------------------------------------------------*/
 {
 	register struct psapblk *pb;
@@ -688,9 +689,11 @@ struct psapblk  *newpublk ()
 
 /*  */
 /*----------------------------------------------------------------------------*/
-struct psapblk   *findpublk (sd)
+struct psapblk *
+findpublk (
 /*----------------------------------------------------------------------------*/
-register int sd;
+    register int sd
+)
 {
 	register struct psapblk *pb;
 
@@ -707,9 +710,11 @@ register int sd;
 
 /*  */
 /*----------------------------------------------------------------------------*/
-int	freepublk (pb)
+int 
+freepublk (
 /*----------------------------------------------------------------------------*/
-register struct psapblk *pb;
+    register struct psapblk *pb
+)
 {
 	register int    i;
 	register struct PSAPcontext *qp;

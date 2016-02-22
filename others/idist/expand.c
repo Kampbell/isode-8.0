@@ -80,9 +80,7 @@ int	argcmp();
  * Major portions of this were snarfed from csh/sh.glob.c.
  */
 struct namelist *
-expand(list, wh)
-struct namelist *list;
-int wh;
+expand (struct namelist *list, int wh)
 {
 	register struct namelist *nl, *prev;
 	register int n;
@@ -138,8 +136,8 @@ int wh;
 	return(list);
 }
 
-expstr(s)
-char *s;
+int 
+expstr (char *s)
 {
 	register char *cp, *cp1;
 	register struct namelist *tp;
@@ -239,9 +237,8 @@ char *s;
 	sort();
 }
 
-static
-argcmp(a1, a2)
-char **a1, **a2;
+static 
+argcmp (char **a1, char **a2)
 {
 
 	return (strcmp(*a1, *a2));
@@ -251,8 +248,8 @@ char **a1, **a2;
  * If there are any Shell meta characters in the name,
  * expand into a list, after searching directory
  */
-expsh(s)
-char *s;
+int 
+expsh (char *s)
 {
 	register char *cp;
 	register char *spathp, *oldcp;
@@ -288,8 +285,8 @@ endit:
 	*pathp = '\0';
 }
 
-matchdir(pattern)
-char *pattern;
+int 
+matchdir (char *pattern)
 {
 	struct stat stb;
 	register struct dirent *dp;
@@ -328,8 +325,8 @@ patherr2:
 	yyerror(path);
 }
 
-execbrc(p, s)
-char *p, *s;
+int 
+execbrc (char *p, char *s)
 {
 	char restbuf[BUFSIZ + 2];
 	register char *pe, *pm, *pl;
@@ -407,8 +404,8 @@ doit:
 	return (0);
 }
 
-match(s, p)
-char *s, *p;
+int 
+match (char *s, char *p)
 {
 	register int c;
 	register char *sentp;
@@ -424,8 +421,8 @@ char *s, *p;
 	return (c);
 }
 
-amatch(s, p)
-register char *s, *p;
+int 
+amatch (register char *s, register char *p)
 {
 	register int scc;
 	int ok, lc;
@@ -511,8 +508,8 @@ slash:
 	}
 }
 
-smatch(s, p)
-register char *s, *p;
+int 
+smatch (register char *s, register char *p)
 {
 	register int scc;
 	int ok, lc;
@@ -568,8 +565,8 @@ register char *s, *p;
 	}
 }
 
-Cat(s1, s2)
-register char *s1, *s2;
+int 
+Cat (register char *s1, register char *s2)
 {
 	int len = strlen(s1) + strlen(s2) + 1;
 	register char *s;
@@ -588,8 +585,8 @@ register char *s1, *s2;
 		;
 }
 
-addpath(c)
-char c;
+int 
+addpath (int c)
 {
 
 	if (pathp >= lastpathp)

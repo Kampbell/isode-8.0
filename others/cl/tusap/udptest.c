@@ -42,10 +42,8 @@ printtaddr();
 
 /* ARGSUSED */
 
-int main(argc, argv, envp)
-int argc;
-char **argv,
-	 **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	struct tsapkt *t;                           /* Working packet pointer */
 	char sendbuf[1024];			        /* send buffer */
@@ -228,8 +226,8 @@ char **argv,
 
 
 
-static	printsrv (is)
-register struct isoservent *is;
+static 
+printsrv (register struct isoservent *is)
 {
 	register int    n = is -> is_tail - is -> is_vec - 1;
 	register char **ap = is -> is_vec;
@@ -246,9 +244,8 @@ register struct isoservent *is;
 
 /*  */
 
-static	printtaddr (ta)
-
-register struct TSAPaddr *ta;
+static 
+printtaddr (register struct TSAPaddr *ta)
 
 {
 

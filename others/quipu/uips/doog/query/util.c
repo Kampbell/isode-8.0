@@ -15,8 +15,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/doog/query/RC
 #include "util.h"
 #include "quipu/util.h"
 
-char *copy_string(string)
-char *string;
+char *
+copy_string (char *string)
 {
 	char *new_string;
 
@@ -28,8 +28,8 @@ char *string;
 	return new_string;
 }
 
-void friendlify(name, fname)
-char *name, *fname;
+void 
+friendlify (char *name, char *fname)
 {
 	register char *start, *end;
 	char save;

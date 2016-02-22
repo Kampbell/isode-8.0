@@ -35,11 +35,8 @@ static int  RtCloseResponseAux ();
 
 /*    RT-CLOSE.RESPONSE */
 
-int	RtCloseResponse (sd, reason, data, rti)
-int	sd,
-	reason;
-PE	data;
-struct RtSAPindication *rti;
+int 
+RtCloseResponse (int sd, int reason, PE data, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int	    result;
@@ -60,11 +57,8 @@ struct RtSAPindication *rti;
 
 /*  */
 
-static int  RtCloseResponseAux (acb, reason, data, rti)
-register struct assocblk *acb;
-int	reason;
-PE	data;
-register struct RtSAPindication *rti;
+static int 
+RtCloseResponseAux (register struct assocblk *acb, int reason, PE data, register struct RtSAPindication *rti)
 {
 	int	    result;
 	struct AcSAPindication acis;

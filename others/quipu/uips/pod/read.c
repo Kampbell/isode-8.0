@@ -241,9 +241,8 @@ Attr_Sequence attrs_to_read;
 	}
 }
 
-read_print(func, ptr)
-int (*func) ();
-caddr_t ptr;
+int 
+read_print (int (*func)(void), caddr_t ptr)
 {
 	PS ps;
 	register char *str;
@@ -301,10 +300,8 @@ out:
 	}
 }
 
-entry2str(ptr, cptr, size)
-caddr_t ptr;
-char *cptr;
-int size;
+int 
+entry2str (caddr_t ptr, char *cptr, int size)
 {
 	PS ps;
 
@@ -317,8 +314,8 @@ int size;
 	ps_free(ps);
 }
 
-void rfc2greybook(string)
-char *string;
+void 
+rfc2greybook (char *string)
 {
 	char reversed[STRINGLEN];
 	register char *part;

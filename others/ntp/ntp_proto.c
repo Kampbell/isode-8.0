@@ -70,9 +70,8 @@ void	process_packet(), clock_update(), clear(), clock_filter(),
 /* 3.4. Event Processing */
 
 /* 3.4.1. Transmit Procedure */
-void
-transmit(peer)
-struct ntp_peer *peer;
+void 
+transmit (struct ntp_peer *peer)
 {
 	struct timeval txtv;
 	static struct ntpdata ntpframe;
@@ -230,10 +229,8 @@ struct ntp_peer *peer;
 }
 
 #ifdef REFCLOCK
-void
-refclock_input(peer, pkt)
-struct ntpdata *pkt;
-struct ntp_peer *peer;
+void 
+refclock_input (struct ntp_peer *peer, struct ntpdata *pkt)
 {
 	struct timeval *tvp;
 	struct timeval *otvp;
@@ -265,12 +262,8 @@ struct ntp_peer *peer;
 #endif REFCLOCK
 
 /* 3.4.2. Receive Procedure */
-void
-receive(dst, pkt, tvp, sock)
-struct Naddr *dst;
-struct ntpdata *pkt;
-struct timeval *tvp;
-int sock;
+void 
+receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int sock)
 {
 	struct ntp_peer *peer;
 	int peer_mode;
@@ -438,12 +431,8 @@ int sock;
 
 
 /* 3.4.3 Packet procedure */
-void
-process_packet(dst, pkt, tvp, peer)
-struct Naddr *dst;
-struct ntpdata *pkt;
-struct timeval *tvp;
-struct ntp_peer *peer;
+void 
+process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, struct ntp_peer *peer)
 {
 	double t1, t2, t3, t4, offset, delay;
 	short duplicate, bogus;
@@ -548,9 +537,8 @@ struct ntp_peer *peer;
 
 /* 3.4.5 Clock update procedure */
 
-void
-clock_update(peer)
-struct ntp_peer *peer;
+void 
+clock_update (struct ntp_peer *peer)
 {
 	double temp;
 	extern int adj_logical();
@@ -650,8 +638,8 @@ struct ntp_peer *peer;
 
 /* 3.4.6 Initialization procedure */
 
-void
-initialize() {
+void 
+initialize (void) {
 	sys.leap = ALARM;	/* indicate unsynchronized */
 	sys.stratum = 0;
 	sys.precision = 0;	/* may be specified in the config file;
@@ -670,9 +658,8 @@ initialize() {
 }
 
 /* 3.4.7 Clear Procedure */
-void
-clear(peer)
-register struct ntp_peer *peer;
+void 
+clear (register struct ntp_peer *peer)
 {
 	register int i;
 
@@ -697,10 +684,8 @@ register struct ntp_peer *peer;
 
 
 /* 3.4.8 Poll Update Procedure */
-void
-poll_update(peer, new_hpoll)
-register struct ntp_peer *peer;
-int new_hpoll;
+void 
+poll_update (register struct ntp_peer *peer, int new_hpoll)
 {
 	int interval;
 
@@ -734,8 +719,10 @@ int new_hpoll;
 
 /* 3.4.9 Authentication Procedures */
 #if	0
-encrypt() {}
-decrypt() {}
+int 
+encrypt (void) {}
+int 
+decrypt (void) {}
 #endif
 
 /* 4.1 Clock Filter Procedure */
@@ -746,10 +733,8 @@ decrypt() {}
  *  different PEER_FILTER values should be much easier.
  */
 
-void
-clock_filter(peer, new_delay, new_offset)
-register struct ntp_peer *peer;
-double new_delay, new_offset;
+void 
+clock_filter (register struct ntp_peer *peer, double new_delay, double new_offset)
 {
 	double offset[PEER_SHIFT], delay[PEER_SHIFT];
 	register double temp, d, w;
@@ -822,8 +807,8 @@ double new_delay, new_offset;
 }
 
 /* 4.2 Clock Select Procedure */
-void
-select_clock() {
+void 
+select_clock (void) {
 	struct ntp_peer *ptmp, *peer = peer_list.head;
 	struct sel_lst {
 		struct ntp_peer *peer;
@@ -1053,9 +1038,8 @@ select_clock() {
 	}
 }
 
-int
-sanity_check(peer)
-struct ntp_peer *peer;
+int 
+sanity_check (struct ntp_peer *peer)
 {
 	TRACE (7, ("Checking peer %s stratum %d",
 			   paddr (&peer->src), peer->stratum));

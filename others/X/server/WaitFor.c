@@ -113,8 +113,8 @@ static long timeTilFrob = 0;		/* while screen saving */
 /*
  * This is a macro if mskcnt <= 4
  */
-ANYSET(src)
-long	*src;
+int 
+ANYSET (long *src)
 {
 	int i;
 

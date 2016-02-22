@@ -37,9 +37,8 @@ int	two_passes = 0;
 
 char   *getenv ();
 
-main (argc, argv)
-int     argc;
-char ** argv;
+int 
+main (int argc, char **argv)
 {
 	char *data;
 	int   fd;

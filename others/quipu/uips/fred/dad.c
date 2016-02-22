@@ -88,10 +88,8 @@ struct passwd  *getpwnam ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    nfds,
 			fd,
@@ -228,9 +226,8 @@ int	i;
 
 /* ARGSUSED */
 
-static	dadser (fd, isock)
-int	fd;
-struct sockaddr_in *isock;
+static 
+dadser (int fd, struct sockaddr_in *isock)
 {
 	int	    i,
 			nfds;
@@ -387,8 +384,8 @@ va_dcl {
 	return val;
 }
 
-static int  _da_response (ap)
-va_list ap;
+static int 
+_da_response (va_list ap)
 {
 	int	    cc,
 			fd,
@@ -410,9 +407,8 @@ va_list ap;
 #else
 /* VARARGS1 */
 
-static	da_response (fd, fmt)
-int	fd;
-char   *fmt;
+static 
+da_response (int fd, char *fmt)
 {
 	da_response (fd, fmt);
 }
@@ -420,8 +416,8 @@ char   *fmt;
 
 /*  */
 
-static int  start_dish (binding)
-int	binding;
+static int 
+start_dish (int binding)
 {
 	int	    ntries,
 			vecp;
@@ -505,7 +501,8 @@ fork_again:
 
 /*  */
 
-static	rcfile () {
+static 
+rcfile (void) {
 	register char   *bp;
 	char    buffer[BUFSIZ],
 			command[BUFSIZ],
@@ -552,8 +549,8 @@ failed:
 
 /*  */
 
-static int  rcpipe (command)
-char   *command;
+static int 
+rcpipe (char *command)
 {
 	int	    cc,
 			len,
@@ -626,8 +623,8 @@ struct sigcontext *sc;
 
 /*  */
 
-static void  arginit (vec)
-char	**vec;
+static void 
+arginit (char **vec)
 {
 	int	    port;
 	register char  *ap;
@@ -684,7 +681,8 @@ char	**vec;
 
 /*  */
 
-static void  envinit () {
+static void 
+envinit (void) {
 	int     i,
 			sd;
 
@@ -770,9 +768,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -796,10 +793,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }

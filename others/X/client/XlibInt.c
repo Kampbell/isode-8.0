@@ -1,16 +1,24 @@
-/*
- * $XConsortium: XlibInt.c,v 11.90 88/09/30 17:25:18 jim Exp $
- */
+__END_DECLS static int 
+readv (int fd, struct iovec *iov, int iovcnt)
+{
+	struct msghdr hdr;
 
-#include "copyright.h"
-/* Copyright    Massachusetts Institute of Technology    1985, 1986, 1987 */
+	hdr.msg_iov = iov;
+	hdr.msg_iovlen = iovcnt;
+	hdr.msg_accrights = 0;
+	hdr.msg_accrightslen = 0;
+	hdr.msg_name = 0;
+	hdr.msg_namelen = 0;
 
-/*
- *	XlibInternal.c - Internal support routines for the C subroutine
- *	interface library (Xlib) to the X Window System Protocol V11.0.
- */
-#define NEED_EVENTS
-#define NEED_REPLIES
+	return (recvmsg (fd, &hdr, 0));
+}
+
+static int 
+writev (
+int fd;
+struct iovec *iov;
+int iovcnt;
+{D_REPLIES
 
 #include <stdio.h>
 #include "Xlibint.h"
@@ -27,29 +35,10 @@
 /*
  * Cray UniCOS does not have readv and writev so we emulate
  */
-#include <sys/socket.h>
-
-static int readv (fd, iov, iovcnt)
-int fd;
-struct iovec *iov;
-int iovcnt;
-{
-	struct msghdr hdr;
-
-	hdr.msg_iov = iov;
-	hdr.msg_iovlen = iovcnt;
-	hdr.msg_accrights = 0;
-	hdr.msg_accrightslen = 0;
-	hdr.msg_name = 0;
-	hdr.msg_namelen = 0;
-
-	return (recvmsg (fd, &hdr, 0));
-}
-
-static int writev (fd, iov, iovcnt)
-int fd;
-struct iovec *iov;
-int iovcnt;
+    int fd,
+    struct iovec *iov,
+    int iovcnt
+)
 {
 	struct msghdr hdr;
 
@@ -76,9 +65,8 @@ int iovcnt;
 /*
  * Check if any bytes queued that could be read...
  */
-TBytesReadable(fd, ptr)
-int fd;
-long *ptr;
+int 
+TBytesReadable (int fd, long *ptr)
 {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -93,9 +81,8 @@ long *ptr;
 /*
  * need followinf for arg mismatch
  */
-UBytesReadable(fd, ptr)
-int fd;
-long *ptr;
+int 
+UBytesReadable (int fd, long *ptr)
 {
 	return ioctl(fd, FIONREAD, ptr);
 }
@@ -103,10 +90,8 @@ long *ptr;
 /*
  * Simple read from transport cx, client
  */
-TReadFromServer(fd, data, size)
-int fd;
-unsigned size;
-char *data;
+int 
+TReadFromServer (int fd, char *data, unsigned size)
 {
 	char *aptr = data;
 	struct TSAPdisconnect tds;
@@ -195,10 +180,8 @@ char *data;
 /*
  * Simple write on transport descriptor client
  */
-TWriteToServer(fd, data, size)
-int fd;
-unsigned size;
-char *data;
+int 
+TWriteToServer (int fd, char *data, unsigned size)
 {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -224,9 +207,8 @@ char *data;
  *
  * or change the structure of X to do async...
  */
-TReadvFromServer(fd, iov, iovcnt)
-int fd, iovcnt;
-struct iovec *iov;
+int 
+TReadvFromServer (int fd, struct iovec *iov, int iovcnt)
 {
 	int i, size, result, left, bcp;
 	char *data, *dp;
@@ -278,9 +260,8 @@ struct iovec *iov;
 /*
  * scatter gather write to transport descriptor
  */
-TWritevToServer(fd, iov, iovcnt)
-int fd, iovcnt;
-struct iovec *iov;
+int 
+TWritevToServer (int fd, struct iovec *iov, int iovcnt)
 {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -314,8 +295,8 @@ struct iovec *iov;
 	return tot;
 }
 
-TDiscFromServer(fd)
-int fd;
+int 
+TDiscFromServer (int fd)
 {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -1385,8 +1366,8 @@ register xEvent *event;	/* wire protocol event */
 }
 
 
-static char *_SysErrorMsg (n)
-int n;
+static char *
+_SysErrorMsg (int n)
 {
 	extern char *sys_errlist[];
 	extern int sys_nerr;
@@ -1538,8 +1519,8 @@ VisualID id;
 	return (NULL);
 }
 
-XFree (data)
-char *data;
+int 
+XFree (char *data)
 {
 	Xfree (data);
 }
@@ -1688,7 +1669,8 @@ unsigned len;
  * no more displays left on the display list
  */
 
-void _XFreeQ () {
+void 
+_XFreeQ (void) {
 	register _XQEvent *qelt = _qfree;
 
 	while (qelt) {

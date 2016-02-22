@@ -108,9 +108,8 @@ jmp_buf sjbuf;
 
 SFD cleanupok();
 
-int main(argc, argv)
-int argc;
-char *argv[];
+int 
+main (int argc, char *argv[])
 {
 	int res;
 
@@ -283,8 +282,8 @@ set_up_defaults:
 	/* and that's all for now */
 }
 
-int
-doCountry() {
+int 
+doCountry (void) {
 
 	if ((strcmp(qinfo[COUNTRY].entered, qinfo[COUNTRY].defvalue) == 0) &&
 			(qinfo[COUNTRY].lp != NULLLIST) && (qinfo[COUNTRY].listlen == 1)) {
@@ -350,9 +349,8 @@ doCountry() {
 	}
 }
 
-int
-doOrganisation(matchstring)
-char matchstring [];
+int 
+doOrganisation (char matchstring[])
 {
 
 	if ((strcmp(qinfo[ORG].entered, qinfo[ORG].defvalue) == 0) &&
@@ -425,9 +423,8 @@ char matchstring [];
 	}
 }
 
-int
-doOU(matchstring)
-char matchstring [];
+int 
+doOU (char matchstring[])
 {
 
 	if ((strcmp(qinfo[ORGUNIT].entered, qinfo[ORGUNIT].defvalue) == 0) &&
@@ -507,10 +504,8 @@ char matchstring [];
 	}
 }
 
-int
-doPRR(matchstring, searchparent)
-char matchstring [];
-int searchparent;
+int 
+doPRR (char matchstring[], int searchparent)
 {
 
 	if ((strcmp(qinfo[PERSON].entered, qinfo[PERSON].defvalue) == 0) &&
@@ -580,8 +575,8 @@ int searchparent;
 }
 
 
-printNames(objectType)
-int objectType;
+int 
+printNames (int objectType)
 {
 	switch (objectType) {
 	case COUNTRY:
@@ -608,18 +603,19 @@ int objectType;
 	}
 }
 
-printCountry() {
+int 
+printCountry (void) {
 	printLastComponent(INDENTON, qinfo[COUNTRY].lp->name, COUNTRY, 0);
 }
 
-void
-foundFollowing() {
+void 
+foundFollowing (void) {
 	resetprint("\nFound the following entries.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
 
-void
-matchFollowing() {
+void 
+matchFollowing (void) {
 	resetprint("\nGot the following approximate matches.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
@@ -628,9 +624,8 @@ matchFollowing() {
 
 /* routine returns the number of an entry selected from a list, or zero
    otherwise */
-int
-enterString(objectType)
-int objectType;
+int 
+enterString (int objectType)
 {
 	char prompt[LINESIZE];
 	static char prstr[] = ":-";
@@ -724,12 +719,8 @@ int objectType;
 }
 
 
-enterAndValidate(prompt, buf, objectType, defaultValue, lp, nep)
-char * prompt, * buf;
-int objectType;
-char * defaultValue;
-struct namelist * lp;
-int * nep;
+int 
+enterAndValidate (char *prompt, char *buf, int objectType, char *defaultValue, struct namelist *lp, int *nep)
 {
 	char * cp, * cp2;
 	int i, n, isnum;
@@ -872,7 +863,8 @@ int * nep;
 	free(cp);
 }
 
-char enterYesNo() {
+char 
+enterYesNo (void) {
 	char buf[LINESIZE];
 	int i;
 
@@ -889,18 +881,20 @@ char enterYesNo() {
 	}
 }
 
-displayValidWildCards() {
+int 
+displayValidWildCards (void) {
 	(void) printf("The following wild-card formats are acceptable:\n");
 	(void) printf("\t*\n\txxx*\n\t*xxx*\n\t*xxx\n\txx*xx\n\n");
 }
 
-countryCodeMessage(str) {
+int 
+countryCodeMessage (int str) {
 	(void) printf("<%s> is not a valid two-letter country code.\n", str);
 	(void) printf("Either enter a valid two-letter code, or enter the country name more fully.\n\n", str);
 }
 
-void
-onint1() {
+void 
+onint1 (void) {
 	(void) putchar('\n');
 	/* simulate search failure -
 	   this ensures that the "country question" is asked */
@@ -912,9 +906,8 @@ SFD cleanupok() {
 	cleanup(0);
 }
 
-int
-cleanup(exitCode)
-int exitCode;
+int 
+cleanup (int exitCode)
 {
 	if (boundToDSA == TRUE)
 		(void) de_unbind();
@@ -925,8 +918,8 @@ int exitCode;
 }
 
 /* the flushes need dealing with properly */
-void
-onalarm() {
+void 
+onalarm (void) {
 
 	(void) signal(SIGALRM, (VFP) onalarm);
 	(void) alarm(2);
@@ -946,8 +939,8 @@ onalarm() {
 	alarmCount++;
 }
 
-searchFail(objectType)
-int objectType;
+int 
+searchFail (int objectType)
 {
 	int problem;
 	searchfail = TRUE;
@@ -997,9 +990,8 @@ int objectType;
 	return problem;
 }
 
-void
-de_exit(exitCode)
-int exitCode;
+void 
+de_exit (int exitCode)
 {
 	void exit();
 

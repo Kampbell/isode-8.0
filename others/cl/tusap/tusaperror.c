@@ -56,8 +56,8 @@ static int  disc_uerr8_cnt = sizeof disc_uerr8 / sizeof disc_uerr8[0];
 
 /*  */
 
-char *TuErrString(code)
-register int	code;
+char *
+TuErrString (register int code)
 {
 	register int    fcode;
 	static char buffer[BUFSIZ];

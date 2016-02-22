@@ -55,10 +55,8 @@ char   *getenv ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    result,
 			sd;
@@ -218,14 +216,8 @@ char  **argv,
 
 /* ARGSUSED */
 
-static int  downtrans (sd, base, len, size, ssn, ack, rti)
-int	sd;
-char  **base;
-int    *len,
-	   size;
-long	ssn,
-		ack;
-struct RtSAPindication *rti;
+static int 
+downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti)
 {
 	register int    cc;
 	int	    n;
@@ -393,8 +385,8 @@ struct RtSAPindication *rti;
 
 /*  */
 
-static	arginit (vec)
-char  **vec;
+static 
+arginit (char **vec)
 {
 	register char *ap;
 	char    prompt[BUFSIZ];

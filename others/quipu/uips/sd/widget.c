@@ -82,7 +82,8 @@ WINDOW *Text;
 int text_height;
 jmp_buf	env;
 
-void initwidgets() {
+void 
+initwidgets (void) {
 	(void) initscr();
 	(void) noecho();
 	(void) crmode();
@@ -91,7 +92,8 @@ void initwidgets() {
 	activelist.count = 0;
 }
 
-void textfresh() {
+void 
+textfresh (void) {
 	(void) wrefresh (Text);
 }
 
@@ -113,11 +115,13 @@ WIDGET	*thesewdgts;
 	rfrshwidgets(thesewdgts);
 }
 
-int linec() {
+int 
+linec (void) {
 	return (int) LINES;
 }
 
-int gety() {
+int 
+gety (void) {
 	int y,x;
 	getyx(Text, y, x);
 	/* Get rid of lint warning */
@@ -287,19 +291,21 @@ WINDOW	*text;
 	++(activelist.count);
 }
 
-void deleteactive() {
+void 
+deleteactive (void) {
 	if (activelist.count > 0)
 		--(activelist.count);
 }
 
-void activeindex(indx)
-char	indx;
+void 
+activeindex (int indx)
 {
 	activelist.lastindex[activelist.count - 1] = indx;
 }
 
 /* Refresh each of the active widgets and the current text window */
-void redraw() {
+void 
+redraw (void) {
 	register int	i;
 
 #ifndef QUICKREFRESH
@@ -372,8 +378,8 @@ WIDGET	*wdgt;
 	}
 }
 
-void printbar(list_size, first, display_num)
-int list_size, first, display_num;
+void 
+printbar (int list_size, int first, int display_num)
 {
 	WIDGET * wdgt;
 	int cnt, bar_size, bar_pos=0, space_size;
@@ -479,7 +485,8 @@ WIDGET	*wdgt;
 /* THESE ROUTINES GET AND REACT TO A USERS INPUT FROM THE KEYBOARD */
 
 /* Loop forever, calling widget callback functions when activated */
-void interact() {
+void 
+interact (void) {
 	register int	ch, indx;
 	void		int_quit(), jumpback();
 
@@ -513,8 +520,8 @@ void interact() {
 }
 
 /* Find a callback 'ch' from the currently active set of widgets */
-int findactiveinput(ch)
-char	ch;
+int 
+findactiveinput (int ch)
 {
 	register int	indx;
 	register WIDGET	*wdgts;
@@ -559,8 +566,8 @@ char	ch;
 	return(-1);
 }
 
-void docallback(indx)
-char	indx;
+void 
+docallback (int indx)
 {
 	WIDGET	*wdgts;
 
@@ -857,7 +864,8 @@ char	label[];
 /* MISCELLANEOUS FUNCTIONS */
 
 /* Try to locate the bottom of the last set of widgets displayed */
-int lowesty() {
+int 
+lowesty (void) {
 	register int		cnt = 0;
 	register WIDGET		*wdgts;
 
@@ -883,27 +891,27 @@ char	*fmt, *a,*b,*c,*d,*e,*f,*g,*h,*i,*j;
 
 /* This can be called as a way for an application to print text */
 /* VARARGS1 */
-void tprint(fmt, a,b,c,d,e,f,g,h,i,j)
-char	*fmt, *a,*b,*c,*d,*e,*f,*g,*h,*i,*j;
+void 
+tprint (char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j)
 {
 	(void) wprintw(Text,fmt,a,b,c,d,e,f,g,h,i,j);
 	(void) wrefresh(Text);
 }
 
-void xprint(fmt)
-char *fmt;
+void 
+xprint (char *fmt)
 {
 	(void) wprintw(Text, "%s", fmt);
 }
 
-void xprintint(fmt, a)
-char *fmt;
-int a;
+void 
+xprintint (char *fmt, int a)
 {
 	(void) wprintw(Text,fmt, a);
 }
 
-void cleartext() {
+void 
+cleartext (void) {
 #ifndef QUICKREFRESH
 	clearok (Text,TRUE);
 #endif /* QUICKREFRESH */
@@ -911,24 +919,28 @@ void cleartext() {
 }
 
 /* Jump back to the interact function only on an interrupt */
-void jumpback() {
+void 
+jumpback (void) {
 	(void) waddstr(Text,"\n*** Interrupted ***\n");
 	(void) wrefresh(Text);
 	longjmp(env, TRUE);
 }
 
 /* This is used as a declaration, when no function callback is required */
-void nullfn() {
+void 
+nullfn (void) {
 }
 
 /* This is used by widgets that just want to kill the current level */
-void quitfn() {
+void 
+quitfn (void) {
 	(void) wclear(Text);
 	(void) wrefresh(Text);
 	killwidgets(activelist.widgets[activelist.count - 1]);
 }
 
-void endwidgets() {
+void 
+endwidgets (void) {
 	move(LINES-1, 0);
 	refresh();
 	endwin();

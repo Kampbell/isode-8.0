@@ -40,13 +40,8 @@ static int  RtBeginRequestAux ();
 
 /*    RT-BEGIN.REQUEST (X.410 OPEN.REQUEST) */
 
-int	RtBeginRequest2 (called, calling, mode, turn, data, rtc, rti)
-struct RtSAPaddr *called, *calling;
-int	mode,
-	turn;
-PE	data;
-struct RtSAPconnect *rtc;
-struct RtSAPindication *rti;
+int 
+RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti)
 {
 	SBV     smask;
 	int     result;
@@ -87,13 +82,8 @@ struct RtSAPindication *rti;
 
 /*  */
 
-static int  RtBeginRequestAux (called, calling, mode, turn, data, rtc, rti)
-struct RtSAPaddr *called, *calling;
-int	mode,
-	turn;
-PE	data;
-struct RtSAPconnect *rtc;
-struct RtSAPindication *rti;
+static int 
+RtBeginRequestAux (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti)
 {
 	int	    len,
 			result,

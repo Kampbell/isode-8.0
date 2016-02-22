@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mapatt
 extern struct mapnamelist * mapnamelp;
 static struct mapnamelist * taillp;
 
-void
-addToAttList(str)
-char *str;
+void 
+addToAttList (char *str)
 {
 	char * cp;
 
@@ -49,9 +48,8 @@ char *str;
 	addAttNode(str, cp);
 }
 
-void
-addAttNode(tablename, nicename)
-char * tablename, * nicename;
+void 
+addAttNode (char *tablename, char *nicename)
 {
 	struct mapnamelist * mnlp;
 
@@ -67,8 +65,7 @@ char * tablename, * nicename;
 }
 
 char *
-mapAttName(tablename)
-char * tablename;
+mapAttName (char *tablename)
 {
 	struct mapnamelist * mnlp;
 

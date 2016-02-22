@@ -35,9 +35,8 @@ int	null_result (), ia5_result (), query_result ();
 
 int	result_value;
 
-int  initdir (flag, dest)
-int	flag;
-char	*dest;
+int 
+initdir (int flag, char *dest)
 {
 	struct qbuf *qb;
 	struct type_Idist_InitDir *idp;
@@ -78,9 +77,8 @@ char	*uname, *group, *name, *lname;
 }
 
 
-terminate (type, status)
-int	type;
-int	status;
+int 
+terminate (int type, int status)
 {
 	struct type_Idist_TermStatus *ts;
 	struct type_Idist_FileType	*makeftype ();
@@ -95,9 +93,8 @@ int	status;
 				   basic_error);
 }
 
-tran_data (data, len)
-char	*data;
-int	len;
+int 
+tran_data (char *data, int len)
 {
 	struct type_Idist_Data *dat;
 
@@ -109,8 +106,8 @@ int	len;
 				   basic_error);
 }
 
-int	runspecial (cmd)
-char	*cmd;
+int 
+runspecial (char *cmd)
 {
 	struct type_UNIV_IA5String *ia5;
 
@@ -154,10 +151,8 @@ unsigned short *mode;
 }
 
 /* ARGSUSED */
-query_result (sd, id, error, qr, roi)
-int	sd, id, error;
-struct type_Idist_QueryResult *qr;
-struct RoSAPindication *roi;
+int 
+query_result (int sd, int id, int error, struct type_Idist_QueryResult *qr, struct RoSAPindication *roi)
 {
 	long	convtime ();
 
@@ -190,8 +185,8 @@ struct RoSAPindication *roi;
 }
 
 static int copts;
-rmchk (opts)
-int	opts;
+int 
+rmchk (int opts)
 {
 	int	listcdir_result ();
 
@@ -203,10 +198,8 @@ int	opts;
 }
 
 /* ARGSUSED */
-int	listcdir_result (sd, id, error, files, roi)
-int	sd, id, error;
-struct type_Idist_FileList *files;
-struct RoSAPindication *roi;
+int 
+listcdir_result (int sd, int id, int error, struct type_Idist_FileList *files, struct RoSAPindication *roi)
 {
 	struct type_Idist_FileList *fl;
 	char	buf[BUFSIZ];
@@ -230,9 +223,8 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-deletefile (str, mode)
-char	*str;
-int	mode;
+int 
+deletefile (char *str, int mode)
 {
 	struct type_UNIV_IA5String *ia5;
 	char	buffer[BUFSIZ];
@@ -267,10 +259,8 @@ int	mode;
 
 
 /* ARGSUSED */
-static int	basic_error (sd, id, error, parameter, roi)
-int	sd, id, error;
-struct type_Idist_IA5List *parameter;
-struct RoSAPindication *roi;
+static int 
+basic_error (int sd, int id, int error, struct type_Idist_IA5List *parameter, struct RoSAPindication *roi)
 {
 	struct RyError *rye;
 
@@ -318,8 +308,8 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-static  void print_ia5list (ia5)
-register struct type_Idist_IA5List *ia5;
+static void 
+print_ia5list (register struct type_Idist_IA5List *ia5)
 {
 	register struct qbuf *p,
 			*q;

@@ -68,10 +68,8 @@ extern char  *quipuversion;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	char    buffer[BUFSIZ];
 
@@ -240,7 +238,8 @@ struct pair *n2p ();
 
 /*  */
 
-static read_config () {
+static 
+read_config (void) {
 	int	    lineno;
 	register char *cp,
 			 *dp;
@@ -557,8 +556,8 @@ postal_problem:
 
 /*  */
 
-static struct country *read_country (code)
-char   *code;
+static struct country *
+read_country (char *code)
 {
 	int	    vecp;
 	register char *cp,
@@ -656,9 +655,8 @@ char   *code;
 
 /*  */
 
-static	read_psap (dsa, addr)
-char   *dsa,
-	   **addr;
+static 
+read_psap (char *dsa, char **addr)
 {
 	int	    i;
 	register char *cp,
@@ -715,7 +713,8 @@ hit:
 
 /*  */
 
-generate_sed () {
+int 
+generate_sed (void) {
 	FILE   *fp;
 	register struct pair *p;
 
@@ -736,9 +735,8 @@ generate_sed () {
 
 /*  */
 
-static struct pair *n2p (name, any)
-char   *name;
-int	any;
+static struct pair *
+n2p (char *name, int any)
 {
 	register struct pair *p;
 
@@ -797,7 +795,8 @@ no_match:
 
 /*    EDB */
 
-static	build_root () {
+static 
+build_root (void) {
 	if (debug)
 		fprintf (stderr, "mkdir %s\n", wildlife);
 	if (mkdir (wildlife, 0700) == NOTOK)
@@ -863,7 +862,8 @@ static char *c_TLC[] = {
 };
 
 
-static	build_TLC () {
+static 
+build_TLC (void) {
 	char    buffer[BUFSIZ];
 
 	(void) sprintf (buffer, "%s/c=%s", wildlife,
@@ -904,7 +904,8 @@ static char *o_I[] = {
 };
 
 
-static	build_organization () {
+static 
+build_organization (void) {
 	char    buffer[BUFSIZ];
 
 	(void) sprintf (buffer, "%s/c=%s/o=%s", wildlife,
@@ -941,7 +942,8 @@ static char *u_J[] = {
 };
 
 
-static	build_unit () {
+static 
+build_unit (void) {
 	char    buffer[BUFSIZ];
 
 	(void) sprintf (buffer, "%s/c=%s/o=%s/ou=%s", wildlife,
@@ -953,11 +955,8 @@ static	build_unit () {
 
 /*  */
 
-static	make_edb (dir, type, date, entries)
-char   *dir,
-	   *type,
-	   *date;
-char   *entries[];
+static 
+make_edb (char *dir, char *type, char *date, char *entries[])
 {
 	char    edb[BUFSIZ];
 	FILE   *fp;
@@ -985,7 +984,8 @@ char   *entries[];
 
 /*  */
 
-static char *version () {
+static char *
+version (void) {
 	long    clock;
 	struct UTCtime ut;
 	static char buffer[BUFSIZ];
@@ -999,25 +999,25 @@ static char *version () {
 
 /*    FILES */
 
-static	build_tailor () {
+static 
+build_tailor (void) {
 	make_file ("quiputailor", "quiputailor", 0644, 1);
 }
 
-static	build_startup () {
+static 
+build_startup (void) {
 	make_file ("startup.sh", "startup.sh", 0755, 1);
 }
 
-static	build_nightly () {
+static 
+build_nightly (void) {
 	make_file ("nightly.sh", "nightly.sh", 0755, 1);
 }
 
 /*  */
 
-static	make_file (infile, outfile, mode, dosed)
-char   *infile,
-	   *outfile;
-int	mode,
-	dosed;
+static 
+make_file (char *infile, char *outfile, int mode, int dosed)
 {
 	char    buffer[BUFSIZ];
 
@@ -1043,19 +1043,21 @@ int	mode,
 
 /*    SED */
 
-static	build_dsap () {
+static 
+build_dsap (void) {
 	fudge_file ("dsaptailor");
 }
 
-static	build_fred () {
+static 
+build_fred (void) {
 	fudge_file ("fredrc");
 	fudge_file ("ufnrc");
 }
 
 /*  */
 
-static	fudge_file (name)
-char   *name;
+static 
+fudge_file (char *name)
 {
 	char   buffer[BUFSIZ],
 		   file[BUFSIZ],
@@ -1085,8 +1087,8 @@ char   *name;
 
 /*    ARGINIT */
 
-static	arginit (vec)
-char  **vec;
+static 
+arginit (char **vec)
 {
 	register char  *ap;
 
@@ -1133,7 +1135,8 @@ usage:
 
 /*  */
 
-static	parse_3166 () {
+static 
+parse_3166 (void) {
 	int	    bitno;
 	unsigned int bits_size;
 	register char *cp,
@@ -1212,7 +1215,8 @@ static	parse_3166 () {
 
 /*  */
 
-static	table_3166 () {
+static 
+table_3166 (void) {
 	register char *cp,
 			 *dp;
 	char    d,
@@ -1290,9 +1294,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void  adios (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -1312,8 +1315,8 @@ va_dcl {
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void 
+_advise (va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -1330,9 +1333,8 @@ va_list	ap;
 #else
 /* VARARGS */
 
-static void  advise (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }
@@ -1341,8 +1343,8 @@ char   *what,
 /*    MISCELLANY */
 
 #ifndef	lint
-static char *strdup (s)
-char   *s;
+static char *
+strdup (char *s)
 {
 	char    *p;
 

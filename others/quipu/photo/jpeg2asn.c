@@ -43,9 +43,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/jpeg2asn
 
 void            GotError();
 
-main(argc, argv)
-int             argc;
-char           *argv[];
+int 
+main (int argc, char *argv[])
 {
 	int             i;
 	unsigned long   length,
@@ -120,9 +119,8 @@ char           *argv[];
 	return 0;
 }
 
-void
-GotError(theStr)
-char           *theStr;
+void 
+GotError (char *theStr)
 
 {
 	(void) perror(theStr);

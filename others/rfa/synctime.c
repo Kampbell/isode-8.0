@@ -52,8 +52,8 @@ extern char *isodesbinpath;
  *  changeTimeWithRfatime - change time by executing external
  *			    rfatime command as root
  *-------------------------------------------------------------*/
-int changeTimeWithRfatime (dt)
-long dt;
+int 
+changeTimeWithRfatime (long dt)
 {
 	char buf[BUFSIZ];
 	char dtbuf[BUFSIZ];
@@ -119,12 +119,8 @@ long dt;
 /*--------------------------------------------------------------
  *  op_syncTime - synchronize time with peer
  *-------------------------------------------------------------*/
-int  op_syncTime (sd, ryo, rox, in, roi)
-int sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t in;
-struct RoSAPindication *roi;
+int 
+op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
 {
 	register struct type_RFA_SyncTimeArg *sta =
 		(struct type_RFA_SyncTimeArg *) in;

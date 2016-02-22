@@ -1,8 +1,7 @@
 #include "util.h"
 
-int issubstr(str, substr)
-char *str;
-char *substr;
+int 
+issubstr (char *str, char *substr)
 {
 	register char *sptr;
 	char c;
@@ -26,8 +25,8 @@ char *substr;
 	}
 }
 
-int indexstring(string, substring)
-char *string, *substring;
+int 
+indexstring (char *string, char *substring)
 {
 	register char *sub, *str;
 	char c, s;

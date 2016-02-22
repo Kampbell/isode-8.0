@@ -60,7 +60,8 @@ static int triedBackup = FALSE;
 static int bindStarted = FALSE;
 static int boundOnce = FALSE;
 
-int tryBackup() {
+int 
+tryBackup (void) {
 
 	if (triedBackup == TRUE)
 		return NOTOK;
@@ -78,8 +79,8 @@ int tryBackup() {
  * bind_to_ds - Bind to directory
  *
  */
-int init_bind_to_ds(assoc)
-int * assoc;
+int 
+init_bind_to_ds (int *assoc)
 {
 	struct ds_bind_arg bind_arg;
 	struct PSAPaddr             *addr;
@@ -123,9 +124,8 @@ try_bind:
 }
 
 
-int wait_bind_to_ds(assoc, wantToBlock)
-int assoc;
-int wantToBlock;
+int 
+wait_bind_to_ds (int assoc, int wantToBlock)
 {
 	struct PSAPindication   pi_s;
 	struct PSAPindication   * pi = &(pi_s);
@@ -195,17 +195,16 @@ int wantToBlock;
 	return NOTOK; /* exit this way if can't talk to access point(s) */
 } /* bind_to_ds */
 
-int
-rebind() {
+int 
+rebind (void) {
 	if (boundToDSA == FALSE)
 		return(de_bind(TRUE));
 	else
 		return OK;
 }
 
-int
-de_bind(wantToBlock)
-int wantToBlock;
+int 
+de_bind (int wantToBlock)
 {
 	static int assoc;
 
@@ -221,7 +220,8 @@ int wantToBlock;
 	return OK;
 }
 
-de_unbind() {
+int 
+de_unbind (void) {
 	if (deLogLevel)
 		(void) ll_log (de_log, LLOG_NOTICE, NULLCP, "Unbind:");
 	(void) ds_unbind();

@@ -83,9 +83,8 @@ extern struct namelist * orgatts;
 extern struct namelist * ouatts;
 extern struct namelist * prratts;
 
-int initialisations(argc, argv)
-int argc;
-char ** argv;
+int 
+initialisations (int argc, char **argv)
 {
 	FILE *config_file;
 	char linebuf[LINESIZE], user_file[LINESIZE];
@@ -190,8 +189,8 @@ char ** argv;
  * Read in an option from detailor or derc file.
  *
  */
-static void read_de_option(line)
-char *line;
+static void 
+read_de_option (char *line)
 {
 	char *part1, *part2;
 	extern char *TidyString(), *SkipSpace();
@@ -316,7 +315,8 @@ char *rtn;
 }
 */
 
-welcome() {
+int 
+welcome (void) {
 	FILE * welcome_file;
 	char linebuf[LINESIZE];
 

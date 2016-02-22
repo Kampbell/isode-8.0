@@ -79,10 +79,8 @@ static void tsbridge (), do_the_biz (), copy_tsdu (), arginit (), envinit ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char	**argv,
-		**envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	struct TSAPdisconnect   tds;
 	register struct TSAPdisconnect  *td = &tds;
@@ -132,10 +130,8 @@ char	**argv,
 
 /*  */
 
-static	void tsbridge (vecp, vec, ta)
-int	vecp;
-char	**vec;
-struct TSAPaddr *ta;
+static void 
+tsbridge (int vecp, char **vec, struct TSAPaddr *ta)
 {
 	struct TSAPstart tss;
 	register struct TSAPstart *ts = &tss;
@@ -205,8 +201,8 @@ struct TSAPaddr *ta;
 
 /*  */
 
-static void	do_the_biz (sd1, sd2)
-int	sd1, sd2;
+static void 
+do_the_biz (int sd1, int sd2)
 {
 	int nfds = 0;
 	fd_set rmask, imask;
@@ -233,8 +229,8 @@ int	sd1, sd2;
 
 /*  */
 
-static	void copy_tsdu (s1, s2)
-int	s1, s2;
+static void 
+copy_tsdu (int s1, int s2)
 {
 	struct TSAPdisconnect   tds;
 	register struct TSAPdisconnect  *td = &tds;
@@ -305,9 +301,8 @@ int	s1, s2;
 
 /*  */
 
-static void ts_discon (td, sd)
-struct TSAPdisconnect *td;
-int	sd;
+static void 
+ts_discon (struct TSAPdisconnect *td, int sd)
 {
 	ts_close (sd, "Normal Disconnect");
 	ts_advise (td, LLOG_NOTICE, "T-DISCONNECT.INDICATION");
@@ -317,9 +312,8 @@ int	sd;
 
 /*  */
 
-static void ts_close (sd, event)
-int	sd;
-char	*event;
+static void 
+ts_close (int sd, char *event)
 {
 	struct TSAPdisconnect tds;
 	register struct TSAPdisconnect *td = &tds;
@@ -333,9 +327,8 @@ char	*event;
 
 /*  */
 
-static void  ts_adios (td, event)
-register struct TSAPdisconnect *td;
-char	*event;
+static void 
+ts_adios (register struct TSAPdisconnect *td, char *event)
 {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
@@ -344,10 +337,8 @@ char	*event;
 
 /*  */
 
-static void  ts_advise (td, code, event)
-register struct TSAPdisconnect *td;
-int     code;
-char   *event;
+static void 
+ts_advise (register struct TSAPdisconnect *td, int code, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -364,10 +355,8 @@ char   *event;
 /*  */
 static int isnew = 1;
 
-static struct TSAPaddr *getnewta (ta, sd, ctp)
-struct TSAPaddr *ta;
-int	sd;
-ContTbl *ctp;
+static struct TSAPaddr *
+getnewta (struct TSAPaddr *ta, int sd, ContTbl *ctp)
 {
 	static struct TSAPaddr newta;
 	struct TSAPaddr *nta = &newta;
@@ -428,10 +417,8 @@ ContTbl *ctp;
 
 /*  */
 
-static struct TSAPaddr *maketa (ta, type, ctp)
-struct TSAPaddr *ta;
-long	type;
-ContTbl *ctp;
+static struct TSAPaddr *
+maketa (struct TSAPaddr *ta, long type, ContTbl *ctp)
 {
 	static struct TSAPaddr newta;
 	register struct TSAPaddr *nta = &newta;
@@ -510,8 +497,8 @@ ContTbl *ctp;
 
 /*  */
 
-static ContTbl *find_connection (ta)
-struct TSAPaddr *ta;
+static ContTbl *
+find_connection (struct TSAPaddr *ta)
 {
 	ContTbl *ctp;
 	struct NSAPaddr *na1, *na2;
@@ -566,8 +553,8 @@ struct TSAPaddr *ta;
 
 /*  */
 
-static void	arginit (vec)
-char	**vec;
+static void 
+arginit (char **vec)
 {
 	register char   *ap;
 	register struct TSAPaddr *ta;
@@ -628,8 +615,8 @@ char	**vec;
 
 /*  */
 
-static void read_file (file)
-char	*file;
+static void 
+read_file (char *file)
 {
 	FILE	*fp;
 	char	buf[BUFSIZ];
@@ -698,7 +685,8 @@ char	*file;
 
 /*  */
 
-static	void envinit () {
+static void 
+envinit (void) {
 	int     i,
 			sd;
 
@@ -778,9 +766,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void    adios (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -804,10 +791,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void    advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int     code;
+static void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }

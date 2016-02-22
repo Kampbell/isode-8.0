@@ -93,10 +93,8 @@ struct group *gr;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int initiate ();
 	oumask = umask (0);
@@ -483,21 +481,16 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-static int i_strerror (sd, err, str, rox, roi)
-int	sd, err;
-char	*str;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+i_strerror (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	addtoia5 (str, strlen(str));
 
 	return error (sd, err, (caddr_t)ia5list, rox, roi);
 }
 
-static int syserror (sd, err, rox, roi)
-int	sd, err;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	extern	int errno;
 
@@ -507,11 +500,8 @@ struct RoSAPindication *roi;
 
 /*    U-REJECT */
 
-static int  ureject (sd, reason, rox, roi)
-int	sd,
-	reason;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");

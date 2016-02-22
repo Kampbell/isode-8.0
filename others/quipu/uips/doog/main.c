@@ -23,9 +23,8 @@ static void read_doog_args();
 
 QBool testing = FALSE;
 
-int main(argc, argv)
-int argc;
-char *argv[];
+int 
+main (int argc, char *argv[])
 {
 	(void) fprintf(stderr, "Binding to directory.....\n");
 
@@ -39,9 +38,8 @@ char *argv[];
 	return 0;
 }
 
-static void read_doog_args(argc, argv)
-int argc;
-char *argv[];
+static void 
+read_doog_args (int argc, char *argv[])
 {
 	char *arg;
 	int count;

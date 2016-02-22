@@ -88,9 +88,8 @@ static struct udpconn *peers = NULL;
  **********************************************************
  */
 
-int	udpinit (tb)
-
-register struct tsapblk	*tb;
+int 
+udpinit (register struct tsapblk *tb)
 
 {
 
@@ -135,13 +134,8 @@ register struct tsapblk	*tb;
  **********************************************************
  */
 
-int 	udp_open (tb, local, remote, option, td)
-
-register struct tsapblk *tb;
-struct NSAPaddr *local,
-		*remote;
-int		option;
-struct TSAPdisconnect *td;
+int 
+udp_open (register struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, int option, struct TSAPdisconnect *td)
 
 {
 
@@ -294,11 +288,8 @@ struct TSAPdisconnect *td;
 
 #ifdef EXOS
 
-int	udp_start_client (sock, opt1, opt2)
-
-struct 	sockaddr_in *sock;
-int	opt1,
-	opt2;
+int 
+udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 
 {
 	register int    port;
@@ -483,12 +474,8 @@ int	opt1,
  **********************************************************
  */
 
-int	udp_join_server (sd, sock, opt1, opt2)
-
-int	sd;
-struct 	sockaddr_in *sock;
-int	opt1,
-	opt2;
+int 
+udp_join_server (int sd, struct sockaddr_in *sock, int opt1, int opt2)
 
 {
 
@@ -548,11 +535,8 @@ int	opt1,
  **********************************************************
  */
 
-int 	join_udp_aux (fd, sock, newfd)
-
-int	fd,
-	newfd;
-struct sockaddr_in *sock;
+int 
+join_udp_aux (int fd, struct sockaddr_in *sock, int newfd)
 
 {
 	int	    nfds,
@@ -616,13 +600,8 @@ struct sockaddr_in *sock;
  **********************************************************
  */
 
-int	udp_read_socket (fd, q, secs, fromsock, td)
-
-int	    	fd;
-struct qbuf 	*q;
-int	    	secs;
-struct sockaddr_in 	*fromsock;
-struct TSAPdisconnect   *td;
+int 
+udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *fromsock, struct TSAPdisconnect *td)
 
 
 {
@@ -760,12 +739,8 @@ struct TSAPdisconnect   *td;
  **********************************************************
  */
 
-int	udp_write_socket (fd, data, cc, td)
-
-int	fd;
-register char *data;
-int	cc;
-struct TSAPdisconnect *td;
+int 
+udp_write_socket (int fd, register char *data, int cc, struct TSAPdisconnect *td)
 
 {
 	register struct udpconn *up;
@@ -812,8 +787,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-int	udp_close (fd)
-int	fd;
+int 
+udp_close (int fd)
 {
 	register struct qbuf *qb,
 			*qp;

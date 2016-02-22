@@ -97,9 +97,8 @@ static	SFD incdebug(), decdebug();
 
 struct ntp_peer *find_peer ();
 
-main(argc, argv)
-int argc;
-char *argv[];
+int 
+main (int argc, char *argv[])
 {
 	int	cc;
 	extern char *optarg;
@@ -211,7 +210,8 @@ char *argv[];
 	return 0;
 }
 
-doit () {
+int 
+doit (void) {
 	struct timeval tvt;
 	fd_set readfds, writefds;
 	int	vecp;
@@ -328,9 +328,7 @@ doit () {
 }
 
 struct ntp_peer *
-check_peer(dst, sock)
-struct Naddr *dst;
-int sock;
+check_peer (struct Naddr *dst, int sock)
 {
 	register struct ntp_peer *peer = peer_list.head;
 
@@ -344,11 +342,8 @@ int sock;
 }
 
 #ifdef	DEBUG
-void
-dump_pkt(dst, pkt, peer)
-struct Naddr *dst;
-struct ntpdata *pkt;
-struct ntp_peer *peer;
+void 
+dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer)
 {
 	struct Naddr clock_host;
 
@@ -394,9 +389,8 @@ struct ntp_peer *peer;
 }
 #endif
 
-void
-make_new_peer(peer)
-struct ntp_peer *peer;
+void 
+make_new_peer (struct ntp_peer *peer)
 {
 	int i;
 	void	double_to_s_fixed ();
@@ -424,9 +418,8 @@ struct ntp_peer *peer;
 /*
  *  This procedure is called to delete a peer from our list of peers.
  */
-demobilize(l, peer)
-struct list *l;
-struct ntp_peer *peer;
+int 
+demobilize (struct list *l, struct ntp_peer *peer)
 {
 	extern struct ntp_peer dummy_peer;
 
@@ -492,9 +485,8 @@ dropit:
 	return 1;
 }
 
-enqueue(l, peer)
-register struct list *l;
-struct ntp_peer *peer;
+int 
+enqueue (register struct list *l, struct ntp_peer *peer)
 {
 	l->members++;
 	if (l->tail == NULL) {
@@ -512,8 +504,8 @@ struct ntp_peer *peer;
 }
 
 
-static void timeout(n)
-int	n;
+static void 
+timeout (int n)
 {
 	static int periodic = 0;
 	register struct ntp_peer *peer;
@@ -577,8 +569,8 @@ int	n;
 #endif
 }
 
-static void do_peer (peer)
-struct ntp_peer *peer;
+static void 
+do_peer (struct ntp_peer *peer)
 {
 	if (peer -> flags & PEER_FL_SNOOZE)
 		return;
@@ -623,8 +615,8 @@ struct ntp_peer *peer;
  */
 int precision;
 
-static void init_ntp(config)
-char *config;
+static void 
+init_ntp (char *config)
 {
 	struct Naddr addr;
 	char buffer[BUFSIZ];
@@ -714,9 +706,8 @@ CMD_TABLE	config_tbl[] = {
 	"",	-1
 };
 
-config_line (argv, argc)
-char	*argv[];
-int	argc;
+int 
+config_line (char *argv[], int argc)
 {
 	int	result;
 	struct Naddr addr;
@@ -980,10 +971,8 @@ CMD_TABLE tbl_peer_flags[] = {
 	NULLCP,		-1
 };
 
-other_peer_fields (peer, argv, argc)
-struct ntp_peer *peer;
-char	**argv;
-int	argc;
+int 
+other_peer_fields (struct ntp_peer *peer, char **argv, int argc)
 {
 	while (argc > 0) {
 		switch (cmd_srch (argv[0], tbl_peer_flags)) {
@@ -1003,8 +992,8 @@ int	argc;
 	}
 }
 
-ynorint (s)
-char	*s;
+int 
+ynorint (char *s)
 {
 	if (*s == 'y' || *s == 'Y')
 		return 1;
@@ -1020,8 +1009,8 @@ static int kern_hz, kern_tick;
 #define n_name n_un.n_name
 #endif
 
-static void
-init_kern_vars() {
+static void 
+init_kern_vars (void) {
 	int kmem;
 	static char	*memory = "/dev/kmem";
 	static struct nlist nl[4];
@@ -1144,9 +1133,8 @@ init_kern_vars() {
  * addresses that have characters or byte values > 255.
  */
 
-GetHostName(name, addr)
-char *name;
-struct Naddr *addr;
+int 
+GetHostName (char *name, struct Naddr *addr)
 {
 	long HostAddr;
 	struct hostent *hp;
@@ -1193,8 +1181,8 @@ struct Naddr *addr;
 	return (NOTOK);
 }
 /* every hour, dump some useful information to the log */
-static void
-hourly() {
+static void 
+hourly (void) {
 	char buf[200];
 	register int p = 0;
 	static double drifts[5] = { 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -1293,8 +1281,8 @@ int init_clock_local(), read_clock_local();
 int init_clock_psti(), read_clock_psti();
 #endif PSTI
 
-init_clock(name, type)
-char *name, *type;
+int 
+init_clock (char *name, char *type)
 {
 	struct refclock *r;
 	int (*reader)();
@@ -1325,9 +1313,8 @@ char *name, *type;
 	return(cfd);
 }
 
-read_clock(cfd, tvpp, otvpp)
-int cfd;
-struct timeval **tvpp, **otvpp;
+int 
+read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp)
 {
 	struct refclock *r;
 
@@ -1338,14 +1325,15 @@ struct timeval **tvpp, **otvpp;
 }
 #endif
 
-create_listeners () {
+int 
+create_listeners (void) {
 	(void) create_sockets(servport);
 
 	create_osilisten (osiaddress);
 }
 
-char	*paddr (addr)
-struct Naddr *addr;
+char *
+paddr (struct Naddr *addr)
 {
 	static char buf[128];
 
@@ -1365,7 +1353,8 @@ struct Naddr *addr;
 	}
 }
 
-envinit () {
+int 
+envinit (void) {
 	int s;
 
 	if (!debug) {
@@ -1427,9 +1416,8 @@ va_dcl {
 #else
 /* VARARGS2 */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -1454,17 +1442,15 @@ va_dcl {
 #else
 /* VARARGS3 */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }
 #endif
 
-addr_compare (pa1, pa2)
-struct Naddr *pa1, *pa2;
+int 
+addr_compare (struct Naddr *pa1, struct Naddr *pa2)
 {
 	if (pa1 -> type != pa2 -> type)
 		return 0;
@@ -1483,8 +1469,8 @@ struct Naddr *pa1, *pa2;
 	}
 }
 
-psapaddr_cmp (pa1, pa2)
-struct PSAPaddr *pa1, *pa2;
+int 
+psapaddr_cmp (struct PSAPaddr *pa1, struct PSAPaddr *pa2)
 {
 	char	*ps1, *ps2;
 
@@ -1497,7 +1483,8 @@ struct PSAPaddr *pa1, *pa2;
 	return 0;
 }
 
-struct ntp_peer *find_peer (n) {
+struct ntp_peer *
+find_peer (int n) {
 	struct ntp_peer *peer;
 
 	for (peer = peer_list.head; peer; peer = peer->next)
@@ -1507,8 +1494,8 @@ struct ntp_peer *find_peer (n) {
 	return NULL;
 }
 
-struct intf *getintf (n)
-int	*n;
+struct intf *
+getintf (int *n)
 {
 	int acount;
 	struct intf *ap;

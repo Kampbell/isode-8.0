@@ -571,8 +571,8 @@ int	len;
 
 /* ARGSUSED */
 
-void	text2spkt (s)
-struct ssapkt *s;
+void 
+text2spkt (struct ssapkt *s)
 {
 	/* NOT YET IMPLEMENTED */
 }

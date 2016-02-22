@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/cname.
 extern struct cnamelist * cnamelp;
 static struct cnamelist * taillp;
 
-void
-addToCoList(str)
-char *str;
+void 
+addToCoList (char *str)
 {
 	char * cp;
 
@@ -53,9 +52,8 @@ char *str;
 	addCoNode(str, cp);
 }
 
-void
-addCoNode(shortname, longname)
-char * shortname, * longname;
+void 
+addCoNode (char *shortname, char *longname)
 {
 	struct cnamelist * colp;
 
@@ -71,8 +69,7 @@ char * shortname, * longname;
 }
 
 char *
-mapCoName(shortname)
-char * shortname;
+mapCoName (char *shortname)
 {
 	struct cnamelist * cnlp;
 

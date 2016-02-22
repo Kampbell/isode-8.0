@@ -90,8 +90,8 @@ struct ssapkt *s;
 
 /*  */
 
-struct ssapkt *str2spkt (buffer)
-char  *buffer;
+struct ssapkt *
+str2spkt (char *buffer)
 {
 	int	    cc;
 	char    packet[CONNECT_MAX + BUFSIZ];

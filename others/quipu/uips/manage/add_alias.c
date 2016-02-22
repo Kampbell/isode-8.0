@@ -44,9 +44,8 @@ extern	PS	rps;
 extern	Entry	current_entry;
 static	char	new_draft;
 
-call_add_alias (argc, argv)
-int             argc;
-char          **argv;
+int 
+call_add_alias (int argc, char **argv)
 {
 	DN		oj_dn, aoj_dn ;
 	DN		save_dn, dnptr, trail ;

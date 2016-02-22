@@ -68,9 +68,8 @@ extern int errno;
 /*
  * Convenience Routines
  */
-TWriteToClient(sd, buf, len)
-int sd, len;
-char *buf;
+int 
+TWriteToClient (int sd, char *buf, int len)
 {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -84,9 +83,8 @@ char *buf;
  * sd = transport descriptor
  * iov is iovec of iovcnt buffers
  */
-TWritevToClient(sd, iov, iovcnt)
-int sd, iovcnt;
-struct iovec *iov;
+int 
+TWritevToClient (int sd, struct iovec *iov, int iovcnt)
 {
 	int i, ret, tot = 0;
 	struct udvec uv[64], *uvp = uv;
@@ -125,10 +123,8 @@ struct iovec *iov;
 	}
 }
 
-TAcceptFromClient(fd, vecp, vec)
-int fd;
-int vecp;
-char **vec;
+int 
+TAcceptFromClient (int fd, int vecp, char **vec)
 {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -150,8 +146,8 @@ char **vec;
 	return tst->ts_sd;
 }
 
-TDiscFromClient(fd)
-int fd;
+int 
+TDiscFromClient (int fd)
 {
 	struct TSAPdisconnect tds;
 
@@ -558,8 +554,8 @@ outOfMem:
 *
 **********************/
 
-void
-FlushAllOutput() {
+void 
+FlushAllOutput (void) {
 	register int index, base, mask;
 	OsCommPtr oc;
 	register ClientPtr client;
@@ -596,14 +592,14 @@ FlushAllOutput() {
 
 }
 
-void
-FlushIfCriticalOutputPending() {
+void 
+FlushIfCriticalOutputPending (void) {
 	if (CriticalOutputPending)
 		FlushAllOutput();
 }
 
-void
-SetCriticalOutputPending() {
+void 
+SetCriticalOutputPending (void) {
 	CriticalOutputPending = TRUE;
 }
 

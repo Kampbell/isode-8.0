@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mappho
 extern struct mapphonelist * mapphonelp;
 static struct mapphonelist * tailplp;
 
-void
-addToPhoneList(str)
-char *str;
+void 
+addToPhoneList (char *str)
 {
 	char * cp;
 
@@ -49,9 +48,8 @@ char *str;
 	addPhoneNode(str, cp);
 }
 
-void
-addPhoneNode(from, to)
-char * from, * to;
+void 
+addPhoneNode (char *from, char *to)
 {
 	struct mapphonelist * mplp;
 
@@ -67,8 +65,7 @@ char * from, * to;
 }
 
 char *
-mapPhone(from)
-char * from;
+mapPhone (char *from)
 {
 	struct mapphonelist * mplp;
 	static char tophone[LINESIZE];

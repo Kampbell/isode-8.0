@@ -65,10 +65,8 @@ static struct dispatch dispatches[] = {
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	(void) ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
 						dispatches, table_PasswordLookup_Operations,
@@ -139,11 +137,8 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  lookup (sd, pw, rox, roi)
-int	sd;
-struct passwd *pw;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	int	    result;
 
@@ -209,11 +204,8 @@ struct RoSAPindication *roi;
 
 /*    U-REJECT */
 
-static int  ureject (sd, reason, rox, roi)
-int	sd,
-	reason;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");

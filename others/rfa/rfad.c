@@ -70,9 +70,8 @@ char homedir[BUFSIZ];
 
 /*   MAIN */
 
-main (argc, argv)
-int argc;
-char  **argv;
+int 
+main (int argc, char **argv)
 {
 	int initiate ();
 	char buf[BUFSIZ];
@@ -139,7 +138,8 @@ char  **argv;
 }
 
 
-cleanup() {
+int 
+cleanup (void) {
 }
 
 

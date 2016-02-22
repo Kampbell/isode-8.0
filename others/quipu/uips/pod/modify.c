@@ -32,9 +32,8 @@ extern mailtype mailformat;
 extern LLog    *log_stat;
 #endif
 
-struct entrymod * ems_append (a,b)
-struct entrymod *a;
-struct entrymod *b;
+struct entrymod *
+ems_append (struct entrymod *a, struct entrymod *b)
 {
 	struct entrymod *ptr;
 
@@ -739,8 +738,8 @@ AV_Sequence oc;
 }
 
 /*Big Bodge!*/
-char *modify_error(error)
-struct DSError *error;
+char *
+modify_error (struct DSError *error)
 {
 	PS ps;
 	char buffer[RESBUF];

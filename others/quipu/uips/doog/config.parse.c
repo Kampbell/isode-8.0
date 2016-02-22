@@ -818,9 +818,8 @@ yyerrhandle:
 #line 100 "config.b"
 
 
-static int yylex(lvalp, llocp)
-YYSTYPE *lvalp;
-YYLTYPE *llocp;
+static int 
+yylex (YYSTYPE *lvalp, YYLTYPE *llocp)
 {
 	register int c;
 	QCardinal count = 0;
@@ -915,8 +914,8 @@ YYLTYPE *llocp;
 }
 
 /* ARGSUSED */
-int yyerror(err)
-char *err;
+int 
+yyerror (char *err)
 {
 	(void) fprintf(stderr, "Line %d. ", config_line_num);
 	(void) fprintf(stderr,

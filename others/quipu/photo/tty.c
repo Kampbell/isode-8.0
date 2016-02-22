@@ -51,8 +51,8 @@ char    show[128];
 char    display[50][50];
 
 /* ARGSUSED */
-photo_start (name)
-char   *name;
+int 
+photo_start (char *name)
 {
 	char   *ptr,
 		   *getenv ();
@@ -95,8 +95,8 @@ char   *name;
 }
 
 /* ARGSUSED */
-photo_end (name)
-char   *name;
+int 
+photo_end (char *name)
 {
 	int     i,
 			j,
@@ -192,8 +192,8 @@ char   *name;
 
 }
 
-photo_black (length)
-int     length;
+int 
+photo_black (int length)
 {
 	int     i;
 
@@ -210,8 +210,8 @@ int     length;
 	pos += length;
 }
 
-photo_white (length)
-int     length;
+int 
+photo_white (int length)
 {
 	int     i;
 

@@ -37,9 +37,8 @@ extern int      errno;
 
 #include "internet.h"
 
-main(argc,argv)
-int	argc;
-char	*argv[];
+int 
+main (int argc, char *argv[])
 {
 	int 			sd,res;
 	struct sockaddr_in	sin_buf;

@@ -42,19 +42,21 @@ static int wrapLines = FALSE;
 int lineno;
 int discardInput;
 
-testRedisplay() {
+int 
+testRedisplay (void) {
 	if (redisplay)
 		return TRUE;
 	else
 		return FALSE;
 }
 
-setRedisplay() {
+int 
+setRedisplay (void) {
 	redisplay = TRUE;
 }
 
-pagerOn(number)
-int number;
+int 
+pagerOn (int number)
 {
 	lineno = 0;
 	discardInput = FALSE;
@@ -65,15 +67,18 @@ int number;
 		numOK = FALSE;
 }
 
-linewrapOn() {
+int 
+linewrapOn (void) {
 	wrapLines = TRUE;
 }
 
-linewrapOff() {
+int 
+linewrapOff (void) {
 	wrapLines = FALSE;
 }
 
-isWrapOn() {
+int 
+isWrapOn (void) {
 	return wrapLines;
 }
 
@@ -145,15 +150,16 @@ va_dcl /* no ; */
 	va_end(ap);
 }
 
-putPagePrompt() {
+int 
+putPagePrompt (void) {
 	writeInverse("SPACE for next screen; q to quit pager");
 	if (numOK == TRUE)
 		writeInverse("; or the number of the entry");
 	writeInverse(": ");
 }
 
-int
-getPagerInput() {
+int 
+getPagerInput (void) {
 	int c, i;
 	char numstr[LINESIZE];
 
@@ -186,7 +192,7 @@ getPagerInput() {
 	return c;
 }
 
-int
-getpnum() {
+int 
+getpnum (void) {
 	return pagerNumber;
 }

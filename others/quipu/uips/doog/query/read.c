@@ -475,8 +475,8 @@ int format;
 } /* photo2xbm */
 
 /* ARGSUSED */
-int photo_start(name)
-char *name;
+int 
+photo_start (char *name)
 {
 	if (photo_pass_two == FALSE) {
 		tmp_width = photo_width = photo_height = 0;
@@ -490,8 +490,8 @@ char *name;
 }
 
 /* ARGSUSED */
-int photo_end(name)
-char *name;
+int 
+photo_end (char *name)
 {
 	register int byte_width;
 
@@ -508,8 +508,8 @@ char *name;
 	return 0;
 }
 
-int photo_black(line_length)
-int line_length;
+int 
+photo_black (int line_length)
 {
 	register unsigned char tmp_byte;
 	register int count;
@@ -571,8 +571,8 @@ int line_length;
 	return 0;
 }
 
-int photo_white(line_length)
-int line_length;
+int 
+photo_white (int line_length)
 {
 	register int count;
 

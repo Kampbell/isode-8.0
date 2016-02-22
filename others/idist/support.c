@@ -52,8 +52,8 @@ char	*uname, *group, *name, *lname;
 	return fs;
 }
 
-struct type_Idist_Options *makeopts (opts)
-int	opts;
+struct type_Idist_Options *
+makeopts (int opts)
 {
 	struct type_Idist_Options *rdo;
 
@@ -74,8 +74,8 @@ int	opts;
 	return rdo;
 }
 
-struct type_Idist_FileType *makeftype (type)
-unsigned short type;
+struct type_Idist_FileType *
+makeftype (int type)
 {
 	struct type_Idist_FileType *ft;
 
@@ -101,8 +101,8 @@ unsigned short type;
 	return ft;
 }
 
-struct type_Idist_FileTime *makefmtime (mtime)
-long	mtime;
+struct type_Idist_FileTime *
+makefmtime (long mtime)
 {
 	struct type_Idist_FileTime *fm;
 
@@ -113,8 +113,8 @@ long	mtime;
 	return fm;
 }
 
-long	convtime (fm)
-struct type_Idist_FileTime *fm;
+long 
+convtime (struct type_Idist_FileTime *fm)
 {
 	return fm -> parm - 2208988800L;
 }
@@ -125,9 +125,7 @@ struct type_Idist_FileTime *fm;
  * part corresponding to `file'.
  */
 char *
-exptilde(buf, file)
-char buf[];
-register char *file;
+exptilde (char buf[], register char *file)
 {
 	register char *s1, *s2, *s3;
 	extern char homedir[];

@@ -172,7 +172,8 @@ int	rw;
 
 /*    ASSOCIATION BLOCKS */
 /*---------------------------------------------------------------------------*/
-struct assocblk  *newacublk () {
+struct assocblk *
+newacublk (void) {
 	/*---------------------------------------------------------------------------*/
 	register struct assocblk *acb;
 
@@ -193,9 +194,11 @@ struct assocblk  *newacublk () {
 
 /*  */
 /*---------------------------------------------------------------------------*/
-struct assocblk   *findacublk (sd)
+struct assocblk *
+findacublk (
 /*---------------------------------------------------------------------------*/
-register int sd;
+    register int sd
+)
 {
 	register struct assocblk *acb;
 
@@ -211,9 +214,11 @@ register int sd;
 
 /*  */
 /*---------------------------------------------------------------------------*/
-freeacublk (acb)
+int 
+freeacublk (
 /*---------------------------------------------------------------------------*/
-register struct assocblk *acb;
+    register struct assocblk *acb
+)
 {
 	if (acb == NULL) return;
 
@@ -243,12 +248,14 @@ register struct assocblk *acb;
 /*---------------------------------------------------------------------------*/
 /*    PSAP interface */
 /*---------------------------------------------------------------------------*/
-int	ps2aculose (acb, aci, event, pa)
+int 
+ps2aculose (
 /*---------------------------------------------------------------------------*/
-register struct assocblk *acb;
-register struct AcSAPindication *aci;
-char   *event;
-register struct PSAPabort *pa;
+    register struct assocblk *acb,
+    register struct AcSAPindication *aci,
+    char *event,
+    register struct PSAPabort *pa
+)
 {
 	int     reason;
 	char   *cp,
@@ -321,11 +328,8 @@ va_dcl {
 }
 #else
 /* VARARGS */
-int	acusaplose (aci, reason, what, fmt)
-struct AcSAPindication *aci;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
 {
 	return acusaplose (aci, reason, what, fmt);
 }
@@ -337,11 +341,13 @@ char   *what,
 #ifndef	lint
 
 /*---------------------------------------------------------------------------*/
-static int  _acusaplose (aci, reason, ap)  /* what, fmt, args ... */
+static int 
+_acusaplose (  /* what, fmt, args ... */
 /*---------------------------------------------------------------------------*/
-register struct AcSAPindication *aci;
-int     reason;
-va_list	ap;
+    register struct AcSAPindication *aci,
+    int reason,
+    va_list ap
+)
 {
 	register char  *bp;
 	char    buffer[BUFSIZ];
@@ -404,9 +410,11 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
 /*  */
 /*---------------------------------------------------------------------------*/
-char   *AcuErrString (code)
+char *
+AcuErrString (
 /*---------------------------------------------------------------------------*/
-register int code;
+    register int code
+)
 {
 	static char buffer[BUFSIZ];
 

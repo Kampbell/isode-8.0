@@ -508,8 +508,8 @@ IFP	writefnx;
 
 /*  */
 
-struct tsapkt *newtpkt (code)
-int	code;
+struct tsapkt *
+newtpkt (int code)
 {
 	register struct tsapkt *t;
 
@@ -524,8 +524,8 @@ int	code;
 }
 
 
-int	freetpkt (t)
-register struct tsapkt *t;
+int 
+freetpkt (register struct tsapkt *t)
 {
 	if (t == NULL)
 		return;

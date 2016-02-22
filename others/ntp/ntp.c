@@ -62,9 +62,8 @@ int debug;
 extern int optind;
 char	*myname;
 
-main(argc, argv)
-int argc;
-char *argv[];
+int 
+main (int argc, char *argv[])
 {
 	struct hostent *hp;
 	struct in_addr clock_host;

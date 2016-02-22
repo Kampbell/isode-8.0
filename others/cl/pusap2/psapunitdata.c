@@ -226,14 +226,16 @@ out:
 /* ^L   BIND  ...  for P-UNIT-DATA.REQUEST and P-UNIT-DATA.INDICATION */
 /*      opens a socket for later, multiple reads and writes */
 /*---------------------------------------------------------------------------*/
-int	PUnitDataBind ( sd, calling, called, ctxlist, qos, pi)
+int 
+PUnitDataBind (
 /*---------------------------------------------------------------------------*/
-int	sd;
-struct	PSAPaddr *calling,
-		*called;
-struct	PSAPctxlist *ctxlist;
-struct	QOStype *qos;
-struct	PSAPindication *pi;
+    int sd,
+    struct PSAPaddr *calling,
+    struct PSAPaddr *called,
+    struct PSAPctxlist *ctxlist,
+    struct QOStype *qos,
+    struct PSAPindication *pi
+)
 {
 	SBV     smask;
 	int     result;
@@ -342,11 +344,13 @@ no_good:
 /*---------------------------------------------------------------------------*/
 /* ^L   ReBIND  ...  resets called address on binding */
 /*---------------------------------------------------------------------------*/
-int	PUnitDataRebind ( sd, called, pi)
+int 
+PUnitDataRebind (
 /*---------------------------------------------------------------------------*/
-int	sd;
-struct	PSAPaddr *called;
-struct	PSAPindication *pi;
+    int sd,
+    struct PSAPaddr *called,
+    struct PSAPindication *pi
+)
 {
 	SBV     smask;
 	int     result;
@@ -526,12 +530,14 @@ out:
 /*    get P-UNIT-DATA.INDICATON over locally bound association */
 /*      socket must have been previously bound by PUnitDataBind() */
 /*---------------------------------------------------------------------------*/
-int	PUnitDataRead ( sd, ps, secs, pi )
+int 
+PUnitDataRead (
 /*---------------------------------------------------------------------------*/
-int	sd;
-struct  PuSAPstart *ps;
-int	secs;
-struct  PSAPindication *pi;
+    int sd,
+    struct PuSAPstart *ps,
+    int secs,
+    struct PSAPindication *pi
+)
 {
 	SBV     smask;
 	int     result, i, len;
@@ -650,10 +656,12 @@ out:
 /*---------------------------------------------------------------------------*/
 /*    clear local binding for P-UNIT-DATA */
 /*---------------------------------------------------------------------------*/
-int	PUnitDataUnbind ( sd, pi)
+int 
+PUnitDataUnbind (
 /*---------------------------------------------------------------------------*/
-int	sd;
-struct  PSAPindication *pi;
+    int sd,
+    struct PSAPindication *pi
+)
 {
 	SBV     smask;
 	int     result;
@@ -696,12 +704,14 @@ out1:
 /*---------------------------------------------------------------------------*/
 /*    save magic args (TPDU) for local P-UNIT-DATA binding                 */
 /*---------------------------------------------------------------------------*/
-int	PuSave ( sd, vecp, vec, pi )
+int 
+PuSave (
 /*---------------------------------------------------------------------------*/
-int	sd;
-int	vecp;
-char    **vec;
-struct  PSAPindication *pi;
+    int sd,
+    int vecp,
+    char **vec,
+    struct PSAPindication *pi
+)
 {
 	int     result;
 	register struct psapblk *pb;
@@ -738,12 +748,14 @@ struct  PSAPindication *pi;
 
 
 /*---------------------------------------------------------------------------*/
-int	addrs2block ( callingaddr, calledaddr, pb, pi )
+int 
+addrs2block (
 /*---------------------------------------------------------------------------*/
-struct PSAPaddr *callingaddr,
-		*calledaddr;
-struct psapblk *pb;
-struct PSAPindication *pi;
+    struct PSAPaddr *callingaddr,
+    struct PSAPaddr *calledaddr,
+    struct psapblk *pb,
+    struct PSAPindication *pi
+)
 {
 	register struct PSAPaddr *pa;
 
@@ -776,12 +788,14 @@ no_mem:
 
 
 /*----------------------------------------------------------------------------*/
-int	contexts2block ( contexts, nctx, pb, pi )
+int 
+contexts2block (
 /*----------------------------------------------------------------------------*/
-struct  PSAPcontext *contexts;
-int     nctx;
-struct  psapblk *pb;
-struct	PSAPindication *pi;
+    struct PSAPcontext *contexts,
+    int nctx,
+    struct psapblk *pb,
+    struct PSAPindication *pi
+)
 {
 	int i;
 	register struct PSAPcontext *pp, *qp;
@@ -833,10 +847,12 @@ out2:
 
 
 /*----------------------------------------------------------------------------*/
-int	contexts2pdu ( pb, pdu )
+int 
+contexts2pdu (
 /*----------------------------------------------------------------------------*/
-struct psapblk *pb;
-struct type_PS_UD__type *pdu;
+    struct psapblk *pb,
+    struct type_PS_UD__type *pdu
+)
 {
 	int i;
 	register struct PSAPcontext  *qp;
@@ -880,11 +896,13 @@ no_mem:
 
 
 /*----------------------------------------------------------------------------*/
-int	pdu2contexts ( pb, ctxdeflist, ctxlist )
+int 
+pdu2contexts (
 /*----------------------------------------------------------------------------*/
-struct psapblk *pb;
-struct type_PS_Definition__list *ctxdeflist;
-struct PSAPctxlist *ctxlist;
+    struct psapblk *pb,
+    struct type_PS_Definition__list *ctxdeflist,
+    struct PSAPctxlist *ctxlist
+)
 {
 	int i, j, result;
 	register struct PSAPcontext  *pp, *qp;

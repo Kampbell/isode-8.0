@@ -99,8 +99,8 @@ static int  f_ufn ();
 
 /*    WHOIS */
 
-int	f_whois (vec)
-char  **vec;
+int 
+f_whois (char **vec)
 {
 	if (strcmp (*vec, "whois") == 0)
 		vec++;
@@ -110,8 +110,8 @@ char  **vec;
 
 /*  */
 
-static int  f_whois_aux (vec)
-char  **vec;
+static int 
+f_whois_aux (char **vec)
 {
 	int	    c,
 			mailbox,
@@ -651,8 +651,8 @@ out:
 
 /*  */
 
-static whois_aux (w)
-register struct whois *w;
+static 
+whois_aux (register struct whois *w)
 {
 	register char *bp,
 			 *cp;
@@ -832,10 +832,8 @@ options:
 
 /*  */
 
-static int  test_arg (user, full, minlen)
-char   *user,
-	   *full;
-int	minlen;
+static int 
+test_arg (char *user, char *full, int minlen)
 {
 	int	    i;
 
@@ -849,9 +847,8 @@ int	minlen;
 
 /*  */
 
-static char *eqstr (s, exact)
-char   *s;
-int	exact;
+static char *
+eqstr (char *s, int exact)
 {
 	static char buffer[BUFSIZ];
 
@@ -872,8 +869,8 @@ int	exact;
 
 /*  */
 
-static char  *limits (isearch)
-int	isearch;
+static char *
+limits (int isearch)
 {
 	register char *bp;
 	static char buffer[100];
@@ -946,8 +943,8 @@ char   *command;
 
 /*  */
 
-static int  f_ufn (vec)
-char  **vec;
+static int 
+f_ufn (char **vec)
 {
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -980,8 +977,8 @@ char  **vec;
 
 /*  */
 
-int	test_ufn (cp)
-char   *cp;
+int 
+test_ufn (char *cp)
 {
 	register char *dp;
 

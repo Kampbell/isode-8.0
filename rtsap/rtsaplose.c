@@ -91,12 +91,8 @@ int	rtpktlose (struct assocblk*acb, ...)
 #else
 /* VARARGS5 */
 
-int	rtpktlose (acb, rti, reason, what, fmt)
-struct assocblk *acb;
-struct RtSAPindication *rti;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, char *what, char *fmt)
 {
 	return rtpktlose (acb, rti, reason, what, fmt);
 }
@@ -124,11 +120,8 @@ int	rtsaplose (struct RtSAPindication*rti, ...)
 #else
 /* VARARGS4 */
 
-int	rtsaplose (rti, reason, what, fmt)
-struct RtSAPindication *rti;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt)
 {
 	return rtsaplose (rti, reason, what, fmt);
 }
@@ -137,10 +130,12 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _rtsaplose (rti, reason, ap)  /* what, fmt, args ... */
-register struct RtSAPindication *rti;
-int     reason;
-va_list	ap;
+static int 
+_rtsaplose (  /* what, fmt, args ... */
+    register struct RtSAPindication *rti,
+    int reason,
+    va_list ap
+)
 {
 	register char  *bp;
 	char    buffer[BUFSIZ];

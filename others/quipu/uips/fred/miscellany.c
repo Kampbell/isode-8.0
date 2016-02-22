@@ -58,8 +58,8 @@ struct area_guide areas[] = {
 
 /* ARGSUSED */
 
-int	f_alias (vec)
-char  **vec;
+int 
+f_alias (char **vec)
 {
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -82,8 +82,8 @@ char  **vec;
 
 /*    AREA */
 
-int	f_area (vec)
-char  **vec;
+int 
+f_area (char **vec)
 {
 	int	    status;
 	char   *cp,
@@ -176,8 +176,8 @@ char  **vec;
 
 /*    DISH */
 
-int	f_dish (vec)
-char  **vec;
+int 
+f_dish (char **vec)
 {
 	register char *bp,
 			 *cp;
@@ -206,8 +206,8 @@ char  **vec;
 
 /*    EDIT */
 
-int	f_edit (vec)
-char  **vec;
+int 
+f_edit (char **vec)
 {
 	int	    result;
 	char    buffer[BUFSIZ];
@@ -246,8 +246,8 @@ char  **vec;
 
 /*    MANUAL */
 
-int	f_manual (vec)
-char  **vec;
+int 
+f_manual (char **vec)
 {
 	char   buffer[BUFSIZ];
 	FILE  *fp;
@@ -274,8 +274,8 @@ char  **vec;
 
 /*    REPORT */
 
-int	f_report (vec)
-char  **vec;
+int 
+f_report (char **vec)
 {
 	register char   *bp;
 	char   *cp,
@@ -339,8 +339,8 @@ char  **vec;
 
 /*    THISIS */
 
-int	f_thisis (vec)
-char  **vec;
+int 
+f_thisis (char **vec)
 {
 	register char   *bp;
 	char   *cp,

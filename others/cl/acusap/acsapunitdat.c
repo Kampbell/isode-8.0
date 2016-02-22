@@ -470,12 +470,14 @@ out:
 /*      socket must have been previously bound by AcUnitDataBind() which */
 /*      bound both the application context and all valid p-contexts */
 /*---------------------------------------------------------------------------*/
-int	AcUnitDataRead ( sd, acs, secs, aci )
+int 
+AcUnitDataRead (
 /*---------------------------------------------------------------------------*/
-int	sd;
-struct	AcuSAPstart	*acs;
-int	secs;
-struct  AcSAPindication *aci;
+    int sd,
+    struct AcuSAPstart *acs,
+    int secs,
+    struct AcSAPindication *aci
+)
 {
 	SBV     smask;
 	int     result;
@@ -586,10 +588,12 @@ no_good:
 /*    clear local binding for A-UNIT-DATA */
 /*      similar to AcUAbortRequest() */
 /*---------------------------------------------------------------------------*/
-int	AcUnitDataUnbind (sd, aci)
+int 
+AcUnitDataUnbind (
 /*---------------------------------------------------------------------------*/
-int	sd;
-struct AcSAPindication *aci;
+    int sd,
+    struct AcSAPindication *aci
+)
 {
 	SBV     smask;
 	int     result;
@@ -635,12 +639,14 @@ out1:
 /*---------------------------------------------------------------------------*/
 /*    save magic args (TPDU) for local A-UNIT-DATA binding                 */
 /*---------------------------------------------------------------------------*/
-int	AcuSave (sd, vecp, vec, aci)
+int 
+AcuSave (
 /*---------------------------------------------------------------------------*/
-int	sd;
-int	vecp;
-char    **vec;
-struct AcSAPindication *aci;
+    int sd,
+    int vecp,
+    char **vec,
+    struct AcSAPindication *aci
+)
 {
 	int     result;
 	register struct assocblk  *acb;
@@ -779,12 +785,14 @@ struct  type_ACS_AUDT__apdu *pdu;
 
 
 /*---------------------------------------------------------------------------*/
-int	ctx2block ( ctxlist, acb, ppcx, aci )
+int 
+ctx2block (
 /*---------------------------------------------------------------------------*/
-struct  PSAPctxlist *ctxlist;
-struct assocblk *acb;
-register struct PSAPcontext **ppcx;
-struct  AcSAPindication *aci;
+    struct PSAPctxlist *ctxlist,
+    struct assocblk *acb,
+    register struct PSAPcontext **ppcx,
+    struct AcSAPindication *aci
+)
 {
 	register int ctx;
 	register int i;
@@ -849,12 +857,14 @@ no_mem:
 
 
 /*---------------------------------------------------------------------------*/
-int	validaudtctx ( ctx, acb, ps, aci )
+int 
+validaudtctx (
 /*---------------------------------------------------------------------------*/
-int		ctx;
-register struct PuSAPstart *ps;
-struct assocblk *acb;
-struct  AcSAPindication *aci;
+    int ctx,
+    struct assocblk *acb,
+    register struct PuSAPstart *ps,
+    struct AcSAPindication *aci
+)
 {
 	register int i;
 	register struct PSAPcontext *pp;
@@ -897,10 +907,12 @@ struct  AcSAPindication *aci;
 
 
 /*---------------------------------------------------------------------------*/
-int	pdu2start ( pdu, acs )
+int 
+pdu2start (
 /*---------------------------------------------------------------------------*/
-struct type_ACS_AUDT__apdu *pdu;
-struct	AcuSAPstart	*acs;
+    struct type_ACS_AUDT__apdu *pdu,
+    struct AcuSAPstart *acs
+)
 {
 	acs -> acs_context = pdu -> application__context__name;
 	pdu -> application__context__name = NULLOID;

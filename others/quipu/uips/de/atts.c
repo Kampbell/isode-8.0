@@ -86,9 +86,8 @@ AttributeValue  av;
 }
 
 
-printDetails(objectType, lp)
-int objectType;
-struct namelist * lp;
+int 
+printDetails (int objectType, struct namelist *lp)
 {
 	Attr_Sequence at;
 	AV_Sequence av;
@@ -142,9 +141,8 @@ struct namelist * lp;
 	linewrapOff();
 }
 
-printPersonOneLiner(lp, number)
-struct namelist * lp;
-int number;
+int 
+printPersonOneLiner (struct namelist *lp, int number)
 {
 	Attr_Sequence at;
 	char * cp;
@@ -176,8 +174,8 @@ int number;
 /* actually we only want a special handler for the printing, but static
    declarations in dsap/common/post.c force us to do all this */
 
-static de_addrfree (addr)
-struct postaddr * addr;
+static 
+de_addrfree (struct postaddr *addr)
 {
 	struct postaddr * next;
 	for (; addr != (struct postaddr *) NULL; addr = next) {
@@ -187,8 +185,8 @@ struct postaddr * addr;
 	}
 }
 
-static de_addrcmp (a,b)
-struct postaddr * a, *b;
+static 
+de_addrcmp (struct postaddr *a, struct postaddr *b)
 {
 	int res;
 	for (; (a != (struct postaddr *) NULL) && (b != (struct postaddr *) NULL) ;
@@ -203,8 +201,8 @@ struct postaddr * a, *b;
 
 }
 
-static struct postaddr * de_addrcpy (a)
-struct postaddr * a;
+static struct postaddr *
+de_addrcpy (struct postaddr *a)
 {
 	struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 
@@ -226,8 +224,8 @@ struct postaddr * a;
 	return (result);
 }
 
-static struct postaddr* de_addrparse (str)
-char * str;
+static struct postaddr *
+de_addrparse (char *str)
 {
 	struct postaddr * result = (struct postaddr *) NULL;
 	struct postaddr * a, *b;
@@ -554,8 +552,8 @@ static struct pair pairs[] = {
 };
 
 
-static	de_fax_free (f)
-register struct fax *f;
+static 
+de_fax_free (register struct fax *f)
 {
 	free (f -> number);
 
@@ -565,8 +563,8 @@ register struct fax *f;
 	free ((char *) f);
 }
 
-static struct fax *de_fax_cpy (a)
-register struct fax *a;
+static struct fax *
+de_fax_cpy (register struct fax *a)
 {
 	register struct fax *f;
 
@@ -578,9 +576,8 @@ register struct fax *a;
 	return f;
 }
 
-static int  de_fax_cmp (a, b)
-register struct fax *a;
-register struct fax *b;
+static int 
+de_fax_cmp (register struct fax *a, register struct fax *b)
 {
 	int	    i;
 
@@ -646,8 +643,8 @@ int	format;
 	}
 }
 
-static struct fax *de_str2fax (str)
-register char  *str;
+static struct fax *
+de_str2fax (register char *str)
 {
 	int	    value;
 	register char  *ptr,
@@ -758,7 +755,8 @@ PE	pe;
 }
 
 
-specialSyntaxHandlers() {
+int 
+specialSyntaxHandlers (void) {
 	AttributeType at;
 
 	set_attribute_syntax(str2syntax("PostalAddress"), (IFP) de_addrenc, (IFP)de_addrdec,

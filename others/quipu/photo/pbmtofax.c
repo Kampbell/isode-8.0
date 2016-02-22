@@ -58,10 +58,8 @@ extern int standardwidth;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int     bitcount;
 	bit    *bitrow;

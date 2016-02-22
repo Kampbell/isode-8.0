@@ -59,9 +59,8 @@ static int  da_response ();
 
 /*    DISH */
 
-int	dish (command, silent)
-char   *command;
-int	silent;
+int 
+dish (char *command, int silent)
 {
 	int	    cc,
 			isarea,
@@ -473,9 +472,8 @@ stuff_it:
 
 /*  */
 
-static	do_edit (sd, octets)
-int	sd;
-char   *octets;
+static 
+do_edit (int sd, char *octets)
 {
 	int	    cc,
 			i,
@@ -762,7 +760,8 @@ no_pager:
    it forks less.  there is still a critical window, but it is very small...
  */
 
-static  foreground () {
+static 
+foreground (void) {
 #ifdef	TIOCGPGRP
 	int     pgrp,
 			tpgrp;
@@ -820,8 +819,8 @@ FILE   *fp;
 }
 
 
-static pagchar (ch)
-char   ch;
+static 
+pagchar (int ch)
 {
 	char    buffer[BUFSIZ];
 
@@ -873,8 +872,8 @@ char   ch;
 
 /* ARGSUSED */
 
-int	f_bind (vec)
-char  **vec;
+int 
+f_bind (char **vec)
 {
 	if (didbind) {
 		didbind = 0;
@@ -886,8 +885,8 @@ char  **vec;
 
 /*    QUIT */
 
-int	f_quit (vec)
-char  **vec;
+int 
+f_quit (char **vec)
 {
 	if (vec && *++vec != NULL && strcmp (*vec, "-help") == 0) {
 		(void) fprintf (stdfp, "quit\n");
@@ -952,8 +951,8 @@ va_list ap;
 #else
 /* VARARGS1 */
 
-static int  da_command (fmt)
-char   *fmt;
+static int 
+da_command (char *fmt)
 {
 	return da_command (fmt);
 }
@@ -961,7 +960,8 @@ char   *fmt;
 
 /*  */
 
-static int  da_response () {
+static int 
+da_response (void) {
 	register char *cp,
 			 *ep;
 
@@ -1003,7 +1003,8 @@ static int  da_response () {
 
 /*  */
 
-int	sync_ufnrc () {
+int 
+sync_ufnrc (void) {
 	register char *bp;
 	char    buffer[BUFSIZ];
 	register struct area_guide *ag;
@@ -1047,7 +1048,8 @@ int	sync_ufnrc () {
 
 /*  */
 
-int	init_ufnrc () {
+int 
+init_ufnrc (void) {
 	register int   i;
 	int	    inprogress;
 	register char *bp,

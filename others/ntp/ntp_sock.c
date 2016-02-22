@@ -22,7 +22,8 @@ extern void receive();
 #ifdef	TEST
 extern int errno;
 
-main() {
+int 
+main (void) {
 	int i, cc, val;
 	char foo[10];
 
@@ -64,8 +65,8 @@ main() {
  *  If we can't determine the interface configuration, just listen with one
  *  socket at the INADDR_ANY address.
  */
-create_sockets(port)
-unsigned int port;
+int 
+create_sockets (unsigned int port)
 {
 	struct intf *ap;
 	int	no;
@@ -99,8 +100,8 @@ unsigned int port;
  *  Grab interface configuration, and create a socket for each interface
  *  address.
  */
-create_sockets(port)
-unsigned int port;
+int 
+create_sockets (unsigned int port)
 {
 	char	buf[1024];
 	struct intf *ap;
@@ -250,9 +251,8 @@ next:
 
 #endif
 
-recv_inet (ap, tvp)
-struct intf *ap;
-struct timeval *tvp;
+int 
+recv_inet (struct intf *ap, struct timeval *tvp)
 {
 	int	dstlen;
 	int	cc;
@@ -309,11 +309,8 @@ struct timeval *tvp;
 	return 0;
 }
 
-send_inet (ap, pkt, size, peer)
-struct intf *ap;
-char	*pkt;
-int	size;
-struct Naddr *peer;
+int 
+send_inet (struct intf *ap, char *pkt, int size, struct Naddr *peer)
 {
 	if (ap -> addr.type != AF_INET) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
@@ -337,10 +334,8 @@ struct Naddr *peer;
 #define	N_NTP_PKTS \
       ((PKTBUF_SIZE - sizeof(struct ntpinfo))/(sizeof(struct clockinfo)))
 
-query_mode(dst, ntp, ap)
-struct Naddr *dst;
-struct ntpdata *ntp;
-struct intf *ap;
+int 
+query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap)
 {
 	extern struct list peer_list;
 	extern struct sysdata sys;

@@ -48,7 +48,8 @@ static int TPid = NOTOK;
 
 /*    INTERNAL */
 
-struct tsapblk   *newtublk () {
+struct tsapblk *
+newtublk (void) {
 	register struct tsapblk *tb;
 
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);
@@ -70,8 +71,8 @@ struct tsapblk   *newtublk () {
 }
 
 
-freetublk (tb)
-register struct tsapblk *tb;
+int 
+freetublk (register struct tsapblk *tb)
 {
 	SBV     smask;
 	register struct qbuf *qb,
@@ -132,8 +133,8 @@ register struct tsapblk *tb;
 
 /*  */
 
-struct tsapblk   *findtublk (sd)
-register int sd;
+struct tsapblk *
+findtublk (register int sd)
 {
 	register struct tsapblk *tb;
 

@@ -160,8 +160,8 @@ int stat;
 /*------------------------------------------------------
  * mallocRfaInfo - malloc list elements
  *------------------------------------------------------*/
-struct RfaInfo *mallocRfaInfo (fn)
-char *fn;
+struct RfaInfo *
+mallocRfaInfo (char *fn)
 {
 	register struct RfaInfo *rfa;
 
@@ -179,8 +179,8 @@ char *fn;
 /*------------------------------------------------------
  * freeRfaInfoList - free list elements
  *------------------------------------------------------*/
-void freeRfaInfoList (rfa)
-struct RfaInfo *rfa;
+void 
+freeRfaInfoList (struct RfaInfo *rfa)
 {
 	struct RfaInfo *r;
 
@@ -262,8 +262,8 @@ FILE *fp;
 /*------------------------------------------------------
  * closeAndUnlockRfainfo
  *------------------------------------------------------*/
-static int closeAndUnlockRfainfo(fn)
-char *fn;
+static int 
+closeAndUnlockRfainfo (char *fn)
 {
 	struct LockEntry *le, **lep;
 
@@ -293,9 +293,8 @@ char *fn;
 /*------------------------------------------------------
  * releaseRfaInfoList - unlock list and free it
  *------------------------------------------------------*/
-void releaseRfaInfoList(fn, rfa)
-char *fn;
-struct RfaInfo *rfa;
+void 
+releaseRfaInfoList (char *fn, struct RfaInfo *rfa)
 {
 	closeAndUnlockRfainfo(fn);
 	freeRfaInfoList(rfa);
@@ -304,9 +303,8 @@ struct RfaInfo *rfa;
 /*------------------------------------------------------
  * statFile - return RfaInfo with results of stat(2) for "fn"
  *------------------------------------------------------*/
-static int statFile(fn, rfa)
-char *fn;
-struct RfaInfo *rfa;
+static int 
+statFile (char *fn, struct RfaInfo *rfa)
 {
 	struct stat st;
 	struct group *gr, *getgrgid();
@@ -439,11 +437,8 @@ struct RfaInfo **rfap;
 /*------------------------------------------------------
  * getRfaInfoList - get file info list for "dir"
  *------------------------------------------------------*/
-int getRfaInfoList(dir, rfaHeadp, target, locked)
-char *dir;
-struct RfaInfo **rfaHeadp;
-char *target;
-int locked;
+int 
+getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int locked)
 {
 	struct RfaInfo *rfalist = NULL, **rfap = & rfalist;
 	DIR *dirp;
@@ -564,9 +559,8 @@ err_cleanup:
 /*------------------------------------------------------
  * putRfaInfoList - write RFA file info list to ".rfainfo"
  *------------------------------------------------------*/
-int putRfaInfoList(dirname, rfa)
-char *dirname;
-struct RfaInfo *rfa;
+int 
+putRfaInfoList (char *dirname, struct RfaInfo *rfa)
 {
 	FILE *backup_f;
 	char buf[BUFSIZ];
@@ -616,9 +610,8 @@ struct RfaInfo *rfa;
 /*------------------------------------------------------
  * extractRfaInfo - extract RFA file info by filename
  *------------------------------------------------------*/
-struct RfaInfo *extractRfaInfo(fn, rfap)
-char *fn;
-struct RfaInfo **rfap;
+struct RfaInfo *
+extractRfaInfo (char *fn, struct RfaInfo **rfap)
 {
 	struct RfaInfo *h;
 
@@ -635,9 +628,8 @@ struct RfaInfo **rfap;
 /*------------------------------------------------------
  * remRfaInfo - remove RFA file info from list
  *------------------------------------------------------*/
-void remRfaInfo (fn, rfap)
-char *fn;
-struct RfaInfo **rfap;
+void 
+remRfaInfo (char *fn, struct RfaInfo **rfap)
 {
 	struct RfaInfo *h;
 
@@ -650,9 +642,8 @@ struct RfaInfo **rfap;
 /*------------------------------------------------------
  * findRfaInfo - find RFA file info by filename
  *------------------------------------------------------*/
-struct RfaInfo *findRfaInfo(fn, rfa)
-char *fn;
-register struct RfaInfo *rfa;
+struct RfaInfo *
+findRfaInfo (char *fn, register struct RfaInfo *rfa)
 {
 	for (; rfa; rfa = rfa->ri_next)
 		if (strcmp(fn, rfa->ri_filename) == 0)
@@ -663,8 +654,8 @@ register struct RfaInfo *rfa;
 /*------------------------------------------------------
  * sortRfaInfoList - sort RFA list
  *------------------------------------------------------*/
-void sortRfaInfoList(rfap)
-struct RfaInfo **rfap;
+void 
+sortRfaInfoList (struct RfaInfo **rfap)
 {
 	struct RfaInfo *tnext, *tosort, *sorted, **spp;
 

@@ -150,10 +150,8 @@ OT	lookup_object ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	register char  *cp,
 			 *sp;
@@ -264,8 +262,8 @@ usage:
 
 /*    ERRORS */
 
-yyerror (s)
-register char   *s;
+int 
+yyerror (register char *s)
 {
 	yyerror_aux (s);
 
@@ -301,15 +299,15 @@ va_dcl {
 #else
 
 /* VARARGS1 */
-warning (fmt)
-char	*fmt;
+int 
+warning (char *fmt)
 {
 	warning (fmt);
 }
 #endif
 
-static	yyerror_aux (s)
-register char   *s;
+static 
+yyerror_aux (register char *s)
 {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
@@ -343,7 +341,8 @@ va_dcl {
 
 /*  */
 
-yywrap () {
+int 
+yywrap (void) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 
@@ -354,16 +353,13 @@ yywrap () {
 
 /* ARGSUSED */
 
-yyprint (s, f, top)
-char   *s;
-int	f,
-	top;
+int 
+yyprint (char *s, int f, int top)
 {
 }
 
-static  yyprint_aux (s, mode)
-char   *s,
-	   *mode;
+static 
+yyprint_aux (char *s, char *mode)
 {
 	int	    len;
 	static int nameoutput = 0;
@@ -397,7 +393,8 @@ char   *s,
 
 /*    PASS1 */
 
-pass1 () {
+int 
+pass1 (void) {
 	printf ("-- object definitions compiled from %s", mymodule);
 	if (mymoduleid)
 		printf (" %s", oidprint(mymoduleid));
@@ -552,7 +549,8 @@ register YP	yp;
 
 /*    PASS2 */
 
-pass2 () {
+int 
+pass2 (void) {
 	register SY	    sy;
 
 	if (!sflag)
@@ -603,9 +601,8 @@ pass2 () {
 
 /* ARGSUSED */
 
-static	do_id (yi, id)
-register OI	yi;
-char   *id;
+static 
+do_id (register OI yi, char *id)
 {
 	printf ("%-20s %s\n", yi -> yi_name, id2str (yi -> yi_value));
 }
@@ -614,9 +611,8 @@ char   *id;
 
 /* ARGSUSED */
 
-static	do_obj1 (yo, id)
-register OT	yo;
-char   *id;
+static 
+do_obj1 (register OT yo, char *id)
 {
 	register YP	    yp,
 			 yz;
@@ -801,9 +797,8 @@ done_sequence:
 
 /* ARGSUSED */
 
-static	do_trap1 (yt, id)
-register TT	yt;
-char   *id;
+static 
+do_trap1 (register TT yt, char *id)
 {
 	register YV	    yv;
 
@@ -839,9 +834,8 @@ done_enterprise:
 
 /*    IDENTIFIER HANDLING */
 
-static	OI	lookup_identifier (mod, id)
-register char *mod,
-		 *id;
+static OI 
+lookup_identifier (register char *mod, register char *id)
 {
 	register SY	    sy;
 
@@ -884,9 +878,8 @@ register YV	yv;
 
 /*    OBJECT HANDLING */
 
-static	OT	lookup_object (mod, id)
-register char *mod,
-		 *id;
+static OT 
+lookup_object (register char *mod, register char *id)
 {
 	register SY	    sy;
 
@@ -1011,9 +1004,8 @@ register YV	yv;
 
 /*    DEBUG */
 
-static	print_yi (yi, level)
-register OI	yi;
-register int	level;
+static 
+print_yi (register OI yi, register int level)
 {
 	if (yi == NULLOI)
 		return;
@@ -1028,9 +1020,8 @@ register int	level;
 
 /*  */
 
-static	print_yo (yo, level)
-register OT	yo;
-register int	level;
+static 
+print_yo (register OT yo, register int level)
 {
 	if (yo == NULLOT)
 		return;
@@ -1049,9 +1040,8 @@ register int	level;
 
 /*  */
 
-static	print_yt (yt, level)
-register TT	yt;
-register int	level;
+static 
+print_yt (register TT yt, register int level)
 {
 	if (yt == NULLTT)
 		return;
@@ -1223,12 +1213,8 @@ register int	level;
 
 /*    SYMBOLS */
 
-static SY  new_symbol (encpref, decpref, prfpref, mod, id)
-register char  *encpref,
-		 *decpref,
-		 *prfpref,
-		 *mod,
-		 *id;
+static SY 
+new_symbol (register char *encpref, register char *decpref, register char *prfpref, register char *mod, register char *id)
 {
 	register SY    sy;
 
@@ -1244,9 +1230,8 @@ register char  *encpref,
 }
 
 
-static SY  add_symbol (s1, s2)
-register SY	s1,
-		 s2;
+static SY 
+add_symbol (register SY s1, register SY s2)
 {
 	register SY	    sy;
 
@@ -1332,8 +1317,8 @@ PElementClass	class;
 
 /*    STRINGS */
 
-char   *new_string (s)
-register char  *s;
+char *
+new_string (register char *s)
 {
 	register char  *p;
 

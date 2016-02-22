@@ -33,9 +33,8 @@ void user_tailor(), main_bind(), cnnct_bind(), interact(), help_init();
 
 void exit();
 
-main(argc, argv)
-unsigned int     argc;
-char    *argv[];
+int 
+main (unsigned int argc, char *argv[])
 {
 	print_parse_errors = FALSE;
 	quipu_syntaxes();
@@ -65,9 +64,8 @@ char    *argv[];
 	return(0);
 }
 
-void read_args(argc, avptr)
-unsigned int argc;
-char ***avptr;
+void 
+read_args (unsigned int argc, char ***avptr)
 {
 	register char **av;
 	register char *cp;
@@ -103,26 +101,27 @@ char ***avptr;
 	}
 }
 
-void setsignals() {
+void 
+setsignals (void) {
 	int     i;
 
 	for (i=0; i<18; i++)
 		(void) signal(i, SIG_DFL);
 }
 
-void eprint(str)
-char    *str;
+void 
+eprint (char *str)
 {
 	tprint(str);
 }
 
-void sd_quit() {
+void 
+sd_quit (void) {
 	quit("\n", 0);
 }
 
-void quit(error, sig)
-char    *error;
-int     sig;
+void 
+quit (char *error, int sig)
 {
 	endwidgets();
 	(void) ds_unbind();
@@ -131,8 +130,8 @@ int     sig;
 	exit(sig);
 }
 
-void int_quit(sig)
-int sig;
+void 
+int_quit (int sig)
 {
 	quit("\n", sig);
 }

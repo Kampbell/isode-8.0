@@ -75,9 +75,8 @@ int (*closefn[])() = {
 	close, TDiscFromServer
 };
 
-static
-int iso_conn(server)
-char *server;
+static int 
+iso_conn (char *server)
 {
 	struct TSAPconnect tcs;
 	struct TSAPconnect *tc = &tcs;
@@ -179,11 +178,13 @@ char *server;
  * of the form hostname:number.screen ("::" if DECnet) is returned in a result
  * parameter. The screen number to use is also returned.
  */
-int _XConnectDisplay (display_name, expanded_name, prop_name, screen_num)
-char *display_name;
-char *expanded_name;	/* return */
-char *prop_name;		/* return */
-int *screen_num;		/* return */
+int 
+_XConnectDisplay (
+    char *display_name,
+    char *expanded_name,	/* return */
+    char *prop_name,		/* return */
+    int *screen_num		/* return */
+)
 
 {
 	char displaybuf[256];		/* Display string buffer */
@@ -494,9 +495,8 @@ int *screen_num;		/* return */
  * Disconnect from server.
  */
 
-int _XDisconnectDisplay (server)
-
-int server;
+int 
+_XDisconnectDisplay (int server)
 
 {
 #ifdef ISOCONN

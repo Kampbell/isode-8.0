@@ -129,9 +129,8 @@ static	snarf ();
 
 /*    DISPATCH */
 
-fredloop (vec, error)
-char  **vec;
-int	error;
+int 
+fredloop (char **vec, int error)
 {
 	register struct dispatch *ds;
 
@@ -161,8 +160,8 @@ int	error;
 
 /*  */
 
-static struct dispatch *getds (name)
-char   *name;
+static struct dispatch *
+getds (char *name)
 {
 	register int    longest,
 			 nmatches;
@@ -302,8 +301,8 @@ char    **getval ();
 
 /*  */
 
-static int  f_set (vec)
-char  **vec;
+static int 
+f_set (char **vec)
 {
 	register int    i,
 			 j;
@@ -504,8 +503,8 @@ out_of_range:
 
 /*  */
 
-static printvar (v)
-register struct var *v;
+static 
+printvar (register struct var *v)
 {
 	int	    i;
 	char    buffer[BUFSIZ];
@@ -546,9 +545,8 @@ register struct var *v;
 
 /*  */
 
-static char **getval (name, choices)
-register char *name;
-char   **choices;
+static char **
+getval (register char *name, char **choices)
 {
 	register int    longest,
 			 nmatches;
@@ -599,8 +597,8 @@ static char *ignore[] = {
 };
 
 
-static struct var *getvar (name)
-register char *name;
+static struct var *
+getvar (register char *name)
 {
 	register int    longest,
 			 nmatches;
@@ -656,8 +654,8 @@ static int helpwidth;
 
 /*  */
 
-int	f_help (vec)
-char  **vec;
+int 
+f_help (char **vec)
 {
 	register int    i,
 			 j,
@@ -727,7 +725,8 @@ char  **vec;
 
 /*    MISCELLANY */
 
-rcinit () {
+int 
+rcinit (void) {
 	register int    w;
 	register char **cp,
 			 *dp;
@@ -784,10 +783,8 @@ rcinit () {
 
 /*  */
 
-static	snarf (file, name, variable)
-char   *file,
-	   *name,
-	   **variable;
+static 
+snarf (char *file, char *name, char **variable)
 {
 	int	    i;
 	register char   *bp,
@@ -847,10 +844,8 @@ set_variable:
 
 /*  */
 
-rcfile (file, op, isystem)
-char   *file;
-int	op,
-	isystem;
+int 
+rcfile (char *file, int op, int isystem)
 {
 	register char *cp;
 	char    buffer[BUFSIZ + 1],
@@ -909,8 +904,8 @@ FILE *fp;
 }
 
 
-f_version (vec)
-char **vec;
+int 
+f_version (char **vec)
 {
 	if (*++vec != NULL)
 		if (strcmp (*vec, "-fred") == 0) {

@@ -78,8 +78,8 @@ int nameserver_timedout;
 
 char *ProgramName;
 
-static int XFamily(af)
-int af;
+static int 
+XFamily (int af)
 {
 	int i;
 	for (i = 0; i < FAMILIES; i++)

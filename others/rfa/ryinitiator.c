@@ -52,9 +52,8 @@ extern char *myname;
 static int ryconnect ();
 
 
-makeconn (thehost, password, user)
-char	*thehost;
-char 	*password, *user;
+int 
+makeconn (char *thehost, char *password, char *user)
 {
 	int	result;
 	PE	data;
@@ -156,7 +155,8 @@ PE	data;
 	return OK;
 }
 
-closeconn () {
+int 
+closeconn (void) {
 	struct AcSAPrelease acrs;
 	register struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
@@ -217,9 +217,8 @@ int *err;
 }
 
 
-void	ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_adios (register struct RoSAPpreject *rop, char *event)
 {
 	ros_errmsg (rop, event);
 
@@ -229,9 +228,8 @@ char   *event;
 }
 
 
-void	ros_errmsg (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_errmsg (register struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -245,9 +243,8 @@ char   *event;
 }
 
 
-void	acs_errexit (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_errexit (register struct AcSAPabort *aca, char *event)
 {
 	acs_errmsg (aca, event);
 
@@ -256,9 +253,8 @@ char   *event;
 }
 
 
-void	acs_errmsg (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_errmsg (register struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -295,9 +291,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	errexit (what, fmt)
-char   *what,
-	   *fmt;
+void 
+errexit (char *what, char *fmt)
 {
 	errexit (what, fmt);
 }
@@ -317,8 +312,8 @@ va_dcl {
 }
 
 
-static void  _errmsg (ap)
-va_list	ap;
+static void 
+_errmsg (va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -335,9 +330,8 @@ va_list	ap;
 #else
 /* VARARGS */
 
-void	errmsg (what, fmt)
-char   *what,
-	   *fmt;
+void 
+errmsg (char *what, char *fmt)
 {
 	errmsg (what, fmt);
 }
@@ -358,9 +352,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	ryr_errmsg (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_errmsg (char *what, char *fmt)
 {
 	ryr_errmsg (what, fmt);
 }

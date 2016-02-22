@@ -65,8 +65,8 @@ static char *reason_err8[] = {
 static int reason_err8_cnt = sizeof reason_err8 / sizeof reason_err8[0];
 
 
-char   *SReportString (code)
-int	code;
+char *
+SReportString (int code)
 {
 	register int    fcode;
 	static char buffer[BUFSIZ];
@@ -87,9 +87,8 @@ int	code;
 
 /*  */
 
-void	rts_adios (rta, event)
-register struct RtSAPabort *rta;
-char   *event;
+void 
+rts_adios (register struct RtSAPabort *rta, char *event)
 {
 	rts_advise (rta, event);
 
@@ -97,9 +96,8 @@ char   *event;
 }
 
 
-void	rts_advise (rta, event)
-register struct RtSAPabort *rta;
-char   *event;
+void 
+rts_advise (register struct RtSAPabort *rta, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -130,9 +128,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -156,10 +153,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }
@@ -180,9 +175,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	ryr_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
 	ryr_advise (what, fmt);
 }
@@ -193,11 +187,8 @@ char   *what,
 #ifdef	lint
 /* VARARGS4 */
 
-int	rtsaplose (rti, reason, what, fmt)
-struct RtSAPindication *rti;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt)
 {
 	return rtsaplose (rti, reason, what, fmt);
 }
@@ -211,8 +202,8 @@ char   *what,
 
 
 #ifndef	TMS
-timer (cc)
-int     cc;
+int 
+timer (int cc)
 {
 	long    ms;
 	float   bs;
@@ -236,10 +227,8 @@ int     cc;
 }
 
 
-static  tvsub (tdiff, t1, t0)
-register struct timeval *tdiff,
-		*t1,
-		*t0;
+static 
+tvsub (register struct timeval *tdiff, register struct timeval *t1, register struct timeval *t0)
 {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
@@ -252,8 +241,8 @@ register struct timeval *tdiff,
 long	times ();
 
 
-timer (cc)
-int	cc;
+int 
+timer (int cc)
 {
 	long    ms;
 	float   bs;

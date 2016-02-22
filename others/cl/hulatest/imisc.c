@@ -147,10 +147,8 @@ char   *ctime ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
 				 table_IMISC_Operations, dispatches, do_quit);
@@ -160,8 +158,8 @@ char  **argv,
 
 /*    TYPES */
 
-struct type_IMISC_IA5List *vec2ia5list (vec)
-char  **vec;
+struct type_IMISC_IA5List *
+vec2ia5list (char **vec)
 {
 	struct type_IMISC_IA5List  *ia5;
 	register struct type_IMISC_IA5List **ia5p;
@@ -185,8 +183,8 @@ char  **vec;
 
 /*  */
 
-static	print_ia5list (ia5)
-register struct type_IMISC_IA5List *ia5;
+static 
+print_ia5list (register struct type_IMISC_IA5List *ia5)
 {
 	register struct qbuf *p,
 			*q;
@@ -203,11 +201,8 @@ register struct type_IMISC_IA5List *ia5;
 
 /* ARGSUSED */
 
-static int  do_finger (sd, ds, args, ia5)
-int	sd;
-struct dispatch *ds;
-char  **args;
-struct type_IMISC_IA5List **ia5;
+static int 
+do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5)
 {
 	*ia5 = vec2ia5list (args);
 
@@ -218,11 +213,8 @@ struct type_IMISC_IA5List **ia5;
 
 /* ARGSUSED */
 
-static int  do_tell (sd, ds, args, ia5)
-int	sd;
-struct dispatch *ds;
-char  **args;
-register struct type_IMISC_IA5List **ia5;
+static int 
+do_tell (int sd, struct dispatch *ds, char **args, register struct type_IMISC_IA5List **ia5)
 {
 	char   *cp,
 		   *dp,
@@ -258,11 +250,8 @@ register struct type_IMISC_IA5List **ia5;
 
 /* ARGSUSED */
 
-static int  do_data (sd, ds, args, pep)
-int	sd;
-struct dispatch *ds;
-char  **args;
-register struct type_IMISC_Data **pep;
+static int 
+do_data (int sd, struct dispatch *ds, char **args, register struct type_IMISC_Data **pep)
 {
 	char   *cp;
 
@@ -337,12 +326,8 @@ caddr_t *dummy;
 
 /* ARGSUSED */
 
-static int  utctime_result (sd, id, dummy, result, roi)
-int	sd,
-	id,
-	dummy;
-register struct type_IMISC_UTCResult *result;
-struct RoSAPindication *roi;
+static int 
+utctime_result (int sd, int id, int dummy, register struct type_IMISC_UTCResult *result, struct RoSAPindication *roi)
 {
 	register struct qbuf *q;
 
@@ -357,12 +342,8 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-static int  timeofday_result (sd, id, dummy, result, roi)
-int	sd,
-	id,
-	dummy;
-register struct type_IMISC_TimeResult *result;
-struct RoSAPindication *roi;
+static int 
+timeofday_result (int sd, int id, int dummy, register struct type_IMISC_TimeResult *result, struct RoSAPindication *roi)
 {
 	long	s;
 
@@ -376,12 +357,8 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-static int  ia5_result (sd, id, dummy, result, roi)
-int	sd,
-	id,
-	dummy;
-register struct type_IMISC_IA5List *result;
-struct RoSAPindication *roi;
+static int 
+ia5_result (int sd, int id, int dummy, register struct type_IMISC_IA5List *result, struct RoSAPindication *roi)
 {
 	print_ia5list (result);
 
@@ -422,12 +399,8 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-static int  echo_result (sd, id, dummy, result, roi)
-int	sd,
-	id,
-	dummy;
-struct type_IMISC_Data *result;
-struct RoSAPindication *roi;
+static int 
+echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi)
 {
 	if (pe_cmp (result, data))
 		advise (NULLCP, "data mismatch");
@@ -439,12 +412,8 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-static int  imisc_error (sd, id, error, parameter, roi)
-int	sd,
-	id,
-	error;
-register struct type_IMISC_IA5List *parameter;
-struct RoSAPindication *roi;
+static int 
+imisc_error (int sd, int id, int error, register struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi)
 {
 	register struct RyError *rye;
 

@@ -32,7 +32,8 @@ static struct ssapblk *SuHead = &susapque;
 
 /*    INTERNAL */
 
-struct ssapblk  *newsublk () {
+struct ssapblk *
+newsublk (void) {
 	register struct ssapblk *sb;
 
 	sb = (struct ssapblk   *) calloc (1, sizeof *sb);
@@ -54,8 +55,8 @@ struct ssapblk  *newsublk () {
 }
 
 
-int	freesublk (sb)
-register struct ssapblk *sb;
+int 
+freesublk (register struct ssapblk *sb)
 {
 	register struct qbuf *qb,
 			*qp;
@@ -87,8 +88,8 @@ register struct ssapblk *sb;
 
 /*  */
 
-struct ssapblk   *findsublk (sd)
-register int sd;
+struct ssapblk *
+findsublk (register int sd)
 {
 	register struct ssapblk *sb;
 

@@ -35,9 +35,8 @@ static int  RtEndRequestAux ();
 
 /*    RT-END.REQUEST (X.410 CLOSE.REQUEST) */
 
-int	RtEndRequest (sd, rti)
-int	sd;
-struct RtSAPindication *rti;
+int 
+RtEndRequest (int sd, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int     result;
@@ -58,9 +57,8 @@ struct RtSAPindication *rti;
 
 /*  */
 
-static int  RtEndRequestAux (acb, rti)
-register struct assocblk   *acb;
-struct RtSAPindication *rti;
+static int 
+RtEndRequestAux (register struct assocblk *acb, struct RtSAPindication *rti)
 {
 	int     result;
 	struct SSAPindication   sis;

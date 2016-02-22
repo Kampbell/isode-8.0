@@ -40,11 +40,8 @@ extern int acsap_conntype;
 
 /*    RT-BEGIN.INDICATION (X.410 OPEN.INDICATION) */
 
-int	RtBInit (vecp, vec, rts, rti)
-int	vecp;
-char  **vec;
-struct RtSAPstart *rts;
-struct RtSAPindication *rti;
+int 
+RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti)
 {
 	int     len,
 			result;
@@ -204,11 +201,8 @@ out1:
 
 /*    RT-BEGIN.RESPONSE (X.410 OPEN.RESPONSE) */
 
-int	RtBeginResponse (sd, status, data, rti)
-int	sd;
-int	status;
-PE	data;
-struct RtSAPindication *rti;
+int 
+RtBeginResponse (int sd, int status, PE data, struct RtSAPindication *rti)
 {
 	int	    len,
 			result;

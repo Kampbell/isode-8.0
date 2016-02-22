@@ -106,7 +106,8 @@ int	pid,
 #else	/* USE UNIX NAMED PIPES */
 
 
-void dummy () {
+void 
+dummy (void) {
 	;
 }
 

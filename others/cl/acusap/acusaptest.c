@@ -83,10 +83,8 @@ void advise();
 
 /* ARGSUSED */
 
-int main(argc, argv, envp)
-int argc;
-char **argv,
-	 **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	char buffer[80], *bptr;
 
@@ -160,7 +158,8 @@ char **argv,
 
 
 /*-------------------------------------*/
-togglemode()
+int 
+togglemode (void)
 /*-------------------------------------*/
 {
 	printf ("\n Current mode is ");
@@ -177,7 +176,8 @@ togglemode()
 
 
 /*-------------------------------------*/
-int	bind()
+int 
+bind (void)
 /*-------------------------------------*/
 {
 	/*  set binding variables: title, presentation address, and ctxlist */
@@ -206,7 +206,8 @@ int	bind()
 }
 
 /*-------------------------------------*/
-initbindvars()
+int 
+initbindvars (void)
 /*-------------------------------------*/
 {
 	/*  set up bind static variables for test */
@@ -233,7 +234,8 @@ initbindvars()
 
 
 /*-------------------------------------*/
-int	unbind()
+int 
+unbind (void)
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -253,7 +255,8 @@ int	unbind()
 
 
 /*-------------------------------------*/
-int	listenup()
+int 
+listenup (void)
 /*-------------------------------------*/
 {
 	;
@@ -295,7 +298,8 @@ int	listenup()
 }
 
 /*-------------------------------------*/
-int audtsendreq()
+int 
+audtsendreq (void)
 /*-------------------------------------*/
 {
 	/*  first set binding variables: title, presentation address, and ctxlist */
@@ -324,7 +328,8 @@ int audtsendreq()
 }
 
 /*-------------------------------------*/
-int audtsend()
+int 
+audtsend (void)
 /*-------------------------------------*/
 {
 	int	sum, result;
@@ -362,7 +367,8 @@ int audtsend()
 
 
 /*-------------------------------------*/
-int audtread()
+int 
+audtread (void)
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -406,10 +412,12 @@ rfail:
 }
 
 /*-------------------------------------*/
-int validbinding ( sd, acs )
+int 
+validbinding (
 /*-------------------------------------*/
-int sd;
-struct  AcuSAPstart	*acs;
+    int sd,
+    struct AcuSAPstart *acs
+)
 {
 	struct assocblk *acb;
 
@@ -439,7 +447,8 @@ struct  AcuSAPstart	*acs;
 
 
 /*-------------------------------------*/
-int audtrebind()
+int 
+audtrebind (void)
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE)
@@ -470,9 +479,11 @@ int audtrebind()
 
 
 /*-------------------------------------*/
-static	printsrv (is)
+static 
+printsrv (
 /*-------------------------------------*/
-register struct isoservent *is;
+    register struct isoservent *is
+)
 {
 	register int    n = is -> is_tail - is -> is_vec - 1;
 	register char **ap = is -> is_vec;
@@ -489,9 +500,11 @@ register struct isoservent *is;
 
 /*  */
 /*-------------------------------------*/
-static	printpaddr (pa)
+static 
+printpaddr (
 /*-------------------------------------*/
-register struct PSAPaddr *pa;
+    register struct PSAPaddr *pa
+)
 {
 	struct SSAPaddr   *sa = &(pa -> pa_addr);
 	struct TSAPaddr   *ta = &(sa -> sa_addr);
@@ -544,9 +557,8 @@ register struct PSAPaddr *pa;
 
 
 
-void	acs_adios (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_adios (register struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -554,9 +566,8 @@ char   *event;
 }
 
 
-void	acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (register struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -586,9 +597,8 @@ va_dcl {
 }
 #else
 /* VARARGS */
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -604,8 +614,8 @@ va_dcl {
 	va_end (ap);
 }
 
-static void  _advise (ap)
-va_list	ap;
+static void 
+_advise (va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -619,9 +629,8 @@ va_list	ap;
 #else
 /* VARARGS */
 
-void	advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }
@@ -640,9 +649,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	ryr_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
 	ryr_advise (what, fmt);
 }

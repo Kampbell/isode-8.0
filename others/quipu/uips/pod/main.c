@@ -35,9 +35,8 @@ void read_bind_args(), read_args(), quit();
 
 void exit();
 
-main (argc, argv)
-unsigned int argc;
-char **argv;
+int 
+main (unsigned int argc, char **argv)
 {
 	char **null_argv = (char **) NULL;
 	char *mess;
@@ -93,9 +92,8 @@ char **argv;
 	return 0;
 }
 
-void read_args(acptr, avptr)
-unsigned int *acptr;
-char ***avptr;
+void 
+read_args (unsigned int *acptr, char ***avptr)
 {
 	register char *cp;
 	char **av;
@@ -128,9 +126,8 @@ char ***avptr;
 	}
 }
 
-void read_bind_args(acptr, avptr)
-unsigned int *acptr;
-char ***avptr;
+void 
+read_bind_args (unsigned int *acptr, char ***avptr)
 {
 	register char *cp;
 	char **av;
@@ -166,8 +163,8 @@ char ***avptr;
 	if (got_user_name == TRUE && got_password == FALSE) passwd[0] = '\0';
 }
 
-void quit(sig)
-int     sig;
+void 
+quit (int sig)
 {
 	(void) ds_unbind();
 	exit(sig);

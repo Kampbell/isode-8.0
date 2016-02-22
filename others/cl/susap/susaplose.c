@@ -42,11 +42,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-int	susaplose (si, reason, what, fmt)
-struct SSAPindication *si;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+susaplose (struct SSAPindication *si, int reason, char *what, char *fmt)
 {
 	return susaplose (si, reason, what, fmt);
 }
@@ -55,10 +52,12 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _susaplose (si, reason, ap)	/* what, fmt, args ... */
-register struct SSAPindication *si;
-int	reason;
-va_list	ap;
+static int 
+_susaplose (	/* what, fmt, args ... */
+    register struct SSAPindication *si,
+    int reason,
+    va_list ap
+)
 {
 	register char  *bp;
 	char    buffer[BUFSIZ];
@@ -84,10 +83,8 @@ va_list	ap;
 
 /*  */
 
-int	ts2suslose (si, event, td)
-register struct SSAPindication *si;
-char   *event;
-register struct TSAPdisconnect *td;
+int 
+ts2suslose (register struct SSAPindication *si, char *event, register struct TSAPdisconnect *td)
 {
 	int     reason;
 	char   *cp,

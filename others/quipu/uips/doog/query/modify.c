@@ -1142,9 +1142,8 @@ makeTemplateRec record;
  *
  */
 
-static struct entrymod * ems_append (a,b)
-struct entrymod *a;
-struct entrymod *b;
+static struct entrymod *
+ems_append (struct entrymod *a, struct entrymod *b)
 {
 	struct entrymod *ptr;
 

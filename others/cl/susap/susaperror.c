@@ -62,8 +62,8 @@ static int reject_uerr8_cnt = sizeof reject_uerr8 / sizeof reject_uerr8[0];
 
 /*  */
 
-char   *SuErrString(code)
-register int	code;
+char *
+SuErrString (register int code)
 {
 	register int    fcode;
 	static char buffer[BUFSIZ];

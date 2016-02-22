@@ -66,8 +66,8 @@ static int x, y, maxx;
 extern int two_passes;
 
 /* ARGSUSED */
-photo_start (name)
-char * name;
+int 
+photo_start (char *name)
 {
 	x = y = 0;
 	if (passno == 1) {
@@ -78,8 +78,8 @@ char * name;
 }
 
 
-photo_end (name)
-char * name;
+int 
+photo_end (char *name)
 {
 	/* Decoding has finished - display the photo */
 	char buff[128];
@@ -191,15 +191,15 @@ char * name;
 	return 0;
 }
 
-photo_black (length)
-int length;
+int 
+photo_black (int length)
 {
 	x += length;
 	return ;
 }
 
-photo_white (length)
-int length;
+int 
+photo_white (int length)
 {
 
 	/* draw a white line of 'length' pixels */

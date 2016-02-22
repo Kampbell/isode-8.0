@@ -41,8 +41,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/jpegphot
 
 char            command[512];
 
-int
-mygetchar() {
+int 
+mygetchar (void) {
 	char            c;
 
 	if (!read(0, &c, 1))
@@ -54,8 +54,8 @@ mygetchar() {
 /*
  * SkipAsn1Len - skip the ASN-1 encoded length (variable # of octets)
  */
-void
-SkipAsn1Len() {
+void 
+SkipAsn1Len (void) {
 	unsigned char   c;
 
 	c = mygetchar();
@@ -68,9 +68,8 @@ SkipAsn1Len() {
 	}
 }
 
-void
-DoG3Fax(firstChar)
-unsigned char firstChar;
+void 
+DoG3Fax (int firstChar)
 {
 	char            buffer[8192];
 	FILE           *newPipe;
@@ -98,8 +97,8 @@ unsigned char firstChar;
 	exit(0);
 }
 
-void
-DoNewJPEG() {
+void 
+DoNewJPEG (void) {
 	SkipAsn1Len();
 
 	(void) strncpy(command, isodefile("g3fax/jpeg.sh", 1), sizeof(command) - 1);
@@ -112,8 +111,8 @@ DoNewJPEG() {
 	/*NOTREACHED*/
 }
 
-void
-DoJPEG() {
+void 
+DoJPEG (void) {
 	SkipAsn1Len();
 
 	(void) strncpy(command, isodefile("g3fax/jpeg.sh", 1), sizeof(command) - 1);
@@ -127,11 +126,8 @@ DoJPEG() {
 }
 
 /* ARGSUSED */
-void
-main(argc, argv, envp)
-int             argc;
-char          **argv,
-			  **envp;
+void 
+main (int argc, char **argv, char **envp)
 {
 	unsigned char   firstChar;
 

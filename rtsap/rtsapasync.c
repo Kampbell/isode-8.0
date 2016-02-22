@@ -33,10 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapasync.c,v 9.0 19
 
 /*    define vectors for INDICATION events */
 
-int	RtSetIndications (sd, indication, rti)
-int	sd;
-IFP	indication;
-struct RtSAPindication *rti;
+int 
+RtSetIndications (int sd, IFP indication, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int     result;

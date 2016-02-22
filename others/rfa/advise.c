@@ -43,8 +43,8 @@ static LLog _pgm_log = {
 LLog *pgm_log = &_pgm_log;
 
 
-void initLog(myname)
-char *myname;
+void 
+initLog (char *myname)
 {
 	/*    if (isatty (fileno (stderr)))
 	        ll_dbinit (pgm_log, myname);
@@ -81,9 +81,8 @@ va_dcl {
 #else
 /* VARARGS2 */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -107,10 +106,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }
@@ -131,9 +128,8 @@ va_dcl {
 }
 #else
 /* VARARGS2 */
-void	ryr_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
 	ryr_advise (what, fmt);
 }

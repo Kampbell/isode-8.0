@@ -116,8 +116,8 @@ static FamilyMap familyMap[] = {
  * for this fd and add them to the selfhosts list.
  * HPUX version - hpux does not have SIOCGIFCONF ioctl;
  */
-DefineSelf (fd)
-int fd;
+int 
+DefineSelf (int fd)
 {
 	register int n;
 	int	len;
@@ -169,8 +169,8 @@ int fd;
 /* Define this host for access control.  Find all the hosts the OS knows about
  * for this fd and add them to the selfhosts list.
  */
-DefineSelf (fd)
-int fd;
+int 
+DefineSelf (int fd)
 {
 	char		buf[2048];
 	struct ifconf	ifc;
@@ -255,8 +255,8 @@ int fd;
 #endif hpux
 
 /* Reset access control list to initial hosts */
-ResetHosts (display)
-char *display;
+int 
+ResetHosts (char *display)
 {
 	register HOST	*host, *self;
 	char 		hostname[120];
@@ -597,9 +597,8 @@ BOOL		*pEnabled;
  * Return address length.
  */
 
-CheckFamily (connection, family)
-int			connection;
-int			family;
+int 
+CheckFamily (int connection, int family)
 {
 #ifdef ISOCONN
 	struct TSAPaddr 	from;
@@ -661,13 +660,8 @@ int			family;
 /* Check if a host is not in the access control list.
  * Returns 1 if host is invalid, 0 if we've found it. */
 
-InvalidHost (saddr, len)
-#ifdef ISOCONN
-register struct TSAPaddr	*saddr;
-#else /* ISOCONN */
-register struct sockaddr	*saddr;
-#endif /* ISOCONN */
-int				len;
+int 
+InvalidHost (register struct sockaddr *saddr, int len)
 {
 	int 			family;
 	pointer			addr;
@@ -787,8 +781,8 @@ int fEnabled;
 	return Success;
 }
 
-static int XFamily(af)
-int af;
+static int 
+XFamily (int af)
 {
 	int i;
 	for (i = 0; i < FAMILIES; i++)
@@ -797,8 +791,8 @@ int af;
 	return -1;
 }
 
-static int UnixFamily(xf)
-int xf;
+static int 
+UnixFamily (int xf)
 {
 	int i;
 	for (i = 0; i < FAMILIES; i++)

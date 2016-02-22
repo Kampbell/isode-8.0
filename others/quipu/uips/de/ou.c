@@ -53,10 +53,8 @@ void ouFilter1(), ouFilter2(), ouFilter3(), ouFilter4();
 VFP explicitOU[] = {makeExplicitOUFilter, NULLVFP};
 VFP normalOU[] = {ouFilter1, ouFilter2, ouFilter3, ouFilter4, NULLVFP};
 
-int
-listOUs(parentstr, thisstr, listp)
-char * parentstr, * thisstr;
-struct namelist ** listp;
+int 
+listOUs (char *parentstr, char *thisstr, struct namelist **listp)
 {
 	clearProblemFlags();
 	initAlarm();
@@ -68,10 +66,8 @@ struct namelist ** listp;
 		return (listMatchingOUs(parentstr, thisstr, listp));
 }
 
-void
-printListOUs(str, listp)
-char * str;
-struct namelist * listp;
+void 
+printListOUs (char *str, struct namelist *listp)
 {
 	struct namelist * x;
 	int i;
@@ -87,9 +83,8 @@ struct namelist * listp;
 	}
 }
 
-void
-freeOUs(listpp)
-struct namelist ** listpp;
+void 
+freeOUs (struct namelist **listpp)
 {
 	struct namelist * x, * y;
 
@@ -105,17 +100,15 @@ struct namelist ** listpp;
 	*listpp = NULLLIST;
 }
 
-void
-freeOUSearchArgs() {
+void 
+freeOUSearchArgs (void) {
 
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 }
 
-int
-listAllOUs(parentstr, listp)
-char * parentstr;
-struct namelist ** listp;
+int 
+listAllOUs (char *parentstr, struct namelist **listp)
 {
 	int ret;
 
@@ -131,10 +124,8 @@ struct namelist ** listp;
 	return ret;
 }
 
-int
-listMatchingOUs(parentstr, thisstr, listp)
-char * parentstr, * thisstr;
-struct namelist ** listp;
+int 
+listMatchingOUs (char *parentstr, char *thisstr, struct namelist **listp)
 {
 	VFP * filtarray;
 	VFP filterfunc;
@@ -196,10 +187,8 @@ struct namelist ** listp;
 	return OK;
 }
 
-int
-listExactOUs(objectstr, listp)
-char * objectstr;
-struct namelist ** listp;
+int 
+listExactOUs (char *objectstr, struct namelist **listp)
 {
 	int ret;
 
@@ -211,9 +200,8 @@ struct namelist ** listp;
 	return ret;
 }
 
-int
-makeListOUs(listp)
-struct namelist ** listp;
+int 
+makeListOUs (struct namelist **listp)
 {
 	entrystruct * x;
 	int retval;
@@ -247,9 +235,7 @@ struct namelist ** listp;
 }
 
 struct ds_search_arg *
-fillMostOUSearchArgs(parentstr, searchdepth)
-char * parentstr;
-int searchdepth;
+fillMostOUSearchArgs (char *parentstr, int searchdepth)
 {
 	static struct ds_search_arg arg;
 	Attr_Sequence * atl;
@@ -280,16 +266,14 @@ int searchdepth;
 	return (&arg);
 }
 
-makeAllOUFilter(fpp)
-struct s_filter ** fpp;
+int 
+makeAllOUFilter (struct s_filter **fpp)
 {
 	*fpp = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATIONAL_UNIT);
 }
 
-void
-makeExplicitOUFilter(oustr, fpp)
-char * oustr;
-struct s_filter ** fpp;
+void 
+makeExplicitOUFilter (char *oustr, struct s_filter **fpp)
 {
 	struct s_filter * fp;
 	int wildcardtype;
@@ -315,10 +299,8 @@ struct s_filter ** fpp;
 	fp->flt_next = NULLFILTER;
 }
 
-void
-ouFilter1(oustr, fpp)
-char * oustr;
-struct s_filter ** fpp;
+void 
+ouFilter1 (char *oustr, struct s_filter **fpp)
 {
 	struct s_filter * fp;
 
@@ -328,10 +310,8 @@ struct s_filter ** fpp;
 	fp->flt_next = NULLFILTER;
 }
 
-void
-ouFilter2(oustr, fpp)
-char * oustr;
-struct s_filter ** fpp;
+void 
+ouFilter2 (char *oustr, struct s_filter **fpp)
 {
 	struct s_filter * fp;
 
@@ -341,10 +321,8 @@ struct s_filter ** fpp;
 	fp->flt_next = NULLFILTER;
 }
 
-void
-ouFilter3(oustr, fpp)
-char * oustr;
-struct s_filter ** fpp;
+void 
+ouFilter3 (char *oustr, struct s_filter **fpp)
 {
 	struct s_filter * fp;
 
@@ -354,10 +332,8 @@ struct s_filter ** fpp;
 	fp->flt_next = NULLFILTER;
 }
 
-void
-ouFilter4(oustr, fpp)
-char * oustr;
-struct s_filter ** fpp;
+void 
+ouFilter4 (char *oustr, struct s_filter **fpp)
 {
 	struct s_filter * fp;
 

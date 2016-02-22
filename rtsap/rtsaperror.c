@@ -59,8 +59,8 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
 /*  */
 
-char   *RtErrString (code)
-register int code;
+char *
+RtErrString (register int code)
 {
 	static char buffer[50];
 

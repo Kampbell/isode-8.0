@@ -76,10 +76,8 @@ static struct dispatch dispatches[] = {
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	(void) ryinitiator (argc, argv, myservice, mycontext, mypci,
 						table_PasswordLookup_Operations, dispatches, do_quit);
@@ -91,11 +89,8 @@ char  **argv,
 
 /* ARGSUSED */
 
-static int  do_lookupUser (sd, ds, args, arg)
-int	sd;
-struct dispatch *ds;
-char  **args;
-register struct type_PasswordLookup_UserName **arg;
+static int 
+do_lookupUser (int sd, struct dispatch *ds, char **args, register struct type_PasswordLookup_UserName **arg)
 {
 	char   *cp;
 
@@ -114,11 +109,8 @@ register struct type_PasswordLookup_UserName **arg;
 
 /* ARGSUSED */
 
-static int  do_lookupUID (sd, ds, args, arg)
-int	sd;
-struct dispatch *ds;
-char  **args;
-register struct type_PasswordLookup_UserID **arg;
+static int 
+do_lookupUID (int sd, struct dispatch *ds, char **args, register struct type_PasswordLookup_UserID **arg)
 {
 	char   *cp;
 
@@ -186,12 +178,8 @@ caddr_t *dummy;
 
 /* ARGSUSED */
 
-static int  lookup_result (sd, id, dummy, result, roi)
-int	sd,
-	id,
-	dummy;
-register struct type_PasswordLookup_Passwd *result;
-struct RoSAPindication *roi;
+static int 
+lookup_result (int sd, int id, int dummy, register struct type_PasswordLookup_Passwd *result, struct RoSAPindication *roi)
 {
 	print_qb (result -> name);
 	putchar (':');
@@ -208,8 +196,8 @@ struct RoSAPindication *roi;
 }
 
 
-static	print_qb (q)
-register struct qbuf *q;
+static 
+print_qb (register struct qbuf *q)
 {
 	register struct qbuf *p;
 

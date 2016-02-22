@@ -44,8 +44,8 @@ static int ryconnect ();
 
 /*    INITIATOR */
 
-makeconn (thehost)
-char	*thehost;
+int 
+makeconn (char *thehost)
 {
 	int	result;
 	PE	data;
@@ -182,7 +182,8 @@ PE	data;
 	return OK;
 }
 
-closeconn () {
+int 
+closeconn (void) {
 	struct AcSAPrelease acrs;
 	register struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
@@ -251,9 +252,8 @@ IFP	rfx, efx;
 
 SFD cleanup ();
 
-void	ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_adios (register struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -263,9 +263,8 @@ char   *event;
 }
 
 
-void	ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_advise (register struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -280,9 +279,8 @@ char   *event;
 
 /*  */
 
-void	acs_adios (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_adios (register struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -291,9 +289,8 @@ char   *event;
 }
 
 
-void	acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (register struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -331,9 +328,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -353,8 +349,8 @@ va_dcl {
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void 
+_advise (va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -371,9 +367,8 @@ va_list	ap;
 #else
 /* VARARGS */
 
-void	advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }
@@ -394,16 +389,15 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	ryr_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
 	ryr_advise (what, fmt);
 }
 #endif
 
-char	*getstring (prompt)
-char	*prompt;
+char *
+getstring (char *prompt)
 {
 	static char buffer[BUFSIZ];
 	char	*cp;

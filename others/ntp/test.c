@@ -19,9 +19,8 @@ int	debug;
 char	*myname;
 
 double value[8] = {5.1, -5.1, 1.5, -1.5, 0.5, -0.5, -0.05, 0.0};
-main(argc, argv)
-int argc;
-char **argv;
+int 
+main (int argc, char **argv)
 {
 	myname = argv[0];
 	if (argc > 1 && strcmp(argv[1], "-v") == 0) {
@@ -39,7 +38,8 @@ char **argv;
 }
 
 
-test1() {
+int 
+test1 (void) {
 	int i;
 	double l_fixed_to_double();
 	struct l_fixedpt sample;
@@ -61,7 +61,8 @@ test1() {
 	return 0;
 }
 
-test2() {
+int 
+test2 (void) {
 	struct timeval tp;
 	struct l_fixedpt time_lm;
 
@@ -76,8 +77,8 @@ test2() {
 	return 0;
 }
 
-test3(v)
-int v;
+int 
+test3 (int v)
 {
 	unsigned long ul = 0x80000001;
 	double dbl;
@@ -110,8 +111,8 @@ int v;
 	}
 }
 
-test4(v)
-int v;
+int 
+test4 (int v)
 {
 	double dbl = 1024.0 * 1024.0 * 1024.0;	/* 2^30 */
 #ifdef SUN_FLT_BUG

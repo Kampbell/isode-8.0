@@ -37,13 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ssexec.c,v 9.0 199
 
 /*    SERVER only */
 
-int	RtExec (ss, rti, arg1, arg2, hook, setperms)
-struct SSAPstart *ss;
-struct RtSAPindication *rti;
-char   *arg1,
-	   *arg2;
-IFP	hook,
-	setperms;
+int 
+RtExec (struct SSAPstart *ss, struct RtSAPindication *rti, char *arg1, char *arg2, IFP hook, IFP setperms)
 {
 	int     result,
 			result2;

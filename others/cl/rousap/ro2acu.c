@@ -53,10 +53,12 @@ int	aculose ();
 /*---------------------------------------------------------------------------*/
 /*    bind underlying service */
 /*---------------------------------------------------------------------------*/
-int	RoAcuService (acb, roi)
+int 
+RoAcuService (
 /*---------------------------------------------------------------------------*/
-register struct assocblk   *acb;
-struct RoSAPindication *roi;
+    register struct assocblk *acb,
+    struct RoSAPindication *roi
+)
 {
 
 	if (!(acb -> acb_flags & ACB_AUDT))
@@ -120,11 +122,14 @@ struct RoSAPindication *roi;
 
 
 /*---------------------------------------------------------------------------*/
-int	ro2acuwait (acb, invokeID, secs, roi)
+int 
+ro2acuwait (
 /*---------------------------------------------------------------------------*/
-register struct assocblk *acb;
-int    	*invokeID, secs;
-register struct RoSAPindication *roi;
+    register struct assocblk *acb,
+    int *invokeID,
+    int secs,
+    register struct RoSAPindication *roi
+)
 {
 	int     fd, result;
 	register PE  pe;
@@ -236,10 +241,12 @@ struct RoSAPindication *roi;
 
 
 /*---------------------------------------------------------------------------*/
-int ValidBinding ( acb, acs )
+int 
+ValidBinding (
 /*---------------------------------------------------------------------------*/
-struct assocblk *acb;
-struct AcuSAPstart *acs;
+    struct assocblk *acb,
+    struct AcuSAPstart *acs
+)
 {
 
 #define	AEICMP(aei1,aei2) \
@@ -265,12 +272,14 @@ struct AcuSAPstart *acs;
 /*---------------------------------------------------------------------------*/
 /*    AcSAP interface */
 /*---------------------------------------------------------------------------*/
-static int aculose (acb, roi, event, aca)
+static int 
+aculose (
 /*---------------------------------------------------------------------------*/
-register struct assocblk *acb;
-register struct RoSAPindication *roi;
-char   *event;
-register struct AcSAPabort *aca;
+    register struct assocblk *acb,
+    register struct RoSAPindication *roi,
+    char *event,
+    register struct AcSAPabort *aca
+)
 {
 	int     reason;
 	char   *cp,

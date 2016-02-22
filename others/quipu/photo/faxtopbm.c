@@ -44,10 +44,8 @@ static	bit	black, white;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	char   *cp;
 	char   *data;
@@ -172,8 +170,8 @@ static	bit    *bitrow, *bP;
 
 /* ARGSUSED */
 
-photo_start(name)
-char   *name;
+int 
+photo_start (char *name)
 {
 	if (passno == 1)
 		maxx = 0;
@@ -185,8 +183,8 @@ char   *name;
 
 /* ARGSUSED */
 
-photo_end (name)
-char   *name;
+int 
+photo_end (char *name)
 {
 	if (passno == 1) {
 		register int	i;
@@ -212,8 +210,8 @@ char   *name;
 }
 
 
-photo_black (length)
-int	length;
+int 
+photo_black (int length)
 {
 	if (passno == 2) {
 		register int	i;
@@ -227,8 +225,8 @@ int	length;
 }
 
 
-photo_white (length)
-int	length;
+int 
+photo_white (int length)
 {
 	if (passno == 2)
 		bP += length;

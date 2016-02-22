@@ -42,8 +42,8 @@ extern	struct type_Idist_FileSpec *makefs ();
 extern	struct type_Idist_QueryResult *query ();
 extern	struct type_Idist_FileList *do_listcdir ();
 
-doexec (cmd)
-char	*cmd;
+int 
+doexec (char *cmd)
 {
 	int fd[2], status, pid, i;
 	char	buf[BUFSIZ];
@@ -84,8 +84,8 @@ char	*cmd;
 	return OK;
 }
 
-do_symlink (fs)
-struct type_Idist_FileSpec *fs;
+int 
+do_symlink (struct type_Idist_FileSpec *fs)
 {
 	char	*new, old[BUFSIZ], *linkname;
 	int	i;
@@ -133,8 +133,8 @@ struct type_Idist_FileSpec *fs;
 	return OK;
 }
 
-static	char	*cannon (name)
-char	*name;
+static char *
+cannon (char *name)
 {
 	static char	nname[BUFSIZ];
 	char	*cp;
@@ -157,8 +157,8 @@ char	*name;
 /*
  * Check to see if parent directory exists and create one if not.
  */
-chkparent(name)
-char *name;
+int 
+chkparent (char *name)
 {
 	register char *cp;
 	struct stat stb;
@@ -181,8 +181,8 @@ char *name;
 	return(-1);
 }
 
-do_rfile (fs)
-struct type_Idist_FileSpec *fs;
+int 
+do_rfile (struct type_Idist_FileSpec *fs)
 {
 	char	*name, *p;
 
@@ -202,8 +202,8 @@ struct type_Idist_FileSpec *fs;
 	return OK;
 }
 
-do_hardlink (fs)
-struct type_Idist_FileSpec *fs;
+int 
+do_hardlink (struct type_Idist_FileSpec *fs)
 {
 	char 	*new;
 	char	*cp;
@@ -248,8 +248,8 @@ struct type_Idist_FileSpec *fs;
 	return OK;
 }
 
-do_direct (fs)
-struct type_Idist_FileSpec *fs;
+int 
+do_direct (struct type_Idist_FileSpec *fs)
 {
 	char	*cp, *name;
 	struct stat stb;
@@ -313,8 +313,8 @@ struct type_Idist_FileSpec *fs;
  * Remove a file or directory (recursively) and send back an acknowledge
  * or an error message.
  */
-i_remove(str)
-char	*str;
+int 
+i_remove (char *str)
 {
 	DIR *d;
 	struct dirent *dp;
@@ -367,9 +367,8 @@ char	*str;
 }
 
 
-addtoia5 (str, len)
-char	*str;
-int	len;
+int 
+addtoia5 (char *str, int len)
 {
 	struct type_Idist_IA5List **ia5p;
 
@@ -379,8 +378,8 @@ int	len;
 	*ia5p = str2ia5list (str, len);
 }
 
-struct type_Idist_QueryResult *query (str)
-char	*str;
+struct type_Idist_QueryResult *
+query (char *str)
 {
 	struct type_Idist_QueryResult *qr;
 	struct stat stb;
@@ -422,9 +421,8 @@ char	*str;
 	return qr;
 }
 
-static struct type_Idist_IA5List *str2ia5list (s, len)
-char   *s;
-int	len;
+static struct type_Idist_IA5List *
+str2ia5list (char *s, int len)
 {
 	register struct type_Idist_IA5List *ia5;
 
@@ -440,7 +438,8 @@ int	len;
 	return ia5;
 }
 
-struct type_Idist_FileList *do_listcdir () {
+struct type_Idist_FileList *
+do_listcdir (void) {
 	DIR	*d;
 	register struct dirent *dp;
 	struct type_Idist_FileList *base, **flp;
@@ -487,7 +486,8 @@ struct type_Idist_FileList *do_listcdir () {
 	return base;
 }
 
-fixup () {
+int 
+fixup (void) {
 	struct timeval tvp[2];
 	char	*new, *p;
 	char	*owner, *group;
@@ -539,8 +539,8 @@ fixup () {
 	return OK;
 }
 
-static int	compare (f1, f2)
-char	*f1, *f2;
+static int 
+compare (char *f1, char *f2)
 {
 	FILE	*fp1, *fp2;
 	char	buf1[BUFSIZ], buf2[BUFSIZ];	/* these two had

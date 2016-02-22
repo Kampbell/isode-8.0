@@ -260,8 +260,8 @@ char  **vec;
 
 /*  */
 
-static int  ros_work (fd)
-int	fd;
+static int 
+ros_work (int fd)
 {
 	int	    result;
 	caddr_t out;
@@ -301,9 +301,8 @@ int	fd;
 
 /*  */
 
-static int ros_indication (sd, roi)
-int	sd;
-register struct RoSAPindication *roi;
+static int 
+ros_indication (int sd, register struct RoSAPindication *roi)
 {
 	int	    reply,
 			result;
@@ -388,9 +387,8 @@ struct TSAPdisconnect *td;
 
 /*    ERRORS */
 
-void	ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_adios (register struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -398,9 +396,8 @@ char   *event;
 }
 
 
-void	ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_advise (register struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -415,9 +412,8 @@ char   *event;
 
 /*  */
 
-void	acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (register struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -456,9 +452,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -483,10 +478,8 @@ va_dcl {
 }
 
 
-static void  _advise (code, what, ap)
-int	code;
-char   *what;
-va_list	ap;
+static void 
+_advise (int code, char *what, va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -505,10 +498,8 @@ va_list	ap;
 #else
 /* VARARGS */
 
-void	advise (what, code, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (char *what, int code, char *fmt)
 {
 	advise (what, code, fmt);
 }
@@ -532,9 +523,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	ryr_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
 	ryr_advise (what, fmt);
 }

@@ -61,9 +61,8 @@ static double reltime();
 #define DEBUG	1
 int debug = 1;
 
-main(argc, argv)
-int argc;
-char **argv;
+int 
+main (int argc, char **argv)
 {
 	struct timeval *tvp, *otvp;
 

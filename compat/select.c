@@ -244,12 +244,7 @@ selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs)
 #include "sys/soioctl.h"
 
 
-int	selsocket (nfds, rfds, wfds, efds, secs)
-int	nfds;
-fd_set *rfds,
-	   *wfds,
-	   *efds;
-int	secs;
+int	selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
 {
 	int    fd;
 	int     n;
@@ -303,10 +298,7 @@ int	secs;
 #if defined(TLI_TP) && defined(TLI_POLL)
 #include <poll.h>
 
-int selsocket (nfds, rfds, wfds, efds, secs)
-int	nfds;
-fd_set	*rfds, *wfds, *efds;
-int	secs;
+int selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
 {
 	int i, j, n;
 	struct pollfd pollfds[128];
@@ -394,12 +386,7 @@ caddr_t	data;
 #if !(defined(_AIX) && defined(X25))
 /* We have an AIX specific version if X25 is defined */
 
-int	xselect (nfds, rfds, wfds, efds, secs)
-int	nfds;
-fd_set *rfds,
-	   *wfds,
-	   *efds;
-int	secs;
+int	xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
 {
 	int    fd;
 	int	    n;

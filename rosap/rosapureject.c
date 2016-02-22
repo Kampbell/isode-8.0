@@ -89,7 +89,7 @@ RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPi
 
 	result = RoURejectRequestAux (acb, invokeID, reason, id, priority, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

@@ -59,9 +59,9 @@ PReSyncRequest (int sd, int type, long ssn, int settings, PE *data, int ndata, s
 	if ((result = SReSyncRequest (sd, type, ssn, settings, base, len, &sis))
 			== NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SReSyncRequest", sa);
+			 ss2pslose (pb, pi, "SReSyncRequest", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SReSyncRequest", sa);
+			 ss2pslose (NULLPB, pi, "SReSyncRequest", sa);
 			goto out1;
 		}
 
@@ -78,7 +78,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

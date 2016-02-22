@@ -224,17 +224,17 @@ PE     *pe;
 		if (strcmp (psapfile, "-")) {
 			char    file[BUFSIZ];
 
-			(void) sprintf (file, psapfile, getpid ());
+			 sprintf (file, psapfile, getpid ());
 			fp = fopen (file, "a"), isopen = 1;
 		} else
-			fp = stderr, isopen = 0, (void) fflush (stdout);
+			fp = stderr, isopen = 0,  fflush (stdout);
 
 		if (fp) {
 			pe2text (fp, p, 1, len);
 			if (isopen)
-				(void) fclose (fp);
+				 fclose (fp);
 			else
-				(void) fflush (fp);
+				 fflush (fp);
 		}
 	}
 #endif
@@ -261,7 +261,7 @@ struct PSAPindication *pi;
 				== NULL) {
 no_mem:
 			;
-			(void) pusaplose (pi, PC_CONGEST, NULLCP, NULLCP);
+			 pusaplose (pi, PC_CONGEST, NULLCP, NULLCP);
 			goto out;
 		}
 
@@ -272,7 +272,7 @@ no_mem:
 		goto no_mem;
 	if (str_setup (ps, qb -> qb_data, qb -> qb_len, 1) == NOTOK
 			|| pe2ps_aux (ps, pe, 0) == NOTOK) {
-		(void) pusaplose (pi, PC_CONGEST, NULLCP, "error encoding user-info");
+		 pusaplose (pi, PC_CONGEST, NULLCP, "error encoding user-info");
 		ps_free (ps);
 		goto out;
 	}
@@ -291,17 +291,17 @@ no_mem:
 		if (strcmp (psapfile, "-")) {
 			char    file[BUFSIZ];
 
-			(void) sprintf (file, psapfile, getpid ());
+			 sprintf (file, psapfile, getpid ());
 			fp = fopen (file, "a"), isopen = 1;
 		} else
-			fp = stderr, isopen = 0, (void) fflush (stdout);
+			fp = stderr, isopen = 0,  fflush (stdout);
 
 		if (fp) {
 			pe2text (fp, pe, 0, len);
 			if (isopen)
-				(void) fclose (fp);
+				 fclose (fp);
 			else
-				(void) fflush (fp);
+				 fflush (fp);
 		}
 	}
 #endif
@@ -344,14 +344,14 @@ int	ndata,
 			== NULL) {
 no_mem:
 		;
-		(void) pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		 pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
 	pdu -> offset = type_PS_User__data_simple;
 	for (d = data, i = 0; i < ndata; i++) {
 		if ((pe = *d++) == NULLPE) {
-			(void) pusaplose (pi, PC_PARAMETER, NULLCP,
+			 pusaplose (pi, PC_PARAMETER, NULLCP,
 							  "missing %d%s PSDU", i + 1,
 							  i == 0 ? "st" : i == 1 ? "nd" : i == 2 ? "rd" : "th");
 			goto out;
@@ -364,7 +364,7 @@ no_mem:
 
 		if (pb -> pb_ncontext > 1) {
 			if ( pe -> pe_context == PE_DFLT_CTX) {
-				(void) pusaplose (pi, PC_PARAMETER, NULLCP,
+				 pusaplose (pi, PC_PARAMETER, NULLCP,
 								  "default context not permitted");
 				goto out;
 			}
@@ -404,12 +404,12 @@ no_mem:
 				if (qp -> pc_id == pe -> pe_context)
 					break;
 			if (j >= pb -> pb_ncontext) {
-				(void) pusaplose (pi, PC_PARAMETER, NULLCP,
+				 pusaplose (pi, PC_PARAMETER, NULLCP,
 								  "context %d is undefined", pe -> pe_context);
 				goto out;
 			}
 			if (qp -> pc_result != PC_ACCEPT) {
-				(void) pusaplose (pi, PC_PARAMETER, NULLCP,
+				 pusaplose (pi, PC_PARAMETER, NULLCP,
 								  "context %d is unsupported", pe -> pe_context);
 				goto out;
 			}
@@ -418,7 +418,7 @@ no_mem:
 		}
 
 		if (!atn_is_asn1 (atn)) {
-			(void) pusaplose (pi, PC_PARAMETER, NULLCP, "not ASN.1");
+			 pusaplose (pi, PC_PARAMETER, NULLCP, "not ASN.1");
 			goto out;
 		}
 
@@ -536,7 +536,7 @@ ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SS
 				reason = PC_WAITING;
 				break;
 			}
-		(void) sprintf (cp = buffer, " (%s at session)",
+		 sprintf (cp = buffer, " (%s at session)",
 						SuErrString (sa -> sa_reason));
 		break;
 	}
@@ -659,7 +659,7 @@ PuErrString (
 
 	if (code < reject_err0_cnt)
 		return reject_err0[code];
-	(void) sprintf (buffer, "unknown error code %d", code);
+	 sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }
 
@@ -667,7 +667,7 @@ PuErrString (
 /*   INTERNAL */
 /*----------------------------------------------------------------------------*/
 struct psapblk *
-newpublk (void)
+newpublk 
 /*----------------------------------------------------------------------------*/
 {
 	struct psapblk *pb;
@@ -761,20 +761,20 @@ IFP	fnx;
 	if (strcmp (psap2file, "-")) {
 		char	file[BUFSIZ];
 
-		(void) sprintf (file, psap2file, getpid ());
+		 sprintf (file, psap2file, getpid ());
 		fp = fopen (file, "a"), isopen = 1;
 	} else
-		fp = stderr, isopen = 0, (void) fflush (stdout);
+		fp = stderr, isopen = 0,  fflush (stdout);
 
 	if (fp) {
 		vpushfp (fp, pe, text, rw);
-		(void) (*fnx) (pe, 1, NULLIP, NULLVP, NULLCP);
+		 (*fnx) (pe, 1, NULLIP, NULLVP, NULLCP);
 		vpopfp ();
 
 		if (isopen)
-			(void) fclose (fp);
+			 fclose (fp);
 		else
-			(void) fflush (fp);
+			 fflush (fp);
 	}
 }
 #endif

@@ -98,7 +98,7 @@ struct	PSAPindication *pi;
 	smask = sigioblock ();
 
 	if ((pb = newpublk ()) == NULLPB) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 	}
 
@@ -141,7 +141,7 @@ struct	PSAPindication *pi;
 	/*  following validation of ASN.1/BER for the default context */
 
 	if ((pb -> pb_asn = ode2oid (DFLT_ASN)) == NULLOID)  {
-		(void) pusaplose (pi, PC_ABSTRACT, NULLCP, "%s: unknown", DFLT_ASN);
+		 pusaplose (pi, PC_ABSTRACT, NULLCP, "%s: unknown", DFLT_ASN);
 		goto no_good;
 	}
 	if ((pb -> pb_asn = oid_cpy (pb -> pb_asn)) == NULLOID) {
@@ -149,7 +149,7 @@ struct	PSAPindication *pi;
 		goto no_good;
 	}
 	if ((pb -> pb_atn = ode2oid (DFLT_ATN)) == NULLOID)  {
-		(void) pusaplose (pi, PC_TRANSFER, NULLCP, "%s: unknown", DFLT_ATN);
+		 pusaplose (pi, PC_TRANSFER, NULLCP, "%s: unknown", DFLT_ATN);
 		goto no_good;
 	}
 	if ((pb -> pb_atn = oid_cpy (pb -> pb_atn)) == NULLOID) {
@@ -177,7 +177,7 @@ struct	PSAPindication *pi;
 
 	pe = NULLPE;
 	if (encode_PS_UD__type (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) pusaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 pusaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						  PY_pepy);
 		goto no_good;
 	}
@@ -200,14 +200,14 @@ struct	PSAPindication *pi;
 
 	if ( (result = SUnitDataRequest ( calling ? &calling -> pa_addr : NULLSA,
 									  &called -> pa_addr, pb -> pb_retry, len, qos, si))  == NOTOK) {
-		(void) ss2pulose (NULLPB, pi, "SUnitDataRequest", sa);
+		 ss2pulose (NULLPB, pi, "SUnitDataRequest", sa);
 	}
 	goto out;
 
 
 no_mem:
 	;
-	(void) pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+	 pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 no_good:
 	;
 	result = NOTOK;
@@ -217,7 +217,7 @@ out:
 	;
 	if ( pb -> pb_retry ) free ( pb -> pb_retry );    /* ??? */
 	freepublk (pb);
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return result;
 }
 
@@ -278,11 +278,11 @@ PUnitDataBind (
 
 	if ( sd == NOTOK ) {
 		if ((pb = newpublk ()) == NULLPB) {
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		}
 	} else if ((pb = findpublk (sd)) == NULLPB || !(pb -> pb_flags & PB_PUDT)) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return pusaplose (pi, PC_PARAMETER, NULLCP,
 						  "invalid presentation descriptor");
 	}
@@ -298,7 +298,7 @@ PUnitDataBind (
 	/*  following validation of ASN.1/BER for the default context */
 
 	if ((pb -> pb_asn = ode2oid (DFLT_ASN)) == NULLOID)  {
-		(void) pusaplose (pi, PC_ABSTRACT, NULLCP, "%s: unknown", DFLT_ASN);
+		 pusaplose (pi, PC_ABSTRACT, NULLCP, "%s: unknown", DFLT_ASN);
 		goto no_good;
 	}
 	if ((pb -> pb_asn = oid_cpy (pb -> pb_asn)) == NULLOID) {
@@ -306,7 +306,7 @@ PUnitDataBind (
 		goto no_good;
 	}
 	if ((pb -> pb_atn = ode2oid (DFLT_ATN)) == NULLOID)  {
-		(void) pusaplose (pi, PC_TRANSFER, NULLCP, "%s: unknown", DFLT_ATN);
+		 pusaplose (pi, PC_TRANSFER, NULLCP, "%s: unknown", DFLT_ATN);
 		goto no_good;
 	}
 	if ((pb -> pb_atn = oid_cpy (pb -> pb_atn)) == NULLOID) {
@@ -323,20 +323,20 @@ PUnitDataBind (
 	if ( (result = SUnitDataBind ( pb -> pb_fd, &calling -> pa_addr,
 								   called ? &called -> pa_addr : NULLSA,
 								   qos, si )) == NOTOK) {
-		(void) ss2pulose (NULLPB, pi, "SUnitDataBind", sa);
+		 ss2pulose (NULLPB, pi, "SUnitDataBind", sa);
 		goto no_good;
 	}
 
 	pb -> pb_fd = result;
 	pb -> pb_flags |= PB_PUDT;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return result;
 
 
 no_good:
 	;
 	freepublk (pb);
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return NOTOK;
 }
 
@@ -366,7 +366,7 @@ PUnitDataRebind (
 	smask = sigioblock ();
 
 	if ((pb = findpublk (sd)) == NULLPB || !(pb -> pb_flags & PB_PUDT)) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return pusaplose (pi, PC_PARAMETER, NULLCP,
 						  "invalid presentation descriptor");
 	}
@@ -387,19 +387,19 @@ PUnitDataRebind (
 	}
 
 	if ( addrs2block ( calling, called, pb, pi ) == NOTOK ) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return NOTOK;
 	}
 
 	if ( SUnitDataBind ( pb -> pb_fd, &calling -> pa_addr,
 						 &called -> pa_addr, NULL, si ) == NOTOK) {
-		(void) ss2pulose (NULLPB, pi, "SUnitDataBind", sa);
+		 ss2pulose (NULLPB, pi, "SUnitDataBind", sa);
 		freepublk (pb);
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return NOTOK;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return OK;
 }
 
@@ -441,7 +441,7 @@ struct  PSAPindication *pi;
 	smask = sigioblock ();
 
 	if ((pb = findpublk (sd)) == NULLPB || !(pb -> pb_flags & PB_PUDT)) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return pusaplose (pi, PC_PARAMETER, NULLCP,
 						  "invalid presentation descriptor");
 	}
@@ -480,7 +480,7 @@ struct  PSAPindication *pi;
 
 	pe = NULLPE;
 	if (encode_PS_UD__type (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) pusaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 pusaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						  PY_pepy);
 		goto no_good;
 	}
@@ -502,14 +502,14 @@ struct  PSAPindication *pi;
 	pe = NULLPE;
 
 	if ((result = SUnitDataWrite ( sd, pb -> pb_retry, len, si )) == NOTOK )
-		(void) ss2pulose (NULLPB, pi, "SUnitDataWrite", sa);
+		 ss2pulose (NULLPB, pi, "SUnitDataWrite", sa);
 	goto out;
 
 
 
 no_mem:
 	;
-	(void) pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+	 pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 no_good:
 	;
 	result = NOTOK;
@@ -518,7 +518,7 @@ no_good:
 out:
 	;
 	if ( pb -> pb_retry ) free ( pb -> pb_retry );    /* ??? */
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return result;
 }
 
@@ -557,7 +557,7 @@ PUnitDataRead (
 	smask = sigioblock ();
 
 	if ((pb = findpublk (sd)) == NULLPB || !(pb -> pb_flags & PB_PUDT)) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return pusaplose (pi, PC_PARAMETER, NULLCP,
 						  "invalid presentation descriptor");
 	}
@@ -567,7 +567,7 @@ PUnitDataRead (
 	pdu = NULL;
 
 	if ((result = SUnitDataRead (pb -> pb_fd, ss, secs, si)) == NOTOK) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		if (sa -> sa_reason == SC_TIMER)
 			return pusaplose (pi, PC_TIMER, NULLCP, NULLCP);
 		return ss2pulose (pb, pi, NULLCP, sa);
@@ -576,14 +576,14 @@ PUnitDataRead (
 	if ((pe = ssdu2pe (ss -> ss_data, ss -> ss_cc, NULLCP, &result))
 			== NULLPE) {
 		if (result == PS_ERR_NMEM) goto no_mem;
-		(void) pusaplose ( pi, PC_PROTOCOL, NULLCP, "%s", ps_error (result));
+		 pusaplose ( pi, PC_PROTOCOL, NULLCP, "%s", ps_error (result));
 		goto no_good;
 	}
 
 	SUSFREE (ss);    /* free the ss_data */
 
 	if (decode_PS_UD__type (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
-		(void) pusaplose (pi, PC_UNRECOGNIZED, NULLCP, "error decoding PDU: %s",
+		 pusaplose (pi, PC_UNRECOGNIZED, NULLCP, "error decoding PDU: %s",
 						  PY_pepy);
 		goto no_good;
 	}
@@ -628,7 +628,7 @@ PUnitDataRead (
 	}
 
 	if ( pdu2contexts (pb, pdu -> context__list, &ps -> ps_ctxlist) == NOTOK ) {
-		(void) pusaplose (pi, PC_TRANSFER, NULLCP,
+		 pusaplose (pi, PC_TRANSFER, NULLCP,
 						  "transfer syntax not supported");
 		goto no_good;
 	}
@@ -638,7 +638,7 @@ PUnitDataRead (
 
 no_mem:
 	;
-	(void) pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+	 pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 no_good:
 	;
 	result = NOTOK;
@@ -647,7 +647,7 @@ no_good:
 out:
 	;
 	if (pdu) free_PS_UD__type (pdu);
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return result;
 }
 
@@ -674,14 +674,14 @@ PUnitDataUnbind (
 	smask = sigioblock ();
 
 	if ((pb = findpublk (sd)) == NULLPB || !(pb -> pb_flags & PB_PUDT)) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return pusaplose (pi, PC_PARAMETER, NULLCP,
 						  "invalid presentation descriptor");
 	}
 
 	if ((result = SUnitDataUnbind (pb -> pb_fd, si))
 			== NOTOK) {
-		(void) ss2pulose (pb, pi, "PUnitDataUnbind", sa);
+		 ss2pulose (pb, pi, "PUnitDataUnbind", sa);
 		if (SC_FATAL (sa -> sa_reason))
 			goto out2;
 		else
@@ -695,7 +695,7 @@ out2:
 
 out1:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return result;
 }
 
@@ -737,7 +737,7 @@ PuSave (
 
 
 	if ( (result = SuSave ( sd, vecp, vec, si) ) == NOTOK) {
-		(void) ss2pulose (NULLPB, pi, "PuSave", sa);
+		 ss2pulose (NULLPB, pi, "PuSave", sa);
 		if ( sd == NOTOK ) freepublk (pb);
 		return NOTOK;
 	}
@@ -805,13 +805,13 @@ contexts2block (
 			i >= 0;
 			i--, pp++, qp++) {
 		if (!((qp -> pc_id = pp -> pc_id) & 01)) {
-			(void) pusaplose (pi, PC_PARAMETER, NULLCP,
+			 pusaplose (pi, PC_PARAMETER, NULLCP,
 							  "only odd values allowed for context identifiers");
 			goto out2;
 		}
 
 		if (pp -> pc_asn == NULLOID) {
-			(void) pusaplose (pi, PC_PARAMETER, NULLCP,
+			 pusaplose (pi, PC_PARAMETER, NULLCP,
 							  "no abstract syntax name given for context %d",
 							  pp -> pc_id);
 			goto out2;
@@ -820,7 +820,7 @@ contexts2block (
 			goto no_mem;
 
 		if (pp -> pc_atn && !atn_is_ok (pb, pp -> pc_atn)) {
-			(void) pusaplose (pi, PC_TRANSFER, NULLCP,
+			 pusaplose (pi, PC_TRANSFER, NULLCP,
 							  "unknown transfer syntax name given for context %d",
 							  pp -> pc_id);
 			goto out2;
@@ -839,7 +839,7 @@ contexts2block (
 
 no_mem:
 	;
-	(void) pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+	 pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 out2:
 	;
 	return NOTOK;

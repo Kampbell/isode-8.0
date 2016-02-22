@@ -318,7 +318,7 @@ InheritAttr m;
 {
 	PE ret_pe;
 
-	(void) encode_Quipu_InheritedAttribute (&ret_pe,0,0,NULLCP,m);
+	 encode_Quipu_InheritedAttribute (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }

@@ -56,9 +56,9 @@ main (int argc, char *argv[])
 
 
 	if (argc != 2) {
-		(void) printf("Usage: jpeg2asn <input file>\n");
-		(void) printf("Takes a normal JPEG file and adds ASN-1 tag and length\n");
-		(void) printf("and prints it to standard output\n");
+		 printf("Usage: jpeg2asn <input file>\n");
+		 printf("Takes a normal JPEG file and adds ASN-1 tag and length\n");
+		 printf("and prints it to standard output\n");
 		exit(0);
 	}
 
@@ -77,7 +77,7 @@ main (int argc, char *argv[])
 
 	/* First thing, add the JPEG tag */
 
-	(void) putc(NEW_JPEG_TAG, outfile);
+	 putc(NEW_JPEG_TAG, outfile);
 
 	/* Has not been tested on a machine were net and host ordering is
 	 * different - e.g. a VAX */
@@ -87,34 +87,34 @@ main (int argc, char *argv[])
 
 	nLength = length;
 	if (length < 0x80)          /* fits in 7 bits */
-		(void) putc((unsigned char) length, outfile);
+		 putc((unsigned char) length, outfile);
 	else if (length <= 0xFF) {  /* 1 byte of length */
-		(void) putc((unsigned char) (0x01 | ASN_LONG_LEN), outfile);
-		(void) putc((unsigned char) length, outfile);
+		 putc((unsigned char) (0x01 | ASN_LONG_LEN), outfile);
+		 putc((unsigned char) length, outfile);
 	} else if (length <= 0xFFFF) { /* 2 bytes of length */
-		(void) putc((unsigned char) (0x02 | ASN_LONG_LEN), outfile);
-		(void) putc((unsigned char) ((nLength >> 8) & 0xFF), outfile);
-		(void) putc((unsigned char) (nLength & 0xFF), outfile);
+		 putc((unsigned char) (0x02 | ASN_LONG_LEN), outfile);
+		 putc((unsigned char) ((nLength >> 8) & 0xFF), outfile);
+		 putc((unsigned char) (nLength & 0xFF), outfile);
 	} else if (length <= 0xFFFFFF) { /* 3 bytes of length */
-		(void) putc((unsigned char) (0x03 | ASN_LONG_LEN), outfile);
-		(void) putc((unsigned char) ((nLength >> 16) & 0xFF), outfile);
-		(void) putc((unsigned char) ((nLength >> 8) & 0xFF), outfile);
-		(void) putc((unsigned char) (nLength & 0xFF), outfile);
+		 putc((unsigned char) (0x03 | ASN_LONG_LEN), outfile);
+		 putc((unsigned char) ((nLength >> 16) & 0xFF), outfile);
+		 putc((unsigned char) ((nLength >> 8) & 0xFF), outfile);
+		 putc((unsigned char) (nLength & 0xFF), outfile);
 	} else { /* 4 bytes of length */
-		(void) putc((unsigned char) (0x04 | ASN_LONG_LEN), outfile);
-		(void) putc((unsigned char) ((nLength >> 24) & 0xFF), outfile);
-		(void) putc((unsigned char) ((nLength >> 16) & 0xFF), outfile);
-		(void) putc((unsigned char) ((nLength >> 8) & 0xFF), outfile);
-		(void) putc((unsigned char) (nLength & 0xFF), outfile);
+		 putc((unsigned char) (0x04 | ASN_LONG_LEN), outfile);
+		 putc((unsigned char) ((nLength >> 24) & 0xFF), outfile);
+		 putc((unsigned char) ((nLength >> 16) & 0xFF), outfile);
+		 putc((unsigned char) ((nLength >> 8) & 0xFF), outfile);
+		 putc((unsigned char) (nLength & 0xFF), outfile);
 	}
 
 	/* Excellent, all we have to do now is to copy the file over ! */
 
 	while ((i = getc(infile)) != EOF)
-		(void) putc(i, outfile);
+		 putc(i, outfile);
 
-	(void) fclose(infile);
-	(void) fclose(outfile);
+	 fclose(infile);
+	 fclose(outfile);
 
 	return 0;
 }
@@ -123,6 +123,6 @@ void
 GotError (char *theStr)
 
 {
-	(void) perror(theStr);
+	 perror(theStr);
 	exit(1);
 }

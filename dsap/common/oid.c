@@ -99,10 +99,10 @@ char * table;
 
 	isodetable = isodefile(table, 0);
 
-	(void) strcpy (filename,isodetable);
+	 strcpy (filename,isodetable);
 	extension = &filename[strlen(isodetable)];
 
-	(void) strcpy (extension,".gen");
+	 strcpy (extension,".gen");
 	if (( f_table = fopen (filename,"r")) == (FILE *) NULL) {
 bad_file:
 		;
@@ -123,9 +123,9 @@ bad_entry:
 		}
 		allow_single_oid = FALSE;
 	}
-	(void) fclose (f_table);
+	 fclose (f_table);
 
-	(void) strcpy (extension,".at");
+	 strcpy (extension,".at");
 	if (( f_table = fopen (filename,"r")) == (FILE *) NULL)
 		goto bad_file;
 
@@ -135,9 +135,9 @@ bad_entry:
 		if (!add_entry (name,ATTR))
 			goto bad_entry;
 	}
-	(void) fclose (f_table);
+	 fclose (f_table);
 
-	(void) strcpy (extension,".oc");
+	 strcpy (extension,".oc");
 	if (( f_table = fopen (filename,"r")) == (FILE *) NULL)
 		goto bad_file;
 
@@ -147,7 +147,7 @@ bad_entry:
 		if (!add_entry (name,OC))
 			goto bad_entry;
 	}
-	(void) fclose (f_table);
+	 fclose (f_table);
 	return OK;
 }
 
@@ -366,7 +366,7 @@ char * str;
 					return (NULLCP);  /* inconsistent */
 			}
 			deref = TRUE;
-			(void) strcpy (buffer,soid);
+			 strcpy (buffer,soid);
 			ptr = buffer + strlen (soid);
 		} else
 			*ptr++ = *str++;
@@ -659,14 +659,14 @@ oid_table * ot;
 				*str++ = DOT;
 				continue;
 			}
-			(void) strcat (buffer,".");
-			(void) strcat (buffer,ptr);
+			 strcat (buffer,".");
+			 strcat (buffer,ptr);
 			*str++ = DOT;
 		} else
 			str++;
 
-	(void) strcat (buffer,".");
-	(void) strcat (buffer,ot->ot_name);
+	 strcat (buffer,".");
+	 strcat (buffer,ot->ot_name);
 	return (&buffer[1]);
 }
 
@@ -700,14 +700,14 @@ oid_table * ot;
 				*str++ = DOT;
 				break;
 			} else
-				(void) strcpy (buffer,ptr);
+				 strcpy (buffer,ptr);
 			last = str;
 			*str++ = DOT;
 
 		} else
 			str++;
 
-	(void) strcat (buffer,last);
+	 strcat (buffer,last);
 	return (buffer);
 }
 
@@ -911,7 +911,7 @@ void	free_oid_buckets() {
 
 
 oid_syntax () {
-	(void) add_attribute_syntax ("oid",
+	 add_attribute_syntax ("oid",
 								 (IFP) oid2pe,	(IFP) dup_prim2oid,
 								 (IFP) name2oid,	oidprint,
 								 (IFP) oid_cpy,	oid_cmp,

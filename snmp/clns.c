@@ -1095,7 +1095,7 @@ int	offset;
 
 			oids.oid_elements = at -> adn_instance + 1;
 			oids.oid_nelem = at -> adn_insize - 1;
-			(void) strcpy (buffer, sprintoid (&oids));
+			 strcpy (buffer, sprintoid (&oids));
 			oids.oid_elements = at -> adm_instance;
 			oids.oid_nelem = at -> adm_insize;
 			advise (LLOG_DEBUG, NULLCP,

@@ -151,7 +151,7 @@ read_bind_args (unsigned int *acptr, char ***avptr)
 			break;
 		case 'p':
 			if (*++av != NULLCP) {
-				(void) strcpy(passwd, *av);
+				 strcpy(passwd, *av);
 				got_password = TRUE;
 			}
 			break;
@@ -166,7 +166,7 @@ read_bind_args (unsigned int *acptr, char ***avptr)
 void 
 quit (int sig)
 {
-	(void) ds_unbind();
+	 ds_unbind();
 	exit(sig);
 }
 
@@ -180,7 +180,7 @@ va_dcl {
 	va_start (ap);
 
 	code = va_arg (ap, int);
-	(void) _ll_log (log_dsap, code, ap);
+	 _ll_log (log_dsap, code, ap);
 
 	va_end (ap);
 }

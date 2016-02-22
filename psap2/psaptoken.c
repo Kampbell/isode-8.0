@@ -50,9 +50,9 @@ PGTokenRequest (int sd, int tokens, struct PSAPindication *pi)
 
 	if ((result = SGTokenRequest (sd, tokens, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SGTokenRequest", sa);
+			 ss2pslose (pb, pi, "SGTokenRequest", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SGTokenRequest", sa);
+			 ss2pslose (NULLPB, pi, "SGTokenRequest", sa);
 			goto out1;
 		}
 	else
@@ -62,7 +62,7 @@ PGTokenRequest (int sd, int tokens, struct PSAPindication *pi)
 		freepblk (pb);
 out1:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -94,9 +94,9 @@ PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindication *
 
 	if ((result = SPTokenRequest (sd, tokens, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SPTokenRequest", sa);
+			 ss2pslose (pb, pi, "SPTokenRequest", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SPTokenRequest", sa);
+			 ss2pslose (NULLPB, pi, "SPTokenRequest", sa);
 			goto out1;
 		}
 
@@ -113,7 +113,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

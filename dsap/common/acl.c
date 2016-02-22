@@ -861,7 +861,7 @@ struct acl * acl;
 {
 	PE ret_pe;
 
-	(void) encode_Quipu_ACLSyntax (&ret_pe,0,0,NULLCP,acl);
+	 encode_Quipu_ACLSyntax (&ret_pe,0,0,NULLCP,acl);
 	return (ret_pe);
 }
 

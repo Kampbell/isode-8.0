@@ -54,13 +54,13 @@ RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 	rosapPsig (acb, sd);
 
 	if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING)) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 	}
 
 	result = (*acb -> acb_roselectmask) (acb, mask, nfds, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

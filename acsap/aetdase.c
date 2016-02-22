@@ -86,7 +86,7 @@ name2value_dase (char *name, char *context, int ontty, char *userdn, char *passw
 
 	if (ps == NULLPS && dase_init () == NOTOK)  {
 		if (ontty)
-			(void) signal (SIGINT, istat);
+			 signal (SIGINT, istat);
 
 		return NULLPE;
 	}
@@ -159,7 +159,7 @@ no_mem:
 		if (!interrupted) {
 			rfds = ifds;		/* struct copy */
 
-			(void) xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
+			 xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
 		}
 
 		if (interrupted) {
@@ -207,10 +207,10 @@ you_lose:
 						= rsp -> un.answer;
 
 			if ((q = ans -> friendly) && ontty) {
-				(void) printf ("[ using ");
+				 printf ("[ using ");
 				print_qb (q);
-				(void) printf (" ]\n");
-				(void) fflush (stdout);
+				 printf (" ]\n");
+				 fflush (stdout);
 			}
 			*real_name = ans -> name, ans -> name = NULLPE;
 			result = ans -> value, ans -> value = NULLPE;
@@ -247,13 +247,13 @@ out:
 	if (ps && (err || !stayopen)) {
 		struct TSAPdisconnect tds;
 
-		(void) TDiscRequest (tcs.tc_sd, NULLCP, 0, &tds);
+		 TDiscRequest (tcs.tc_sd, NULLCP, 0, &tds);
 		ps_free (ps);
 		ps = NULLPS;
 	}
 
 	if (ontty)
-		(void) signal (SIGINT, istat);
+		 signal (SIGINT, istat);
 
 	return result;
 }
@@ -261,7 +261,7 @@ out:
 /*  */
 
 static int 
-dase_init (void) {
+dase_init()  {
 	int	    i,
 			nfds;
 	fd_set  ifds;
@@ -308,7 +308,7 @@ you_lose:
 			else
 				rmask = NULLFD, wmask = &mask;
 
-			(void) xselect (nfds, rmask, wmask, NULLFD, NOTOK);
+			 xselect (nfds, rmask, wmask, NULLFD, NOTOK);
 		}
 
 		if (interrupted) {
@@ -337,7 +337,7 @@ you_lose:
 
 oops:
 		;
-		(void) TDiscRequest (tcs.tc_sd, NULLCP, 0, td);
+		 TDiscRequest (tcs.tc_sd, NULLCP, 0, td);
 		goto out;
 	}
 
@@ -362,25 +362,25 @@ dase_callback (struct type_DASE_Callback__REQ *arg)
 		i++;
 
 	if (i > 10) {
-		(void) printf ("%d imprecise matches for '", i);
+		 printf ("%d imprecise matches for '", i);
 		print_qb (arg -> string);
-		(void) printf ("', select fron them [y/n] ? ");
+		 printf ("', select fron them [y/n] ? ");
 		if (yesno () != OK)
 			goto send_rsp;
 	} else {
-		(void) printf ("Please select from the following %d match%s for '",
+		 printf ("Please select from the following %d match%s for '",
 					   i, i != 1 ? "es" : "");
 		print_qb (arg -> string);
-		(void) printf ("':\n");
+		 printf ("':\n");
 	}
 
 	j = 1;
 	for (choice = arg -> choices; choice; choice = choice -> next) {
 		struct type_DASE_Callback__RSP *yes;
 
-		(void) printf ("  ");
+		 printf ("  ");
 		print_qb (choice -> Pair -> friendly);
-		(void) printf (" [y/n] ? ");
+		 printf (" [y/n] ? ");
 
 		switch (yesno ()) {
 		case DONE:
@@ -405,7 +405,7 @@ dase_callback (struct type_DASE_Callback__REQ *arg)
 		}
 
 		if ((j++ % 10) == 0 && choice -> next) {
-			(void) printf ("Continue (%d more) [y/n] ? ", i - j + 1);
+			 printf ("Continue (%d more) [y/n] ? ", i - j + 1);
 			if (yesno () != OK)
 				break;
 		}
@@ -438,7 +438,7 @@ out:
 /*  */
 
 static int 
-yesno (void) {
+yesno()  {
 	int     x,
 			y,
 			result;
@@ -455,7 +455,7 @@ yesno (void) {
 
 	case NOTOK:
 	default:
-		(void) printf ("\n");
+		 printf ("\n");
 		armed = 0;
 		return DONE;
 	}
@@ -482,7 +482,7 @@ again:
 		break;
 
 	default:
-		(void) printf ("Please type 'y' or 'n': ");
+		 printf ("Please type 'y' or 'n': ");
 		goto again;
 	}
 
@@ -498,13 +498,13 @@ print_qb (struct qbuf *q)
 	struct qbuf *p;
 
 	for (p = q -> qb_forw; p != q; p = p -> qb_forw)
-		(void) printf ("%*.*s", p -> qb_len, p -> qb_len, p -> qb_data);
+		 printf ("%*.*s", p -> qb_len, p -> qb_len, p -> qb_data);
 }
 
 /*  */
 
 static struct element_DASE_1 *
-read_el (void) {
+read_el()  {
 	int   i;
 	char *bp,
 			 *cp;
@@ -516,16 +516,16 @@ read_el (void) {
 	struct element_DASE_2 **dtail;
 
 	if (bp = getenv ("UFNRC"))
-		(void) strcpy (ufnrc, bp);
+		 strcpy (ufnrc, bp);
 	else {
 		if ((bp = getenv ("HOME")) == NULL)
 			bp = ".";
 
-		(void) sprintf (ufnrc, "%s/.ufnrc", bp);
+		 sprintf (ufnrc, "%s/.ufnrc", bp);
 	}
 
 	if ((fp = fopen (ufnrc, "r")) == NULL) {
-		(void) strcpy (ufnrc, isodefile ("ufnrc", 0));
+		 strcpy (ufnrc, isodefile ("ufnrc", 0));
 
 		if ((fp = fopen (ufnrc, "r")) == NULL) {
 			PY_advise (ufnrc, "unable to read");
@@ -569,7 +569,7 @@ out:
 					free ((char *) top);
 				}
 				SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
-				(void) fclose (fp);
+				 fclose (fp);
 				return NULL;
 			}
 			*etail = el;
@@ -618,7 +618,7 @@ out:
 			goto no_mem;
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 
 	return top;
 }
@@ -631,7 +631,7 @@ static SFD
 intrser (int sig)
 {
 #ifndef	BSDSIGS
-	(void) signal (SIGINT, intrser);
+	 signal (SIGINT, intrser);
 #endif
 
 	if (armed)
@@ -648,7 +648,7 @@ set_lookup_dase (int flag)
 	if (!(stayopen = flag) && ps) {
 		struct TSAPdisconnect tds;
 
-		(void) TDiscRequest (tcs.tc_sd, NULLCP, 0, &tds);
+		 TDiscRequest (tcs.tc_sd, NULLCP, 0, &tds);
 		ps_free (ps);
 		ps = NULLPS;
 	}

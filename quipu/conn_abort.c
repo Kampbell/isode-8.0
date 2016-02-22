@@ -164,10 +164,10 @@ int 			fd;
 	}
 
 	if (da->da_cc)
-		(void) sprintf (buffer,"DSAP %s abort (%d), %s (%s): %s",
+		 sprintf (buffer,"DSAP %s abort (%d), %s (%s): %s",
 						source, fd, str, reason, da->da_data);
 	else
-		(void) sprintf (buffer,"DSAP %s abort (%d), %s (%s)",
+		 sprintf (buffer,"DSAP %s abort (%d), %s (%s)",
 						source, fd, str, reason);
 
 	LLOG (log_dsap, LLOG_EXCEPTIONS, ("%s", buffer));

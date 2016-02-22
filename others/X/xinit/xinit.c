@@ -255,7 +255,7 @@ main (int argc, char **argv)
 			strcpy (xinitrcbuf, cp);
 			required = True;
 		} else if ((cp = getenv ("HOME")) != NULL) {
-			(void) sprintf (xinitrcbuf, "%s/%s", cp, XINITRC);
+			 sprintf (xinitrcbuf, "%s/%s", cp, XINITRC);
 		}
 		if (xinitrcbuf[0]) {
 			if (access (xinitrcbuf, F_OK) == 0) {
@@ -282,7 +282,7 @@ main (int argc, char **argv)
 			strcpy (xserverrcbuf, cp);
 			required = True;
 		} else if ((cp = getenv ("HOME")) != NULL) {
-			(void) sprintf (xserverrcbuf, "%s/%s", cp, XSERVERRC);
+			 sprintf (xserverrcbuf, "%s/%s", cp, XSERVERRC);
 		}
 		if (xserverrcbuf[0]) {
 			if (access (xserverrcbuf, F_OK) == 0) {
@@ -423,10 +423,10 @@ startServer (char *server[])
 		 * don't hang on read/write to control tty
 		 */
 #ifdef SIGTTIN
-		(void) signal(SIGTTIN, SIG_IGN);
+		 signal(SIGTTIN, SIG_IGN);
 #endif
 #ifdef SIGTTOU
-		(void) signal(SIGTTOU, SIG_IGN);
+		 signal(SIGTTOU, SIG_IGN);
 #endif
 
 		/*
@@ -578,7 +578,7 @@ shutdown (int serverpid, int clientpid)
  */
 
 int 
-set_environment (void) {
+set_environment  {
 	int nenvvars;
 	char **newPtr, **oldPtr;
 	static char displaybuf[256];

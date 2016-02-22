@@ -79,7 +79,7 @@ main (int argc, char **argv, char **envp)
 		} else if (file) {
 usage:
 			;
-			(void) fprintf (stderr, "usage: faxtopbm [-2d] [file]\n");
+			 fprintf (stderr, "usage: faxtopbm [-2d] [file]\n");
 			exit (1);
 		} else {
 			file = cp;
@@ -100,7 +100,7 @@ usage:
 
 	data = (char *)malloc ((unsigned int)ALLOCATION_SIZE);
 	if ( !data ) {
-		(void) fputs ("faxtopbm: out of memory\n", stderr);
+		 fputs ("faxtopbm: out of memory\n", stderr);
 		exit (1);
 	}
 	limit = ALLOCATION_SIZE;
@@ -110,7 +110,7 @@ usage:
 		if (size + ALLOCATION_SIZE > limit) {
 			newData = (char *)realloc (data, (unsigned int)(limit + ALLOCATION_SIZE));
 			if ( !newData ) {
-				(void) fputs ("faxtopbm: out of memory\n", stderr);
+				 fputs ("faxtopbm: out of memory\n", stderr);
 				exit (1);
 			}
 			data = newData;
@@ -126,13 +126,13 @@ usage:
 	}
 
 	if (size < 1) {
-		(void) fprintf (stderr, "%s: is not a fax image\n", file);
+		 fprintf (stderr, "%s: is not a fax image\n", file);
 		exit (1);
 	}
 
 	if (decode_t4 (data, file, (int)size) == -1
 			|| decode_t4 (data, file, (int)size) == -1) {
-		(void) fprintf (stderr,"\n");
+		 fprintf (stderr,"\n");
 		exit (-1);
 	}
 
@@ -147,7 +147,7 @@ static ps_die (ps, s)
 PS	 ps;
 char   *s;
 {
-	(void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
+	 fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
 }
 
@@ -156,7 +156,7 @@ static pe_die (pe, s)
 PE	 pe;
 char   *s;
 {
-	(void) fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
+	 fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
 	exit (1);
 }
 

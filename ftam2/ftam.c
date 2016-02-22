@@ -92,10 +92,10 @@ char  **argv,
 	/* The lower layers get a SIGPIPE if the remote end dies while
 	 * we are sending. The SIGPIPE is followed by a DISCONNECT Request.
 	 */
-	(void)signal(SIGPIPE, SIG_IGN);
+	signal(SIGPIPE, SIG_IGN);
 
 	rcinit ();
-	(void) sprintf (buffer, "%s/.ftamrc", myhome);
+	 sprintf (buffer, "%s/.ftamrc", myhome);
 
 	if (!fflag && (fp = fopen (buffer, "r"))) {
 		while (fgets (buffer, sizeof buffer, fp)) {
@@ -110,7 +110,7 @@ char  **argv,
 				exit (1);
 		}
 
-		(void) fclose (fp);
+		 fclose (fp);
 	}
 
 	if (hflag) {
@@ -181,7 +181,7 @@ char  **argv,
 		for (interrupted = 0;; interrupted = 0) {
 			if (hash && marks >= BUFSIZ) {
 				marks = 0;
-				(void) printf ("\n");
+				 printf ("\n");
 			}
 
 			if (getline (command_prompt, buffer) == NOTOK) {
@@ -205,7 +205,7 @@ char  **argv,
 			case OK:
 			default:
 				if (bell)
-					(void) putchar (ringring);
+					 putchar (ringring);
 				continue;
 
 			case DONE:
@@ -215,7 +215,7 @@ char  **argv,
 			break;
 		}
 
-		(void) signal (SIGINT, istat);
+		 signal (SIGINT, istat);
 	}
 
 	if (ftamfd != NOTOK) {
@@ -223,7 +223,7 @@ char  **argv,
 		vec[vecp++] = "close";
 		vec[vecp] = NULL;
 
-		(void) ftamloop (vec, NOTOK);
+		 ftamloop (vec, NOTOK);
 	}
 
 #ifdef	DEBUG
@@ -425,7 +425,7 @@ char   *prompt,
 
 	case NOTOK:
 		if (ontty)
-			(void) printf ("\n");	/* and fall */
+			 printf ("\n");	/* and fall */
 	default:
 		armed = 0;
 		return NOTOK;
@@ -439,13 +439,13 @@ char   *prompt,
 
 		printf (prompt, ftamfd != NOTOK ? host : myname);
 
-		(void) fflush (stdout);
+		 fflush (stdout);
 	}
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
 			if (ontty)
-				(void) printf ("\n");
+				 printf ("\n");
 			clearerr (stdin);
 			if (cp == buffer)
 				longjmp (intrenv, DONE);
@@ -475,7 +475,7 @@ static	SFD intrser (sig)
 int	sig;
 {
 #ifndef	BSDSIGS
-	(void) signal (SIGINT, intrser);
+	 signal (SIGINT, intrser);
 #endif
 
 	if (armed)
@@ -512,12 +512,12 @@ va_dcl {
 
 	case NOTOK:
 	default:
-		(void) printf ("\n");
+		 printf ("\n");
 		armed = 0;
 		return DONE;
 	}
 	if (bell)
-		(void) putchar (ringring);
+		 putchar (ringring);
 
 	va_start (ap);
 
@@ -527,7 +527,7 @@ va_dcl {
 
 again:
 	;
-	(void) printf ("%s? (y)es, (n)o: ", buffer);
+	 printf ("%s? (y)es, (n)o: ", buffer);
 
 	x = y = getchar ();
 	while (y != '\n' && y != EOF)
@@ -584,7 +584,7 @@ va_dcl {
 	va_end (ap);
 
 	if (ftamfd != NOTOK)
-		(void) FUAbortRequest (ftamfd, FACTION_PERM,
+		 FUAbortRequest (ftamfd, FACTION_PERM,
 		(struct FTAMdiagnostic *) 0, 0, &ftis);
 
 #ifdef	BRIDGE
@@ -629,19 +629,19 @@ va_list	ap;
 #ifndef	BRIDGE
 	if (hash && marks >= BUFSIZ) {
 		marks = 0;
-		(void) printf ("\n");
+		 printf ("\n");
 	}
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
-	(void) fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	 fprintf (stderr, "%s: ", myname);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-	(void) fflush (stderr);
+	 fflush (stderr);
 #else
-	(void) ll_log (ftam_log, LLOG_NOTICE, NULLCP, "%s", buffer);
-	(void) strcpy (ftam_error, buffer);
+	 ll_log (ftam_log, LLOG_NOTICE, NULLCP, "%s", buffer);
+	 strcpy (ftam_error, buffer);
 #endif
 }
 #else

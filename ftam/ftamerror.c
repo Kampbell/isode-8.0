@@ -271,6 +271,6 @@ int code;
 		break;
 	}
 
-	(void) sprintf (buffer, "unknown error code %d", code);
+	 sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }

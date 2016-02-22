@@ -63,7 +63,7 @@ str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd)
 
 	if ((alias = alias2name (string)) == NULL)
 		alias = string;
-	(void) strcpy (name, alias);
+	 strcpy (name, alias);
 
 	if (acsap_lookup == NULL) {
 		PY_advise (NULLCP, "str2aei_dse: acsap_lookup function not set");

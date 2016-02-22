@@ -359,7 +359,7 @@ arginit (int ac, char **av)
 /*  */
 /* read_dsas () -- read in identities and locations of regional DSAs */
 void 
-read_dsas (void) {
+read_dsas  {
 	u_short lncnt;			/* linecount */
 	char *cp;				/* character pointer */
 	char *toks[NVEC+1];			/* tokens on line */
@@ -422,7 +422,7 @@ read_dsas (void) {
 /*  */
 /* read_config () -- parse configuration file, and initialize from it */
 void 
-read_config (void) {
+read_config  {
 	u_short lncnt;			/* linecount */
 	char *toks[NVEC+1];			/* tokens on line */
 	char *cp,*cp2;			/* character pointers */
@@ -744,7 +744,7 @@ bad_postaladdress (
 /*  */
 /* build_top () -- build root, c=US */
 void 
-build_top (void) {
+build_top  {
 	struct pair *pp;
 	int i;
 	extern void copy_edb ();
@@ -856,7 +856,7 @@ add_state (
 
 /*  */
 void 
-build_dsa (void) {
+build_dsa  {
 	unlink (DSAENTRY);
 	bzero (buf, BUFSIZ);
 	sprintf (buf, "sed -f %s %s  > %s", SEDFILE, DSATMPL, DSAENTRY);
@@ -870,7 +870,7 @@ build_dsa (void) {
 /*  */
 /* build_orgedb () -- build skeleton EDB for organization */
 void 
-build_orgedb (void) {
+build_orgedb  {
 	struct pair *pp;		/* to get pair values */
 	char *orgnm;		/* name of organization */
 	extern struct pair *findpair ();
@@ -914,7 +914,7 @@ build_orgedb (void) {
 
 /* build_ouedb () -- build skeleton EDB for organizational unit */
 void 
-build_ouedb (void) {
+build_ouedb  {
 	struct pair *pp;		/* to get pair values */
 	char *orgnm;		/* name of organization */
 	char *ounm;			/* name of organizational unit */
@@ -965,7 +965,7 @@ build_ouedb (void) {
 /*  */
 /* build_tailor () -- build tailor files */
 void 
-build_tailor (void) {
+build_tailor  {
 	extern void make_file ();
 
 	make_file ("quiputailor", QUIPUTMPL);
@@ -974,7 +974,7 @@ build_tailor (void) {
 
 /* build_scripts () -- build script files */
 void 
-build_scripts (void) {
+build_scripts  {
 	extern void make_file ();
 
 	make_file ("startup.sh", STARTUPTMPL);
@@ -984,7 +984,7 @@ build_scripts (void) {
 
 /* build_uifl () -- build user interface configuration files */
 void 
-build_uifl (void) {
+build_uifl  {
 	extern void make_file ();
 
 	sprintf (file, "%s/fredrc", isodetcpath);
@@ -998,7 +998,7 @@ build_uifl (void) {
 /*  */
 /* create_sedfile () -- create sed file to convert templates */
 void 
-create_sedfile (void) {
+create_sedfile  {
 	FILE *sedfp;			/* sed file pointer */
 	struct pair *pp;			/* to get pair values */
 	char *orgnm;			/* organization name */
@@ -1093,7 +1093,7 @@ make_file (
 /*  */
 /* build_mesgfl () -- build file that needs to be sent to wpp-manager */
 void 
-build_mesgfl (void) {
+build_mesgfl  {
 	FILE *msgfp;			/* pointer to message file */
 	FILE *fp;				/* pointer to various EDB entries */
 	struct pair *pp;			/* to get pair values */
@@ -1228,7 +1228,7 @@ findpair (
 /*  */
 /* set_permissions () -- set appropriate permissions on database directory */
 void 
-set_permissions (void) {
+set_permissions  {
 	struct pair *pp;			/* to get pair values */
 	char *owner, *group;		/* owner and group */
 	char *wildlife;			/* database directory */
@@ -1292,7 +1292,7 @@ set_permissions (void) {
 /*  */
 /* make_usstates () -- generate EDB format entries for the U.S. states */
 void 
-make_usstates (void) {
+make_usstates  {
 	int i,j;
 	char *masterdsa;
 
@@ -1318,14 +1318,14 @@ make_usstates (void) {
 /*  */
 /* timestamp () -- return timestamp to use as version on EDB file */
 char *
-timestamp (void) {
+timestamp  {
 	long clock;
 	struct UTCtime ut;
 	static char timestamp [32];
 
-	(void) time (&clock);
+	 time (&clock);
 	tm2ut (gmtime (&clock), &ut);
-	(void) strcpy (timestamp, gent2str (&ut));
+	 strcpy (timestamp, gent2str (&ut));
 
 	return (timestamp);
 }
@@ -1383,13 +1383,13 @@ _advise (va_list ap)
 
 	asprintf (buffer, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	fprintf (stderr, "%s: ", prgnm);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n',stderr);
+	 fputs (buffer, stderr);
+	 fputc ('\n',stderr);
 
-	(void)fflush(stderr);
+	fflush(stderr);
 }
 
 #else /* lint */

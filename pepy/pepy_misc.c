@@ -182,21 +182,21 @@ int	lt;
 }
 
 int 
-print_expimp (void) {
+print_expimp()  {
 	SYM		sp;
 	int		ind;
 	OID		oid;
 	char	*p;
 
 	if (sp = symtab[TBL_EXPORT])
-		(void) printf ("\nEXPORTS\n");
+		 printf ("\nEXPORTS\n");
 
 	for (ind = 0; sp; sp = sp->sym_next) {
 		if (ind == 0) {
 			putchar('\t');
 			ind = 8;
 		}
-		(void) printf("%s", sp -> sym_name);
+		 printf("%s", sp -> sym_name);
 		ind += strlen (sp -> sym_name);
 		if (sp -> sym_next) {
 			putchar (',');
@@ -214,7 +214,7 @@ print_expimp (void) {
 	putchar ('\n');
 
 	if (sp = symtab[TBL_IMPORT]) {
-		(void) printf ("\nIMPORTS\n");
+		 printf ("\nIMPORTS\n");
 		p = sp -> sym_module;
 		oid = sp -> sym_oid;
 	}
@@ -223,7 +223,7 @@ print_expimp (void) {
 			putchar ('\t');
 			ind = 8;
 		}
-		(void) printf ("%s", sp -> sym_name);
+		 printf ("%s", sp -> sym_name);
 		ind += strlen (sp -> sym_name);
 		if (sp -> sym_next) {
 			if (strcmp (p, sp -> sym_next -> sym_module) == 0) {
@@ -238,25 +238,25 @@ print_expimp (void) {
 				}
 			} else {
 				if (ind != 8)
-					(void) printf ("\n\t\t");
+					 printf ("\n\t\t");
 				else	putchar ('\t');
-				(void) printf ("FROM %s", p);
+				 printf ("FROM %s", p);
 				if (oid)
-					(void) printf (" %s", oidprint (oid));
-				(void) printf ("\n\t");
+					 printf (" %s", oidprint (oid));
+				 printf ("\n\t");
 				ind = 8;
 				p = sp -> sym_next -> sym_module;
 				oid = sp -> sym_next -> sym_oid;
 			}
 		} else {
 			if (ind != 8)
-				(void) printf ("\n\t\t");
+				 printf ("\n\t\t");
 			else
 				putchar ('\t');
-			(void) printf ("FROM %s", p);
+			 printf ("FROM %s", p);
 			if (oid)
-				(void) printf (" %s", oidprint (oid));
-			(void) printf (";\n");
+				 printf (" %s", oidprint (oid));
+			 printf (";\n");
 		}
 	}
 }
@@ -308,7 +308,7 @@ static struct oidtbl {
 };
 
 int 
-initoidtbl (void) {
+initoidtbl()  {
 	struct oidtbl *op;
 	OID		oid;
 
@@ -331,7 +331,7 @@ OID	oid;
 	if (oid == NULLOID)
 		return "";
 
-	(void) strcpy (buf, "{ ");
+	 strcpy (buf, "{ ");
 	cp = buf + strlen(buf);
 
 	i = oid->oid_nelem;
@@ -342,16 +342,16 @@ OID	oid;
 	if (p) {
 		i --;
 		ip ++;
-		(void) sprintf (cp, "%s ", p);
+		 sprintf (cp, "%s ", p);
 		cp += strlen(cp);
 	}
 
 	for (; i > 0; i--) {
-		(void) sprintf (cp, "%d ", *ip++);
+		 sprintf (cp, "%d ", *ip++);
 		cp += strlen (cp);
 	}
 
-	(void) strcat (cp, " }");
+	 strcat (cp, " }");
 	return buf;
 }
 

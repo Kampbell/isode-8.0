@@ -47,14 +47,14 @@ RtTransferRequest (int sd, PE data, int secs, struct RtSAPindication *rti)
 	rtsapPsig (acb, sd);
 
 	if (data == NULLPE && acb -> acb_downtrans == NULLIFP) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return rtsaplose (rti, RTS_PARAMETER, NULLCP,
 						  "mandatory parameter \"data\" missing");
 	}
 
 	result = (*acb -> acb_transferequest)  (acb, data, secs, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

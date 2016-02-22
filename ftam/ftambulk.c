@@ -51,7 +51,7 @@ struct FTAMindication *fti;
 
 	result = FDataRequestAux (fsb, fadus, nfadu, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -110,7 +110,7 @@ struct FTAMindication *fti;
 	}
 
 	if (PDataRequest (fsb -> fsb_fd, fadus, nfadu, pi) == NOTOK) {
-		(void) ps2ftamlose (fsb, fti, "PDataRequest", pa);
+		 ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		if (PC_FATAL (pa -> pa_reason))
 			freefsblk (fsb);
 
@@ -152,7 +152,7 @@ struct FTAMindication *fti;
 
 	result = FDataEndRequestAux (fsb, action, diag, ndiag, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -195,7 +195,7 @@ struct FTAMindication *fti;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -222,7 +222,7 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -240,7 +240,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) ps2ftamlose (fsb, fti, "PDataRequest", pa);
+		 ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
 
@@ -282,7 +282,7 @@ struct FTAMindication *fti;
 
 	result = FCancelRequestAux (fsb, action, sharedASE, diag, ndiag, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -320,7 +320,7 @@ struct FTAMindication *fti;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -351,7 +351,7 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -383,7 +383,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) ps2ftamlose (fsb, fti, prequest, pa);
+		 ps2ftamlose (fsb, fti, prequest, pa);
 		goto out;
 	}
 
@@ -431,7 +431,7 @@ struct FTAMindication *fti;
 
 	result = FCancelResponseAux (fsb, action, sharedASE, diag, ndiag, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -462,7 +462,7 @@ struct FTAMindication *fti;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -493,7 +493,7 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -523,7 +523,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) ps2ftamlose (fsb, fti, prequest, pa);
+		 ps2ftamlose (fsb, fti, prequest, pa);
 		goto out;
 	}
 

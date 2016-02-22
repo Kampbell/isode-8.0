@@ -64,7 +64,7 @@ RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID
 	result = RoInvokeRequestAux (acb, op, class, args, invokeID, linkedID,
 								 priority, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

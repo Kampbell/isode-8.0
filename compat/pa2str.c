@@ -81,7 +81,7 @@ pa2str (struct PSAPaddr *px)
 		if (dp >= ep && (tz = str2taddr (ta -> ta_selector))) {
 			pa -> pa_addr.sa_addr = *tz;	    /* struct copy */
 bridge:
-			(void) sprintf (bp, "%s through TS bridge at ",
+			 sprintf (bp, "%s through TS bridge at ",
 							paddr2str (pa, NULLNA));
 			bp += strlen (bp);
 
@@ -91,7 +91,7 @@ bridge:
 		}
 	}
 normal:
-	(void) strcpy (bp, paddr2str (pa, NULLNA));
+	 strcpy (bp, paddr2str (pa, NULLNA));
 
 	return buffer;
 }

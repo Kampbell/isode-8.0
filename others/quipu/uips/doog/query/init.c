@@ -81,15 +81,15 @@ init_query_engine (int argc, char *argv[])
 	 */
 
 	if((config_file = fopen(isodefile(tailfile,0), "r")) == (FILE *) NULL) {
-		(void) fprintf(stderr,
+		 fprintf(stderr,
 					   "Cannot open `dsaptailor' file. Attempting to continue.\n"
 					  );
 	} else {
 		while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP)
 			if ((*linebuf != '#') && (*linebuf != '\n'))
-				(void) tai_string (linebuf);
+				 tai_string (linebuf);
 
-		(void) fclose(config_file);
+		 fclose(config_file);
 	}
 
 
@@ -122,7 +122,7 @@ init_query_engine (int argc, char *argv[])
  *
  */
 static void 
-read_quipurc (void) {
+read_quipurc  {
 	extern char *SkipSpace(), *TidyString(), *getenv();
 	char quipurc_path[LINESIZE], line[LINESIZE];
 	char *quipurc_name = "/.quipurc";
@@ -130,8 +130,8 @@ read_quipurc (void) {
 	FILE *config_file;
 
 
-	(void) strcpy(quipurc_path, getenv("HOME"));
-	(void) strcat(quipurc_path, quipurc_name);
+	 strcpy(quipurc_path, getenv("HOME"));
+	 strcat(quipurc_path, quipurc_name);
 
 
 	if ((config_file = fopen (quipurc_path, "r")) == 0)
@@ -158,19 +158,19 @@ read_quipurc (void) {
 		 *	Read users DN
 		 */
 		if ((lexequ(part1, "username") == 0) && *username == '\0')
-			(void) strcpy (username, part2);
+			 strcpy (username, part2);
 
 		/*
 		 *	Read password
 		 */
 		else if ((lexequ(part1, "password") == 0) && *userpassword == '\0')
-			(void) strcpy (userpassword, part2);
+			 strcpy (userpassword, part2);
 
 		/*
 		 *	Dsap options
 		 */
 		else if (lexequ (part1, "dsap") == 0)
-			(void) tai_string (part2);
+			 tai_string (part2);
 
 		/*
 		 *	Isode options
@@ -180,7 +180,7 @@ read_quipurc (void) {
 
 			if ((split = index (part2,' ')) != NULLCP) {
 				*split++ = 0;
-				(void) isodesetvar (part2, split, 0);
+				 isodesetvar (part2, split, 0);
 			}
 		}
 
@@ -192,7 +192,7 @@ read_quipurc (void) {
 	}
 
 	isodexport(NULLCP);
-	(void) fclose(config_file);
+	 fclose(config_file);
 } /* read_quipurc */
 
 /*
@@ -247,7 +247,7 @@ read_args (int argc, char *argv[])
  *
  */
 void 
-have_iso8859_font (void) {
+have_iso8859_font  {
 	extern int ch_set;
 
 	ch_set = 1;

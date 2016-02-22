@@ -67,7 +67,7 @@ struct PSAPindication *pi;
 
 	freepblk (pb);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -102,11 +102,11 @@ struct PSAPindication *pi;
 		PLOGP (psap2_log,PS_PDUs, pe, "ReleaseResponse-PDU", 0);
 
 		if ((result = pe2ps (ps = pb -> pb_stream, pe)) == NOTOK)
-			(void) pslose (pi, ps -> ps_errno);
+			 pslose (pi, ps -> ps_errno);
 		else
 			result = OK;
 	} else
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						 PY_pepy);
 
 	if (pe)

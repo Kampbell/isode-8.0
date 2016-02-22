@@ -69,7 +69,7 @@ main (int argc, char **argv)
 	debug = argc;
 	if (openclock(CLOCKDEV))
 		do {
-			(void)readclock(&tvp, &otvp);
+			readclock(&tvp, &otvp);
 			sleep(1);
 		} while (debug>1);
 	exit(0);
@@ -176,14 +176,14 @@ struct timeval **tvpp, **otvpp;
 	timeout.tv_sec = 2;
 	timeout.tv_usec = 0;
 
-	(void) ioctl(cfd, TIOCFLUSH, 0);	/* scrap the I/O queues */
+	 ioctl(cfd, TIOCFLUSH, 0);	/* scrap the I/O queues */
 
 	/* BEGIN TIME CRITICAL CODE SECTION!!!!!! */
 	/* EVERY CYCLE FROM THIS POINT OUT ADDS TO THE INACCURACY OF
 	     THE READ CLOCK VALUE!!!!! */
 	if (write(cfd, "\003qu0000", 7) != 7) {
 #ifdef DEBUG
-		if (debug) (void)printf("radioclock write failed\n");
+		if (debug) printf("radioclock write failed\n");
 		else
 #endif DEBUG
 			if ((nerrors++%ERR_RATE) == 0)
@@ -193,7 +193,7 @@ struct timeval **tvpp, **otvpp;
 	}
 	if(select(cfd+1, &readfds, 0, 0, &timeout) != 1) {
 #ifdef DEBUG
-		if (debug) (void)printf("radioclock poll timed out\n");
+		if (debug) printf("radioclock poll timed out\n");
 		else
 #endif DEBUG
 			if ((nerrors++%ERR_RATE) == 0)
@@ -203,7 +203,7 @@ struct timeval **tvpp, **otvpp;
 	}
 	if ((i = read(cfd, clockdata, sizeof clockdata)) < MIN_READ) {
 #ifdef DEBUG
-		if (debug) (void)printf("radioclock read error (%d)\n", i);
+		if (debug) printf("radioclock read error (%d)\n", i);
 		else
 #endif DEBUG
 			if ((nerrors++%ERR_RATE) == 0)
@@ -212,12 +212,12 @@ struct timeval **tvpp, **otvpp;
 		return(1);
 	}
 
-	(void) gettimeofday(&mytime, (struct timezone *)0);
+	 gettimeofday(&mytime, (struct timezone *)0);
 	/* END OF TIME CRITICAL CODE SECTION!!!! */
 
 	if (clockdata[i-1] != '\n') {
 #ifdef DEBUG
-		if (debug) (void)printf("radioclock format error1 (%.12s)(0x%x)\n",
+		if (debug) printf("radioclock format error1 (%.12s)(0x%x)\n",
 									clockdata, clockdata[12]);
 		else
 #endif DEBUG
@@ -230,7 +230,7 @@ struct timeval **tvpp, **otvpp;
 	for (i = 0; i < 12; i++) {
 		if (clockdata[i] < '0' || clockdata[i] > 'o') {
 #ifdef DEBUG
-			if (debug) (void)printf("radioclock format error2\n");
+			if (debug) printf("radioclock format error2\n");
 			else
 #endif DEBUG
 				if ((nerrors++%ERR_RATE) == 0)
@@ -264,7 +264,7 @@ struct timeval **tvpp, **otvpp;
 
 	if (stat1 != 0x4 && (nerrors++%ERR_RATE)==0) {
 #ifdef DEBUG
-		if (debug) (void)printf("radioclock fault #%d 0x%x:%s%s%s%s%s%s\n",
+		if (debug) printf("radioclock fault #%d 0x%x:%s%s%s%s%s%s\n",
 									nerrors, stat1,
 									stat1&0x20?" Out of Spec,":"",
 									stat1&0x10?" Hardware Fault,":"",
@@ -274,7 +274,7 @@ struct timeval **tvpp, **otvpp;
 									stat1&0x1?" Clock Reset,":"");
 		else {
 #endif DEBUG
-			(void) sprintf(message, "radioclock fault #%d 0x%x:%s%s%s%s%s%s\n",
+			 sprintf(message, "radioclock fault #%d 0x%x:%s%s%s%s%s%s\n",
 						   nerrors, stat1,
 						   stat1&0x20?" Out of Spec,":"",
 						   stat1&0x10?" Hardware Fault,":"",
@@ -290,12 +290,12 @@ struct timeval **tvpp, **otvpp;
 	if ((millis > 999 || rtm->tm_sec > 60 || rtm->tm_min > 60 ||
 			rtm->tm_hour > 23 || rtm->tm_yday > 365) && (nerrors++%ERR_RATE)==0) {
 #ifdef DEBUG
-		if (debug) (void)printf("radioclock bogon #%d: %dd %dh %dm %ds %dms\n",
+		if (debug) printf("radioclock bogon #%d: %dd %dh %dm %ds %dms\n",
 									nerrors, rtm->tm_yday, rtm->tm_hour,
 									rtm->tm_min, rtm->tm_sec, millis);
 		else
 #endif DEBUG
-			(void) sprintf(message,
+			 sprintf(message,
 						   "radioclock bogon #%d: %dd %dh %dm %ds %dms\n",
 						   nerrors, rtm->tm_yday, rtm->tm_hour,
 						   rtm->tm_min, rtm->tm_sec, millis);
@@ -307,7 +307,7 @@ struct timeval **tvpp, **otvpp;
 	diff =  reltime(rtm, millis*1000) - reltime(mtm, mytime.tv_usec);
 #ifdef DEBUG
 	if (debug > 1)
-		(void) printf("Clock time:  19%d day %03d %02d:%02d:%02d.%03d diff %.3f\n",
+		 printf("Clock time:  19%d day %03d %02d:%02d:%02d.%03d diff %.3f\n",
 					  rtm->tm_year, rtm->tm_yday, rtm->tm_hour,
 					  rtm->tm_min, rtm->tm_sec, millis, diff);
 #endif DEBUG
@@ -315,7 +315,7 @@ struct timeval **tvpp, **otvpp;
 	if (diff > (90*24*60*60.0) && (nerrors++%ERR_RATE)==0) {
 #ifdef DEBUG
 		if (debug)
-			(void) printf("offset excessive (system 19%d/%d, clock 19%d/%d)\n",
+			 printf("offset excessive (system 19%d/%d, clock 19%d/%d)\n",
 						  mtm->tm_year, mtm->tm_yday,
 						  rtm->tm_year, mtm->tm_yday);
 		else
@@ -332,12 +332,12 @@ struct timeval **tvpp, **otvpp;
 	radiotime.tv_usec = (diff - (double)radiotime.tv_sec) * 1000000;
 #ifdef DEBUG
 	if (debug > 1) {
-		(void) printf("System time: 19%d day %03d %02d:%02d:%02d.%03d\n",
+		 printf("System time: 19%d day %03d %02d:%02d:%02d.%03d\n",
 					  mtm->tm_year, mtm->tm_yday, mtm->tm_hour,
 					  mtm->tm_min, mtm->tm_sec, mytime.tv_usec/1000);
-		(void) printf("stat1 0%o, stat2 0%o: ", stat1, stat2);
+		 printf("stat1 0%o, stat2 0%o: ", stat1, stat2);
 		if (stat1 || stat2)
-			(void) printf("%s%s%s%s%s%s%s%s%s%s%s%s",
+			 printf("%s%s%s%s%s%s%s%s%s%s%s%s",
 						  stat1&0x20?" Out of Spec,":"",
 						  stat1&0x10?" Hardware Fault,":"",
 						  stat1&0x8?" Signal Fault,":"",
@@ -350,14 +350,14 @@ struct timeval **tvpp, **otvpp;
 						  stat2&0x4?" Spare?,":"",
 						  stat2&0x2?" DST??? +1,":"",
 						  stat2&0x1?" DST??? -1,":"");
-		(void) printf("\n");
+		 printf("\n");
 	}
 #endif DEBUG
 	/* If necessary, acknowledge "Clock Reset" flag bit */
 	if (stat1 & 0x1) {
 		if (write(cfd, "si0", 3) != 3) {
 #ifdef DEBUG
-			if (debug) (void)printf("radioclock reset write failed\n");
+			if (debug) printf("radioclock reset write failed\n");
 			else
 #endif DEBUG
 				advise (LLOG_EXCEPTIONS, "failed",

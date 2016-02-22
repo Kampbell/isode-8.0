@@ -82,7 +82,7 @@ struct FTAMindication  *fti;
 	if ((result = frgrpchk (fsb, ftg, type, fti)) != NOTOK)
 		result = FGroupResponseAux (fsb, ftg, state, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -148,7 +148,7 @@ out:
 
 	if (result == NOTOK) {
 		if (did_loop)
-			(void) ps2ftamlose (fsb, fti, "PDataRequest", pa);
+			 ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		if (fti -> fti_abort.fta_action == FACTION_PERM)
 			freefsblk (fsb);
 

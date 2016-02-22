@@ -186,7 +186,7 @@ struct namelist ** clistp;
 
 	/* if 2 letter country entered - let's see if we can read the entry*/
 	if (strlen(cstr) == 2) {
-		(void) sprintf(str, "%s=%s", SHORT_CO, cstr);
+		 sprintf(str, "%s=%s", SHORT_CO, cstr);
 		ret = readCo(str, clistp);
 		if (ret == OK) {
 			alarmCleanUp();

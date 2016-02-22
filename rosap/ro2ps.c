@@ -97,7 +97,7 @@ ro2psasync (struct assocblk *acb, IFP indication, struct RoSAPindication *roi)
 			return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) pslose (acb, roi, "PSetIndications", pa);
+			 pslose (acb, roi, "PSetIndications", pa);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -124,7 +124,7 @@ ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication
 			return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) pslose (acb, roi, "PSelectMask", pa);
+			 pslose (acb, roi, "PSelectMask", pa);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -162,7 +162,7 @@ acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct 
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at association control)",
+		 sprintf (cp = buffer, " (%s at association control)",
 						AcErrString (aca -> aca_reason));
 	case ACS_PRESENTATION:
 		reason = ROS_ACS;
@@ -225,7 +225,7 @@ ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication
 				return DONE;
 
 			default:
-				(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+				 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 								  "unknown indication (0x%x) from presentation",
 								  pi -> pi_type);
 				break;
@@ -233,7 +233,7 @@ ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication
 			break;
 
 		default:
-			(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+			 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 							  "unexpected return from PReadRequest=%d", result);
 			break;
 		}
@@ -261,12 +261,12 @@ ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindica
 	PLOGP (rosap_log,ROS_ROSEapdus, pe, "ROSEapdus", 0);
 
 	if ((result = PDataRequest (acb -> acb_fd, &pe, 1, &pis)) == NOTOK) {
-		(void) pslose (acb, roi, "PDataRequest", pa);
+		 pslose (acb, roi, "PDataRequest", pa);
 		freeacblk (acb);
 	}
 
 	if (fe)
-		(void) pe_extract (pe, fe);
+		 pe_extract (pe, fe);
 
 	pe_free (pe);
 
@@ -281,7 +281,7 @@ doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAP
 	PE	    pe;
 
 	if (px -> px_type != SX_NORMAL) {
-		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+		 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 						  "unexpected data indication (0x%x)", px -> px_type);
 		PXFREE (px);
 
@@ -300,7 +300,7 @@ doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAP
 static int 
 doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected token indication (0x%x)", pt -> pt_type);
 	PTFREE (pt);
 
@@ -313,7 +313,7 @@ doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *
 static int 
 doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected sync indication (0x%x)", pn -> pn_type);
 	PNFREE (pn);
 
@@ -326,7 +326,7 @@ doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi
 static int 
 doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected activity indication (0x%x)", pv -> pv_type);
 	PVFREE (pv);
 
@@ -339,7 +339,7 @@ doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindicat
 static int 
 doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected exception report indication (0x%x)", pp -> pp_peer);
 	PPFREE (pp);
 
@@ -358,7 +358,7 @@ doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication 
 	struct AcSAPabort *aca = &acis.aci_abort;
 
 	if (acb -> acb_flags & ACB_INIT) {
-		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+		 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 						  "association management botched");
 		PFFREE (pf);
 		freeacblk (acb);
@@ -391,14 +391,14 @@ doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RoSAPindication *r
 		return rosaplose (roi, ROS_TIMER, NULLCP, NULLCP);
 
 	if (AcABORTser (acb -> acb_fd, pa, &acis) == NOTOK) {
-		(void) acslose (acb, roi, "AcABORTser", aca);
+		 acslose (acb, roi, "AcABORTser", aca);
 		goto out;
 	}
 
 	if (aca -> aca_source != ACA_USER)
-		(void) acslose (acb, roi, NULLCP, aca);
+		 acslose (acb, roi, NULLCP, aca);
 	else
-		(void) rosaplose (roi, ROS_ABORTED, NULLCP, NULLCP);
+		 rosaplose (roi, ROS_ABORTED, NULLCP, NULLCP);
 
 	if (aca->aca_ninfo > 0) {
 		rop -> rop_apdu = aca->aca_info[0];
@@ -518,7 +518,7 @@ psFINISHser (int sd, struct PSAPfinish *pf)
 		return;
 	handler = acb -> acb_rosindication;
 
-	(void) doPSfinish (acb, pf, roi);
+	 doPSfinish (acb, pf, roi);
 
 	(*handler) (sd, roi);
 }
@@ -537,7 +537,7 @@ psABORTser (int sd, struct PSAPabort *pa)
 		return;
 	handler = acb -> acb_rosindication;
 
-	(void) doPSabort (acb, pa, roi);
+	 doPSabort (acb, pa, roi);
 
 	(*handler) (sd, roi);
 }
@@ -572,7 +572,7 @@ pslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct P
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at presentation)",
+		 sprintf (cp = buffer, " (%s at presentation)",
 						PErrString (pa -> pa_reason));
 	case PC_SESSION:
 		reason = ROS_PRESENTATION;

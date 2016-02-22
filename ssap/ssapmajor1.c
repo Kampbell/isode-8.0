@@ -50,7 +50,7 @@ SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *s
 
 	result = SMajSyncRequestAux (sb, ssn, data, cc, MAP_SYNC_NOEND, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

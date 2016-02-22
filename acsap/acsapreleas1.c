@@ -76,7 +76,7 @@ AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrel
 
 	if ((rlrq = (struct type_ACS_RLRQ__apdu *) calloc (1, sizeof *rlrq))
 			== NULL) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	rlrq -> optionals |= opt_ACS_RLRQ__apdu_reason;
@@ -93,7 +93,7 @@ AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrel
 	rlrq = NULL;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 						  PY_pepy);
 		goto out2;
 	}
@@ -117,7 +117,7 @@ out2:
 
 out1:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -144,7 +144,7 @@ AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindic
 	else
 		result = AcRelRetryRequestAux (acb, secs, acr, aci);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -178,14 +178,14 @@ AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, 
 		}
 
 		if (pa -> pa_peer) {
-			(void) AcABORTser (acb -> acb_fd, pa, aci);
+			 AcABORTser (acb -> acb_fd, pa, aci);
 			goto out1;
 		}
 		if (PC_FATAL (pa -> pa_reason)) {
-			(void) ps2acslose (acb, aci, id, pa);
+			 ps2acslose (acb, aci, id, pa);
 			goto out2;
 		} else {
-			(void) ps2acslose (NULLACB, aci, id, pa);
+			 ps2acslose (NULLACB, aci, id, pa);
 			goto out1;
 		}
 	}
@@ -210,12 +210,12 @@ AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, 
 	pe = pr -> pr_info[0] = NULLPE;
 
 	if (result == NOTOK) {
-		(void) acpktlose (acb, aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
+		 acpktlose (acb, aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto out3;
 	}
 
 	if (pdu -> offset != type_ACS_ACSE__apdu_rlre) {
-		(void) acpktlose (acb, aci, ACS_PROTOCOL, NULLCP,
+		 acpktlose (acb, aci, ACS_PROTOCOL, NULLCP,
 						  "unexpected PDU %d on P-RELEASE", pdu -> offset);
 		goto out3;
 	}

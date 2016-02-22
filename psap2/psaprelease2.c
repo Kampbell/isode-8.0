@@ -69,10 +69,10 @@ PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication *pi
 	if ((result = SRelResponse (pb -> pb_fd, status, base, len, &sis))
 			== NOTOK)
 		if (SC_FATAL (sa -> sa_reason)) {
-			(void) ss2pslose (pb, pi, "SRelResponse", sa);
+			 ss2pslose (pb, pi, "SRelResponse", sa);
 			goto out2;
 		} else {
-			(void) ss2pslose (NULLPB, pi, "SRelResponse", sa);
+			 ss2pslose (NULLPB, pi, "SRelResponse", sa);
 			goto out1;
 		}
 
@@ -92,7 +92,7 @@ out1:
 	if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

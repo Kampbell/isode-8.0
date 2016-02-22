@@ -92,7 +92,7 @@ int     ad;
 	struct RoSAPpreject         *rop = &(roi->roi_preject);
 
 	if(RoSetService(ad, RoPService, roi) != OK) {
-		(void) ros_log(rop, "RoSetService");
+		 ros_log(rop, "RoSetService");
 		return NOTOK;
 	}
 	return(OK);

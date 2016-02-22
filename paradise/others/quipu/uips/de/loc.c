@@ -85,9 +85,9 @@ struct query * a, * b;
 {
 	struct namelist * lp, ** slp;
 
-	(void) strcpy(a->defvalue, b->defvalue);
-	(void) strcpy(a->entered, b->entered);
-	(void) strcpy(a->displayed, b->displayed);
+	 strcpy(a->defvalue, b->defvalue);
+	 strcpy(a->entered, b->entered);
+	 strcpy(a->displayed, b->displayed);
 	a->listlen = 0;
 	slp = &a->lp;
 	for (lp = b->lp; lp != NULLLIST; lp = lp->next) {
@@ -227,7 +227,7 @@ struct namelist ** llistp;
 		filtnumber = 0;
 	}
 	if (quipuMastersCo ==FALSE) { /* try read first */
-		(void)sprintf(rstr, "%s@l=%s", cstr, lstr);
+		sprintf(rstr, "%s@l=%s", cstr, lstr);
 		if (readExactLoc(rstr, llistp) == OK) {
 			logReadSuccess(READ_OK, "loc");
 			return OK;

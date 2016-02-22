@@ -45,13 +45,13 @@ getisoserventbyport (char *provider, int port)
 	DLOG (addr_log, LLOG_TRACE,
 		  ("getisoserventbyport \"%s\" %d", provider, (int) ntohs (port)));
 
-	(void) setisoservent (0);
+	 setisoservent (0);
 	while (is = getisoservent ())
 		if (sizeof (port) == is -> is_selectlen
 				&& port == is -> is_port
 				&& strcmp (provider, is -> is_provider) == 0)
 			break;
-	(void) endisoservent ();
+	 endisoservent ();
 
 	if (is) {
 #ifdef	DEBUG

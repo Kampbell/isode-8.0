@@ -90,7 +90,7 @@ struct PSAPindication *pi;
 							  prequirements, srequirements, isn, settings, ref, data, ndata,
 							  qos, pc, pi, async);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -155,7 +155,7 @@ struct PSAPindication *pi;
 	if ((pdu = (struct type_PS_CP__type *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	if ((pdu -> mode = (struct type_PS_Mode__selector *)
@@ -180,13 +180,13 @@ no_mem:
 		goto no_mem;
 
 	if ((pb -> pb_asn = DFLT_ASN_OID) == NULLOID)  {
-		(void) psaplose (pi, PC_ABSTRACT, NULLCP, "%s: unknown", DFLT_ASN);
+		 psaplose (pi, PC_ABSTRACT, NULLCP, "%s: unknown", DFLT_ASN);
 		goto out2;
 	}
 	if ((pb -> pb_asn = oid_cpy (pb -> pb_asn)) == NULLOID)
 		goto no_mem;
 	if ((pb -> pb_atn = DFLT_ATN_OID) == NULLOID)  {
-		(void) psaplose (pi, PC_TRANSFER, NULLCP, "%s: unknown", DFLT_ATN);
+		 psaplose (pi, PC_TRANSFER, NULLCP, "%s: unknown", DFLT_ATN);
 		goto out2;
 	}
 	if ((pb -> pb_atn = oid_cpy (pb -> pb_atn)) == NULLOID)
@@ -207,13 +207,13 @@ no_mem:
 				i >= 0;
 				i--, pp++, qp++) {
 			if (!((qp -> pc_id = pp -> pc_id) & 01)) {
-				(void) psaplose (pi, PC_PARAMETER, NULLCP,
+				 psaplose (pi, PC_PARAMETER, NULLCP,
 								 "only odd values allowed for context identifiers");
 				goto out2;
 			}
 
 			if (pp -> pc_asn == NULLOID) {
-				(void) psaplose (pi, PC_PARAMETER, NULLCP,
+				 psaplose (pi, PC_PARAMETER, NULLCP,
 								 "no abstract syntax name given for context %d",
 								 pp -> pc_id);
 				goto out2;
@@ -222,7 +222,7 @@ no_mem:
 				goto no_mem;
 
 			if (pp -> pc_atn && !atn_is_ok (pb, pp -> pc_atn)) {
-				(void) psaplose (pi, PC_TRANSFER, NULLCP,
+				 psaplose (pi, PC_TRANSFER, NULLCP,
 								 "unknown transfer syntax name given for context %d",
 								 pp -> pc_id);
 				goto out2;
@@ -334,7 +334,7 @@ no_mem:
 	}
 
 	if (encode_PS_CP__type (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						 PY_pepy);
 		goto out2;
 	}
@@ -355,7 +355,7 @@ no_mem:
 	if ((result = SAsynConnRequest (ref, calling ? &calling -> pa_addr
 									: NULLSA, &called -> pa_addr, pb -> pb_srequirements, settings,
 									isn, pb -> pb_retry, len, qos, sc, si, async)) == NOTOK) {
-		(void) ss2pslose (NULLPB, pi, "SAsynConnRequest", sa);
+		 ss2pslose (NULLPB, pi, "SAsynConnRequest", sa);
 		goto out1;
 	}
 
@@ -407,12 +407,12 @@ PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 	smask = sigioblock ();
 
 	if ((pb = findpblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
 	if (pb -> pb_flags & PB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return psaplose (pi, PC_OPERATION, NULLCP,
 						 "presentation descriptor connected");
 	}
@@ -422,7 +422,7 @@ PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 	switch (result = SAsynRetryRequest (pb -> pb_fd, sc, si)) {
 	case NOTOK:
 		pb -> pb_fd = NOTOK;
-		(void) ss2pslose (pb, pi, "SAsynRetryRequest", sa);
+		 ss2pslose (pb, pi, "SAsynRetryRequest", sa);
 		freepblk (pb);
 		break;
 
@@ -435,7 +435,7 @@ PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 		break;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -464,7 +464,7 @@ PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication
 	bzero ((char *) pc, sizeof *pc);
 
 	if (sc -> sc_result == SC_ABORT) {
-		(void) ss2psabort (pb, sa, pi);
+		 ss2psabort (pb, sa, pi);
 
 		pc -> pc_sd = NOTOK;
 		pc -> pc_result = PC_ABORTED;
@@ -478,7 +478,7 @@ PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication
 		if (sc -> sc_result != SC_ACCEPT) {
 			sa -> sa_reason = sc -> sc_result;
 			pb -> pb_fd = NOTOK;
-			(void) ss2pslose (pb, pi, "SAsynConnRequest(pseudo)", sa);
+			 ss2pslose (pb, pi, "SAsynConnRequest(pseudo)", sa);
 
 			pc -> pc_sd = NOTOK;
 			pc -> pc_result = pi -> pi_abort.pa_reason;
@@ -486,7 +486,7 @@ PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication
 			result = DONE;
 			goto out1;
 		} else
-			(void) ppktlose (pb, pi, result != PS_ERR_NMEM ? PC_UNRECOGNIZED
+			 ppktlose (pb, pi, result != PS_ERR_NMEM ? PC_UNRECOGNIZED
 							 : PC_NOTSPECIFIED, sc -> sc_result == SC_ACCEPT ? PPDU_CPA
 							 : PPDU_CPR, NULLCP, "%s", ps_error (result));
 		goto out2;
@@ -520,7 +520,7 @@ PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication
 		pb -> pb_ssdusize = sc -> sc_ssdusize;
 
 		if (decode_PS_CPA__type (pe, 1, NULLIP, NULLVP, &cpa) == NOTOK) {
-			(void) ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CPA, NULLCP, "%s",
+			 ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CPA, NULLCP, "%s",
 							 PY_pepy);
 			goto out2;
 		}
@@ -528,7 +528,7 @@ PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication
 		PLOGP (psap2_log,PS_CPA__type, pe, "CPA-type", 1);
 
 		if (cpa -> mode -> parm != int_PS_Mode__selector_normal__mode) {
-			(void) ppktlose (pb, pi, PC_INVALID, PPDU_CPA, NULLCP,
+			 ppktlose (pb, pi, PC_INVALID, PPDU_CPA, NULLCP,
 							 "X.410 mode mismatch");
 			goto out2;
 		}
@@ -538,7 +538,7 @@ PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication
 	} else {
 		if (sc -> sc_result == SC_NOTSPECIFIED) {
 			if (decode_PS_ARP__PPDU (pe, 1, NULLIP, NULLVP, &arp) == NOTOK) {
-				(void) ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_ARP, NULLCP,
+				 ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_ARP, NULLCP,
 								 "%s", PY_pepy);
 				goto out2;
 			}
@@ -553,12 +553,12 @@ PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication
 			} else
 				result = PC_NOTSPECIFIED;
 
-			(void) psaplose (pi, result, NULLCP, NULLCP);
+			 psaplose (pi, result, NULLCP, NULLCP);
 			goto out2;
 		}
 
 		if (decode_PS_CPR__type (pe, 1, NULLIP, NULLVP, &cpr) == NOTOK) {
-			(void) ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CPR, NULLCP, "%s",
+			 ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CPR, NULLCP, "%s",
 							 PY_pepy);
 			goto out2;
 		}
@@ -566,7 +566,7 @@ PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication
 		PLOGP (psap2_log,PS_CPR__type, pe, "CPR-type", 1);
 
 		if (cpr -> offset != type_PS_CPR__type_normal__mode) {
-			(void) ppktlose (pb, pi, PC_INVALID, PPDU_CPR, NULLCP,
+			 ppktlose (pb, pi, PC_INVALID, PPDU_CPR, NULLCP,
 							 "X.410 mode mismatch");
 			goto out2;
 		}
@@ -581,7 +581,7 @@ PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication
 
 		if ((base = qb2str (qb)) == NULLCP
 				&& sc -> sc_result == SC_ACCEPT) {
-			(void) ppktlose (pb, pi, PC_INVALID, PPDU_CPA, NULLCP,
+			 ppktlose (pb, pi, PC_INVALID, PPDU_CPA, NULLCP,
 							 "malformed PSAP selector");
 			goto out2;
 		}
@@ -611,7 +611,7 @@ PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication
 				goto carry_on;
 			}
 
-			(void) ppktlose (pb, pi, PC_INVALID, PPDU_CPA, NULLCP,
+			 ppktlose (pb, pi, PC_INVALID, PPDU_CPA, NULLCP,
 							 "proposed/resulting presentation contexts mismatch");
 			goto out2;
 		}
@@ -701,16 +701,16 @@ carry_on:
 			struct pair *pp;
 
 			if (!(pb -> pb_srequirements & SR_TYPEDATA)) {
-				(void) bit_off (cpa_normal -> presentation__fu,
+				 bit_off (cpa_normal -> presentation__fu,
 								bit_PS_Presentation__requirements_context__management);
-				(void) bit_off (cpa_normal -> presentation__fu,
+				 bit_off (cpa_normal -> presentation__fu,
 								bit_PS_Presentation__requirements_restoration);
 			}
 			for (pp = preq_pairs; pp -> p_mask; pp++)
 				if (!(pb -> pb_prequirements & pp -> p_mask)) {
 					if (bit_test (cpa_normal -> presentation__fu,
 								  pp -> p_bitno) == 1) {
-						(void) ppktlose (pb, pi, PC_INVALID, PPDU_CPA, NULLCP,
+						 ppktlose (pb, pi, PC_INVALID, PPDU_CPA, NULLCP,
 										 "presentation-requirements negotiation botched");
 						goto out2;
 					}
@@ -795,12 +795,12 @@ PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 	smask = sigioblock ();
 
 	if ((pb = findpblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
 	if (pb -> pb_flags & PB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return psaplose (pi, PC_OPERATION, NULLCP,
 						 "presentation descriptor connected");
 	}
@@ -810,7 +810,7 @@ PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 	switch (result = SAsynNextRequest (pb -> pb_fd, sc, si)) {
 	case NOTOK:
 		pb -> pb_fd = NOTOK;
-		(void) ss2pslose (pb, pi, "SAsynRetryRequest", sa);
+		 ss2pslose (pb, pi, "SAsynRetryRequest", sa);
 		freepblk (pb);
 		break;
 
@@ -823,7 +823,7 @@ PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 		break;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

@@ -108,7 +108,7 @@ SAsynConnRequest (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr
 	result = SConnRequestAux (ref, calling, called, requirements, settings,
 							  isn, data, cc, qos, sc, si, async);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -137,7 +137,7 @@ SConnRequestAux (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr 
 		sb -> sb_maxtime = qos -> qos_maxtime;
 
 	if ((s = newspkt (SPDU_CN)) == NULL) {
-		(void) ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+		 ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 		goto out1;
 	}
 
@@ -167,7 +167,7 @@ SConnRequestAux (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr 
 									(qos ? qos -> qos_extended : 0)
 									|| ((requirements & SR_EXPEDITED) ? 1 : 0),
 									NULLCP, 0, qos, tc, td, async)) == NOTOK) {
-		(void) ts2sslose (si, "TAsynConnRequest", td);
+		 ts2sslose (si, "TAsynConnRequest", td);
 
 		bzero ((char *) sc, sizeof *sc);
 		sc -> sc_sd = NOTOK;
@@ -245,12 +245,12 @@ SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 	smask = sigioblock ();
 
 	if ((sb = findsblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP,
 						 "invalid session descriptor");
 	}
 	if (sb -> sb_flags & SB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "session descriptor connected");
 	}
@@ -260,7 +260,7 @@ SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 	else
 		switch (result = TAsynRetryRequest (sb -> sb_fd, tc, td)) {
 		case NOTOK:
-			(void) ts2sslose (si, "TAsynRetryRequest", td);
+			 ts2sslose (si, "TAsynRetryRequest", td);
 			sb -> sb_fd = NOTOK;
 
 			bzero ((char *) sc, sizeof *sc);
@@ -280,7 +280,7 @@ SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 			break;
 		}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -304,12 +304,12 @@ SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 	smask = sigioblock ();
 
 	if ((sb = findsblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP,
 						 "invalid session descriptor");
 	}
 	if (sb -> sb_flags & SB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "session descriptor connected");
 	}
@@ -317,7 +317,7 @@ SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 
 	switch (result = TAsynNextRequest (sb -> sb_fd, tc, td)) {
 	case NOTOK:
-		(void) ts2sslose (si, "TAsynNextRequest", td);
+		 ts2sslose (si, "TAsynNextRequest", td);
 		sb -> sb_fd = NOTOK;
 
 		bzero ((char *) sc, sizeof *sc);
@@ -337,7 +337,7 @@ SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 		break;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -454,7 +454,7 @@ SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *
 
 	if ((s = sb2spkt (sb, si, sb -> sb_maxtime, NULLTX)) == NULL) {
 		if (si -> si_abort.sa_reason == SC_TIMER)
-			(void) ssaplose (si, SC_CONGEST, NULLCP, "remote SPM timed-out");
+			 ssaplose (si, SC_CONGEST, NULLCP, "remote SPM timed-out");
 		result = NOTOK;
 		goto out;
 	}

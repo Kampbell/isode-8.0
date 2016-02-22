@@ -58,7 +58,7 @@ int retcode;
 
 
 int 
-cleanup (void) {}
+cleanup  {}
 
 /*--------------------------------------------------------------*/
 /*  errMsg                                                      */
@@ -184,7 +184,7 @@ do_llock (char *fn)
 		}
 		SET_LOCKINFO(rfa->ri_status, RI_LOCKED);
 		rfa->ri_lckname = strdup(getenv("USER"));
-		(void)time(&(rfa->ri_lcksince));
+		time(&(rfa->ri_lcksince));
 		if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err,
@@ -241,7 +241,7 @@ main (int ac, char **av)
 	}
 
 	/*--- init cwd ---*/
-	(void)getwd(buf);
+	getwd(buf);
 	if (strncmp(buf, fsBase, strlen(fsBase)) == 0)
 		strcpy(cwd_remote, buf + strlen(fsBase));
 

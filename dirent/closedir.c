@@ -38,7 +38,7 @@ DIR	*dirp;		/* stream from opendir() */
 }
 #else
 int 
-_closedir_stub (void) {
+_closedir_stub()  {
 	;
 }
 #endif

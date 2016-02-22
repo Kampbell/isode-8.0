@@ -183,7 +183,7 @@ struct pref_deliv * m;
 {
 	PE ret_pe;
 
-	(void) encode_SA_PreferredDeliveryMethod (&ret_pe,0,0,NULLCP,m);
+	 encode_SA_PreferredDeliveryMethod (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -199,7 +199,7 @@ PE pe;
 }
 
 pref_deliv_syntax () {
-	(void) add_attribute_syntax ("DeliveryMethod",
+	 add_attribute_syntax ("DeliveryMethod",
 								 (IFP) pdmenc,	(IFP) pdmdec,
 								 (IFP) pdmparse,pdmprint,
 								 (IFP) pdmcpy,	pdmcmp,

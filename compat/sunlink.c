@@ -77,7 +77,7 @@ start_x25_client (struct NSAPaddr *local, int priv)
 		if (nsap2if (local, &f.f_calling_aef) == NOTOK ||
 				ioctl (sd, X25_SET_FACILITY, &f) == NOTOK) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("set calling AEF"));
-			(void) close_x25_socket (sd);
+			 close_x25_socket (sd);
 			return NOTOK;
 		}
 	}
@@ -105,7 +105,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	if (ioctl (sd, X25_CALL_ACPT_APPROVAL, (char *) &onoff) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed",
 			  ("X25_CALL_ACPT_APPROVAL"));
-		(void) close_x25_socket (sd);
+		 close_x25_socket (sd);
 		return NOTOK;
 	}
 
@@ -121,14 +121,14 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 		bzero ((char *)xs, sizeof *xs);
 		if (bind (sd, (struct sockaddr *)xs, sizeof *xs) == NOTOK) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-			(void) close_x25_socket (sd);
+			 close_x25_socket (sd);
 			return NOTOK;
 		}
 	} else {
 #endif
 		if (ioctl (sd, X25_RD_HOSTADR, (char *) xs) == NOTOK) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("X25_RD_HOSTADR"));
-			(void) close_x25_socket (sd);
+			 close_x25_socket (sd);
 			return NOTOK;
 		}
 		/* if null DTE in /etc/x25params
@@ -159,7 +159,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 		}
 		if (bind (sd, (struct sockaddr *) sock, sizeof(CONN_DB)) == NOTOK) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-			(void) close_x25_socket (sd);
+			 close_x25_socket (sd);
 			return NOTOK;
 		}
 #ifdef AEF_NSAP
@@ -168,23 +168,23 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 
 #ifndef	BSD43
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
 #else
 	onoff = 1;
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
 
 	if (set_x25_facilities(sd, CALLED, "Acceptable") == NOTOK) {
-		(void) close_x25_socket (sd);
+		 close_x25_socket (sd);
 		return NOTOK;
 	}
 
-	(void) listen (sd, backlog);
+	 listen (sd, backlog);
 
 	return sd;
 }
@@ -225,14 +225,14 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 	if ((nfd = connect (fd, (struct sockaddr *)sock, sizeof (CONN_DB)))
 			== NOTOK) {
 		if (compat_log -> ll_events & LLOG_EXCEPTIONS)
-			(void) log_cause_and_diag(fd);      /* Sun's documentation throwns
+			 log_cause_and_diag(fd);      /* Sun's documentation throwns
 						   no light as to whether, or
 						   not this will result in any
 						   useful information */
 	}
 #ifdef  DEBUG
 	else if (compat_log -> ll_events & LLOG_DEBUG)
-		(void) log_x25_facilities(fd, CALLING, "Effective Calling");
+		 log_x25_facilities(fd, CALLING, "Effective Calling");
 #endif
 
 	return nfd;
@@ -253,14 +253,14 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 
 	if ((nfd = accept (fd, (struct sockaddr *) sock, &len)) == NOTOK) {
 		if (compat_log -> ll_events & LLOG_EXCEPTIONS)
-			(void) log_cause_and_diag(fd);      /* Sun's documentation throwns
+			 log_cause_and_diag(fd);      /* Sun's documentation throwns
 						   no light as to whether, or
 						   not this will result in any
 						   useful information */
 	}
 #ifdef  DEBUG
 	else if (compat_log -> ll_events & LLOG_DEBUG)
-		(void) log_x25_facilities(fd, CALLED, "Effective Called");
+		 log_x25_facilities(fd, CALLED, "Effective Called");
 #endif
 	if (nfd < 0) return nfd;
 
@@ -666,9 +666,9 @@ print_send:
 #endif
 #else
 int 
-_sunlink_stub2 (void) {}
+_sunlink_stub2()  {}
 #endif
 #else
 int 
-_sunlink_stub (void) {}
+_sunlink_stub()  {}
 #endif

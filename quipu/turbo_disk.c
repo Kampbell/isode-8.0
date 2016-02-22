@@ -80,11 +80,11 @@ int	backup;
 	if ( create ) {
 		if ( backup ) {
 			/* first make a backup of the old one */
-			(void) unlink(bakname);
+			 unlink(bakname);
 			if ( link(turbo_gfname, bakname) != 0 )
 				LLOG (log_dsap, LLOG_EXCEPTIONS,
 					  ("turbo: could not make backup"));
-			(void) unlink(turbo_gfname);
+			 unlink(turbo_gfname);
 		}
 
 		/* then open the new one */
@@ -183,7 +183,7 @@ Entry	e;
 
 	akid = (Entry) avl_getone(e->e_children);
 	if (turbo_write_header(db, e, akid ? akid->e_data : e->e_data) != OK) {
-		(void) gdbm_close(db);
+		 gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
 		return(NOTOK);
@@ -191,13 +191,13 @@ Entry	e;
 
 	if (avl_apply(e->e_children, turbo_write_entry, (caddr_t) db, NOTOK,
 				  AVL_PREORDER) != AVL_NOMORE) {
-		(void) gdbm_close(db);
+		 gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
 		return(NOTOK);
 	}
 
-	(void) gdbm_close(db);
+	 gdbm_close(db);
 	mem_heap = save_heap;
 	parse_file = NULLCP;
 	return(OK);
@@ -227,20 +227,20 @@ Entry	e;
 	}
 
 	if ( turbo_write_header(db, e->e_parent, e->e_data) != OK ) {
-		(void) gdbm_close(db);
+		 gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
 		return(NOTOK);
 	}
 
 	if ( turbo_write_entry(e, db) != OK ) {
-		(void) gdbm_close(db);
+		 gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
 		return(NOTOK);
 	}
 
-	(void) gdbm_close(db);
+	 gdbm_close(db);
 	mem_heap = save_heap;
 	parse_file = NULLCP;
 	return(OK);
@@ -272,7 +272,7 @@ Entry	e;
 	}
 
 	if ( turbo_write_header(db, e->e_parent, e->e_data) != OK ) {
-		(void) gdbm_close(db);
+		 gdbm_close(db);
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
@@ -299,13 +299,13 @@ Entry	e;
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
 			  ("turbo: gdbm_delete %d gdbm_errno %d", rc, gdbm_errno));
 		ps_free(ps);
-		(void) gdbm_close(db);
+		 gdbm_close(db);
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
 
 	ps_free(ps);
-	(void) gdbm_close(db);
+	 gdbm_close(db);
 	mem_heap = save_heap;
 	return(OK);
 }
@@ -348,7 +348,7 @@ Entry		parent;
 	else
 		version = new_version();
 
-	(void) sprintf(hbuf, "%s\n%s\n", type, version);
+	 sprintf(hbuf, "%s\n%s\n", type, version);
 
 	newheader.dptr = hbuf;
 	newheader.dsize = strlen(newheader.dptr) + 1;

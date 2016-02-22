@@ -107,7 +107,7 @@ struct  AcSAPindication *aci;
 	missingP (data);
 	toomuchP (data, ndata, NACDATA, "user");
 	if ( ndata <= 0 )
-		(void) acusaplose (aci, ACS_PARAMETER, NULLCP,
+		 acusaplose (aci, ACS_PARAMETER, NULLCP,
 						   "illegal number of ASDUs (%d)", ndata );
 	missingP (aci);
 
@@ -115,7 +115,7 @@ struct  AcSAPindication *aci;
 	smask = sigioblock ();
 
 	if ((acb = newacublk ()) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 	}
 
@@ -128,7 +128,7 @@ struct  AcSAPindication *aci;
 
 	pdu -> application__context__name = context;
 
-	(void) titles2pdu ( callingtitle, calledtitle, pdu );
+	 titles2pdu ( callingtitle, calledtitle, pdu );
 
 	/*  Unfortunately info2_apdu() below only does fully encoded data */
 	/*  Will change to allow simple encoding later */
@@ -139,7 +139,7 @@ struct  AcSAPindication *aci;
 		goto no_good;
 
 	if ( encode_ACS_AUDT__apdu (&pe, 1, 0, NULLCP, pdu) == NOTOK ) {
-		(void) acusaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+		 acusaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 						   PY_pepy);
 		goto no_good;
 	}
@@ -169,7 +169,7 @@ struct  AcSAPindication *aci;
 	}
 
 	if ( result == NOTOK) {
-		(void) ps2aculose (NULLACB, aci, "PUnitDataRequest", pa);
+		 ps2aculose (NULLACB, aci, "PUnitDataRequest", pa);
 		goto no_good;
 	}
 	goto out;
@@ -188,7 +188,7 @@ out:
 	if (pe)
 		pe_free (pe);
 	freeacublk (acb);
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return result;
 }
 
@@ -244,13 +244,13 @@ struct  AcSAPindication *aci;
 
 	if ( sd == NOTOK ) {
 		if ((acb = newacublk ()) == NULL) {
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 		}
 		acb -> acb_fd = sd;
 	} else {
 		if ((acb = findacublk (sd)) == NULL || !(acb -> acb_flags & ACB_AUDT)) {
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return acusaplose (aci, ACS_PARAMETER, NULLCP,
 							   "invalid association descriptor");
 		}
@@ -259,7 +259,7 @@ struct  AcSAPindication *aci;
 	acb -> acb_binding = ((binding == BIND_DYNAMIC) ? binding : BIND_STATIC);
 
 	if ((acb -> acb_context = oid_cpy (context)) == NULLOID) {
-		(void) acusaplose (aci, ACS_CONGEST, NULLCP, NULLCP);
+		 acusaplose (aci, ACS_CONGEST, NULLCP, NULLCP);
 		goto no_good;
 	}
 
@@ -287,7 +287,7 @@ struct  AcSAPindication *aci;
 
 
 	if ( result == NOTOK ) {
-		(void) ps2aculose (NULLACB, aci, "PUnitDataBind", pa);
+		 ps2aculose (NULLACB, aci, "PUnitDataBind", pa);
 		goto no_good;
 	}
 
@@ -300,14 +300,14 @@ struct  AcSAPindication *aci;
 	acb -> acb_flags |= ACB_ACS;  /* may be necessary to fake out rosap */
 	acb -> acb_flags |= ACB_INIT; /* may be necessary to fake out rosap */
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return result;
 
 
 no_good:
 	;
 	freeacublk (acb);
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return NOTOK;
 }
 
@@ -356,16 +356,16 @@ struct  AcSAPindication *aci;
 		goto no_good;
 
 	if ( PUnitDataRebind ( acb -> acb_fd, calledaddr, pi) == NOTOK ) {
-		(void) ps2aculose (NULLACB, aci, "PUnitDataRebind", pa);
+		 ps2aculose (NULLACB, aci, "PUnitDataRebind", pa);
 		goto no_good;
 	}
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return OK;
 
 
 no_good:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return NOTOK;
 }
 
@@ -398,7 +398,7 @@ struct  AcSAPindication *aci;
 	missingP (data);
 	toomuchP (data, ndata, NACDATA, "user");
 	if ( ndata <= 0 )
-		(void) acusaplose (aci, ACS_PARAMETER, NULLCP,
+		 acusaplose (aci, ACS_PARAMETER, NULLCP,
 						   "illegal number of ASDUs (%d)", ndata );
 
 	missingP (aci);
@@ -406,7 +406,7 @@ struct  AcSAPindication *aci;
 	smask = sigioblock ();
 
 	if ((acb = findacublk (sd)) == NULL || !(acb -> acb_flags & ACB_AUDT)) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acusaplose (aci, ACS_PARAMETER, NULLCP,
 						   "invalid association descriptor");
 	}
@@ -420,7 +420,7 @@ struct  AcSAPindication *aci;
 	pdu -> application__context__name = acb -> acb_context;
 
 
-	(void) titles2pdu ( acb -> acb_callingtitle,  acb -> acb_calledtitle, pdu );
+	 titles2pdu ( acb -> acb_callingtitle,  acb -> acb_calledtitle, pdu );
 
 
 	/*  Unfortunately info2_apdu() below only does fully encoded data */
@@ -431,14 +431,14 @@ struct  AcSAPindication *aci;
 
 	pe = NULLPE;
 	if ( encode_ACS_AUDT__apdu (&pe, 1, 0, NULLCP, pdu) == NOTOK ) {
-		(void) acusaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+		 acusaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 						   PY_pepy);
 		goto no_good;
 	}
 
 	pe -> pe_context = acb -> acb_id;
 	if ( (result = PUnitDataWrite ( sd, &pe, 1, pi ))  ==  NOTOK )
-		(void) ps2aculose (NULLACB, aci, "PUnitDataWrite", pa);
+		 ps2aculose (NULLACB, aci, "PUnitDataWrite", pa);
 	goto out;
 
 
@@ -458,7 +458,7 @@ out:
 	}
 	if (pe)
 		pe_free (pe);
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return result;
 }
 
@@ -500,7 +500,7 @@ AcUnitDataRead (
 	smask = sigioblock ();
 
 	if ((acb = findacublk (sd)) == NULL || !(acb -> acb_flags & ACB_AUDT)) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acusaplose (aci, ACS_PARAMETER, NULLCP,
 						   "invalid association descriptor");
 	}
@@ -509,13 +509,13 @@ AcUnitDataRead (
 	bzero ((char *) acs,  sizeof *acs );
 
 	if ( PUnitDataRead (acb -> acb_fd, ps, secs, pi) == NOTOK ) {
-		(void) ps2aculose (NULLACB, aci, "PUnitDataRead", pa);
+		 ps2aculose (NULLACB, aci, "PUnitDataRead", pa);
 		return NOTOK;
 	}
 
 	pdu = NULL;
 	if (ps -> ps_ninfo < 1) {
-		(void) acusaplose (aci, ACS_PROTOCOL, NULLCP,
+		 acusaplose (aci, ACS_PROTOCOL, NULLCP,
 						   "no user-data on P-UNIT-DATA");
 		goto no_good;
 	}
@@ -533,7 +533,7 @@ AcUnitDataRead (
 	pe = ps -> ps_info[0] = NULLPE;
 
 	if (result == NOTOK) {
-		(void) acusaplose (aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
+		 acusaplose (aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto no_good;
 	}
 
@@ -547,7 +547,7 @@ AcUnitDataRead (
 		goto no_good;
 
 	if ( pdu -> application__context__name == NULLOID ) {
-		(void) acusaplose (aci, ACS_CONGEST, NULLCP, NULLCP);
+		 acusaplose (aci, ACS_CONGEST, NULLCP, NULLCP);
 		goto no_good;
 	}
 
@@ -557,7 +557,7 @@ AcUnitDataRead (
 
 	acs -> acs_sd = acb -> acb_fd;
 
-	(void) pdu2start ( pdu, acs ); /* move context and titles to start struct */
+	 pdu2start ( pdu, acs ); /* move context and titles to start struct */
 
 	if (apdu2_info (acb, aci, pdu -> user__information, acs -> acs_info,
 					&acs -> acs_ninfo) == NOTOK)
@@ -607,14 +607,14 @@ AcUnitDataUnbind (
 	smask = sigioblock ();
 
 	if ((acb = findacublk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acusaplose (aci, ACS_PARAMETER, NULLCP,
 						   "invalid association descriptor");
 	}
 
 	if ((result = PUnitDataUnbind (acb -> acb_fd, pi))
 			== NOTOK) {
-		(void) ps2aculose (acb, aci, "PUnitDataUnbind", pa);
+		 ps2aculose (acb, aci, "PUnitDataUnbind", pa);
 		if (PC_FATAL (pa -> pa_reason))
 			goto out2;
 		else
@@ -629,7 +629,7 @@ out2:
 
 out1:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 	return result;
 }
 
@@ -675,7 +675,7 @@ AcuSave (
 
 
 	if ( (result = PuSave ( sd, vecp, vec, pi) ) == NOTOK) {
-		(void) ps2aculose (NULLACB, aci, "PuSave", pa);
+		 ps2aculose (NULLACB, aci, "PuSave", pa);
 		if ( sd == NOTOK ) freeacublk (acb);
 		return NOTOK;
 	}

@@ -117,7 +117,7 @@ dirEntry mods;
 							if (entrymods) ems_free(entrymods);
 							AttrT_free(attr_type);
 							mod_error.error = attributerror;
-							(void) sprintf(err_buf,
+							 sprintf(err_buf,
 										   "Attribute Error!\nInvalid syntax for value '%s' type '%s'.",
 										   curr_val->new_value, attrs->attr_name);
 							mod_error.err_mess = strdup(err_buf);
@@ -179,7 +179,7 @@ dirEntry mods;
 								if (entrymods) ems_free(entrymods);
 								AttrT_free(attr_type);
 								mod_error.error = attributerror;
-								(void) sprintf(err_buf,
+								 sprintf(err_buf,
 											   "Attribute Error!\nInvalid syntax for value %s type %s.",
 											   curr_val->new_value, attrs->attr_name);
 								mod_error.err_mess = strdup(err_buf);
@@ -227,7 +227,7 @@ dirEntry mods;
 								if (entrymods) ems_free(entrymods);
 								AttrT_free(attr_type);
 								mod_error.error = attributerror;
-								(void) sprintf(err_buf,
+								 sprintf(err_buf,
 											   "Attribute Error!\nInvalid syntax for value %s type %s.",
 											   curr_val->new_value, attrs->attr_name);
 								mod_error.err_mess = strdup(err_buf);
@@ -528,7 +528,7 @@ dirAttrs *attrs;
 
 				if (!lexequ(curr_attr->attr_name, "rfc822Mailbox")
 						&& mailformat == greybook) {
-					(void) strcpy(curr_attr->attr_name, "mailbox");
+					 strcpy(curr_attr->attr_name, "mailbox");
 				}
 			}
 		} else {
@@ -552,7 +552,7 @@ dirAttrs *attrs;
 
 			if (!lexequ(curr_attr->attr_name, "rfc822Mailbox")
 					&& mailformat == greybook) {
-				(void) strcpy(curr_attr->attr_name, "mailbox");
+				 strcpy(curr_attr->attr_name, "mailbox");
 			}
 		}
 
@@ -626,7 +626,7 @@ AttributeType at;
 	ia5_char_desc[2] = '\0';
 
 	if (!at || !is_map_required(at)) {
-		(void) strcpy(buffer, value);
+		 strcpy(buffer, value);
 		return;
 	}
 
@@ -679,12 +679,12 @@ AttributeType at;
 	}
 
 	if (str2syntax("dn") == at->oa_syntax) {
-		if (*value == '@') (void) strcpy(buffer, (char *) (value + 1));
+		if (*value == '@')  strcpy(buffer, (char *) (value + 1));
 		return;
 	}
 
 	if (!is_map_required(at)) {
-		(void) strcpy(buffer, value);
+		 strcpy(buffer, value);
 		return;
 	}
 
@@ -778,9 +778,9 @@ int  format;
 
 	if (as != NULLATTR) {
 		if (format == READOUT)
-			(void) sprintf(buffer,"%s", attr2name(as->attr_type, 1));
+			 sprintf(buffer,"%s", attr2name(as->attr_type, 1));
 		else
-			(void) sprintf(buffer,"%s", attr2name_aux(as->attr_type));
+			 sprintf(buffer,"%s", attr2name_aux(as->attr_type));
 
 		if (split_attr (as)) {
 			if (as->attr_value == NULLAV && format != READOUT)

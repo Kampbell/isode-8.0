@@ -164,7 +164,7 @@ PS	ps;
 	if (pt -> ps_output.pio_base)
 		free (pt -> ps_output.pio_base);
 
-	(void) set_check_fd (pt -> ps_fd, NULLIFP, NULLCP);
+	 set_check_fd (pt -> ps_fd, NULLIFP, NULLCP);
 
 	free ((char *) pt);
 
@@ -222,7 +222,7 @@ int	fd;
 	pt -> ps_output.pio_bufsiz = pt -> ps_output.pio_cnt = pz;
 	pt -> ps_output.pio_ptr = pt -> ps_output.pio_base;
 
-	(void) set_check_fd (fd, fdx_check, (caddr_t) ps);
+	 set_check_fd (fd, fdx_check, (caddr_t) ps);
 
 	return OK;
 }

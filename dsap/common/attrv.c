@@ -347,7 +347,7 @@ AttributeValue rav;
 	case 1: /* FILE */
 		return (str2file_aux (str,at,rav));
 	case 2: /* ASN */
-		(void) str2AttrV_aux (str,0,rav);
+		 str2AttrV_aux (str,0,rav);
 		if (AttrV_decode (at,rav) == NOTOK) {
 			parse_error ("ASN attribute decode failed",NULLCP);
 			return (NOTOK);

@@ -147,7 +147,7 @@ update_pseudo_attr () {
 		struct op_list * tmp_op_list ;
 		time_t timenow ;
 
-		(void) time (&timenow) ;
+		 time (&timenow) ;
 
 		tmp_op_list = ((struct quipu_call *)tmp_avs->avseq_av.av_struct)->pending_ops ;
 		while(tmp_op_list != (struct op_list *) 0) {
@@ -287,22 +287,22 @@ Entry eptr;
 	update_pseudo_attr ();
 
 	if (dsa_pseudo_attr) {
-		(void) sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
+		 sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
 
 		um = umask (0177);
 		if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("can't write DSA pseudo entry: \"%s\" (%d)",filename,errno));
 		}
-		(void) umask (um);
+		 umask (um);
 
 		if ((ps = ps_alloc (std_open)) == NULLPS) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
-			(void) fclose (fptr);
+			 fclose (fptr);
 			return;
 		}
 		if (std_setup (ps,fptr) == NOTOK) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("std_setup failed"));
-			(void) fclose (fptr);
+			 fclose (fptr);
 			return;
 		}
 
@@ -313,14 +313,14 @@ Entry eptr;
 
 		if (ps->ps_errno != PS_ERR_NONE) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA ps error: %s",ps_error(ps->ps_errno)));
-			(void) fclose (fptr);
+			 fclose (fptr);
 			return;
 		}
 		ps_free (ps);
 
 		if (fflush (fptr) != 0) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA flush error: %d",errno));
-			(void) fclose (fptr);
+			 fclose (fptr);
 			return;
 		}
 #if	defined(SYS5) && !defined(SVR4)
@@ -328,7 +328,7 @@ Entry eptr;
 #else
 		if (fsync (fileno(fptr)) != 0) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA fsync error: %d",errno));
-			(void) fclose (fptr);
+			 fclose (fptr);
 			return;
 		}
 #endif
@@ -343,22 +343,22 @@ Entry eptr;
 	if (eptr->e_data == E_DATA_MASTER)
 		return;
 
-	(void) sprintf (filename,"%sDSA.real",isodefile(treedir,0));
+	 sprintf (filename,"%sDSA.real",isodefile(treedir,0));
 
 	um = umask (0177);
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("can't write DSA pseudo entry: \"%s\" (%d)",filename,errno));
 	}
-	(void) umask (um);
+	 umask (um);
 
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return;
 	}
 	if (std_setup (ps,fptr) == NOTOK) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("std_setup failed"));
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return;
 	}
 
@@ -373,14 +373,14 @@ Entry eptr;
 
 	if (ps->ps_errno != PS_ERR_NONE) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA ps error: %s",ps_error(ps->ps_errno)));
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return;
 	}
 	ps_free (ps);
 
 	if (fflush (fptr) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA flush error: %d",errno));
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return;
 	}
 #if     defined(SYS5) && !defined(SVR4)
@@ -388,7 +388,7 @@ Entry eptr;
 #else
 	if (fsync (fileno(fptr)) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA fsync error: %d",errno));
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return;
 	}
 #endif
@@ -411,7 +411,7 @@ char data_type;
 
 	/* write e_attributes, and preserved attributes to DSA file */
 
-	(void) sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
+	 sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
 
 	/* What if DSA at top level with same name as us !?! */
 	parse_file = filename;
@@ -430,14 +430,14 @@ char data_type;
 #endif
 			LLOG (log_dsap,LLOG_TRACE,("Error in DSA pseudo entry: \"%s\" (%d)",filename,errno));
 
-		(void) fclose (fptr);
+		 fclose (fptr);
 
 	}
 
 	if (data_type == E_DATA_MASTER)
 		return;
 
-	(void) sprintf (filename,"%sDSA.real",isodefile(treedir,0));
+	 sprintf (filename,"%sDSA.real",isodefile(treedir,0));
 
 	if ((fptr = fopen (filename,"r")) == (FILE *) NULL)
 		LLOG (log_dsap,LLOG_TRACE,("No DSA real entry: \"%s\" (%d)",filename,errno));
@@ -450,7 +450,7 @@ char data_type;
 #endif
 			LLOG (log_dsap,LLOG_TRACE,("Error in DSA real entry: \"%s\" (%d)",filename,errno));
 
-		(void) fclose (fptr);
+		 fclose (fptr);
 	}
 
 }

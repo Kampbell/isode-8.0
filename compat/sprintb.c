@@ -42,7 +42,7 @@ sprintb (int v, char *bits)
 			 *bp;
 	static char buffer[BUFSIZ];
 
-	(void) sprintf (buffer, bits && *bits == 010 ? "0%o" : "0x%x", v);
+	 sprintf (buffer, bits && *bits == 010 ? "0%o" : "0x%x", v);
 	bp = buffer + strlen (buffer);
 
 	if (bits && *++bits) {

@@ -45,7 +45,7 @@ sys_errname (int i)
 
 	if (0 < i && i < sys_nerr)
 		return sys_errlist[i];
-	(void) sprintf (buffer, "Error %d", i);
+	 sprintf (buffer, "Error %d", i);
 
 	return buffer;
 }

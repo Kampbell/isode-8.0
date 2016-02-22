@@ -42,7 +42,7 @@ extern int PIC_LINESIZE;
 
 
 int 
-sigwinched (void) {
+sigwinched  {
 	tool_sigwinch (tool);
 }
 
@@ -54,12 +54,12 @@ photo_start (char *name)
 	/* Initialise a window to recieve a photo of 'name' */
 
 	if (getenv ("WINDOW_PARENT") == (char *)NULL) {
-		(void) fprintf (stderr,"PHOTO: Must be running suntools on the console");
+		 fprintf (stderr,"PHOTO: Must be running suntools on the console");
 		return (-1);
 	}
 
 	if (( tool = tool_make (WIN_LABEL,name,WIN_TOP,sx,WIN_LEFT,sy,0)) == NULL) {
-		(void) fprintf (stderr,"PHOTO: can't create window");
+		 fprintf (stderr,"PHOTO: can't create window");
 		return (-1);
 	}
 
@@ -81,9 +81,9 @@ photo_end (char *name)
 {
 	/* Decoding has finished - display the photo */
 
-	(void) printf ("(See sunview window)");
-	(void) fflush (stdout);
-	(void) close (1);
+	 printf ("(See sunview window)");
+	 fflush (stdout);
+	 close (1);
 
 	/* return 0 if sucessful -1 if not */
 	tool_set_attributes (tool,WIN_WIDTH,PIC_LINESIZE+40,WIN_HEIGHT,sy+40,0);

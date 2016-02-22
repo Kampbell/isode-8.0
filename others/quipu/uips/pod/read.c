@@ -242,7 +242,7 @@ Attr_Sequence attrs_to_read;
 }
 
 int 
-read_print (int (*func)(void), caddr_t ptr)
+read_print (int (*func), caddr_t ptr)
 {
 	PS ps;
 	char *str;
@@ -284,7 +284,7 @@ int format;
 
 		two_passes = 0;
 
-		(void) pe2ps(sps, picture);
+		 pe2ps(sps, picture);
 		if (decode_t4(sps->ps_base, "photo", sps->ps_ptr - sps->ps_base ) == -1)
 			goto out;
 
@@ -329,18 +329,18 @@ rfc2greybook (char *string)
 		while (*part != '.' && *part != '@') --part;
 
 		if (*part == '.') {
-			if (reversed[0] != '\0') (void) strcat(reversed, ".");
+			if (reversed[0] != '\0')  strcat(reversed, ".");
 			part++;
-			(void) strcat(reversed, part);
+			 strcat(reversed, part);
 			*--part = '\0';
 			--part;
 		} else {
 			part++;
-			(void) strcat(reversed, ".");
-			(void) strcat(reversed, part);
+			 strcat(reversed, ".");
+			 strcat(reversed, part);
 			*part = '\0';
 			/*       while (!isspace(*part)) --part; */
-			(void) strcat(string, reversed);
+			 strcat(string, reversed);
 			return;
 		}
 	}

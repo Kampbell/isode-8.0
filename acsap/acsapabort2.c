@@ -51,14 +51,14 @@ AcABORTser (int sd, struct PSAPabort *pa, struct AcSAPindication *aci)
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
 
 	result = ps2acsabort (acb, pa, aci);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -81,12 +81,12 @@ ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindication 
 		if (PC_FATAL (pa -> pa_reason))
 			acb -> acb_fd = NOTOK;
 
-		(void) ps2acslose (acb, aci, NULLCP, pa);
+		 ps2acslose (acb, aci, NULLCP, pa);
 		goto out;
 	}
 
 	if (pa -> pa_ninfo == 0) {
-		(void) acsaplose (aci, ACS_ABORTED, NULLCP, NULLCP);
+		 acsaplose (aci, ACS_ABORTED, NULLCP, NULLCP);
 		if (acb -> acb_sversion == 1)
 			aca -> aca_source = ACA_PROVIDER;
 		goto out;
@@ -122,7 +122,7 @@ ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindication 
 	pe = pa -> pa_info[0] = NULLPE;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
+		 acsaplose (aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto out;
 	}
 
@@ -135,7 +135,7 @@ ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindication 
 	abrt = pdu -> un.abrt;
 	aca -> aca_reason = ACS_ABORTED;
 	aca -> aca_source = abrt -> abort__source;
-	(void) apdu2info (acb, aci, abrt -> user__information, aca -> aca_info,
+	 apdu2info (acb, aci, abrt -> user__information, aca -> aca_info,
 					  &aca -> aca_ninfo);
 
 out:

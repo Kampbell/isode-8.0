@@ -230,7 +230,7 @@ main (int argc, char **argv, char **envp)
 		int	secs;
 		long	now;
 
-		(void) time (&now);
+		 time (&now);
 		now++;
 
 		if ((secs = (int) (nextime - now)) <= 0) {
@@ -257,16 +257,16 @@ main (int argc, char **argv, char **envp)
 
 #ifdef SYS5
 #ifdef HPUX
-		(void) signal(SIGCHLD, cldser);
+		 signal(SIGCHLD, cldser);
 #else
-		(void) signal(SIGCLD, cldser);
+		 signal(SIGCLD, cldser);
 #endif
 #endif
 
 		switch (TNetFork (vecp, vec, td)) {
 		case OK:
 #ifdef	IAE
-			(void) signal (SIGHUP, SIG_DFL);
+			 signal (SIGHUP, SIG_DFL);
 #endif
 			ll_hdinit (pgm_log, pgmname);
 			break;
@@ -307,8 +307,8 @@ tsapd (int vecp, char **vec)
 	IFP	    hook;
 
 	/* begin UGLY */
-	(void) strcpy (buffer1, vec[1]);
-	(void) strcpy (buffer2, vec[2]);
+	 strcpy (buffer1, vec[1]);
+	 strcpy (buffer2, vec[2]);
 	/* end UGLY */
 
 	if (TInit (vecp, vec, ts, td) == NOTOK) {
@@ -336,7 +336,7 @@ tsapd (int vecp, char **vec)
 
 	if (is >= iz) {
 #endif
-			(void) sprintf (buffer, "OSI service tsap/%s not found",
+			 sprintf (buffer, "OSI service tsap/%s not found",
 							sel2str (ts -> ts_called.ta_selector,
 									 ts -> ts_called.ta_selectlen, 1));
 			goto out;
@@ -344,7 +344,7 @@ tsapd (int vecp, char **vec)
 #ifndef IAE
 	} else if (hook == NULLIFP
 			   || (is = getisoserventbyname ("session", "tsap")) == NULL) {
-		(void) strcpy (buffer, "default session service not found");
+		 strcpy (buffer, "default session service not found");
 		goto out;
 	}
 	*is -> is_tail++ = buffer1;
@@ -367,12 +367,12 @@ tsapd (int vecp, char **vec)
 
 	case OK:
 	default:
-		(void) setperms (is);
+		 setperms (is);
 #ifdef ULTRIX_X25_DEMSA
 		if (Pre_Exec(is -> is_vec,"Pre_exec in tsapd") == OK)
 #endif
-			(void) execv (*is -> is_vec, is -> is_vec);
-		(void) sprintf (buffer, "unable to exec %s: %s",
+			 execv (*is -> is_vec, is -> is_vec);
+		 sprintf (buffer, "unable to exec %s: %s",
 						*is -> is_vec, sys_errname (errno));
 		SLOG (pgm_log, LLOG_FATAL, NULLCP, ("%s", buffer));
 		break;
@@ -383,7 +383,7 @@ out:
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s", buffer);
 	if ((int)strlen (buffer) >= TD_SIZE)
 		buffer[0] = NULL;
-	(void) TDiscRequest (ts -> ts_sd, buffer, strlen (buffer) + 1, td);
+	 TDiscRequest (ts -> ts_sd, buffer, strlen (buffer) + 1, td);
 
 	exit (1);
 }
@@ -400,11 +400,11 @@ struct IAEntry *is;
 	struct stat st;
 
 	if (stat (*is -> is_vec, &st) == NOTOK) {
-		(void) setgid (1);
-		(void) setuid (1);
+		 setgid (1);
+		 setuid (1);
 	} else {
-		(void) setgid (st.st_gid);
-		(void) setuid (st.st_uid);
+		 setgid (st.st_gid);
+		 setuid (st.st_uid);
 	}
 }
 
@@ -415,11 +415,11 @@ static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event)
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						TErrString (td -> td_reason),
 						td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		(void) sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
@@ -488,8 +488,8 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si)
 		return OK;
 
 	/* begin UGLY */
-	(void) strcpy (buffer1, *(is -> is_tail - 2));
-	(void) strcpy (buffer2, *(is -> is_tail - 1));
+	 strcpy (buffer1, *(is -> is_tail - 2));
+	 strcpy (buffer2, *(is -> is_tail - 1));
 	/* end UGLY */
 	if (SInit (is -> is_tail - is -> is_vec, is -> is_vec, ss, si) == NOTOK)
 		return NOTOK;
@@ -573,7 +573,7 @@ char	**vec;
 
 	rflag = 0;
 
-	(void) strcpy (myhost, TLocalHostName ());
+	 strcpy (myhost, TLocalHostName ());
 
 	bzero ((char *) tas, sizeof tas);
 	tz = tas;
@@ -603,7 +603,7 @@ char	**vec;
 	x25_na -> na_stack = NA_X25;
 	x25_na -> na_community = ts_comm_x25_default;
 	if (x25_local_dte && *x25_local_dte) {
-		(void) strcpy (x25_na -> na_dte, x25_local_dte);
+		 strcpy (x25_na -> na_dte, x25_local_dte);
 		x25_na -> na_dtelen = strlen (x25_na -> na_dte);
 	}
 	if (x25_local_pid && *x25_local_pid)
@@ -620,7 +620,7 @@ char	**vec;
 	x2584_na = tz -> ta_addrs;
 	x2584_na -> na_stack = NA_NSAP;
 	x2584_na -> na_community = ts_comm_nsap_default;
-	(void) strcpy (x2584_na -> na_address, "00");
+	 strcpy (x2584_na -> na_address, "00");
 	x2584_na -> na_addrlen = 2;
 	tz -> ta_naddr = 1;
 
@@ -632,7 +632,7 @@ char	**vec;
 	if (!(ts_stacks & (TS_TP4|TS_X2584)))
 		tp4service = 0;
 
-	(void) setisoservent (0);
+	 setisoservent (0);
 
 	tp4_na_start = tp4_na_end = tz;
 
@@ -657,7 +657,7 @@ char	**vec;
 			tz++;
 			tp4_na_end = tz;
 		}
-	(void) endisoservent ();
+	 endisoservent ();
 #endif
 
 	for (vec++; ap = *vec; vec++) {
@@ -710,7 +710,7 @@ char	**vec;
 			case 'a':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -a x121address", pgmname);
-				(void) strcpy (x25_na -> na_dte, ap);
+				 strcpy (x25_na -> na_dte, ap);
 				x25_na -> na_dtelen = strlen (ap);
 				continue;
 
@@ -736,7 +736,7 @@ char	**vec;
 				for (loop_na = tp4_na_start;
 						loop_na != tp4_na_end; loop_na++) {
 					loop_na -> ta_addrs -> na_dtelen = strlen (ap);
-					(void) strcpy (loop_na -> ta_addrs -> na_dte, ap);
+					 strcpy (loop_na -> ta_addrs -> na_dte, ap);
 					loop_na -> ta_naddr = 1;
 					loop_na -> ta_addrs -> na_stack = NA_X25;
 					loop_na -> ta_addrs -> na_community = ts_comm_x25_default;
@@ -854,10 +854,10 @@ char	**vec;
 
 	dsap_init (&argp, (argptr = args, &argptr));
 
-	(void) strcpy (myhost, TLocalHostName ());
+	 strcpy (myhost, TLocalHostName ());
 	if (local_dit == NULLCP)
 		local_dit = "";
-	(void) strcpy (base, local_dit);
+	 strcpy (base, local_dit);
 
 	if (!(ts_stacks & TS_TCP))
 		tcpservice = 0;
@@ -911,9 +911,9 @@ char	**vec;
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -D DIT", pgmname);
 				if (*ap == '@')
-					(void) strcpy (base, ap);
+					 strcpy (base, ap);
 				else
-					(void) sprintf (base, "%s@%s", local_dit, ap);
+					 sprintf (base, "%s@%s", local_dit, ap);
 				continue;
 
 			case 'm':
@@ -937,7 +937,7 @@ char	**vec;
 			case 'p':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -p password", pgmname);
-				(void) strcpy (passwd, ap);
+				 strcpy (passwd, ap);
 				bzero ((char *) ap, strlen (ap));
 				continue;
 
@@ -1130,7 +1130,7 @@ static	search_directory ( int	firstime;
 								malloc ((unsigned) (strlen (cp) + 1)))
 							== NULL)
 						adios (NULLCP, "out of memory allocating iaeVector");
-					(void) strcpy (iz -> is_vector, cp);
+					 strcpy (iz -> is_vector, cp);
 
 					if ((vecp = str2vec (iz -> is_vector, evec)) < 1)
 						goto losing_iae;
@@ -1154,7 +1154,7 @@ static	search_directory ( int	firstime;
 								malloc ((unsigned) (strlen (cp) + 1)))
 							== NULL)
 						adios (NULLCP, "out of memory allocating pgmVector");
-					(void) strcpy (iz -> is_vec[0], cp);
+					 strcpy (iz -> is_vec[0], cp);
 				}
 				continue;
 			}
@@ -1224,7 +1224,7 @@ losing_iae:
 				char    buffer[BUFSIZ];
 				int n;
 
-				(void) strcpy (buffer, taddr2str (tb));
+				 strcpy (buffer, taddr2str (tb));
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"two services with the same transport selector: %s and %s",
 						buffer, taddr2str (ta));
@@ -1258,7 +1258,7 @@ losing_iae:
 	entryinfo_free (sr -> CSR_entries, 0);
 	crefs_free (sr -> CSR_cr);
 
-	(void) unbind_from_directory ();
+	 unbind_from_directory ();
 
 	if (!firstime) {
 		int	failed = 0;
@@ -1330,7 +1330,7 @@ losing_iae:
 			advise (LLOG_DEBUG, NULLCP, "  addr=%s", taddr2str (ta));
 	}
 
-	(void) time (&nextime);
+	 time (&nextime);
 	nextime += IAETIME;
 }
 
@@ -1345,7 +1345,7 @@ static	bind_to_directory () {
 	struct ds_bind_error *be = &bind_error;
 	static int very_first_time = 1;
 
-	(void) unbind_from_directory ();
+	 unbind_from_directory ();
 
 	make_bind_args (ba, br, be);
 
@@ -1381,13 +1381,13 @@ static int  rebind_to_directory () {
 		if (debug)
 			advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
 
-		(void) dap_unbind (referral_dsa);
+		 dap_unbind (referral_dsa);
 		referral_dsa = NOTOK;
 		dsap_ad = main_dsa;
 	}
 
 	if (!isbound)
-		(void) bind_to_directory ();
+		 bind_to_directory ();
 
 	return (isbound ? OK : NOTOK);
 }
@@ -1404,7 +1404,7 @@ static	int	make_bind_args ( struct ds_bind_arg *ba, *br; struct ds_bind_error *b
 	if (ba -> dba_dn = userdn)
 		ba -> dba_auth_type = DBA_AUTH_SIMPLE;
 	if (ba -> dba_passwd_len = strlen (passwd))
-		(void) strcpy (ba -> dba_passwd, passwd);
+		 strcpy (ba -> dba_passwd, passwd);
 }
 
 /*  */
@@ -1417,12 +1417,12 @@ static int  unbind_from_directory () {
 			if (debug)
 				advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
 
-			(void) dap_unbind (referral_dsa);
+			 dap_unbind (referral_dsa);
 			referral_dsa = NOTOK;
 			dsap_ad = main_dsa;
 		}
 
-		(void) ds_unbind ();
+		 ds_unbind ();
 		isbound = 0;
 	}
 
@@ -1451,7 +1451,7 @@ static int  do_error ( struct DSError *de;
 			if (debug)
 				advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
 
-			(void) dap_unbind (referral_dsa);
+			 dap_unbind (referral_dsa);
 			referral_dsa = NOTOK;
 			dsap_ad = main_dsa;
 		}
@@ -1489,11 +1489,11 @@ static int  do_error ( struct DSError *de;
 			if (debug)
 				advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
 
-			(void) dap_unbind (referral_dsa);
+			 dap_unbind (referral_dsa);
 			referral_dsa = NOTOK;
 			dsap_ad = main_dsa;
 		} else
-			(void) unbind_from_directory ();
+			 unbind_from_directory ();
 	}
 
 	return NOTOK;
@@ -1523,7 +1523,7 @@ static SFD  hupser (sig)
 int	sig;
 {
 #ifndef	BSD42
-	(void) signal (sig, hupser);
+	 signal (sig, hupser);
 #endif
 
 	search_directory (0);
@@ -1545,7 +1545,7 @@ int   sig;
 	pid = wait(&status);
 #endif /* HPUX */
 
-	(void) signal(sig, cldser);
+	 signal(sig, cldser);
 }
 #endif /* SYS5 */
 
@@ -1581,14 +1581,14 @@ static  envinit () {
 			}
 		}
 
-		(void) chdir ("/");
+		 chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			(void) dup2 (sd, 0), (void) close (sd);
-		(void) dup2 (0, 1);
-		(void) dup2 (0, 2);
+			 dup2 (sd, 0),  close (sd);
+		 dup2 (0, 1);
+		 dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -1596,14 +1596,14 @@ static  envinit () {
 #endif
 #ifdef	TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			(void) ioctl (sd, TIOCNOTTY, NULLCP);
-			(void) close (sd);
+			 ioctl (sd, TIOCNOTTY, NULLCP);
+			 close (sd);
 		}
 #else
 #ifdef	SYS5
-		(void) setpgrp ();
-		(void) signal (SIGINT, SIG_IGN);
-		(void) signal (SIGQUIT, SIG_IGN);
+		 setpgrp ();
+		 signal (SIGINT, SIG_IGN);
+		 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -1612,16 +1612,16 @@ static  envinit () {
 #ifndef	sun		/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			(void) close (sd);
+			 close (sd);
 #endif
 
-	(void) signal (SIGPIPE, SIG_IGN);
+	 signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, pgmname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
 
 #ifdef	IAE
-	(void) signal (SIGHUP, hupser);
+	 signal (SIGHUP, hupser);
 #endif
 }
 

@@ -1582,7 +1582,7 @@ PE pe;
 }
 
 nrs_info_syntax () {
-	(void) add_attribute_syntax ("NRSInformation",
+	 add_attribute_syntax ("NRSInformation",
 								 (IFP) nrs_info_enc,	(IFP) nrs_info_dec,
 								 (IFP) str2nrs_info,	nrs_info_print,
 								 (IFP) nrs_info_cpy,	nrs_info_cmp,

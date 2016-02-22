@@ -48,14 +48,14 @@ SUAbortRequest (int sd, char *data, int cc, struct SSAPindication *si)
 	smask = sigioblock ();
 
 	if ((sb = findsblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid session descriptor");
 	}
 	toomuchP (sb, data, cc, SA_SIZE, "abort");
 
 	result = SUAbortRequestAux (sb, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

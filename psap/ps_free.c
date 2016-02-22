@@ -36,7 +36,7 @@ void
 ps_free (PS ps)
 {
 	if (ps -> ps_closeP)
-		(void) (*ps -> ps_closeP) (ps);
+		 (*ps -> ps_closeP) (ps);
 
 	free ((char *) ps);
 }

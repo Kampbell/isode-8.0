@@ -86,7 +86,7 @@ PY_pp (int argc, char **argv, char **envp, IFP pfx)
 				continue;
 			}
 			status += process (cp, fp, pfx);
-			(void) fclose (fp);
+			 fclose (fp);
 		}
 
 	return status;
@@ -139,7 +139,7 @@ done:
 			break;
 		}
 
-		(void) (*pfx) (pe, 1, NULLIP, NULLVP, NULLCP);
+		 (*pfx) (pe, 1, NULLIP, NULLVP, NULLCP);
 
 		pe_free (pe);
 	}
@@ -200,13 +200,13 @@ static void  _advise (char*what, ...)
 
 	asprintf (buffer, what, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
-	(void) fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	 fprintf (stderr, "%s: ", myname);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-	(void) fflush (stderr);
+	 fflush (stderr);
 
 	va_end (ap);
 }

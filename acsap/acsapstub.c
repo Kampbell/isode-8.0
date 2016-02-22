@@ -114,9 +114,9 @@ str2aei_stub (char *designator, char *qualifier)
 				char **ap;
 #endif
 
-				(void) bcopy ((char *) hp -> h_addr, (char *) &h_in_addr,
+				 bcopy ((char *) hp -> h_addr, (char *) &h_in_addr,
 							  sizeof (struct in_addr));
-				(void) strcpy (na -> na_domain, inet_ntoa (h_in_addr));
+				 strcpy (na -> na_domain, inet_ntoa (h_in_addr));
 #ifdef	h_addr
 				for (ap = hp -> h_addr_list + 1; *ap; ap++) {
 					ta -> ta_naddr++, na++;
@@ -127,7 +127,7 @@ str2aei_stub (char *designator, char *qualifier)
 					bzero ((char *) na, sizeof *na);
 					na -> na_stack = NA_TCP;
 					na -> na_community = ts_comm_tcp_default;
-					(void) strcpy (na -> na_domain,
+					 strcpy (na -> na_domain,
 								   inet_ntoa (*(struct in_addr *) *ap));
 				}
 #endif
@@ -135,7 +135,7 @@ str2aei_stub (char *designator, char *qualifier)
 				/* hostname not in /etc/hosts or NIS */
 				return (NULLAEI);
 		} else {
-			(void) strcpy (na -> na_dte, designator);
+			 strcpy (na -> na_dte, designator);
 			na -> na_dtelen = strlen (na -> na_dte);
 #ifdef	BRIDGE_X25
 			na -> na_stack = bridgediscrim (na) ? NA_BRG : NA_X25;
@@ -182,7 +182,7 @@ str2aei_stub (char *designator, char *qualifier)
 					bzero ((char *) ua, sizeof *ua);
 					ua -> na_stack = NA_TCP;
 					ua -> na_community = ts_comm_tcp_default;
-					(void) strncpy (ua -> na_domain, na -> na_domain,
+					 strncpy (ua -> na_domain, na -> na_domain,
 									sizeof ua -> na_domain);
 					ua -> na_port = (u_short) udp_port;
 					ua -> na_tset = NA_TSET_UDP;
@@ -237,15 +237,15 @@ lpp_aet (char *designator, char *qualifier, struct isoentity *ie)
 
 	oid -> oid_elements = elements;
 	oid -> oid_nelem = nelem;
-	(void) sprintf (ie -> ie_descriptor = objent, "%s-%s", designator,
+	 sprintf (ie -> ie_descriptor = objent, "%s-%s", designator,
 					qualifier);
 
-	(void) bzero ((char *) pa, sizeof *pa);
+	 bzero ((char *) pa, sizeof *pa);
 	na = ta -> ta_addrs;
 	if (tcp_port) {
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
-		(void) strncpy (na -> na_domain, designator, sizeof na -> na_domain);
+		 strncpy (na -> na_domain, designator, sizeof na -> na_domain);
 		na -> na_port = (u_short) tcp_port;
 		na -> na_tset = NA_TSET_TCP;
 		na++;
@@ -253,7 +253,7 @@ lpp_aet (char *designator, char *qualifier, struct isoentity *ie)
 	if (udp_port) {
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
-		(void) strncpy (na -> na_domain, designator, sizeof na -> na_domain);
+		 strncpy (na -> na_domain, designator, sizeof na -> na_domain);
 		na -> na_port = (u_short) udp_port;
 		na -> na_tset = NA_TSET_UDP;
 		na++;

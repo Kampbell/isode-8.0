@@ -122,14 +122,14 @@ PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *d
 	if (ppdu == PPDU_TE) {
 		for (d = data, i = 0; i < ndata; i++)
 			if ((p = *d++) && p -> pe_context != PE_DFLT_CTX) {
-				(void) sigiomask (smask);
+				 sigiomask (smask);
 				return psaplose (pi, PC_OPERATION, NULLCP,
 								 "defined context not permited with expedited service");
 			}
 	}
 
 	if (ppdu == PPDU_TTD && !(pb -> pb_urequirements & SR_TYPEDATA)) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return psaplose (pi, PC_OPERATION, NULLCP,
 						 "typed data service unavailable");
 	}
@@ -140,9 +140,9 @@ PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *d
 
 	if ((result = (*sfunc) (sd, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, stype, sa);
+			 ss2pslose (pb, pi, stype, sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, stype, sa);
+			 ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
 
@@ -159,7 +159,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -182,7 +182,7 @@ PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi)
 
 	result = PReadRequestAux (pb, px, secs, pi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -226,7 +226,7 @@ PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPi
 			return doFINISH (pb, &si -> si_finish, pi);
 
 		default:
-			(void) ppktlose (pb, pi, PC_PROTOCOL, PPDU_NONE,
+			 ppktlose (pb, pi, PC_PROTOCOL, PPDU_NONE,
 							 NULLCP,
 							 "unknown indication (0x%x) from session",
 							 si -> si_type);
@@ -235,7 +235,7 @@ PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPi
 		break;
 
 	default:
-		(void) ppktlose (pb, pi, PC_PROTOCOL, PPDU_NONE, NULLCP,
+		 ppktlose (pb, pi, PC_PROTOCOL, PPDU_NONE, NULLCP,
 						 "unexpected return from SReadRequest=%d", result);
 		break;
 	}
@@ -444,12 +444,12 @@ ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication *pi)
 		if (sa -> sa_reason == SC_TIMER)
 			return psaplose (pi, PC_TIMER, NULLCP, NULLCP);
 
-		(void) ss2pslose (pb, pi, NULLCP, sa);
+		 ss2pslose (pb, pi, NULLCP, sa);
 		goto out;
 	}
 
 	if (sa -> sa_cc == 0) {
-		(void) psaplose (pi, PC_ABORTED, NULLCP, NULLCP);
+		 psaplose (pi, PC_ABORTED, NULLCP, NULLCP);
 		goto out;
 	}
 
@@ -458,13 +458,13 @@ ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication *pi)
 
 	if ((pe = ssdu2pe (sa -> sa_info, sa -> sa_cc, NULLCP, &result))
 			== NULLPE) {
-		(void) psaplose (pi, result == PS_ERR_NMEM ? PC_CONGEST : PC_PROTOCOL,
+		 psaplose (pi, result == PS_ERR_NMEM ? PC_CONGEST : PC_PROTOCOL,
 						 NULLCP, "%s", ps_error (result));
 		goto out;
 	}
 
 	if (decode_PS_Abort__type (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
-		(void) psaplose (pi, PC_UNRECOGNIZED, NULLCP, "%s", PY_pepy);
+		 psaplose (pi, PC_UNRECOGNIZED, NULLCP, "%s", PY_pepy);
 		goto out;
 	}
 
@@ -493,12 +493,12 @@ ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication *pi)
 		} else
 			result = PC_NOTSPECIFIED;
 
-		(void) psaplose (pi, result, NULLCP, NULLCP);
+		 psaplose (pi, result, NULLCP, NULLCP);
 		info = NULL, ppdu = PPDU_ARP;
 		break;
 	}
 
-	(void) ppdu2info (pb, pi, info, pa -> pa_info, &pa -> pa_ninfo, ppdu);
+	 ppdu2info (pb, pi, info, pa -> pa_info, &pa -> pa_ninfo, ppdu);
 
 out:
 	;
@@ -558,17 +558,17 @@ PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP repor
 		pb -> pb_flags &= ~PB_ASYN;
 		switch (sa -> sa_reason) {
 		case SC_WAITING:
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return psaplose (pi, PC_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) ss2pslose (pb, pi, "SSetIndications", sa);
+			 ss2pslose (pb, pi, "SSetIndications", sa);
 			freepblk (pb);
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return NOTOK;
 		}
 	}
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }
@@ -631,7 +631,7 @@ ss2pslose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SS
 				reason = PC_WAITING;
 				break;
 			}
-		(void) sprintf (cp = buffer, " (%s at session)",
+		 sprintf (cp = buffer, " (%s at session)",
 						SErrString (sa -> sa_reason));
 		break;
 	}
@@ -803,14 +803,14 @@ ABORTser (int sd, struct SSAPabort *sa)
 	bzero ((char *) pi, sizeof *pi);
 	abort = pb -> pb_AbortIndication;
 
-	(void) doABORT (pb, sa, pi);
+	 doABORT (pb, sa, pi);
 	(*abort) (sd, &pi -> pi_abort);
 }
 
 /*    INTERNAL */
 
 struct psapblk *
-newpblk (void) {
+newpblk()  {
 	struct psapblk *pb;
 
 	pb = (struct psapblk   *) calloc (1, sizeof *pb);
@@ -842,7 +842,7 @@ freepblk (struct psapblk *pb)
 	if (pb -> pb_fd != NOTOK) {
 		struct SSAPindication   sis;
 
-		(void) SUAbortRequest (pb -> pb_fd, NULLCP, 0, &sis);
+		 SUAbortRequest (pb -> pb_fd, NULLCP, 0, &sis);
 	}
 
 	if (pb -> pb_realbase)
@@ -913,14 +913,14 @@ info2ppdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, i
 			== NULL) {
 no_mem:
 		;
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
 	pdu -> offset = type_PS_User__data_simple;
 	for (d = data, i = 0; i < ndata; i++) {
 		if ((pe = *d++) == NULLPE) {
-			(void) psaplose (pi, PC_PARAMETER, NULLCP,
+			 psaplose (pi, PC_PARAMETER, NULLCP,
 							 "missing %d%s PDV in PSDU", i + 1,
 							 i == 0 ? "st" : i == 1 ? "nd" : i == 2 ? "rd" : "th");
 			goto out;
@@ -930,7 +930,7 @@ no_mem:
 					((pb -> pb_flags & (PB_DFLT|PB_MAGIC)) == PB_DFLT &&
 					 pe -> pe_context == pb -> pb_dctxid))) {
 			if (ppdu != PPDU_TE) {
-				(void) psaplose (pi, PC_PARAMETER, NULLCP,
+				 psaplose (pi, PC_PARAMETER, NULLCP,
 								 "default context not permitted");
 				goto out;
 			}
@@ -972,12 +972,12 @@ no_mem:
 				if (qp -> pc_id == pe -> pe_context)
 					break;
 			if (j >= pb -> pb_ncontext) {
-				(void) psaplose (pi, PC_PARAMETER, NULLCP,
+				 psaplose (pi, PC_PARAMETER, NULLCP,
 								 "context %d is undefined", pe -> pe_context);
 				goto out;
 			}
 			if (qp -> pc_result != PC_ACCEPT) {
-				(void) psaplose (pi, PC_PARAMETER, NULLCP,
+				 psaplose (pi, PC_PARAMETER, NULLCP,
 								 "context %d is unsupported", pe -> pe_context);
 				goto out;
 			}
@@ -986,7 +986,7 @@ no_mem:
 		}
 
 		if (!atn_is_ber (pb, atn)) {
-			(void) psaplose (pi, PC_PARAMETER, NULLCP,
+			 psaplose (pi, PC_PARAMETER, NULLCP,
 							 "ATN not BER for context %d", pe -> pe_context);
 			goto out;
 		}
@@ -1308,7 +1308,7 @@ ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, int len, P
 			== NULL) {
 no_mem:
 		;
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 out:
 		;
 		if (info)
@@ -1339,7 +1339,7 @@ out:
 		info -> offset = type_PS_User__data_complex;
 
 		if ((pe = ssdu2pe (base, len, NULLCP, &result)) == NULLPE) {
-			(void) ppktlose (pb, pi, result == PS_ERR_NMEM ? PC_CONGEST
+			 ppktlose (pb, pi, result == PS_ERR_NMEM ? PC_CONGEST
 							 : PC_PROTOCOL, ppdu, NULLCP, "%s",
 							 ps_error (result));
 			goto out;
@@ -1367,7 +1367,7 @@ punch_it:
 		pe_free (pe);
 
 		if (result == NOTOK) {
-			(void) ppktlose (pb, pi, PC_UNRECOGNIZED, ppdu, NULLCP, "%s",
+			 ppktlose (pb, pi, PC_UNRECOGNIZED, ppdu, NULLCP, "%s",
 							 PY_pepy);
 			goto out;
 		}
@@ -1433,7 +1433,7 @@ qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, int l
 			== NULL) {
 no_mem:
 		;
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
@@ -1461,7 +1461,7 @@ no_mem:
 		info -> offset = type_PS_User__data_complex;
 
 		if ((pe = qbuf2pe (qb, len, &result)) == NULLPE) {
-			(void) ppktlose (pb, pi, result == PS_ERR_NMEM ? PC_CONGEST
+			 ppktlose (pb, pi, result == PS_ERR_NMEM ? PC_CONGEST
 							 : PC_PROTOCOL, ppdu, NULLCP, "%s",
 							 ps_error (result));
 			goto out;
@@ -1487,7 +1487,7 @@ punch_it:
 		pe_free (pe);
 
 		if (result == NOTOK) {
-			(void) ppktlose (pb, pi, PC_UNRECOGNIZED, ppdu, NULLCP, "%s",
+			 ppktlose (pb, pi, PC_UNRECOGNIZED, ppdu, NULLCP, "%s",
 							 PY_pepy);
 			goto out;
 		}
@@ -1532,7 +1532,7 @@ info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi)
 		if ((qb = (struct qbuf *) malloc ((unsigned) sizeof *qb
 										  + (len = ps_get_abs (pe))))
 				== NULL) {
-			(void) psaplose (pi, PC_CONGEST, NULLCP, NULLCP);
+			 psaplose (pi, PC_CONGEST, NULLCP, NULLCP);
 			goto out_f;
 		}
 
@@ -1540,7 +1540,7 @@ info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi)
 	} else {
 		len = ps_get_abs (pe);
 		if (len > qb->qb_len) {
-			(void) psaplose (pi, PC_CONGEST, NULLCP,
+			 psaplose (pi, PC_CONGEST, NULLCP,
 							 "too much simple data when encoding user-info");
 			goto out_f;
 		}
@@ -1551,7 +1551,7 @@ info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi)
 	Ecp = Qcp + len;
 	Len = 0;
 	if ((qlen = pe2qb_f(pe)) == NOTOK) {
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding user-info");
+		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding user-info");
 		goto out_f;
 	}
 
@@ -1637,7 +1637,7 @@ silly_list (struct psapblk *pb, struct PSAPindication *pi)
 				  calloc (1, sizeof *lp)) == NULL) {
 no_mem:
 			;
-			(void) psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+			 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 			free_PS_Identifier__list (list);
 			return NULL;
 		}

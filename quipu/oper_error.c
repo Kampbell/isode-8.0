@@ -103,7 +103,7 @@ struct DSAPindication	* di;
 		get_edb_fail_wakeup(oper);
 		break;
 	case ON_TYPE_SHADOW:
-		(void) shadow_fail_wakeup(oper);
+		 shadow_fail_wakeup(oper);
 		break;
 	default:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("oper_error - on_type invalid"));

@@ -51,7 +51,7 @@ SReSyncResponse (int sd, long ssn, int settings, char *data, int cc, struct SSAP
 
 	result = SReSyncResponseAux (sb, ssn, settings, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

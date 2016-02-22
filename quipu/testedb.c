@@ -56,13 +56,13 @@ char *argv[];
 		fatal (-1, "Can't load oid tables");
 	check_dsa_known_oids ();
 
-	(void) ll_close (log_dsap);
+	 ll_close (log_dsap);
 	ll_dbinit (log_dsap, "testedb");
 	log_dsap -> ll_events = LLOG_FATAL | LLOG_EXCEPTIONS;
 
 	if ((treetop = getentry_block (NULLENTRY, argc > 1 ? argv [1] : "./EDB"))
 			!= NULL) {
-		(void) printf ("EDB ok\n");
+		 printf ("EDB ok\n");
 #ifdef DEBUG
 		thedb = get_default_entry(NULLENTRY);
 		thedb->e_children = treetop;
@@ -74,7 +74,7 @@ char *argv[];
 		exit (0);
 	}
 
-	(void) printf ("EDB not ok\n");
+	 printf ("EDB not ok\n");
 
 	return 1;
 }

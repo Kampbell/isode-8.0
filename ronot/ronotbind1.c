@@ -100,7 +100,7 @@ int			  async;
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : RoAsynBindRequest failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
-		(void) acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
+		 acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
@@ -116,7 +116,7 @@ int			  async;
 		} else if (acc->acc_result != ACS_PERMANENT ) {
 			LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : not ACS_ACCEPT [%d,%d]",acc->acc_result,aci->aci_type));
 			if (aci->aci_type == ACI_ABORT) {
-				(void) acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
+				 acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
 				ACAFREE (aca);
 				return result;
 			}
@@ -156,7 +156,7 @@ RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNO
 
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.RETRY : AcAsynRetryRequest failed"));
-		(void) acs2ronotlose (rni, "RO-BIND.RETRY", aca);
+		 acs2ronotlose (rni, "RO-BIND.RETRY", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
@@ -172,7 +172,7 @@ RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNO
 		} else if (acc->acc_result != ACS_PERMANENT ) {
 			LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : not ACS_ACCEPT"));
 			if (aci->aci_type == ACI_ABORT) {
-				(void) acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
+				 acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
 				ACAFREE (aca);
 				return result;
 			}

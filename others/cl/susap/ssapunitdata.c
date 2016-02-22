@@ -174,7 +174,7 @@ SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct Q
 									  NULLCP,
 									  SuErrString(UDERR_NO_MEMORY));
 			} else {
-				(void) sigsetmask (smask);
+				 sigsetmask (smask);
 				return susaplose (si,
 								  SC_PARAMETER,
 								  NULLCP,
@@ -366,7 +366,7 @@ SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 
 		if ((sb = findsublk (sd)) == NULL) {
 
-			(void) sigsetmask (smask);
+			 sigsetmask (smask);
 			return susaplose (si,
 							  SC_PARAMETER,
 							  NULLCP,
@@ -623,7 +623,7 @@ SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 	*  Restore the mask.
 	*/
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	if (result == NOTOK)
 		return NOTOK;
@@ -862,7 +862,7 @@ SUnitDataWriteV (int sd, struct udvec *uv, int si)
 	*  Restore the mask.
 	*/
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	if (result == NOTOK)
 		return NOTOK;
@@ -931,7 +931,7 @@ SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *
 	 *  Restore the mask.
 	 */
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	/*
 	 *  Return the result.
@@ -1133,7 +1133,7 @@ struct SSAPindication *si;
 	sb -> sb_ReleaseIndication = finish;
 	sb -> sb_AbortIndication = abort;
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }

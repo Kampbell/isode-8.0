@@ -79,6 +79,6 @@ SuErrString (int code)
 	} else if (code < reject_uerr0_cnt)
 		return reject_uerr0[code];
 
-	(void) sprintf (buffer, "unknown error code 0x%x", code);
+	 sprintf (buffer, "unknown error code 0x%x", code);
 	return buffer;
 }

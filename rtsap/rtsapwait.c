@@ -48,7 +48,7 @@ RtWaitRequest (int sd, int secs, struct RtSAPindication *rti)
 
 	result = RtWaitRequestAux (acb, secs, 0, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

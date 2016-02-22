@@ -31,18 +31,18 @@ char *val;
 		if (val) {
 			table->val =
 				(char *) malloc((unsigned) strlen(val) + 1);
-			(void) strcpy(table->val, val);
+			 strcpy(table->val, val);
 		} else
 			table->val = (char *) 0;
 	} else {
 		table = (table_entry) malloc(sizeof(table_entry));
 		table->next = NULLSYM;
 		table->name = (char *) malloc((unsigned) strlen(name) + 1);
-		(void) strcpy(table->name, name);
+		 strcpy(table->name, name);
 		if (val) {
 			table->val =
 				(char *) malloc((unsigned) strlen(val) + 1);
-			(void) strcpy(table->val, val);
+			 strcpy(table->val, val);
 		} else
 			table->val = 0;
 	}

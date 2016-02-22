@@ -602,7 +602,7 @@ TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 
 #endif
 			default:
-			(void) tusaplose (td, DR_ADDRESS, NULLCP,
+			 tusaplose (td, DR_ADDRESS, NULLCP,
 							  "unknown network type: 0x%x (%c)", *vec[0], *vec[0]);
 			freetblk (tb);
 			return NOTOK;
@@ -880,7 +880,7 @@ TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 	 *  Restore the mask.
 	 */
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	/*
 	 *  And return the result from the write.  To succeed, it
@@ -1009,7 +1009,7 @@ TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdisconnect
 	hp = gethostbyaddr ((char *) &socket.sin_addr,
 						sizeof socket.sin_addr,
 						socket.sin_family);
-	(void) strcpy ( na-> na_domain, hp ? hp -> h_name :
+	 strcpy ( na-> na_domain, hp ? hp -> h_name :
 					inet_ntoa (socket.sin_addr));
 
 	na -> na_port = socket.sin_port;
@@ -1096,7 +1096,7 @@ IFP	data;
 
 	result = TUnitDataWakeUp (tb);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -1139,7 +1139,7 @@ int    *nfds;
 	 */
 
 	if ((tb = findtublk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return tusaplose ( td,
 						   DR_PARAMETER,
 						   NULLCP,
@@ -1153,7 +1153,7 @@ int    *nfds;
 	selmask (tb -> tb_fd, *mask, *nfds);
 
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 
@@ -1195,7 +1195,7 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 	struct TSAPdata   *tx = &txs;
 
 #ifndef	BSDSIGS
-	(void) signal (SIGEMT, UNITDATAser);
+	 signal (SIGEMT, UNITDATAser);
 
 	smask = sigioblock ();
 #endif
@@ -1249,11 +1249,11 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 	 */
 
 #ifndef	SIGPOLL
-	(void) kill (TPid, SIGEMT);
+	 kill (TPid, SIGEMT);
 #endif
 
 #ifndef	BSDSIGS
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 #endif
 
 }
@@ -1278,7 +1278,7 @@ TUnitDataWakeUp (struct tsapblk *tb)
 	static int  inited = 0;
 
 	if (TPid > OK) {
-		(void) kill (TPid, SIGTERM);
+		 kill (TPid, SIGTERM);
 		TPid = NOTOK;
 	}
 
@@ -1299,9 +1299,9 @@ TUnitDataWakeUp (struct tsapblk *tb)
 		int    smask = sigsetmask (sigblock (0) & ~sigmask (SIGEMT));
 #endif
 
-		(void) signal (SIGEMT, UNITDATAser);
+		 signal (SIGEMT, UNITDATAser);
 #ifndef	BSDSIGS
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 #endif
 		inited++;
 	}
@@ -1309,11 +1309,11 @@ TUnitDataWakeUp (struct tsapblk *tb)
 	if ((is = getisoserventbyname ("udisore", "tsap")) == NULL)
 		return tusaplose (td, DR_CONGEST, NULLCP, "ISO service tsap/isore not found");
 
-	(void) sprintf (buf1, "%d", nfds);
+	 sprintf (buf1, "%d", nfds);
 	*is -> is_tail++ = buf1;
-	(void) sprintf (buf2, "0x%x", mask.fds_bits[0]);
+	 sprintf (buf2, "0x%x", mask.fds_bits[0]);
 	*is -> is_tail++ = buf2;
-	(void) sprintf (buf3, "%d", getpid ());
+	 sprintf (buf3, "%d", getpid ());
 	*is -> is_tail++ = buf3;
 	*is -> is_tail = NULL;
 
@@ -1323,8 +1323,8 @@ TUnitDataWakeUp (struct tsapblk *tb)
 			continue;
 
 		case OK:
-			(void) signal (SIGEMT, SIG_DFL);
-			(void) execv (*is -> is_vec, is -> is_vec);
+			 signal (SIGEMT, SIG_DFL);
+			 execv (*is -> is_vec, is -> is_vec);
 			_exit (1);
 
 		default:
@@ -1353,7 +1353,7 @@ struct tsapblk *tb;
 
 	if (tb -> tb_flags & TB_ASYN) {
 		if (!inited) {
-			(void) signal (SIGPOLL, UNITDATAser);
+			 signal (SIGPOLL, UNITDATAser);
 
 			inited++;
 		}

@@ -79,7 +79,7 @@ transmit (struct ntp_peer *peer)
 	int i;
 
 	if (peer->src.type == AF_OSI) {
-		(void) transmit_osi (peer);
+		 transmit_osi (peer);
 		return;
 	}
 
@@ -95,7 +95,7 @@ transmit (struct ntp_peer *peer)
 	pkt->reftime = sys.reftime;
 	pkt->org = peer->org;
 	pkt->rec = peer->rec;
-	(void) gettimeofday(&txtv, (struct timezone *) 0);
+	 gettimeofday(&txtv, (struct timezone *) 0);
 
 #ifdef notdef
 	if (peer->flags & PEER_FL_AUTHENABLE &&
@@ -174,7 +174,7 @@ transmit (struct ntp_peer *peer)
 
 #ifdef	DEBUG
 	if (debug > 5) {
-		(void) printf("\nSent ");
+		 printf("\nSent ");
 		dump_pkt(&peer->src, pkt, (struct ntp_peer *)NULL);
 	}
 #endif
@@ -252,7 +252,7 @@ refclock_input (struct ntp_peer *peer, struct ntpdata *pkt)
 	double_to_s_fixed(&pkt->dispersion, 0.0);
 #ifdef	DEBUG
 	if (debug > 5) {
-		(void) printf("\nFaking packet ");
+		 printf("\nFaking packet ");
 		dump_pkt(&peer->src, pkt, (struct ntp_peer *)NULL);
 	}
 #endif
@@ -639,7 +639,7 @@ clock_update (struct ntp_peer *peer)
 /* 3.4.6 Initialization procedure */
 
 void 
-initialize (void) {
+initialize  {
 	sys.leap = ALARM;	/* indicate unsynchronized */
 	sys.stratum = 0;
 	sys.precision = 0;	/* may be specified in the config file;
@@ -720,9 +720,9 @@ poll_update (struct ntp_peer *peer, int new_hpoll)
 /* 3.4.9 Authentication Procedures */
 #if	0
 int 
-encrypt (void) {}
+encrypt  {}
 int 
-decrypt (void) {}
+decrypt  {}
 #endif
 
 /* 4.1 Clock Filter Procedure */
@@ -808,7 +808,7 @@ clock_filter (struct ntp_peer *peer, double new_delay, double new_offset)
 
 /* 4.2 Clock Select Procedure */
 void 
-select_clock (void) {
+select_clock  {
 	struct ntp_peer *ptmp, *peer = peer_list.head;
 	struct sel_lst {
 		struct ntp_peer *peer;

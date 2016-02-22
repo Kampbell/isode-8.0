@@ -181,7 +181,7 @@ char * f;
 		malloc_started = 1;
 	} else {
 		malloc_file = open (malloc_fname,1);
-		(void) lseek (malloc_file,0l,2);
+		 lseek (malloc_file,0l,2);
 	}
 #else
 	malloc_file = 0;
@@ -191,7 +191,7 @@ char * f;
 stop_malloc_trace () {
 #ifdef MALLOCTRACE
 	if (malloc_file)
-		(void) close (malloc_file);
+		 close (malloc_file);
 #endif
 	malloc_file = 0;
 }
@@ -210,7 +210,7 @@ char *p;
 	q = p;
 	while (*q++)
 		;
-	(void) write(malloc_file, p, q-p-1);
+	 write(malloc_file, p, q-p-1);
 }
 
 static write_addr(addr)
@@ -227,7 +227,7 @@ char *addr;
 	x = (int) addr;
 
 	if (x == 0) {
-		(void) write(malloc_file, "0 ",2);
+		 write(malloc_file, "0 ",2);
 		return;
 	}
 
@@ -237,9 +237,9 @@ char *addr;
 	*ptr = 0;
 
 	while (ptr != buf)
-		(void) write(malloc_file, --ptr,1);
+		 write(malloc_file, --ptr,1);
 
-	(void) write (malloc_file," ",1);
+	 write (malloc_file," ",1);
 }
 
 static write_int(x)
@@ -253,7 +253,7 @@ unsigned x;
 		return;
 
 	if (x == 0) {
-		(void) write(malloc_file, "0 ",2);
+		 write(malloc_file, "0 ",2);
 		return;
 	}
 
@@ -262,9 +262,9 @@ unsigned x;
 		*ptr++ = dec[x % 10], x /= 10;
 
 	while (ptr != buf)
-		(void) write(malloc_file, --ptr,1);
+		 write(malloc_file, --ptr,1);
 
-	(void) write (malloc_file," ",1);
+	 write (malloc_file," ",1);
 }
 
 static log_realloc (oldlen,newlen,bsize,addr)

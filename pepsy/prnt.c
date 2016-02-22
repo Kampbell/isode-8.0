@@ -1183,7 +1183,7 @@ next_ptpe (ptpe *p)
 
 	level = 0;
 	if (p->pe_type == PE_END) {
-		(void) ppepsylose (NULLMODTYP, p, NULLPE,
+		 ppepsylose (NULLMODTYP, p, NULLPE,
 						   "next_ptpe: unexpected PE_END");
 		return (NULLPTPE);
 	}
@@ -1246,7 +1246,7 @@ again:
 			break;
 
 		default:
-			(void) ppepsylose (NULLMODTYP, p, NULLPE,
+			 ppepsylose (NULLMODTYP, p, NULLPE,
 							   "next_ptpe: unknown type %d\n", p->pe_type);
 			return (NULLPTPE);
 		}
@@ -1517,7 +1517,7 @@ p_ismatch (
 	case SEXTOBJ:
 	case EXTOBJ:
 		if (p[1].pe_type != EXTMOD) {
-			(void) ppepsylose (mod, p, NULLPE, "p_ismatch: missing EXTMOD");
+			 ppepsylose (mod, p, NULLPE, "p_ismatch: missing EXTMOD");
 			return (0); /* fixup ismatch return -1 */
 		}
 		return (p_ismatch(EXT2MOD(mod, (p + 1))->md_ptab[p->pe_tag] + 1,
@@ -1654,7 +1654,7 @@ setpval (ptpe *typ, ptpe *dflt, modtyp *mod)
 		if (printable(ptr, intval)) {
 			(*vfnx) (vfp, "\"");
 			for (; *ptr && intval-- > 0; ptr++)
-				(void) fputc(*ptr, vfp);
+				 fputc(*ptr, vfp);
 			(*vfnx) (vfp, "\"\n");
 		} else {
 			(*vfnx) (vfp, "'");
@@ -1734,7 +1734,7 @@ dmp_ptpe (
 	ptpe  **par, **prev;
 	char   *name;
 
-	(void) fprintf(vfp, "%s:(%s)", s, mod->md_name);
+	 fprintf(vfp, "%s:(%s)", s, mod->md_name);
 	/*
 	 * Calculate what table it is in - we assume they are in order of
 	 * increasing address
@@ -1746,7 +1746,7 @@ dmp_ptpe (
 		name = "Printing:";
 	}
 	if (par == NULL) {
-		(void) fprintf(vfp, "can't find entry 0x%x\n", p);
+		 fprintf(vfp, "can't find entry 0x%x\n", p);
 		return;
 	}
 	prev = par;
@@ -1756,13 +1756,13 @@ dmp_ptpe (
 		par++;
 	}
 	if (par == prev) {
-		(void) ppepsylose (mod, p, NULLPE,
+		 ppepsylose (mod, p, NULLPE,
 						   "dmp_ptpe:par == prev == 0x%x internal error\n", (int) par);
 		return;
 	}
 	par--;
 	j = p - *par;
 
-	(void) fprintf(vfp, "%s type %d + %d ", name, par - prev, j);
+	 fprintf(vfp, "%s type %d + %d ", name, par - prev, j);
 	pr_entry(p);
 }

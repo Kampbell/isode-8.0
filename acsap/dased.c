@@ -110,7 +110,7 @@ main (int argc, char **argv, char **envp)
 				*rfds;
 
 		if (!isbound && prebind)
-			(void) bind_to_dsa ();
+			 bind_to_dsa ();
 
 		if (isbound) {
 			rfds = &ifds;
@@ -134,7 +134,7 @@ main (int argc, char **argv, char **envp)
 			if (debug)
 				advise (LLOG_DEBUG, NULLCP, "unbound from directory");
 
-			(void) ds_unbind ();
+			 ds_unbind ();
 			isbound = 0;
 		}
 
@@ -156,7 +156,7 @@ main (int argc, char **argv, char **envp)
 		default:
 			if (isbound) {
 				if (dsap_ad != NOTOK)
-					(void) close (dsap_ad), dsap_ad = NOTOK;
+					 close (dsap_ad), dsap_ad = NOTOK;
 				isbound = 0;
 			}
 			continue;
@@ -223,7 +223,7 @@ dased (int vecp, char **vec)
 		if (debug)
 			advise (LLOG_DEBUG, NULLCP, "unbound from directory");
 
-		(void) ds_unbind ();
+		 ds_unbind ();
 		isbound = 0;
 	}
 
@@ -341,7 +341,7 @@ no_mem:
 				goto no_mem;
 			if (strcmp (passwd, cp))
 				changed++;
-			(void) strcpy (passwd, cp);
+			 strcpy (passwd, cp);
 			free (cp);
 		} else {
 			if (passwd[0])
@@ -350,7 +350,7 @@ no_mem:
 		}
 
 		if (isbound && changed) {
-			(void) ds_unbind ();
+			 ds_unbind ();
 			isbound = 0;
 		}
 	}
@@ -388,7 +388,7 @@ no_mem:
 
 	if (dns -> dns_next) {
 		if (req -> interactive)
-			(void) dnSelect (vec[0], &dns, dase_interact, el -> Dns);
+			 dnSelect (vec[0], &dns, dase_interact, el -> Dns);
 
 		for (; dns; dns = dns -> dns_next) {
 			dn = &dns -> dns_dn;
@@ -403,7 +403,7 @@ no_mem:
 all_done:
 	;
 	if (dn) {
-		(void) encode_IF_DistinguishedName (&rsp -> name, 1, NULL, NULLCP,*dn);
+		 encode_IF_DistinguishedName (&rsp -> name, 1, NULL, NULLCP,*dn);
 #ifdef	STATS
 		advise (LLOG_NOTICE, NULLCP, "answer: %s", dn2str (*dn));
 #endif
@@ -462,7 +462,7 @@ send_rsp:
 /*  */
 
 static 
-bind_to_dsa (void) {
+bind_to_dsa  {
 	struct ds_bind_arg ba;
 	struct ds_bind_arg br;
 	struct ds_bind_error be;
@@ -472,7 +472,7 @@ bind_to_dsa (void) {
 		if (debug)
 			advise (LLOG_DEBUG, NULLCP, "unbound from directory");
 
-		(void) ds_unbind ();
+		 ds_unbind ();
 		isbound = 0;
 	}
 
@@ -511,7 +511,7 @@ make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_e
 	if (ba -> dba_dn = userdn)
 		ba -> dba_auth_type = DBA_AUTH_SIMPLE;
 	if (ba -> dba_passwd_len = strlen (passwd))
-		(void) strcpy (ba -> dba_passwd, passwd);
+		 strcpy (ba -> dba_passwd, passwd);
 }
 
 /*  */
@@ -831,7 +831,7 @@ arginit (char **vec)
 			case 'p':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -p passwd", pgmname);
-				(void) strcpy (passwd, ap);
+				 strcpy (passwd, ap);
 				bzero ((char *) ap, strlen (ap));
 				continue;
 
@@ -855,7 +855,7 @@ arginit (char **vec)
 /*  */
 
 static 
-envinit (void) {
+envinit  {
 	int     i,
 			sd;
 
@@ -877,14 +877,14 @@ envinit (void) {
 			break;
 		}
 
-		(void) chdir ("/");
+		 chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			(void) dup2 (sd, 0), (void) close (sd);
-		(void) dup2 (0, 1);
-		(void) dup2 (0, 2);
+			 dup2 (sd, 0),  close (sd);
+		 dup2 (0, 1);
+		 dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -892,14 +892,14 @@ envinit (void) {
 #endif
 #ifdef  TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			(void) ioctl (sd, TIOCNOTTY, NULLCP);
-			(void) close (sd);
+			 ioctl (sd, TIOCNOTTY, NULLCP);
+			 close (sd);
 		}
 #else
 #ifdef  SYS5
-		(void) setpgrp ();
-		(void) signal (SIGINT, SIG_IGN);
-		(void) signal (SIGQUIT, SIG_IGN);
+		 setpgrp ();
+		 signal (SIGINT, SIG_IGN);
+		 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -908,10 +908,10 @@ envinit (void) {
 #ifndef sun			/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			(void) close (sd);
+			 close (sd);
 #endif
 
-	(void) signal (SIGPIPE, SIG_IGN);
+	 signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, pgmname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
@@ -985,11 +985,11 @@ ts_advise (struct TSAPdisconnect *td, int code, char *event)
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						TErrString (td -> td_reason),
 						td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		(void) sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }

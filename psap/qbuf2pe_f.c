@@ -315,17 +315,17 @@ leave:
 
 #ifdef DEBUG
 int 
-qbprintf (void) {
+qbprintf()  {
 	int len;
 	struct qbuf *qb;
 	char *cp;
 
 	for(qb = Fqb, cp = qb->qb_data; qb != Hqb; qb = qb->qb_forw) {
 		for(len = 0; len < qb->qb_len; cp++, len++) {
-			(void) ll_printf (psap_log, "%x ", *cp);
-			if((len % 15) == 0) (void) ll_printf(psap_log, "\n");
+			 ll_printf (psap_log, "%x ", *cp);
+			if((len % 15) == 0)  ll_printf(psap_log, "\n");
 		}
 	}
-	(void) ll_sync (psap_log);
+	 ll_sync (psap_log);
 }
 #endif

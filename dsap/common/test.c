@@ -80,7 +80,7 @@ char **argv;
 			do_parse (*argv++);
 	} else
 		for (;;) {
-			(void) fprintf (stderr,"-> ");
+			 fprintf (stderr,"-> ");
 
 			if ((buffer = getline(stdin)) == NULLCP)
 				break;
@@ -118,11 +118,11 @@ char *str;
 	as = as_cpy (as2);
 
 	if (as == NULLATTR) {
-		(void) fprintf (stderr,"NULL value\n");
+		 fprintf (stderr,"NULL value\n");
 		return;
 	}
 	if (parse_status != 0) {
-		(void) fprintf (stderr,"parse error - non null as\n");
+		 fprintf (stderr,"parse error - non null as\n");
 		return;
 	}
 
@@ -176,11 +176,11 @@ char *str;
 	quipu_faststart = FALSE;
 
 	if (as2 == NULLATTR) {
-		(void) fprintf (stderr,"NULL value from 2nd parse\n");
+		 fprintf (stderr,"NULL value from 2nd parse\n");
 		return;
 	}
 	if (parse_status != 0) {
-		(void) fprintf (stderr,"parse error 2nd time - non null as\n");
+		 fprintf (stderr,"parse error 2nd time - non null as\n");
 		return;
 	}
 

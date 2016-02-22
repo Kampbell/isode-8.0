@@ -88,6 +88,6 @@ RoErrString (int code)
 	if (code < reject_err0_cnt)
 		return reject_err0[code];
 
-	(void) sprintf (buffer, "unknown error code 0x%x", code);
+	 sprintf (buffer, "unknown error code 0x%x", code);
 	return buffer;
 }

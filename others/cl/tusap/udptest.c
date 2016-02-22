@@ -216,7 +216,7 @@ main (int argc, char **argv, char **envp)
 			break;
 		}
 		printf("\nCommand: ");
-		(void)fflush(stdout);
+		fflush(stdout);
 		bptr = gets(buffer);
 		if (feof (stdin))
 			exit (1);

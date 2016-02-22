@@ -47,7 +47,7 @@ DIR		*dirp;	/* stream from opendir() */
 }
 #else
 int 
-_readdir_stub (void) {
+_readdir_stub()  {
 	;
 }
 #endif

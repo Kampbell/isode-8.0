@@ -33,7 +33,7 @@ read_clock_local (int cfd, struct timeval **tvp, struct timeval **mtvp)
 	static struct timeval realtime, mytime;
 
 	TRACE (2, ("read_local_clock"));
-	(void) gettimeofday(&realtime, (struct timezone *)0);
+	 gettimeofday(&realtime, (struct timezone *)0);
 	mytime = realtime;
 	*tvp = &realtime;
 	*mtvp = &mytime;

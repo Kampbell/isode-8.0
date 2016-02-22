@@ -114,7 +114,7 @@ again:
 
 						/* interrupt causes EINTR */
 						if (RoSelectMask (sd, &rfds, &nfds, roi) == OK)
-							(void) xselect (nfds, &rfds, NULLFD,
+							 xselect (nfds, &rfds, NULLFD,
 											NULLFD, NOTOK);
 					}
 					if (interrupted) {
@@ -161,7 +161,7 @@ again:
 	}
 
 	if (class == ROS_INTR)
-		(void) signal (SIGINT, istat);
+		 signal (SIGINT, istat);
 
 	return result;
 }
@@ -174,7 +174,7 @@ static SFD
 intrser (int sig)
 {
 #ifndef	BSDSIGS
-	(void) signal (SIGINT, intrser);
+	 signal (SIGINT, intrser);
 #endif
 
 	interrupted++;

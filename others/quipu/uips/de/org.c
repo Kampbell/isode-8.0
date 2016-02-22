@@ -103,7 +103,7 @@ freeOrgs (struct namelist **listpp)
 }
 
 void 
-freeOrgSearchArgs (void) {
+freeOrgSearchArgs  {
 	/*
 	Attr_Sequence atl, x;
 	*/

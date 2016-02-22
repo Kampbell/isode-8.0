@@ -59,7 +59,7 @@ photo_start (char *name)
 	erase ();
 	linemod ("solid");
 
-	(void) signal (SIGTERM,photo_quit);
+	 signal (SIGTERM,photo_quit);
 	/* return 0 if sucessful -1 if not */
 
 	return (0);
@@ -74,9 +74,9 @@ photo_end (char *name)
 	move (0,Y_OFFSET - 100);
 	closepl();
 
-	(void) printf ("\n");
-	(void) fflush (stdout);
-	(void) close (1);	/* this is needed for QUIPU */
+	 printf ("\n");
+	 fflush (stdout);
+	 close (1);	/* this is needed for QUIPU */
 	/* wait until signalled to Terminate */
 	for (;;)
 		;

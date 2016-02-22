@@ -43,7 +43,7 @@ main (int argc, char **argv)
 			sleeptime = atoi (optarg);
 			break;
 		default:
-			(void) fprintf (stderr, "Usage: %s [-s] host\n", myname);
+			 fprintf (stderr, "Usage: %s [-s] host\n", myname);
 			break;
 		}
 
@@ -128,7 +128,7 @@ mk_connect (char *addr)
 	pc -> pc_ctx[0].pc_atn = NULLOID;
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
 	if (AcAssocRequest (ctx, NULLAEI, NULLAEI, NULLPA, pa,
@@ -241,11 +241,11 @@ query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, 
 	char	*p, c;
 	int 	i;
 
-	(void) printf (" %4.4s %4.4s %5.5s %8.8s %8.8s %8.8s %s\n",
+	 printf (" %4.4s %4.4s %5.5s %8.8s %8.8s %8.8s %s\n",
 				   "Stratum", "Poll", "Reach", "Delay", "Offset", "Disp", "host");
 	for (i = 0; i < 44; i++)
-		(void) putchar('-');
-	(void) putchar ('\n');
+		 putchar('-');
+	 putchar ('\n');
 	for (; result; result = result -> next) {
 		clock = result -> ClockInfo;
 
@@ -260,24 +260,24 @@ query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, 
 			c = '>';
 		if (bit_test (clock -> flags, bit_NTP_flags_inactive))
 			c = '!';
-		(void) putchar (c);
-		(void) printf ("%4d", clock -> stratum);
-		(void) printf (" %4d", clock -> timer);
-		(void) printf ("   %03o", clock -> reachability);
-		(void) printf (" %8d", clock -> estdelay);
-		(void) printf (" %8d", clock -> estoffset);
-		(void) printf (" %8d", clock -> estdisp);
+		 putchar (c);
+		 printf ("%4d", clock -> stratum);
+		 printf (" %4d", clock -> timer);
+		 printf ("   %03o", clock -> reachability);
+		 printf (" %8d", clock -> estdelay);
+		 printf (" %8d", clock -> estoffset);
+		 printf (" %8d", clock -> estdisp);
 		p = qb2str (clock -> remoteAddress);
-		(void) printf (" %s", p);
+		 printf (" %s", p);
 		free(p);
 		if (c == '>') {
 			struct type_NTP_ClockIdentifier *ci =
 						clock -> reference;
 			p = qb2str(ci -> un.referenceClock);
-			(void) printf (" (%s)", p);
+			 printf (" (%s)", p);
 			free (p);
 		}
-		(void) putchar ('\n');
+		 putchar ('\n');
 	}
 	return OK;
 }
@@ -310,9 +310,9 @@ static PE build_bind_arg () {
 	bindarg -> version =
 		pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
 				  PE_PRIM_BITS);
-	(void) bit_on (bindarg -> version,
+	 bit_on (bindarg -> version,
 				   bit_NTP_version_version__1);
-	(void) bit_on (bindarg -> version,
+	 bit_on (bindarg -> version,
 				   bit_NTP_version_version__2);
 
 	bindarg -> mode = (struct type_NTP_BindMode *)
@@ -342,10 +342,10 @@ ros_advise (struct RoSAPpreject *rop, char *event)
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (NULLCP, "%s: %s", event, buffer);
 }
@@ -367,11 +367,11 @@ acs_advise (struct AcSAPabort *aca, char *event)
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -423,13 +423,13 @@ va_list ap;
 
 	asprintf (buffer, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
-	(void) fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	 fprintf (stderr, "%s: ", myname);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-	(void) fflush (stderr);
+	 fflush (stderr);
 }
 #else
 /* VARARGS */

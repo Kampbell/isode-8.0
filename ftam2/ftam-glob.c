@@ -94,7 +94,7 @@ char *v;
 	vv[0] = malloc ((unsigned) (strlen (v) + 1));
 	if (vv[0] == (char *)0)
 		fatal("out of memory");
-	(void) strcpy (vv[0], v);
+	 strcpy (vv[0], v);
 	v = vv[0];
 	vv[1] = 0;
 	gflag = 0;
@@ -192,9 +192,9 @@ char *as;
 				*gpathp = 0;
 				if ((*gethdir) (gpath + 1))
 					globerr = "Unknown user name after ~";
-				(void) strcpy(gpath, gpath + 1);
+				 strcpy(gpath, gpath + 1);
 			} else
-				(void) strcpy(gpath, home);
+				 strcpy(gpath, home);
 			gpathp = strend(gpath);
 		}
 	}
@@ -217,7 +217,7 @@ char *as;
 		cs++, gpathp++;
 	*gpathp = 0;
 	if (*oldcs == '{') {
-		(void) execbrc(cs, ((char *)0));
+		 execbrc(cs, ((char *)0));
 		return;
 	}
 	(*matchdir) (cs);
@@ -238,7 +238,7 @@ char *pattern;
 	struct dirent *dp;
 	DIR *dirp;
 
-	(void) strcpy (pat, pattern);
+	 strcpy (pat, pattern);
 
 	dirp = opendir(*gpath ? gpath : ".");
 	if (dirp == NULL) {
@@ -262,11 +262,11 @@ char *pattern;
 	}
 	if (errno)
 		globerr = "corrupted directory";
-	(void) closedir(dirp);
+	 closedir(dirp);
 	return;
 
 patherr1:
-	(void) closedir(dirp);
+	 closedir(dirp);
 patherr2:
 	globerr = "Bad directory components";
 }
@@ -323,8 +323,8 @@ pend:
 doit:
 			savec = *pm;
 			*pm = 0;
-			(void) strcpy(lm, pl);
-			(void) strcat(restbuf, pe + 1);
+			 strcpy(lm, pl);
+			 strcat(restbuf, pe + 1);
 			*pm = savec;
 			if (s == 0) {
 				sgpathp = gpathp;
@@ -674,8 +674,8 @@ char *cp, *dp;
 
 	if (ep == (char *)0)
 		fatal("out of memory");
-	(void) strcpy(ep, cp);
-	(void) strcat(ep, dp);
+	 strcpy(ep, cp);
+	 strcat(ep, dp);
 	return (ep);
 }
 
@@ -716,7 +716,7 @@ char *hdir;
 
 	if (pp == 0)
 		return (1);
-	(void) strcpy(hdir, pp->pw_dir);
+	 strcpy(hdir, pp->pw_dir);
 	return (0);
 }
 
@@ -778,7 +778,7 @@ int	remote;
 			cp = remote ? str2file (*gp) : *gp;
 			if ((dp = malloc ((unsigned) (strlen (cp) + 1))) == NULLCP)
 				fatal ("out of memory");
-			(void) strcpy (dp, cp);
+			 strcpy (dp, cp);
 			*gp = dp;
 		}
 
@@ -851,7 +851,7 @@ int	remote;
 
 	if (vp && debug)
 		for (gp = vp; *gp; gp++)
-			(void) printf ("%d: \"%s\"\n", gp - vp, *gp);
+			 printf ("%d: \"%s\"\n", gp - vp, *gp);
 
 	return vp;
 }
@@ -868,7 +868,7 @@ char   *pattern;
 	struct FADUidentity *faduid = &faduids;
 	struct filent *fi, *gi;
 
-	(void) strcpy (pat, pattern);
+	 strcpy (pat, pattern);
 
 	switch (isdir (gpath, cwd, 1)) {
 	case NOTOK:
@@ -879,7 +879,7 @@ char   *pattern;
 
 	default:
 		if (cwd[0] == NULL)
-			(void) strcpy (cwd, gpath);
+			 strcpy (cwd, gpath);
 		cp = cwd + strlen (cwd) - 1;
 		if (*cp == '/')
 			*cp = NULL;
@@ -894,11 +894,11 @@ char   *pattern;
 	faduid -> fa_type = FA_FIRSTLAST;
 	faduid -> fa_firstlast = FA_FIRST;
 
-	(void) fdffnx (NOTOK, (struct PSAPdata *) 0, 1);
-	(void) getvf (cp, NULLCP, faduid, &vfs[VFS_FDF], fdffnx);
+	 fdffnx (NOTOK, (struct PSAPdata *) 0, 1);
+	 getvf (cp, NULLCP, faduid, &vfs[VFS_FDF], fdffnx);
 
 	fi = gi = filents, filents = NULL;
-	(void) fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
+	 fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
 
 	{
 		int len = strlen (cp);
@@ -917,7 +917,7 @@ char   *pattern;
 	}
 
 	filents = gi;
-	(void) fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
+	 fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
 }
 
 /*  */
@@ -938,7 +938,7 @@ char    *hdir;
 {
 	char    buffer[BUFSIZ];
 
-	(void) sprintf (buffer, "~%s", hdir);
+	 sprintf (buffer, "~%s", hdir);
 
 	return (isdir (buffer, hdir, 1) != DONE);
 }
@@ -966,11 +966,11 @@ char  **vec;
 		for (cp = ""; *gp; gp++, cp = " ") {
 			gs = rindex (*gp, '/');
 			if (gs == NULL)
-				(void) printf ("%s%s", cp, *gp);
+				 printf ("%s%s", cp, *gp);
 			else
-				(void) printf ("%s%s", cp, ++gs);
+				 printf ("%s%s", cp, ++gs);
 		}
-		(void) printf ("\n");
+		 printf ("\n");
 
 		blkfree (gb);
 	}

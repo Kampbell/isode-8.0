@@ -287,7 +287,7 @@ IFP	magic;
 			fd = (*fnx) (ta, NULLNA, ns, magic, td);
 #ifdef MGMT
 			if (fd == OK)
-				(void) TManGen (STARTLISTEN, NULLBP, ta);
+				 TManGen (STARTLISTEN, NULLBP, ta);
 #endif
 
 			return fd;
@@ -351,18 +351,18 @@ IFP	magic;
 	if (lstn == OK) {
 #ifdef MGMT
 		tas.ta_naddr = ca - tas.ta_addrs;
-		(void) TManGen (STARTLISTEN, NULLBP, &tas);
+		 TManGen (STARTLISTEN, NULLBP, &tas);
 #endif
 
 		return OK;
 	}
 
-	(void) tsaplose (td, DR_PARAMETER, NULLCP,
+	 tsaplose (td, DR_PARAMETER, NULLCP,
 					 "no supported network addresses");
 
 out:
 	;
-	(void) TNetClose (ta, &tds);
+	 TNetClose (ta, &tds);
 	return NOTOK;
 }
 
@@ -477,9 +477,9 @@ struct TSAPdisconnect *td;
 
 	if (!inited) {
 #if defined(BSD42) || defined(HPUX)
-		(void) signal (SIGCHLD, chldser);
+		 signal (SIGCHLD, chldser);
 #else
-		(void) signal (SIGCLD, SIG_IGN);
+		 signal (SIGCLD, SIG_IGN);
 #endif
 		if (acl_count == 0)
 			FD_ZERO (&acl_mask);
@@ -508,7 +508,7 @@ retry:
 			if (errno == EINTR && chldhit)
 				goto retry;
 #endif
-			(void) tsaplose (td, DR_CONGEST, "failed", "xselect");
+			 tsaplose (td, DR_CONGEST, "failed", "xselect");
 		}
 
 		return n;
@@ -632,7 +632,7 @@ empty:
 						if (magicfnx
 								&& (*magicfnx) (vecp, vec, td)
 								== NOTOK) {
-							(void) (*closefnx) (fd);
+							 (*closefnx) (fd);
 							return NOTOK;
 						}
 						accepted++;
@@ -782,7 +782,7 @@ struct TSAPdisconnect *td;
 					if ((*lb2 -> lb_accept2) (lb2, vecp, vec, td) == NOTOK)
 						return NOTOK;
 					if (magicfnx && (*magicfnx) (vecp, vec, td) == NOTOK) {
-						(void) (*closefnx) (fd);
+						 (*closefnx) (fd);
 						return NOTOK;
 					}
 					accepted++;
@@ -902,7 +902,7 @@ struct TSAPdisconnect *td;
 	int   error;
 
 	if (vecp < 2) {
-		(void) tsaplose (td, DR_CONGEST, "x25_pass_to_child",
+		 tsaplose (td, DR_CONGEST, "x25_pass_to_child",
 						 "vecp too small, so rejecting");
 		return NOTOK;
 	}
@@ -916,13 +916,13 @@ struct TSAPdisconnect *td;
 			vci = our_get_vci(fd,"our_get_vci in x25_pass_to_child");
 
 			if ( (error = X25Option(vci,X25_PassToChild)) < NULL ) {
-				(void) tsaplose (td, DR_CONGEST, "x25_pass_to_child (X25Option)",
+				 tsaplose (td, DR_CONGEST, "x25_pass_to_child (X25Option)",
 								 X25ErrorText(vci,error));
 				return NOTOK;
 			}
 		}
 	} else {
-		(void) tsaplose (td, DR_CONGEST, "x25_pass_to_child",
+		 tsaplose (td, DR_CONGEST, "x25_pass_to_child",
 						 "invalid vec[0], so rejecting");
 		return NOTOK;
 	}
@@ -1079,7 +1079,7 @@ struct TSAPdisconnect *td;
 		break;
 
 	case NOTOK:
-		(void) tsaplose (td, DR_CONGEST, "connection",
+		 tsaplose (td, DR_CONGEST, "connection",
 						 "unable to fork, so rejecting");
 	default:
 #ifndef	LPP
@@ -1101,14 +1101,14 @@ struct TSAPdisconnect *td;
 			return pid;
 		}
 
-		(void) (*tb -> tb_closefnx) (tb -> tb_fd);
+		 (*tb -> tb_closefnx) (tb -> tb_fd);
 
 		tb -> tb_fd = NOTOK;
 		freetblk (tb);
 	}
 #else
 	if (_lpp_fd != NOTOK) {
-		(void) close_tcp_socket (_lpp_fd);
+		 close_tcp_socket (_lpp_fd);
 		_lpp_fd = NOTOK;
 	}
 #endif
@@ -1116,29 +1116,29 @@ struct TSAPdisconnect *td;
 	return pid;
 	}
 
-	(void) TNetClose (NULLTA, td);
+	 TNetClose (NULLTA, td);
 
 #ifdef	SETSID
-	(void) setsid ();
+	 setsid ();
 #endif
 #ifdef	TIOCNOTTY
 	if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-		(void) ioctl (sd, TIOCNOTTY, NULLCP);
-		(void) close (sd);
+		 ioctl (sd, TIOCNOTTY, NULLCP);
+		 close (sd);
 	}
 #else
 #ifdef	SYS5
-	(void) setpgrp ();
-	(void) signal (SIGINT, SIG_IGN);
-	(void) signal (SIGQUIT, SIG_IGN);
+	 setpgrp ();
+	 signal (SIGINT, SIG_IGN);
+	 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	isodexport (NULLCP);
 
 #ifdef	BSD42
-	(void) signal (SIGCHLD, SIG_DFL);
+	 signal (SIGCHLD, SIG_DFL);
 #else
-	(void) signal (SIGCLD, SIG_DFL);
+	 signal (SIGCLD, SIG_DFL);
 #endif
 
 	return OK;
@@ -1220,7 +1220,7 @@ struct TSAPdisconnect *td;
 #endif
 
 	if ((lb2 = newlblk (LB_ACCEPT, NULLTA)) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
@@ -1267,12 +1267,12 @@ struct TSAPdisconnect *td;
 
 #ifndef	LPP
 	if ((tb = newtblk ()) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
 	tb -> tb_fd = fd;
-	(void) TTService (tb);
+	 TTService (tb);
 
 	add_fd (fd);
 #else
@@ -1322,30 +1322,30 @@ struct TSAPdisconnect *td;
 #endif
 
 	fd = lb -> lb_fd;
-	(void) sprintf (buffer1, "%s+%d",
+	 sprintf (buffer1, "%s+%d",
 					inet_ntoa (lb -> lb_rem_isock.sin_addr),
 					ntohs (lb -> lb_rem_isock.sin_port));
 
 #ifdef	SOCKETS
 	len = sizeof *isock;
 	if (getsockname (fd, (struct sockaddr *) isock, &len) != NOTOK) {
-		(void) sprintf (buffer2, "%s+%d",
+		 sprintf (buffer2, "%s+%d",
 						inet_ntoa (isock -> sin_addr),
 						ntohs (isock -> sin_port));
 	} else
 #endif
-		(void) sprintf (buffer2, "%s", TLocalHostName ());
+		 sprintf (buffer2, "%s", TLocalHostName ());
 
 #ifndef LPP
 	if ((t = fd2tpkt (fd, tb -> tb_initfnx,
 					  tb -> tb_readfnx)) == NULL || t -> t_errno != OK) {
-		(void) tpktlose (tb, td, t ? t -> t_errno : DR_CONGEST, NULLCP,
+		 tpktlose (tb, td, t ? t -> t_errno : DR_CONGEST, NULLCP,
 						 NULLCP);
 		goto out;
 	}
 
 	if (TPDU_CODE (t) != TPDU_CR) {
-		(void) tpktlose (tb, td, DR_PROTOCOL, NULLCP,
+		 tpktlose (tb, td, DR_PROTOCOL, NULLCP,
 						 "transport protocol mangled: expecting 0x%x, got 0x%x",
 						 TPDU_CR, TPDU_CODE (t));
 		goto out;
@@ -1356,7 +1356,7 @@ struct TSAPdisconnect *td;
 				|| bcmp (lb -> lb_addr.ta_selector,
 						 t -> t_called,
 						 lb -> lb_addr.ta_selectlen))) {
-		(void) tpktlose (tb, td, DR_SESSION, NULLCP,
+		 tpktlose (tb, td, DR_SESSION, NULLCP,
 						 "not expecting connection for tsap/%s",
 						 sel2str (t -> t_called, t -> t_calledlen, 1));
 		goto out;
@@ -1368,7 +1368,7 @@ struct TSAPdisconnect *td;
 		goto out;
 
 	if ((vec[2] = tpkt2str (t)) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
+		 tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
 		goto out;
 	}
 
@@ -1451,7 +1451,7 @@ struct TSAPdisconnect *td;
 			return tsaplose (td, DR_CONGEST, "failed", "start_tcp_server");
 		break;
 	}
-	(void) strcpy (na -> na_domain, inet_ntoa (isock -> sin_addr));
+	 strcpy (na -> na_domain, inet_ntoa (isock -> sin_addr));
 	na -> na_port = isock -> sin_port;
 
 	return fd;
@@ -1494,7 +1494,7 @@ struct TSAPdisconnect *td;
 	struct listenblk *lb2;
 
 	if ((lb2 = newlblk (LB_ACCEPT, NULLTA)) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
@@ -1523,12 +1523,12 @@ struct TSAPdisconnect *td;
 	lb2 -> lb_fd = fd;
 
 	if ((tb = newtblk ()) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
 	tb -> tb_fd = fd;
-	(void) XTService (tb);
+	 XTService (tb);
 
 	lb2 -> lb_tb = tb;
 	add_fd (fd);
@@ -1562,13 +1562,13 @@ struct TSAPdisconnect *td;
 
 	if ((t = fd2tpkt (fd = tb -> tb_fd, tb -> tb_initfnx,
 					  tb -> tb_readfnx)) == NULL || t -> t_errno != OK) {
-		(void) tpktlose (tb, td, t ? t -> t_errno : DR_CONGEST, NULLCP,
+		 tpktlose (tb, td, t ? t -> t_errno : DR_CONGEST, NULLCP,
 						 NULLCP);
 		goto out;
 	}
 
 	if (TPDU_CODE (t) != TPDU_CR) {
-		(void) tpktlose (tb, td, DR_PROTOCOL, NULLCP,
+		 tpktlose (tb, td, DR_PROTOCOL, NULLCP,
 						 "transport protocol mangled: expecting 0x%x, got 0x%x",
 						 TPDU_CR, TPDU_CODE (t));
 		goto out;
@@ -1579,7 +1579,7 @@ struct TSAPdisconnect *td;
 				|| bcmp (lb -> lb_addr.ta_selector,
 						 t -> t_called,
 						 lb -> lb_addr.ta_selectlen))) {
-		(void) tpktlose (tb, td, DR_SESSION, NULLCP,
+		 tpktlose (tb, td, DR_SESSION, NULLCP,
 						 "not expecting connection for tsap/%s",
 						 sel2str (t -> t_called, t -> t_calledlen, 1));
 		goto out;
@@ -1592,7 +1592,7 @@ struct TSAPdisconnect *td;
 						   td)) == NULL)
 		goto out;
 	if ((vec[2] = tpkt2str (t)) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
+		 tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
 		goto out;
 	}
 
@@ -1672,7 +1672,7 @@ struct TSAPdisconnect *td;
 	int exp;
 
 	if ((lb2 = newlblk (LB_ACCEPTNOW, NULLTA)) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
@@ -1692,7 +1692,7 @@ struct TSAPdisconnect *td;
 	lb2 -> lb_fd = fd;
 
 	if ((tb = newtblk ()) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
@@ -1706,7 +1706,7 @@ struct TSAPdisconnect *td;
 	buffer[tb -> tb_cc] = NULL;
 	tb -> tb_data = buffer;
 
-	(void) tp4init (tb);
+	 tp4init (tb);
 
 	lb2 -> lb_tb = tb;
 
@@ -1808,7 +1808,7 @@ struct TSAPdisconnect *td;
 	struct listenblk *lb2;
 
 	if ((lb2 = newlblk (LB_ACCEPTNOW, NULLTA)) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
@@ -1826,12 +1826,12 @@ struct TSAPdisconnect *td;
 	lb2 -> lb_fd = fd;
 
 	if ((tb = newtblk ()) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
 	tb -> tb_fd = fd;
-	(void) tp4init (tb);
+	 tp4init (tb);
 
 	lb2 -> lb_tb = tb;
 
@@ -1871,14 +1871,14 @@ struct TSAPdisconnect *td;
 	len = sizeof sock;
 	if (getsockname (fd, (struct sockaddr *) ifaddr, &len) != NOTOK) {
 		ifaddr -> siso_len = len;
-		(void) tp42genX (&tb -> tb_initiating, &sock);
+		 tp42genX (&tb -> tb_initiating, &sock);
 	} else
 		SLOG (tsap_log, LLOG_EXCEPTIONS, "failed",
 			  ("getsockname on incoming connection"));
 
 	cc = sizeof udata;
 	if (tp4getCmsg (fd, &cc, &cmsgtype, udata) == NOTOK) {
-		(void) tsaplose (td, DR_CONGEST, "TPOPT_CONN_DATA", "unable to get");
+		 tsaplose (td, DR_CONGEST, "TPOPT_CONN_DATA", "unable to get");
 		goto out;
 	}
 	if (cmsgtype != TPOPT_CONN_DATA)
@@ -1956,7 +1956,7 @@ struct TSAPdisconnect *td;
 	struct listenblk *lb2;
 
 	if ((lb2 = newlblk (LB_ACCEPT, NULLTA)) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
@@ -1975,11 +1975,11 @@ struct TSAPdisconnect *td;
 	lb2 -> lb_fd = fd;
 
 	if ((tb = newtblk ()) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+		 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 	tb -> tb_fd = fd;
-	(void) tp4init (tb);
+	 tp4init (tb);
 
 	add_fd (fd);
 	lb2 -> lb_tb = tb;
@@ -2016,26 +2016,26 @@ struct TSAPdisconnect *td;
 	static char buffer[BUFSIZ];
 
 	if ((tp = newtp4pkt ((TP_EVENT) 0)) == NULL) {
-		(void) tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
+		 tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
 		goto out;
 	}
 
 	header_len = sizeof (TP_MSG_CONNECT);
 	if ((cc = recvfrom (fd, data, sizeof data, 0, (struct sockaddr *) tp,
 						&header_len)) == NOTOK) {
-		(void) tpktlose (tb, td, DR_CONGEST, "failed", "recvfrom");
+		 tpktlose (tb, td, DR_CONGEST, "failed", "recvfrom");
 		goto out;
 	}
 
 	if (tp -> tp4_event != TP_CONNECT_IND) {
-		(void) tpktlose (tb, td, DR_REMOTE, NULLCP,
+		 tpktlose (tb, td, DR_REMOTE, NULLCP,
 						 "transport protocol mangled: expecting 0x%x got 0x%x",
 						 TP_CONNECT_IND, tp -> tp4_event);
 		goto out;
 	}
 
-	(void) tp42genX (&tb -> tb_responding, &tp -> tp4_called);
-	(void) tp42genX (&tb -> tb_initiating, &tp -> tp4_calling);
+	 tp42genX (&tb -> tb_responding, &tp -> tp4_called);
+	 tp42genX (&tb -> tb_initiating, &tp -> tp4_calling);
 
 	vec[0] = "tsaplisten";		/* any value will do */
 
@@ -2121,7 +2121,7 @@ struct listenblk *lb;
 
 #ifdef	MGMT
 	if (lb -> lb_type == LB_LISTEN)
-		(void) TManGen (ENDLISTEN, NULLBP, &lb -> lb_addr);
+		 TManGen (ENDLISTEN, NULLBP, &lb -> lb_addr);
 #endif
 
 #ifndef	LPP
@@ -2129,7 +2129,7 @@ struct listenblk *lb;
 #endif
 		if (lb -> lb_fd != NOTOK) {
 			del_fd (lb -> lb_fd);
-			(void) (*lb -> lb_close) (lb -> lb_fd);
+			 (*lb -> lb_close) (lb -> lb_fd);
 		}
 
 	remque (lb);
@@ -2305,7 +2305,7 @@ struct TSAPdisconnect *td;
 		tb -> tb_queuePfnx = NULLIFP;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

@@ -79,7 +79,7 @@ enc_f (
 	ptpe *p;
 
 	if (typ < 0 || typ >= mod->md_nentries) {
-		(void) pepsylose (mod, NULLTPE, NULLPE, "enc_f:Illegal typ %d", typ);
+		 pepsylose (mod, NULLTPE, NULLPE, "enc_f:Illegal typ %d", typ);
 		return NOTOK;
 	}
 

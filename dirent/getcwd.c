@@ -92,7 +92,7 @@ int		size;		/* size of buf[] or malloc()ed memory */
 
 		if ( fstat( dirp->dd_fd, dd ) != 0 ) {
 			serrno = errno;	/* set by fstat() */
-			(void)closedir( dirp );
+			closedir( dirp );
 			errno = serrno;	/* in case closedir() clobbered it */
 			goto error;
 		}
@@ -107,7 +107,7 @@ int		size;		/* size of buf[] or malloc()ed memory */
 
 			do
 				if ( (dir = readdir( dirp )) == NULL ) {
-					(void)closedir( dirp );
+					closedir( dirp );
 					errno = ENOENT;	/* missing entry */
 					goto error;
 				}
@@ -116,18 +116,18 @@ int		size;		/* size of buf[] or malloc()ed memory */
 			struct stat	t;	/* info re. test entry */
 			char		name[sizeof(dotdots) + 1 + NAME_MAX];
 
-			(void)strcpy( name, dotdot );
+			strcpy( name, dotdot );
 			dname = &name[strlen( name )];
 			*dname++ = '/';
 
 			do	{
 				if ( (dir = readdir( dirp )) == NULL ) {
-					(void)closedir( dirp );
+					closedir( dirp );
 					errno = ENOENT;	/* missing entry */
 					goto error;
 				}
 
-				(void)strcpy( dname, dir->d_name );
+				strcpy( dname, dir->d_name );
 				/* must fit if NAME_MAX is not a lie */
 			} while ( stat( name, &t ) != 0
 					  || t.st_ino != d->st_ino
@@ -151,7 +151,7 @@ append:
 				;
 
 			if ( app - dname >= bufend - endp ) {
-				(void)closedir( dirp );
+				closedir( dirp );
 				errno = ERANGE;	/* won't fit allotted space */
 				goto error;
 			}
@@ -160,7 +160,7 @@ append:
 				*endp++ = *--app;
 		}
 
-		(void)closedir( dirp );
+		closedir( dirp );
 
 		if ( dname[0] == '\0' ) {	/* reached root; wrap it up */
 			char	*startp;	/* -> buffer[.] */

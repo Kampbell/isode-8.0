@@ -390,7 +390,7 @@ char * new_version () {
 	time_t clock;
 	struct UTCtime ut;
 
-	(void) time (&clock);
+	 time (&clock);
 	tm2ut (gmtime (&clock),&ut);
 	return (strdup(utct2str(&ut)));
 }

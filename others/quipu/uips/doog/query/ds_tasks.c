@@ -130,7 +130,7 @@ abort_task (int task_id)
 
 	arg.aba_invokeid = task_id;
 
-	(void) DapAbandon(dsap_ad, next_task_id++, &arg, &di, ROS_ASYNC);
+	 DapAbandon(dsap_ad, next_task_id++, &arg, &di, ROS_ASYNC);
 
 #ifndef NO_STATS
 	LLOG (log_stat, LLOG_NOTICE,
@@ -150,9 +150,9 @@ DsTask task;
 		return;
 
 	if (task->baseobject != NULLCP)
-		(void) free(task->baseobject);
+		 free(task->baseobject);
 
-	(void) free((char *) task);
+	 free((char *) task);
 } /* ds_task_free */
 
 

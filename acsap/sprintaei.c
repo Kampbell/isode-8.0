@@ -63,16 +63,16 @@ sprintaei (AEI aei)
 	*cp++ = ',';
 
 	if (aei -> aei_flags & AEI_AE_ID) {
-		(void) sprintf (cp, "%d", aei -> aei_ae_id);
+		 sprintf (cp, "%d", aei -> aei_ae_id);
 		cp += strlen (cp);
 	}
 	*cp++ = ',';
 
 	if (aei -> aei_flags & AEI_AP_ID) {
-		(void) sprintf (cp, "%d", aei -> aei_ap_id);
+		 sprintf (cp, "%d", aei -> aei_ap_id);
 		cp += strlen (cp);
 	}
-	(void) strcpy (cp, ">");
+	 strcpy (cp, ">");
 
 	return bp;
 }

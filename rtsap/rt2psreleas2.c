@@ -50,7 +50,7 @@ RtCloseResponse (int sd, int reason, PE data, struct RtSAPindication *rti)
 
 	result = RtCloseResponseAux (acb, reason, data, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

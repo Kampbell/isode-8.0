@@ -53,7 +53,7 @@ SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struc
 
 	result = SRelRequestAux (sb, data, cc, secs, sr, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -129,7 +129,7 @@ SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindicatio
 	else
 		result = SRelRetryRequestAux (sb, secs, sr, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -225,7 +225,7 @@ waiting:
 	default:
 bad_nf:
 		;
-		(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+		 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 						 "session protocol mangled: not expecting 0x%x",
 						 s -> s_code);
 		break;

@@ -73,12 +73,12 @@ struct opsblk *opb;
 
 #ifdef PEPSY_DEFINITIONS
 	if (opb -> opb_out && opb -> opb_free_mod)
-		(void) fre_obj (opb -> opb_out,
+		 fre_obj (opb -> opb_out,
 						opb -> opb_free_mod -> md_dtab[opb -> opb_free_index],
 						opb -> opb_free_mod, 1);
 #else
 	if (opb -> opb_out && opb -> opb_free)
-		(void) (*opb -> opb_free) (opb -> opb_out);
+		 (*opb -> opb_free) (opb -> opb_out);
 #endif
 
 	if (opb -> opb_pe)

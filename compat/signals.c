@@ -74,7 +74,7 @@ static SFP handler[NSIG];
 static SFD 
 sigser (int sig)
 {
-	(void) signal (sig, sigser);
+	 signal (sig, sigser);
 
 	pending |= sigmask (sig);
 }
@@ -119,11 +119,11 @@ sigsetmask (int mask)
 			blocked |= smask;
 		} else if (smask & blocked) {
 			blocked &= ~smask;
-			(void) signal (sig, handler[sig] != BADSIG ? handler[sig]
+			 signal (sig, handler[sig] != BADSIG ? handler[sig]
 						   : SIG_DFL);
 			if (smask & pending) {
 				pending &= ~smask;
-				(void) kill (getpid (), sig);
+				 kill (getpid (), sig);
 			}
 		}
 

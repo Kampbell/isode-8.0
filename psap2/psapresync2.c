@@ -59,9 +59,9 @@ PReSyncResponse (int sd, long ssn, int settings, PE *data, int ndata, struct PSA
 	if ((result = SReSyncResponse (sd, ssn, settings, base, len, &sis))
 			== NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SReSyncResponse", sa);
+			 ss2pslose (pb, pi, "SReSyncResponse", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SReSyncResponse", sa);
+			 ss2pslose (NULLPB, pi, "SReSyncResponse", sa);
 			goto out1;
 		}
 
@@ -78,7 +78,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

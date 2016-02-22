@@ -49,7 +49,7 @@ setenv (const char *name, const char *value, int overwrite)
 	if ((cp = malloc ((unsigned) (strlen (name) + strlen (value) + 2)))
 			== NULL)
 		return 1;
-	(void) sprintf (cp, "%s=%s", name, value);
+	 sprintf (cp, "%s=%s", name, value);
 
 	for (ep = environ, i = 0; *ep; ep++, i++)
 		if (nvmatch (name, *ep)) {

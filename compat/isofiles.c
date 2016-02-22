@@ -45,9 +45,9 @@ _isodefile (char *path, char *file)
 			|| (*file == '.'
 				&& (file[1] == '/'
 					|| (file[1] == '.' && file[2] == '/'))))
-		(void) strcpy (buffer, file);
+		 strcpy (buffer, file);
 	else
-		(void) sprintf (buffer, "%s%s", path, file);
+		 sprintf (buffer, "%s%s", path, file);
 
 	return buffer;
 }

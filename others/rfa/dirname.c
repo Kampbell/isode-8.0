@@ -207,7 +207,7 @@ getRfaContext (char *cwd, char *fn)
 	else if (*fn == '/')
 		rp = realPath("/", fn);
 	else if(commandMode) {
-		(void)getwd(buf);
+		getwd(buf);
 		rp = realPath(buf, fn);
 	} else
 		rp = realPath3(fsBase, cwd, fn);

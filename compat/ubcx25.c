@@ -98,7 +98,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	if (local != NULLNA) {
 		local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
 		if (local -> na_dtelen == 0) {
-			(void) strcpy (local -> na_dte, x25_local_dte);
+			 strcpy (local -> na_dte, x25_local_dte);
 			local -> na_dtelen = strlen(x25_local_dte);
 			if (local -> na_pidlen == 0 && *x25_local_pid)
 				local -> na_pidlen =
@@ -106,10 +106,10 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 		}
 	}
 
-	(void) gen2if (local, sck, ADDR_LISTEN);
+	 gen2if (local, sck, ADDR_LISTEN);
 	if (bind (sd, sck, sizeof(CONN_DB)) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-		(void) close_x25_socket (sd);
+		 close_x25_socket (sd);
 		return NOTOK;
 	}
 
@@ -117,19 +117,19 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 #ifdef	notyet		/* not sure if these are supported... */
 #ifndef	BSD43
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
 #else
 	onoff = 1;
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
 #endif
 
-	(void) listen (sd, backlog);
+	 listen (sd, backlog);
 
 	return sd;
 }
@@ -145,7 +145,7 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 
 	if((nfd = accept (fd, (struct sockaddr *) &sck, &len)) == NOTOK)
 		return NOTOK;
-	(void) if2gen (remote, &sck, ADDR_REMOTE);
+	 if2gen (remote, &sck, ADDR_REMOTE);
 	return nfd;
 }
 
@@ -160,7 +160,7 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 			  ("Invalid type na%d", remote->na_stack));
 		return NOTOK;
 	}
-	(void) gen2if (remote, sck, ADDR_REMOTE);
+	 gen2if (remote, sck, ADDR_REMOTE);
 	return connect (fd, sck, sizeof (CONN_DB));
 }
 
@@ -296,9 +296,9 @@ char    *buffer;
 
 #else   /* UBC_X25 */
 int 
-_ubcx25_stub2 (void) {}
+_ubcx25_stub2()  {}
 #endif  /* UBC_X25 */
 #else	/* X25 */
 int 
-_ubcx25_stub (void) {}
+_ubcx25_stub()  {}
 #endif  /* X25 */

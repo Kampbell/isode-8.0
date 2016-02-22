@@ -111,28 +111,28 @@ iserver_initAux (int argc, char **argv, struct PSAPaddr *pa, IFP initfnx, IFP ma
 				break;
 			}
 
-			(void) chdir ("/");
+			 chdir ("/");
 
 			if ((fd = open ("/dev/null", O_RDWR)) != NOTOK) {
 				if (fd != 0)
-					(void) dup2 (fd, 0), (void) close (fd);
-				(void) dup2 (0, 1);
-				(void) dup2 (0, 2);
+					 dup2 (fd, 0),  close (fd);
+				 dup2 (0, 1);
+				 dup2 (0, 2);
 			}
 
 #ifdef	SETSID
-			(void) setsid ();
+			 setsid ();
 #endif
 #ifdef	TIOCNOTTY
 			if ((fd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-				(void) ioctl (fd, TIOCNOTTY, NULLCP);
-				(void) close (fd);
+				 ioctl (fd, TIOCNOTTY, NULLCP);
+				 close (fd);
 			}
 #else
 #ifdef	SYS5
-			(void) setpgrp ();
-			(void) signal (SIGINT, SIG_IGN);
-			(void) signal (SIGQUIT, SIG_IGN);
+			 setpgrp ();
+			 signal (SIGINT, SIG_IGN);
+			 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 			isodexport (NULLCP);	/* re-initialize logfiles */
@@ -171,7 +171,7 @@ iserver_wait (IFP initfnx, IFP workfnx, IFP losefnx, int nfds, fd_set *rfds, fd_
 
 	if (TNetAccept (&vecp, vec, nfds, &ifds, &ofds, &xfds, secs, td)
 			== NOTOK) {
-		(void) (*losefnx) (td);
+		 (*losefnx) (td);
 
 		return OK;
 	}
@@ -189,7 +189,7 @@ iserver_wait (IFP initfnx, IFP workfnx, IFP losefnx, int nfds, fd_set *rfds, fd_
 	for (fd = 0; fd < nfds; fd++)
 		if (FD_ISSET (fd, &is_mask) && FD_ISSET (fd, &ifds)) {
 			if (workfnx == NULLIFP) {
-				(void) TNetClose (NULLTA, td);
+				 TNetClose (NULLTA, td);
 				return tsaplose (td, DR_OPERATION, NULLCP,
 								 "no worker routine for connected fd");
 			}
@@ -220,6 +220,6 @@ iserver_wait (IFP initfnx, IFP workfnx, IFP losefnx, int nfds, fd_set *rfds, fd_
 /*  */
 
 fd_set 
-iserver_mask (void) {
+iserver_mask()  {
 	return is_mask;
 }

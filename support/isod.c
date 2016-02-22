@@ -267,7 +267,7 @@ ts_main (int argc, char **argv)
 		break;
 
 	default:
-		(void) strcpy (buffer, "entity unknown or unavailable");
+		 strcpy (buffer, "entity unknown or unavailable");
 		if (TDiscRequest (sd, buffer, strlen (buffer) + 1, td) == NOTOK)
 			ts_adios (td, "T-DISCONNECT.REQUEST");
 		advise (LLOG_NOTICE, NULLCP, "rejected");
@@ -280,7 +280,7 @@ ts_main (int argc, char **argv)
 			ts_adios (td, "set ASYNC fails");
 
 		for (;;)
-			(void) pause ();
+			 pause ();
 	}
 
 	for (;;) {
@@ -354,11 +354,11 @@ ts_advise (struct TSAPdisconnect *td, char *event)
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						TErrString (td -> td_reason),
 						td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		(void) sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
@@ -484,7 +484,7 @@ ss_main (int argc, char **argv)
 		break;
 
 	default:
-		(void) strcpy (buffer, "entity unknown or unavailable");
+		 strcpy (buffer, "entity unknown or unavailable");
 		if (SConnResponse (sd, &ss -> ss_connect, NULLSA,
 						   SC_REJECTED, 0, 0, SERIAL_NONE, buffer,
 						   strlen (buffer + 1), si)
@@ -501,7 +501,7 @@ ss_main (int argc, char **argv)
 			ss_adios (sa, "set ASYNC fails");
 
 		for (;;)
-			(void) pause ();
+			 pause ();
 	}
 
 	for (;;)
@@ -598,7 +598,7 @@ ss_dataindication (int sd, struct SSAPdata *sx)
 			break;
 		if (requirements & SR_HALFDUPLEX) {
 			if (hx -> sx_cc > 0) {
-				(void) strcpy (buffer, "protocol screw-up");
+				 strcpy (buffer, "protocol screw-up");
 				if (SUAbortRequest (sd, buffer, strlen (buffer) + 1, si) == NOTOK)
 					ss_adios (sa, "S-U-ABORT.REQUEST");
 				else
@@ -1019,11 +1019,11 @@ ss_advise (struct SSAPabort *sa, char *event)
 	char    buffer[BUFSIZ];
 
 	if (sa -> sa_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						SErrString (sa -> sa_reason),
 						sa -> sa_cc, sa -> sa_cc, sa -> sa_prdata);
 	else
-		(void) sprintf (buffer, "[%s]", SErrString (sa -> sa_reason));
+		 sprintf (buffer, "[%s]", SErrString (sa -> sa_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 
@@ -1278,7 +1278,7 @@ ps_main (int argc, char **argv)
 			ps_adios (pa, "set ASYNC fails");
 
 		for (;;)
-			(void) pause ();
+			 pause ();
 	}
 
 	for (;;)
@@ -1796,11 +1796,11 @@ ps_advise (struct PSAPabort *pa, char *event)
 	char    buffer[BUFSIZ];
 
 	if (pa -> pa_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						PErrString (pa -> pa_reason),
 						pa -> pa_cc, pa -> pa_cc, pa -> pa_data);
 	else
-		(void) sprintf (buffer, "[%s]", PErrString (pa -> pa_reason));
+		 sprintf (buffer, "[%s]", PErrString (pa -> pa_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
@@ -1822,11 +1822,11 @@ acs_advise (struct AcSAPabort *aca, char *event)
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -2041,7 +2041,7 @@ accept:
 			rts_adios (rta, "set ASYNC fails");
 
 		for (;;)
-			(void) pause ();
+			 pause ();
 	}
 
 	for (;;)
@@ -2200,10 +2200,10 @@ rts_advise (struct RtSAPabort *rta, char *event)
 	char    buffer[BUFSIZ];
 
 	if (rta -> rta_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),
+		 sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),
 						rta -> rta_cc, rta -> rta_cc, rta -> rta_data);
 	else
-		(void) sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
+		 sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
@@ -2307,7 +2307,7 @@ do_ros (int sd, int async)
 			ros_adios (rop, "set ASYNC fails");
 
 		for (;;)
-			(void) pause ();
+			 pause ();
 	}
 
 	for (;;)
@@ -2524,10 +2524,10 @@ ros_advise (struct RoSAPpreject *rop, char *event)
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }

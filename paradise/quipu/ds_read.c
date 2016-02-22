@@ -351,7 +351,7 @@ static Attr_Sequence  dsa_control_info() {
 	char buffer [LINESIZE];
 	Attr_Sequence as;
 
-	(void) sprintf (buffer,"%d Master entries (in %d EDBs), %d Slave entries (in %d EDBs), %d Cached entries",
+	 sprintf (buffer,"%d Master entries (in %d EDBs), %d Slave entries (in %d EDBs), %d Cached entries",
 					local_master_size,master_edbs,local_slave_size,slave_edbs,local_cache_size);
 
 	as=as_comp_alloc();

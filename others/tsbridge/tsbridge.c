@@ -185,7 +185,7 @@ tsbridge (int vecp, char **vec, struct TSAPaddr *ta)
 	if (TConnRequest (fromta, tota, ts -> ts_expedited,
 					  ts -> ts_data, ts -> ts_cc, &ts -> ts_qos,
 					  tc, td) == NOTOK) {
-		(void) TDiscRequest (sd, td -> td_data, td -> td_cc, td);
+		 TDiscRequest (sd, td -> td_data, td -> td_cc, td);
 		ts_adios(td, "T-CONNECT.REQUEST");
 	}
 	if (TConnResponse (sd, NULLTA,
@@ -343,11 +343,11 @@ ts_advise (struct TSAPdisconnect *td, int code, char *event)
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						TErrString (td -> td_reason),
 						td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		(void) sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
@@ -570,7 +570,7 @@ arginit (char **vec)
 			case 'T':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -T tailorfile", myname);
-				(void) isodesetailor (ap);
+				 isodesetailor (ap);
 				isodetailor (myname, 0);
 				ll_hdinit (pgm_log, myname);
 				continue;
@@ -680,13 +680,13 @@ read_file (char *file)
 	}
 
 	if (strcmp (file, "-") != 0)
-		(void) fclose (fp);
+		 fclose (fp);
 }
 
 /*  */
 
 static void 
-envinit (void) {
+envinit  {
 	int     i,
 			sd;
 
@@ -708,14 +708,14 @@ envinit (void) {
 			break;
 		}
 
-		(void) chdir ("/");
+		 chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			(void) dup2 (sd, 0), (void) close (sd);
-		(void) dup2 (0, 1);
-		(void) dup2 (0, 2);
+			 dup2 (sd, 0),  close (sd);
+		 dup2 (0, 1);
+		 dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -723,14 +723,14 @@ envinit (void) {
 #endif
 #ifdef  TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			(void) ioctl (sd, TIOCNOTTY, NULLCP);
-			(void) close (sd);
+			 ioctl (sd, TIOCNOTTY, NULLCP);
+			 close (sd);
 		}
 #else
 #ifdef  SYS5
-		(void) setpgrp ();
-		(void) signal (SIGINT, SIG_IGN);
-		(void) signal (SIGQUIT, SIG_IGN);
+		 setpgrp ();
+		 signal (SIGINT, SIG_IGN);
+		 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -739,10 +739,10 @@ envinit (void) {
 #ifndef sun			/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			(void) close (sd);
+			 close (sd);
 #endif
 
-	(void) signal (SIGPIPE, SIG_IGN);
+	 signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, myname);
 	advise (LLOG_NOTICE, NULLCP, "starting");

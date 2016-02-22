@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/dfns.c,v 9.0 1992/06/
 
 id_entry *id_table[TABLESIZE];
 
-#define my_error(mesg)	((void)fprintf(stderr, "%s\n",mesg),exit(1))
+#define my_error(mesg)	(fprintf(stderr, "%s\n",mesg),exit(1))
 
 extern char *notidtoid(), *my_new_str(), *my_strcat();
 extern char *
@@ -86,11 +86,11 @@ FILE   *fp;
 	for (j = 0; j < TABLESIZE; j++)
 		for (ptr = id_table[j]; ptr != NULL; ptr = ptr->next) {
 			if (ptr->def_bit)
-				(void) fprintf(fp, "#define %s%s\t%d\n", PREFIX, ptr->r_value, ptr->def_value);
+				 fprintf(fp, "#define %s%s\t%d\n", PREFIX, ptr->r_value, ptr->def_value);
 			else
 				ferrs(0, "the identifier %s is used but not defined\n", ptr->h_value);
 			if (ptr->count > 1)	/* not used */
-				(void) printf("The id %s has a count of %d\n", ptr->r_value, ptr->count);
+				 printf("The id %s has a count of %d\n", ptr->r_value, ptr->count);
 		}
 }
 
@@ -122,7 +122,7 @@ my_new_str (char *s)
 	if ((t = (char *) malloc((unsigned)strlen(s) + 1)) == NULL)
 		my_error("my_new_str: Out of memory");
 
-	(void) strcpy(t, s);
+	 strcpy(t, s);
 	return t;
 }
 
@@ -142,7 +142,7 @@ my_strcat (char *s1, char *s2)
 
 	for (s = s1, t = s3; *s != '\0'; s++, t++)
 		*t = *s;
-	(void) strcpy(t, s2);
+	 strcpy(t, s2);
 	return s3;
 }
 
@@ -165,7 +165,7 @@ hash_val (char *s)
  * initialize the table id_table
  */
 int 
-init (void) {
+init()  {
 	int     i;
 
 	for (i = 0; i <= TABLESIZE; i++)
@@ -195,8 +195,8 @@ concat (char *s1, char *s2)
 		} else if ((buf = realloc(buf, len)) == NULL)
 			ferr(1, "concat:realloc failed\n");
 	}
-	(void) strcpy(buf, s1);
-	(void) strcat(buf, s2);
+	 strcpy(buf, s1);
+	 strcat(buf, s2);
 
 	return (buf);
 }
@@ -227,7 +227,7 @@ gfree (
 		} else if ((buf = realloc(buf, len)) == NULL)
 			ferr(1, "concat:realloc failed\n");
 	}
-	(void) sprintf(buf, "(void) fre_obj((char *) %s, %s%s%s.md_dtab[%s%s%s], &%s%s%s, 1)",
+	 sprintf(buf, " fre_obj((char *) %s, %s%s%s.md_dtab[%s%s%s], &%s%s%s, 1)",
 				   parm,
 				   PREFIX, p1, MODTYP_SUFFIX,
 				   PREFIX, p2, p1,

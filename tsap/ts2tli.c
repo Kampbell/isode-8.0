@@ -130,7 +130,7 @@ int te;
 
 	if (te > 0 && te <= t_nerr)
 		return t_errlist[te];
-	(void) sprintf (tbuf, "Terrno %d", te);
+	 sprintf (tbuf, "Terrno %d", te);
 	return tbuf;
 }
 
@@ -139,9 +139,9 @@ tli_lose (struct TSAPdisconnect *td, int fd, int reason, char *str)
 {
 	int eindex = errno;
 	int tindex = t_errno;
-	(void) tsaplose (td, reason, sys_terrname (t_errno), str);
+	 tsaplose (td, reason, sys_terrname (t_errno), str);
 	if (fd != NOTOK)
-		(void) t_close (fd);
+		 t_close (fd);
 	errno = eindex;
 	t_errno = tindex;
 	return NOTOK;
@@ -240,7 +240,7 @@ tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, int context)
 		 * we could be given someting else.
 		 * Only care about selector
 		 */
-		(void) tp42gen(&bound_ta, &bound->addr);
+		 tp42gen(&bound_ta, &bound->addr);
 		if ((qlen && bound->qlen < 1) ||
 				ta->ta_selectlen != bound_ta.ta_selectlen ||
 				memcmp(ta->ta_selector, bound_ta.ta_selector,
@@ -249,7 +249,7 @@ tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, int context)
 
 			t_unbind(fd);
 			fd = tli_lose (td, fd, DR_CONGEST, "address in use");
-			(void) strcpy(buf, taddr2str(ta));
+			 strcpy(buf, taddr2str(ta));
 			LLOG (tsap_log, LLOG_EXCEPTIONS,
 				  ("tried to bind to %s but got %s", buf, taddr2str(&bound_ta)));
 			goto out;
@@ -322,7 +322,7 @@ tp4getdis (int fd, struct TSAPdisconnect *td)
 
 	discon = (struct t_discon *)t_alloc (fd, T_DIS, T_ALL);
 	if (t_rcvdis (fd, discon) == NOTOK) {
-		(void) tli_lose (td, NOTOK, DR_NETWORK, "t_discon");
+		 tli_lose (td, NOTOK, DR_NETWORK, "t_discon");
 		goto out;
 	}
 	if (discon != (struct t_discon *)0) {
@@ -442,7 +442,7 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 
 	t_free ((char *)sndcall, T_CALL);
 
-	(void) tp42gen (&ta, &rcvcall -> addr);
+	 tp42gen (&ta, &rcvcall -> addr);
 	copyTSAPaddrY(&ta, &tb -> tb_responding);
 
 	if (cc = rcvcall->udata.len) {
@@ -450,7 +450,7 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 			free (tb -> tb_data);
 		if ((tb -> tb_data = malloc ((unsigned) cc)) == NULLCP) {
 			t_free ((char *)rcvcall, T_CALL);
-			(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+			 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		}
 		bcopy (rcvcall->udata.buf, tb->tb_data, tb->tb_cc = cc);
 	} else
@@ -498,7 +498,7 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 
 		if ((call = (struct t_call *)
 					t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL) {
-			(void) tli_lose (td, NOTOK, DR_CONGEST, "t_alloc ");
+			 tli_lose (td, NOTOK, DR_CONGEST, "t_alloc ");
 			goto out;
 		}
 
@@ -507,9 +507,9 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 			if (t_errno == TNODATA)
 				return CONNECTING_2;
 			else if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
-				(void) tp4getdis(tb -> tb_fd, td);
+				 tp4getdis(tb -> tb_fd, td);
 			else
-				(void) tli_lose (td, NOTOK, DR_REFUSED, "t_rcvconnect");
+				 tli_lose (td, NOTOK, DR_REFUSED, "t_rcvconnect");
 			goto out;
 		}
 
@@ -517,15 +517,15 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 			int flags;
 			if ((flags = fcntl (tb -> tb_fd, F_GETFL, 0)) == NOTOK) {
 				t_free ((char *)call, T_CALL);
-				(void) tsaplose (td, DR_CONGEST, "failed", "fcntl");
+				 tsaplose (td, DR_CONGEST, "failed", "fcntl");
 				goto out;
 			}
 
 			flags &= ~FNDELAY;
-			(void) fcntl (tb -> tb_fd, F_SETFL, flags);
+			 fcntl (tb -> tb_fd, F_SETFL, flags);
 		}
 
-		(void) tp42gen (&ta, &call -> addr);
+		 tp42gen (&ta, &call -> addr);
 		copyTSAPaddrY(&ta, &tb -> tb_responding);
 
 		if (call -> udata.len > 0)
@@ -616,7 +616,7 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 		goto reject;
 
 	if ((call = (struct t_call *)t_alloc(tb->tb_fd, T_CALL, T_ALL)) == NULL) {
-		(void) tli_lose (td, result, DR_CONGEST, "t_alloc");
+		 tli_lose (td, result, DR_CONGEST, "t_alloc");
 		goto reject;
 	}
 
@@ -631,19 +631,19 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 			  ("t_accept fail: t_errno=%d, t_look=%d",
 			   t_errno, t_look(tb->tb_fd)));
 		if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
-			(void) tp4getdis(tb -> tb_fd, td);
+			 tp4getdis(tb -> tb_fd, td);
 		else
-			(void) tli_lose (td, result, DR_CONGEST, "t_accept");
+			 tli_lose (td, result, DR_CONGEST, "t_accept");
 		t_free ((char *)call, T_CALL);
 		return NOTOK;
 	}
 	t_free ((char *)call, T_CALL);
 
 	/* OK - we have the new call - lets pretend we are back where we were...*/
-	(void) t_close (tb -> tb_fd); /* finished with this - get rid of it! */
-	(void) dup2 (result, tb -> tb_fd);
-	(void) t_close(result);
-	(void) t_sync(tb -> tb_fd);
+	 t_close (tb -> tb_fd); /* finished with this - get rid of it! */
+	 dup2 (result, tb -> tb_fd);
+	 t_close(result);
+	 t_sync(tb -> tb_fd);
 
 	/* Phew - we now have everything as it should be - I hope */
 
@@ -661,7 +661,7 @@ reject: {
 
 		bzero((char *)&dis, sizeof dis);
 		dis.sequence = tb->tb_seq;
-		(void) t_snddis(tb->tb_fd, &dis);
+		 t_snddis(tb->tb_fd, &dis);
 		return NOTOK;
 	}
 }
@@ -699,7 +699,7 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 
 		if ((qb = (struct qbuf *) malloc (sizeof *qb + (unsigned) cc))
 				== NULL) {
-			(void) tsaplose (td, DR_CONGEST, NULLCP,
+			 tsaplose (td, DR_CONGEST, NULLCP,
 							 "unable to malloc %d octets for pseudo-writev, failing...",
 							 cc);
 			freetblk (tb);
@@ -721,7 +721,7 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 		}
 
 		if ((async = fcntl (tb -> tb_fd, F_GETFL, 0)) != NOTOK)
-			(void) fcntl (tb -> tb_fd, F_SETFL, async | FNDELAY);
+			 fcntl (tb -> tb_fd, F_SETFL, async | FNDELAY);
 
 		nc = t_snd (tb -> tb_fd, qb -> qb_data, qb -> qb_len, 0);
 		DLOG (tsap_log, LLOG_TRACE,
@@ -730,15 +730,15 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 
 
 		if (async != NOTOK)
-			(void) fcntl (tb -> tb_fd, F_SETFL, async);
+			 fcntl (tb -> tb_fd, F_SETFL, async);
 
 		if (nc != cc) {
 			if (nc == NOTOK) {
 				if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT) {
-					(void) tp4getdis(tb -> tb_fd, td);
+					 tp4getdis(tb -> tb_fd, td);
 					goto losing;
 				} else if (t_errno != TFLOW) {
-					(void) tsaplose (td, DR_CONGEST, "failed", "sendmsg");
+					 tsaplose (td, DR_CONGEST, "failed", "sendmsg");
 					goto losing;
 				}
 
@@ -807,9 +807,9 @@ losing:
 			free(d);
 		if (ret == NOTOK) {
 			if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
-				(void) tp4getdis(tb -> tb_fd, td);
+				 tp4getdis(tb -> tb_fd, td);
 			else
-				(void) tsaplose (td, DR_CONGEST, "failed", "sendmsg");
+				 tsaplose (td, DR_CONGEST, "failed", "sendmsg");
 			freetblk (tb);
 
 			return NOTOK;
@@ -837,7 +837,7 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 	struct qbuf *qb;
 
 	if ((onoff = fcntl (tb -> tb_fd, F_GETFL, 0)) != NOTOK)
-		(void) fcntl (tb -> tb_fd, F_SETFL, onoff | FNDELAY);
+		 fcntl (tb -> tb_fd, F_SETFL, onoff | FNDELAY);
 
 
 	while ((qb = tb -> tb_qwrites.qb_forw) != &tb -> tb_qwrites) {
@@ -876,7 +876,7 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 out:
 	;
 	if (onoff != NOTOK)
-		(void) fcntl (tb -> tb_fd, F_SETFL, onoff);
+		 fcntl (tb -> tb_fd, F_SETFL, onoff);
 
 	return result;
 }
@@ -907,7 +907,7 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 		}
 		if (qb == NULL && (qb = (struct qbuf *)
 								malloc ((unsigned) (sizeof *qb + tb -> tb_tsdusize))) == NULL) {
-			(void) tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
+			 tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
 			break;
 		} else
 			qb -> qb_len = tb -> tb_tsdusize;
@@ -922,17 +922,17 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 			case TLOOK:
 				switch (t_look (tb -> tb_fd)) {
 				case T_DISCONNECT:
-					(void) tp4getdis(tb -> tb_fd, td);
+					 tp4getdis(tb -> tb_fd, td);
 					break;
 				default:
-					(void) tsaplose (td, DR_CONGEST, NULLCP,
+					 tsaplose (td, DR_CONGEST, NULLCP,
 									 "unexpected event %d",
 									 t_look(tb -> tb_fd));
 					break;
 				}
 				goto out;
 			default:
-				(void) tli_lose (td, NOTOK, DR_CONGEST, "t_rcv");
+				 tli_lose (td, NOTOK, DR_CONGEST, "t_rcv");
 				break;
 			}
 			break;
@@ -1095,11 +1095,11 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 		return NOTOK;
 	}
 
-	(void) tp4init (tb);
+	 tp4init (tb);
 
 	if (async)
 		if ((onoff = fcntl (fd, F_GETFL, 0)) != NOTOK)
-			(void) fcntl (fd, F_SETFL, onoff | FNDELAY);
+			 fcntl (fd, F_SETFL, onoff | FNDELAY);
 
 	return (async ? OK : DONE);
 }
@@ -1141,7 +1141,7 @@ tp4save (int fd, int seq, int exp, struct tsapADDR *calling_ta, struct tsapADDR 
 
 	copyTSAPaddrX(called_ta, &called);
 	copyTSAPaddrX(calling_ta, &calling);
-	(void) sprintf (buffer, "%c%d.%d.%d %s %s", NT_TLI, fd, seq, exp,
+	 sprintf (buffer, "%c%d.%d.%d %s %s", NT_TLI, fd, seq, exp,
 					taddr2str(&calling), taddr2str(&called));
 	return buffer;
 }
@@ -1183,7 +1183,7 @@ tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 		tb -> tb_flags |= TB_EXPD;
 	else
 		tb -> tb_flags &= ~TB_EXPD;
-	(void) tp4init (tb);
+	 tp4init (tb);
 	return OK;
 }
 
@@ -1256,7 +1256,7 @@ join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *se
 		else
 			return tli_lose (td, NOTOK, DR_CONGEST, "t_listen");
 	}
-	(void) tp42gen (remote_ta, &call -> addr);
+	 tp42gen (remote_ta, &call -> addr);
 	*seqp = call -> sequence;
 	if ((*ccp = call -> udata.len) > 0)
 		bcopy (call -> udata.buf, ud, *ccp);
@@ -1333,7 +1333,7 @@ out_space:
 		return NOTOK;
 	}
 
-	(void) strcat (cp, prefix);
+	 strcat (cp, prefix);
 	cp += strlen(cp);
 	*cp++ = 0x0;
 
@@ -1619,7 +1619,7 @@ int	fd;
 
 #else
 int 
-_ts2tli_stub (void) {
+_ts2tli_stub(){
 	;
 }
 #endif

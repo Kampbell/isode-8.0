@@ -105,7 +105,7 @@ getfile_aux (char *fn, struct RfaInfo *rfa, int *rmode)
 		return rc;
 	}
 
-	(void)time(&te);
+	time(&te);
 	te = (te - ts) ? te - ts : 1L;
 	switch (gfr->mode) {
 	case int_RFA_mode_compressed:

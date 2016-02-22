@@ -1034,8 +1034,8 @@ SFP fn;
 
 	if (dsa_mode) {
 		watch_dog_where = "FINAL";
-		(void) signal (SIGALRM, fn);
-		(void) alarm (watchdog_time);
+		 signal (SIGALRM, fn);
+		 alarm (watchdog_time);
 	}
 }
 
@@ -1082,8 +1082,8 @@ char * where;
 
 	if (dsa_mode) {
 		watch_dog_where = where;
-		(void) signal (SIGALRM, watch_dog_activate);
-		(void) alarm (watchdog_time);
+		 signal (SIGALRM, watch_dog_activate);
+		 alarm (watchdog_time);
 	}
 }
 
@@ -1100,8 +1100,8 @@ char * where;
 
 	if (dsa_mode) {
 		watch_dog_where = where;
-		(void) signal (SIGALRM, slack_watch_dog_activate);
-		(void) alarm (watchdog_time);
+		 signal (SIGALRM, slack_watch_dog_activate);
+		 alarm (watchdog_time);
 	}
 }
 
@@ -1115,8 +1115,8 @@ unsigned secs;
 
 	if (dsa_mode) {
 		watch_dog_where = where;
-		(void) signal (SIGALRM, watch_dog_activate);
-		(void) alarm (secs);
+		 signal (SIGALRM, watch_dog_activate);
+		 alarm (secs);
 	}
 }
 
@@ -1125,15 +1125,15 @@ watch_dog_reset () {
 		return;
 
 	if (dsa_mode) {
-		(void) signal (SIGALRM, SIG_IGN);
-		(void) alarm ((unsigned) 0);
+		 signal (SIGALRM, SIG_IGN);
+		 alarm ((unsigned) 0);
 	}
 }
 
 watch_dog_final_reset () {
 	if (dsa_mode) {
-		(void) signal (SIGALRM, SIG_IGN);
-		(void) alarm ((unsigned) 0);
+		 signal (SIGALRM, SIG_IGN);
+		 alarm ((unsigned) 0);
 	}
 }
 

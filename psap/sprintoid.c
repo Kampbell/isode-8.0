@@ -49,7 +49,7 @@ OID oid;
 	for (ip = oid -> oid_elements, i = oid -> oid_nelem, cp = "";
 			i-- > 0;
 			ip++, cp = ".") {
-		(void) sprintf (bp, "%s%u", cp, *ip);
+		 sprintf (bp, "%s%u", cp, *ip);
 		bp += strlen (bp);
 	}
 

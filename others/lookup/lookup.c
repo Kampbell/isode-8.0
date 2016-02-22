@@ -79,7 +79,7 @@ static struct dispatch dispatches[] = {
 int 
 main (int argc, char **argv, char **envp)
 {
-	(void) ryinitiator (argc, argv, myservice, mycontext, mypci,
+	 ryinitiator (argc, argv, myservice, mycontext, mypci,
 						table_PasswordLookup_Operations, dispatches, do_quit);
 
 	exit (0);			/* NOTREACHED */
@@ -165,7 +165,7 @@ caddr_t *dummy;
 		acs_adios (aca, "A-RELEASE.REQUEST");
 
 	if (!acr -> acr_affirmative) {
-		(void) AcUAbortRequest (sd, NULLPEP, 0, aci);
+		 AcUAbortRequest (sd, NULLPEP, 0, aci);
 		adios (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
 	}
 

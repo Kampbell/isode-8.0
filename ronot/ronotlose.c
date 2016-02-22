@@ -116,10 +116,10 @@ acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *aca)
 
 	/*
 		if (event)
-			(void) sprintf (cp = buffer, " {%s} (%s at ACSE)",
+			 sprintf (cp = buffer, " {%s} (%s at ACSE)",
 				event, AcErrString (aca->aca_reason));
 		else
-			(void) sprintf (cp = buffer, " (%s at ACSE)",
+			 sprintf (cp = buffer, " (%s at ACSE)",
 				AcErrString (aca->aca_reason));
 	*/
 

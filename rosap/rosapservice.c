@@ -49,14 +49,14 @@ RoSetService (int sd, IFP bfunc, struct RoSAPindication *roi)
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
 
 	result = (*bfunc) (acb, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

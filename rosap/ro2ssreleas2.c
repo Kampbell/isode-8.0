@@ -53,7 +53,7 @@ RoEndResponse (int sd, struct RoSAPindication *roi)
 
 	result = RoEndResponseAux (acb, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 

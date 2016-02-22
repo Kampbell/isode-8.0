@@ -113,7 +113,7 @@ ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td)
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at transport)",
+		 sprintf (cp = buffer, " (%s at transport)",
 						TuErrString (td -> td_reason));
 	case DR_NETWORK:
 		reason = SC_TRANSPORT;

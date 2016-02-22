@@ -33,7 +33,7 @@ static struct ssapblk *SuHead = &susapque;
 /*    INTERNAL */
 
 struct ssapblk *
-newsublk (void) {
+newsublk  {
 	struct ssapblk *sb;
 
 	sb = (struct ssapblk   *) calloc (1, sizeof *sb);

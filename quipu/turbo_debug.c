@@ -75,16 +75,16 @@ Avlnode	*root;
 #endif
 #endif
 
-	(void) printf( "**** soundex avl_print ****\n" );
+	 printf( "**** soundex avl_print ****\n" );
 
 	if ( root == 0 ) {
-		(void) printf( "NULL\n" );
+		 printf( "NULL\n" );
 		return;
 	}
 
 	( void ) rsavl_print( root, fprintf, (FILE *)stdout, 0 );
 
-	(void) printf( "**** soundex avl_print end ****\n" );
+	 printf( "**** soundex avl_print end ****\n" );
 }
 
 static ravl_print( root, fn, fps, format, depth )
@@ -114,25 +114,25 @@ Avlnode	*root;
 	PS	fps;
 	int	rdn_print();
 
-	(void) printf( "**** avl_print ****\n" );
+	 printf( "**** avl_print ****\n" );
 
 	if ( root == 0 ) {
-		(void) printf( "NULL\n" );
+		 printf( "NULL\n" );
 		return;
 	}
 
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
-		(void) printf( "avl_print: ps_alloc failed\n" );
+		 printf( "avl_print: ps_alloc failed\n" );
 		return;
 	}
 	if ( std_setup( fps, stdout ) == NOTOK ) {
-		(void) printf( "avl_print: std_setup failed\n" );
+		 printf( "avl_print: std_setup failed\n" );
 		return;
 	}
 
 	( void ) ravl_print( root, rdn_print, fps, EDBOUT, 0 );
 
-	(void) printf( "**** avl_print end ****\n" );
+	 printf( "**** avl_print end ****\n" );
 
 	ps_free( fps );
 }
@@ -150,7 +150,7 @@ int	depth;
 	ps_print( ps, "\n" );
 
 	if ( node->e_children != NULLAVL )
-		(void) avl_apply( node->e_children, rprint_directory, (caddr_t) (depth + 1),
+		 avl_apply( node->e_children, rprint_directory, (caddr_t) (depth + 1),
 						  NOTOK, AVL_INORDER );
 }
 
@@ -158,18 +158,18 @@ print_directory( node )
 Entry	node;
 {
 	if ( (ps = ps_alloc( std_open )) == NULLPS ) {
-		(void) printf( "avl_print: ps_alloc failed\n" );
+		 printf( "avl_print: ps_alloc failed\n" );
 		return;
 	}
 	if ( std_setup( ps, stdout ) == NOTOK ) {
-		(void) printf( "avl_print: std_setup failed\n" );
+		 printf( "avl_print: std_setup failed\n" );
 		return;
 	}
 
 	rprint_directory( node, 0 );
 
 	ps_free( ps );
-	(void) fflush( stdout );
+	 fflush( stdout );
 }
 
 /*
@@ -182,11 +182,11 @@ print_optimized_attrs() {
 	PS	fps;
 
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
-		(void) printf( "turbo_index_print: ps_alloc failed\n" );
+		 printf( "turbo_index_print: ps_alloc failed\n" );
 		return;
 	}
 	if ( std_setup( fps, stdout ) == NOTOK ) {
-		(void) printf( "turbo_index_print: std_setup failed\n" );
+		 printf( "turbo_index_print: std_setup failed\n" );
 		return;
 	}
 
@@ -252,16 +252,16 @@ Index	*pindex;
 	int	i;
 
 	if ( pindex == (Index *) 0 ) {
-		(void) printf("NULLINDEX\n");
+		 printf("NULLINDEX\n");
 		return;
 	}
 
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
-		(void) printf( "turbo_index_print: ps_alloc failed\n" );
+		 printf( "turbo_index_print: ps_alloc failed\n" );
 		return;
 	}
 	if ( std_setup( fps, stdout ) == NOTOK ) {
-		(void) printf( "turbo_index_print: std_setup failed\n" );
+		 printf( "turbo_index_print: std_setup failed\n" );
 		return;
 	}
 
@@ -270,13 +270,13 @@ Index	*pindex;
 		ps_printf( fps, "  Index for attribute (%s)\n",
 				   pindex[i].i_attr->oa_ot.ot_name );
 
-		(void) avl_apply( pindex[i].i_root, print_index_node, (caddr_t) fps,
+		 avl_apply( pindex[i].i_root, print_index_node, (caddr_t) fps,
 						  NOTOK, AVL_INORDER );
 
 		ps_printf( fps, "  Soundex index for attribute (%s)\n",
 				   pindex[i].i_attr->oa_ot.ot_name );
 
-		(void) avl_apply( pindex[i].i_sroot, print_soundex_node, (caddr_t) fps,
+		 avl_apply( pindex[i].i_sroot, print_soundex_node, (caddr_t) fps,
 						  NOTOK, AVL_INORDER );
 
 		ps_print( fps, "  Endof index\n" );
@@ -292,7 +292,7 @@ EntryInfo	*e;
 	DN	dnend;
 
 	if ( e == NULLENTRYINFO ) {
-		(void) printf("\tNULL\n");
+		 printf("\tNULL\n");
 		return;
 	}
 
@@ -301,11 +301,11 @@ EntryInfo	*e;
 				dnend = dnend->dn_parent )
 			;	/* NULL */
 
-		(void) printf("\t(%s)\n", dnend->dn_rdn->rdn_av.av_struct);
+		 printf("\t(%s)\n", dnend->dn_rdn->rdn_av.av_struct);
 
 		e = e->ent_next;
 	}
-	(void) printf("(end)\n");
+	 printf("(end)\n");
 }
 
 print_dn( dn )
@@ -314,18 +314,18 @@ DN	dn;
 	PS	fps;
 
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
-		(void) printf( "turbo_index_print: ps_alloc failed\n" );
+		 printf( "turbo_index_print: ps_alloc failed\n" );
 		return;
 	}
 	if ( std_setup( fps, stdout ) == NOTOK ) {
-		(void) printf( "turbo_index_print: std_setup failed\n" );
+		 printf( "turbo_index_print: std_setup failed\n" );
 		return;
 	}
 
 	ps_print( fps, "\tDN= " );
 	dn_print( fps, dn, EDBOUT );
 	ps_print( fps, "\n" );
-	(void) ps_flush( fps );
+	 ps_flush( fps );
 
 	ps_free( fps );
 }

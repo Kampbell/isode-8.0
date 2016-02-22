@@ -197,7 +197,7 @@ char  *str;
 	ptr = strdup (ptr);
 
 	bzero ((char *) vec, sizeof vec);
-	(void) str2vec (ptr, vec);
+	 str2vec (ptr, vec);
 
 	for (ap = vec; *ap; ap++) {
 		if (sscanf (*ap, "%d", &value) == 1 && value >= 0)
@@ -253,7 +253,7 @@ struct fax *f;
 
 	f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
 
-	(void) encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
+	 encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
 
 	if (f -> fax_bits)
 		free (f -> fax_bits);
@@ -291,7 +291,7 @@ PE	pe;
 /*  */
 
 fax_syntax () {
-	(void) add_attribute_syntax ("FacsimileTelephoneNumber",
+	 add_attribute_syntax ("FacsimileTelephoneNumber",
 								 (IFP) fax_enc,	(IFP) fax_dec,
 								 (IFP) str2fax,	fax_print,
 								 (IFP) fax_cpy,	fax_cmp,

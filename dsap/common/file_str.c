@@ -70,7 +70,7 @@ AttributeValue x;
 									(unsigned)((p - fs->fs_name) + strlen(str) + 1)))
 						== NULLCP)
 					return NOTOK;
-			(void) strcpy(p, str);
+			 strcpy(p, str);
 			fs->fs_mode = 0;
 
 		} else
@@ -118,7 +118,7 @@ struct file_syntax * fs;
 
 	if ( (fs->fs_mode & FS_TMP) ||
 			(!dsa_mode && (fs->fs_mode & FS_CREATE))) {
-		(void) unlink (fs->fs_name);
+		 unlink (fs->fs_name);
 		DLOG (log_dsap,LLOG_DEBUG,("Removed photo file '%s'",fs->fs_name));
 		fs->fs_mode &= ~FS_CREATE;
 	}

@@ -61,7 +61,7 @@ SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPind
 
 	result = SMinSyncRequestAux (sb, type, ssn, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

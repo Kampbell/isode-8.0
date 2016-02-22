@@ -73,7 +73,7 @@ struct PSAPindication *pi;
 		break;
 
 	default:
-		(void) psaplose (pi, PC_PARAMETER, NULLCP,
+		 psaplose (pi, PC_PARAMETER, NULLCP,
 						 "unknown transport type: 0x%x (%c)",
 						 *vec[0], *vec[0]);
 		goto out;
@@ -125,7 +125,7 @@ struct PSAPindication *pi;
 	pe_free (pe);
 
 	if (result == NOTOK) {
-		(void) ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
+		 ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
 						 "error decoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -312,7 +312,7 @@ struct PSAPindication *pi;
 			== NULL) {
 no_mem:
 		;
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 
@@ -348,7 +348,7 @@ no_mem:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						 PY_pepy);
 		goto out2;
 	}

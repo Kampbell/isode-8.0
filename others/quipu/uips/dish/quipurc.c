@@ -110,7 +110,7 @@ char	Local[LINESIZE] ;
 char	filterstring[LINESIZE] ;
 
 int 
-main (void) {
+main  {
 	struct  passwd  *pw_entry ;
 	struct  passwd  *getpwuid() ;
 	struct	stat	buf ;
@@ -134,11 +134,11 @@ main (void) {
 
 	vecptr = (char **) malloc(100) ;
 	vecptr[0] = malloc (LINESIZE) ;
-	(void) strcpy(vecptr[0], "showentry") ;
-	(void) strcpy(pass1, "x") ;
-	(void) strcpy(pass2, "y") ;
+	 strcpy(vecptr[0], "showentry") ;
+	 strcpy(pass1, "x") ;
+	 strcpy(pass2, "y") ;
 	tmpdraft = malloc (LINESIZE) ;
-	(void) strcpy(tmpdraft, "/tmp/dish-") ;
+	 strcpy(tmpdraft, "/tmp/dish-") ;
 
 	if ((opt = ps_alloc (std_open)) == NULLPS)
 		fatal (-62, "ps_alloc failed");
@@ -148,7 +148,7 @@ main (void) {
 		fatal (-64, "ps_alloc 2 failed");
 	if (std_setup (rps, stdout) == NOTOK)
 		fatal (-65, "std_setup 2 failed");
-	(void) strcpy(filterstring, "userid=") ;
+	 strcpy(filterstring, "userid=") ;
 
 	/* Sort out files, userids etc. */
 	uid=getuid() ;
@@ -156,31 +156,31 @@ main (void) {
 		ps_printf(rps, "Who are you? (no name for your uid number)\n") ;
 		exit(1) ;
 	}
-	(void) strcpy(user_name, pw_entry->pw_name) ;
-	(void) strcat(tmpdraft, user_name) ;
+	 strcpy(user_name, pw_entry->pw_name) ;
+	 strcat(tmpdraft, user_name) ;
 
 	if (getenv("HOME") == 0) {
 		ps_printf(rps, "No home directory?!!") ;
-		(void) strcpy(home_dir, pw_entry->pw_dir) ;
+		 strcpy(home_dir, pw_entry->pw_dir) ;
 	} else {
-		(void) strcpy(home_dir, getenv("HOME")) ;
+		 strcpy(home_dir, getenv("HOME")) ;
 	}
 
-	(void) strcpy(quipurc_file, home_dir) ;
-	(void) strcat(quipurc_file, "/.quipurc") ;
+	 strcpy(quipurc_file, home_dir) ;
+	 strcat(quipurc_file, "/.quipurc") ;
 
-	(void) strcpy(tailor_file, isodefile ("dishinit", 1));
+	 strcpy(tailor_file, isodefile ("dishinit", 1));
 
 	Manager[0] = 0;
 	Password[0] = 0;
 	Local[0] = 0;
 
-	(void) stat(tailor_file, &buf) ;
+	 stat(tailor_file, &buf) ;
 #ifndef HPUX
-	(void) seteuid(buf.st_uid) ;	/* set effective to enable */
+	 seteuid(buf.st_uid) ;	/* set effective to enable */
 	/* us to read protected file */
 #else
-	(void) setresuid(-1, buf.st_uid, -1) ; /* set effective to enable */
+	 setresuid(-1, buf.st_uid, -1) ; /* set effective to enable */
 	/* us to read protected file */
 #endif
 
@@ -207,17 +207,17 @@ main (void) {
 		part2 = TidyString (part2);
 
 		if (lexequ(part1, "manager") == 0) {
-			(void) strcpy(Manager, part2) ;
+			 strcpy(Manager, part2) ;
 		} else if (lexequ(part1, "password") == 0) {
-			(void) strcpy(Password, part2) ;
+			 strcpy(Password, part2) ;
 		} else if (lexequ(part1, "local") == 0) {
-			(void) strcpy(Local, part2) ;
+			 strcpy(Local, part2) ;
 		} else {
 			ps_printf(rps, "Error in tailor. What's a %s?\n", part1) ;
 		}
 
 	}
-	(void) setuid(uid) ;			/* Restore Userid to original user. */
+	 setuid(uid) ;			/* Restore Userid to original user. */
 
 	/* create ~/.quipurc file. NB this does eradicate anything in there.
 	 * 			   (Theoretically nothing.)
@@ -241,7 +241,7 @@ main (void) {
 		ps_printf(rps, "Can't open ~/.quipurc. Aborting..\n") ;
 		exit(1) ;
 	}
-	(void) umask(um) ;
+	 umask(um) ;
 
 	if ((fileps = ps_alloc(std_open)) == NULLPS) {
 		fatal (-66, "ps_alloc 2 failed");
@@ -255,7 +255,7 @@ main (void) {
 	quipu_syntaxes() ;		/* set up the needed function pointers */
 	dsap_init(&i, &vecptr) ;
 
-	(void) strcpy(bindarg.dba_passwd, Password) ;
+	 strcpy(bindarg.dba_passwd, Password) ;
 	bindarg.dba_version = DBA_VERSION_V1988;
 	bindarg.dba_passwd_len = strlen(bindarg.dba_passwd) ;
 
@@ -303,7 +303,7 @@ main (void) {
 		exit(1) ;
 	}
 
-	(void) strcat(filterstring, user_name) ;
+	 strcat(filterstring, user_name) ;
 
 	search_arg.sra_filter->flt_un.flt_un_item.fi_type = FILTERITEM_EQUALITY ;
 
@@ -400,8 +400,8 @@ main (void) {
 			while( strcmp(pass1, pass2)) {
 				ps_printf(opt, "You need a password...\n") ;
 				ps_printf(opt, "(do not use your UNIX system password)\n") ;
-				(void) strcpy(pass1, getpassword("Enter Password: ")) ;
-				(void) strcpy(pass2, getpassword("Re-enter password: ")) ;
+				 strcpy(pass1, getpassword("Enter Password: ")) ;
+				 strcpy(pass2, getpassword("Re-enter password: ")) ;
 				if (strcmp(pass1, pass2)) {
 					ps_printf(opt, "\nMismatch - Try again.\n") ;
 				}
@@ -413,12 +413,12 @@ main (void) {
 				ps_print(rps, "Can't open draft file... Abort.\n") ;
 				exit(1) ;
 			}
-			(void) umask(um) ;
+			 umask(um) ;
 
-			(void) fprintf(fp_draft, "UserPassword = %s\n", pass1) ;
-			(void) fprintf(fp_draft, "acl = self # write # attributes # acl $ userPassword\n") ;
-			(void) fprintf(fp_draft, "acl = others # compare # attributes # acl $ userPassword\n\n") ;
-			(void) fclose(fp_draft) ;
+			 fprintf(fp_draft, "UserPassword = %s\n", pass1) ;
+			 fprintf(fp_draft, "acl = self # write # attributes # acl $ userPassword\n") ;
+			 fprintf(fp_draft, "acl = others # compare # attributes # acl $ userPassword\n\n") ;
+			 fclose(fp_draft) ;
 
 			if ((fp_draft = fopen (tmpdraft, "r")) == NULL) {
 				ps_printf (opt, "Can't open draft entry %s\n", tmpdraft);
@@ -432,7 +432,7 @@ main (void) {
 			entry_ptr->e_attributes = get_attributes (fp_draft);
 #endif
 
-			(void) fclose (fp_draft);
+			 fclose (fp_draft);
 
 			mod_arg.mea_common = ca; /* struct copy */
 			mod_arg.mea_object = dn;
@@ -489,37 +489,37 @@ main (void) {
 	}
 
 	while(fgets(Read_in_Stuff, LINESIZE, fp_tailor) != 0) {
-		(void) fputs(Read_in_Stuff, fp_quipurc) ;
+		 fputs(Read_in_Stuff, fp_quipurc) ;
 	}
 
-	(void) fclose(fp_quipurc) ;
-	(void) fclose(fp_tailor) ;
+	 fclose(fp_quipurc) ;
+	 fclose(fp_tailor) ;
 
-	/*	(void) fprintf(fp_quipurc, "dsap: local_dit \"%s\"\n", Local) ;
-		(void) fprintf(fp_quipurc, "notype: acl\n") ;
-		(void) fprintf(fp_quipurc, "notype: treestructure\n") ;
-		(void) fprintf(fp_quipurc, "notype: masterdsa\n") ;
-		(void) fprintf(fp_quipurc, "notype: slavedsa\n") ;
-		(void) fprintf(fp_quipurc, "notype: objectclass\n") ;
-		(void) fprintf(fp_quipurc, "cache_time: 30\n") ;
-		(void) fprintf(fp_quipurc, "connect_time: 2\n") ;
+	/*	 fprintf(fp_quipurc, "dsap: local_dit \"%s\"\n", Local) ;
+		 fprintf(fp_quipurc, "notype: acl\n") ;
+		 fprintf(fp_quipurc, "notype: treestructure\n") ;
+		 fprintf(fp_quipurc, "notype: masterdsa\n") ;
+		 fprintf(fp_quipurc, "notype: slavedsa\n") ;
+		 fprintf(fp_quipurc, "notype: objectclass\n") ;
+		 fprintf(fp_quipurc, "cache_time: 30\n") ;
+		 fprintf(fp_quipurc, "connect_time: 2\n") ;
 	 */
-	(void) ds_unbind() ;
-	(void) unlink(tmpdraft) ;
+	 ds_unbind() ;
+	 unlink(tmpdraft) ;
 
 	return(0);
 }
 
 void 
-advise (void) {
+advise  {
 }
 
 void 
-set_sequence (void) {
+set_sequence  {
 }
 
 void 
-unset_sequence (void) {
+unset_sequence  {
 }
 
 dish_error (ps,error)

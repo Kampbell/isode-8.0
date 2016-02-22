@@ -50,7 +50,7 @@ static	type_info ();
 
 /*  */
 
-#define	SPDU_TYPE(e)	(void) ll_printf (lp, "%sCODE/ %s\n", rw, e)
+#define	SPDU_TYPE(e)	 ll_printf (lp, "%sCODE/ %s\n", rw, e)
 
 #define	DMASK	"\020\01RELEASE\02USER\03PROTOCOL\04UNKNOWN"
 #define	EMASK	"\020\01BEGIN\02END"
@@ -72,9 +72,9 @@ spkt2text (LLog *lp, struct ssapkt *s, int read)
 		  ("dump of SPDU 0x%x, errno=0x%x mask=0x%x%s",
 		   s, s -> s_errno, s -> s_mask,
 		   s -> s_mask & SMASK_SPDU_EXPD ? " (expedited)" : ""));
-	(void) ll_printf (lp, "%s(\n", rw);
+	 ll_printf (lp, "%s(\n", rw);
 
-	(void) ll_printf (lp, "%sLI/ %d\n", rw, s -> s_li);
+	 ll_printf (lp, "%sLI/ %d\n", rw, s -> s_li);
 
 	switch (s -> s_code) {
 	case SPDU_CN:
@@ -285,10 +285,10 @@ spkt2text (LLog *lp, struct ssapkt *s, int read)
 	case SPDU_AS:
 		SPDU_TYPE ("ACTIVITY START");
 		if (s -> s_mask & SMASK_AS_ID) {
-			(void) ll_printf (lp, "%s", rw);
+			 ll_printf (lp, "%s", rw);
 			type_info (lp, "ID/ %d", (int) s -> s_as_id.sd_len,
 					   s -> s_as_id.sd_data);
-			(void) ll_printf (lp, "\n");
+			 ll_printf (lp, "\n");
 		}
 		break;
 
@@ -297,18 +297,18 @@ spkt2text (LLog *lp, struct ssapkt *s, int read)
 		if (s -> s_mask & SMASK_AR_REF)
 			type_ref (lp, rw, &s -> s_ar_reference);
 		if (s -> s_mask & SMASK_AR_OID) {
-			(void) ll_printf (lp, "%s", rw);
+			 ll_printf (lp, "%s", rw);
 			type_info (lp, "OLD ID/ %d", (int) s -> s_ar_oid.sd_len,
 					   s -> s_ar_oid.sd_data);
-			(void) ll_printf (lp, "\n");
+			 ll_printf (lp, "\n");
 		}
 		if (s -> s_mask & SMASK_AR_SSN)
 			type_ssn (lp, rw, "SSN", s -> s_ar_serial);
 		if (s -> s_mask & SMASK_AR_ID) {
-			(void) ll_printf (lp, "%s", rw);
+			 ll_printf (lp, "%s", rw);
 			type_info (lp, "ID/ %d", (int) s -> s_ar_id.sd_len,
 					   s -> s_ar_id.sd_data);
-			(void) ll_printf (lp, "\n");
+			 ll_printf (lp, "\n");
 		}
 		break;
 
@@ -323,7 +323,7 @@ spkt2text (LLog *lp, struct ssapkt *s, int read)
 		break;
 
 	default:
-		(void) ll_printf (lp, "%sCODE/ 0x%x\n", rw, s -> s_code);
+		 ll_printf (lp, "%sCODE/ 0x%x\n", rw, s -> s_code);
 		break;
 	}
 
@@ -336,13 +336,13 @@ spkt2text (LLog *lp, struct ssapkt *s, int read)
 		else if (s -> s_mask & SMASK_UDATA_PGI)
 			type_data (lp, "USER", rw, s -> s_ulen, s -> s_udata);
 		else {
-			(void) ll_printf (lp, "%sUSER INFO/ ", rw);
+			 ll_printf (lp, "%sUSER INFO/ ", rw);
 			type_info (lp, "%d", s -> s_ulen, s -> s_udata);
-			(void) ll_printf (lp, "\n");
+			 ll_printf (lp, "\n");
 		}
-	(void) ll_printf (lp, "%s)\n", rw);
+	 ll_printf (lp, "%s)\n", rw);
 
-	(void) ll_sync (lp);
+	 ll_sync (lp);
 }
 
 /*  */
@@ -354,31 +354,31 @@ type_id (LLog *lp, char *type, char *rw, char *selector, int len)
 
 	buffer[explode (buffer, (u_char *) selector, len)] = NULL;
 
-	(void) ll_printf (lp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
+	 ll_printf (lp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
 
 
 static 
 type_ssn (LLog *lp, char *rw, char *what, u_long ssn)
 {
-	(void) ll_printf (lp, "%s%s/ %d\n", rw, what, ssn);
+	 ll_printf (lp, "%s%s/ %d\n", rw, what, ssn);
 }
 
 
 static 
 type_bits (LLog *lp, char *rw, char *s, int bits, int mask, char *t)
 {
-	(void) ll_printf (lp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
+	 ll_printf (lp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
 	if (bits & ~mask)
-		(void) ll_printf (lp, ": illegal use of %s", sprintc (bits & ~mask, t));
-	(void) ll_printf (lp, "\n");
+		 ll_printf (lp, ": illegal use of %s", sprintc (bits & ~mask, t));
+	 ll_printf (lp, "\n");
 }
 
 
 #define dotoken(requires,shift,bit,type) \
 { \
     token = (settings >> shift) & ST_MASK; \
-    (void) ll_printf (lp, " %s:%s", type, token == ST_INIT_VALUE ? "initiator" \
+     ll_printf (lp, " %s:%s", type, token == ST_INIT_VALUE ? "initiator" \
 	: token == ST_RESP_VALUE ? "responder" \
 	: token == ST_CALL_VALUE ? "choice" \
 	: "reserved"); \
@@ -389,9 +389,9 @@ type_settings (LLog *lp, char *rw, int settings)
 {
 	int     token;
 
-	(void) ll_printf (lp, "%sSETTINGS/", rw);
+	 ll_printf (lp, "%sSETTINGS/", rw);
 	dotokens ();
-	(void) ll_printf (lp, "\n");
+	 ll_printf (lp, "\n");
 }
 
 #undef	dotoken
@@ -400,7 +400,7 @@ type_settings (LLog *lp, char *rw, int settings)
 static 
 type_tsdu (LLog *lp, char *rw, int init, int resp)
 {
-	(void) ll_printf (lp, "%sTSDU/ INITIATOR: %d, RESPONDER: %d\n",
+	 ll_printf (lp, "%sTSDU/ INITIATOR: %d, RESPONDER: %d\n",
 					  rw, init, resp);
 }
 
@@ -408,7 +408,7 @@ type_tsdu (LLog *lp, char *rw, int init, int resp)
 static 
 type_ref (LLog *lp, char *rw, struct SSAPref *ref)
 {
-	(void) ll_printf (lp, "%sREFERENCE/", rw);
+	 ll_printf (lp, "%sREFERENCE/", rw);
 	if (ref -> sr_vlen)
 		type_info (lp, "<CALLING %d", (int) ref -> sr_calling_len,
 				   ref -> sr_calling);
@@ -419,21 +419,21 @@ type_ref (LLog *lp, char *rw, struct SSAPref *ref)
 	if (ref -> sr_vlen)
 		type_info (lp, ", CALLED %d", (int) ref -> sr_called_len,
 				   ref -> sr_called);
-	(void) ll_printf (lp, ">\n");
+	 ll_printf (lp, ">\n");
 }
 
 
 static 
 type_vrsn (LLog *lp, char *rw, int version)
 {
-	(void) ll_printf (lp, "%sVERSION/ 0x%x\n", rw, version);
+	 ll_printf (lp, "%sVERSION/ 0x%x\n", rw, version);
 }
 
 
 static 
 type_reason (LLog *lp, char *rw, int reason)
 {
-	(void) ll_printf (lp, "%sREASON/ 0x%x: %s\n", rw, reason,
+	 ll_printf (lp, "%sREASON/ 0x%x: %s\n", rw, reason,
 					  SErrString ((int) reason));
 }
 
@@ -441,87 +441,87 @@ type_reason (LLog *lp, char *rw, int reason)
 static 
 type_prepare (LLog *lp, char *rw, int type)
 {
-	(void) ll_printf (lp, "%sTYPE/ ", rw);
+	 ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
 	case PR_MAA:
-		(void) ll_printf (lp, "MAA");
+		 ll_printf (lp, "MAA");
 		break;
 	case PR_RS:
-		(void) ll_printf (lp, "RS");
+		 ll_printf (lp, "RS");
 		break;
 	case PR_RA:
-		(void) ll_printf (lp, "RA");
+		 ll_printf (lp, "RA");
 		break;
 	case PR_AB:
-		(void) ll_printf (lp, "AB");
+		 ll_printf (lp, "AB");
 		break;
 	default:
-		(void) ll_printf (lp, "%d: illegal value", type);
+		 ll_printf (lp, "%d: illegal value", type);
 		break;
 	}
-	(void) ll_printf (lp, "\n");
+	 ll_printf (lp, "\n");
 }
 
 
 static 
 type_error (LLog *lp, char *rw, int reason)
 {
-	(void) ll_printf (lp, "%sREASON/ ", rw);
+	 ll_printf (lp, "%sREASON/ ", rw);
 	switch (reason) {
 	case SP_NOREASON:
-		(void) ll_printf (lp, "No specific reason stated");
+		 ll_printf (lp, "No specific reason stated");
 		break;
 	case SP_JEOPARDY:
-		(void) ll_printf (lp, "User receiving ability jeopardized");
+		 ll_printf (lp, "User receiving ability jeopardized");
 		break;
 	case SP_SEQUENCE:
-		(void) ll_printf (lp, "User sequence error");
+		 ll_printf (lp, "User sequence error");
 		break;
 	case SP_LOCAL:
-		(void) ll_printf (lp, "Local SS-user error");
+		 ll_printf (lp, "Local SS-user error");
 		break;
 	case SP_PROCEDURAL:
-		(void) ll_printf (lp, "Unrecoverable procedural error");
+		 ll_printf (lp, "Unrecoverable procedural error");
 		break;
 	case SP_DEMAND:
-		(void) ll_printf (lp, "Demand data token");
+		 ll_printf (lp, "Demand data token");
 		break;
 	default:
-		(void) ll_printf (lp, "%d: illegal value", reason);
+		 ll_printf (lp, "%d: illegal value", reason);
 		break;
 	}
-	(void) ll_printf (lp, "\n");
+	 ll_printf (lp, "\n");
 }
 
 
 static 
 type_resync (LLog *lp, char *rw, int type)
 {
-	(void) ll_printf (lp, "%sTYPE/ ", rw);
+	 ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
 	case SYNC_RESTART:
-		(void) ll_printf (lp, "restart");
+		 ll_printf (lp, "restart");
 		break;
 	case SYNC_ABANDON:
-		(void) ll_printf (lp, "abandon");
+		 ll_printf (lp, "abandon");
 		break;
 	case SYNC_SET:
-		(void) ll_printf (lp, "set");
+		 ll_printf (lp, "set");
 		break;
 	default:
-		(void) ll_printf (lp, "%d: illegal value", type);
+		 ll_printf (lp, "%d: illegal value", type);
 		break;
 	}
-	(void) ll_printf (lp, "\n");
+	 ll_printf (lp, "\n");
 }
 
 
 static 
 type_data (LLog *lp, char *type, char *rw, int len, char *data)
 {
-	(void) ll_printf (lp, "%s%s DATA/ ", rw, type);
+	 ll_printf (lp, "%s%s DATA/ ", rw, type);
 	type_info (lp, "%d", len, data);
-	(void) ll_printf (lp, "\n");
+	 ll_printf (lp, "\n");
 }
 
 
@@ -530,10 +530,10 @@ type_info (LLog *lp, char *fmt, int len, char *data)
 {
 	char    buffer[BUFSIZ];
 
-	(void) ll_printf (lp, fmt, len);
+	 ll_printf (lp, fmt, len);
 	if (0 < len && len < sizeof buffer / 2) {
 		buffer[explode (buffer, (u_char *) data, len)] = NULL;
-		(void) ll_printf (lp, " %s", buffer);
+		 ll_printf (lp, " %s", buffer);
 	}
 }
 

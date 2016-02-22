@@ -75,7 +75,7 @@ RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, 
 
 	result = RtBeginRequestAux (called, calling, mode, turn, data, rtc, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -153,7 +153,7 @@ no_mem:
 		goto no_mem;
 
 	if (data)
-		(void) pe_extract (pe, data), data = NULLPE;
+		 pe_extract (pe, data), data = NULLPE;
 	pe_free (pe);
 	pe = NULLPE;
 
@@ -208,7 +208,7 @@ no_mem:
 	} else if (sc -> sc_result == SC_ABORT) {
 		acb -> acb_fd = NOTOK;
 
-		(void) ss2rtsabort (acb, sa, rti);
+		 ss2rtsabort (acb, sa, rti);
 
 		rtc -> rtc_sd = NOTOK;
 		rtc -> rtc_result = RTS_ABORTED;
@@ -222,7 +222,7 @@ no_mem:
 			bzero ((char *) sa, sizeof *sa);
 			sa -> sa_reason = sc -> sc_result;
 			acb -> acb_fd = NOTOK;
-			(void) ss2rtslose (acb, rti, "SConnRequest(pseudo)", sa);
+			 ss2rtslose (acb, rti, "SConnRequest(pseudo)", sa);
 
 			rtc -> rtc_sd = NOTOK;
 			rtc -> rtc_result = rti -> rti_abort.rta_reason;
@@ -357,7 +357,7 @@ out1:
 	SCFREE (sc);
 	if (pe) {
 		if (data)
-			(void) pe_extract (pe, data);
+			 pe_extract (pe, data);
 		pe_free (pe);
 	}
 	freeacblk (acb);

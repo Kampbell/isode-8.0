@@ -47,7 +47,7 @@ Entry directory;
 			turbo_index_delete(directory);
 
 		if (directory->e_children != NULLAVL)
-			(void) avl_free(directory->e_children, directory_free);
+			 avl_free(directory->e_children, directory_free);
 
 		switch (directory->e_data) {
 		case E_TYPE_SLAVE:

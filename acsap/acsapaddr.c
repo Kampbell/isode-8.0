@@ -114,8 +114,8 @@ _str2aei (char *designator, char *qualifier, char *context, int interactive, cha
 							   passwd)) {
 			lookup = aei2addr_dse;
 #ifndef	NOSTUB
-			(void) strcpy (fallback1, designator);
-			(void) strcpy (fallback2, qualifier);
+			 strcpy (fallback1, designator);
+			 strcpy (fallback2, qualifier);
 			goto out;
 #endif
 		} else

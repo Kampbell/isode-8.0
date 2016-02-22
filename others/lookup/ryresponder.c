@@ -89,7 +89,7 @@ IFP	start,
 	else {
 		static char  myfile[BUFSIZ];
 
-		(void) sprintf (myfile, "%s.log",
+		 sprintf (myfile, "%s.log",
 						(strncmp (myname, "ros.", 4)
 						 && strncmp (myname, "lpp.", 4))
 						|| myname[4] == NULL
@@ -201,8 +201,8 @@ ros_work (int fd)
 		if (stopfnx)
 			(*stopfnx) (fd, (struct AcSAPfinish *) 0);
 	case DONE:
-		(void) AcUAbortRequest (fd, NULLPEP, 0, &acis);
-		(void) RyLose (fd, roi);
+		 AcUAbortRequest (fd, NULLPEP, 0, &acis);
+		 RyLose (fd, roi);
 		return NOTOK;
 	}
 
@@ -319,10 +319,10 @@ ros_advise (struct RoSAPpreject *rop, char *event)
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
@@ -335,11 +335,11 @@ acs_advise (struct AcSAPabort *aca, char *event)
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);

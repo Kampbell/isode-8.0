@@ -311,7 +311,7 @@ struct ds_search_task	*local;
 	Typedata		td;
 
 	rc = (struct result_count *) smalloc( sizeof(struct result_count) );
-	(void) bzero( (char *) rc, sizeof(struct result_count) );
+	 bzero( (char *) rc, sizeof(struct result_count) );
 	rc->rc_base = e;
 
 	save = NULLSACL;
@@ -449,7 +449,7 @@ char			authtype;
 		/* no running total - make one, possibly a dummy */
 		rc = make_rc( binddn, selfdn, ancestor, scope, local );
 
-		(void) avl_insert( (Avlnode **)&local->st_sacls, (caddr_t) rc,
+		 avl_insert( (Avlnode **)&local->st_sacls, (caddr_t) rc,
 						   rc_cmp, avl_dup_error );
 	}
 

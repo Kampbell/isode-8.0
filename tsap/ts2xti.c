@@ -101,7 +101,7 @@ sys_terrname (int te)
 
 	if (te > 0 && te <= t_nerr)
 		return t_errlist[te];
-	(void) sprintf(tbuf, "Terrno %d", te);
+	 sprintf(tbuf, "Terrno %d", te);
 	return tbuf;
 }
 
@@ -356,9 +356,9 @@ tli_lose (struct TSAPdisconnect *td, int fd, int reason, char *str)
 {
 	int             eindex = errno;
 	int             tindex = t_errno;
-	(void) tsaplose(td, reason, sys_terrname(t_errno), str);
+	 tsaplose(td, reason, sys_terrname(t_errno), str);
 	if (fd != NOTOK)
-		(void) T_close(fd);
+		 T_close(fd);
 	errno = eindex;
 	t_errno = tindex;
 	return NOTOK;
@@ -427,7 +427,7 @@ tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, struct NSAPad
 		 * Check that we bound where we asked, we could be given someting else.
 		 * Only care about selector
 		 */
-		(void) tp42gen(&bound_ta, &bound->addr);
+		 tp42gen(&bound_ta, &bound->addr);
 		if ((qlen && bound->qlen < 1) ||
 				ta->ta_selectlen != bound_ta.ta_selectlen ||
 				memcmp(ta->ta_selector, bound_ta.ta_selector,
@@ -436,7 +436,7 @@ tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, struct NSAPad
 
 			t_unbind(fd);
 			fd = tli_lose(td, fd, DR_CONGEST, "address in use");
-			(void) strcpy(buf, taddr2str(ta));
+			 strcpy(buf, taddr2str(ta));
 			LLOG(tsap_log, LLOG_EXCEPTIONS,
 				 ("tried to bind to %s but got %s", buf, taddr2str(&bound_ta)));
 			goto out;
@@ -505,7 +505,7 @@ tp4getdis (int fd, struct TSAPdisconnect *td)
 
 	discon = (struct t_discon *) T_alloc(fd, T_DIS_STR, T_ALL);
 	if (t_rcvdis(fd, discon) == NOTOK) {
-		(void) tli_lose(td, NOTOK, DR_NETWORK, "t_discon");
+		 tli_lose(td, NOTOK, DR_NETWORK, "t_discon");
 		goto out;
 	}
 	if (discon != (struct t_discon *) 0) {
@@ -586,7 +586,7 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 	}
 	T_free((char *) sndcall, T_CALL_STR);
 
-	(void) tp42gen(&ta, &rcvcall->addr);
+	 tp42gen(&ta, &rcvcall->addr);
 	copyTSAPaddrY(&ta, &tb->tb_responding);
 
 	if (cc = rcvcall->udata.len) {
@@ -594,7 +594,7 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 			free(tb->tb_data);
 		if ((tb->tb_data = calloc(1,(unsigned) cc)) == NULLCP) {
 			T_free((char *) rcvcall, T_CALL_STR);
-			(void) tsaplose(td, DR_CONGEST, NULLCP, "out of memory");
+			 tsaplose(td, DR_CONGEST, NULLCP, "out of memory");
 		}
 		bcopy(rcvcall->udata.buf, tb->tb_data, tb->tb_cc = cc);
 	} else
@@ -634,7 +634,7 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 		}
 		if ((call = (struct t_call *)
 					T_alloc(tb->tb_fd, T_CALL_STR, T_ALL)) == NULL) {
-			(void) tli_lose(td, NOTOK, DR_CONGEST, "T_alloc ");
+			 tli_lose(td, NOTOK, DR_CONGEST, "T_alloc ");
 			goto out;
 		}
 		if (t_rcvconnect(tb->tb_fd, call) == NOTOK) {
@@ -642,22 +642,22 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 			if (t_errno == TNODATA)
 				return CONNECTING_2;
 			else if (t_errno == TLOOK && t_look(tb->tb_fd) == T_DISCONNECT)
-				(void) tp4getdis(tb->tb_fd, td);
+				 tp4getdis(tb->tb_fd, td);
 			else
-				(void) tli_lose(td, NOTOK, DR_REFUSED, "t_rcvconnect");
+				 tli_lose(td, NOTOK, DR_REFUSED, "t_rcvconnect");
 			goto out;
 		}
 		if (async) {
 			int             flags;
 			if ((flags = fcntl(tb->tb_fd, F_GETFL, 0)) == NOTOK) {
 				T_free((char *) call, T_CALL_STR);
-				(void) tsaplose(td, DR_CONGEST, "failed", "fcntl");
+				 tsaplose(td, DR_CONGEST, "failed", "fcntl");
 				goto out;
 			}
 			flags &= ~FNDELAY;
-			(void) fcntl(tb->tb_fd, F_SETFL, flags);
+			 fcntl(tb->tb_fd, F_SETFL, flags);
 		}
-		(void) tp42gen(&ta, &call->addr);
+		 tp42gen(&ta, &call->addr);
 		copyTSAPaddrY(&ta, &tb->tb_responding);
 
 		if (call->udata.len > 0)
@@ -743,7 +743,7 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 		goto reject;
 
 	if ((call = (struct t_call *) T_alloc(tb->tb_fd, T_CALL_STR, T_ALL)) == NULL) {
-		(void) tli_lose(td, result, DR_CONGEST, "T_alloc");
+		 tli_lose(td, result, DR_CONGEST, "T_alloc");
 		goto reject;
 	}
 	if (data)			/* user data? */
@@ -757,9 +757,9 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 			 ("T_accept fail: t_errno=%d, t_look=%d",
 			  t_errno, t_look(tb->tb_fd)));
 		if (t_errno == TLOOK && t_look(tb->tb_fd) == T_DISCONNECT)
-			(void) tp4getdis(tb->tb_fd, td);
+			 tp4getdis(tb->tb_fd, td);
 		else
-			(void) tli_lose(td, result, DR_CONGEST, "T_accept");
+			 tli_lose(td, result, DR_CONGEST, "T_accept");
 		T_free((char *) call, T_CALL_STR);
 		return NOTOK;
 	}
@@ -768,10 +768,10 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 	/*
 	 * OK - we have the new call - lets pretend we are back where we were...
 	 */
-	(void) T_close(tb->tb_fd);	/* finished with this - get rid of it! */
-	(void) dup2(result, tb->tb_fd);
-	(void) T_close(result);
-	(void) t_sync(tb->tb_fd);
+	 T_close(tb->tb_fd);	/* finished with this - get rid of it! */
+	 dup2(result, tb->tb_fd);
+	 T_close(result);
+	 t_sync(tb->tb_fd);
 
 	T_swapfd (result, tb->tb_fd);
 
@@ -791,7 +791,7 @@ reject: {
 
 		bzero((char *) &dis, sizeof dis);
 		dis.sequence = tb->tb_dstref;
-		(void) t_snddis(tb->tb_fd, &dis);
+		 t_snddis(tb->tb_fd, &dis);
 		return NOTOK;
 	}
 }
@@ -829,7 +829,7 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 
 		if ((qb = (struct qbuf *) calloc(1,sizeof *qb + (unsigned) cc))
 				== NULL) {
-			(void) tsaplose(td, DR_CONGEST, NULLCP,
+			 tsaplose(td, DR_CONGEST, NULLCP,
 							"unable to malloc %d octets for pseudo-writev, failing...",
 							cc);
 			freetblk(tb);
@@ -850,7 +850,7 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 			goto insert;
 		}
 		if ((async = fcntl(tb->tb_fd, F_GETFL, 0)) != NOTOK)
-			(void) fcntl(tb->tb_fd, F_SETFL, async | FNDELAY);
+			 fcntl(tb->tb_fd, F_SETFL, async | FNDELAY);
 
 		nc = t_snd(tb->tb_fd, qb->qb_data, qb->qb_len, 0);
 		DLOG(tsap_log, LLOG_TRACE,
@@ -859,15 +859,15 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 
 
 		if (async != NOTOK)
-			(void) fcntl(tb->tb_fd, F_SETFL, async);
+			 fcntl(tb->tb_fd, F_SETFL, async);
 
 		if (nc != cc) {
 			if (nc == NOTOK) {
 				if (t_errno == TLOOK && t_look(tb->tb_fd) == T_DISCONNECT) {
-					(void) tp4getdis(tb->tb_fd, td);
+					 tp4getdis(tb->tb_fd, td);
 					goto losing;
 				} else if (t_errno != TFLOW) {
-					(void) tsaplose(td, DR_CONGEST, "failed", "sendmsg");
+					 tsaplose(td, DR_CONGEST, "failed", "sendmsg");
 					goto losing;
 				}
 				nc = 0;
@@ -907,9 +907,9 @@ losing:
 		if (t_snd(tb->tb_fd, uv->uv_base, uv->uv_len,
 				  flags | (more ? T_MORE : 0)) == NOTOK) {
 			if (t_errno == TLOOK && t_look(tb->tb_fd) == T_DISCONNECT)
-				(void) tp4getdis(tb->tb_fd, td);
+				 tp4getdis(tb->tb_fd, td);
 			else
-				(void) tsaplose(td, DR_CONGEST, "failed", "sendmsg");
+				 tsaplose(td, DR_CONGEST, "failed", "sendmsg");
 			freetblk(tb);
 
 			return NOTOK;
@@ -935,7 +935,7 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 	struct qbuf *qb;
 
 	if ((onoff = fcntl(tb->tb_fd, F_GETFL, 0)) != NOTOK)
-		(void) fcntl(tb->tb_fd, F_SETFL, onoff | FNDELAY);
+		 fcntl(tb->tb_fd, F_SETFL, onoff | FNDELAY);
 
 
 	while ((qb = tb->tb_qwrites.qb_forw) != &tb->tb_qwrites) {
@@ -971,7 +971,7 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 out:
 	;
 	if (onoff != NOTOK)
-		(void) fcntl(tb->tb_fd, F_SETFL, onoff);
+		 fcntl(tb->tb_fd, F_SETFL, onoff);
 
 	return result;
 }
@@ -1002,7 +1002,7 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 		}
 		if (qb == NULL && (qb = (struct qbuf *)
 								calloc(1,(unsigned) (sizeof *qb + tb->tb_tsdusize))) == NULL) {
-			(void) tsaplose(td, DR_CONGEST, NULLCP, NULLCP);
+			 tsaplose(td, DR_CONGEST, NULLCP, NULLCP);
 			break;
 		} else
 			qb->qb_len = tb->tb_tsdusize;
@@ -1017,17 +1017,17 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 			case TLOOK:
 				switch (t_look(tb->tb_fd)) {
 				case T_DISCONNECT:
-					(void) tp4getdis(tb->tb_fd, td);
+					 tp4getdis(tb->tb_fd, td);
 					break;
 				default:
-					(void) tsaplose(td, DR_CONGEST, NULLCP,
+					 tsaplose(td, DR_CONGEST, NULLCP,
 									"unexpected event %d",
 									t_look(tb->tb_fd));
 					break;
 				}
 				goto out;
 			default:
-				(void) tli_lose(td, NOTOK, DR_CONGEST, "t_rcv");
+				 tli_lose(td, NOTOK, DR_CONGEST, "t_rcv");
 				break;
 			}
 			break;
@@ -1181,11 +1181,11 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 		tb->tb_fd = NOTOK;
 		return NOTOK;
 	}
-	(void) tp4init(tb);
+	 tp4init(tb);
 
 	if (async)
 		if ((onoff = fcntl(fd, F_GETFL, 0)) != NOTOK)
-			(void) fcntl(fd, F_SETFL, onoff | FNDELAY);
+			 fcntl(fd, F_SETFL, onoff | FNDELAY);
 
 	return (async ? OK : DONE);
 }
@@ -1234,7 +1234,7 @@ tp4save (int fd, int seq, int exp, struct tsapADDR *calling_ta, struct tsapADDR 
 			 ("Couldn't find transport descriptor information for %d", fd));
 		return NULLCP;
 	}
-	(void) sprintf(buffer, "%c%d.%d.%d.%ld.%ld.%ld.%ld.%ld.%ld.%ld %s %s", NT_XTI, fd, seq, exp, info->addr, info->options, info->tsdu, info->etsdu, info->connect, info->discon, info->servtype,
+	 sprintf(buffer, "%c%d.%d.%d.%ld.%ld.%ld.%ld.%ld.%ld.%ld %s %s", NT_XTI, fd, seq, exp, info->addr, info->options, info->tsdu, info->etsdu, info->connect, info->discon, info->servtype,
 				   taddr2str(&calling), taddr2str(&called));
 	if (T_delinfo(fd) == NOTOK) {
 		LLOG(tsap_log, LLOG_EXCEPTIONS,
@@ -1276,7 +1276,7 @@ tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 		tb->tb_flags |= TB_EXPD;
 	else
 		tb->tb_flags &= ~TB_EXPD;
-	(void) tp4init(tb);
+	 tp4init(tb);
 	return OK;
 }
 
@@ -1349,7 +1349,7 @@ join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *se
 		else
 			return tli_lose(td, NOTOK, DR_CONGEST, "t_listen");
 	}
-	(void) tp42gen(remote_ta, &call->addr);
+	 tp42gen(remote_ta, &call->addr);
 	*seqp = call->sequence;
 	if ((*ccp = call->udata.len) > 0)
 		bcopy(call->udata.buf, ud, *ccp);
@@ -1453,7 +1453,7 @@ int             fd;
 
 #else
 int 
-_ts2xti_stub (void) {
+_ts2xti_stub(){
 	;
 }
 #endif

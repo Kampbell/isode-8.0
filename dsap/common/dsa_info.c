@@ -233,12 +233,12 @@ struct edb_info * ei;
 {
 	PE ret_pe;
 
-	(void) encode_Quipu_EDBInfoSyntax (&ret_pe,0,0,NULLCP,ei);
+	 encode_Quipu_EDBInfoSyntax (&ret_pe,0,0,NULLCP,ei);
 	return (ret_pe);
 }
 
 edbinfo_syntax () {
-	(void) add_attribute_syntax ("edbinfo",
+	 add_attribute_syntax ("edbinfo",
 								 (IFP) edb_info_enc,	(IFP) edb_info_decode,
 								 (IFP) str2update,	edb_info_print,
 								 (IFP) edb_info_cpy,	edb_info_cmp,

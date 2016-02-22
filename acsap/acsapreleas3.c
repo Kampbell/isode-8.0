@@ -109,7 +109,7 @@ out:
 	if (pdu)
 		free_ACS_ACSE__apdu (pdu);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

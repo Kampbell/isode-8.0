@@ -84,7 +84,7 @@ rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti)
 	free (base);
 
 	if (result == NOTOK) {
-		(void) ss2rtslose (acb, rti, "SPTokenRequest", sa);
+		 ss2rtslose (acb, rti, "SPTokenRequest", sa);
 		freeacblk (acb);
 	}
 
@@ -109,7 +109,7 @@ rt2ssgturn (struct assocblk *acb, struct RtSAPindication *rti)
 		return rtsaplose (rti, RTS_OPERATION, NULLCP, "transfer in progress");
 
 	if (SGControlRequest (acb -> acb_fd, si) == NOTOK) {
-		(void) ss2rtslose (acb, rti, "SGControlRequest", sa);
+		 ss2rtslose (acb, rti, "SGControlRequest", sa);
 		freeacblk (acb);
 		return NOTOK;
 	}
@@ -156,14 +156,14 @@ rt2sstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti
 	base = NULL;
 
 	if (SActStartRequest (acb -> acb_fd, id, NULLCP, 0, si) == NOTOK) {
-		(void) ss2rtslose (acb, rti, "SActStartRequest", sa);
+		 ss2rtslose (acb, rti, "SActStartRequest", sa);
 		goto out;
 	}
 
 	acb -> acb_flags |= ACB_ACT;
 
 	if (data && pe2ssdu (data, &base, &len) == NOTOK) {
-		(void) rtsaplose (rti, RTS_CONGEST, NULLCP, NULLCP);
+		 rtsaplose (rti, RTS_CONGEST, NULLCP, NULLCP);
 		goto out;
 	}
 
@@ -175,7 +175,7 @@ rt2sstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti
 bad_trans:
 				;
 				if (SActDiscRequest (acb -> acb_fd, SP_LOCAL, si) == NOTOK) {
-					(void) ss2rtslose (acb, rti, "SActDiscRequest", sa);
+					 ss2rtslose (acb, rti, "SActDiscRequest", sa);
 					goto out;
 				}
 				goto done;
@@ -187,7 +187,7 @@ bad_trans:
 		}
 
 		if (SDataRequest (acb -> acb_fd, base, len, si) == NOTOK) {
-			(void) ss2rtslose (acb, rti, "SDataRequest", sa);
+			 ss2rtslose (acb, rti, "SDataRequest", sa);
 			goto out;
 		}
 	} else {
@@ -198,7 +198,7 @@ bad_trans:
 #endif
 		acb -> acb_ssn = acb -> acb_ack = 0L;
 		if (secs != NOTOK) {
-			(void) time (&limit);
+			 time (&limit);
 			limit += secs;
 		}
 
@@ -215,7 +215,7 @@ bad_trans:
 
 		dp = base, cc = min (len, size);
 		if (SDataRequest (acb -> acb_fd, dp, cc, si) == NOTOK) {
-			(void) ss2rtslose (acb, rti, "SDataRequest", sa);
+			 ss2rtslose (acb, rti, "SDataRequest", sa);
 			goto out;
 		}
 
@@ -235,7 +235,7 @@ bad_trans:
 			}
 
 			if (secs != NOTOK) {
-				(void) time (&clock);
+				 time (&clock);
 				if (limit < clock) {
 					result = NOTOK;
 					break;
@@ -244,7 +244,7 @@ bad_trans:
 
 			if (SMinSyncRequest (acb -> acb_fd, SYNC_CONFIRM,
 								 &acb -> acb_ssn, NULLCP, 0, si) == NOTOK) {
-				(void) ss2rtslose (acb, rti, "SMinSyncRequest", sa);
+				 ss2rtslose (acb, rti, "SMinSyncRequest", sa);
 				goto out;
 			}
 
@@ -272,7 +272,7 @@ bad_trans:
 
 			cc = min (len, size);
 			if (SDataRequest (acb -> acb_fd, dp, cc, si) == NOTOK) {
-				(void) ss2rtslose (acb, rti, "SDataRequest", sa);
+				 ss2rtslose (acb, rti, "SDataRequest", sa);
 				goto out;
 			}
 		}
@@ -287,7 +287,7 @@ done:
 	case OK:
 		if (SActEndRequest (acb -> acb_fd, &acb -> acb_ssn, NULLCP, 0,
 							si) == NOTOK) {
-			(void) ss2rtslose (acb, rti, "SActEndRequest", sa);
+			 ss2rtslose (acb, rti, "SActEndRequest", sa);
 			goto out;
 		}
 		break;
@@ -295,7 +295,7 @@ done:
 	default:
 		acb -> acb_flags |= ACB_TIMER;
 		if (SActDiscRequest (acb -> acb_fd, SP_LOCAL, si) == NOTOK) {
-			(void) ss2rtslose (acb, rti, "SActDiscRequest", sa);
+			 ss2rtslose (acb, rti, "SActDiscRequest", sa);
 			goto out;
 		}
 		break;
@@ -373,7 +373,7 @@ rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rt
 				return doSSfinish (acb, &si -> si_finish, rti);
 
 			default:
-				(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+				 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 								  "unknown indication (0x%x) from session",
 								  si -> si_type);
 				break;
@@ -381,7 +381,7 @@ rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rt
 			break;
 
 		default:
-			(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+			 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 							  "unexpected return from SReadRequest=%d", result);
 			break;
 		}
@@ -418,7 +418,7 @@ rt2ssasync (struct assocblk *acb, IFP indication, struct RtSAPindication *rti)
 			return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) ss2rtslose (acb, rti, "SSetIndications", sa);
+			 ss2rtslose (acb, rti, "SSetIndications", sa);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -444,7 +444,7 @@ rt2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication
 			return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) ss2rtslose (acb, rti, "SSelectMask", sa);
+			 ss2rtslose (acb, rti, "SSelectMask", sa);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -467,7 +467,7 @@ rt2sslose (struct assocblk *acb, int result)
 	if (pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET)) {
 		if (set_add (pe, num2prim ((integer) result, PE_CLASS_CONT, 0))
 				!= NOTOK)
-			(void) pe2ssdu (pe, &base, &len);
+			 pe2ssdu (pe, &base, &len);
 
 		PLOGP (rtsap_log,OACS_AbortInformation, pe, "AbortInformation",
 			   0);
@@ -477,7 +477,7 @@ rt2sslose (struct assocblk *acb, int result)
 	}
 	/* end AbortInformation PSDU */
 
-	(void) SUAbortRequest (acb -> acb_fd, base, len, &sis);
+	 SUAbortRequest (acb -> acb_fd, base, len, &sis);
 	if (!(acb -> acb_flags & ACB_STICKY))
 		acb -> acb_fd = NOTOK;
 
@@ -498,7 +498,7 @@ doSSdata (struct assocblk *acb, struct SSAPdata *sx, struct RtSAPindication *rti
 	if (!(acb -> acb_flags & ACB_ACT)
 			|| (acb -> acb_flags & ACB_TURN)
 			|| sx -> sx_type != SX_NORMAL) {
-		(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+		 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						  "unexpected data indication (0x%x)", sx -> sx_type);
 		goto out;
 	}
@@ -523,7 +523,7 @@ congested:
 				;
 				if (SUReportRequest (acb -> acb_fd, SP_LOCAL, NULLCP, 0,
 									 si) == NOTOK) {
-					(void) ss2rtslose (acb, rti, "SUReportRequest", sa);
+					 ss2rtslose (acb, rti, "SUReportRequest", sa);
 					goto out;
 				}
 				FREEACB (acb);
@@ -603,7 +603,7 @@ doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPin
 			pe = ssdu2pe (st -> st_data, st -> st_cc, NULLCP, &result);
 			STFREE (st);
 			if (pe == NULLPE) {
-				(void) rtpktlose (acb, rti, result != PS_ERR_NMEM
+				 rtpktlose (acb, rti, result != PS_ERR_NMEM
 								  ? RTS_PROTOCOL : RTS_CONGEST, NULLCP,
 								  ps_error (result));
 				goto out;
@@ -618,7 +618,7 @@ doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPin
 
 			pe_free (pe);
 			if (result == NOTOK) {
-				(void) pylose ();
+				 pylose ();
 				free_OACS_Priority(priority);
 				goto out;
 			}
@@ -630,7 +630,7 @@ doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPin
 												 0L, 0L, rti) == NOTOK
 							&& SActIntrRequest (acb -> acb_fd, SP_LOCAL,
 												si) == NOTOK) {
-						(void) ss2rtslose (acb, rti, "SActIntrRequest",sa);
+						 ss2rtslose (acb, rti, "SActIntrRequest",sa);
 						free_OACS_Priority(priority);
 						goto out;
 					}
@@ -655,7 +655,7 @@ doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPin
 		default:
 			break;
 		}
-	(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+	 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 					  "unexpected token indication (0x%x)", st -> st_type);
 
 out:
@@ -687,7 +687,7 @@ doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti
 										   (caddr_t) sn, rti) == NOTOK) {
 					if (SUReportRequest (acb -> acb_fd, SP_LOCAL,
 										 NULLCP, 0, si) == NOTOK) {
-						(void) ss2rtslose (acb, rti, "SUReportRequest",sa);
+						 ss2rtslose (acb, rti, "SUReportRequest",sa);
 						goto out;
 					}
 					return OK;
@@ -695,7 +695,7 @@ doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti
 			}
 			if (SMinSyncResponse (acb -> acb_fd, sn -> sn_ssn,
 								  NULLCP, 0, si) == NOTOK) {
-				(void) ss2rtslose (acb, rti, "SMinSyncResponse", sa);
+				 ss2rtslose (acb, rti, "SMinSyncResponse", sa);
 				goto out;
 			}
 			return OK;
@@ -709,7 +709,7 @@ doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti
 		default:
 			break;
 		}
-	(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+	 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 					  "unexpected sync indication (0x%x)", sn -> sn_type);
 
 out:
@@ -741,7 +741,7 @@ doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindicat
 									   (caddr_t) sv, rti) == NOTOK) {
 				if (SUReportRequest (acb -> acb_fd, SP_LOCAL,
 									 NULLCP, 0, si) == NOTOK) {
-					(void) ss2rtslose (acb, rti, "SUReportRequest", sa);
+					 ss2rtslose (acb, rti, "SUReportRequest", sa);
 					goto out;
 				}
 				return OK;
@@ -755,7 +755,7 @@ doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindicat
 			break;
 		if (SUReportRequest (acb -> acb_fd, SP_PROCEDURAL, NULLCP, 0,
 							 si) == NOTOK) {
-			(void) ss2rtslose (acb, rti, "SUReportRequest", sa);
+			 ss2rtslose (acb, rti, "SUReportRequest", sa);
 			goto out;
 		}
 		acb -> acb_flags |= ACB_ACT;
@@ -767,12 +767,12 @@ doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindicat
 				|| (acb -> acb_flags & ACB_TURN))
 			break;
 		if (acb -> acb_uptrans)
-			(void) (*acb -> acb_uptrans) (acb -> acb_fd, SI_ACTIVITY,
+			 (*acb -> acb_uptrans) (acb -> acb_fd, SI_ACTIVITY,
 										  (caddr_t) sv, rti);
 		if ((sv -> sv_type == SV_INTRIND
 				? SActIntrResponse (acb -> acb_fd, si)
 				: SActDiscResponse (acb -> acb_fd, si)) == NOTOK) {
-			(void) ss2rtslose (acb, rti, sv -> sv_type == SV_INTRIND
+			 ss2rtslose (acb, rti, sv -> sv_type == SV_INTRIND
 							   ? "SActIntrResponse" : "SActDiscResponse", sa);
 			goto out;
 		}
@@ -786,7 +786,7 @@ doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindicat
 				|| !(acb -> acb_flags & ACB_TURN))
 			break;
 		acb -> acb_flags &= ~ACB_ACT;
-		(void) rtsaplose (rti, acb -> acb_flags & ACB_TIMER ? RTS_TIMER
+		 rtsaplose (rti, acb -> acb_flags & ACB_TIMER ? RTS_TIMER
 						  : RTS_TRANSFER, NULLCP, NULLCP);
 		return OK;
 
@@ -799,7 +799,7 @@ doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindicat
 									   (caddr_t) sv, rti) == NOTOK) {
 				if (SUReportRequest (acb -> acb_fd, SP_LOCAL, NULLCP, 0,
 									 si) == NOTOK) {
-					(void) ss2rtslose (acb, rti, "SUReportRequest", sa);
+					 ss2rtslose (acb, rti, "SUReportRequest", sa);
 					goto out;
 				}
 
@@ -821,13 +821,13 @@ doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindicat
 		FREEACB (acb);
 		if (pe == NULLPE) {
 			if (result != PS_ERR_NMEM) {
-				(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP, "%s",
+				 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP, "%s",
 								  ps_error (result));
 				goto out;
 			}
 			if (SUReportRequest (acb -> acb_fd, SP_LOCAL, NULLCP, 0, si)
 					== NOTOK) {
-				(void) ss2rtslose (acb, rti, "SUReportRequest", sa);
+				 ss2rtslose (acb, rti, "SUReportRequest", sa);
 				goto out;
 			}
 			return OK;
@@ -836,7 +836,7 @@ doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindicat
 end_it:
 		;
 		if (SActEndResponse (acb -> acb_fd, NULLCP, 0, si) == NOTOK) {
-			(void) ss2rtslose (acb, rti, "SActEndResponse", sa);
+			 ss2rtslose (acb, rti, "SActEndResponse", sa);
 			if (pe)
 				pe_free (pe);
 			goto out;
@@ -861,7 +861,7 @@ end_it:
 	default:
 		break;
 	}
-	(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+	 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 					  "unexpected activity indication (0x%x)", sv -> sv_type);
 
 out:
@@ -888,7 +888,7 @@ doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RtSAPindication 
 		/* XXX: should try lots of things here, based on how many checkpoints have
 			been acknowledged, but, for now we'll treate everything as severe... */
 
-		(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+		 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						  "unrecoverable provider-initiated exception report");
 		goto out1;
 	}
@@ -897,7 +897,7 @@ doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RtSAPindication 
 			|| !(acb -> acb_flags & ACB_TURN)) {
 out2:
 		;
-		(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+		 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						  "unexpected exception report indication (0x%x)",
 						  sp -> sp_peer);
 		goto out1;
@@ -907,11 +907,11 @@ out2:
 		but, for now we'll treat everything as SP_NOREASON... */
 
 	if (acb -> acb_uptrans)
-		(void) (*acb -> acb_uptrans) (acb -> acb_fd, SI_REPORT,
+		 (*acb -> acb_uptrans) (acb -> acb_fd, SI_REPORT,
 									  (caddr_t) sp, rti);
 	if (SActDiscRequest (acb -> acb_fd, SP_NOREASON, si) != NOTOK)
 		return OK;
-	(void) ss2rtslose (acb, rti, "SActDiscRequest", sa);
+	 ss2rtslose (acb, rti, "SActDiscRequest", sa);
 
 out1:
 	;
@@ -930,13 +930,13 @@ doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RtSAPindication 
 
 	if (((acb -> acb_flags & ACB_INIT) && (acb -> acb_flags & ACB_TWA))
 			|| (acb -> acb_flags & ACB_TURN)) {
-		(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+		 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						  "association management botched");
 		goto out;
 	}
 
 	if (acb -> acb_flags & ACB_ACT) {
-		(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+		 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						  "unexpected release indication");
 		goto out;
 	}
@@ -969,18 +969,18 @@ ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication 
 		if (sa -> sa_reason == SC_TIMER)
 			return rtsaplose (rti, RTS_TIMER, NULLCP, NULLCP);
 
-		(void) ss2rtslose (acb, rti, NULLCP, sa);
+		 ss2rtslose (acb, rti, NULLCP, sa);
 		goto out;
 	}
 
 	if (sa -> sa_cc == 0) {
-		(void) rtsaplose (rti, RTS_ABORTED, NULLCP, NULLCP);
+		 rtsaplose (rti, RTS_ABORTED, NULLCP, NULLCP);
 		goto out;
 	}
 
 	if ((pe = ssdu2pe (sa -> sa_info, sa -> sa_cc, NULLCP, &result))
 			== NULLPE) {
-		(void) rtsaplose (rti, RTS_PROTOCOL, NULLCP, NULLCP);
+		 rtsaplose (rti, RTS_PROTOCOL, NULLCP, NULLCP);
 		goto out;
 	}
 	/* acsap_abort = -1; */
@@ -994,7 +994,7 @@ ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication 
 
 	pe_free (pe);
 	if (result == NOTOK) {
-		(void) rtsaplose (rti, RTS_PROTOCOL, "%s", PY_pepy);
+		 rtsaplose (rti, RTS_PROTOCOL, "%s", PY_pepy);
 		free_OACS_AbortInformation (pabi);
 		goto out;
 	}
@@ -1012,7 +1012,7 @@ ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication 
 		result = RTS_PROTOCOL;
 		break;
 	}
-	(void) rtsaplose (rti, result, NULLCP, NULLCP);
+	 rtsaplose (rti, result, NULLCP, NULLCP);
 	free_OACS_AbortInformation (pabi);
 
 out:
@@ -1129,7 +1129,7 @@ ssFINISHser (int sd, struct SSAPfinish *sf)
 		return;
 	handler = acb -> acb_rtsindication;
 
-	(void) doSSfinish (acb, sf, rti);
+	 doSSfinish (acb, sf, rti);
 
 	(*handler) (sd, rti);
 }
@@ -1148,7 +1148,7 @@ ssABORTser (int sd, struct SSAPabort *sa)
 		return;
 	handler = acb -> acb_rtsindication;
 
-	(void) doSSabort (acb, sa, rti);
+	 doSSabort (acb, sa, rti);
 
 	(*handler) (sd, rti);
 }
@@ -1185,7 +1185,7 @@ ss2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, stru
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at session)",
+		 sprintf (cp = buffer, " (%s at session)",
 						SErrString (sa -> sa_reason));
 	case SC_TRANSPORT:
 	case SC_ABORT:

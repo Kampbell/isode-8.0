@@ -72,7 +72,7 @@ int   size;
 	if ((unsigned char)*data != 0xa3 && *data != 0x03) {
 		if (((unsigned char)*data == 0x05) &&
 				((unsigned char)*(data + 1) == 0x00)) {
-			(void) fprintf (stderr, "NULL photo !?!");
+			 fprintf (stderr, "NULL photo !?!");
 			return (-1);
 		}
 		return decode_t4_aux (data, name, (int)size, twoDimensional);
@@ -80,7 +80,7 @@ int   size;
 	/* attempt to decode the source */
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) {
-		(void) fprintf (stderr, "ps_alloc: unable to allocate presentation stream\n");
+		 fprintf (stderr, "ps_alloc: unable to allocate presentation stream\n");
 		return (-1);
 	}
 	if (str_setup (ps, data, (int)size, 0) == NOTOK) {
@@ -108,7 +108,7 @@ int   size;
 		set = first_member (pe);
 		if (!set || set->pe_class != PE_CLASS_UNIV ||
 				set->pe_form != PE_FORM_CONS || set->pe_id != PE_CONS_SET) {
-			(void) fprintf (stderr, "decode_fax: %s is not a fax image\n", name);
+			 fprintf (stderr, "decode_fax: %s is not a fax image\n", name);
 			pe_free (pe);
 			ps_free (ps);
 			return -1;
@@ -131,7 +131,7 @@ int   size;
 		seq = next_member (pe, set);
 		if (!seq || seq->pe_class != PE_CLASS_UNIV ||
 				seq->pe_form != PE_FORM_CONS || seq->pe_id != PE_CONS_SEQ) {
-			(void) fprintf (stderr, "%s: is not a fax image\n", name);
+			 fprintf (stderr, "%s: is not a fax image\n", name);
 			pe_free (pe);
 			ps_free (ps);
 			return -1;
@@ -141,7 +141,7 @@ int   size;
 			if (member->pe_class != PE_CLASS_UNIV ||
 					member->pe_form != PE_FORM_PRIM ||
 					member->pe_id != PE_PRIM_BITS) {
-				(void) fprintf (stderr, "%s: is not a fax image\n", name);
+				 fprintf (stderr, "%s: is not a fax image\n", name);
 				pe_free (pe);
 				ps_free (ps);
 				return -1;
@@ -306,8 +306,8 @@ int   twoDimensional;
 
 	bitmap = code_line.dbuf_top;
 
-	(void) free ((char *)buffer1);
-	(void) free ((char *)buffer2);
+	 free ((char *)buffer1);
+	 free ((char *)buffer2);
 
 	return (photo_end (winname));
 
@@ -339,7 +339,7 @@ node * tree_top;
 		}
 
 		if (ptr == NULL) {
-			(void) fprintf (stderr,
+			 fprintf (stderr,
 							"decode_fax: WARNING - sequencing error in line %d\n",
 							NUMLINES);
 			return (NULL);
@@ -443,7 +443,7 @@ bit_string * t4_lineptr;
 				resync (t4_lineptr);
 				return (-2);
 			} else {
-				(void) fputs ("decode_fax: too many sequencing errors\n", stderr);
+				 fputs ("decode_fax: too many sequencing errors\n", stderr);
 				return (-1);
 			}
 		} else if (run.r_type == UNCOMPRESSED_1D) {
@@ -512,7 +512,7 @@ bit_string * t4_lineptr;
 				resync (t4_lineptr);
 				return (-2);
 			} else {
-				(void) fputs ("decode_fax: too many sequencing errors\n", stderr);
+				 fputs ("decode_fax: too many sequencing errors\n", stderr);
 				return (-1);
 			}
 		}
@@ -587,13 +587,13 @@ int twoD;
 		zeros = 0;
 		while (get_bit(t4_lineptr) != 01) ++zeros;
 		if (zeros > 10) {
-			(void) fputs ("decode_fax: bad code word in uncompressed mode string\n",
+			 fputs ("decode_fax: bad code word in uncompressed mode string\n",
 						  stderr);
 			if (++seqerrs < 10) {
 				resync (t4_lineptr);
 				return (-2);
 			} else {
-				(void) fputs ("decode_fax: too many sequencing errors\n", stderr);
+				 fputs ("decode_fax: too many sequencing errors\n", stderr);
 				return (-1);
 			}
 		}
@@ -679,7 +679,7 @@ bit_string * code_lineptr;
 			resync (t4_lineptr);
 			return (-2);
 		} else {
-			(void) fputs ("decode_fax: too many sequencing errors\n", stderr);
+			 fputs ("decode_fax: too many sequencing errors\n", stderr);
 			return (-1);
 		}
 	}
@@ -692,7 +692,7 @@ bit_string * code_lineptr;
 			resync (t4_lineptr);
 			return (-2);
 		} else {
-			(void) fputs ("decode_fax: too many sequencing errors\n", stderr);
+			 fputs ("decode_fax: too many sequencing errors\n", stderr);
 			return (-1);
 		}
 	}
@@ -807,7 +807,7 @@ char xcolour;
 
 	/*
 	    if ( length < 0 ) {
-		(void) fprintf (stderr,
+		 fprintf (stderr,
 				"decode_fax: WARNING - negative run length (%d) detected in line %d\n",
 				length, NUMLINES);
 	    }
@@ -925,7 +925,7 @@ int	length;
 
 	if (length == 0) {
 		if (*lineptr->dbuf++ != 0x03) {
-			(void) fputs ("decode_fax: input stream is not a BIT STRING\n",
+			 fputs ("decode_fax: input stream is not a BIT STRING\n",
 						  stderr);
 			return (-1);
 		}
@@ -933,7 +933,7 @@ int	length;
 		if (cbyte & 0x80) { /* long form */
 			count = cbyte & 0x7f;
 			if (count > 4) {
-				(void) fputs ("decode_fax: length error\n", stderr);
+				 fputs ("decode_fax: length error\n", stderr);
 				return (-1);
 			}
 			for (i = 0; i < count; ++i)

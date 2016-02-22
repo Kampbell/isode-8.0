@@ -53,7 +53,7 @@ SMinSyncResponse (int sd, long ssn, char *data, int cc, struct SSAPindication *s
 
 	result = SMinSyncResponseAux (sb, ssn, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

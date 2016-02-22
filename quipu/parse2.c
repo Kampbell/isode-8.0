@@ -102,11 +102,11 @@ char * fname;
 #ifdef TURBO_DISK
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		(void) gdbm_close (file);
+		 gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
-		(void) fclose (file);
+		 fclose (file);
 		return (NULLAVL);
 #endif
 	}
@@ -131,12 +131,12 @@ char * fname;
 		p_parent->e_children = NULLAVL ;
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		(void) gdbm_close (file);
+		 gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
 		p_parent->e_children = NULLAVL;
-		(void) fclose (file);
+		 fclose (file);
 		return(NULLAVL) ;
 #endif
 	}
@@ -149,11 +149,11 @@ char * fname;
 #ifdef TURBO_DISK
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		(void) gdbm_close (file);
+		 gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
-		(void) fclose (file);
+		 fclose (file);
 		return(NULLAVL);
 #endif
 	}
@@ -174,11 +174,11 @@ char * fname;
 #ifdef TURBO_DISK
 	save_heap = mem_heap;
 	GENERAL_HEAP;
-	(void) gdbm_close (file);
+	 gdbm_close (file);
 	mem_heap = save_heap;
 	return(tree);
 #else
-	(void) fclose (file);
+	 fclose (file);
 	return (tree);
 #endif
 }

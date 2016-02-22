@@ -45,7 +45,7 @@ int  format;
 	avs_count = 1;
 
 	if (format == READOUT) {
-		(void) sprintf (buffer,"%s",attr2name (as->attr_type,oidformat));
+		 sprintf (buffer,"%s",attr2name (as->attr_type,oidformat));
 		ptr = buffer;
 	} else
 		ptr = attr2name_aux (as->attr_type);

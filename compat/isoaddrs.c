@@ -175,7 +175,7 @@ value2macro (char *value)
 /*  */
 
 static int 
-read_macros (void) {
+read_macros()  {
 	char *hp;
 	char    buffer[BUFSIZ];
 
@@ -189,7 +189,7 @@ read_macros (void) {
 
 	if ((hp = getenv ("HOME")) == NULL)
 		hp = ".";
-	(void) sprintf (buffer, "%s/.isode_macros", hp);
+	 sprintf (buffer, "%s/.isode_macros", hp);
 	read_file (buffer);
 }
 
@@ -218,7 +218,7 @@ read_file (char *file)
 			break;
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 }
 
 /*  */
@@ -241,7 +241,7 @@ add_macro (char *name, char *value)
 			return OK;
 		}
 
-		(void) sprintf (value = buffer, "%s%s", p -> m_value, cp);
+		 sprintf (value = buffer, "%s%s", p -> m_value, cp);
 	}
 
 	if ((m = (struct macro *) calloc (1, sizeof *m)) == NULL) {
@@ -259,8 +259,8 @@ add_macro (char *name, char *value)
 		free ((char *) m);
 		return NOTOK;
 	}
-	(void) strcpy (m -> m_name, name);
-	(void) strcpy (m -> m_value, value);
+	 strcpy (m -> m_name, name);
+	 strcpy (m -> m_value, value);
 
 	m -> m_chain = Mbuckets[i = MHASH (m -> m_name)];
 	Mbuckets[i] = m;
@@ -367,7 +367,7 @@ str2paddr (char *str)
 	i = i % 2;
 
 	bzero ((char *) pa, sizeof *pa);
-	(void) strcpy (buf1, str);
+	 strcpy (buf1, str);
 
 	state = PS_INIT;
 	sp = sels, lp = lens;
@@ -386,7 +386,7 @@ str2paddr (char *str)
 					return NULLPA;
 				}
 				*cp++ = NULL;
-				(void) strcpy (*sp, dp);
+				 strcpy (*sp, dp);
 				*lp = strlen (dp);
 				break;
 
@@ -453,7 +453,7 @@ stuff_selectors:
 						  ("non-existant macro \"%s\"", ep));
 					return NULLPA;
 				}
-				(void) sprintf (ep = buf2, "%s%s", m -> m_value, dp);
+				 sprintf (ep = buf2, "%s%s", m -> m_value, dp);
 			}
 
 			{
@@ -547,12 +547,12 @@ too_many:
 					/* X121 form -- should be more general
 					 * Only applies if the DSP is NULL
 					 */
-					(void) strcpy (nsap, dp);
+					 strcpy (nsap, dp);
 					if ((na -> na_dtelen = strlen (nsap)) > NSAP_DTELEN) {
 						dp = nsap;
 						goto invalid_dte;
 					}
-					(void) strcpy (na -> na_dte, nsap);
+					 strcpy (na -> na_dte, nsap);
 					na -> na_stack = NA_X25;
 					na -> na_community = SUBNET_INT_X25;
 					goto next;
@@ -564,16 +564,16 @@ too_many:
 						fp = pp -> p_dec1, padchar = '1';
 					else
 						fp = pp -> p_dec0, padchar = '0';
-					(void) strcpy (nsap, fp);
+					 strcpy (nsap, fp);
 					fp = nsap + strlen (nsap);
 					for (len = pp -> p_idi_len - strlen (dp);
 							len > 0;
 							len--)
 						*fp++ = padchar;
-					(void) strcpy (fp, dp);
+					 strcpy (fp, dp);
 					fp += strlen (fp);
 					if (*ep != NULL)
-						(void) strcpy (fp, ep + 1);
+						 strcpy (fp, ep + 1);
 					goto handle_dsp;
 
 				case 'x':
@@ -581,13 +581,13 @@ too_many:
 						fp = pp -> p_hex1, padchar = '1';
 					else
 						fp = pp -> p_hex0, padchar = '0';
-					(void) strcpy (nsap, fp);
+					 strcpy (nsap, fp);
 					fp = nsap + strlen (nsap);
 					for (len = pp -> p_idi_len - strlen (dp);
 							len > 0;
 							len--)
 						*fp++ = padchar;
-					(void) strcpy (fp, dp);
+					 strcpy (fp, dp);
 					/* Odd length IDI padded below */
 					goto handle_dsp;
 
@@ -598,7 +598,7 @@ too_many:
 							   pp -> p_name));
 						return NULLPA;
 					}
-					(void) strcpy (nsap, pp -> p_ia5);
+					 strcpy (nsap, pp -> p_ia5);
 					goto handle_dsp;
 
 handle_dsp:
@@ -617,7 +617,7 @@ handle_dsp:
 								 NULLPA, L3);
 						na -> na_addrlen += j;
 					} else if (*ep == 'l') {
-						(void) strcpy (dp, ep + 1);
+						 strcpy (dp, ep + 1);
 						na -> na_addrlen += strlen (ep + 1);
 					}
 					break;
@@ -627,13 +627,13 @@ handle_dsp:
 						fp = pp -> p_dec1, padchar = '1';
 					else
 						fp = pp -> p_dec0, padchar = '0';
-					(void) strcpy (nsap, fp);
+					 strcpy (nsap, fp);
 					fp = nsap + strlen (nsap);
 					for (len = pp -> p_idi_len - strlen (dp);
 							len > 0;
 							len--)
 						*fp++ = padchar;
-					(void) strcpy (fp, dp);
+					 strcpy (fp, dp);
 					if (strncmp ("RFC-1006+", ep,
 								 sizeof "RFC-1006+" - 1) == 0) {
 #ifdef	h_addr
@@ -656,7 +656,7 @@ handle_dsp:
 								  ("%s: unknown host", dp));
 							return NULLPA;
 						}
-						(void) strcpy (na -> na_domain,
+						 strcpy (na -> na_domain,
 									   inet_ntoa (*(struct in_addr *)
 												  hp -> h_addr));
 						if (*ep) {
@@ -677,7 +677,7 @@ handle_dsp:
 								goto too_many;
 							bcopy ((char *) (na - 1), (char *) na,
 								   sizeof *na);
-							(void) strcpy (na -> na_domain,
+							 strcpy (na -> na_domain,
 										   inet_ntoa (*(struct in_addr *) *ap));
 						}
 #endif
@@ -721,7 +721,7 @@ invalid_dte:
 						if (np - dp > NSAP_DTELEN + 1)
 							goto invalid_dte;
 #endif
-						(void) strcpy (na -> na_dte, dp);
+						 strcpy (na -> na_dte, dp);
 						na -> na_dtelen = strlen (na -> na_dte);
 						if (*ep) {
 							char   *cudf,
@@ -841,7 +841,7 @@ macro2comm (char *name, struct ts_interim *ts)
 	if ((cp = macro2str (name)) == NULLCP)
 		return NOTOK;
 	ts -> ts_value = cp;
-	(void) strcpy (buffer, cp);
+	 strcpy (buffer, cp);
 	ap = addr;
 
 	if ((ep = index (dp = buffer, '+')) == NULL)
@@ -867,7 +867,7 @@ macro2comm (char *name, struct ts_interim *ts)
 
 	if (!ep) {
 		/* No IDI */
-		(void) strcpy (ap, pp -> p_dec0);
+		 strcpy (ap, pp -> p_dec0);
 		ap += strlen (ap);
 		goto out;
 	}
@@ -888,7 +888,7 @@ macro2comm (char *name, struct ts_interim *ts)
 
 	if (lexequ (pp -> p_name, "X121") == 0 && *ep == NULL) {
 		/* Only used if there is no DSP */
-		(void) strcpy (ap, dp);
+		 strcpy (ap, dp);
 		ap += strlen (ap);
 
 		ts -> ts_syntax = NA_X25;
@@ -903,14 +903,14 @@ macro2comm (char *name, struct ts_interim *ts)
 			fp = pp -> p_dec1, padchar = '1';
 		else
 			fp = pp -> p_dec0, padchar = '0';
-		(void) strcpy (ap, fp);
+		 strcpy (ap, fp);
 		ap += strlen (ap);
 		for (len = pp -> p_idi_len - strlen (dp); len > 0; len--)
 			*ap++ = padchar;
-		(void) strcpy (ap, dp);
+		 strcpy (ap, dp);
 		ap += strlen (ap);
 		if (*ep != NULL)
-			(void) strcpy (ap, ep + 1);
+			 strcpy (ap, ep + 1);
 		break;
 
 	case 'x':
@@ -918,11 +918,11 @@ macro2comm (char *name, struct ts_interim *ts)
 			fp = pp -> p_hex1, padchar = '1';
 		else
 			fp = pp -> p_hex0, padchar = '0';
-		(void) strcpy (ap, fp);
+		 strcpy (ap, fp);
 		ap += strlen (ap);
 		for (len = pp -> p_idi_len - strlen (dp); len > 0; len--)
 			*ap++ = padchar;
-		(void) strcpy (ap, dp);
+		 strcpy (ap, dp);
 		/* Odd length IDI padded below */
 		break;
 
@@ -932,7 +932,7 @@ macro2comm (char *name, struct ts_interim *ts)
 				  ("No IA5 syntax for AFI \"%s\": %s", pp -> p_name, cp));
 			return NOTOK;
 		}
-		(void) strcpy (ap, pp -> p_ia5);
+		 strcpy (ap, pp -> p_ia5);
 		break;
 
 	default:
@@ -940,11 +940,11 @@ macro2comm (char *name, struct ts_interim *ts)
 			fp = pp -> p_dec1, padchar = '1';
 		else
 			fp = pp -> p_dec0, padchar = '0';
-		(void) strcpy (ap, fp);
+		 strcpy (ap, fp);
 		ap += strlen (ap);
 		for (len = pp -> p_idi_len - strlen (dp); len > 0; len--)
 			*ap++ = padchar;
-		(void) strcpy (ap, dp);
+		 strcpy (ap, dp);
 		ap += strlen (ap);
 
 		if ((ep = index (dp = ep, '+')) == NULL)
@@ -965,7 +965,7 @@ macro2comm (char *name, struct ts_interim *ts)
 		else
 			*ep++ = NULL;
 
-		(void) strcpy (ap, dp);
+		 strcpy (ap, dp);
 
 		if (*ep) {
 			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
@@ -992,7 +992,7 @@ out:
 		break;
 
 	case 'l':
-		(void) strcpy (np, ep + 1);
+		 strcpy (np, ep + 1);
 		np += strlen (ep + 1);
 		break;
 
@@ -1031,7 +1031,7 @@ SEL2STR (char *sel, int len)
 				cp = buffer;
 				*cp++ = '\'';
 				cp += explode (cp, (u_char *) sel, len);
-				(void) strcpy (cp, "'H");
+				 strcpy (cp, "'H");
 				return buffer;
 			}
 			break;
@@ -1073,7 +1073,7 @@ _paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact)
 	if (pa == NULLPA) {
 bad_pa:
 		;
-		(void) strcpy (bp, "NULLPA");
+		 strcpy (bp, "NULLPA");
 		return bp;
 	}
 	sa = &pa -> pa_addr;
@@ -1085,17 +1085,17 @@ bad_pa:
 		na = ta -> ta_addrs;
 
 	if (pa -> pa_selectlen > 0) {
-		(void) sprintf (cp, "%s/",
+		 sprintf (cp, "%s/",
 						SEL2STR (pa -> pa_selector, pa -> pa_selectlen));
 		cp += strlen (cp);
 	}
 	if (sa -> sa_selectlen > 0 || bp != cp) {
-		(void) sprintf (cp, "%s/",
+		 sprintf (cp, "%s/",
 						SEL2STR (sa -> sa_selector, sa -> sa_selectlen));
 		cp += strlen (cp);
 	}
 	if (ta -> ta_selectlen > 0 || bp != cp) {
-		(void) sprintf (cp, "%s/",
+		 sprintf (cp, "%s/",
 						SEL2STR (ta -> ta_selector, ta -> ta_selectlen));
 		cp += strlen (cp);
 	}
@@ -1122,7 +1122,7 @@ bad_pa:
 			if ((ca = na2norm (na)) == NULLNA)
 				goto bad_pa;
 
-			(void) strcpy (cp, "NS+");
+			 strcpy (cp, "NS+");
 			cp += strlen (cp);
 
 			cp += explode (cp, (u_char *) ca -> na_address, ca -> na_addrlen);
@@ -1144,7 +1144,7 @@ bad_pa:
 				   ts -> ts_name, na -> na_community));
 			goto bad_pa;
 		}
-		(void) strcpy (dp = cp, ts -> ts_value);
+		 strcpy (dp = cp, ts -> ts_value);
 		cp += strlen (cp) - 1;
 		if (*cp != '+')
 			*++cp = '+', *++cp = NULL;
@@ -1155,7 +1155,7 @@ bad_pa:
 			struct afi_info *a;
 
 		case NA_NSAP:
-			(void) strcpy (cp = dp, "NS+");
+			 strcpy (cp = dp, "NS+");
 			cp += strlen (cp);
 
 			cp += explode (cp, (u_char *) na -> na_address, na -> na_addrlen);
@@ -1183,7 +1183,7 @@ bad_pa:
 				dsp = cp + a->p_idi_len;		/* find DSP */
 				while (cp < dsp && *cp == pad)
 					cp++;			/* skip pad chars */
-				(void) sprintf(buf, "%s+%.*s", a->p_name, dsp - cp, cp);
+				 sprintf(buf, "%s+%.*s", a->p_name, dsp - cp, cp);
 
 				/*
 				 * If we have an odd number of characters in IDI &
@@ -1199,8 +1199,8 @@ bad_pa:
 						 'f')
 					*cp = '\0';
 				if (*dsp)
-					(void) sprintf(buf+strlen(buf), "+%c%s", dspmark, dsp);
-				(void) strcpy(dp, buf);
+					 sprintf(buf+strlen(buf), "+%c%s", dspmark, dsp);
+				 strcpy(dp, buf);
 				cp = dp + strlen(dp);
 				break;
 			}
@@ -1208,14 +1208,14 @@ bad_pa:
 
 
 		case NA_TCP:
-			(void) strcpy (cp, na -> na_domain);
+			 strcpy (cp, na -> na_domain);
 			cp += strlen (cp);
 			if (na -> na_port) {
-				(void) sprintf (cp, "+%d", (int) ntohs (na -> na_port));
+				 sprintf (cp, "+%d", (int) ntohs (na -> na_port));
 				cp += strlen (cp);
 
 				if (na -> na_tset) {
-					(void) sprintf (cp, "+%d", (int) na -> na_tset);
+					 sprintf (cp, "+%d", (int) na -> na_tset);
 					cp += strlen (cp);
 				}
 			}
@@ -1226,19 +1226,19 @@ bad_pa:
 					&& na -> na_cudflen == 0
 					&& na -> na_pidlen == 0
 					&& na -> na_dte[0] != '0') {
-				(void) sprintf (cp = dp, "X121+%s", na -> na_dte);
+				 sprintf (cp = dp, "X121+%s", na -> na_dte);
 				cp += strlen (cp);
 			} else {
-				(void) strcpy (cp, na -> na_dte);
+				 strcpy (cp, na -> na_dte);
 				cp += strlen (cp);
 				if (na -> na_pidlen > 0) {
-					(void) strcpy (cp, "+PID+");
+					 strcpy (cp, "+PID+");
 					cp += strlen (cp);
 
 					cp += explode (cp, (u_char *) na -> na_pid,
 								   (int) na -> na_pidlen);
 				} else if (na -> na_cudflen > 0) {
-					(void) strcpy (cp, "+CUDF+");
+					 strcpy (cp, "+CUDF+");
 					cp += strlen (cp);
 
 					cp += explode (cp, (u_char *) na -> na_cudf,
@@ -1259,9 +1259,9 @@ bad_pa:
 		if (!compact && (m = value2macro (dp))) {
 			char    buffer[BUFSIZ];
 
-			(void) sprintf (buffer, "%s=%s", m -> m_name,
+			 sprintf (buffer, "%s=%s", m -> m_name,
 							dp + strlen (m -> m_value));
-			(void) strcpy (dp, buffer);
+			 strcpy (dp, buffer);
 			cp = dp + strlen (dp);
 		}
 	}
@@ -1274,7 +1274,7 @@ bad_pa:
 
 #ifdef DEBUG
 int 
-free_macros (void) {
+free_macros()  {
 	int    i;
 	struct macro *m,
 			*p;

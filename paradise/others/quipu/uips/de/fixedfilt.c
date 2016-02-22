@@ -112,7 +112,7 @@ char type;
 		if (dp = index (s, '*')) {
 			char    buffer[BUFSIZ];
 
-			(void) strcpy (buffer, s);
+			 strcpy (buffer, s);
 			dp = buffer + (dp - s);
 			s = buffer;
 

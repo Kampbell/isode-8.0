@@ -40,12 +40,12 @@ addToCoList (char *str)
 
 	cp = index(str, ' ');
 	if (cp == NULLCP) {
-		(void) fprintf(stderr, "log an error message about parsing of country name mappings...\n");
+		 fprintf(stderr, "log an error message about parsing of country name mappings...\n");
 		return;
 	}
 	*cp = '\0';
 	if (strlen(str) != 2) {
-		(void) fprintf(stderr, "log an error message about short country name not 2 chars\n");
+		 fprintf(stderr, "log an error message about short country name not 2 chars\n");
 		return;
 	}
 	cp++;

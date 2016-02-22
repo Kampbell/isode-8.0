@@ -46,7 +46,7 @@ struct DSAPindication	* di;
 	watch_dog_reset();
 
 	if (result == NOTOK) {
-		(void) ronot2dsaplose (di, "D-UNBIND.ACCEPT", rni);
+		 ronot2dsaplose (di, "D-UNBIND.ACCEPT", rni);
 		return (NOTOK);
 	}
 
@@ -72,7 +72,7 @@ struct DSAPindication	* di;
 	watch_dog_reset ();
 
 	if (result == NOTOK) {
-		(void) ronot2dsaplose (di, "D-UNBIND.REJECT", rni);
+		 ronot2dsaplose (di, "D-UNBIND.REJECT", rni);
 		return (NOTOK);
 	}
 

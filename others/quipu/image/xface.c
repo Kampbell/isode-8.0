@@ -116,7 +116,7 @@ main (int argc, char **argv, char **envp)
 		fetch_face (vec[0], vec[1]);
 
 		if (debug)
-			(void) fflush (stderr);
+			 fflush (stderr);
 	}
 
 	return (0);
@@ -150,12 +150,12 @@ getline (char *buffer)
 		return NOTOK;
 	}
 
-	(void) printf ("%s> ", myname);
-	(void) fflush (stdout);
+	 printf ("%s> ", myname);
+	 fflush (stdout);
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
-			(void) printf ("\n");
+			 printf ("\n");
 			if (cp != buffer) {
 				sticky++;
 				break;
@@ -253,7 +253,7 @@ arginit (char **vec)
 /*  */
 
 static 
-envinit (void) {
+envinit  {
 	int     i,
 			pid;
 
@@ -277,7 +277,7 @@ envinit (void) {
 /*  */
 
 static 
-display_X (void) {
+display_X  {
 	if (mywindow == NULL) {
 		int	bwidth;
 		char   *opt,
@@ -328,11 +328,11 @@ display_X (void) {
 			myframe.width = DisplayWidth (DISP, SCRN) - bwidth * 2;
 		myframe.x = DisplayWidth (DISP, SCRN) - (myframe.width + bwidth * 2);
 		myframe.y = 0;
-		(void) sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
+		 sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
 						myframe.x, myframe.y);
 
 		if (debug)
-			(void) fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
+			 fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
 							myframe.width, myframe.height, myframe.x, myframe.y,
 							myframe.bdrwidth);
 
@@ -372,7 +372,7 @@ display_X (void) {
 /*  */
 
 static 
-Redisplay (void) {
+Redisplay  {
 	int     sx,
 			sy,
 			dx,
@@ -394,9 +394,9 @@ Redisplay (void) {
 	h = min (myframe.height, myim -> height);
 
 	if (debug) {
-		(void) fprintf (stderr, "im: %dx%d frame:%dx%d\n",
+		 fprintf (stderr, "im: %dx%d frame:%dx%d\n",
 						myim -> width, myim -> height, myframe.width, myframe.height);
-		(void) fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
+		 fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
 						sx, sy, dx, dy, w, h);
 	}
 
@@ -416,7 +416,7 @@ Redisplay (void) {
 /*  */
 
 static int 
-ALRMser (void) {
+ALRMser  {
 	if (mywindow && mapped) {
 		if (parent)
 			XClearWindow (DISP, mywindow);
@@ -446,7 +446,7 @@ XWINser (int io)
 		switch (xe -> type) {
 		case Expose:
 			if (debug)
-				(void) fprintf (stderr, "Expose %d\n",
+				 fprintf (stderr, "Expose %d\n",
 								((XExposeEvent *) xe) -> count);
 			if (myim) {
 				if (((XExposeEvent *) xe) -> count > 0)
@@ -465,7 +465,7 @@ unmap:
 
 		case MapNotify:
 			if (debug)
-				(void) fprintf (stderr, "MapNotify (0x%x)\n",
+				 fprintf (stderr, "MapNotify (0x%x)\n",
 								myim);
 			if (myim) {
 				mapped = 1;
@@ -476,7 +476,7 @@ unmap:
 
 		case ConfigureNotify:
 			if (debug)
-				(void) fprintf (stderr, "ConfigureNotify %dx%d\n",
+				 fprintf (stderr, "ConfigureNotify %dx%d\n",
 								((XConfigureEvent *) xe) -> height,
 								((XConfigureEvent *) xe) -> width);
 			if ((wh = ((XConfigureEvent *) xe) -> height) > 0
@@ -486,19 +486,19 @@ unmap:
 
 		case UnmapNotify:
 			if (debug)
-				(void) fprintf (stderr, "UnmapNotify\n");
+				 fprintf (stderr, "UnmapNotify\n");
 			mapped = 0;
 			break;
 
 		case ReparentNotify:
 			if (debug)
-				(void) fprintf (stderr, "ReparentNotify\n");
+				 fprintf (stderr, "ReparentNotify\n");
 			parent = 1;
 			break;
 
 		default:
 			if (debug)
-				(void) fprintf (stderr, "Event %d\n", xe -> type);
+				 fprintf (stderr, "Event %d\n", xe -> type);
 			break;
 		}
 	}
@@ -554,7 +554,7 @@ readsocket (char *buffer)
 				continue;
 
 			if (ppidsw > 0 && kill (ppidsw, 0) == NOTOK) {
-				(void) close (sd);
+				 close (sd);
 				return NOTOK;
 			}
 
@@ -565,7 +565,7 @@ readsocket (char *buffer)
 		}
 
 		if (ppidsw > 0 && kill (ppidsw, 0) == NOTOK) {
-			(void) close (sd);
+			 close (sd);
 			return NOTOK;
 		}
 

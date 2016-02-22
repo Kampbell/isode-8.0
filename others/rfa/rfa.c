@@ -174,7 +174,7 @@ do_listDir (char **av)
 		if ((rc= getRemoteRfaInfoList(fn, &rfalist)) != OK)
 			CONT(rc);
 
-		(void)sortRfaInfoList(&rfalist);
+		sortRfaInfoList(&rfalist);
 		for (rfa = rfalist; rfa; rfa = rfa->ri_next)
 			fprintf(out, "%s\n", (char *)rfa2ls(rfa));
 		freeRfaInfoList(rfa);
@@ -404,7 +404,7 @@ do_lockFile (char **av)
 			}
 			SET_LOCKINFO(rfa->ri_status, RI_LOCKED);
 			rfa->ri_lckname = strdup(getenv("USER"));
-			(void)time(&(rfa->ri_lcksince));
+			time(&(rfa->ri_lcksince));
 			if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 				releaseRfaInfoList(dirname(fn), rfalist);
 				fprintf(err, "*** local file access error : %s ***\n",
@@ -454,9 +454,9 @@ do_lockFile (char **av)
 		free_RFA_RequestMasterArg(rma);
 		SET_LOCKINFO(rfa->ri_status, RI_LOCKED);
 		SET_STATUS(rfa->ri_status, RI_MASTER);
-		(void)time(&(rfa->ri_lastChange));
+		time(&(rfa->ri_lastChange));
 		rfa->ri_lckname = strdup(getenv("USER"));
-		(void)time(&(rfa->ri_lcksince));
+		time(&(rfa->ri_lcksince));
 		if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
@@ -697,7 +697,7 @@ do_slave (char **av)
 						"*** remote site is not master for file %s ***\n", fn);
 				CONT(NOTOK_REMOTE_NOT_MASTER);
 			}
-			(void)freeRfaInfoList(remoteRfaList);
+			freeRfaInfoList(remoteRfaList);
 		}
 
 		if ((rfa->ri_mode & S_IFMT & S_IFDIR) == 0)
@@ -708,7 +708,7 @@ do_slave (char **av)
 		if (IS_UNREGISTERED(rfa->ri_status))
 			SET_TRANSFER(rfa->ri_status, default_transfer);
 		SET_STATUS(rfa->ri_status, RI_SLAVE);
-		(void)time(&(rfa->ri_lastChange));
+		time(&(rfa->ri_lastChange));
 
 		if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
@@ -760,7 +760,7 @@ do_un(char **av)
 		SET_LOCKINFO(rfa->ri_status, RI_UNLOCKED);
 		SET_TRANSFER(rfa->ri_status, RI_TR_REQ);
 		SET_STATUS(rfa->ri_status, RI_UNREGISTERED);
-		(void)time(&(rfa->ri_lastChange));
+		time(&(rfa->ri_lastChange));
 
 		if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
@@ -877,7 +877,7 @@ do_settransfer (char **av, int mode)
 			fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
 			CONT(NOTOK_FILEACCESS);
 		}
-		(void)releaseRfaInfoList(dirname(fn), rfalist);
+		releaseRfaInfoList(dirname(fn), rfalist);
 		fprintf(out, "set transfer mode to %s for file %s\n",
 				mode == RI_TR_AUTO ? "AUTOMATIC" : "REQUEST", fn);
 	}
@@ -949,7 +949,7 @@ do_timesync (char **av)
 		sta.time = 0;
 	} else {
 		sta.role = int_RFA_role_master;
-		(void)time(&(sta.time));
+		time(&(sta.time));
 		sta.time += SENDTIME_DELAY;
 	}
 	if (invoke(operation_RFA_syncTime, (caddr_t)&sta, (caddr_t *)&str, &res)
@@ -1121,12 +1121,12 @@ executeCommand (char *cmd)
 }
 
 int 
-cleanup (void) {
+cleanup  {
 }
 
 
 int 
-getConnection (void) {
+getConnection  {
 	if (connected)
 		return OK;
 	if (makeconn(host, passwd, user) == NOTOK)  {

@@ -50,7 +50,7 @@ RtEndRequest (int sd, struct RtSAPindication *rti)
 
 	result = RtEndRequestAux (acb, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

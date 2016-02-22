@@ -60,7 +60,7 @@ makeopts (int opts)
 	rdo = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_BITS);
 	if (rdo == NULL)
 		adios ("memory", "out of");
-#define dobit(X,Y) if (opts & (X)) (void) bit_on (rdo, (Y))
+#define dobit(X,Y) if (opts & (X))  bit_on (rdo, (Y))
 	dobit (VERIFY, bit_Idist_Options_verify);
 	dobit (WHOLE, bit_Idist_Options_whole);
 	dobit (YOUNGER, bit_Idist_Options_younger);
@@ -131,7 +131,7 @@ exptilde (char buf[], char *file)
 	extern char homedir[];
 
 	if (*file != '~') {
-		(void) strcpy(buf, file);
+		 strcpy(buf, file);
 		return(buf);
 	}
 	if (*++file == '\0') {

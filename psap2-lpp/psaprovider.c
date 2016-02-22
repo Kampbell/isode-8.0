@@ -68,7 +68,7 @@ struct PSAPindication *pi;
 	if ((result = PDataRequestAux (pb, data[0], pi)) == NOTOK)
 		freepblk (pb);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -118,11 +118,11 @@ struct PSAPindication *pi;
 		PLOGP (psap2_log,PS_PDUs, pe, cp, 0);
 
 		if ((result = pe2ps (ps = pb -> pb_stream, pe)) == NOTOK)
-			(void) pslose (pi, ps -> ps_errno);
+			 pslose (pi, ps -> ps_errno);
 		else
 			result = OK;
 	} else
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						 PY_pepy);
 
 	if (pe)
@@ -182,7 +182,7 @@ struct PSAPindication *pi;
 	if (result == NOTOK && pa -> pa_reason != PC_TIMER)
 		freepblk (pb);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -217,7 +217,7 @@ struct PSAPindication *pi;
 		if (pb -> pb_reliability == LOW_QUALITY)
 			goto bad_ref2;
 
-		(void) ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
+		 ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
 						 "error decoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -232,7 +232,7 @@ struct PSAPindication *pi;
 				&& refcmp (pb -> pb_reference, (pref = rr -> reference))) {
 bad_ref1:
 			;
-			(void) ppktlose (pb, pi, PC_SESSION, pref, NULLCP,
+			 ppktlose (pb, pi, PC_SESSION, pref, NULLCP,
 							 "reference mismatch");
 bad_ref2:
 			;
@@ -416,7 +416,7 @@ struct psapblk *pb;
 		return;
 
 	if (pb -> pb_fd != NOTOK && pb -> pb_closefnx)
-		(void) (*pb -> pb_closefnx) (pb -> pb_fd);
+		 (*pb -> pb_closefnx) (pb -> pb_fd);
 
 	if (pb -> pb_retry)
 		pe_free (pb -> pb_retry);

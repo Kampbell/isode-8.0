@@ -50,9 +50,9 @@ PGControlRequest (int sd, struct PSAPindication *pi)
 
 	if ((result = SGControlRequest (sd, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SGControlRequest", sa);
+			 ss2pslose (pb, pi, "SGControlRequest", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SGControlRequest", sa);
+			 ss2pslose (NULLPB, pi, "SGControlRequest", sa);
 			goto out1;
 		}
 	else
@@ -62,7 +62,7 @@ PGControlRequest (int sd, struct PSAPindication *pi)
 		freepblk (pb);
 out1:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -94,9 +94,9 @@ PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct PSAP
 
 	if ((result = SActStartRequest (sd, id, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SActStartRequest", sa);
+			 ss2pslose (pb, pi, "SActStartRequest", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SActStartRequest", sa);
+			 ss2pslose (NULLPB, pi, "SActStartRequest", sa);
 			goto out1;
 		}
 
@@ -113,7 +113,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -146,9 +146,9 @@ PActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn
 	if ((result = SActResumeRequest (sd, id, oid, ssn, ref, base, len, &sis))
 			== NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SActResumeRequest", sa);
+			 ss2pslose (pb, pi, "SActResumeRequest", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SActResumeRequest", sa);
+			 ss2pslose (NULLPB, pi, "SActResumeRequest", sa);
 			goto out1;
 		}
 
@@ -165,7 +165,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -191,9 +191,9 @@ PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc, ch
 
 	if ((result = (*sfunc) (sd, reason, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, stype, sa);
+			 ss2pslose (pb, pi, stype, sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, stype, sa);
+			 ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
 
@@ -201,7 +201,7 @@ PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc, ch
 		freepblk (pb);
 out1:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -227,9 +227,9 @@ PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *stype)
 
 	if ((result = (*sfunc) (sd, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, stype, sa);
+			 ss2pslose (pb, pi, stype, sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, stype, sa);
+			 ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
 
@@ -237,7 +237,7 @@ PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *stype)
 		freepblk (pb);
 out1:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

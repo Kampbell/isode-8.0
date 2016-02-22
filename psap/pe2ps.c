@@ -52,7 +52,7 @@ pe2ps_aux (PS ps, PE pe, int eval)
 			break;
 
 		case PE_FORM_CONS:
-			(void) ps_get_abs (pe);
+			 ps_get_abs (pe);
 			break;
 		}
 

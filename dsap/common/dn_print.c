@@ -106,7 +106,7 @@ int multiline;
 	if (localdn == NULLDN)
 		localdn = str2dn (local_dit);
 
-	(void) ufn_dn_print_aux (ps,dn,localdn,multiline);
+	 ufn_dn_print_aux (ps,dn,localdn,multiline);
 }
 
 

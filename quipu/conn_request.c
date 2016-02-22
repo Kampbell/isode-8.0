@@ -205,7 +205,7 @@ conn_req_aux(cn)
 #ifndef NO_STATS
 		{
 			char buf [LINESIZE];
-			(void) sprintf (buf,"Bound using %s DSP context (%d)",
+			 sprintf (buf,"Bound using %s DSP context (%d)",
 							cn->cn_ctx == DS_CTX_QUIPU_DSP ? "QUIPU" :
 							cn->cn_ctx == DS_CTX_INTERNET_DSP ? "Internet" : "X500",
 							cn->cn_ad);

@@ -79,7 +79,7 @@ AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPa
 								srequirements, isn, settings, ref, data, ndata, qos, acc, aci,
 								async);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -150,7 +150,7 @@ no_mem:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 						  PY_pepy);
 		goto out;
 	}
@@ -231,7 +231,7 @@ ready:
 	pe = NULLPE;
 
 	if (result == NOTOK) {
-		(void) ps2acslose (NULLACB, aci, "PAsynConnRequest", pa);
+		 ps2acslose (NULLACB, aci, "PAsynConnRequest", pa);
 		goto out;
 	}
 
@@ -285,12 +285,12 @@ AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *ac
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
 	if (acb -> acb_flags & ACB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_OPERATION, NULLCP,
 						  "association descriptor connected");
 	}
@@ -302,7 +302,7 @@ AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *ac
 	switch (result = PAsynRetryRequest (acb -> acb_fd, pc, pi)) {
 	case NOTOK:
 		acb -> acb_fd = NOTOK;
-		(void) ps2acslose (acb, aci, "PAsynRetryRequest", pa);
+		 ps2acslose (acb, aci, "PAsynRetryRequest", pa);
 		freeacblk (acb);
 		break;
 
@@ -315,7 +315,7 @@ AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *ac
 		break;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -334,7 +334,7 @@ AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindicat
 	struct type_ACS_AARE__apdu *aare;
 
 	if (pc -> pc_result == PC_ABORTED) {
-		(void) ps2acsabort (acb, pa, aci);
+		 ps2acsabort (acb, pa, aci);
 
 		acc -> acc_sd = NOTOK;
 		acc -> acc_result = ACS_ABORTED;
@@ -349,7 +349,7 @@ AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindicat
 		if (pc -> pc_result != PC_ACCEPT) {
 			pa -> pa_reason = pc -> pc_result;
 			acb -> acb_fd = NOTOK;
-			(void) ps2acslose (acb, aci, "PAsynConnRequest(pseudo)", pa);
+			 ps2acslose (acb, aci, "PAsynConnRequest(pseudo)", pa);
 
 			acc -> acc_sd = NOTOK;
 			acc -> acc_result = aci -> aci_abort.aca_reason;
@@ -375,7 +375,7 @@ AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindicat
 	pe = pc -> pc_info[0] = NULLPE;
 
 	if (result == NOTOK) {
-		(void) acpktlose (acb, aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
+		 acpktlose (acb, aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto out;
 	}
 
@@ -527,12 +527,12 @@ AcAsynNextRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
 	if (acb -> acb_flags & ACB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_OPERATION, NULLCP,
 						  "association descriptor connected");
 	}
@@ -544,7 +544,7 @@ AcAsynNextRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci
 	switch (result = PAsynNextRequest (acb -> acb_fd, pc, pi)) {
 	case NOTOK:
 		acb -> acb_fd = NOTOK;
-		(void) ps2acslose (acb, aci, "PAsynRetryRequest", pa);
+		 ps2acslose (acb, aci, "PAsynRetryRequest", pa);
 		freeacblk (acb);
 		break;
 
@@ -557,7 +557,7 @@ AcAsynNextRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci
 		break;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

@@ -49,7 +49,7 @@ struct FTAMindication *fti;
 			i >= 0;
 			fc++, i--) {
 		if (fc -> fc_resource == NULL || fc -> fc_unit == NULL) {
-			(void) ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "empty charge at slot %d",
 							 charging -> fc_ncharge - i - 1);
 			goto out;
@@ -59,7 +59,7 @@ struct FTAMindication *fti;
 				== NULL) {
 no_mem:
 			;
-			(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+			 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 			;
 			if (fpmp)

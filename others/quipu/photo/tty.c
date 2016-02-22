@@ -76,9 +76,9 @@ photo_start (char *name)
 		}
 	}
 	if ((ptr = getenv ("photo_mapping")) != (char *) NULL)
-		(void) strcpy (mapping, ptr);
+		 strcpy (mapping, ptr);
 	else
-		(void) strcpy (mapping, GREYSCALE);
+		 strcpy (mapping, GREYSCALE);
 
 	if ((ptr = getenv ("photo_scale")) != (char *) NULL) {
 		if (strcmp (ptr, "large") == 0)
@@ -90,7 +90,7 @@ photo_start (char *name)
 	}
 	scalediv = scale * scale / 8;
 
-	(void) printf ("\n");
+	 printf ("\n");
 	return (0);
 }
 
@@ -128,11 +128,11 @@ photo_end (char *name)
 		for (i = 0; i < ln; i++) {
 			for (j = 0; j < PIC_LINESIZE / scale; j++) {
 				if (invert)
-					(void) putc (mapping[show[display[i][j]]],stdout);
+					 putc (mapping[show[display[i][j]]],stdout);
 				else
-					(void) putc (mapping[15 - show[display[i][j]]],stdout);
+					 putc (mapping[15 - show[display[i][j]]],stdout);
 			}
-			(void) printf ("\n");
+			 printf ("\n");
 		}
 	} else if (edges) {
 		/* edges by expansion */
@@ -180,11 +180,11 @@ photo_end (char *name)
 					cnt = 0;
 
 				if (invert)
-					(void) putc (mapping[(cnt / scalediv)],stdout);
+					 putc (mapping[(cnt / scalediv)],stdout);
 				else
-					(void) putc (mapping[15 - (cnt / scalediv)],stdout);
+					 putc (mapping[15 - (cnt / scalediv)],stdout);
 			}
-			(void) putc ('\n',stdout);
+			 putc ('\n',stdout);
 		}
 
 	}
@@ -200,9 +200,9 @@ photo_black (int length)
 	if (scale == 1) {
 		for (i = pos; i < length + pos; i++)
 			if (invert)
-				(void) putc (' ',stdout);
+				 putc (' ',stdout);
 			else
-				(void) putc ('#',stdout);
+				 putc ('#',stdout);
 		return;
 	}
 	for (i = pos; i < length + pos; i++)
@@ -218,9 +218,9 @@ photo_white (int length)
 	if (scale == 1) {
 		for (i = pos; i < length + pos; i++)
 			if (invert)
-				(void) putc ('#',stdout);
+				 putc ('#',stdout);
 			else
-				(void) putc (' ',stdout);
+				 putc (' ',stdout);
 		return;
 	}
 	for (i = pos; i < length + pos; i++)
@@ -238,7 +238,7 @@ bit_string *line;
 			cnt;
 
 	if (scale == 1) {
-		(void) putc ('\n',stdout);
+		 putc ('\n',stdout);
 		return;
 	}
 	lineno++;
@@ -265,12 +265,12 @@ bit_string *line;
 
 
 			if (invert)
-				(void) putc (mapping[cnt / scalediv],stdout);
+				 putc (mapping[cnt / scalediv],stdout);
 			else
-				(void) putc (mapping[15 - (cnt / scalediv)],stdout);
+				 putc (mapping[15 - (cnt / scalediv)],stdout);
 		}
 
 		if (!equal)
-			(void) putc ('\n',stdout);
+			 putc ('\n',stdout);
 	}
 }

@@ -1631,7 +1631,7 @@ pr_choice (
 			cnt++;
 		}
 	}
-	(void) pepsylose(mod, p, head, "pr_choice: no choice taken");
+	 pepsylose(mod, p, head, "pr_choice: no choice taken");
 bad:
 	return (NOTOK);
 }
@@ -2071,7 +2071,7 @@ again:
 			break;	/* already allocated */
 
 		if ((*(parm) = (char *) calloc(1, (unsigned ) typ->pe_tag)) == NULL) {
-			(void) pepsylose (mod, typ, NULLPE,
+			 pepsylose (mod, typ, NULLPE,
 							  "setdval:calloc failed on %d", typ->pe_tag);
 			return NOTOK;
 		}
@@ -2191,7 +2191,7 @@ again:
 		 * dmp_tpe("setdval: type not implemented", typ, mod); - need
 		 * mod
 		 */
-		(void) pepsylose(mod, typ, NULLPE,
+		 pepsylose(mod, typ, NULLPE,
 						 "setdval: %d not implemented", typ->pe_type);
 		return NOTOK;
 	}

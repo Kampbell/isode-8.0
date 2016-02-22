@@ -48,7 +48,7 @@ RtGTurnRequest (int sd, struct RtSAPindication *rti)
 
 	result = (*acb -> acb_gturnrequest) (acb, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

@@ -54,7 +54,7 @@ PUAbortRequest (int sd, PE *data, int ndata, struct PSAPindication *pi)
 	smask = sigioblock ();
 
 	if ((pb = findpblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
@@ -65,7 +65,7 @@ PUAbortRequest (int sd, PE *data, int ndata, struct PSAPindication *pi)
 	if ((pdu = (struct type_PS_ARU__PPDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	pdu -> offset = type_PS_ARU__PPDU_normal__mode;
@@ -87,7 +87,7 @@ no_mem:
 	}
 
 	if (encode_PS_ARU__PPDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						 PY_pepy);
 		goto out2;
 	}
@@ -99,10 +99,10 @@ no_mem:
 
 	if ((result = SUAbortRequest (pb -> pb_fd, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason)) {
-			(void) ss2pslose (pb, pi, "SUAbortRequest", sa);
+			 ss2pslose (pb, pi, "SUAbortRequest", sa);
 			goto out2;
 		} else {
-			(void) ss2pslose (NULLPB, pi, "SUAbortRequest", sa);
+			 ss2pslose (NULLPB, pi, "SUAbortRequest", sa);
 			goto out1;
 		}
 
@@ -122,7 +122,7 @@ out1:
 	if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

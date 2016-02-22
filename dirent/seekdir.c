@@ -108,7 +108,7 @@ off_t	loc;		/* position from telldir() */
 }
 #else
 int 
-_seekdir_stub (void) {
+_seekdir_stub()  {
 	;
 }
 #endif

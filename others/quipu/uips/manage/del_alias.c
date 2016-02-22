@@ -78,10 +78,10 @@ call_del_alias (int argc, char **argv)
 	emnew = em_alloc() ;
 	str_buffer = (char *) malloc ((unsigned)1000) ;
 	contact_showentry[5] = (char *) malloc ((unsigned)strlen(argv[1])) ;
-	(void)strcpy(contact_showentry[5], argv[1]+1) ;
+	strcpy(contact_showentry[5], argv[1]+1) ;
 
 	contact_compare[3] = (char *) malloc ((unsigned)strlen("objectClass=alias.")) ;
-	(void)strcpy(contact_compare[3], "objectClass=alias") ;
+	strcpy(contact_compare[3], "objectClass=alias") ;
 
 	if ((argc = service_control (OPT, argc, argv, &remove_arg.rma_common)) == -1)
 		return ;
@@ -98,7 +98,7 @@ call_del_alias (int argc, char **argv)
 		return ;
 	}
 
-	(void)strcpy(objectname,argv[1]) ;
+	strcpy(objectname,argv[1]) ;
 	contact_compare[1] = argv[1] ;
 
 	if (service_control (OPT, 6, contact_compare, &compare_arg.cma_common) == -1) {
@@ -166,7 +166,7 @@ call_del_alias (int argc, char **argv)
 	call_showentry(5, contact_showentry) ;
 
 	if (current_entry == NULLENTRY) {
-		(void)fprintf(stderr, "we have no current entry. No wonder!\n") ;
+		fprintf(stderr, "we have no current entry. No wonder!\n") ;
 	} else {
 		Attr_Sequence eptr ;
 		AttributeType a_t = AttrT_new("aliasedObjectName") ;
@@ -221,17 +221,17 @@ call_del_alias (int argc, char **argv)
 	dn_free(dn) ;
 	dn = dn_cpy(aoj_dn) ;
 	contact_showentry[1] = ( char *) malloc ((unsigned)strlen("-noshow") + 1) ;
-	(void)strcpy(contact_showentry[1], "-noshow") ;
+	strcpy(contact_showentry[1], "-noshow") ;
 	contact_showentry[2] = ( char *) malloc ((unsigned)strlen("-all") + 1) ;
-	(void)strcpy(contact_showentry[2], "-all") ;
+	strcpy(contact_showentry[2], "-all") ;
 	contact_showentry[3] = ( char *) malloc ((unsigned)strlen("-nokey") + 1) ;
-	(void)strcpy(contact_showentry[3], "-nokey") ;
+	strcpy(contact_showentry[3], "-nokey") ;
 	contact_showentry[4] = ( char *) malloc ((unsigned)strlen("-dontdereferencealias") + 1) ;
-	(void)strcpy(contact_showentry[4], "-dontdereferencealias") ;
+	strcpy(contact_showentry[4], "-dontdereferencealias") ;
 
 	call_showentry(5, contact_showentry) ;
 	if (current_entry == NULLENTRY) {
-		(void)fprintf(stderr, "we have no current entry. No wonder!\n") ;
+		fprintf(stderr, "we have no current entry. No wonder!\n") ;
 	} else {
 		Attr_Sequence eptr ;
 		AttributeType a_t = AttrT_new("seeAlso") ;

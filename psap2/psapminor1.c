@@ -58,9 +58,9 @@ PMinSyncRequest (int sd, int type, long *ssn, PE *data, int ndata, struct PSAPin
 
 	if ((result = SMinSyncRequest (sd, type, ssn, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SMinSyncRequest", sa);
+			 ss2pslose (pb, pi, "SMinSyncRequest", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SMinSyncRequest", sa);
+			 ss2pslose (NULLPB, pi, "SMinSyncRequest", sa);
 			goto out1;
 		}
 
@@ -77,7 +77,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

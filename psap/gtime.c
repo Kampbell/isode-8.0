@@ -98,7 +98,7 @@ gtime (struct tm *tm)
 	result = 60 * result + sec;
 
 #ifdef	notdef
-	(void) ftime (&tb);
+	 ftime (&tb);
 	result += 60 * tb.timezone;
 	local = result;
 	if ((tm = localtime (&local)) && tm -> tm_isdst)

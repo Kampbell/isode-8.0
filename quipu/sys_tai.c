@@ -264,27 +264,27 @@ char    **argv;
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor admin size %d", admin_size));
 		break;
 	case ADMIN_TIME:
-		(void) sscanf (arg, "%ld", &admin_time);
+		 sscanf (arg, "%ld", &admin_time);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor admin time %ld", admin_time));
 		break;
 	case CACHE_TIME:
-		(void) sscanf (arg, "%ld", &cache_timeout);
+		 sscanf (arg, "%ld", &cache_timeout);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor cache time %ld", cache_timeout));
 		break;
 	case RETRY_TIME:
-		(void) sscanf (arg, "%ld", &retry_timeout);
+		 sscanf (arg, "%ld", &retry_timeout);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor retry time %ld", retry_timeout));
 		break;
 	case SLAVE_TIME:
-		(void) sscanf (arg, "%ld", &slave_timeout);
+		 sscanf (arg, "%ld", &slave_timeout);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor slave time %ld", slave_timeout));
 		break;
 	case CONN_TIME:
-		(void) sscanf (arg, "%ld", &conn_timeout);
+		 sscanf (arg, "%ld", &conn_timeout);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor conn time %ld", conn_timeout));
 		break;
 	case NSAP_TIME:
-		(void) sscanf (arg, "%ld", &nsap_timeout);
+		 sscanf (arg, "%ld", &nsap_timeout);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor nsap time %ld", nsap_timeout));
 		break;
 	case SECRET_KEY:
@@ -294,11 +294,11 @@ char    **argv;
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor dsa certificate ignored - obsolete feature"));
 		break;
 	case WATCHDOG_TIME:
-		(void) sscanf (arg, "%d", &watchdog_time);
+		 sscanf (arg, "%d", &watchdog_time);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor watchdog time %d", watchdog_time));
 		break;
 	case WATCHDOG_DELTA:
-		(void) sscanf (arg, "%d", &watchdog_delta);
+		 sscanf (arg, "%d", &watchdog_delta);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor watchdog delta %d", watchdog_delta));
 		break;
 	case BIND_POLICY:
@@ -346,7 +346,7 @@ char    **argv;
 			LLOG (log_dsap,LLOG_EXCEPTIONS,(
 					  "Invalid isode option in quiputailor"));
 		else
-			(void) isodesetvar(arg,strdup(argv[2]),0);
+			 isodesetvar(arg,strdup(argv[2]),0);
 		break;
 	case AUTH:
 		auth_bind = cmd_srch(arg, authtab);

@@ -61,6 +61,6 @@ ps_error (int c)
 	if (c < ps_maxerror && (bp = ps_errorlist[c]))
 		return bp;
 
-	(void) sprintf (buffer, "Error %d", c);
+	 sprintf (buffer, "Error %d", c);
 	return buffer;
 }

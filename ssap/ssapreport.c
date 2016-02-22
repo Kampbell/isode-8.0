@@ -53,7 +53,7 @@ SUReportRequest (int sd, int reason, char *data, int cc, struct SSAPindication *
 
 	result = SUReportRequestAux (sb, reason, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

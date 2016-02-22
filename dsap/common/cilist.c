@@ -208,7 +208,7 @@ struct CIList * m;
 {
 	PE ret_pe;
 
-	(void) encode_SA_CaseIgnoreList (&ret_pe,0,0,NULLCP,m);
+	 encode_SA_CaseIgnoreList (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -224,7 +224,7 @@ PE pe;
 }
 
 cilist_syntax () {
-	(void) add_attribute_syntax ("CaseIgnoreList",
+	 add_attribute_syntax ("CaseIgnoreList",
 								 (IFP) cilistenc,	(IFP) cilistdec,
 								 (IFP) cilistparse,	cilistprint,
 								 (IFP) cilistcpy,	cilistcmp,

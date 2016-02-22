@@ -58,7 +58,7 @@ acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *ro
 			? decode_ROS_ROSEapdus (pe, 1, NULLIP, NULLVP, &papdu)
 			: decode_ROS_OPDU (pe, 1, NULLIP, NULLVP, &popdu))
 			== NOTOK) {
-		(void) rosapreject (acb, roi, rosap_type != APDU_UNKNOWN
+		 rosapreject (acb, roi, rosap_type != APDU_UNKNOWN
 							? ROS_GP_MISTYPED
 							: ROS_GP_UNRECOG,
 							NULLCP, "%s", PY_pepy);

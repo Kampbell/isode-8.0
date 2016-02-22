@@ -51,7 +51,7 @@ RoWaitRequest (int sd, int secs, struct RoSAPindication *roi)
 
 	result =  (*acb -> acb_rowaitrequest) (acb, NULLIP, secs, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

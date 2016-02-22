@@ -65,7 +65,7 @@ struct FTAMindication *fti;
 	pdu = NULL;
 
 	if (AcInit (vecp, vec, acs, aci) == NOTOK) {
-		(void) acs2ftamlose (fsb, fti, "AcInit", aca);
+		 acs2ftamlose (fsb, fti, "AcInit", aca);
 		goto out1;
 	}
 
@@ -91,7 +91,7 @@ struct FTAMindication *fti;
 		break; \
  \
 	    default: \
-		(void) ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, \
+		 ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, \
 			    EREF_IFPM, NULLCP, \
 			    "%s token management botched", type); \
 		goto out2; \
@@ -100,7 +100,7 @@ struct FTAMindication *fti;
 	dotokens ();
 #undef	dotoken
 	if (fsb -> fsb_owned != 0) {
-		(void) ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_IFPM, NULLCP,
+		 ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_IFPM, NULLCP,
 						 "token management botched");
 		goto out2;
 	}
@@ -110,18 +110,18 @@ struct FTAMindication *fti;
 	fsb -> fsb_prequirements = ps -> ps_prequirements;
 
 	if (acs -> acs_ninfo < 1 || (pe = acs -> acs_info[0]) == NULLPE) {
-		(void) ftamoops (fti, FS_PRO_ERR, 1, EREF_RFPM, EREF_IFPM, NULLCP,
+		 ftamoops (fti, FS_PRO_ERR, 1, EREF_RFPM, EREF_IFPM, NULLCP,
 						 NULLCP);
 		goto out2;
 	}
 
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
-		(void) ftamoops (fti, FS_PRO_ERRMSG, 1, EREF_RFPM, EREF_RFPM,
+		 ftamoops (fti, FS_PRO_ERRMSG, 1, EREF_RFPM, EREF_RFPM,
 						 NULLCP, "unable to parse PDU: %s", PY_pepy);
 		goto out3;
 	}
 	if (pdu -> offset != type_FTAM_PDU_f__initialize__request) {
-		(void) ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_RFPM,
+		 ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_RFPM,
 						 NULLCP, "expecting F-INITIALIZE-request, got %d",
 						 pdu -> offset);
 		goto out3;
@@ -161,19 +161,19 @@ struct FTAMindication *fti;
 		fsb -> fsb_units |= FUNITS_MANAGE;
 	if (!(fsb -> fsb_class &=
 				(FCLASS_TRANSFER | FCLASS_TM | FCLASS_MANAGE | FCLASS_ACCESS))) {
-		(void) ftamoops (fti, FS_ACS_CLASS, 1, EREF_RFPM, EREF_IFPM,
+		 ftamoops (fti, FS_ACS_CLASS, 1, EREF_RFPM, EREF_IFPM,
 						 NULLCP, NULLCP);
 		goto out3;
 	}
 	if (!(fsb -> fsb_units & FUNIT_LIMITED)
 			&& (fsb -> fsb_units & FUNIT_ENHANCED)) {
-		(void) ftamoops (fti, FS_PRO_ERRFUNIT, 1, EREF_RFPM, EREF_IFPM,
+		 ftamoops (fti, FS_PRO_ERRFUNIT, 1, EREF_RFPM, EREF_IFPM,
 						 NULLCP,
 						 "enhanced-file-management requires limited-file-management");
 		goto out3;
 	}
 	if (!(fsb -> fsb_units & FUNIT_GROUPING)) {	/* XXX: should be OPTIONAL */
-		(void) ftamoops (fti, FS_PRO_ERRFUNIT, 1, EREF_RFPM, EREF_IFPM,
+		 ftamoops (fti, FS_PRO_ERRFUNIT, 1, EREF_RFPM, EREF_IFPM,
 						 NULLCP,
 						 "insufficient functional units for service class");
 		goto out3;
@@ -185,7 +185,7 @@ struct FTAMindication *fti;
 #ifdef	notdef
 	if ((fsb -> fsb_attrs & FATTR_SECURITY)
 			&& !(fsb -> fsb_attrs & FATTR_STORAGE)) {
-		(void) ftamoops (fti, FS_ACS_GRP, 1, EREF_RFPM, EREF_IFPM,
+		 ftamoops (fti, FS_ACS_GRP, 1, EREF_RFPM, EREF_IFPM,
 						 NULLCP, NULLCP);
 		goto out3;
 	}
@@ -199,7 +199,7 @@ struct FTAMindication *fti;
 	if ((fsb -> fsb_context = oid_cpy (acs -> acs_context)) == NULLOID) {
 no_mem:
 		;
-		(void) ftamoops (fti, FS_GEN_NOREASON, 1, EREF_RFPM, EREF_RFPM,
+		 ftamoops (fti, FS_GEN_NOREASON, 1, EREF_RFPM, EREF_RFPM,
 						 NULLCP, "out of memory");
 		goto out3;
 	}
@@ -235,7 +235,7 @@ no_mem:
 
 		fx = fts -> fts_contents.fc_contents;
 
-		(void) AcFindPCI (fsb -> fsb_fd, &acsid, aci);
+		 AcFindPCI (fsb -> fsb_fd, &acsid, aci);
 
 		fx2 = fsb -> fsb_contents.fc_contents;
 		fsb -> fsb_contents.fc_ncontent = 0;
@@ -333,7 +333,7 @@ no_mem:
 
 #undef	PC_XXX
 	} else if (req -> contents__type__list) {
-		(void) ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_IFPM,
+		 ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_IFPM,
 						 NULLCP, "content types management botched");
 		goto out3;
 	}
@@ -402,7 +402,7 @@ carry_on:
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-ASSOCIATE.RESPONSE(reject)",
 					"F-INITIALIZE-response", pe, 0));
 
-	(void) AcAssocResponse (acs -> acs_sd, ACS_TRANSIENT, ACS_USER_NOREASON,
+	 AcAssocResponse (acs -> acs_sd, ACS_TRANSIENT, ACS_USER_NOREASON,
 							NULLOID, NULLAEI, NULLPA, NULLPC, ps -> ps_defctxresult, 0, 0,
 							SERIAL_NONE, 0, &ps -> ps_connect, pe ? &pe : NULLPEP,
 							pe ? 1 : 0, aci);
@@ -584,7 +584,7 @@ too_many:
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "proposed/resulting content types mismatch");
 
-		(void) AcFindPCI (fsb -> fsb_fd, &acsid, aci);
+		 AcFindPCI (fsb -> fsb_fd, &acsid, aci);
 		for (px = pl -> fc_contents, i = pl -> fc_ncontent - 1;
 				i >= 0;
 				px++, i--) {
@@ -698,7 +698,7 @@ no_mem:
 	rsp -> checkpoint__window = 1;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -722,7 +722,7 @@ no_mem:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) acs2ftamlose (fsb, fti, "AcAssocResponse", aca);
+		 acs2ftamlose (fsb, fti, "AcAssocResponse", aca);
 		goto out;
 	}
 
@@ -768,7 +768,7 @@ carry_on:
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-ASSOCIATE.RESPONSE(reject)",
 					"F-INITIALIZE-response", pe, 0));
 
-	(void) AcAssocResponse (fsb -> fsb_fd, ACS_TRANSIENT, ACS_USER_NOREASON,
+	 AcAssocResponse (fsb -> fsb_fd, ACS_TRANSIENT, ACS_USER_NOREASON,
 							NULLOID, NULLAEI, NULLPA, NULLPC, PC_ACCEPT, 0, 0, SERIAL_NONE,
 							0, &fsb -> fsb_connect, pe ? &pe : NULLPEP, pe ? 1 : 0, aci);
 	if (pe)

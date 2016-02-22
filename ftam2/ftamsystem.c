@@ -173,7 +173,7 @@ int	ftp_default = VFS_UBF;
 { \
     dp -> ftd_identifier = (id); \
     dp -> ftd_observer = (ob), dp -> ftd_source = (so); \
-    (void) strncpy (dp -> ftd_data, des, FTD_SIZE);\
+     strncpy (dp -> ftd_data, des, FTD_SIZE);\
     dp -> ftd_cc = strlen(dp -> ftd_data);\
     goto bad2; \
 }
@@ -204,7 +204,7 @@ struct FTAMstart *fts;
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
-	(void) time (&clok);
+	 time (&clok);
 
 	if (stat ("/dev/null", &st) != NOTOK)
 		null_dev = st.st_dev, null_ino = st.st_ino;
@@ -312,7 +312,7 @@ struct FTAMstart *fts;
 			RemoteHost, initiator);
 	if (ftp_login(RemoteHost, initiator, password, account) == NOTOK)
 		seterr (FS_ACS_IDENTITY, EREF_RFSU, EREF_IFSU, ftp_error);
-	(void) strcpy (myhome, "");
+	 strcpy (myhome, "");
 	myhomelen = strlen (myhome);
 #else
 	guest = 0;
@@ -378,7 +378,7 @@ bad_account:
 		dp -> ftd_identifier = FS_ACS_MGMT;
 		dp -> ftd_observer = EREF_RFPM, dp -> ftd_source = EREF_IFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		(void) sprintf (dp -> ftd_data, "unable to change to %s: %s",
+		 sprintf (dp -> ftd_data, "unable to change to %s: %s",
 						pw -> pw_dir, sys_errname (errno));
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
@@ -388,29 +388,29 @@ bad_account:
 	if ((wtmp = open ("/usr/adm/wtmp", O_WRONLY | O_APPEND)) != NOTOK) {
 		char    line[32];
 
-		(void) sprintf (line, "ftam%d", getpid ());
-		(void) SCPYN (uts.ut_line, line);
+		 sprintf (line, "ftam%d", getpid ());
+		 SCPYN (uts.ut_line, line);
 #ifndef	BRIDGE
-		(void) SCPYN (uts.ut_name, pw -> pw_name);
+		 SCPYN (uts.ut_name, pw -> pw_name);
 #else
-		(void) SCPYN (uts.ut_name, initiator);
+		 SCPYN (uts.ut_name, initiator);
 #endif
 #if	!defined(SYS5) && !defined(bsd43_ut_host)
-		(void) SCPYN (uts.ut_host,
+		 SCPYN (uts.ut_host,
 					  na2str (fts -> fts_callingaddr.pa_addr.sa_addr.ta_addrs));
 #else
 		uts.ut_type = USER_PROCESS;
 #endif
 		uts.ut_time = clok;
-		(void) write (wtmp, (char *) &uts, sizeof uts);
+		 write (wtmp, (char *) &uts, sizeof uts);
 #if	defined(SYS5) || defined(bsd43_ut_host)
-		(void) close (wtmp);
+		 close (wtmp);
 #endif
 	}
 
 #ifndef	BRIDGE
 	if (cflag || guest) {
-		(void) setisobject (1);		/* for PDU pretty-printing
+		 setisobject (1);		/* for PDU pretty-printing
 					   AND for A-ASSOCIATE.RESPONSE!!! */
 		if (chroot (pw -> pw_dir) == NOTOK) {
 			if (!debug)
@@ -424,7 +424,7 @@ bad_account:
 				dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
 			}
 			dp -> ftd_delay = DIAG_NODELAY;
-			(void) sprintf (dp -> ftd_data, "unable to change root to %s: %s",
+			 sprintf (dp -> ftd_data, "unable to change root to %s: %s",
 							pw -> pw_dir, sys_errname (errno));
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			if (debug)
@@ -439,7 +439,7 @@ bad_account:
 				dp -> ftd_identifier = FS_ACS_MGMT;
 				dp -> ftd_observer = EREF_RFPM, dp -> ftd_source = EREF_IFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
-				(void) sprintf (dp -> ftd_data,
+				 sprintf (dp -> ftd_data,
 								"unable to change to %s: %s",
 								pw -> pw_dir, sys_errname (errno));
 				dp -> ftd_cc = strlen (dp -> ftd_data);
@@ -453,7 +453,7 @@ bad_account:
 			dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_RFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
 			if (guest)
-				(void) strcpy (dp -> ftd_data,
+				 strcpy (dp -> ftd_data,
 							   "ANONymous user permitted, access restrictions apply");
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
@@ -462,18 +462,18 @@ bad_account:
 		}
 	}
 
-	(void) sprintf (myhome, "%s/", pw -> pw_dir);
+	 sprintf (myhome, "%s/", pw -> pw_dir);
 	myhomelen = strlen (myhome);
 
-	(void) setgid (pw -> pw_gid);
+	 setgid (pw -> pw_gid);
 #ifndef	SYS5
-	(void) initgroups (pw -> pw_name, pw -> pw_gid);
-	(void) seteuid (myuid = pw -> pw_uid);
+	 initgroups (pw -> pw_name, pw -> pw_gid);
+	 seteuid (myuid = pw -> pw_uid);
 #else
-	(void) setuid (myuid = pw -> pw_uid);
+	 setuid (myuid = pw -> pw_uid);
 #endif
 
-	(void) umask (0022);
+	 umask (0022);
 #endif
 
 	if (FInitializeResponse (ftamfd, FSTATE_SUCCESS, FACTION_SUCCESS,
@@ -578,7 +578,7 @@ struct FTAMfinish *ftf;
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 #ifdef	BRIDGE
-	(void) ftp_quit ();
+	 ftp_quit ();
 #endif
 
 	advise (LLOG_NOTICE, NULLCP, "F-TERMINATE.INDICATION");
@@ -586,7 +586,7 @@ struct FTAMfinish *ftf;
 #ifdef	DEBUG
 	fc -> fc_ncharge = 0;
 	if (account) {
-		(void) time (&now);
+		 time (&now);
 
 		fc -> fc_charges[fc -> fc_ncharge].fc_resource = "elapsed time";
 		fc -> fc_charges[fc -> fc_ncharge].fc_unit = "seconds";
@@ -609,15 +609,15 @@ closewtmp () {
 #if	!defined(SYS5) && !defined(bsd43_ut_host)
 	long    now;
 
-	(void) time (&now);
+	 time (&now);
 
 	if (wtmp != NOTOK) {
-		(void) lseek (wtmp, 0L, L_XTND);
-		(void) SCPYN (uts.ut_name, "");
-		(void) SCPYN (uts.ut_host, "");
+		 lseek (wtmp, 0L, L_XTND);
+		 SCPYN (uts.ut_name, "");
+		 SCPYN (uts.ut_host, "");
 		uts.ut_time = now;
-		(void) write (wtmp, (char *) &uts, sizeof uts);
-		(void) close (wtmp);
+		 write (wtmp, (char *) &uts, sizeof uts);
+		 close (wtmp);
 	}
 #endif
 }
@@ -633,12 +633,12 @@ struct FTAMabort *fta;
 			fta -> fta_peer ? "U" : "P", fta -> fta_action);
 	ftam_diag (fta -> fta_diags, fta -> fta_ndiag);
 #ifdef	BRIDGE
-	(void) ftp_abort ();
-	(void) ftp_quit ();
+	 ftp_abort ();
+	 ftp_quit ();
 #endif
 
 	if (fta -> fta_action != FACTION_PERM && !fta -> fta_peer)
-		(void) FUAbortRequest (ftamfd, FACTION_PERM,
+		 FUAbortRequest (ftamfd, FACTION_PERM,
 							   (struct FTAMdiagnostic *) 0, 0, &ftis);
 
 	closewtmp ();

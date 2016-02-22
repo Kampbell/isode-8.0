@@ -149,10 +149,10 @@ ask_it:
 				   && (st.st_mode & S_IFMT) == S_IFDIR) {
 #ifdef apollo
 			if (*dst == '/')
-				(void) sprintf (bp = buffer, "%s", dst);
+				 sprintf (bp = buffer, "%s", dst);
 			else
 #endif
-				(void) sprintf (bp = buffer, "%s/", dst);
+				 sprintf (bp = buffer, "%s/", dst);
 			bp += strlen (bp);
 			switch (realstore) {
 			case RFS_UNIX:
@@ -165,13 +165,13 @@ ask_it:
 			default:
 				break;
 			}
-			(void) strcpy (bp, dst);
+			 strcpy (bp, dst);
 			dst = buffer;
 			goto ask_it;
 		}
 
 		if (check_get (dst) != NOTOK)
-			(void) getvf (*src, dst, faduid, vf, ubffnx);
+			 getvf (*src, dst, faduid, vf, ubffnx);
 		goto out;
 	}
 
@@ -183,10 +183,10 @@ ask_it:
 	case RFS_UNIX:
 #ifdef apollo
 		if (dst && dst[strlen (dst) - 1] == '/')
-			(void) sprintf (bp = buffer, "%s", dst);
+			 sprintf (bp = buffer, "%s", dst);
 		else
 #endif
-			(void) sprintf (bp = buffer, "%s/", dst ? dst : ".");
+			 sprintf (bp = buffer, "%s/", dst ? dst : ".");
 		bp += strlen (bp);
 		break;
 
@@ -217,7 +217,7 @@ ask_it:
 			dst = *gp;
 			break;
 		}
-		(void) strcpy (bp, dst);
+		 strcpy (bp, dst);
 		dst = buffer;
 
 		if (sglobbed) {
@@ -239,7 +239,7 @@ ask_it:
 
 		if (check_get (dst) == NOTOK)
 			break;
-		(void) getvf (*gp, dst, faduid, vf, ubffnx);
+		 getvf (*gp, dst, faduid, vf, ubffnx);
 
 		if (ftamfd == NOTOK)
 			break;
@@ -449,7 +449,7 @@ IFP	wfnx;
 						break;
 					}
 				if (parm)
-					(void) fre_obj (parm,
+					 fre_obj (parm,
 									_ZDOCS_mod.md_dtab[myvf -> vf_number],
 									&_ZDOCS_mod, 1);
 			}
@@ -498,7 +498,7 @@ IFP	wfnx;
 			dp -> ftd_identifier = FS_ACC_LCL;
 			dp -> ftd_observer = dp -> ftd_source = EREF_IFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
-			(void) sprintf (dp -> ftd_data, "unable to write %s: %s",
+			 sprintf (dp -> ftd_data, "unable to write %s: %s",
 							dst, sys_errname (errno));
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
@@ -507,7 +507,7 @@ IFP	wfnx;
 								dp - diags, fti) == NOTOK) {
 				ftam_advise (fta, "F-CANCEL.REQUEST");
 				if (fd != NOTOK)
-					(void) close (fd);
+					 close (fd);
 				return NOTOK;
 			}
 
@@ -531,7 +531,7 @@ IFP	wfnx;
 
 	if (fd != NOTOK) {
 		(*wfnx) (fd, (struct PSAPdata *) 0, DONE);
-		(void) close (fd);
+		 close (fd);
 	}
 
 	switch (result) {
@@ -708,7 +708,7 @@ char   *file;
 						&& oid_cmp (vf -> vf_oid, fa -> fa_contents) == 0) {
 					if (fa -> fa_parameter && vf -> vf_number >= 0) {
 						if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
-							(void) fre_obj (vf -> vf_parameter,
+							 fre_obj (vf -> vf_parameter,
 											_ZDOCS_mod.md_dtab[vf
 															   -> vf_number],
 											&_ZDOCS_mod, 1);
@@ -779,7 +779,7 @@ IFP	wfnx;
 			FD_ZERO (&rfds);
 			/* interrupt causes EINTR */
 			if (FSelectMask (ftamfd, &rfds, &nfds, fti) == OK)
-				(void) xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
+				 xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
 		}
 
 		if (interrupted) {
@@ -820,7 +820,7 @@ do_cancel:
 				dp -> ftd_identifier = reason;
 				dp -> ftd_observer = dp -> ftd_source = EREF_IFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
-				(void) strcpy (dp -> ftd_data, sys_errname (errno));
+				 strcpy (dp -> ftd_data, sys_errname (errno));
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				dp++;
 
@@ -927,11 +927,11 @@ int	status;
 			cc += n;
 		if (hash) {
 			if (hash > 1)
-				(void) printf ("%d\r", cc);
+				 printf ("%d\r", cc);
 			else
 				for (; marks < cc; marks += BUFSIZ)
-					(void) putchar ('#');
-			(void) fflush (stdout);
+					 putchar ('#');
+			 fflush (stdout);
 		}
 	}
 

@@ -120,7 +120,7 @@ start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 		if (bind (sd, (struct sockaddr *) sock, sizeof *sock) != NOTOK)
 			goto got_socket;
 
-		(void) close (sd);
+		 close (sd);
 		return NOTOK;
 	} else
 		sock -> sin_family = AF_INET;
@@ -139,7 +139,7 @@ start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 
 		case EADDRNOTAVAIL:
 		default:
-			(void) close (sd);
+			 close (sd);
 			return NOTOK;
 		}
 	}
@@ -158,18 +158,18 @@ got_socket:
 
 #ifndef	BSD43
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
 #else
 	onoff = 1;
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
 
-	(void) set_check_fd (sd, check_dgram_socket, NULLCP);
+	 set_check_fd (sd, check_dgram_socket, NULLCP);
 	return (peers[sd].dgram_parent = sd);
 }
 #endif
@@ -215,7 +215,7 @@ start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2)
 				!= NOTOK)
 			goto got_socket;
 
-		(void) close (sd);
+		 close (sd);
 		return NOTOK;
 	} else
 		ifaddr -> siso_family = AF_ISO;
@@ -248,11 +248,11 @@ start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2)
 
 		case EADDRNOTAVAIL:
 		default:
-			(void) close (sd);
+			 close (sd);
 			return NOTOK;
 		}
 	}
-	(void) close (sd);
+	 close (sd);
 	errno = EADDRNOTAVAIL;
 	return NOTOK;
 
@@ -270,18 +270,18 @@ got_socket:
 
 #ifndef	BSD43
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
 #else
 	onoff = 1;
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
 
-	(void) set_check_fd (sd, check_dgram_socket, NULLCP);
+	 set_check_fd (sd, check_dgram_socket, NULLCP);
 	return (peers[sd].dgram_parent = sd);
 }
 #endif
@@ -318,7 +318,7 @@ join_dgram_aux (int fd, struct sockaddr *sock, int newfd)
 
 		if ((sd = dup (fd)) == NOTOK)
 			return NOTOK;
-		(void) set_check_fd (fd, check_dgram_socket, NULLCP);
+		 set_check_fd (fd, check_dgram_socket, NULLCP);
 
 		up = &peers[sd];
 #ifdef	BSD44
@@ -478,7 +478,7 @@ close_dgram_socket (int fd)
 		if (up -> dgram_parent == fd)
 			up -> dgram_parent = up - peers;
 
-	(void) set_check_fd (fd, NULLIFP, NULLCP);
+	 set_check_fd (fd, NULLIFP, NULLCP);
 	return close (fd);
 }
 
@@ -650,7 +650,7 @@ check_dgram_socket (int fd)
 static 
 inetprint (struct sockaddr_in *sin, char *bp)
 {
-	(void) sprintf (bp, "Internet=%s+%d+%d", inet_ntoa (sin -> sin_addr),
+	 sprintf (bp, "Internet=%s+%d+%d", inet_ntoa (sin -> sin_addr),
 					(int) ntohs (sin -> sin_port), NA_TSET_UDP);
 }
 #endif
@@ -709,15 +709,15 @@ hexprint (char *bp, int n, u_char *buf, char *start, char *stop)
 	if (n == 0)
 		return;
 
-	(void) strcpy (bp, start);
+	 strcpy (bp, start);
 	bp += strlen (bp);
 
 	while (in < top) {
-		(void) sprintf (bp, "%02x", *in++ & 0xff);
+		 sprintf (bp, "%02x", *in++ & 0xff);
 		bp += 2;
 	}
 
-	(void) strcpy (bp, stop);
+	 strcpy (bp, stop);
 }
 #endif
 
@@ -758,7 +758,7 @@ struct sockaddr *sock;
 		return;
 	}
 
-	(void) (*p -> p_function) (sock, buffer);
+	 (*p -> p_function) (sock, buffer);
 
 	DLOG (compat_log, LLOG_TRACE, ("%-10.10s %d %s", s, fd, buffer));
 }
@@ -769,6 +769,6 @@ struct sockaddr *sock;
 /*  */
 
 int 
-dgram_dummy (void) {}
+dgram_dummy  {}
 
 #endif

@@ -69,13 +69,13 @@ PExec (struct SSAPstart *ss, struct PSAPindication *pi, char *arg1, char *arg2, 
 		if (result == PS_ERR_NMEM)
 			goto congest;
 
-		(void) ppktlose (pb, pi, PC_PROTOCOL, PPDU_CP, NULLCP, "%s",
+		 ppktlose (pb, pi, PC_PROTOCOL, PPDU_CP, NULLCP, "%s",
 						 ps_error (result));
 		goto out1;
 	}
 
 	if (decode_PS_CP__type (pe, 1, NULLIP, NULLVP, &cp) == NOTOK) {
-		(void) ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CP, NULLCP, "%s",
+		 ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CP, NULLCP, "%s",
 						 PY_pepy);
 		goto out1;
 	}
@@ -83,7 +83,7 @@ PExec (struct SSAPstart *ss, struct PSAPindication *pi, char *arg1, char *arg2, 
 	PLOGP (psap2_log,PS_CP__type, pe, "CP-type", 1);
 
 	if (cp -> mode -> parm != int_PS_Mode__selector_normal__mode) {
-		(void) ppktlose (pb, pi, PC_INVALID, PPDU_CP, NULLCP,
+		 ppktlose (pb, pi, PC_INVALID, PPDU_CP, NULLCP,
 						 "X.410-mode not supported");
 		goto out1;
 	}
@@ -130,8 +130,8 @@ PExec (struct SSAPstart *ss, struct PSAPindication *pi, char *arg1, char *arg2, 
 	case OK:
 	default:
 		if (setperms)
-			(void) (*setperms) (is);
-		(void) execv (*is -> is_vec, is -> is_vec);
+			 (*setperms) (is);
+		 execv (*is -> is_vec, is -> is_vec);
 		SLOG (psap2_log, LLOG_FATAL, *is -> is_vec,
 			  ("unable to exec"));
 		break;
@@ -140,7 +140,7 @@ PExec (struct SSAPstart *ss, struct PSAPindication *pi, char *arg1, char *arg2, 
 congest:
 	;
 	result = SC_CONGESTION;
-	(void) psaplose (pi, result2 = PC_CONGEST, NULLCP, NULLCP);
+	 psaplose (pi, result2 = PC_CONGEST, NULLCP, NULLCP);
 
 out2:
 	;
@@ -157,7 +157,7 @@ out2:
 			cpr -> offset = type_PS_CPR__type_x410__mode;
 			if (pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET)) {
 				cpr -> un.x410__mode = pe;
-				(void) set_add (pe, num2prim ((integer) (result2 != PC_CONGEST ? 0 : 3),
+				 set_add (pe, num2prim ((integer) (result2 != PC_CONGEST ? 0 : 3),
 											  PE_CLASS_CONT, 0));
 			}
 		} else {
@@ -177,16 +177,16 @@ out2:
 		PLOGP (psap2_log,PS_CPR__type, pe, "CPR-type", 0);
 
 		if (pe)
-			(void) pe2ssdu (pe, &base, &len);
+			 pe2ssdu (pe, &base, &len);
 	} else
 		base = NULL, len = 0;
 
 	bzero ((char *) &ref, sizeof ref);
-	(void) SConnResponse (ss -> ss_sd, &ref, NULLSA, result, 0, 0,
+	 SConnResponse (ss -> ss_sd, &ref, NULLSA, result, 0, 0,
 						  SERIAL_NONE, base, len, si);
 	if (base)
 		free (base);
-	(void) psaplose (pi, result2, NULLCP, NULLCP);
+	 psaplose (pi, result2, NULLCP, NULLCP);
 
 out1:
 	;

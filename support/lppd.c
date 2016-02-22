@@ -189,7 +189,7 @@ lppd (int vecp, char **vec, struct TSAPaddr *ta)
 	advise (LLOG_NOTICE, NULLCP, "exec \"%s\" for \"%s\"", *is -> is_vec,
 			dp -> dp_entity);
 
-	(void) execv (*is -> is_vec, is -> is_vec);
+	 execv (*is -> is_vec, is -> is_vec);
 
 	adios (*is -> is_vec, "unable to exec");
 }
@@ -202,11 +202,11 @@ ts_advise (struct TSAPdisconnect *td, int code, char *event)
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						TErrString (td -> td_reason),
 						td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		(void) sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
@@ -237,7 +237,7 @@ arginit (char **vec)
 			&& st.st_uid != 0)
 		adios (NULLCP, "%s not owned by root", ap);
 
-	(void) strcpy (myhost, TLocalHostName ());
+	 strcpy (myhost, TLocalHostName ());
 
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
@@ -249,7 +249,7 @@ arginit (char **vec)
 			case 's':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -s service-designator");
-				(void) strcpy (myhost, ap);
+				 strcpy (myhost, ap);
 				continue;
 
 			default:
@@ -265,7 +265,7 @@ arginit (char **vec)
 	bzero ((char *) dps, sizeof dps);
 	dz = dps;
 
-	(void) setisoservent (0);
+	 setisoservent (0);
 	while (is = getisoservent ())
 		if (strcmp (is -> is_provider, "lpp") == 0
 				&& access (*is -> is_vec, X_OK) != NOTOK) {
@@ -303,20 +303,20 @@ arginit (char **vec)
 							malloc ((unsigned) (strlen (is -> is_entity) + 1)))
 						== NULL)
 					adios (NULLCP, "out of memory");
-				(void) strcpy (dz -> dp_entity, is -> is_entity);
+				 strcpy (dz -> dp_entity, is -> is_entity);
 				dz -> dp_port = na -> na_port;
 				dz++;
 			}
 		}
 no_more:
 	;
-	(void) endisoservent ();
+	 endisoservent ();
 }
 
 /*  */
 
 static 
-envinit (void) {
+envinit  {
 	int     i,
 			sd;
 
@@ -338,14 +338,14 @@ envinit (void) {
 			break;
 		}
 
-		(void) chdir ("/");
+		 chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			(void) dup2 (sd, 0), (void) close (sd);
-		(void) dup2 (0, 1);
-		(void) dup2 (0, 2);
+			 dup2 (sd, 0),  close (sd);
+		 dup2 (0, 1);
+		 dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -353,14 +353,14 @@ envinit (void) {
 #endif
 #ifdef	TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			(void) ioctl (sd, TIOCNOTTY, NULLCP);
-			(void) close (sd);
+			 ioctl (sd, TIOCNOTTY, NULLCP);
+			 close (sd);
 		}
 #else
 #ifdef	SYS5
-		(void) setpgrp ();
-		(void) signal (SIGINT, SIG_IGN);
-		(void) signal (SIGQUIT, SIG_IGN);
+		 setpgrp ();
+		 signal (SIGINT, SIG_IGN);
+		 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -369,10 +369,10 @@ envinit (void) {
 #ifndef	sun		/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			(void) close (sd);
+			 close (sd);
 #endif
 
-	(void) signal (SIGPIPE, SIG_IGN);
+	 signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, myname);
 	advise (LLOG_NOTICE, NULLCP, "starting");

@@ -77,18 +77,18 @@ CommonArgs * ca;
 	ca->ca_servicecontrol.svc_timelimit = timelimit;
 
 	if ((opt = ps_alloc (str_open)) == NULLPS) {
-		(void) fprintf (stderr,"ps_alloc error\n");
+		 fprintf (stderr,"ps_alloc error\n");
 		return (NOTOK);
 	}
 
 	if (str_setup (opt, buffer, LINESIZE, 1) == NOTOK) {
-		(void) fprintf (stderr,"ps_setup error\n");
+		 fprintf (stderr,"ps_setup error\n");
 		return (NOTOK);
 	}
 
 	if (! default_serv_set)
 		if (set_default_service (opt) != OK) {
-			(void) fprintf (stderr,"error (1) - %s\n",buffer);
+			 fprintf (stderr,"error (1) - %s\n",buffer);
 			ps_free (opt);
 			return (NOTOK);
 
@@ -97,7 +97,7 @@ CommonArgs * ca;
 	do_shuffle = FALSE;
 
 	if (do_service_control (opt,serv_argc, serv_vec, ca) < 0) {
-		(void) fprintf (stderr,"error (2) - %s\n",buffer);
+		 fprintf (stderr,"error (2) - %s\n",buffer);
 		ps_free (opt);
 		return (NOTOK);
 	}
@@ -290,8 +290,8 @@ char * ptr;
 
 	if (ptr != 0) {
 		if (*default_service != 0)
-			(void) strcat (default_service," ");
-		(void) strcat (default_service,ptr);
+			 strcat (default_service," ");
+		 strcat (default_service,ptr);
 	}
 }
 
@@ -398,7 +398,7 @@ char	ufn;
 	for (ptr=current_sequence->ds_data; ptr != NULL_DE; ptr=ptr->de_next, x++) {
 		ps_printf (RPS,"%-3d%s",x,ufn ? " " : " @");
 		if (ufn)
-			(void) ufn_dn_print_aux (RPS, ptr -> de_name, NULLDN, 0);
+			 ufn_dn_print_aux (RPS, ptr -> de_name, NULLDN, 0);
 		else
 			dn_print (RPS,ptr->de_name,EDBOUT);
 		ps_print (RPS,"\n");

@@ -812,7 +812,7 @@ Entry eptr;
 	}
 #else
 	if (write_edb(empty_entry, filename) != OK) {
-		(void) unlink (filename);
+		 unlink (filename);
 		fatal(-33, "SPT: ds_modify: 2 writing new NLN out failed.\n") ;
 	}
 #endif

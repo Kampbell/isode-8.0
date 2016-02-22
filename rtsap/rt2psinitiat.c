@@ -94,7 +94,7 @@ struct RtSAPindication *rti;
 							   callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,
 							   rtc, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -244,12 +244,12 @@ ready:
 	}
 
 	if (data)
-		(void) pe_extract (pe, data);
+		 pe_extract (pe, data);
 	pe_free (pe);
 	pe = NULLPE;
 
 	if (result == NOTOK) {
-		(void) acs2rtslose (NULLACB, rti, "AcAssocRequest", aca);
+		 acs2rtslose (NULLACB, rti, "AcAssocRequest", aca);
 		goto out1;
 	}
 
@@ -259,7 +259,7 @@ ready:
 			goto out2;
 		}
 	} else if (acc -> acc_result == ACS_ABORTED) {
-		(void) acs2rtsabort (acb = NULLACB, aca, rti);
+		 acs2rtsabort (acb = NULLACB, aca, rti);
 
 		rtc -> rtc_sd = NOTOK;
 		rtc -> rtc_result = RTS_ABORTED;
@@ -272,7 +272,7 @@ ready:
 	if ((pe = acc -> acc_info[0]) == NULLPE) {
 		if (acc -> acc_result != ACS_ACCEPT) {
 			aca -> aca_reason = acc -> acc_result;
-			(void) acs2rtslose (acb, rti, "AcAssocRequest(pseudo)", aca);
+			 acs2rtslose (acb, rti, "AcAssocRequest(pseudo)", aca);
 
 			rtc -> rtc_sd = NOTOK;
 			rtc -> rtc_result = rti -> rti_abort.rta_reason;
@@ -305,7 +305,7 @@ ready:
 
 		rtc -> rtc_sd = NOTOK;
 		rtc -> rtc_result = RTS_REJECT;
-		(void) pe_extract (pe, rtc -> rtc_data = prtorj -> userDataRJ);
+		 pe_extract (pe, rtc -> rtc_data = prtorj -> userDataRJ);
 		if (rtc -> rtc_data)
 			rtc -> rtc_data -> pe_refcnt ++;
 
@@ -414,7 +414,7 @@ ready:
 			rtc -> rtc_data -> pe_refcnt ++;
 	} else
 		rtc -> rtc_data = NULL;
-	(void) pe_extract (pe, rtc -> rtc_data);
+	 pe_extract (pe, rtc -> rtc_data);
 
 	for (i = acc -> acc_ninfo - 1; i >= 0; i--)
 		if (acc -> acc_info[i]) {
@@ -440,7 +440,7 @@ out1:
 	if (tctx) oid_free (tctx);
 	if (pe) {
 		if (data)
-			(void) pe_extract (pe, data);
+			 pe_extract (pe, data);
 		pe_free (pe);
 	}
 

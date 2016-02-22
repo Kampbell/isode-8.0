@@ -87,7 +87,7 @@ ll_open (LLog *lp)
 			|| *lp -> ll_file == NULL) {
 you_lose:
 		;
-		(void) ll_close (lp);
+		 ll_close (lp);
 		lp -> ll_stat |= LLOGERR;
 		return NOTOK;
 	}
@@ -102,7 +102,7 @@ you_lose:
 		return OK;
 	}
 
-	(void) sprintf (bp = buffer, _isodefile (isodelogpath, lp -> ll_file),
+	 sprintf (bp = buffer, _isodefile (isodelogpath, lp -> ll_file),
 					getpid ());
 
 	mode = O_WRONLY | O_APPEND;
@@ -111,7 +111,7 @@ you_lose:
 
 	mask = umask (~0666);
 	lp -> ll_fd = open (bp, mode, 0666);
-	(void) umask (mask);
+	 umask (mask);
 
 	if (ll_check (lp) == NOTOK)
 		return (NOTOK);
@@ -222,10 +222,10 @@ _ll_log (	/* what, fmt, args ... */
 			break;
 		}
 
-		(void) syslog (priority, "%s", buffer + 13);
+		 syslog (priority, "%s", buffer + 13);
 
 		if (lp -> ll_stat & LLOGCLS)
-			(void) closelog ();
+			 closelog ();
 	}
 #endif
 
@@ -235,13 +235,13 @@ _ll_log (	/* what, fmt, args ... */
 		lp -> ll_stat |= LLOGTTY;
 
 	if (lp -> ll_stat & LLOGTTY) {
-		(void) fflush (stdout);
+		 fflush (stdout);
 
 		if (lp -> ll_fd != NOTOK)
-			(void) fprintf (stderr, "LOGGING: ");
-		(void) fputs (bp, stderr);
-		(void) fputc ('\n', stderr);
-		(void) fflush (stderr);
+			 fprintf (stderr, "LOGGING: ");
+		 fputs (bp, stderr);
+		 fputc ('\n', stderr);
+		 fflush (stderr);
 	}
 	bp += strlen (bp);
 
@@ -259,7 +259,7 @@ _ll_log (	/* what, fmt, args ... */
 
 	if ((status = write (lp -> ll_fd, buffer, cc)) != cc) {
 		if (status == NOTOK) {
-			(void) ll_close (lp);
+			 ll_close (lp);
 error:
 			;
 			lp -> ll_stat |= LLOGERR;
@@ -300,10 +300,10 @@ ll_hdinit (LLog *lp, char *prefix)
 
 	if ((up = getenv ("USER")) == NULLCP
 			&& (up = getenv ("LOGNAME")) == NULLCP) {
-		(void) sprintf (user, "#%d", getuid ());
+		 sprintf (user, "#%d", getuid ());
 		up = user;
 	}
-	(void) sprintf (buffer, "%-8.8s %05d (%-8.8s)",
+	 sprintf (buffer, "%-8.8s %05d (%-8.8s)",
 					cp, getpid () % 100000, up);
 
 	if (lp -> ll_stat & LLOGHDR)
@@ -313,7 +313,7 @@ ll_hdinit (LLog *lp, char *prefix)
 	if ((lp -> ll_hdr = malloc ((unsigned) (strlen (buffer) + 1))) == NULLCP)
 		return;
 
-	(void) strcpy (lp -> ll_hdr, buffer);
+	 strcpy (lp -> ll_hdr, buffer);
 	lp -> ll_stat |= LLOGHDR;
 }
 
@@ -333,13 +333,13 @@ ll_dbinit (LLog *lp, char *prefix)
 		if (cp == NULL || *cp == NULL)
 			cp = prefix;
 
-		(void) sprintf (buffer, "./%s.log", cp);
+		 sprintf (buffer, "./%s.log", cp);
 
 		if ((lp -> ll_file = malloc ((unsigned) (strlen (buffer) + 1)))
 				== NULLCP)
 			return;
 
-		(void) strcpy (lp -> ll_file, buffer);
+		 strcpy (lp -> ll_file, buffer);
 	}
 
 	lp -> ll_events |= LLOG_ALL;
@@ -403,13 +403,13 @@ int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 		lp -> ll_stat |= LLOGTTY;
 
 	if (lp -> ll_stat & LLOGTTY) {
-		(void) fflush (stdout);
+		 fflush (stdout);
 
 		if (bp)
-			(void) fputs (bp, stderr);
+			 fputs (bp, stderr);
 		else
-			(void) fputs (fmt, stderr);
-		(void) fflush (stderr);
+			 fputs (fmt, stderr);
+		 fflush (stderr);
 	}
 	if (bp)
 		bp += strlen (bp);
@@ -430,7 +430,7 @@ int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 
 	if ((status = write (lp -> ll_fd, bp ? buffer : fmt, cc)) != cc) {
 		if (status == NOTOK) {
-			(void) ll_close (lp);
+			 ll_close (lp);
 			lp -> ll_stat |= LLOGERR;
 			return NOTOK;
 		}
@@ -503,7 +503,7 @@ ll_check (LLog *lp)
 		return OK;
 
 	if (!(lp -> ll_stat & LLOGZER)) {
-		(void) ll_close (lp);
+		 ll_close (lp);
 
 #ifndef	BSD42
 error:
@@ -515,17 +515,17 @@ error:
 
 #ifdef	BSD42
 #ifdef	SUNOS4
-	(void) ftruncate (lp -> ll_fd, (off_t) 0);
+	 ftruncate (lp -> ll_fd, (off_t) 0);
 #else
-	(void) ftruncate (lp -> ll_fd, 0);
+	 ftruncate (lp -> ll_fd, 0);
 #endif
-	(void) lseek (lp -> ll_fd, 0L, 0);
+	 lseek (lp -> ll_fd, 0L, 0);
 	return OK;
 #else
-	(void) sprintf (buffer, _isodefile (isodelogpath, lp -> ll_file), getpid ());
+	 sprintf (buffer, _isodefile (isodelogpath, lp -> ll_file), getpid ());
 	if ((fd = open (buffer, O_WRONLY | O_APPEND | O_TRUNC)) == NOTOK)
 		goto error;
-	(void) close (fd);
+	 close (fd);
 	return OK;
 #endif
 }
@@ -545,10 +545,10 @@ ll_defmhdr (
 	time_t    clock;
 	struct tm *tm;
 
-	(void) time (&clock);
+	 time (&clock);
 	tm = localtime (&clock);
 
-	(void) sprintf (bufferp, "%2d/%2d %2d:%02d:%02d %s %s ",
+	 sprintf (bufferp, "%2d/%2d %2d:%02d:%02d %s %s ",
 					tm -> tm_mon + 1, tm -> tm_mday,
 					tm -> tm_hour, tm -> tm_min, tm -> tm_sec,
 					headerp ? headerp : "",

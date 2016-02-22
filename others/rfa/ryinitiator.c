@@ -126,7 +126,7 @@ PE	data;
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
 	if (AcAssocRequest (ctx, NULLAEI, aei, NULLPA, pa, pc, NULLOID,
@@ -156,7 +156,7 @@ PE	data;
 }
 
 int 
-closeconn (void) {
+closeconn  {
 	struct AcSAPrelease acrs;
 	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
@@ -170,7 +170,7 @@ closeconn (void) {
 		acs_errexit (aca, "A-RELEASE.REQUEST");
 
 	if (!acr -> acr_affirmative) {
-		(void) AcUAbortRequest (ry_sd, NULLPEP, 0, aci);
+		 AcUAbortRequest (ry_sd, NULLPEP, 0, aci);
 		errexit (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
 	}
 
@@ -234,10 +234,10 @@ ros_errmsg (struct RoSAPpreject *rop, char *event)
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	errmsg (NULLCP, "%s: %s", event, buffer);
 }
@@ -259,11 +259,11 @@ acs_errmsg (struct AcSAPabort *aca, char *event)
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	errmsg (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -319,13 +319,13 @@ _errmsg (va_list ap)
 
 	asprintf (buffer, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-	(void) fflush (stderr);
+	 fflush (stderr);
 }
 #else
 /* VARARGS */

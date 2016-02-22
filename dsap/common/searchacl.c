@@ -227,7 +227,7 @@ Saclinfo acl;
 {
 	PE ret_pe;
 
-	(void) encode_Quipu_SearchACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
+	 encode_Quipu_SearchACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
 
 	return( ret_pe );
 }
@@ -617,7 +617,7 @@ Listacl acl;
 {
 	PE ret_pe;
 
-	(void) encode_Quipu_ListACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
+	 encode_Quipu_ListACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
 
 	return( ret_pe );
 }

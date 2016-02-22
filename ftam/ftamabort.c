@@ -63,7 +63,7 @@ struct FTAMindication *fti;
 	result = FAbortRequestAux (fsb, type_FTAM_PDU_f__u__abort__request, action,
 							   diag, ndiag, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -138,7 +138,7 @@ carry_on:
 		free_FTAM_PDU (pdu);
 
 	if (result == NOTOK)
-		(void) acs2ftamlose (fsb, fti, "AcUAbortRequest", aca);
+		 acs2ftamlose (fsb, fti, "AcUAbortRequest", aca);
 	else {
 		fsb -> fsb_fd = NOTOK;
 		result = OK;

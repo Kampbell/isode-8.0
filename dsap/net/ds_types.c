@@ -700,7 +700,7 @@ struct signature	* sig;
 	if ((ret = (struct signature *) smalloc (sizeof (struct signature))) == (struct signature *) NULL)
 		return ((struct signature *) NULL);
 
-	(void) alg_cpy (&ret->alg, &sig->alg);
+	 alg_cpy (&ret->alg, &sig->alg);
 
 	if (sig->encoded == NULLPE)
 		ret->encoded = NULLPE;

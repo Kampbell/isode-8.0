@@ -248,7 +248,7 @@ PE *pe;
 
 
 			}
-			(void) seq_addon ((*p91), p92, (*p93));
+			 seq_addon ((*p91), p92, (*p93));
 			p92 = (*p93);
 		}
 
@@ -423,7 +423,7 @@ PE pe;
 				{
 					/* type */
 #ifdef DEBUG
-					(void) testdebug (p116, "type");
+					 testdebug (p116, "type");
 #endif
 
 					if (decode_IF_AttributeType (p116, 1, (int *)0, NULLVP, &subs_next->fi_sub_type) == NOTOK)
@@ -447,7 +447,7 @@ PE pe;
 					PE p118;
 
 #ifdef DEBUG
-					(void) testdebug (p117, "strings");
+					 testdebug (p117, "strings");
 #endif
 
 					if (p117 -> pe_class != PE_CLASS_UNIV
@@ -468,7 +468,7 @@ PE pe;
 					for (p118 = first_member (p117); p118; p118 = next_member (p117, p118)) {
 						{
 #ifdef DEBUG
-							(void) testdebug (p118, "element");
+							 testdebug (p118, "element");
 #endif
 							av_next = AttrV_alloc();
 							av_next->av_syntax = 0;
@@ -495,7 +495,7 @@ PE pe;
 								}
 								{
 #ifdef DEBUG
-									(void) testdebug (p119, "initial");
+									 testdebug (p119, "initial");
 #endif
 
 									/*
@@ -539,7 +539,7 @@ PE pe;
 								}
 								{
 #ifdef DEBUG
-									(void) testdebug (p121, "any");
+									 testdebug (p121, "any");
 #endif
 									/*
 														if (decode_IF_AttributeValue (p121, 1, NULLINTP, NULLVP, &av_next) == NOTOK)
@@ -582,7 +582,7 @@ PE pe;
 								}
 								{
 #ifdef DEBUG
-									(void) testdebug (p123, "final");
+									 testdebug (p123, "final");
 #endif
 									/*
 
@@ -746,16 +746,16 @@ PE * pe;
 				}
 
 #ifdef DEBUG
-				(void) testdebug ((*p25), "member");
+				 testdebug ((*p25), "member");
 #endif
 
 			}
-			(void)set_addon ((*p23), p24, (*p25));
+			set_addon ((*p23), p24, (*p25));
 			p24 = (*p25);
 		}
 
 #ifdef DEBUG
-		(void) testdebug ((*p23), "mandatoryObjectClasses");
+		 testdebug ((*p23), "mandatoryObjectClasses");
 #endif
 
 		{
@@ -794,7 +794,7 @@ PE * pe;
 		}
 
 #ifdef DEBUG
-		(void) testdebug ((*p23), "permittedRDNs");
+		 testdebug ((*p23), "permittedRDNs");
 #endif
 
 		{
@@ -818,7 +818,7 @@ PE * pe;
 		}
 
 #ifdef DEBUG
-	(void) testdebug ((*pe), "Quipu.TreeStructureSyntax");
+	 testdebug ((*pe), "Quipu.TreeStructureSyntax");
 #endif
 
 	{
@@ -898,7 +898,7 @@ PE pe;
 	PE p34;
 
 #ifdef DEBUG
-	(void) testdebug (pe, "Quipu.TreeStructureSyntax");
+	 testdebug (pe, "Quipu.TreeStructureSyntax");
 #endif
 
 	if (explicit) {
@@ -949,7 +949,7 @@ PE pe;
 			PE p37;
 
 #ifdef DEBUG
-			(void) testdebug (p35, "mandatoryObjectClasses");
+			 testdebug (p35, "mandatoryObjectClasses");
 #endif
 
 			if (p35 -> pe_class != PE_CLASS_UNIV
@@ -971,7 +971,7 @@ PE pe;
 				OID p38;
 
 #ifdef DEBUG
-				(void) testdebug (p37, "member");
+				 testdebug (p37, "member");
 #endif
 
 				if (p37 -> pe_class != PE_CLASS_UNIV
@@ -1035,7 +1035,7 @@ PE pe;
 			PE p41;
 
 #ifdef DEBUG
-			(void) testdebug (p39, "optionalObjectClasses");
+			 testdebug (p39, "optionalObjectClasses");
 #endif
 
 			if (p39 -> pe_class != PE_CLASS_UNIV
@@ -1055,7 +1055,7 @@ PE pe;
 
 			for (p41 = first_member (p39); p41; p41 = next_member (p39, p41)) {
 #ifdef DEBUG
-				(void) testdebug (p41, "member");
+				 testdebug (p41, "member");
 #endif
 
 				if (p41 -> pe_class != PE_CLASS_UNIV
@@ -1098,7 +1098,7 @@ PE pe;
 			PE p44;
 
 #ifdef DEBUG
-			(void) testdebug (p42, "permittedRDNs");
+			 testdebug (p42, "permittedRDNs");
 #endif
 
 			if (p42 -> pe_class != PE_CLASS_UNIV
@@ -1120,7 +1120,7 @@ PE pe;
 				PE p45;
 
 #ifdef DEBUG
-				(void) testdebug (p44, "member");
+				 testdebug (p44, "member");
 #endif
 
 				if (p44 -> pe_class != PE_CLASS_UNIV
@@ -1140,7 +1140,7 @@ PE pe;
 
 				for (p45 = first_member (p44); p45; p45 = next_member (p44, p45)) {
 #ifdef DEBUG
-					(void) testdebug (p45, "member");
+					 testdebug (p45, "member");
 #endif
 
 					if (decode_IF_AttributeType (p45, 1, (int *)0, NULLVP, & at_tmp) == NOTOK)
@@ -1189,7 +1189,7 @@ PE *pe;
 		if (encode_Quipu_RelativeEntry (p32, 0, NULL, NULLCP, ent_tmp) == NOTOK)
 			return NOTOK;
 
-		(void) seq_addon ((*pe), p31, (*p32));
+		 seq_addon ((*pe), p31, (*p32));
 		p31 = (*p32);
 	}
 

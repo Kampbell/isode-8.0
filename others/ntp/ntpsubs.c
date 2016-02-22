@@ -194,7 +194,7 @@ ntoa (struct sockaddr_in *nsin)
 	static int i = 0;
 	static char bufs[8][64];
 
-	(void) sprintf (bufs[i], ntohs (nsin->sin_port) ?
+	 sprintf (bufs[i], ntohs (nsin->sin_port) ?
 					"INET %s/%d" : "INET %s", inet_ntoa (nsin->sin_addr),
 					ntohs(nsin->sin_port));
 	return bufs[i];

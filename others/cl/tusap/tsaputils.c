@@ -49,7 +49,7 @@ static int TPid = NOTOK;
 /*    INTERNAL */
 
 struct tsapblk *
-newtublk (void) {
+newtublk  {
 	struct tsapblk *tb;
 
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);
@@ -95,14 +95,14 @@ freetublk (struct tsapblk *tb)
 #endif
 
 	if (tb -> tb_fd != NOTOK)
-		(void) (*tb -> tb_closefnx) (tb -> tb_fd);
+		 (*tb -> tb_closefnx) (tb -> tb_fd);
 
 	if (tb -> tb_retry)
 		freetpkt (tb -> tb_retry);
 
 #ifndef	SIGPOLL
 	if ((tb -> tb_flags & TB_ASYN) && TPid > OK) {
-		(void) kill (TPid, SIGTERM);
+		 kill (TPid, SIGTERM);
 		TPid = NOTOK;
 	}
 #endif
@@ -122,13 +122,13 @@ freetublk (struct tsapblk *tb)
 	for (tb = TuHead -> tb_forw; tb != TuHead; tb = tb -> tb_forw)
 		if (tb -> tb_fd != NOTOK && (tb -> tb_flags & TB_ASYN)) {
 			if (tb -> tb_flags & TB_CLNS)
-				/* (void) TUnitDataWakeUp (tb); */
+				/*  TUnitDataWakeUp (tb); */
 				;
 			break;
 		}
 #endif
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 }
 
 /*  */

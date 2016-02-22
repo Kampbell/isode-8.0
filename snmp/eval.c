@@ -122,7 +122,7 @@ int	offset;
 #define	get_arg(a) \
     if (tos <= fstack + 1) { \
 	curexpr -> e_status = E_underflow; \
-	(void) strcpy (curexpr -> e_hints, "stack underflow"); \
+	 strcpy (curexpr -> e_hints, "stack underflow"); \
 	return NOTOK; \
     } \
     (a) = *--tos;
@@ -175,7 +175,7 @@ int	offset;
 	case functDiv:
 		if (arg2 == 0) {
 			curexpr -> e_status = E_divide;
-			(void) strcpy (curexpr -> e_hints, "division by zero");
+			 strcpy (curexpr -> e_hints, "division by zero");
 			return NOTOK;
 		}
 		arg1 /= arg2;
@@ -184,7 +184,7 @@ int	offset;
 	case functMod:
 		if (arg2 == 0) {
 			curexpr -> e_status = E_divide;
-			(void) strcpy (curexpr -> e_hints, "modulus by zero");
+			 strcpy (curexpr -> e_hints, "modulus by zero");
 			return NOTOK;
 		}
 		arg1 %= arg2;
@@ -322,7 +322,7 @@ int	offset;
 
 	case exprEval:
 		e -> e_eval = 0, e -> e_status = E_noError, e -> e_hints[0] = NULL;
-		(void) eval_expr (curexpr = e);
+		 eval_expr (curexpr = e);
 		curexpr = NULL;
 		return o_integer (oi, v, e -> e_eval);
 
@@ -357,12 +357,12 @@ struct expr *e;
 	bzero ((char *) ps, sizeof *ps);
 	if (str_open (ps) == NOTOK) {
 		e -> e_status = E_other;
-		(void) strcpy (e -> e_hints, "str_open failed");
+		 strcpy (e -> e_hints, "str_open failed");
 		return NOTOK;
 	}
 	if (str_setup (ps, e -> e_expr, e -> e_size, 1) == NOTOK) {
 		e -> e_status = E_other;
-		(void) sprintf (e -> e_hints, "str_setup failed: %s",
+		 sprintf (e -> e_hints, "str_setup failed: %s",
 						ps_error (ps -> ps_errno));
 		return NOTOK;
 	}
@@ -371,7 +371,7 @@ struct expr *e;
 		return NOTOK;
 	if (PE_ID (class, id) != PE_ID (PE_CLASS_UNIV, PE_CONS_SEQ)) {
 		e -> e_status = E_other;
-		(void) sprintf (e -> e_hints, "unexpected TAG: %d/%d", class, id);
+		 sprintf (e -> e_hints, "unexpected TAG: %d/%d", class, id);
 		return NOTOK;
 	}
 
@@ -396,7 +396,7 @@ struct expr *e;
 
 		default:
 			e -> e_status = E_other;
-			(void) sprintf (e -> e_hints, "unexpected TAG: %d/%d",
+			 sprintf (e -> e_hints, "unexpected TAG: %d/%d",
 							class, id);
 			return NOTOK;
 		}
@@ -406,20 +406,20 @@ struct expr *e;
 			*tos++ = i;
 		else {
 			e -> e_status = E_overflow;
-			(void) strcpy (e -> e_hints, "stack overflow");
+			 strcpy (e -> e_hints, "stack overflow");
 			return NOTOK;
 		}
 	}
 
 	if (tos <= fstack) {
 		e -> e_status = E_underflow;
-		(void) strcpy (e -> e_hints, "stack underflow");
+		 strcpy (e -> e_hints, "stack underflow");
 		return NOTOK;
 	}
 	e -> e_eval = *--tos;
 
 	if (tos > fstack + 1 && e -> e_hints[0] == NULL)
-		(void) sprintf (e -> e_hints,
+		 sprintf (e -> e_hints,
 						"%d items left on stack after evaluating expression",
 						tos - fstack - 1);
 
@@ -439,13 +439,13 @@ PElementLen   *len;
 
 	if (ps_read_id (ps, 0, class, form, id) == NOTOK) {
 		e -> e_status = E_other;
-		(void) sprintf (e -> e_hints, "error reading TAG info: %s",
+		 sprintf (e -> e_hints, "error reading TAG info: %s",
 						ps_error (ps -> ps_errno));
 		return NOTOK;
 	}
 	if (ps_read_len (ps, len) == NOTOK) {
 		e -> e_status = E_other;
-		(void) sprintf (e -> e_hints, "error reading LEN info: %s",
+		 sprintf (e -> e_hints, "error reading LEN info: %s",
 						ps_error (ps -> ps_errno));
 		return NOTOK;
 	}
@@ -468,12 +468,12 @@ integer *result;
 
 	if (form != PE_FORM_PRIM) {
 		e -> e_status = E_other;
-		(void) sprintf (e -> e_hints, "integer: %s", pe_error (PE_ERR_PRIM));
+		 sprintf (e -> e_hints, "integer: %s", pe_error (PE_ERR_PRIM));
 		return NOTOK;
 	}
 	if (len > sizeof (i)) {
 		e -> e_status = E_other;
-		(void) sprintf (e -> e_hints, "integer: %s", pe_error (PE_ERR_OVER));
+		 sprintf (e -> e_hints, "integer: %s", pe_error (PE_ERR_OVER));
 		return NOTOK;
 	}
 
@@ -506,7 +506,7 @@ OID   *ox;
 			|| (dp = (PElementData) base) == NULLPED
 			|| len == 0) {
 		e -> e_status = E_other;
-		(void) sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_PRIM));
+		 sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_PRIM));
 		return NOTOK;
 	}
 	ep = dp + len;
@@ -517,14 +517,14 @@ OID   *ox;
 	for (i = 1; dp < ep; i++) {	/* another whacko OSI encoding... */
 		if (*dp == 0x80) {
 			e -> e_status = E_other;
-			(void) sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_OID));
+			 sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_OID));
 			return NOTOK;
 		}
 
 		while (*dp++ & 0x80)
 			if (dp > ep) {
 				e -> e_status = E_other;
-				(void) sprintf (e -> e_hints, "oid: %s",
+				 sprintf (e -> e_hints, "oid: %s",
 								pe_error (PE_ERR_OID));
 				return NOTOK;
 			}
@@ -532,7 +532,7 @@ OID   *ox;
 
 	if ((ip = (unsigned int *) malloc ((i + 1) * sizeof *ip)) == NULL) {
 		e -> e_status = E_other;
-		(void) sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_NMEM));
+		 sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_NMEM));
 		return NOTOK;
 	}
 	o -> oid_elements = ip, o -> oid_nelem = i;
@@ -575,32 +575,32 @@ integer *i;
 
 	if ((oi = name2inst (oid)) == NULL) {
 		e -> e_status = E_noSuchName;
-		(void) sprintf (e -> e_hints, "variable %s unknown", oid2ode (oid));
+		 sprintf (e -> e_hints, "variable %s unknown", oid2ode (oid));
 		return NOTOK;
 	}
 	if ((ot = oi -> oi_type) == NULL) {
 		e -> e_status = E_noSuchName;
-		(void) sprintf (e -> e_hints, "no object type for variable %s",
+		 sprintf (e -> e_hints, "no object type for variable %s",
 						oid2ode (oid));
 		return NOTOK;
 	}
 	if ((os = ot -> ot_syntax) == NULL) {
 		e -> e_status = E_noSuchName;
-		(void) sprintf (e -> e_hints, "no object syntax for variable %s",
+		 sprintf (e -> e_hints, "no object syntax for variable %s",
 						oid2ode (oid));
 		return NOTOK;
 	}
 
 	if (!os -> os_data2) {
 		e -> e_status = E_notAnInteger;
-		(void) sprintf (e -> e_hints, "variable %s is not integer-valued",
+		 sprintf (e -> e_hints, "variable %s is not integer-valued",
 						oid2ode (oid));
 		return NOTOK;
 	}
 
 	if (ot -> ot_getfnx == NULL) {
 		e -> e_status = E_noSuchName;
-		(void) sprintf (e -> e_hints, "no get method for variable %s",
+		 sprintf (e -> e_hints, "no get method for variable %s",
 						oid2ode (oid));
 		return NOTOK;
 	}
@@ -612,14 +612,14 @@ integer *i;
 		if (v)
 			free_SNMP_VarBind (v);
 		e -> e_status = E_other;
-		(void) sprintf (e -> e_hints, "out of memory");
+		 sprintf (e -> e_hints, "out of memory");
 		return NOTOK;
 	}
 
 	if ((status = (*ot -> ot_getfnx) (oi, v, type_SNMP_PDUs_get__request))
 			!= int_SNMP_error__status_noError) {
 		if (e -> e_hints[0] == NULL)
-			(void) sprintf (e -> e_hints, "%s: %d", oid2ode (oid), status);
+			 sprintf (e -> e_hints, "%s: %d", oid2ode (oid), status);
 losing:
 		;
 		free_SNMP_VarBind (v);
@@ -628,7 +628,7 @@ losing:
 
 	if ((*os -> os_decode) (&result, v -> value) == NOTOK) {
 		e -> e_status = E_other;
-		(void) sprintf (e -> e_hints, "%s: decoding error!", oid2ode (oid));
+		 sprintf (e -> e_hints, "%s: decoding error!", oid2ode (oid));
 		goto losing;
 	}
 	*i = *result;

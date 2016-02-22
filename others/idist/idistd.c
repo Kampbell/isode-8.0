@@ -101,7 +101,7 @@ main (int argc, char **argv, char **envp)
 
 	host = getlocalhost ();
 
-	(void) ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
+	 ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
 						dispatches, table_Idist_Operations, initiate,
 						NULLIFP);
 
@@ -313,10 +313,10 @@ struct RoSAPindication *roi;
 		if (cfile == NULL)
 			return i_strerror (sd, error_Idist_protocol,
 							   "File not open", rox, roi);
-		(void) fflush (cfile);
+		 fflush (cfile);
 		if (ferror (cfile))
 			return syserror (sd, error_Idist_writeerror, rox, roi);
-		(void) fclose (cfile);
+		 fclose (cfile);
 		if ( fixup () < 0)
 			return error (sd, error_Idist_fileproblem,
 						  (caddr_t) ia5list, rox, roi);
@@ -413,7 +413,7 @@ struct RoSAPindication *roi;
 				sd, ryo -> ryo_name);
 
 	str = qb2str (arg);
-	(void) sprintf (buf, "%s/%s", target, str);
+	 sprintf (buf, "%s/%s", target, str);
 	free (str);
 	result = i_remove (buf);
 
@@ -533,7 +533,7 @@ PE	*pe;
 		return init_lose (ACS_PERMANENT, pe, "Version mismatch");
 
 	cp = qb2str (initial -> user);
-	(void) strcpy (user, cp);
+	 strcpy (user, cp);
 	free (cp);
 
 	if (baduser (NULLCP, user)) {
@@ -549,7 +549,7 @@ PE	*pe;
 
 	userid = pw -> pw_uid;
 	groupid = pw -> pw_gid;
-	(void) strcpy (homedir, pw -> pw_dir);
+	 strcpy (homedir, pw -> pw_dir);
 
 	cp = qb2str (initial -> passwd);
 
@@ -580,7 +580,7 @@ PE	*pe;
 		return init_lose (ACS_PERMANENT, pe, "Can't set user id");
 	}
 
-	(void) mktemp (utmpfile);
+	 mktemp (utmpfile);
 
 	return ACS_ACCEPT;
 }

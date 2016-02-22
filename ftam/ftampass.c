@@ -43,7 +43,7 @@ struct FTAMindication *fti;
 			   calloc (1, sizeof *fpm)) == NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		if (fpm)
 			free_FTAM_Access__Passwords (fpm);
 		return NULL;

@@ -98,7 +98,7 @@ int	format;
 		if (format == READOUT) {
 			indent++;
 			for ( atl = a ; atl != NULL; atl = atl->attr_link) {
-				(void) sprintf(buf,"%s",attr2name(atl->attr_type,oidformat));
+				 sprintf(buf,"%s",attr2name(atl->attr_type,oidformat));
 				for (avs= atl->attr_value; avs != NULLAV; avs = avs->avseq_next) {
 					ps_printf(ps,"\n");
 					for ( i = 0; i< indent; i++)
@@ -164,10 +164,10 @@ char * buf;
 	char *cp, cp1[3];
 
 	cp = smalloc(strlen(buf)+4);
-	(void) sprintf(cp,"%c\n", AS_START_DELIMITER);
-	(void) strcat(cp,buf);
-	(void) sprintf(cp1,"%c\n",AS_END_DELIMITER);
-	(void) strcat(cp,cp1);
+	 sprintf(cp,"%c\n", AS_START_DELIMITER);
+	 strcat(cp,buf);
+	 sprintf(cp1,"%c\n",AS_END_DELIMITER);
+	 strcat(cp,cp1);
 	return(str2attrSntx(cp));
 }
 #define str2AttrList(buf)	str2attrSeq(buf)
@@ -184,7 +184,7 @@ AV_Sequence avs;
 
 	for (avl = avs; avl; avl=avl->avseq_next) {
 		AttrV_cpy_enc(&(avl->avseq_av),&av);
-		(void) seq_add(pe,(PE) av.av_struct,-1);
+		 seq_add(pe,(PE) av.av_struct,-1);
 	}
 
 	return pe;
@@ -203,7 +203,7 @@ AttributeType at;
 		av->avseq_next = NULLAV;
 		av->avseq_av.av_syntax = 0;
 		av->avseq_av.av_struct = (caddr_t) pe_cpy(r);
-		(void) AttrV_decode(at,&(av->avseq_av));
+		 AttrV_decode(at,&(av->avseq_av));
 		avl = avs_merge(avl,av);
 	}
 	return avl;
@@ -220,13 +220,13 @@ Attr_Sequence a;
 		pe_free(pe);
 		return(NULLPE);
 	} else
-		(void) seq_add(pe,r,0);
+		 seq_add(pe,r,0);
 
 	if ((r = avs_enc(a->attr_value)) == NULLPE) {
 		pe_free(pe);
 		return(NULLPE);
 	} else
-		(void) seq_add(pe,r,1);
+		 seq_add(pe,r,1);
 
 	return(pe);
 }
@@ -280,7 +280,7 @@ Attr_Sequence a;
 			pe_free(pe);
 			return(NULLPE);
 		} else
-			(void) seq_add(pe,r,-1);
+			 seq_add(pe,r,-1);
 	}
 	return pe;
 }

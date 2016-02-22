@@ -642,11 +642,11 @@ char   *event;
 	char	buffer[BUFSIZ];
 
 	if (aa -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aa -> aca_reason),
 						aa -> aca_cc, aa -> aca_cc, aa -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aa -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aa -> aca_reason));
 
 	advise (LLOG_NOTICE,NULLCP,  "%s: %s (source %d)", event, buffer,
 			aa -> aca_source);
@@ -672,11 +672,11 @@ char   *event;
 	char    buffer[BUFSIZ];
 
 	if (pab -> pa_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						PErrString (pab -> pa_reason),
 						pab -> pa_cc, pab -> pa_cc, pab -> pa_data);
 	else
-		(void) sprintf (buffer, "[%s]", PErrString (pab -> pa_reason));
+		 sprintf (buffer, "[%s]", PErrString (pab -> pa_reason));
 
 	advise (LLOG_NOTICE,NULLCP,  "%s: %s%s", event, buffer,
 			pab -> pa_peer ? " (peer initiated)" : "");

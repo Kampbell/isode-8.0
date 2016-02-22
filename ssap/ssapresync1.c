@@ -88,7 +88,7 @@ SReSyncRequest (int sd, int type, long ssn, int settings, char *data, int cc, st
 
 	result = SReSyncRequestAux (sb, type, ssn, settings, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

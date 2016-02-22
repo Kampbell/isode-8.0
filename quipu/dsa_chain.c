@@ -1087,7 +1087,7 @@ struct oper_act	* on;
 		get_edb_fail_wakeup(on);
 		break;
 	case ON_TYPE_SHADOW:
-		(void) shadow_fail_wakeup(on);
+		 shadow_fail_wakeup(on);
 		break;
 	default:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("oper_fail_wakeup - op has invalid type"));
@@ -1144,7 +1144,7 @@ struct task_act * tk;
 					break;
 			}
 		} else
-			(void) di2cref(di_tmp, &err, tk->tk_conn->cn_ctx);
+			 di2cref(di_tmp, &err, tk->tk_conn->cn_ctx);
 
 		on = oper_alloc();
 		on->on_type = ON_TYPE_SUBTASK;

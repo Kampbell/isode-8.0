@@ -212,7 +212,7 @@ char  **vec;
 		advise(LLOG_NOTICE,NULLCP,"VT-BREAK Functional Unit Not Chosen");
 		return OK;
 	}
-	(void)tmode(2);
+	tmode(2);
 	vt_clr_obj();	/*Initialize all control objects*/
 	vbrkreq();
 #else
@@ -342,7 +342,7 @@ char **vec;
 	if(build_UDQPDU_UDQpdu(&udqp,1,NULL,NULLCP,(PEPYPARM) &ud) == NOTOK)
 		adios(NULLCP,"UDQ build failure");
 	udqp->pe_context = 1;
-	(void) do_event(VDATreq_u,udqp);
+	 do_event(VDATreq_u,udqp);
 	pe_free(udqp);
 	return OK;
 }

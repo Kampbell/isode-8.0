@@ -77,7 +77,7 @@ alias2name (char *name)
 /*  */
 
 static int 
-read_aliases (void) {
+read_aliases()  {
 	char   *hp;
 	char   buffer[BUFSIZ];
 
@@ -91,7 +91,7 @@ read_aliases (void) {
 
 	if ((hp = getenv ("HOME")) == NULL)
 		hp = ".";
-	(void) sprintf (buffer, "%s/.isode_aliases", hp);
+	 sprintf (buffer, "%s/.isode_aliases", hp);
 	read_file (buffer);
 }
 
@@ -120,7 +120,7 @@ read_file (char *file)
 			break;
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 }
 
 /*  */
@@ -150,8 +150,8 @@ add_alias (char *name, char *value)
 		free ((char *) p);
 		return NOTOK;
 	}
-	(void) strcpy (p -> p_name, name);
-	(void) strcpy (p -> p_value, value);
+	 strcpy (p -> p_name, name);
+	 strcpy (p -> p_value, value);
 
 	p -> p_chain = Pbuckets[i = PHASH (p -> p_name)];
 	Pbuckets[i] = p;
@@ -161,7 +161,7 @@ add_alias (char *name, char *value)
 
 #ifdef DEBUG
 int 
-free_isode_alias (void) {
+free_isode_alias()  {
 	int i;
 	struct pair *p, *np;
 

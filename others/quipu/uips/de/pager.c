@@ -43,7 +43,7 @@ int lineno;
 int discardInput;
 
 int 
-testRedisplay (void) {
+testRedisplay  {
 	if (redisplay)
 		return TRUE;
 	else
@@ -51,7 +51,7 @@ testRedisplay (void) {
 }
 
 int 
-setRedisplay (void) {
+setRedisplay  {
 	redisplay = TRUE;
 }
 
@@ -68,17 +68,17 @@ pagerOn (int number)
 }
 
 int 
-linewrapOn (void) {
+linewrapOn  {
 	wrapLines = TRUE;
 }
 
 int 
-linewrapOff (void) {
+linewrapOff  {
 	wrapLines = FALSE;
 }
 
 int 
-isWrapOn (void) {
+isWrapOn  {
 	return wrapLines;
 }
 
@@ -89,7 +89,7 @@ va_dcl {
 
 	va_start (ap);
 	_asprintf (buf, NULLCP, ap);
-	(void) fputs(buf, stdout);
+	 fputs(buf, stdout);
 	pagerOn(numOK);
 	redisplay = TRUE;
 	va_end(ap);
@@ -111,7 +111,7 @@ va_dcl /* no ; */
 	for (i = 0; buf[i] != '\0'; i++) {
 		if (buf[i] == '\n') {
 			charsInLine = 0;
-			(void) putchar(buf[i]);
+			 putchar(buf[i]);
 			lineno++;
 			if (lineno >= lines - 1) {
 				putPagePrompt();
@@ -127,7 +127,7 @@ va_dcl /* no ; */
 					break;
 				}
 				if ((pagerNumber == -1) && ((c == VEOF) || (c == VKILL)))
-					(void) kill(getpid(), 2); /* let the signal handling sort it out */
+					 kill(getpid(), 2); /* let the signal handling sort it out */
 				if (((pagerNumber == -1)&& (c == 'q')) || (pagerNumber != -1)) {
 					discardInput = TRUE;
 					break;
@@ -137,7 +137,7 @@ va_dcl /* no ; */
 			/* optionally discard chars that would cause line wrapping */
 			if (isWrapOn() ||
 					(charsInLine < (cols - 1))) {
-				(void) putchar(buf[i]);
+				 putchar(buf[i]);
 				charsInLine++;
 				if (isWrapOn()) {
 					if (charsInLine == cols) {
@@ -151,7 +151,7 @@ va_dcl /* no ; */
 }
 
 int 
-putPagePrompt (void) {
+putPagePrompt  {
 	writeInverse("SPACE for next screen; q to quit pager");
 	if (numOK == TRUE)
 		writeInverse("; or the number of the entry");
@@ -159,7 +159,7 @@ putPagePrompt (void) {
 }
 
 int 
-getPagerInput (void) {
+getPagerInput  {
 	int c, i;
 	char numstr[LINESIZE];
 
@@ -170,7 +170,7 @@ getPagerInput (void) {
 			  || (c == VKILL) || (c == VEOF))) {
 		if ((numOK == TRUE) && isdigit(c)) {
 			for (i = 0; isdigit(c); i++) {
-				(void) putchar(c);
+				 putchar(c);
 				numstr[i] = c;
 				c = getchar();
 			}
@@ -193,6 +193,6 @@ getPagerInput (void) {
 }
 
 int 
-getpnum (void) {
+getpnum  {
 	return pagerNumber;
 }

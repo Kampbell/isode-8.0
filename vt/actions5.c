@@ -63,7 +63,7 @@ int
 ce_105() {	/* common event 105 */
 	/* if (vns > 0)  for(... */
 	if(p_ondq != NULLPE)
-		(void)p_data(p_ondq);  /* send NDQ	*/
+		p_data(p_ondq);  /* send NDQ	*/
 	vns = 0;
 	return(OK);
 }
@@ -133,7 +133,7 @@ PE pe;
 	vnt = 0;
 	vns = 0;
 	/* vtkp was set in vbrkreq so it could be coded in to the pe */
-	(void)p_resync_req(pe,SYNC_RESTART); /* send break request */
+	p_resync_req(pe,SYNC_RESTART); /* send break request */
 	state = S5_61;
 	return(OK);
 }
@@ -142,7 +142,7 @@ int
 a5_6(pe)	/* VBRKrsp in state 62 */
 PE pe;
 {
-	(void)p_resync_resp(pe); /* send out break response */
+	p_resync_resp(pe); /* send out break response */
 	if (vsmd && vtok)
 		state = S5_40T;
 	else if (vsmd)
@@ -165,12 +165,12 @@ PE pe;
 		/* ==> SAMESTATE */
 		return(NOTOK);
 	}
-	(void)ce_105();
+	ce_105();
 	/* send out dlq */
 	/* this will be replace by the new-fangled pepy schtuff;
 		will use this now for compatability */
 
-	(void)p_data(pe);
+	p_data(pe);
 	state = (vra) ? state + 2 : state; /* pretty neeto eh? */
 	return(OK);
 }
@@ -179,7 +179,7 @@ int
 a5_11(pe)	/*HDQ request in 400B*/
 PE pe;
 {
-	(void) p_typed_data(pe);
+	 p_typed_data(pe);
 	return(OK);
 }
 
@@ -208,7 +208,7 @@ int
 a5_28(pe)	/*UDQ request in 400B*/
 PE pe;
 {
-	(void) p_typed_data(pe);
+	 p_typed_data(pe);
 	return(OK);
 }
 
@@ -255,7 +255,7 @@ PE pe;
 
 	if ((vra = prim2flag(pe)) == NOTOK)
 		adios("a5_35: bogus PDU (%s)", pe_error (pe -> pe_errno));
-	(void)ce_104(NULLPE);
+	ce_104(NULLPE);
 	vdelind(pe,vra);
 	state = (vra) ? state + 2 : state;
 	return(OK);
@@ -267,10 +267,10 @@ a5_38(pe)	/* RLQ in states 400B */
 PE pe;
 {
 
-	(void)ce_104(pe);
+	ce_104(pe);
 	sector = 1;
 	state = S1_51R;
-	(void)vrelind();
+	vrelind();
 	return(OK);
 }
 

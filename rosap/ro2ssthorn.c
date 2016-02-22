@@ -53,7 +53,7 @@ RoSetThorn (int sd, struct RoSAPindication *roi)
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
@@ -66,7 +66,7 @@ RoSetThorn (int sd, struct RoSAPindication *roi)
 							"not an association descriptor for ROS");
 
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

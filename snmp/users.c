@@ -157,14 +157,14 @@ int	offset;
 		advise (LLOG_EXCEPTIONS, "/etc/passwd", "unable to flock");
 ohoh:
 		;
-		(void) close (pw_fd), pw_fd = NOTOK;
+		 close (pw_fd), pw_fd = NOTOK;
 		return NOTOK;
 	}
 	if (fstat (pw_fd, &st) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "/etc/passwd", "unable to fstat");
 oops:
 		;
-		(void) flock (pw_fd, LOCK_UN);
+		 flock (pw_fd, LOCK_UN);
 		goto ohoh;
 	}
 	if ((cc = st.st_size) == 0) {
@@ -209,8 +209,8 @@ losing:
 	}
 	pw_touched = 0;
 	if (offset != type_SNMP_SMUX__PDUs_set__request) {
-		(void) flock (pw_fd, LOCK_UN);
-		(void) close (pw_fd), pw_fd = NOTOK;
+		 flock (pw_fd, LOCK_UN);
+		 close (pw_fd), pw_fd = NOTOK;
 	}
 
 	for (pw = pw_head, dp = pw_data; dp < ep; pw++) {
@@ -334,8 +334,8 @@ static	free_pw () {
 		free (pw_data), pw_data = NULL;
 
 	if (pw_fd != NOTOK) {
-		(void) flock (pw_fd, LOCK_UN);
-		(void) close (pw_fd), pw_fd = NOTOK;
+		 flock (pw_fd, LOCK_UN);
+		 close (pw_fd), pw_fd = NOTOK;
 	}
 }
 
@@ -409,14 +409,14 @@ int	offset;
 		advise (LLOG_EXCEPTIONS, "/etc/group", "unable to flock");
 ohoh:
 		;
-		(void) close (gr_fd), gr_fd = NOTOK;
+		 close (gr_fd), gr_fd = NOTOK;
 		return NOTOK;
 	}
 	if (fstat (gr_fd, &st) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "/etc/group", "unable to fstat");
 oops:
 		;
-		(void) flock (gr_fd, LOCK_UN);
+		 flock (gr_fd, LOCK_UN);
 		goto ohoh;
 	}
 	if ((cc = st.st_size) == 0) {
@@ -461,8 +461,8 @@ losing:
 	}
 	gr_touched = 0;
 	if (offset != type_SNMP_SMUX__PDUs_set__request) {
-		(void) flock (gr_fd, LOCK_UN);
-		(void) close (gr_fd), gr_fd = NOTOK;
+		 flock (gr_fd, LOCK_UN);
+		 close (gr_fd), gr_fd = NOTOK;
 	}
 
 	for (gr = gr_head, dp = gr_data; dp < ep; gr++) {
@@ -570,8 +570,8 @@ static	free_gr () {
 		free (gr_data), gr_data = NULL;
 
 	if (gr_fd != NOTOK) {
-		(void) flock (gr_fd, LOCK_UN);
-		(void) close (gr_fd), gr_fd = NOTOK;
+		 flock (gr_fd, LOCK_UN);
+		 close (gr_fd), gr_fd = NOTOK;
 	}
 }
 
@@ -887,7 +887,7 @@ try_again:
 								 strlen (grp -> gr_name));
 		}
 
-		(void) sprintf (buffer, "%d", pwp -> pw_gid);
+		 sprintf (buffer, "%d", pwp -> pw_gid);
 		return o_string (oi, v, buffer, strlen (buffer));
 	}
 
@@ -1755,7 +1755,7 @@ char   *s;
 	long    v;
 	char    salt[3];
 
-	(void) srandom ((int) time ((long *) 0));
+	 srandom ((int) time ((long *) 0));
 	salt[0] = itoa64[(v = random ()) & 0x3f];
 	salt[1] = itoa64[(v >> 6) & 0x3f];
 	salt[2] = NULL;
@@ -1888,8 +1888,8 @@ integer	cor;
 		if (!pw_touched)
 			goto check_gr;
 		invalid = 0;
-		(void) strcpy (tmpfil, "/etc/ptmpXXXXXX");
-		(void) unlink (mktemp (tmpfil));
+		 strcpy (tmpfil, "/etc/ptmpXXXXXX");
+		 unlink (mktemp (tmpfil));
 		if (!(fp = fopen (tmpfil, "w"))) {
 			advise (LLOG_FATAL, tmpfil, "unable to write");
 			goto flush_pw;
@@ -1927,13 +1927,13 @@ integer	cor;
 						"unable to set permissions for %s", pwp -> pw_dir);
 		}
 
-		(void) fflush (fp);
+		 fflush (fp);
 		if (iserr = ferror (fp))
 			advise (LLOG_FATAL, tmpfil, "error writing");
-		(void) fclose (fp);
+		 fclose (fp);
 
 		if (iserr)
-			(void) unlink (tmpfil);
+			 unlink (tmpfil);
 		else {
 			if (access ("/etc/passwd.orig", F_OK) == NOTOK
 					&& errno == ENOENT
@@ -1962,8 +1962,8 @@ check_gr:
 		if (!gr_touched)
 			break;
 		invalid = 0;
-		(void) strcpy (tmpfil, "/etc/gtmpXXXXXX");
-		(void) unlink (mktemp (tmpfil));
+		 strcpy (tmpfil, "/etc/gtmpXXXXXX");
+		 unlink (mktemp (tmpfil));
 		if (!(fp = fopen (tmpfil, "w"))) {
 			advise (LLOG_FATAL, tmpfil, "unable to write");
 			goto flush_gr;
@@ -2007,12 +2007,12 @@ check_gr:
 			fprintf (fp, "\n");
 		}
 
-		(void) fflush (fp);
+		 fflush (fp);
 		if (iserr = ferror (fp))
 			advise (LLOG_FATAL, tmpfil, "error writing");
-		(void) fclose (fp);
+		 fclose (fp);
 		if (iserr)
-			(void) unlink (tmpfil);
+			 unlink (tmpfil);
 		else {
 			if (access ("/etc/group.orig", F_OK) == NOTOK
 					&& errno == ENOENT
@@ -2053,15 +2053,15 @@ flush_gr:
 
 	pw_touched = 0;
 	if (pw_fd != NOTOK) {
-		(void) fstat (pw_fd, &pw_st);
-		(void) flock (pw_fd, LOCK_UN);
-		(void) close (pw_fd), pw_fd = NOTOK;
+		 fstat (pw_fd, &pw_st);
+		 flock (pw_fd, LOCK_UN);
+		 close (pw_fd), pw_fd = NOTOK;
 	}
 
 	gr_touched = 0;
 	if (gr_fd != NOTOK) {
-		(void) fstat (gr_fd, &gr_st);
-		(void) flock (gr_fd, LOCK_UN);
-		(void) close (gr_fd), gr_fd = NOTOK;
+		 fstat (gr_fd, &gr_st);
+		 flock (gr_fd, LOCK_UN);
+		 close (gr_fd), gr_fd = NOTOK;
 	}
 }

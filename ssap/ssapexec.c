@@ -53,7 +53,7 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
 	TXFREE (tx);
 
 	if (s == NULL || s -> s_errno != SC_ACCEPT) {
-		(void) spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST) | SC_REFUSE,
+		 spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST) | SC_REFUSE,
 						 NULLCP, NULLCP);
 		goto out1;
 	}
@@ -62,7 +62,7 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
 	case SPDU_CN:
 		if ((s -> s_mask & SMASK_CN_VRSN)
 				&& !(s -> s_cn_version & SB_ALLVRSNS)) {
-			(void) spktlose (sd, si, SC_VERSION | SC_REFUSE, NULLCP,
+			 spktlose (sd, si, SC_VERSION | SC_REFUSE, NULLCP,
 							 "version mismatch: expecting 0x%x, got 0x%x",
 							 SB_ALLVRSNS, s -> s_cn_version);
 			break;
@@ -75,25 +75,25 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
 
 				buffer[explode (buffer, (u_char *) s -> s_called,
 								s -> s_calledlen)] = NULL;
-				(void) spktlose (sd, si, SC_SSAPID | SC_REFUSE, NULLCP,
+				 spktlose (sd, si, SC_SSAPID | SC_REFUSE, NULLCP,
 								 "ISO service ssap/%s not found", buffer);
 				break;
 			}
 		} else if ((is = getisoserventbyname ("presentation", "ssap"))
 				   == NULL) {
-			(void) spktlose (sd, si, SC_SSUSER | SC_REFUSE, NULLCP,
+			 spktlose (sd, si, SC_SSUSER | SC_REFUSE, NULLCP,
 							 "default presentation service not found");
 			break;
 		}
 
 		if (TSaveState (sd, is -> is_tail, td) == NOTOK) {
-			(void) spktlose (sd, si, SC_CONGEST | SC_REFUSE, NULLCP,
+			 spktlose (sd, si, SC_CONGEST | SC_REFUSE, NULLCP,
 							 NULLCP);
 			break;
 		}
 		cp = *is -> is_tail++;
 		if ((*is -> is_tail++ = spkt2str (s)) == NULL) {
-			(void) spktlose (sd, si, SC_CONGEST | SC_REFUSE, NULLCP,
+			 spktlose (sd, si, SC_CONGEST | SC_REFUSE, NULLCP,
 							 NULLCP);
 			break;
 		}
@@ -109,19 +109,19 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
 		case OK:
 		default:
 			if (setperms)
-				(void) (*setperms) (is);
-			(void) execv (*is -> is_vec, is -> is_vec);
+				 (*setperms) (is);
+			 execv (*is -> is_vec, is -> is_vec);
 			SLOG (ssap_log, LLOG_FATAL, *is -> is_vec,
 				  ("unable to exec"));
-			(void) TRestoreState (cp, ts, td);
-			(void) spktlose (ts -> ts_sd, si, SC_CONGEST | SC_REFUSE,
+			 TRestoreState (cp, ts, td);
+			 spktlose (ts -> ts_sd, si, SC_CONGEST | SC_REFUSE,
 							 *is -> is_vec, "unable to exec");
 			break;
 		}
 		break;
 
 	default:
-		(void) spktlose (sd, si, SC_PROTOCOL | SC_REFUSE, NULLCP,
+		 spktlose (sd, si, SC_PROTOCOL | SC_REFUSE, NULLCP,
 						 "session protocol mangled: expecting 0x%x, got 0x%x",
 						 SPDU_CN, s -> s_code);
 		break;

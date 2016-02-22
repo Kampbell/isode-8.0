@@ -49,7 +49,7 @@ SMajSyncResponse (int sd, char *data, int cc, struct SSAPindication *si)
 
 	result = SMajSyncResponseAux (sb, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

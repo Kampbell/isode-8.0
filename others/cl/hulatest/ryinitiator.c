@@ -191,7 +191,7 @@ IFP	quit;
 	/*
 	    if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	    }
 	*/
 
@@ -208,7 +208,7 @@ IFP	quit;
 		printf ("using %s\n", isodeversion);
 
 		printf ("%s... ", cp);
-		(void) fflush (stdout);
+		 fflush (stdout);
 
 		iloop = 1;
 	} else {
@@ -242,7 +242,7 @@ IFP	quit;
 	    }
 	    if (iloop) {
 		printf ("connected\n");
-		(void) fflush (stdout);
+		 fflush (stdout);
 	    }
 	    sd = acc -> acc_sd;
 	    ACCFREE (acc);
@@ -253,7 +253,7 @@ IFP	quit;
 
 	if (iloop) {
 		printf ("connected\n");
-		(void) fflush (stdout);
+		 fflush (stdout);
 	}
 
 	if (RoSetService (sd, RoAcuService, roi) == NOTOK)
@@ -355,7 +355,7 @@ nope:
 out:
 	;
 	if (ds -> ds_free && in)
-		(void) (*ds -> ds_free) (in);
+		 (*ds -> ds_free) (in);
 }
 
 /*    INTERACTIVE */
@@ -374,7 +374,7 @@ getline (char *buffer)
 	}
 
 	printf ("%s> ", myname);
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
@@ -417,10 +417,10 @@ timer (int bytes, int pkts)
 	static struct timeval   start;
 
 	if (pkts == 0) {
-		(void) gettimeofday (&start, (struct timezone *) 0);
+		 gettimeofday (&start, (struct timezone *) 0);
 		return;
 	} else
-		(void) gettimeofday (&stop, (struct timezone  *) 0);
+		 gettimeofday (&stop, (struct timezone  *) 0);
 
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
@@ -513,10 +513,10 @@ ros_advise (struct RoSAPpreject *rop, char *event)
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (NULLCP, "%s: %s", event, buffer);
 }
@@ -538,13 +538,13 @@ acs_advise (struct AcSAPabort *aca, char *event)
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcuErrString (aca -> aca_reason),
 						/*		AcErrString (aca -> aca_reason), */
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
-	/*	(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason)); */
+		 sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
+	/*	 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason)); */
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -599,13 +599,13 @@ _advise (va_list ap)
 
 	asprintf (buffer, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-	(void) fflush (stderr);
+	 fflush (stderr);
 }
 #else
 /* VARARGS */

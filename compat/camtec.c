@@ -102,7 +102,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	if (local != NULLNA) {
 		local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
 		if (local -> na_dtelen == 0) {
-			(void) strcpy (local -> na_dte, x25_local_dte);
+			 strcpy (local -> na_dte, x25_local_dte);
 			local -> na_dtelen = strlen(x25_local_dte);
 			if (local -> na_pidlen == 0 && *x25_local_pid)
 				local -> na_pidlen =
@@ -110,7 +110,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 		}
 	}
 
-	(void) gen2if (local, &b_iov, ADDR_LISTEN);
+	 gen2if (local, &b_iov, ADDR_LISTEN);
 	if (bind (sd, &b_iov, sizeof(b_iov)) != NOTOK) {
 		if (ioctl(sd, CCL_AUTO_ACCEPT, 1) < 0) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed",
@@ -118,11 +118,11 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 			close (sd);
 			return NOTOK;
 		}
-		(void) listen (sd, backlog);
+		 listen (sd, backlog);
 		return sd;
 	}
 
-	(void) close (sd);
+	 close (sd);
 	return NOTOK;
 }
 
@@ -152,7 +152,7 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 	iov[4].iov_len = iov[5].iov_len = iov[6].iov_len = 0;
 	if (ioctl(nfd, CCL_FETCH_CONNECT, &iov[0]) < 0)
 		return NOTOK;
-	(void) if2gen (remote, &sck, ADDR_REMOTE);
+	 if2gen (remote, &sck, ADDR_REMOTE);
 	ioctl (nfd, CCL_SEND_TYPE, 0);
 	return nfd;
 }
@@ -181,7 +181,7 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 	iov[3].iov_base = param4;
 	iov[4].iov_len = iov[5].iov_len = iov[6].iov_len = 0;
 
-	(void) gen2if (remote, sck, ADDR_REMOTE);
+	 gen2if (remote, sck, ADDR_REMOTE);
 	if ((r = connect (fd, sck, sizeof (CONN_DB))) >= 0)
 		ioctl (fd, CCL_SEND_TYPE, 0);
 	bzero(calling_dte, sizeof calling_dte );
@@ -246,9 +246,9 @@ char    *buffer;
 }
 #else 	/* CAMTEC_CCL */
 int 
-_camtec_sunlink_stub2 (void) {}
+_camtec_sunlink_stub2()  {}
 #endif  /* CAMTEC_CCL */
 #else	/* X25 */
 int 
-_camtec_sunlink_stub (void) {}
+_camtec_sunlink_stub()  {}
 #endif  /* X25 */

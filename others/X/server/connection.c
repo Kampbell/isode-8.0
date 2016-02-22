@@ -196,7 +196,7 @@ extern int GiveUp();
 static struct sockaddr_un unsock;
 
 static int 
-open_unix_socket (void) {
+open_unix_socket  {
 	int oldUmask;
 	int request;
 
@@ -215,7 +215,7 @@ open_unix_socket (void) {
 			Error ("Binding Unix socket");
 		if (listen (request, 5)) Error ("Unix Listening");
 	}
-	(void)umask(oldUmask);
+	umask(oldUmask);
 	return request;
 }
 #endif /*UNIXCONN */
@@ -228,7 +228,7 @@ open_unix_socket (void) {
  *****************/
 
 void 
-CreateWellKnownSockets (void) {
+CreateWellKnownSockets  {
 	int		request, i;
 	int		whichbyte;	    /* used to figure out whether this is
    					 LSB or MSB */
@@ -421,7 +421,7 @@ CreateWellKnownSockets (void) {
 }
 
 void 
-ResetWellKnownSockets (void) {
+ResetWellKnownSockets  {
 #ifdef UNIXCONN
 	if (unixDomainConnection != -1) {
 		/*
@@ -433,8 +433,8 @@ ResetWellKnownSockets (void) {
 				(statb.st_mode & S_IFMT) != S_IFSOCK) {
 			ErrorF ("Unix domain socket %s trashed, recreating\n",
 					unsock.sun_path);
-			(void) unlink (unsock.sun_path);
-			(void) close (unixDomainConnection);
+			 unlink (unsock.sun_path);
+			 close (unixDomainConnection);
 			WellKnownConnections &= ~(1L << unixDomainConnection);
 			unixDomainConnection = open_unix_socket ();
 			if (unixDomainConnection != -1)
@@ -558,7 +558,7 @@ TReadFromClient (int client, char *data, int size, int nonblock)
 
 jmp_buf	env;
 void 
-TimeOut (void) {
+TimeOut  {
 	longjmp(env, 1);
 }
 static Bool
@@ -910,7 +910,7 @@ int 		*nnew;
 							}
 
 #ifdef ISOCONN
-							(void)SWrite(newconn, (char *)&c, sizeof(xConnSetupPrefix));
+							SWrite(newconn, (char *)&c, sizeof(xConnSetupPrefix));
 #else /* ISOCONN */
 							write(newconn, (char *)&c, sizeof(xConnSetupPrefix));
 #endif /* ISOCONN */

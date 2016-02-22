@@ -191,7 +191,7 @@ struct namelist ** olistp;
 		filtnumber = 0;
 	}
 	if (quipuMastersCo ==FALSE) { /* try read first */
-		(void)sprintf(rstr, "%s@o=%s", cstr, ostr);
+		sprintf(rstr, "%s@o=%s", cstr, ostr);
 		if (readExactOrg(rstr, olistp) == OK) {
 			logReadSuccess(READ_OK, "org");
 			return OK;

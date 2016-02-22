@@ -149,8 +149,8 @@ char    **argv;
 				set_av_pe_print (str2syntax("photo"),strdup(argv[2]));
 			else {
 				char proc [LINESIZE];
-				(void) strcpy (proc,isodefile("g3fax/", 1));
-				(void) strcat (proc,argv[2]);
+				 strcpy (proc,isodefile("g3fax/", 1));
+				 strcat (proc,argv[2]);
 				set_av_pe_print (str2syntax("photo"),strdup(proc));
 			}
 		}
@@ -162,8 +162,8 @@ char    **argv;
 				set_av_pe_print (str2syntax("jpeg"),strdup(argv[2]));
 			else {
 				char proc [LINESIZE];
-				(void) strcpy (proc,isodefile("g3fax/", 1));
-				(void) strcat (proc,argv[2]);
+				 strcpy (proc,isodefile("g3fax/", 1));
+				 strcat (proc,argv[2]);
 				set_av_pe_print (str2syntax("jpeg"),strdup(proc));
 			}
 		}
@@ -190,7 +190,7 @@ char    **argv;
 			LLOG (log_dsap,LLOG_EXCEPTIONS,(
 					  "Invalid isode option in quiputailor"));
 		else
-			(void) isodesetvar(arg,strdup(argv[2]),0);
+			 isodesetvar(arg,strdup(argv[2]),0);
 		break;
 	case CH_SET:
 		DLOG (log_dsap,LLOG_DEBUG,( "ch_set =%s", arg));

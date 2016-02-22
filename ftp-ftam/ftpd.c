@@ -153,9 +153,9 @@ char *argv[];
 	}
 	ctrl_addr.sin_port = sp->s_port;
 	data_source.sin_port = htons(ntohs((u_short) sp->s_port) - 1);
-	(void)signal(SIGPIPE, lostconn);
-	(void)signal(SIGCHLD, SIG_IGN);
-	(void)dup2(0, 1);
+	signal(SIGPIPE, lostconn);
+	signal(SIGCHLD, SIG_IGN);
+	dup2(0, 1);
 	/* do telnet option negotiation here */
 	/*
 	 * Set up default state
@@ -170,14 +170,14 @@ char *argv[];
 	addrlen = sizeof ctrl_addr;
 	if (getsockname(0, (struct sockaddr *) &ctrl_addr, &addrlen) == NOTOK)
 		adios ("failed", "getsockname");
-	(void)gethostname(hostname, sizeof (hostname));
+	gethostname(hostname, sizeof (hostname));
 	ptr = index(hostname,'.'); /* strip off domain name */
 	if (ptr) *ptr = '\0';
 	reply(220, "%s FTP/FTAM gateway (%s) ready.",
 		  hostname, version);
 	for (;;) {
-		(void)setjmp(errcatch);
-		(void)yyparse();
+		setjmp(errcatch);
+		yyparse();
 	}
 }
 
@@ -195,7 +195,7 @@ char *s;
 	char *new = malloc((unsigned) (strlen(s) + 1));
 
 	if (new != NULL)
-		(void)strcpy(new, s);
+		strcpy(new, s);
 	return (new);
 }
 
@@ -272,7 +272,7 @@ getdatasock() {
 		goto bad;
 	return (s);
 bad:
-	(void)close(s);
+	close(s);
 	return (NOTOK);
 }
 
@@ -311,7 +311,7 @@ char *name;
 		}
 		reply(425, "Can't build data connection: %s.",
 			  sys_errlist[errno]);
-		(void) close(data);
+		 close(data);
 		data = -1;
 		return (NOTOK);
 	}
@@ -364,8 +364,8 @@ va_list ap;
 
 	_asprintf (buffer, NULLCP, ap);
 
-	(void)printf ("%d%c%s\r\n", n, c, buffer);
-	(void)fflush (stdout);
+	printf ("%d%c%s\r\n", n, c, buffer);
+	fflush (stdout);
 
 	if (verbose)
 		advise (NULLCP,"<--- %d%c%s", n, c, buffer);
@@ -392,8 +392,8 @@ char   *fmt;
 replystr(s)
 char *s;
 {
-	(void)printf("%s\r\n", s);
-	(void)fflush(stdout);
+	printf("%s\r\n", s);
+	fflush(stdout);
 	if (verbose)
 		advise(NULLCP,"<--- %s", s);
 }
@@ -506,11 +506,11 @@ struct sockaddr_in *sin;
 
 #ifdef	notanymore
 	if (hp) {
-		(void)strncpy(remotehost, hp->h_name, sizeof (remotehost));
+		strncpy(remotehost, hp->h_name, sizeof (remotehost));
 		endhostent();
 	} else
 #endif
-		(void)strncpy(remotehost, inet_ntoa(sin->sin_addr),
+		strncpy(remotehost, inet_ntoa(sin->sin_addr),
 					  sizeof (remotehost));
 	t = time((time_t*)0);
 	if (!logging)
@@ -600,7 +600,7 @@ int status;
 	/* f_close performs the logout sequence and receives charging
 	     * information
 	     */
-	(void) f_close(vec);
+	 f_close(vec);
 	if (status>=0)
 		reply(221,"Logged off. %s",ftam_error);
 	/* beware of flushing buffers after a SIGPIPE */
@@ -633,7 +633,7 @@ char *name;
 			break;
 		}
 	}
-	(void)fclose(fd);
+	fclose(fd);
 	return (!found);
 }
 

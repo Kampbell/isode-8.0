@@ -68,13 +68,13 @@ int	pepsylose (modtyp*module, ...)
 	pe = va_arg (ap, PE);
 
 	_asprintf (buffer, NULLCP, NULLCP, ap);
-	(void) sprintf (PY_pepy, "%s: module %s",
+	 sprintf (PY_pepy, "%s: module %s",
 	buffer, module ? module -> md_name : "<none>");
 	if (p) {
 		for (p1 = p; p1 -> pe_type != PE_END; p1++)
 			continue;
 		cp = PY_pepy + strlen (PY_pepy);
-		(void) sprintf (cp, "encoding %s expecting %s,class=%s/id=%d",
+		 sprintf (cp, "encoding %s expecting %s,class=%s/id=%d",
 		pname(p1),
 		pr_petype (p -> pe_type),
 		pe_classlist[p -> pe_flags & FL_CLASS],
@@ -82,7 +82,7 @@ int	pepsylose (modtyp*module, ...)
 	}
 	if (pe && ((int)pe -> pe_class) < pe_maxclass) {
 		cp = PY_pepy + strlen (PY_pepy);
-		(void) sprintf (cp, " found %s/%d", pe_classlist[pe -> pe_class],
+		 sprintf (cp, " found %s/%d", pe_classlist[pe -> pe_class],
 		pe -> pe_id);
 	}
 
@@ -121,20 +121,20 @@ int	ppepsylose (modtyp*module, ...)
 	pe = va_arg (ap, PE);
 
 	_asprintf (buffer, NULLCP, NULLCP, ap);
-	(void) sprintf (PY_pepy, "%s: module %s",
+	 sprintf (PY_pepy, "%s: module %s",
 	buffer, module ? module -> md_name : "<none>");
 	if (p) {
 		cp = PY_pepy + strlen (PY_pepy);
-		(void) sprintf (cp, " %s/class=%s/id=%d",
+		 sprintf (cp, " %s/class=%s/id=%d",
 		pr_petype (p -> pe_type),
 		pe_classlist[p -> pe_flags & FL_CLASS],
 		p -> pe_tag);
 		if (p->pe_typename)
-			(void) sprintf (cp, "(%s)", *p -> pe_typename);
+			 sprintf (cp, "(%s)", *p -> pe_typename);
 	}
 	if (pe && ((int)pe -> pe_class) < pe_maxclass) {
 		cp = PY_pepy + strlen (PY_pepy);
-		(void) sprintf (cp, " got %s/%d", pe_classlist[pe -> pe_class],
+		 sprintf (cp, " got %s/%d", pe_classlist[pe -> pe_class],
 		pe -> pe_id);
 	}
 
@@ -155,7 +155,7 @@ int	ppepsylose (modtyp*module, ...)
 int 
 ferr (int n, char *mesg)
 {
-	(void) printf(mesg);
+	 printf(mesg);
 	if (n > 0)
 		exit(n);
 }
@@ -166,7 +166,7 @@ ferr (int n, char *mesg)
 int 
 ferrd (int n, char *mesg, int d)
 {
-	(void) printf(mesg, d);
+	 printf(mesg, d);
 	if (n > 0)
 		exit(n);
 }
@@ -190,7 +190,7 @@ dmp_tpe (
 	ptpe   **par, **prev;
 	char   *name;
 
-	(void) printf("%s: (%s)", s, mod->md_name);
+	 printf("%s: (%s)", s, mod->md_name);
 	/*
 	 * Calculate what table it is in - we assume they are in order of
 	 * increasing address
@@ -221,13 +221,13 @@ dmp_tpe (
 			break;
 
 		default:
-			(void) pepsylose (mod, p, NULLPE, "dmp_tpe:typ = %d internal error\n",
+			 pepsylose (mod, p, NULLPE, "dmp_tpe:typ = %d internal error\n",
 							  typ);
 			return;
 		}
 	}
 	if (par == NULL) {
-		(void) printf("can't find entry 0x%x\n", p);
+		 printf("can't find entry 0x%x\n", p);
 		return;
 	}
 	prev = par;
@@ -237,12 +237,12 @@ dmp_tpe (
 		par++;
 	}
 	if (par == prev)
-		(void) pepsylose (mod, p, NULLPE,
+		 pepsylose (mod, p, NULLPE,
 						  "dmp_tpe:par == prev == 0x%x internal error\n", (int) par);
 	par--;
 	j = p - *par;
 
-	(void) printf("%s type %d + %d ", name, par - prev, j);
+	 printf("%s type %d + %d ", name, par - prev, j);
 	pr_entry(p);
 }
 #define NENTRY(x)	((sizeof (x)/sizeof (x[0])))
@@ -315,15 +315,15 @@ pr_petype (int type)
 	char *p;
 
 	if ((p = rcmd_srch (type, pepsy_type_tbl)) == NULLCP)
-		(void) sprintf (p = nbuf, "%d", type);
+		 sprintf (p = nbuf, "%d", type);
 	return p;
 }
 
 int 
 pr_entry (ptpe *p)
 {
-	(void) printf ("%s, ", pr_petype (p -> pe_type));
-	(void) printf("%d, %d, %d}\n", p->pe_ucode, p->pe_tag, p->pe_flags);
+	 printf ("%s, ", pr_petype (p -> pe_type));
+	 printf("%d, %d, %d}\n", p->pe_ucode, p->pe_tag, p->pe_flags);
 }
 
 
@@ -331,7 +331,7 @@ pr_entry (ptpe *p)
  * null function for what evr purposes
  */
 int 
-f_null (void) {
+f_null()  {
 }
 
 /*
@@ -501,7 +501,7 @@ same (
 		}
 bstring:
 		if ((p1 = bitstr2strb(pe, &val)) == NULL) {
-			(void) pepsylose (mod, typ, pe, "same:bad bitstring\n");
+			 pepsylose (mod, typ, pe, "same:bad bitstring\n");
 			return (NOTOK);
 			/* Should really abort encoding here but how can we comunicate this
 			 * to the routine that calls us?
@@ -623,7 +623,7 @@ o1string:
 
 
 	default:
-		(void) pepsylose (mod, typ, NULLPE, "same: %d not implemented\n",
+		 pepsylose (mod, typ, NULLPE, "same: %d not implemented\n",
 						  typ->pe_type);
 		return (NOTOK);
 	}
@@ -644,7 +644,7 @@ next_tpe (ptpe *p)
 
 	level = 0;
 	if (p->pe_type == PE_END) {
-		(void) pepsylose (NULLMODTYP, p, NULLPE,
+		 pepsylose (NULLMODTYP, p, NULLPE,
 						  "next_tpe:internal error: unexpected PE_END found");
 		return (p);
 	}

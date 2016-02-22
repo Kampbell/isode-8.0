@@ -1521,7 +1521,7 @@ losing_noop:
 
 						/* initialize arpreq.arp_flags for ATF_PERM
 						   below... */
-						(void) ioctl (nd, SIOCGARP, &arpreq);
+						 ioctl (nd, SIOCGARP, &arpreq);
 
 						s = "SIOCDARP";
 						if (ioctl (nd, SIOCDARP, &arpreq) == NOTOK)
@@ -1662,7 +1662,7 @@ no_dice:
 
 				oids.oid_elements = at -> adn_instance + 1;
 				oids.oid_nelem = at -> adn_insize - 1;
-				(void) strcpy (buffer, sprintoid (&oids));
+				 strcpy (buffer, sprintoid (&oids));
 				oids.oid_elements = at -> adm_instance;
 				oids.oid_nelem = at -> adm_insize;
 				advise (LLOG_DEBUG, NULLCP,

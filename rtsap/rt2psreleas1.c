@@ -51,7 +51,7 @@ RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct Rt
 
 	result = RtCloseRequestAux (acb, reason, data, acr, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

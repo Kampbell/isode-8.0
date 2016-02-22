@@ -57,7 +57,7 @@ int	f;
 
 int	endisodocument () {
 	if (servf && !stayopen) {
-		(void) fclose (servf);
+		 fclose (servf);
 		servf = NULL;
 	}
 
@@ -154,11 +154,11 @@ char    *entry;
 {
 	struct isodocument *id;
 
-	(void) setisodocument (0);
+	 setisodocument (0);
 	while (id = getisodocument ())
 		if (strcmp (id -> id_entry, entry) == 0)
 			break;
-	(void) endisodocument ();
+	 endisodocument ();
 
 	return id;
 }
@@ -170,11 +170,11 @@ OID	type;
 {
 	struct isodocument *id;
 
-	(void) setisodocument (0);
+	 setisodocument (0);
 	while (id = getisodocument ())
 		if (oid_cmp (id -> id_type, type) == 0)
 			break;
-	(void) endisodocument ();
+	 endisodocument ();
 
 	return id;
 }

@@ -47,7 +47,7 @@ RtSetDownTrans (int sd, IFP fnx, struct RtSAPindication *rti)
 
 	acb -> acb_downtrans = fnx;
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }

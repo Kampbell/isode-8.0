@@ -41,7 +41,7 @@ struct FTAMindication *fti;
 
 	if ((fpm = (struct type_FTAM_Shared__ASE__Information *)
 			   calloc (1, sizeof *fpm)) == NULL) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		if (fpm)
 			free_FTAM_Shared__ASE__Information (fpm);
 		return NULL;
@@ -69,7 +69,7 @@ struct FTAMindication *fti;
 						 "shared ASE information not single-ASN1-type");
 
 	if ((pe = pe_cpy (fpm -> encoding -> un.single__ASN1__type)) == NULLPE)
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 	(*sharedASE = pe) -> pe_context = fpm -> indirect__reference;
 
 	return OK;

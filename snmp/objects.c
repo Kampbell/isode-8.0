@@ -95,10 +95,10 @@ OT    *a,
 			return 0;
 
 		if (PY_pepy[0])
-			(void) sprintf (PY_pepy + strlen (PY_pepy), ", ");
+			 sprintf (PY_pepy + strlen (PY_pepy), ", ");
 		else
-			(void) sprintf (PY_pepy, "duplicate objects: ");
-		(void) sprintf (PY_pepy + strlen (PY_pepy), "\"%s\" and \"%s\"",
+			 sprintf (PY_pepy, "duplicate objects: ");
+		 sprintf (PY_pepy + strlen (PY_pepy), "\"%s\" and \"%s\"",
 						(*a) -> ot_text, (*b) -> ot_text);
 		(*a) -> ot_access |= OT_XXX, (*b) -> ot_access |= OT_XXX;
 	}
@@ -124,7 +124,7 @@ char   *file;
 		file = "objects.defs";
 	if ((fp = fopen (file, "r")) == NULL
 			&& (fp = fopen (cp = isodefile (file, 0), "r")) == NULL) {
-		(void) sprintf (PY_pepy, "unable to read %s: %s",
+		 sprintf (PY_pepy, "unable to read %s: %s",
 						cp, sys_errname (errno));
 		return NOTOK;
 	}
@@ -154,13 +154,13 @@ char   *file;
 				if ((compile_heap1 = (OT) calloc ((unsigned) i,
 												  sizeof *compile_heap1))
 						== NULL) {
-					(void) sprintf (PY_pepy,
+					 sprintf (PY_pepy,
 									"out of memory allocating %d objects", i);
 					goto you_lose;
 				}
 
 				if ((compile_heap2 = malloc ((unsigned) j)) == NULL) {
-					(void) sprintf (PY_pepy,
+					 sprintf (PY_pepy,
 									"out of memory allocating %d octets", j);
 					goto you_lose;
 				}
@@ -168,7 +168,7 @@ char   *file;
 				if ((compile_heap3 = (unsigned int *)
 									 calloc ((unsigned) k, sizeof *compile_heap3))
 						== NULL) {
-					(void) sprintf (PY_pepy,
+					 sprintf (PY_pepy,
 									"out of memory allocating %d sub-identitifers",
 									k);
 					goto you_lose;
@@ -177,28 +177,28 @@ char   *file;
 				if ((compile_heap4 = (OID) calloc ((unsigned) i,
 												   sizeof *compile_heap4))
 						== NULL) {
-					(void) sprintf (PY_pepy,
+					 sprintf (PY_pepy,
 									"out of memory allocating %d identitifers",
 									i);
 					goto you_lose;
 				}
 			} else {
-				(void) sprintf (PY_pepy,
+				 sprintf (PY_pepy,
 								"old-style compiled file %s: re-compile", cp);
 				goto you_lose;
 			}
 		} else {
 			compile_flag = 0;
-			(void) rewind (fp);
+			 rewind (fp);
 
 			for (ap = roots + (sizeof roots / sizeof roots[0]) - 1;
 					ap >= roots;
 					ap--) {
-				(void) sprintf (buffer, "%d", ap - roots);
+				 sprintf (buffer, "%d", ap - roots);
 				if (read_name (*ap, buffer, NULLCP) == NOTOK) {
 you_lose:
 					;
-					(void) fclose (fp);
+					 fclose (fp);
 					return NOTOK;
 				}
 			}
@@ -206,7 +206,7 @@ you_lose:
 
 		once_only_Tbuckets = 1;
 	} else if (compile_flag > 0) {
-		(void) sprintf (PY_pepy, "only one compiled file is allowed");
+		 sprintf (PY_pepy, "only one compiled file is allowed");
 		goto you_lose;
 	}
 
@@ -215,7 +215,7 @@ you_lose:
 			continue;
 		if (cp = index (buffer, '\n'))
 			*cp = NULL;
-		(void) strcpy (line, buffer);
+		 strcpy (line, buffer);
 
 		bzero ((char *) vec, sizeof vec);
 		switch (str2vec (buffer, vec)) {
@@ -235,12 +235,12 @@ you_lose:
 			break;
 
 		default:
-			(void) sprintf (PY_pepy, "malformed line: \"%s\"", line);
+			 sprintf (PY_pepy, "malformed line: \"%s\"", line);
 			goto you_lose;
 		}
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 
 	PY_pepy[0] = NULL;
 	if (compile_flag < 1) {
@@ -256,7 +256,7 @@ you_lose:
 		hit = 1, oz = NULLOT;
 		do {
 			if (!hit) {
-				(void) sprintf (PY_pepy, "unable to resolve object \"%s\"",
+				 sprintf (PY_pepy, "unable to resolve object \"%s\"",
 								oz -> ot_text);
 				return NOTOK;
 			}
@@ -281,7 +281,7 @@ you_lose:
 		/* j > 1 ALWAYS */
 
 		if ((base = (OT *) malloc ((unsigned) (j * sizeof *base))) == NULL) {
-			(void) sprintf (PY_pepy, "out of memory");
+			 sprintf (PY_pepy, "out of memory");
 			return NOTOK;
 		}
 
@@ -311,7 +311,7 @@ you_lose:
 			if ((i = str2elem (ot -> ot_id, ip = compile_heap3)) < 1
 					|| ip[0] > 2
 					|| (i > 1 && ip[0] < 2 && ip[1] > 39)) {
-				(void) sprintf (PY_pepy,
+				 sprintf (PY_pepy,
 								"invalid OID (%s) for \"%s\" in compiled file",
 								ot -> ot_id, ot -> ot_text);
 				return NOTOK;
@@ -350,9 +350,9 @@ char   *name,
 		goto not_compiled;
 
 	ot = compile_heap1++;
-	(void) strcpy (ot -> ot_text = compile_heap2, name);
+	 strcpy (ot -> ot_text = compile_heap2, name);
 	compile_heap2 += strlen (compile_heap2) + 1;
-	(void) strcpy (ot -> ot_id = compile_heap2, value);
+	 strcpy (ot -> ot_id = compile_heap2, value);
 	compile_heap2 += strlen (compile_heap2) + 1;
 
 	ot -> ot_chain = Tbuckets[i = *hash ? atoi (hash) : THASH (name)];
@@ -369,18 +369,18 @@ char   *name,
 not_compiled:
 	;
 	if (text2obj (name)) {
-		(void) sprintf (PY_pepy, "duplicate object \"%s\"", name);
+		 sprintf (PY_pepy, "duplicate object \"%s\"", name);
 		return NOTOK;
 	}
 
 	if ((ot = (OT) calloc (1, sizeof *ot)) == NULL) {
-		(void) sprintf (PY_pepy, "out of memory");
+		 sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
 
 	if ((ot -> ot_text = strdup (name)) == NULL
 			|| (ot -> ot_id = strdup (value)) == NULL) {
-		(void) sprintf (PY_pepy, "out of memory");
+		 sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
 
@@ -402,9 +402,9 @@ char  **vec;
 		goto not_compiled;
 
 	ot = compile_heap1++;
-	(void) strcpy (ot -> ot_text = compile_heap2, *vec++);
+	 strcpy (ot -> ot_text = compile_heap2, *vec++);
 	compile_heap2 += strlen (compile_heap2) + 1;
-	(void) strcpy (ot -> ot_id = compile_heap2, *vec++);
+	 strcpy (ot -> ot_id = compile_heap2, *vec++);
 	compile_heap2 += strlen (compile_heap2) + 1;
 
 	ot -> ot_chain = Tbuckets[i = *vec[3] ? atoi (vec[3])
@@ -419,18 +419,18 @@ char  **vec;
 not_compiled:
 	;
 	if (text2obj (*vec)) {
-		(void) sprintf (PY_pepy, "duplicate object \"%s\"", *vec);
+		 sprintf (PY_pepy, "duplicate object \"%s\"", *vec);
 		return NOTOK;
 	}
 
 	if ((ot = (OT) calloc (1, sizeof *ot)) == NULL) {
-		(void) sprintf (PY_pepy, "out of memory");
+		 sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
 
 	if ((ot -> ot_text = strdup (*vec++)) == NULL
 			|| (ot -> ot_id = strdup (*vec++)) == NULL) {
-		(void) sprintf (PY_pepy, "out of memory");
+		 sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
 
@@ -741,13 +741,13 @@ int	quoted;
 			|| (ot = name2obj (oid)) == NULLOT)
 		return sprintoid (oid);
 
-	(void) strcpy (bp = buffer, ot -> ot_text);
+	 strcpy (bp = buffer, ot -> ot_text);
 	bp += strlen (bp);
 	for (ip = oid -> oid_elements + (oid2 = ot -> ot_name) -> oid_nelem,
 			i = oid -> oid_nelem - oid2 -> oid_nelem;
 			i-- > 0;
 			ip++) {
-		(void) sprintf (bp, ".%u", *ip);
+		 sprintf (bp, ".%u", *ip);
 		bp += strlen (bp);
 	}
 
@@ -902,7 +902,7 @@ char   *s;
 	char   *p;
 
 	if (p = malloc ((unsigned) (strlen (s) + 1)))
-		(void) strcpy (p, s);
+		 strcpy (p, s);
 
 	return p;
 }
@@ -942,7 +942,7 @@ char   *file;\n\
 	return readobjects (file);\n\
 \n\
     if (once_only) {\n\
-	(void) sprintf (PY_pepy, \"loadobjects called more than once!\");\n\
+	 sprintf (PY_pepy, \"loadobjects called more than once!\");\n\
 	return NOTOK;\n\
     }\n\
     once_only = 1;\n\
@@ -953,7 +953,7 @@ char   *file;\n\
     readsyntax ();\n\
     for (sy = _syntaxes; sy -> name; sy++)\n\
 	if ((sy -> value = text2syn (sy -> name)) == NULLOS) {\n\
-	    (void) sprintf (PY_pepy, \"lost \\\"%%s\\\" syntax\", sy -> name);\n\
+	     sprintf (PY_pepy, \"lost \\\"%%s\\\" syntax\", sy -> name);\n\
 	    return NOTOK;\n\
 	}\n\
 \n\

@@ -47,14 +47,14 @@ RtSetIndications (int sd, IFP indication, struct RtSAPindication *rti)
 	rtsapPsig (acb, sd);
 
 	if (acb -> acb_flags & ACB_PLEASE) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 
 		return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
 	}
 
 	result = (*acb -> acb_rtsetindications) (acb, indication, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

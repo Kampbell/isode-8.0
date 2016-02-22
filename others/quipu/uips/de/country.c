@@ -111,7 +111,7 @@ freeCos (struct namelist **listpp)
 }
 
 void 
-freeCoSearchArgs (void) {
+freeCoSearchArgs  {
 	dn_free(sarg.sra_baseobject);
 }
 

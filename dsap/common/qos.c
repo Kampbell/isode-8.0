@@ -147,7 +147,7 @@ struct dsaQoS *a;
 {
 	PE	    pe;
 
-	(void) encode_Thorn_DSAQualitySyntax (&pe, 0, 0, NULLCP, a);
+	 encode_Thorn_DSAQualitySyntax (&pe, 0, 0, NULLCP, a);
 
 	return pe;
 }
@@ -501,7 +501,7 @@ struct ditQoS *a;
 {
 	PE	    pe;
 
-	(void) encode_Thorn_DataQualitySyntax (&pe, 0, 0, NULLCP, a);
+	 encode_Thorn_DataQualitySyntax (&pe, 0, 0, NULLCP, a);
 
 	return pe;
 }
@@ -518,7 +518,7 @@ PE	pe;
 }
 
 QoS_syntax () {
-	(void) add_attribute_syntax ("DSAQualitySyntax",
+	 add_attribute_syntax ("DSAQualitySyntax",
 								 (IFP) dsaQoS_enc,
 								 (IFP) dsaQoS_dec,
 								 (IFP) str2dsaQoS,
@@ -527,7 +527,7 @@ QoS_syntax () {
 								 dsaQoS_cmp,
 								 dsaQoS_free,
 								 NULLCP, NULLIFP, TRUE);
-	(void) add_attribute_syntax ("DataQualitySyntax",
+	 add_attribute_syntax ("DataQualitySyntax",
 								 (IFP) ditQoS_enc,
 								 (IFP) ditQoS_dec,
 								 (IFP) str2ditQoS,

@@ -48,7 +48,7 @@ struct DSError              *error;
 
 	++(*id);
 
-	(void) DapRead (ad, (*id), arg, di, ROS_INTR);
+	 DapRead (ad, (*id), arg, di, ROS_INTR);
 
 	error->dse_type = DSE_NOERROR;
 

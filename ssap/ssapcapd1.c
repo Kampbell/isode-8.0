@@ -51,7 +51,7 @@ SCapdRequest (int sd, char *data, int cc, struct SSAPindication *si)
 
 	result = SCapdRequestAux (sb, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

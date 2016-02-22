@@ -172,7 +172,7 @@ VT_PROFILE *profile;
 	if(build_ASQPDU_ASQpdu(&a_req,1,NULL,NULLCP,(PEPYPARM)&ud) == NOTOK)
 		adios(NULLCP, "ASQ build failure (%s)", PY_pepy);
 
-	(void)do_event(VASSreq, a_req);
+	do_event(VASSreq, a_req);
 }
 
 
@@ -284,7 +284,7 @@ vrelreq() {
 	PE  r_req;
 
 	r_req = NULLPE;
-	(void)do_event(VRELreq,r_req);
+	do_event(VRELreq,r_req);
 }
 
 /*************************************************************************/
@@ -321,7 +321,7 @@ int result;
 	}
 	if (seq2prim(r_rsp) == NULLPE)
 		adios(NULLCP, "RLR encode error, seq2prim: (%s)", PY_pepy);
-	(void)do_event(VRELrsp,r_rsp);
+	do_event(VRELrsp,r_rsp);
 
 	pe_free(r_coll);
 	pe_free(r_result);
@@ -387,12 +387,12 @@ int		len;
 	if (debug > 6) {
 		int i;
 
-		(void)ll_log(vt_log, LLOG_DEBUG, NULLCP,  ("vt_text sending"));
-		(void)ll_printf (vt_log, "<<");
+		ll_log(vt_log, LLOG_DEBUG, NULLCP,  ("vt_text sending"));
+		ll_printf (vt_log, "<<");
 		for(i=0; i<len; i++)
-			(void)ll_printf (vt_log, "%02x ", *(str+i));
-		(void)ll_printf (vt_log,  ">>\n");
-		(void)ll_sync (vt_log);
+			ll_printf (vt_log, "%02x ", *(str+i));
+		ll_printf (vt_log,  ">>\n");
+		ll_sync (vt_log);
 	}
 
 	bzero ((char *) &ud, sizeof ud);
@@ -577,7 +577,7 @@ data_pending() {
 	   being released
 	*/
 	if (!connected) {
-		(void)putch(EOF);
+		putch(EOF);
 		return(TRUE);
 	}
 
@@ -658,7 +658,7 @@ PE	ndq;
 	if (ndq == NULLPE)
 		return;
 
-	(void)do_event(VDATreq_n,ndq);
+	do_event(VDATreq_n,ndq);
 }
 
 
@@ -698,7 +698,7 @@ int	ack;
 			  "ACK requests in deliver PDUs not supported at this time");
 	p_dlq = mkdeliver(FALSE);
 
-	(void)do_event(VDELreq,p_dlq);
+	do_event(VDELreq,p_dlq);
 }
 
 
@@ -1062,7 +1062,7 @@ PE data;
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
 	PLOG (vt_log, print_VT_PDUs, data, NULLCP, 0);
@@ -1120,7 +1120,7 @@ vt_disconnect() {
 		acs_adios (aca, "A-RELEASE.REQUEST");
 	if(acr->acr_affirmative) {
 		connected = FALSE;
-		(void) do_event (RLR, acr -> acr_info[0]);
+		 do_event (RLR, acr -> acr_info[0]);
 	}
 
 	ACRFREE (acr);
@@ -1180,7 +1180,7 @@ char  **argv;
 			sprintb (ps -> ps_srequirements, RMASK), ps -> ps_isn,
 			ps -> ps_ssdusize);
 
-	(void) strcpy (peerhost,
+	 strcpy (peerhost,
 				   na2str (ps -> ps_calling.pa_addr.sa_addr.ta_addrs));
 
 	sd = acs->acs_sd;
@@ -1217,7 +1217,7 @@ vbrkreq() {
 		adios (NULLCP, "BKQ build failed (%s)", PY_pepy);
 	brk_pe->pe_context = 1;
 	flushbufs();  /* flush local buffers */
-	(void)do_event(VBRKreq,brk_pe);
+	do_event(VBRKreq,brk_pe);
 }
 
 vbrkrsp() {
@@ -1232,7 +1232,7 @@ vbrkrsp() {
 	if ((build_VT_BKR__pdu(&brk_pe,1,NULL,NULLCP,(int *)&brk)) == NOTOK)
 		adios (NULLCP, "BKR build failed (%s)", PY_pepy);
 	brk_pe->pe_context = 1;
-	(void)do_event(VBRKrsp,brk_pe);
+	do_event(VBRKrsp,brk_pe);
 }
 
 
@@ -1266,7 +1266,7 @@ PE brk_pe;
 vbrkcnf(brk_pe)
 PE brk_pe;
 {
-	(void)printf("\r\n[break]\r\n");
+	printf("\r\n[break]\r\n");
 	if(telnet_profile) {
 #ifndef PTYBUG
 		vt_rem_echo(&ni_image);

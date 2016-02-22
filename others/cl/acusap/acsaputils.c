@@ -94,7 +94,7 @@ int	ndata;
 out:
 	;
 	free_ACS_Association__information (info);
-	(void) acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+	 acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 	return NULL;
 }
 
@@ -151,20 +151,20 @@ int	rw;
 	if (strcmp (acsapfile, "-")) {
 		char	file[BUFSIZ];
 
-		(void) sprintf (file, acsapfile, getpid ());
+		 sprintf (file, acsapfile, getpid ());
 		fp = fopen (file, "a"), isopen = 1;
 	} else
-		fp = stderr, isopen = 0, (void) fflush (stdout);
+		fp = stderr, isopen = 0,  fflush (stdout);
 
 	if (fp) {
 		vpushfp (fp, pe, text, rw);
-		(void) print_ACS_ACSE__apdu (pe, 1, NULLIP, NULLVP, NULLCP);
+		 print_ACS_ACSE__apdu (pe, 1, NULLIP, NULLVP, NULLCP);
 		vpopfp ();
 
 		if (isopen)
-			(void) fclose (fp);
+			 fclose (fp);
 		else
-			(void) fflush (fp);
+			 fflush (fp);
 	}
 }
 #endif
@@ -173,7 +173,7 @@ int	rw;
 /*    ASSOCIATION BLOCKS */
 /*---------------------------------------------------------------------------*/
 struct assocblk *
-newacublk (void) {
+newacublk  {
 	/*---------------------------------------------------------------------------*/
 	struct assocblk *acb;
 
@@ -290,7 +290,7 @@ ps2aculose (
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at presentation)",
+		 sprintf (cp = buffer, " (%s at presentation)",
 						PuErrString (pa -> pa_reason));
 	case PC_SESSION:
 		reason = ACS_PRESENTATION;
@@ -421,6 +421,6 @@ AcuErrString (
 	if (code < reject_err0_cnt)
 		return reject_err0[code];
 
-	(void) sprintf (buffer, "unknown error code %d", code);
+	 sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }

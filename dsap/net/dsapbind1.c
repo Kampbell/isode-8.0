@@ -137,10 +137,10 @@ int			  async;
 
 	if ((sf = addr2ref (qlocalhost)) == NULL) {
 		sf = &sf_s;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
-	(void) bzero ((char *) &qos, sizeof qos);
+	 bzero ((char *) &qos, sizeof qos);
 	qos.qos_sversion = NOTOK;	/* Negotiate highest session */
 	qos.qos_maxtime = qos_maxtime;
 
@@ -238,10 +238,10 @@ int			  async;
 
 	if ((sf = addr2ref (qlocalhost)) == NULL) {
 		sf = &sf_s;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
-	(void) bzero ((char *) &qos, sizeof qos);
+	 bzero ((char *) &qos, sizeof qos);
 	qos.qos_sversion = NOTOK;	/* Negotiate highest session */
 	qos.qos_maxtime = qos_maxtime;
 
@@ -470,10 +470,10 @@ int			  async;
 
 	if ((sf = addr2ref (qlocalhost)) == NULL) {
 		sf = &sf_s;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
-	(void) bzero ((char *) &qos, sizeof qos);
+	 bzero ((char *) &qos, sizeof qos);
 	qos.qos_sversion = NOTOK;	/* Negotiate highest session */
 	qos.qos_maxtime = qos_maxtime;
 

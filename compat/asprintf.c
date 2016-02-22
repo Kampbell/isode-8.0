@@ -79,7 +79,7 @@ void	_asprintf (char*bp, char*what, char* fmt, va_list ap)	/* fmt, args, ... */
 		_doprnt (fmt, ap, &iob);
 		putc (NULL, &iob);
 #else
-		(void) vsprintf (bp, fmt, ap);
+		 vsprintf (bp, fmt, ap);
 #endif
 		bp += strlen (bp);
 
@@ -87,15 +87,15 @@ void	_asprintf (char*bp, char*what, char* fmt, va_list ap)	/* fmt, args, ... */
 
 	if (what) {
 		if (*what) {
-			(void) sprintf (bp, " %s: ", what);
+			 sprintf (bp, " %s: ", what);
 			bp += strlen (bp);
 		}
-		(void) strcpy (bp, sys_errname (eindex));
+		 strcpy (bp, sys_errname (eindex));
 		bp += strlen (bp);
 
 #ifdef X25
 		if (isode_x25_errflag) {
-			(void) sprintf (bp, " (%02x %02x)",isode_x25_err[0],isode_x25_err[1]);
+			 sprintf (bp, " (%02x %02x)",isode_x25_err[0],isode_x25_err[1]);
 			bp += strlen (bp);
 		}
 #endif

@@ -70,7 +70,7 @@ static        int         chain_list_print() ;
 static        int         sub_ch_list_print() ;
 
 dsa_control_syntax() {
-	(void) add_attribute_syntax
+	 add_attribute_syntax
 	("DSAControl",
 	 (IFP)dsa_control_enc,    (IFP)dsa_control_decode,/* Encoder and decoder */
 	 (IFP)str2dsa_control,	dsa_control_print,          /* parser, print */
@@ -84,7 +84,7 @@ struct dsa_control * control_option;
 {
 	PE ret_pe;
 
-	(void) encode_Quipu_DSAControl(&ret_pe,0,0,NULLCP,control_option);
+	 encode_Quipu_DSAControl(&ret_pe,0,0,NULLCP,control_option);
 	return (ret_pe);
 }
 
@@ -449,7 +449,7 @@ struct optional_dn * item_to_free ;
 
 
 quipu_call_syntax() {
-	(void) add_attribute_syntax
+	 add_attribute_syntax
 	("Call",
 	 (IFP)quipu_call_enc,    (IFP)quipu_call_decode,     /* Encoder and decoder */
 	 (IFP)str2quipu_call,	  quipu_call_print,      /* parser, print */
@@ -463,7 +463,7 @@ struct quipu_call * control_option;
 {
 	PE ret_pe;
 
-	(void) encode_Quipu_Call(&ret_pe,0,0,NULLCP,control_option);
+	 encode_Quipu_Call(&ret_pe,0,0,NULLCP,control_option);
 	return (ret_pe);
 }
 
@@ -719,7 +719,7 @@ struct ops * item ;
 	/*  if (item->start_time)
 	  {
 	    tmp_item->start_time = malloc (strlen(item->start_time)+1) ;
-	    (void) strcpy(tmp_item->start_time, item->start_time) ;
+	     strcpy(tmp_item->start_time, item->start_time) ;
 	  }
 	  else
 	  {
@@ -728,7 +728,7 @@ struct ops * item ;
 	  if (item->finish_time)
 	  {
 	    tmp_item->finish_time = malloc (strlen(item->finish_time)+1) ;
-	    (void) strcpy(tmp_item->finish_time, item->finish_time) ;
+	     strcpy(tmp_item->finish_time, item->finish_time) ;
 	  }
 	  else
 	  {

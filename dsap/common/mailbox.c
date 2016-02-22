@@ -126,7 +126,7 @@ struct mailbox * m;
 {
 	PE ret_pe;
 
-	(void) encode_Thorn_MailBox (&ret_pe,0,0,NULLCP,m);
+	 encode_Thorn_MailBox (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -143,7 +143,7 @@ PE pe;
 }
 
 mailbox_syntax () {
-	(void) add_attribute_syntax ("Mailbox",
+	 add_attribute_syntax ("Mailbox",
 								 (IFP) mail_enc,		(IFP) mail_dec,
 								 (IFP) str2mailbox,	mailbox_print,
 								 (IFP) mailbox_cpy,	mailbox_cmp,

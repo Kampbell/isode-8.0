@@ -808,7 +808,7 @@ xGenericReply *rep;
 	while (newseq < lastseq) {
 		newseq += 0x10000;
 		if (newseq > dpy->request) {
-			(void) fprintf (stderr,
+			 fprintf (stderr,
 							"Xlib:  sequence lost (0x%lx > 0x%lx) in reply type 0x%x!\n",
 							newseq, dpy->request,
 							(unsigned int) rep->type);
@@ -849,7 +849,7 @@ Bool discard;	/* should I discard data followind "extra" words? */
 			if (rep->generic.sequenceNumber == (cur_request & 0xffff))
 				dpy->last_request_read = cur_request;
 			else
-				(void) _SetLastRequestRead(dpy, &rep->generic);
+				 _SetLastRequestRead(dpy, &rep->generic);
 			if (extra == 0) {
 				if (discard && (rep->generic.length > 0))
 					/* unexpectedly long reply! */
@@ -1001,7 +1001,7 @@ XEvent *re;	/* pointer to where event should be reformatted */
 xEvent *event;	/* wire protocol event */
 {
 #ifdef notdef
-	(void) fprintf(stderr,
+	 fprintf(stderr,
 				   "Xlib: unhandled wire event! event number = %d, display = %x\n.",
 				   event->u.u.type, dpy);
 #endif
@@ -1016,7 +1016,7 @@ XEvent *re;	/* pointer to where event should be reformatted */
 xEvent *event;	/* wire protocol event */
 {
 #ifdef notdef
-	(void) fprintf(stderr,
+	 fprintf(stderr,
 				   "Xlib: unhandled native event! event number = %d, display = %x\n.",
 				   re->type, dpy);
 #endif
@@ -1383,16 +1383,16 @@ _SysErrorMsg (int n)
 _XIOError (dpy)
 Display *dpy;
 {
-	(void) fprintf (stderr,
+	 fprintf (stderr,
 					"XIO:  fatal IO error %d (%s) on X server \"%s\"\r\n",
 					errno, _SysErrorMsg (errno), DisplayString (dpy));
-	(void) fprintf (stderr,
+	 fprintf (stderr,
 					"      after %lu requests (%lu known processed) with %d events remaining.\r\n",
 					NextRequest(dpy) - 1, LastKnownRequestProcessed(dpy),
 					QLength(dpy));
 
 	if (errno == EPIPE) {
-		(void) fprintf (stderr,
+		 fprintf (stderr,
 						"      The connection was probably broken by a server shutdown or KillClient.\r\n");
 	}
 
@@ -1438,29 +1438,29 @@ FILE *fp;
 	char *mtype = "XlibMessage";
 	XGetErrorText(dpy, event->error_code, buffer, BUFSIZ);
 	XGetErrorDatabaseText(dpy, mtype, "XError", "X Error", mesg, BUFSIZ);
-	(void) fprintf(fp, "%s:  %s\n  ", mesg, buffer);
+	 fprintf(fp, "%s:  %s\n  ", mesg, buffer);
 	XGetErrorDatabaseText(dpy, mtype, "MajorCode", "Request Major code %d",
 						  mesg, BUFSIZ);
-	(void) fprintf(fp, mesg, event->request_code);
+	 fprintf(fp, mesg, event->request_code);
 	sprintf(number, "%d", event->request_code);
 	XGetErrorDatabaseText(dpy, "XRequest", number, "", 	buffer, BUFSIZ);
-	(void) fprintf(fp, " (%s)", buffer);
+	 fprintf(fp, " (%s)", buffer);
 	fputs("\n  ", fp);
 	XGetErrorDatabaseText(dpy, mtype, "MinorCode", "Request Minor code",
 						  mesg, BUFSIZ);
-	(void) fprintf(fp, mesg, event->minor_code);
+	 fprintf(fp, mesg, event->minor_code);
 	fputs("\n  ", fp);
 	XGetErrorDatabaseText(dpy, mtype, "ResourceID", "ResourceID 0x%x",
 						  mesg, BUFSIZ);
-	(void) fprintf(fp, mesg, event->resourceid);
+	 fprintf(fp, mesg, event->resourceid);
 	fputs("\n  ", fp);
 	XGetErrorDatabaseText(dpy, mtype, "ErrorSerial", "Error Serial #%d",
 						  mesg, BUFSIZ);
-	(void) fprintf(fp, mesg, event->serial);
+	 fprintf(fp, mesg, event->serial);
 	fputs("\n  ", fp);
 	XGetErrorDatabaseText(dpy, mtype, "CurrentSerial", "Current Serial #%d",
 						  mesg, BUFSIZ);
-	(void) fprintf(fp, mesg, dpy->request);
+	 fprintf(fp, mesg, dpy->request);
 	fputs("\n", fp);
 	if (event->error_code == BadImplementation) return 0;
 	return 1;
@@ -1670,7 +1670,7 @@ unsigned len;
  */
 
 void 
-_XFreeQ (void) {
+_XFreeQ  {
 	_XQEvent *qelt = _qfree;
 
 	while (qelt) {

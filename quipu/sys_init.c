@@ -96,9 +96,9 @@ void mk_dsa_tmp_dir() {
 	char edbtmp_buf[BUFSIZ];
 	char err_buf[BUFSIZ];
 
-	(void) sprintf (edbtmp_buf, "%stmp", treedir);
+	 sprintf (edbtmp_buf, "%stmp", treedir);
 
-	(void) strcat (edbtmp_buf, "/");
+	 strcat (edbtmp_buf, "/");
 	edbtmp_path = strdup (edbtmp_buf);
 	edbtmp_buf[strlen(edbtmp_path) - 1] = 0;	/* remove "/" */
 
@@ -106,12 +106,12 @@ void mk_dsa_tmp_dir() {
 			&& ((statbuf.st_mode & S_IFMT) == S_IFDIR)) {
 		/* tmpdir exists - clean it */
 		struct dirent **namelist;
-		(void) _scandir(edbtmp_buf, &namelist, rmFiles, NULLIFP);
+		 _scandir(edbtmp_buf, &namelist, rmFiles, NULLIFP);
 		if (namelist)
 			free((char *) namelist);
 
 	} else if (mkdir (edbtmp_buf,0700) != 0) {
-		(void)sprintf (err_buf,"Can't create tmp directory: %s (%d)",
+		sprintf (err_buf,"Can't create tmp directory: %s (%d)",
 					   edbtmp_path,errno);
 		fatal (-43,err_buf);
 	}
@@ -127,8 +127,8 @@ struct dirent *entry;
 			|| (strcmp(entry->d_name,"..") == 0))
 		return 0;
 
-	(void) strcpy (cbuf, edbtmp_path);
-	(void) strcat (cbuf, entry -> d_name);
+	 strcpy (cbuf, edbtmp_path);
+	 strcat (cbuf, entry -> d_name);
 
 	if (unlink(cbuf) == NOTOK) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,

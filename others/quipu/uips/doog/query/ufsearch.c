@@ -59,7 +59,7 @@ QCardinal *id_ptr;
 	AttributeType co_type, org_type, ou_type, loc_type, curr_type, per_type;
 
 	/* Record request invocation */
-	(void) _request_invoked(UFSEARCH, id_ptr);
+	 _request_invoked(UFSEARCH, id_ptr);
 
 	request = _get_request_of_id(*id_ptr);
 	ufsrec = request->UFSEARCH_REC;
@@ -354,7 +354,7 @@ ufsearchRec ufsrec;
 			start = ++end;
 		}
 
-	(void) get_default_service(&search_arg.sra_common);
+	 get_default_service(&search_arg.sra_common);
 
 	search_arg.sra_common.ca_servicecontrol.svc_options =
 		search_arg.sra_common.ca_servicecontrol.svc_options | SVC_OPT_PREFERCHAIN;
@@ -418,8 +418,8 @@ ufsearchRec ufsrec;
 					return QERR_bad_value_syntax;
 				}
 
-				(void) strcat(valbuf, ", ");
-				(void) strcat(valbuf, curr_val->string);
+				 strcat(valbuf, ", ");
+				 strcat(valbuf, curr_val->string);
 			}
 
 			get_attrs = as_merge(get_attrs,
@@ -439,8 +439,8 @@ ufsearchRec ufsrec;
 			return QERR_bad_value_syntax;
 		}
 
-		(void) strcat(valbuf, ", ");
-		(void) strcat(valbuf, search_vals->values->string);
+		 strcat(valbuf, ", ");
+		 strcat(valbuf, search_vals->values->string);
 
 		get_attrs = as_merge(get_attrs,
 							 as_comp_new(search_vals->type,
@@ -749,7 +749,7 @@ struct DSResult *ds_result;
 					}
 
 					if (is_dit_type == TRUE)
-						(void) dn_list_add(curr_name,
+						 dn_list_add(curr_name,
 										   &ufsrec->to_follow, val_type);
 				} else {
 					QBool is_target_type = FALSE;
@@ -799,7 +799,7 @@ struct DSResult *ds_result;
 					}
 
 					if (is_target_type)
-						(void) dn_list_add(curr_name,
+						 dn_list_add(curr_name,
 										   &ufsrec->to_follow, NULLAttrT);
 				}
 			}
@@ -808,14 +808,14 @@ struct DSResult *ds_result;
 				free_string_seq(&(got_attrs->attr_name));
 				free_string_seq(&(got_attrs->val_list));
 
-				(void) free((char *) got_attrs);
+				 free((char *) got_attrs);
 			}
 
 			got_attrs = NULLAVList;
 			hit_count++;
 
 			if (curr_name != NULLCP)
-				(void) free(curr_name);
+				 free(curr_name);
 		}
 	}
 

@@ -48,12 +48,12 @@ char *value;
 
 	filt->fu_cont.item.fi_type = match;
 	filt->fu_cont.item.stroid = (char *) malloc((unsigned) (strlen(oid) + 1));
-	(void) strcpy(filt->fu_cont.item.stroid, oid);
+	 strcpy(filt->fu_cont.item.stroid, oid);
 
 	if (*value == '*') filt->fu_cont.item.name = (char *) 0;
 	else {
 		filt->fu_cont.item.name = (char *) malloc((unsigned) (strlen(value) + 1));
-		(void) strcpy(filt->fu_cont.item.name, value);
+		 strcpy(filt->fu_cont.item.name, value);
 	}
 	return filt;
 }
@@ -128,7 +128,7 @@ Filter make_attr_filter() {
 			&& *end != '*' && *end != '\0') end++;
 	save = *end;
 	*end = '\0';
-	(void) strcpy(attr_name, start);
+	 strcpy(attr_name, start);
 	*end = save;
 
 	if (attr_name [0] == '\0') {
@@ -151,7 +151,7 @@ Filter make_attr_filter() {
 
 		save = *end;
 		*end = '\0';
-		(void) strcpy(attr_val, start);
+		 strcpy(attr_val, start);
 		*end = save;
 
 		if (attr_val[0] == '\0') {
@@ -189,7 +189,7 @@ Filter make_attr_filter() {
 			while (isalnum(*end) && *end != '\0') end++;
 
 			if (*end == '\0') {
-				(void) strcpy (sub_val_final, start);
+				 strcpy (sub_val_final, start);
 				sub_val_any[0] = '*';
 			} else {
 				next = end;
@@ -201,14 +201,14 @@ Filter make_attr_filter() {
 
 					save = *end;
 					*end = '\0';
-					(void) strcpy(sub_val_any, start);
+					 strcpy(sub_val_any, start);
 					*end = save;
 				} else {
 					sub_val_any[0] = '*';
 
 					save = *end;
 					*end = '\0';
-					(void) strcpy(sub_val_final, start);
+					 strcpy(sub_val_final, start);
 					*end = save;
 				}
 			}
@@ -234,7 +234,7 @@ Filter make_attr_filter() {
 				filter_free(sfilt);
 				return NULLFILTER;
 			} else {
-				(void) strcpy(sub_val_initial, start);
+				 strcpy(sub_val_initial, start);
 				sub_val_any[0] = sub_val_final[0] = '*';
 			}
 		}
@@ -362,7 +362,7 @@ filt_struct *filt;
 		sfilt->flt_type = FILTER_ITEM;
 		sfilt->flt_next = make_filter(filt->next);
 
-		(void) strcpy(svalue, (filt->fu_cont.item.name?
+		 strcpy(svalue, (filt->fu_cont.item.name?
 							   filt->fu_cont.item.name:
 							   mvalue));
 

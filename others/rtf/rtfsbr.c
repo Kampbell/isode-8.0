@@ -81,7 +81,7 @@ SReportString (int code)
 	} else if (code < reason_err0_cnt)
 		return reason_err0[code];
 
-	(void) sprintf (buffer, "unknown reason code 0x%x", code);
+	 sprintf (buffer, "unknown reason code 0x%x", code);
 	return buffer;
 }
 
@@ -102,10 +102,10 @@ rts_advise (struct RtSAPabort *rta, char *event)
 	char    buffer[BUFSIZ];
 
 	if (rta -> rta_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),
+		 sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),
 						rta -> rta_cc, rta -> rta_cc, rta -> rta_data);
 	else
-		(void) sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
+		 sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
@@ -212,10 +212,10 @@ timer (int cc)
 	static struct timeval   start;
 
 	if (cc == 0) {
-		(void) gettimeofday (&start, (struct timezone *) 0);
+		 gettimeofday (&start, (struct timezone *) 0);
 		return;
 	} else
-		(void) gettimeofday (&stop, (struct timezone  *) 0);
+		 gettimeofday (&stop, (struct timezone  *) 0);
 
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);

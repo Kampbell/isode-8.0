@@ -207,7 +207,7 @@ getdents (		/* returns # bytes read;
 	case maybe:			/* first time only */
 		shdlr = signal( SIGSYS, sig_catch );
 		retval = _getdents( fildes, buf, nbyte );	/* try it */
-		(void)signal( SIGSYS, shdlr );
+		signal( SIGSYS, shdlr );
 
 		if ( state == maybe ) {	/* SIGSYS did not occur */
 			state = yes;	/* so _getdents() must have worked */
@@ -282,7 +282,7 @@ getdents (		/* returns # bytes read;
 				bp->d_ino = dp->d_fileno;
 				bp->d_off = offset + ((char *)dp - u.dblk);
 				bp->d_reclen = reclen;
-				(void)strncpy( bp->d_name, dp->d_name,
+				strncpy( bp->d_name, dp->d_name,
 #ifdef UFS
 							   DIRSIZ );
 				/* be sure d_name is NULL-terminated */
@@ -309,5 +309,5 @@ getdents (		/* returns # bytes read;
 }
 #else
 int 
-_getdents_stub (void) {}
+_getdents_stub()  {}
 #endif

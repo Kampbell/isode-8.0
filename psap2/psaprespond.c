@@ -66,7 +66,7 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 	cp = NULL, cpr = NULL;
 
 	if (SInit (vecp, vec, ss, si) == NOTOK) {
-		(void) ss2pslose (pb, pi, "SInit", sa);
+		 ss2pslose (pb, pi, "SInit", sa);
 		goto out2;
 	}
 
@@ -77,7 +77,7 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 		if (result == PS_ERR_NMEM)
 			goto congest;
 
-		(void) ppktlose (pb, pi, PC_PROTOCOL, PPDU_CP, NULLCP, "%s",
+		 ppktlose (pb, pi, PC_PROTOCOL, PPDU_CP, NULLCP, "%s",
 						 ps_error (result));
 		goto out1;
 	}
@@ -91,7 +91,7 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 	bzero ((char *) ps, sizeof *ps);
 
 	if (decode_PS_CP__type (pe, 1, NULLIP, NULLVP, &cp) == NOTOK) {
-		(void) ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CP, NULLCP, "%s",
+		 ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CP, NULLCP, "%s",
 						 PY_pepy);
 		goto out1;
 	}
@@ -99,7 +99,7 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 	PLOGP (psap2_log,PS_CP__type, pe, "CP-type", 1);
 
 	if (cp -> mode -> parm != int_PS_Mode__selector_normal__mode) {
-		(void) ppktlose (pb, pi, PC_INVALID, PPDU_CP, NULLCP,
+		 ppktlose (pb, pi, PC_INVALID, PPDU_CP, NULLCP,
 						 "X.410-mode not supported");
 		goto out1;
 	}
@@ -133,14 +133,14 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 	}
 
 	if ((pb -> pb_asn = DFLT_ASN_OID) == NULLOID)  {
-		(void) ppktlose (pb, pi, PC_ABSTRACT, PPDU_CP, NULLCP, "%s: unknown",
+		 ppktlose (pb, pi, PC_ABSTRACT, PPDU_CP, NULLCP, "%s: unknown",
 						 DFLT_ASN);
 		goto out1;
 	}
 	if ((pb -> pb_asn = oid_cpy (pb -> pb_asn)) == NULLOID)
 		goto congest;
 	if ((pb -> pb_atn = DFLT_ATN_OID) == NULLOID)  {
-		(void) ppktlose (pb, pi, PC_TRANSFER, PPDU_CP, NULLCP, "%s: unknown",
+		 ppktlose (pb, pi, PC_TRANSFER, PPDU_CP, NULLCP, "%s: unknown",
 						 DFLT_ATN);
 		goto out1;
 	}
@@ -222,9 +222,9 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 		struct pair *pp;
 
 		if (!(pb -> pb_srequirements & SR_TYPEDATA)) {
-			(void) bit_off (cp_normal -> presentation__fu,
+			 bit_off (cp_normal -> presentation__fu,
 							bit_PS_Presentation__requirements_context__management);
-			(void) bit_off (cp_normal -> presentation__fu,
+			 bit_off (cp_normal -> presentation__fu,
 							bit_PS_Presentation__requirements_restoration);
 		}
 
@@ -259,7 +259,7 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 congest:
 	;
 	result = SC_CONGESTION;
-	(void) psaplose (pi, result2 = PC_CONGEST, NULLCP, NULLCP);
+	 psaplose (pi, result2 = PC_CONGEST, NULLCP, NULLCP);
 
 	if (pe) {
 		pe_free (pe);
@@ -274,7 +274,7 @@ congest:
 			cpr -> offset = type_PS_CPR__type_x410__mode;
 			if (pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET)) {
 				cpr -> un.x410__mode = pe;
-				(void) set_add (pe, num2prim ((integer) (result2 != PC_CONGEST ? 0 : 3),
+				 set_add (pe, num2prim ((integer) (result2 != PC_CONGEST ? 0 : 3),
 											  PE_CLASS_CONT, 0));
 			}
 		} else {
@@ -294,16 +294,16 @@ congest:
 		PLOGP (psap2_log,PS_CPR__type, pe, "CPR-type", 0);
 
 		if (pe)
-			(void) pe2ssdu (pe, &base, &len);
+			 pe2ssdu (pe, &base, &len);
 	} else
 		base = NULL, len = 0;
 
 	bzero ((char *) &ref, sizeof ref);
-	(void) SConnResponse (ss -> ss_sd, &ref, NULLSA, result, 0, 0,
+	 SConnResponse (ss -> ss_sd, &ref, NULLSA, result, 0, 0,
 						  SERIAL_NONE, base, len, si);
 	if (base)
 		free (base);
-	(void) psaplose (pi, result2, NULLCP, NULLCP);
+	 psaplose (pi, result2, NULLCP, NULLCP);
 
 out1:
 	;
@@ -435,7 +435,7 @@ PConnResponse (int sd, int status, struct PSAPaddr *responding, struct PSAPctxli
 				== NULL) {
 no_mem:
 			;
-			(void) psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+			 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 			goto out2;
 		}
 		if ((cpa -> mode = (struct type_PS_Mode__selector *)
@@ -664,7 +664,7 @@ no_mem:
 	}
 
 	if (result == NOTOK) {
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						 PY_pepy);
 		goto out2;
 	}
@@ -687,7 +687,7 @@ no_mem:
 					   : NULLSA, status, pb -> pb_srequirements, settings, isn, base,
 					   len, si) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason)) {
-			(void) ss2pslose (pb, pi, "SConnResponse", sa);
+			 ss2pslose (pb, pi, "SConnResponse", sa);
 			goto out2;
 		} else {			/* assume SS-user parameter error */
 			result = ss2pslose (NULLPB, pi, "SConnResponse", sa);
@@ -741,17 +741,17 @@ out2:
 		PLOGP (psap2_log,PS_CPR__type, pe, "CPR-type", 0);
 
 		if (pe)
-			(void) pe2ssdu (pe, &base, &len);
+			 pe2ssdu (pe, &base, &len);
 	} else
 		base = NULL, len = 0;
 
-	(void) SConnResponse (pb -> pb_fd, ref, NULLSA, result, 0, 0,
+	 SConnResponse (pb -> pb_fd, ref, NULLSA, result, 0, 0,
 						  SERIAL_NONE, base, len, si);
 
 	if (base)
 		free (base);
-	(void) pe2ssdu (pe, &base, &len);
-	(void) SConnResponse (pb -> pb_fd, ref, NULLSA, SC_CONGESTION, 0, 0,
+	 pe2ssdu (pe, &base, &len);
+	 SConnResponse (pb -> pb_fd, ref, NULLSA, SC_CONGESTION, 0, 0,
 						  SERIAL_NONE, base, len, si);
 
 	freepblk (pb);

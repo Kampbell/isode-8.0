@@ -98,8 +98,8 @@ congest:
 
 	case OK:
 		if (setperms)
-			(void) (*setperms) (is);
-		(void) execv (*is -> is_vec, is -> is_vec);/* fall */
+			 (*setperms) (is);
+		 execv (*is -> is_vec, is -> is_vec);/* fall */
 		SLOG (rosap_log, LLOG_FATAL, *is -> is_vec, ("unable to exec"));
 	default:
 		goto congest;
@@ -110,7 +110,7 @@ out:
 	SSFREE (ss);
 
 	bzero ((char *) &ref, sizeof ref);
-	(void) SConnResponse (ss -> ss_sd, &ref, NULLSA,
+	 SConnResponse (ss -> ss_sd, &ref, NULLSA,
 						  result, 0, 0, SERIAL_NONE, NULLCP, 0, si);
 	return rosaplose (roi, result2, NULLCP, NULLCP);
 }

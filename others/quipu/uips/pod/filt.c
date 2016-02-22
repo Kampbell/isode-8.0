@@ -39,7 +39,7 @@ char * name_val;
 filt_struct * filt;
 {
 	filttype[curr_filt] = (char *) malloc((unsigned int) (strlen(name_val) + 1));
-	(void) strcpy(filttype[curr_filt], name_val);
+	 strcpy(filttype[curr_filt], name_val);
 
 	filt_arr[curr_filt] = filt;
 }
@@ -57,13 +57,13 @@ char *value;
 	filt->fu_cont.item.fi_type = match;
 	filt->fu_cont.item.stroid =
 		(char *) malloc((unsigned int) (strlen(oid) + 1));
-	(void) strcpy(filt->fu_cont.item.stroid, oid);
+	 strcpy(filt->fu_cont.item.stroid, oid);
 
 	if (*value == '*') filt->fu_cont.item.name = (char *) 0;
 	else {
 		filt->fu_cont.item.name =
 			(char *) malloc((unsigned int) (strlen(value) + 1));
-		(void) strcpy(filt->fu_cont.item.name, value);
+		 strcpy(filt->fu_cont.item.name, value);
 	}
 	return filt;
 }
@@ -153,11 +153,11 @@ Filter make_attr_filter() {
 			&& *end != '*' && *end != '\0') end++;
 	save = *end;
 	*end = '\0';
-	(void) strcpy(attr_name, start);
+	 strcpy(attr_name, start);
 	*end = save;
 
 	if (attr_name [0] == '\0') {
-		(void) sprintf (dir_error_message,
+		 sprintf (dir_error_message,
 						"Error: Cannot search, invalid syntax on filter '%s'.\n",
 						mvalue);
 		filter_free(sfilt);
@@ -176,11 +176,11 @@ Filter make_attr_filter() {
 
 		save = *end;
 		*end = '\0';
-		(void) strcpy(attr_val, start);
+		 strcpy(attr_val, start);
 		*end = save;
 
 		if (attr_val[0] == '\0') {
-			(void) sprintf (dir_error_message,
+			 sprintf (dir_error_message,
 							"Error: Cannot search, invalid syntax on filter '%s'.\n",
 							mvalue);
 			filter_free(sfilt);
@@ -190,7 +190,7 @@ Filter make_attr_filter() {
 		while (!isalnum(*start) && *start != '*' && *start != '\0') start++;
 
 		if (*start == '\0') {
-			(void) sprintf (dir_error_message,
+			 sprintf (dir_error_message,
 							"Error: Cannot search, invalid syntax on filter '%s'.\n",
 							mvalue);
 			filter_free(sfilt);
@@ -203,7 +203,7 @@ Filter make_attr_filter() {
 			while (isspace(*start) && *start != '\0') start++;
 
 			if (*start == '\0' || !isalnum(*start)) {
-				(void) sprintf (dir_error_message,
+				 sprintf (dir_error_message,
 								"Error: Cannot search, invalid syntax on filter '%s'.\n",
 								mvalue);
 				filter_free(sfilt);
@@ -214,7 +214,7 @@ Filter make_attr_filter() {
 			while (isalnum(*end) && isspace(*end) && *end != '\0') end++;
 
 			if (*end == '\0') {
-				(void) strcpy (sub_val_final, start);
+				 strcpy (sub_val_final, start);
 				sub_val_any[0] = '*';
 			} else {
 				next = end;
@@ -226,14 +226,14 @@ Filter make_attr_filter() {
 
 					save = *end;
 					*end = '\0';
-					(void) strcpy(sub_val_any, start);
+					 strcpy(sub_val_any, start);
 					*end = save;
 				} else {
 					sub_val_any[0] = '*';
 
 					save = *end;
 					*end = '\0';
-					(void) strcpy(sub_val_final, start);
+					 strcpy(sub_val_final, start);
 					*end = save;
 				}
 			}
@@ -246,7 +246,7 @@ Filter make_attr_filter() {
 			end++;
 
 			if (*end == '\0') {
-				(void) sprintf (dir_error_message,
+				 sprintf (dir_error_message,
 								"Error: Cannot search, invalid syntax on filter '%s'.\n",
 								mvalue);
 				filter_free(sfilt);
@@ -254,7 +254,7 @@ Filter make_attr_filter() {
 			}
 
 			if (index ((char *) (end + 1), '*') == NULLCP) {
-				(void) sprintf (dir_error_message,
+				 sprintf (dir_error_message,
 								"Error: Cannot search, invalid syntax on filter '%s'.\n",
 								mvalue);
 				filter_free(sfilt);
@@ -263,7 +263,7 @@ Filter make_attr_filter() {
 				save = *end;
 				*end = '\0';
 
-				(void) strcpy(sub_val_initial, start);
+				 strcpy(sub_val_initial, start);
 				sub_val_any[0] = sub_val_final[0] = '*';
 
 				*end = save;
@@ -283,7 +283,7 @@ Filter make_attr_filter() {
 
 		if (!sfilt->FUITEM.UNAVA.ava_type ||
 				sfilt->FUITEM.UNAVA.ava_type->oa_syntax == 0) {
-			(void) sprintf (dir_error_message,
+			 sprintf (dir_error_message,
 							"Error: Cannot search, invalid attribute type '%s'.\n",
 							attr_name);
 			sfilt->flt_next = NULLFILTER;
@@ -295,7 +295,7 @@ Filter make_attr_filter() {
 					str2AttrV(attr_val, sfilt->FUITEM.UNAVA.ava_type->oa_syntax))
 				== NULL) {
 
-			(void) sprintf (dir_error_message,
+			 sprintf (dir_error_message,
 							"Error: Cannot search, invalid value '%s' for attribute type '%s'.\n",
 							attr_val, attr_name);
 
@@ -316,7 +316,7 @@ Filter make_attr_filter() {
 		type_syntax = sfilt->FUITEM.UNSUB.fi_sub_type->oa_syntax;
 
 		if (type_syntax == 0) {
-			(void) sprintf (dir_error_message,
+			 sprintf (dir_error_message,
 							"Error: Cannot search, invalid attribute type '%s'.\n",
 							attr_name);
 			filter_free(sfilt);
@@ -324,7 +324,7 @@ Filter make_attr_filter() {
 		}
 
 		if (!sub_string(type_syntax)) {
-			(void) sprintf (dir_error_message,
+			 sprintf (dir_error_message,
 							"Error: Cannot search, substring search unavailable for attribute '%s'.\n",
 							attr_name);
 			filter_free(sfilt);
@@ -337,7 +337,7 @@ Filter make_attr_filter() {
 											   sfilt->FUITEM.UNSUB.fi_sub_type->oa_syntax)))
 					== NULLAV) {
 
-				(void) sprintf (dir_error_message,
+				 sprintf (dir_error_message,
 								"Error: Cannot search, invalid value '%s' for attribute type '%s'.\n",
 								sub_val_initial, attr_name);
 
@@ -350,7 +350,7 @@ Filter make_attr_filter() {
 						avs_comp_new(str2AttrV(sub_val_any,
 											   sfilt->FUITEM.UNSUB.fi_sub_type->oa_syntax)))
 					== NULLAV) {
-				(void) sprintf (dir_error_message,
+				 sprintf (dir_error_message,
 								"Error: Cannot search, invalid value '%s' for attribute type '%s'.\n",
 								sub_val_any, attr_name);
 
@@ -364,7 +364,7 @@ Filter make_attr_filter() {
 											   sfilt->FUITEM.UNSUB.fi_sub_type->oa_syntax)))
 					== NULLAV) {
 
-				(void) sprintf (dir_error_message,
+				 sprintf (dir_error_message,
 								"Error: Cannot search, invalid value '%s' for attribute type '%s'.\n",
 								sub_val_final, attr_name);
 
@@ -373,7 +373,7 @@ Filter make_attr_filter() {
 			}
 		return sfilt;
 	default:
-		(void) sprintf(dir_error_message, "Internal Error! Sorry.\n");
+		 sprintf(dir_error_message, "Internal Error! Sorry.\n");
 		return NULLFILTER;
 	}
 }
@@ -397,7 +397,7 @@ filt_struct *filt;
 		sfilt->flt_type = FILTER_ITEM;
 		sfilt->flt_next = make_filter(filt->next);
 
-		(void) strcpy(svalue, (filt->fu_cont.item.name?
+		 strcpy(svalue, (filt->fu_cont.item.name?
 							   filt->fu_cont.item.name:
 							   mvalue));
 
@@ -411,7 +411,7 @@ filt_struct *filt;
 			if (!sfilt->FUITEM.UNAVA.ava_type ||
 					sfilt->FUITEM.UNAVA.ava_type->oa_syntax == 0) {
 
-				(void) sprintf(dir_error_message,
+				 sprintf(dir_error_message,
 							   "Search Error! Invalid attribute type '%s'.\n",
 							   filt->fu_cont.item.stroid);
 
@@ -427,7 +427,7 @@ filt_struct *filt;
 						str2AttrV(svalue, sfilt->FUITEM.UNAVA.ava_type->oa_syntax))
 					== NULLAttrV) {
 
-				(void) sprintf(dir_error_message,
+				 sprintf(dir_error_message,
 							   "Search Error! Invalid value '%s' for attribute type '%s'.\n",
 							   svalue, filt->fu_cont.item.stroid);
 
@@ -456,7 +456,7 @@ filt_struct *filt;
 			type_syntax =sfilt->FUITEM.UNSUB.fi_sub_type->oa_syntax;
 
 			if (type_syntax == 0) {
-				(void) sprintf(dir_error_message,
+				 sprintf(dir_error_message,
 							   "Search Error! Invalid attribute type '%s'.\n",
 							   filt->fu_cont.item.stroid);
 
@@ -470,7 +470,7 @@ filt_struct *filt;
 
 			if (!sub_string(type_syntax)) {
 
-				(void) sprintf(dir_error_message,
+				 sprintf(dir_error_message,
 							   "Search Error: Substring search unavailable for attribute '%s'.\n",
 							   filt->fu_cont.item.stroid);
 
@@ -488,7 +488,7 @@ filt_struct *filt;
 
 			if (sfilt->FUITEM.UNSUB.fi_sub_any == NULLAV) {
 
-				(void) sprintf(dir_error_message,
+				 sprintf(dir_error_message,
 							   "Search Error! Invalid value '%s' for attribute type '%s'.\n",
 							   svalue, filt->fu_cont.item.stroid);
 

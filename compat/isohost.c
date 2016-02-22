@@ -55,22 +55,22 @@ char   *getlocalhost () {
 
 	isodetailor (NULLCP, 0);
 	if (*isodename)
-		(void) strcpy (buffer, isodename);
+		 strcpy (buffer, isodename);
 	else {
 #if	!defined(SOCKETS) && !defined(SYS5)
-		(void) strcpy (buffer, "localhost");
+		 strcpy (buffer, "localhost");
 #endif
 #ifdef	SOCKETS
-		(void) gethostname (buffer, sizeof buffer);
+		 gethostname (buffer, sizeof buffer);
 #endif
 #ifdef	SYS5
-		(void) uname (&uts);
-		(void) strcpy (buffer, uts.nodename);
+		 uname (&uts);
+		 strcpy (buffer, uts.nodename);
 #endif
 
 #ifdef	TCP
 		if (hp = gethostbyname (buffer))
-			(void) strcpy (buffer, hp -> h_name);
+			 strcpy (buffer, hp -> h_name);
 		else
 			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
 				  ("%s: unknown host", buffer));

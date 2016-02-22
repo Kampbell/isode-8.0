@@ -92,7 +92,7 @@ ro2rtsasync (struct assocblk *acb, IFP indication, struct RoSAPindication *roi)
 			return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) rtslose (acb, roi, "RtSetIndications", rta);
+			 rtslose (acb, roi, "RtSetIndications", rta);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -119,7 +119,7 @@ ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindicatio
 			return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) rtslose (acb, roi, "RtSelectMask", rta);
+			 rtslose (acb, roi, "RtSelectMask", rta);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -198,7 +198,7 @@ ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindicatio
 				continue;
 
 			default:
-				(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+				 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 								  "unknown indication (0x%x) from rts",
 								  rti -> rti_type);
 				break;
@@ -206,7 +206,7 @@ ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindicatio
 			break;
 
 		default:
-			(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+			 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 							  "unexpected return from RtWaitRequest=%d", result);
 			break;
 		}
@@ -239,7 +239,7 @@ ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindic
 	result = RtTransferRequest (acb -> acb_fd, pe, NOTOK, &rtis);
 
 	if (fe)
-		(void) pe_extract (pe, fe);
+		 pe_extract (pe, fe);
 	pe_free (pe);
 
 	if (result == OK)
@@ -248,7 +248,7 @@ ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindic
 	if (rta -> rta_reason == RTS_TRANSFER)
 		return rosaplose (roi, ROS_APDU, NULLCP, NULLCP);
 
-	(void) rtslose (acb, roi, "RtTransferRequest", rta);
+	 rtslose (acb, roi, "RtTransferRequest", rta);
 
 	freeacblk (acb);
 	return NOTOK;
@@ -279,7 +279,7 @@ static int
 doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication *roi)
 {
 	if (acb -> acb_flags & ACB_INIT) {
-		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+		 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 						  "association management botched");
 		freeacblk (acb);
 		return NOTOK;
@@ -301,7 +301,7 @@ static int
 doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi)
 {
 	if (acb -> acb_flags & ACB_INIT) {
-		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+		 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 						  "association management botched");
 		ACFFREE (acf);
 		freeacblk (acb);
@@ -323,9 +323,9 @@ doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication
 		if (rta -> rta_reason == RTS_TIMER)
 			return rosaplose (roi, ROS_TIMER, NULLCP, NULLCP);
 
-		(void) rtslose (acb, roi, NULLCP, rta);
+		 rtslose (acb, roi, NULLCP, rta);
 	} else
-		(void) rosaplose (roi, ROS_ABORTED, NULLCP, NULLCP);
+		 rosaplose (roi, ROS_ABORTED, NULLCP, NULLCP);
 
 	RTAFREE (rta);
 	acb -> acb_fd = NOTOK;
@@ -397,7 +397,7 @@ ro2rtsready (struct assocblk *acb, int priority, struct RoSAPindication *roi)
 		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 	if (RtPTurnRequest (acb -> acb_fd, priority, rti) == NOTOK) {
-		(void) rtslose (acb, roi, "RtPTurnRequest", rta);
+		 rtslose (acb, roi, "RtPTurnRequest", rta);
 		goto out;
 	}
 
@@ -452,7 +452,7 @@ ro2rtsready (struct assocblk *acb, int priority, struct RoSAPindication *roi)
 				continue;
 
 			default:
-				(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+				 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 								  "unknown indication (0x%x) from rts",
 								  rti -> rti_type);
 				break;
@@ -460,7 +460,7 @@ ro2rtsready (struct assocblk *acb, int priority, struct RoSAPindication *roi)
 			goto out;
 
 		default:
-			(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+			 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 							  "unexpected return from RtWaitRequest=%d", result);
 			goto out;
 		}
@@ -504,7 +504,7 @@ rtslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct 
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at rts)",
+		 sprintf (cp = buffer, " (%s at rts)",
 						RtErrString (rta -> rta_reason));
 	case RTS_SESSION:
 		reason = ROS_RTS;

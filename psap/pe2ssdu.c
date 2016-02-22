@@ -49,7 +49,7 @@ pe2ssdu (PE pe, char **base, int *len)
 	Len = 0;
 	Ecp = Qcp + plen;
 	if ((ret = pe2qb_f(pe)) != plen) {
-		(void) printf("pe2ssdu: bad length returned %d should be %d\n",
+		 printf("pe2ssdu: bad length returned %d should be %d\n",
 					  ret, plen);
 		return NOTOK;
 	}

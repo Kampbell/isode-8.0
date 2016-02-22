@@ -45,13 +45,13 @@ getisoserventbyselector (char *provider, char *selector, int selectlen)
 		  ("getisoserventbyselector \"%s\" %s",
 		   provider, sel2str (selector, selectlen, 1)));
 
-	(void) setisoservent (0);
+	 setisoservent (0);
 	while (is = getisoservent ())
 		if (selectlen == is -> is_selectlen
 				&& bcmp (selector, is -> is_selector, is -> is_selectlen) == 0
 				&& strcmp (provider, is -> is_provider) == 0)
 			break;
-	(void) endisoservent ();
+	 endisoservent ();
 
 	if (is) {
 #ifdef	DEBUG

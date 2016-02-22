@@ -131,11 +131,11 @@ OS	os;
 
 
 static	add_integer () {
-	(void) add_syntax ("INTEGER", integer_encode, integer_decode, integer_free,
+	 add_syntax ("INTEGER", integer_encode, integer_decode, integer_free,
 					   integer_parse, integer_print);
-	(void) add_syntax ("Services", integer_encode, integer_decode,
+	 add_syntax ("Services", integer_encode, integer_decode,
 					   integer_free, integer_parse, services_print);
-	(void) add_syntax ("Privileges", integer_encode, integer_decode,
+	 add_syntax ("Privileges", integer_encode, integer_decode,
 					   integer_free, integer_parse, privs_print);
 }
 
@@ -243,11 +243,11 @@ OS	os;
 
 
 static	add_string () {
-	(void) add_syntax ("OctetString", string_encode, string_decode, qb_free,
+	 add_syntax ("OctetString", string_encode, string_decode, qb_free,
 					   string_parse, string_print);
-	(void) add_syntax ("DisplayString", string_encode, string_decode, qb_free,
+	 add_syntax ("DisplayString", string_encode, string_decode, qb_free,
 					   string_parse, string_display);
-	(void) add_syntax ("PhysAddress", string_encode, string_decode, qb_free,
+	 add_syntax ("PhysAddress", string_encode, string_decode, qb_free,
 					   string_parse, string_print);
 }
 
@@ -300,7 +300,7 @@ OS	os;
 	char  *cp,
 		  ode[BUFSIZ];
 
-	(void) strcpy (ode, oid2ode (x));
+	 strcpy (ode, oid2ode (x));
 	printf ("%s", ode);
 	if (strcmp (ode, cp = sprintoid (x)))
 		printf (" (%s)", cp);
@@ -308,7 +308,7 @@ OS	os;
 
 
 static	add_object () {
-	(void) add_syntax ("ObjectID", object_encode, object_decode, oid_free,
+	 add_syntax ("ObjectID", object_encode, object_decode, oid_free,
 					   object_parse, object_print);
 }
 
@@ -372,7 +372,7 @@ OS	os;
 
 
 static	add_null () {
-	(void) add_syntax ("NULL", null_encode, null_decode, null_free, null_parse,
+	 add_syntax ("NULL", null_encode, null_decode, null_free, null_parse,
 					   null_print);
 }
 
@@ -461,7 +461,7 @@ OS	os;
 
 
 static	add_ipaddr () {
-	(void) add_syntax ("IpAddress", ipaddr_encode, ipaddr_decode, ipaddr_free,
+	 add_syntax ("IpAddress", ipaddr_encode, ipaddr_decode, ipaddr_free,
 					   ipaddr_parse, ipaddr_print);
 }
 
@@ -470,7 +470,7 @@ static	add_ipaddr () {
 /* good enough for now (and probably forever)... */
 
 static	add_netaddr () {
-	(void) add_syntax ("NetworkAddress", ipaddr_encode, ipaddr_decode,
+	 add_syntax ("NetworkAddress", ipaddr_encode, ipaddr_decode,
 					   ipaddr_free, ipaddr_parse, ipaddr_print);
 }
 
@@ -596,7 +596,7 @@ OS	os;
 
 
 static	add_counter () {
-	(void) add_syntax ("Counter", counter_encode, counter_decode, counter_free,
+	 add_syntax ("Counter", counter_encode, counter_decode, counter_free,
 					   counter_parse, counter_print);
 }
 
@@ -614,7 +614,7 @@ PE     *pe;
 
 
 static	add_gauge () {
-	(void) add_syntax ("Gauge", gauge_encode, counter_decode, counter_free,
+	 add_syntax ("Gauge", gauge_encode, counter_decode, counter_free,
 					   counter_parse, counter_print);
 }
 
@@ -663,7 +663,7 @@ OS	os;
 
 
 static	add_timeticks () {
-	(void) add_syntax ("TimeTicks", timeticks_encode, counter_decode,
+	 add_syntax ("TimeTicks", timeticks_encode, counter_decode,
 					   counter_free, counter_parse, timeticks_print);
 }
 
@@ -756,7 +756,7 @@ OS	os;
 
 
 static	add_clnpaddr () {
-	(void) add_syntax ("ClnpAddress", clnpaddr_encode, clnpaddr_decode,
+	 add_syntax ("ClnpAddress", clnpaddr_encode, clnpaddr_decode,
 					   clnpaddr_free, clnpaddr_parse, clnpaddr_print);
 }
 

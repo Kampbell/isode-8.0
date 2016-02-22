@@ -863,7 +863,7 @@ yylex (YYSTYPE *lvalp, YYLTYPE *llocp)
 
 		if (c == '\"' || c == '\0') {
 			lexeme[count] = '\0';
-			(void) strcpy(lvalp->strval, lexeme);
+			 strcpy(lvalp->strval, lexeme);
 
 			return STRING;
 		}
@@ -882,7 +882,7 @@ yylex (YYSTYPE *lvalp, YYLTYPE *llocp)
 
 	if (c == EOF) return 0;
 
-	(void) fseek(lexfile, (long) -1, 1);
+	 fseek(lexfile, (long) -1, 1);
 
 	lexeme[count] = '\0';
 
@@ -917,8 +917,8 @@ yylex (YYSTYPE *lvalp, YYLTYPE *llocp)
 int 
 yyerror (char *err)
 {
-	(void) fprintf(stderr, "Line %d. ", config_line_num);
-	(void) fprintf(stderr,
+	 fprintf(stderr, "Line %d. ", config_line_num);
+	 fprintf(stderr,
 				   "Parse error in file `%s' at or near `%s'.\n",
 				   config_file_name,
 				   lexeme);

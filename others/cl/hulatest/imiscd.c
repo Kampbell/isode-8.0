@@ -282,7 +282,7 @@ op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, 
 	if ((ud = open ("/etc/utmp", 0)) == NOTOK) {
 		int	result;
 
-		(void) sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
+		 sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
@@ -300,11 +300,11 @@ op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, 
 			continue;
 		if ((dp = ctime (&ut -> ut_time)) == NULL)
 			goto congested;
-		(void) sprintf (buffer, "%-*.*s %-*.*s %.12s",
+		 sprintf (buffer, "%-*.*s %-*.*s %.12s",
 						NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line, dp + 4);
 #ifdef	BSD42
 		if (ut -> ut_host[0])
-			(void) sprintf (buffer + strlen (buffer), "\t(%.*s)",
+			 sprintf (buffer + strlen (buffer), "\t(%.*s)",
 							HMAX, ut -> ut_host);
 #endif
 
@@ -312,7 +312,7 @@ op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, 
 			goto congested;
 		ia5p = &((*ia5p) -> next);
 	}
-	(void) close (ud);
+	 close (ud);
 #else
 	setutent ();
 	while (ut = getutent ()) {
@@ -320,7 +320,7 @@ op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, 
 			continue;
 		if ((dp = ctime (&ut -> ut_time)) == NULL)
 			goto congested;
-		(void) sprintf (buffer, "%-*.*s %-*.*s %.12s",
+		 sprintf (buffer, "%-*.*s %-*.*s %.12s",
 						NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line,
 						dp + 4);
 
@@ -590,14 +590,14 @@ pwdgen (char *pw)
 				  (((unsigned) (strlen (Dx) + strlen (Lx) + strlen (Nx)))))
 				== NULL)
 			return NOTOK;
-		(void) strcpy (s = Mx, Dx);
+		 strcpy (s = Mx, Dx);
 		s += strlen (s);
-		(void) strcpy (s, Lx);
+		 strcpy (s, Lx);
 		s += strlen (s);
-		(void) strcpy (s, Nx);
+		 strcpy (s, Nx);
 		s += strlen (s);
 
-		(void) srand ((int) time ((long *) 0));
+		 srand ((int) time ((long *) 0));
 
 		latch++;
 	}
@@ -746,7 +746,7 @@ oops:
 		ia5 = NULL;
 		ia5p = &ia5;
 
-		(void) sprintf (buffer, "%s: %s", pgm, sys_errname (errno));
+		 sprintf (buffer, "%s: %s", pgm, sys_errname (errno));
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
@@ -764,8 +764,8 @@ oops:
 
 	switch (fork ()) {
 	case NOTOK:
-		(void) close (pd[0]);
-		(void) close (pd[1]);
+		 close (pd[0]);
+		 close (pd[1]);
 		result = error_IMISC_unableToFork;
 		goto oops;
 
@@ -773,21 +773,21 @@ oops:
 		closelog ();
 		if ((fd = open ("/dev/null", 2)) != NOTOK) {
 			if (fd != 0)
-				(void) dup2 (fd, 0), (void) close (fd);
+				 dup2 (fd, 0),  close (fd);
 		}
-		(void) dup2 (pd[1], 1);
-		(void) dup2 (pd[1], 2);
-		(void) close (pd[0]);
-		(void) close (pd[1]);
+		 dup2 (pd[1], 1);
+		 dup2 (pd[1], 2);
+		 close (pd[0]);
+		 close (pd[1]);
 		if (execuid != 0) {
-			(void) setgid (execgid);
-			(void) setuid (execuid);
+			 setgid (execgid);
+			 setuid (execuid);
 		}
 		execvp (pgm, vec);
 		_exit (1);
 
 	default:
-		(void) close (pd[1]);
+		 close (pd[1]);
 		for (vecp = vecq; bp = vec[vecp]; vecp++) {
 			free (bp);
 			vec[vecp] = NULL;
@@ -800,13 +800,13 @@ oops:
 			switch (i = read (pd[0], buffer, sizeof buffer)) {
 			case NOTOK:
 				i = errno;
-				(void) close (pd[0]);
+				 close (pd[0]);
 				errno = i;
 				result = error_IMISC_errorReading;
 				goto oops;
 
 			case OK:
-				(void) close (pd[0]);
+				 close (pd[0]);
 				if (dp != data) {
 					*dp = NULL;
 					if ((*ia5p = str2ia5list (data)) == NULL)
@@ -910,7 +910,7 @@ op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t i
 	result = error_IMISC_userNotLoggedIn;
 #ifndef	SYS5
 	if ((ud = open ("/etc/utmp", 0)) == NOTOK) {
-		(void) sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
+		 sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
 		if ((ia5 = str2ia5list (buffer)) == NULL)
 			goto congested;
 
@@ -931,7 +931,7 @@ op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t i
 			else
 				result = error_IMISC_unableToOpenFile;
 	}
-	(void) close (ud);
+	 close (ud);
 #else
 	setutent ();
 	while (ut = getutent ()) {
@@ -981,9 +981,9 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp)
 	struct stat st;
 	FILE   *fp;
 
-	(void) strcpy (bp = tty, "/dev/");
+	 strcpy (bp = tty, "/dev/");
 	bp += strlen (bp);
-	(void) strncpy (bp, ut -> ut_line, LMAX);
+	 strncpy (bp, ut -> ut_line, LMAX);
 	bp += LMAX;
 	*bp = NULL;
 	if (stat (tty, &st) == NOTOK
@@ -1014,7 +1014,7 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp)
 		fputs (vec[i], fp);
 	}
 	fputs ("\r\n", fp);
-	(void) fclose (fp);
+	 fclose (fp);
 	_exit (0);			/* NOTREACHED */
 }
 

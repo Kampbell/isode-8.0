@@ -95,14 +95,14 @@ char          **argv;
 	new_draft = FALSE;
 
 	if (home = getenv ("DISHDRAFT"))
-		(void) strcpy (fname, home);
+		 strcpy (fname, home);
 	else if (dad_flag) {
-		(void) strcpy (fname, "/tmp/dishXXXXXX");
-		(void) unlink (mktemp (fname));
+		 strcpy (fname, "/tmp/dishXXXXXX");
+		 unlink (mktemp (fname));
 	} else if (home = getenv ("HOME"))
-		(void) sprintf (fname, "%s/.dishdraft", home);
+		 sprintf (fname, "%s/.dishdraft", home);
 	else
-		(void) strcpy (fname, "./.dishdraft");
+		 strcpy (fname, "./.dishdraft");
 
 	for (x=1; x<argc; x++) {
 		if (test_arg (argv[x], "-draft",1)) {
@@ -113,7 +113,7 @@ char          **argv;
 				Usage (argv[0]);
 				return;
 			}
-			(void) strcpy (fname, argv[x]);
+			 strcpy (fname, argv[x]);
 			shuffle_up (argc--,argv,x--);
 		} else if (test_arg (argv[x], "-newdraft",2)) {
 			new_draft = TRUE;
@@ -132,7 +132,7 @@ char          **argv;
 			}
 			l_temp = (struct list_element *) malloc (sizeof(struct list_element)) ;
 			l_temp->mod = (char *) malloc ((unsigned)(strlen(argv[x]) + 1));
-			(void) strcpy (l_temp->mod, argv[x]) ;
+			 strcpy (l_temp->mod, argv[x]) ;
 			l_temp->add = 0 ;
 			l_temp->next = 0 ;
 			if (start == 0) {
@@ -151,7 +151,7 @@ char          **argv;
 			}
 			l_temp = (struct list_element *) malloc (sizeof(struct list_element)) ;
 			l_temp->mod = (char *) malloc ((unsigned)(strlen(argv[x]) + 1));
-			(void) strcpy (l_temp->mod, argv[x]) ;
+			 strcpy (l_temp->mod, argv[x]) ;
 			l_temp->add = 1 ;
 			l_temp->next = 0 ;
 			if (start == 0) {
@@ -204,7 +204,7 @@ char          **argv;
 		noedit_flag = FALSE;
 	} else {
 		new_draft = TRUE;	/* Ugh ! */
-		(void) mod_template ("/dev/null",TRUE);
+		 mod_template ("/dev/null",TRUE);
 	}
 
 	if (! noedit_flag)
@@ -227,7 +227,7 @@ char          **argv;
 	entry_ptr->e_attributes = get_attributes (fd);
 #endif
 
-	(void) fclose (fd);
+	 fclose (fd);
 	if (parse_status != 0)
 		return;
 
@@ -514,46 +514,46 @@ char          **argv;
 	if (test_arg (argv[1], "-dump",1))
 		if (argc != 3) goto out;
 		else
-			(void) sprintf (buffer, "d %s", argv[2]);
+			 sprintf (buffer, "d %s", argv[2]);
 	else if (test_arg (argv[1], "-tailor",1))
 		if (argc != 3) goto out;
 		else
-			(void) sprintf (buffer, "t %s", argv[2]);
+			 sprintf (buffer, "t %s", argv[2]);
 	else if (test_arg (argv[1], "-abort",1)) {
-		(void) strcpy (buffer,"a");
+		 strcpy (buffer,"a");
 		argc++;		/* to get through if (argc != 3) */
 		do_unbind = TRUE;
 	} else if (test_arg (argv[1], "-restart",1)) {
-		(void) strcpy (buffer,"b");
+		 strcpy (buffer,"b");
 		argc++;		/* to get through if (argc != 3) */
 		do_unbind = TRUE;
 	} else if (test_arg (argv[1], "-refresh",3))
 		if (argc != 3) goto out;
 		else
-			(void) sprintf (buffer, "r %s", foobar (argv[2]));
+			 sprintf (buffer, "r %s", foobar (argv[2]));
 	else if (test_arg (argv[1], "-resync",2))
 		if (argc != 3) goto out;
 		else
-			(void) sprintf (buffer, "f %s", foobar (argv[2]));
+			 sprintf (buffer, "f %s", foobar (argv[2]));
 	else if (test_arg (argv[1], "-lock",1))
 		if (argc != 3) goto out;
 		else
-			(void) sprintf (buffer, "l %s", foobar (argv[2]));
+			 sprintf (buffer, "l %s", foobar (argv[2]));
 	else if (test_arg (argv[1], "-unlock",1))
 		if (argc != 3) goto out;
 		else
-			(void) sprintf (buffer, "u %s", foobar (argv[2]));
+			 sprintf (buffer, "u %s", foobar (argv[2]));
 	else if (test_arg (argv[1], "-info",1)) {
 		dsa_control_info();
 		return;
 	} else if (test_arg (argv[1], "-slave",1)) {
 		msg = "Scheduled\n";
 		if (argc == 2) {
-			(void) strcpy (buffer,"s");
+			 strcpy (buffer,"s");
 			argc++;		/* to get through if (argc != 3) */
 		} else if (argc != 3) goto out;
 		else
-			(void) sprintf (buffer, "s %s", foobar (argv[2]));
+			 sprintf (buffer, "s %s", foobar (argv[2]));
 	} else
 		argc = 1;	/* to force error */
 
@@ -577,7 +577,7 @@ out:
 
 	if (ds_modifyentry (&mod_arg, &error) != DS_OK) {
 		/* deal with error */
-		(void) dish_error (OPT, &error);
+		 dish_error (OPT, &error);
 	} else {
 		ps_print (RPS, msg);
 	}
@@ -605,7 +605,7 @@ dsa_control_info () {
 		return;
 
 	if (ds_read (&read_arg, &error, &result) != DS_OK) {
-		(void) dish_error (OPT, &error);
+		 dish_error (OPT, &error);
 		return;
 	}
 
@@ -628,7 +628,7 @@ char 		noedit;
 
 	if (! new_draft)
 		if ((fptr = fopen (name, "r")) != NULL) {
-			(void) fclose (fptr);
+			 fclose (fptr);
 			if (!noedit) {
 				if (!yesno ("Use existing draft file ? "))
 					return OK;
@@ -644,7 +644,7 @@ char 		noedit;
 		ps_printf (OPT, "Can't open template entry %s\n", name);
 		return (-1);
 	}
-	(void) umask (um);
+	 umask (um);
 
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		return (-1);
@@ -665,7 +665,7 @@ char 		noedit;
 
 	as_free (tas);
 	ps_free (ps);
-	(void) fclose (fptr);
+	 fclose (fptr);
 
 	return (OK);
 }

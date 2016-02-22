@@ -111,7 +111,7 @@ struct RoSAPindication *roi;
 		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 	    default:
-		(void) aculose (acb, roi, "PSelectMask", aca);
+		 aculose (acb, roi, "PSelectMask", aca);
 		freeacblk (acb);
 		return NOTOK;
 	}
@@ -210,30 +210,30 @@ struct RoSAPindication *roi;
 		if (strcmp (rosapfile, "-")) {
 			char    file[BUFSIZ];
 
-			(void) sprintf (file, rosapfile, getpid ());
+			 sprintf (file, rosapfile, getpid ());
 			fp = fopen (file, "a"), isopen = 1;
 		} else
-			fp = stderr, isopen = 0, (void) fflush (stdout);
+			fp = stderr, isopen = 0,  fflush (stdout);
 
 		if (fp) {
 			vpushfp (fp, pe, "ROSEapdus", 0);
-			(void) print_ROS_ROSEapdus (pe, 1, NULLIP, NULLVP, NULLCP);
+			 print_ROS_ROSEapdus (pe, 1, NULLIP, NULLVP, NULLCP);
 			vpopfp ();
 
 			if (isopen)
-				(void) fclose (fp);
+				 fclose (fp);
 			else
-				(void) fflush (fp);
+				 fflush (fp);
 		}
 	}
 #endif
 
 	if ((result = AcUnitDataWrite (acb -> acb_fd, &pe, 1, aci)) == NOTOK) {
-		(void) aculose (acb, roi, "AcUnitDataWrite", aca);
+		 aculose (acb, roi, "AcUnitDataWrite", aca);
 	}
 
 	if (fe)
-		(void) pe_extract (pe, fe);
+		 pe_extract (pe, fe);
 	pe_free (pe);
 
 	return result;
@@ -306,7 +306,7 @@ aculose (
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at association control)",
+		 sprintf (cp = buffer, " (%s at association control)",
 						AcErrString (aca -> aca_reason));
 	case ACS_PRESENTATION:
 		reason = ROS_ACS;

@@ -46,14 +46,14 @@ AcFindPCI (int sd, int *pci, struct AcSAPindication *aci)
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
 
 	*pci = acb -> acb_id;
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }

@@ -77,7 +77,7 @@ PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, stru
 
 out:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -104,7 +104,7 @@ PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindicatio
 	else
 		result = PRelRetryRequestAux (pb, secs, pr, pi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -136,14 +136,14 @@ PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struc
 		}
 
 		if (sa -> sa_peer) {
-			(void) ss2psabort (pb, sa, pi);
+			 ss2psabort (pb, sa, pi);
 			goto out1;
 		}
 		if (SC_FATAL (sa -> sa_reason)) {
-			(void) ss2pslose (pb, pi, id, sa);
+			 ss2pslose (pb, pi, id, sa);
 			goto out2;
 		} else {
-			(void) ss2pslose (NULLPB, pi, id, sa);
+			 ss2pslose (NULLPB, pi, id, sa);
 			goto out1;
 		}
 	}

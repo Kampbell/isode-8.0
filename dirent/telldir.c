@@ -36,7 +36,7 @@ DIR	*dirp;			/* stream from opendir() */
 }
 #else
 int 
-_telldir_stub (void) {
+_telldir_stub()  {
 	;
 }
 #endif

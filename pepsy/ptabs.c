@@ -115,7 +115,7 @@ char   *type;
 		char *t1;
 		/* we have a [[ P type ]] specification */
 		if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-			(void) fprintf(stderr,
+			 fprintf(stderr,
 						   "\ntenc_typ:SETLIST can't extract direct type from %s\n",
 						   yp->yp_param_type);
 			exit(1);
@@ -126,7 +126,7 @@ char   *type;
 
 	if ((yp->yp_flags & YP_PARMVAL) && yp->yp_parm) {
 		if ((f = getfield(yp->yp_parm)) == NULLCP) {
-			(void) fprintf(stderr, "\ntprnt_typ:can't extract field from %s\n",
+			 fprintf(stderr, "\ntprnt_typ:can't extract field from %s\n",
 						   yp->yp_parm);
 			exit(1);
 		}
@@ -225,7 +225,7 @@ char   *type;
 		}
 		t = NULL;
 		p1 = NULL;
-		(void) fprintf(fp, "\t{ SBITSTRING, %d, %s, %s, NULLVP },\n",
+		 fprintf(fp, "\t{ SBITSTRING, %d, %s, %s, NULLVP },\n",
 					   ptr_tblidx, c_tag(yp), c_class(yp));
 		break;
 
@@ -264,7 +264,7 @@ char   *type;
 				break;
 
 			default:
-				(void) fprintf(stderr,"\ntprnt_typ:Unknown Octet string specifier %c\n",
+				 fprintf(stderr,"\ntprnt_typ:Unknown Octet string specifier %c\n",
 							   yp->yp_prfexp);
 				exit(1);
 			}
@@ -354,7 +354,7 @@ char   *type;
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntprnt_typ:SEQLIST can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -368,14 +368,14 @@ char   *type;
 				yp->yp_structname = t;
 #ifdef DO_OFFSETS
 			if (optfield(y)) {
-				(void) fprintf(fp,
+				 fprintf(fp,
 							   "\t{ OPTL, OFFSET(%s, optionals), 0, 0, NULLVP },\n",
 							   yp->yp_structname);
 			}
 #endif
 			tprnt_loop(fp, y, id, yp->yp_structname);
 		}
-		(void) fprintf(fp, "\t{ PE_END, 0, 0, 0, NULLVP },\n");
+		 fprintf(fp, "\t{ PE_END, 0, 0, 0, NULLVP },\n");
 		ptr = save_ptr;
 		cons_type--;
 		break;
@@ -401,7 +401,7 @@ char   *type;
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntprnt_typ:SETLIST can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -415,14 +415,14 @@ char   *type;
 				yp->yp_structname = t;
 #ifdef DO_OFFSETS
 			if (optfield(y)) {
-				(void) fprintf(fp,
+				 fprintf(fp,
 							   "\t{ OPTL, OFFSET(%s, optionals), 0, 0, NULLVP },\n",
 							   yp->yp_structname);
 			}
 #endif
 			tprnt_loop(fp, y, id, yp->yp_structname);
 		}
-		(void) fprintf(fp, "\t{ PE_END, 0, 0, 0, NULLVP },\n");
+		 fprintf(fp, "\t{ PE_END, 0, 0, 0, NULLVP },\n");
 		ptr = save_ptr;
 		cons_type--;
 		break;
@@ -446,7 +446,7 @@ char   *type;
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntprnt_typ:SEQTYPE can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -465,19 +465,19 @@ char   *type;
 			char *f1;
 
 			if ((f1 = getfield(yp->yp_control)) == NULLCP) {
-				(void) fprintf(stderr, "\ntprnt_typ:SEQ OF: can't extract field from %s\n",
+				 fprintf(stderr, "\ntprnt_typ:SEQ OF: can't extract field from %s\n",
 							   yp->yp_control);
 				exit(1);
 			}
-			(void) fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0 },\n",
+			 fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0 },\n",
 						   yp->yp_structname, f1);
 		} else if (yp->yp_structname != NULL)
-			(void) fprintf(fp,
+			 fprintf(fp,
 						   "\t{ PE_END, OFFSET(%s, next), 0, 0, NULLVP },\n",
 						   yp->yp_structname);
 		else
 #endif
-			(void) fprintf(fp, "\t{ PE_END, 0, 0, 0, NULLVP },\n");
+			 fprintf(fp, "\t{ PE_END, 0, 0, 0, NULLVP },\n");
 		ptr = save_ptr;
 		cons_type--;
 		break;
@@ -502,7 +502,7 @@ char   *type;
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntprnt_typ:SETTYPE can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -520,18 +520,18 @@ char   *type;
 			char *f1;
 
 			if ((f1 = getfield(yp->yp_control)) == NULLCP) {
-				(void) fprintf(stderr, "\ntprnt_typ:SET OF: can't extract field from %s\n",
+				 fprintf(stderr, "\ntprnt_typ:SET OF: can't extract field from %s\n",
 							   yp->yp_control);
 				exit(1);
 			}
-			(void) fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0 },\n",
+			 fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0 },\n",
 						   yp->yp_structname, f1);
 		} else if (yp->yp_structname != NULL)
-			(void) fprintf(fp,
+			 fprintf(fp,
 						   "\t{ PE_END, OFFSET(%s, next), 0, 0, NULLVP },\n",
 						   yp->yp_structname);
 		else
-			(void) fprintf(fp, "\t{ PE_END, 0, 0, 0, NULLVP },\n");
+			 fprintf(fp, "\t{ PE_END, 0, 0, 0, NULLVP },\n");
 		ptr = save_ptr;
 		cons_type--;
 		break;
@@ -563,7 +563,7 @@ char   *type;
 			if (yp->yp_flags & YP_CONTROLLED) {
 
 				if ((f1 = getfield(yp->yp_control)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntprnt_typ:CHOICE: can't extract field from %s\n",
 								   yp->yp_control);
 					exit(1);
@@ -573,26 +573,26 @@ char   *type;
 				f1 = "offset";
 
 			if ((yp->yp_flags & YP_ID) && yp->yp_id)
-				(void) fprintf(fp,
+				 fprintf(fp,
 							   "\t{ SCTRL, OFFSET(%s, %s), 0, 0, (char **)&%s%s%s[%d] },\n",
 							   yp->yp_structname, f1, PREFIX, PTR_TABNAME, tab,
 							   addsptr(yp->yp_id));
 			else
-				(void) fprintf(fp,
+				 fprintf(fp,
 							   "\t{ SCTRL, OFFSET(%s, %s), 0, 0, NULLVP },\n",
 							   yp->yp_structname, f1);
 #else
 			if ((yp->yp_flags & YP_ID) && yp->yp_id)
-				(void) fprintf(fp,"\t{ SCTRL, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
+				 fprintf(fp,"\t{ SCTRL, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
 							   PREFIX, PTR_TABNAME, tab, addsptr(yp->yp_id));
 			else
-				(void) fprintf(fp, "\t{ SCTRL, 0, 0, 0, NULLVP },\n");
+				 fprintf(fp, "\t{ SCTRL, 0, 0, 0, NULLVP },\n");
 
 #endif
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntprnt_typ:CHOICE can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -606,7 +606,7 @@ char   *type;
 				yp->yp_structname = t;
 			tprnt_loop(fp, y, id, yp->yp_structname);
 		}
-		(void) fprintf(fp, "\t{ PE_END, 0, 0, 0, NULLVP },\n");
+		 fprintf(fp, "\t{ PE_END, 0, 0, 0, NULLVP },\n");
 		ptr = save_ptr;
 		cons_type--;
 		break;
@@ -657,7 +657,7 @@ YP      yp;
 	case YP_BOOL:
 	case YP_INT:
 	case YP_INTLIST:
-		(void) fprintf(fp, "\t{DFLT_B,      %d,     0,      0 },\n",
+		 fprintf(fp, "\t{DFLT_B,      %d,     0,      0 },\n",
 					   yp->yp_default->yv_number);
 		break;
 	case YP_BIT:
@@ -676,7 +676,7 @@ YP      yp;
 	case YP_IDEFINED:
 	case YP_ENUMLIST:
 	case YP_REAL:
-		(void) fprintf(fp, "\t{DFLT_B,      0,      0,      0 },\n");
+		 fprintf(fp, "\t{DFLT_B,      0,      0,      0 },\n");
 		break;
 
 	default:
@@ -702,8 +702,8 @@ int	idx;
 	tag = c_tag(yp);
 	flags = c_class(yp);
 	if (mrose3) {		/* need to append FL_PRTAG flag */
-		(void) strncpy(buf1, flags, BUFSIZ);
-		(void) strncat(buf1, "|FL_PRTAG", BUFSIZ);
+		 strncpy(buf1, flags, BUFSIZ);
+		 strncat(buf1, "|FL_PRTAG", BUFSIZ);
 		flags = buf1;
 	}
 	if (mrose1)
@@ -714,11 +714,11 @@ int	idx;
 		typename = (char *)0;
 	if (typename) {
 		int pindex = addsptr (typename);
-		(void) fprintf(fp, "\t{ %s, %d, %s, %s, (char **)&%s%s%s[%d] },\n",
+		 fprintf(fp, "\t{ %s, %d, %s, %s, (char **)&%s%s%s[%d] },\n",
 					   type, idx, tag, flags,
 					   PREFIX, PTR_TABNAME, tab, pindex);
 	} else
-		(void) fprintf(fp, "\t{ %s, %d, %s, %s, NULLVP },\n",
+		 fprintf(fp, "\t{ %s, %d, %s, %s, NULLVP },\n",
 					   type,idx, tag, flags);
 }
 
@@ -739,8 +739,8 @@ int	idx;
 	tag = ec_tag(yp);
 	flags = ec_class(yp);
 	if (mrose3) {		/* need to append FL_PRTAG flag */
-		(void) strncpy(buf1, flags, BUFSIZ);
-		(void) strncat(buf1, "|FL_PRTAG", BUFSIZ);
+		 strncpy(buf1, flags, BUFSIZ);
+		 strncat(buf1, "|FL_PRTAG", BUFSIZ);
 		flags = buf1;
 		mrose3 = 0;	/* don't want the next tag */
 	}
@@ -754,11 +754,11 @@ int	idx;
 		typename = NULL;
 	if (typename) {
 		int pindex = addsptr (typename);
-		(void) fprintf(fp, "\t{ %s, %d, %s, %s, (char **)&%s%s%s[%d] },\n",
+		 fprintf(fp, "\t{ %s, %d, %s, %s, (char **)&%s%s%s[%d] },\n",
 					   type, idx, tag, flags,
 					   PREFIX, PTR_TABNAME, tab, pindex);
 	} else
-		(void) fprintf(fp, "\t{ %s, %d, %s, %s, NULLVP },\n",
+		 fprintf(fp, "\t{ %s, %d, %s, %s, NULLVP },\n",
 					   type, idx, tag, flags);
 }
 
@@ -781,8 +781,8 @@ int	idx;
 	tag = c_tag(yp);
 	flags = c_class(yp);
 	if (mrose3) {		/* need to append FL_PRTAG flag */
-		(void) strncpy(buf1, flags, BUFSIZ);
-		(void) strncat(buf1, "|FL_PRTAG", BUFSIZ);
+		 strncpy(buf1, flags, BUFSIZ);
+		 strncat(buf1, "|FL_PRTAG", BUFSIZ);
 		flags = buf1;
 	}
 	if (mrose1)
@@ -794,20 +794,20 @@ int	idx;
 #ifdef DO_OFFSETS
 	if (typename) {
 		int pindex = addsptr (typename);
-		(void) fprintf(fp, "\t{ %s, OFFSET(%s, %s), %s, %s, (char **)&%s%s%s[%d] },\n",
+		 fprintf(fp, "\t{ %s, OFFSET(%s, %s), %s, %s, (char **)&%s%s%s[%d] },\n",
 					   type, t, f, tag, flags,
 					   PREFIX, PTR_TABNAME, tab, pindex);
 	} else
-		(void) fprintf(fp, "\t{ %s, OFFSET(%s, %s), %s, %s, NULLVP },\n",
+		 fprintf(fp, "\t{ %s, OFFSET(%s, %s), %s, %s, NULLVP },\n",
 					   type, t, f, tag, flags);
 #else
 	if (typename) {
 		int pindex = addsptr (typename);
-		(void) fprintf(fp, "\t{ %s, %d, %s, %s, (char **)&%s%s%s[%d] },\n",
+		 fprintf(fp, "\t{ %s, %d, %s, %s, (char **)&%s%s%s[%d] },\n",
 					   type, idx, tag, flags,
 					   PREFIX, PTR_TABNAME, tab, pindex);
 	} else
-		(void) fprintf(fp, "\t{ %s, %d, %s, %s, NULLVP },\n",
+		 fprintf(fp, "\t{ %s, %d, %s, %s, NULLVP },\n",
 					   type, idx, tag, flags);
 #endif
 }
@@ -877,8 +877,8 @@ char	*t, *f;
 	}
 	flags = c_class(yp);
 	if (mrose3) {		/* need to append FL_PRTAG flag */
-		(void) strncpy(buf1, flags, BUFSIZ);
-		(void) strncat(buf1, "|FL_PRTAG", BUFSIZ);
+		 strncpy(buf1, flags, BUFSIZ);
+		 strncat(buf1, "|FL_PRTAG", BUFSIZ);
 		flags = buf1;
 	}
 	if (mrose1)
@@ -889,24 +889,24 @@ char	*t, *f;
 		typename = (char *)0;
 #ifdef DO_OFFSETS
 	if (f && !noindirect(f)) {
-		(void) sprintf(buf2, "OFFSET(%s, %s)", t, f);
+		 sprintf(buf2, "OFFSET(%s, %s)", t, f);
 		off = buf2;
 	} else if (f && *f == '&') {
-		(void) sprintf(buf2, "OFFSET(%s, %s)", t, f + 1);
+		 sprintf(buf2, "OFFSET(%s, %s)", t, f + 1);
 		off = buf2;
 	} else
 #endif
 		off = "0";
 	if (typename) {
 		int pindex = addsptr (typename);
-		(void) fprintf(fp, "\t{ %s, %s, _Z%s, %s, (char **)&%s%s%s[%d] },\n",
+		 fprintf(fp, "\t{ %s, %s, _Z%s, %s, (char **)&%s%s%s[%d] },\n",
 					   type, off, obj, flags,
 					   PREFIX, PTR_TABNAME, tab, pindex);
 	} else
-		(void) fprintf(fp, "\t{ %s, %s, _Z%s, %s, NULLVP },\n",
+		 fprintf(fp, "\t{ %s, %s, _Z%s, %s, NULLVP },\n",
 					   type, off, obj, flags);
 	if (extflag)
-		(void) fprintf(fp, "\t{ EXTMOD, %d, 0, 0, NULLVP },\n",
+		 fprintf(fp, "\t{ EXTMOD, %d, 0, 0, NULLVP },\n",
 					   gen_modref(yp->yp_module));
 }
 
@@ -933,7 +933,7 @@ char	*t, *f;
 	char	buf3[BUFSIZ];
 
 	if (f == NULL || noindirect(f))  {
-		(void) sprintf(buf3, "S%s", p->univ_tab);
+		 sprintf(buf3, "S%s", p->univ_tab);
 		type = buf3;
 	} else
 		type = p->univ_tab;
@@ -946,10 +946,10 @@ char	*t, *f;
 		class = p->univ_class;
 	}
 
-	(void) strncpy(buf1, c_flags(yp, class), BUFSIZ);
+	 strncpy(buf1, c_flags(yp, class), BUFSIZ);
 	flags = buf1;
 	if (mrose3) {		/* need to append FL_PRTAG flag */
-		(void) strncat(buf1, "|FL_PRTAG", BUFSIZ);
+		 strncat(buf1, "|FL_PRTAG", BUFSIZ);
 	}
 	if (mrose1)
 		typename = yp->yp_id;
@@ -959,21 +959,21 @@ char	*t, *f;
 		typename = (char *)0;
 #ifdef DO_OFFSETS
 	if (f && !noindirect(f)) {
-		(void) sprintf(buf2, "OFFSET(%s, %s)", t, f);
+		 sprintf(buf2, "OFFSET(%s, %s)", t, f);
 		off = buf2;
 	} else if (f && *f == '&') {
-		(void) sprintf(buf2, "OFFSET(%s, %s)", t, f + 1);
+		 sprintf(buf2, "OFFSET(%s, %s)", t, f + 1);
 		off = buf2;
 	} else
 #endif
 		off = "0";
 	if (typename) {
 		int pindex = addsptr (typename);
-		(void) fprintf(fp, "\t{ %s, %s, %d, %s, (char **)&%s%s%s[%d] },\n",
+		 fprintf(fp, "\t{ %s, %s, %d, %s, (char **)&%s%s%s[%d] },\n",
 					   type, off, tag, flags,
 					   PREFIX, PTR_TABNAME, tab, pindex);
 	} else
-		(void) fprintf(fp, "\t{ %s, %s, %d, %s, NULLVP },\n",
+		 fprintf(fp, "\t{ %s, %s, %d, %s, NULLVP },\n",
 					   type, off, tag, flags);
 }
 
@@ -1126,6 +1126,6 @@ addsptr (char *s)
 {
 	char buf[BUFSIZ];
 
-	(void) sprintf (buf, "\"%s\"", s);
+	 sprintf (buf, "\"%s\"", s);
 	return addptr (buf);
 }

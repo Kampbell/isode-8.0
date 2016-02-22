@@ -68,7 +68,7 @@ static struct dispatch dispatches[] = {
 int 
 main (int argc, char **argv, char **envp)
 {
-	(void) ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
+	 ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
 						dispatches, table_PasswordLookup_Operations,
 						NULLIFP, NULLIFP);
 

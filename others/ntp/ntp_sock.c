@@ -23,14 +23,14 @@ extern void receive();
 extern int errno;
 
 int 
-main (void) {
+main  {
 	int i, cc, val;
 	char foo[10];
 
 	advise(LLOG_DEBUG, NULLCP, "ifconfig test");
 	create_sockets(htons(43242));
 	for (i = 0; i < nintf; i++) {
-		(void) printf("%d: %s fd %d  addr %s  mask %x ",
+		 printf("%d: %s fd %d  addr %s  mask %x ",
 					  i, addrs[i].name, addrs[i].fd,
 					  paddr (addrs[i].addr),
 					  ntohl(addrs[i].mask.sin_addr.s_addr));
@@ -40,21 +40,21 @@ main (void) {
 			perror("getsockopt");
 			exit(1);
 		}
-		(void) printf("BCAST opt %d", val);
+		 printf("BCAST opt %d", val);
 		cc = sizeof(val);
 		if (getsockopt(addrs[0].fd, SOL_SOCKET, SO_RCVBUF,
 					   (char*)&val, &cc)) {
 			perror("getsockopt");
 			exit(1);
 		}
-		(void) printf("sockbuf size = %d ", val);
-		(void) putchar('\n');
+		 printf("sockbuf size = %d ", val);
+		 putchar('\n');
 	}
 
 	for (i=0; i < nintf; i++) {
-		(void) fprintf(stderr, "Read fd %d.. ", addrs[i].fd);
+		 fprintf(stderr, "Read fd %d.. ", addrs[i].fd);
 		cc = read(addrs[i].fd, foo, 10);
-		(void) fprintf(stderr, " returns %d ", cc);
+		 fprintf(stderr, " returns %d ", cc);
 		perror("read errno");
 	}
 }
@@ -194,7 +194,7 @@ create_sockets (unsigned int port)
 next:
 		;
 	}
-	(void) close(vs);
+	 close(vs);
 
 	for (i = 0; i < nintf; i++) {
 		if ((addrs[i].flags & INTF_VALID) == 0)
@@ -282,7 +282,7 @@ recv_inet (struct intf *ap, struct timeval *tvp)
 	if (cc < sizeof(*pkt)) {
 #ifdef	DEBUG
 		if (debug)
-			(void) printf("Runt packet from %s\n",
+			 printf("Runt packet from %s\n",
 						  paddr (peer));
 #endif
 		return -1;
@@ -294,7 +294,7 @@ recv_inet (struct intf *ap, struct timeval *tvp)
 	}
 #ifdef	DEBUG
 	if (debug > 3) {
-		(void) printf ("\nInput ");
+		 printf ("\nInput ");
 		dump_pkt(peer, pkt, (struct ntp_peer *)NULL);
 	}
 #endif
@@ -414,7 +414,7 @@ query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap)
 		cip++;
 		if (nip->count++ >= N_NTP_PKTS - 1) {
 			nip->seq =seq++;
-			(void) send_inet (ap, (char *)packet,
+			 send_inet (ap, (char *)packet,
 							  sizeof (packet), dst);
 			nip->type = INFO_REPLY;
 			nip->count = 0;
@@ -423,7 +423,7 @@ query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap)
 	}
 	if (nip->count) {
 		nip->seq = seq;
-		(void) send_inet (ap, (char *)packet,
+		 send_inet (ap, (char *)packet,
 						  sizeof (packet), dst);
 	}
 }

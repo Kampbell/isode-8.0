@@ -209,7 +209,7 @@ struct documentStore *a;
 {
 	PE	    pe;
 
-	(void) encode_Thorn_DocumentStoreSyntax (&pe, 0, 0, NULLCP, a);
+	 encode_Thorn_DocumentStoreSyntax (&pe, 0, 0, NULLCP, a);
 
 	return pe;
 }
@@ -226,7 +226,7 @@ PE	pe;
 }
 
 documentStore_syntax () {
-	(void) add_attribute_syntax ("documentStoreSyntax",
+	 add_attribute_syntax ("documentStoreSyntax",
 								 (IFP) documentStore_enc,
 								 (IFP) documentStore_dec,
 								 (IFP) str2documentStore,

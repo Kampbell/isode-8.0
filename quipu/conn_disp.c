@@ -227,7 +227,7 @@ struct DSAPindication *di ;
 			break;
 		}
 		}
-		(void) time(&timenow) ;
+		 time(&timenow) ;
 		tm2ut(gmtime(&timenow), &ut) ;
 		tmp_op_list->operation_list->start_time = strdup(utct2str(&ut)) ;
 		tmp_op_list->operation_list->finish_time = (char *) 0 ;
@@ -276,7 +276,7 @@ struct DSAPindication *di ;
 		tmp_op_list->operation_list->operation_id = 0 ;
 		tmp_op_list->operation_list->invoke_id = cn->cn_op_id ;
 		tmp_op_list->operation_list->base_object = dn_cpy(cn->cn_dn) ;
-		(void) time(&timenow) ;
+		 time(&timenow) ;
 		tm2ut(gmtime(&timenow), &ut) ;
 		tmp_op_list->operation_list->start_time = strdup(utct2str(&ut)) ;
 		tmp_op_list->operation_list->finish_time = (char *) 0 ;
@@ -301,7 +301,7 @@ struct DSAPindication *di ;
 		}
 
 		/* Now fill out the finish time */
-		(void) time(&timenow) ;
+		 time(&timenow) ;
 		tm2ut(gmtime(&timenow), &ut) ;
 		((struct quipu_call *)tmp_avs->avseq_av.av_struct)->finish_time = strdup(utct2str(&ut)) ;
 #ifdef SPT_DEBUG

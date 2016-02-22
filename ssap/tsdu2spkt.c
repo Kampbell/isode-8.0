@@ -362,7 +362,7 @@ static int pi_length[PI_TABLE_LEN] = {
 	s -> s_errno = SC_PROTOCOL; \
 	return NOTOK; \
     } \
-    (void) sprintf (isn, "%lu", (ssn)); \
+     sprintf (isn, "%lu", (ssn)); \
     put2spdu ((code), strlen (isn), isn, &c); \
 }
 

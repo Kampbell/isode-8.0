@@ -95,7 +95,7 @@ int    d1,
 	if (d1 == d2)
 		return OK;
 
-	(void) close (d2);
+	 close (d2);
 #ifdef	F_DUPFD
 	if ((d = fcntl (d1, F_DUPFD, d2)) == NOTOK)
 		return NOTOK;
@@ -124,7 +124,7 @@ int	d1,
 
 	result = dup2_aux (d1, d2);
 
-	(void) close (fd);
+	 close (fd);
 
 	return result;
 }

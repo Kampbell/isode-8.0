@@ -36,7 +36,7 @@ char ufn_notify = FALSE;
 int ufn_flags = UFN_ALL;
 
 extern char PY_pepy[];
-#define NOTIFY(x) if (ufn_notify) (void) printf x, (void) putchar('\n'); else ;
+#define NOTIFY(x) if (ufn_notify)  printf x,  putchar('\n'); else ;
 
 AttributeType at_OrgUnit;
 AttributeType at_Organisation;
@@ -670,17 +670,17 @@ envlist read_envlist() {
 	int i = 0;
 
 	if (home = getenv ("UFNRC"))
-		(void) strcpy (ufnrc, home);
+		 strcpy (ufnrc, home);
 	else if (home = getenv ("HOME"))
-		(void) sprintf (ufnrc, "%s/.ufnrc", home);
+		 sprintf (ufnrc, "%s/.ufnrc", home);
 	else
-		(void) strcpy (ufnrc, "./.ufnrc");
+		 strcpy (ufnrc, "./.ufnrc");
 
 	opened = ufnrc;
 	if ((file = fopen (ufnrc,"r")) == 0) {
 		def = isodefile("ufnrc",0);
 		if ((file = fopen(def,"r")) == 0) {
-			(void) sprintf (PY_pepy,"Can't open '%s' or '%s'",ufnrc,def);
+			 sprintf (PY_pepy,"Can't open '%s' or '%s'",ufnrc,def);
 			return NULLEL;
 		}
 		opened = def;
@@ -695,16 +695,16 @@ envlist read_envlist() {
 		if (isspace (*p)) {
 			/* part of current environment */
 			if (!dtail) {
-				(void) sprintf (PY_pepy, "Unexpected blank at start of line %d in %s",i,opened);
-				(void) fclose (file);
+				 sprintf (PY_pepy, "Unexpected blank at start of line %d in %s",i,opened);
+				 fclose (file);
 				return NULLEL;
 			}
 			p = TidyString(p);
 			if (*p == '-')
 				dn = NULLDN;
 			else if ((dn = str2dn (p)) == NULLDN) {
-				(void) sprintf (PY_pepy, "Bad DN in environment file (%s) line %d",opened,i);
-				(void) fclose (file);
+				 sprintf (PY_pepy, "Bad DN in environment file (%s) line %d",opened,i);
+				 fclose (file);
 				return NULLEL;
 			}
 			dtail->dns_next = dn_seq_alloc();
@@ -717,8 +717,8 @@ envlist read_envlist() {
 		p = TidyString (p);
 
 		if ((ptr = index (p,':')) == NULLCP) {
-			(void) sprintf (PY_pepy, "':' missing in environment file (%s) line %d",opened,i);
-			(void) fclose (file);
+			 sprintf (PY_pepy, "':' missing in environment file (%s) line %d",opened,i);
+			 fclose (file);
 			return NULLEL;
 		}
 
@@ -728,8 +728,8 @@ envlist read_envlist() {
 		if (*ptr == '-')
 			dn = NULLDN;
 		else if ((dn = str2dn (ptr)) == NULLDN) {
-			(void) sprintf (PY_pepy, "Bad DN in environment file (%s) line %d",opened,i);
-			(void) fclose (file);
+			 sprintf (PY_pepy, "Bad DN in environment file (%s) line %d",opened,i);
+			 fclose (file);
 			return NULLEL;
 		}
 
@@ -763,7 +763,7 @@ envlist read_envlist() {
 
 	}
 
-	(void) fclose (file);
+	 fclose (file);
 
 	return top;
 }
@@ -788,7 +788,7 @@ envlist el;
 	PY_pepy[0] = NULL;
 	if (el == NULLEL) {
 		if ((el = read_envlist ()) == NULLEL) {
-			(void) sprintf (PY_pepy,"Can't read environment");
+			 sprintf (PY_pepy,"Can't read environment");
 			return 0;
 		}
 	}
@@ -873,11 +873,11 @@ Filter	fi;
 
 	if (nps == NULLPS) {
 		if ((nps = ps_alloc (std_open)) == NULL) {
-			(void) fprintf (stderr, "ps_alloc(std_open): you lose\n");
+			 fprintf (stderr, "ps_alloc(std_open): you lose\n");
 			return;
 		}
 		if (std_setup (nps, stdout) == NOTOK) {
-			(void) fprintf (stderr, "std_setup(stdout): you lose\n");
+			 fprintf (stderr, "std_setup(stdout): you lose\n");
 			ps_free (nps);
 			nps = NULL;
 			return;
@@ -891,6 +891,6 @@ Filter	fi;
 	print_filter (nps, fi, 0);
 
 	ps_print (nps, "\n\n");
-	(void) ps_flush (nps);
+	 ps_flush (nps);
 }
 #endif

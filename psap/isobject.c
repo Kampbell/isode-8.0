@@ -57,9 +57,9 @@ setisobject (int f)
 
 
 int 
-endisobject (void) {
+endisobject()  {
 	if (servf && !stayopen) {
-		(void) fclose (servf);
+		 fclose (servf);
 		servf = NULL;
 	}
 
@@ -69,7 +69,7 @@ endisobject (void) {
 /*  */
 
 struct isobject *
-getisobject (void) {
+getisobject()  {
 	int i;
 	struct isobject *io = &ios;
 	char  *cp;

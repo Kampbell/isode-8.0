@@ -59,17 +59,17 @@ struct FTAMindication *fti;
 		case PC_WAITING:
 waiting:
 			;
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return ftamlose (fti, FS_GEN_WAITING, 0, NULLCP, NULLCP);
 
 		default:
-			(void) ps2ftamlose (fsb, fti, "PSelectMask", pa);
+			 ps2ftamlose (fsb, fti, "PSelectMask", pa);
 			freefsblk (fsb);
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return NOTOK;
 		}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }

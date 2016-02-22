@@ -50,7 +50,7 @@ RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication
 	if (result != OK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoBindInit: RO-BIND.INDICATION: failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
-		(void) acs2ronotlose (rni, "RO-BIND.INDICATION", aca);
+		 acs2ronotlose (rni, "RO-BIND.INDICATION", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	} else {
@@ -91,7 +91,7 @@ ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni)
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("ParseRoBindArgument: decode_RONOT_BindArgumentValue failed"));
 		acs->acs_ninfo = 0;
 		pe_free (pe);
-		(void) RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
+		 RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 		return (ronotlose (rni, RBI_DEC_BIND_ARG, NULLCP, NULLCP));
 	}
 	pe_free (pe);
@@ -153,7 +153,7 @@ struct RoNOTindication	* rni;
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoBindResult: AcAssocResponse failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
-		(void) acs2ronotlose (rni, "RO-BIND.RESULT", aca);
+		 acs2ronotlose (rni, "RO-BIND.RESULT", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
@@ -215,7 +215,7 @@ struct RoNOTindication	* rni;
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoBindError: AcAssocResponse failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
-		(void) acs2ronotlose (rni, "RO-BIND.ERROR", aca);
+		 acs2ronotlose (rni, "RO-BIND.ERROR", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}

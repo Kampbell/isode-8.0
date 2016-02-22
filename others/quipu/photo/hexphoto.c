@@ -37,7 +37,7 @@ decode_t4 (char *picture, char *persons_name, int len)
 	if (len == 0) len = photolen (picture);
 
 	for (i=0; i<len; i++)
-		(void) fprintf (stderr,"%02x",*picture++ & 255);
+		 fprintf (stderr,"%02x",*picture++ & 255);
 
 
 }

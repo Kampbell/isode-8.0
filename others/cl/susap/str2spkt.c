@@ -71,14 +71,14 @@ struct ssapkt *s;
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			(void) sprintf (file, ssapfile, getpid ());
+			 sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				fprintf (fp, "str = %d/\"%s\"\n", strlen (buffer), buffer);
 				spkt2text (fp, s, 0);
-				(void) fclose (fp);
+				 fclose (fp);
 			}
 		} else {
-			(void) fflush (stdout);
+			 fflush (stdout);
 			fprintf (stderr, "str = %d/\"%s\"\n", strlen (buffer), buffer);
 			spkt2text (stderr, s, 0);
 		}
@@ -123,15 +123,15 @@ str2spkt (char *buffer)
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			(void) sprintf (file, ssapfile, getpid ());
+			 sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				fprintf (fp, "str = %d/\"%s\"\n", strlen (buffer), buffer);
 				if (s)
 					spkt2text (fp, s, 1);
-				(void) fclose (fp);
+				 fclose (fp);
 			}
 		} else {
-			(void) fflush (stdout);
+			 fflush (stdout);
 			fprintf (stderr, "str = %d/\"%s\"\n", strlen (buffer), buffer);
 			if (s)
 				spkt2text (stderr, s, 1);

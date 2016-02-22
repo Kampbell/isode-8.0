@@ -63,7 +63,7 @@ str2vecX (char *s, char **vec, int nmask, int *mask, int brk, int docomma)
 			for (vec[i++] = ++s; *s != NULL && *s != '"'; s++)
 				if (*s == QUOTE) {
 					if (*++s == '"')
-						(void) strcpy (s - 1, s);
+						 strcpy (s - 1, s);
 					s--;
 				}
 			if (*s == '"')

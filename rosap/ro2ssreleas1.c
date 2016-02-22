@@ -53,7 +53,7 @@ RoEndRequest (int sd, int priority, struct RoSAPindication *roi)
 
 	result = RoEndRequestAux (acb, priority, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 

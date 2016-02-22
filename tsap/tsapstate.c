@@ -47,7 +47,7 @@ TSaveState (int sd, char **vec, struct TSAPdisconnect *td)
 	tsapPsig (tb, sd);
 
 	if (tb -> tb_len > 0) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 
 		return tsaplose (td, DR_WAITING, NULLCP, NULLCP);
 	}
@@ -60,7 +60,7 @@ TSaveState (int sd, char **vec, struct TSAPdisconnect *td)
 
 	freetblk (tb);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }
@@ -80,12 +80,12 @@ TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td)
 		return tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 
 	if (implode ((u_char *) &tbs, buffer, strlen (buffer)) != sizeof tbs) {
-		(void) tsaplose (td, DR_PARAMETER, NULLCP, "bad state vector");
+		 tsaplose (td, DR_PARAMETER, NULLCP, "bad state vector");
 		goto out1;
 	}
 
 	if (findtblk (tbs.tb_fd)) {
-		(void) tsaplose (td, DR_PARAMETER, NULLCP, "transport descriptor active");
+		 tsaplose (td, DR_PARAMETER, NULLCP, "transport descriptor active");
 		goto out1;
 	}
 	tb -> tb_fd = tbs.tb_fd;
@@ -98,24 +98,24 @@ TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td)
 	switch (tb -> tb_flags & (TB_TP0 | TB_TP4)) {
 #ifdef	TCP
 	case TB_TCP:
-		(void) TTService (tb);
+		 TTService (tb);
 		break;
 #endif
 
 #ifdef	X25
 	case TB_X25:
-		(void) XTService (tb);
+		 XTService (tb);
 		break;
 #endif
 
 #ifdef	TP4
 	case TB_TP4:
-		(void) tp4init (tb);
+		 tp4init (tb);
 		break;
 #endif
 
 	default:
-		(void) tsaplose (td, DR_PARAMETER, NULLCP, "network type not set");
+		 tsaplose (td, DR_PARAMETER, NULLCP, "network type not set");
 		tb -> tb_fd = NOTOK;
 		goto out1;
 	}

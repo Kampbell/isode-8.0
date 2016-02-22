@@ -52,7 +52,7 @@ struct FTAMindication *fti;
 				== NULL) {
 no_mem:
 			;
-			(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+			 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 			;
 			if (fpmp)
@@ -74,7 +74,7 @@ out:
 		default:
 bad_dp:
 			;
-			(void) ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "bad diagnostic type/observer/source (%d/%d/%d) at slot %d",
 							 dp -> ftd_type, dp -> ftd_observer, dp -> ftd_source,
 							 ndiag - i - 1);
@@ -183,7 +183,7 @@ struct FTAMindication *fti;
 			if ((cp = qb2str (f3 -> further__details)) == NULL)
 				return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 								 "out of memory");
-			(void) strncpy (dp -> ftd_data, cp, sizeof dp -> ftd_data);
+			 strncpy (dp -> ftd_data, cp, sizeof dp -> ftd_data);
 			dp -> ftd_data[sizeof dp -> ftd_data - 1] = NULL;
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			free (cp);

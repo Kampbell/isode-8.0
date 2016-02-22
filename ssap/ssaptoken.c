@@ -66,7 +66,7 @@ SGTokenRequest (int sd, int tokens, struct SSAPindication *si)
 
 	result = SGTokenRequestAux (sb, tokens, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -146,7 +146,7 @@ SPTokenRequest (int sd, int tokens, char *data, int cc, struct SSAPindication *s
 
 	result = SPTokenRequestAux (sb, tokens, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

@@ -301,29 +301,29 @@ pl_read_lex (PS ps, PL pl)
 {
 	int     i = pl_read_lex_aux (ps, pl);
 
-	(void) fprintf (stderr, "pl_read_lex returns ");
+	 fprintf (stderr, "pl_read_lex returns ");
 	if (i == NOTOK) {
-		(void) fprintf (stderr, "NOTOK [%s]\n", ps_error (ps -> ps_errno));
+		 fprintf (stderr, "NOTOK [%s]\n", ps_error (ps -> ps_errno));
 		return NOTOK;
 	}
 	switch (pl -> pl_code) {
 	case PL_CODE_LPAR:
-		(void) fprintf (stderr, "LPAR");
+		 fprintf (stderr, "LPAR");
 		break;
 	case PL_CODE_RPAR:
-		(void) fprintf (stderr, "RPAR");
+		 fprintf (stderr, "RPAR");
 		break;
 	case PL_CODE_NAME:
-		(void) fprintf (stderr, "NAME \"%s\"", pl -> pl_name);
+		 fprintf (stderr, "NAME \"%s\"", pl -> pl_name);
 		break;
 	case PL_CODE_NUM:
-		(void) fprintf (stderr, "NUM 0x%x", pl -> pl_num);
+		 fprintf (stderr, "NUM 0x%x", pl -> pl_num);
 		break;
 	default:
-		(void) fprintf (stderr, "code %d", pl -> pl_code);
+		 fprintf (stderr, "code %d", pl -> pl_code);
 		break;
 	}
-	(void) fprintf (stderr, "\n");
+	 fprintf (stderr, "\n");
 	if (pl -> pl_code == PL_CODE_RPAR)
 		sleep(1);
 

@@ -215,7 +215,7 @@ struct task_act * task ;
 		return ;
 	}
 
-	(void) time(&timenow) ;
+	 time(&timenow) ;
 	tm2ut(gmtime(&timenow), &ut) ;
 	tmp_op_list->operation_list->finish_time = strdup(utct2str(&ut)) ;
 }

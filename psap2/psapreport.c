@@ -59,9 +59,9 @@ PUReportRequest (int sd, int reason, PE *data, int ndata, struct PSAPindication 
 
 	if ((result = SUReportRequest (sd, reason, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SUReportRequest", sa);
+			 ss2pslose (pb, pi, "SUReportRequest", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SUReportRequest", sa);
+			 ss2pslose (NULLPB, pi, "SUReportRequest", sa);
 			goto out1;
 		}
 
@@ -78,7 +78,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

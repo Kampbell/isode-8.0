@@ -176,7 +176,7 @@ net_init() {
 			   paddr2str (dsaladdr, NULLNA)));
 		if (td -> td_cc > 0) {
 			if (ontty)
-				(void) fprintf (stderr,
+				 fprintf (stderr,
 								"TNetListen: [%s] %*.*s\nAddress: %s\n",
 								TErrString (td -> td_reason), td -> td_cc,
 								td -> td_cc, td -> td_data,
@@ -186,7 +186,7 @@ net_init() {
 				   td -> td_cc, td -> td_cc, td -> td_data));
 		} else {
 			if (ontty)
-				(void) fprintf (stderr, "TNetListen: [%s]\nAddress: %s\n",
+				 fprintf (stderr, "TNetListen: [%s]\nAddress: %s\n",
 								TErrString (td -> td_reason),
 								paddr2str (dsaladdr, NULLNA));
 			LLOG (log_dsap, LLOG_FATAL,

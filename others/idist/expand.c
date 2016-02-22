@@ -88,7 +88,7 @@ expand (struct namelist *list, int wh)
 	char *argvbuf[GAVSIZ];
 
 	if (debug) {
-		(void) printf("expand(%x, %d)\nlist = ", list, wh);
+		 printf("expand(%x, %d)\nlist = ", list, wh);
 		prnames(list);
 	}
 
@@ -130,7 +130,7 @@ expand (struct namelist *list, int wh)
 		}
 	}
 	if (debug) {
-		(void) printf("expanded list = ");
+		 printf("expanded list = ");
 		prnames(list);
 	}
 	return(list);
@@ -176,13 +176,13 @@ expstr (char *s)
 			*tail = savec;
 		if (tp != NULL) {
 			for (; tp != NULL; tp = tp->n_next) {
-				(void) sprintf(buf, "%s%s%s",
+				 sprintf(buf, "%s%s%s",
 							   s, tp->n_name, tail);
 				expstr(buf);
 			}
 			return;
 		}
-		(void) sprintf(buf, "%s%s", s, tail);
+		 sprintf(buf, "%s%s", s, tail);
 		expstr(buf);
 		return;
 	}
@@ -205,7 +205,7 @@ expstr (char *s)
 			*cp1 = '\0';
 			if (pw == NULL || strcmp(pw->pw_name, buf+1) != 0) {
 				if ((pw = getpwnam(buf+1)) == NULL) {
-					(void) strcat(buf, ": unknown user name");
+					 strcat(buf, ": unknown user name");
 					yyerror(buf+1);
 					return;
 				}
@@ -276,7 +276,7 @@ expsh (char *s)
 		cp++, pathp++;
 	*pathp = '\0';
 	if (*oldcp == '{') {
-		(void) execbrc(cp, (char *)NULL);
+		 execbrc(cp, (char *)NULL);
 		return;
 	}
 	matchdir(cp);
@@ -309,19 +309,19 @@ matchdir (char *pattern)
 			if (which & E_TILDE)
 				Cat(path, dp->d_name);
 			else {
-				(void) strcpy(pathp, dp->d_name);
+				 strcpy(pathp, dp->d_name);
 				Cat(tilde, tpathp);
 				*pathp = '\0';
 			}
 		}
-	(void) closedir(dirp);
+	 closedir(dirp);
 	return;
 
 patherr1:
-	(void) closedir(dirp);
+	 closedir(dirp);
 patherr2:
-	(void) strcat(path, ": ");
-	(void) strcat(path, sys_errlist[errno]);
+	 strcat(path, ": ");
+	 strcat(path, sys_errlist[errno]);
 	yyerror(path);
 }
 
@@ -380,8 +380,8 @@ pend:
 doit:
 			savec = *pm;
 			*pm = 0;
-			(void) strcpy(lm, pl);
-			(void) strcat(restbuf, pe + 1);
+			 strcpy(lm, pl);
+			 strcat(restbuf, pe + 1);
 			*pm = savec;
 			if (s == 0) {
 				spathp = pathp;

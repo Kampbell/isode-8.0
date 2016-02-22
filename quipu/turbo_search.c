@@ -205,7 +205,7 @@ struct search_kid_arg	*ska;
 	if ( ska->ska_arg->sra_searchaliases && pindex->i_nonlocalaliases
 			!= (Entry *) 0 ) {
 		for ( tmp = pindex->i_nonlocalaliases; *tmp; tmp++ )
-			(void) do_alias( ska->ska_arg, *tmp, ska->ska_local );
+			 do_alias( ska->ska_arg, *tmp, ska->ska_local );
 	}
 }
 
@@ -269,7 +269,7 @@ struct search_kid_arg	*ska;
 			i = th_prefix( (*ska->ska_local)->st_originalbase,
 						   (*tmp)->e_alias );
 			if ( i > 0 ) {
-				(void) do_alias( ska->ska_arg, *tmp,
+				 do_alias( ska->ska_arg, *tmp,
 								 ska->ska_local );
 			}
 		}
@@ -545,7 +545,7 @@ int			toplevel;
 			break;
 
 		g_toplevel = toplevel;
-		(void) entry_collect( node, &eilist );
+		 entry_collect( node, &eilist );
 		break;
 
 	case FILTERITEM_APPROX:
@@ -574,7 +574,7 @@ int			toplevel;
 
 		node = new_indexnode();
 		g_stopearly = 0;
-		(void) avl_prefixapply(pindex[i].i_sroot,
+		 avl_prefixapply(pindex[i].i_sroot,
 							   (caddr_t) small, build_indexnode, (caddr_t) node,
 							   index_soundex_prefix, (caddr_t)strlen(small), NOTOK);
 #else
@@ -594,7 +594,7 @@ int			toplevel;
 		 */
 
 		g_toplevel = toplevel;
-		(void) entry_collect(node, &eilist);
+		 entry_collect(node, &eilist);
 
 #ifdef SOUNDEX_PREFIX
 		free((char *) node->in_entries);
@@ -650,16 +650,16 @@ int			toplevel;
 		g_count = size * g_size_normalizer;
 		if (case_exact_match(f->UNSUB.fi_sub_type->oa_syntax)) {
 			if (phoneflag)
-				(void) avl_prefixapply(theindex, thestring,
+				 avl_prefixapply(theindex, thestring,
 									   build_indexnode, (caddr_t) node,
 									   substring_prefix_tel_cmp, (caddr_t)len,
 									   NOTOK);
 			else
-				(void) avl_prefixapply(theindex, thestring,
+				 avl_prefixapply(theindex, thestring,
 									   build_indexnode, (caddr_t) node,
 									   substring_prefix_cmp, (caddr_t)len, NOTOK);
 		} else {
-			(void) avl_prefixapply(theindex, thestring,
+			 avl_prefixapply(theindex, thestring,
 								   build_indexnode, (caddr_t) node,
 								   substring_prefix_case_cmp, (caddr_t)len, NOTOK);
 		}
@@ -670,7 +670,7 @@ int			toplevel;
 		}
 
 		g_toplevel = (toplevel == 1); /* > 1 => or search */
-		(void) entry_collect(node, &eilist);
+		 entry_collect(node, &eilist);
 
 		free((char *) node->in_entries);
 		free((char *) node);
@@ -679,7 +679,7 @@ int			toplevel;
 
 	case FILTERITEM_PRESENT:
 		g_toplevel = toplevel;
-		(void) avl_apply( pindex[ i ].i_root, entry_collect,
+		 avl_apply( pindex[ i ].i_root, entry_collect,
 						  (caddr_t) &eilist, NOTOK, AVL_INORDER );
 		break;
 
@@ -811,7 +811,7 @@ int		toplevel;
 	while (b != NULLENTRYINFO) {
 		next = b->ent_next;
 		b->ent_next = NULLENTRYINFO;
-		(void) eis_merge(b, &result, toplevel);
+		 eis_merge(b, &result, toplevel);
 		b = next;
 
 		if (toplevel && size <= 0)

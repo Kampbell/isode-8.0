@@ -74,8 +74,8 @@ dish (char *command, int silent)
 	FILE   *fp;
 
 	if (watch) {
-		(void) fprintf (stderr, "%s\n", command);
-		(void) fflush (stderr);
+		 fprintf (stderr, "%s\n", command);
+		 fflush (stderr);
 	}
 
 	isarea = strncmp (command, "moveto -pwd", sizeof "moveto -pwd" - 1)
@@ -84,7 +84,7 @@ dish (char *command, int silent)
 
 	if (dafd != NOTOK) {
 		if (da_command ("STAT") == NOTOK) {
-			(void) close_tcp_socket (dafd);
+			 close_tcp_socket (dafd);
 			dafd = NOTOK, boundP = 0;
 		}
 	} else if (dish_running != NOTOK
@@ -98,8 +98,8 @@ dish (char *command, int silent)
 		static int very_first_time = 1;
 
 		if (very_first_time) {
-			(void) unsetenv ("DISHPROC");
-			(void) unsetenv ("DISHPARENT");
+			 unsetenv ("DISHPROC");
+			 unsetenv ("DISHPARENT");
 
 			very_first_time = 0;
 		}
@@ -159,7 +159,7 @@ dish (char *command, int silent)
 			sock -> sin_port = htons ((u_short) portno);
 
 			didbind = 0, boundP = 1;
-			(void) signal (SIGPIPE, SIG_IGN);
+			 signal (SIGPIPE, SIG_IGN);
 
 			if (cp = getenv ("DISPLAY")) {
 				char cp_host [1024];
@@ -167,7 +167,7 @@ dish (char *command, int silent)
 				struct sockaddr_in sinl;
 				int sinl_size;
 
-				(void) strncpy (cp_host, cp, 1024);
+				 strncpy (cp_host, cp, 1024);
 				cp_host [1023] = '\0';
 				if ((cp_disp = index (cp_host, ':')) == NULLCP)
 					goto no_display;
@@ -175,21 +175,21 @@ dish (char *command, int silent)
 				if (strcmp (cp_host, "local") &&
 						strcmp (cp_host, "localhost") &&
 						strcmp (cp_host, "unix"))
-					(void) sprintf (buffer, "fred -display \"%s\"", cp);
+					 sprintf (buffer, "fred -display \"%s\"", cp);
 				else {
 					sinl_size = sizeof (struct sockaddr_in);
 					if (getsockname (dafd, (struct sockaddr *)&sinl,
 									 &sinl_size) == NOTOK)
 						goto no_display;
 					if (sinl.sin_addr.s_addr == sock->sin_addr.s_addr)
-						(void) sprintf (buffer, "fred -display \"%s\"", cp);
+						 sprintf (buffer, "fred -display \"%s\"", cp);
 					else {
 						cp = inet_ntoa (sinl.sin_addr);
-						(void) sprintf (buffer, "fred -display \"%s:%s\"",
+						 sprintf (buffer, "fred -display \"%s:%s\"",
 										cp, cp_disp);
 					}
 				}
-				(void) dish (buffer, 1);
+				 dish (buffer, 1);
 			}
 no_display:
 
@@ -199,7 +199,7 @@ no_display:
 		if (get_dish_sock (sock, getpid (), 1) == NOTOK)
 			exit (1);
 
-		(void) strcpy (dishname, _isodefile (isodebinpath, "dish"));
+		 strcpy (dishname, _isodefile (isodebinpath, "dish"));
 
 fork_again:
 		;
@@ -214,8 +214,8 @@ fork_again:
 			vec[vecp++] = "-pipe";
 			vec[vecp++] = "-fast";
 			vec[vecp] = NULL;
-			(void) execv (dishname, vec);
-			(void) fprintf (stderr, "unable to exec ");
+			 execv (dishname, vec);
+			 fprintf (stderr, "unable to exec ");
 			perror (dishname);
 			_exit (1);
 
@@ -227,7 +227,7 @@ fork_again:
 				if (join_tcp_server (sd, sock) != NOTOK)
 					break;
 
-				(void) close_tcp_socket (sd);
+				 close_tcp_socket (sd);
 
 				sleep (5);
 
@@ -236,7 +236,7 @@ fork_again:
 			}
 
 			didbind = 0, boundP = 1;
-			(void) signal (SIGPIPE, SIG_IGN);
+			 signal (SIGPIPE, SIG_IGN);
 			break;
 		}
 	} else {
@@ -248,16 +248,16 @@ do_conn:
 			adios ("server", "unable to join");
 	}
 
-	(void) sprintf (buffer, "%s\n", command);
+	 sprintf (buffer, "%s\n", command);
 	n = send (sd, buffer, cc = strlen (buffer), 0);
 	if (debug)
-		(void) fprintf (stderr, "wrote %d of %d octets to DUA\n", n, cc);
+		 fprintf (stderr, "wrote %d of %d octets to DUA\n", n, cc);
 
 	if (n != cc)
 		if (n == NOTOK) {
 			advise ("please retry", "write to DUA failed,");
-			(void) f_quit (NULLVP);
-			(void) close_tcp_socket (sd);
+			 f_quit (NULLVP);
+			 close_tcp_socket (sd);
 			return NOTOK;
 		} else
 			adios (NULLCP, "write to DUA truncated, sent %d of %d octets",
@@ -272,16 +272,16 @@ err_recv:
 				adios ("failed", "read from DUA");
 
 			if (dafd != NOTOK)
-				(void) da_command ("INTR");
+				 da_command ("INTR");
 			else
-				(void) kill (dish_running, SIGINT);
+				 kill (dish_running, SIGINT);
 			interrupted = 0;
 			continue;
 		}
 
 		buffer[cc] = NULL;
 		if (debug)
-			(void) fprintf (stderr, "read %d octets from DUA: '%c'\n", cc,
+			 fprintf (stderr, "read %d octets from DUA: '%c'\n", cc,
 							cc > 0 ? buffer[0] : ' ');
 		if (cc == OK) {
 lost_dua:
@@ -289,7 +289,7 @@ lost_dua:
 			if ((dafd != NOTOK ? da_command ("STAT") : kill (dish_running, 0))
 					== NOTOK) {
 				if (dafd != NOTOK) {
-					(void) close_tcp_socket (dafd);
+					 close_tcp_socket (dafd);
 					dafd = NOTOK;
 				}
 				boundP = 0;
@@ -316,7 +316,7 @@ lost_dua:
 				case OK:
 				default:
 					if (debug)
-						(void) fprintf (stderr, "read %d more octets from DUA\n",
+						 fprintf (stderr, "read %d more octets from DUA\n",
 										cc);
 					if (cc == OK)
 						goto lost_dua;
@@ -324,7 +324,7 @@ lost_dua:
 					if (cp < ep)
 						continue;
 					if (debug)
-						(void) fprintf (stderr,
+						 fprintf (stderr,
 										"'%c' directive exceeds %d octets",
 										buffer[0], sizeof buffer - 1);
 					cp++;
@@ -378,8 +378,8 @@ copy_out:
 
 		case 'e':
 			if (watch) {
-				(void) fprintf (stderr, "%s\n", buffer + 1);
-				(void) fflush (stderr);
+				 fprintf (stderr, "%s\n", buffer + 1);
+				 fflush (stderr);
 			}
 			if (dafd != NOTOK)
 				switch (do_edit (sd, buffer + 1)) {
@@ -395,61 +395,61 @@ copy_out:
 			if (system (buffer + 1)) {
 user_abort:
 				;
-				(void) strcpy (where, "e");
+				 strcpy (where, "e");
 			} else
-				(void) getcwd (where, sizeof where);
+				 getcwd (where, sizeof where);
 			goto stuff_it;
 
 		case 'm':
-			(void) strcpy (where, "m");
+			 strcpy (where, "m");
 			if (!network) {
-				(void) fprintf (stderr, "\n%s\n", buffer + 1);
-				(void) fflush (stderr);
+				 fprintf (stderr, "\n%s\n", buffer + 1);
+				 fflush (stderr);
 			}
 			goto stuff_it;
 
 		case 'y':
 			if (network)
-				(void) strcpy (where, "n");
+				 strcpy (where, "n");
 			else
 				switch (ask ("%s", buffer + 1)) {
 				case NOTOK:
 				default:
-					(void) strcpy (where, "n");
+					 strcpy (where, "n");
 					break;
 
 				case OK:
-					(void) strcpy (where, "y");
+					 strcpy (where, "y");
 					break;
 
 				case DONE:
-					(void) putchar ('\n');
-					(void) strcpy (where, "N");
+					 putchar ('\n');
+					 strcpy (where, "N");
 					break;
 				}
 			goto stuff_it;
 
 		case 'p':
-			(void) sprintf (where, "Enter password for \"%s\": ",
+			 sprintf (where, "Enter password for \"%s\": ",
 							buffer + 1);
-			(void) sprintf (where, "p%s", getpassword (where));
+			 sprintf (where, "p%s", getpassword (where));
 
 stuff_it:
 			;
-			(void) strcat (where, "\n");
+			 strcat (where, "\n");
 			if (watch) {
-				(void) fprintf (stderr, "%s", where);
-				(void) fflush (stderr);
+				 fprintf (stderr, "%s", where);
+				 fflush (stderr);
 			}
 			n = send (sd, where, cc = strlen (where), 0);
 			if (debug)
-				(void) fprintf (stderr, "wrote %d of %d octets to DUA\n", n, cc);
+				 fprintf (stderr, "wrote %d of %d octets to DUA\n", n, cc);
 
 			if (n != cc)
 				if (n == NOTOK) {
 					advise ("please retry", "write to DUA failed,");
-					(void) f_quit (NULLVP);
-					(void) close_tcp_socket (sd);
+					 f_quit (NULLVP);
+					 close_tcp_socket (sd);
 					return NOTOK;
 				} else
 					adios (NULLCP,
@@ -465,7 +465,7 @@ stuff_it:
 		break;
 	}
 
-	(void) close_tcp_socket (sd);
+	 close_tcp_socket (sd);
 
 	return status;
 }
@@ -487,26 +487,26 @@ do_edit (int sd, char *octets)
 	FILE   *fp;
 	struct stat st;
 
-	(void) strcpy (tmpfil, "/tmp/fredXXXXXX");
-	(void) unlink (mktemp (tmpfil));
+	 strcpy (tmpfil, "/tmp/fredXXXXXX");
+	 unlink (mktemp (tmpfil));
 
 	if (sscanf (octets, "%d", &j) != 1 || j < 0) {
 		advise (NULLCP, "protocol botch");
 losing:
 		;
-		(void) f_quit (NULLVP);
-		(void) close_tcp_socket (sd);
-		(void) unlink (tmpfil);
+		 f_quit (NULLVP);
+		 close_tcp_socket (sd);
+		 unlink (tmpfil);
 		return NOTOK;
 	}
 
 	if (watch) {
-		(void) fprintf (stderr, "y\n");
-		(void) fflush (stderr);
+		 fprintf (stderr, "y\n");
+		 fflush (stderr);
 	}
 	n = send (sd, "y\n", cc = sizeof "y\n" - 1, 0);
 	if (debug)
-		(void) fprintf (stderr, "wrote %d of %d octets to DUA\n", n, cc);
+		 fprintf (stderr, "wrote %d of %d octets to DUA\n", n, cc);
 
 	if (n != cc)
 		if (n == NOTOK) {
@@ -525,10 +525,10 @@ losing:
 		case NOTOK:
 			if (!interrupted)
 				adios ("failed", "read from DUA");
-			(void) da_command ("INTR");
+			 da_command ("INTR");
 			interrupted = 0;
-			(void) fclose (fp);
-			(void) unlink (tmpfil);
+			 fclose (fp);
+			 unlink (tmpfil);
 			return DONE;
 
 		case OK:
@@ -537,11 +537,11 @@ losing:
 
 		default:
 			if (debug)
-				(void) fprintf (stderr, "read %d %soctets from DUA\n",
+				 fprintf (stderr, "read %d %soctets from DUA\n",
 								i, j != cc ? "more " : "");
 			if (fp && fwrite (buffer, sizeof *buffer, i, fp) == 0) {
 				advise (tmpfil, "error writing to");
-				(void) fclose (fp);
+				 fclose (fp);
 				fp = NULL;
 			}
 			break;
@@ -550,12 +550,12 @@ losing:
 	if (fp == NULL) {
 all_done:
 		;
-		(void) unlink (tmpfil);
+		 unlink (tmpfil);
 		return OK;
 	}
-	(void) fclose (fp);
+	 fclose (fp);
 
-	(void) sprintf (buffer, "%s %s",
+	 sprintf (buffer, "%s %s",
 					_isodefile (isodebinpath, "editentry"), tmpfil);
 	if (system (buffer))
 		goto all_done;
@@ -573,15 +573,15 @@ nearly_done:
 		;
 		if (cp)
 			free (cp);
-		(void) fclose (fp);
+		 fclose (fp);
 		goto all_done;
 	}
 
-	(void) sprintf (buffer, "e%d\n", cc);
+	 sprintf (buffer, "e%d\n", cc);
 	j = strlen (buffer);
 	if ((cp = malloc ((unsigned) (k = cc + j + 1))) == NULL)
 		adios (NULLCP, "out of memory");
-	(void) strcpy (dp = cp, buffer);
+	 strcpy (dp = cp, buffer);
 	for (dp += j, j = cc; j > 0; dp += i, j -= i)
 		switch (i = fread (dp, sizeof *dp, j, fp)) {
 		case NOTOK:
@@ -597,19 +597,19 @@ nearly_done:
 		}
 	*dp = NULL;
 
-	(void) fclose (fp);
-	(void) unlink (tmpfil);
+	 fclose (fp);
+	 unlink (tmpfil);
 
 	if (watch) {
-		(void) fprintf (stderr, "///////\n%s///////\n", cp);
-		(void) fflush (stderr);
+		 fprintf (stderr, "///////\n%s///////\n", cp);
+		 fflush (stderr);
 	}
 	for (dp = cp, j = k; j > 0; dp += i, j -= i)
 		switch (i = send (sd, dp, j, 0)) {
 		case NOTOK:
 			advise ("please retry", "write to DUA failed,");
-			(void) f_quit (NULLVP);
-			(void) close_tcp_socket (sd);
+			 f_quit (NULLVP);
+			 close_tcp_socket (sd);
 			free (cp);
 			return NOTOK;
 
@@ -618,7 +618,7 @@ nearly_done:
 
 		default:
 			if (debug)
-				(void) fprintf (stderr, "wrote %d %soctets to DUA\n",
+				 fprintf (stderr, "wrote %d %soctets to DUA\n",
 								j, dp != cp ? "more " : "");
 			break;
 		}
@@ -649,7 +649,7 @@ int	cc;
 		int	child;
 
 		first_time = 1;
-		(void) fflush (fp);
+		 fflush (fp);
 		if (!doing_pager)
 			return;
 
@@ -659,7 +659,7 @@ int	cc;
 			adios ("standard output", "unable to dup2");
 
 		clearerr (fp);
-		(void) close (sd);
+		 close (sd);
 
 #ifdef SVR4
 		while ((child = wait (&status)) != NOTOK
@@ -669,8 +669,8 @@ int	cc;
 				&& child != pid)
 			continue;
 
-		(void) signal (SIGINT, Istat);
-		(void) signal (SIGQUIT, Qstat);
+		 signal (SIGINT, Istat);
+		 signal (SIGQUIT, Qstat);
 
 		return;
 	}
@@ -683,7 +683,7 @@ int	cc;
 		if (dontpage || network || *pager == NULL || !isatty (fileno (fp)))
 			goto no_pager;
 
-		(void) fflush (fp);
+		 fflush (fp);
 
 		foreground ();
 
@@ -699,33 +699,33 @@ int	cc;
 		switch (pid = fork ()) {
 		case NOTOK:
 			advise ("fork", "unable to");
-			(void) close (pd[0]);
-			(void) close (pd[1]);
+			 close (pd[0]);
+			 close (pd[1]);
 			goto no_pager;
 
 		case OK:
-			(void) signal (SIGINT, SIG_DFL);
-			(void) signal (SIGQUIT, SIG_DFL);
+			 signal (SIGINT, SIG_DFL);
+			 signal (SIGQUIT, SIG_DFL);
 
-			(void) close (pd[1]);
+			 close (pd[1]);
 			if (pd[0] != fileno (stdin)) {
-				(void) dup2 (pd[0], fileno (stdin));
-				(void) close (pd[0]);
+				 dup2 (pd[0], fileno (stdin));
+				 close (pd[0]);
 			}
 			if (readonly)
 				mypager (stdin);
 			else {
-				(void) execlp (pager, pager, NULLCP);
-				(void) fprintf (stderr, "unable to exec ");
+				 execlp (pager, pager, NULLCP);
+				 fprintf (stderr, "unable to exec ");
 				perror (pager);
 			}
 			_exit (-1);
 
 		default:
-			(void) close (pd[0]);
+			 close (pd[0]);
 			if (pd[1] != fileno (fp)) {
-				(void) dup2 (pd[1], fileno (fp));
-				(void) close (pd[1]);
+				 dup2 (pd[1], fileno (fp));
+				 close (pd[1]);
 			}
 			break;
 		}
@@ -744,11 +744,11 @@ no_pager:
 
 		for (dp = (cp = buffer) + cc; cp < dp; cp++) {
 			if (*cp == '\n')
-				(void) fputc ('\r', fp);
-			(void) fputc (*cp, fp);
+				 fputc ('\r', fp);
+			 fputc (*cp, fp);
 		}
 	} else
-		(void) fwrite (buffer, sizeof buffer[0], cc, fp);
+		 fwrite (buffer, sizeof buffer[0], cc, fp);
 }
 
 /*  */
@@ -761,7 +761,7 @@ no_pager:
  */
 
 static 
-foreground (void) {
+foreground  {
 #ifdef	TIOCGPGRP
 	int     pgrp,
 			tpgrp;
@@ -777,9 +777,9 @@ foreground (void) {
 		if (pgrp == tpgrp)
 			break;
 
-		(void) kill (0, SIGTTIN);
+		 kill (0, SIGTTIN);
 	}
-	(void) signal (SIGTTIN, tstat);
+	 signal (SIGTTIN, tstat);
 #endif
 }
 
@@ -815,7 +815,7 @@ FILE   *fp;
 		for (bp = buffer; *bp; bp++)
 			pagchar (*bp);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 }
 
 
@@ -830,14 +830,14 @@ pagchar (int ch)
 		if (++rows < length)
 			break;
 		if (bflag)
-			(void) putc (0x07, stdout);
-		(void) fflush (stdout);
+			 putc (0x07, stdout);
+		 fflush (stdout);
 		buffer[0] = NULL;
-		(void) read (fileno (stdout), buffer, sizeof buffer);
+		 read (fileno (stdout), buffer, sizeof buffer);
 		if (buffer[0] == '\n')
 			rows = 0;
 		else {
-			(void) putc ('\n', stdout);
+			 putc ('\n', stdout);
 			rows = length / 3;
 		}
 		return;
@@ -865,7 +865,7 @@ pagchar (int ch)
 		pagchar ('\n');
 		pagchar (ch);
 	} else
-		(void) putc (ch, stdout);
+		 putc (ch, stdout);
 }
 
 /*    BIND */
@@ -889,18 +889,18 @@ int
 f_quit (char **vec)
 {
 	if (vec && *++vec != NULL && strcmp (*vec, "-help") == 0) {
-		(void) fprintf (stdfp, "quit\n");
-		(void) fprintf (stdfp, "    terminate fred\n");
+		 fprintf (stdfp, "quit\n");
+		 fprintf (stdfp, "    terminate fred\n");
 
 		return OK;
 	}
 
 	if (dafd != NOTOK) {
-		(void) da_command ("QUIT");
+		 da_command ("QUIT");
 
-		(void) close_tcp_socket (dafd);
+		 close_tcp_socket (dafd);
 	} else if (dish_running != NOTOK)
-		(void) kill (dish_running, SIGHUP);
+		 kill (dish_running, SIGHUP);
 
 	dafd = dish_running = NOTOK, boundP = 0;
 
@@ -936,11 +936,11 @@ va_list ap;
 
 	_asprintf (buffer, NULLCP, ap);
 	if (watch) {
-		(void) fprintf (stderr, "<--- %s\n", buffer);
-		(void) fflush (stderr);
+		 fprintf (stderr, "<--- %s\n", buffer);
+		 fflush (stderr);
 	}
 
-	(void) strcat (buffer, "\r\n");
+	 strcat (buffer, "\r\n");
 	len = strlen (buffer);
 
 	if (write_tcp_socket (dafd, buffer, len) != len)
@@ -961,7 +961,7 @@ da_command (char *fmt)
 /*  */
 
 static int 
-da_response (void) {
+da_response  {
 	char *cp,
 			 *ep;
 
@@ -984,8 +984,8 @@ da_response (void) {
 		*cp = NULL;
 
 	if (watch) {
-		(void) fprintf (stderr, "---> %s\n", da_reply);
-		(void) fflush (stderr);
+		 fprintf (stderr, "---> %s\n", da_reply);
+		 fflush (stderr);
 	}
 
 	switch (da_reply[0]) {
@@ -1004,43 +1004,43 @@ da_response (void) {
 /*  */
 
 int 
-sync_ufnrc (void) {
+sync_ufnrc  {
 	char *bp;
 	char    buffer[BUFSIZ];
 	struct area_guide *ag;
 
-	(void) sprintf (bp = buffer, "fred -ufnrc");
+	 sprintf (bp = buffer, "fred -ufnrc");
 	bp += strlen (bp);
 
 	for (ag = areas; ag -> ag_record; ag++)
 		if (ag -> ag_record == W_ORGANIZATION)
 			break;
 
-	(void) sprintf (bp, " 1 1 \"%s", myarea + 1);
+	 sprintf (bp, " 1 1 \"%s", myarea + 1);
 	bp += strlen (bp);
 	if ((ag -> ag_record) && (ag -> ag_area)) {
-		(void) sprintf (bp, "$%s", ag -> ag_area + 1);
+		 sprintf (bp, "$%s", ag -> ag_area + 1);
 		bp += strlen (bp);
 	}
-	(void) sprintf (bp, "$-\"");
+	 sprintf (bp, "$-\"");
 	bp += strlen (bp);
 
-	(void) sprintf (bp, " 2 2 \"");
+	 sprintf (bp, " 2 2 \"");
 	bp += strlen (bp);
 	if ((ag -> ag_record) && (ag -> ag_area)) {
-		(void) sprintf (bp, "%s$", ag -> ag_area + 1);
+		 sprintf (bp, "%s$", ag -> ag_area + 1);
 		bp += strlen (bp);
 	}
-	(void) sprintf (bp, "%s$-\"", myarea + 1);
+	 sprintf (bp, "%s$-\"", myarea + 1);
 	bp += strlen (bp);
 
-	(void) sprintf (bp, " 3 32767 \"-");
+	 sprintf (bp, " 3 32767 \"-");
 	bp += strlen (bp);
 	if ((ag -> ag_record) && (ag->ag_area)) {
-		(void) sprintf (bp, "$%s", ag -> ag_area + 1);
+		 sprintf (bp, "$%s", ag -> ag_area + 1);
 		bp += strlen (bp);
 	}
-	(void) sprintf (bp, "$%s\"", myarea + 1);
+	 sprintf (bp, "$%s\"", myarea + 1);
 	bp += strlen (bp);
 
 	return dish (buffer, 1);
@@ -1049,7 +1049,7 @@ sync_ufnrc (void) {
 /*  */
 
 int 
-init_ufnrc (void) {
+init_ufnrc  {
 	int   i;
 	int	    inprogress;
 	char *bp,
@@ -1061,22 +1061,22 @@ init_ufnrc (void) {
 	FILE   *fp;
 
 	if (bp = getenv ("UFNRC"))
-		(void) strcpy (ufnrc, bp);
+		 strcpy (ufnrc, bp);
 	else {
 		if ((bp = getenv ("HOME")) == NULL)
 			bp = ".";
 
-		(void) sprintf (ufnrc, "%s/.ufnrc", bp);
+		 sprintf (ufnrc, "%s/.ufnrc", bp);
 	}
 
 	if ((fp = fopen (ufnrc, "r")) == NULL) {
-		(void) strcpy (ufnrc, isodefile ("ufnrc", 0));
+		 strcpy (ufnrc, isodefile ("ufnrc", 0));
 
 		if ((fp = fopen (ufnrc, "r")) == NULL)
 			return NOTOK;
 	}
 
-	(void) sprintf (ep = sync, "fred -ufnrc");
+	 sprintf (ep = sync, "fred -ufnrc");
 	ep += strlen (ep);
 
 	inprogress = 0;
@@ -1089,7 +1089,7 @@ init_ufnrc (void) {
 		bp = buffer;
 		if (*bp == NULL) {
 			if (inprogress) {
-				(void) strcpy (ep, "\"");
+				 strcpy (ep, "\"");
 				ep += strlen (ep);
 				inprogress = 0;
 			}
@@ -1117,7 +1117,7 @@ init_ufnrc (void) {
 				upper = 0;
 
 			lower = atoi (bp);
-			(void) sprintf (ep, " %d %d \"", lower, upper ? upper : lower);
+			 sprintf (ep, " %d %d \"", lower, upper ? upper : lower);
 			ep += strlen (ep);
 
 			bp = cp;
@@ -1131,17 +1131,17 @@ init_ufnrc (void) {
 
 		while (isspace (*bp))
 			bp++;
-		(void) sprintf (ep, "%s", bp);
+		 sprintf (ep, "%s", bp);
 		ep += strlen (ep);
 	}
 
 	if (inprogress) {
-		(void) strcpy (ep, "\"");
+		 strcpy (ep, "\"");
 		ep += strlen (ep);
 		inprogress = 0;
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 
 	return dish (sync, 1);
 }

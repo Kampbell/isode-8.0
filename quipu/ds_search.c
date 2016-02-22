@@ -434,7 +434,7 @@ char            authtype;
 			st_free(local);
 			if (saclerror == 0)
 				result->CSR_limitproblem = LSR_NOLIMITPROBLEM;
-			(void) dsa_search_control(arg, result);
+			 dsa_search_control(arg, result);
 			return (DS_OK);
 		}
 		(*local) = st_done(local);
@@ -459,7 +459,7 @@ struct ds_search_task *st;
 	if (st->st_save != NULL_ST)
 		st_free(&st->st_save);
 	if (--st->st_saclrefcount <= 0) {
-		(void) avl_free((Avlnode *) st->st_sacls, rc_free);
+		 avl_free((Avlnode *) st->st_sacls, rc_free);
 		free((char *) st->st_saclheader);
 	}
 	if (--st->st_ftyperefcount <= 0) {
@@ -1062,11 +1062,11 @@ struct search_kid_arg *ska;
 				 * SEARCH_DELTA_SIZE entries searched.
 				 */
 				if (!ska->ska_domore)
-					(void) dsa_wait(0);
+					 dsa_wait(0);
 
 				ska->ska_tmp = 0;
 				ska->ska_domore = TRUE;
-				(void) avl_apply(e->e_children, search_kid2,
+				 avl_apply(e->e_children, search_kid2,
 								 (caddr_t) ska, NOTOK, AVL_INORDER);
 
 				if (timelimit <= (timenow = time((time_t *) 0)))
@@ -1076,7 +1076,7 @@ struct search_kid_arg *ska;
 					ska->ska_domore = (ska->ska_tmp <
 									   (SEARCH_DELTA_SIZE / 5));
 				if (!ska->ska_domore)
-					(void) dsa_wait(0);
+					 dsa_wait(0);
 			}
 			/*
 			It doesn't seem to make much sense to do this here with the avl's...
@@ -1145,7 +1145,7 @@ int		*saclerror;
 		return (NULLENTRYINFO);
 	}
 	if (entryptr->e_alias != NULLDN) {
-		(void) do_alias(arg, entryptr, local);
+		 do_alias(arg, entryptr, local);
 		return (NULLENTRYINFO);
 	}
 	if ((ptr = entryptr->e_children) == NULLAVL
@@ -1167,24 +1167,24 @@ int		*saclerror;
 #ifdef TURBO_INDEX
 	/* non optimized filter */
 	if ((*local)->st_optimized == 0) {
-		(void) avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+		 avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 
 		/* optimized filter & subtree search & subtree indexed */
 	} else if (arg->sra_subset == SRA_WHOLESUBTREE
 			   && get_subtree_index((*local)->st_baseobject)) {
-		(void) turbo_subtree_search(entryptr, &ska);
+		 turbo_subtree_search(entryptr, &ska);
 
 		/* optimized filter & sibling search & siblings indexed */
 	} else if (arg->sra_subset == SRA_ONELEVEL
 			   && get_sibling_index((*local)->st_baseobject)) {
-		(void) turbo_sibling_search(entryptr, &ska);
+		 turbo_sibling_search(entryptr, &ska);
 
 		/* optimized filter, but no index to search */
 	} else {
-		(void) avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+		 avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 	}
 #else
-	(void) avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+	 avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 #endif
 
 	tmp = ska.ska_tmp;
@@ -1856,7 +1856,7 @@ struct ds_search_result *result;
 	if (result->CSR_entries)
 		entryinfo_free(result->CSR_entries, 0);
 
-	(void) sprintf(buffer, "%d", big_size - size);
+	 sprintf(buffer, "%d", big_size - size);
 
 	as = as_comp_alloc();
 	as->attr_acl = NULLACL_INFO;

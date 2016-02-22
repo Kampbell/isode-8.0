@@ -213,7 +213,7 @@ errorList *error_list_ptr;
 		next_errors = errors->next;
 
 		if (errors->ds_message != NULLCP)
-			(void) free(errors->ds_message);
+			 free(errors->ds_message);
 
 		free((char *) errors);
 		errors = next_errors;

@@ -84,7 +84,7 @@ stringCell attr_list;
 	readRec new_request;
 	requestRec this_request;
 
-	(void) _request_invoked(DS_READ, id_ptr);
+	 _request_invoked(DS_READ, id_ptr);
 	this_request = _get_request_of_id(*id_ptr);
 
 	new_request = this_request->READ_REC;
@@ -128,7 +128,7 @@ int *task_id_ptr;
 		attr_list = attr_list->next;
 	}
 
-	(void) get_default_service(&read_arg.rda_common);
+	 get_default_service(&read_arg.rda_common);
 
 	read_arg.rda_common.ca_servicecontrol.svc_options =
 		read_arg.rda_common.ca_servicecontrol.svc_options | SVC_OPT_PREFERCHAIN;
@@ -461,13 +461,13 @@ int format;
 
 	photo_ps = ps;
 
-	(void) pe2ps(sps, picture);
+	 pe2ps(sps, picture);
 
 	photo_pass_two = FALSE;
-	(void)decode_t4(sps->ps_base, "photo", 0);
+	decode_t4(sps->ps_base, "photo", 0);
 
 	photo_pass_two = TRUE;
-	(void)decode_t4(sps->ps_base, "photo", 0);
+	decode_t4(sps->ps_base, "photo", 0);
 
 	ps_free(sps);
 
@@ -637,7 +637,7 @@ stringCell dn_attr;
 	readDnAttrRec new_request;
 	requestRec this_request;
 
-	(void) _request_invoked(READ_DN_ATTR, id_ptr);
+	 _request_invoked(READ_DN_ATTR, id_ptr);
 	this_request = _get_request_of_id(*id_ptr);
 
 	new_request = this_request->READ_DN_ATTR_REC;

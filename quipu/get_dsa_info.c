@@ -428,7 +428,7 @@ struct ds_bind_arg *arg;
 	} else {
 		arg->dba_dn = dn_cpy(mydsadn);
 		if ( (passwd = get_entry_passwd(my_entry->e_attributes)) != NULLCP) {
-			(void) strncpy (arg->dba_passwd,passwd,DBA_MAX_PASSWD_LEN);
+			 strncpy (arg->dba_passwd,passwd,DBA_MAX_PASSWD_LEN);
 			arg->dba_passwd_len = strlen (passwd);
 		} else {
 			arg->dba_auth_type = DBA_AUTH_NONE;

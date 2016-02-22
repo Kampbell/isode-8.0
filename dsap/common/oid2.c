@@ -269,13 +269,13 @@ void	dumpalloid () {
 	oid_table        * oi = &OIDTable[0];
 
 	for (i=0; i<ocNumEntries; i++,oc++)
-		(void) printf("\"%s\"\t\t%s\n", oc->oc_ot.ot_name, oc->oc_ot.ot_stroid);
+		 printf("\"%s\"\t\t%s\n", oc->oc_ot.ot_name, oc->oc_ot.ot_stroid);
 
 	for (i=0; i<attrNumEntries; i++,at++)
-		(void) printf("\"%s\"\t\t%s\n", at->oa_ot.ot_name, at->oa_ot.ot_stroid);
+		 printf("\"%s\"\t\t%s\n", at->oa_ot.ot_name, at->oa_ot.ot_stroid);
 
 	for (i=0; i<NumEntries; i++,oi++)
-		(void) printf("\"%s\"\t\t%s\n", oi->ot_name, oi->ot_stroid);
+		 printf("\"%s\"\t\t%s\n", oi->ot_name, oi->ot_stroid);
 
 }
 
@@ -283,8 +283,8 @@ void	dumpalloid () {
 add_oc_macro (buf,ptr)
 char * buf, *ptr;
 {
-	(void) strcpy(macro[NumMacro].name,buf);
-	(void) strcpy(macro[NumMacro++].value,ptr);
+	 strcpy(macro[NumMacro].name,buf);
+	 strcpy(macro[NumMacro++].value,ptr);
 }
 
 void	table_seq_free (ts)

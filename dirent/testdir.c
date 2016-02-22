@@ -19,15 +19,15 @@ main (int argc, char **argv)
 	int			nerrs = 0;	/* total not found */
 
 	if ( (dirp = opendir( "." )) == NULL ) {
-		(void)fprintf( stderr, "Cannot open \".\" directory\n" );
+		fprintf( stderr, "Cannot open \".\" directory\n" );
 		exit( 1 );
 	}
 
 	if (argc == 1) {
 		while (dp = readdir (dirp))
-			(void)printf ("ino=%d len=%d name=\"%s\"\n",
+			printf ("ino=%d len=%d name=\"%s\"\n",
 						  dp -> d_ino, strlen (dp -> d_name), dp -> d_name);
-		(void) closedir (dirp);
+		 closedir (dirp);
 		exit (0);
 	}
 
@@ -36,19 +36,19 @@ main (int argc, char **argv)
 
 		while ( (dp = readdir( dirp )) != NULL )
 			if ( strcmp( dp->d_name, *argv ) == 0 ) {
-				(void)printf( "\"%s\" found.\n", *argv );
+				printf( "\"%s\" found.\n", *argv );
 				break;
 			}
 
 		if ( dp == NULL ) {
-			(void)printf( "\"%s\" not found.\n", *argv );
+			printf( "\"%s\" not found.\n", *argv );
 			++nerrs;
 		}
 
 		rewinddir( dirp );
 	}
 
-	(void)closedir( dirp );
+	closedir( dirp );
 	exit( nerrs );
 
 	return 0;

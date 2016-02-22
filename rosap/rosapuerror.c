@@ -53,7 +53,7 @@ RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct
 
 	result = RoErrorRequestAux (acb, invokeID, error, params, priority, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -88,7 +88,7 @@ RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int
 			|| (params && seq_add (p, params, -1) == NOTOK)) {
 		if (pe) {
 			if (params)
-				(void) pe_extract (pe, params);
+				 pe_extract (pe, params);
 			pe_free (pe);
 		}
 		freeacblk (acb);

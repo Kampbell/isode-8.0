@@ -235,7 +235,7 @@ do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **i
 	if ((ia52 = (struct type_IMISC_IA5List *) calloc (1, sizeof *ia52))
 			== NULL)
 		adios (NULLCP, "out of memory");
-	(void) sprintf (buffer, "%s@%s", cp, dp);
+	 sprintf (buffer, "%s@%s", cp, dp);
 	if ((ia52 -> IA5String = str2qb (buffer, strlen (buffer), 1)) == NULL)
 		adios (NULLCP, "out of memory");
 
@@ -312,7 +312,7 @@ caddr_t *dummy;
 	acs_adios (aca, "A-RELEASE.REQUEST");
 
     if (!acr -> acr_affirmative) {
-	(void) AcUAbortRequest (sd, NULLPEP, 0, aci);
+	 AcUAbortRequest (sd, NULLPEP, 0, aci);
 	adios (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
     }
 

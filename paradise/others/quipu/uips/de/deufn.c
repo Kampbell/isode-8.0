@@ -67,12 +67,12 @@ doUfnSearch() {
 			de_exit(-1);
 
 	if (deLogLevel)
-		(void) ll_log (de_log, LLOG_NOTICE, NULLCP,
+		 ll_log (de_log, LLOG_NOTICE, NULLCP,
 					   "Search: ufn=%s", qinfo[PERSON].entered);
 
 	ufnel = 0;
 	ufnres = NULL;
-	(void) strcpy(buf, qinfo[PERSON].entered);
+	 strcpy(buf, qinfo[PERSON].entered);
 	cp = buf;
 	for (cpp = &ufnargv[0]; ; cpp++) {
 		*cpp = cp;
@@ -95,7 +95,7 @@ doUfnSearch() {
 		return;
 	}
 	if (ufnres == NULLDNS) {
-		(void)printf ("\nNo matching entries found\n");
+		printf ("\nNo matching entries found\n");
 		return;
 	}
 	pagerOn(NUMBER_NOT_ALLOWED);
@@ -106,14 +106,14 @@ doUfnSearch() {
 			resetprint("Couldn't read entry for `%s'\n",
 					   lastComponent(dn2str(dns->dns_dn), PERSON));
 		} else {
-			(void) printUfnComponents(dn2str(dns->dns_dn));
+			 printUfnComponents(dn2str(dns->dns_dn));
 			printDetails(PERSON, qinfo[PERSON].lp);
 			freePRRs(&qinfo[PERSON].lp);
 		}
 		initAlarm();
 	}
 	alarmCleanUp();
-	(void) strcpy(qinfo[PERSON].defvalue, qinfo[PERSON].entered);
+	 strcpy(qinfo[PERSON].defvalue, qinfo[PERSON].entered);
 	return;
 }
 
@@ -138,20 +138,20 @@ char * s;
 		i++;
 		if (dns->dns_next != NULLDNS) { /* more than one in list */
 			if (removeLastRDN(dn2str(ptr->dns_dn)) != NULLCP) {
-				(void)strcpy(buf2, removeLastRDN(dn2str(ptr->dns_dn)));
+				strcpy(buf2, removeLastRDN(dn2str(ptr->dns_dn)));
 				if (i == 1)
 					j = printUfnComponents(buf2);
 				else {
 					if (strcmp(penult, lastRDN(buf2)) != 0) {
-						(void)strcpy(buf, lastRDN(buf2));
+						strcpy(buf, lastRDN(buf2));
 						cp = index(buf, '=') + 1;
 						pageprint("%-*s%s\n", j-1, "", cp);
 					}
 				}
-				(void)strcpy(penult, lastRDN(buf2));
+				strcpy(penult, lastRDN(buf2));
 			} else
 				j = 0; /* component under the root */
-			(void)strcpy(buf, lastRDN(dn2str(ptr->dns_dn)));
+			strcpy(buf, lastRDN(dn2str(ptr->dns_dn)));
 			cp = index(buf, '=') + 1;
 			pageprint("%-*s%3d %s\n", j, "", i, cp);
 		}
@@ -160,7 +160,7 @@ char * s;
 		goto validNumber;
 	if ((n = getpnum()) != -1)
 		if (n > i)
-			(void) fprintf(stderr,
+			 fprintf(stderr,
 						   "Invalid number entered (maximum = %d)\n\n", i);
 		else
 			goto validNumber;
@@ -206,7 +206,7 @@ char * str;
 
 	if (str == NULLCP)
 		return 0;
-	(void)strcpy(buf, str);
+	strcpy(buf, str);
 	for (j = 0, cp = buf; cp != NULLCP; j++) {
 		cp2 = index(cp, '@');
 		if (cp2 != NULLCP)

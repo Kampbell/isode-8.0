@@ -114,7 +114,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 		strcpy (sbuf.addr.x25ifname, "x25_0");
 		if (ioctl (sd, X25_RD_HOSTADR, (char *) &sbuf.addr) == NOTOK) {
 			SLOG (x25_log, LLOG_EXCEPTIONS, "failed", ("X25_RD_HOSTADR"));
-			(void) close_x25_socket (sd);
+			 close_x25_socket (sd);
 			return NOTOK;
 		}
 		sbuf.addr.x25ifname [0] = '\0';
@@ -135,40 +135,40 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	if (sock->cudf.x25_cud_len)
 		if (ioctl (sd, X25_WR_USER_DATA, &sock->cudf) == -1) {
 			SLOG (x25_log, LLOG_EXCEPTIONS, "failed", ("X25_WR_USER_DATA"));
-			(void) close_x25_socket (sd);
+			 close_x25_socket (sd);
 			return NOTOK;
 		}
 	if (bind (sd, (X25_ADDR *) &sock->addr, sizeof(X25_ADDR)) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-		(void) close_x25_socket (sd);
+		 close_x25_socket (sd);
 		return NOTOK;
 	}
 
 #ifndef	BSD43
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
 #else
 	onoff = 1;
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
 
 	if (set_x25_facilities(sd, CALLED, "Acceptable") == NOTOK) {
-		(void) close_x25_socket (sd);
+		 close_x25_socket (sd);
 		return NOTOK;
 	}
 
-	(void) listen (sd, backlog);
+	 listen (sd, backlog);
 
 	onoff = 0;
 	if (ioctl (sd, X25_CALL_ACPT_APPROVAL, (char *) &onoff) == NOTOK) {
 		SLOG (x25_log, LLOG_EXCEPTIONS, "failed",
 			  ("X25_CALL_ACPT_APPROVAL"));
-		(void) close_x25_socket (sd);
+		 close_x25_socket (sd);
 		return NOTOK;
 	}
 
@@ -203,7 +203,7 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 	}
 #ifdef  DEBUG
 	else if (x25_log -> ll_events & LLOG_DEBUG)
-		(void) log_x25_facilities(fd, CALLING, "Effective Calling");
+		 log_x25_facilities(fd, CALLING, "Effective Calling");
 #endif
 
 	remote = if2gen (remote, sock, ADDR_REMOTE);
@@ -233,7 +233,7 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 
 #ifdef  DEBUG
 	if (x25_log -> ll_events & LLOG_DEBUG)
-		(void) log_x25_facilities(fd, CALLED, "Effective Called");
+		 log_x25_facilities(fd, CALLED, "Effective Called");
 #endif
 	remote = if2gen (remote, sock, ADDR_REMOTE);
 
@@ -542,7 +542,7 @@ log_cause_and_diag (int fd)
 			close_x25_socket (fd);
 			break;
 		}
-		(void) elucidate_x25_err (flags, &buf [2]);
+		 elucidate_x25_err (flags, &buf [2]);
 	}
 }
 
@@ -552,7 +552,7 @@ sigurg (int sig, int code, struct sigcontext *scp)
 {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
-	(void) signal (SIGURG, sigurg);
+	 signal (SIGURG, sigurg);
 	while (fdlp != NULL) {
 		log_cause_and_diag (fdlp->fd);
 		fdlp = fdlp->next;
@@ -570,7 +570,7 @@ setup_sigurg (int fd)
 {
 	struct fdl_st *fdlp = fdl;
 
-	(void) signal (SIGURG, sigurg);
+	 signal (SIGURG, sigurg);
 	while (fdlp != NULL)
 		if (fdlp->fd == fd)
 			return;
@@ -894,13 +894,13 @@ print_send:
 #endif
 #else
 int 
-_hpuxx25_stub2 (void) {
+_hpuxx25_stub2()  {
 	;
 }
 #endif
 #else
 int 
-_hpuxx25_stub (void) {
+_hpuxx25_stub()  {
 	;
 }
 #endif

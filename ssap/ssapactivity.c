@@ -52,7 +52,7 @@ SGControlRequest (int sd, struct SSAPindication *si)
 
 	result = SGControlRequestAux (sb, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -105,7 +105,7 @@ SActStartRequest (int sd, struct SSAPactid *id, char *data, int cc, struct SSAPi
 
 	result = SActStartRequestAux (sb, id, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -160,7 +160,7 @@ SActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn
 
 	result = SActResumeRequestAux (sb, id, oid, ssn, ref, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -204,13 +204,13 @@ SActIntrRequest (int sd, int reason, struct SSAPindication *si)
 
 	ssapXsig (sb, sd);
 	if (sb -> sb_flags & SB_MAP) {
-		(void) sigsetmask (smask);
+		 sigsetmask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP, "majorsync in progress");
 	}
 
 	result = SActIntrRequestAux (sb, reason, SPDU_AI, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -266,7 +266,7 @@ SActIntrResponse (int sd, struct SSAPindication *si)
 
 	result = SActIntrResponseAux (sb, SPDU_AIA, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -316,13 +316,13 @@ SActDiscRequest (int sd, int reason, struct SSAPindication *si)
 
 	ssapXsig (sb, sd);
 	if (sb -> sb_flags & SB_MAP) {
-		(void) sigsetmask (smask);
+		 sigsetmask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP, "majorsync in progress");
 	}
 
 	result = SActIntrRequestAux (sb, reason, SPDU_AD, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -344,7 +344,7 @@ SActDiscResponse (int sd, struct SSAPindication *si)
 
 	result = SActIntrResponseAux (sb, SPDU_ADA, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -368,7 +368,7 @@ SActEndRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si
 
 	result = SMajSyncRequestAux (sb, ssn, data, cc, 0, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -391,7 +391,7 @@ SActEndResponse (int sd, char *data, int cc, struct SSAPindication *si)
 
 	result = SMajSyncResponseAux (sb, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

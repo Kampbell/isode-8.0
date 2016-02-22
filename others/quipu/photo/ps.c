@@ -57,7 +57,7 @@ int
 photo_black (int length)
 {
 	if (length > 0)
-		(void) printf ("%d %d moveto %d %d lineto stroke\n", x, y, x + length - 1, y);
+		 printf ("%d %d moveto %d %d lineto stroke\n", x, y, x + length - 1, y);
 	x += length;
 }
 

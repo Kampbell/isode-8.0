@@ -93,7 +93,7 @@ photo_end (char *name)
 
 		return 0;
 	}
-	if (name && *name) (void) strcpy(photo_name, name);
+	if (name && *name)  strcpy(photo_name, name);
 	passno = 1;
 	x = y = maxx = 0;
 	return 0;

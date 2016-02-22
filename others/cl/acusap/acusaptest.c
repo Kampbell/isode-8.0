@@ -148,7 +148,7 @@ main (int argc, char **argv, char **envp)
 			break;
 		}
 		printf("\nCommand: ");
-		(void)fflush(stdout);
+		fflush(stdout);
 		bptr = gets(buffer);
 		if (feof (stdin))
 			exit (1);
@@ -159,7 +159,7 @@ main (int argc, char **argv, char **envp)
 
 /*-------------------------------------*/
 int 
-togglemode (void)
+togglemode 
 /*-------------------------------------*/
 {
 	printf ("\n Current mode is ");
@@ -177,7 +177,7 @@ togglemode (void)
 
 /*-------------------------------------*/
 int 
-bind (void)
+bind 
 /*-------------------------------------*/
 {
 	/*  set binding variables: title, presentation address, and ctxlist */
@@ -207,7 +207,7 @@ bind (void)
 
 /*-------------------------------------*/
 int 
-initbindvars (void)
+initbindvars 
 /*-------------------------------------*/
 {
 	/*  set up bind static variables for test */
@@ -235,7 +235,7 @@ initbindvars (void)
 
 /*-------------------------------------*/
 int 
-unbind (void)
+unbind 
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -256,7 +256,7 @@ unbind (void)
 
 /*-------------------------------------*/
 int 
-listenup (void)
+listenup 
 /*-------------------------------------*/
 {
 	;
@@ -299,7 +299,7 @@ listenup (void)
 
 /*-------------------------------------*/
 int 
-audtsendreq (void)
+audtsendreq 
 /*-------------------------------------*/
 {
 	/*  first set binding variables: title, presentation address, and ctxlist */
@@ -329,7 +329,7 @@ audtsendreq (void)
 
 /*-------------------------------------*/
 int 
-audtsend (void)
+audtsend 
 /*-------------------------------------*/
 {
 	int	sum, result;
@@ -368,7 +368,7 @@ audtsend (void)
 
 /*-------------------------------------*/
 int 
-audtread (void)
+audtread 
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -448,7 +448,7 @@ validbinding (
 
 /*-------------------------------------*/
 int 
-audtrebind (void)
+audtrebind 
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE)
@@ -572,11 +572,11 @@ acs_advise (struct AcSAPabort *aca, char *event)
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcuErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -620,11 +620,11 @@ _advise (va_list ap)
 	char    buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
-	(void) fflush (stdout);
+	 fflush (stdout);
 	fprintf (stderr, "%s: ", myservice);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
-	(void) fflush (stderr);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
+	 fflush (stderr);
 }
 #else
 /* VARARGS */

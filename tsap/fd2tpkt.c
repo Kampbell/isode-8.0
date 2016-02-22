@@ -477,8 +477,8 @@ tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx)
 
 	i = (*writefnx) (tb, t, outptr, ilen);
 
-	(void) sigiomask (smask);
-	(void) signal (SIGPIPE, pstat);
+	 sigiomask (smask);
+	 signal (SIGPIPE, pstat);
 
 	if (i != NOTOK)
 		i = OK;

@@ -60,7 +60,7 @@ listlen (struct namelist *lp)
 }
 
 unsigned int 
-alarmLen (void) {
+alarmLen  {
 	if ((lexequ(qinfo[ORG].entered, origDefaultOrg) == 0) &&
 			(lexequ(qinfo[COUNTRY].entered, origDefaultCo) == 0))
 		return localAlarmTime;
@@ -69,42 +69,42 @@ alarmLen (void) {
 }
 
 void 
-initAlarm (void) {
+initAlarm  {
 	void onalarm();
 
 	alarmCount = 0;
-	(void) signal(SIGALRM, (VFP) onalarm);
-	(void) alarm(alarmLen());
+	 signal(SIGALRM, (VFP) onalarm);
+	 alarm(alarmLen());
 }
 
 void 
-alarmCleanUp (void) {
-	(void) signal(SIGALRM, SIG_IGN);
-	(void) alarm(0);
+alarmCleanUp  {
+	 signal(SIGALRM, SIG_IGN);
+	 alarm(0);
 	if (alarmCount > 1) {
 		alarmCount = 0;
-		(void) printf("\n\n");
+		 printf("\n\n");
 	}
 }
 
 void 
-handleTimeout (void) {
+handleTimeout  {
 	de_unbind();
-	(void) signal(SIGALRM, SIG_IGN);
+	 signal(SIGALRM, SIG_IGN);
 }
 
 void 
-startUnbindTimer (void) {
+startUnbindTimer  {
 	void handleTimeout();
 
-	(void) signal(SIGALRM, (VFP) handleTimeout);
-	(void) alarm((unsigned)bindTimeout);
+	 signal(SIGALRM, (VFP) handleTimeout);
+	 alarm((unsigned)bindTimeout);
 }
 
 void 
-stopUnbindTimer (void) {
-	(void) signal(SIGALRM, SIG_IGN);
-	(void) alarm(0);
+stopUnbindTimer  {
+	 signal(SIGALRM, SIG_IGN);
+	 alarm(0);
 }
 
 char *
@@ -115,7 +115,7 @@ copy_string (char *string)
 	if (string == NULLCP) return NULLCP;
 
 	new_string = (char *) smalloc((strlen(string) + 1));
-	(void) strcpy(new_string, string);
+	 strcpy(new_string, string);
 
 	return new_string;
 }
@@ -206,7 +206,7 @@ printLastComponent (int indent, char *dnstr, int objectType, int printNumber)
 			pageprint("      ");
 			break;
 		default:
-			(void) fprintf(stderr, "WOT's THIS?  ");
+			 fprintf(stderr, "WOT's THIS?  ");
 			break;
 		}
 	}
@@ -306,7 +306,7 @@ lastRDN (char *dnstr)
 }
 
 void 
-clearProblemFlags (void) {
+clearProblemFlags  {
 	limitProblem = notAllReached = FALSE;
 }
 
@@ -351,11 +351,11 @@ logSearchSuccess (char *outcome, char *objecttype, char *string, int searchNumbe
 
 	if (deLogLevel > 1) {
 		if (searchNumber == 0)
-			(void) strcpy(filterNumberString, "explicit");
+			 strcpy(filterNumberString, "explicit");
 		else
-			(void) sprintf(filterNumberString, "%d", searchNumber);
+			 sprintf(filterNumberString, "%d", searchNumber);
 
-		(void) ll_log (de_log, LLOG_NOTICE, NULLCP,
+		 ll_log (de_log, LLOG_NOTICE, NULLCP,
 					   "searchOutcome:%s:%s:%s:%s:%d", objecttype,
 					   outcome, string, filterNumberString, noMatches);
 	}
@@ -365,7 +365,7 @@ void
 logListSuccess (char *outcome, char *objecttype, int noMatches)
 {
 	if (deLogLevel > 1) {
-		(void) ll_log (de_log, LLOG_NOTICE, NULLCP,
+		 ll_log (de_log, LLOG_NOTICE, NULLCP,
 					   "listOutcome:%s:%s:%d", objecttype, outcome, noMatches);
 	}
 }

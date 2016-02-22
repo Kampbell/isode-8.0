@@ -119,7 +119,7 @@ TInit (int vecp, char **vec, struct TSAPstart *ts, struct TSAPdisconnect *td)
 #endif
 
 	default:
-		(void) tsaplose (td, DR_PARAMETER, NULLCP,
+		 tsaplose (td, DR_PARAMETER, NULLCP,
 						 "unknown network type: 0x%x (%c)", *vec[0], *vec[0]);
 		goto out;
 	}
@@ -135,7 +135,7 @@ TInit (int vecp, char **vec, struct TSAPstart *ts, struct TSAPdisconnect *td)
 
 not_supported:
 	;
-	(void) tsaplose (td, DR_PARAMETER, NULLCP,
+	 tsaplose (td, DR_PARAMETER, NULLCP,
 					 "not configured for network type: 0x%x (%c)",
 					 *vec[0], *vec[0]);
 

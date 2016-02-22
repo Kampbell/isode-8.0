@@ -23,7 +23,7 @@ copy_string (char *string)
 	if (string == NULLCP) return NULLCP;
 
 	new_string = (char *) smalloc(strlen(string) + 1);
-	(void) strcpy(new_string, string);
+	 strcpy(new_string, string);
 
 	return new_string;
 }
@@ -51,9 +51,9 @@ friendlify (char *name, char *fname)
 		while (isspace(*start)) start++;
 
 		if (!isnull(*fname))
-			(void) strcat(fname, ", ");
+			 strcat(fname, ", ");
 
-		(void) strcat(fname, start);
+		 strcat(fname, start);
 
 		*end = save;
 

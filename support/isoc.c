@@ -223,19 +223,19 @@ char   *service,
 
     if ((sd = start_tcp_client ((struct sockaddr_in *) 0, 0)) == NOTOK)
 	adios ("socket", "unable to start");
-    (void) fprintf (stderr, "%s... ", hp -> h_name);
-    (void) fflush (stderr);
+     fprintf (stderr, "%s... ", hp -> h_name);
+     fflush (stderr);
     if (join_tcp_server (sd, isock) == NOTOK) {
-	(void) fprintf (stderr, "failed\n");
+	 fprintf (stderr, "failed\n");
 	adios ("socket", "unable to connect");
     }
-    (void) fprintf (stderr, "connected\n");
+     fprintf (stderr, "connected\n");
 
     if (fstat (fileno (stdin), &st) == NOTOK
 	    || (st.st_mode & S_IFMT) != S_IFREG
 	    || (cc = st.st_size) == 0)
 	adios (NULLCP, "standard input not a regular file");
-    (void) lseek (fileno (stdin), 0L, 0);
+     lseek (fileno (stdin), 0L, 0);
 
     if ((cp = malloc ((unsigned) cc)) == NULL)
 	adios (NULLCP, "no memory");
@@ -256,7 +256,7 @@ char   *service,
 #endif
     if (write_tcp_socket (sd, cp, cc) != cc)
 	adios ("writing", "error");
-    (void) close_tcp_socket (sd);
+     close_tcp_socket (sd);
 #ifdef	TIMER
     timer (cc);
 #endif
@@ -288,18 +288,18 @@ char   *addr;
     if ((ta = is2taddr (addr, NULLCP, is)) == NULL)
 	adios (NULLCP, "address translation failed");
 
-    (void) fprintf (stderr, "%s... ", addr);
-    (void) fflush (stderr);
+     fprintf (stderr, "%s... ", addr);
+     fflush (stderr);
 #ifndef	ASYNC
     if (TConnRequest (NULLTA, ta, 1, NULLCP, 0, NULLQOS, tc, td) == NOTOK) {
-	(void) fprintf (stderr, "failed\n");
+	 fprintf (stderr, "failed\n");
 	ts_adios (td, "T-CONNECT.REQUEST");
     }
     sd = tc -> tc_sd;
 #else
     if ((i = TAsynConnRequest (NULLTA, ta, 1, NULLCP, 0, NULLQOS, tc, td, 1))
 	    == NOTOK) {
-	(void) fprintf (stderr, "failed\n");
+	 fprintf (stderr, "failed\n");
 	ts_adios (td, "T-(ASYN-)CONNECT.REQUEST");
     }
     sd = tc -> tc_sd, cc = 0;
@@ -312,16 +312,16 @@ char   *addr;
 	nfds = 0;
 	FD_ZERO (&mask);
 	if (TSelectMask (sd, &mask, &nfds, td) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    ts_adios (td, "T-(ASYN-)CONNECT.REQUEST(TSelectMask)");
 	}
 	rmask = (i == CONNECTING_2) ? &mask : NULLFD;
 	wmask = (i == CONNECTING_2) ? NULLFD : &mask;
 
-	(void) fprintf (stderr, ".");
-	(void) fflush (stderr);
+	 fprintf (stderr, ".");
+	 fflush (stderr);
 	if (xselect (nfds, rmask, wmask, NULLFD, 1) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    adios ("failed", "select");
 	}
 
@@ -330,12 +330,12 @@ char   *addr;
 	    continue;
 	    
 	if ((i = TAsynRetryRequest (sd, tc, td)) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    ts_adios (td, "T-ASYN-RETRY.REQUEST");
 	}
     }
 #endif
-    (void) fprintf (stderr, "connected\n");
+     fprintf (stderr, "connected\n");
 
 
     if (getenv ("TEST_QUEUED_WRITES")) {
@@ -344,7 +344,7 @@ char   *addr;
 
 	tsap_log -> ll_events |= LLOG_EXCEPTIONS;
 	tsap_log -> ll_file = "-";
-	(void) ll_close (tsap_log);
+	 ll_close (tsap_log);
 
 	testing_queued_writes = 1;
     }
@@ -363,7 +363,7 @@ char   *addr;
     if (fstat (fileno (stdin), &st) != NOTOK
 	    && (st.st_mode & S_IFMT) == S_IFREG
 	    && (cc = st.st_size) != 0) {
-	(void) lseek (fileno (stdin), 0L, 0);
+	 lseek (fileno (stdin), 0L, 0);
 
 	if ((cp = malloc ((unsigned) cc)) == NULL)
 	    adios (NULLCP, "no memory");
@@ -469,12 +469,12 @@ char   *event;
     char    data[BUFSIZ];
 
     if (td -> td_cc > 0) {
-	(void) sprintf (data, "[%s] %*.*s",
+	 sprintf (data, "[%s] %*.*s",
 		TErrString (td -> td_reason),
 		td -> td_cc, td -> td_cc, td -> td_data);
     }
     else
-	(void) sprintf (data, "[%s]", TErrString (td -> td_reason));
+	 sprintf (data, "[%s]", TErrString (td -> td_reason));
 
     advise (NULLCP, "%s: %s", event, data);
 }
@@ -531,7 +531,7 @@ char   *addr;
 	adios (NULLCP, "address translation failed");
     if ((sf = addr2ref (SLocalHostName ())) == NULL) {
 	sf = &sfs;
-	(void) bzero ((char *) sf, sizeof *sf);
+	 bzero ((char *) sf, sizeof *sf);
     }
 
     tokens = 0;
@@ -543,12 +543,12 @@ char   *addr;
     dotokens ();
 #undef	dotoken
 
-    (void) fprintf (stderr, "%s... ", addr);
-    (void) fflush (stderr);
+     fprintf (stderr, "%s... ", addr);
+     fflush (stderr);
 #ifndef	ASYNC
     if (SConnRequest (sf, NULLSA, sz, requirements, tokens, ISN (requirements),
 	    userdata, sizeof userdata /*SS_SIZE*/, NULLQOS, sc, si) == NOTOK) {
-	(void) fprintf (stderr, "failed\n");
+	 fprintf (stderr, "failed\n");
 	ss_adios (sa, "S-CONNECT.REQUEST");
     }
     sd = sc -> sc_sd;
@@ -557,7 +557,7 @@ char   *addr;
 	    ISN (requirements), userdata, sizeof userdata /*SS_SIZE*/, NULLQOS,
 	    sc, si, 1))
 	  == NOTOK) {
-	(void) fprintf (stderr, "failed\n");
+	 fprintf (stderr, "failed\n");
 	ss_adios (sa, "S-(ASYN-)CONNECT.REQUEST");
     }
     sd = sc -> sc_sd, cc = 0;
@@ -570,15 +570,15 @@ char   *addr;
 	nfds = 0;
 	FD_ZERO (&mask);
 	if (SSelectMask (sd, &mask, &nfds, si) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    ss_adios (sa, "S-(ASYN-)CONNECT.REQUEST(SSelectMask)");
 	}
 	rmask = (i == CONNECTING_2) ? &mask : NULLFD;
 	wmask = (i == CONNECTING_2) ? NULLFD : &mask;
 
-	(void) fprintf (stderr, ".");
+	 fprintf (stderr, ".");
 	if (xselect (nfds, rmask, wmask, NULLFD, 1) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    adios ("failed", "select");
 	}
 
@@ -587,14 +587,14 @@ char   *addr;
 	    continue;
 	    
 	if ((i = SAsynRetryRequest (sd, sc, si)) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    ss_adios (sa, "S-ASYN-RETRY.REQUEST");
 	}
     }
 #endif
 
     if (sc -> sc_result != SC_ACCEPT) {
-	(void) fprintf (stderr, "failed\n");
+	 fprintf (stderr, "failed\n");
 	if (sc -> sc_cc > 0)
 	    adios (NULLCP, "connection rejected: [%s] %*.*s",
 			SErrString (sc -> sc_result),
@@ -603,7 +603,7 @@ char   *addr;
 	    adios (NULLCP, "connection rejected: [%s]",
 			SErrString (sc -> sc_result));
     }
-    (void) fprintf (stderr, "connected\n");
+     fprintf (stderr, "connected\n");
 
 #ifdef	DEBUG
     {
@@ -647,7 +647,7 @@ char   *addr;
 #undef	dotoken
 
     if (requirements & SR_ACTIVITY) {
-	(void) strcpy (id -> sd_data, mode == echo ? "echo" : "sink");
+	 strcpy (id -> sd_data, mode == echo ? "echo" : "sink");
 	id -> sd_len = strlen (id -> sd_data);
 	if (SActStartRequest (sd, id, userdata, SV_SIZE, si) == NOTOK)
 	    ss_adios (sa, "S-ACTIVITY-START.REQUEST");
@@ -656,7 +656,7 @@ char   *addr;
     if (fstat (fileno (stdin), &st) != NOTOK
 	    && (st.st_mode & S_IFMT) == S_IFREG
 	    && (cc = st.st_size) != 0) {
-	(void) lseek (fileno (stdin), 0L, 0);
+	 lseek (fileno (stdin), 0L, 0);
 
 	if ((cp = malloc ((unsigned) cc)) == NULL)
 	    adios (NULLCP, "no memory");
@@ -814,7 +814,7 @@ push_data: ;
 	}
 
 	if (!sr -> sr_affirmative) {
-	    (void) SUAbortRequest (sd, NULLCP, 0, si);
+	     SUAbortRequest (sd, NULLCP, 0, si);
 
 	    if (sr -> sr_cc > 0)
 		adios (NULLCP, "release rejected by peer: %*.*s",
@@ -995,7 +995,7 @@ read_it: ;
 		ss_adios (sa, "S-READ.REQUEST");
 
 	    case OK: 
-		(void) strcpy (buffer, "protocol screw-up");
+		 strcpy (buffer, "protocol screw-up");
 		if (SUAbortRequest (sd, buffer, strlen (buffer) + 1, si) == NOTOK)
 		    ss_adios (sa, "S-U-ABORT.REQUEST");
 		adios (NULLCP, "%s, data indication type=0x%x",
@@ -1202,11 +1202,11 @@ char   *event;
     char    buffer[BUFSIZ];
 
     if (sa -> sa_cc > 0)
-	(void) sprintf (buffer, "[%s] %*.*s",
+	 sprintf (buffer, "[%s] %*.*s",
 		SErrString (sa -> sa_reason),
 		sa -> sa_cc, sa -> sa_cc, sa -> sa_prdata);
     else
-	(void) sprintf (buffer, "[%s]", SErrString (sa -> sa_reason));
+	 sprintf (buffer, "[%s]", SErrString (sa -> sa_reason));
 
     advise (NULLCP, "%s: %s%s", event, buffer, sa -> sa_peer ? " (peer initiated)" : "");
 
@@ -1282,7 +1282,7 @@ char   *addr;
 	    adios (NULLCP, "address translation failed");
     if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 	sf = &sfs;
-	(void) bzero ((char *) sf, sizeof *sf);
+	 bzero ((char *) sf, sizeof *sf);
     }
 
     tokens = 0;
@@ -1309,15 +1309,15 @@ char   *addr;
 	udata[i] = pe;
     }
 
-    (void) fprintf (stderr, "%s... ", addr);
-    (void) fflush (stderr);
+     fprintf (stderr, "%s... ", addr);
+     fflush (stderr);
     if (isacs) {
 #ifndef	ASYNC
 	if (AcAssocRequest (ode, NULLAEI, aei, NULLPA, pz, pl, ode,
 		prequirements, srequirements, ISN (srequirements), tokens, sf,
 		udata, NACDATA, NULLQOS, acc, aci)
 		== NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    acs_adios (aca, "A-ASSOCIATE.REQUEST");
 	}
 	sd = acc -> acc_sd;
@@ -1325,7 +1325,7 @@ char   *addr;
 	if ((i = AcAsynAssocRequest (ode, NULLAEI, aei, NULLPA, pz, pl, ode,
 		prequirements, srequirements, ISN (srequirements), tokens, sf,
 		udata, NACDATA, NULLQOS, acc, aci, 1)) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    acs_adios (aca, "A-(ASYN-)ASSOCIATE.REQUEST");
 	}
 	sd = acc -> acc_sd, cc = 0;
@@ -1338,15 +1338,15 @@ char   *addr;
 	    nfds = 0;
 	    FD_ZERO (&mask);
 	    if (PSelectMask (sd, &mask, &nfds, pi) == NOTOK) {
-		(void) fprintf (stderr, "failed\n");
+		 fprintf (stderr, "failed\n");
 		acs_adios (aca, "A-(ASYN-)ASSOCIATE.REQUEST(PSelectMask)");
 	    }
 	    rmask = (i == CONNECTING_2) ? &mask : NULLFD;
 	    wmask = (i == CONNECTING_2) ? NULLFD : &mask;
 
-	    (void) fprintf (stderr, ".");
+	     fprintf (stderr, ".");
 	    if (xselect (nfds, rmask, wmask, NULLFD, 1) == NOTOK) {
-		(void) fprintf (stderr, "failed\n");
+		 fprintf (stderr, "failed\n");
 		adios ("failed", "select");
 	    }
 
@@ -1355,14 +1355,14 @@ char   *addr;
 		continue;
 	    
 	    if ((i = AcAsynRetryRequest (sd, acc, aci)) == NOTOK) {
-		(void) fprintf (stderr, "failed\n");
+		 fprintf (stderr, "failed\n");
 		acs_adios (aca, "A-ASYN-RETRY.REQUEST");
 	    }
 	}
 #endif
 
 	if (acc -> acc_result != ACS_ACCEPT) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    adios (NULLCP, "connection rejected: [%s], %d elements",
 		    AcErrString (acc -> acc_result), acc -> acc_ninfo);
 	}
@@ -1374,7 +1374,7 @@ char   *addr;
 		    & (SR_MINORSYNC | SR_MAJORSYNC | SR_RESYNC | SR_ACTIVITY)
 		? (long) (getpid () % (SERIAL_MAX - SERIAL_MIN + 1)) + SERIAL_MIN
 		: SERIAL_NONE, tokens, sf, udata, NPDATA, NULLQOS, pc, pi) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    ps_adios (pa, "P-CONNECT.REQUEST");
 	}
 	sd = pc -> pc_sd;
@@ -1382,7 +1382,7 @@ char   *addr;
 	if ((i = PAsynConnRequest (NULLPA, pz, pl, NULLOID, prequirements,
 		srequirements, ISN (srequirements), tokens, sf, udata, NPDATA,
 		NULLQOS, pc, pi, 1)) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    ps_adios (pa, "P-CONNECT.REQUEST");
 	}
 	sd = pc -> pc_sd, cc = 0;
@@ -1395,15 +1395,15 @@ char   *addr;
 	    nfds = 0;
 	    FD_ZERO (&mask);
 	    if (PSelectMask (sd, &mask, &nfds, pi) == NOTOK) {
-		(void) fprintf (stderr, "failed\n");
+		 fprintf (stderr, "failed\n");
 		ps_adios (pa, "P-CONNECT.REQUEST(PSelectMask)");
 	    }
 	    rmask = (i == CONNECTING_2) ? &mask : NULLFD;
 	    wmask = (i == CONNECTING_2) ? NULLFD : &mask;
 
-	    (void) fprintf (stderr, ".");
+	     fprintf (stderr, ".");
 	    if (xselect (nfds, rmask, wmask, NULLFD, 1) == NOTOK) {
-		(void) fprintf (stderr, "failed\n");
+		 fprintf (stderr, "failed\n");
 		adios ("failed", "select");
 	    }
 
@@ -1412,19 +1412,19 @@ char   *addr;
 		continue;
 
 	    if ((i = PAsynRetryRequest (sd, pc, pi)) == NOTOK) {
-		(void) fprintf (stderr, "failed\n");
+		 fprintf (stderr, "failed\n");
 		ps_adios (pa, "P-ASYN-RETRY.REQUEST");
 	    }
 	}
 #endif
 
 	if (pc -> pc_result != PC_ACCEPT) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    adios (NULLCP, "connection rejected: [%s], %d elements",
 		    PErrString (pc -> pc_result), pc -> pc_ninfo);
 	}
     }
-    (void) fprintf (stderr, "connected\n");
+     fprintf (stderr, "connected\n");
 
     if (isacs) {
 	pc = &acc -> acc_connect;
@@ -1557,7 +1557,7 @@ char   *addr;
 	PCFREE (pc);
 
     if (srequirements & SR_ACTIVITY) {
-	(void) strcpy (id -> sd_data, mode == echo ? "echo" : "sink");
+	 strcpy (id -> sd_data, mode == echo ? "echo" : "sink");
 	id -> sd_len = strlen (id -> sd_data);
 	if (PActStartRequest (sd, id, udata, NPDATA, pi) == NOTOK)
 	    ps_adios (pa, "P-ACTIVITY-START.REQUEST");
@@ -1566,7 +1566,7 @@ char   *addr;
     if (fstat (fileno (stdin), &st) != NOTOK
 	    && (st.st_mode & S_IFMT) == S_IFREG
 	    && (cc = st.st_size) != 0) {
-	(void) lseek (fileno (stdin), 0L, 0);
+	 lseek (fileno (stdin), 0L, 0);
 
 	if ((cp = malloc ((unsigned) cc)) == NULL)
 	    adios (NULLCP, "no memory");
@@ -1734,7 +1734,7 @@ do_release: ;
 	}
 
 	if (!acr -> acr_affirmative) {
-	    (void) AcUAbortRequest (sd, NULLPEP, 0, aci);
+	     AcUAbortRequest (sd, NULLPEP, 0, aci);
 	    adios (NULLCP, "release rejected by peer: %d, %d elements",
 			acr -> acr_reason, acr -> acr_ninfo);
 	}
@@ -1759,7 +1759,7 @@ do_release: ;
 	    }
 
 	if (!pr -> pr_affirmative) {
-	    (void) PUAbortRequest (sd, NULLPEP, 0, pi);
+	     PUAbortRequest (sd, NULLPEP, 0, pi);
 	    adios (NULLCP, "release rejected by peer: %d elements",
 		    pr -> pr_ninfo);
 	}
@@ -2187,11 +2187,11 @@ char   *event;
     char    buffer[BUFSIZ];
 
     if (pa -> pa_cc > 0)
-	(void) sprintf (buffer, "[%s] %*.*s",
+	 sprintf (buffer, "[%s] %*.*s",
 		PErrString (pa -> pa_reason),
 		pa -> pa_cc, pa -> pa_cc, pa -> pa_data);
     else
-	(void) sprintf (buffer, "[%s]", PErrString (pa -> pa_reason));
+	 sprintf (buffer, "[%s]", PErrString (pa -> pa_reason));
 
     advise (NULLCP, "%s: %s%s", event, buffer,
 	    pa -> pa_peer ? " (peer initiated)" : "");
@@ -2216,11 +2216,11 @@ char   *event;
     char    buffer[BUFSIZ];
 
     if (aca -> aca_cc > 0)
-	(void) sprintf (buffer, "[%s] %*.*s",
+	 sprintf (buffer, "[%s] %*.*s",
 		AcErrString (aca -> aca_reason),
 		aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
     else
-	(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+	 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 		aca -> aca_source);
@@ -2296,12 +2296,12 @@ char *addr;
 	    pl -> pc_ctx[j].pc_atn = NULLOID;
 	}
 
-	(void) fprintf (stderr, "%s... ", addr);
-	(void) fflush (stderr);
+	 fprintf (stderr, "%s... ", addr);
+	 fflush (stderr);
 	if (RtOpenRequest (RTS_TWA, turn ? RTS_INITIATOR : RTS_RESPONDER,
 		    ode, NULLAEI, aei, NULLPA, pa, pl, ode, pe,
 		    NULLQOS, rtc, rti) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    rts_adios (rta, "RT-OPEN.REQUEST");
 	}
     }
@@ -2320,11 +2320,11 @@ char *addr;
 	    adios (NULLCP, "address translation failed");
 	rtz -> rta_addr = *sa;	/* struct copy */
 
-	(void) fprintf (stderr, "%s... ", addr);
-	(void) fflush (stderr);
+	 fprintf (stderr, "%s... ", addr);
+	 fflush (stderr);
 	if (RtBeginRequest (rtz, RTS_TWA, turn ? RTS_INITIATOR : RTS_RESPONDER,
 		    pe, rtc, rti) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    rts_adios (rta, "RT-BEGIN.REQUEST");
 	}
     }
@@ -2332,11 +2332,11 @@ char *addr;
     pe_free (pe);
 
     if (rtc -> rtc_result != RTS_ACCEPT) {
-	(void) fprintf (stderr, "failed\n");
+	 fprintf (stderr, "failed\n");
 	adios (NULLCP, "association rejected: [%s]",
 		RtErrString (rtc -> rtc_result));
     }
-    (void) fprintf (stderr, "connected\n");
+     fprintf (stderr, "connected\n");
 
 #ifdef	DEBUG
     advise (NULLCP, "sent greetings of %d", i);
@@ -2391,7 +2391,7 @@ char *addr;
     if (fstat (fileno (stdin), &st) != NOTOK
 	    && (st.st_mode & S_IFMT) == S_IFREG
 	    && (cc = st.st_size) != 0) {
-	(void) lseek (fileno (stdin), 0L, 0);
+	 lseek (fileno (stdin), 0L, 0);
 
 	if ((cp = malloc ((unsigned) cc)) == NULL)
 	    adios (NULLCP, "no memory");
@@ -2446,7 +2446,7 @@ char *addr;
 	    }
 
 	if (!acr -> acr_affirmative) {
-	    (void) RtUAbortRequest (sd, NULLPE, rti);
+	     RtUAbortRequest (sd, NULLPE, rti);
 	    adios (NULLCP, "release rejected by peer: %d, %d elements",
 			acr -> acr_reason, acr -> acr_ninfo);
 	}
@@ -2623,10 +2623,10 @@ char   *event;
     char    buffer[BUFSIZ];
 
     if (rta -> rta_cc > 0)
-	(void) sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),
+	 sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),
 		rta -> rta_cc, rta -> rta_cc, rta -> rta_data);
     else
-	(void) sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
+	 sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
 
     advise (NULLCP, "%s: %s", event, buffer);
 }
@@ -2678,7 +2678,7 @@ char *addr;
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 	    sf = &sfs;
-	    (void) bzero ((char *) sf, sizeof *sf);
+	     bzero ((char *) sf, sizeof *sf);
 	}
 	pl -> pc_nctx = 1;
 	pl -> pc_ctx[0].pc_id = 1;
@@ -2687,8 +2687,8 @@ char *addr;
 	pl -> pc_ctx[0].pc_asn = oid_cpy (oid);
 	pl -> pc_ctx[0].pc_atn = NULLOID;
 
-	(void) fprintf (stderr, "%s... ", addr);
-	(void) fflush (stderr);
+	 fprintf (stderr, "%s... ", addr);
+	 fflush (stderr);
 	if (AcAssocRequest (ode, NULLAEI, aei, NULLPA, pa, pl, ode,
 		    0, ROS_MYREQUIRE, SERIAL_NONE, 0, sf, NULLPEP, 0, NULLQOS,
 		    acc, aci)
@@ -2696,11 +2696,11 @@ char *addr;
 	    acs_adios (aca, "A-ASSOCIATE.REQUEST");
 
 	if (acc -> acc_result != ACS_ACCEPT) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    adios (NULLCP, "association rejected: [%s]",
 		    AcErrString (acc -> acc_result));
 	}
-	(void) fprintf (stderr, "connected\n");
+	 fprintf (stderr, "connected\n");
 
 	sd = acc -> acc_sd;
 
@@ -2745,21 +2745,21 @@ char *addr;
 	if ((pe = int2prim (i = getpid ())) == NULLPE)
 	    adios (NULLCP, "unable to allocate hello");
 
-	(void) fprintf (stderr, "%s... ", addr);
-	(void) fflush (stderr);
+	 fprintf (stderr, "%s... ", addr);
+	 fflush (stderr);
 	if (RoBeginRequest (roa, pe, roc, roi) == NOTOK) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    ros_adios (rop, "RO-BEGIN.REQUEST");
 	}
 
 	pe_free (pe);
 
 	if (roc -> roc_result != ROS_ACCEPT) {
-	    (void) fprintf (stderr, "failed\n");
+	     fprintf (stderr, "failed\n");
 	    adios (NULLCP, "association rejected: [%s]",
 		    RoErrString (roc -> roc_result));
 	}
-	(void) fprintf (stderr, "connected\n");
+	 fprintf (stderr, "connected\n");
 
 #ifdef	DEBUG
 	advise (NULLCP, "sent greetings of %d", i);
@@ -2803,7 +2803,7 @@ int	sd;
     if (fstat (fileno (stdin), &st) != NOTOK
 	    && (st.st_mode & S_IFMT) == S_IFREG
 	    && (cc = st.st_size) != 0) {
-	(void) lseek (fileno (stdin), 0L, 0);
+	 lseek (fileno (stdin), 0L, 0);
 
 	if ((cp = malloc ((unsigned) cc)) == NULL)
 	    adios (NULLCP, "no memory");
@@ -2860,7 +2860,7 @@ int	sd;
 		}
 
 	    if (!acr -> acr_affirmative) {
-		(void) RtUAbortRequest (sd, NULLPE, rti);
+		 RtUAbortRequest (sd, NULLPE, rti);
 		adios (NULLCP, "release rejected by peer: %d, %d elements",
 			    acr -> acr_reason, acr -> acr_ninfo);
 	    }
@@ -2889,7 +2889,7 @@ int	sd;
 		acs_adios (aca, "A-RELEASE.REQUEST");
 
 	    if (!acr -> acr_affirmative) {
-		(void) AcUAbortRequest (sd, NULLPEP, 0, aci);
+		 AcUAbortRequest (sd, NULLPEP, 0, aci);
 		adios (NULLCP, "release rejected by peer: %d, %d elements",
 			    acr -> acr_reason, acr -> acr_ninfo);
 	    }
@@ -3035,10 +3035,10 @@ char   *event;
     char    buffer[BUFSIZ];
 
     if (rop -> rop_cc > 0)
-	(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+	 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 		rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
     else
-	(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+	 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
     advise (NULLCP, "%s: %s", event, buffer);
 }
@@ -3064,11 +3064,11 @@ int     cc;
     static struct timeval   start;
 
     if (cc == 0) {
-	(void) gettimeofday (&start, (struct timezone *) 0);
+	 gettimeofday (&start, (struct timezone *) 0);
 	return;
     }
     else
-	(void) gettimeofday (&stop, (struct timezone  *) 0);
+	 gettimeofday (&stop, (struct timezone  *) 0);
 
     tvsub (&td, &stop, &start);
     ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
@@ -3212,13 +3212,13 @@ static void  _advise (char*what, va_list ap)
 
     asprintf (buffer, what, fmt, ap);
 
-    (void) fflush (stdout);
+     fflush (stdout);
 
-    (void) fprintf (stderr, "%s: ", myname);
-    (void) fputs (buffer, stderr);
-    (void) fputc ('\n', stderr);
+     fprintf (stderr, "%s: ", myname);
+     fputs (buffer, stderr);
+     fputc ('\n', stderr);
 
-    (void) fflush (stderr);
+     fflush (stderr);
 }
 #else
 /* VARARGS */

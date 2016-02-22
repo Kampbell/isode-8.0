@@ -48,7 +48,7 @@ char *str;
 
 	cp = index(str, ' ');
 	if (cp == NULLCP) {
-		(void) fprintf(stderr, "log an error message about parsing of attribute name mappings...\n");
+		 fprintf(stderr, "log an error message about parsing of attribute name mappings...\n");
 		return;
 	}
 	*cp = '\0';

@@ -88,7 +88,7 @@ start_tcp_client (struct sockaddr_in *sock, int priv)
 		default:
 			eindex = errno;
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-			(void) close_tcp_socket (sd);
+			 close_tcp_socket (sd);
 			errno = eindex;
 			return NOTOK;
 		}
@@ -149,7 +149,7 @@ start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 
 		eindex = errno;
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-		(void) close_tcp_socket (sd);
+		 close_tcp_socket (sd);
 		errno = eindex;
 		return NOTOK;
 	}
@@ -168,7 +168,7 @@ start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 		default:
 			eindex = errno;
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-			(void) close_tcp_socket (sd);
+			 close_tcp_socket (sd);
 			errno = eindex;
 			return NOTOK;
 		}
@@ -202,7 +202,7 @@ got_socket:
 			  ("set socket option 0x%x", opt2));
 #endif
 
-	(void) listen (sd, backlog);
+	 listen (sd, backlog);
 
 	return sd;
 }
@@ -319,7 +319,7 @@ int	fd;
 #endif
 
 #ifdef	never_do_this_if_from_join_tcp_client
-	(void) shutdown (fd, 2);
+	 shutdown (fd, 2);
 #endif
 
 	return (close (fd));
@@ -481,7 +481,7 @@ gethostbyaddr (char *addr, int len, int type)
 	if ((name = raddr (iaddr)) == NULL)
 		return NULL;
 
-	(void) strcpy (buffer, name);
+	 strcpy (buffer, name);
 	free (name);
 
 	h -> h_name = buffer;
@@ -505,7 +505,7 @@ gethostbyname (char *name)
 	if ((iaddr = rhost (&name)) == NOTOK)
 		return NULL;
 
-	(void) strcpy (buffer, name);
+	 strcpy (buffer, name);
 	free (name);
 
 	h -> h_name = buffer;
@@ -617,7 +617,7 @@ inet_ntoa (struct in_addr in)
 	char  *s = (char *) &in;
 	static char addr[4 * 3 + 3 + 1];
 
-	(void) sprintf (addr, "%d.%d.%d.%d",
+	 sprintf (addr, "%d.%d.%d.%d",
 					s2a (s[0]), s2a (s[1]), s2a (s[2]), s2a (s[3]));
 
 	return addr;

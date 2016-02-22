@@ -101,7 +101,7 @@ int	ppktlose (struct psapblk*pb, ...)
 	if (encode_PS_ARP__PPDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		PLOGP (psap2_log,PS_ARP__PPDU, pe, "ARP-PPDU", 0);
 
-		(void) pe2ssdu (pe, &base, &len);
+		 pe2ssdu (pe, &base, &len);
 	}
 	if (pe)
 		pe_free (pe);

@@ -172,13 +172,13 @@ no_dice:
 		goto no_dice;
 	}
 
-	(void) setgid (pw -> pw_gid);
+	 setgid (pw -> pw_gid);
 #ifndef	SYS5
-	(void) initgroups (pw -> pw_name, pw -> pw_gid);
+	 initgroups (pw -> pw_name, pw -> pw_gid);
 #endif
-	(void) setuid (pw -> pw_uid);
+	 setuid (pw -> pw_uid);
 
-	(void) umask (0022);
+	 umask (0022);
 
 	if (turn == RTS_RESPONDER) {
 		if ((fd = open (cp, O_RDONLY, 0x00)) == NOTOK) {
@@ -208,7 +208,7 @@ no_dice:
 		else
 			timer (nbytes);
 
-		(void) close (fd);
+		 close (fd);
 	} else if (RtSetUpTrans (sd, uptrans, rti) == NOTOK)
 		rts_adios (rta, "set UpTrans upcall");
 

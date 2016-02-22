@@ -35,10 +35,10 @@ char default_string[];
 	prompt2 = malloc(LINESIZE);
 
 	for (;;) {
-		(void) sprintf(prompt2, "%s (%s/%s)", prompt, yes_string, no_string);
-		(void) sprintf(prompt2, "%s [%s]  ", prompt2, default_string);
+		 sprintf(prompt2, "%s (%s/%s)", prompt, yes_string, no_string);
+		 sprintf(prompt2, "%s [%s]  ", prompt2, default_string);
 		writeInverse(prompt2);
-		(void) putchar(' ');
+		 putchar(' ');
 		if (gets(value) == NULLCP) {
 			/* behave as for an interrupt */
 			clearerr(stdin);
@@ -51,10 +51,10 @@ char default_string[];
 		else if (!(strcmp(value, no_string)))
 			break;
 		else if (strlen(value) == 0) {
-			(void) sprintf(value, default_string);
+			 sprintf(value, default_string);
 			break;
 		} else {
-			(void) sprintf(temp, yesnoonly);
+			 sprintf(temp, yesnoonly);
 			writeInverse(temp);
 		}
 	}
@@ -69,10 +69,10 @@ char * value;
 {
 	char * temp;
 	temp = malloc(LINESIZE);
-	(void) sprintf(temp, prompt);
-	(void) writeInverse(temp);
+	 sprintf(temp, prompt);
+	 writeInverse(temp);
 
-	(void) putchar(' ');
+	 putchar(' ');
 
 	if (gets(value) == NULLCP) {
 		/* behave as for an interrupt */
@@ -102,15 +102,15 @@ char * lines;
 	int position;
 
 	str = malloc(LINESIZE);
-	(void) strncpy(str_pa, "", LINESIZE);
+	 strncpy(str_pa, "", LINESIZE);
 	line_counter = 1;
 	length = 0;
 	position = 0;
 	last = FALSE;
-	(void) strncpy(str_pa, "", LINESIZE);
+	 strncpy(str_pa, "", LINESIZE);
 	while (line_counter <= LINES_PA) {
 		addr_ptr[line_counter] = malloc(LINESIZE);
-		(void) strncpy(addr_ptr[line_counter], "", LINESIZE);
+		 strncpy(addr_ptr[line_counter], "", LINESIZE);
 		line_counter++;
 	}
 
@@ -125,10 +125,10 @@ char * lines;
 					ptr = index(lines, '\0');
 					last = TRUE;
 				}
-				(void) strncpy(addr_ptr[line_counter], mark, ptr-mark);
+				 strncpy(addr_ptr[line_counter], mark, ptr-mark);
 			}
 prompt_value1:
-			(void) printf("   %s %d [%s]:  ", line_str, line_counter, addr_ptr[line_counter]);
+			 printf("   %s %d [%s]:  ", line_str, line_counter, addr_ptr[line_counter]);
 			if (gets(str) == NULLCP) {
 				/* behave as for an interrupt */
 				clearerr(stdin);
@@ -137,7 +137,7 @@ prompt_value1:
 				str = TidyString(str);
 			}
 			if (!(strcmp(str, quit_String))) {
-				(void) sprintf(lines, "q");
+				 sprintf(lines, "q");
 				return NOTOK;
 			} else if (!(strcmp(str, "?"))) {
 				displayFile(attr_name, FALSE);
@@ -149,22 +149,22 @@ prompt_value1:
 				addr_ptr[line_counter] = NULLCP;
 			}
 			if (strlen(str) > CHARS_PA) {
-				(void) printf("%s %d %s\n", max_len_line, CHARS_PA, characters);
+				 printf("%s %d %s\n", max_len_line, CHARS_PA, characters);
 				goto prompt_value1;
 			}
 
 			if (strlen(str) == 0 && addr_ptr[line_counter] != NULLCP) {
 				/* The default value was taken, copy it */
-				(void) strcpy(str, addr_ptr[line_counter]);
+				 strcpy(str, addr_ptr[line_counter]);
 			}
 
 			if (line_counter == 1) {
-				(void) strcpy(str_pa, str);
+				 strcpy(str_pa, str);
 			} else {
-				(void) strcat(str_pa, str);
+				 strcat(str_pa, str);
 			}
 			if (line_counter < LINES_PA) { /* Don't add $ to last line */
-				(void) sprintf(str_pa, "%s$", str_pa);
+				 sprintf(str_pa, "%s$", str_pa);
 			}
 			if (last == FALSE) {
 				ptr++; /* skip $ */
@@ -176,7 +176,7 @@ prompt_value1:
 		line_counter = 1;
 		while (line_counter <= LINES_PA) {
 prompt_value2:
-			(void) printf("   %s %d:  ", line_str, line_counter);
+			 printf("   %s %d:  ", line_str, line_counter);
 			if (gets(str) == NULLCP) {
 				/* behave as for an interrupt */
 				clearerr(stdin);
@@ -185,7 +185,7 @@ prompt_value2:
 				str = TidyString(str);
 			}
 			if (!(strcmp(str, quit_String))) {
-				(void) sprintf(lines, "q");
+				 sprintf(lines, "q");
 				while (line_counter <= LINES_PA) {
 					/*                      free(addr_ptr[line_counter]); */
 					line_counter++;
@@ -196,16 +196,16 @@ prompt_value2:
 				goto prompt_value2;
 			}
 			if (strlen(str) > CHARS_PA) {
-				(void) printf("%s %d %s\n", max_len_line, CHARS_PA, characters);
+				 printf("%s %d %s\n", max_len_line, CHARS_PA, characters);
 				goto prompt_value2;
 			}
 			if (line_counter == 1) {
-				(void) strcpy(str_pa, str);
+				 strcpy(str_pa, str);
 			} else {
-				(void) strcat(str_pa, str);
+				 strcat(str_pa, str);
 			}
 			if (line_counter < LINES_PA) { /* Don't add $ to last line */
-				(void) sprintf(str_pa, "%s$", str_pa);
+				 sprintf(str_pa, "%s$", str_pa);
 			}
 			line_counter++;
 		}
@@ -223,7 +223,7 @@ prompt_value2:
 			break;
 		}
 	}
-	(void) sprintf(lines, str_pa);
+	 sprintf(lines, str_pa);
 	line_counter = 1;
 	while (line_counter <= LINES_PA) {
 		/*        free(addr_ptr[line_counter]); */
@@ -252,15 +252,15 @@ char * lines;
 	prompt	= malloc(LINESIZE);
 	str		= malloc(LINESIZE);
 
-	(void) strncpy(str_pa, "", LINESIZE);
+	 strncpy(str_pa, "", LINESIZE);
 	line_counter = 1;
 	length = 0;
 	position = 0;
 	last = FALSE;
-	(void) strncpy(str_pa, "", LINESIZE);
+	 strncpy(str_pa, "", LINESIZE);
 	while (line_counter <= LINES_TLX) {
 		tlx_ptr[line_counter] = malloc(LINESIZE);
-		(void) strncpy(tlx_ptr[line_counter], "", LINESIZE);
+		 strncpy(tlx_ptr[line_counter], "", LINESIZE);
 		line_counter++;
 	}
 
@@ -275,17 +275,17 @@ char * lines;
 					ptr = index(lines, '\0');
 					last = TRUE;
 				}
-				(void) strncpy(tlx_ptr[line_counter], mark, ptr-mark);
+				 strncpy(tlx_ptr[line_counter], mark, ptr-mark);
 			}
 prompt_value1:
 			if (line_counter == 1) {
-				(void) sprintf(prompt, "   %s", number_str);
+				 sprintf(prompt, "   %s", number_str);
 			} else if (line_counter == 2) {
-				(void) sprintf(prompt, "   %s", country_str);
+				 sprintf(prompt, "   %s", country_str);
 			} else if (line_counter == 3) {
-				(void) sprintf(prompt, "   %s", ansBack_str);
+				 sprintf(prompt, "   %s", ansBack_str);
 			}
-			(void) printf("%s [%s]:  ", prompt, tlx_ptr[line_counter]);
+			 printf("%s [%s]:  ", prompt, tlx_ptr[line_counter]);
 			if (gets(str) == NULLCP) {
 				/* behave as for an interrupt */
 				clearerr(stdin);
@@ -294,7 +294,7 @@ prompt_value1:
 				str = TidyString(str);
 			}
 			if (!(strcmp(str, quit_String))) {
-				(void) sprintf(lines, "q");
+				 sprintf(lines, "q");
 				return NOTOK;
 			} else if (!(strcmp(str, "?"))) {
 				displayFile(attr_name, FALSE);
@@ -308,16 +308,16 @@ prompt_value1:
 
 			if (strlen(str) == 0 && tlx_ptr[line_counter] != NULLCP) {
 				/* The default value was taken, copy it */
-				(void) strcpy(str, tlx_ptr[line_counter]);
+				 strcpy(str, tlx_ptr[line_counter]);
 			}
 
 			if (line_counter == 1) {
-				(void) strcpy(str_pa, str);
+				 strcpy(str_pa, str);
 			} else {
-				(void) strcat(str_pa, str);
+				 strcat(str_pa, str);
 			}
 			if (line_counter < LINES_TLX) { /* Don't add $ to last line */
-				(void) sprintf(str_pa, "%s$", str_pa);
+				 sprintf(str_pa, "%s$", str_pa);
 			}
 			if (last == FALSE) {
 				ptr++; /* skip $ */
@@ -330,13 +330,13 @@ prompt_value1:
 		while (line_counter <= LINES_TLX) {
 prompt_value2:
 			if (line_counter == 1) {
-				(void) sprintf(prompt, "   %s", number_str);
+				 sprintf(prompt, "   %s", number_str);
 			} else if (line_counter == 2) {
-				(void) sprintf(prompt, "   %s", country_str);
+				 sprintf(prompt, "   %s", country_str);
 			} else if (line_counter == 3) {
-				(void) sprintf(prompt, "   %s", ansBack_str);
+				 sprintf(prompt, "   %s", ansBack_str);
 			}
-			(void) printf("%s:  ", prompt);
+			 printf("%s:  ", prompt);
 			if (gets(str) == NULLCP) {
 				/* behave as for an interrupt */
 				clearerr(stdin);
@@ -345,7 +345,7 @@ prompt_value2:
 				str = TidyString(str);
 			}
 			if (!(strcmp(str, quit_String))) {
-				(void) sprintf(lines, "q");
+				 sprintf(lines, "q");
 				while (line_counter <= LINES_TLX) {
 					/*                      free(tlx_ptr[line_counter]); */
 					line_counter++;
@@ -358,16 +358,16 @@ prompt_value2:
 
 			if (line_counter == 1) {
 				if (strlen(str) <= 0) {
-					(void) sprintf(lines, "");
+					 sprintf(lines, "");
 					return OK;
 				} else {
-					(void) strcpy(str_pa, str);
+					 strcpy(str_pa, str);
 				}
 			} else {
-				(void) strcat(str_pa, str);
+				 strcat(str_pa, str);
 			}
 			if (line_counter < LINES_TLX) { /* Don't add $ to last line */
-				(void) sprintf(str_pa, "%s$", str_pa);
+				 sprintf(str_pa, "%s$", str_pa);
 			}
 			line_counter++;
 		}
@@ -385,7 +385,7 @@ prompt_value2:
 			break;
 		}
 	}
-	(void) sprintf(lines, str_pa);
+	 sprintf(lines, str_pa);
 	line_counter = 1;
 	while (line_counter <= LINES_TLX) {
 		/*        free(tlx_ptr[line_counter]); */
@@ -485,46 +485,46 @@ char attr_name[];
 	if (((!(strcmp(change_posdn, yes_string))) &&
 			(strlen(posdn) <= 0)) ||
 			(strcmp(change_posdn, yes_string))) {
-		(void) sprintf(posdn, posdit);
+		 sprintf(posdn, posdit);
 	}
 
 prompt_where:
 	if (!(strcmp(change_posdn, yes_string))) {
-		(void) printf("                                   ");
-		(void) display_posdit(36, posdn);
-		(void) printf("\n");
+		 printf("                                   ");
+		 display_posdit(36, posdn);
+		 printf("\n");
 		objectType = 0;
 		cp = rindex(posdn, '@');
 		status = get_objectClass(cp, &objectType);
 		if (status != OK) {
-			(void) printf(org_unk_type);
-			(void) printf("\n%s", err_rprtHlpdsk);
-			(void) sprintf(posDNattr, "position"); /* continue */
+			 printf(org_unk_type);
+			 printf("\n%s", err_rprtHlpdsk);
+			 sprintf(posDNattr, "position"); /* continue */
 		} else {
 			if (objectType == COUNTRY) {
-				(void) sprintf(posDNattr, country2_str);
+				 sprintf(posDNattr, country2_str);
 			} else if (objectType == ORG) {
-				(void) sprintf(posDNattr, org_str);
+				 sprintf(posDNattr, org_str);
 			} else if (objectType == ORGUNIT) {
-				(void) sprintf(posDNattr, ou_str);
+				 sprintf(posDNattr, ou_str);
 			}
 		}
-		(void) sprintf(ask_ifhere, "%s %s %s %s", is_the, mapAttName(attr_name), posDNattr, above_str);
+		 sprintf(ask_ifhere, "%s %s %s %s", is_the, mapAttName(attr_name), posDNattr, above_str);
 		de_prompt_yesno(ask_ifhere, here, yes_string);
 	} else {
-		(void) sprintf(here, yes_string);
+		 sprintf(here, yes_string);
 	}
 prompt_dn:
 
 	if (!(strcmp(here, yes_string))) {
 		if (strlen(str) <= 0) {
-			(void) sprintf(default_userdn, "");
+			 sprintf(default_userdn, "");
 		} else {
 			rdn = copy_string(lastComponent(str, PERSON));
-			(void) sprintf(default_userdn, rdn);
+			 sprintf(default_userdn, rdn);
 		}
 
-		(void) printf("%s %s ", enter_msg, mapAttName(attr_name));
+		 printf("%s %s ", enter_msg, mapAttName(attr_name));
 		noPersons = 0;
 		enterString(USERDN, person, plp);
 
@@ -536,14 +536,14 @@ prompt_dn:
 		}
 
 		if (strlen(person) == 1 && index(person, '-') != 0) {
-			(void) sprintf(str, "%s", "-");
+			 sprintf(str, "%s", "-");
 			return OK;
 		} else if (strlen(person) <= 0) {
 			/* Return was entered */
 			if (strlen(default_userdn) <= 0) {
 				if (strlen(str) <= 0) {
 					/* no value entered and no default*/
-					(void) sprintf(str, "");
+					 sprintf(str, "");
 					return OK;
 				} else {
 					return OK;
@@ -553,7 +553,7 @@ prompt_dn:
 					return OK;
 				} else {
 					/* set person, in order to search in new posdn */
-					(void) sprintf(person, "%s", default_userdn);
+					 sprintf(person, "%s", default_userdn);
 				}
 			}
 		}
@@ -563,18 +563,18 @@ prompt_dn:
 		}
 
 		if (orgEntered == FALSE) {
-			(void) sprintf(tmp_search, "%s@cn=%s", posdn,person);
+			 sprintf(tmp_search, "%s@cn=%s", posdn,person);
 			if (listXctCpPRRcn(tmp_search, &plp) != OK) {
 				searchFail(person);
 				cont_add_role = malloc(LINESIZE);
 				de_prompt_yesno(cnt_nosrv_posdn, cont_add_role, no_string);
 				if (!(strcmp(cont_add_role, yes_string))) {
 					/* return an empty string */
-					(void) sprintf(str, "");
+					 sprintf(str, "");
 					free(cont_add_role);
 					return OK;
 				} else {
-					(void) sprintf(str, "");
+					 sprintf(str, "");
 					free(cont_add_role);
 					return NOTOK;
 				}
@@ -586,11 +586,11 @@ prompt_dn:
 				de_prompt_yesno(cnt_nosrv_posdn, cont_add_role, no_string);
 				if (!(strcmp(cont_add_role, yes_string))) {
 					/* return an empty string */
-					(void) sprintf(str, "");
+					 sprintf(str, "");
 					free(cont_add_role);
 					return OK;
 				} else {
-					(void) sprintf(str, "");
+					 sprintf(str, "");
 					free(cont_add_role);
 					return NOTOK;
 				}
@@ -598,14 +598,14 @@ prompt_dn:
 		}
 		noPersons = listlen(plp);
 		if (noPersons <= 0) {
-			(void) printf("%s `%s'\n\n", no_ent_match, person);
+			 printf("%s `%s'\n\n", no_ent_match, person);
 			goto prompt_where;
 		} else if (noPersons == 1) {
-			(void) sprintf(str, "@%s", plp->name);
+			 sprintf(str, "@%s", plp->name);
 			return OK;
 		} else {
-			(void) printf(got_match);
-			(void) printf(type_number);
+			 printf(got_match);
+			 printf(type_number);
 			pagerOn(NUMBER_ALLOWED);
 			printListPRRs(person, plp, PERSON, FALSE);
 			goto prompt_dn;
@@ -618,16 +618,16 @@ prompt_dn:
 			de_prompt_yesno(cnt_nosrv_posdn, cont_add_role, no_string);
 			if (!(strcmp(cont_add_role, yes_string))) {
 				/* return an empty string */
-				(void) sprintf(str, "");
+				 sprintf(str, "");
 				free(cont_add_role);
 				return OK;
 			} else {
-				(void) sprintf(str, "");
+				 sprintf(str, "");
 				free(cont_add_role);
 				return NOTOK;
 			}
 		} else {
-			(void) sprintf(here, yes_string);
+			 sprintf(here, yes_string);
 			goto prompt_dn;
 		}
 	}
@@ -654,10 +654,10 @@ prompt_country:
 	enterString(COUNTRY, co, clp);
 	if (strlen(co) == 0) {
 		if (!(strcmp(default_country, ""))) {
-			(void) printf("%s %s %s\n", reenter_c, quit_String, to_quit);
+			 printf("%s %s %s\n", reenter_c, quit_String, to_quit);
 			goto prompt_country;
 		} else {
-			(void) strcpy(co, default_country);
+			 strcpy(co, default_country);
 		}
 	} else {
 		if (!(strcmp(co, quit_String))) {
@@ -666,7 +666,7 @@ prompt_country:
 			pagerOn(NUMBER_NOT_ALLOWED);
 			return NOTOK;
 		} else {
-			(void) sprintf(default_organisation, "");
+			 sprintf(default_organisation, "");
 			*new = TRUE;
 		}
 	}
@@ -677,36 +677,36 @@ prompt_country:
 	}
 	noCos = listlen(clp);
 	if (noCos <= 0) {
-		(void) printf("%s `%s' \n\n", no_cMatch, co);
+		 printf("%s `%s' \n\n", no_cMatch, co);
 		goto prompt_country;
 	} else if (noCos == 1) {
-		(void) sprintf(posdn, "@%s", clp->name);
+		 sprintf(posdn, "@%s", clp->name);
 		rdn = copy_string(lastComponent(clp->name, COUNTRY));
-		(void) strcpy(default_country, rdn);
-		(void) printf("%s\n", default_country);
+		 strcpy(default_country, rdn);
+		 printf("%s\n", default_country);
 		highNumber = 0;
 		pagerOn(NUMBER_NOT_ALLOWED);
 	} else {
-		(void) printf(got_match);
-		(void) printf(type_number);
+		 printf(got_match);
+		 printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListCos(clp);
 		goto prompt_country;
 	}
 prompt_org:
-	(void) printf("\n");
+	 printf("\n");
 	enterString(ORG, org, olp);
 	if (strlen(org) == 0) {
 		if (!(strcmp(default_organisation, ""))) {
 			if ((strcmp(org_compel, no_string))) {
-				(void) printf("%s %s %s\n", enter_org, quit_String, to_quit);
+				 printf("%s %s %s\n", enter_org, quit_String, to_quit);
 				goto prompt_org;
 			} else {
 				free(rdn);
 				return OK;
 			}
 		} else {
-			(void) strcpy(org, default_organisation);
+			 strcpy(org, default_organisation);
 		}
 	} else {
 		if (!(strcmp(org, quit_String))) {
@@ -720,7 +720,7 @@ prompt_org:
 				return OK;
 			}
 		} else {
-			(void) sprintf(default_department, "");
+			 sprintf(default_department, "");
 			*new = TRUE;
 		}
 	}
@@ -730,19 +730,19 @@ prompt_org:
 	}
 	noOrgs = listlen(olp);
 	if (noOrgs <= 0) {
-		(void) printf("%s `%s' \n\n", no_orgMatch, org);
+		 printf("%s `%s' \n\n", no_orgMatch, org);
 		goto prompt_org;
 	} else if (noOrgs == 1) {
-		(void) sprintf(posdn, "@%s", olp->name);
+		 sprintf(posdn, "@%s", olp->name);
 		rdn = copy_string(lastComponent(olp->name, ORG));
-		(void) strcpy(default_organisation, rdn);
-		(void) printf("%s\n", default_organisation);
+		 strcpy(default_organisation, rdn);
+		 printf("%s\n", default_organisation);
 		highNumber = 0;
 		pagerOn(NUMBER_NOT_ALLOWED);
 		orgEntered = TRUE;
 	} else {
-		(void) printf(got_match);
-		(void) printf(type_number);
+		 printf(got_match);
+		 printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListOrgs(org, olp);
 		goto prompt_org;
@@ -756,7 +756,7 @@ prompt_org:
 		return OK;
 	} else if ((strcmp(have_department, yes_string))) {
 		/* if something different from yes or no (default) */
-		(void) sprintf(ou, "%s", "*");
+		 sprintf(ou, "%s", "*");
 		if (listOUs(posdn, ou, &oulp) != OK) {
 			searchFail("departments");
 			return NOTOK;
@@ -772,14 +772,14 @@ prompt_org:
 	pagerOn(NUMBER_NOT_ALLOWED);
 
 prompt_ou:
-	(void) printf("\n");
+	 printf("\n");
 	enterString(ORGUNIT, ou, oulp);
 	if (strlen(ou) == 0) {
 		if (!(strcmp(default_department, ""))) {
 			free(rdn);
 			return OK;
 		} else {
-			(void) strcpy(ou, default_department);
+			 strcpy(ou, default_department);
 		}
 	} else {
 		if (!(strcmp(ou, quit_String))) {
@@ -797,18 +797,18 @@ prompt_ou:
 	}
 	noOUs = listlen(oulp);
 	if (noOUs <= 0) {
-		(void) printf("%s `%s' \n\n", no_ouMatch, ou);
+		 printf("%s `%s' \n\n", no_ouMatch, ou);
 		goto prompt_ou;
 	} else if (noOUs == 1) {
-		(void) sprintf(posdn, "@%s", oulp->name);
+		 sprintf(posdn, "@%s", oulp->name);
 		rdn = copy_string(lastComponent(oulp->name, ORGUNIT));
-		(void) strcpy(default_department, rdn);
-		(void) printf("%s\n", default_department);
+		 strcpy(default_department, rdn);
+		 printf("%s\n", default_department);
 		highNumber = 0;
 		pagerOn(NUMBER_NOT_ALLOWED);
 	} else {
-		(void) printf(got_match);
-		(void) printf(type_number);
+		 printf(got_match);
+		 printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListOUs(ou, oulp);
 		goto prompt_ou;
@@ -828,29 +828,29 @@ char pswd[];
 	temp2 = malloc(LINESIZE);
 
 ask_again:
-	(void) sprintf(temp2, "%s :  ", ask_org_password);
-	(void) sprintf(new_pswd, getpass(temp2));
+	 sprintf(temp2, "%s :  ", ask_org_password);
+	 sprintf(new_pswd, getpass(temp2));
 	if ((!(strcmp(new_pswd, quit_String))) || (strlen(new_pswd) <= 0)) {
-		(void) printf(pswd_must_enter);
+		 printf(pswd_must_enter);
 		goto ask_again;
 	} else if (!(strcmp(new_pswd, "?"))) {
 		displayFile("userPassword", FALSE);
 		goto ask_again;
 	}
-	(void) sprintf(temp2, "%s :  ", ask_vfy_org_pswd);
-	(void) sprintf(vfy_pswd, getpass(temp2));
+	 sprintf(temp2, "%s :  ", ask_vfy_org_pswd);
+	 sprintf(vfy_pswd, getpass(temp2));
 	if ((!(strcmp(vfy_pswd, quit_String))) || (strlen(new_pswd) <= 0)) {
-		(void) printf(pswd_must_enter);
+		 printf(pswd_must_enter);
 		goto ask_again;
 	} else if (!(strcmp(vfy_pswd, "?"))) {
 		displayFile("userPassword", FALSE);
 		goto ask_again;
 	}
 	if (!(strcmp(new_pswd, vfy_pswd))) {
-		(void) sprintf(pswd, new_pswd);
+		 sprintf(pswd, new_pswd);
 		return OK;
 	} else {
-		(void) printf(vfy_pswd_fail);
+		 printf(vfy_pswd_fail);
 		goto ask_again;
 	}
 }

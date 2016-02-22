@@ -55,13 +55,13 @@ IFP	initfnx,
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			(void) sprintf (file, tsapfile, getpid ());
+			 sprintf (file, tsapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				tpkt2text (fp, t, 1);
-				(void) fclose (fp);
+				 fclose (fp);
 			}
 		} else {
-			(void) fflush (stdout);
+			 fflush (stdout);
 			tpkt2text (stderr, t, 1);
 		}
 	}
@@ -483,13 +483,13 @@ IFP	writefnx;
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			(void) sprintf (file, tsapfile, getpid ());
+			 sprintf (file, tsapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				tpkt2text (fp, t, 0);
-				(void) fclose (fp);
+				 fclose (fp);
 			}
 		} else {
-			(void) fflush (stdout);
+			 fflush (stdout);
 			tpkt2text (stderr, t, 0);
 		}
 	}
@@ -500,8 +500,8 @@ IFP	writefnx;
 
 	i = (*writefnx) (fd, t, outptr, ilen);
 
-	(void) sigiomask (smask);
-	(void) signal (SIGPIPE, pstat);
+	 sigiomask (smask);
+	 signal (SIGPIPE, pstat);
 
 	return (i != NOTOK ? OK : DR_NETWORK);
 }

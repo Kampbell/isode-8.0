@@ -55,21 +55,21 @@ doexec (char *cmd)
 		/*
 		 * Return everything the shell commands print.
 		 */
-		(void) close(0);
-		(void) close(1);
-		(void) close(2);
-		(void) open("/dev/null", 0);
-		(void) dup(fd[1]);
-		(void) dup(fd[1]);
-		(void) close(fd[0]);
-		(void) close(fd[1]);
-		(void) execl("/bin/sh", "sh", "-c", cmd, 0);
+		 close(0);
+		 close(1);
+		 close(2);
+		 open("/dev/null", 0);
+		 dup(fd[1]);
+		 dup(fd[1]);
+		 close(fd[0]);
+		 close(fd[1]);
+		 execl("/bin/sh", "sh", "-c", cmd, 0);
 		_exit(127);
 	}
 	if (pid == -1)
 		return NOTOK;
 
-	(void) close(fd[1]);
+	 close(fd[1]);
 
 	while ((i = read(fd[0], buf, sizeof(buf))) > 0) {
 		addtoia5 (buf, i);
@@ -79,7 +79,7 @@ doexec (char *cmd)
 		;
 	if (i == -1)
 		status = -1;
-	(void) close(fd[0]);
+	 close(fd[0]);
 
 	return OK;
 }
@@ -95,7 +95,7 @@ do_symlink (struct type_Idist_FileSpec *fs)
 	free (new);
 
 	new = qb2str (fs -> linkname);
-	(void) strcpy (old, new);
+	 strcpy (old, new);
 	free (new);
 
 
@@ -113,11 +113,11 @@ do_symlink (struct type_Idist_FileSpec *fs)
 		if ((i = readlink (target, tbuf, BUFSIZ)) >= 0 &&
 				i == fs -> filesize &&
 				strncmp (old, tbuf, (int) fs -> filesize) == 0) {
-			(void) unlink (linkname);
+			 unlink (linkname);
 			return OK;
 		}
 		if (bit_on (fs -> fileopts, bit_Idist_Options_verify)) {
-			(void) unlink (linkname);
+			 unlink (linkname);
 			note ("need to update: %s", target);
 			return OK;
 		}
@@ -125,7 +125,7 @@ do_symlink (struct type_Idist_FileSpec *fs)
 
 	if (rename (linkname, target) < 0) {
 		nadvise (target, "can't rename %s to", linkname);
-		(void) unlink (linkname);
+		 unlink (linkname);
 		return NOTOK;
 	}
 	if (bit_on (fs -> fileopts, bit_Idist_Options_compare))
@@ -141,14 +141,14 @@ cannon (char *name)
 	extern	char	*tmpname;
 
 	if (catname)
-		(void) sprintf (tp, "/%s", name);
+		 sprintf (tp, "/%s", name);
 	if((cp = rindex (target, '/')) == NULL)
-		(void) strcpy (nname, tmpname);
+		 strcpy (nname, tmpname);
 	else if (cp == target)
-		(void) sprintf (nname, "/%s", tmpname);
+		 sprintf (nname, "/%s", tmpname);
 	else {
 		*cp = '\0';
-		(void) sprintf (nname, "%s/%s", target, tmpname);
+		 sprintf (nname, "%s/%s", target, tmpname);
 		*cp = '/';
 	}
 	return nname;
@@ -197,7 +197,7 @@ do_rfile (struct type_Idist_FileSpec *fs)
 			return NOTOK;
 		}
 	}
-	(void) fchmod (fileno (cfile), (int)fs -> filemode);
+	 fchmod (fileno (cfile), (int)fs -> filemode);
 
 	return OK;
 }
@@ -221,7 +221,7 @@ do_hardlink (struct type_Idist_FileSpec *fs)
 	free (cp);
 
 	if (catname)
-		(void) sprintf (tp, "/%s", new);
+		 sprintf (tp, "/%s", new);
 	free (new);
 
 	if (lstat(target, &stb) == 0) {
@@ -354,10 +354,10 @@ i_remove (char *str)
 		if (strcmp(dp->d_name, ".") == 0 ||
 				strcmp(dp->d_name, "..") == 0)
 			continue;
-		(void) sprintf (buf, "%s/%s", str, dp -> d_name);
+		 sprintf (buf, "%s/%s", str, dp -> d_name);
 		result = i_remove(buf) == OK ? result : NOTOK;
 	}
-	(void) closedir(d);
+	 closedir(d);
 	if (rmdir(str) < 0) {
 		nadvise (str, "Can't remove directory", str);
 		return NOTOK;
@@ -389,7 +389,7 @@ query (char *str)
 		adios ("memory", "out of");
 
 	if (catname)
-		(void) sprintf (tp, "/%s", str);
+		 sprintf (tp, "/%s", str);
 
 	if (lstat (target, &stb) < 0) {
 		if (errno == ENOENT) {
@@ -439,7 +439,7 @@ str2ia5list (char *s, int len)
 }
 
 struct type_Idist_FileList *
-do_listcdir (void) {
+do_listcdir  {
 	DIR	*d;
 	struct dirent *dp;
 	struct type_Idist_FileList *base, **flp;
@@ -458,7 +458,7 @@ do_listcdir (void) {
 		if (strcmp (dp -> d_name, ".") == 0 ||
 				strcmp (dp -> d_name, "..") == 0)
 			continue;
-		(void) sprintf (buf, "%s/%s", target, dp -> d_name);
+		 sprintf (buf, "%s/%s", target, dp -> d_name);
 		if (lstat (buf, &stb) < 0) {
 			nadvise (buf, "Can't stat");
 			continue;
@@ -482,12 +482,12 @@ do_listcdir (void) {
 		(*flp) -> next = NULL;
 		flp = &(*flp) -> next;
 	}
-	(void) closedir (d);
+	 closedir (d);
 	return base;
 }
 
 int 
-fixup (void) {
+fixup  {
 	struct timeval tvp[2];
 	char	*new, *p;
 	char	*owner, *group;
@@ -499,11 +499,11 @@ fixup (void) {
 
 	if (bit_on (cfiletype -> fileopts, bit_Idist_Options_compare)) {
 		if (compare (target, new) == OK) {
-			(void) unlink (new);
+			 unlink (new);
 			return OK;
 		}
 		if (bit_on (cfiletype -> fileopts, bit_Idist_Options_verify)) {
-			(void) unlink (new);
+			 unlink (new);
 			note ("need to update: %s", target);
 			return OK;
 		}
@@ -522,7 +522,7 @@ fixup (void) {
 	if (chog (new, owner, group, cfiletype -> filemode) < 0) {
 		free (owner);
 		free (group);
-		(void) unlink (new);
+		 unlink (new);
 		return NOTOK;
 	}
 	free (owner);
@@ -553,7 +553,7 @@ compare (char *f1, char *f2)
 	}
 	if ((fp2 = fopen (f2, "r")) == NULL) {
 		nadvise (f2, "Can't reopend file");
-		(void) fclose (fp1);
+		 fclose (fp1);
 		return NOTOK;
 	}
 	for (;;) {
@@ -565,8 +565,8 @@ compare (char *f1, char *f2)
 			break;
 	}
 
-	(void) fclose (fp1);
-	(void) fclose (fp2);
+	 fclose (fp1);
+	 fclose (fp2);
 	return n1 == 0 ? OK : NOTOK;
 }
 
@@ -642,6 +642,6 @@ SFD cleanup () {
 	if (cfiletype) {
 		p = qb2str (cfiletype -> filename);
 		temp = cannon (p);
-		(void) unlink (temp);
+		 unlink (temp);
 	}
 }

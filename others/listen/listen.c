@@ -103,7 +103,7 @@ main (int argc, char **argv, char **envp)
 			ss -> ss_ssdusize);
 
 	/* stop listening, we have what we want */
-	(void) TNetClose (NULLTA, td);
+	 TNetClose (NULLTA, td);
 
 	bzero ((char *) sbi, sizeof *sbi);
 	sbi -> sb_sd = ss -> ss_sd;

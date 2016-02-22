@@ -81,7 +81,7 @@ struct TSAPdisconnect *td;
 		value += (long) tb -> tb_len;
 	*nbytes = value;
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -105,7 +105,7 @@ TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding,
 	if (responding)
 		copyTSAPaddrX (&tb -> tb_responding, responding);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }
@@ -127,7 +127,7 @@ TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td)
 
 	tb -> tb_manfnx = fnx;
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }

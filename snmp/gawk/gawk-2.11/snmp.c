@@ -460,7 +460,7 @@ no_mem_for_inst:
 	if (oid_cmp (oid, v -> name)) {
 		char    buffer[BUFSIZ];
 
-		(void) strcpy (buffer, oid2ode (v -> name));
+		 strcpy (buffer, oid2ode (v -> name));
 		snmp_diag (NULLCP, "wrong variable returned (got %s, wanted %s)",
 				   buffer, oid2ode (oid));
 		goto out;
@@ -481,7 +481,7 @@ error_x:
 	if (ps)
 		ps_free (ps), ps = NULLPS;
 	if (snmp_fd != NOTOK)
-		(void) close_udp_socket (snmp_fd), snmp_fd = NOTOK;
+		 close_udp_socket (snmp_fd), snmp_fd = NOTOK;
 
 out:
 	;
@@ -957,7 +957,7 @@ error_x:
 	if (ps)
 		ps_free (ps), ps = NULLPS;
 	if (snmp_fd != NOTOK)
-		(void) close_udp_socket (snmp_fd), snmp_fd = NOTOK;
+		 close_udp_socket (snmp_fd), snmp_fd = NOTOK;
 
 out:
 	;
@@ -1218,7 +1218,7 @@ set_value:
 	if (oid_cmp (oid, v -> name)) {
 		char    buffer[BUFSIZ];
 
-		(void) strcpy (buffer, oid2ode (v -> name));
+		 strcpy (buffer, oid2ode (v -> name));
 		snmp_diag (NULLCP, "wrong variable returned (got %s, wanted %s)",
 				   buffer, oid2ode (oid));
 		goto out;
@@ -1242,7 +1242,7 @@ error_x:
 	if (ps)
 		ps_free (ps), ps = NULLPS;
 	if (snmp_fd != NOTOK)
-		(void) close_udp_socket (snmp_fd), snmp_fd = NOTOK;
+		 close_udp_socket (snmp_fd), snmp_fd = NOTOK;
 
 out:
 	;
@@ -1274,7 +1274,7 @@ NODE   *x;
 PE     *pe;
 {
 	if ((*pe = int2prim ((integer) force_number (x))) == NULLPE) {
-		(void) strcpy (PY_pepy, "int2prim failed");
+		 strcpy (PY_pepy, "int2prim failed");
 		return NOTOK;
 	}
 
@@ -1307,11 +1307,11 @@ PE     *pe;
 			return e_display (x, pe);
 
 	if ((p = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_OCTS)) == NULL) {
-		(void) strcpy (PY_pepy, "pe_alloc failed");
+		 strcpy (PY_pepy, "pe_alloc failed");
 		return NOTOK;
 	}
 	if ((d = p -> pe_prim = PEDalloc (p -> pe_len = (i / 3) + 1)) == NULL) {
-		(void) strcpy (PY_pepy, "PEDalloc failed");
+		 strcpy (PY_pepy, "PEDalloc failed");
 		pe_free (p);
 		return NOTOK;
 	}
@@ -1331,7 +1331,7 @@ PE     *pe;
 
 	if ((*pe = str2prim (tmp, strlen (tmp), PE_CLASS_UNIV, PE_PRIM_OCTS))
 			== NULLPE) {
-		(void) strcpy (PY_pepy, "str2prim failed");
+		 strcpy (PY_pepy, "str2prim failed");
 		return NOTOK;
 	}
 
@@ -1351,7 +1351,7 @@ PE     *pe;
 bad_oid:
 		;
 #endif
-		(void) sprintf (PY_pepy, "str2oid: bad instance identifier \"%s\"",
+		 sprintf (PY_pepy, "str2oid: bad instance identifier \"%s\"",
 						tmp);
 		return NOTOK;
 	}
@@ -1364,7 +1364,7 @@ bad_oid:
 #endif
 
 	if ((*pe = oid2prim (oid)) == NULLPE) {
-		(void) strcpy (PY_pepy, "oid2prim failed");
+		 strcpy (PY_pepy, "oid2prim failed");
 		return NOTOK;
 	}
 
@@ -1380,7 +1380,7 @@ PE     *pe;
 {
 	if ((*pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_NULL))
 			== NULLPE) {
-		(void) strcpy (PY_pepy, "pe_alloc failed");
+		 strcpy (PY_pepy, "pe_alloc failed");
 		return NOTOK;
 	}
 
@@ -1398,7 +1398,7 @@ PE     *pe;
 	struct sockaddr_in *lsock = &lo_socket;
 
 	if (!(hp = gethostbystring (tmp))) {
-		(void) sprintf (PY_pepy, "invalid IP-address: \"%s\"", tmp);
+		 sprintf (PY_pepy, "invalid IP-address: \"%s\"", tmp);
 		return NOTOK;
 	}
 	bzero ((char *) lsock, sizeof *lsock);
@@ -1407,7 +1407,7 @@ PE     *pe;
 
 	if ((*pe = str2prim ((char *) &lsock -> sin_addr, 4, PE_CLASS_APPL, 0))
 			== NULLPE) {
-		(void) strcpy (PY_pepy, "str2prim failed");
+		 strcpy (PY_pepy, "str2prim failed");
 		return NOTOK;
 	}
 
@@ -1424,7 +1424,7 @@ PElementID id;
 {
 	if ((*pe = ulong2prim ((u_long) force_number (x), PE_CLASS_APPL, id))
 			== NULL) {
-		(void) strcpy (PY_pepy, "ulong2prim failed");
+		 strcpy (PY_pepy, "ulong2prim failed");
 		return NOTOK;
 	}
 
@@ -1483,7 +1483,7 @@ int	len;
 	emalloc (r -> stptr, char *, len * 3 + 1, "make_octet_node");
 	bp = r -> stptr;
 	for (ep = (cp = base) + len; cp < ep; cp++, s = ":") {
-		(void) sprintf (bp, "%s%02x", s, *cp & 0xff);
+		 sprintf (bp, "%s%02x", s, *cp & 0xff);
 		bp += strlen (bp);
 	}
 	*bp = NULL;		/* in case len == 0 */
@@ -1502,7 +1502,7 @@ PE	pe;
 	integer	i = prim2num (pe);
 
 	if (i == NOTOK && pe -> pe_errno != PE_ERR_NONE) {
-		(void) strcpy (PY_pepy, pe_error (pe -> pe_errno));
+		 strcpy (PY_pepy, pe_error (pe -> pe_errno));
 		return NOTOK;
 	}
 
@@ -1519,7 +1519,7 @@ PE	pe;
 	struct qbuf *qb = prim2qb (pe);
 
 	if (qb == NULL || qb_pullup (qb) == NOTOK) {
-		(void) strcpy (PY_pepy, qb ? "qb_pullup: out of memory"
+		 strcpy (PY_pepy, qb ? "qb_pullup: out of memory"
 					   : pe_error (pe -> pe_errno));
 		return NOTOK;
 	}
@@ -1539,7 +1539,7 @@ PE	pe;
 	struct qbuf *qb = prim2qb (pe);
 
 	if (qb == NULL || qb_pullup (qb) == NOTOK) {
-		(void) strcpy (PY_pepy, qb ? "qb_pullup: out of memory"
+		 strcpy (PY_pepy, qb ? "qb_pullup: out of memory"
 					   : pe_error (pe -> pe_errno));
 		return NOTOK;
 	}
@@ -1560,7 +1560,7 @@ PE	pe;
 	OID	    oid = prim2oid (pe);
 
 	if (oid == NULLOID) {
-		(void) strcpy (PY_pepy, pe_error (pe -> pe_errno));
+		 strcpy (PY_pepy, pe_error (pe -> pe_errno));
 		return NOTOK;
 	}
 	cp = sprintoid (oid);
@@ -1594,18 +1594,18 @@ PE	pe;
 	if (decode_SNMP_IpAddress (pe, 1, NULLIP, NULLVP, &ip) == NOTOK)
 		return NOTOK;
 	if (qb_pullup (ip) == NOTOK) {
-		(void) strcpy (PY_pepy, "qb_pullup: out of memory");
+		 strcpy (PY_pepy, "qb_pullup: out of memory");
 		free_SNMP_IpAddress (ip);
 		return NOTOK;
 	}
 	if ((qb = ip -> qb_forw) -> qb_len != 4) {
-		(void) sprintf (PY_pepy,
+		 sprintf (PY_pepy,
 						"IpAddress is wrong length (got %d, wanted 4)",
 						qb -> qb_len);
 		free_SNMP_IpAddress (ip);
 		return NOTOK;
 	}
-	(void) sprintf (ipaddr, "%d.%d.%d.%d",
+	 sprintf (ipaddr, "%d.%d.%d.%d",
 					qb -> qb_data[0] & 0xff, qb -> qb_data[1] & 0xff,
 					qb -> qb_data[2] & 0xff, qb -> qb_data[3] & 0xff);
 
@@ -1626,7 +1626,7 @@ PE	pe;
 	u_long    i = prim2ulong (pe);
 
 	if (i == 0 && pe -> pe_errno != PE_ERR_NONE) {
-		(void) strcpy (PY_pepy, pe_error (pe -> pe_errno));
+		 strcpy (PY_pepy, pe_error (pe -> pe_errno));
 		return NOTOK;
 	}
 
@@ -1647,7 +1647,7 @@ PE	pe;
 	if (decode_SNMP_ClnpAddress (pe, 1, NULLIP, NULLVP, &clnp) == NOTOK)
 		return NOTOK;
 	if (qb_pullup (clnp) == NOTOK) {
-		(void) strcpy (PY_pepy, "qb_pullup: out of memory");
+		 strcpy (PY_pepy, "qb_pullup: out of memory");
 		free_SNMP_ClnpAddress (clnp);
 		return NOTOK;
 	}
@@ -1700,7 +1700,7 @@ int	do_id;
 			free (snmp_agent), snmp_agent = NULL;
 
 		emalloc (snmp_agent, char *, strlen (tmp -> stptr) + 1, "snmp_ready1");
-		(void) strcpy (snmp_agent, tmp -> stptr);
+		 strcpy (snmp_agent, tmp -> stptr);
 
 		changed++;
 	}
@@ -1714,7 +1714,7 @@ int	do_id;
 
 		emalloc (snmp_community, char *, strlen (tmp -> stptr) + 1,
 				 "snmp_ready2");
-		(void) strcpy (snmp_community, tmp -> stptr);
+		 strcpy (snmp_community, tmp -> stptr);
 		if ((msg -> community = str2qb (snmp_community,
 										strlen (snmp_community), 1)) == NULL) {
 			snmp_diag (NULLCP, "str2qb: out of memory");
@@ -1727,7 +1727,7 @@ int	do_id;
 		if (ps)
 			ps_free (ps), ps = NULLPS;
 		if (snmp_fd != NOTOK)
-			(void) close_udp_socket (snmp_fd), snmp_fd = NOTOK;
+			 close_udp_socket (snmp_fd), snmp_fd = NOTOK;
 	} else
 		return OK;
 
@@ -1878,7 +1878,7 @@ struct sockaddr_in *isock;
 
 done:
 	;
-	(void) fclose (fp);
+	 fclose (fp);
 
 	return result;
 }
@@ -1940,7 +1940,7 @@ int	i;
 
 	if (0 < i && i < sizeof errors / sizeof errors[0])
 		return errors[i];
-	(void) sprintf (buffer, "error %d", i);
+	 sprintf (buffer, "error %d", i);
 
 	return buffer;
 }

@@ -103,7 +103,7 @@ Authpolicy ap;
 {
 	PE ret_pe;
 
-	(void) encode_Quipu_AuthenticationPolicySyntax( &ret_pe, 0, 0, NULLCP,
+	 encode_Quipu_AuthenticationPolicySyntax( &ret_pe, 0, 0, NULLCP,
 			ap );
 
 	return( ret_pe );

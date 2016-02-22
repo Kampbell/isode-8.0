@@ -366,7 +366,7 @@ int	offset;
 	case type_SNMP_PDUs_commit:
 		is -> ifn_admin = is -> ifn_touched;
 		bzero ((char *) &ifreq, sizeof ifreq);
-		(void) strcpy (ifreq.ifr_name, is -> ifn_descr);
+		 strcpy (ifreq.ifr_name, is -> ifn_descr);
 		if (ioctl (nd, SIOCGIFFLAGS, &ifreq) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, "failed", "SIOCGIFFLAGS on %s",
 					is -> ifn_descr);
@@ -506,7 +506,7 @@ disabled:
 				== NOTOK)
 			goto disabled;
 		is -> ifn_descr[sizeof is -> ifn_descr - 1] = NULL;
-		(void) sprintf (is -> ifn_descr + strlen (is -> ifn_descr), "%d",
+		 sprintf (is -> ifn_descr + strlen (is -> ifn_descr), "%d",
 						ifn -> if_unit);
 
 #ifdef	BSD44
@@ -550,7 +550,7 @@ disabled:
 		*((integer *) ot -> ot_info) = ifNumber = i;
 	}
 
-	(void) get_interfaces (type_SNMP_PDUs_get__request);
+	 get_interfaces (type_SNMP_PDUs_get__request);
 
 	if (ot = text2obj ("ifIndex"))
 		ot -> ot_getfnx = o_interfaces,
@@ -716,7 +716,7 @@ int	offset;
 			continue;
 
 		if (nd != NOTOK) {
-			(void) strcpy (ifreq.ifr_name, is -> ifn_descr);
+			 strcpy (ifreq.ifr_name, is -> ifn_descr);
 			if (ioctl (nd, SIOCGIFNETMASK, (char *) &ifreq) == NOTOK) {
 				if (debug)
 					advise (LLOG_EXCEPTIONS, "failed", "SIOCGIFNETMASK on %s",
@@ -787,7 +787,7 @@ int	offset;
 				continue;
 
 			if (nd != NOTOK) {
-				(void) strcpy (ifreq.ifr_name, is -> ifn_descr);
+				 strcpy (ifreq.ifr_name, is -> ifn_descr);
 				if (ioctl (nd, SIOCGIFNETMASK, (char *) &ifreq) == NOTOK) {
 					if (debug)
 						advise (LLOG_EXCEPTIONS, "failed",

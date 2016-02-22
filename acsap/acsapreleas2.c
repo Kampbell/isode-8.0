@@ -91,7 +91,7 @@ AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAP
 	pe = NULLPE;
 	if ((pdu = (struct type_ACS_RLRE__apdu *) calloc (1, sizeof *pdu))
 			== NULL) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	pdu -> optionals |= opt_ACS_RLRE__apdu_reason;
@@ -108,7 +108,7 @@ AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAP
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 						  PY_pepy);
 		goto out2;
 	}
@@ -117,7 +117,7 @@ AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAP
 	PLOGP (acsap_log,ACS_ACSE__apdu, pe, "RLRE-apdu", 0);
 
 	if ((result = PRelResponse (acb -> acb_fd, code, &pe, 1, &pis)) == NOTOK) {
-		(void) ps2acslose (acb, aci, "PRelResponse", pa);
+		 ps2acslose (acb, aci, "PRelResponse", pa);
 		if (PC_FATAL (pa -> pa_reason))
 			goto out2;
 		else
@@ -142,7 +142,7 @@ out1:
 	if (pdu)
 		free_ACS_RLRE__apdu (pdu);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

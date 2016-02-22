@@ -65,8 +65,8 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 
 		if (vecp == 2) {
 			if (TRestoreState (vec[1], ts, td) == NOTOK) {
-				(void) ts2sslose (si, "TRestoreState", td);
-				(void) ssaplose (si, SC_PARAMETER, NULLCP,
+				 ts2sslose (si, "TRestoreState", td);
+				 ssaplose (si, SC_PARAMETER, NULLCP,
 								 "bad initialization vector");
 				goto out1;
 			}
@@ -76,15 +76,15 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 		} else {
 			if (TConnResponse (ts -> ts_sd, &ts -> ts_called,
 							   ts -> ts_expedited,  NULLCP, 0, NULLQOS, td) == NOTOK) {
-				(void) ts2sslose (si, "TConnResponse", td);
-				(void) TDiscRequest (ts -> ts_sd, NULLCP, 0, td);
+				 ts2sslose (si, "TConnResponse", td);
+				 TDiscRequest (ts -> ts_sd, NULLCP, 0, td);
 				goto out1;
 			}
 		}
 		sd = ts -> ts_sd;
 
 		if (TReadRequest (sb -> sb_fd = sd, tx, NOTOK, td) == NOTOK) {
-			(void) ts2sslose (si, "TReadRequest", td);
+			 ts2sslose (si, "TReadRequest", td);
 			goto out1;
 		}
 
@@ -92,13 +92,13 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 		TXFREE (tx);
 
 		if (s == NULL || s -> s_errno != SC_ACCEPT) {
-			(void) spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST)
+			 spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST)
 							 | SC_REFUSE, NULLCP, NULLCP);
 			goto out2;
 		}
 
 		if (s -> s_code != SPDU_CN) {
-			(void) spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST)
+			 spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST)
 							 | SC_REFUSE, NULLCP,
 							 "session protocol mangled: expected 0x%x, got 0x%x",
 							 SPDU_CN, s -> s_code);
@@ -107,7 +107,7 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 
 		if (s -> s_mask & SMASK_CN_VRSN
 				&& !(s -> s_cn_version & SB_ALLVRSNS)) {
-			(void) spktlose (sd, si, SC_VERSION | SC_REFUSE, NULLCP,
+			 spktlose (sd, si, SC_VERSION | SC_REFUSE, NULLCP,
 							 "version mismatch: expecting something in 0x%x, got 0x%x",
 							 SB_ALLVRSNS, s -> s_cn_version);
 			goto out2;
@@ -123,7 +123,7 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 				 (!(s -> s_cn_require & (SR_HALFDUPLEX | SR_DUPLEX)))
 				)
 		   ) {
-			(void) spktlose (sd, si, SC_PROTOCOL, NULLCP,
+			 spktlose (sd, si, SC_PROTOCOL, NULLCP,
 							 "proposed session requirements error: got 0x%x",
 							 s -> s_cn_require);
 			goto out2;
@@ -134,7 +134,7 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 				 ? (!(s -> s_cn_require & SR_ACTIVITY)
 					&& !(s -> s_mask & SMASK_CN_ISN))
 				 : (s -> s_mask & SMASK_CN_ISN))) {
-			(void) spktlose (sd, si, SC_PROTOCOL, NULLCP,
+			 spktlose (sd, si, SC_PROTOCOL, NULLCP,
 							 "proposed session ISN error: %s, got FUs 0x%x",
 							 (s -> s_mask & SMASK_CN_ISN) ? "present" : "absent",
 							 s -> s_cn_require);
@@ -152,9 +152,9 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 			if (s)
 				freespkt (s);
 			else
-				(void) ts2sslose (si, reason != DR_PARAMETER ? "TInit"
+				 ts2sslose (si, reason != DR_PARAMETER ? "TInit"
 								  : "TRestoreState", td);
-			(void) ssaplose (si, SC_PARAMETER, NULLCP,
+			 ssaplose (si, SC_PARAMETER, NULLCP,
 							 "bad initialization vector");
 			goto out1;
 		}
@@ -351,7 +351,7 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 
 	if (status != SC_ACCEPT) {
 		if ((s = newspkt (SPDU_RF)) == NULL) {
-			(void) ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+			 ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 			goto out1;
 		}
 
@@ -363,7 +363,7 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 		}
 		if ((s -> s_rdata = malloc ((unsigned) (s -> s_rlen = 1 + cc)))
 				== NULL) {
-			(void) ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+			 ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 			goto out2;
 		}
 		*s -> s_rdata = status & 0xff;
@@ -376,7 +376,7 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 	}
 
 	if ((s = newspkt (SPDU_AC)) == NULL) {
-		(void) ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+		 ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 		goto out1;
 	}
 

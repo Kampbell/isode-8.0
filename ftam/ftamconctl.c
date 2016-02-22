@@ -67,7 +67,7 @@ struct FTAMindication *fti;
 			   calloc (1, sizeof *fpm)) == NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		if (fpm)
 			free_FTAM_Concurrency__Control (fpm);
 		return NULL;
@@ -135,7 +135,7 @@ struct FTAMindication *fti;
 
 	if ((fpm = (struct type_FTAM_Concurrency__Access *)
 			   calloc (1, sizeof *fpm)) == NULL) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		if (fpm)
 			free_FTAM_Concurrency__Access (fpm);
 		return NULL;
@@ -174,7 +174,7 @@ struct FTAMindication *fti;
 #define dolock(s,t) \
 { \
     key = fc -> t; \
-    (void) fpm2bits (fsb, fconctl_pairs, fpm -> s, &key, fti); \
+     fpm2bits (fsb, fconctl_pairs, fpm -> s, &key, fti); \
 }
 	dolock (read, fc_readlock);
 	dolock (insert, fc_insertlock);

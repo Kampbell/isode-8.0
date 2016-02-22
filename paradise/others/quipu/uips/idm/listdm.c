@@ -47,11 +47,11 @@ int dm_List() {
 
 	rdn = malloc(LINESIZE);
 
-	(void) sprintf(default_person, "");	/* Avoid default */
+	 sprintf(default_person, "");	/* Avoid default */
 
-	(void) printf("\n");
+	 printf("\n");
 
-	(void) sprintf(person, "%s", "*");
+	 sprintf(person, "%s", "*");
 
 	if (listPRRs(posdit, person, &plp) != OK) {
 		searchFail(person);
@@ -61,7 +61,7 @@ int dm_List() {
 	noEntries = listlen(plp);
 
 	if (noEntries == 0) {
-		(void) printf(no_ent_found);
+		 printf(no_ent_found);
 		freePRRs(&plp);
 		return OK;
 	} else {
@@ -71,7 +71,7 @@ next_entry:
 		rdn = copy_string(lastComponent(plp->name, PERSON));
 		status = get_objectClassPRR(plp, &objectType);
 		if (status != OK) {
-			(void) printf(no_p_rl_rm);
+			 printf(no_p_rl_rm);
 			goto skip_entry;
 		} else if (objectType == PERSON) {
 			if (listPRRs(posdit, rdn, &plp2) != OK) {
@@ -86,7 +86,7 @@ next_entry:
 				searchFail(rdn);
 			}
 		} else {
-			(void) printf(no_p_rl_rm);
+			 printf(no_p_rl_rm);
 		}
 		printListPRRs(person, plp2, COUNTRY, TRUE);
 		freePRRs(&plp2);
@@ -102,7 +102,7 @@ skip_entry:
 		/* continue in loop */
 	}
 
-	(void) printf(press_CR);
+	 printf(press_CR);
 	buf = malloc(LINESIZE);
 	if (gets(buf) == NULLCP) {
 		free(buf);

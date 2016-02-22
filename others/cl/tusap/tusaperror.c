@@ -73,6 +73,6 @@ TuErrString (int code)
 	} else if (code < disc_uerr0_cnt)
 		return disc_uerr0[code];
 
-	(void) sprintf (buffer, "unknown error code 0x%x", code);
+	 sprintf (buffer, "unknown error code 0x%x", code);
 	return buffer;
 }

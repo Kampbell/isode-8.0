@@ -77,7 +77,7 @@ SSendRequest (int sd, char *data, int cc, int begin, int end, struct SSAPindicat
 
 	result = SDataRequestAux (sb, SPDU_DT, uvs, begin, end, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -100,7 +100,7 @@ SWriteRequest (int sd, int typed, struct udvec *uv, struct SSAPindication *si)
 
 	result = SDataRequestAux (sb, typed ? SPDU_TD : SPDU_DT, uv, 1, 1, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -162,7 +162,7 @@ SDataRequestAux (struct ssapblk *sb, int code, struct udvec *uv, int begin, int 
 			s -> s_mask |= SMASK_SPDU_GT;
 
 			if (spkt2tsdu (s, &vv -> uv_base, &vv -> uv_len) == NOTOK) {
-				(void) ssaplose (si, s -> s_errno, NULLCP, NULLCP);
+				 ssaplose (si, s -> s_errno, NULLCP, NULLCP);
 				goto out1;
 			}
 			freespkt (s);
@@ -185,7 +185,7 @@ SDataRequestAux (struct ssapblk *sb, int code, struct udvec *uv, int begin, int 
 			}
 		}
 		if (!sb -> sb_tsdu_us && uv -> uv_base) {
-			(void) ssaplose (si, SC_PARAMETER, NULLCP,
+			 ssaplose (si, SC_PARAMETER, NULLCP,
 							 "too many vector entries in SDU");
 			goto out2;
 		}
@@ -193,7 +193,7 @@ SDataRequestAux (struct ssapblk *sb, int code, struct udvec *uv, int begin, int 
 
 		vv = xv;
 		if ((s = newspkt (code)) == NULL) {
-			(void) ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+			 ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 			goto out2;
 		}
 		if (sb -> sb_tsdu_us) {
@@ -206,14 +206,14 @@ SDataRequestAux (struct ssapblk *sb, int code, struct udvec *uv, int begin, int 
 				s -> s_enclose |= ENCL_END;
 		}
 		if (spkt2tsdu (s, &vv -> uv_base, &vv -> uv_len) == NOTOK) {
-			(void) ssaplose (si, s -> s_errno, NULLCP, NULLCP);
+			 ssaplose (si, s -> s_errno, NULLCP, NULLCP);
 			goto out3;
 		}
 		freespkt (s);
 		s = NULL;
 
 		if ((result = TWriteRequest (sb -> sb_fd, vvs, td)) == NOTOK)
-			(void) ts2sslose (si, "TWriteRequest", td);
+			 ts2sslose (si, "TWriteRequest", td);
 
 		free (vvs[0].uv_base);
 		if (code == SPDU_DT)
@@ -254,23 +254,23 @@ SReadRequest (int sd, struct SSAPdata *sx, int secs, struct SSAPindication *si)
 	smask = sigioblock ();
 
 	if ((sb = findsblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid session descriptor");
 	}
 	if (!(sb -> sb_flags & SB_CONN)) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP,
 						 "session descriptor not connected");
 	}
 	if (sb -> sb_flags & SB_FINN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "session descriptor finishing");
 	}
 
 	result = SReadRequestAux (sb, sx, secs, si, 0, NULLTX);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -355,7 +355,7 @@ drop_it:
 			switch (s -> s_code) {
 			case SPDU_PR:
 			case SPDU_EX:
-				(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 								 "invalid SPDU 0x%x on Transport normal flow",
 								 s -> s_code);
 				goto out;
@@ -364,7 +364,7 @@ drop_it:
 			switch (s -> s_code) {
 			case SPDU_PR:
 				if (sb -> sb_pr != SPDU_PR) {
-					(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+					 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 									 "PR SPDU followed by PR");
 					goto out;
 				}
@@ -375,7 +375,7 @@ drop_it:
 				break;
 
 			default:
-				(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 								 "invalid SPDU 0x%x on Transport expedited",
 								 s -> s_code);
 				goto out;
@@ -480,7 +480,7 @@ drop_it:
 			default:
 				if (sb -> sb_code == s -> s_code)
 					break;
-				(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 								 "session protocol mangled: expecting 0x%x, got 0x%x during segmentation",
 								 sb -> sb_code, s -> s_code);
 				goto out;
@@ -488,7 +488,7 @@ drop_it:
 
 		/* allows AB SPDUs to have 512, not 9, octets (which is fine by me) */
 		if (s -> s_ulen > CN_SIZE && sb -> sb_version < SB_VRSN2) {
-			(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+			 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 							 "too much user data (%d) in SPDU 0x%x",
 							 s -> s_ulen, s -> s_code);
 			goto out;
@@ -498,7 +498,7 @@ drop_it:
 				&& (s -> s_code != SPDU_DT || (s -> s_mask & SMASK_SPDU_GT))
 				&& s -> s_code != SPDU_TD) {
 			if (sb -> sb_version < SB_VRSN2) {
-				(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 								 "unexpected segmentation for SPDU 0x%x",
 								 s -> s_code);
 				goto out;
@@ -513,7 +513,7 @@ drop_it:
 				under such circumstances. */
 
 			if (s -> s_enclose != ENCL_MASK) {
-				(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 								 "non-trivial segmentation (0x%x) for SPDU 0x%x",
 								 s -> s_enclose, s -> s_code);
 				goto out;
@@ -589,7 +589,7 @@ drop_it:
 			if (!(sb -> sb_requirements & SR_ACTIVITY)) {
 
 invalid:
-				(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 								 "invalid SPDU in this connection");
 				goto out;
 			}
@@ -644,7 +644,7 @@ invalid:
 #undef	dotoken
 				}
 				if (tokens && !(sb -> sb_requirements & SR_TOKENS)) {
-					(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+					 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 									 "GT SPDU not available");
 					break;
 				}
@@ -668,13 +668,13 @@ invalid:
 			sb -> sb_code = s -> s_code;
 			if (sb -> sb_tsdu_them) {
 				if (!(s -> s_mask & SMASK_ENCLOSE)) {
-					(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+					 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 									 "no segmentation information");
 					break;
 				}
 				if ((s -> s_enclose & ENCL_BEGIN)
 						? sb -> sb_len > 0 : sb -> sb_len == 0) {
-					(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+					 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 									 "segmentation mismatch");
 					break;
 				}
@@ -682,7 +682,7 @@ invalid:
 			} else if ((s -> s_mask & SMASK_ENCLOSE) &&
 					   (!(s -> s_enclose & ENCL_BEGIN) ||
 						!(s -> s_enclose & ENCL_END))) {
-				(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 								 "enclosure error when no segmentation");
 				break;
 			} else
@@ -722,7 +722,7 @@ invalid:
 				SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP,
 					  ("buffering XSDU during preparation"));
 				if (sb -> sb_xspdu) {
-					(void) spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP,
+					 spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP,
 									 "unable to buffer second XSDU");
 					break;
 				}
@@ -757,7 +757,7 @@ invalid:
 				qb = (struct qbuf *)
 					 malloc (sizeof *qb + (unsigned) s -> s_ulen);
 				if (qb == NULL) {
-					(void) spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP,
+					 spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP,
 									 "out of memory");
 					break;
 				}
@@ -783,7 +783,7 @@ invalid:
 #undef	dotoken
 			freespkt (s);
 			if ((s = newspkt (SPDU_GTA)) == NULL) {
-				(void) spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP,
+				 spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP,
 								 "out of memory");
 				break;
 			}
@@ -1218,14 +1218,14 @@ spdu_ae:
 			freespkt (s);
 			if (s = newspkt (SPDU_AA)) {
 				s -> s_mask |= SMASK_SPDU_AA;
-				(void) spkt2sd (s, sb -> sb_fd, sb -> sb_flags & SB_EXPD
+				 spkt2sd (s, sb -> sb_fd, sb -> sb_flags & SB_EXPD
 								? 1 : 0, (struct SSAPindication *) 0);
 			}
 #endif
 			break;
 
 		default:
-			(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+			 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 							 "session protocol mangled: not expecting 0x%x",
 							 s -> s_code);
 			break;
@@ -1334,7 +1334,7 @@ SSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP repor
 			return ts2sslose (si, "TSetIndications", td);
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }
@@ -1355,7 +1355,7 @@ spkt2sd (struct ssapkt *s, int sd, int expedited, struct SSAPindication *si)
 	if (expedited)
 		s -> s_mask |= SMASK_SPDU_EXPD;
 	if (spkt2tsdu (s, &base, &len) == NOTOK) {
-		(void) ssaplose (si, s -> s_errno, NULLCP, NULLCP);
+		 ssaplose (si, s -> s_errno, NULLCP, NULLCP);
 		return NOTOK;
 	}
 	if (s -> s_code == SPDU_EX) {/* only SX_EXSIZE octets, so no big deal... */
@@ -1363,7 +1363,7 @@ spkt2sd (struct ssapkt *s, int sd, int expedited, struct SSAPindication *si)
 			if ((dp = realloc (base, (unsigned) (i = len + s -> s_ulen)))
 					== NULL) {
 				free (base);
-				(void) ssaplose (si, SC_CONGEST, NULLCP, NULLCP);
+				 ssaplose (si, SC_CONGEST, NULLCP, NULLCP);
 				return NOTOK;
 			}
 			bcopy (s -> s_udata, (base = dp) + len, s -> s_ulen);
@@ -1375,7 +1375,7 @@ spkt2sd (struct ssapkt *s, int sd, int expedited, struct SSAPindication *si)
 		expedited = 0;
 	if ((result = expedited ? TExpdRequest (sd, base, len, td)
 				  : TDataRequest (sd, base, len, td)) == NOTOK)
-		(void) ts2sslose (si, expedited ? "TExpdRequest" : "TDataRequest", td);
+		 ts2sslose (si, expedited ? "TExpdRequest" : "TDataRequest", td);
 
 	if (base)
 		free (base);
@@ -1422,9 +1422,9 @@ sb2spkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPdat
 		ty -> tx_qbuf.qb_forw = ty -> tx_qbuf.qb_back = &ty -> tx_qbuf;
 	} else if (TReadRequest (sb -> sb_fd, tx, secs, td) == NOTOK) {
 		if (td -> td_reason != DR_TIMER)
-			(void) ts2sslose (si, "TReadRequest", td);
+			 ts2sslose (si, "TReadRequest", td);
 		else
-			(void) ssaplose (si, SC_TIMER, NULLCP, NULLCP);
+			 ssaplose (si, SC_TIMER, NULLCP, NULLCP);
 
 		return NULL;
 	}
@@ -1433,7 +1433,7 @@ sb2spkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPdat
 
 	if ((s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, (cc = 1, &cc))) == NULL
 			|| s -> s_errno != SC_ACCEPT) {
-		(void) spktlose (sb -> sb_fd, si,
+		 spktlose (sb -> sb_fd, si,
 						 s ? s -> s_errno : SC_CONGEST, NULLCP, NULLCP);
 bad1:
 		;
@@ -1482,13 +1482,13 @@ simple:
 			TXFREE (tx);
 			return s;
 		}
-		(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+		 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 						 "session protocol mangled: not expecting user information after 0x%x (%d bytes)",
 						 s -> s_code, tx -> tx_cc);
 		goto bad1;
 
 	default:
-		(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+		 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 						 "session protocol mangled: not expecting 0x%x",
 						 s -> s_code);
 		goto bad1;
@@ -1501,7 +1501,7 @@ simple:
 
 	if ((s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, (cc = 0, &cc))) == NULL
 			|| s -> s_errno != SC_ACCEPT) {
-		(void) spktlose (sb -> sb_fd,
+		 spktlose (sb -> sb_fd,
 						 si, s ? s -> s_errno : SC_CONGEST, NULLCP, NULLCP);
 bad2:
 		;
@@ -1556,13 +1556,13 @@ bad2:
 			TXFREE (tx);
 			break;
 		}
-		(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+		 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 						 "session protocol mangled: not expecting user information after 0x%x (%d bytes)",
 						 s -> s_code, tx -> tx_cc);
 		goto bad2;
 
 	default:
-		(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+		 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 						 "session protocol mangled: not expecting 0x%x to be concatenated after 0x%x",
 						 s -> s_code, p -> s_code);
 		goto bad2;
@@ -1665,12 +1665,12 @@ TDISCser (int sd, struct TSAPdisconnect *td)
 	if ((sb = findsblk (sd)) == NULL)
 		return;
 
-	(void) ts2sslose (si, NULLCP, td);
+	 ts2sslose (si, NULLCP, td);
 
 	abort = sb -> sb_AbortIndication;
 
 	sb -> sb_fd = NOTOK;
-	(void) freesblk (sb);
+	 freesblk (sb);
 
 	(*abort) (sd, &si -> si_abort);
 }
@@ -1707,7 +1707,7 @@ ts2sslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td)
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at transport)",
+		 sprintf (cp = buffer, " (%s at transport)",
 						TErrString (td -> td_reason));
 	case DR_NETWORK:
 		reason = SC_TRANSPORT;
@@ -1724,7 +1724,7 @@ ts2sslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td)
 /*    INTERNAL */
 
 struct ssapblk *
-newsblk (void) {
+newsblk()  {
 	struct ssapblk *sb;
 
 	sb = (struct ssapblk   *) calloc (1, sizeof *sb);
@@ -1764,7 +1764,7 @@ freesblk (struct ssapblk *sb)
 					TXFREE (&txs);
 				}
 
-		(void) TDiscRequest (sb -> sb_fd, NULLCP, 0, &tds);
+		 TDiscRequest (sb -> sb_fd, NULLCP, 0, &tds);
 	}
 
 	if (sb -> sb_retry) {

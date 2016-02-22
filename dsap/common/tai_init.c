@@ -58,7 +58,7 @@ dsap_tai_init() {
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("tai_string failed %s",buf));
 
 
-	(void) fclose(fp);
+	 fclose(fp);
 	return OK;
 }
 

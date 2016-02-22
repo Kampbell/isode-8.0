@@ -46,7 +46,7 @@ struct FTAMindication *fti;
 			== NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (fpm)
@@ -65,7 +65,7 @@ out:
 		default:
 bad_value:
 			;
-			(void) ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "bad value in FADU identity");
 			goto out;
 		}
@@ -132,7 +132,7 @@ bad_value:
 		break;
 
 	default:
-		(void) ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 						 "bad type for FADU identity");
 		goto out;
 	}

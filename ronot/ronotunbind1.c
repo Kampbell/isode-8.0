@@ -75,7 +75,7 @@ RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, str
 			return (DONE);
 		} else {
 			LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnbindRequest: AcRelRequest failed"));
-			(void) acs2ronotlose (rni, "RO-UNBIND.REQUEST", aca);
+			 acs2ronotlose (rni, "RO-UNBIND.REQUEST", aca);
 			ACAFREE (aca);
 			return (NOTOK);
 		}
@@ -112,7 +112,7 @@ RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindicatio
 			return (DONE);
 		} else {
 			LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnbindRetry: AcRelRetryRequest failed"));
-			(void) acs2ronotlose (rni, "RO-UNBIND.RETRY", aca);
+			 acs2ronotlose (rni, "RO-UNBIND.RETRY", aca);
 			ACAFREE (aca);
 			return (NOTOK);
 		}

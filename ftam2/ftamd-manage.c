@@ -42,10 +42,10 @@ struct FTAMgroup *ftg;
 	if (myfd != NOTOK) {
 #ifndef	BRIDGE
 		unlock ();
-		(void) close (myfd);
+		 close (myfd);
 #else
-		(void) close (myfd);
-		(void) ftp_reply ();
+		 close (myfd);
+		 ftp_reply ();
 #endif
 		myfd = NOTOK;
 	}

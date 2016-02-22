@@ -48,7 +48,7 @@ PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi)
 	smask = sigioblock ();
 
 	if ((pb = findpblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
@@ -56,17 +56,17 @@ PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi)
 	if (SSelectMask (pb -> pb_fd, mask, nfds, &sis) == NOTOK)
 		switch (sa -> sa_reason) {
 		case SC_WAITING:
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return psaplose (pi, PC_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) ss2pslose (pb, pi, "SSelectMask", sa);
+			 ss2pslose (pb, pi, "SSelectMask", sa);
 			freepblk (pb);
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return NOTOK;
 		}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }

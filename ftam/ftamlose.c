@@ -63,7 +63,7 @@ va_dcl {
 	if (fsb -> fsb_fd == NOTOK)
 		return result;
 
-	(void) FAbortRequestAux (fsb, type_FTAM_PDU_f__p__abort__request,
+	 FAbortRequestAux (fsb, type_FTAM_PDU_f__p__abort__request,
 	FACTION_PERM, fti -> fti_abort.fta_diags, 1,
 	&ftis);
 

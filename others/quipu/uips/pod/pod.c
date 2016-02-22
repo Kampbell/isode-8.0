@@ -123,7 +123,7 @@ static XtActionsRec currPosActionsTable[] = {
 };
 
 void 
-CreateWidgets (void) {
+CreateWidgets  {
 	int count;
 	Arg args[MAXARGS];
 
@@ -152,7 +152,7 @@ CreateWidgets (void) {
 }
 
 void 
-PodLoop (void) {
+PodLoop  {
 	Widget PosWindow;
 	XSizeHints   hints;
 	XWMHints wm_hints;
@@ -223,7 +223,7 @@ PodLoop (void) {
 }
 
 void 
-make_photo_widget (void) {
+make_photo_widget  {
 	int count;
 	Arg args[MAXARGS];
 	Widget TextForm, TextWindow;
@@ -254,7 +254,7 @@ make_photo_widget (void) {
 }
 
 void 
-kill_photo (void) {
+kill_photo  {
 	if (PhotoWindow != NULL) {
 		XtUnmanageChild(PhotoWindow);
 		XtDestroyWidget(PhotoWindow);
@@ -263,7 +263,7 @@ kill_photo (void) {
 }
 
 void 
-print_photo (void) {
+print_photo  {
 	int count;
 	Arg args[MAXARGS];
 
@@ -384,7 +384,7 @@ char *top_mess, *lower_mess;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, top_mess);
 	count++;
-	(void) XtCreateManagedWidget("listTitle", labelWidgetClass,
+	 XtCreateManagedWidget("listTitle", labelWidgetClass,
 								 ListTitleView, args, count);
 
 	count = 0;
@@ -398,7 +398,7 @@ char *top_mess, *lower_mess;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, lower_mess);
 	count++;
-	(void) XtCreateManagedWidget("ListMessage", labelWidgetClass,
+	 XtCreateManagedWidget("ListMessage", labelWidgetClass,
 								 ListForm, args, count);
 
 	XtAddCallback(ListWindow, XtNdestroyCallback,
@@ -438,7 +438,7 @@ Widget parent;
 									PosForm, args, count);
 
 	count = 0;
-	(void) XtCreateManagedWidget("PosWindow", formWidgetClass,
+	 XtCreateManagedWidget("PosWindow", formWidgetClass,
 								 swindow, args, count);
 }
 
@@ -472,7 +472,7 @@ Widget parent;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, "Searching For");
 	count++;
-	(void) XtCreateManagedWidget("SearchValLabel", labelWidgetClass,
+	 XtCreateManagedWidget("SearchValLabel", labelWidgetClass,
 								 TypeForm, args, count);
 
 	count = 0;
@@ -497,7 +497,7 @@ Widget parent;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, XtNresizable);
 	count++;
-	(void) XtCreateManagedWidget("TypeButton", menuButtonWidgetClass,
+	 XtCreateManagedWidget("TypeButton", menuButtonWidgetClass,
 								 TypeForm, args, count);
 
 	XtSetKeyboardFocus(parent, SearchVal);
@@ -539,7 +539,7 @@ add_to_history (int seqnum)
 		back_buf_num--;
 	}
 
-	(void) strcpy(curr_base, base_path);
+	 strcpy(curr_base, base_path);
 	base_path[0] = '\0';
 
 	AddNewList(history_display, backseq,  (unsigned) back_buf_num);
@@ -547,7 +547,7 @@ add_to_history (int seqnum)
 	XtRealizeWidget(history_display);
 	XtManageChild(history_display);
 
-	(void) strcpy(base_path, curr_base);
+	 strcpy(base_path, curr_base);
 	XawFormDoLayout(history_form, TRUE);
 
 }
@@ -590,14 +590,14 @@ Widget PosWindow;
 									   PosWindow, args, count);
 	XtAddCallback(rdn_window, XtNcallback, DnMoveRead, (XtPointer) 0);
 
-	(void) sprintf(trans_buf, "%d", 0);
+	 sprintf(trans_buf, "%d", 0);
 
-	(void) strcpy(translations, trans_start_btn2);
-	(void) strcat(translations, trans_buf);
-	(void) strcat(translations, ") unset() \n ");
-	(void) strcat(translations, trans_start_btn3);
-	(void) strcat(translations, trans_buf);
-	(void) strcat(translations, ") unset()");
+	 strcpy(translations, trans_start_btn2);
+	 strcat(translations, trans_buf);
+	 strcat(translations, ") unset() \n ");
+	 strcat(translations, trans_start_btn3);
+	 strcat(translations, trans_buf);
+	 strcat(translations, ") unset()");
 
 	trans_table = XtParseTranslationTable(translations);
 	XtOverrideTranslations(rdn_window, trans_table);
@@ -606,7 +606,7 @@ Widget PosWindow;
 
 	rdn_number = 1;
 
-	(void) strcpy (name_array, "xx");
+	 strcpy (name_array, "xx");
 
 	make_friendly(friendly_base_path, base_path);
 	end = friendly_base_path;
@@ -648,19 +648,19 @@ Widget PosWindow;
 		last_rdn = rdn_window;
 		XtAddCallback(rdn_window, XtNcallback, DnMoveRead, (XtPointer) rdn_number);
 
-		(void) sprintf(trans_buf, "%d", (strlen(name_array) - 1));
+		 sprintf(trans_buf, "%d", (strlen(name_array) - 1));
 
-		(void) strcpy(translations, trans_start_btn2);
-		(void) strcat(translations, trans_buf);
-		(void) strcat(translations, ") unset() \n ");
-		(void) strcat(translations, trans_start_btn3);
-		(void) strcat(translations, trans_buf);
-		(void) strcat(translations, ") unset()");
+		 strcpy(translations, trans_start_btn2);
+		 strcat(translations, trans_buf);
+		 strcat(translations, ") unset() \n ");
+		 strcat(translations, trans_start_btn3);
+		 strcat(translations, trans_buf);
+		 strcat(translations, ") unset()");
 
 		trans_table = XtParseTranslationTable(translations);
 		XtOverrideTranslations(rdn_window, trans_table);
 
-		(void) strcat(name_array, "x");
+		 strcat(name_array, "x");
 		rdn_number++;
 
 		*end = save;
@@ -693,7 +693,7 @@ XtPointer closure, calldata;
 	XtSetArg(args[count], XtNstring, &value);
 	count++;
 	XtGetValues(text, args, count);
-	(void) strcpy(mvalue, value);
+	 strcpy(mvalue, value);
 
 	if (mvalue[0] == '\0') {
 		kill_message();
@@ -704,11 +704,11 @@ Click on this window to continue");
 	}
 
 	if (index(mvalue, '=') == NULLCP)
-		(void) sprintf(mess,
+		 sprintf(mess,
 					   "Searching for entry of type `%s'.\nPlease stand by....",
 					   filttype[typeindx]);
 	else
-		(void) sprintf(mess,
+		 sprintf(mess,
 					   "Searching with filter `%s'.\nPlease stand by....",
 					   mvalue);
 
@@ -727,9 +727,9 @@ Click on this window to continue");
 	switch(status) {
 	case Okay:
 		if (entry_number == 1) {
-			(void) strcpy(entry, (get_from_seq(1, dnseq)));
+			 strcpy(entry, (get_from_seq(1, dnseq)));
 			if (!is_dit_leaf(entry)) {
-				(void) strcpy(base_path, entry);
+				 strcpy(base_path, entry);
 				make_friendly(friendly_base_path, base_path);
 				set_search_area(XtNameToWidget
 								(outer, "PosForm.PosScrolledWindow.PosWindow"));
@@ -746,8 +746,8 @@ Click on this window to continue");
 				else
 					doError(status);
 			} else {
-				(void) strcpy(string, base_path);
-				(void) strcpy(base_path, entry);
+				 strcpy(string, base_path);
+				 strcpy(base_path, entry);
 				make_friendly(friendly_base_path, base_path);
 				XFlush(dpy);
 
@@ -757,7 +757,7 @@ Click on this window to continue");
 				displayReadPopup();
 
 				if (status == Okay) {
-					(void) strcpy(base_path, string);
+					 strcpy(base_path, string);
 					make_friendly(friendly_base_path, base_path);
 				} else
 					doError(status);
@@ -765,16 +765,16 @@ Click on this window to continue");
 			clear_dnseq();
 			entry_number = 0;
 		} else if (entry_number > 0) {
-			(void) strcpy(mess, "Results of search under ");
+			 strcpy(mess, "Results of search under ");
 
 			if (strlen(base_path) > 3) {
 				indx = 0;
 				while (friendly_base_path[indx] != ',' &&
 						friendly_base_path[indx] != '\0') indx++;
 				friendly_base_path[indx] = '\0';
-				(void) strcat(mess, (char *) (friendly_base_path));
+				 strcat(mess, (char *) (friendly_base_path));
 			} else {
-				(void) strcat(mess, "The World");
+				 strcat(mess, "The World");
 				indx = 0;
 			}
 
@@ -784,22 +784,22 @@ Click on this window to continue");
 		case listsizelimit:
 		case adminlimit_w_partial:
 		case timelimit_w_partial:
-			(void) strcpy(mess, "Results of search under ");
+			 strcpy(mess, "Results of search under ");
 
 			if (strlen(base_path) > 3) {
 				indx = 0;
 				while (friendly_base_path[indx] != ',' &&
 						friendly_base_path[indx] != '\0') indx++;
 				friendly_base_path[indx] = '\0';
-				(void) strcat(mess, (char *) friendly_base_path);
+				 strcat(mess, (char *) friendly_base_path);
 			} else {
-				(void) strcat(mess, "The World");
+				 strcat(mess, "The World");
 				indx = 0;
 			}
 
 			switch (status) {
 			case timelimit_w_partial:
-				(void) sprintf(string,
+				 sprintf(string,
 							   "%s. %s. %d %s.",
 							   "Time limit reached",
 							   "Partial results only",
@@ -807,7 +807,7 @@ Click on this window to continue");
 							   "items displayed");
 				break;
 			case adminlimit_w_partial:
-				(void) sprintf(string,
+				 sprintf(string,
 							   "%s. %s. %d %s.",
 							   "Administrative limit reached",
 							   "Partial results only",
@@ -815,7 +815,7 @@ Click on this window to continue");
 							   "items displayed");
 				break;
 			case listsizelimit:
-				(void) sprintf(string,
+				 sprintf(string,
 							   "List size limit exceeded. Only %d items displayed.",
 							   entry_number);
 				break;
@@ -874,9 +874,9 @@ XtPointer indx, calldata;
 	if ((menu = XtNameToWidget(outer, "TypeForm.TypeButton.menu")))
 		XtDestroyWidget(menu);
 
-	(void) createTypeMenu(menuButton);
+	 createTypeMenu(menuButton);
 
-	(void) strcpy(label, filttype[(int) indx]);
+	 strcpy(label, filttype[(int) indx]);
 
 	count = 0;
 	XtSetArg(args[count], XtNlabel, label);
@@ -961,7 +961,7 @@ Widget parent;
 }
 
 static void 
-displayReadPopup (void) {
+displayReadPopup  {
 	if (curr_read_popup) {
 		XtPopup(curr_read_popup, XtGrabNone);
 		XRaiseWindow(dpy, XtWindow(curr_read_popup));
@@ -1100,7 +1100,7 @@ static Widget createReadPopup() {
 	count = 0;
 	XtSetArg(args[count], XtNlabel, friendly_base_path);
 	count++;
-	(void) XtCreateManagedWidget("readTitle", commandWidgetClass,
+	 XtCreateManagedWidget("readTitle", commandWidgetClass,
 								 titleView, args, count);
 
 	count = 0;
@@ -1129,7 +1129,7 @@ static Widget createReadPopup() {
 	count++;
 	XtSetArg(args[count], XtNstring, "");
 	count++;
-	(void) XtCreateManagedWidget("SepWindow", asciiTextWidgetClass,
+	 XtCreateManagedWidget("SepWindow", asciiTextWidgetClass,
 								 TextForm, args, count);
 
 	count = 0;
@@ -1137,7 +1137,7 @@ static Widget createReadPopup() {
 	count++;
 	XtSetArg(args[count], XtNstring, "");
 	count++;
-	(void) XtCreateManagedWidget("ValWindow", asciiTextWidgetClass,
+	 XtCreateManagedWidget("ValWindow", asciiTextWidgetClass,
 								 TextForm, args, count);
 
 	XawFormDoLayout(TextForm, FALSE);
@@ -1200,7 +1200,7 @@ unsigned int list_size;
 
 	*name = '\0';
 	for (n = 0; n < element_number; n++) {
-		(void) strcat(name, "X");
+		 strcat(name, "X");
 
 		object = get_from_seq(n+1, list_seq);
 		make_friendly_rdn(friendly_rdn, object, base_path);
@@ -1227,16 +1227,16 @@ unsigned int list_size;
 
 		XtAddCallback(element, XtNcallback, ListSelect, (XtPointer) object);
 
-		(void) strcpy(translations, trans_start_btn2);
-		(void) strcat(translations,"\"");
-		(void) strcat(translations, object);
-		(void) strcat(translations,"\"");
-		(void) strcat(translations, ") unset()\n ");
-		(void) strcat(translations, trans_start_btn3);
-		(void) strcat(translations,"\"");
-		(void) strcat(translations, object);
-		(void) strcat(translations,"\"");
-		(void) strcat(translations, ") unset()");
+		 strcpy(translations, trans_start_btn2);
+		 strcat(translations,"\"");
+		 strcat(translations, object);
+		 strcat(translations,"\"");
+		 strcat(translations, ") unset()\n ");
+		 strcat(translations, trans_start_btn3);
+		 strcat(translations,"\"");
+		 strcat(translations, object);
+		 strcat(translations,"\"");
+		 strcat(translations, ") unset()");
 
 		trans_table = XtParseTranslationTable(translations);
 		XtOverrideTranslations(element, trans_table);
@@ -1285,9 +1285,9 @@ char *entry_ptr;
 
 	XawFormDoLayout(entry_form, FALSE);
 
-	(void) strcpy(vals, "");
-	(void) strcpy(attrs, "");
-	(void) strcpy(seps, "");
+	 strcpy(vals, "");
+	 strcpy(attrs, "");
+	 strcpy(seps, "");
 
 	attr_list = XtNameToWidget(entry_form, "AttrWindow");
 	val_list = XtNameToWidget(entry_form, "ValWindow");
@@ -1314,13 +1314,13 @@ char *entry_ptr;
 			save = *str_end;
 			*str_end = '\0';
 
-			(void) strcat(attrs, "\n");
-			(void) strcat(vals, "\n");
+			 strcat(attrs, "\n");
+			 strcat(vals, "\n");
 
 			if (do_mail_reverse == TRUE) rfc2greybook(str_start);
-			(void) strcat(vals, str_start);
+			 strcat(vals, str_start);
 
-			(void) strcat(seps, "\n");
+			 strcat(seps, "\n");
 
 			val_width = XTextWidth(font, str_start, strlen(str_start))+
 						FONTWIDTH(font);
@@ -1334,14 +1334,14 @@ char *entry_ptr;
 			save = *str_end;
 			*str_end = '\0';
 
-			(void) strcat(attrs, "\n");
+			 strcat(attrs, "\n");
 
 			if (mailformat == greybook && !lexequ(str_start, "rfc822Mailbox")) {
 				do_mail_reverse = TRUE;
-				(void) strcat(attrs, "mailbox");
+				 strcat(attrs, "mailbox");
 			} else {
 				do_mail_reverse = FALSE;
-				(void) strcat(attrs, str_start);
+				 strcat(attrs, str_start);
 			}
 
 			attr_width = XTextWidth(font, str_start, strlen(str_start)) +
@@ -1361,11 +1361,11 @@ char *entry_ptr;
 			save = *str_end;
 			*str_end = '\0';
 
-			(void) strcat(seps, "-\n");
-			(void) strcat(vals, "\n");
+			 strcat(seps, "-\n");
+			 strcat(vals, "\n");
 
 			if (do_mail_reverse == TRUE) rfc2greybook(str_start);
-			(void) strcat(vals, str_start);
+			 strcat(vals, str_start);
 
 			val_width =
 				XTextWidth(font, str_start, strlen(str_start)) + FONTWIDTH(font);
@@ -1382,7 +1382,7 @@ char *entry_ptr;
 	sep_width = FONTWIDTH(font);
 
 	if (entry_ptr == NULLCP) {
-		(void) strcpy (attrs, "No Attributes found!");
+		 strcpy (attrs, "No Attributes found!");
 		max_attr_width =
 			XTextWidth(font, attrs, strlen(attrs)) + FONTWIDTH(font);
 	}
@@ -1470,8 +1470,8 @@ XtPointer closure, calldata;
 	char current_path[STRINGLEN];
 	char *object = (char *) closure;
 
-	(void) strcpy(current_path, base_path);
-	(void) strcpy(base_path, object);
+	 strcpy(current_path, base_path);
+	 strcpy(base_path, object);
 
 	temp_read_popup = curr_read_popup;
 
@@ -1484,7 +1484,7 @@ XtPointer closure, calldata;
 	else
 		displayReadPopup();
 
-	(void) strcpy(base_path, current_path);
+	 strcpy(base_path, current_path);
 	curr_read_popup = temp_read_popup;
 }
 
@@ -1518,7 +1518,7 @@ Widget search_area;
 	name[0] = '\0';
 
 	for (n = 0; n < rdn_number; n++) {
-		(void) strcat(name, "x");
+		 strcat(name, "x");
 		wlist[n] = XtNameToWidget(search_area, name);
 		count++;
 	}
@@ -1561,25 +1561,25 @@ XtPointer closure, calldata;
 	case listsizelimit:
 	case adminlimit_w_partial:
 	case timelimit_w_partial:
-		(void) strcpy(mess, "Results of list under ");
+		 strcpy(mess, "Results of list under ");
 
 		if (strlen(base_path) > 3) {
 			indx = 0;
 			while (friendly_base_path[indx] != ',' &&
 					friendly_base_path[indx] != '\0') indx++;
 			friendly_base_path[indx] = '\0';
-			(void) strcat(mess, (char *) friendly_base_path);
+			 strcat(mess, (char *) friendly_base_path);
 		} else
-			(void) strcat(mess, "The World");
+			 strcat(mess, "The World");
 
 		switch (status) {
 		case listsizelimit:
-			(void) sprintf(string,
+			 sprintf(string,
 						   "List size limit exceeded. Only %d items displayed.",
 						   entry_number);
 			break;
 		case adminlimit_w_partial:
-			(void) sprintf(string,
+			 sprintf(string,
 						   "%s. %s. %d %s.",
 						   "Administrative limit reached",
 						   "Partial results only",
@@ -1587,7 +1587,7 @@ XtPointer closure, calldata;
 						   "items displayed");
 			break;
 		case timelimit_w_partial:
-			(void) sprintf (string,
+			 sprintf (string,
 							"%s. %s. %d %s.",
 							"Time limit reached",
 							"Partial results only",
@@ -1599,16 +1599,16 @@ XtPointer closure, calldata;
 		dnseq = 0;
 		break;
 	case Okay:
-		(void) strcpy(mess, "Results of list under ");
+		 strcpy(mess, "Results of list under ");
 
 		if (strlen(base_path) > 3) {
 			indx = 0;
 			while (friendly_base_path[indx] != ',' &&
 					friendly_base_path[indx] != '\0') indx++;
 			friendly_base_path[indx] = '\0';
-			(void) strcat(mess, (char *) friendly_base_path);
+			 strcat(mess, (char *) friendly_base_path);
 		} else
-			(void) strcat(mess, "The World");
+			 strcat(mess, "The World");
 
 		createList(dnseq, mess, "");
 		dnseq = 0;
@@ -1629,8 +1629,8 @@ XtPointer object, calldata;
 
 	entry_name = (char *) object;
 
-	(void) strcpy(parent, base_path);
-	(void) strcpy(base_path, entry_name);
+	 strcpy(parent, base_path);
+	 strcpy(base_path, entry_name);
 	make_friendly(friendly_base_path, base_path);
 
 	if (!is_dit_leaf(entry_name)) {
@@ -1640,7 +1640,7 @@ XtPointer object, calldata;
 		Move((Widget) 0, (XtPointer) entry_name, (XtPointer) 0);
 	} else {
 		Read((Widget) 0, (XtPointer) 0, (XtPointer) 0);
-		(void) strcpy(base_path, parent);
+		 strcpy(base_path, parent);
 	}
 }
 
@@ -1654,8 +1654,8 @@ Cardinal num_params;
 	char temp_path[STRINGLEN];
 	Widget search_area = XtNameToWidget(outer,
 										"PosForm.PosScrolledWindow.PosWindow");
-	(void) strcpy(temp_path, base_path);
-	(void) strcpy(base_path, params[0]);
+	 strcpy(temp_path, base_path);
+	 strcpy(base_path, params[0]);
 
 	if (!is_dit_leaf(base_path)) {
 		goto_addr();
@@ -1663,7 +1663,7 @@ Cardinal num_params;
 		SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
 		XFlush(dpy);
 	} else {
-		(void) strcpy(base_path, temp_path);
+		 strcpy(base_path, temp_path);
 		displayError(outer,
 					 "Cannot move to a leaf entry!\n\
 Click on this window to continue");
@@ -1681,8 +1681,8 @@ Cardinal num_params;
 										"PosForm.PosScrolledWindow.PosWindow");
 	char temp_path[STRINGLEN];
 
-	(void) strcpy(temp_path, base_path);
-	(void) strcpy(base_path, params[0]);
+	 strcpy(temp_path, base_path);
+	 strcpy(base_path, params[0]);
 
 	if (!is_dit_leaf(base_path)) {
 		List((Widget) 0, (XtPointer) 0, (XtPointer) 0);
@@ -1692,7 +1692,7 @@ Cardinal num_params;
 		SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
 		XFlush(dpy);
 	} else {
-		(void) strcpy(base_path, temp_path);
+		 strcpy(base_path, temp_path);
 		displayError(outer,
 					 "Cannot list under this entry!\n\
 Click on this window to continue");
@@ -1808,7 +1808,7 @@ XtPointer closure, calldata;
 	search_area = XtNameToWidget(outer, "PosForm.PosScrolledWindow.PosWindow");
 
 	new_base = (char *) closure;
-	(void) strcpy(base_path, new_base);
+	 strcpy(base_path, new_base);
 
 	make_friendly(friendly_base_path, new_base);
 	set_search_area(search_area);
@@ -1817,7 +1817,7 @@ XtPointer closure, calldata;
 }
 
 static void 
-CreateMessagePopup (void) {
+CreateMessagePopup  {
 	int count;
 	Arg args[MAXARGS];
 
@@ -1829,14 +1829,14 @@ CreateMessagePopup (void) {
 	count = 0;
 	XtSetArg(args[count], XtNresize, FALSE);
 	count++;
-	(void) XtCreateManagedWidget("standby", labelWidgetClass,
+	 XtCreateManagedWidget("standby", labelWidgetClass,
 								 standby, args, count);
 
 	XtRealizeWidget(standby);
 }
 
 static void 
-CreateVersionPopup (void) {
+CreateVersionPopup  {
 	Widget title, piccy, version_label, text_form;
 	Arg args[MAXARGS];
 	int count;
@@ -1894,7 +1894,7 @@ Brunel University";
 	count++;
 	XtSetArg(args[count], XtNresizable, TRUE);
 	count++;
-	(void) XtCreateManagedWidget("authLabel", labelWidgetClass,
+	 XtCreateManagedWidget("authLabel", labelWidgetClass,
 								 text_form, args, count);
 
 	XtRealizeWidget(version_popup);
@@ -1980,7 +1980,7 @@ Cardinal num_params;
 }
 
 static void 
-CreateErrorPopup (void) {
+CreateErrorPopup  {
 	Widget text;
 	int count;
 	Arg args[MAXARGS];
@@ -2070,7 +2070,7 @@ to make this request!\nClick on this window to continue");
 		break;
 	case error_string_given:
 		dnseq = 0;
-		(void) sprintf(show_message, "%sClick on this window to continue",
+		 sprintf(show_message, "%sClick on this window to continue",
 					   dir_error_message);
 		displayError(outer, show_message);
 		break;
@@ -2126,7 +2126,7 @@ XtPointer closure, calldata;
 }
 
 static void 
-kill_error (void) {
+kill_error  {
 	Arg args[MAXARGS];
 	int count;
 	Pixmap pixmap_resource;
@@ -2174,7 +2174,7 @@ char *mess;
 }
 
 void 
-kill_message (void) {
+kill_message  {
 	Arg args[MAXARGS];
 	int count;
 	Pixmap pixmap_resource;
@@ -2198,7 +2198,7 @@ kill_message (void) {
 }
 
 static void 
-CreateHelpPopup (void) {
+CreateHelpPopup  {
 	Widget popup_help, popup_help_button, popup_quit_button,
 		   popup_help_form, popup_help_scrolwin;
 
@@ -2241,7 +2241,7 @@ CreateHelpPopup (void) {
 						  popup_help_form, args, count);
 
 	count = 0;
-	(void) XtCreateManagedWidget("popup_help_text",
+	 XtCreateManagedWidget("popup_help_text",
 								 asciiTextWidgetClass,
 								 popup_help_scrolwin, args, count);
 	XtRealizeWidget(popup_help);
@@ -2309,8 +2309,8 @@ XtPointer closure, calldata;
 	count++;
 	XtGetValues(scrolwin, args, count);
 
-	(void) strcpy(filename, dua_help_dir);
-	(void) strcat(filename, (String) closure);
+	 strcpy(filename, dua_help_dir);
+	 strcat(filename, (String) closure);
 
 	count = 0;
 	XtSetArg(args[count], XtNfont, &font);
@@ -2325,23 +2325,23 @@ XtPointer closure, calldata;
 
 	height = 0;
 	if (!(file = fopen(filename, "r"))) {
-		(void) strcpy(filename, "./Xd/podHelpdir/");
-		(void) strcat(filename, (String) closure);
+		 strcpy(filename, "./Xd/podHelpdir/");
+		 strcat(filename, (String) closure);
 		if (!(file = fopen(filename, "r"))) {
-			(void) fprintf(stderr, "Helpfile '%s%s' not found\n",
+			 fprintf(stderr, "Helpfile '%s%s' not found\n",
 						   dua_help_dir, closure);
 			return;
 		}
 	}
 
 	if (file) {
-		(void) strcpy(help_buf, "\0");
+		 strcpy(help_buf, "\0");
 		while (fgets(help_string, STRINGLEN - 1, file)) {
 			height += (FONTHEIGHT(font));
-			(void) strcat(help_buf, help_string);
+			 strcat(help_buf, help_string);
 		}
 
-		(void) fclose(file);
+		 fclose(file);
 		count = 0;
 		XtSetArg(args[count], XtNstring, "");
 		count++;
@@ -2448,7 +2448,7 @@ char *mess;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, "History Window");
 	count++;
-	(void) XtCreateManagedWidget("HistoryTitle", labelWidgetClass,
+	 XtCreateManagedWidget("HistoryTitle", labelWidgetClass,
 								 HistoryForm, args, count);
 
 	count = 0;
@@ -2462,7 +2462,7 @@ char *mess;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, mess);
 	count++;
-	(void) XtCreateManagedWidget("ListMessage", labelWidgetClass,
+	 XtCreateManagedWidget("ListMessage", labelWidgetClass,
 								 HistoryForm, args, count);
 
 	XtAddCallback(ListWindow, XtNdestroyCallback,
@@ -2509,7 +2509,7 @@ Cardinal num_params;
 {
 	if ((help_up) && strcmp(params[0], curr_help)) {
 		InsertHelp((Widget) 0, (XtPointer) params[0], (XtPointer) 0);
-		(void) strcpy(curr_help, params[0]);
+		 strcpy(curr_help, params[0]);
 	}
 }
 
@@ -2658,7 +2658,7 @@ XtPointer object, calldata;
 	else {
 		Widget modify_form = XtNameToWidget(curr_modify_popup, "modifyForm");
 		XawFormDoLayout(modify_form, FALSE);
-		(void) createModifyTemplate(curr_modify_popup, (char *) object);
+		 createModifyTemplate(curr_modify_popup, (char *) object);
 		XawFormDoLayout(modify_form, TRUE);
 		XtPopup(curr_modify_popup, XtGrabNone);
 		XRaiseWindow(dpy, XtWindow(curr_modify_popup));
@@ -2780,10 +2780,10 @@ XtPointer closure, calldata;
 		break;
 	default:
 		XBell(dpy, 100);
-		(void) strcpy(error_message, "Cannot modify!\n");
-		(void) strcat(error_message, mod_error.err_mess);
-		(void) strcat(error_message, "\n");
-		(void) strcat(error_message, "Click on this window to continue.");
+		 strcpy(error_message, "Cannot modify!\n");
+		 strcat(error_message, mod_error.err_mess);
+		 strcat(error_message, "\n");
+		 strcat(error_message, "Click on this window to continue.");
 		displayError(XtParent(XtParent(XtParent(w))), error_message);
 		free(mod_error.err_mess);
 	}
@@ -3301,7 +3301,7 @@ char *entry_name;
 
 	entry = (dirEntry) malloc(sizeof(dir_entry));
 	entry->entry_name = malloc((unsigned) strlen(entry_name) + 1);
-	(void) strcpy(entry->entry_name, entry_name);
+	 strcpy(entry->entry_name, entry_name);
 	entry->attrs = attrs;
 
 	modifyViewForm = XtNameToWidget(modify_form,
@@ -3611,7 +3611,7 @@ char *entry_name;
 										 ButtonForm, args, count);
 
 	count = 0;
-	(void) XtCreateManagedWidget("modifyScrolledWindow",
+	 XtCreateManagedWidget("modifyScrolledWindow",
 								 viewportWidgetClass, modifyForm,
 								 args, count);
 
@@ -3818,8 +3818,8 @@ XtPointer closure, calldata;
 	Time xtime = XtLastTimestampProcessed(dpy);
 	char *string = (char *) closure;
 
-	(void) strcpy(curr_selection, "@");
-	(void) strcat(curr_selection, string);
+	 strcpy(curr_selection, "@");
+	 strcat(curr_selection, string);
 	XtOwnSelection(w, XA_PRIMARY, xtime, ConvSel, NULL, NULL);
 }
 

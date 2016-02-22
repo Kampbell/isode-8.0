@@ -18,7 +18,7 @@
 /*    DATA */
 
 #define moveit(c, l)        if(Qcp + l > Ecp) { \
-				(void) printf("pe2qb_f: Qcp %o Ecp %o len %d\n", \
+				 printf("pe2qb_f: Qcp %o Ecp %o len %d\n", \
 					Qcp, Ecp, l); \
 				return(NOTOK); \
 			    } \

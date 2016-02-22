@@ -44,11 +44,11 @@ getisobjectbyname (char *descriptor)
 		  ("getisobjectbyname \"%s\"", descriptor));
 #endif
 
-	(void) setisobject (0);
+	 setisobject (0);
 	while (io = getisobject ())
 		if (strcmp (descriptor, io -> io_descriptor) == 0)
 			break;
-	(void) endisobject ();
+	 endisobject ();
 
 	if (io) {
 #ifdef	DEBUG

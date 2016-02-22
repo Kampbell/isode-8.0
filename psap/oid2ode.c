@@ -49,7 +49,7 @@ int	quoted;
 	addr_log -> ll_events = events;
 
 	if (io) {
-		(void) sprintf (buffer, quoted ? "\"%s\"" : "%s",
+		 sprintf (buffer, quoted ? "\"%s\"" : "%s",
 						io -> io_descriptor);
 		return buffer;
 	}

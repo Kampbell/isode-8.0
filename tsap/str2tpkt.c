@@ -43,7 +43,7 @@ tpkt2str (struct tsapkt *t)
 	char    packet[BUFSIZ];
 	static char buffer[2 * sizeof packet + 1];
 
-	(void) writefnx ((struct tsapblk *) NOTOK, packet, 0);
+	 writefnx ((struct tsapblk *) NOTOK, packet, 0);
 	if (tpkt2fd ((struct tsapblk *) 0, t, putfnx) == NOTOK)
 		return NULLCP;
 
@@ -71,7 +71,7 @@ str2tpkt (char *buffer)
 	DLOG (tsap_log, LLOG_PDUS,
 		  ("read %d bytes, \"%s\"", strlen (buffer), buffer));
 
-	(void) getfnx (NOTOK, NULLPKT, packet,
+	 getfnx (NOTOK, NULLPKT, packet,
 				   implode ((u_char *) packet, buffer, strlen (buffer)));
 	t = fd2tpkt (0, getfnx, readfnx);
 
@@ -86,7 +86,7 @@ getfnx (int fd, struct tsapkt *t, char *buffer, int n)
 	static int  cc;
 
 	if (fd == NOTOK) {
-		(void) readfnx (NOTOK, buffer, cc = n);
+		 readfnx (NOTOK, buffer, cc = n);
 		return OK;
 	}
 

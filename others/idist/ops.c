@@ -209,13 +209,13 @@ listcdir_result (int sd, int id, int error, struct type_Idist_FileList *files, s
 
 	for (fl = files; fl; fl = fl -> next) {
 		name = qb2str (fl -> FileSpec -> filename);
-		(void) sprintf (buf, "%s/%s", target, name);
+		 sprintf (buf, "%s/%s", target, name);
 		if (lstat (buf, &stb) < 0) {
 			if (copts & VERIFY)
-				(void) printf ("need to remove: %s/%s\n",
+				 printf ("need to remove: %s/%s\n",
 							   target, name);
 			else
-				(void) deletefile (name,
+				 deletefile (name,
 								   (int) fl -> FileSpec -> filetype -> parm);
 		}
 		free (name);
@@ -245,7 +245,7 @@ deletefile (char *str, int mode)
 		break;
 	}
 
-	(void) sprintf (buffer, "%s/%s", target, str);
+	 sprintf (buffer, "%s/%s", target, str);
 	if ((copts & QUERYM) && !query ("Delete", mode, buffer))
 		return OK;
 
@@ -317,7 +317,7 @@ print_ia5list (struct type_Idist_IA5List *ia5)
 	for (; ia5; ia5 = ia5 -> next) {
 		p = ia5 -> IA5String;
 		for (q = p -> qb_forw; q != p ; q = q -> qb_forw)
-			(void) printf ("%*.*s", q -> qb_len, q -> qb_len, q -> qb_data);
-		(void) printf ("\n");
+			 printf ("%*.*s", q -> qb_len, q -> qb_len, q -> qb_data);
+		 printf ("\n");
 	}
 }

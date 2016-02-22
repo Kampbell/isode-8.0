@@ -127,7 +127,7 @@ op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t i
 	struct type_RFA_SyncTimeRes	 str;
 	time_t lt, dt;
 
-	(void)time(&lt);
+	time(&lt);
 
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_NOTICE, NULLCP,
@@ -143,7 +143,7 @@ op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t i
 			return str_error(sd, error_RFA_miscError,"remote is not TIME master"
 							 , rox, roi);
 		}
-		(void)time(&(str.parm));
+		time(&(str.parm));
 		str.parm += SENDTIME_DELAY;
 	} else {
 		if (!timeSlave) {

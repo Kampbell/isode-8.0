@@ -171,7 +171,7 @@ transmit_osi (struct ntp_peer *peer)
 	packet -> originateTimestamp = sstamp (&peer -> org);
 	packet -> receiveTimestamp = sstamp (&peer -> rec);
 
-	(void) gettimeofday (&txtv, (struct timezone *)0);
+	 gettimeofday (&txtv, (struct timezone *)0);
 	tstamp_osi (&peer->xmt, &txtv);
 	packet -> transmitTimestamp = sstamp (&peer -> xmt);
 
@@ -346,7 +346,7 @@ struct RoSAPindication *roi;
 	case ACT_XMIT:
 		process_packet_osi(dst, result, osi_tvp, peer);
 		poll_update(peer, (int)peer->ppoll);
-		(void) transmit_osi(peer);
+		 transmit_osi(peer);
 		break;
 
 	default:
@@ -489,7 +489,7 @@ struct type_NTP_ClockIdentifier *ci;
 	case type_NTP_ClockIdentifier_referenceClock:
 		rid.rid_type = RID_STRING;
 		p = qb2str (ci->un.referenceClock);
-		(void) strncpy (rid.rid_string, p, 4);
+		 strncpy (rid.rid_string, p, 4);
 		free (p);
 		break;
 	case type_NTP_ClockIdentifier_inetaddr:
@@ -506,7 +506,7 @@ struct type_NTP_ClockIdentifier *ci;
 		free (p);
 		break;
 	default:
-		(void) strncpy (rid.rid_string, "????", 4);
+		 strncpy (rid.rid_string, "????", 4);
 		rid.rid_type = RID_STRING;
 	}
 	return &rid;
@@ -672,8 +672,8 @@ terminate (struct intf *ap, struct RoSAPindication *roi)
 	struct ntp_peer *peer;
 	int	fd = ap -> fd;
 
-	(void) AcUAbortRequest (fd, NULLPEP, 0, &acsis);
-	(void) RyLose (fd, roi);
+	 AcUAbortRequest (fd, NULLPEP, 0, &acsis);
+	 RyLose (fd, roi);
 	if (fd >= 0) {
 		FD_CLR (fd, &globmask);
 		FD_CLR (fd, &globwmask);
@@ -915,7 +915,7 @@ iso_accept (struct intf *ap)
 	TRACE (2, ("Association accepted from %s sd %d if %d",
 			   paddr (adr), sd, ap -> inum));
 	if (peer && peer -> flags & PEER_FL_CONFIG)
-		(void) transmit_osi (peer);
+		 transmit_osi (peer);
 	return OK;
 }
 
@@ -946,7 +946,7 @@ bindfailed (struct intf *ap, struct AcSAPstart *acs, int type, char *msg)
 	PLOG (pgm_log, print_NTP_BindError, pe, "NTP.BindError", 0);
 	pe -> pe_context = 3;
 	free_NTP_BindError (binderr);
-	(void) AcAssocResponse (ap -> fd, ACS_REJECT, ACS_USER_NULL,
+	 AcAssocResponse (ap -> fd, ACS_REJECT, ACS_USER_NULL,
 							NULLOID, NULLAEI, NULLPA, NULLPC,
 							ps -> ps_defctxresult,
 							ps -> ps_prequirements,
@@ -1122,7 +1122,7 @@ acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindication *roi)
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
 	result = AcAsynAssocRequest (ctx, NULLAEI, NULLAEI, pa2, pa,
@@ -1230,9 +1230,9 @@ struct ntp_peer *peer;
 	bindarg -> version =
 		pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
 				  PE_PRIM_BITS);
-	(void) bit_on (bindarg -> version,
+	 bit_on (bindarg -> version,
 				   bit_NTP_version_version__1);
-	(void) bit_on (bindarg -> version,
+	 bit_on (bindarg -> version,
 				   bit_NTP_version_version__2);
 
 	bindarg -> mode = (struct type_NTP_BindMode *)
@@ -1357,11 +1357,11 @@ ros_advise (struct RoSAPpreject *rop, char *event)
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]",
+		 sprintf (buffer, "[%s]",
 						RoErrString (rop -> rop_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
@@ -1373,11 +1373,11 @@ acs_advise (struct AcSAPabort *aca, char *event)
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]",
+		 sprintf (buffer, "[%s]",
 						AcErrString (aca -> aca_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
@@ -1520,7 +1520,7 @@ peer2clock (struct ntp_peer *peer)
 	cp = paddr (&peer -> src);
 	ci -> remoteAddress = str2qb (cp, strlen (cp), 1);
 	ci -> flags = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_BITS);
-#define setflbit(x,y) if (peer -> flags & (x)) (void) bit_on (ci -> flags, (y))
+#define setflbit(x,y) if (peer -> flags & (x))  bit_on (ci -> flags, (y))
 	setflbit (PEER_FL_CONFIG, bit_NTP_flags_configured);
 	setflbit (PEER_FL_AUTHENABLE, bit_NTP_flags_authentable);
 	setflbit (PEER_FL_SANE, bit_NTP_flags_sane);
@@ -1531,7 +1531,7 @@ peer2clock (struct ntp_peer *peer)
 	setflbit (PEER_FL_SELECTED, bit_NTP_flags_selected);
 	setflbit (PEER_FL_SNOOZE, bit_NTP_flags_inactive);
 	if (sys.peer == peer)
-		(void) bit_on (ci -> flags, bit_NTP_flags_selected);
+		 bit_on (ci -> flags, bit_NTP_flags_selected);
 #undef setflbit
 	ci -> packetsSent = peer -> pkt_sent;
 	ci -> packetsReceived = peer -> pkt_rcvd;

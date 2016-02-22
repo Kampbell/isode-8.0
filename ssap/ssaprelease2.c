@@ -51,7 +51,7 @@ SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication *si)
 
 	result = SRelResponseAux (sb, status, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

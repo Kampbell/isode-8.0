@@ -177,21 +177,21 @@ IFP	quit;
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
 	if (*ap == NULL) {
-		(void) printf ("%s", myname);
+		 printf ("%s", myname);
 		if (sf -> sr_ulen > 2)
-			(void) printf (" running on host %s", sf -> sr_udata + 2);
+			 printf (" running on host %s", sf -> sr_udata + 2);
 		if (sf -> sr_clen > 2)
-			(void) printf (" at %s", sf -> sr_cdata + 2);
-		(void) printf (" [%s, ", oid2ode (ctx));
-		(void) printf ("%s]\n", oid2ode (pci));
-		(void) printf ("using %s\n", isodeversion);
+			 printf (" at %s", sf -> sr_cdata + 2);
+		 printf (" [%s, ", oid2ode (ctx));
+		 printf ("%s]\n", oid2ode (pci));
+		 printf ("using %s\n", isodeversion);
 
-		(void) printf ("%s... ", cp);
-		(void) fflush (stdout);
+		 printf ("%s... ", cp);
+		 fflush (stdout);
 
 		iloop = 1;
 	} else {
@@ -213,14 +213,14 @@ IFP	quit;
 
 	if (acc -> acc_result != ACS_ACCEPT) {
 		if (iloop)
-			(void) printf ("failed\n");
+			 printf ("failed\n");
 
 		adios (NULLCP, "association rejected: [%s]",
 			   AcErrString (acc -> acc_result));
 	}
 	if (iloop) {
-		(void) printf ("connected\n");
-		(void) fflush (stdout);
+		 printf ("connected\n");
+		 fflush (stdout);
 	}
 
 	sd = acc -> acc_sd;
@@ -329,7 +329,7 @@ nope:
 out:
 	;
 	if (ds -> ds_fr_mod && in)
-		(void) fre_obj (in, ds -> ds_fr_mod -> md_dtab[ds -> ds_fr_index],
+		 fre_obj (in, ds -> ds_fr_mod -> md_dtab[ds -> ds_fr_index],
 						ds -> ds_fr_mod, 1);
 }
 
@@ -348,12 +348,12 @@ getlines (char *buffer)
 		return NOTOK;
 	}
 
-	(void) printf ("%s> ", myname);
-	(void) fflush (stdout);
+	 printf ("%s> ", myname);
+	 fflush (stdout);
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
-			(void) printf ("\n");
+			 printf ("\n");
 			clearerr (stdin);
 			if (cp != buffer) {
 				sticky++;
@@ -392,21 +392,21 @@ timer (int bytes, int pkts)
 	static struct timeval   start;
 
 	if (pkts == 0) {
-		(void) gettimeofday (&start, (struct timezone *) 0);
+		 gettimeofday (&start, (struct timezone *) 0);
 		return;
 	} else
-		(void) gettimeofday (&stop, (struct timezone  *) 0);
+		 gettimeofday (&stop, (struct timezone  *) 0);
 
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
 	bs = (((float) bytes * pkts * NBBY * 1000) / (float) (ms ? ms : 1)) / NBBY;
 	ps = ((float) pkts * 1000) / (float) (ms ? ms : 1);
 
-	(void) printf ("%d operations in %d.%02d seconds (%.2f ops/s)",
+	 printf ("%d operations in %d.%02d seconds (%.2f ops/s)",
 				   pkts, td.tv_sec, td.tv_usec / 10000, ps);
 	if (bytes > 0)
-		(void) printf ("; %d bytes/op for %.2f Kbytes/s", bytes, bs / 1024);
-	(void) printf ("\n");
+		 printf ("; %d bytes/op for %.2f Kbytes/s", bytes, bs / 1024);
+	 printf ("\n");
 }
 
 
@@ -448,11 +448,11 @@ timer (int bytes, int pkts)
 	bs = (((float) bytes * pkts * NBBY * 1000) / (float) (ms ? ms : 1)) / NBBY;
 	ps = ((float) pkts * 1000) / (float) (ms ? ms : 1);
 
-	(void) printf ("%d operations in %d.%02d seconds (%.2f ops/s)",
+	 printf ("%d operations in %d.%02d seconds (%.2f ops/s)",
 				   pkts, secs, msecs / 10, ps);
 	if (bytes > 0)
-		(void) printf ("; %d bytes/op for %.2f Kbytes/s", bytes, bs / 1024);
-	(void) printf ("\n");
+		 printf ("; %d bytes/op for %.2f Kbytes/s", bytes, bs / 1024);
+	 printf ("\n");
 }
 #endif
 #endif
@@ -484,10 +484,10 @@ ros_advise (struct RoSAPpreject *rop, char *event)
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (NULLCP, "%s: %s", event, buffer);
 }
@@ -509,11 +509,11 @@ acs_advise (struct AcSAPabort *aca, char *event)
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -568,13 +568,13 @@ _advise (char* what, va_list ap)
 
 	asprintf (buffer, what, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
-	(void) fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	 fprintf (stderr, "%s: ", myname);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-	(void) fflush (stderr);
+	 fflush (stderr);
 }
 #else
 /* VARARGS */

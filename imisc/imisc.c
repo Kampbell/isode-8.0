@@ -193,8 +193,8 @@ print_ia5list (struct type_IMISC_IA5List *ia5)
 	for (; ia5; ia5 = ia5 -> next) {
 		p = ia5 -> IA5String;
 		for (q = p -> qb_forw; q != p ; q = q -> qb_forw)
-			(void) printf ("%*.*s", q -> qb_len, q -> qb_len, q -> qb_data);
-		(void) printf ("\n");
+			 printf ("%*.*s", q -> qb_len, q -> qb_len, q -> qb_data);
+		 printf ("\n");
 	}
 }
 
@@ -236,7 +236,7 @@ do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **i
 	if ((ia52 = (struct type_IMISC_IA5List *) calloc (1, sizeof *ia52))
 			== NULL)
 		adios (NULLCP, "out of memory");
-	(void) sprintf (buffer, "%s@%s", cp, dp);
+	 sprintf (buffer, "%s@%s", cp, dp);
 	if ((ia52 -> IA5String = str2qb (buffer, strlen (buffer), 1)) == NULL)
 		adios (NULLCP, "out of memory");
 
@@ -279,9 +279,9 @@ do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep)
 static int 
 do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy)
 {
-	(void) printf ("\nCommands are:\n");
+	 printf ("\nCommands are:\n");
 	for (ds = dispatches; ds -> ds_name; ds++)
-		(void) printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
+		 printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
 
 	return NOTOK;
 }
@@ -303,7 +303,7 @@ do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy)
 		acs_adios (aca, "A-RELEASE.REQUEST");
 
 	if (!acr -> acr_affirmative) {
-		(void) AcUAbortRequest (sd, NULLPEP, 0, aci);
+		 AcUAbortRequest (sd, NULLPEP, 0, aci);
 		adios (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
 	}
 
@@ -322,8 +322,8 @@ utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, 
 	struct qbuf *q;
 
 	for (q = result -> qb_forw; q != result; q = q -> qb_forw)
-		(void) printf ("%*.*s", q -> qb_len, q -> qb_len, q -> qb_data);
-	(void) printf ("\n");
+		 printf ("%*.*s", q -> qb_len, q -> qb_len, q -> qb_data);
+	 printf ("\n");
 
 	return OK;
 }
@@ -338,7 +338,7 @@ timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *resul
 	long	s;
 
 	s = result -> parm - 2208988800L;	/* UNIX epoch */
-	(void) printf ("%s", ctime (&s));
+	 printf ("%s", ctime (&s));
 
 	return OK;
 }
@@ -362,7 +362,7 @@ ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct
 static int 
 tell_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi)
 {
-	(void) printf ("told.\n");
+	 printf ("told.\n");
 
 	return OK;
 }

@@ -94,7 +94,7 @@ main (int argc, char **argv)
 	sprintf(buf,"HOME=%s", RFA_TAILDIR);
 	putenv(buf);
 	isodetailor (myname, 1);
-	(void)initLog(myname);
+	initLog(myname);
 
 	/*--- rfa tailoring ---*/
 	sprintf(buf, "%s/rfatailor", isodetcpath);
@@ -139,7 +139,7 @@ main (int argc, char **argv)
 
 
 int 
-cleanup (void) {
+cleanup  {
 }
 
 
@@ -178,7 +178,7 @@ PE  *pe;
 
 	userid = pw -> pw_uid;
 	groupid = pw -> pw_gid;
-	(void) strcpy (homedir, pw -> pw_dir);
+	 strcpy (homedir, pw -> pw_dir);
 
 	cp = qb2str (initial -> password);
 

@@ -56,7 +56,7 @@ sel2str (char *sel, int len, int quoted)
 		if (len == 2) {
 			if (quoted < 0)
 				goto ugly;
-			(void) sprintf (cp, "#%d",
+			 sprintf (cp, "#%d",
 							(sel[0] & 0xff) << 8 | (sel[1] & 0xff));
 			goto out;
 		}
@@ -69,7 +69,7 @@ sel2str (char *sel, int len, int quoted)
 		if (len > NASIZE * 2)
 			len = NASIZE * 2;
 
-		(void) sprintf (cp, len ? "\"%*.*s\"" : "\"\"", len, len, sel);
+		 sprintf (cp, len ? "\"%*.*s\"" : "\"\"", len, len, sel);
 	} else {
 ugly:
 		;

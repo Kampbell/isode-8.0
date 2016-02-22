@@ -107,13 +107,13 @@ int sd;
 
 
 	if (bound) {
-		(void) dap_unbind (main_dsa_id);
+		 dap_unbind (main_dsa_id);
 #ifndef NO_STATS
 		LLOG (log_stat,LLOG_NOTICE,("Connection closed"));
 #endif
 		bound = FALSE;
 		if (referral_dsa != 0) {
-			(void) dap_unbind (referral_dsa);
+			 dap_unbind (referral_dsa);
 			referral_dsa = 0;
 		}
 	}
@@ -122,14 +122,14 @@ int sd;
 	if (frompipe && (waiting >= cache_time))
 		dish_quit (SIGHUP);
 
-	(void) signal (SIGALRM, alarm_sig);
-	(void) alarm (connect_time);
+	 signal (SIGALRM, alarm_sig);
+	 alarm (connect_time);
 }
 
 set_alarm () {
 	waiting = 0;
-	(void) signal (SIGALRM, alarm_sig);
-	(void) alarm (connect_time);
+	 signal (SIGALRM, alarm_sig);
+	 alarm (connect_time);
 }
 
 /* ARGSUSED */
@@ -147,8 +147,8 @@ int sd;
 }
 
 bind_alarm () {
-	(void) signal (SIGALRM, bind_sig);
-	(void) alarm (connect_time);
+	 signal (SIGALRM, bind_sig);
+	 alarm (connect_time);
 }
 
 isnumeric (ptr)
@@ -207,7 +207,7 @@ char ** argv;
 				x--;
 				*username = 0;
 			} else
-				(void) strcpy (username,argv[x]);
+				 strcpy (username,argv[x]);
 		} else if (test_arg (argv[x], "-pipe",2)) {
 			if (strcmp (argv[0],"dish") == 0)
 				ps_print (OPT,"Sorry... '-pipe' must be the first argument to dish.\n");
@@ -235,7 +235,7 @@ char ** argv;
 				*password = 0;
 			} else {
 				int i;
-				(void) strcpy (password,argv[x]);
+				 strcpy (password,argv[x]);
 				for (i=0; i< (int)strlen(password) ; i++)
 					if ( i < 4 )
 						argv[x][i] = 'X';
@@ -249,7 +249,7 @@ char ** argv;
 				Usage (argv[0]);
 				return (NOTOK);
 			}
-			(void) strcpy (bdsa,argv[x]);
+			 strcpy (bdsa,argv[x]);
 		} else {
 			/* assume its the user name */
 			if (got_name) {
@@ -258,7 +258,7 @@ char ** argv;
 				return (NOTOK);
 			}
 			got_name = TRUE;
-			(void) strcpy (username,argv[x]);
+			 strcpy (username,argv[x]);
 			if (*username == '-') {
 				ps_printf (OPT,"Unknown option %s\n",username);
 				username[0] = 0;
@@ -303,12 +303,12 @@ char ** argv;
 		bindarg.dba_passwd[0]  = 0;
 		if ((*username != 0) && (auth_type != DBA_AUTH_NONE)) {
 			get_password (username, password);
-			(void) strcpy(&bindarg.dba_passwd[0], password);
+			 strcpy(&bindarg.dba_passwd[0], password);
 			bindarg.dba_passwd_len = strlen	(&bindarg.dba_passwd[0]);
 		}
 	} else {
 		bindarg.dba_passwd_len = strlen (password);
-		(void) strcpy (bindarg.dba_passwd, password);
+		 strcpy (bindarg.dba_passwd, password);
 	}
 
 	if ((bindarg.dba_passwd_len == 0) && (auth_type != DBA_AUTH_STRONG))
@@ -393,7 +393,7 @@ char ** argv;
 
 			read_arg.rda_object = dsadn;
 
-			(void) service_control (OPT, 0, NULLVP, &read_arg.rda_common);
+			 service_control (OPT, 0, NULLVP, &read_arg.rda_common);
 
 			read_arg.rda_eis.eis_allattributes = FALSE;
 			read_arg.rda_eis.eis_select = as_comp_new (AttrT_cpy (t_addr),
@@ -420,8 +420,8 @@ char ** argv;
 			if (attr && (avseq = attr -> attr_value)) {
 				static char dsaddr[BUFSIZ];
 
-				(void) strcpy (myname = save_bdsa, bdsa);
-				(void) strcpy (dsa_address = dsaddr,
+				 strcpy (myname = save_bdsa, bdsa);
+				 strcpy (dsa_address = dsaddr,
 							   paddr2str ((struct PSAPaddr *)
 										  avseq -> avseq_av.av_struct,
 										  NULLNA));
@@ -440,7 +440,7 @@ char ** argv;
 	} else
 		/* now set dsa_address */
 		if (bdsa[0] != 0) {
-			(void) strcpy (myname = save_bdsa, bdsa);
+			 strcpy (myname = save_bdsa, bdsa);
 			dsa_address = NULLCP;
 
 			/* read tailor file to get address */
@@ -456,14 +456,14 @@ char ** argv;
 					if (tai_string (buf) == NOTOK)
 						DLOG (log_dsap,LLOG_DEBUG,("tai_string failed %s",buf));
 
-			(void) fclose(fp);
+			 fclose(fp);
 
 			if (dsa_address == NULLCP)
 				dsa_address = myname;
 		}
 
 	if (bound)
-		(void) ds_unbind ();
+		 ds_unbind ();
 
 	bound = FALSE;
 	first_bind = FALSE;
@@ -471,7 +471,7 @@ char ** argv;
 	binderr.dbe_value = 0;
 	bind_alarm ();
 	if (secure_ds_bind (&bindarg, &binderr, &bindresult) != OK) {
-		(void) signal (SIGALRM, SIG_IGN);
+		 signal (SIGALRM, SIG_IGN);
 		if (binderr.dbe_value == 0)
 			ps_print (OPT, "*** Service error : Unable to contact DSA ***\n");
 		else
@@ -486,7 +486,7 @@ char ** argv;
 		myname = save_name;
 		return (NOTOK);
 	}
-	(void) signal (SIGALRM, SIG_IGN);
+	 signal (SIGALRM, SIG_IGN);
 	main_dsa_id = dsap_ad;
 
 #ifndef NO_STATS
@@ -503,7 +503,7 @@ char ** argv;
 rebind () {
 
 	if (referral_dsa != 0) {
-		(void) dap_unbind (referral_dsa);
+		 dap_unbind (referral_dsa);
 		referral_dsa = 0;
 		dsap_ad = main_dsa_id;
 	}
@@ -534,7 +534,7 @@ rebind () {
 	binderr.dbe_value = 0;
 	bind_alarm ();
 	if (secure_ds_bind (&bindarg, &binderr, &bindresult) != OK) {
-		(void) signal (SIGALRM, SIG_IGN);
+		 signal (SIGALRM, SIG_IGN);
 		if (binderr.dbe_value == 0)
 			ps_print (OPT, "*** Service error: Unable to contact DSA ***\n");
 		else
@@ -546,7 +546,7 @@ rebind () {
 #endif
 		return (NOTOK);
 	}
-	(void) signal (SIGALRM, SIG_IGN);
+	 signal (SIGALRM, SIG_IGN);
 	main_dsa_id = dsap_ad;
 #ifndef NO_STATS
 	LLOG (log_stat,LLOG_NOTICE,("re-connect"));
@@ -561,7 +561,7 @@ referral_bind (addr)
 struct PSAPaddr * addr;
 {
 	if (referral_dsa != 0)
-		(void) dap_unbind (referral_dsa++);
+		 dap_unbind (referral_dsa++);
 	else
 		referral_dsa = dsap_ad + 1;
 
@@ -577,14 +577,14 @@ struct PSAPaddr * addr;
 		protect_password();
 		break;
 	case DBA_AUTH_STRONG:
-		(void) sign_bindarg();
+		 sign_bindarg();
 		break;
 	}
 
 	binderr.dbe_value = 0;
 	bind_alarm ();
 	if (dap_bind (&dsap_ad, &bindarg, &binderr, &bindresult, addr) != OK) {
-		(void) signal (SIGALRM, SIG_IGN);
+		 signal (SIGALRM, SIG_IGN);
 		if (binderr.dbe_value == 0)
 			ps_print (OPT, "*** Service error : Unable to contact DSA ***\n");
 		else
@@ -599,7 +599,7 @@ struct PSAPaddr * addr;
 		dsap_ad = main_dsa_id;
 		return (0);
 	}
-	(void) signal (SIGALRM, SIG_IGN);
+	 signal (SIGALRM, SIG_IGN);
 	referral_dsa = dsap_ad;
 
 #ifndef NO_STATS
@@ -627,12 +627,12 @@ char ** argv;
 		}
 	}
 	if (!noquit)
-		(void) signal (SIGINT, SIG_DFL);
+		 signal (SIGINT, SIG_DFL);
 
 	if (bound) {
-		(void) dap_unbind (main_dsa_id);
+		 dap_unbind (main_dsa_id);
 		if (referral_dsa != 0) {
-			(void) dap_unbind (referral_dsa);
+			 dap_unbind (referral_dsa);
 			referral_dsa = 0;
 		}
 	}
@@ -654,9 +654,9 @@ char ** argv;
 
 unbind_from_dsa () {
 	if (bound) {
-		(void) dap_unbind (main_dsa_id);
+		 dap_unbind (main_dsa_id);
 		if (referral_dsa != 0) {
-			(void) dap_unbind (referral_dsa);
+			 dap_unbind (referral_dsa);
 			referral_dsa = 0;
 		}
 	}
@@ -688,7 +688,7 @@ user_tailor () {
 
 	set_sequence ("default");
 
-	(void) set_cmd_default ("modify","-dontusecopy");
+	 set_cmd_default ("modify","-dontusecopy");
 	/* we dont want to make templates with copies */
 
 
@@ -697,11 +697,11 @@ user_tailor () {
 
 	isenv = 0;
 	if (home = getenv ("QUIPURC"))
-		(void) strcpy (Dish_Home, home), isenv = 1;
+		 strcpy (Dish_Home, home), isenv = 1;
 	else if (home = getenv ("HOME"))
-		(void) sprintf (Dish_Home, "%s/.quipurc", home);
+		 sprintf (Dish_Home, "%s/.quipurc", home);
 	else
-		(void) strcpy (Dish_Home, "./.quipurc");
+		 strcpy (Dish_Home, "./.quipurc");
 
 	if (no_rcfile)
 		goto out;
@@ -716,19 +716,19 @@ user_tailor () {
 
 			ps_print (OPT,"Please wait whilst I initialise everything...\n");
 			msk = umask (0111);
-			(void) strcpy (cmd_buf, isodefile ("new_quipurc", 1));
+			 strcpy (cmd_buf, isodefile ("new_quipurc", 1));
 			if ((file = fopen (Dish_Home, "w")) == 0)
 				return (OK);	/* cant make one */
-			(void) umask (msk);
-			(void) fclose (file);
+			 umask (msk);
+			 fclose (file);
 			if (system (cmd_buf) == 0) {
-				(void) chmod (Dish_Home,0600);
+				 chmod (Dish_Home,0600);
 				if ((file = fopen (Dish_Home, "r")) == 0) {
-					(void) fprintf (stderr,"Cant open %s - BUT I just created it!!!\n", Dish_Home);
+					 fprintf (stderr,"Cant open %s - BUT I just created it!!!\n", Dish_Home);
 					return (NOTOK);
 				}
 			} else {
-				(void) unlink (Dish_Home);
+				 unlink (Dish_Home);
 				return (NOTOK);
 			}
 			rc_mod_time = time ((time_t *)0);
@@ -742,7 +742,7 @@ user_tailor () {
 	if ((file = fopen (Dish_Home, "r")) == 0) {
 no_dice:
 		;
-		(void) fprintf (stderr,"Cant open ");
+		 fprintf (stderr,"Cant open ");
 		perror (Dish_Home);
 		return NOTOK;
 	}
@@ -768,11 +768,11 @@ no_dice:
 				ps_printf (OPT,"Invalid DN for username: %s\n",part2);
 				return (NOTOK);
 			}
-			(void) strcpy (username, part2);
+			 strcpy (username, part2);
 			bindarg.dba_dn = user_name;
 		} else if (lexequ (part1, "password") == 0) {
-			(void) strcpy (bindarg.dba_passwd,part2);
-			(void) strcpy (password, part2);
+			 strcpy (bindarg.dba_passwd,part2);
+			 strcpy (password, part2);
 			bindarg.dba_passwd_len = strlen (part2);
 		} else if (lexequ (part1, "cache_time") == 0)
 			cache_time = MIN (atoi(part2) * 60, 5 * 60 * 60);
@@ -794,14 +794,14 @@ no_dice:
 				ps_printf (OPT,"Invalid DN for sequence: %s\n",part2);
 				return (NOTOK);
 			}
-			(void) add_sequence (sdn);
+			 add_sequence (sdn);
 		} else if (lexequ (part1, "dsap") == 0)
-			(void) tai_string (part2);
+			 tai_string (part2);
 		else if (lexequ (part1, "isode") == 0) {
 			char * split;
 			if ((split = index (part2,' ')) != NULLCP) {
 				*split++ = 0;
-				(void)isodesetvar (part2,strdup(split),0);
+				isodesetvar (part2,strdup(split),0);
 			}
 		} else if (set_cmd_default (part1,part2) != OK) {
 			if (*part2 == '@')
@@ -812,7 +812,7 @@ no_dice:
 			}
 		}
 	}
-	(void) fclose (file);
+	 fclose (file);
 
 out:
 	;
@@ -824,7 +824,7 @@ out:
 			return (NOTOK);
 		}
 
-	(void) strcpy (bindarg.dba_passwd,password);
+	 strcpy (bindarg.dba_passwd,password);
 	bindarg.dba_passwd_len = strlen (password);
 
 	isodexport (NULLCP);
@@ -852,9 +852,9 @@ SFD dish_quit (sig)
 int sig;
 {
 	if (bound) {
-		(void) dap_unbind (main_dsa_id);
+		 dap_unbind (main_dsa_id);
 		if (referral_dsa != 0) {
-			(void) dap_unbind (referral_dsa);
+			 dap_unbind (referral_dsa);
 			referral_dsa = 0;
 		}
 	}
@@ -862,7 +862,7 @@ int sig;
 	if (frompipe)
 		exit_pipe ();
 	else
-		(void) fprintf (stderr,"Dish Problem\n");
+		 fprintf (stderr,"Dish Problem\n");
 
 	hide_picture();
 
@@ -877,7 +877,7 @@ int sig;
 		exit (0);
 	default:
 		LLOG (log_dsap, LLOG_FATAL, ("Dish problem - signal %d",sig));
-		(void) signal (sig, SIG_DFL); /* to stop recursion */
+		 signal (sig, SIG_DFL); /* to stop recursion */
 		abort ();
 	}
 

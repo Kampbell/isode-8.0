@@ -51,22 +51,22 @@ time2str (UTC u, int generalized)
 	bp = buffer;
 
 	if (generalized)
-		(void) sprintf (bp, "%04d", YEAR (u -> ut_year));
+		 sprintf (bp, "%04d", YEAR (u -> ut_year));
 	else
-		(void) sprintf (bp, "%02d", UNYEAR (u -> ut_year));
+		 sprintf (bp, "%02d", UNYEAR (u -> ut_year));
 	bp += strlen (bp);
 
-	(void) sprintf (bp, "%02d%02d%02d%02d", u -> ut_mon, u -> ut_mday,
+	 sprintf (bp, "%02d%02d%02d%02d", u -> ut_mon, u -> ut_mday,
 					u -> ut_hour, u -> ut_min);
 	bp += strlen (bp);
 
 	if (u -> ut_flags & UT_SEC
 			|| (generalized && (u -> ut_flags & UT_USEC))) {
-		(void) sprintf (bp, "%02d", u -> ut_sec);
+		 sprintf (bp, "%02d", u -> ut_sec);
 		bp += strlen (bp);
 	}
 	if (generalized && (u -> ut_flags & UT_USEC)) {
-		(void) sprintf (bp, ".%06d", u -> ut_usec);
+		 sprintf (bp, ".%06d", u -> ut_usec);
 		bp += strlen (bp);
 	}
 
@@ -78,7 +78,7 @@ time2str (UTC u, int generalized)
 				mins = (-zone) % 60, hours = (-zone) / 60;
 			else
 				mins = zone % 60, hours = zone / 60;
-			(void) sprintf (bp, "%c%02d%02d", zone < 0 ? '-' : '+',
+			 sprintf (bp, "%c%02d%02d", zone < 0 ? '-' : '+',
 							hours, mins);
 			bp += strlen (bp);
 		}

@@ -64,6 +64,6 @@ pe_error (int c)
 	if (c < pe_maxerror && (bp = pe_errorlist[c]))
 		return bp;
 
-	(void) sprintf (buffer, "Error %d", c);
+	 sprintf (buffer, "Error %d", c);
 	return buffer;
 }

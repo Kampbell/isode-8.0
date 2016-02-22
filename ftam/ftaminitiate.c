@@ -125,7 +125,7 @@ not_enough:
 									contents, initiator, account, password, passlen, qos, tracing, ftc,
 									fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -332,7 +332,7 @@ no_mem:
 	req -> checkpoint__window = 1;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out1;
 	}
@@ -367,7 +367,7 @@ no_mem:
 							 qos, acc, aci);
 
 	if (result == NOTOK) {
-		(void) acs2ftamlose (fsb, fti, "AcAssocRequest", aca);
+		 acs2ftamlose (fsb, fti, "AcAssocRequest", aca);
 		goto out1;
 	}
 
@@ -397,7 +397,7 @@ no_mem:
 			struct FTAMabort *fta = &fti -> fti_abort;
 
 			aca -> aca_reason = acc -> acc_result;
-			(void) acs2ftamlose (fsb, fti, "AcAssocRequest(pseudo)", aca);
+			 acs2ftamlose (fsb, fti, "AcAssocRequest(pseudo)", aca);
 
 			ftc -> ftc_sd = NOTOK;
 			ftc -> ftc_state = FSTATE_FAILURE;
@@ -672,7 +672,7 @@ too_many:
 		}
 	}
 	if (rsp -> diagnostic)
-		(void) fpm2diag (fsb, rsp -> diagnostic, ftc -> ftc_diags,
+		 fpm2diag (fsb, rsp -> diagnostic, ftc -> ftc_diags,
 						 &ftc -> ftc_ndiag, fti);
 	ftc -> ftc_ssdusize = fsb -> fsb_ssdusize;
 	ftc -> ftc_qos = pc -> pc_qos;	/* struct copy */

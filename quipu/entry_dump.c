@@ -104,16 +104,16 @@ char * filename;
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("file_open failed: \"%s\" (%d)",filename,errno));
 		return NOTOK;
 	}
-	(void) umask (um);
+	 umask (um);
 
 	if ((entryps = ps_alloc (std_open)) == NULLPS) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return NOTOK;
 	}
 	if (std_setup (entryps,fptr) == NOTOK) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("std_setup failed"));
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return NOTOK;
 	}
 
@@ -123,14 +123,14 @@ char * filename;
 
 	if (entryps->ps_errno != PS_ERR_NONE) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb ps error: %s",ps_error(entryps->ps_errno)));
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return NOTOK;
 	}
 	ps_free (entryps);
 
 	if (fflush (fptr) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb flush error: %d",errno));
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return NOTOK;
 	}
 #if     defined(SYS5) && !defined(SVR4)
@@ -138,7 +138,7 @@ char * filename;
 #else
 	if (fsync (fileno(fptr)) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb fsync error: %d",errno));
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return NOTOK;
 	}
 #endif

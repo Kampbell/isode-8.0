@@ -43,7 +43,7 @@ struct DSError              *error;
 
 	++(*id);
 
-	(void) DapList (ad, (*id), arg, di, ROS_INTR);
+	 DapList (ad, (*id), arg, di, ROS_INTR);
 
 	error->dse_type = DSE_NOERROR;
 

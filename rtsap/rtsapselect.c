@@ -49,14 +49,14 @@ RtSelectMask (int sd, fd_set *mask, int *nfds, struct RtSAPindication *rti)
 	rtsapPsig (acb, sd);
 
 	if (acb -> acb_flags & ACB_PLEASE) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 
 		return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
 	}
 
 	result = (*acb -> acb_rtselectmask) (acb, mask, nfds, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

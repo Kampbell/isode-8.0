@@ -64,7 +64,7 @@ struct FTAMindication *fti;
 
 	result = FAccessResponseAux (fsb, action, identity, diag, ndiag, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -108,7 +108,7 @@ struct FTAMindication *fti;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -158,7 +158,7 @@ out:
 	}
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -177,7 +177,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) ps2ftamlose (fsb, fti, "PDataRequest", pa);
+		 ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
 

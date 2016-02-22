@@ -416,10 +416,10 @@ int	wl;
 		} else
 			n = 0;
 		for (i = pos; i > 0; i--, line++)
-			(void) putc(*line, fp);
+			 putc(*line, fp);
 		for (i = n; i > 0; i--)
-			(void) putc(CONT_CHAR, fp);
-		(void) putc('\n', fp);
+			 putc(CONT_CHAR, fp);
+		 putc('\n', fp);
 		len -= pos;
 	}
 }
@@ -457,7 +457,7 @@ int	wl;
 			}
 		} else
 			n = 0;
-		(void) ps_write(ps, (PElementData)line, pos);
+		 ps_write(ps, (PElementData)line, pos);
 		if (n > 0) {
 			char nbuf[MAXLINE];
 
@@ -466,13 +466,13 @@ int	wl;
 				for (i = MAXLINE - 2; i >= 0; i--)
 					nbuf[i] = CONT_CHAR;
 				nbuf[MAXLINE - 1] = '\n';
-				(void) ps_write(ps, (PElementData)line, pos);
+				 ps_write(ps, (PElementData)line, pos);
 				n -= MAXLINE;
 			}
 			for (i = n - 1; i >= 0; i--)
 				nbuf[i] = CONT_CHAR;
 			nbuf[n] = '\n';
-			(void) ps_write(ps, (PElementData)line, pos);
+			 ps_write(ps, (PElementData)line, pos);
 		}
 		len -= pos;
 	}
@@ -720,7 +720,7 @@ DN dn;
 			if ((new = new_constructor(ptr)) == NULLENTRY)
 				return NULLENTRY;
 			new->e_name = rdn_cpy(dn->dn_rdn);
-			(void) avl_insert(&ptr->e_children, (caddr_t) new, entry_cmp, avl_dup_error);
+			 avl_insert(&ptr->e_children, (caddr_t) new, entry_cmp, avl_dup_error);
 			ptr = (Entry) avl_getone(ptr->e_children);
 		}
 		return (ptr);
@@ -742,7 +742,7 @@ DN dn;
 							NULLENTRY)
 						return NULLENTRY;
 					new->e_name = rdn_cpy(dn->dn_rdn);
-					(void) avl_insert(&parent->e_children, (caddr_t) new,
+					 avl_insert(&parent->e_children, (caddr_t) new,
 									  entry_cmp, avl_dup_error);
 					parent = (Entry) avl_find(parent->e_children, (caddr_t) dn->dn_rdn, entryrdn_cmp);
 				}
@@ -761,7 +761,7 @@ DN dn;
 							NULLENTRY)
 						return NULLENTRY;
 					new->e_name = rdn_cpy(dn->dn_rdn);
-					(void) avl_insert(&ptr->e_children, (caddr_t) new,
+					 avl_insert(&ptr->e_children, (caddr_t) new,
 									  entry_cmp, avl_dup_error);
 					ptr = (Entry) avl_find(ptr->e_children,
 										   (caddr_t) dn->dn_rdn, entryrdn_cmp);

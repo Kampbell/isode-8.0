@@ -142,7 +142,7 @@ npierr2str (int n)
 	case NNOTSUPPORT:
 		return "unsupported primitive";
 	default:
-		(void) sprintf(buf, "NPI error %d", n);
+		 sprintf(buf, "NPI error %d", n);
 		return buf;
 	}
 }
@@ -211,7 +211,7 @@ npiev2str (int n)
 	case N_UNREADABLE:
 		return "N_UNREADABLE";
 	default:
-		(void) sprintf(buf, "%d", n);
+		 sprintf(buf, "%d", n);
 		return buf;
 	}
 }
@@ -228,14 +228,14 @@ get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, int e
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed",
 			  ("getmsg expecting %s", npiev2str(expected)));
 		if (close_fd != NOTOK)
-			(void) close(close_fd);
+			 close(close_fd);
 		return NOTOK;
 	}
 	if (control->len < (int)sizeof(err->PRIM_type)) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "insufficient control data",
 			  ("getmsg"));
 		if (close_fd != NOTOK)
-			(void) close(close_fd);
+			 close(close_fd);
 		return NOTOK;
 	}
 	err = (N_error_ack_t *)control->buf;
@@ -243,7 +243,7 @@ get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, int e
 		SLOG (compat_log, LLOG_EXCEPTIONS, "too much control data",
 			  ("getmsg: %s", npiev2str(err -> PRIM_type)));
 		if (close_fd != NOTOK)
-			(void) close(close_fd);
+			 close(close_fd);
 		return NOTOK;
 	}
 	if (err -> PRIM_type == expected && control->len >= size)
@@ -255,13 +255,13 @@ get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, int e
 			  npierr2str(err->NPI_error),
 			  ("getmsg (expected %s)", npiev2str(expected)));
 		if (close_fd != NOTOK)
-			(void) close(close_fd);
+			 close(close_fd);
 		return NOTOK;
 	}
 	SLOG (compat_log, LLOG_EXCEPTIONS, "unexpected event",
 		  ("getmsg: %s", npiev2str(err -> PRIM_type)));
 	if (close_fd != NOTOK)
-		(void) close(close_fd);
+		 close(close_fd);
 	return NOTOK;
 }
 
@@ -307,7 +307,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	if (local != NULLNA) {
 		local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
 		if (local -> na_dtelen == 0) {
-			(void) strcpy (local -> na_dte, x25_local_dte);
+			 strcpy (local -> na_dte, x25_local_dte);
 			local -> na_dtelen = strlen(x25_local_dte);
 			if (local -> na_pidlen == 0 && *x25_local_pid)
 				local -> na_pidlen =
@@ -316,7 +316,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	}
 
 	bzero((char *)&bind, sizeof(bind));
-	(void) gen2if (local, &bind.addr, ADDR_LISTEN);
+	 gen2if (local, &bind.addr, ADDR_LISTEN);
 	bind.bind.PRIM_type = N_BIND_REQ;
 	if (bind.addr.addr.DTE_MAC.lsap_len == 0 && bind.addr.cud.len == 0)
 		bind.bind.BIND_flags = DEFAULT_LISTENER;;
@@ -334,7 +334,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 
 	if (putmsg (sd, &control, data.len ? &data : 0, 0) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind:putmsg"));
-		(void) close(sd);
+		 close(sd);
 		return NOTOK;
 	}
 
@@ -347,7 +347,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	ack = (N_bind_ack_t *)pbuf;
 	if (ack->CONIND_number == 0) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "unable to listen", ("bind"));
-		(void) close(sd);
+		 close(sd);
 		return NOTOK;
 	}
 
@@ -392,7 +392,7 @@ join_x25_client (int fd, struct NSAPaddr *remote, struct NSAPaddr *local)
 
 		addr.addr = *((N_X25_addr_t *)&pbuf[ind.SRC_offset]);
 		addr.cud.len = 0;
-		(void) if2gen (remote, &addr, ADDR_REMOTE);
+		 if2gen (remote, &addr, ADDR_REMOTE);
 	} else {
 		bzero(remote, sizeof(remote));
 		remote -> na_stack = NA_X25;
@@ -402,7 +402,7 @@ join_x25_client (int fd, struct NSAPaddr *remote, struct NSAPaddr *local)
 		CONN_DB	addr;
 
 		addr.addr = *((N_X25_addr_t *)&pbuf[ind.DEST_offset]);
-		(void) if2gen (local, &addr, ADDR_LOCAL);
+		 if2gen (local, &addr, ADDR_LOCAL);
 	}
 
 	/* get & bind fd to accept on */
@@ -418,7 +418,7 @@ join_x25_client (int fd, struct NSAPaddr *remote, struct NSAPaddr *local)
 	control.buf = (char *)&bind;
 	if (putmsg (nfd, &control, 0, 0) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind:putmsg"));
-		(void) close(nfd);
+		 close(nfd);
 		return NOTOK;
 	}
 	control.maxlen = sizeof(pbuf);
@@ -437,7 +437,7 @@ join_x25_client (int fd, struct NSAPaddr *remote, struct NSAPaddr *local)
 	control.buf = (char *)&res;
 	if (putmsg (fd, &control, 0, 0) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("accept:putmsg"));
-		(void) close(nfd);
+		 close(nfd);
 		return NOTOK;
 	}
 	control.maxlen = sizeof(pbuf);
@@ -529,7 +529,7 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 
 
 	bzero((char *)&con, sizeof(con));
-	(void) gen2if (remote, &con.addr, ADDR_REMOTE);
+	 gen2if (remote, &con.addr, ADDR_REMOTE);
 	con.req.PRIM_type = N_CONN_REQ;
 	con.req.DEST_length = sizeof(con.addr.addr);
 	con.req.DEST_offset = sizeof(con.req);
@@ -704,8 +704,8 @@ int fd;
 
 #else
 int 
-_ccurx25_stub (void) {}
+_ccurx25_stub(){}
 #endif  /* CCUR_X25 */
 int 
-_ccurx25_stub2 (void) {}
+_ccurx25_stub2  {}
 #endif  /* X25 */

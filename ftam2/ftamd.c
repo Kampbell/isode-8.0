@@ -125,7 +125,7 @@ char  **argv,
 				case 'd':
 					debug++;
 					ll_dbinit (ftam_log, myname);
-					(void) FHookRequest (fts -> fts_sd, FTraceHook, fti);
+					 FHookRequest (fts -> fts_sd, FTraceHook, fti);
 					break;
 
 				default:
@@ -162,7 +162,7 @@ char   *event;
 	ftam_advise (fta, event);
 
 	if (fta -> fta_action != FACTION_PERM && ftamfd != NOTOK)
-		(void) FUAbortRequest (ftamfd, FACTION_PERM,
+		 FUAbortRequest (ftamfd, FACTION_PERM,
 							   (struct FTAMdiagnostic *) 0, 0, &ftis);
 
 	closewtmp ();
@@ -203,40 +203,40 @@ int	ndiag;
 
 	for (dp = diag, i = ndiag - 1; i >= 0; dp++, i--) {
 		cp = buffer;
-		(void) sprintf (cp, "%s", FErrString (dp -> ftd_identifier));
+		 sprintf (cp, "%s", FErrString (dp -> ftd_identifier));
 
 		if (dp -> ftd_cc > 0) {
 			cp += strlen (cp);
-			(void) sprintf (cp, ": %*.*s", dp -> ftd_cc, dp -> ftd_cc,
+			 sprintf (cp, ": %*.*s", dp -> ftd_cc, dp -> ftd_cc,
 							dp -> ftd_data);
 		}
 
 		advise (LLOG_NOTICE, NULLCP, "%s", buffer);
 
 		cp = buffer;
-		(void) sprintf (cp, "    type ");
+		 sprintf (cp, "    type ");
 		cp += strlen (cp);
 
 		switch (dp -> ftd_type) {
 		case DIAG_INFORM:
-			(void) sprintf (cp, "informative");
+			 sprintf (cp, "informative");
 			break;
 
 		case DIAG_TRANS:
-			(void) sprintf (cp, "transient");
+			 sprintf (cp, "transient");
 			break;
 
 		case DIAG_PERM:
-			(void) sprintf (cp, "permanent");
+			 sprintf (cp, "permanent");
 			break;
 
 		default:
-			(void) sprintf (cp, "%d", dp -> ftd_type);
+			 sprintf (cp, "%d", dp -> ftd_type);
 			break;
 		}
 		cp += strlen (cp);
 
-		(void) sprintf (cp, ", observer ");
+		 sprintf (cp, ", observer ");
 		cp += strlen (cp);
 
 		switch (dp -> ftd_observer) {
@@ -244,16 +244,16 @@ int	ndiag;
 		case EREF_IFPM:
 		case EREF_RFPM:
 		case EREF_RFSU:
-			(void) sprintf (cp, "%s", entity[dp -> ftd_observer]);
+			 sprintf (cp, "%s", entity[dp -> ftd_observer]);
 			break;
 
 		default:
-			(void) sprintf (cp, "%d", dp -> ftd_observer);
+			 sprintf (cp, "%d", dp -> ftd_observer);
 			break;
 		}
 		cp += strlen (cp);
 
-		(void) sprintf (cp, ", source ");
+		 sprintf (cp, ", source ");
 		cp += strlen (cp);
 
 		switch (dp -> ftd_source) {
@@ -263,17 +263,17 @@ int	ndiag;
 		case EREF_SERV:
 		case EREF_RFPM:
 		case EREF_RFSU:
-			(void) sprintf (cp, "%s", entity[dp -> ftd_source]);
+			 sprintf (cp, "%s", entity[dp -> ftd_source]);
 			break;
 
 		default:
-			(void) sprintf (cp, "%d", dp -> ftd_source);
+			 sprintf (cp, "%d", dp -> ftd_source);
 			break;
 		}
 
 		if (dp -> ftd_delay != DIAG_NODELAY) {
 			cp += strlen (cp);
-			(void) sprintf (cp, ", suggested-delay %d", dp -> ftd_delay);
+			 sprintf (cp, ", suggested-delay %d", dp -> ftd_delay);
 		}
 
 		advise (LLOG_NOTICE, NULLCP, "%s", buffer);
@@ -290,12 +290,12 @@ va_dcl {
 
 	va_start (ap);
 
-	(void) _ll_log (ftam_log, LLOG_FATAL, ap);
+	 _ll_log (ftam_log, LLOG_FATAL, ap);
 
 	va_end (ap);
 
 	if (ftamfd != NOTOK)
-		(void) FUAbortRequest (ftamfd, FACTION_PERM,
+		 FUAbortRequest (ftamfd, FACTION_PERM,
 		(struct FTAMdiagnostic *) 0, 0, &ftis);
 
 	closewtmp ();
@@ -324,7 +324,7 @@ va_dcl {
 
 	code = va_arg (ap, int);
 
-	(void) _ll_log (ftam_log, code, ap);
+	 _ll_log (ftam_log, code, ap);
 
 	va_end (ap);
 }

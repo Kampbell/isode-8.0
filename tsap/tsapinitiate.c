@@ -108,7 +108,7 @@ TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedit
 	result = TConnRequestAux (calling, called, expedited, data, cc, qos,
 							  tc, td, async);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -156,7 +156,7 @@ TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedite
 		if ((tb -> tb_data = malloc ((unsigned) cc)) == NULLCP) {
 no_mem:
 			;
-			(void) tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+			 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 			goto out;
 		}
 		bcopy (data, tb -> tb_data, cc);
@@ -339,12 +339,12 @@ TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 	smask = sigioblock ();
 
 	if ((tb = findtblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return tsaplose (td, DR_PARAMETER, NULLCP,
 						 "invalid transport descriptor");
 	}
 	if (tb -> tb_flags & TB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return tsaplose (td, DR_OPERATION, NULLCP,
 						 "transport descriptor connected");
 	}
@@ -371,8 +371,8 @@ TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 		case CONNECTING_1:
 		case CONNECTING_2:
 			if (tb -> tb_fd != sd) {
-				(void) dup2 (tb -> tb_fd, sd);
-				(void) close (tb -> tb_fd);
+				 dup2 (tb -> tb_fd, sd);
+				 close (tb -> tb_fd);
 				tb -> tb_fd = sd;
 			}
 			break;
@@ -398,7 +398,7 @@ TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 		break;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -419,14 +419,14 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 	smask = sigioblock ();
 
 	if ((tb = findtblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return tsaplose (td, DR_PARAMETER, NULLCP,
 						 "invalid transport descriptor");
 	}
 
 #ifdef notanymore
 	if (tb -> tb_flags & TB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return tsaplose (td, DR_OPERATION, NULLCP,
 						 "transport descriptor connected");
 	}
@@ -439,12 +439,12 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 
 	/* close previous connection attempt */
 	if (tb -> tb_fd != NOTOK)
-		(void) (*tb -> tb_closefnx) (tb -> tb_fd);
+		 (*tb -> tb_closefnx) (tb -> tb_fd);
 	tb -> tb_fd = NOTOK;
 
 	if (ta -> ta_naddr <= 1) {
 		freetblk (tb);
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return tsaplose (td, DR_PARAMETER, NULLCP, "no more NSAPs to try");
 	}
 	*tb -> tb_called = *newtaddr (ta, &ta -> ta_addrs[1],
@@ -457,8 +457,8 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 	case CONNECTING_1:
 	case CONNECTING_2:
 		if (tb -> tb_fd != sd) {
-			(void) dup2 (tb -> tb_fd, sd);
-			(void) close (tb -> tb_fd);
+			 dup2 (tb -> tb_fd, sd);
+			 close (tb -> tb_fd);
 			tb -> tb_fd = sd;
 		}
 		break;
@@ -468,7 +468,7 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 		break;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

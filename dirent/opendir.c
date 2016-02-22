@@ -46,7 +46,7 @@ char		*dirname;	/* name of directory */
 		return NULL;		/* errno set by open() */
 
 	if ( fstat( fd, &sbuf ) != 0 || !S_ISDIR( sbuf.st_mode ) ) {
-		(void)close( fd );
+		close( fd );
 		errno = ENOTDIR;
 		return NULL;		/* not a directory */
 	}
@@ -60,7 +60,7 @@ char		*dirname;	/* name of directory */
 		if ( dirp != NULL )
 			free( (pointer)dirp );
 
-		(void)close( fd );
+		close( fd );
 		errno = serrno;
 		return NULL;		/* not enough memory */
 	}
@@ -72,7 +72,7 @@ char		*dirname;	/* name of directory */
 }
 #else
 int 
-_opendir_stub (void) {
+_opendir_stub()  {
 	;
 }
 #endif

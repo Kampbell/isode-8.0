@@ -194,7 +194,7 @@ DN dn;
 {
 	PE ret_pe;
 
-	(void) encode_IF_DistinguishedName (&ret_pe,0,0,NULLCP,dn);
+	 encode_IF_DistinguishedName (&ret_pe,0,0,NULLCP,dn);
 	return (ret_pe);
 }
 

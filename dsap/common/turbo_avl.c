@@ -39,7 +39,7 @@ extern LLog * log_dsap;
 #define ROTATERIGHT(x)	{ \
 	Avlnode *tmp;\
 	if ( *x == NULL || (*x)->avl_left == NULL ) {\
-		(void) printf("RR error\n"); exit(1); \
+		 printf("RR error\n"); exit(1); \
 	}\
 	tmp = (*x)->avl_left;\
 	(*x)->avl_left = tmp->avl_right;\
@@ -49,7 +49,7 @@ extern LLog * log_dsap;
 #define ROTATELEFT(x)	{ \
 	Avlnode *tmp;\
 	if ( *x == NULL || (*x)->avl_right == NULL ) {\
-		(void) printf("RL error\n"); exit(1); \
+		 printf("RL error\n"); exit(1); \
 	}\
 	tmp = (*x)->avl_right;\
 	(*x)->avl_right = tmp->avl_left;\
@@ -689,7 +689,7 @@ Avlnode	*root;
 	if ( root == 0 )
 		return( 0 );
 
-	(void) avl_apply( root, avl_buildlist, (caddr_t) 0, -1, AVL_INORDER );
+	 avl_apply( root, avl_buildlist, (caddr_t) 0, -1, AVL_INORDER );
 
 	return( avl_list[ avl_nextlist++ ] );
 }

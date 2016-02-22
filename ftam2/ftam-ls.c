@@ -108,11 +108,11 @@ char  **vec;
 	result = f_ls (vec);
 
 	if (doingpipe) {
-		(void) pclose (fp);
-		(void) signal (SIGPIPE, pstat);
+		 pclose (fp);
+		 signal (SIGPIPE, pstat);
 	} else {
 		free (cp);
-		(void) fclose (fp);
+		 fclose (fp);
 	}
 
 	lsfp = stdout;
@@ -141,7 +141,7 @@ char  **vec;
 			return OK;
 		}
 
-		(void) time (&now);
+		 time (&now);
 		longtimeago = now - 6L * 30L * 24L * 60L * 60L;
 	}
 
@@ -170,9 +170,9 @@ char  **vec;
 #ifdef	BRIDGE
 	if ((fd = dataconn ("LIST")) == NOTOK
 			|| (lsfp = fdopen (fd, "w")) == NULL) {
-		(void) sprintf (ftam_error, "out of memory");
+		 sprintf (ftam_error, "out of memory");
 		if (fd != NOTOK) {
-			(void) close (fd);
+			 close (fd);
 			return NOTOK;
 		}
 		return DONE;
@@ -196,8 +196,8 @@ char  **vec;
 		blkfree (vec);
 	}
 #ifdef	BRIDGE
-	(void) fclose (lsfp);
-	(void) close (fd);
+	 fclose (lsfp);
+	 close (fd);
 #endif
 
 	return result;
@@ -273,7 +273,7 @@ int	top,
 		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		if (multi && ftse -> ftse_state != FSTATE_SUCCESS)
-			(void) printf ("%s\n", fa -> fa_files[0]);
+			 printf ("%s\n", fa -> fa_files[0]);
 		ftam_diag (ftse -> ftse_diags, ftse -> ftse_ndiag, 1,
 				   ftse -> ftse_action);
 		if (ftse -> ftse_state != FSTATE_SUCCESS)
@@ -302,9 +302,9 @@ int	top,
 			recurse++;
 			if (!didrecurse && !first)
 #ifdef	BRIDGE
-				(void) fprintf (lsfp, "\r\n");
+				 fprintf (lsfp, "\r\n");
 #else
-				(void) fprintf (lsfp, "\n");
+				 fprintf (lsfp, "\n");
 #endif
 		}
 		if (!invis)
@@ -321,21 +321,21 @@ int	top,
 				for (uf = vfs; uf -> vf_entry; uf++)
 					if (oid_cmp (uf -> vf_oid, fa -> fa_contents) == 0)
 						break;
-				(void) fprintf (lsfp, "%c ", uf -> vf_entry ? uf -> vf_stat : ' ');
+				 fprintf (lsfp, "%c ", uf -> vf_entry ? uf -> vf_stat : ' ');
 			} else
-				(void) fprintf (lsfp, "  ");
-			(void) fprintf (lsfp, "%-8.8s %-8.8s %8d ", s ? s : "",
+				 fprintf (lsfp, "  ");
+			 fprintf (lsfp, "%-8.8s %-8.8s %8d ", s ? s : "",
 							(fa -> fa_present & FA_ACCOUNT) ? fa -> fa_account : "",
 							(fa -> fa_present & FA_FILESIZE) ? fa -> fa_filesize : 0);
 			if (ut) {
 				mtime = gtime (ut2tm (ut));
 				s = ctime (&mtime);
 				if (mtime < longtimeago || mtime > now)
-					(void) fprintf (lsfp, "%-7.7s %-4.4s ", s + 4, s + 20);
+					 fprintf (lsfp, "%-7.7s %-4.4s ", s + 4, s + 20);
 				else
-					(void) fprintf (lsfp, "%-12.12s ", s + 4);
+					 fprintf (lsfp, "%-12.12s ", s + 4);
 			} else
-				(void) fprintf (lsfp, "             ");
+				 fprintf (lsfp, "             ");
 		}
 		if (!invis) {
 			char *dp;
@@ -343,9 +343,9 @@ int	top,
 			dp = top && (fa -> fa_present & FA_FILENAME) ? fa -> fa_files[0]
 				 : entry;
 #ifdef	BRIDGE
-			(void) fprintf (lsfp, "%s%s\r\n", dp, multi && recurse ? ":" : "");
+			 fprintf (lsfp, "%s%s\r\n", dp, multi && recurse ? ":" : "");
 #else
-			(void) fprintf (lsfp, "%s%s\n", dp, multi && recurse ? ":" : "");
+			 fprintf (lsfp, "%s%s\n", dp, multi && recurse ? ":" : "");
 #endif
 		}
 	}
@@ -365,17 +365,17 @@ int	top,
 		faduid -> fa_type = FA_FIRSTLAST;
 		faduid -> fa_firstlast = FA_FIRST;
 
-		(void) fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
-		(void) getvf (file, NULLCP, faduid, vf, fdffnx);
+		 fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
+		 getvf (file, NULLCP, faduid, vf, fdffnx);
 
-		(void) fdfls (file);
+		 fdfls (file);
 
-		(void) fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
+		 fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
 		didrecurse++;
 	}
 
 	if (top && !last && didrecurse)
-		(void) fprintf (lsfp, "\n");
+		 fprintf (lsfp, "\n");
 
 	FTGFREE (ftg);
 	return OK;
@@ -408,10 +408,10 @@ char   *file;
 		if (strcmp (file, ".")) {
 #ifdef apollo
 			if (*file == '/')
-				(void) sprintf (bp = buffer, "%s", file);
+				 sprintf (bp = buffer, "%s", file);
 			else
 #endif
-				(void) sprintf (bp = buffer, "%s/", file);
+				 sprintf (bp = buffer, "%s/", file);
 			bp += strlen (bp);
 			i = bp - buffer;
 			for (xi = &filents; fi = *xi;)
@@ -445,12 +445,12 @@ char   *file;
 	case 1:
 		fi = filents;
 		if (dashl)
-			(void) ls (fi -> fi_name, fi -> fi_entry, 0, 1, 1, 0, 0);
+			 ls (fi -> fi_name, fi -> fi_entry, 0, 1, 1, 0, 0);
 		else
 #ifdef	BRIDGE
-			(void) fprintf (lsfp, "%s\r\n", fi -> fi_entry);
+			 fprintf (lsfp, "%s\r\n", fi -> fi_entry);
 #else
-			(void) fprintf (lsfp, "%s\n", fi -> fi_entry);
+			 fprintf (lsfp, "%s\n", fi -> fi_entry);
 #endif
 		break;
 
@@ -475,7 +475,7 @@ char   *file;
 			}
 
 			for (fi = filents; fi; fi = fi -> fi_next)
-				(void) ls (fi -> fi_name, fi -> fi_entry, 0, fi == filents,
+				 ls (fi -> fi_name, fi -> fi_entry, 0, fi == filents,
 						   fi -> fi_next == NULL, 0, 1);
 			break;
 		}
@@ -483,9 +483,9 @@ char   *file;
 		if (!xi) {
 			for (fi = filents; fi; fi = fi -> fi_next)
 #ifdef	BRIDGE
-				(void) fprintf (lsfp, "%s\r\n", fi -> fi_entry);
+				 fprintf (lsfp, "%s\r\n", fi -> fi_entry);
 #else
-				(void) fprintf (lsfp, "%s\n", fi -> fi_entry);
+				 fprintf (lsfp, "%s\n", fi -> fi_entry);
 #endif
 			break;
 		}
@@ -505,20 +505,20 @@ char   *file;
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
 				fi = xi[w = j * lines + i];
-				(void) fprintf (lsfp, "%s", fi -> fi_entry);
+				 fprintf (lsfp, "%s", fi -> fi_entry);
 				if (w + lines >= nfilent) {
 #ifdef	BRIDGE
-					(void) fputc ('\r', lsfp);
-					(void) fputc ('\n', lsfp);
+					 fputc ('\r', lsfp);
+					 fputc ('\n', lsfp);
 #else
-					(void) fputc ('\n', lsfp);
+					 fputc ('\n', lsfp);
 #endif
 					break;
 				}
 				for (w = strlen (fi -> fi_entry);
 						w < width;
 						w = (w + 8) & ~7)
-					(void) fputc ('\t', lsfp);
+					 fputc ('\t', lsfp);
 			}
 		free ((char *) xi);
 	}

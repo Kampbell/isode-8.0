@@ -146,7 +146,7 @@ int format;
 }
 
 ap_syntax () {
-	(void) add_attribute_syntax ("AccessPoint",
+	 add_attribute_syntax ("AccessPoint",
 								 (IFP) qap_enc,		(IFP) qap_dec,
 								 (IFP) qap_parse,	qap_print,
 								 (IFP) qap_cpy,		qap_cmp,

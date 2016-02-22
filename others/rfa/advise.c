@@ -52,7 +52,7 @@ initLog (char *myname)
 
 		static char  myfile[BUFSIZ];
 
-		(void) sprintf (myfile, "%s.log", (strncmp (myname, "ros.", 4)
+		 sprintf (myfile, "%s.log", (strncmp (myname, "ros.", 4)
 										   && strncmp (myname, "lpp.", 4))
 						|| myname[4] == NULL
 						? myname : myname + 4);

@@ -63,9 +63,9 @@ setisoentity (int f)
 
 
 int 
-endisoentity (void) {
+endisoentity()  {
 	if (servf && !stayopen) {
-		(void) fclose (servf);
+		 fclose (servf);
 		servf = NULL;
 	}
 
@@ -75,7 +75,7 @@ endisoentity (void) {
 /*  */
 
 struct isoentity *
-getisoentity (void) {
+getisoentity()  {
 	static char  descriptor[BUFSIZ];
 
 	if (servf == NULL
@@ -122,7 +122,7 @@ _startisoentity (char *descriptor)
 			continue;
 		}
 
-		(void) sprintf (descriptor, "%s-%s", vec[0], vec[1]);
+		 sprintf (descriptor, "%s-%s", vec[0], vec[1]);
 
 		return OK;
 	}
@@ -177,10 +177,10 @@ _printent (struct isoentity *ie)
 		  ("Entity:  %s (%s)", ie -> ie_descriptor,
 		   oid2ode (&ie -> ie_identifier)));
 
-	(void) ll_printf (addr_log, "Address: %s\n",
+	 ll_printf (addr_log, "Address: %s\n",
 					  paddr2str (&ie -> ie_addr, NULLNA));
 
-	(void) ll_printf (addr_log, "///////\n");
+	 ll_printf (addr_log, "///////\n");
 
-	(void) ll_sync (addr_log);
+	 ll_sync (addr_log);
 }

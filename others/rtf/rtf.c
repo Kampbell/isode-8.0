@@ -104,7 +104,7 @@ main (int argc, char **argv, char **envp)
 	rtz -> rta_addr = *sa;	/* struct copy */
 
 	fprintf (stderr, "%s...", host);
-	(void) fflush (stderr);
+	 fflush (stderr);
 	if (RtBeginRequest (rtz, RTS_TWA, turn, pe, rtc, rti) == NOTOK) {
 		fprintf (stderr, "failed\n");
 		rts_adios (rta, "RT-BEGIN.REQUEST");
@@ -138,7 +138,7 @@ main (int argc, char **argv, char **envp)
 		else
 			timer (nbytes);
 
-		(void) close (fd);
+		 close (fd);
 	} else {
 		if (RtSetUpTrans (sd, uptrans, rti) == NOTOK)
 			rts_adios (rta, "set UpTrans upcall");
@@ -447,7 +447,7 @@ usage:
 
 	if (password == NULL) {
 		if (strcmp (user, "ANON")) {
-			(void) sprintf (prompt, "password (%s:%s): ", host, user);
+			 sprintf (prompt, "password (%s:%s): ", host, user);
 			password = getpassword (prompt);
 		} else
 			password = user ? user : "";

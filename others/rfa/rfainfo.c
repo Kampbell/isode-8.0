@@ -595,7 +595,7 @@ putRfaInfoList (char *dirname, struct RfaInfo *rfa)
 					rfa->ri_lcksince) == EOF) {
 			sprintf(rfaErrStr, "can't write %s/.rfainfo (%s)", dirname,
 					sys_errname(errno));
-			(void)advise(LLOG_EXCEPTIONS,NULLCP,rfaErrStr);
+			advise(LLOG_EXCEPTIONS,NULLCP,rfaErrStr);
 			unlink(makeFN2(dirname, ".rfainfo"));
 			strcpy(buf, makeFN2(dirname,".rfainfo.bak"));
 			rename (buf, makeFN2(dirname,".rfainfo"));

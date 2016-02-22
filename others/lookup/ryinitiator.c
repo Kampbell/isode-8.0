@@ -100,7 +100,7 @@ IFP	quit;
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
 	if (argc < 3) {
@@ -114,7 +114,7 @@ IFP	quit;
 		printf ("using %s\n", isodeversion);
 
 		printf ("%s... ", argv[1]);
-		(void) fflush (stdout);
+		 fflush (stdout);
 
 		iloop = 1;
 	} else {
@@ -142,7 +142,7 @@ IFP	quit;
 	}
 	if (iloop) {
 		printf ("connected\n");
-		(void) fflush (stdout);
+		 fflush (stdout);
 	}
 
 	sd = acc -> acc_sd;
@@ -212,7 +212,7 @@ invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args)
 	}
 
 	if (ds -> ds_mod && ds -> ds_ind >= 0 && in)
-		(void) fre_obj (in, ds -> ds_mod -> md_dtab[ds -> ds_ind],
+		 fre_obj (in, ds -> ds_mod -> md_dtab[ds -> ds_ind],
 						ds -> ds_mod, 1);
 }
 
@@ -232,7 +232,7 @@ getline (char *buffer)
 	}
 
 	printf ("%s> ", myname);
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
@@ -271,10 +271,10 @@ ros_advise (struct RoSAPpreject *rop, char *event)
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (NULLCP, "%s: %s", event, buffer);
 }
@@ -296,11 +296,11 @@ acs_advise (struct AcSAPabort *aca, char *event)
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -355,13 +355,13 @@ _advise (va_list ap)
 
 	asprintf (buffer, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-	(void) fflush (stderr);
+	 fflush (stderr);
 }
 #else
 /* VARARGS */

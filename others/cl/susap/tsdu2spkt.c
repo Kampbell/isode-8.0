@@ -364,7 +364,7 @@ static int pi_length[PI_TABLE_LEN] = {
 	s -> s_errno = SC_PROTOCOL; \
 	return NOTOK; \
     } \
-    (void) sprintf (isn, "%lu", (ssn)); \
+     sprintf (isn, "%lu", (ssn)); \
     put2spdu ((code), strlen (isn), isn, &c); \
 }
 
@@ -1053,13 +1053,13 @@ spkt2tsdu (struct ssapkt *s, char **base, int *len)
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			(void) sprintf (file, ssapfile, getpid ());
+			 sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				spkt2text (fp, s, 0);
-				(void) fclose (fp);
+				 fclose (fp);
 			}
 		} else {
-			(void) fflush (stdout);
+			 fflush (stdout);
 			spkt2text (stderr, s, 0);
 		}
 	}
@@ -1835,13 +1835,13 @@ do_pgi:
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			(void) sprintf (file, ssapfile, getpid ());
+			 sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				spkt2text (fp, s, 1);
-				(void) fclose (fp);
+				 fclose (fp);
 			}
 		} else {
-			(void) fflush (stdout);
+			 fflush (stdout);
 			spkt2text (stderr, s, 1);
 		}
 	}
@@ -2023,13 +2023,13 @@ udtsdu2spkt (struct qbuf *qb, int len)
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			(void) sprintf (file, ssapfile, getpid ());
+			 sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				spkt2text (fp, s, 1);
-				(void) fclose (fp);
+				 fclose (fp);
 			}
 		} else {
-			(void) fflush (stdout);
+			 fflush (stdout);
 			spkt2text (stderr, s, 1);
 		}
 	}

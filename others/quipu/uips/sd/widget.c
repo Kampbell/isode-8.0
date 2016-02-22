@@ -83,18 +83,18 @@ int text_height;
 jmp_buf	env;
 
 void 
-initwidgets (void) {
-	(void) initscr();
-	(void) noecho();
-	(void) crmode();
+initwidgets  {
+	 initscr();
+	 noecho();
+	 crmode();
 	Text = stdscr;
 	typetoggled = 0;
 	activelist.count = 0;
 }
 
 void 
-textfresh (void) {
-	(void) wrefresh (Text);
+textfresh  {
+	 wrefresh (Text);
 }
 
 void setwidgets(thesewdgts, y)
@@ -108,20 +108,20 @@ WIDGET	*thesewdgts;
 #ifndef QUICKREFRESH
 	refresh();
 #endif /* QUICKREFRESH */
-	(void) scrollok(Text, FALSE);
-	(void) wrefresh(Text);
+	 scrollok(Text, FALSE);
+	 wrefresh(Text);
 	makewidgets(thesewdgts);
 	activewidget(thesewdgts, Text);
 	rfrshwidgets(thesewdgts);
 }
 
 int 
-linec (void) {
+linec  {
 	return (int) LINES;
 }
 
 int 
-gety (void) {
+gety  {
 	int y,x;
 	getyx(Text, y, x);
 	/* Get rid of lint warning */
@@ -255,14 +255,14 @@ WIDGET	*thesewdgts;
 
 	while (thesewdgts[cnt].type != FINISH)
 		if (thesewdgts[cnt].type != DUMMY) {
-			(void) wclear(thesewdgts[cnt].wndw);
-			(void) wrefresh(thesewdgts[cnt++].wndw);
+			 wclear(thesewdgts[cnt].wndw);
+			 wrefresh(thesewdgts[cnt++].wndw);
 		} else ++cnt;
 	cnt = 0;
 #ifndef QUICKREFRESH
-	(void) wclear(Text);
+	 wclear(Text);
 #endif /* QUICKREFRESH */
-	(void) wrefresh(Text);
+	 wrefresh(Text);
 	while (thesewdgts[cnt].type != FINISH)
 		if (thesewdgts[cnt].type != DUMMY)
 			delwin(thesewdgts[cnt++].wndw);
@@ -273,7 +273,7 @@ WIDGET	*thesewdgts;
 
 	Text = activelist.text[activelist.count-1];
 	if (Text != (WINDOW *)NULL)
-		(void) wrefresh(Text);
+		 wrefresh(Text);
 }
 
 /* THESE FUNCTIONS MANIPULATE THE ACTIVELIST ARRAY OF WIDGETS */
@@ -292,7 +292,7 @@ WINDOW	*text;
 }
 
 void 
-deleteactive (void) {
+deleteactive  {
 	if (activelist.count > 0)
 		--(activelist.count);
 }
@@ -305,7 +305,7 @@ activeindex (int indx)
 
 /* Refresh each of the active widgets and the current text window */
 void 
-redraw (void) {
+redraw  {
 	int	i;
 
 #ifndef QUICKREFRESH
@@ -314,7 +314,7 @@ redraw (void) {
 	for (i=0; i<activelist.count; i++)
 		rfrshwidgets(activelist.widgets[i]);
 
-	(void) wrefresh(Text);
+	 wrefresh(Text);
 }
 
 void rfrshwidgets(thesewdgts)
@@ -324,7 +324,7 @@ WIDGET	*thesewdgts;
 
 	while(thesewdgts[i].wndw != (WINDOW *)NULL && thesewdgts[i].type != DUMMY) {
 		touchwin(thesewdgts[i].wndw);
-		(void) wrefresh(thesewdgts[i++].wndw);
+		 wrefresh(thesewdgts[i++].wndw);
 	}
 }
 
@@ -337,19 +337,19 @@ WIDGET	*wdgt;
 
 	mvwaddch(wdgt->wndw, 0, 0, '.');
 	for (x = 1; x < wdgt->wdth-1; x++)
-		(void) waddch(wdgt->wndw, xch);
-	(void) waddch(wdgt->wndw, '.');
+		 waddch(wdgt->wndw, xch);
+	 waddch(wdgt->wndw, '.');
 
 	mvwaddch(wdgt->wndw, 1, 0, ych);
 	for (y = 1; y < wdgt->hght-1; y++) {
-		(void) mvwaddch(wdgt->wndw, y, 0, ych);
-		(void) mvwaddch(wdgt->wndw, y, wdgt->wdth-1, ych);
+		 mvwaddch(wdgt->wndw, y, 0, ych);
+		 mvwaddch(wdgt->wndw, y, wdgt->wdth-1, ych);
 	}
 
 	mvwaddch(wdgt->wndw, wdgt->hght-1, 0, '`');
 	for (x = 1; x < wdgt->wdth-1; x++)
-		(void) waddch(wdgt->wndw, xch);
-	(void) waddch(wdgt->wndw, '\'');
+		 waddch(wdgt->wndw, xch);
+	 waddch(wdgt->wndw, '\'');
 }
 
 /* THESE ROUTINES PRINT THE INDIVIDUAL WIDGET BOXES */
@@ -387,7 +387,7 @@ printbar (int list_size, int first, int display_num)
 	for(cnt = 0; currwidgets[cnt].type != SCROLLBAR; cnt++) ;
 	wdgt = &currwidgets[cnt];
 
-	(void) wclear(wdgt->wndw);
+	 wclear(wdgt->wndw);
 	boxwdgt(wdgt, '-', '|');
 
 	space_size = wdgt->hght - 4;
@@ -407,12 +407,12 @@ printbar (int list_size, int first, int display_num)
 	}
 
 	for(cnt = 0; cnt < bar_size; cnt++)
-		(void) mvwaddch(wdgt->wndw, cnt+1+bar_pos, 1, '*');
+		 mvwaddch(wdgt->wndw, cnt+1+bar_pos, 1, '*');
 
-	(void) mvwaddch(wdgt->wndw, 1, 1, ']');
-	(void) mvwaddch(wdgt->wndw, wdgt->hght-2, 1, '[');
+	 mvwaddch(wdgt->wndw, 1, 1, ']');
+	 mvwaddch(wdgt->wndw, wdgt->hght-2, 1, '[');
 
-	(void) wrefresh(wdgt->wndw);
+	 wrefresh(wdgt->wndw);
 }
 
 /* Print a LABEL widgets label string, dependant on the justification char */
@@ -434,7 +434,7 @@ WIDGET	*wdgt;
 	else if (wdgt->callch & RIGHT)	x = wdgtlen - labellen;
 
 	mvwaddstr(wdgt->wndw,1,1+x,wdgt->label);
-	(void) wrefresh(wdgt->wndw);
+	 wrefresh(wdgt->wndw);
 }
 
 /* Print a DIALOG widget label: if it don't all fit, show the last part */
@@ -444,7 +444,7 @@ WIDGET	*wdgt;
 	int	length, maxlen;
 	char	*showptr;
 
-	(void) wclear(wdgt->wndw);
+	 wclear(wdgt->wndw);
 	boxwdgt(wdgt, '-', '|');
 	if (wdgt->dstr != (char *)NULL) {
 		length = strlen(wdgt->dstr);
@@ -453,25 +453,25 @@ WIDGET	*wdgt;
 			showptr = &(wdgt->dstr[length - maxlen]);
 		else
 			showptr = wdgt->dstr;
-		(void) mvwprintw(wdgt->wndw, 1, 1, "%s%c%s",wdgt->label,
+		 mvwprintw(wdgt->wndw, 1, 1, "%s%c%s",wdgt->label,
 						 (length > maxlen)?'<':' ',showptr);
 	}
-	(void) wrefresh(wdgt->wndw);
+	 wrefresh(wdgt->wndw);
 }
 
 /* Print a TOGGLE widget label, and the current toggle value */
 void printtoggle(wdgt)
 WIDGET	*wdgt;
 {
-	(void) wclear(wdgt->wndw);
+	 wclear(wdgt->wndw);
 	boxwdgt(wdgt, '-', '|');
 	if (wdgt->tvalues == (char **)NULL)
 		return;
 	mvwaddstr(wdgt->wndw,1,1,wdgt->label);
-	(void) waddstr(wdgt->wndw,wdgt->tvalues[wdgt->tindx]);
-	(void) wclrtoeol(wdgt->wndw);
-	(void) mvwaddch(wdgt->wndw,1,wdgt->wdth-1,'|');
-	(void) wrefresh(wdgt->wndw);
+	 waddstr(wdgt->wndw,wdgt->tvalues[wdgt->tindx]);
+	 wclrtoeol(wdgt->wndw);
+	 mvwaddch(wdgt->wndw,1,wdgt->wdth-1,'|');
+	 wrefresh(wdgt->wndw);
 }
 
 /* Print a COMMAND widget label */
@@ -479,29 +479,29 @@ void printcommand(wdgt)
 WIDGET	*wdgt;
 {
 	mvwaddstr(wdgt->wndw,1,1,wdgt->label);
-	(void) wrefresh(wdgt->wndw);
+	 wrefresh(wdgt->wndw);
 }
 
 /* THESE ROUTINES GET AND REACT TO A USERS INPUT FROM THE KEYBOARD */
 
 /* Loop forever, calling widget callback functions when activated */
 void 
-interact (void) {
+interact  {
 	int	ch, indx;
 	void		int_quit(), jumpback();
 
 	for (;;) {
 		/* Get a character input, and set the interrupt jump vector */
-		(void) setjmp(env);
-		(void) signal(SIGINT, int_quit);
+		 setjmp(env);
+		 signal(SIGINT, int_quit);
 
 		move(0,0);
-		(void) wrefresh(Text);
+		 wrefresh(Text);
 		refresh();
 		ch = getchar();
 		if (isupper(ch))
 			ch = tolower(ch);
-		(void) signal(SIGINT, jumpback);
+		 signal(SIGINT, jumpback);
 
 		/* Allow the user to refresh the entire screen, with a CTRL-L */
 		if (ch == '\014') {
@@ -654,10 +654,10 @@ WIDGET	*wdgt;
 		showptr = &(wdgt->dstr[length - maxlen]);
 	else
 		showptr = wdgt->dstr;
-	(void) mvwprintw(wdgt->wndw, 1, 1, "%s%c%s", wdgt->label,
+	 mvwprintw(wdgt->wndw, 1, 1, "%s%c%s", wdgt->label,
 					 (length > maxlen)? '<' : ' ',
 					 showptr);
-	(void) wrefresh(wdgt->wndw);
+	 wrefresh(wdgt->wndw);
 #ifdef QUICKREFRESH
 	doupdate ();
 #endif /* QUICKREFRESH */
@@ -676,18 +676,18 @@ WIDGET	*wdgt;
 				--showptr;
 			--length;
 			if (length < maxlen) {	/* Only need to erase one character */
-				(void) waddstr(wdgt->wndw,"\b \b");
-				(void) wrefresh(wdgt->wndw);
+				 waddstr(wdgt->wndw,"\b \b");
+				 wrefresh(wdgt->wndw);
 #ifdef QUICKREFRESH
 				doupdate ();
 #endif /* QUICKREFRESH */
 				continue;
 			}
 			/* We'll have to erase everything */
-			(void) wprintw(wdgt->wndw, "\r|%s%c%s \b", wdgt->label,
+			 wprintw(wdgt->wndw, "\r|%s%c%s \b", wdgt->label,
 						   (length <= maxlen)? ' ' : '<',
 						   showptr);
-			(void) wrefresh(wdgt->wndw);
+			 wrefresh(wdgt->wndw);
 #ifdef QUICKREFRESH
 			doupdate ();
 #endif /* QUICKREFRESH */
@@ -699,9 +699,9 @@ WIDGET	*wdgt;
 			endptr = wdgt->dstr;
 			*endptr = '\0';
 			showptr = wdgt->dstr;
-			(void) wprintw(wdgt->wndw, "\r|%s %s\r|%s ", wdgt->label, blanks,
+			 wprintw(wdgt->wndw, "\r|%s %s\r|%s ", wdgt->label, blanks,
 						   wdgt->label);
-			(void) wrefresh(wdgt->wndw);
+			 wrefresh(wdgt->wndw);
 #ifdef QUICKREFRESH
 			doupdate ();
 #endif /* QUICKREFRESH */
@@ -723,16 +723,16 @@ WIDGET	*wdgt;
 		*endptr++ = ch;
 		*endptr = '\0';
 		if (++length <= maxlen) {	/* Just add this character to the end */
-			(void) waddch(wdgt->wndw, ch);
-			(void) wrefresh(wdgt->wndw);
+			 waddch(wdgt->wndw, ch);
+			 wrefresh(wdgt->wndw);
 #ifdef QUICKREFRESH
 			doupdate ();
 #endif /* QUICKREFRESH */
 			continue;
 		}
 		++showptr;
-		(void) wprintw(wdgt->wndw, "\r|%s<%s", wdgt->label, showptr);
-		(void) wrefresh(wdgt->wndw);
+		 wprintw(wdgt->wndw, "\r|%s<%s", wdgt->label, showptr);
+		 wrefresh(wdgt->wndw);
 #ifdef QUICKREFRESH
 		doupdate ();
 #endif /* QUICKREFRESH */
@@ -758,7 +758,7 @@ WIDGET	*wdgt;
 {
 	if (wdgt->type != DIALOG || wdgt->dstr == (char *)NULL) return(FALSE);
 
-	(void) strcpy(str, wdgt->dstr);
+	 strcpy(str, wdgt->dstr);
 	return(TRUE);
 }
 
@@ -776,7 +776,7 @@ WIDGET	*wdgt;
 	if (wdgt == getwidget(currwidgets, 't')) {
 		typetoggled = 1;
 		vwdgt = getwidget(currwidgets, 's');
-		(void) strcpy(filtvalue[wdgt->tindx], vwdgt->dstr);
+		 strcpy(filtvalue[wdgt->tindx], vwdgt->dstr);
 
 		av_indx = 0;
 		while (av_typeindx[av_indx] != wdgt->tindx && av_typeindx[av_indx] >= 0)
@@ -790,7 +790,7 @@ WIDGET	*wdgt;
 
 		wdgt->tindx = av_typeindx[av_indx];
 
-		(void) strcpy(vwdgt->dstr, filtvalue[wdgt->tindx]);
+		 strcpy(vwdgt->dstr, filtvalue[wdgt->tindx]);
 		typeindx = wdgt->tindx;
 
 		printdialog(vwdgt);
@@ -841,7 +841,7 @@ char	str[];
 {
 	if (wdgt->type != TOGGLE || wdgt->tvalues == (char **)NULL)
 		return(FALSE);
-	(void) strcpy(str, wdgt->tvalues[wdgt->tindx]);
+	 strcpy(str, wdgt->tvalues[wdgt->tindx]);
 	return(TRUE);
 }
 
@@ -858,14 +858,14 @@ void getlabel(wdgt, label)		/* 'label' must be long enough... */
 WIDGET	*wdgt;
 char	label[];
 {
-	(void) strcpy(label, wdgt->label);
+	 strcpy(label, wdgt->label);
 }
 
 /* MISCELLANEOUS FUNCTIONS */
 
 /* Try to locate the bottom of the last set of widgets displayed */
 int 
-lowesty (void) {
+lowesty  {
 	int		cnt = 0;
 	WIDGET		*wdgts;
 
@@ -885,8 +885,8 @@ void wprint(here, fmt, a,b,c,d,e,f,g,h,i,j)
 WINDOW	*here;
 char	*fmt, *a,*b,*c,*d,*e,*f,*g,*h,*i,*j;
 {
-	(void) wprintw(Text,fmt,a,b,c,d,e,f,g,h,i,j);
-	(void) wrefresh(Text);
+	 wprintw(Text,fmt,a,b,c,d,e,f,g,h,i,j);
+	 wrefresh(Text);
 }
 
 /* This can be called as a way for an application to print text */
@@ -894,53 +894,53 @@ char	*fmt, *a,*b,*c,*d,*e,*f,*g,*h,*i,*j;
 void 
 tprint (char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j)
 {
-	(void) wprintw(Text,fmt,a,b,c,d,e,f,g,h,i,j);
-	(void) wrefresh(Text);
+	 wprintw(Text,fmt,a,b,c,d,e,f,g,h,i,j);
+	 wrefresh(Text);
 }
 
 void 
 xprint (char *fmt)
 {
-	(void) wprintw(Text, "%s", fmt);
+	 wprintw(Text, "%s", fmt);
 }
 
 void 
 xprintint (char *fmt, int a)
 {
-	(void) wprintw(Text,fmt, a);
+	 wprintw(Text,fmt, a);
 }
 
 void 
-cleartext (void) {
+cleartext  {
 #ifndef QUICKREFRESH
 	clearok (Text,TRUE);
 #endif /* QUICKREFRESH */
-	(void) wclear (Text);
+	 wclear (Text);
 }
 
 /* Jump back to the interact function only on an interrupt */
 void 
-jumpback (void) {
-	(void) waddstr(Text,"\n*** Interrupted ***\n");
-	(void) wrefresh(Text);
+jumpback  {
+	 waddstr(Text,"\n*** Interrupted ***\n");
+	 wrefresh(Text);
 	longjmp(env, TRUE);
 }
 
 /* This is used as a declaration, when no function callback is required */
 void 
-nullfn (void) {
+nullfn  {
 }
 
 /* This is used by widgets that just want to kill the current level */
 void 
-quitfn (void) {
-	(void) wclear(Text);
-	(void) wrefresh(Text);
+quitfn  {
+	 wclear(Text);
+	 wrefresh(Text);
 	killwidgets(activelist.widgets[activelist.count - 1]);
 }
 
 void 
-endwidgets (void) {
+endwidgets  {
 	move(LINES-1, 0);
 	refresh();
 	endwin();

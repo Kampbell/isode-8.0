@@ -12288,7 +12288,7 @@ char   *file;
 		return readobjects (file);
 
 	if (once_only) {
-		(void) sprintf (PY_pepy, "loadobjects called more than once!");
+		 sprintf (PY_pepy, "loadobjects called more than once!");
 		return NOTOK;
 	}
 	once_only = 1;
@@ -12299,7 +12299,7 @@ char   *file;
 	readsyntax ();
 	for (sy = _syntaxes; sy -> name; sy++)
 		if ((sy -> value = text2syn (sy -> name)) == NULLOS) {
-			(void) sprintf (PY_pepy, "lost \"%s\" syntax", sy -> name);
+			 sprintf (PY_pepy, "lost \"%s\" syntax", sy -> name);
 			return NOTOK;
 		}
 

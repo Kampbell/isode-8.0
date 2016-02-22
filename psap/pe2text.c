@@ -43,10 +43,10 @@ ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line)
 	LLog    *lp = (LLog *) ps -> ps_addr;
 
 	if (lp -> ll_stat & LLOGTTY) {
-		(void) fflush (stdout);
+		 fflush (stdout);
 
-		(void) fwrite ((char *) data, sizeof *data, (int) n, stderr);
-		(void) fflush (stderr);
+		 fwrite ((char *) data, sizeof *data, (int) n, stderr);
+		 fflush (stderr);
 	}
 
 	if (lp -> ll_fd == NOTOK) {
@@ -82,26 +82,26 @@ pe2text (LLog *lp, PE pe, int rw, int cc)
 	PS ps;
 
 	bp = buffer;
-	(void) sprintf (bp, "%s PE", rw ? "read" : "wrote");
+	 sprintf (bp, "%s PE", rw ? "read" : "wrote");
 	bp += strlen (bp);
 	if (pe -> pe_context != PE_DFLT_CTX) {
-		(void) sprintf (bp, ", context %d", pe -> pe_context);
+		 sprintf (bp, ", context %d", pe -> pe_context);
 		bp += strlen (bp);
 	}
 	if (cc != NOTOK) {
-		(void) sprintf (bp, ", length %d", cc);
+		 sprintf (bp, ", length %d", cc);
 		bp += strlen (bp);
 	}
 	LLOG (lp, LLOG_ALL, ("%s", buffer));
 
 	if ((ps = ps_alloc (ll_psopen)) != NULLPS) {
 		if (ll_psetup (ps, lp) != NOTOK)
-			(void) pe2pl (ps, pe);
+			 pe2pl (ps, pe);
 
 		ps_free (ps);
 	}
 
-	(void) ll_printf (lp, "-------\n");
+	 ll_printf (lp, "-------\n");
 
-	(void) ll_sync (lp);
+	 ll_sync (lp);
 }

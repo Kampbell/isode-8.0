@@ -123,7 +123,7 @@ int format;
 }
 
 psap_syntax () {
-	(void) add_attribute_syntax ("presentationAddress",
+	 add_attribute_syntax ("presentationAddress",
 								 (IFP) psap_enc,		(IFP) psap_dec,
 								 (IFP) psap_parse,	psap_print,
 								 (IFP) psap_cpy,		psap_cmp,

@@ -57,7 +57,7 @@ STypedRequest (int sd, char *data, int cc, struct SSAPindication *si)
 
 	result = SDataRequestAux (sb, SPDU_TD, uvs, 1, 1, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

@@ -61,9 +61,9 @@ PMajSyncRequestAux (int sd, long *ssn, PE *data, int ndata, struct PSAPindicatio
 
 	if ((result = (*sfunc) (sd, ssn, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, stype, sa);
+			 ss2pslose (pb, pi, stype, sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, stype, sa);
+			 ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
 
@@ -80,7 +80,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

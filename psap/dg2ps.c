@@ -165,7 +165,7 @@ dg_close (PS ps)
 	if (pt -> ps_output.pio_qb)
 		qb_free (pt -> ps_output.pio_qb);
 
-	(void) set_check_fd (pt -> ps_fd, NULLIFP, NULLCP);
+	 set_check_fd (pt -> ps_fd, NULLIFP, NULLCP);
 
 	free ((char *) pt);
 
@@ -231,7 +231,7 @@ dg_setup (PS ps, int fd, int size, IFP rfx, IFP wfx, IFP cfx)
 		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 
 	pt -> ps_check = cfx;
-	(void) set_check_fd (fd, dg_check, (caddr_t) ps);
+	 set_check_fd (fd, dg_check, (caddr_t) ps);
 
 	return OK;
 }

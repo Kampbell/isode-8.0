@@ -310,7 +310,7 @@ int	offset;
 		while (dd = readdir (dp))
 			if (dd -> d_name[0] == 'c' && dd -> d_name[1] == 'f')
 				i++;
-		(void) closedir (dp);
+		 closedir (dp);
 	}
 
 	if ((pj_head = (struct pj *) calloc ((unsigned) i, sizeof *pj_head))
@@ -328,7 +328,7 @@ int	offset;
 
 		if (chdir (pq -> pq_SD) == NOTOK || !(dp = opendir (".")))
 			continue;
-		(void) fstat (dp -> dd_fd, &pq -> pq_st);
+		 fstat (dp -> dd_fd, &pq -> pq_st);
 		while (dd = readdir (dp)) {
 			int    j;
 			unsigned int *ip;
@@ -341,7 +341,7 @@ int	offset;
 				continue;
 			if (i <= 1)
 				break;
-			(void) strcpy (pj -> pj_file, dd -> d_name);
+			 strcpy (pj -> pj_file, dd -> d_name);
 			pj -> pj_pq = pq;
 
 			for (cp = pq -> pq_name, ip = pj -> pj_instance, j = 0; *cp; j++)
@@ -352,7 +352,7 @@ int	offset;
 
 			pj++, i--;
 		}
-		(void) closedir (dp);
+		 closedir (dp);
 		if (i <= 1)
 			break;
 	}
@@ -546,13 +546,13 @@ try_again:
 											';'))
 							&& *++cp == ' '
 							&& *++cp != NULL)
-						(void) strcpy (pq -> pq_display,
+						 strcpy (pq -> pq_display,
 									   (pq -> pq_status & PQ_STDAEMON)
 									   ? cp : "");
 					else
-						(void) strcpy (pq -> pq_display, buffer);
+						 strcpy (pq -> pq_display, buffer);
 
-					(void) fclose (fp);
+					 fclose (fp);
 				}
 			} else
 				pq -> pq_status |= PQ_STQUEUEING | PQ_STPRINTING;
@@ -564,7 +564,7 @@ try_again:
 				while (dd = readdir (dp))
 					if (dd -> d_name[0] == 'c' && dd -> d_name[1] == 'f')
 						pq -> pq_entries++;
-				(void) closedir (dp);
+				 closedir (dp);
 			}
 		}
 		break;
@@ -786,17 +786,17 @@ try_again:
 				switch (buffer[0]) {
 				case 'P':
 					if (!pj -> pj_owner[0])
-						(void) strcpy (pj -> pj_owner, buffer + 1);
+						 strcpy (pj -> pj_owner, buffer + 1);
 					break;
 
 				case 'H':
 					if (!host[0])
-						(void) strcpy (host, buffer + 1);
+						 strcpy (host, buffer + 1);
 					break;
 
 				case 'J':
 					if (!pj -> pj_description[0])
-						(void) strcpy (pj -> pj_description,
+						 strcpy (pj -> pj_description,
 									   buffer + 1);
 					break;
 
@@ -809,10 +809,10 @@ try_again:
 				}
 			}
 			if (host[0])
-				(void) sprintf (pj -> pj_owner + strlen (pj -> pj_owner),
+				 sprintf (pj -> pj_owner + strlen (pj -> pj_owner),
 								"@%s", host);
 
-			(void) fclose (fp);
+			 fclose (fp);
 		}
 		break;
 	}
@@ -949,7 +949,7 @@ int	init_print () {
 			  ot -> ot_setfnx = s_pj,
 					ot -> ot_info = (caddr_t) printJAction;
 
-	(void) umask (0);
+	 umask (0);
 }
 
 /*  */
@@ -1076,7 +1076,7 @@ integer	cor;
 						advise (LLOG_EXCEPTIONS, pq -> pq_LO,
 								"unable to create");
 					else {
-						(void) close (fd);
+						 close (fd);
 						upstat (pq, "printing disabled\n");
 					}
 
@@ -1105,7 +1105,7 @@ integer	cor;
 						if (kill (pid, 0) == NOTOK)
 							break;
 					if (i <= 0)
-						(void) kill (pid, SIGKILL);
+						 kill (pid, SIGKILL);
 				}
 				if (pq -> pq_touched == PQ_RESTART)
 					startdaemon (pq);
@@ -1170,7 +1170,7 @@ integer	cor;
 						advise (LLOG_EXCEPTIONS, pq -> pq_LO,
 								"unable to create");
 					else
-						(void) close (fd);
+						 close (fd);
 				} else
 					advise (LLOG_EXCEPTIONS, pq -> pq_LO,
 							"unable to stat");
@@ -1245,7 +1245,7 @@ integer	cor;
 								if (kill (pid, 0) == NOTOK)
 									break;
 							if (i <= 0)
-								(void) kill (pid, SIGKILL);
+								 kill (pid, SIGKILL);
 						}
 					} else
 						pid = NOTOK;
@@ -1263,7 +1263,7 @@ integer	cor;
 							invalid = 1;
 						}
 					}
-					(void) fclose (fp);
+					 fclose (fp);
 
 					if (unlink (pj -> pj_file) == NOTOK) {
 						advise (LLOG_EXCEPTIONS, pj -> pj_file,
@@ -1321,14 +1321,14 @@ char   *msg;
 
 	if (flock (fd, LOCK_EX) < 0) {
 		advise (LLOG_EXCEPTIONS, pq -> pq_ST, "unable to flock");
-		(void) close (fd);
+		 close (fd);
 		return;
 	}
 
-	(void) ftruncate (fd, (off_t) 0);
-	(void) write (fd, msg, strlen (msg));
+	 ftruncate (fd, (off_t) 0);
+	 write (fd, msg, strlen (msg));
 
-	(void) close (fd);
+	 close (fd);
 }
 
 /*  */
@@ -1352,31 +1352,31 @@ struct pq *pq;
 
 	bzero ((char *) &sunix, sizeof sunix);
 	sunix.sun_family = AF_UNIX;
-	(void) strcpy (sunix.sun_path, _PATH_SOCKETNAME);
+	 strcpy (sunix.sun_path, _PATH_SOCKETNAME);
 	if (connect(sd, (struct sockaddr *) &sunix, strlen (sunix.sun_path) + 2)
 			== NOTOK) {
 		advise (LLOG_EXCEPTIONS, "unix socket", "unable to connect");
-		(void) close (sd);
+		 close (sd);
 		return;
 	}
 
-	(void) sprintf (buffer, "\1%s\n", pq -> pq_name);
+	 sprintf (buffer, "\1%s\n", pq -> pq_name);
 	n = strlen (buffer);
 	if (write (sd, buffer, n) != n) {
 		advise (LLOG_EXCEPTIONS, "unix socket", "error writing to");
-		(void) close (sd);
+		 close (sd);
 		return;
 	}
 	if (read (sd, buffer, 1) == 1)
 		if (buffer[0] == NULL) {
-			(void) close (sd);
+			 close (sd);
 			return;
 		}
 	advise (LLOG_EXCEPTIONS, NULLCP, "lpd refuses to start print queue %s",
 			pq -> pq_name);
 	while ((n = read (sd, buffer, sizeof (buffer))) > 0)
 		continue;
-	(void) close (sd);
+	 close (sd);
 
 	return;
 }
@@ -1408,13 +1408,13 @@ char   *current;
 					&& fgets (buffer, sizeof buffer - 1, fp)) {
 				if (cp = index (buffer, '\n'))
 					*cp = NULL;
-				(void) strcpy (current, buffer);
+				 strcpy (current, buffer);
 			} else
 				current[0] = NULL;
 		}
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 
 	return pid;
 }

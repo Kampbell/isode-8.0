@@ -143,7 +143,7 @@ char 			authtype;
 		turbo_index_delete(entryptr);
 #endif
 		/* removed node in core */
-		(void) avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr,entry_cmp);
+		 avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr,entry_cmp);
 		entryptr->e_parent->e_allchildrenpresent = 2 ;
 
 		if (entryptr->e_parent->e_edbversion)
@@ -169,7 +169,7 @@ char 			authtype;
 				fatal(-33, "SPT: ds_modify: 1 creating new NLN out failed.\n") ;
 			}
 			if (write_edb(empty_entry, filename) != OK) {
-				(void) unlink (filename);
+				 unlink (filename);
 				fatal(-33, "SPT: ds_modify: 2 writing new NLN out failed.\n") ;
 			}
 
@@ -186,7 +186,7 @@ char 			authtype;
 		/* delete index references to this node */
 		turbo_index_delete(entryptr);
 #endif
-		(void) avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr,entry_cmp);
+		 avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr,entry_cmp);
 	}
 
 	if (entryptr->e_parent->e_edbversion)

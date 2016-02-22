@@ -76,7 +76,7 @@ ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, stru
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at presentation)",
+		 sprintf (cp = buffer, " (%s at presentation)",
 						PErrString (pa -> pa_reason));
 	case PC_SESSION:
 		reason = ACS_PRESENTATION;
@@ -143,7 +143,7 @@ out:
 	;
 	free_ACS_Association__information (info);
 
-	(void) acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+	 acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 
 	return NULL;
 }

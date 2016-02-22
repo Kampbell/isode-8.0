@@ -207,7 +207,7 @@ getds (char *name)
 	default:
 		for (ds = dispatches, p = buffer; q = ds -> ds_name; ds++)
 			if (strncmp (q, name, longest) == 0) {
-				(void) sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
+				 sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
 		advise (NULLCP, "ambiguous operation, it could be one of:%s",
@@ -327,29 +327,29 @@ f_set (char **vec)
 			columns = 1;
 		lines = ((u - vars) + columns - 1) / columns;
 
-		(void) printf ("Variables:\n");
+		 printf ("Variables:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
 				v = vars + j * lines + i;
-				(void) printf ("%s", v -> v_name);
+				 printf ("%s", v -> v_name);
 				if (v + lines >= u) {
-					(void) printf ("\n");
+					 printf ("\n");
 					break;
 				}
 				for (w = strlen (v -> v_name); w < width; w = (w + 8) & ~7)
-					(void) putchar ('\t');
+					 putchar ('\t');
 			}
-		/*	(void) printf ("\nversion: %s\n", isodeversion); */
+		/*	 printf ("\nversion: %s\n", isodeversion); */
 		return OK;
 	}
 
 	if (strcmp (*vec, "-help") == 0) {
-		(void) fprintf (stdfp, "set [variable [value]]\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp, "set [variable [value]]\n");
+		 fprintf (stdfp,
 						"    with no arguments, lists variables which may be set\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp,
 						"    with one argument, lists the value of the named variable\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp,
 						"    with two arguments, sets the given variable accordingly\n");
 
 		return OK;
@@ -373,17 +373,17 @@ f_set (char **vec)
 
 	if (strcmp (*vec, "?") == 0) {
 		if (v -> v_value && (cp = v -> v_dvalue)) {
-			(void) printf ("use %s of:", v -> v_mask ? "any" : "one");
+			 printf ("use %s of:", v -> v_mask ? "any" : "one");
 			for (i = 0; *cp; cp++)
-				(void) printf ("%s \"%s\"", i++ ? "," : "", *cp);
+				 printf ("%s \"%s\"", i++ ? "," : "", *cp);
 			if (v -> v_mask)
-				(void) printf (";\n\tor  \"all\";\n\tor a hexadecimal number from 0 to 0x%x\n",
+				 printf (";\n\tor  \"all\";\n\tor a hexadecimal number from 0 to 0x%x\n",
 							   (1 << (i - 1)) - 1);
 			else
-				(void) printf (";\n\tor a number from 0 to %d\n",
+				 printf (";\n\tor a number from 0 to %d\n",
 							   cp - v -> v_dvalue - 1);
 		} else
-			(void) printf ("use any %s value\n",
+			 printf ("use any %s value\n",
 						   v -> v_value ? "integer" : "string");
 
 		return OK;
@@ -512,35 +512,35 @@ printvar (struct var *v)
 	if (runcom)
 		return;
 
-	(void) printf ("%-*s = ", varwidth1, v -> v_name);
+	 printf ("%-*s = ", varwidth1, v -> v_name);
 	if (v -> v_value) {
 		i = *v -> v_value;
 
 		if (v -> v_mask) {
 			if (v -> v_dvalue) {
 				if (i == 0)
-					(void) printf ("%-*s", varwidth2, v -> v_dvalue[i]);
+					 printf ("%-*s", varwidth2, v -> v_dvalue[i]);
 				else {
-					(void) strcpy (buffer, sprintb (i, v -> v_mask));
+					 strcpy (buffer, sprintb (i, v -> v_mask));
 					if ((int)strlen (buffer) <= varwidth2)
-						(void) printf ("%-*s", varwidth2, buffer);
+						 printf ("%-*s", varwidth2, buffer);
 					else
-						(void) printf ("%s\n%*s", buffer, varwidth1 + varwidth2 + 3,
+						 printf ("%s\n%*s", buffer, varwidth1 + varwidth2 + 3,
 									   "");
 				}
 			} else
-				(void) printf ("0x%-*x", varwidth2 - 2, i);
+				 printf ("0x%-*x", varwidth2 - 2, i);
 		} else {
 			if (v -> v_dvalue)
-				(void) printf ("%-*s", varwidth2, v -> v_dvalue[i]);
+				 printf ("%-*s", varwidth2, v -> v_dvalue[i]);
 			else
-				(void) printf ("%-*d", varwidth2, i);
+				 printf ("%-*d", varwidth2, i);
 		}
 	} else if (*v -> v_dvalue) {
-		(void) sprintf (buffer, "\"%s\"", *v -> v_dvalue);
-		(void) printf ("%-*s", varwidth2, buffer);
+		 sprintf (buffer, "\"%s\"", *v -> v_dvalue);
+		 printf ("%-*s", varwidth2, buffer);
 	}
-	(void) printf ("    - %s\n", v -> v_dname);
+	 printf ("    - %s\n", v -> v_dname);
 }
 
 /*  */
@@ -581,7 +581,7 @@ getval (char *name, char **choices)
 	default:
 		for (cp = choices, p = buffer; q = *cp; cp++)
 			if (strncmp (q, name, longest) == 0) {
-				(void) sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
+				 sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
 		advise (NULLCP, "ambiguous value, it could be one of:%s",
@@ -639,7 +639,7 @@ getvar (char *name)
 	default:
 		for (v = vars, p = buffer; q = v -> v_name; v++)
 			if (strncmp (q, name, longest) == 0) {
-				(void) sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
+				 sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
 		advise (NULLCP, "ambiguous variable, it could be one of:%s",
@@ -670,7 +670,7 @@ f_help (char **vec)
 		char **ap;
 
 		for (ap = whois_help; *ap; ap++)
-			(void) fprintf (stdfp, "%s%s", *ap, EOLN);
+			 fprintf (stdfp, "%s%s", *ap, EOLN);
 
 		return OK;
 	}
@@ -684,28 +684,28 @@ f_help (char **vec)
 			columns = 1;
 		lines = ((es - dispatches) + columns - 1) / columns;
 
-		(void) printf ("Operations:\n");
+		 printf ("Operations:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
 				ds = dispatches + j * lines + i;
-				(void) printf ("%s", ds -> ds_name);
+				 printf ("%s", ds -> ds_name);
 				if (ds + lines >= es) {
-					(void) printf ("\n");
+					 printf ("\n");
 					break;
 				}
 				for (w = strlen (ds -> ds_name); w < width; w = (w + 8) & ~7)
-					(void) putchar ('\t');
+					 putchar ('\t');
 			}
-		/*	(void) printf ("\nversion: %s\n", isodeversion); */
+		/*	 printf ("\nversion: %s\n", isodeversion); */
 
 		return OK;
 	}
 
 	if (strcmp (*vec, "-help") == 0) {
-		(void) fprintf (stdfp, "help [commands ...]\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp, "help [commands ...]\n");
+		 fprintf (stdfp,
 						"    with no arguments, lists operations which may be invoked\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp,
 						"    otherwise prints help for each operation given\n");
 
 		return OK;
@@ -714,11 +714,11 @@ f_help (char **vec)
 	for (; *vec; vec++)
 		if (strcmp (*vec, "?") == 0) {
 			for (ds = dispatches; ds -> ds_name; ds++)
-				(void) printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
+				 printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
 
 			break;
 		} else if (ds = getds (*vec))
-			(void) printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
+			 printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
 
 	return OK;
 }
@@ -726,7 +726,7 @@ f_help (char **vec)
 /*    MISCELLANY */
 
 int 
-rcinit (void) {
+rcinit  {
 	int    w;
 	char **cp,
 			 *dp;
@@ -744,9 +744,9 @@ rcinit (void) {
 		myuser = getenv ("LOGNAME");
 
 	if (dp = getenv ("QUIPURC"))
-		(void) strcpy (buffer, dp);
+		 strcpy (buffer, dp);
 	else
-		(void) sprintf (buffer, "%s/.quipurc", myhome);
+		 sprintf (buffer, "%s/.quipurc", myhome);
 	snarf (buffer, "username:", &mydn);
 
 	for (ds = dispatches, helpwidth = 0; ds -> ds_name; ds++)
@@ -838,7 +838,7 @@ set_variable:
 			break;
 		}
 
-		(void) fclose (fp);
+		 fclose (fp);
 	}
 }
 
@@ -872,14 +872,14 @@ rcfile (char *file, int op, int isystem)
 			continue;
 
 		if (fredloop (vec, NOTOK) != OK && op) {
-			(void) f_quit (NULLVP);
+			 f_quit (NULLVP);
 			exit (1);
 		}
 	}
 
 	runcom = runsys = 0;
 
-	(void) fclose (fp);
+	 fclose (fp);
 }
 
 /*  */
@@ -909,10 +909,10 @@ f_version (char **vec)
 {
 	if (*++vec != NULL)
 		if (strcmp (*vec, "-fred") == 0) {
-			(void) printf ("version: %s\n", isodeversion);
+			 printf ("version: %s\n", isodeversion);
 			return OK;
 		}
 
-	(void) printf ("version: %s\n\nUsing server version:\n", isodeversion);
+	 printf ("version: %s\n\nUsing server version:\n", isodeversion);
 	return dish ("squid -version", 0);
 }

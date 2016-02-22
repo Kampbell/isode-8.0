@@ -69,7 +69,7 @@ baduser (char *file, char *user)
 			}
 		}
 
-		(void) fclose (fp);
+		 fclose (fp);
 	}
 
 

@@ -493,7 +493,7 @@ syncDir (char *dir, int rec)
 				SET_STATUS(rfa->ri_status, RI_SLAVE);
 				SET_LOCKINFO(rfa->ri_status, RI_UNLOCKED);
 				SET_TRANSFER(rfa->ri_status, RI_TRANSFER(rrfa->ri_status));
-				(void)time(&(rfa->ri_lastChange));
+				time(&(rfa->ri_lastChange));
 				rfa->ri_modTime = 0L;
 				rfa->ri_mode = rrfa->ri_mode;
 				rfa->ri_next = localRfaList;
@@ -549,7 +549,7 @@ syncDir (char *dir, int rec)
 					rfa->ri_filename);
 		}
 
-	(void)releaseRfaInfoList(dir, localRfaList);
+	releaseRfaInfoList(dir, localRfaList);
 	freeRfaInfoList(remoteRfaList);
 
 	/*-- look for .rfaexec script --*/

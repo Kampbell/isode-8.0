@@ -62,7 +62,7 @@ fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree)
 		return (OK);
 
 	if (p->pe_type != PE_START) {
-		(void) pepsylose (mod, p, NULLPE, "fre_obj: missing PE_START\n");
+		 pepsylose (mod, p, NULLPE, "fre_obj: missing PE_START\n");
 		return (NOTOK);
 	}
 
@@ -205,7 +205,7 @@ again:
 
 	case SEXTOBJ:
 		if (p[1].pe_type != EXTMOD) {
-			(void) pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
+			 pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
 			return (NOTOK);
 		}
 		if (fre_obj(parm + p->pe_ucode, (EXT2MOD(mod, (p + 1)))->md_dtab[p->pe_tag],
@@ -215,7 +215,7 @@ again:
 
 	case EXTOBJ:
 		if (p[1].pe_type != EXTMOD) {
-			(void) pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
+			 pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
 			return (NOTOK);
 		}
 		if (fre_obj(*(char **) (parm + p->pe_ucode),
@@ -311,7 +311,7 @@ again:
 		break;
 
 	default:
-		(void) pepsylose (mod, p, NULLPE, "fre_type: %d not implemented\n",
+		 pepsylose (mod, p, NULLPE, "fre_type: %d not implemented\n",
 						  p->pe_type);
 		return (NOTOK);
 	}
@@ -340,7 +340,7 @@ fre_seq (
 
 	if (p->pe_type != SEQ_START && p->pe_type != SET_START
 			&& p->pe_type != SSEQ_START && p->pe_type != SSET_START) {
-		(void) pepsylose (mod, p, NULLPE, "fre_seq: bad starting item %d\n",
+		 pepsylose (mod, p, NULLPE, "fre_seq: bad starting item %d\n",
 						  p->pe_type);
 		return (NOTOK);
 	}
@@ -422,7 +422,7 @@ fre_seq (
 
 		case SEXTOBJ:
 			if (p[1].pe_type != EXTMOD) {
-				(void) pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
+				 pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
 				return (NOTOK);
 			}
 			if (fre_obj(parm + p->pe_ucode, (EXT2MOD(mod, (p + 1)))->md_dtab[p->pe_tag],
@@ -432,7 +432,7 @@ fre_seq (
 
 		case EXTOBJ:
 			if (p[1].pe_type != EXTMOD) {
-				(void) pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
+				 pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
 				return (NOTOK);
 			}
 			if (fre_obj(*(char **) (parm + p->pe_ucode),
@@ -478,7 +478,7 @@ fre_seqof (
 
 	if (p->pe_type != SEQOF_START && p->pe_type != SETOF_START
 			&& p->pe_type != SSEQOF_START && p->pe_type != SSETOF_START) {
-		(void) pepsylose (mod, p, NULLPE, "fre_seqof: illegal field");
+		 pepsylose (mod, p, NULLPE, "fre_seqof: illegal field");
 		return (NOTOK);
 	}
 	for (start = p; (char *) parm != NULL; p = start) {
@@ -551,7 +551,7 @@ fre_seqof (
 
 			case SEXTOBJ:
 				if (p[1].pe_type != EXTMOD) {
-					(void) pepsylose (mod, p, NULLPE,
+					 pepsylose (mod, p, NULLPE,
 									  "fre_seqof: missing EXTMOD");
 					return (NOTOK);
 				}
@@ -562,7 +562,7 @@ fre_seqof (
 
 			case EXTOBJ:
 				if (p[1].pe_type != EXTMOD) {
-					(void) pepsylose (mod, p, NULLPE,
+					 pepsylose (mod, p, NULLPE,
 									  "fre_seqof: missing EXTMOD");
 					return (NOTOK);
 				}
@@ -613,7 +613,7 @@ fre_choice (
 		return OK;
 
 	if (p->pe_type != CHOICE_START && p->pe_type != SCHOICE_START) {
-		(void) pepsylose (mod, p, NULLPE,
+		 pepsylose (mod, p, NULLPE,
 						  "fre_choice:CHOICE_START missing found %d\n", p->pe_type);
 	}
 	p++;
@@ -629,7 +629,7 @@ fre_choice (
 		p++;
 	}
 	if (p->pe_type != SCTRL) {
-		(void) pepsylose (mod, p, NULLPE,
+		 pepsylose (mod, p, NULLPE,
 						  "fre_choice: missing SCTRL information\n");
 		return (NOTOK);
 	}
@@ -637,7 +637,7 @@ fre_choice (
 	if (cnt != 0)
 		cnt--;
 	if (cnt < 0) {
-		(void) pepsylose (mod, p, NULLPE,"fre_choice:offset negative %d", cnt);
+		 pepsylose (mod, p, NULLPE,"fre_choice:offset negative %d", cnt);
 		return (NOTOK);
 	}
 	for (p++; p->pe_type != PE_END; NEXT_TPE(p)) {
@@ -655,7 +655,7 @@ fre_choice (
 		}
 	}
 
-	(void) pepsylose (mod, p, NULLPE, "fre_choice: no choice taken");
+	 pepsylose (mod, p, NULLPE, "fre_choice: no choice taken");
 	return (NOTOK);
 }
 /*
@@ -688,7 +688,7 @@ callsfn (ptpe *p, modtyp *mod)
 		}
 	}
 
-	(void) pepsylose (mod, p, NULLPE,"callsfn:Corrupted tables:PE_END found\n");
+	 pepsylose (mod, p, NULLPE,"callsfn:Corrupted tables:PE_END found\n");
 	ferr(1, "callsfn:Mangled tables\n");
 	/*NOTREACHED*/
 

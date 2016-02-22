@@ -70,7 +70,7 @@ struct PSAPindication *pi;
 	else
 		freepblk (pb);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -107,7 +107,7 @@ struct PSAPindication *pi;
 	rr = NULL;
 
 	if (result == NOTOK) {
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						 PY_pepy);
 		goto out;
 	}
@@ -166,7 +166,7 @@ again:
 		if (pb -> pb_reliability == LOW_QUALITY)
 			goto bad_ref;
 
-		(void) ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
+		 ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
 						 "error decoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -178,7 +178,7 @@ again:
 
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, rp -> reference)) {
-			(void) ppktlose (pb, pi, PC_SESSION, rp -> reference,
+			 ppktlose (pb, pi, PC_SESSION, rp -> reference,
 							 NULLCP, "reference mismatch");
 
 bad_ref:

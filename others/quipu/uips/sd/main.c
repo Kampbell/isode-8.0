@@ -78,10 +78,10 @@ read_args (unsigned int argc, char ***avptr)
 	while ((cp = *av) && (*cp == '-')) {
 		switch (*++cp) {
 		case 'u':
-			if (*++av != NULLCP) (void) strcpy(namestr, *av);
+			if (*++av != NULLCP)  strcpy(namestr, *av);
 			break;
 		case 'p':
-			if (*++av != NULLCP) (void) strcpy(passwd, *av);
+			if (*++av != NULLCP)  strcpy(passwd, *av);
 			break;
 		case 'T':
 			if (*++av != NULLCP) oidtable = *av;
@@ -102,11 +102,11 @@ read_args (unsigned int argc, char ***avptr)
 }
 
 void 
-setsignals (void) {
+setsignals  {
 	int     i;
 
 	for (i=0; i<18; i++)
-		(void) signal(i, SIG_DFL);
+		 signal(i, SIG_DFL);
 }
 
 void 
@@ -116,7 +116,7 @@ eprint (char *str)
 }
 
 void 
-sd_quit (void) {
+sd_quit  {
 	quit("\n", 0);
 }
 
@@ -124,9 +124,9 @@ void
 quit (char *error, int sig)
 {
 	endwidgets();
-	(void) ds_unbind();
+	 ds_unbind();
 	hide_picture();
-	(void) printf(error);
+	 printf(error);
 	exit(sig);
 }
 
@@ -147,7 +147,7 @@ va_dcl {
 
 	code = va_arg (ap, int);
 
-	(void) _ll_log (log_dsap, code, ap);
+	 _ll_log (log_dsap, code, ap);
 
 	va_end (ap);
 }

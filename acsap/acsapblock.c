@@ -39,7 +39,7 @@ static struct assocblk *ACHead = &assocque;
 /*    ASSOCIATION BLOCKS */
 
 struct assocblk *
-newacblk (void) {
+newacblk()  {
 	struct assocblk *acb;
 
 	acb = (struct assocblk   *) calloc (1, sizeof *acb);
@@ -77,17 +77,17 @@ freeacblk (struct assocblk *acb)
 			if (acb -> acb_flags & ACB_RTS) {/* recurse */
 				struct AcSAPindication  acis;
 
-				(void) (*acb -> acb_uabort) (acb -> acb_fd, NULLPEP, 0, &acis);
+				 (*acb -> acb_uabort) (acb -> acb_fd, NULLPEP, 0, &acis);
 				return;
 			} else {
 				struct PSAPindication   pis;
 
-				(void) (*acb -> acb_uabort) (acb -> acb_fd, NULLPEP, 0, &pis);
+				 (*acb -> acb_uabort) (acb -> acb_fd, NULLPEP, 0, &pis);
 			}
 		} else {
 			struct SSAPindication   sis;
 
-			(void) (*acb -> acb_uabort) (acb -> acb_fd, NULLCP, 0, &sis);
+			 (*acb -> acb_uabort) (acb -> acb_fd, NULLCP, 0, &sis);
 		}
 
 	if (acb -> acb_flags & ACB_FINISH)

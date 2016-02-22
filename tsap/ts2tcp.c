@@ -97,7 +97,7 @@ tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, st
 		return tsaplose (td, DR_ADDRESS, NULLCP, "%s: unknown host",
 						 remote -> na_domain);
 #ifdef	notanymore
-	(void) strncpy (remote -> na_domain, hp -> h_name,
+	 strncpy (remote -> na_domain, hp -> h_name,
 					sizeof remote -> na_domain);
 #endif
 
@@ -105,7 +105,7 @@ tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, st
 	inaddr_copy (hp, isock);
 
 #ifndef	notanymore
-	(void) strcpy (remote -> na_domain, inet_ntoa (isock -> sin_addr));
+	 strcpy (remote -> na_domain, inet_ntoa (isock -> sin_addr));
 #endif
 
 	if (local && local -> na_domain[0]) {
@@ -128,15 +128,15 @@ tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, st
 
 #ifdef	FIONBIO
 	if (async)
-		(void) ioctl (fd, FIONBIO, (onoff = 1, (char *) &onoff));
+		 ioctl (fd, FIONBIO, (onoff = 1, (char *) &onoff));
 #else
 #ifdef	O_NDELAY
 	if (async)
-		(void) fcntl (fd, F_SETFL, O_NDELAY);
+		 fcntl (fd, F_SETFL, O_NDELAY);
 #endif
 #endif
 	tb -> tb_fd = fd;
-	(void) TTService (tb);
+	 TTService (tb);
 
 	if (join_tcp_server (fd, isock) == NOTOK) {
 #ifdef	NODELAY
@@ -148,9 +148,9 @@ tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, st
 							calloc ((unsigned) getdtablesize (),
 									sizeof *peers);
 					if (peers == NULL) {
-						(void) tsaplose (td, DR_CONGEST, NULLCP,
+						 tsaplose (td, DR_CONGEST, NULLCP,
 										 "out of memory");
-						(void) close_tcp_socket (fd);
+						 close_tcp_socket (fd);
 						return (tb -> tb_fd = NOTOK);
 					}
 
@@ -168,8 +168,8 @@ tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, st
 			}
 #endif
 
-		(void) tsaplose (td, DR_REFUSED, "connection", "unable to establish");
-		(void) close_tcp_socket (fd);
+		 tsaplose (td, DR_REFUSED, "connection", "unable to establish");
+		 close_tcp_socket (fd);
 		return (tb -> tb_fd = NOTOK);
 	}
 #ifdef	NODELAY
@@ -179,11 +179,11 @@ done:
 
 #ifdef	FIONBIO
 	if (async)
-		(void) ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
+		 ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
 #else
 #ifdef	O_NDELAY
 	if (async)
-		(void) fcntl (fd, F_SETFL, 0x00);
+		 fcntl (fd, F_SETFL, 0x00);
 #endif
 #endif
 
@@ -234,19 +234,19 @@ tcpretry (struct tsapblk *tb, struct TSAPdisconnect *td)
 			break;
 		}
 
-		(void) tsaplose (td, DR_REFUSED, "connection", "unable to establish");
+		 tsaplose (td, DR_REFUSED, "connection", "unable to establish");
 		FD_CLR (fd, &inprogress);
-		(void) close_tcp_socket (fd);
+		 close_tcp_socket (fd);
 		return (tb -> tb_fd = NOTOK);
 	}
 done:
 	;
 
 #ifdef	FIONBIO
-	(void) ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
+	 ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
 #else
 #ifdef	O_NDELAY
-	(void) fcntl (fd, F_SETFL, 0x00);
+	 fcntl (fd, F_SETFL, 0x00);
 #endif
 #endif
 
@@ -297,7 +297,7 @@ tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td)
 {
 	static char buffer[BUFSIZ];
 
-	(void) sprintf (buffer, "%c%d %s %s", NT_TCP, fd, cp1, cp2);
+	 sprintf (buffer, "%c%d %s %s", NT_TCP, fd, cp1, cp2);
 
 	return buffer;
 }
@@ -343,10 +343,10 @@ tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 		*cp++ = NULL;
 		na -> na_port = htons ((u_short) atoi (cp));
 	}
-	(void) strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
+	 strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
 
 	tb -> tb_fd = fd;
-	(void) TTService (tb);
+	 TTService (tb);
 
 	ta = &tb -> tb_responding;
 	ta -> ta_present = 1;
@@ -358,7 +358,7 @@ tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 		*cp++ = NULL;
 		na -> na_port = htons ((u_short) atoi (cp));
 	}
-	(void) strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
+	 strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
 
 	return OK;
 }

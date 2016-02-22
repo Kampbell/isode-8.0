@@ -154,7 +154,7 @@ struct FTAMindication *fti;
 
 	result = FWaitRequestAux (fsb, secs, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -306,7 +306,7 @@ copy_psdu:
 			if (!(fsb -> fsb_flags & FSB_INIT)) {
 unexpected_fadu:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 								 "unexpected FADU; state=0x%x",
 								 fsb -> fsb_state);
 				goto out;
@@ -344,7 +344,7 @@ unexpected_fadu:
 		if ((pe = *pep) == NULLPE)
 			continue;
 		if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
-			(void) fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
+			 fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 							 "unable to parse PDU: %s", PY_pepy);
 			goto out;
 		}
@@ -368,7 +368,7 @@ do_begin:
 			if (!(fsb -> fsb_units & FUNIT_GROUPING)) {
 no_grouping:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERRFUNIT, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRFUNIT, NULLCP,
 								 "grouping not permitted");
 				goto out;
 			}
@@ -414,7 +414,7 @@ no_grouping:
 						== NULL) {
 no_mem:
 					;
-					(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+					 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 									 "out of memory");
 					goto out;
 				}
@@ -463,7 +463,7 @@ no_mem:
 			if (!(fsb -> fsb_units & FUNIT_LIMITED)) {
 no_limited:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "limited file management not permitted");
 				goto out;
 			}
@@ -480,7 +480,7 @@ no_limited:
 				if ((ftce -> ftce_attrs.fa_present &
 						(FA_FILENAME | FA_ACTIONS | FA_CONTENTS))
 						!= (FA_FILENAME | FA_ACTIONS | FA_CONTENTS)) {
-					(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+					 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 									 "missing mandatory parameters in F-CREATE-request");
 					goto out;
 				}
@@ -629,7 +629,7 @@ no_limited:
 			if (!(fsb -> fsb_units & FUNIT_ENHANCED)) {
 no_enhanced:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "enhanced file management not permitted");
 				goto out;
 			}
@@ -643,7 +643,7 @@ no_enhanced:
 					goto out;
 				if (ftca -> ftca_attrs.fa_present
 						& ftca -> ftca_attrs.fa_novalue) {
-					(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+					 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 									 "attributes can not be changed to no value available");
 					goto out;
 				}
@@ -942,7 +942,7 @@ do_end:
 			if (!(fsb -> fsb_units & FUNIT_ACCESS)) {
 no_access:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "file access not permitted");
 				goto out;
 			}
@@ -1048,7 +1048,7 @@ no_access:
 					|| fsb -> fsb_state != FSB_DATAIDLE)
 				goto unexpected_fpdu;
 			if (!(fsb -> fsb_units & FUNIT_READ)) {
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "reading not permitted");
 				goto out;
 			}
@@ -1071,7 +1071,7 @@ no_access:
 						ftrw -> ftrw_level =
 							req -> access__context -> level__number;
 					else {
-						(void) fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
+						 fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 										 "level-number missing for access-context FL");
 						goto out;
 					}
@@ -1091,7 +1091,7 @@ no_access:
 					|| fsb -> fsb_state != FSB_DATAIDLE)
 				goto unexpected_fpdu;
 			if (!(fsb -> fsb_units & FUNIT_WRITE)) {
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "writing not permitted");
 				goto out;
 			}
@@ -1138,7 +1138,7 @@ no_access:
 			default:
 unexpected_data_end:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 								 "unexpected data end; state=0x%x",
 								 fsb -> fsb_state);
 				goto out;
@@ -1276,7 +1276,7 @@ do_cancel:
 		default:
 unexpected_fpdu:
 			;
-			(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+			 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 							 "FPDU mismatch; expecting one of 0x%x, found tag %s/%d/0x%x; state=0x%x",
 							 next, pe_classlist[pe -> pe_class], pe -> pe_form,
 							 pe -> pe_id, fsb -> fsb_state);
@@ -1288,7 +1288,7 @@ unexpected_fpdu:
 	}
 
 	if (next) {
-		(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+		 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 						 "missing FPDU(s) in group; expecting one of 0x%x next",
 						 next);
 		goto out;
@@ -1323,7 +1323,7 @@ unexpected_fpdu:
 
 			fsbtrace (fsb, (fsb -> fsb_fd, "resolving CANCEL collision",
 							NULLCP, NULLPE, -1));
-			(void) FCancelResponseAux (fsb, fsb -> fsb_cancelaction,
+			 FCancelResponseAux (fsb, fsb -> fsb_cancelaction,
 									   fsb -> fsb_cancelshared,
 									   fsb -> fsb_canceldiags,
 									   fsb -> fsb_cancelndiag,
@@ -1355,7 +1355,7 @@ unexpected_fpdu:
 
 	if (!(fsb -> fsb_flags & FSB_INIT)
 			&& ftg -> ftg_threshold != px -> px_ninfo - 2) {
-		(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+		 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 						 "threshold mismatch; expecting %d, found %d",
 						 px -> px_ninfo - 2, ftg -> ftg_threshold);
 		goto out;
@@ -1380,7 +1380,7 @@ unexpected_fpdu:
 
 			if (fsb -> fsb_flags & FSB_INIT) {
 				if (ftg -> ftg_flags & ~fsb -> fsb_group) {
-					(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+					 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 									 "management reply mismatch; expecting 0x%x, found 0x%x",
 									 fsb -> fsb_group, ftg -> ftg_flags);
 					goto out;
@@ -1422,7 +1422,7 @@ unexpected_fpdu:
 				int	state;
 
 				if (ftg -> ftg_flags & ~fsb -> fsb_group) {
-					(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+					 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 									 "bulk transfer reply mismatch; expecting 0x%x found 0x%x",
 									 fsb -> fsb_group, ftg -> ftg_flags);
 					goto out;
@@ -1472,7 +1472,7 @@ unexpected_fpdu:
 			if (fsb -> fsb_state != FSB_BULKEND)
 				goto unexpected_group;
 			if (ftg -> ftg_flags & ~fsb -> fsb_group) {
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "bulk transfer reply mismatch; expecting 0x%x found 0x%x",
 								 fsb -> fsb_group, ftg -> ftg_flags);
 				goto out;
@@ -1490,7 +1490,7 @@ unexpected_fpdu:
 
 unexpected_group:
 	;
-	(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+	 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 					 "unexpected group type 0x%x; state=0x%x", ftg -> ftg_flags,
 					 fsb -> fsb_state);
 	goto out;
@@ -1544,7 +1544,7 @@ struct ftamblk   *fsb;
 struct PSAPtoken *pt;
 struct FTAMindication *fti;
 {
-	(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+	 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 					 "unexpected token indication (0x%x)", pt -> pt_type);
 	PTFREE (pt);
 
@@ -1571,7 +1571,7 @@ struct FTAMindication *fti;
 			break;		/* else fall */
 
 	default:
-		(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+		 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 						 "unexpected sync indication (0x%x)", pn -> pn_type);
 		PNFREE (pn);
 
@@ -1632,7 +1632,7 @@ struct ftamblk   *fsb;
 struct PSAPactivity *pv;
 struct FTAMindication *fti;
 {
-	(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+	 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 					 "unexpected activity indication (0x%x)", pv -> pv_type);
 	PVFREE (pv);
 
@@ -1647,7 +1647,7 @@ struct ftamblk   *fsb;
 struct PSAPreport *pp;
 struct FTAMindication *fti;
 {
-	(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+	 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 					 "unexpected exception report indication (0x%x)", pp -> pp_peer);
 	PPFREE (pp);
 
@@ -1671,29 +1671,29 @@ struct FTAMindication *fti;
 
 	pdu = NULL;
 	if ((fsb -> fsb_flags & FSB_INIT) || fsb -> fsb_state != FSB_INITIALIZED) {
-		(void) fpktlose (fsb, fti, FS_ACS_MGMT, NULLCP,
+		 fpktlose (fsb, fti, FS_ACS_MGMT, NULLCP,
 						 "association management botched");
 		PFFREE (pf);
 		goto out1;
 	}
 
 	if (AcFINISHser (fsb -> fsb_fd, pf, &acis) == NOTOK) {
-		(void) acs2ftamlose (fsb, fti, "AcFINISHser", aca);
+		 acs2ftamlose (fsb, fti, "AcFINISHser", aca);
 		goto out1;
 	}
 
 	if (acf -> acf_ninfo < 1 || (pe = acf -> acf_info[0]) == NULLPE) {
-		(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP, NULLCP);
+		 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP, NULLCP);
 		goto out2;
 	}
 
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
-		(void) fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
+		 fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 						 "unable to parse PDU: %s", PY_pepy);
 		goto out2;
 	}
 	if (pdu -> offset != type_FTAM_PDU_f__terminate__request) {
-		(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+		 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 						 "expecting F-TERMINATE-request, got %d",
 						 pdu -> offset);
 		goto out2;
@@ -1743,7 +1743,7 @@ struct FTAMindication *fti;
 		return ftamlose (fti, FS_PRO_TIMEOUT, 0, NULLCP, NULLCP);
 
 	if (AcABORTser (fsb -> fsb_fd, pa, &acis) == NOTOK) {
-		(void) acs2ftamlose (fsb, fti, "AcABORTser", aca);
+		 acs2ftamlose (fsb, fti, "AcABORTser", aca);
 		fsb -> fsb_fd = NOTOK;
 		freefsblk (fsb);
 
@@ -1919,17 +1919,17 @@ struct FTAMindication *fti;
 		fsb -> fsb_flags &= ~FSB_ASYN;
 		switch (pa -> pa_reason) {
 		case PC_WAITING:
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return ftamlose (fti, FS_GEN_WAITING, 0, NULLCP, NULLCP);
 
 		default:
-			(void) ps2ftamlose (fsb, fti, "PSetIndications", pa);
+			 ps2ftamlose (fsb, fti, "PSetIndications", pa);
 			freefsblk (fsb);
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return NOTOK;
 		}
 	}
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }
@@ -1951,10 +1951,10 @@ struct AcSAPabort *aca;
 
 	if (fsb && fsb -> fsb_trace && event) {
 		cp = buffer;
-		(void) sprintf (cp, "%s: %s", event, AcErrString (aca -> aca_reason));
+		 sprintf (cp, "%s: %s", event, AcErrString (aca -> aca_reason));
 		if (aca -> aca_cc > 0) {
 			cp += strlen (cp);
-			(void) sprintf (cp, " [%*.*s]", aca -> aca_cc, aca -> aca_cc,
+			 sprintf (cp, " [%*.*s]", aca -> aca_cc, aca -> aca_cc,
 							aca -> aca_data);
 		}
 
@@ -1965,16 +1965,16 @@ struct AcSAPabort *aca;
 	switch (aca -> aca_reason) {
 	case ACS_ADDRESS:
 		reason = FS_PRO_LOWADDR;
-		(void) sprintf (cp = buffer, " (%s)", AcErrString (ACS_ADDRESS));
+		 sprintf (cp = buffer, " (%s)", AcErrString (ACS_ADDRESS));
 		break;
 
 	case ACS_REFUSED:
 		reason = FS_PRO_LOWFAIL;
-		(void) sprintf (cp = buffer, " (%s)", AcErrString (ACS_REFUSED));
+		 sprintf (cp = buffer, " (%s)", AcErrString (ACS_REFUSED));
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at association control)",
+		 sprintf (cp = buffer, " (%s at association control)",
 						AcErrString (aca -> aca_reason));
 	case ACS_CONGEST:
 	case ACS_PARAMETER:
@@ -2016,17 +2016,17 @@ struct FTAMindication *fti;
 
 	pdu = NULL;
 	if (aca -> aca_source != ACA_USER) {
-		(void) acs2ftamlose (fsb, fti, NULLCP, aca);
+		 acs2ftamlose (fsb, fti, NULLCP, aca);
 		goto out;
 	}
 
 	if (aca -> aca_ninfo < 1 || (pe = aca -> aca_info[0]) == NULLPE) {
-		(void) ftamlose (fti, FS_PRO_ERR, 1, NULLCP, NULLCP);
+		 ftamlose (fti, FS_PRO_ERR, 1, NULLCP, NULLCP);
 		goto out;
 	}
 
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_PRO_ERRMSG, 1, NULLCP,
+		 ftamlose (fti, FS_PRO_ERRMSG, 1, NULLCP,
 						 "unable to parse PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -2042,7 +2042,7 @@ struct FTAMindication *fti;
 		break;
 
 	default:
-		(void) ftamlose (fti, FS_PRO_ERRPROC, 1, NULLCP,
+		 ftamlose (fti, FS_PRO_ERRPROC, 1, NULLCP,
 						 "expecting F-{U,P}-ABORT-request, got %d",
 						 pdu -> offset);
 		goto out;
@@ -2058,7 +2058,7 @@ struct FTAMindication *fti;
 	fta -> fta_action = req -> action__result ? req -> action__result -> parm
 						:int_FTAM_Action__Result_success;
 	if (req -> diagnostic)
-		(void) fpm2diag (fsb, req -> diagnostic, fta -> fta_diags,
+		 fpm2diag (fsb, req -> diagnostic, fta -> fta_diags,
 						 &fta -> fta_ndiag, fti);
 
 out:
@@ -2088,10 +2088,10 @@ struct PSAPabort *pa;
 
 	if (fsb && fsb -> fsb_trace && event) {
 		cp = buffer;
-		(void) sprintf (cp, "%s: %s", event, PErrString (pa -> pa_reason));
+		 sprintf (cp, "%s: %s", event, PErrString (pa -> pa_reason));
 		if (pa -> pa_cc > 0) {
 			cp += strlen (cp);
-			(void) sprintf (cp, " [%*.*s]", pa -> pa_cc, pa -> pa_cc,
+			 sprintf (cp, " [%*.*s]", pa -> pa_cc, pa -> pa_cc,
 							pa -> pa_data);
 		}
 
@@ -2103,7 +2103,7 @@ struct PSAPabort *pa;
 	case PC_PARAMETER:
 	case PC_OPERATION:
 	default:
-		(void) sprintf (cp = buffer, " (%s at presentation)",
+		 sprintf (cp = buffer, " (%s at presentation)",
 						PErrString (pa -> pa_reason));
 	case PC_CONGEST:
 	case PC_SESSION:
@@ -2167,7 +2167,7 @@ struct ftamblk *fsb;
 		fsbtrace (fsb, (fsb -> fsb_fd, "A-ABORT.REQUEST(discard)",
 						NULLCP, NULLPE, 0));
 
-		(void) AcUAbortRequest (fsb -> fsb_fd, NULLPEP, 0, &acis);
+		 AcUAbortRequest (fsb -> fsb_fd, NULLPEP, 0, &acis);
 	}
 
 	if (fsb -> fsb_context)

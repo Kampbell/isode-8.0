@@ -212,10 +212,10 @@ struct dn_seq *dlist;
 	} else
 		buffer[0] = NULL;
 	if (ps)
-		(void) ps_free (ps);
+		 ps_free (ps);
 
 	if (debug)
-		(void) fprintf (stderr, "dlevel=%d dm=%s dn=%s\n", dlevel, dm, buffer);
+		 fprintf (stderr, "dlevel=%d dm=%s dn=%s\n", dlevel, dm, buffer);
 
 	bzero ((char *) sa, sizeof *sa);
 
@@ -236,7 +236,7 @@ struct dn_seq *dlist;
 		AttributeType at;
 
 		if (debug)
-			(void) fprintf (stderr, "-- dlevel=%d dp=%s(%d) dn=%s\n",
+			 fprintf (stderr, "-- dlevel=%d dp=%s(%d) dn=%s\n",
 							dlevel, dp, strlen (dp), buffer);
 
 		if ((i = strlen (dp)) < dlevel)
@@ -256,7 +256,7 @@ struct dn_seq *dlist;
 				LLOG (pgm_log, LLOG_EXCEPTIONS,
 					  ("search operation failed"));
 
-			(void) ds_unbind ();
+			 ds_unbind ();
 
 			bound = 0;
 
@@ -373,7 +373,7 @@ struct aka *ak;
 			if (recording)
 				LLOG (pgm_log, LLOG_EXCEPTIONS, ("search operation failed"));
 
-			(void) ds_unbind ();
+			 ds_unbind ();
 
 			bound = 0;
 
@@ -423,7 +423,7 @@ free_filter:
 /*  */
 
 static 
-do_bind (void) {
+do_bind  {
 	struct ds_bind_arg bind_arg,
 			bind_result;
 	struct ds_bind_arg *ba = &bind_arg,
@@ -477,7 +477,7 @@ fetch_image (char *local, char *domain)
 		return NULL;
 
 	if (!stay_bound) {
-		(void) ds_unbind ();
+		 ds_unbind ();
 		bound = 0;
 	}
 
@@ -485,20 +485,20 @@ fetch_image (char *local, char *domain)
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) {
 		if (debug)
-			(void) fprintf (stderr, "ps_alloc: failed\n");
+			 fprintf (stderr, "ps_alloc: failed\n");
 
 		goto out;
 	}
 	if (str_setup (ps, NULLCP, 0, 0) == NOTOK) {
 		if (debug)
-			(void) fprintf (stderr, "ps_alloc: %s\n", ps_error (ps -> ps_errno));
+			 fprintf (stderr, "ps_alloc: %s\n", ps_error (ps -> ps_errno));
 
 		goto out;
 	}
 
 	if (pe2ps (ps, pe) == NOTOK) {
 		if (debug)
-			(void) fprintf (stderr, "pe2ps: %s\n", pe_error (pe -> pe_errno));
+			 fprintf (stderr, "pe2ps: %s\n", pe_error (pe -> pe_errno));
 
 		goto out;
 	}
@@ -506,7 +506,7 @@ fetch_image (char *local, char *domain)
 	for (passno = 1; passno < 3; passno++)
 		if (decode_t4 (ps -> ps_base, PHOTO, ps -> ps_ptr - ps -> ps_base)
 				== NOTOK) {
-			(void) fprintf (stderr, "\n");
+			 fprintf (stderr, "\n");
 			if (im) {
 				qb_free (im -> data);
 				free ((char *) im);
@@ -552,13 +552,13 @@ photo_end (char *name)
 		x = maxx, y--;
 
 		if (debug)
-			(void) fprintf (stderr, "ending pass one for \"%s\", %dx%d\n",
+			 fprintf (stderr, "ending pass one for \"%s\", %dx%d\n",
 							name, x, y);
 
 		if ((im = (struct type_IMAGE_Image *) calloc (1, sizeof *im))
 				== NULL) {
 			if (debug)
-				(void) fprintf (stderr, "calloc fails");
+				 fprintf (stderr, "calloc fails");
 			return NOTOK;
 		}
 		im -> width = x, im -> height = y;
@@ -566,7 +566,7 @@ photo_end (char *name)
 		len = ((im -> width + 7) / 8) * im -> height;
 		if ((im -> data = qb = (struct qbuf *) malloc (sizeof *qb)) == NULL) {
 			if (debug)
-				(void) fprintf (stderr, "unable to allocate qbuf");
+				 fprintf (stderr, "unable to allocate qbuf");
 			return NOTOK;
 		}
 		qb -> qb_forw = qb -> qb_back = qb;
@@ -575,7 +575,7 @@ photo_end (char *name)
 		if ((pb = (struct qbuf *) calloc ((unsigned) (sizeof *pb + len), 1))
 				== NULL) {
 			if (debug)
-				(void) fprintf (stderr, "unable to allocate qbuf (%d+%d)",
+				 fprintf (stderr, "unable to allocate qbuf (%d+%d)",
 								sizeof *qb, len);
 			return NOTOK;
 		}
@@ -682,14 +682,14 @@ _advise (va_list ap)
 
 	asprintf (buffer, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	if (errsw != NOTOK) {
-		(void) fprintf (stderr, "%s: ", myname);
-		(void) fputs (buffer, stderr);
-		(void) fputc ('\n', stderr);
+		 fprintf (stderr, "%s: ", myname);
+		 fputs (buffer, stderr);
+		 fputc ('\n', stderr);
 
-		(void) fflush (stderr);
+		 fflush (stderr);
 	}
 }
 #else

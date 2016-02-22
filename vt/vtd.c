@@ -173,7 +173,7 @@ char *argv[];
 			if ((logname = argv[++i]) == NULL || *logname == '-')
 				adios (NULLCP, "usage: %s -F logfile", myname);
 			vt_log -> ll_file = logname;
-			(void) ll_close (vt_log);
+			 ll_close (vt_log);
 			advise(LLOG_DEBUG,NULLCP, "logging to %s",logname);
 		} else
 			adios(NULLCP, "usage: %s [-F logfile] [-d N]",
@@ -230,7 +230,7 @@ gotpty:
 		if (ioctl(t, TIOCNOTTY, 0) == -1) {
 			perror("ioctl (TIOCNOTTY)");
 		}
-		(void)close(t);
+		close(t);
 	}
 	t = open(cp, 2);
 	if (t < 0)
@@ -263,8 +263,8 @@ gotpty:
 		fatalperror(f, "fork", errno);
 	if (i)
 		vtd(sd, p);
-	(void)close(sd);
-	(void)close(p);
+	close(sd);
+	close(p);
 	if (dup2(t, 0) == -1) {
 		perror("dup2");
 		adios(NULLCP, "dup2 failed");
@@ -277,7 +277,7 @@ gotpty:
 		perror("dup2");
 		adios(NULLCP, "dup2 failed");
 	}
-	(void)close(t);
+	close(t);
 #endif
 	environ = envinit;
 
@@ -292,8 +292,8 @@ char *msg;
 {
 	char buf[BUFSIZ];
 
-	(void) sprintf(buf, "%s: %s.\n", myname, msg);
-	(void) write(f, buf, strlen(buf));
+	 sprintf(buf, "%s: %s.\n", myname, msg);
+	 write(f, buf, strlen(buf));
 	adios (NULLCP, msg);
 }
 
@@ -305,7 +305,7 @@ int errnum;
 	char buf[BUFSIZ];
 	extern char *sys_errlist[];
 
-	(void) sprintf(buf, "%s: %s", msg, sys_errlist[errnum]);
+	 sprintf(buf, "%s: %s", msg, sys_errlist[errnum]);
 	fatal(f, buf);
 }
 
@@ -340,16 +340,16 @@ vtd(f, p) {
 	}
 #endif
 #ifdef	SIGTSTP
-	(void) signal(SIGTSTP, SIG_IGN);
+	 signal(SIGTSTP, SIG_IGN);
 #endif
 #ifdef	SIGCHLD
-	(void) signal(SIGCHLD, cleanup);
+	 signal(SIGCHLD, cleanup);
 #endif
 	/*
 	 * Show banner that getty never gave.
 	 */
 	myhostname = PLocalHostName ();
-	(void) sprintf(nfrontp, BANNER, myhostname, "");
+	 sprintf(nfrontp, BANNER, myhostname, "");
 	nfrontp += strlen(nfrontp);
 
 #ifdef TERMIOS
@@ -518,16 +518,16 @@ netflush() {
 	if ((n = nfrontp - nbackp) > 0) {
 
 		if (debug) {
-			(void) ll_log (vt_log, LLOG_DEBUG, NULLCP,
+			 ll_log (vt_log, LLOG_DEBUG, NULLCP,
 						   ("writing to the net"));
-			(void) ll_printf (vt_log, "<<");
+			 ll_printf (vt_log, "<<");
 			for(i=0; i<(nfrontp-nbackp); i++)
-				(void)ll_printf (vt_log, "%02x ",*(nbackp+i));
-			(void)ll_printf (vt_log,  ">>\n");
-			(void)ll_sync (vt_log);
+				ll_printf (vt_log, "%02x ",*(nbackp+i));
+			ll_printf (vt_log,  ">>\n");
+			ll_sync (vt_log);
 		}
 		if(transparent) {
-			(void)vt_text(nbackp,n);
+			vt_text(nbackp,n);
 			vtsend();
 			cp = nbackp;
 			for(i=0; i<n; i++) {
@@ -543,14 +543,14 @@ netflush() {
 			cp = nbackp;
 			for(i=0,j=0; i<n; i++) {
 				if(*cp == '\r') {
-					if(rflag) (void)vt_text(crp,1);
+					if(rflag) vt_text(crp,1);
 					/*Previous char was CR so put one in NDQ*/
 					if(j)
-						(void)vt_text(nbackp,j);
+						vt_text(nbackp,j);
 					nbackp += (j+1); /*Skip over current CR*/
 					cp = nbackp;
 					j = 0;
-					if(i == (n-1) ) (void)vt_text(crp,1);
+					if(i == (n-1) ) vt_text(crp,1);
 					/*If CR is last char in buffer, send it*/
 					else rflag = 1;
 					/*If not last char in buffer, read next one*/
@@ -565,7 +565,7 @@ netflush() {
 						continue;
 					} else /*Preceeding char was CR but not followed by
 				   LF.  Put CR in buffer*/
-						(void) vt_text(crp,1);
+						 vt_text(crp,1);
 					rflag = 0;
 				}
 				if(telnet_profile) {
@@ -573,7 +573,7 @@ netflush() {
 #ifdef MAP_BACKSPACE
 					if(*cp == 0x08) { /*If believed to be erase*/
 						if(j)
-							(void)vt_text(nbackp,j);
+							vt_text(nbackp,j);
 						nbackp += (j+1);
 						cp = nbackp;
 						j = 0;
@@ -586,7 +586,7 @@ netflush() {
 					{
 						if((*cp < 0x20) || (*cp > 0x7e)) {
 							if(j)
-								(void)vt_text(nbackp,j);
+								vt_text(nbackp,j);
 							nbackp += (j+1);
 							cp = nbackp;
 							j = 0;
@@ -601,7 +601,7 @@ netflush() {
 				} else {	/*Else Default Profile*/
 					if((*cp < 0x20) || (*cp > 0x7e)) {
 						if(j)
-							(void)vt_text(nbackp,j);
+							vt_text(nbackp,j);
 						nbackp += (j+1);
 						cp = nbackp;
 						j = 0;
@@ -612,7 +612,7 @@ netflush() {
 				}
 			}		/*End for loop*/
 			if(j)
-				(void)vt_text(nbackp,j); /*Load anything left if CR or LF
+				vt_text(nbackp,j); /*Load anything left if CR or LF
 						wasn't last char in buffer*/
 			nbackp += j;
 			vtsend();	/*Send the whole NDQ*/
@@ -642,7 +642,7 @@ SFD	cleanup() {
 #endif
 
 	vrelreq();
-	(void)kill(0, SIGKILL);
+	kill(0, SIGKILL);
 	exit(1);
 }
 
@@ -666,36 +666,36 @@ rmut() {
 		while(read(f, (char *)&wtmp, sizeof (wtmp)) == sizeof (wtmp)) {
 			if (SCMPN(wtmp.ut_line, line+5) || wtmp.ut_name[0]==0)
 				continue;
-			(void)lseek(f, -(long)sizeof (wtmp), 1);
-			(void)SCPYN(wtmp.ut_name, "");
+			lseek(f, -(long)sizeof (wtmp), 1);
+			SCPYN(wtmp.ut_name, "");
 #if	!defined(SYS5) && !defined(bsd43_ut_host)
-			(void)SCPYN(wtmp.ut_host, "");
+			SCPYN(wtmp.ut_host, "");
 #endif
-			(void)time(&wtmp.ut_time);
-			(void) write(f, (char *)&wtmp, sizeof (wtmp));
+			time(&wtmp.ut_time);
+			 write(f, (char *)&wtmp, sizeof (wtmp));
 			found++;
 		}
-		(void)close(f);
+		close(f);
 	}
 	if (found) {
 		f = open(wtmpf, 1);
 		if (f >= 0) {
-			(void)SCPYN(wtmp.ut_line, line+5);
-			(void)SCPYN(wtmp.ut_name, "");
+			SCPYN(wtmp.ut_line, line+5);
+			SCPYN(wtmp.ut_name, "");
 #if	!defined(SYS5) && !defined(bsd43_ut_host)
-			(void)SCPYN(wtmp.ut_host, "");
+			SCPYN(wtmp.ut_host, "");
 #endif
-			(void)time(&wtmp.ut_time);
-			(void)lseek(f, (long)0, 2);
-			(void) write(f, (char *)&wtmp, sizeof (wtmp));
-			(void)close(f);
+			time(&wtmp.ut_time);
+			lseek(f, (long)0, 2);
+			 write(f, (char *)&wtmp, sizeof (wtmp));
+			close(f);
 		}
 	}
-	(void)chmod(line, 0666);
-	(void)chown(line, 0, 0);
+	chmod(line, 0666);
+	chown(line, 0, 0);
 	line[strlen("/dev/")] = 'p';
-	(void)chmod(line, 0666);
-	(void)chown(line, 0, 0);
+	chmod(line, 0666);
+	chown(line, 0, 0);
 }
 
 #else
@@ -705,18 +705,18 @@ rmut() {
 	p = line + sizeof(_PATH_DEV) - 1;
 	if (logout(p))
 		logwtmp(p, "", "");
-	(void)chmod(line, DEFFILEMODE);
-	(void)chown(line, 0, 0);
+	chmod(line, DEFFILEMODE);
+	chown(line, 0, 0);
 	*p = 'p';
-	(void)chmod(line, DEFFILEMODE);
-	(void)chown(line, 0, 0);
+	chmod(line, DEFFILEMODE);
+	chown(line, 0, 0);
 }
 #endif
 
 bye() {
 	if(do_cleaning) {
 		rmut();
-		(void)kill(0, SIGKILL);
+		kill(0, SIGKILL);
 	}
 	exit(0);
 }
@@ -743,7 +743,7 @@ va_dcl {
 
 	va_start (ap);
 
-	(void) _ll_log (vt_log, LLOG_FATAL, ap);
+	 _ll_log (vt_log, LLOG_FATAL, ap);
 
 	va_end (ap);
 
@@ -773,7 +773,7 @@ va_dcl {
 
 	code = va_arg (ap, int);
 
-	(void) _ll_log (vt_log, code, ap);
+	 _ll_log (vt_log, code, ap);
 
 	va_end (ap);
 }

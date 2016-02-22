@@ -246,7 +246,7 @@ udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, i
 		if ((hp = gethostbystring (remote -> na_domain)) == NULL)
 			tusaplose (td, DR_ADDRESS, NULLCP, TuErrString(UDERR_RHOST_UNKNOWN));
 
-		(void) strncpy (remote -> na_domain,
+		 strncpy (remote -> na_domain,
 						hp -> h_name,
 						sizeof remote -> na_domain);
 
@@ -510,7 +510,7 @@ udp_join_server (int sd, struct sockaddr_in *sock, int opt1, int opt2)
 			 */
 			return OK;
 		default:
-			(void) udp_close (sd);
+			 udp_close (sd);
 			return NOTOK;
 		}
 	}

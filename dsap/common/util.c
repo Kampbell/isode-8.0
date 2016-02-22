@@ -255,7 +255,7 @@ ps_printf (ps,fmt)
 PS ps;
 char * fmt;
 {
-	(void) ps_printf (ps,fmt) ;
+	 ps_printf (ps,fmt) ;
 }
 
 #endif
@@ -269,8 +269,8 @@ char *fmt;
 		log_dsap -> ll_syslog = LLOG_FATAL;
 	LLOG (log_dsap,LLOG_FATAL,("Quipu failure (%d): %s",code,fmt));
 	stop_listeners ();
-	(void) fflush (stdout);
-	(void) fprintf (stderr,"Quipu failure (%d): %s\n",code,fmt);
+	 fflush (stdout);
+	 fprintf (stderr,"Quipu failure (%d): %s\n",code,fmt);
 	exit (code);
 }
 
@@ -312,7 +312,7 @@ stop_listeners () {
 	struct TSAPdisconnect	* td = &(td_s);
 
 	/* close all listeners */
-	(void) TNetClose (NULLTA,td);
+	 TNetClose (NULLTA,td);
 }
 
 quipu_pe_cmp (a,b)

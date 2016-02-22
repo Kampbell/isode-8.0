@@ -52,7 +52,7 @@ OID oid;
 		Current->ot_oid = oid_cpy (oid);
 	Current->ot_name = strdup(oid2ode_aux(oid,0));
 	Current->ot_stroid = strdup(sprintoid(oid));
-	(void) add_entry_aux (Current->ot_name,(caddr_t)&ocOIDTable[ocNumEntries],3,NULLCP);
+	 add_entry_aux (Current->ot_name,(caddr_t)&ocOIDTable[ocNumEntries],3,NULLCP);
 	ocOIDTable[ocNumEntries].oc_hierachy = NULLOCSEQ;
 	ocOIDTable[ocNumEntries].oc_may  = NULLTABLE_SEQ;
 	ocOIDTable[ocNumEntries].oc_must = NULLTABLE_SEQ;

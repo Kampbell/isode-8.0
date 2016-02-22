@@ -68,15 +68,15 @@ f_alias (char **vec)
 		return dish ("squid -fred -sequence default", 0);
 
 	if (strcmp (cp, "-help") == 0) {
-		(void) fprintf (stdfp, "alias [name]\n");
-		(void) fprintf (stdfp, "    with no arguments, reports on active aliases\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp, "alias [name]\n");
+		 fprintf (stdfp, "    with no arguments, reports on active aliases\n");
+		 fprintf (stdfp,
 						"    with one argument, defines an alias for the given name\n");
 
 		return OK;
 	}
 
-	(void) sprintf (buffer, "squid -fred -alias \"%s\"", cp);
+	 sprintf (buffer, "squid -fred -alias \"%s\"", cp);
 	return dish (buffer, runcom);
 }
 
@@ -97,36 +97,36 @@ f_area (char **vec)
 			if (dish ("moveto -pwd", 0) == NOTOK)
 				return NOTOK;
 		} else
-			(void) fprintf (stdfp, "                     default area %s\n", myarea);
+			 fprintf (stdfp, "                     default area %s\n", myarea);
 
 		for (ag = areas; ag -> ag_record; ag++)
 			if (ag -> ag_area)
-				(void) fprintf (stdfp, "area for record-type %-12.12s %s\n",
+				 fprintf (stdfp, "area for record-type %-12.12s %s\n",
 								ag -> ag_key, ag -> ag_area);
 
 		return OK;
 	}
 
 	if (strcmp (cp, "-help") == 0) {
-		(void) fprintf (stdfp, "area [[record] location]\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp, "area [[record] location]\n");
+		 fprintf (stdfp,
 						"    with no arguments, lists areas current defined for various searches\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp,
 						"    with one argument, sets the default area for general searches\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp,
 						"    with two arguments, sets the default area for the given record type\n");
 
 		return OK;
 	}
 
 	if ((dp = *++vec) == NULL) {
-		(void) sprintf (buffer, "moveto -pwd \"%s\"", cp);
+		 sprintf (buffer, "moveto -pwd \"%s\"", cp);
 		if (dish (buffer, 1) == NOTOK) {
 			advise (NULLCP, "bad area: \"%s\"", cp);
 			return NOTOK;
 		}
 		if (!runcom)
-			(void) fprintf (stdfp, "%s\n", myarea);
+			 fprintf (stdfp, "%s\n", myarea);
 
 		area_quantum++;
 		return OK;
@@ -150,14 +150,14 @@ f_area (char **vec)
 	if (cp = myarea)
 		myarea = NULL;
 
-	(void) sprintf (buffer, "moveto -pwd \"%s\"", dp);
+	 sprintf (buffer, "moveto -pwd \"%s\"", dp);
 	if ((status = dish (buffer, 1)) == OK) {
 		if (ag -> ag_area)
 			free (ag -> ag_area);
 		ag -> ag_area = myarea;
 
 		if (!runcom)
-			(void) fprintf (stdfp, "area for record-type %s: %s\n",
+			 fprintf (stdfp, "area for record-type %s: %s\n",
 							ag -> ag_key, ag -> ag_area);
 	} else {
 		advise (NULLCP, "bad area: \"%s\"", dp);
@@ -166,8 +166,8 @@ f_area (char **vec)
 	}
 
 	if (myarea = cp) {
-		(void) sprintf (buffer, "moveto -pwd \"%s\"", myarea);
-		(void) dish (buffer, 1);
+		 sprintf (buffer, "moveto -pwd \"%s\"", myarea);
+		 dish (buffer, 1);
 	}
 
 	area_quantum++;
@@ -186,18 +186,18 @@ f_dish (char **vec)
 	if ((cp = *++vec) == NULL)
 		return dish ("squid -fred", 0);
 	if (strcmp (cp, "-help") == 0) {
-		(void) fprintf (stdfp, "dish [command [arguments ...]]\n");
-		(void) fprintf (stdfp, "    with no arguments, reports on status of dish\n");
-		(void) fprintf (stdfp, "    with arguments, passes those directly to dish\n");
+		 fprintf (stdfp, "dish [command [arguments ...]]\n");
+		 fprintf (stdfp, "    with no arguments, reports on status of dish\n");
+		 fprintf (stdfp, "    with arguments, passes those directly to dish\n");
 
 		return OK;
 	}
 
-	(void) strcpy (bp = buffer, cp);
+	 strcpy (bp = buffer, cp);
 	bp += strlen (bp);
 
 	while (cp = *++vec) {
-		(void) sprintf (bp, " \"%s\"", cp);
+		 sprintf (bp, " \"%s\"", cp);
 		bp += strlen (bp);
 	}
 
@@ -213,8 +213,8 @@ f_edit (char **vec)
 	char    buffer[BUFSIZ];
 
 	if (*++vec != NULL && strcmp (*vec, "-help") == 0) {
-		(void) fprintf (stdfp, "edit\n");
-		(void) fprintf (stdfp, "    edit entry in the white pages\n");
+		 fprintf (stdfp, "edit\n");
+		 fprintf (stdfp, "    edit entry in the white pages\n");
 
 		return OK;
 	}
@@ -229,7 +229,7 @@ f_edit (char **vec)
 		return NOTOK;
 	}
 
-	(void) sprintf (buffer, "modify -nocache -dontusecopy -newdraft \"%s\"",
+	 sprintf (buffer, "modify -nocache -dontusecopy -newdraft \"%s\"",
 					mydn);
 	dontpage = 1;
 	result = dish (buffer, 0);
@@ -238,9 +238,9 @@ f_edit (char **vec)
 	if (result != OK)
 		return result;
 
-	(void) sprintf (buffer, "showentry \"%s\" -fred -nocache -dontusecopy",
+	 sprintf (buffer, "showentry \"%s\" -fred -nocache -dontusecopy",
 					mydn);
-	(void) dish (buffer, 0);
+	 dish (buffer, 0);
 	return OK;
 }
 
@@ -253,19 +253,19 @@ f_manual (char **vec)
 	FILE  *fp;
 
 	if (*++vec != NULL && strcmp (*vec, "-help") == 0) {
-		(void) fprintf (stdfp, "manual\n");
-		(void) fprintf (stdfp, "    print detailed information\n");
+		 fprintf (stdfp, "manual\n");
+		 fprintf (stdfp, "    print detailed information\n");
 
 		return OK;
 	}
 
-	(void) strcpy (buffer, isodefile ("fred.0", 0));
+	 strcpy (buffer, isodefile ("fred.0", 0));
 	if (fp = fopen (buffer, "r")) {
 		while (fgets (buffer, sizeof buffer, fp))
 			paginate (stdfp, buffer, strlen (buffer));
 		paginate (stdfp, NULLCP, 0);
 
-		(void) fclose (fp);
+		 fclose (fp);
 	} else
 		advise (buffer, "unable to open");
 
@@ -282,54 +282,54 @@ f_report (char **vec)
 		   buffer[BUFSIZ];
 
 	if (*++vec != NULL && strcmp (*vec, "-help") == 0) {
-		(void) fprintf (stdfp, "report [subject]\n");
-		(void) fprintf (stdfp, "    send report to white pages manager\n");
+		 fprintf (stdfp, "report [subject]\n");
+		 fprintf (stdfp, "    send report to white pages manager\n");
 
 		return OK;
 	}
 
 	if (readonly)
-		(void) strcpy (buffer, _isodefile (isodebinpath, "mhmail"));
+		 strcpy (buffer, _isodefile (isodebinpath, "mhmail"));
 	bp = buffer;
 	cp = strcmp (manager, "internal") ? manager : "wpp-manager@psi.com";
 
 	if (!readonly || access (buffer, 0x01) == NOTOK) {
-		(void) strcpy (bp, "/usr/ucb/Mail ");
+		 strcpy (bp, "/usr/ucb/Mail ");
 		bp += strlen (bp);
 
 		if (debug) {
-			(void) sprintf (bp, "-v ");
+			 sprintf (bp, "-v ");
 			bp += strlen (bp);
 		}
 
 		if (readonly) {
-			(void) sprintf (bp, "-r \"%s\" ", cp);
+			 sprintf (bp, "-r \"%s\" ", cp);
 			bp += strlen (bp);
 		}
 
-		(void) sprintf (bp, "-s");
+		 sprintf (bp, "-s");
 	} else {
 		bp += strlen (bp);
 
-		(void) sprintf (bp, " -subject");
+		 sprintf (bp, " -subject");
 	}
 	bp += strlen (bp);
 
-	(void) sprintf (bp, " \"%s\" \"%s\"",
+	 sprintf (bp, " \"%s\" \"%s\"",
 					*vec ? *vec : "White Pages report", cp);
 	bp += strlen (bp);
 
 
-	(void) fprintf (stdfp, "End report with CTRL-D%s.\n",
+	 fprintf (stdfp, "End report with CTRL-D%s.\n",
 					readonly ? ", it will then take 30 seconds to post message" : "");
 	if (readonly)
-		(void) fprintf (stdfp,
+		 fprintf (stdfp,
 						"In the message please specify your e-mail address, so a reply may be made.\n");
-	(void) fflush (stdfp);
+	 fflush (stdfp);
 
 	if (watch) {
-		(void) fprintf (stderr, "%s\n", buffer);
-		(void) fflush (stderr);
+		 fprintf (stderr, "%s\n", buffer);
+		 fflush (stderr);
 	}
 	if (system (buffer))
 		advise (NULLCP, "problem sending report");
@@ -354,15 +354,15 @@ again:
 			return NOTOK;
 		}
 
-		(void) printf ("you are \"%s\"\n", mydn);
+		 printf ("you are \"%s\"\n", mydn);
 		return OK;
 	}
 
 	if (strcmp (cp, "-help") == 0) {
-		(void) fprintf (stdfp, "thisis [name]\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp, "thisis [name]\n");
+		 fprintf (stdfp,
 						"    with no arguments, lists your name in the white pages\n");
-		(void) fprintf (stdfp,
+		 fprintf (stdfp,
 						"    with one argument, identifies you in the white pages\n");
 
 		return OK;
@@ -384,7 +384,7 @@ again:
 
 	bp = buffer;
 
-	(void) sprintf (bp, "bind -simple -user \"%s\"", cp);
+	 sprintf (bp, "bind -simple -user \"%s\"", cp);
 	bp += strlen (bp);
 
 	if (*++vec) {
@@ -392,19 +392,19 @@ again:
 			adios (NULLCP,
 				   "incorrect mode for runcom file -- use \"chmod 0600 $HOME/.fredrc\"");
 
-		(void) sprintf (bp, " -password \"%s\"", *vec);
+		 sprintf (bp, " -password \"%s\"", *vec);
 		bp += strlen (bp);
 	}
 
 	if (dish (buffer, 0) != OK) {
-		(void) f_quit (NULLVP);
+		 f_quit (NULLVP);
 		exit (1);	/* NOT REACHED */
 	}
 
 	if (runcom)
 		didbind = 1;
 
-	(void) dish ("squid -user", 1);
+	 dish ("squid -user", 1);
 
 	return OK;
 }

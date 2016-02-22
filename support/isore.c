@@ -37,10 +37,8 @@ static SFD	EMTser ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int     argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    fd,
 			mask,
@@ -60,8 +58,9 @@ char  **argv,
 	for (fd = 0; fd < nfds; fd++)
 		if (mask & (1 << fd))
 			FD_SET (fd, &rfds);
-
+#ifndef BSDSIGS
 	(void) signal (SIGEMT, EMTser);
+#endif
 
 	for (;;) {
 		ifds = rfds;
@@ -75,7 +74,7 @@ char  **argv,
 			break;
 
 		default:
-			(void) kill (ppid, SIGEMT);
+			(void) kill (ppid, SIGUNUSED); //FIXME SIGEMT);
 			(void) sigpause (0);
 			break;
 		}

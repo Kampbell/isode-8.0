@@ -62,7 +62,8 @@ struct dispatch {
 };
 
 
-void	adios (), advise ();
+void	adios (char*, ...);
+void	advise (int code, ...);
 
 
 static void	ts_adios (), ts_advise ();
@@ -158,10 +159,8 @@ extern int  errno;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int     argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	register char  *cp;
 
@@ -207,9 +206,8 @@ char  **argv,
 
 /*    TSAP */
 
-static int  ts_main (argc, argv)
-int	argc;
-char  **argv;
+static int 
+ts_main (int argc, char **argv)
 {
 	int     async,
 			sd;
@@ -295,9 +293,8 @@ char  **argv;
 
 /*  */
 
-static int  ts_dataindication (sd, tx)
-int	sd;
-register struct TSAPdata *tx;
+static int 
+ts_dataindication (int sd, register struct TSAPdata *tx)
 {
 	struct TSAPdisconnect   tds;
 	register struct TSAPdisconnect *td = &tds;
@@ -326,9 +323,8 @@ register struct TSAPdata *tx;
 
 /* ARGSUSED */
 
-static int  ts_discindication (sd, td)
-int	sd;
-register struct TSAPdisconnect *td;
+static int 
+ts_discindication (int sd, register struct TSAPdisconnect *td)
 {
 	if (td -> td_reason != DR_NORMAL)
 		ts_adios (td, "T-DISCONNECT.INDICATION");
@@ -343,9 +339,8 @@ register struct TSAPdisconnect *td;
 
 /*  */
 
-static void  ts_adios (td, event)
-register struct TSAPdisconnect *td;
-char   *event;
+static void 
+ts_adios (register struct TSAPdisconnect *td, char *event)
 {
 	ts_advise (td, event);
 
@@ -353,9 +348,8 @@ char   *event;
 }
 
 
-static void  ts_advise (td, event)
-register struct TSAPdisconnect *td;
-char   *event;
+static void 
+ts_advise (register struct TSAPdisconnect *td, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -412,9 +406,8 @@ static struct SSAPdata *hx = &hxs;
 
 /*  */
 
-static int ss_main (argc, argv)
-int	argc;
-char  **argv;
+static int 
+ss_main (int argc, char **argv)
 {
 	int     async,
 			result,
@@ -557,9 +550,8 @@ char  **argv;
 
 /*  */
 
-static int ss_dataindication (sd, sx)
-int	sd;
-register struct SSAPdata *sx;
+static int 
+ss_dataindication (int sd, register struct SSAPdata *sx)
 {
 	char   *p,
 		   buffer[BUFSIZ];
@@ -664,9 +656,8 @@ register struct SSAPdata *sx;
 
 /*  */
 
-static int ss_tokenindication (sd, st)
-int	sd;
-register struct SSAPtoken *st;
+static int 
+ss_tokenindication (int sd, register struct SSAPtoken *st)
 {
 	struct SSAPindication   sis;
 	register struct SSAPindication *si = &sis;
@@ -723,9 +714,8 @@ register struct SSAPtoken *st;
 
 /*  */
 
-static int ss_syncindication (sd, sn)
-int	sd;
-register struct SSAPsync *sn;
+static int 
+ss_syncindication (int sd, register struct SSAPsync *sn)
 {
 	struct SSAPindication   sis;
 	register struct SSAPindication *si = &sis;
@@ -837,9 +827,8 @@ register struct SSAPsync *sn;
 
 /*  */
 
-static int ss_actindication (sd, sv)
-int	sd;
-register struct SSAPactivity *sv;
+static int 
+ss_actindication (int sd, register struct SSAPactivity *sv)
 {
 	struct SSAPindication   sis;
 	register struct SSAPindication *si = &sis;
@@ -944,9 +933,8 @@ register struct SSAPactivity *sv;
 
 /*  */
 
-static int ss_reportindication (sd, sp)
-int	sd;
-struct SSAPreport *sp;
+static int 
+ss_reportindication (int sd, struct SSAPreport *sp)
 {
 	struct SSAPindication   sis;
 	register struct SSAPindication *si = &sis;
@@ -975,9 +963,8 @@ struct SSAPreport *sp;
 
 /*  */
 
-static int ss_finishindication (sd, sf)
-int	sd;
-register struct SSAPfinish *sf;
+static int 
+ss_finishindication (int sd, register struct SSAPfinish *sf)
 {
 	struct SSAPindication   sis;
 	register struct SSAPindication *si = &sis;
@@ -1001,9 +988,8 @@ register struct SSAPfinish *sf;
 
 /* ARGSUSED */
 
-static int ss_abortindication (sd, sa)
-int	sd;
-register struct SSAPabort *sa;
+static int 
+ss_abortindication (int sd, register struct SSAPabort *sa)
 {
 	if (!sa -> sa_peer)
 		ss_adios (sa, "S-P-ABORT.INDICATION");
@@ -1018,9 +1004,8 @@ register struct SSAPabort *sa;
 
 /*  */
 
-static void  ss_adios (sa, event)
-register struct SSAPabort *sa;
-char   *event;
+static void 
+ss_adios (register struct SSAPabort *sa, char *event)
 {
 	ss_advise (sa, event);
 
@@ -1028,9 +1013,8 @@ char   *event;
 }
 
 
-static void  ss_advise (sa, event)
-register struct SSAPabort *sa;
-char   *event;
+static void 
+ss_advise (register struct SSAPabort *sa, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -1085,9 +1069,8 @@ static struct PSAPdata *ix = &ixs;
 
 /*  */
 
-static int  ps_main (argc, argv)
-int	argc;
-char  **argv;
+static int 
+ps_main (int argc, char **argv)
 {
 	int     async,
 			result,
@@ -1344,9 +1327,8 @@ char  **argv;
 
 /*  */
 
-static int ps_dataindication (sd, px)
-int	sd;
-register struct PSAPdata *px;
+static int 
+ps_dataindication (int sd, register struct PSAPdata *px)
 {
 	struct PSAPindication   pis;
 	register struct PSAPindication *pi = &pis;
@@ -1439,9 +1421,8 @@ register struct PSAPdata *px;
 
 /*  */
 
-static int ps_tokenindication (sd, pt)
-int	sd;
-register struct PSAPtoken *pt;
+static int 
+ps_tokenindication (int sd, register struct PSAPtoken *pt)
 {
 	struct PSAPindication   pis;
 	register struct PSAPindication *pi = &pis;
@@ -1494,9 +1475,8 @@ register struct PSAPtoken *pt;
 
 /*  */
 
-static int ps_syncindication (sd, pn)
-int	sd;
-register struct PSAPsync *pn;
+static int 
+ps_syncindication (int sd, register struct PSAPsync *pn)
 {
 	struct PSAPindication   pis;
 	register struct PSAPindication *pi = &pis;
@@ -1607,9 +1587,8 @@ register struct PSAPsync *pn;
 
 /*  */
 
-static int ps_actindication (sd, pv)
-int	sd;
-register struct PSAPactivity *pv;
+static int 
+ps_actindication (int sd, register struct PSAPactivity *pv)
 {
 	struct PSAPindication   pis;
 	register struct PSAPindication *pi = &pis;
@@ -1708,9 +1687,8 @@ register struct PSAPactivity *pv;
 
 /*  */
 
-static int ps_reportindication (sd, pp)
-int	sd;
-register struct PSAPreport *pp;
+static int 
+ps_reportindication (int sd, register struct PSAPreport *pp)
 {
 	struct PSAPindication   pis;
 	register struct PSAPindication *pi = &pis;
@@ -1740,9 +1718,8 @@ register struct PSAPreport *pp;
 
 /*  */
 
-static int ps_finishindication (sd, pf)
-int	sd;
-register struct PSAPfinish *pf;
+static int 
+ps_finishindication (int sd, register struct PSAPfinish *pf)
 {
 	struct PSAPindication   pis;
 	register struct PSAPindication *pi = &pis;
@@ -1773,9 +1750,8 @@ register struct PSAPfinish *pf;
 
 /* ARGSUSED */
 
-static int ps_abortindication (sd, pa)
-int	sd;
-register struct PSAPabort *pa;
+static int 
+ps_abortindication (int sd, register struct PSAPabort *pa)
 {
 	struct AcSAPindication  acis;
 	register struct AcSAPindication *aci = &acis;
@@ -1805,9 +1781,8 @@ register struct PSAPabort *pa;
 
 /*  */
 
-static void  ps_adios (pa, event)
-register struct PSAPabort *pa;
-char   *event;
+static void 
+ps_adios (register struct PSAPabort *pa, char *event)
 {
 	ps_advise (pa, event);
 
@@ -1815,9 +1790,8 @@ char   *event;
 }
 
 
-static void  ps_advise (pa, event)
-register struct PSAPabort *pa;
-char   *event;
+static void 
+ps_advise (register struct PSAPabort *pa, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -1833,9 +1807,8 @@ char   *event;
 
 /*    AcSAP */
 
-static void  acs_adios (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+static void 
+acs_adios (register struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -1843,9 +1816,8 @@ char   *event;
 }
 
 
-static void  acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+static void 
+acs_advise (register struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -1862,9 +1834,8 @@ char   *event;
 
 /*    RtSAP */
 
-static int  rts_main (argc, argv)
-int	argc;
-char  **argv;
+static int 
+rts_main (int argc, char **argv)
 {
 	int     async,
 			result,
@@ -2088,9 +2059,8 @@ accept:
 
 /*  */
 
-static int  rts_indication (sd, rti)
-int	sd;
-register struct RtSAPindication *rti;
+static int 
+rts_indication (int sd, register struct RtSAPindication *rti)
 {
 	switch (rti -> rti_type) {
 	case RTI_TURN:
@@ -2120,9 +2090,8 @@ register struct RtSAPindication *rti;
 
 /*  */
 
-static int  rts_turn (sd, rtu)
-int	sd;
-register struct RtSAPturn *rtu;
+static int 
+rts_turn (int sd, register struct RtSAPturn *rtu)
 {
 	struct RtSAPindication  rtis;
 	register struct RtSAPindication *rti = &rtis;
@@ -2141,9 +2110,8 @@ register struct RtSAPturn *rtu;
 
 /*  */
 
-static int  rts_transfer (sd, rtt)
-int	sd;
-register struct RtSAPtransfer *rtt;
+static int 
+rts_transfer (int sd, register struct RtSAPtransfer *rtt)
 {
 	struct RtSAPindication  rtis;
 	register struct RtSAPindication *rti = &rtis;
@@ -2164,9 +2132,8 @@ register struct RtSAPtransfer *rtt;
 
 /* ARGSUSED */
 
-static int  rts_abort (sd, rta)
-int	sd;
-register struct RtSAPabort *rta;
+static int 
+rts_abort (int sd, register struct RtSAPabort *rta)
 {
 	if (rta -> rta_peer)
 		rts_adios (rta, "RT-U-ABORT.INDICATION");
@@ -2180,9 +2147,8 @@ register struct RtSAPabort *rta;
 
 /* ARGSUSED */
 
-static int  rts_close (sd, rtc)
-int	sd;
-struct RtSAPclose *rtc;
+static int 
+rts_close (int sd, struct RtSAPclose *rtc)
 {
 	struct RtSAPindication  rtis;
 	register struct RtSAPindication *rti = &rtis;
@@ -2198,9 +2164,8 @@ struct RtSAPclose *rtc;
 
 /*  */
 
-static int  rts_finish (sd, acf)
-int	sd;
-register struct AcSAPfinish *acf;
+static int 
+rts_finish (int sd, register struct AcSAPfinish *acf)
 {
 	struct RtSAPindication  rtis;
 	register struct RtSAPindication *rti = &rtis;
@@ -2220,9 +2185,8 @@ register struct AcSAPfinish *acf;
 
 /*  */
 
-static void  rts_adios (rta, event)
-register struct RtSAPabort *rta;
-char   *event;
+static void 
+rts_adios (register struct RtSAPabort *rta, char *event)
 {
 	rts_advise (rta, event);
 
@@ -2230,9 +2194,8 @@ char   *event;
 }
 
 
-static void  rts_advise (rta, event)
-register struct RtSAPabort *rta;
-char   *event;
+static void 
+rts_advise (register struct RtSAPabort *rta, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -2247,9 +2210,8 @@ char   *event;
 
 /*    RoSAP */
 
-static int  ros_main (argc, argv)
-int	argc;
-char  **argv;
+static int 
+ros_main (int argc, char **argv)
 {
 	int     async,
 			result,
@@ -2328,9 +2290,8 @@ char  **argv;
 
 /*  */
 
-static int  do_ros (sd, async)
-int	sd,
-	async;
+static int 
+do_ros (int sd, int async)
 {
 	int     result;
 	struct RoSAPindication  rois;
@@ -2364,9 +2325,8 @@ int	sd,
 
 /*  */
 
-static int ros_indication (sd, roi)
-int	sd;
-register struct RoSAPindication *roi;
+static int 
+ros_indication (int sd, register struct RoSAPindication *roi)
 {
 	switch (roi -> roi_type) {
 	case ROI_INVOKE:
@@ -2404,9 +2364,8 @@ register struct RoSAPindication *roi;
 
 /*  */
 
-static int  ros_invoke (sd, rox)
-int	sd;
-register struct RoSAPinvoke *rox;
+static int 
+ros_invoke (int sd, register struct RoSAPinvoke *rox)
 {
 	struct RoSAPindication  rois;
 	register struct RoSAPindication *roi = &rois;
@@ -2430,9 +2389,8 @@ register struct RoSAPinvoke *rox;
 
 /*  */
 
-static int  ros_result (sd, ror)
-int	sd;
-register struct RoSAPresult *ror;
+static int 
+ros_result (int sd, register struct RoSAPresult *ror)
 {
 	struct RoSAPindication  rois;
 	register struct RoSAPindication *roi = &rois;
@@ -2447,9 +2405,8 @@ register struct RoSAPresult *ror;
 
 /*  */
 
-static int  ros_error (sd, roe)
-int	sd;
-register struct RoSAPerror *roe;
+static int 
+ros_error (int sd, register struct RoSAPerror *roe)
 {
 	struct RoSAPindication  rois;
 	register struct RoSAPindication *roi = &rois;
@@ -2466,9 +2423,8 @@ register struct RoSAPerror *roe;
 
 /* ARGSUSED */
 
-static int  ros_ureject (sd, rou)
-int	sd;
-register struct RoSAPureject *rou;
+static int 
+ros_ureject (int sd, register struct RoSAPureject *rou)
 {
 	if (rou -> rou_noid)
 		advise (LLOG_NOTICE, NULLCP, "RO-REJECT-U.INDICATION: %s",
@@ -2482,9 +2438,8 @@ register struct RoSAPureject *rou;
 
 /* ARGSUSED */
 
-static int  ros_preject (sd, rop)
-int	sd;
-register struct RoSAPpreject *rop;
+static int 
+ros_preject (int sd, register struct RoSAPpreject *rop)
 {
 	if (ROS_FATAL (rop -> rop_reason))
 		ros_adios (rop, "RO-REJECT-P.INDICATION");
@@ -2495,9 +2450,8 @@ register struct RoSAPpreject *rop;
 
 /* ARGSUSED */
 
-static int  ros_end (sd, roe)
-int	sd;
-struct RoSAPend *roe;
+static int 
+ros_end (int sd, struct RoSAPend *roe)
 {
 	if (isrts) {
 		struct RtSAPindication  rtis;
@@ -2522,9 +2476,8 @@ struct RoSAPend *roe;
 
 /*  */
 
-static int  ros_finish (sd, acf)
-int	sd;
-register struct AcSAPfinish *acf;
+static int 
+ros_finish (int sd, register struct AcSAPfinish *acf)
 {
 	if (isrts) {
 		struct RtSAPindication  rtis;
@@ -2556,9 +2509,8 @@ register struct AcSAPfinish *acf;
 
 /*  */
 
-static void  ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+static void 
+ros_adios (register struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -2566,9 +2518,8 @@ char   *event;
 }
 
 
-static void  ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+static void 
+ros_advise (register struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -2599,9 +2550,8 @@ void	adios (char*what, ...)
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -2622,10 +2572,8 @@ void	advise (int code, ...)
 #else
 /* VARARGS */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }

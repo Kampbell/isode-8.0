@@ -91,10 +91,8 @@ char   *ctime ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	ryresponder (argc, argv, PLocalHostName (), myservice, NULLCP,
 				 dispatches, table_IMISC_Operations, NULLIFP, NULLIFP);
@@ -616,8 +614,8 @@ int	rand (), srand ();
 			    return NOTOK;
 
 
-static int  pwdgen (pw)
-char   *pw;
+static int 
+pwdgen (char *pw)
 {
 	register int    i,
 			 j;
@@ -695,8 +693,8 @@ static struct obj {
 };
 
 
-static int  object (pw)
-register char   *pw;
+static int 
+object (register char *pw)
 {
 	register int    n;
 	register char  *f,
@@ -1023,11 +1021,8 @@ out:
 
 /*  */
 
-static int  do_the_tell (ut, from, vec, vecp)
-struct	utmp	*ut;
-char	*from;
-char	*vec[];
-int	vecp;
+static int 
+do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp)
 {
 	int     i,
 			pid;
@@ -1101,12 +1096,8 @@ struct RoSAPindication *roi;
 
 /*    ERROR */
 
-static int  error (sd, err, param, rox, roi)
-int	sd,
-	err;
-caddr_t	param;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
@@ -1116,11 +1107,8 @@ struct RoSAPindication *roi;
 
 /*    U-REJECT */
 
-static int  ureject (sd, reason, rox, roi)
-int	sd,
-	reason;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
@@ -1130,8 +1118,8 @@ struct RoSAPindication *roi;
 
 /*    TYPES */
 
-struct type_IMISC_IA5List *str2ia5list (s)
-char   *s;
+struct type_IMISC_IA5List *
+str2ia5list (char *s)
 {
 	register struct type_IMISC_IA5List *ia5;
 

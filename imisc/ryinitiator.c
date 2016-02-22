@@ -60,7 +60,7 @@ static int	timing_result ();
 
 static char *myname = "ryinitiator";
 
-static int  getline ();
+static int getlines (char *buffer);
 static	void invoke ();
 
 #ifdef	TIMER
@@ -231,7 +231,7 @@ IFP	quit;
 
 	if (iloop) {
 		for (;;) {
-			if (getline (buffer) == NOTOK)
+			if (getlines (buffer) == NOTOK)
 				break;
 
 			if (str2vec (buffer, vec) < 1)
@@ -335,8 +335,8 @@ out:
 
 /*    INTERACTIVE */
 
-static int  getline (buffer)
-char   *buffer;
+static int 
+getlines (char *buffer)
 {
 	register int    i;
 	register char  *cp,
@@ -381,9 +381,8 @@ char   *buffer;
 
 
 #ifndef	TMS
-static  void timer (bytes, pkts)
-int     bytes,
-		pkts;
+static void 
+timer (int bytes, int pkts)
 {
 	long    ms;
 	float   bs,
@@ -411,10 +410,8 @@ int     bytes,
 }
 
 
-static  void tvsub (tdiff, t1, t0)
-register struct timeval *tdiff,
-		*t1,
-		*t0;
+static void 
+tvsub (register struct timeval *tdiff, register struct timeval *t1, register struct timeval *t0)
 {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
@@ -426,9 +423,8 @@ register struct timeval *tdiff,
 long	times ();
 
 
-static	void timer (bytes, pkts)
-int	bytes,
-	pkts;
+static void 
+timer (int bytes, int pkts)
 {
 	long    ms;
 	float   bs,
@@ -465,21 +461,16 @@ int	bytes,
 
 /* ARGSUSED */
 
-static int    timing_result (sd, id, dummy, result, roi)
-int	sd,
-	id,
-	dummy;
-caddr_t result;
-struct RoSAPindication *roi;
+static int 
+timing_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi)
 {
 	return OK;
 }
 
 /*    ERRORS */
 
-void	ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_adios (register struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -487,9 +478,8 @@ char   *event;
 }
 
 
-void	ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_advise (register struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -504,9 +494,8 @@ char   *event;
 
 /*  */
 
-void	acs_adios (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_adios (register struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -514,9 +503,8 @@ char   *event;
 }
 
 
-void	acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (register struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -552,9 +540,8 @@ void	adios (char*what, ...)
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -574,12 +561,12 @@ void	advise (char*what, ...)
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void 
+_advise (char* what, va_list ap)
 {
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+	asprintf (buffer, what, ap);
 
 	(void) fflush (stdout);
 
@@ -592,9 +579,8 @@ va_list	ap;
 #else
 /* VARARGS */
 
-void	advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }
@@ -615,9 +601,8 @@ void	ryr_advise (char*what, ...)
 #else
 /* VARARGS */
 
-void	ryr_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
 	ryr_advise (what, fmt);
 }

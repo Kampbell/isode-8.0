@@ -129,9 +129,8 @@ IFP	start,
 
 /*  */
 
-static int  ros_init (vecp, vec)
-int	vecp;
-char  **vec;
+static int 
+ros_init (int vecp, char **vec)
 {
 	int	    reply,
 			result,
@@ -186,8 +185,8 @@ char  **vec;
 
 /*  */
 
-static int  ros_work (fd)
-int	fd;
+static int 
+ros_work (int fd)
 {
 	int	    result;
 	caddr_t out;
@@ -227,9 +226,8 @@ int	fd;
 
 /*  */
 
-static int ros_indication (sd, roi)
-int	sd;
-register struct RoSAPindication *roi;
+static int 
+ros_indication (int sd, register struct RoSAPindication *roi)
 {
 	int	    reply,
 			result;
@@ -295,8 +293,8 @@ register struct RoSAPindication *roi;
 
 /*  */
 
-static int  ros_lose (td)
-struct TSAPdisconnect *td;
+static int 
+ros_lose (struct TSAPdisconnect *td)
 {
 	if (td -> td_cc > 0)
 		adios (NULLCP, "TNetAccept: [%s] %*.*s",
@@ -308,9 +306,8 @@ struct TSAPdisconnect *td;
 
 /*    ERRORS */
 
-void	ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_adios (register struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -318,9 +315,8 @@ char   *event;
 }
 
 
-void	ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_advise (register struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -335,9 +331,8 @@ char   *event;
 
 /*  */
 
-void	acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (register struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -370,9 +365,8 @@ void	adios (char*what, ...)
 #else
 /* VARARGS2 */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -393,10 +387,8 @@ void	advise (int code, ...)
 #else
 /* VARARGS3 */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }
@@ -417,9 +409,8 @@ void	ryr_advise (char*what, ...)
 #else
 /* VARARGS2 */
 
-void	ryr_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
 	ryr_advise (what, fmt);
 }

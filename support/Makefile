@@ -83,6 +83,8 @@ $(SBINDIR)tsapd:	xtsapd
 		-@echo ""
 
 tsapd:		xtsapd
+		rm -f tsapd
+		ln xtsapd tsapd
 
 xtsapd:		tsapd.o $(TOPDIR)libisode.a
 		$(LDCC) $(LDFLAGS) -o $@ tsapd.o $(LIBISODE) $(LSOCKET)
@@ -103,6 +105,8 @@ $(SBINDIR)iaed:	xiaed
 		-@echo ""
 
 iaed:		xiaed
+		rm -f iaed
+		ln xiaed iaed
 
 xiaed:		iaed.o $(TOPDIR)libdsap.a $(TOPDIR)libisode.a
 		$(LDCC) $(LDFLAGS) -o $@ iaed.o \
@@ -140,6 +144,8 @@ $(SBINDIR)isore:	xisore
 		-@echo ""
 
 isore:		xisore
+		rm -f isore
+		ln xisore isore
 
 xisore:		isore.o
 		$(LDCC) $(LDFLAGS) -o $@ isore.o $(TOPDIR)libcompat.a \
@@ -173,6 +179,8 @@ $(SBINDIR)isod.tsap:	xisod
 		-@echo ""
 
 isod:		xisod
+		rm -f isod
+		ln xisod isod
 
 xisod:		isod.o $(TOPDIR)libisode.a
 		$(LDCC) $(LDFLAGS) -o $@ isod.o $(LIBISODE) $(LSOCKET)
@@ -197,7 +205,7 @@ $(BINDIR)isoc:	xisoc
 		-@echo ""
 
 isoc:		xisoc
-		rm isoc
+		rm -f isoc
 		ln xisoc isoc
 
 xisoc:		isoc.o $(TOPDIR)libisode.a
@@ -387,6 +395,8 @@ $(SBINDIR)lppd:	xlppd
 		-@echo ""
 
 lppd:		xlppd
+		-rm -f lppd
+		-ln xlppd lppd
 
 xlppd:		lppd.o $(LPP-LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ lppd.o $(LPP-LIBES) $(LSOCKET)
@@ -419,9 +429,9 @@ manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 # clean
 ################################################################
 
-clean:;		rm -f *.o *.a *.so* x* z* _* core isodevrsn.c llib-lisode \
+clean:;		rm -f *.o *.a *.so* x* z* _* core* isodevrsn.c llib-lisode \
 		    isoaliases isoentities isomacros isobjects isoservices \
-		    libisode-shared
+		    libisode-shared tsapd isoc isod isore
 
 grind:		isoaliases isoentities isomacros isobjects isoservices \
 			isotailor true
@@ -441,37 +451,37 @@ true:;
 ################################################################
 
 HOST	=	localhost
-FILE1	=	/etc/mount
+FILE1	=	/etc/mtab
 FILE2	=	/etc/fstab
 
 
-test:;		-xisoc $(HOST) tsap echo < $(FILE1)
-		-xisoc $(HOST) ssap echo < $(FILE1)
-		-xisoc $(HOST) psap echo < $(FILE1)
-		-xisoc $(HOST) psap isode/echo < $(FILE1)
-		-xisoc $(HOST) rtsap echo < $(FILE1)
-		-xisoc $(HOST) rtsap ros_echo < $(FILE1)
-		-xisoc $(HOST) rtsap "isode/rtse echo" < $(FILE1)
-		-xisoc $(HOST) rtsap isode/ros_echo < $(FILE1)
-		-xisoc $(HOST) rosap echo < $(FILE1)
-		-xisoc $(HOST) rosap isode/echo < $(FILE1)
-		-xisoc $(HOST) tsap sink < $(FILE1)
-		-xisoc $(HOST) ssap sink < $(FILE1)
-		-xisoc $(HOST) psap sink < $(FILE1)
-		-xisoc $(HOST) psap isode/sink < $(FILE1)
-		-xisoc $(HOST) rtsap sink < $(FILE1)
-		-xisoc $(HOST) rtsap ros_sink < $(FILE1)
-		-xisoc $(HOST) rtsap "isode/rtse sink" < $(FILE1)
-		-xisoc $(HOST) rtsap isode/ros_sink < $(FILE1)
-		-xisoc $(HOST) rosap sink < $(FILE1)
-		-xisoc $(HOST) rosap isode/sink < $(FILE1)
-		-cat $(FILE2) | xisoc $(HOST) tsap echo
-		-cat $(FILE2) | xisoc $(HOST) ssap echo
-		-cat $(FILE2) | xisoc $(HOST) psap echo
-		-cat $(FILE2) | xisoc $(HOST) psap isode/echo
-		-cat $(FILE2) | xisoc $(HOST) rtsap echo
-		-cat $(FILE2) | xisoc $(HOST) rtsap ros_echo
-		-cat $(FILE2) | xisoc $(HOST) rtsap "isode/rtse echo"
-		-cat $(FILE2) | xisoc $(HOST) rtsap isode/ros_echo
-		-cat $(FILE2) | xisoc $(HOST) rosap echo
-		-cat $(FILE2) | xisoc $(HOST) rosap isode/echo
+test:;		-./xisoc $(HOST) tsap echo < $(FILE1)
+		-./xisoc $(HOST) ssap echo < $(FILE1)
+		-./xisoc $(HOST) psap echo < $(FILE1)
+		-./xisoc $(HOST) psap isode/echo < $(FILE1)
+		-./xisoc $(HOST) rtsap echo < $(FILE1)
+		-./xisoc $(HOST) rtsap ros_echo < $(FILE1)
+		-./xisoc $(HOST) rtsap "isode/rtse echo" < $(FILE1)
+		-./xisoc $(HOST) rtsap isode/ros_echo < $(FILE1)
+		-./xisoc $(HOST) rosap echo < $(FILE1)
+		-./xisoc $(HOST) rosap isode/echo < $(FILE1)
+		-./xisoc $(HOST) tsap sink < $(FILE1)
+		-./xisoc $(HOST) ssap sink < $(FILE1)
+		-./xisoc $(HOST) psap sink < $(FILE1)
+		-./xisoc $(HOST) psap isode/sink < $(FILE1)
+		-./xisoc $(HOST) rtsap sink < $(FILE1)
+		-./xisoc $(HOST) rtsap ros_sink < $(FILE1)
+		-./xisoc $(HOST) rtsap "isode/rtse sink" < $(FILE1)
+		-./xisoc $(HOST) rtsap isode/ros_sink < $(FILE1)
+		-./xisoc $(HOST) rosap sink < $(FILE1)
+		-./xisoc $(HOST) rosap isode/sink < $(FILE1)
+		-cat $(FILE2) | ./xisoc $(HOST) tsap echo
+		-cat $(FILE2) | ./xisoc $(HOST) ssap echo
+		-cat $(FILE2) | ./xisoc $(HOST) psap echo
+		-cat $(FILE2) | ./xisoc $(HOST) psap isode/echo
+		-cat $(FILE2) | ./xisoc $(HOST) rtsap echo
+		-cat $(FILE2) | ./xisoc $(HOST) rtsap ros_echo
+		-cat $(FILE2) | ./xisoc $(HOST) rtsap "isode/rtse echo"
+		-cat $(FILE2) | ./xisoc $(HOST) rtsap isode/ros_echo
+		-cat $(FILE2) | ./xisoc $(HOST) rosap echo
+		-cat $(FILE2) | ./xisoc $(HOST) rosap isode/echo

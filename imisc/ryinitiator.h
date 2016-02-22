@@ -42,7 +42,7 @@ struct dispatch {
 };
 
 
-void	adios (), advise ();
+void	adios (char*,...), advise (char*, ...);
 void	acs_adios (), acs_advise ();
 void	ros_adios (), ros_advise ();
 

@@ -91,10 +91,8 @@ extern int  errno;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int     argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    listening,
 			vecp;
@@ -166,10 +164,8 @@ char  **argv,
 
 /* ARGSUSED */
 
-static int  lppd (vecp, vec, ta)
-int	vecp;
-char  **vec;
-struct TSAPaddr *ta;
+static int 
+lppd (int vecp, char **vec, struct TSAPaddr *ta)
 {
 	register u_short port = ta -> ta_addrs[0].na_port;
 	register struct dispatch *dp;
@@ -200,10 +196,8 @@ struct TSAPaddr *ta;
 
 /*  */
 
-static void  ts_advise (td, code, event)
-register struct TSAPdisconnect *td;
-int	code;
-char   *event;
+static void 
+ts_advise (register struct TSAPdisconnect *td, int code, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -219,8 +213,8 @@ char   *event;
 
 /*  */
 
-static	arginit (vec)
-char	**vec;
+static 
+arginit (char **vec)
 {
 	register int    n;
 	register char  *ap;
@@ -321,7 +315,8 @@ no_more:
 
 /*  */
 
-static  envinit () {
+static 
+envinit (void) {
 	int     i,
 			sd;
 
@@ -413,9 +408,8 @@ void  adios (char* what, char* fmt, ...)
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -447,10 +441,8 @@ void  advise (int code, ...)
 #else
 /* VARARGS */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }

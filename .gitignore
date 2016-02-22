@@ -8,6 +8,7 @@ core.*
 */*vrsn.c
 */.l
 */.y
+*/*-tables.c
 
 # Compiled #
 ############

@@ -37,7 +37,8 @@ register DIR	*dirp;		/* stream from opendir() */
 	return close( fd );
 }
 #else
-int	_closedir_stub () {
+int 
+_closedir_stub (void) {
 	;
 }
 #endif

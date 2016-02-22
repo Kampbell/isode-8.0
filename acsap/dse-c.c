@@ -44,12 +44,8 @@ static int  gstring ();
 
 /*  */
 
-int	build_DSE_PSAPaddr (pe, explicit, len, buffer, parm)
-PE     *pe;
-int     explicit;
-int     len;
-char   *buffer;
-char	*parm;
+int 
+build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm)
 {
 	int	    result;
 	register struct PSAPaddr *pa = (struct PSAPaddr *) parm;
@@ -67,8 +63,8 @@ char	*parm;
 
 /*  */
 
-static struct type_DSE_PSAPaddr *psap2dse (pa)
-register struct PSAPaddr *pa;
+static struct type_DSE_PSAPaddr *
+psap2dse (register struct PSAPaddr *pa)
 {
 	register int    n;
 	register struct type_DSE_PSAPaddr *dse;
@@ -120,12 +116,8 @@ losing:
 
 /*  */
 
-int	parse_DSE_PSAPaddr (pe, explicit, len, buffer, parm)
-register PE pe;
-int	explicit;
-int    *len;
-char  **buffer;
-char   *parm;
+int 
+parse_DSE_PSAPaddr (register PE pe, int explicit, int *len, char **buffer, char *parm)
 {
 	int	    result;
 	register struct PSAPaddr *pa = (struct PSAPaddr *) parm;
@@ -143,9 +135,8 @@ char   *parm;
 
 /*  */
 
-static int  dse2psap (dse, pa)
-register struct type_DSE_PSAPaddr *dse;
-register struct PSAPaddr *pa;
+static int 
+dse2psap (register struct type_DSE_PSAPaddr *dse, register struct PSAPaddr *pa)
 {
 	register struct SSAPaddr *sa = &pa -> pa_addr;
 	register struct TSAPaddr *ta = &sa -> sa_addr;
@@ -183,11 +174,8 @@ register struct PSAPaddr *pa;
 
 /*  */
 
-static int  gstring (buf, buflen, qb, w)
-char   *buf;
-int	buflen;
-struct qbuf *qb;
-char	*w;
+static int 
+gstring (char *buf, int buflen, struct qbuf *qb, char *w)
 {
 	char   *p;
 

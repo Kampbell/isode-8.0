@@ -38,11 +38,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapselect.c,v 9.0 1
 
 /* ARGSUSED */
 
-int	RoSelectMask (sd, mask, nfds, roi)
-int	sd;
-fd_set *mask;
-int    *nfds;
-struct RoSAPindication *roi;
+int 
+RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;

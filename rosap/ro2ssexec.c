@@ -40,13 +40,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssexec.c,v 9.0 199
 
 /*    SERVER only */
 
-int	RoExec (ss, roi, arg1, arg2, hook, setperms)
-struct SSAPstart *ss;
-char   *arg1,
-	   *arg2;
-struct RoSAPindication *roi;
-IFP	hook,
-	setperms;
+int 
+RoExec (struct SSAPstart *ss, struct RoSAPindication *roi, char *arg1, char *arg2, IFP hook, IFP setperms)
 {
 	int     result,
 			result2;

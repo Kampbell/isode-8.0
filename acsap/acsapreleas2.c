@@ -36,13 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas2.c,v 9.0 
 
 /*    A-RELEASE.RESPONSE */
 
-int	AcRelResponse (sd, status, reason, data, ndata, aci)
-int	sd;
-int	status,
-	reason;
-PE     *data;
-int	ndata;
-struct AcSAPindication *aci;
+int 
+AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAPindication *aci)
 {
 	SBV	    smask;
 	int     code,

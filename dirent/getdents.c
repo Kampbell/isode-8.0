@@ -138,9 +138,10 @@ extern int	errno;
 	Thanks to Richard Todd for pointing this out.
 */
 
-static int
-NameLen( name )				/* return # chars in embedded name */
-char		name[];		/* -> name embedded in struct direct */
+static int 
+NameLen (				/* return # chars in embedded name */
+    char name[]		/* -> name embedded in struct direct */
+)
 {
 	register char	*s;		/* -> name[.] */
 	register char	*stop = &name[DIRSIZ];	/* -> past end of name field */
@@ -167,20 +168,22 @@ static enum	{ maybe, no, yes }	state = maybe;
 /* does _getdents() work? */
 
 /*ARGSUSED*/
-static void
-sig_catch( sig )
-int	sig;			/* must be SIGSYS */
+static void 
+sig_catch (
+    int sig			/* must be SIGSYS */
+)
 {
 	state = no;			/* attempted _getdents() faulted */
 }
 #endif
 
-int
-getdents( fildes, buf, nbyte )		/* returns # bytes read;
+int 
+getdents (		/* returns # bytes read;
 					   0 on EOF, -1 on error */
-int			fildes;	/* directory file descriptor */
-char			*buf;	/* where to put the (struct dirent)s */
-unsigned		nbyte;	/* size of buf[] */
+    int fildes,	/* directory file descriptor */
+    char *buf,	/* where to put the (struct dirent)s */
+    unsigned nbyte	/* size of buf[] */
+)
 {
 	int			serrno;	/* entry errno */
 	off_t			offset;	/* initial directory file offset */
@@ -305,5 +308,6 @@ unsigned		nbyte;	/* size of buf[] */
 	return (char *)bp - buf;	/* return # bytes read */
 }
 #else
-int	_getdents_stub () {}
+int 
+_getdents_stub (void) {}
 #endif

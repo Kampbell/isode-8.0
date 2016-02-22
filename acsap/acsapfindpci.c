@@ -34,10 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapfindpci.c,v 9.0 
 
 /*  */
 
-int	AcFindPCI (sd, pci, aci)
-int	sd;
-int    *pci;
-struct AcSAPindication *aci;
+int 
+AcFindPCI (int sd, int *pci, struct AcSAPindication *aci)
 {
 	SBV     smask;
 	register struct assocblk  *acb;

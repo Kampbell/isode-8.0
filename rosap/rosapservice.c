@@ -36,10 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapservice.c,v 9.0 
 
 /*    bind underlying service */
 
-int	RoSetService (sd, bfunc, roi)
-int	sd;
-IFP	bfunc;
-struct RoSAPindication *roi;
+int 
+RoSetService (int sd, IFP bfunc, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;

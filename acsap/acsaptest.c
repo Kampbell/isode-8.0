@@ -49,10 +49,8 @@ static	printsrv ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	AEI	    aei;
 	register struct PSAPaddr *pa;
@@ -136,10 +134,8 @@ you_lose:
 
 /*  */
 
-static	printent (ie, aei, pa)
-register struct isoentity  *ie;
-AEI	aei;
-register struct PSAPaddr *pa;
+static 
+printent (register struct isoentity *ie, AEI aei, register struct PSAPaddr *pa)
 {
 	if (ie)
 		(void) printf ("Entity:  %s (%s)\n", ie -> ie_descriptor,
@@ -198,8 +194,8 @@ dont_touch:
 
 /*  */
 
-static	printobj (io)
-register struct isobject *io;
+static 
+printobj (register struct isobject *io)
 {
 	(void) printf ("ODE: \"%s\"\nOID: %s\n\n", io -> io_descriptor,
 				   sprintoid (&io -> io_identity));
@@ -207,8 +203,8 @@ register struct isobject *io;
 
 /*  */
 
-static	printsrv (is)
-register struct isoservent *is;
+static 
+printsrv (register struct isoservent *is)
 {
 	register int    n = is -> is_tail - is -> is_vec - 1;
 	register char **ap = is -> is_vec;

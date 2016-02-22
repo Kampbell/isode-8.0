@@ -36,10 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapwait.c,v 9.0 199
 
 /*    RO-WAIT.REQUEST (pseudo) */
 
-int	RoWaitRequest (sd, secs, roi)
-int	sd;
-int	secs;
-struct RoSAPindication *roi;
+int 
+RoWaitRequest (int sd, int secs, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;

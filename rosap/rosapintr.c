@@ -38,14 +38,8 @@ static SFD	intrser ();
 
 /*    RO-INVOKE.REQUEST (interruptable) */
 
-int	RoIntrRequest (sd, op, args, invokeID, linkedID, priority, roi)
-int	sd;
-int	op,
-	invokeID,
-	*linkedID,
-	priority;
-PE	args;
-struct RoSAPindication *roi;
+int 
+RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
 {
 	int	    nfds,
 			result;
@@ -86,8 +80,8 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-static  SFD intrser (sig)
-int	sig;
+static SFD 
+intrser (int sig)
 {
 #ifndef	BSDSIGS
 	(void) signal (SIGINT, intrser);

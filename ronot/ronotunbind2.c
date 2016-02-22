@@ -37,10 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind2.c,v 9.0 
 
 /* ARGSUSED */
 
-int     RoUnBindInit (sd, acf, rni)
-int			  sd;
-struct AcSAPfinish	* acf;
-struct RoNOTindication	* rni;
+int 
+RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni)
 {
 	/*
 	* What is provided here is in-line handling of the
@@ -80,10 +78,8 @@ struct RoNOTindication	* rni;
 
 /* ARGSUSED */
 
-int	  RoUnBindResult (sd, unbindrespe, rni)
-int			  sd;
-PE			  unbindrespe;
-struct RoNOTindication	* rni;
+int 
+RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni)
 {
 	int			  result;
 	PE			  user_data;
@@ -127,10 +123,8 @@ struct RoNOTindication	* rni;
 
 /* ARGSUSED */
 
-int	  RoUnBindError (sd, unbinderrpe, rni)
-int			  sd;
-PE			  unbinderrpe;
-struct RoNOTindication	* rni;
+int 
+RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni)
 {
 	int			  result;
 	PE			  user_data;
@@ -173,11 +167,8 @@ struct RoNOTindication	* rni;
 
 /* ARGSUSED */
 
-int	  RoUnBindReject (sd, status, reason, rni)
-int			  sd;
-int			  status;
-int			  reason;
-struct RoNOTindication	* rni;
+int 
+RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni)
 {
 	int			  result;
 	struct AcSAPindication	  aci_s;

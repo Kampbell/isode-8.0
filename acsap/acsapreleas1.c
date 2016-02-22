@@ -38,14 +38,8 @@ static int  AcRelRetryRequestAux ();
 
 /*    A-RELEASE.REQUEST */
 
-int	AcRelRequest (sd, reason, data, ndata, secs, acr, aci)
-int	sd;
-int	reason;
-PE     *data;
-int	ndata;
-int	secs;
-struct AcSAPrelease *acr;
-struct AcSAPindication *aci;
+int 
+AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
 {
 	SBV	    smask;
 	int	    result;
@@ -130,11 +124,8 @@ out1:
 
 /*    A-RELEASE-RETRY.REQUEST (pseudo) */
 
-int	AcRelRetryRequest (sd, secs, acr, aci)
-int	sd;
-int	secs;
-struct AcSAPrelease *acr;
-struct AcSAPindication *aci;
+int 
+AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
 {
 	SBV	    smask;
 	int	    result;
@@ -160,11 +151,8 @@ struct AcSAPindication *aci;
 
 /*  */
 
-static int  AcRelRetryRequestAux (acb, secs, acr, aci)
-register struct assocblk *acb;
-int	secs;
-struct AcSAPrelease *acr;
-struct AcSAPindication *aci;
+static int 
+AcRelRetryRequestAux (register struct assocblk *acb, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
 {
 	int	    result;
 	char   *id = acb -> acb_flags & ACB_RELEASE ? "PRelRetryRequest"

@@ -130,10 +130,12 @@ acsaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int  _acsaplose (aci, reason, ap)  /* what, fmt, args ... */
-register struct AcSAPindication *aci;
-int     reason;
-va_list	ap;
+static int 
+_acsaplose (  /* what, fmt, args ... */
+    register struct AcSAPindication *aci,
+    int reason,
+    va_list ap
+)
 {
 	register char  *bp;
 	char    buffer[BUFSIZ];

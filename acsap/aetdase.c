@@ -63,13 +63,8 @@ static struct element_DASE_1 *read_el ();
 
 /* ARGSUSED */
 
-PE	name2value_dase (name, context, ontty, userdn, passwd, real_name)
-char   *name,
-	   *context,
-	   *userdn,
-	   *passwd;
-int	ontty;
-PE     *real_name;
+PE 
+name2value_dase (char *name, char *context, int ontty, char *userdn, char *passwd, PE *real_name)
 {
 	int	    done,
 			err,
@@ -265,7 +260,8 @@ out:
 
 /*  */
 
-static int  dase_init () {
+static int 
+dase_init (void) {
 	int	    i,
 			nfds;
 	fd_set  ifds;
@@ -350,8 +346,8 @@ oops:
 
 /*  */
 
-static int  dase_callback (arg)
-register struct type_DASE_Callback__REQ *arg;
+static int 
+dase_callback (register struct type_DASE_Callback__REQ *arg)
 {
 	register int i,
 			 j;
@@ -441,7 +437,8 @@ out:
 
 /*  */
 
-static int  yesno () {
+static int 
+yesno (void) {
 	int     x,
 			y,
 			result;
@@ -495,8 +492,8 @@ again:
 }
 
 
-static	print_qb (q)
-struct qbuf *q;
+static 
+print_qb (struct qbuf *q)
 {
 	register struct qbuf *p;
 
@@ -506,7 +503,8 @@ struct qbuf *q;
 
 /*  */
 
-static struct element_DASE_1 *read_el () {
+static struct element_DASE_1 *
+read_el (void) {
 	register int   i;
 	register char *bp,
 			 *cp;
@@ -629,8 +627,8 @@ out:
 
 /* ARGSUSED */
 
-static SFD  intrser (sig)
-int	sig;
+static SFD 
+intrser (int sig)
 {
 #ifndef	BSDSIGS
 	(void) signal (SIGINT, intrser);
@@ -644,8 +642,8 @@ int	sig;
 
 /*  */
 
-set_lookup_dase (flag)
-char	flag;
+int 
+set_lookup_dase (int flag)
 {
 	if (!(stayopen = flag) && ps) {
 		struct TSAPdisconnect tds;

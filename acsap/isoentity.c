@@ -49,8 +49,8 @@ static struct isoentity ies;
 
 /*  */
 
-int	setisoentity (f)
-int	f;
+int 
+setisoentity (int f)
 {
 	if (servf == NULL)
 		servf = fopen (isodefile (isoentities, 0), "r");
@@ -62,7 +62,8 @@ int	f;
 }
 
 
-int	endisoentity () {
+int 
+endisoentity (void) {
 	if (servf && !stayopen) {
 		(void) fclose (servf);
 		servf = NULL;
@@ -73,7 +74,8 @@ int	endisoentity () {
 
 /*  */
 
-struct isoentity   *getisoentity () {
+struct isoentity *
+getisoentity (void) {
 	static char  descriptor[BUFSIZ];
 
 	if (servf == NULL
@@ -89,8 +91,8 @@ struct isoentity   *getisoentity () {
 
 /*  */
 
-int	_startisoentity (descriptor)
-char   *descriptor;
+int 
+_startisoentity (char *descriptor)
 {
 	register char  *cp,
 			 *dp;
@@ -130,9 +132,8 @@ char   *descriptor;
 
 /*  */
 
-int	_stopisoentity (descriptor, iep)
-char   *descriptor;
-struct isoentity *iep;
+int 
+_stopisoentity (char *descriptor, struct isoentity *iep)
 {
 	register int    i;
 	register struct isoentity  *ie = &ies;
@@ -169,8 +170,8 @@ struct isoentity *iep;
 
 /*  */
 
-_printent (ie)
-register struct isoentity  *ie;
+int 
+_printent (register struct isoentity *ie)
 {
 	LLOG (addr_log, LLOG_DEBUG,
 		  ("Entity:  %s (%s)", ie -> ie_descriptor,

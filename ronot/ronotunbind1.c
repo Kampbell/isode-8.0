@@ -37,12 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind1.c,v 9.0 
 
 /* ARGSUSED */
 
-int	  RoUnBindRequest (sd, unbindargpe, secs, acr, rni)
-int			  sd;
-PE			  unbindargpe;
-int			  secs;
-struct AcSAPrelease	* acr;
-struct RoNOTindication	* rni;
+int 
+RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni)
 {
 	int			  result;
 	PE			  user_data;
@@ -98,11 +94,8 @@ struct RoNOTindication	* rni;
 
 /* ARGSUSED */
 
-int	  RoUnBindRetry (sd, secs, acr, rni)
-int			  sd;
-int			  secs;
-struct AcSAPrelease	* acr;
-struct RoNOTindication	* rni;
+int 
+RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni)
 {
 	int			  result;
 	struct AcSAPindication	  aci_s;
@@ -134,9 +127,8 @@ struct RoNOTindication	* rni;
 	return (result);
 }
 
-int	  ParseRoUnBindResponse (acr, rni)
-struct AcSAPrelease	* acr;
-struct RoNOTindication	* rni;
+int 
+ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindication *rni)
 {
 	PE	  pe;
 

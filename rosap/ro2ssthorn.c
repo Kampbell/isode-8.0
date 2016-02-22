@@ -33,19 +33,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssthorn.c,v 9.0 19
 
 /*  */
 
-static PE	qb2Rpe (qb, len, result)
-register struct qbuf *qb;
-int	len;
-int    *result;
+static PE 
+qb2Rpe (register struct qbuf *qb, int len, int *result)
 {
 	return qb2pe (qb, len, 2, result);
 }
 
 /*    modify underling service */
 
-int	RoSetThorn (sd, roi)
-int	sd;
-struct RoSAPindication *roi;
+int 
+RoSetThorn (int sd, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int	    result;

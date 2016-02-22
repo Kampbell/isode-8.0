@@ -44,12 +44,8 @@ PE	(*acsap_lookup) () = name2value_dase;
 
 /*  */
 
-AEI	str2aei_dse (string, context, ontty, userdn, passwd)
-char   *string,
-	   *context,
-	   *userdn,
-	   *passwd;
-int	ontty;
+AEI 
+str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd)
 {
 	char   *alias,
 		   name[BUFSIZ];
@@ -94,8 +90,8 @@ int	ontty;
 
 /*  */
 
-struct PSAPaddr *aei2addr_dse (aei)
-AEI	aei;
+struct PSAPaddr *
+aei2addr_dse (AEI aei)
 {
 	register struct PSAPaddr *pa;
 

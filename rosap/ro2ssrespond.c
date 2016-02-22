@@ -38,11 +38,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssrespond.c,v 9.0 
 
 /*    RO-BEGIN.INDICATION */
 
-int	RoInit (vecp, vec, ros, roi)
-int	vecp;
-char  **vec;
-struct RoSAPstart *ros;
-struct RoSAPindication *roi;
+int 
+RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi)
 {
 	int     result;
 	register struct assocblk   *acb;
@@ -143,11 +140,8 @@ out1:
 
 /*    RO-BEGIN.RESPONSE */
 
-int	RoBeginResponse (sd, status, data, roi)
-int	sd;
-int	status;
-PE	data;
-struct RoSAPindication *roi;
+int 
+RoBeginResponse (int sd, int status, PE data, struct RoSAPindication *roi)
 {
 	int	    len,
 			result;

@@ -45,9 +45,8 @@ static struct isoentity ies;
 
 /*  */
 
-AEI	str2aei_stub (designator, qualifier)
-char   *designator,
-	   *qualifier;
+AEI 
+str2aei_stub (char *designator, char *qualifier)
 {
 #ifdef	LPP
 	register int    n;
@@ -210,10 +209,8 @@ static unsigned int elements[NELEM + 1];
 static char objent[BUFSIZ];
 
 
-static int  lpp_aet (designator, qualifier, ie)
-char   *designator,
-	   *qualifier;
-register struct isoentity *ie;
+static int 
+lpp_aet (char *designator, char *qualifier, register struct isoentity *ie)
 {
 	register int    nelem;
 	int	    tcp_port,
@@ -269,8 +266,8 @@ register struct isoentity *ie;
 
 /*  */
 
-struct PSAPaddr *aei2addr_stub (aei)
-AEI	aei;
+struct PSAPaddr *
+aei2addr_stub (AEI aei)
 {
 	register struct isoentity  *ie = &ies;
 	register struct PSAPaddr   *pa;
@@ -295,11 +292,8 @@ AEI	aei;
 #ifdef	LPP
 /* ARGSUSED */
 
-AEI	str2aei_dse (designator, qualifier, context, interactive)
-char   *designator,
-	   *qualifier,
-	   *context;
-int	interactive;
+AEI 
+str2aei_dse (char *designator, char *qualifier, char *context, int interactive)
 {
 	SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
 		  ("DSE lookup not supported for LPP"));
@@ -309,8 +303,8 @@ int	interactive;
 
 /* ARGSUSED */
 
-struct PSAPaddr *aei2addr_dse (aei)
-AEI	aei;
+struct PSAPaddr *
+aei2addr_dse (AEI aei)
 {
 	SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
 		  ("DSE lookup not supported for LPP"));

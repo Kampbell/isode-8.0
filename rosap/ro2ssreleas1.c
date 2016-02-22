@@ -38,10 +38,8 @@ static int  RoEndRequestAux ();
 
 /*    RO-END.REQUEST */
 
-int	RoEndRequest (sd, priority, roi)
-int	sd;
-int	priority;
-struct RoSAPindication *roi;
+int 
+RoEndRequest (int sd, int priority, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;
@@ -63,10 +61,8 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  RoEndRequestAux (acb, priority, roi)
-register struct assocblk   *acb;
-int	priority;
-struct RoSAPindication *roi;
+static int 
+RoEndRequestAux (register struct assocblk *acb, int priority, struct RoSAPindication *roi)
 {
 	int     result;
 	struct SSAPindication   sis;

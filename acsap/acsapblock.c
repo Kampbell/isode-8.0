@@ -38,7 +38,8 @@ static struct assocblk *ACHead = &assocque;
 
 /*    ASSOCIATION BLOCKS */
 
-struct assocblk  *newacblk () {
+struct assocblk *
+newacblk (void) {
 	register struct assocblk *acb;
 
 	acb = (struct assocblk   *) calloc (1, sizeof *acb);
@@ -60,8 +61,8 @@ struct assocblk  *newacblk () {
 
 /*  */
 
-freeacblk (acb)
-register struct assocblk *acb;
+int 
+freeacblk (register struct assocblk *acb)
 {
 	if (acb == NULL)
 		return;
@@ -109,8 +110,8 @@ register struct assocblk *acb;
 
 /*  */
 
-struct assocblk   *findacblk (sd)
-register int sd;
+struct assocblk *
+findacblk (register int sd)
 {
 	register struct assocblk *acb;
 

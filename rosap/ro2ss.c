@@ -53,19 +53,16 @@ static int  doSSfinish ();
 
 /*    local stub routine for psap/qbuf2pe */
 
-static        PE      qbuf2pe_local (qb, len, result)
-register struct qbuf *qb;
-int     len;
-int    *result;
+static PE 
+qbuf2pe_local (register struct qbuf *qb, int len, int *result)
 {
 	return(qbuf2pe(qb, len, result));
 }
 
 /*    bind underlying service */
 
-int	RoSService (acb, roi)
-register struct assocblk   *acb;
-struct RoSAPindication *roi;
+int 
+RoSService (register struct assocblk *acb, struct RoSAPindication *roi)
 {
 	if (acb -> acb_flags & (ACB_ACS | ACB_RTS))
 		return rosaplose (roi, ROS_OPERATION, NULLCP,
@@ -89,10 +86,8 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2ssasync (acb, indication, roi)
-register struct assocblk   *acb;
-IFP	indication;
-struct RoSAPindication *roi;
+int 
+ro2ssasync (register struct assocblk *acb, IFP indication, struct RoSAPindication *roi)
 {
 	struct SSAPindication   sis;
 	register struct SSAPabort  *sa = &sis.si_abort;
@@ -127,11 +122,8 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2ssmask (acb, mask, nfds, roi)
-register struct assocblk   *acb;
-fd_set *mask;
-int    *nfds;
-struct RoSAPindication *roi;
+int 
+ro2ssmask (register struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 {
 	struct SSAPindication   sis;
 	register struct SSAPabort  *sa = &sis.si_abort;
@@ -152,9 +144,8 @@ struct RoSAPindication *roi;
 
 /*    protocol-level abort */
 
-int	ro2sslose (acb, result)
-register struct assocblk   *acb;
-int	result;
+int 
+ro2sslose (register struct assocblk *acb, int result)
 {
 	int     len;
 	char   *base;
@@ -184,11 +175,8 @@ int	result;
 
 /*    SSAP interface */
 
-int	ro2sswait (acb, invokeID, secs, roi)
-register struct assocblk *acb;
-int    *invokeID,
-	   secs;
-register struct RoSAPindication *roi;
+int 
+ro2sswait (register struct assocblk *acb, int *invokeID, int secs, register struct RoSAPindication *roi)
 {
 	int     result;
 	struct SSAPdata sxs;
@@ -265,10 +253,8 @@ register struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2ssready (acb, priority, roi)
-register struct assocblk *acb;
-int	priority;
-struct RoSAPindication *roi;
+int 
+ro2ssready (register struct assocblk *acb, int priority, struct RoSAPindication *roi)
 {
 	int     result;
 	PE	    pe;
@@ -378,12 +364,8 @@ out:
 
 /* ARGSUSED */
 
-int	ro2sswrite (acb, pe, fe, priority, roi)
-register struct assocblk *acb;
-register PE pe;
-PE	fe;
-int	priority;
-struct RoSAPindication *roi;
+int 
+ro2sswrite (register struct assocblk *acb, register PE pe, PE fe, int priority, struct RoSAPindication *roi)
 {
 	int	    result;
 	register struct udvec *vv;
@@ -421,11 +403,8 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doSSdata (acb, invokeID, sx, roi)
-register struct assocblk   *acb;
-int    *invokeID;
-register struct SSAPdata *sx;
-struct RoSAPindication *roi;
+static int 
+doSSdata (register struct assocblk *acb, int *invokeID, register struct SSAPdata *sx, struct RoSAPindication *roi)
 {
 	int     result;
 	register PE	    pe;
@@ -456,10 +435,8 @@ out:
 
 /*  */
 
-static int  doSStokens (acb, st, roi)
-register struct assocblk   *acb;
-register struct SSAPtoken *st;
-struct RoSAPindication *roi;
+static int 
+doSStokens (register struct assocblk *acb, register struct SSAPtoken *st, struct RoSAPindication *roi)
 {
 	int     result = DONE;
 	struct SSAPindication   sis;
@@ -515,10 +492,8 @@ out:
 
 /*  */
 
-static int  doSSsync (acb, sn, roi)
-register struct assocblk   *acb;
-register struct SSAPsync *sn;
-struct RoSAPindication *roi;
+static int 
+doSSsync (register struct assocblk *acb, register struct SSAPsync *sn, struct RoSAPindication *roi)
 {
 	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected sync indication (0x%x)", sn -> sn_type);
@@ -531,10 +506,8 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doSSactivity (acb, sv, roi)
-register struct assocblk   *acb;
-register struct SSAPactivity *sv;
-struct RoSAPindication *roi;
+static int 
+doSSactivity (register struct assocblk *acb, register struct SSAPactivity *sv, struct RoSAPindication *roi)
 {
 	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected activity indication (0x%x)", sv -> sv_type);
@@ -547,10 +520,8 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doSSreport (acb, sp, roi)
-register struct assocblk   *acb;
-register struct SSAPreport *sp;
-struct RoSAPindication *roi;
+static int 
+doSSreport (register struct assocblk *acb, register struct SSAPreport *sp, struct RoSAPindication *roi)
 {
 	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected exception report indication (0x%x)", sp -> sp_peer);
@@ -563,10 +534,8 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doSSfinish (acb, sf, roi)
-register struct assocblk   *acb;
-struct SSAPfinish *sf;
-struct RoSAPindication *roi;
+static int 
+doSSfinish (register struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication *roi)
 {
 	SFFREE (sf);
 
@@ -590,10 +559,8 @@ struct RoSAPindication *roi;
 
 /*  */
 
-int	ss2rosabort (acb, sa, roi)
-register struct assocblk   *acb;
-register struct SSAPabort *sa;
-struct RoSAPindication *roi;
+int 
+ss2rosabort (register struct assocblk *acb, register struct SSAPabort *sa, struct RoSAPindication *roi)
 {
 	int	    result;
 	register PE	pe;
@@ -658,9 +625,8 @@ out:
 
 /*  */
 
-static int  ssDATAser (sd, sx)
-int	sd;
-register struct SSAPdata *sx;
+static int 
+ssDATAser (int sd, register struct SSAPdata *sx)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -677,9 +643,8 @@ register struct SSAPdata *sx;
 
 /*  */
 
-static int  ssTOKENser (sd, st)
-int	sd;
-register struct SSAPtoken *st;
+static int 
+ssTOKENser (int sd, register struct SSAPtoken *st)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -696,9 +661,8 @@ register struct SSAPtoken *st;
 
 /*  */
 
-static int  ssSYNCser (sd, sn)
-int	sd;
-register struct SSAPsync *sn;
+static int 
+ssSYNCser (int sd, register struct SSAPsync *sn)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -715,9 +679,8 @@ register struct SSAPsync *sn;
 
 /*  */
 
-static int  ssACTIVITYser (sd, sv)
-int	sd;
-register struct SSAPactivity *sv;
+static int 
+ssACTIVITYser (int sd, register struct SSAPactivity *sv)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -734,9 +697,8 @@ register struct SSAPactivity *sv;
 
 /*  */
 
-static int  ssREPORTser (sd, sp)
-int	sd;
-register struct SSAPreport *sp;
+static int 
+ssREPORTser (int sd, register struct SSAPreport *sp)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -753,9 +715,8 @@ register struct SSAPreport *sp;
 
 /*  */
 
-static int  ssFINISHser (sd, sf)
-int	sd;
-struct SSAPfinish *sf;
+static int 
+ssFINISHser (int sd, struct SSAPfinish *sf)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -773,9 +734,8 @@ struct SSAPfinish *sf;
 
 /*  */
 
-static int  ssABORTser (sd, sa)
-int	sd;
-register struct SSAPabort *sa;
+static int 
+ssABORTser (int sd, register struct SSAPabort *sa)
 {
 	IFP	    handler;
 	register struct assocblk   *acb;
@@ -793,11 +753,8 @@ register struct SSAPabort *sa;
 
 /*  */
 
-int	ss2roslose (acb, roi, event, sa)
-register struct assocblk *acb;
-register struct RoSAPindication *roi;
-char   *event;
-register struct SSAPabort *sa;
+int 
+ss2roslose (register struct assocblk *acb, register struct RoSAPindication *roi, char *event, register struct SSAPabort *sa)
 {
 	int     reason;
 	char   *cp,

@@ -58,8 +58,8 @@ static int  read_file ();
 
 /*  */
 
-char   *alias2name (name)
-char   *name;
+char *
+alias2name (char *name)
 {
 	register struct pair *p;
 
@@ -76,7 +76,8 @@ char   *name;
 
 /*  */
 
-static int  read_aliases () {
+static int 
+read_aliases (void) {
 	register char   *hp;
 	char   buffer[BUFSIZ];
 
@@ -96,8 +97,8 @@ static int  read_aliases () {
 
 /*  */
 
-static int  read_file (file)
-char   *file;
+static int 
+read_file (char *file)
 {
 	register char *cp;
 	char   buffer[BUFSIZ + 1],
@@ -124,9 +125,8 @@ char   *file;
 
 /*  */
 
-int	add_alias (name, value)
-char   *name,
-	   *value;
+int 
+add_alias (char *name, char *value)
 {
 	int	    i;
 	register struct pair *p;
@@ -160,7 +160,8 @@ char   *name,
 }
 
 #ifdef DEBUG
-free_isode_alias() {
+int 
+free_isode_alias (void) {
 	int i;
 	struct pair *p, *np;
 

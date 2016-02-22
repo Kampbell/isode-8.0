@@ -138,11 +138,8 @@ int			  async;
 
 /* ARGSUSED */
 
-int	  RoAsynBindRetry (ad, do_next_nsap, acc, rni)
-int			  ad;
-int			  do_next_nsap;
-struct AcSAPconnect	* acc;
-struct RoNOTindication	* rni;
+int 
+RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNOTindication *rni)
 {
 	int			  result;
 	struct AcSAPindication	  aci_s;
@@ -192,9 +189,8 @@ struct RoNOTindication	* rni;
 	return (result);
 }
 
-int	  ParseRoBindResponse (acc, rni)
-struct AcSAPconnect *acc;
-struct RoNOTindication	* rni;
+int 
+ParseRoBindResponse (struct AcSAPconnect *acc, struct RoNOTindication *rni)
 {
 	PE	  pe;
 

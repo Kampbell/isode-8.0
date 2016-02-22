@@ -36,10 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapasync.c,v 9.0 19
 
 /*    define vectors for INDICATION events */
 
-int	RoSetIndications (sd, indication, roi)
-int	sd;
-IFP	indication;
-struct RoSAPindication *roi;
+int 
+RoSetIndications (int sd, IFP indication, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;

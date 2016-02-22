@@ -171,10 +171,12 @@ rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int  _rosaplose (roi, reason, ap)  /* what, fmt, args ... */
-register struct RoSAPindication *roi;
-int     reason;
-va_list	ap;
+static int 
+_rosaplose (  /* what, fmt, args ... */
+    register struct RoSAPindication *roi,
+    int reason,
+    va_list ap
+)
 {
 	register char  *bp;
 	char    buffer[BUFSIZ];

@@ -41,12 +41,8 @@ static char	is_single;
 
 /*  */
 
-iserver_init (argc, argv, aei, initfnx, td)
-int argc;
-char **argv;
-IFP	initfnx;
-AEI aei;
-struct TSAPdisconnect *td;
+int 
+iserver_init (int argc, char **argv, AEI aei, IFP initfnx, struct TSAPdisconnect *td)
 {
 	struct PSAPaddr *pa = NULLPA;
 
@@ -57,12 +53,8 @@ struct TSAPdisconnect *td;
 }
 
 
-int     iserver_init_aux (argc, argv, aei, initfnx, magicfnx, flag, td)
-int     argc;
-char    **argv;
-AEI     aei;
-IFP     initfnx, magicfnx;
-struct TSAPdisconnect *td;
+int 
+iserver_init_aux (int argc, char **argv, AEI aei, IFP initfnx, IFP magicfnx, int flag, struct TSAPdisconnect *td)
 {
 	struct PSAPaddr *pa = NULLPA;
 
@@ -74,12 +66,8 @@ struct TSAPdisconnect *td;
 }
 
 
-int	iserver_initAux (argc, argv, pa, initfnx, magicfnx, flag, td)
-int	argc;
-char	**argv;
-struct PSAPaddr *pa;
-IFP	initfnx, magicfnx;
-struct TSAPdisconnect *td;
+int 
+iserver_initAux (int argc, char **argv, struct PSAPaddr *pa, IFP initfnx, IFP magicfnx, int flag, struct TSAPdisconnect *td)
 {
 	int	fd;
 
@@ -156,17 +144,8 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-int	iserver_wait (initfnx, workfnx, losefnx, nfds, rfds, wfds, efds, secs,
-				  td)
-IFP	initfnx,
-	workfnx,
-	losefnx;
-int	nfds;
-fd_set *rfds,
-	   *wfds,
-	   *efds;
-int	secs;
-struct TSAPdisconnect *td;
+int 
+iserver_wait (IFP initfnx, IFP workfnx, IFP losefnx, int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs, struct TSAPdisconnect *td)
 {
 	int	    fd,
 			vecp;
@@ -240,6 +219,7 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-fd_set	iserver_mask () {
+fd_set 
+iserver_mask (void) {
 	return is_mask;
 }

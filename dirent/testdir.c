@@ -11,9 +11,8 @@
 extern void	exit();
 extern int	strcmp();
 
-main( argc, argv )
-int			argc;
-register char		**argv;
+int 
+main (int argc, register char **argv)
 {
 	register DIR		*dirp;
 	register struct dirent	*dp;

@@ -38,7 +38,8 @@ register DIR		*dirp;	/* stream from opendir() */
 	(void)lseek( dirp->dd_fd, (off_t)0, SEEK_SET );	/* may set errno */
 }
 #else
-int	_rewinddir_stub () {
+int 
+_rewinddir_stub (void) {
 	;
 }
 #endif

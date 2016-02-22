@@ -40,27 +40,8 @@ static int  AcAsynRetryAux ();
 
 /*    A-(ASYN-)ASSOCIATE.REQUEST */
 
-int	AcAsynAssocRequest (context, callingtitle, calledtitle, callingaddr,
-						calledaddr, ctxlist, defctxname, prequirements, srequirements, isn,
-						settings, ref, data, ndata, qos, acc, aci, async)
-OID	context;
-AEI	callingtitle,
-	calledtitle;
-struct PSAPaddr *callingaddr,
-		*calledaddr;
-int	prequirements,
-	srequirements,
-	settings,
-	ndata,
-	async;
-long	isn;
-struct PSAPctxlist *ctxlist;
-OID	defctxname;
-struct SSAPref *ref;
-PE    *data;
-struct QOStype *qos;
-struct AcSAPconnect *acc;
-struct AcSAPindication *aci;
+int 
+AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async)
 {
 	SBV     smask;
 	int     result;
@@ -105,27 +86,8 @@ struct AcSAPindication *aci;
 
 /*  */
 
-static int AcAssocRequestAux (context, callingtitle, calledtitle, callingaddr,
-							  calledaddr, ctxlist, defctxname, prequirements, srequirements, isn,
-							  settings, ref, data, ndata, qos, acc, aci, async)
-OID	context;
-AEI	callingtitle,
-	calledtitle;
-struct PSAPaddr *callingaddr,
-		*calledaddr;
-int	prequirements,
-	srequirements,
-	settings,
-	ndata,
-	async;
-long	isn;
-struct PSAPctxlist *ctxlist;
-OID	defctxname;
-struct SSAPref *ref;
-PE    *data;
-struct QOStype *qos;
-struct AcSAPconnect *acc;
-struct AcSAPindication *aci;
+static int 
+AcAssocRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async)
 {
 	register int    i;
 	int	    result;
@@ -306,10 +268,8 @@ out:
 
 /*    A-ASYN-RETRY.REQUEST (pseudo) */
 
-int	AcAsynRetryRequest (sd, acc, aci)
-int	sd;
-struct AcSAPconnect *acc;
-struct AcSAPindication *aci;
+int 
+AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci)
 {
 	SBV     smask;
 	int     result;
@@ -362,12 +322,8 @@ struct AcSAPindication *aci;
 
 /*  */
 
-static int  AcAsynRetryAux (acb, pc, pi, acc, aci)
-register struct assocblk *acb;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
-struct AcSAPconnect *acc;
-struct AcSAPindication *aci;
+static int 
+AcAsynRetryAux (register struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindication *pi, struct AcSAPconnect *acc, struct AcSAPindication *aci)
 {
 	register int    i;
 	int	    result;
@@ -554,10 +510,8 @@ out:
 
 /*    A-ASYN-NEXT.REQUEST (pseudo) */
 
-int	AcAsynNextRequest (sd, acc, aci)
-int	sd;
-struct AcSAPconnect *acc;
-struct AcSAPindication *aci;
+int 
+AcAsynNextRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci)
 {
 	SBV     smask;
 	int     result;

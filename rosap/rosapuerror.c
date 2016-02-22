@@ -38,13 +38,8 @@ static int RoErrorRequestAux ();
 
 /*    RO-ERROR.REQUEST */
 
-int	RoErrorRequest (sd, invokeID, error, params, priority, roi)
-int	sd;
-int	invokeID,
-	error,
-	priority;
-PE	params;
-struct RoSAPindication *roi;
+int 
+RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;
@@ -65,13 +60,8 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  RoErrorRequestAux (acb, invokeID, error, params, priority, roi)
-register struct assocblk   *acb;
-int	invokeID,
-	error,
-	priority;
-PE	params;
-struct RoSAPindication *roi;
+static int 
+RoErrorRequestAux (register struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi)
 {
 	register PE	pe,
 			 p;

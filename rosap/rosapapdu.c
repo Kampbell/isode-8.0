@@ -45,11 +45,8 @@ static int  opdu_proc ();
 
 /*  */
 
-int	acb2osdu (acb, invokeID, pe, roi)
-register struct assocblk  *acb;
-int   *invokeID;
-PE	pe;
-register struct RoSAPindication *roi;
+int 
+acb2osdu (register struct assocblk *acb, int *invokeID, PE pe, register struct RoSAPindication *roi)
 {
 	struct type_ROS_ROSEapdus *papdu;
 	struct type_ROS_OPDU	*popdu;
@@ -102,13 +99,8 @@ register struct RoSAPindication *roi;
  * RoSAPindication structure
  */
 
-static int  apdu_proc (sd, papdu, pe, roi, acb, invokeID)
-int	sd;
-struct type_ROS_ROSEapdus *papdu;
-PE     *pe;
-register struct RoSAPindication *roi;
-register struct assocblk  *acb;
-int   *invokeID;
+static int 
+apdu_proc (int sd, struct type_ROS_ROSEapdus *papdu, PE *pe, register struct RoSAPindication *roi, register struct assocblk *acb, int *invokeID)
 {
 	int	    rosap_id;
 
@@ -202,13 +194,8 @@ int   *invokeID;
  * simpilfy matters. What is an OPDU - an Old PDU ??
  */
 
-static int  opdu_proc (sd, popdu, pe, roi, acb, invokeID)
-int	sd;
-struct type_ROS_OPDU *popdu;
-PE	*pe;
-register struct RoSAPindication *roi;
-register struct assocblk  *acb;
-int   *invokeID;
+static int 
+opdu_proc (int sd, struct type_ROS_OPDU *popdu, PE *pe, register struct RoSAPindication *roi, register struct assocblk *acb, int *invokeID)
 {
 	int	rosap_id;
 
@@ -306,8 +293,8 @@ static int REprob[] = { ROS_REP_UNRECOG, ROS_REP_UNEXP, ROS_REP_RECERR,
 /* return the ISODE code from the numbers passed in the data or NOTOK if
  * it finds an illegal value
  */
-static int  prob2num (prob)
-register struct choice_ROS_3	*prob;
+static int 
+prob2num (register struct choice_ROS_3 *prob)
 {
 	register int num;
 

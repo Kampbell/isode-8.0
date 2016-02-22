@@ -33,8 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/sprintaei.c,v 9.0 199
 
 /*  */
 
-char   *sprintaei (aei)
-AEI	aei;
+char *
+sprintaei (AEI aei)
 {
 	register char *cp;
 	char   *bp;

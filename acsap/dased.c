@@ -88,10 +88,8 @@ PE	grab_pe ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char	**argv,
-		**envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    vecp;
 	char   *vec[4];
@@ -173,9 +171,8 @@ char	**argv,
 
 /*    DASE */
 
-static	dased (vecp, vec)
-int	vecp;
-char  **vec;
+static 
+dased (int vecp, char **vec)
 {
 	int	    sd;
 	struct TSAPstart tss;
@@ -235,8 +232,8 @@ char  **vec;
 
 /*  */
 
-static	dase_aux (req)
-register struct type_DASE_Query__REQ *req;
+static 
+dase_aux (register struct type_DASE_Query__REQ *req)
 {
 	register int    i;
 	int	    vecp;
@@ -464,7 +461,8 @@ send_rsp:
 
 /*  */
 
-static bind_to_dsa () {
+static 
+bind_to_dsa (void) {
 	struct ds_bind_arg ba;
 	struct ds_bind_arg br;
 	struct ds_bind_error be;
@@ -502,10 +500,8 @@ static bind_to_dsa () {
 
 /*  */
 
-static	int	make_bind_args (ba, br, be)
-register struct ds_bind_arg *ba,
-		*br;
-register struct ds_bind_error *be;
+static int 
+make_bind_args (register struct ds_bind_arg *ba, register struct ds_bind_arg *br, register struct ds_bind_error *be)
 {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
@@ -520,10 +516,8 @@ register struct ds_bind_error *be;
 
 /*  */
 
-static DNS  dase_interact (dns, dn, s)
-DNS	dns;
-DN	dn;
-char   *s;
+static DNS 
+dase_interact (DNS dns, DN dn, char *s)
 {
 	register int i;
 	register struct type_DASE_Callback__REQ *req = NULL;
@@ -671,9 +665,8 @@ out:
 
 /*  */
 
-static	int	dns_compar (a, b)
-struct dn_seq **a,
-		**b;
+static int 
+dns_compar (struct dn_seq **a, struct dn_seq **b)
 {
 	int	    i;
 	DN	    adn,
@@ -692,10 +685,8 @@ struct dn_seq **a,
 
 /* ARGSUSED */
 
-static DNS  just_say_no (dns, dn, s)
-DNS	dns;
-DN	dn;
-char   *s;
+static DNS 
+just_say_no (DNS dns, DN dn, char *s)
 {
 	dn_seq_free (dns);
 
@@ -704,8 +695,8 @@ char   *s;
 
 /*  */
 
-static PE  name2psap (dn)
-DN	dn;
+static PE 
+name2psap (DN dn)
 {
 	int	    i;
 	AttributeType at;
@@ -756,8 +747,8 @@ DN	dn;
 
 /*    INIT */
 
-static	arginit (vec)
-char	**vec;
+static 
+arginit (char **vec)
 {
 	int	    argp;
 	register char   *ap;
@@ -863,7 +854,8 @@ char	**vec;
 
 /*  */
 
-static	envinit () {
+static 
+envinit (void) {
 	int     i,
 			sd;
 
@@ -943,9 +935,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void    adios (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -969,10 +960,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void    advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int     code;
+static void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }
@@ -980,9 +969,8 @@ int     code;
 
 /*  */
 
-static void  ts_adios (td, event)
-register struct TSAPdisconnect *td;
-char	*event;
+static void 
+ts_adios (register struct TSAPdisconnect *td, char *event)
 {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
@@ -991,10 +979,8 @@ char	*event;
 
 /*  */
 
-static void  ts_advise (td, code, event)
-register struct TSAPdisconnect *td;
-int     code;
-char   *event;
+static void 
+ts_advise (register struct TSAPdisconnect *td, int code, char *event)
 {
 	char    buffer[BUFSIZ];
 

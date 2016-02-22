@@ -39,9 +39,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/asprintf.c,v 9.0 199
 
 /*  */
 
-void	asprintf (char*bp, char*what, char* fmt, ...)		/* what, fmt, args, ... */
+void	asprintf (char*bp, char*what, char*fmt, ...)		/* fmt, args, ... */
 {
-	 va_list ap;
+	va_list ap;
 	va_start(ap, fmt);
 	_asprintf (bp, what, fmt, ap);
 	va_end(ap);
@@ -52,10 +52,9 @@ unsigned char isode_x25_err[2];
 char isode_x25_errflag = 0;
 #endif
 
-void	_asprintf (char*bp, char*what, char*fmt, va_list ap)	/* fmt, args, ... */
+void	_asprintf (char*bp, char*what, char* fmt, va_list ap)	/* fmt, args, ... */
 {
 	register int    eindex;
-
 	eindex = errno;
 
 	*bp = NULL;

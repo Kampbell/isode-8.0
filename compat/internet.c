@@ -431,19 +431,18 @@ gethostbystring (char *s)
 {
 	register struct hostent *h;
 #ifndef	DG
-	static u_long iaddr;
+	int result;
+	static struct in_addr iaddr;
+	result =  inet_aton(s, &iaddr);
+	if (result == 0)
+		return gethostbyname (s);
 #else
 	static struct in_addr iaddr;
+	iaddr = inet_addr (s);
+	if (iaddr.s_addr == NOTOK && strcmp (s, "255.255.255.255"))
+		return gethostbyname (s);
 #endif
 	static struct hostent   hs;
-
-	iaddr = inet_addr (s);
-#ifndef	DG
-	if (iaddr == NOTOK && strcmp (s, "255.255.255.255"))
-#else
-	if (iaddr.s_addr == NOTOK && strcmp (s, "255.255.255.255"))
-#endif
-		return gethostbyname (s);
 
 	h = &hs;
 	h -> h_name = s;

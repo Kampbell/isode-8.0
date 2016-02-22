@@ -402,9 +402,8 @@ static        pyyerror (YP yp, ...)
 #else
 /* VARARGS */
 +
-static        pyyerror (yp, fmt)
-YP    yp;
-char   *fmt;
+static 
+pyyerror (YP yp, char *fmt)
 {
 	pyyerror (yp, fmt);
 }
@@ -475,14 +474,8 @@ pass1 (void) {
 
 /*  */
 
-pass1_op (mod, id, arg, result, errors, linked, opcode)
-char   *mod,
-	   *id;
-YP	arg,
- result;
-YV	errors;
-YV	linked;
-int	opcode;
+int 
+pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int opcode)
 {
 	register SY	    sy;
 	register YO	    yo;
@@ -514,11 +507,8 @@ int	opcode;
 
 /*  */
 
-pass1_err (mod, id, param, errcode)
-char   *mod,
-	   *id;
-YP	param;
-int	errcode;
+int 
+pass1_err (char *mod, char *id, YP param, int errcode)
 {
 	register SY	    sy;
 	register YE	    ye;
@@ -548,13 +538,8 @@ int	errcode;
 
 /*  */
 
-pass1_type (encpref, decpref, prfpref, mod, id, yp)
-register char  *encpref,
-		 *decpref,
-		 *prfpref,
-		 *mod,
-		 *id;
-register YP	yp;
+int 
+pass1_type (register char *encpref, register char *decpref, register char *prfpref, register char *mod, register char *id, register YP yp)
 {
 	register SY	    sy;
 
@@ -780,9 +765,8 @@ pass2 (void) {
 
 /* ARGSUSED */
 
-static	do_op1 (yo, id)
-register YO	yo;
-char   *id;
+static 
+do_op1 (register YO yo, char *id)
 {
 	register YE	    ye;
 	register YP	    yp;
@@ -906,9 +890,8 @@ char   *id;
 
 /* ARGSUSED */
 
-static	do_op2 (yo, id)
-register YO	yo;
-char   *id;
+static 
+do_op2 (register YO yo, char *id)
 {
 	register YP	    yp;
 
@@ -1029,9 +1012,8 @@ char   *id;
 
 /* ARGSUSED */
 
-static	do_err1 (ye, id)
-register YE	ye;
-char   *id;
+static 
+do_err1 (register YE ye, char *id)
 {
 	register YP	    yp;
 
@@ -1090,9 +1072,8 @@ char   *id;
 
 /* ARGSUSED */
 
-static	do_err2 (ye, id)
-register YE	ye;
-char   *id;
+static 
+do_err2 (register YE ye, char *id)
 {
 	register YP	yp;
 
@@ -1125,10 +1106,8 @@ char   *id;
 
 /* ARGSUSED */
 
-static	do_type (yp, level, id)
-register YP yp;
-int	level;
-char   *id;
+static 
+do_type (register YP yp, int level, char *id)
 {
 	register YP	    y;
 	register YV	    yv;
@@ -1423,8 +1402,8 @@ char   *id;
 
 /*    ERROR HANDLING */
 
-static YE  lookup_err (yv)
-YV	yv;
+static YE 
+lookup_err (YV yv)
 {
 	register char  *id,
 			 *mod;
@@ -1455,9 +1434,8 @@ YV	yv;
 
 /*    TYPE HANDLING */
 
-static YP  lookup_type (mod, id)
-register char *mod,
-		 *id;
+static YP 
+lookup_type (register char *mod, register char *id)
 {
 	register SY	    sy;
 
@@ -1478,9 +1456,8 @@ register char *mod,
 
 /*  */
 
-static  normalize (yp, id)
-YP     *yp;
-char   *id;
+static 
+normalize (YP *yp, char *id)
 {
 	int	    i;
 	register YP	    y,
@@ -1506,8 +1483,8 @@ char   *id;
 
 /*    VALUE HANDLING */
 
-static int  val2int (yv)
-register YV	yv;
+static int 
+val2int (register YV yv)
 {
 	switch (yv -> yv_code) {
 	case YV_BOOL:
@@ -1538,9 +1515,8 @@ register YV	yv;
 
 /*  */
 
-static	val2prf (yv, level)
-register YV	yv;
-int	level;
+static 
+val2prf (register YV yv, int level)
 {
 	register YV    y;
 
@@ -1728,9 +1704,8 @@ expand (register char *dp, register char *ep, char **gp)
 
 /*    DEBUG */
 
-static	print_op (yo, level)
-register YO	yo;
-register int	level;
+static 
+print_op (register YO yo, register int level)
 {
 	if (yo == NULLYO)
 		return;
@@ -1754,9 +1729,8 @@ register int	level;
 
 /*  */
 
-static	print_err (ye, level)
-register YE	ye;
-register int	level;
+static 
+print_err (register YE ye, register int level)
 {
 	if (ye == NULLYE)
 		return;
@@ -1772,9 +1746,8 @@ register int	level;
 
 /*  */
 
-print_type (yp, level)
-register YP	yp;
-register int	level;
+int 
+print_type (register YP yp, register int level)
 {
 	register YP	    y;
 	register YV	    yv;
@@ -1864,9 +1837,8 @@ register int	level;
 
 /*  */
 
-static	print_value (yv, level)
-register YV	yv;
-register int	level;
+static 
+print_value (register YV yv, register int level)
 {
 	register YV	    y;
 
@@ -1961,8 +1933,8 @@ add_symbol (register SY s1, register SY s2)
 
 /*    TYPES */
 
-YP	new_type (code)
-int	code;
+YP 
+new_type (int code)
 {
 	register YP    yp;
 
@@ -1974,9 +1946,8 @@ int	code;
 }
 
 
-YP	add_type (y, z)
-register YP	y,
-		 z;
+YP 
+add_type (register YP y, register YP z)
 {
 	register YP	    yp;
 
@@ -1989,8 +1960,8 @@ register YP	y,
 
 /*    VALUES */
 
-YV	new_value (code)
-int	code;
+YV 
+new_value (int code)
 {
 	register YV    yv;
 
@@ -2002,9 +1973,8 @@ int	code;
 }
 
 
-YV	add_value (y, z)
-register YV	y,
-		 z;
+YV 
+add_value (register YV y, register YV z)
 {
 	register YV	    yv;
 
@@ -2017,8 +1987,8 @@ register YV	y,
 
 /*    TAGS */
 
-YT	new_tag (class)
-PElementClass	class;
+YT 
+new_tag (int class)
 {
 	register YT    yt;
 

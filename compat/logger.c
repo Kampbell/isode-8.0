@@ -55,7 +55,7 @@ extern void closelog();
 #ifndef	lint
 static
 #endif
-int  _ll_printf (LLog*lp, ...);
+int  _ll_printf (LLog*lp, va_list ap);
 
 struct ll_private {
 	int	    ll_checks;
@@ -377,7 +377,7 @@ ll_printf (LLog *lp, char *fmt)
 #ifndef	lint
 static
 #endif
-int  _ll_printf (LLog*lp, ...)		/* fmt, args ... */
+int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 {
 	int	    cc,
 			status;
@@ -386,12 +386,12 @@ int  _ll_printf (LLog*lp, ...)		/* fmt, args ... */
 	char    *fmt;
 	va_list fp;
 
-	va_start(fp, lp);
+	va_copy(fp, ap);
 
-	fmt = va_arg (fp, char *);
+	fmt = va_arg (ap, char *);
 	if (strcmp (fmt, "%s") != 0) {
 		bp = buffer;
-		_asprintf (bp, NULLCP, fmt, fp); // FIXME was ap
+		_asprintf (bp, NULLCP, fmt, ap); // FIXME was ap
 	} else {
 		bp = NULL;
 		fmt = va_arg (fp, char *);
@@ -499,8 +499,7 @@ ll_check (register LLog *lp)
 	if (llp && lp -> ll_fd != NOTOK)
 		llp[lp -> ll_fd].ll_checks = CHKINT;
 	if (lp -> ll_fd == NOTOK
-			|| (fstat (lp -> ll_fd, &st) != NOTOK
-				&& st.st_size < (size <<= 10)))
+			|| (fstat (lp -> ll_fd, &st) != NOTOK && st.st_size < (size <<= 10)))
 		return OK;
 
 	if (!(lp -> ll_stat & LLOGZER)) {
@@ -523,8 +522,7 @@ error:
 	(void) lseek (lp -> ll_fd, 0L, 0);
 	return OK;
 #else
-	(void) sprintf (buffer, _isodefile (isodelogpath, lp -> ll_file),
-					getpid ());
+	(void) sprintf (buffer, _isodefile (isodelogpath, lp -> ll_file), getpid ());
 	if ((fd = open (buffer, O_WRONLY | O_APPEND | O_TRUNC)) == NOTOK)
 		goto error;
 	(void) close (fd);

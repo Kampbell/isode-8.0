@@ -450,7 +450,7 @@ true:;
 # testing...
 ################################################################
 
-HOST	=	localhost
+HOST	=	127.0.0.1
 FILE1	=	/etc/mtab
 FILE2	=	/etc/fstab
 

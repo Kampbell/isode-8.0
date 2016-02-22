@@ -50,9 +50,7 @@ tpkt2text (register LLog *lp, register struct tsapkt *t, int isread)
 	char   *rw = isread ? "<--- " : "---> ";
 	register struct udvec *uv;
 
-	LLOG (lp, LLOG_ALL,
-		  ("dump of TPKT 0x%x, errno=0x%x version=0x%x length=%d",
-		   t, t -> t_errno, t -> t_vrsn, t -> t_length));
+	LLOG (lp, LLOG_ALL, ("dump of TPKT 0x%x, errno=0x%x version=0x%x length=%d", t, t -> t_errno, t -> t_vrsn, t -> t_length));
 	(void) ll_printf (lp, "%s(\n", rw);
 
 	(void) ll_printf (lp, "%sLI/ %d\n", rw, t -> t_li);
@@ -62,8 +60,7 @@ tpkt2text (register LLog *lp, register struct tsapkt *t, int isread)
 	switch (TPDU_CODE (t)) {
 	case TPDU_CR:
 	case TPDU_CC:
-		TPKT_TYPE (TPDU_CODE (t) == TPDU_CR ? "CONNECT REQUEST"
-				   : "CONNECT CONFIRM");
+		TPKT_TYPE (TPDU_CODE (t) == TPDU_CR ? "CONNECT REQUEST" : "CONNECT CONFIRM");
 		(void) ll_printf (lp, "%sDSTREF/ 0x%x\n", rw, ntohs (t -> t_cr.cr_dstref));
 		(void) ll_printf (lp, "%sSRCREF/ 0x%x\n", rw, ntohs (t -> t_cr.cr_srcref));
 		(void) ll_printf (lp, "%sCLASS/ 0x%x\n", rw, t -> t_cr.cr_class);
@@ -82,17 +79,14 @@ tpkt2text (register LLog *lp, register struct tsapkt *t, int isread)
 		TPKT_TYPE ("DISCONNECT REQUEST");
 		(void) ll_printf (lp, "%sDSTREF/ 0x%x\n", rw, ntohs (t -> t_dr.dr_dstref));
 		(void) ll_printf (lp, "%sSRCREF/ 0x%x\n", rw, ntohs (t -> t_dr.dr_srcref));
-		(void) ll_printf (lp, "%sREASON/ 0x%x: %s\n", rw, t -> t_dr.dr_reason,
-						  TErrString ((int) t -> t_dr.dr_reason));
+		(void) ll_printf (lp, "%sREASON/ 0x%x: %s\n", rw, t -> t_dr.dr_reason, TErrString ((int) t -> t_dr.dr_reason));
 		break;
 
 	case TPDU_DT:
 	case TPDU_ED:
 		TPKT_TYPE (TPDU_CODE (t) == TPDU_DT ? "DATA TRANSFER"
 				   : "EXPEDITED DATA TRANSFER");
-		(void) ll_printf (lp, "%sSEQUENCE/ %s0x%x\n", rw,
-						  t -> t_dt.dt_nr & DT_EOT ? "<EOT>+" : "",
-						  t -> t_dt.dt_nr & ~DT_EOT);
+		(void) ll_printf (lp, "%sSEQUENCE/ %s0x%x\n", rw, t -> t_dt.dt_nr & DT_EOT ? "<EOT>+" : "", t -> t_dt.dt_nr & ~DT_EOT);
 		break;
 
 	case TPDU_ER:

@@ -531,7 +531,7 @@ out:
  * UPPER HALF */
 
 static int 
-TConnect (register struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td)
+TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td)
 {
 	struct t_call  *sndcall;
 	struct t_call  *rcvcall;
@@ -614,7 +614,7 @@ TConnect (register struct tsapblk *tb, int expedited, char *data, int cc, struct
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 static int 
-TRetry (register struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td)
+TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 {
 	struct t_call  *call;
 
@@ -698,7 +698,7 @@ out:
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 static int 
-TStart (register struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td)
+TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td)
 {
 	int             i;
 
@@ -733,7 +733,7 @@ TStart (register struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAP
 /* ARGSUSED */
 
 static int 
-TAccept (register struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td)
+TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td)
 {
 	struct t_call  *call;
 	int             result;
@@ -799,16 +799,16 @@ reject: {
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 static int 
-TWrite (register struct tsapblk *tb, register struct udvec *uv, int expedited, struct TSAPdisconnect *td)
+TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td)
 {
-	register int    cc;
+	int    cc;
 	int             async;
 	int             flags;
 #ifdef  MGMT
 	int             dlen;
 #endif
-	register char  *bp;
-	register struct qbuf *qb;
+	char  *bp;
+	struct qbuf *qb;
 
 	flags = expedited ? T_EXPEDITED : 0;
 
@@ -893,7 +893,7 @@ losing:
 		return NOTOK;
 	}
 	for (; uv->uv_base; uv++) {
-		register int    more;
+		int    more;
 #ifdef  MGMT
 		dlen += uv->uv_len;
 #endif
@@ -929,10 +929,10 @@ done:
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 static int 
-TDrain (register struct tsapblk *tb, struct TSAPdisconnect *td)
+TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	int             nc, onoff, result;
-	register struct qbuf *qb;
+	struct qbuf *qb;
 
 	if ((onoff = fcntl(tb->tb_fd, F_GETFL, 0)) != NOTOK)
 		(void) fcntl(tb->tb_fd, F_SETFL, onoff | FNDELAY);
@@ -981,10 +981,10 @@ out:
 /* ARGSUSED */
 
 static int 
-TRead (register struct tsapblk *tb, register struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob)
+TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob)
 {
 	int             cc;
-	register struct qbuf *qb;
+	struct qbuf *qb;
 	static struct qbuf *spare_qb = 0;
 	int             flags;
 
@@ -1037,7 +1037,7 @@ TRead (register struct tsapblk *tb, register struct TSAPdata *tx, struct TSAPdis
 			  tb->tb_fd, qb->qb_data, qb->qb_len, flags, cc));
 		if (flags & T_EXPEDITED) {
 			if (cc > 0) {
-				register struct qbuf *qb2 = tx->tx_qbuf.qb_back;
+				struct qbuf *qb2 = tx->tx_qbuf.qb_back;
 
 				/*
 				 * assume ETSDU will always be less than MAXTP4
@@ -1066,7 +1066,7 @@ TRead (register struct tsapblk *tb, register struct TSAPdata *tx, struct TSAPdis
 
 		tb->tb_len += (qb->qb_len = cc);
 		if (cc > 0) {
-			register struct qbuf *qb2 = tb->tb_qbuf.qb_back;
+			struct qbuf *qb2 = tb->tb_qbuf.qb_back;
 
 			if (qb2 != &tb->tb_qbuf && qb2->qb_len + cc <= tb->tb_tsdusize) {
 				bcopy(qb->qb_data, qb2->qb_len + qb2->qb_data, cc);
@@ -1110,7 +1110,7 @@ out:
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 static int 
-TDisconnect (register struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
+TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
 {
 	int             result = OK;
 	struct t_call  *call;
@@ -1134,7 +1134,7 @@ TDisconnect (register struct tsapblk *tb, char *data, int cc, struct TSAPdisconn
 /* ARGSUSED */
 
 static int 
-TLose (register struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
+TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
 {
 	struct t_call  *call;
 
@@ -1159,12 +1159,12 @@ TLose (register struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
 /* ARGSUSED */
 
 int 
-tp4open (register struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async)
+tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async)
 {
 	int             fd, onoff;
 	struct TSAPaddr tzs;
-	register struct TSAPaddr *tz = &tzs;
-	register struct NSAPaddr *nz = tz->ta_addrs;
+	struct TSAPaddr *tz = &tzs;
+	struct NSAPaddr *nz = tz->ta_addrs;
 
 	bzero((char *) tz, sizeof *tz);
 	if (local_ta)
@@ -1195,7 +1195,7 @@ tp4open (register struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr
 /* ARGSUSED */
 
 static int 
-retry_tp4_socket (register struct tsapblk *tb, struct TSAPdisconnect *td)
+retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	fd_set          mask;
 
@@ -1247,7 +1247,7 @@ tp4save (int fd, int seq, int exp, struct tsapADDR *calling_ta, struct tsapADDR 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 int 
-tp4restore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
+tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 {
 	int             fd, exp;
 	char            calling_buf[BUFSIZ];
@@ -1283,7 +1283,7 @@ tp4restore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 int 
-tp4init (register struct tsapblk *tb)
+tp4init (struct tsapblk *tb)
 {
 
 	tb->tb_connPfnx = TConnect;
@@ -1421,7 +1421,7 @@ int
 tp42gen (struct TSAPaddr *generic, struct netbuf *specific)
 {
 
-	register struct NSAPaddr *na = generic->ta_addrs;
+	struct NSAPaddr *na = generic->ta_addrs;
 	struct xti_netbuf *xtb;
 
 	bzero((char *) generic, sizeof *generic);

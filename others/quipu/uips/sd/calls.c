@@ -100,9 +100,9 @@ FILE *config_file;
 char *file_names[MAXTYPES];
 
 char *
-get_strioid (register char *ptr)
+get_strioid (char *ptr)
 {
-	register char *end_ptr;
+	char *end_ptr;
 
 	while(*ptr == '"') ptr++;
 	while(*ptr != '"') ptr++;
@@ -617,7 +617,7 @@ back_start (void) {
 
 void 
 widen (void) {
-	register char *str, *sptr;
+	char *str, *sptr;
 	int count = 0;
 	str_seq first;
 
@@ -785,7 +785,7 @@ list_start (void) {
 		cleartext();
 		correlate_search_results (&result);
 		if (result.CSR_entries != NULLENTRYINFO) {
-			register EntryInfo *ptr;
+			EntryInfo *ptr;
 
 			xprint ("Result of search ...\n");
 			if (result.CSR_common.cr_aliasdereferenced) {
@@ -942,7 +942,7 @@ srch_start (void) {
 		correlate_search_results (&result);
 
 		if (result.CSR_entries != NULLENTRYINFO) {
-			register EntryInfo *ptr;
+			EntryInfo *ptr;
 
 			if (result.CSR_common.cr_aliasdereferenced) {
 				xprint (" (Alias dereferenced - object is ");
@@ -1047,7 +1047,7 @@ caddr_t ptr;
 	char buffer [RESBUF];
 	char save;
 	int i, size;
-	register char *str, *sptr;
+	char *str, *sptr;
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) return ;
 
@@ -1093,7 +1093,7 @@ caddr_t ptr;
 	PS ps;
 	char buffer [RESBUF];
 	int count;
-	register char *str, *sptr;
+	char *str, *sptr;
 	char save;
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) return ;
@@ -1222,9 +1222,9 @@ WIDGET *wdgt;
 void 
 scrollbar (int command)
 {
-	register char *str;
+	char *str;
 	char *base_rdn;
-	register int rdn_count = 0;
+	int rdn_count = 0;
 	int lines, count = 0;
 	str_seq thisseq;
 
@@ -1316,9 +1316,9 @@ scrollbar (int command)
 }
 
 void 
-make_friendly (char *fstr, register char *str)
+make_friendly (char *fstr, char *str)
 {
-	register char *end_ptr;
+	char *end_ptr;
 	char save;
 
 	*fstr = '\0';
@@ -1415,7 +1415,7 @@ int size;
 int 
 issubstr (char *str, char *substr)
 {
-	register char *sptr;
+	char *sptr;
 	char c;
 	int substrlen = strlen(substr);
 	int count;
@@ -1440,7 +1440,7 @@ issubstr (char *str, char *substr)
 int 
 indexstring (char *string, char *substring)
 {
-	register char *sub, *str;
+	char *sub, *str;
 	char c, s;
 	int indx = 0;
 
@@ -1468,7 +1468,7 @@ rfc2jnt (char *string)
 {
 	char reversed[STRINGLEN];
 	char front[STRINGLEN];
-	register char *part;
+	char *part;
 	char *mailbox;
 
 	mailbox = string;
@@ -1549,7 +1549,7 @@ sort_attrs (struct attrcomp *entry_attrs)
 
 
 char *
-GetSurname (register char *name)
+GetSurname (char *name)
 {
 	while (*name != '\0') name++;
 	while (*name != ' ' && *name != '=') name--;
@@ -1557,7 +1557,7 @@ GetSurname (register char *name)
 }
 
 char *
-GetWholeRelName (register char *name)
+GetWholeRelName (char *name)
 {
 	while (*name!= '\0') name++;
 	while (*name != '=') name--;
@@ -1568,10 +1568,10 @@ GetWholeRelName (register char *name)
 str_seq SortList(list)
 str_seq list;
 {
-	register str_seq currEntry, lastSortedEntry , currSortedEntry;
+	str_seq currEntry, lastSortedEntry , currSortedEntry;
 	str_seq sortedList;
 	char *sortedName, *currName;
-	register DN curr_dn;
+	DN curr_dn;
 	DN dn;
 
 	if (!list) return 0;

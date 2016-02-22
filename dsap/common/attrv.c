@@ -178,8 +178,8 @@ short sntx;
 short str2syntax (str)
 char * str;
 {
-	register sntx_table * ptr;
-	register int i;
+	sntx_table * ptr;
+	int i;
 
 	for (i=0, ptr = &syntax_table[0] ; i<num_syntax; i++,ptr++)
 		if ( lexequ (ptr->s_sntx,str) == 0)
@@ -205,7 +205,7 @@ AttributeValue x;
 }
 
 AttrV_free_aux (x)
-register AttributeValue x;
+AttributeValue x;
 {
 	if (x == NULLAttrV)
 		return;
@@ -235,8 +235,8 @@ AttributeValue  av;
 }
 
 AttrV_decode(x,y)
-register AttributeType x;
-register AttributeValue y;
+AttributeType x;
+AttributeValue y;
 {
 	int y_syntax;
 
@@ -280,7 +280,7 @@ register AttributeValue y;
 static strip_header(str)
 char ** str;
 {
-	register char * ptr, *save, val;
+	char * ptr, *save, val;
 	int syntax;
 	static CMD_TABLE cmd_syntax [] = {
 		"FILE",		1,
@@ -449,9 +449,9 @@ AttributeValue x;
 }
 
 AttributeValue AttrV_cpy (x)
-register AttributeValue x;
+AttributeValue x;
 {
-	register AttributeValue y = NULLAttrV;
+	AttributeValue y = NULLAttrV;
 
 	y = AttrV_alloc();
 	AttrV_cpy_aux (x,y);
@@ -459,8 +459,8 @@ register AttributeValue x;
 }
 
 AttrV_cpy_aux (x,y)
-register AttributeValue x;
-register AttributeValue y;
+AttributeValue x;
+AttributeValue y;
 {
 	struct file_syntax * fileattr_cpy();
 
@@ -480,8 +480,8 @@ register AttributeValue y;
 }
 
 AttrV_cpy_enc (x,y)
-register AttributeValue x;
-register AttributeValue y;
+AttributeValue x;
+AttributeValue y;
 {
 	struct file_syntax * fileattr_cpy();
 
@@ -506,9 +506,9 @@ register AttributeValue y;
 
 
 rdn_cmp (a,b)
-register RDN  a,b;
+RDN  a,b;
 {
-	register int i;
+	int i;
 
 	for (; (a != NULLRDN) && (b != NULLRDN) ; a = a->rdn_next, b = b->rdn_next) {
 		if (a->rdn_at != b->rdn_at)
@@ -529,9 +529,9 @@ register RDN  a,b;
 }
 
 rdn_cmp_reverse (a,b)
-register RDN  a,b;
+RDN  a,b;
 {
-	register int i;
+	int i;
 
 	for (; (a != NULLRDN) && (b != NULLRDN) ; a = a->rdn_next, b = b->rdn_next) {
 		if (a->rdn_at != b->rdn_at)
@@ -552,7 +552,7 @@ register RDN  a,b;
 }
 
 AttrV_cmp (x,y)
-register AttributeValue x,y;
+AttributeValue x,y;
 {
 	if (x->av_syntax != y->av_syntax)
 		return (-2);

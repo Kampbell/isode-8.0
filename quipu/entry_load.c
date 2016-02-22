@@ -93,7 +93,7 @@ char * file;
 	char *ptr, *newname, *tmp, *getline();
 #endif	/* TURBO_DISK */
 	extern int parse_line;
-	register int i;
+	int i;
 
 	if ((mapfp = fopen (file,"r")) == (FILE *)NULL) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Cannot read \"%s\" (%d)",file,errno));
@@ -142,7 +142,7 @@ char * file;
 	char mapname[LINESIZE];
 	char sname[LINESIZE];
 	char *mptr, *nptr;
-	register int i;
+	int i;
 #ifdef TEMPNAM
 	char mapdir[LINESIZE];
 	char *cp;
@@ -357,8 +357,8 @@ DN dn;
 }
 
 static file_check (offset,entryptr)
-register int offset;
-register Entry entryptr;
+int offset;
+Entry entryptr;
 {
 	ps->ps_ptr = filename + offset;
 	ps->ps_cnt = LINESIZE - offset;
@@ -448,7 +448,7 @@ int     offset;
 
 static entry_load_kids (entryptr,offset)
 Avlnode	*entryptr;	/* in this case, entryptr is really a tree of kids */
-register int offset;
+int offset;
 {
 	Entry	akid, parent;
 

@@ -47,7 +47,7 @@ int commandMode = 0;
 char *
 basename (char *fn)
 {
-	register char *f;
+	char *f;
 
 	if (f = rindex(fn,'/'))
 		return f+1;
@@ -60,7 +60,7 @@ char *
 dirname (char *fn)
 {
 	static char buf[MAXPATHLEN];
-	register char *f;
+	char *f;
 
 	strcpy(buf, fn);
 	if ((f = rindex(buf,'/')) && (f != buf)) {
@@ -81,7 +81,7 @@ makeFN (char *fn)
 char *
 makeFN2 (char *dir, char *fn)
 {
-	register char *s = p;
+	char *s = p;
 
 	strcpy(s,fsBase);
 	s += strlen(fsBase);
@@ -137,7 +137,7 @@ expandSymLinks (char *path)
 char *
 realPath3 (char *dir, char *path1, char *path2)
 {
-	register char *s, *s1, *rp;
+	char *s, *s1, *rp;
 	static char realp[MAXPATHLEN];
 	char givenp[MAXPATHLEN];
 

@@ -63,7 +63,7 @@ static void
 preloadcache (char *str)
 {
 	struct la_cache *cp = &Cache[0];
-	register struct isobject *io;
+	struct isobject *io;
 
 	(void) setisobject (0);
 	while (io = getisobject ()) {
@@ -92,7 +92,7 @@ preloadcache (char *str)
 OID 
 ode2oid (char *descriptor)
 {
-	register struct isobject *io;
+	struct isobject *io;
 	int i, least;
 	struct la_cache *cp, *cpn;
 	static char firsttime = 0;

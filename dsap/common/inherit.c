@@ -88,7 +88,7 @@ InheritAttr b;
 
 
 static inherit_print (ps,inherit,format)
-register PS ps;
+PS ps;
 InheritAttr inherit;
 int format;
 {

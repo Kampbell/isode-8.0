@@ -40,7 +40,7 @@ SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 
@@ -59,11 +59,11 @@ SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication *si)
 /*    S-RELEASE.RESPONSE */
 
 static int 
-SRelResponseAux (register struct ssapblk *sb, int status, char *data, int cc, struct SSAPindication *si)
+SRelResponseAux (struct ssapblk *sb, int status, char *data, int cc, struct SSAPindication *si)
 {
 	int     code,
 			result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	switch (status) {
 	case SC_ACCEPT:

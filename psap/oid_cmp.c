@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/oid_cmp.c,v 9.0 1992/0
 /*  */
 
 int	oid_cmp (p, q)
-register OID	p,
+OID	p,
 			q;
 {
 	if (p == NULLOID)
@@ -46,7 +46,7 @@ register OID	p,
 /*  */
 
 int 
-elem_cmp (register unsigned int *ip, register int i, register unsigned int *jp, register int j)
+elem_cmp (unsigned int *ip, int i, unsigned int *jp, int j)
 {
 	while (i > 0) {
 		if (j == 0)

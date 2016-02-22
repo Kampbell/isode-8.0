@@ -39,11 +39,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapabort2.c,v 9.0 1
 /*    handle P-{U,P}-ABORT.INDICATION */
 
 int 
-AcABORTser (int sd, register struct PSAPabort *pa, register struct AcSAPindication *aci)
+AcABORTser (int sd, struct PSAPabort *pa, struct AcSAPindication *aci)
 {
 	SBV	    smask;
 	int	    result;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	missingP (pa);
 	missingP (aci);
@@ -66,13 +66,13 @@ AcABORTser (int sd, register struct PSAPabort *pa, register struct AcSAPindicati
 /*  */
 
 int 
-ps2acsabort (register struct assocblk *acb, register struct PSAPabort *pa, register struct AcSAPindication *aci)
+ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindication *aci)
 {
 	int	    result;
 	PE	    pe;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	struct type_ACS_ACSE__apdu *pdu;
-	register struct type_ACS_ABRT__apdu *abrt;
+	struct type_ACS_ABRT__apdu *abrt;
 
 	result = OK;
 	pdu = NULL;
@@ -96,7 +96,7 @@ ps2acsabort (register struct assocblk *acb, register struct PSAPabort *pa, regis
 	aci -> aci_type = ACI_ABORT;
 
 	if (acb -> acb_sversion == 1) {
-		register int	i;
+		int	i;
 
 		aca -> aca_reason = ACS_ABORTED;
 		aca -> aca_source = ACA_USER;

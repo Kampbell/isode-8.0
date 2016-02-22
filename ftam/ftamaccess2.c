@@ -43,7 +43,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	switch (action) {
 	case FACTION_SUCCESS:
@@ -72,7 +72,7 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FAccessResponseAux (fsb, action, identity, diag, ndiag, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	action;
 struct FADUidentity *identity;
 struct FTAMdiagnostic diag[];
@@ -84,9 +84,9 @@ struct FTAMindication *fti;
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__LOCATE__response *loc;
-	register struct type_FTAM_F__ERASE__response *era;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__LOCATE__response *loc;
+	struct type_FTAM_F__ERASE__response *era;
 
 	if (fsb -> fsb_flags & FSB_INIT)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not responder");

@@ -193,9 +193,9 @@ char  **argv,
 	int	    failed,
 			vecp;
 	char   *vec[4];
-	register struct TSAPaddr  *ta;
+	struct TSAPaddr  *ta;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 
 	arginit (argv);
 	envinit ();
@@ -203,7 +203,7 @@ char  **argv,
 	failed = 0;
 
 	for (ta = tas; ta < tz; ta++) {
-		register struct NSAPaddr *na;
+		struct NSAPaddr *na;
 
 		if (ta -> ta_naddr) {
 			if (((na = ta -> ta_addrs) -> na_stack < 0
@@ -300,15 +300,15 @@ char  **vec;
 {
 	char    buffer[BUFSIZ];
 #ifndef	IAE
-	register struct isoservent *is;
+	struct isoservent *is;
 #else
-	register struct IAEntry *is;
+	struct IAEntry *is;
 #endif
 	struct tsapblk *tb;
 	struct TSAPstart   tss;
-	register struct TSAPstart *ts = &tss;
+	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	IFP	    hook;
 
 	/* begin UGLY */
@@ -406,9 +406,9 @@ out:
 
 static int  setperms (is)
 #ifndef	IAE
-register struct isoservent *is;
+struct isoservent *is;
 #else
-register struct IAEntry *is;
+struct IAEntry *is;
 #endif
 {
 	struct stat st;
@@ -425,7 +425,7 @@ register struct IAEntry *is;
 /*  */
 
 static void  ts_advise (td, code, event)
-register struct TSAPdisconnect *td;
+struct TSAPdisconnect *td;
 int	code;
 char   *event;
 {
@@ -445,14 +445,14 @@ char   *event;
 
 #ifndef	NOGOSIP
 static int  ssapd (is, td)
-register struct isoservent *is;
-register struct TSAPdisconnect *td;
+struct isoservent *is;
+struct TSAPdisconnect *td;
 {
 	int	    sd;
 	struct TSAPstart    tss;
-	register struct TSAPstart  *ts = &tss;
+	struct TSAPstart  *ts = &tss;
 	struct SSAPindication sis;
-	register struct SSAPabort *sa = &sis.si_abort;
+	struct SSAPabort *sa = &sis.si_abort;
 
 	if (strcmp (is -> is_entity, "session")
 			|| strcmp (is -> is_provider, "tsap"))
@@ -488,17 +488,17 @@ register struct TSAPdisconnect *td;
 
 
 static int  psapd (is, si)
-register struct isoservent *is;
-register struct SSAPindication *si;
+struct isoservent *is;
+struct SSAPindication *si;
 {
 	struct SSAPstart    sss;
-	register struct SSAPstart  *ss = &sss;
+	struct SSAPstart  *ss = &sss;
 	struct PSAPindication  pis;
-	register struct PSAPabort *pa = &pis.pi_abort;
+	struct PSAPabort *pa = &pis.pi_abort;
 	struct RtSAPindication  rtis;
-	register struct RtSAPabort *rta = &rtis.rti_abort;
+	struct RtSAPabort *rta = &rtis.rti_abort;
 	struct RoSAPindication  rois;
-	register struct RoSAPpreject   *rop = &rois.roi_preject;
+	struct RoSAPpreject   *rop = &rois.roi_preject;
 
 	if (strcmp (is -> is_provider, "ssap"))
 		return OK;
@@ -565,11 +565,11 @@ static	arginit (vec)
 char	**vec;
 {
 	int	    rflag;
-	register char  *ap;
+	char  *ap;
 #ifdef	TCP
 	int	    port;
 	struct NSAPaddr *tcp_na;
-	register struct servent *sp;
+	struct servent *sp;
 #endif
 #ifdef	X25
 	struct NSAPaddr *x25_na;
@@ -578,7 +578,7 @@ char	**vec;
 #endif
 #endif
 #ifdef	TP4
-	register struct isoservent *is;
+	struct isoservent *is;
 	struct TSAPaddr *tp4_na_start;
 	struct TSAPaddr *tp4_na_end;
 #endif
@@ -839,7 +839,7 @@ char	**vec;
 {
 	int	    argp,
 			options;
-	register char *ap;
+	char *ap;
 	char    base[BUFSIZ],
 			**argptr,
 			*args[4];
@@ -989,8 +989,8 @@ char	**vec;
 		Attr_Sequence as;
 		AttributeType t_oc;
 		DN	    local_dn;
-		register Filter	fi;
-		register struct ds_search_arg *sa = &search_arg;
+		Filter	fi;
+		struct ds_search_arg *sa = &search_arg;
 
 		if ((t_ev = str2AttrT ("execVector")) == NULL)
 			adios (NULLCP, "unknown attribute type \"%s\"", "execVector");
@@ -1047,14 +1047,14 @@ static	search_directory (firstime)
 int	firstime;
 {
 	int	    i;
-	register struct ds_search_arg *sa = &search_arg;
+	struct ds_search_arg *sa = &search_arg;
 	struct ds_search_result search_result;
-	register struct ds_search_result *sr = &search_result;
+	struct ds_search_result *sr = &search_result;
 	struct DSError error;
-	register struct DSError *se = &error;
-	register EntryInfo *ptr;
-	register struct IAEntry  *ia;
-	register struct TSAPaddr *ta,
+	struct DSError *se = &error;
+	EntryInfo *ptr;
+	struct IAEntry  *ia;
+	struct TSAPaddr *ta,
 			*tb,
 			*ty;
 	struct TSAPaddr tys[NTADDRS];
@@ -1132,7 +1132,7 @@ int	firstime;
 		for (eptr = ptr -> ent_attr; eptr; eptr = eptr -> attr_link) {
 			if (AttrT_cmp (eptr -> attr_type, t_la) == 0) {
 				if (avs = eptr -> attr_value) {
-					register struct PSAPaddr *pa =
+					struct PSAPaddr *pa =
 						(struct PSAPaddr *) avs -> avseq_av.av_struct;
 					ta = &pa -> pa_addr.sa_addr;
 
@@ -1145,7 +1145,7 @@ int	firstime;
 			if (AttrT_cmp (eptr -> attr_type, t_pa) == 0
 					&& found_listen == 0) {
 				if (avs = eptr -> attr_value) {
-					register struct PSAPaddr *pa =
+					struct PSAPaddr *pa =
 						(struct PSAPaddr *) avs -> avseq_av.av_struct;
 
 					ta = &pa -> pa_addr.sa_addr;
@@ -1159,7 +1159,7 @@ int	firstime;
 			if (AttrT_cmp (eptr -> attr_type, t_ev) == 0) {
 				if (avs = eptr -> attr_value) {
 					int	    vecp;
-					register char  **vp;
+					char  **vp;
 					char   *cp,
 						   *evec[NVEC + NSLACK + 1];
 
@@ -1217,8 +1217,8 @@ losing_iae:
 		if (ta -> ta_naddr == 0)
 			*ty++ = *ta;			/* struct copy */
 		else {
-			register int n = ta -> ta_naddr;
-			register struct NSAPaddr *na = ta -> ta_addrs;
+			int n = ta -> ta_naddr;
+			struct NSAPaddr *na = ta -> ta_addrs;
 
 			for (; n > 0; na++, n--) {
 				for (tb = tys; tb < ty; tb++) {
@@ -1260,7 +1260,7 @@ losing_iae:
 					&& bcmp (ta -> ta_selector, tb -> ta_selector,
 							 ta -> ta_selectlen)  == 0) {
 				char    buffer[BUFSIZ];
-				register int n;
+				int n;
 
 				(void) strcpy (buffer, taddr2str (tb));
 				advise (LLOG_EXCEPTIONS, NULLCP,
@@ -1321,7 +1321,7 @@ losing_iae:
 				if (bcmp ((char *) ta, (char *) tb, sizeof *ta) == 0)
 					break;
 			if (tb >= tz) {
-				register struct NSAPaddr *na;
+				struct NSAPaddr *na;
 
 				if (ta -> ta_naddr) {
 					if (((na = ta -> ta_addrs) -> na_stack < 0
@@ -1377,10 +1377,10 @@ losing_iae:
 static	bind_to_directory () {
 	struct ds_bind_arg bind_arg,
 			bind_result;
-	register struct ds_bind_arg *ba = &bind_arg,
+	struct ds_bind_arg *ba = &bind_arg,
 										 *br = &bind_result;
 	struct ds_bind_error bind_error;
-	register struct ds_bind_error *be = &bind_error;
+	struct ds_bind_error *be = &bind_error;
 	static int very_first_time = 1;
 
 	(void) unbind_from_directory ();
@@ -1433,9 +1433,9 @@ static int  rebind_to_directory () {
 /*  */
 
 static	int	make_bind_args (ba, br, be)
-register struct ds_bind_arg *ba,
+struct ds_bind_arg *ba,
 		*br;
-register struct ds_bind_error *be;
+struct ds_bind_error *be;
 {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
@@ -1475,17 +1475,17 @@ static int  unbind_from_directory () {
 /*  */
 
 static int  do_error (de)
-register struct DSError *de;
+struct DSError *de;
 {
 	if (de -> dse_type == DSE_REFERRAL
 			&& de -> ERR_REFERRAL.DSE_ref_candidates) {
-		register struct access_point *ap;
+		struct access_point *ap;
 		struct ds_bind_arg bind_arg,
 				bind_result;
-		register struct ds_bind_arg *ba = &bind_arg,
+		struct ds_bind_arg *ba = &bind_arg,
 											 *br = &bind_result;
 		struct ds_bind_error bind_error;
-		register struct ds_bind_error *be = &bind_error;
+		struct ds_bind_error *be = &bind_error;
 
 		ap = de -> ERR_REFERRAL.DSE_ref_candidates -> cr_accesspoints;
 

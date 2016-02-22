@@ -31,7 +31,7 @@ DN  dn;
 PS   ps;
 int  format;
 {
-	register DN eptr;
+	DN eptr;
 
 	if (dn == NULLDN) {
 		if (format == READOUT)
@@ -150,7 +150,7 @@ void ufn_rdn_print (ps,rdn)
 RDN  rdn;
 PS   ps;
 {
-	register RDN eptr;
+	RDN eptr;
 
 	if (rdn ==  NULLRDN)
 		return;

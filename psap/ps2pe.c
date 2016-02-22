@@ -34,13 +34,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps2pe.c,v 9.0 1992/06/
 /*  */
 
 PE 
-ps2pe_aux (register PS ps, int top, int all)
+ps2pe_aux (PS ps, int top, int all)
 {
-	register PElementLen len;
+	PElementLen len;
 	PElementClass   class;
 	PElementForm    form;
 	PElementID	    id;
-	register PE	    pe;
+	PE	    pe;
 	PE		    rpe = NULLPE;	/* for lint */
 
 	if (top && ps_prime (ps, 0) == NOTOK)
@@ -119,11 +119,11 @@ static int pe_id_overshift = PE_ID_MASK << (PE_ID_BITS - PE_ID_SHIFT);
 
 
 int 
-ps_read_id (register PS ps, int top, register PElementClass *class, register PElementForm *form, register PElementID *id)
+ps_read_id (PS ps, int top, PElementClass *class, PElementForm *form, PElementID *id)
 {
 	byte    c,
 			d;
-	register PElementID j;
+	PElementID j;
 
 	if (ps_read (ps, &c, 1) == NOTOK) {
 		if (top && ps -> ps_errno == PS_ERR_EOF)
@@ -165,10 +165,10 @@ ps_read_id (register PS ps, int top, register PElementClass *class, register PEl
 /*  */
 
 int 
-ps_read_len (register PS ps, register PElementLen *len)
+ps_read_len (PS ps, PElementLen *len)
 {
-	register int    i;
-	register PElementLen j;
+	int    i;
+	PElementLen j;
 	byte    c;
 
 	if (ps_read (ps, &c, 1) == NOTOK) {
@@ -210,10 +210,10 @@ ps_read_len (register PS ps, register PElementLen *len)
 /*  */
 
 int 
-ps_read_cons (register PS ps, register PE *pe, register PElementLen len)
+ps_read_cons (PS ps, PE *pe, PElementLen len)
 {
-	register int    cc;
-	register PE	    p,
+	int    cc;
+	PE	    p,
 			 q;
 
 	cc = ps -> ps_byteno + len;

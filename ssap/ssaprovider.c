@@ -59,8 +59,8 @@ SSendRequest (int sd, char *data, int cc, int begin, int end, struct SSAPindicat
 	SBV	    smask;
 	int     result;
 	struct udvec uvs[2];
-	register struct udvec *uv = uvs;
-	register struct ssapblk *sb;
+	struct udvec *uv = uvs;
+	struct ssapblk *sb;
 
 	missingP (data);
 	if (cc <= 0)
@@ -89,7 +89,7 @@ SWriteRequest (int sd, int typed, struct udvec *uv, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (uv);
 	missingP (si);
@@ -111,20 +111,20 @@ SWriteRequest (int sd, int typed, struct udvec *uv, struct SSAPindication *si)
 
 
 int 
-SDataRequestAux (register struct ssapblk *sb, int code, register struct udvec *uv, int begin, int end, struct SSAPindication *si)
+SDataRequestAux (struct ssapblk *sb, int code, struct udvec *uv, int begin, int end, struct SSAPindication *si)
 {
 	int     cc,
 			j,
 			len,
 			n,
 			result;
-	register char *bp,
+	char *bp,
 			 *ep;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 	struct udvec vvs[NSPUV];
-	register struct udvec  *vv,
+	struct udvec  *vv,
 			*wv;
 	struct udvec *xv;
 
@@ -246,7 +246,7 @@ SReadRequest (int sd, struct SSAPdata *sx, int secs, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (sx);
 	missingP (si);
@@ -278,11 +278,11 @@ SReadRequest (int sd, struct SSAPdata *sx, int secs, struct SSAPindication *si)
 /*  */
 
 static int 
-SReadRequestAux (register struct ssapblk *sb, register struct SSAPdata *sx, int secs, struct SSAPindication *si, int async, struct TSAPdata *tx)
+SReadRequestAux (struct ssapblk *sb, struct SSAPdata *sx, int secs, struct SSAPindication *si, int async, struct TSAPdata *tx)
 {
 	int     eot;
 	char    tokens;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	bzero ((char *) sx, sizeof *sx);
 	sx -> sx_qbuf.qb_forw = sx -> sx_qbuf.qb_back = &sx -> sx_qbuf;
@@ -616,7 +616,7 @@ invalid:
 			}
 			si -> si_type = SI_TOKEN;
 			{
-				register struct SSAPtoken *st = &si -> si_token;
+				struct SSAPtoken *st = &si -> si_token;
 
 				st -> st_type = ST_PLEASE;
 				st -> st_tokens = tokens;
@@ -653,7 +653,7 @@ invalid:
 					sb -> sb_flags &= ~(SB_ED | SB_ERACK);
 				si -> si_type = SI_TOKEN;
 				{
-					register struct SSAPtoken  *st = &si -> si_token;
+					struct SSAPtoken  *st = &si -> si_token;
 
 					st -> st_type = ST_GIVE;
 					st -> st_tokens = tokens;
@@ -752,7 +752,7 @@ invalid:
 				sx -> sx_type = SX_CAPDCNF;
 			}
 			if (s -> s_udata) {
-				register struct qbuf *qb;
+				struct qbuf *qb;
 
 				qb = (struct qbuf *)
 					 malloc (sizeof *qb + (unsigned) s -> s_ulen);
@@ -792,7 +792,7 @@ invalid:
 			freespkt (s);
 			si -> si_type = SI_TOKEN;
 			{
-				register struct SSAPtoken  *st = &si -> si_token;
+				struct SSAPtoken  *st = &si -> si_token;
 
 				st -> st_type = ST_CONTROL;
 				st -> st_tokens = st -> st_owned = sb -> sb_owned;
@@ -811,7 +811,7 @@ spin:
 				continue;
 			si -> si_type = SI_DATA;
 			{
-				register struct SSAPdata *sk = &si -> si_data;
+				struct SSAPdata *sk = &si -> si_data;
 
 				bzero ((char *) sk, sizeof *sk);
 				sk -> sx_qbuf.qb_forw = sk -> sx_qbuf.qb_back =
@@ -842,7 +842,7 @@ spin:
 			sb -> sb_flags |= SB_MAA;
 			si -> si_type = SI_SYNC;
 			{
-				register struct SSAPsync *sn = &si -> si_sync;
+				struct SSAPsync *sn = &si -> si_sync;
 
 				sn -> sn_type = SN_MAJORIND;
 				sn -> sn_ssn = s -> s_map_serial;
@@ -870,7 +870,7 @@ spin:
 				sb -> sb_flags &= ~SB_AE;
 				si -> si_type = SI_ACTIVITY;
 				{
-					register struct SSAPactivity *sv = &si -> si_activity;
+					struct SSAPactivity *sv = &si -> si_activity;
 
 					sv -> sv_type = SV_ENDCNF;
 					sv -> sv_ssn = s -> s_maa_serial;
@@ -879,7 +879,7 @@ spin:
 			} else {
 				si -> si_type = SI_SYNC;
 				{
-					register struct SSAPsync *sn = &si -> si_sync;
+					struct SSAPsync *sn = &si -> si_sync;
 
 					sn -> sn_type = SN_MAJORCNF;
 					sn -> sn_ssn = s -> s_maa_serial;
@@ -901,7 +901,7 @@ spin:
 			}
 			si -> si_type = SI_SYNC;
 			{
-				register struct SSAPsync *sn = &si -> si_sync;
+				struct SSAPsync *sn = &si -> si_sync;
 
 				sn -> sn_type = SN_MINORIND;
 				sn -> sn_options = (s -> s_mask & SMASK_MIP_SYNC)
@@ -923,7 +923,7 @@ spin:
 			sb -> sb_V_A = s -> s_mia_serial;
 			si -> si_type = SI_SYNC;
 			{
-				register struct SSAPsync *sn = &si -> si_sync;
+				struct SSAPsync *sn = &si -> si_sync;
 
 				sn -> sn_type = SN_MINORCNF;
 				sn -> sn_ssn = s -> s_mia_serial;
@@ -959,7 +959,7 @@ spin:
 			}
 			si -> si_type = SI_SYNC;
 			{
-				register struct SSAPsync *sn = &si -> si_sync;
+				struct SSAPsync *sn = &si -> si_sync;
 
 				sn -> sn_type = SN_RESETIND;
 				sn -> sn_options = sb -> sb_rs;
@@ -1024,7 +1024,7 @@ spin:
 #undef	dotoken2
 			si -> si_type = SI_SYNC;
 			{
-				register struct SSAPsync *sn = &si -> si_sync;
+				struct SSAPsync *sn = &si -> si_sync;
 
 				sn -> sn_type = SN_RESETCNF;
 				sn -> sn_ssn = sb -> sb_V_M;
@@ -1057,7 +1057,7 @@ spin:
 			sb -> sb_flags |= SB_ERACK;
 			si -> si_type = SI_REPORT;
 			{
-				register struct SSAPreport *sp = &si -> si_report;
+				struct SSAPreport *sp = &si -> si_report;
 
 				sp -> sp_peer = 0;
 				sp -> sp_reason = SP_PROTOCOL;
@@ -1070,7 +1070,7 @@ spin:
 				sb -> sb_flags |= SB_EDACK;
 			si -> si_type = SI_REPORT;
 			{
-				register struct SSAPreport *sp = &si -> si_report;
+				struct SSAPreport *sp = &si -> si_report;
 
 				sp -> sp_peer = 1;
 				sp -> sp_reason = s -> s_ed_reason;
@@ -1088,7 +1088,7 @@ spin:
 			sb -> sb_flags |= SB_Vact;
 			si -> si_type = SI_ACTIVITY;
 			{
-				register struct SSAPactivity *sv = &si -> si_activity;
+				struct SSAPactivity *sv = &si -> si_activity;
 
 				sv -> sv_type = SV_START;
 				sv -> sv_id = s -> s_as_id;	/* struct copy */
@@ -1107,7 +1107,7 @@ spin:
 			sb -> sb_flags |= SB_Vact;
 			si -> si_type = SI_ACTIVITY;
 			{
-				register struct SSAPactivity *sv = &si -> si_activity;
+				struct SSAPactivity *sv = &si -> si_activity;
 
 				sv -> sv_type = SV_RESUME;
 				sv -> sv_id = s -> s_ar_id;	/* struct copy */
@@ -1131,7 +1131,7 @@ spdu_ai:
 			sb -> sb_rs = SYNC_INTR;
 			si -> si_type = SI_ACTIVITY;
 			{
-				register struct SSAPactivity *sv = &si -> si_activity;
+				struct SSAPactivity *sv = &si -> si_activity;
 
 				sv -> sv_type = s -> s_code == SPDU_AI ? SV_INTRIND
 								: SV_DISCIND;
@@ -1163,7 +1163,7 @@ spdu_ai:
 #undef	dotoken
 			si -> si_type = SI_ACTIVITY;
 			{
-				register struct SSAPactivity *sv = &si -> si_activity;
+				struct SSAPactivity *sv = &si -> si_activity;
 
 				sv -> sv_type = s -> s_code == SPDU_AIA ? SV_INTRCNF
 								: SV_DISCCNF;
@@ -1180,7 +1180,7 @@ spdu_ae:
 			sb -> sb_flags |= SB_MAA | SB_AE;
 			si -> si_type = SI_ACTIVITY;
 			{
-				register struct SSAPactivity *sv = &si -> si_activity;
+				struct SSAPactivity *sv = &si -> si_activity;
 
 				sv -> sv_type = SV_ENDIND;
 				sv -> sv_ssn = s -> s_map_serial;
@@ -1193,7 +1193,7 @@ spdu_ae:
 			sb -> sb_flags |= SB_FINN;
 			si -> si_type = SI_FINISH;
 			{
-				register struct SSAPfinish *sf = &si -> si_finish;
+				struct SSAPfinish *sf = &si -> si_finish;
 
 				copySPKTdata (s, sf);
 			}
@@ -1206,7 +1206,7 @@ spdu_ae:
 			sb -> sb_flags &= ~(SB_ED | SB_EDACK | SB_ERACK);
 			si -> si_type = SI_ABORT;
 			{
-				register struct SSAPabort  *sa = &si -> si_abort;
+				struct SSAPabort  *sa = &si -> si_abort;
 
 				if (!(sa -> sa_peer = (s -> s_ab_disconnect & AB_DISC_USER)
 									  ? 1 : 0))
@@ -1296,9 +1296,9 @@ int
 SSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish, IFP abort, struct SSAPindication *si)
 {
 	SBV     smask;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if (data || tokens || sync || activity || report || finish || abort) {
 		missingP (data);
@@ -1342,7 +1342,7 @@ SSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP repor
 /*    TSAP interface */
 
 int 
-spkt2sd (register struct ssapkt *s, int sd, int expedited, register struct SSAPindication *si)
+spkt2sd (struct ssapkt *s, int sd, int expedited, struct SSAPindication *si)
 {
 	int     i,
 			len,
@@ -1350,7 +1350,7 @@ spkt2sd (register struct ssapkt *s, int sd, int expedited, register struct SSAPi
 	char   *base,
 		   *dp;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if (expedited)
 		s -> s_mask |= SMASK_SPDU_EXPD;
@@ -1386,15 +1386,15 @@ spkt2sd (register struct ssapkt *s, int sd, int expedited, register struct SSAPi
 /*  */
 
 struct ssapkt *
-sb2spkt (register struct ssapblk *sb, register struct SSAPindication *si, int secs, register struct TSAPdata *ty)
+sb2spkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPdata *ty)
 {
 	int     cc;
-	register struct ssapkt   *s,
+	struct ssapkt   *s,
 			*p;
 	struct TSAPdata txs;
-	register struct TSAPdata   *tx = &txs;
+	struct TSAPdata   *tx = &txs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if (sb -> sb_pr == SPDU_PR && sb -> sb_xspdu) {
 		SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP,
@@ -1594,15 +1594,15 @@ bad2:
 /*  */
 
 static int 
-TDATAser (int sd, register struct TSAPdata *tx)
+TDATAser (int sd, struct TSAPdata *tx)
 {
 	IFP	    abort;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct SSAPdata sxs;
-	register struct SSAPdata   *sx = &sxs;
+	struct SSAPdata   *sx = &sxs;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 	if ((sb = findsblk (sd)) == NULL)
 		return;
@@ -1655,12 +1655,12 @@ TDATAser (int sd, register struct TSAPdata *tx)
 /*  */
 
 static int 
-TDISCser (int sd, register struct TSAPdisconnect *td)
+TDISCser (int sd, struct TSAPdisconnect *td)
 {
 	IFP	    abort;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
+	struct SSAPindication *si = &sis;
 
 	if ((sb = findsblk (sd)) == NULL)
 		return;
@@ -1678,7 +1678,7 @@ TDISCser (int sd, register struct TSAPdisconnect *td)
 /*  */
 
 int 
-ts2sslose (register struct SSAPindication *si, char *event, register struct TSAPdisconnect *td)
+ts2sslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td)
 {
 	int     reason;
 	char   *cp,
@@ -1725,7 +1725,7 @@ ts2sslose (register struct SSAPindication *si, char *event, register struct TSAP
 
 struct ssapblk *
 newsblk (void) {
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	sb = (struct ssapblk   *) calloc (1, sizeof *sb);
 	if (sb == NULL)
@@ -1747,7 +1747,7 @@ newsblk (void) {
 
 
 int 
-freesblk (register struct ssapblk *sb)
+freesblk (struct ssapblk *sb)
 {
 	if (sb == NULL)
 		return;
@@ -1788,9 +1788,9 @@ freesblk (register struct ssapblk *sb)
 /*  */
 
 struct ssapblk *
-findsblk (register int sd)
+findsblk (int sd)
 {
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	if (once_only == 0)
 		return NULL;

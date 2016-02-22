@@ -108,7 +108,7 @@ selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs)
 
 	int     error;
 	struct timeval  tvs;
-	register struct timeval *tv = &tvs;
+	struct timeval *tv = &tvs;
 
 	if (secs != NOTOK)
 		tv -> tv_sec = secs, tv -> tv_usec = 0;
@@ -121,7 +121,7 @@ selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs)
 	int msecs;
 #else
 	struct timeval  tvs;
-	register struct timeval *tv = &tvs;
+	struct timeval *tv = &tvs;
 #endif
 
 #if defined(masscomp) && defined(_ATT)
@@ -251,7 +251,7 @@ fd_set *rfds,
 	   *efds;
 int	secs;
 {
-	register int    fd;
+	int    fd;
 	int     n;
 	fd_set  ifds,
 			ofds;
@@ -401,7 +401,7 @@ fd_set *rfds,
 	   *efds;
 int	secs;
 {
-	register int    fd;
+	int    fd;
 	int	    n;
 	fd_set  ifds,
 			ofds,

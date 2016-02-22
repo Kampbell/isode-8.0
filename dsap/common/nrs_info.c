@@ -158,7 +158,7 @@ struct str_seq	* arg2;
 }
 
 static str_seq_print (ps, strseq, format)
-register PS	  ps;
+PS	  ps;
 struct str_seq	* strseq;
 int		  format;
 {
@@ -490,7 +490,7 @@ struct addr_info	* arg2;
 }
 
 static addr_info_print (ps, info, format)
-register PS		  ps;
+PS		  ps;
 struct addr_info	* info;
 int			  format;
 {
@@ -1090,7 +1090,7 @@ struct nrs_routes * arg2;
 }
 
 static nrs_routes_print (ps, routes, format)
-register PS		  ps;
+PS		  ps;
 struct nrs_routes	* routes;
 int			  format;
 {
@@ -1265,7 +1265,7 @@ struct nrs_info * arg2;
 }
 
 static context_print (ps, ctx, format)
-register PS	  ps;
+PS	  ps;
 int		  ctx;
 int		  format;
 {
@@ -1327,7 +1327,7 @@ int		  format;
 }
 
 static addr_sp_id_print (ps, asi, format)
-register PS	  ps;
+PS	  ps;
 int		  asi;
 int		  format;
 {
@@ -1356,7 +1356,7 @@ int		  format;
 }
 
 static nrs_info_print (ps, nrs, format)
-register PS	  ps;
+PS	  ps;
 struct nrs_info	* nrs;
 int		  format;
 {

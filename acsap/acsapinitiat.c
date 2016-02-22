@@ -60,8 +60,8 @@ AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPa
 
 	toomuchP (data, ndata, NACDATA, "initial");
 	if (data) {	    /* XXX: probably should have a more intensive check... */
-		register int    i;
-		register PE    *pep;
+		int    i;
+		PE    *pep;
 
 		for (pep = data, i = ndata; i > 0; pep++, i--)
 			if ((*pep) -> pe_context == PE_DFLT_CTX)
@@ -89,16 +89,16 @@ AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPa
 static int 
 AcAssocRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async)
 {
-	register int    i;
+	int    i;
 	int	    result;
 	PE	    pe;
-	register struct assocblk *acb;
-	register struct PSAPcontext *pp;
-	register struct PSAPconnect *pc = &acc -> acc_connect;
+	struct assocblk *acb;
+	struct PSAPcontext *pp;
+	struct PSAPconnect *pc = &acc -> acc_connect;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
-	register struct type_ACS_AARQ__apdu *pdu;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
+	struct type_ACS_AARQ__apdu *pdu;
 
 	if ((acb = newacblk ()) == NULL)
 		return acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
@@ -162,8 +162,8 @@ no_mem:
 	}
 
 	{
-		register int ctx;
-		register OID oid;
+		int ctx;
+		OID oid;
 
 		if ((oid = AC_ASN_OID) == NULLOID) {
 			result = acsaplose (aci, ACS_PARAMETER, NULLCP,
@@ -273,11 +273,11 @@ AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *ac
 {
 	SBV     smask;
 	int     result;
-	register struct assocblk *acb;
-	register struct PSAPconnect *pc;
+	struct assocblk *acb;
+	struct PSAPconnect *pc;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
 
 	missingP (acc);
 	missingP (aci);
@@ -323,15 +323,15 @@ AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *ac
 /*  */
 
 static int 
-AcAsynRetryAux (register struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindication *pi, struct AcSAPconnect *acc, struct AcSAPindication *aci)
+AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindication *pi, struct AcSAPconnect *acc, struct AcSAPindication *aci)
 {
-	register int    i;
+	int    i;
 	int	    result;
 	PE	    pe;
-	register struct PSAPcontext *pp;
-	register struct PSAPabort *pa = &pi -> pi_abort;
+	struct PSAPcontext *pp;
+	struct PSAPabort *pa = &pi -> pi_abort;
 	struct type_ACS_ACSE__apdu *pdu;
-	register struct type_ACS_AARE__apdu *aare;
+	struct type_ACS_AARE__apdu *aare;
 
 	if (pc -> pc_result == PC_ABORTED) {
 		(void) ps2acsabort (acb, pa, aci);
@@ -515,11 +515,11 @@ AcAsynNextRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci
 {
 	SBV     smask;
 	int     result;
-	register struct assocblk *acb;
-	register struct PSAPconnect *pc;
+	struct assocblk *acb;
+	struct PSAPconnect *pc;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
 
 	missingP (acc);
 	missingP (aci);

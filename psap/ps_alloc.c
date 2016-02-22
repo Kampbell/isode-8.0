@@ -67,9 +67,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_alloc.c,v 9.0 1992/
 /*  */
 
 PS 
-ps_alloc (register IFP io)
+ps_alloc (IFP io)
 {
-	register PS	    ps;
+	PS	    ps;
 
 	if ((ps = (PS) calloc (1, sizeof *ps)) == NULLPS)
 		return NULLPS;

@@ -222,7 +222,7 @@ int
 main (int argc, char **argv, char **envp)
 {
 	int	    i;
-	register char  *cp,
+	char  *cp,
 			 *dp;
 
 	dp = pepsyversion + strlen ("pepsy ");
@@ -336,7 +336,7 @@ usage:
 /*    ERRORS */
 
 int 
-yyerror (register char *s)
+yyerror (char *s)
 {
 	yyerror_aux (s);
 
@@ -382,7 +382,7 @@ warning (char *fmt)
 #endif
 
 static 
-yyerror_aux (register char *s)
+yyerror_aux (char *s)
 {
 	if (linepos)
 		(void) fprintf (stderr, "\n"), linepos = 0;
@@ -537,14 +537,14 @@ pass1 (void) {
 /*  */
 
 pass1_type (encpref, decpref, prfpref, mod, id, yp)
-register char  *encpref,
+char  *encpref,
 		 *decpref,
 		 *prfpref,
 		 *mod,
 		 *id;
-register YP	yp;
+YP	yp;
 {
-	register SY	    sy;
+	SY	    sy;
 
 	if (lookup_type (mod, id))	/* no duplicate entries, please... */
 		return;
@@ -598,8 +598,8 @@ FILE *fp;
 
 int 
 pass2 (void) {
-	register SY	    sy;
-	register YP	    yp;
+	SY	    sy;
+	YP	    yp;
 
 
 	modsym_aux (mymodule, modulename);
@@ -750,10 +750,10 @@ merge_files (char *stem)
 /* ARGSUSED */
 
 static	do_struct0 (yp, id)
-register YP	yp;
+YP	yp;
 char   *id;
 {
-	register YP	    y;
+	YP	    y;
 	MD	md;
 
 	switch (yp -> yp_code) {
@@ -806,15 +806,15 @@ char   *id;
 /*  */
 
 static	do_struct1 (yp, id, pullup)
-register YP	yp;
+YP	yp;
 char   *id,
 	   *pullup;
 {
-	register int    i,
+	int    i,
 			 j;
 	char    buf1[BUFSIZ];
-	register YP	    y;
-	register YV	    yv;
+	YP	    y;
+	YV	    yv;
 
 	switch (yp -> yp_code) {
 	case YP_BIT:
@@ -913,11 +913,11 @@ char   *id,
 /*  */
 
 static	do_struct2 (yp, id, pullup)
-register YP	yp;
+YP	yp;
 char   *id,
 	   *pullup;
 {
-	register YP	    y;
+	YP	    y;
 	int	flg = (yp -> yp_code == YP_SEQTYPE || yp -> yp_code == YP_SETTYPE);
 
 	switch (yp -> yp_code) {
@@ -958,7 +958,7 @@ char   *id,
 /* ARGSUSED */
 
 static	do_type1 (yp, top, level, id, var, action2, direction)
-register YP yp;
+YP yp;
 int	top,
 	level;
 char   *id,
@@ -971,9 +971,9 @@ int	direction;
 		   *ep,
 		   buffer[BUFSIZ],
 		   varbuf[BUFSIZ];
-	register YP	    y;
-	register YV	    yv;
-	register YT	    yt;
+	YP	    y;
+	YV	    yv;
+	YT	    yt;
 
 	(void) printf ("%*s", level * 4, "");
 
@@ -1532,10 +1532,10 @@ int	direction;
 /*    TYPE HANDLING */
 
 YP  lookup_type (mod, id)
-register char *mod,
+char *mod,
 		 *id;
 {
-	register SY	    sy;
+	SY	    sy;
 
 	for (sy = mysymbols; sy; sy = sy -> sy_next) {
 		if (mod) {
@@ -1555,7 +1555,7 @@ register char *mod,
 /*  */
 
 pepsy (yp, top, level, id, val, var, arrayflg)
-register YP	yp;
+YP	yp;
 int	top,
 	level,
 	arrayflg;
@@ -1563,9 +1563,9 @@ char   *id,
 	   *val,
 	   *var;
 {
-	register int    i,
+	int    i,
 			 j;
-	register char  *bp;
+	char  *bp;
 	char   *cp,
 		   *dp,
 		   *ep,
@@ -1573,8 +1573,8 @@ char   *id,
 		   buf1[BUFSIZ],
 		   buf2[BUFSIZ],
 		   buf3[BUFSIZ];
-	register YP	    y;
-	register YV	    yv;
+	YP	    y;
+	YV	    yv;
 
 	(void) strcpy (bp = buf2, var);
 	bp += strlen (bp);
@@ -1986,7 +1986,7 @@ char   *id,
 /*  */
 
 static	printag (yp, level, pullup)
-register YP	yp;
+YP	yp;
 int	level;
 char   *pullup;
 {
@@ -2010,7 +2010,7 @@ char   *pullup;
 /*  */
 
 static	xalloc (yp, top, level, arg, type, brackets)
-register YP	yp;
+YP	yp;
 int	top,
 	level,
 	brackets;
@@ -2018,7 +2018,7 @@ char   *arg,
 	   *type;
 {
 	int	    didone;
-	register YP	    y;
+	YP	    y;
 
 	if (hflag && !arg && !type)
 		return;
@@ -2110,7 +2110,7 @@ char   *arg,
 
 
 static	balloc (yp, var, action2, level)
-register YP	yp;
+YP	yp;
 char   *var, *action2;
 int	level;
 {
@@ -2131,7 +2131,7 @@ int	level;
 
 #ifdef	notdef
 static	qalloc (yp, var, action2, level)
-register YP	yp;
+YP	yp;
 char   *var,
 	   *action2;
 int	level;
@@ -2161,10 +2161,10 @@ int	level;
  * actions in CHOICE { CHOICE {} } and such like
  */
 static	choice_pullup (yp, partial)
-register YP	yp;
+YP	yp;
 int	partial;
 {
-	register YP	   *x,
+	YP	   *x,
 			 y,
 			 z,
 			 *z1,
@@ -2225,9 +2225,9 @@ patch:
 /*  */
 
 static	components_pullup (yp)
-register YP	yp;
+YP	yp;
 {
-	register YP    *x,
+	YP    *x,
 			 y,
 			 z,
 			 z1,
@@ -2274,7 +2274,7 @@ register YP	yp;
 /*    VALUE HANDLING */
 
 static int  val2int (yv)
-register YV	yv;
+YV	yv;
 {
 	switch (yv -> yv_code) {
 	case YV_BOOL:
@@ -2298,7 +2298,7 @@ register YV	yv;
 }
 
 static double  val2real (yv)
-register YV	yv;
+YV	yv;
 {
 	switch (yv -> yv_code) {
 	case YV_NUMBER:
@@ -2326,10 +2326,10 @@ register YV	yv;
 /*  */
 
 static	val2prf (yv, level)
-register YV	yv;
+YV	yv;
 int	level;
 {
-	register YV    y;
+	YV    y;
 
 	if (yv -> yv_flags & YV_ID)
 		(void) printf ("%s ", yv -> yv_id);
@@ -2397,7 +2397,7 @@ dump_real (double r)
 	(void) printf ("{ %s%s, 10, %d }", sign ? "-" : "", sbuf,
 				   decpt - strlen (sbuf));
 #else
-	register char   *cp,
+	char   *cp,
 			 *dp,
 			 *sp;
 	char    sbuf[128];
@@ -2421,9 +2421,9 @@ dump_real (double r)
 /*  */
 
 static int  dfl2int (yp)
-register YP	yp;
+YP	yp;
 {
-	register YV	    yv,
+	YV	    yv,
 			 y;
 
 	yv = yp -> yp_default;
@@ -2461,11 +2461,11 @@ register YP	yp;
 /*    DEBUG */
 
 print_type (yp, level)
-register YP	yp;
-register int	level;
+YP	yp;
+int	level;
 {
-	register YP	    y;
-	register YV	    yv;
+	YP	    y;
+	YV	    yv;
 
 	if (yp == NULLYP)
 		return;
@@ -2553,10 +2553,10 @@ register int	level;
 /*  */
 
 static	print_value (yv, level)
-register YV	yv;
-register int	level;
+YV	yv;
+int	level;
 {
-	register YV	    y;
+	YV	    y;
 
 	if (yv == NULLYV)
 		return;
@@ -2616,14 +2616,14 @@ register int	level;
 /*    SYMBOLS */
 
 static SY  new_symbol (encpref, decpref, prfpref, mod, id, type)
-register char  *encpref,
+char  *encpref,
 		 *decpref,
 		 *prfpref,
 		 *mod,
 		 *id;
-register YP	type;
+YP	type;
 {
-	register SY    sy;
+	SY    sy;
 
 	if ((sy = (SY) calloc (1, sizeof *sy)) == NULLSY)
 		yyerror ("out of memory");
@@ -2639,9 +2639,9 @@ register YP	type;
 
 
 static SY 
-add_symbol (register SY s1, register SY s2)
+add_symbol (SY s1, SY s2)
 {
-	register SY	    sy;
+	SY	    sy;
 
 	if (s1 == NULLSY)
 		return s2;
@@ -2659,7 +2659,7 @@ MD  lookup_module (module, oid)
 char   *module;
 OID	oid;
 {
-	register MD	    md;
+	MD	    md;
 
 	for (md = mymodules; md; md = md -> md_next) {
 		if (module && md -> md_module && strcmp (md -> md_module, module) == 0)
@@ -2690,7 +2690,7 @@ YP	new_type (code, lineno)
 int	code;
 int	lineno;
 {
-	register YP    yp;
+	YP    yp;
 
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
 		yyerror ("out of memory");
@@ -2702,10 +2702,10 @@ int	lineno;
 
 
 YP	add_type (y, z)
-register YP	y,
+YP	y,
 		 z;
 {
-	register YP	    yp;
+	YP	    yp;
 
 	for (yp = y; yp -> yp_next; yp = yp -> yp_next)
 		continue;
@@ -2717,9 +2717,9 @@ register YP	y,
 /*  */
 
 YP	copy_type (yp)
-register YP	yp;
+YP	yp;
 {
-	register YP	    y;
+	YP	    y;
 
 	if (yp == NULLYP)
 		return NULLYP;
@@ -2844,7 +2844,7 @@ register YP	yp;
 YV	new_value (code)
 int	code;
 {
-	register YV    yv;
+	YV    yv;
 
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
 		yyerror ("out of memory");
@@ -2855,10 +2855,10 @@ int	code;
 
 
 YV	add_value (y, z)
-register YV	y,
+YV	y,
 		 z;
 {
-	register YV	    yv;
+	YV	    yv;
 
 	for (yv = y; yv -> yv_next; yv = yv -> yv_next)
 		continue;
@@ -2870,9 +2870,9 @@ register YV	y,
 /*  */
 
 YV	copy_value (yv)
-register YV	yv;
+YV	yv;
 {
-	register YV	    y;
+	YV	    y;
 
 	if (yv == NULLYV)
 		return NULLYV;
@@ -2930,7 +2930,7 @@ register YV	yv;
 YT	new_tag (class)
 PElementClass	class;
 {
-	register YT    yt;
+	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)
 		yyerror ("out of memory");
@@ -2942,9 +2942,9 @@ PElementClass	class;
 /*  */
 
 YT	copy_tag (yt)
-register YT	yt;
+YT	yt;
 {
-	register YT	    y;
+	YT	    y;
 
 	if (yt == NULLYT)
 		return NULLYT;
@@ -2959,9 +2959,9 @@ register YT	yt;
 /*    STRINGS */
 
 char *
-new_string (register char *s)
+new_string (char *s)
 {
-	register char  *p;
+	char  *p;
 
 	if (s == NULLCP)
 		return NULLCP;
@@ -3003,12 +3003,12 @@ static struct triple {
 /*  */
 
 char *
-modsym (register char *module, register char *id, char *prefix)
+modsym (char *module, char *id, char *prefix)
 {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
-	register struct triple *t;
+	struct triple *t;
 	static char buffer[BUFSIZ];
 
 	if (module == NULLCP)
@@ -3032,9 +3032,9 @@ modsym (register char *module, register char *id, char *prefix)
 
 
 static 
-modsym_aux (register char *name, register char *bp)
+modsym_aux (char *name, char *bp)
 {
-	register char   c;
+	char   c;
 
 	while (c = *name++)
 		switch (c) {
@@ -3057,7 +3057,7 @@ static char *
 gensym (char *s, char *a)
 {
 	int     i;
-	register char  *p;
+	char  *p;
 	char    buffer[BUFSIZ];
 	static int  cP = 0;
 	static int  eP = 0;
@@ -3152,7 +3152,7 @@ int	level;
 /* really need much more information in the .ph file... */
 
 static	read_ph_file (module, oid)
-register char *module;
+char *module;
 OID	oid;
 {
 	int     class,
@@ -3165,10 +3165,10 @@ OID	oid;
 			decpref[BUFSIZ],
 			printpref[BUFSIZ];
 	char    *p, *ep, *dp, *ppp;
-	register FILE  *fp;
-	register YP	    yp;
-	register YT	    yt;
-	register YV	    yv;
+	FILE  *fp;
+	YP	    yp;
+	YT	    yt;
+	YV	    yv;
 
 	(void) sprintf (file, "%s.ph", module);
 	if (oid)
@@ -3224,10 +3224,10 @@ write_ph_file (void) {
 	char    file[BUFSIZ];
 	char    fileoid[BUFSIZ];
 	char	*cp;
-	register FILE  *fp;
-	register SY	    sy;
-	register YT	    yt;
-	register YP	    yp;
+	FILE  *fp;
+	SY	    sy;
+	YT	    yt;
+	YP	    yp;
 
 	(void) sprintf (file, "%s.ph", mymodule);
 	if (mymoduleid)
@@ -3272,10 +3272,10 @@ char *fn,
 	 *fnoid,
 	 *mode;
 {
-	register char  *dst,
+	char  *dst,
 			 *path;
 	char    fnb[BUFSIZ];
-	register FILE  *fp;
+	FILE  *fp;
 	static char *pepypath = NULL;
 
 	if (*fn == '/')
@@ -3331,14 +3331,14 @@ char *fn,
 }
 
 YT  lookup_tag (yp)
-register YP     yp;
+YP     yp;
 {
-	register struct tuple *t;
+	struct tuple *t;
 	static struct ypt ypts;
-	register YT     yt = &ypts;
+	YT     yt = &ypts;
 	static struct ypv ypvs;
-	register YV     yv = &ypvs;
-	register YP     z;
+	YV     yv = &ypvs;
+	YP     z;
 
 	if (yp -> yp_flags & YP_TAG)
 		return yp -> yp_tag;
@@ -3373,9 +3373,9 @@ register YP     yp;
 }
 
 int  is_any_type (yp)
-register YP     yp;
+YP     yp;
 {
-	register    YP z;
+	   YP z;
 
 	while (yp -> yp_code == YP_IDEFINED) {
 		if (yp -> yp_flags & YP_TAG)
@@ -3550,7 +3550,7 @@ new_yfn(efn, dfn, pfn, ffn)
 char	*efn, *dfn, *pfn, *ffn;
 {
 
-	register YFN    fn;
+	YFN    fn;
 	char	buf[STRSIZE];
 
 	if ((fn = (YFN) calloc (1, sizeof *fn)) == NULLYFN)
@@ -3653,7 +3653,7 @@ YAL	yal1, yal2;
  */
 YFN
 join_yfn(fn1, fn2)
-register YFN	fn1, fn2;
+YFN	fn1, fn2;
 {
 
 	if (fn2 == NULLYFN)

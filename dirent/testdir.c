@@ -12,10 +12,10 @@ extern void	exit();
 extern int	strcmp();
 
 int 
-main (int argc, register char **argv)
+main (int argc, char **argv)
 {
-	register DIR		*dirp;
-	register struct dirent	*dp;
+	DIR		*dirp;
+	struct dirent	*dp;
 	int			nerrs = 0;	/* total not found */
 
 	if ( (dirp = opendir( "." )) == NULL ) {

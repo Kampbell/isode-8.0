@@ -77,7 +77,7 @@ char   *getuser (), *getgroup ();
 /*    SELECTION REGIME */
 
 int	ftam_selection (ftg, ftm)
-register struct FTAMgroup *ftg,
+struct FTAMgroup *ftg,
 		*ftm;
 {
 	int     action,
@@ -90,8 +90,8 @@ register struct FTAMgroup *ftg,
 
 	state = FSTATE_SUCCESS;
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 		struct FTAMdiagnostic *dp = ftm -> ftg_select.ftse_diags;
 
 		errno = 0;
@@ -181,10 +181,10 @@ done_select:
 	}
 
 	if (ftg -> ftg_flags & FTG_CREATE) {
-		register struct FTAMcreate *ftce = &ftg -> ftg_create;
-		register struct FTAMattributes *fa = &ftce -> ftce_attrs;
+		struct FTAMcreate *ftce = &ftg -> ftg_create;
+		struct FTAMattributes *fa = &ftce -> ftce_attrs;
 		struct FTAMdiagnostic *dp = ftm -> ftg_create.ftce_diags;
-		register struct vfsmap *vf;
+		struct vfsmap *vf;
 
 		if (!(fa -> fa_present & FA_FILENAME)
 				|| fa -> fa_nfile != 1
@@ -328,8 +328,8 @@ done_create:
 		ftm -> ftg_readattr.ftra_action = FACTION_SUCCESS;
 
 	if (ftg -> ftg_flags & FTG_CHATTR) {
-		register struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
-		register struct FTAMattributes *fa = &ftca -> ftca_attrs;
+		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
+		struct FTAMattributes *fa = &ftca -> ftca_attrs;
 		struct FTAMdiagnostic *dp = ftm -> ftg_chngattr.ftca_diags;
 
 		if (chkattrs (fa, fa -> fa_present, 0, &dp) == NOTOK)
@@ -342,7 +342,7 @@ done_create:
 	}
 
 	if (ftg -> ftg_flags & FTG_OPEN) {
-		register struct FTAMopen *ftop = &ftm -> ftg_open;
+		struct FTAMopen *ftop = &ftm -> ftg_open;
 
 		ftop -> ftop_state = FSTATE_FAILURE;
 		ftop -> ftop_action = FACTION_SUCCESS;
@@ -362,8 +362,8 @@ done_create:
 		ftm -> ftg_delete.ftxe_action = FACTION_SUCCESS;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftm -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftm -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		if (state != FSTATE_SUCCESS) {
 			ftse -> ftse_action = FACTION_PERM;
@@ -378,8 +378,8 @@ done_create:
 	}
 
 	if (ftg -> ftg_flags & FTG_CREATE) {
-		register struct FTAMattributes *fa = &ftg -> ftg_create.ftce_attrs;
-		register struct FTAMcreate *ftce = &ftm -> ftg_create;
+		struct FTAMattributes *fa = &ftg -> ftg_create.ftce_attrs;
+		struct FTAMcreate *ftce = &ftm -> ftg_create;
 		struct FTAMdiagnostic  *dp = ftce -> ftce_diags + ftce -> ftce_ndiag;
 
 		if (state != FSTATE_SUCCESS) {
@@ -492,7 +492,7 @@ bad_open:
 
 	if (ftg -> ftg_flags & FTG_RDATTR
 			&& (ftm -> ftg_readattr.ftra_action == FACTION_SUCCESS)) {
-		register struct FTAMreadattr   *ftra = &ftm -> ftg_readattr;
+		struct FTAMreadattr   *ftra = &ftm -> ftg_readattr;
 		struct FTAMdiagnostic  *dp = ftra -> ftra_diags + ftra -> ftra_ndiag;
 
 		if (!statok) {
@@ -527,8 +527,8 @@ bad_readattr:
 
 	if (ftg -> ftg_flags & FTG_CHATTR
 			&& (ftm -> ftg_chngattr.ftca_action == FACTION_SUCCESS)) {
-		register struct FTAMchngattr   *ftca = &ftm -> ftg_chngattr;
-		register struct FTAMattributes *fa = &ftg -> ftg_chngattr.ftca_attrs;
+		struct FTAMchngattr   *ftca = &ftm -> ftg_chngattr;
+		struct FTAMattributes *fa = &ftg -> ftg_chngattr.ftca_attrs;
 		struct FTAMdiagnostic  *dp = ftca -> ftca_diags + ftca -> ftca_ndiag;
 
 		if (chngattrs (fa -> fa_present, fa, &dp) == NOTOK) {
@@ -544,7 +544,7 @@ bad_readattr:
 #ifndef	BRIDGE
 		int	mode;
 #endif
-		register struct FTAMopen *ftop = &ftm -> ftg_open;
+		struct FTAMopen *ftop = &ftm -> ftg_open;
 		struct FTAMdiagnostic  *dp = ftop -> ftop_diags + ftop -> ftop_ndiag;
 
 		ftop -> ftop_state = FSTATE_SUCCESS;
@@ -572,7 +572,7 @@ unavailable:
 		}
 
 		if (ftop -> ftop_contents == NULL) {
-			register struct FTAMattributes *fa;
+			struct FTAMattributes *fa;
 
 			if (ftg -> ftg_flags & FTG_CREATE) {
 				fa = &ftg -> ftg_create.ftce_attrs;
@@ -791,7 +791,7 @@ done_open:
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftm -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftm -> ftg_deselect;
 
 		if (ftde -> ftde_action == FACTION_SUCCESS) {
 			/* anything to charge if (mygid != NOTOK)?  ha! */
@@ -799,7 +799,7 @@ done_open:
 	}
 
 	if (ftg -> ftg_flags & FTG_DELETE) {
-		register struct FTAMdelete *ftxe = &ftm -> ftg_delete;
+		struct FTAMdelete *ftxe = &ftm -> ftg_delete;
 		struct FTAMdiagnostic  *dp = ftxe -> ftxe_diags + ftxe -> ftxe_ndiag;
 
 		if (ftxe -> ftxe_action == FACTION_SUCCESS) {
@@ -846,13 +846,13 @@ int	fd,
 register
 #endif
 struct FTAMconcurrency *fc;
-register struct FTAMdiagnostic **diags;
+struct FTAMdiagnostic **diags;
 {
 	int     result;
 #ifndef	BRIDGE
-	register char  *cp;
+	char  *cp;
 #endif
-	register struct FTAMdiagnostic *dp = *diags;
+	struct FTAMdiagnostic *dp = *diags;
 
 	result = OK;
 
@@ -968,15 +968,15 @@ bad_concur:
 /*  */
 
 static int  chkattrs (fa, present, select, diags)
-register struct FTAMattributes *fa;
+struct FTAMattributes *fa;
 long	present;
 int	select;
-register struct FTAMdiagnostic **diags;
+struct FTAMdiagnostic **diags;
 {
 	int     id,
 			result;
 	char   *file;
-	register struct FTAMdiagnostic *dp = *diags;
+	struct FTAMdiagnostic *dp = *diags;
 
 	result = OK;
 
@@ -1047,19 +1047,19 @@ register struct FTAMdiagnostic **diags;
 
 int	readattrs (attrnames, fa, proposed, parameter, file, st, diags)
 int	attrnames;
-register struct FTAMattributes *fa;
+struct FTAMattributes *fa;
 OID	proposed;
 PE	parameter;
 char   *file;
 struct stat *st;
-register struct FTAMdiagnostic **diags;
+struct FTAMdiagnostic **diags;
 {
 #ifndef	BRIDGE
 	int     result;
 	char   *cp;
-	register struct tm *tm;
+	struct tm *tm;
 #endif
-	register struct FTAMdiagnostic *dp = *diags;
+	struct FTAMdiagnostic *dp = *diags;
 
 	fa -> fa_present = attrnames;
 	fa -> fa_novalue = attrnames & (FA_SECURITY | FA_PRIVATE);
@@ -1104,7 +1104,7 @@ register struct FTAMdiagnostic **diags;
 	}
 
 	if (attrnames & FA_CONTENTS) {
-		register struct vfsmap *vf;
+		struct vfsmap *vf;
 
 		if (vf = st2vfs (myfd, file, st, proposed, ftamfd)) {
 			fa -> fa_contents = vf -> vf_oid;
@@ -1251,14 +1251,14 @@ bad_param:
 
 static int  chngattrs (present, fa, diags)
 long	present;
-register struct FTAMattributes *fa;
-register struct FTAMdiagnostic **diags;
+struct FTAMattributes *fa;
+struct FTAMdiagnostic **diags;
 {
 #ifndef	BRIDGE
 	int     gid,
 			result;
 #endif
-	register struct FTAMdiagnostic *dp = *diags;
+	struct FTAMdiagnostic *dp = *diags;
 #ifndef	BRIDGE
 	struct  stat    n1;
 #endif
@@ -1367,11 +1367,11 @@ no_change:
 static char *getfile (file)
 char   *file;
 {
-	register char  *bp;
+	char  *bp;
 #ifndef	BRIDGE
-	register char  *cp,
+	char  *cp,
 			 *pp;
-	register struct passwd *pw;
+	struct passwd *pw;
 #endif
 	static int  i = 0;
 	static char buffer1[MAXPATHLEN],
@@ -1469,7 +1469,7 @@ int	uid;
 static char *getgroup (gid)
 int	gid;
 {
-	register struct group *gr;
+	struct group *gr;
 	static int	my_gid = -1;
 	static char my_name[NMAX + 1];
 
@@ -1493,7 +1493,7 @@ char   *group;
 #ifdef	BSD42
 	int	    gidset[NGROUPS];
 #endif
-	register struct group *gr;
+	struct group *gr;
 	static int my_gid = -1;
 	static char my_name[NMAX + 1] = "";
 

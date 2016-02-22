@@ -88,7 +88,7 @@ struct telex * b;
 
 
 static telex_print (ps,telex,format)
-register PS ps;
+PS ps;
 struct   telex* telex;
 int format;
 {

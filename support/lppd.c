@@ -97,11 +97,11 @@ main (int argc, char **argv, char **envp)
 	int	    listening,
 			vecp;
 	char   *vec[4];
-	register struct NSAPaddr  *na;
-	register struct TSAPaddr  *ta;
-	register struct dispatch  *dp;
+	struct NSAPaddr  *na;
+	struct TSAPaddr  *ta;
+	struct dispatch  *dp;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 
 	arginit (argv);
 	envinit ();
@@ -167,9 +167,9 @@ main (int argc, char **argv, char **envp)
 static int 
 lppd (int vecp, char **vec, struct TSAPaddr *ta)
 {
-	register u_short port = ta -> ta_addrs[0].na_port;
-	register struct dispatch *dp;
-	register struct isoservent *is;
+	u_short port = ta -> ta_addrs[0].na_port;
+	struct dispatch *dp;
+	struct isoservent *is;
 
 	for (dp = dps; dp < dz; dp++)
 		if (dp -> dp_port == port)
@@ -197,7 +197,7 @@ lppd (int vecp, char **vec, struct TSAPaddr *ta)
 /*  */
 
 static void 
-ts_advise (register struct TSAPdisconnect *td, int code, char *event)
+ts_advise (struct TSAPdisconnect *td, int code, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -216,12 +216,12 @@ ts_advise (register struct TSAPdisconnect *td, int code, char *event)
 static 
 arginit (char **vec)
 {
-	register int    n;
-	register char  *ap;
+	int    n;
+	char  *ap;
 	struct stat st;
-	register struct isoservent *is;
-	register struct PSAPaddr *pa;
-	register struct NSAPaddr *na;
+	struct isoservent *is;
+	struct PSAPaddr *pa;
+	struct NSAPaddr *na;
 	AEI	    aei;
 
 	if (myname = rindex (*vec, '/'))

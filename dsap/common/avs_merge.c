@@ -33,7 +33,7 @@ extern LLog * log_dsap;
 AV_Sequence avs_merge (a,b)
 AV_Sequence a,b;
 {
-	register AV_Sequence aptr, bptr, result, trail, tmp;
+	AV_Sequence aptr, bptr, result, trail, tmp;
 
 	if ( a == NULLAV )
 		return (b);
@@ -106,7 +106,7 @@ AV_Sequence a,b;
 AV_Sequence avs_fast_merge (a,b,c,d)
 AV_Sequence a,b,c,d;
 {
-	register AV_Sequence aptr, bptr, result, trail, tmp;
+	AV_Sequence aptr, bptr, result, trail, tmp;
 
 	if ( a == NULLAV )
 		return (b);

@@ -38,17 +38,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaprespond.c,v 9.0 
 int 
 AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication *aci)
 {
-	register int    i;
+	int    i;
 	int	    ctx,
 			result;
-	register struct assocblk *acb;
-	register struct PSAPstart *ps;
+	struct assocblk *acb;
+	struct PSAPstart *ps;
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 	PE	    pe = NULLPE;
 	struct type_ACS_ACSE__apdu *pdu;
-	register struct type_ACS_AARQ__apdu *aarq;
+	struct type_ACS_AARQ__apdu *aarq;
 
 	isodetailor (NULLCP, 0);
 
@@ -112,8 +112,8 @@ AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication *ac
 	}
 
 	{
-		register OID	oid;
-		register struct PSAPcontext *pp;
+		OID	oid;
+		struct PSAPcontext *pp;
 
 		if ((oid = AC_ASN_OID) == NULLOID) {
 			(void) acsaplose (aci, ACS_PARAMETER, NULLCP,
@@ -224,11 +224,11 @@ AcAssocResponse (int sd, int status, int reason, OID context, AEI respondtitle, 
 	int	    pstatus,
 			result;
 	PE	    pe;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
-	register struct type_ACS_AARE__apdu *pdu;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
+	struct type_ACS_AARE__apdu *pdu;
 
 	if ((acb = findacblk (sd)) == NULL || (acb -> acb_flags & ACB_CONN))
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
@@ -278,8 +278,8 @@ bad_reason:
 
 	toomuchP (data, ndata, NACDATA, "initial");
 	if (data) {	    /* XXX: probably should have a more intensive check... */
-		register int    i;
-		register PE    *pep;
+		int    i;
+		PE    *pep;
 
 		for (pep = data, i = ndata; i > 0; pep++, i--)
 			if ((*pep) -> pe_context == PE_DFLT_CTX)
@@ -340,8 +340,8 @@ no_mem:
 	}
 
 	if (ctxlist) {
-		register int	i;
-		register struct PSAPcontext *pp;
+		int	i;
+		struct PSAPcontext *pp;
 
 		if (ctxlist -> pc_nctx > NPCTX) {
 			(void) acsaplose (aci, ACS_PARAMETER, NULLCP, "too many contexts");

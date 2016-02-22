@@ -22,9 +22,9 @@ extern int	errno;
 
 int
 closedir( dirp )
-register DIR	*dirp;		/* stream from opendir() */
+DIR	*dirp;		/* stream from opendir() */
 {
-	register int	fd;
+	int	fd;
 
 	if ( dirp == NULL || dirp->dd_buf == NULL ) {
 		errno = EFAULT;

@@ -58,7 +58,7 @@ extern int  errno;
 int 
 start_tcp_client (struct sockaddr_in *sock, int priv)
 {
-	register int    port;
+	int    port;
 	int     eindex,
 			sd;
 #if	defined(BSD43) || defined(SVR4)
@@ -114,7 +114,7 @@ got_socket:
 int 
 start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 {
-	register int    port;
+	int    port;
 	int     eindex,
 			sd;
 #ifdef ULTRIX_X25_DEMSA
@@ -230,7 +230,7 @@ struct sockaddr_in *sock;
 #ifdef ULTRIX_X25_DEMSA
 	else {
 		/* this descriptor will be used for the accepted connection */
-		/* so we register the descriptor result                     */
+		/* so we the descriptor result                     */
 		if ( X25RegisterFD(result,rhandler,whandler,xhandler,result) < NULL) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("X25RegisterFD"));
 			return NOTOK;
@@ -273,7 +273,7 @@ struct sockaddr_in *sock;
 	}
 #ifdef ULTRIX_X25_DEMSA
 	else {
-		/* connect returned success, now we register the descriptor */
+		/* connect returned success, now we the descriptor */
 		/* fd for the connection, which is going to be established  */
 		if ( X25RegisterFD(fd,rhandler,whandler,xhandler,fd) < NULL) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("X25RegisterFD"));
@@ -342,9 +342,9 @@ int	fd;
 int 
 start_tcp_client (struct sockaddr_in *sock, int priv)
 {
-	register int    port;
+	int    port;
 	int     sd;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	if (sock == NULL)
 		return socket (SOCK_STREAM, 0, (struct sockaddr *) 0, SO_KEEPALIVE);
@@ -382,9 +382,9 @@ start_tcp_client (struct sockaddr_in *sock, int priv)
 int 
 start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 {
-	register int    port;
+	int    port;
 	int     sd;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	if (backlog != 1)
 		return socket (SOCK_STREAM, 0, (struct sockaddr *) sock,
@@ -429,7 +429,7 @@ static char *addrs[2] = { NULL };
 struct hostent *
 gethostbystring (char *s)
 {
-	register struct hostent *h;
+	struct hostent *h;
 #ifndef	DG
 	int result;
 	static struct in_addr iaddr;
@@ -473,7 +473,7 @@ gethostbyaddr (char *addr, int len, int type)
 	char   *name;
 	static char buffer[BUFSIZ];
 	static struct hostent   hs;
-	register struct hostent *h = &hs;
+	struct hostent *h = &hs;
 
 	if (len != sizeof (long) || type != AF_INET)
 		return NULL;
@@ -500,7 +500,7 @@ gethostbyname (char *name)
 	static long iaddr;
 	static char buffer[BUFSIZ];
 	static struct hostent   hs;
-	register struct hostent *h = &hs;
+	struct hostent *h = &hs;
 
 	if ((iaddr = rhost (&name)) == NOTOK)
 		return NULL;
@@ -589,9 +589,9 @@ static struct servent   services[] = {
 
 
 struct servent *
-getservbyname (register char *name, register char *proto)
+getservbyname (char *name, char *proto)
 {
-	register struct servent *s;
+	struct servent *s;
 
 	for (s = services; s -> s_name; s++)
 		if (strcmp (name, s -> s_name) == 0
@@ -614,7 +614,7 @@ getservbyname (register char *name, register char *proto)
 char *
 inet_ntoa (struct in_addr in)
 {
-	register char  *s = (char *) &in;
+	char  *s = (char *) &in;
 	static char addr[4 * 3 + 3 + 1];
 
 	(void) sprintf (addr, "%d.%d.%d.%d",
@@ -627,11 +627,11 @@ inet_ntoa (struct in_addr in)
 u_long 
 inet_addr (char *cp)
 {
-	register int    base;
-	register char   c;
-	register u_long val;
+	int    base;
+	char   c;
+	u_long val;
 	u_long	parts[4];
-	register u_long *pp = parts;
+	u_long *pp = parts;
 
 	for (;;) {
 		val = 0, base = 10;
@@ -698,11 +698,11 @@ inet_addr (char *cp)
 u_long 
 inet_network (char *cp)
 {
-	register int    base;
-	register char   c;
-	register u_long val;
+	int    base;
+	char   c;
+	u_long val;
 	u_long	parts[4];
-	register u_long *pp = parts;
+	u_long *pp = parts;
 
 	for (;;) {
 		val = 0, base = 10;

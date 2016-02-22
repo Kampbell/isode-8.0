@@ -67,8 +67,8 @@ int	endisodocument () {
 /*  */
 
 struct isodocument *getisodocument () {
-	register char  *cp;
-	register struct isodocument *id = &ids;
+	char  *cp;
+	struct isodocument *id = &ids;
 	static char buffer[BUFSIZ + 1];
 	static char *vec[NVEC + NSLACK + 1];
 
@@ -152,7 +152,7 @@ free1:
 struct isodocument *getisodocumentbyentry (entry)
 char    *entry;
 {
-	register struct isodocument *id;
+	struct isodocument *id;
 
 	(void) setisodocument (0);
 	while (id = getisodocument ())
@@ -168,7 +168,7 @@ char    *entry;
 struct isodocument *getisodocumentbytype (type)
 OID	type;
 {
-	register struct isodocument *id;
+	struct isodocument *id;
 
 	(void) setisodocument (0);
 	while (id = getisodocument ())

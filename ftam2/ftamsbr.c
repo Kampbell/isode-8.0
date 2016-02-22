@@ -52,10 +52,10 @@ OID	proposed;
 int	ftamfd;
 {
 #ifndef	BRIDGE
-	register int    fmt;
-	register struct vfsmap *lf;
+	int    fmt;
+	struct vfsmap *lf;
 #endif
-	register struct vfsmap *vf;
+	struct vfsmap *vf;
 
 #ifndef	BRIDGE
 	fmt = st -> st_mode & S_IFMT;
@@ -137,7 +137,7 @@ int	binarycheck (param, data)
 caddr_t param;
 char   *data;
 {
-	register struct type_DOCS_FTAM__3__Parameters *p3 =
+	struct type_DOCS_FTAM__3__Parameters *p3 =
 		(struct type_DOCS_FTAM__3__Parameters *) param;
 
 	if (p3 -> optionals
@@ -168,7 +168,7 @@ int	textcheck (param, data)
 caddr_t param;
 char   *data;
 {
-	register struct type_DOCS_FTAM__1__Parameters *p1 =
+	struct type_DOCS_FTAM__1__Parameters *p1 =
 		(struct type_DOCS_FTAM__1__Parameters *) param;
 
 	if (!(p1 -> optionals
@@ -216,14 +216,14 @@ char   *data;
 /* ARGSUSED */
 
 int	binarypeek (vf, fd, file, st, ftamfd)
-register struct vfsmap *vf;
+struct vfsmap *vf;
 int	fd;
 char   *file;
 struct stat *st;
 int	ftamfd;
 {
 	static struct type_DOCS_FTAM__3__Parameters p3s;
-	register struct type_DOCS_FTAM__3__Parameters *p3 = &p3s;
+	struct type_DOCS_FTAM__3__Parameters *p3 = &p3s;
 
 	if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
 		(void) fre_obj (vf -> vf_parameter,
@@ -268,7 +268,7 @@ int	ftamfd;
 /* ARGSUSED */
 
 int	textpeek (vf, fd, file, st, ftamfd)
-register struct vfsmap *vf;
+struct vfsmap *vf;
 int	fd;
 char   *file;
 struct stat *st;
@@ -277,12 +277,12 @@ int	ftamfd;
 #ifndef	BRIDGE
 	int     gd,
 			n;
-	register char *cp;
+	char *cp;
 	char    buffer[BLKSIZE];
 	long    pos;
 #endif
 	static struct type_DOCS_FTAM__1__Parameters p1s;
-	register struct type_DOCS_FTAM__1__Parameters *p1 = &p1s;
+	struct type_DOCS_FTAM__1__Parameters *p1 = &p1s;
 
 	if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
 		(void) fre_obj (vf -> vf_parameter,
@@ -359,7 +359,7 @@ int	ftamfd;
 /* ARGSUSED */
 
 int	fdfpeek (vf, fd, file, st, ftamfd)
-register struct vfsmap *vf;
+struct vfsmap *vf;
 int	fd;
 char   *file;
 struct stat *st;
@@ -397,12 +397,12 @@ PE	pe;
 int	text,
 	effector;
 {
-	register int    i,
+	int    i,
 			 n;
-	register char  *bp,
+	char  *bp,
 			 *cp,
 			 *ep;
-	register PE	    p;
+	PE	    p;
 
 	if (pe -> pe_form == PE_FORM_CONS) {
 		for (p = pe -> pe_cons, n = 0; p; p = p -> pe_next, n += i)
@@ -440,7 +440,7 @@ int	text,
 			switch (*++bp) {
 			case 0x28:	/* G0: 02/08 04/02 */
 				if (*++bp == 0x42) {
-					register char *dp;
+					char *dp;
 
 write_it:
 					;
@@ -504,9 +504,9 @@ outside:
 
 
 int	compath (f)
-register char  *f;
+char  *f;
 {
-	register char  *cp,
+	char  *cp,
 			 *dp;
 
 	if (*f != '/')

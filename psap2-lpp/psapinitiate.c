@@ -134,9 +134,9 @@ int	async;
 {
 	int	    result;
 	OID     asn;
-	register struct psapblk *pb;
-	register struct type_PS_ConnectRequest__PDU *pdu;
-	register struct type_PS_SessionConnectionIdentifier *pref;
+	struct psapblk *pb;
+	struct type_PS_ConnectRequest__PDU *pdu;
+	struct type_PS_SessionConnectionIdentifier *pref;
 
 	if ((pb = newpblk ()) == NULL)
 		return psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
@@ -177,8 +177,8 @@ no_mem:
 
 	asn = NULLOID;
 	{
-		register int	i;
-		register struct PSAPcontext *pp,
+		int	i;
+		struct PSAPcontext *pp,
 				*qp;
 
 		i = ctxlist -> pc_nctx - 1;
@@ -321,15 +321,15 @@ int	async;
 {
 	int	    reliability,
 			result;
-	register int n = called -> ta_naddr - 1;
-	register struct NSAPaddr *na = called -> ta_addrs;
+	int n = called -> ta_naddr - 1;
+	struct NSAPaddr *na = called -> ta_addrs;
 
 	reliability = qos ? qos -> qos_reliability : QOS_RELIABLE_DFLT;
 
 	for (; n >= 0; na++, n--) {
-		register int	l;
-		register struct NSAPaddr *la;
-		register struct nsapent *ns;
+		int	l;
+		struct NSAPaddr *la;
+		struct nsapent *ns;
 
 		if (na -> na_stack != NA_TCP)
 			continue;
@@ -363,7 +363,7 @@ int	async;
 	}
 
 	{
-		register struct TSAPaddr *ta = &pb -> pb_responding.pa_addr.sa_addr;
+		struct TSAPaddr *ta = &pb -> pb_responding.pa_addr.sa_addr;
 
 		ta -> ta_addrs[0] = *na;	/* struct copy */
 		ta -> ta_naddr = 1;
@@ -381,7 +381,7 @@ struct PSAPindication *pi;
 {
 	SBV     smask;
 	int     result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	missingP (pc);
 	missingP (pi);
@@ -421,7 +421,7 @@ struct PSAPindication *pi;
 /*  */
 
 static int  PAsynRetryAux (pb, pc, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 struct PSAPconnect *pc;
 struct PSAPindication *pi;
 {
@@ -455,7 +455,7 @@ struct PSAPindication *pi;
 
 	switch (pdu -> offset) {
 	case type_PS_PDUs_connectResponse: {
-		register struct type_PS_ConnectResponse__PDU *cr =
+		struct type_PS_ConnectResponse__PDU *cr =
 					pdu -> un.connectResponse;
 
 		if (pb -> pb_reliability == LOW_QUALITY
@@ -485,8 +485,8 @@ struct PSAPindication *pi;
 
 		pc -> pc_defctxresult = pb -> pb_result = PC_ACCEPT;
 		{
-			register int	i;
-			register struct PSAPcontext *pp,
+			int	i;
+			struct PSAPcontext *pp,
 					*qp;
 
 			i = pb -> pb_ncontext;
@@ -519,8 +519,8 @@ struct PSAPindication *pi;
 	}
 
 	case type_PS_PDUs_abort: {
-		register struct PSAPabort *pa = &pi -> pi_abort;
-		register struct type_PS_Abort__PDU *ab = pdu -> un.abort;
+		struct PSAPabort *pa = &pi -> pi_abort;
+		struct type_PS_Abort__PDU *ab = pdu -> un.abort;
 
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, ab -> reference)) {

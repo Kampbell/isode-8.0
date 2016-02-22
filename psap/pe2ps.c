@@ -41,7 +41,7 @@ int  ps_write_len ();
 /*  */
 
 int 
-pe2ps_aux (register PS ps, register PE pe, int eval)
+pe2ps_aux (PS ps, PE pe, int eval)
 {
 	int     result;
 
@@ -64,9 +64,9 @@ pe2ps_aux (register PS ps, register PE pe, int eval)
 
 
 static int 
-pe2ps_aux2 (register PS ps, register PE pe, int eval)
+pe2ps_aux2 (PS ps, PE pe, int eval)
 {
-	register PE	    p;
+	PE	    p;
 
 	if (pe -> pe_form == PE_FORM_ICONS) {
 		if (ps_write_aux (ps, pe -> pe_prim, pe -> pe_len, 1) == NOTOK)
@@ -105,12 +105,12 @@ pe2ps_aux2 (register PS ps, register PE pe, int eval)
 /*  */
 
 int 
-ps_write_id (register PS ps, register PE pe)
+ps_write_id (PS ps, PE pe)
 {
 	byte    buffer[1 + sizeof (PElementID)];
-	register byte  *bp = buffer;
+	byte  *bp = buffer;
 	PElementForm    form;
-	register PElementID id;
+	PElementID id;
 
 	if ((form = pe -> pe_form) == PE_FORM_ICONS)
 		form = PE_FORM_CONS;
@@ -120,8 +120,8 @@ ps_write_id (register PS ps, register PE pe)
 	if ((id = pe -> pe_id) < PE_ID_XTND)
 		*bp++ |= id;
 	else {
-		register byte *ep;
-		register PElementID jd;
+		byte *ep;
+		PElementID jd;
 
 		*bp |= PE_ID_XTND;
 
@@ -149,12 +149,12 @@ ps_write_id (register PS ps, register PE pe)
    num2prim() for a single, unified routine */
 
 int 
-ps_write_len (register PS ps, register PE pe)
+ps_write_len (PS ps, PE pe)
 {
 	byte    buffer[1 + sizeof (PElementLen)];
-	register byte  *bp = buffer,
+	byte  *bp = buffer,
 					*ep;
-	register PElementLen len;
+	PElementLen len;
 
 	if ((len = pe -> pe_len) == PE_LEN_INDF)
 		*bp++ = PE_LEN_XTND;

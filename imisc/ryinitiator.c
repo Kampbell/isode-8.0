@@ -88,28 +88,28 @@ IFP	quit;
 {
 	int	    iloop,
 			sd;
-	register char  *cp,
+	char  *cp,
 			 **ap;
 	char    buffer[BUFSIZ],
 			*vec[NVEC + 1];
-	register struct dispatch   *ds;
+	struct dispatch   *ds;
 	struct QOStype qos;
 	struct SSAPref sfs;
-	register struct SSAPref *sf;
-	register struct PSAPaddr *pa;
+	struct SSAPref *sf;
+	struct PSAPaddr *pa;
 	struct AcSAPconnect accs;
-	register struct AcSAPconnect   *acc = &accs;
+	struct AcSAPconnect   *acc = &accs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	AEI	    aei;
 	OID	    ctx,
 			pci;
 	struct PSAPctxlist pcs;
-	register struct PSAPctxlist *pc = &pcs;
+	struct PSAPctxlist *pc = &pcs;
 	struct RoSAPindication rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject *rop = &roi -> roi_preject;
 
 	if (myname = rindex (argv[0], '/'))
 		myname++;
@@ -258,16 +258,16 @@ IFP	quit;
 static void invoke (sd, ops, ds, args)
 int	sd;
 struct RyOperation ops[];
-register struct dispatch *ds;
+struct dispatch *ds;
 char  **args;
 {
-	register int    i;
+	int    i;
 	int	    cc,
 			result;
 	caddr_t in;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	in = NULL;
 	if (ds -> ds_argument && (*ds -> ds_argument) (sd, ds, args, &in) == NOTOK)
@@ -275,7 +275,7 @@ char  **args;
 
 #ifdef	TIMER
 	if (timing) {
-		register struct RyOperation *ryo = ops;
+		struct RyOperation *ryo = ops;
 		PE	pe;
 
 		cc = 0;
@@ -338,8 +338,8 @@ out:
 static int 
 getlines (char *buffer)
 {
-	register int    i;
-	register char  *cp,
+	int    i;
+	char  *cp,
 			 *ep;
 	static int  sticky = 0;
 
@@ -411,7 +411,7 @@ timer (int bytes, int pkts)
 
 
 static void 
-tvsub (register struct timeval *tdiff, register struct timeval *t1, register struct timeval *t0)
+tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
 {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
@@ -470,7 +470,7 @@ timing_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication
 /*    ERRORS */
 
 void 
-ros_adios (register struct RoSAPpreject *rop, char *event)
+ros_adios (struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -479,7 +479,7 @@ ros_adios (register struct RoSAPpreject *rop, char *event)
 
 
 void 
-ros_advise (register struct RoSAPpreject *rop, char *event)
+ros_advise (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -495,7 +495,7 @@ ros_advise (register struct RoSAPpreject *rop, char *event)
 /*  */
 
 void 
-acs_adios (register struct AcSAPabort *aca, char *event)
+acs_adios (struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -504,7 +504,7 @@ acs_adios (register struct AcSAPabort *aca, char *event)
 
 
 void 
-acs_advise (register struct AcSAPabort *aca, char *event)
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 

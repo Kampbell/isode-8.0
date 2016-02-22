@@ -82,15 +82,15 @@ struct RyOperation *ops;
 IFP	start,
 	stop;
 {
-	register struct dispatch   *ds;
+	struct dispatch   *ds;
 	AEI	    aei;
 	/*
 	    struct TSAPdisconnect   tds;
 	    struct TSAPdisconnect  *td = &tds;
 	*/
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 	struct PSAPaddr *pa;
 
 	/* HULA added for connectionless ******************/
@@ -209,14 +209,14 @@ char  **vec;
 	    result,
 	    sd;
     struct AcSAPstart   acss;
-    register struct AcSAPstart *acs = &acss;
+    struct AcSAPstart *acs = &acss;
     struct AcSAPindication  acis;
-    register struct AcSAPindication *aci = &acis;
-    register struct AcSAPabort   *aca = &aci -> aci_abort;
-    register struct PSAPstart *ps = &acs -> acs_start;
+    struct AcSAPindication *aci = &acis;
+    struct AcSAPabort   *aca = &aci -> aci_abort;
+    struct PSAPstart *ps = &acs -> acs_start;
     struct RoSAPindication  rois;
-    register struct RoSAPindication *roi = &rois;
-    register struct RoSAPpreject   *rop = &roi -> roi_preject;
+    struct RoSAPindication *roi = &rois;
+    struct RoSAPpreject   *rop = &roi -> roi_preject;
 
     if (AcInit (vecp, vec, acs, aci) == NOTOK) {
 	acs_advise (aca, "initialization fails");
@@ -267,8 +267,8 @@ ros_work (int fd)
 	caddr_t out;
 	struct AcSAPindication  acis;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	switch (setjmp (toplevel)) {
 	case OK:
@@ -302,7 +302,7 @@ ros_work (int fd)
 /*  */
 
 static int 
-ros_indication (int sd, register struct RoSAPindication *roi)
+ros_indication (int sd, struct RoSAPindication *roi)
 {
 	int	    reply,
 			result;
@@ -315,7 +315,7 @@ ros_indication (int sd, register struct RoSAPindication *roi)
 		break;
 
 	case ROI_UREJECT: {
-		register struct RoSAPureject   *rou = &roi -> roi_ureject;
+		struct RoSAPureject   *rou = &roi -> roi_ureject;
 
 		if (rou -> rou_noid)
 			advise (NULLCP, LOG_INFO, "RO-REJECT-U.INDICATION/%d: %s",
@@ -329,7 +329,7 @@ ros_indication (int sd, register struct RoSAPindication *roi)
 	break;
 
 	case ROI_PREJECT: {
-		register struct RoSAPpreject   *rop = &roi -> roi_preject;
+		struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 		if (ROS_FATAL (rop -> rop_reason))
 			ros_adios (rop, "RO-REJECT-P.INDICATION");
@@ -339,9 +339,9 @@ ros_indication (int sd, register struct RoSAPindication *roi)
 	/*
 		case ROI_FINISH:
 		    {
-			register struct AcSAPfinish *acf = &roi -> roi_finish;
+			struct AcSAPfinish *acf = &roi -> roi_finish;
 			struct AcSAPindication  acis;
-			register struct AcSAPabort *aca = &acis.aci_abort;
+			struct AcSAPabort *aca = &acis.aci_abort;
 
 			advise (NULLCP, LOG_INFO, "A-RELEASE.INDICATION/%d: %d",
 				sd, acf -> acf_reason);
@@ -388,7 +388,7 @@ struct TSAPdisconnect *td;
 /*    ERRORS */
 
 void 
-ros_adios (register struct RoSAPpreject *rop, char *event)
+ros_adios (struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -397,7 +397,7 @@ ros_adios (register struct RoSAPpreject *rop, char *event)
 
 
 void 
-ros_advise (register struct RoSAPpreject *rop, char *event)
+ros_advise (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -413,7 +413,7 @@ ros_advise (register struct RoSAPpreject *rop, char *event)
 /*  */
 
 void 
-acs_advise (register struct AcSAPabort *aca, char *event)
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 

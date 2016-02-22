@@ -203,7 +203,7 @@ read_quipurc (void) {
 static void 
 read_args (int argc, char *argv[])
 {
-	register char *argstr;
+	char *argstr;
 
 	if (argc <= 1) return;
 

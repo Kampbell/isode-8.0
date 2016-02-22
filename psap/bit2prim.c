@@ -36,7 +36,7 @@ static PE	bit2prim_aux ();
 /*  */
 
 PE 
-bit2prim (register PE pe)
+bit2prim (PE pe)
 {
 	if (pe == NULLPE)
 		return NULLPE;
@@ -63,10 +63,10 @@ bit2prim (register PE pe)
 /*  */
 
 static PE 
-bit2prim_aux (register PE pe)
+bit2prim_aux (PE pe)
 {
 	int	    i;
-	register PE	    p;
+	PE	    p;
 
 	if (pe == NULLPE)
 		return NULLPE;

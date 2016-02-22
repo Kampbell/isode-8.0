@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_prime.c,v 9.0 1992/
 /*  */
 
 int 
-ps_prime (register PS ps, int waiting)
+ps_prime (PS ps, int waiting)
 {
 	if (ps -> ps_primeP)
 		return (*ps -> ps_primeP) (ps, waiting);

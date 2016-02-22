@@ -4,7 +4,7 @@
 main() {
 	unsigned int i;
 	char buf[1];
-	register int result, count;
+	int result, count;
 
 	while ((result = scanf("%d", &i)) != EOF) {
 		count++;

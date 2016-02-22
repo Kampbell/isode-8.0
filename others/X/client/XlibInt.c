@@ -340,11 +340,11 @@ static xReq _dummy_request = {
  * This routine may have to be reworked if int < long.
  */
 _XFlush (dpy)
-register Display *dpy;
+Display *dpy;
 {
-	register long size, todo;
-	register int write_stat;
-	register char *bufindex;
+	long size, todo;
+	int write_stat;
+	char *bufindex;
 
 	size = todo = dpy->bufptr - dpy->buffer;
 	bufindex = dpy->bufptr = dpy->buffer;
@@ -383,13 +383,13 @@ register Display *dpy;
 
 int
 _XEventsQueued (dpy, mode)
-register Display *dpy;
+Display *dpy;
 int mode;
 {
-	register int len;
+	int len;
 	int pend;
 	char buf[BUFSIZE];
-	register xReply *rep;
+	xReply *rep;
 
 	if (mode == QueuedAfterFlush)
 		_XFlush(dpy);
@@ -418,12 +418,12 @@ int mode;
  * then read as many events as possible (but at least 1) and enqueue them
  */
 _XReadEvents(dpy)
-register Display *dpy;
+Display *dpy;
 {
 	char buf[BUFSIZE];
-	long pend_not_register; /* because can't "&" a register variable */
-	register long pend;
-	register xEvent *ev;
+	long pend_not_register; /* because can't "&" a variable */
+	long pend;
+	xEvent *ev;
 	Bool not_yet_flushed = True;
 
 	do {
@@ -471,11 +471,11 @@ register Display *dpy;
  * reads.  This routine may have to be reworked if int < long.
  */
 _XRead (dpy, data, size)
-register Display *dpy;
-register char *data;
-register long size;
+Display *dpy;
+char *data;
+long size;
 {
-	register long bytes_read;
+	long bytes_read;
 
 	if (size == 0) return;
 	errno = 0;
@@ -526,10 +526,10 @@ register long size;
  *
  */
 static _doXRead32 (dpy, data, size, packbuffer)
-register Display *dpy;
-register long *data;
-register long size;
-register char *packbuffer;
+Display *dpy;
+long *data;
+long size;
+char *packbuffer;
 {
 	long *lpack,*lp;
 	long mask32 = 0x00000000ffffffff;
@@ -574,9 +574,9 @@ long len;
  *
  */
 static _doXRead16 (dpy, data, size, packbuffer)
-register Display *dpy;
-register short *data;
-register long size;
+Display *dpy;
+short *data;
+long size;
 char *packbuffer;
 {
 	long *lpack,*lp;
@@ -636,11 +636,11 @@ long size;
  * bytes. This routine may have to be reworked if int < long.
  */
 _XReadPad (dpy, data, size)
-register Display *dpy;
-register char *data;
-register long size;
+Display *dpy;
+char *data;
+long size;
 {
-	register long bytes_read;
+	long bytes_read;
 	struct iovec iov[2];
 	char pad[3];
 
@@ -701,9 +701,9 @@ register long size;
  * This routine may have to be reworked if int < long;
  */
 _XSend (dpy, data, size)
-register Display *dpy;
+Display *dpy;
 char *data;
-register long size;
+long size;
 {
 	struct iovec iov[3];
 	static char pad[3] = {0, 0, 0};
@@ -774,7 +774,7 @@ register long size;
  * follow the rules.
  */
 XID _XAllocID(dpy)
-register Display *dpy;
+Display *dpy;
 {
 	return (dpy->resource_base + (dpy->resource_id++ << dpy->resource_shift));
 }
@@ -789,10 +789,10 @@ register Display *dpy;
  */
 static unsigned long
 _SetLastRequestRead(dpy, rep)
-register Display *dpy;
-register xGenericReply *rep;
+Display *dpy;
+xGenericReply *rep;
 {
-	register unsigned long	newseq, lastseq;
+	unsigned long	newseq, lastseq;
 
 	/*
 	 * KeymapNotify has no sequence number, but is always guaranteed
@@ -827,8 +827,8 @@ register xGenericReply *rep;
  * we may encounter.
  */
 Status _XReply (dpy, rep, extra, discard)
-register Display *dpy;
-register xReply *rep;
+Display *dpy;
+xReply *rep;
 int extra;		/* number of 32-bit words expected after the reply */
 Bool discard;	/* should I discard data followind "extra" words? */
 {
@@ -882,8 +882,8 @@ Bool discard;	/* should I discard data followind "extra" words? */
 			return (0);
 
 		case X_Error: {
-			register _XExtension *ext;
-			register Bool ret = False;
+			_XExtension *ext;
+			Bool ret = False;
 			int ret_code;
 			xError *err = (xError *) rep;
 			unsigned long serial;
@@ -960,10 +960,10 @@ unsigned long n;
  * is pointer motion hints....
  */
 _XEnq (dpy, event)
-register Display *dpy;
-register xEvent *event;
+Display *dpy;
+xEvent *event;
 {
-	register _XQEvent *qelt;
+	_XQEvent *qelt;
 
 	/*NOSTRICT*/
 	if (qelt = _qfree) {
@@ -996,9 +996,9 @@ register xEvent *event;
 /*ARGSUSED*/
 Bool
 _XUnknownWireEvent(dpy, re, event)
-register Display *dpy;	/* pointer to display structure */
-register XEvent *re;	/* pointer to where event should be reformatted */
-register xEvent *event;	/* wire protocol event */
+Display *dpy;	/* pointer to display structure */
+XEvent *re;	/* pointer to where event should be reformatted */
+xEvent *event;	/* wire protocol event */
 {
 #ifdef notdef
 	(void) fprintf(stderr,
@@ -1011,9 +1011,9 @@ register xEvent *event;	/* wire protocol event */
 /*ARGSUSED*/
 Status
 _XUnknownNativeEvent(dpy, re, event)
-register Display *dpy;	/* pointer to display structure */
-register XEvent *re;	/* pointer to where event should be reformatted */
-register xEvent *event;	/* wire protocol event */
+Display *dpy;	/* pointer to display structure */
+XEvent *re;	/* pointer to where event should be reformatted */
+xEvent *event;	/* wire protocol event */
 {
 #ifdef notdef
 	(void) fprintf(stderr,
@@ -1027,9 +1027,9 @@ register xEvent *event;	/* wire protocol event */
  */
 Bool
 _XWireToEvent(dpy, re, event)
-register Display *dpy;	/* pointer to display structure */
-register XEvent *re;	/* pointer to where event should be reformatted */
-register xEvent *event;	/* wire protocol event */
+Display *dpy;	/* pointer to display structure */
+XEvent *re;	/* pointer to where event should be reformatted */
+xEvent *event;	/* wire protocol event */
 {
 
 	re->type = event->u.u.type & 0x7f;
@@ -1044,7 +1044,7 @@ register xEvent *event;	/* wire protocol event */
 	switch (event-> u.u.type & 0177) {
 	case KeyPress:
 	case KeyRelease: {
-		register XKeyEvent *ev = (XKeyEvent*) re;
+		XKeyEvent *ev = (XKeyEvent*) re;
 		ev->root 	= event->u.keyButtonPointer.root;
 		ev->window 	= event->u.keyButtonPointer.event;
 		ev->subwindow 	= event->u.keyButtonPointer.child;
@@ -1060,7 +1060,7 @@ register xEvent *event;	/* wire protocol event */
 	break;
 	case ButtonPress:
 	case ButtonRelease: {
-		register XButtonEvent *ev =  (XButtonEvent *) re;
+		XButtonEvent *ev =  (XButtonEvent *) re;
 		ev->root 	= event->u.keyButtonPointer.root;
 		ev->window 	= event->u.keyButtonPointer.event;
 		ev->subwindow 	= event->u.keyButtonPointer.child;
@@ -1075,7 +1075,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case MotionNotify: {
-		register XMotionEvent *ev =   (XMotionEvent *)re;
+		XMotionEvent *ev =   (XMotionEvent *)re;
 		ev->root 	= event->u.keyButtonPointer.root;
 		ev->window 	= event->u.keyButtonPointer.event;
 		ev->subwindow 	= event->u.keyButtonPointer.child;
@@ -1091,7 +1091,7 @@ register xEvent *event;	/* wire protocol event */
 	break;
 	case EnterNotify:
 	case LeaveNotify: {
-		register XCrossingEvent *ev   = (XCrossingEvent *) re;
+		XCrossingEvent *ev   = (XCrossingEvent *) re;
 		ev->root	= event->u.enterLeave.root;
 		ev->window	= event->u.enterLeave.event;
 		ev->subwindow	= event->u.enterLeave.child;
@@ -1111,14 +1111,14 @@ register xEvent *event;	/* wire protocol event */
 	break;
 	case FocusIn:
 	case FocusOut: {
-		register XFocusChangeEvent *ev = (XFocusChangeEvent *) re;
+		XFocusChangeEvent *ev = (XFocusChangeEvent *) re;
 		ev->window 	= event->u.focus.window;
 		ev->mode	= event->u.focus.mode;
 		ev->detail	= event->u.u.detail;
 	}
 	break;
 	case KeymapNotify: {
-		register XKeymapEvent *ev = (XKeymapEvent *) re;
+		XKeymapEvent *ev = (XKeymapEvent *) re;
 		ev->window	= dpy->current;
 		bcopy ((char *)((xKeymapEvent *) event)->map,
 			   &ev->key_vector[1],
@@ -1126,7 +1126,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case Expose: {
-		register XExposeEvent *ev = (XExposeEvent *) re;
+		XExposeEvent *ev = (XExposeEvent *) re;
 		ev->window	= event->u.expose.window;
 		ev->x		= event->u.expose.x;
 		ev->y		= event->u.expose.y;
@@ -1136,7 +1136,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case GraphicsExpose: {
-		register XGraphicsExposeEvent *ev =
+		XGraphicsExposeEvent *ev =
 			(XGraphicsExposeEvent *) re;
 		ev->drawable	= event->u.graphicsExposure.drawable;
 		ev->x		= event->u.graphicsExposure.x;
@@ -1149,20 +1149,20 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case NoExpose: {
-		register XNoExposeEvent *ev = (XNoExposeEvent *) re;
+		XNoExposeEvent *ev = (XNoExposeEvent *) re;
 		ev->drawable	= event->u.noExposure.drawable;
 		ev->major_code	= event->u.noExposure.majorEvent;
 		ev->minor_code	= event->u.noExposure.minorEvent;
 	}
 	break;
 	case VisibilityNotify: {
-		register XVisibilityEvent *ev = (XVisibilityEvent *) re;
+		XVisibilityEvent *ev = (XVisibilityEvent *) re;
 		ev->window		= event->u.visibility.window;
 		ev->state		= event->u.visibility.state;
 	}
 	break;
 	case CreateNotify: {
-		register XCreateWindowEvent *ev =
+		XCreateWindowEvent *ev =
 			(XCreateWindowEvent *) re;
 		ev->window		= event->u.createNotify.window;
 		ev->parent		= event->u.createNotify.parent;
@@ -1175,34 +1175,34 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case DestroyNotify: {
-		register XDestroyWindowEvent *ev =
+		XDestroyWindowEvent *ev =
 			(XDestroyWindowEvent *) re;
 		ev->window		= event->u.destroyNotify.window;
 		ev->event		= event->u.destroyNotify.event;
 	}
 	break;
 	case UnmapNotify: {
-		register XUnmapEvent *ev = (XUnmapEvent *) re;
+		XUnmapEvent *ev = (XUnmapEvent *) re;
 		ev->window		= event->u.unmapNotify.window;
 		ev->event		= event->u.unmapNotify.event;
 		ev->from_configure	= event->u.unmapNotify.fromConfigure;
 	}
 	break;
 	case MapNotify: {
-		register XMapEvent *ev = (XMapEvent *) re;
+		XMapEvent *ev = (XMapEvent *) re;
 		ev->window		= event->u.mapNotify.window;
 		ev->event		= event->u.mapNotify.event;
 		ev->override_redirect	= event->u.mapNotify.override;
 	}
 	break;
 	case MapRequest: {
-		register XMapRequestEvent *ev = (XMapRequestEvent *) re;
+		XMapRequestEvent *ev = (XMapRequestEvent *) re;
 		ev->window		= event->u.mapRequest.window;
 		ev->parent		= event->u.mapRequest.parent;
 	}
 	break;
 	case ReparentNotify: {
-		register XReparentEvent *ev = (XReparentEvent *) re;
+		XReparentEvent *ev = (XReparentEvent *) re;
 		ev->event		= event->u.reparent.event;
 		ev->window		= event->u.reparent.window;
 		ev->parent		= event->u.reparent.parent;
@@ -1212,7 +1212,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case ConfigureNotify: {
-		register XConfigureEvent *ev = (XConfigureEvent *) re;
+		XConfigureEvent *ev = (XConfigureEvent *) re;
 		ev->event	= event->u.configureNotify.event;
 		ev->window	= event->u.configureNotify.window;
 		ev->above	= event->u.configureNotify.aboveSibling;
@@ -1225,7 +1225,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case ConfigureRequest: {
-		register XConfigureRequestEvent *ev =
+		XConfigureRequestEvent *ev =
 			(XConfigureRequestEvent *) re;
 		ev->window		= event->u.configureRequest.window;
 		ev->parent		= event->u.configureRequest.parent;
@@ -1240,7 +1240,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case GravityNotify: {
-		register XGravityEvent *ev = (XGravityEvent *) re;
+		XGravityEvent *ev = (XGravityEvent *) re;
 		ev->window		= event->u.gravity.window;
 		ev->event		= event->u.gravity.event;
 		ev->x		= event->u.gravity.x;
@@ -1248,7 +1248,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case ResizeRequest: {
-		register XResizeRequestEvent *ev =
+		XResizeRequestEvent *ev =
 			(XResizeRequestEvent *) re;
 		ev->window		= event->u.resizeRequest.window;
 		ev->width		= event->u.resizeRequest.width;
@@ -1256,14 +1256,14 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case CirculateNotify: {
-		register XCirculateEvent *ev = (XCirculateEvent *) re;
+		XCirculateEvent *ev = (XCirculateEvent *) re;
 		ev->window		= event->u.circulate.window;
 		ev->event		= event->u.circulate.event;
 		ev->place		= event->u.circulate.place;
 	}
 	break;
 	case CirculateRequest: {
-		register XCirculateRequestEvent *ev =
+		XCirculateRequestEvent *ev =
 			(XCirculateRequestEvent *) re;
 		ev->window		= event->u.circulate.window;
 		ev->parent		= event->u.circulate.event;
@@ -1271,7 +1271,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case PropertyNotify: {
-		register XPropertyEvent *ev = (XPropertyEvent *) re;
+		XPropertyEvent *ev = (XPropertyEvent *) re;
 		ev->window		= event->u.property.window;
 		ev->atom		= event->u.property.atom;
 		ev->time		= event->u.property.time;
@@ -1279,7 +1279,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case SelectionClear: {
-		register XSelectionClearEvent *ev =
+		XSelectionClearEvent *ev =
 			(XSelectionClearEvent *) re;
 		ev->window		= event->u.selectionClear.window;
 		ev->selection	= event->u.selectionClear.atom;
@@ -1287,7 +1287,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case SelectionRequest: {
-		register XSelectionRequestEvent *ev =
+		XSelectionRequestEvent *ev =
 			(XSelectionRequestEvent *) re;
 		ev->owner		= event->u.selectionRequest.owner;
 		ev->requestor	= event->u.selectionRequest.requestor;
@@ -1298,7 +1298,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case SelectionNotify: {
-		register XSelectionEvent *ev = (XSelectionEvent *) re;
+		XSelectionEvent *ev = (XSelectionEvent *) re;
 		ev->requestor	= event->u.selectionNotify.requestor;
 		ev->selection	= event->u.selectionNotify.selection;
 		ev->target		= event->u.selectionNotify.target;
@@ -1307,7 +1307,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case ColormapNotify: {
-		register XColormapEvent *ev = (XColormapEvent *) re;
+		XColormapEvent *ev = (XColormapEvent *) re;
 		ev->window		= event->u.colormap.window;
 		ev->colormap	= event->u.colormap.colormap;
 		ev->new		= event->u.colormap.new;
@@ -1315,8 +1315,8 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case ClientMessage: {
-		register int i;
-		register XClientMessageEvent *ev
+		int i;
+		XClientMessageEvent *ev
 			= (XClientMessageEvent *) re;
 		ev->window		= event->u.clientMessage.window;
 		ev->format		= event->u.u.detail;
@@ -1353,7 +1353,7 @@ register xEvent *event;	/* wire protocol event */
 	}
 	break;
 	case MappingNotify: {
-		register XMappingEvent *ev = (XMappingEvent *)re;
+		XMappingEvent *ev = (XMappingEvent *)re;
 		ev->first_keycode 	= event->u.mappingNotify.firstKeyCode;
 		ev->request 		= event->u.mappingNotify.request;
 		ev->count 		= event->u.mappingNotify.count;
@@ -1484,7 +1484,7 @@ int (*_XErrorFunction)() = _XDefaultError;
  * each time, unless the library needs a large scratch space.
  */
 char *_XAllocScratch (dpy, nbytes)
-register Display *dpy;
+Display *dpy;
 unsigned long nbytes;
 {
 	if (nbytes > dpy->scratch_length) {
@@ -1502,10 +1502,10 @@ Visual *_XVIDtoVisual (dpy, id)
 Display *dpy;
 VisualID id;
 {
-	register int i, j, k;
-	register Screen *sp;
-	register Depth *dp;
-	register Visual *vp;
+	int i, j, k;
+	Screen *sp;
+	Depth *dp;
+	Visual *vp;
 	for (i = 0; i < dpy->nscreens; i++) {
 		sp = &dpy->screens[i];
 		for (j = 0; j < sp->ndepths; j++) {
@@ -1557,7 +1557,7 @@ long len;
  */
 
 static doData16(dpy, data, len, packbuffer)
-register Display *dpy;
+Display *dpy;
 short *data;
 unsigned len;
 char *packbuffer;
@@ -1613,7 +1613,7 @@ unsigned len;
  */
 
 static doData32 (dpy, data, len, packbuffer)
-register Display *dpy;
+Display *dpy;
 long *data;
 unsigned len;
 char *packbuffer;
@@ -1671,10 +1671,10 @@ unsigned len;
 
 void 
 _XFreeQ (void) {
-	register _XQEvent *qelt = _qfree;
+	_XQEvent *qelt = _qfree;
 
 	while (qelt) {
-		register _XQEvent *qnext = qelt->next;
+		_XQEvent *qnext = qelt->next;
 		Xfree (qelt);
 		qelt = qnext;
 	}

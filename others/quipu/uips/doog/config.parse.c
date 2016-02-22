@@ -309,9 +309,9 @@ char *from;
 char *to;
 int count;
 {
-	register char *f = from;
-	register char *t = to;
-	register int i = count;
+	char *f = from;
+	char *t = to;
+	int i = count;
 
 	while (i-- > 0)
 		*t++ = *f++;
@@ -323,9 +323,9 @@ int count;
    in available built-in functions on various systems.  */
 static void
 __yy_bcopy (char *from, char *to, int count) {
-	register char *f = from;
-	register char *t = to;
-	register int i = count;
+	char *f = from;
+	char *t = to;
+	int i = count;
 
 	while (i-- > 0)
 		*t++ = *f++;
@@ -336,10 +336,10 @@ __yy_bcopy (char *from, char *to, int count) {
 #line 160 "/usr/local/lib/bison.simple"
 int
 yyparse() {
-	register int yystate;
-	register int yyn;
-	register short *yyssp;
-	register YYSTYPE *yyvsp;
+	int yystate;
+	int yyn;
+	short *yyssp;
+	YYSTYPE *yyvsp;
 	int yyerrstatus;	/*  number of tokens to shift before error messages enabled */
 	int yychar1;		/*  lookahead token as an internal (translated) token number */
 
@@ -821,7 +821,7 @@ yyerrhandle:
 static int 
 yylex (YYSTYPE *lvalp, YYLTYPE *llocp)
 {
-	register int c;
+	int c;
 	QCardinal count = 0;
 	FILE *lexfile = config_file;
 

@@ -260,7 +260,7 @@ char *argv[];
 	rcinit ();
 	(void) sprintf (buffer, "%s/.vtrc", myhome);
 	if (!fflag && (fp = fopen (buffer, "r"))) {
-		register char   *bp;
+		char   *bp;
 
 		while (fgets (buffer, sizeof buffer, fp)) {
 			if (bp = index (buffer, '\n'))
@@ -339,7 +339,7 @@ static int vtploop (vec, error)
 char  **vec;
 int	error;
 {
-	register struct dispatch *ds;
+	struct dispatch *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
 		return error;
@@ -374,8 +374,8 @@ int	getline (prompt, buffer)
 char   *prompt,
 	   *buffer;
 {
-	register int    i;
-	register char  *cp,
+	int    i;
+	char  *cp,
 			 *ep;
 	static int  sticky = 0;
 
@@ -409,14 +409,14 @@ char   *prompt,
 /*  */
 
 struct dispatch *getds (name)
-register char *name;
+char *name;
 {
-	register int    longest,
+	int    longest,
 			 nmatches;
-	register char  *p,
+	char  *p,
 			 *q;
 	char    buffer[BUFSIZ];
-	register struct dispatch   *ds,
+	struct dispatch   *ds,
 			*fs;
 
 	longest = nmatches = 0;
@@ -550,7 +550,7 @@ char  **vec;
 static int  vt_suspend (vec)
 char  **vec;
 {
-	register int save;
+	int save;
 
 	save = tmode(0);
 	(void)kill(0, SIGTSTP);
@@ -716,20 +716,20 @@ char    **getval ();
 static int  vt_set (vec)
 char  **vec;
 {
-	register int    i,
+	int    i,
 			 j;
 	int     value,
 			vflag;
-	register char **cp,
+	char **cp,
 			 *dp;
-	register struct var *v;
+	struct var *v;
 
 	if (*++vec == NULL) {
-		register int    w;
+		int    w;
 		int     columns,
 				width,
 				lines;
-		register struct var *u;
+		struct var *u;
 
 		for (u = vars; u -> v_name; u++)
 			continue;
@@ -793,7 +793,7 @@ char  **vec;
 	}
 
 	if (v -> v_value == NULLIP) {
-		register int    w;
+		int    w;
 
 		if (*v -> v_dvalue)
 			free (*v -> v_dvalue);
@@ -898,7 +898,7 @@ out_of_range:
 /*  */
 
 static printvar (v)
-register struct var *v;
+struct var *v;
 {
 	int	    i;
 	char    buffer[BUFSIZ];
@@ -995,12 +995,12 @@ struct var *v;
 /*  */
 
 static char **getval (name, choices)
-register char *name;
+char *name;
 char   **choices;
 {
-	register int    longest,
+	int    longest,
 			 nmatches;
-	register char  *p,
+	char  *p,
 			 *q,
 			 **cp,
 			 **fp;
@@ -1043,14 +1043,14 @@ char   **choices;
 /*  */
 
 static struct var *getvar (name)
-register char *name;
+char *name;
 {
-	register int    longest,
+	int    longest,
 			 nmatches;
-	register char  *p,
+	char  *p,
 			 *q;
 	char    buffer[BUFSIZ];
-	register struct var *v,
+	struct var *v,
 			*f;
 
 	longest = nmatches = 0;
@@ -1095,13 +1095,13 @@ static int helpwidth = 0;
 static int  vt_help (vec)
 char  **vec;
 {
-	register int    i,
+	int    i,
 			 j,
 			 w;
 	int     columns,
 			width,
 			lines;
-	register struct dispatch   *ds,
+	struct dispatch   *ds,
 			*es;
 
 	for (es = dispatches; es -> ds_name; es++)
@@ -1166,10 +1166,10 @@ FILE *fp;
 /*  */
 
 static rcinit () {
-	register int    w;
-	register char **cp;
-	register struct dispatch *ds;
-	register struct var *v;
+	int    w;
+	char **cp;
+	struct dispatch *ds;
+	struct var *v;
 
 	if ((myhome = getenv ("HOME")) == NULL)
 		myhome = ".";		/* could do passwd search... */
@@ -1217,7 +1217,7 @@ int	tcc;
 vt(s)
 int s;
 {
-	register int c;
+	int c;
 	int tin = fileno(stdin), tout = fileno(stdout);
 	int nfds, result;
 
@@ -1305,7 +1305,7 @@ int s;
 		}
 
 		while (tcc > 0) {
-			register int ch;
+			int ch;
 
 			if ((&netobuf[BUFSIZ] - nfrontp) < 2)
 				break;
@@ -1331,7 +1331,7 @@ int s;
  */
 char *
 control(c)
-register int c;
+int c;
 {
 	static char buf[3];
 
@@ -1380,7 +1380,7 @@ int	dd;
 netflush(dd)
 int	dd;
 {
-	register char *cp;
+	char *cp;
 	int n, i, j;
 	int nl_flag;		/*If current PDU includes newline, follow it
 				  with a Deliver Request*/

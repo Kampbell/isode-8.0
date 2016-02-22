@@ -157,7 +157,7 @@ IFP	tracing;
 struct FTAMconnect *ftc;
 struct FTAMindication *fti;
 {
-	register int	i;
+	int	i;
 	int	    bits,
 			rcvd_bits,
 			idc,
@@ -168,20 +168,20 @@ struct FTAMindication *fti;
 	OID	    ctx,
 			pci;
 	struct SSAPref *sr;
-	register struct PSAPcontext *px;
+	struct PSAPcontext *px;
 	struct PSAPctxlist pls;
-	register struct PSAPctxlist *pl = &pls;
+	struct PSAPctxlist *pl = &pls;
 	struct AcSAPconnect accs;
-	register struct AcSAPconnect *acc = &accs;
-	register struct PSAPconnect *pc = &acc -> acc_connect;
+	struct AcSAPconnect *acc = &accs;
+	struct PSAPconnect *pc = &acc -> acc_connect;
 	struct AcSAPindication acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
-	register struct FTAMcontent *fx;
-	register struct ftamblk *fsb;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
+	struct FTAMcontent *fx;
+	struct ftamblk *fsb;
 	struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__INITIALIZE__request *req;
-	register struct type_FTAM_F__INITIALIZE__response *rsp;
+	struct type_FTAM_F__INITIALIZE__request *req;
+	struct type_FTAM_F__INITIALIZE__response *rsp;
 
 	if ((fsb = newfsblk ()) == NULL)
 		return ftamlose (fti, FS_GEN_NOREASON, 1, NULLCP, "out of memory");
@@ -229,7 +229,7 @@ no_mem:
 	px++, pl -> pc_nctx++;
 
 	if (contents) {
-		register struct isodocument *id;
+		struct isodocument *id;
 
 		for (fx = contents -> fc_contents, i = contents -> fc_ncontent - 1;
 				i >= 0;
@@ -292,7 +292,7 @@ no_mem:
 #endif
 	if (contents) {
 		struct type_FTAM_Contents__Type__List *fpm;
-		register struct type_FTAM_Contents__Type__List **fpc;
+		struct type_FTAM_Contents__Type__List **fpc;
 
 		fpc = &req -> contents__type__list;
 		for (fx = contents -> fc_contents, i = contents -> fc_ncontent - 1;
@@ -319,7 +319,7 @@ no_mem:
 			== NULL)
 		goto out1;
 	if (password) {
-		register struct type_FTAM_Password *p;
+		struct type_FTAM_Password *p;
 
 		if ((p = (struct type_FTAM_Password *) calloc (1, sizeof *p))
 				== NULL)
@@ -394,7 +394,7 @@ no_mem:
 
 	if (acc -> acc_ninfo < 1 || (pe = acc -> acc_info[0]) == NULLPE) {
 		if (acc -> acc_result != ACS_ACCEPT) {
-			register struct FTAMabort *fta = &fti -> fti_abort;
+			struct FTAMabort *fta = &fti -> fti_abort;
 
 			aca -> aca_reason = acc -> acc_result;
 			(void) acs2ftamlose (fsb, fti, "AcAssocRequest(pseudo)", aca);
@@ -612,7 +612,7 @@ too_many:
 			goto out2;
 		}
 		{
-			register struct FTAMabort *fta = &fti -> fti_abort;
+			struct FTAMabort *fta = &fti -> fti_abort;
 
 			bzero ((char *) fta, sizeof *fta);
 			fta -> fta_peer = 1;
@@ -636,8 +636,8 @@ too_many:
 	ftc -> ftc_fqos = fsb -> fsb_fqos;
 
 	if (contents) {
-		register struct type_FTAM_Contents__Type__List *dtn;
-		register struct FTAMcontent *fx2;
+		struct type_FTAM_Contents__Type__List *dtn;
+		struct FTAMcontent *fx2;
 
 		fx2 = ftc -> ftc_contents.fc_contents;
 

@@ -44,7 +44,7 @@ RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	switch (class) {
 	case ROS_SYNC:
@@ -72,7 +72,7 @@ RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID
 /*  */
 
 static int 
-RoInvokeRequestAux (register struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
+RoInvokeRequestAux (struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
 {
 	PE	pe;
 

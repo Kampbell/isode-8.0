@@ -241,19 +241,19 @@ struct pair *n2p ();
 static 
 read_config (void) {
 	int	    lineno;
-	register char *cp,
+	char *cp,
 			 *dp;
 	char    buffer[BUFSIZ],
 			file[BUFSIZ],
 			line[BUFSIZ],
 			*vec[NVEC + 1];
 	FILE   *fp;
-	register struct country *c;
-	register struct pair *p,
+	struct country *c;
+	struct pair *p,
 			*q;
-	register struct hostent *hp;
+	struct hostent *hp;
 	struct sockaddr_in in_socket;
-	register struct sockaddr_in *isock = &in_socket;
+	struct sockaddr_in *isock = &in_socket;
 
 	(void) sprintf (file, "%s.dsa", wildlife);
 	if ((fp = fopen (file, "r")) == NULL)
@@ -422,13 +422,13 @@ illegal:
 
 	uid = getuid (), gid = getgid ();
 	if ((p = n2p ("userid", 1)) -> p_value) {
-		register struct passwd *pw = getpwnam (p -> p_value);
+		struct passwd *pw = getpwnam (p -> p_value);
 
 		if (pw == NULL)
 			adios (NULLCP, "unknown user name \"%s\"", p -> p_value);
 		uid = pw -> pw_uid, gid = pw -> pw_gid;
 	} else {
-		register struct passwd *pw = getpwuid (uid);
+		struct passwd *pw = getpwuid (uid);
 
 		if (pw == NULL)
 			adios (NULLCP, "unknown user name \"%s\"", p -> p_value);
@@ -439,7 +439,7 @@ illegal:
 	}
 
 	if (p = n2p ("groupid", 0)) {
-		register struct group *gr = getgrnam (p -> p_value);
+		struct group *gr = getgrnam (p -> p_value);
 
 		if (gr == NULL)
 			adios (NULLCP, "unknown group name \"%s\"", p -> p_value);
@@ -560,7 +560,7 @@ static struct country *
 read_country (char *code)
 {
 	int	    vecp;
-	register char *cp,
+	char *cp,
 			 *dp;
 	char    d,
 			*ep,
@@ -569,7 +569,7 @@ read_country (char *code)
 			*vec[NVEC + NSLACK + 1];
 	FILE   *fp;
 	static struct country cs;
-	register struct country *c = NULL;
+	struct country *c = NULL;
 
 	(void) strcpy (file, "iso3166");
 	if ((fp = fopen (file, "r")) == NULL)
@@ -659,7 +659,7 @@ static
 read_psap (char *dsa, char **addr)
 {
 	int	    i;
-	register char *cp,
+	char *cp,
 			 *dp;
 	char    buffer[BUFSIZ],
 			stuff[BUFSIZ];
@@ -716,7 +716,7 @@ hit:
 int 
 generate_sed (void) {
 	FILE   *fp;
-	register struct pair *p;
+	struct pair *p;
 
 	(void) sprintf (sedfil, "/tmp/%sXXXXXX", myname);
 	(void) unlink (mktemp (sedfil));
@@ -738,7 +738,7 @@ generate_sed (void) {
 static struct pair *
 n2p (char *name, int any)
 {
-	register struct pair *p;
+	struct pair *p;
 
 	for (p = pairs; p -> p_name; p++)
 		if (strcmp (p -> p_name, name) == 0)
@@ -755,13 +755,13 @@ static	munge (fp, entries)
 FILE   *fp;
 char   *entries[];
 {
-	register char   c,
+	char   c,
 			 *bp,
 			 *cp,
 			 *dp,
 			 **pp;
 	char    buffer[BUFSIZ];
-	register struct pair *p;
+	struct pair *p;
 
 
 	for (pp = entries; cp = *pp; pp++) {
@@ -1090,7 +1090,7 @@ fudge_file (char *name)
 static 
 arginit (char **vec)
 {
-	register char  *ap;
+	char  *ap;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -1139,7 +1139,7 @@ static
 parse_3166 (void) {
 	int	    bitno;
 	unsigned int bits_size;
-	register char *cp,
+	char *cp,
 			 *dp;
 	char    d,
 			*ep,
@@ -1201,7 +1201,7 @@ parse_3166 (void) {
 	}
 
 	{
-		register unsigned char *bp;
+		unsigned char *bp;
 		unsigned char *xp;
 
 		printf ("static unsigned char bits_3166[%u] = {\n", bits_size);
@@ -1217,7 +1217,7 @@ parse_3166 (void) {
 
 static 
 table_3166 (void) {
-	register char *cp,
+	char *cp,
 			 *dp;
 	char    d,
 			*ep,

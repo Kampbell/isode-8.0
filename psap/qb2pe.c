@@ -38,10 +38,10 @@ static PE	qb2pe_aux ();
 /*  */
 
 PE 
-qb2pe (register struct qbuf *qb, int len, int depth, int *result)
+qb2pe (struct qbuf *qb, int len, int depth, int *result)
 {
 	char   *sp;
-	register struct qbuf *qp;
+	struct qbuf *qp;
 	PE	    pe;
 
 	*result = PS_ERR_NONE;
@@ -84,11 +84,11 @@ qb2pe (register struct qbuf *qb, int len, int depth, int *result)
 /*  */
 
 static PE 
-qb2pe_aux (register char *s, register int len, int depth, int *result)
+qb2pe_aux (char *s, int len, int depth, int *result)
 {
 	int	    i;
-	register PElementData data;
-	register PE	    pe,
+	PElementData data;
+	PE	    pe,
 			 p,
 			 q;
 	PE	    *r,

@@ -430,7 +430,7 @@ PS   xps;
 DN  dn;
 int  format;
 {
-	register DN eptr;
+	DN eptr;
 	int pad;
 	char padstr[100];
 
@@ -553,7 +553,7 @@ static struct pair pairs[] = {
 
 
 static 
-de_fax_free (register struct fax *f)
+de_fax_free (struct fax *f)
 {
 	free (f -> number);
 
@@ -564,9 +564,9 @@ de_fax_free (register struct fax *f)
 }
 
 static struct fax *
-de_fax_cpy (register struct fax *a)
+de_fax_cpy (struct fax *a)
 {
-	register struct fax *f;
+	struct fax *f;
 
 	f = (struct fax *) smalloc (sizeof *f);
 
@@ -577,7 +577,7 @@ de_fax_cpy (register struct fax *a)
 }
 
 static int 
-de_fax_cmp (register struct fax *a, register struct fax *b)
+de_fax_cmp (struct fax *a, struct fax *b)
 {
 	int	    i;
 
@@ -593,13 +593,13 @@ de_fax_cmp (register struct fax *a, register struct fax *b)
 }
 
 static	de_fax_print (xps, f, format)
-register PS xps;
-register struct fax *f;
+PS xps;
+struct fax *f;
 int	format;
 {
-	register int   i;
-	register struct pair *p;
-	register PE    pe;
+	int   i;
+	struct pair *p;
+	PE    pe;
 
 	if (format == READOUT) {
 		ps_printf (xps, "%s", mapPhone(f -> number));
@@ -644,14 +644,14 @@ int	format;
 }
 
 static struct fax *
-de_str2fax (register char *str)
+de_str2fax (char *str)
 {
 	int	    value;
-	register char  *ptr,
+	char  *ptr,
 			 **ap;
 	char   *vec[NVEC + 1];
-	register struct fax *f;
-	register struct pair *p;
+	struct fax *f;
+	struct pair *p;
 
 	f = (struct fax *) smalloc (sizeof *f);
 

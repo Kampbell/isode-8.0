@@ -41,7 +41,7 @@ char *oid;
 int match;
 char *value;
 {
-	register filt_struct * filt = (filt_struct *) malloc(sizeof(filt_struct));
+	filt_struct * filt = (filt_struct *) malloc(sizeof(filt_struct));
 
 	filt->flt_type = ITEM;
 	filt->next = 0;
@@ -107,7 +107,7 @@ Filter make_attr_filter() {
 	char attr_name[1024],
 		 attr_val[1024], sub_val_initial[1024],
 		 sub_val_final[1024], sub_val_any[1024];
-	register char *end, *start, *next;
+	char *end, *start, *next;
 	char save;
 	Filter sfilt = filter_alloc();
 

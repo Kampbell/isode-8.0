@@ -115,7 +115,7 @@ dsEnqError srch_start() {
 		dn_number = 0;
 
 		if (result.CSR_entries != NULLENTRYINFO) {
-			register EntryInfo *ptr;
+			EntryInfo *ptr;
 
 			return_error = Okay;
 			free_seq(dnseq);

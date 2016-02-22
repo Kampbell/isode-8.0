@@ -137,11 +137,11 @@ char	**argv;
 
 
 char * TidyString (a)
-register char * a;
+char * a;
 {
-	register char * b;
+	char * b;
 	char * c;
-	register int i = 0;
+	int i = 0;
 
 	if (!*a)
 		return (a);

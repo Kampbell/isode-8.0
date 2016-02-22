@@ -46,7 +46,7 @@ str2aet_seq (char *designator, char *qualifier, struct isoentity *iep)
 	char    descriptor[BUFSIZ],
 			desdflt[BUFSIZ],
 			qualdflt[BUFSIZ];
-	register struct isoentity  *ie;
+	struct isoentity  *ie;
 	struct isoentity ids,
 			iqs;
 

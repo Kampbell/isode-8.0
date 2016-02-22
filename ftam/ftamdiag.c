@@ -33,18 +33,18 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamdiag.c,v 9.0 1992/
 /*  */
 
 struct type_FTAM_Diagnostic *diag2fpm (fsb, magic, diag, ndiag, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	magic;
 struct FTAMdiagnostic diag[];
 int	ndiag;
 struct FTAMindication *fti;
 {
-	register int    i;
-	register struct FTAMdiagnostic *dp;
+	int    i;
+	struct FTAMdiagnostic *dp;
 	struct type_FTAM_Diagnostic *fpmp;
-	register struct type_FTAM_Diagnostic  *fpm,
+	struct type_FTAM_Diagnostic  *fpm,
 			**fpc;
-	register struct diag_element *f3;
+	struct diag_element *f3;
 
 	fpmp = NULL, fpc = &fpmp;
 	for (dp = diag, i = ndiag - 1; i >= 0; dp++, i--) {
@@ -150,15 +150,15 @@ bad_dp:
 /*  */
 
 int	fpm2diag (fsb, fpm, diag, ndiag, fti)
-register struct ftamblk *fsb;
-register struct type_FTAM_Diagnostic *fpm;
+struct ftamblk *fsb;
+struct type_FTAM_Diagnostic *fpm;
 struct FTAMdiagnostic diag[];
 int   *ndiag;
 struct FTAMindication *fti;
 {
-	register int    i;
-	register struct FTAMdiagnostic *dp;
-	register struct diag_element *f3;
+	int    i;
+	struct FTAMdiagnostic *dp;
+	struct diag_element *f3;
 
 	*ndiag = 0;
 
@@ -178,7 +178,7 @@ struct FTAMindication *fti;
 		else
 			dp -> ftd_delay = DIAG_NODELAY;
 		if (f3 -> further__details) {
-			register char   *cp;
+			char   *cp;
 
 			if ((cp = qb2str (f3 -> further__details)) == NULL)
 				return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,

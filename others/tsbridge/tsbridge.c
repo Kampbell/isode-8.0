@@ -83,7 +83,7 @@ int
 main (int argc, char **argv, char **envp)
 {
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	struct TSAPaddr tas, *ta = &tas;
 	int	vecp;
 	char	*vec[4];
@@ -134,9 +134,9 @@ static void
 tsbridge (int vecp, char **vec, struct TSAPaddr *ta)
 {
 	struct TSAPstart tss;
-	register struct TSAPstart *ts = &tss;
+	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	struct TSAPaddr *tota;
 	struct TSAPaddr *fromta;
 	struct TSAPconnect tcs;
@@ -207,7 +207,7 @@ do_the_biz (int sd1, int sd2)
 	int nfds = 0;
 	fd_set rmask, imask;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 
 	FD_ZERO (&rmask);
 
@@ -233,9 +233,9 @@ static void
 copy_tsdu (int s1, int s2)
 {
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	struct TSAPdata txs;
-	register struct TSAPdata *tx = &txs;
+	struct TSAPdata *tx = &txs;
 	int	result;
 	char	*p;
 
@@ -316,7 +316,7 @@ static void
 ts_close (int sd, char *event)
 {
 	struct TSAPdisconnect tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if ((int)strlen (event) >= TD_SIZE)
 		event = NULLCP;
@@ -328,7 +328,7 @@ ts_close (int sd, char *event)
 /*  */
 
 static void 
-ts_adios (register struct TSAPdisconnect *td, char *event)
+ts_adios (struct TSAPdisconnect *td, char *event)
 {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
@@ -338,7 +338,7 @@ ts_adios (register struct TSAPdisconnect *td, char *event)
 /*  */
 
 static void 
-ts_advise (register struct TSAPdisconnect *td, int code, char *event)
+ts_advise (struct TSAPdisconnect *td, int code, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -421,7 +421,7 @@ static struct TSAPaddr *
 maketa (struct TSAPaddr *ta, long type, ContTbl *ctp)
 {
 	static struct TSAPaddr newta;
-	register struct TSAPaddr *nta = &newta;
+	struct TSAPaddr *nta = &newta;
 	char	*p;
 	int	i;
 	struct PSAPaddr pas;
@@ -556,8 +556,8 @@ find_connection (struct TSAPaddr *ta)
 static void 
 arginit (char **vec)
 {
-	register char   *ap;
-	register struct TSAPaddr *ta;
+	char   *ap;
+	struct TSAPaddr *ta;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;

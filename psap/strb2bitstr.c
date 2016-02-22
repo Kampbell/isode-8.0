@@ -33,13 +33,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/strb2bitstr.c,v 9.0 19
 /*  */
 
 PE 
-strb2bitstr (register char *cp, register int len, int class, int id)
+strb2bitstr (char *cp, int len, int class, int id)
 {
-	register int    i,
+	int    i,
 			 j,
 			 bit,
 			 mask;
-	register PE	    p;
+	PE	    p;
 
 	if ((p = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
 		return NULLPE;

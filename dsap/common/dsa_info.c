@@ -146,7 +146,7 @@ int format;
 static struct edb_info * str2update (str)
 char * str;
 {
-	register char * ptr;
+	char * ptr;
 	char * save,val;
 	struct edb_info * ei;
 

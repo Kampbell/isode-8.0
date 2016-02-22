@@ -157,10 +157,10 @@ arginit (char **vec)
 {
 	int	    n,
 			nhosts;
-	register char  *ap,
+	char  *ap,
 			 *cp,
 			 *lp;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -273,8 +273,8 @@ arginit (char **vec)
 
 static 
 update_X (void) {
-	register struct host   *hp;
-	register struct face   *fp;
+	struct host   *hp;
+	struct face   *fp;
 	XGCValues gcvalues;
 
 	service_X ();
@@ -356,11 +356,11 @@ static int
 service_X (void) {
 	int	    wh,
 			ww;
-	register Window w;
-	register struct face   *fp;
-	register struct host   *hp;
+	Window w;
+	struct face   *fp;
+	struct host   *hp;
 	XEvent xevent;
-	register XEvent *xe = &xevent;
+	XEvent *xe = &xevent;
 
 	while (XPending (DISP)) {
 		XNextEvent (DISP, xe);
@@ -481,8 +481,8 @@ init_X (void) {
 static 
 layout_X (void) {
 	int     h;
-	register struct face   *fp;
-	register struct host   *hp;
+	struct face   *fp;
+	struct host   *hp;
 	XCharStruct mychar;
 
 	h = largest_w = 0;
@@ -569,7 +569,7 @@ display_top (void) {
 
 
 static 
-display_host (register struct host *hp)
+display_host (struct host *hp)
 {
 	if (debug)
 		(void) fprintf (stderr, "%s:\n", hp -> h_name);
@@ -581,7 +581,7 @@ display_host (register struct host *hp)
 /*  */
 
 static 
-display_face (register struct face *fp)
+display_face (struct face *fp)
 {
 	int     sx,
 			sy,
@@ -589,8 +589,8 @@ display_face (register struct face *fp)
 			dy;
 	unsigned int    h,
 			 w;
-	register struct type_IMAGE_Image *im = fp -> f_imap;
-	register OpaqueFrame *xm = &fp -> f_frame;
+	struct type_IMAGE_Image *im = fp -> f_imap;
+	OpaqueFrame *xm = &fp -> f_frame;
 	XImage *image;
 
 	sx = max (im -> width - (int) xm -> width, 0) / 2;
@@ -641,14 +641,14 @@ read_X (void) {
 	int	    fd,
 			n;
 	long    now;
-	register struct dirent *dp;
-	register struct face *fp,
+	struct dirent *dp;
+	struct face *fp,
 			**fpp;
-	register struct host *hp,
+	struct host *hp,
 			**hpp;
 	struct whod wds;
-	register struct whod *wd = &wds;
-	register struct whoent *we;
+	struct whod *wd = &wds;
+	struct whoent *we;
 	static DIR *dd = NULL;
 
 	(void) time (&now);
@@ -756,19 +756,19 @@ read_X (void) {
 	}
 
 	{
-		register int    i;
-		register struct host **hq;
+		int    i;
+		struct host **hq;
 
 		i = 0;
 		for (hp = hosts; hp; hp = hp -> h_next) {
-			register int j;
-			register struct face **fq;
+			int j;
+			struct face **fq;
 
 			i++, j = 0;
 			for (fp = hp -> h_faces; fp; fp = fp -> f_next)
 				j++;
 			if (j > 1) {
-				register struct face **faces;
+				struct face **faces;
 
 				if ((faces = (struct face **)
 							 calloc ((unsigned) j, sizeof *faces)) == NULL)
@@ -788,7 +788,7 @@ read_X (void) {
 		}
 
 		if (i > 1) {
-			register struct host **hostz;
+			struct host **hostz;
 
 			if ((hostz = (struct host **)
 						 calloc ((unsigned) i, sizeof *hostz)) == NULL)
@@ -812,9 +812,9 @@ out:
 /*  */
 
 static int 
-display_this_host (register char *n)
+display_this_host (char *n)
 {
-	register char **ap;
+	char **ap;
 
 	if (host_list == host_end)
 		return 1;

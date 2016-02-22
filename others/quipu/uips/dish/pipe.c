@@ -159,7 +159,7 @@ err_recv:
 			(void) close_tcp_socket (sd);
 			exit (eval);
 		} else {		/* 'e', 'y', 'm', or 'p' */
-			register char  *cp, *ep;
+			char  *cp, *ep;
 			char            where[BUFSIZ];
 
 			cp = buffer + res - 1;

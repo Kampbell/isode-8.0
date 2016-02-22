@@ -61,9 +61,9 @@ SFD	lostconn();
 int 
 docmds (char **dhosts, int argc, char **argv)
 {
-	register struct cmd *c;
-	register struct namelist *f;
-	register char **cpp;
+	struct cmd *c;
+	struct namelist *f;
+	char **cpp;
 	extern struct cmd *cmds;
 
 	(void) signal(SIGHUP, cleanup);
@@ -114,9 +114,9 @@ found:
 int 
 doarrow (char **filev, struct namelist *files, char *rhost, struct subcmd *scmds)
 {
-	register struct namelist *f;
-	register struct subcmd *sc;
-	register char **cpp;
+	struct namelist *f;
+	struct subcmd *sc;
+	char **cpp;
 	int n, ddir, opts = options;
 
 	if (debug)
@@ -203,9 +203,9 @@ extern	char target[], *tp;
 int 
 dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *scmds)
 {
-	register struct subcmd *sc;
-	register struct namelist *f;
-	register char **cpp;
+	struct subcmd *sc;
+	struct namelist *f;
+	char **cpp;
 	struct timeval tv[2];
 	struct timezone tz;
 	struct stat stb;
@@ -313,9 +313,9 @@ cmptime (char *name)
 int 
 rcmptime (struct stat *st)
 {
-	register DIR *d;
-	register struct dirent *dp;
-	register char *cp;
+	DIR *d;
+	struct dirent *dp;
+	char *cp;
 	char *otp;
 	int len;
 
@@ -356,10 +356,10 @@ rcmptime (struct stat *st)
  */
 notify(file, rhost, to, lmod)
 char *file, *rhost;
-register struct namelist *to;
+struct namelist *to;
 time_t lmod;
 {
-	register int fd, len;
+	int fd, len;
 	FILE *pf, *popen();
 	struct stat stb;
 	char	buf[BUFSIZ];
@@ -434,7 +434,7 @@ time_t lmod;
 int 
 inlist (struct namelist *list, char *file)
 {
-	register struct namelist *nl;
+	struct namelist *nl;
 
 	for (nl = list; nl != NULL; nl = nl->n_next)
 		if (!strcmp(file, nl->n_name))
@@ -448,8 +448,8 @@ inlist (struct namelist *list, char *file)
 int 
 except (char *file)
 {
-	register struct	subcmd *sc;
-	register struct	namelist *nl;
+	struct	subcmd *sc;
+	struct	namelist *nl;
 	char	*p, *re_comp ();
 
 	if (debug)
@@ -476,7 +476,7 @@ except (char *file)
 }
 
 char *
-colon (register char *cp)
+colon (char *cp)
 {
 
 	while (*cp) {

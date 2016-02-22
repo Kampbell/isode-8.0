@@ -53,7 +53,7 @@ set_smalloc_handler (VFP fnx)
 char *
 smalloc (int size)
 {
-	register char *ptr;
+	char *ptr;
 
 	if ((ptr = malloc((unsigned) size)) == (char *)0) {
 		(*smalloc_handler) ();

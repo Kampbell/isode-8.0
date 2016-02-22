@@ -38,7 +38,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2real.c,v 9.0 1992
 static double decode_binary (), decode_decimal ();
 
 double 
-prim2real (register PE pe)
+prim2real (PE pe)
 {
 	if (pe -> pe_form != PE_FORM_PRIM)
 		return pe_seterr (pe, PE_ERR_PRIM, NOTOK);

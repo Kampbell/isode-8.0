@@ -153,7 +153,7 @@ OT	lookup_object ();
 int 
 main (int argc, char **argv, char **envp)
 {
-	register char  *cp,
+	char  *cp,
 			 *sp;
 
 	fprintf (stderr, "%s\n", mosyversion);
@@ -263,7 +263,7 @@ usage:
 /*    ERRORS */
 
 int 
-yyerror (register char *s)
+yyerror (char *s)
 {
 	yyerror_aux (s);
 
@@ -307,7 +307,7 @@ warning (char *fmt)
 #endif
 
 static 
-yyerror_aux (register char *s)
+yyerror_aux (char *s)
 {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
@@ -408,8 +408,8 @@ char   *mod,
 	   *id;
 YV	value;
 {
-	register SY	    sy;
-	register OI	    yi;
+	SY	    sy;
+	OI	    yi;
 
 	if ((yi = (OI) calloc (1, sizeof *yi)) == NULLOI)
 		yyerror ("out of memory");
@@ -446,8 +446,8 @@ YV	value,
  idx,
  defval;
 {
-	register SY	    sy;
-	register OT	    yo;
+	SY	    sy;
+	OT	    yo;
 
 
 	if ((yo = (OT) calloc (1, sizeof *yo)) == NULLOT)
@@ -489,8 +489,8 @@ YV	vars;
 char   *descr,
 	   *refer;
 {
-	register SY	    sy;
-	register TT	    yt;
+	SY	    sy;
+	TT	    yt;
 
 	if ((yt = (TT) calloc (1, sizeof *yt)) == NULLTT)
 		yyerror ("out of memory");
@@ -520,14 +520,14 @@ char   *descr,
 /*  */
 
 pass1_type (encpref, decpref, prfpref, mod, id, yp)
-register char  *encpref,
+char  *encpref,
 		 *decpref,
 		 *prfpref,
 		 *mod,
 		 *id;
-register YP	yp;
+YP	yp;
 {
-	register SY	    sy;
+	SY	    sy;
 
 	if (dflag && lookup_type (mod, id))	/* no duplicate entries, please... */
 		return;
@@ -551,7 +551,7 @@ register YP	yp;
 
 int 
 pass2 (void) {
-	register SY	    sy;
+	SY	    sy;
 
 	if (!sflag)
 		(void) fflush (stderr);
@@ -602,7 +602,7 @@ pass2 (void) {
 /* ARGSUSED */
 
 static 
-do_id (register OI yi, char *id)
+do_id (OI yi, char *id)
 {
 	printf ("%-20s %s\n", yi -> yi_name, id2str (yi -> yi_value));
 }
@@ -612,14 +612,14 @@ do_id (register OI yi, char *id)
 /* ARGSUSED */
 
 static 
-do_obj1 (register OT yo, char *id)
+do_obj1 (OT yo, char *id)
 {
-	register YP	    yp,
+	YP	    yp,
 			 yz;
-	register YV	    yv;
+	YV	    yv;
 
 	{
-		register char *cp;
+		char *cp;
 
 		for (cp = yo -> yo_name; *cp; cp++)
 			if (*cp == '-') {
@@ -645,7 +645,7 @@ again:
 			else if (yv -> yv_number == 0)
 				yyerror ("value of enumerated INTEGER is zero");
 		for (yv = yp -> yp_value; yv; yv = yv -> yv_next) {
-			register YV	v;
+			YV	v;
 
 			for (v = yv -> yv_next; v; v = v -> yv_next)
 				if (yv -> yv_number == v -> yv_number)
@@ -727,7 +727,7 @@ again:
 
 	if (yp -> yp_code == YP_SEQLIST) {
 		for (yz = yp -> yp_type; yz; yz = yz -> yp_next) {
-			register YP	y = yz;
+			YP	y = yz;
 
 check_again:
 			;
@@ -798,9 +798,9 @@ done_sequence:
 /* ARGSUSED */
 
 static 
-do_trap1 (register TT yt, char *id)
+do_trap1 (TT yt, char *id)
 {
-	register YV	    yv;
+	YV	    yv;
 
 	if ((yv = yt -> yt_enterprise) == NULLYV) {
 		yyerror ("no enterprise associated with trap type");
@@ -835,9 +835,9 @@ done_enterprise:
 /*    IDENTIFIER HANDLING */
 
 static OI 
-lookup_identifier (register char *mod, register char *id)
+lookup_identifier (char *mod, char *id)
 {
-	register SY	    sy;
+	SY	    sy;
 
 	for (sy = myidentifiers; sy; sy = sy -> sy_next) {
 		if (mod) {
@@ -857,9 +857,9 @@ lookup_identifier (register char *mod, register char *id)
 /*  */
 
 static char *id2str (yv)
-register YV	yv;
+YV	yv;
 {
-	register char *cp,
+	char *cp,
 			 *dp;
 	static char buffer[BUFSIZ];
 
@@ -879,9 +879,9 @@ register YV	yv;
 /*    OBJECT HANDLING */
 
 static OT 
-lookup_object (register char *mod, register char *id)
+lookup_object (char *mod, char *id)
 {
-	register SY	    sy;
+	SY	    sy;
 
 	for (sy = myobjects; sy; sy = sy -> sy_next) {
 		if (mod) {
@@ -901,7 +901,7 @@ lookup_object (register char *mod, register char *id)
 /*  */
 
 static	check_objects (yv, clause, typesOK)
-register YV    yv;
+YV    yv;
 char   *clause;
 int	typesOK;
 {
@@ -943,10 +943,10 @@ not_a_type:
 /*    TYPE HANDLING */
 
 static YP  lookup_type (mod, id)
-register char *mod,
+char *mod,
 		 *id;
 {
-	register SY	    sy;
+	SY	    sy;
 
 	for (sy = mytypes; sy; sy = sy -> sy_next) {
 		if (mod) {
@@ -966,7 +966,7 @@ register char *mod,
 /*    VALUE HANDLING */
 
 static char *val2str (yv)
-register YV	yv;
+YV	yv;
 {
 	static char buffer[BUFSIZ];
 
@@ -1005,7 +1005,7 @@ register YV	yv;
 /*    DEBUG */
 
 static 
-print_yi (register OI yi, register int level)
+print_yi (OI yi, int level)
 {
 	if (yi == NULLOI)
 		return;
@@ -1021,7 +1021,7 @@ print_yi (register OI yi, register int level)
 /*  */
 
 static 
-print_yo (register OT yo, register int level)
+print_yo (OT yo, int level)
 {
 	if (yo == NULLOT)
 		return;
@@ -1041,7 +1041,7 @@ print_yo (register OT yo, register int level)
 /*  */
 
 static 
-print_yt (register TT yt, register int level)
+print_yt (TT yt, int level)
 {
 	if (yt == NULLTT)
 		return;
@@ -1062,11 +1062,11 @@ print_yt (register TT yt, register int level)
 /*  */
 
 static	print_type (yp, level)
-register YP	yp;
-register int	level;
+YP	yp;
+int	level;
 {
-	register YP	    y;
-	register YV	    yv;
+	YP	    y;
+	YV	    yv;
 
 	if (yp == NULLYP)
 		return;
@@ -1150,10 +1150,10 @@ register int	level;
 /*  */
 
 static	print_value (yv, level)
-register YV	yv;
-register int	level;
+YV	yv;
+int	level;
 {
-	register YV	    y;
+	YV	    y;
 
 	if (yv == NULLYV)
 		return;
@@ -1214,9 +1214,9 @@ register int	level;
 /*    SYMBOLS */
 
 static SY 
-new_symbol (register char *encpref, register char *decpref, register char *prfpref, register char *mod, register char *id)
+new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id)
 {
-	register SY    sy;
+	SY    sy;
 
 	if ((sy = (SY) calloc (1, sizeof *sy)) == NULLSY)
 		yyerror ("out of memory");
@@ -1231,9 +1231,9 @@ new_symbol (register char *encpref, register char *decpref, register char *prfpr
 
 
 static SY 
-add_symbol (register SY s1, register SY s2)
+add_symbol (SY s1, SY s2)
 {
-	register SY	    sy;
+	SY	    sy;
 
 	if (s1 == NULLSY)
 		return s2;
@@ -1250,7 +1250,7 @@ add_symbol (register SY s1, register SY s2)
 YP	new_type (code)
 int	code;
 {
-	register YP    yp;
+	YP    yp;
 
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
 		yyerror ("out of memory");
@@ -1261,10 +1261,10 @@ int	code;
 
 
 YP	add_type (yp1, yp2)
-register YP	yp1,
+YP	yp1,
 		 yp2;
 {
-	register YP	    yp;
+	YP	    yp;
 
 	for (yp = yp1; yp -> yp_next; yp = yp -> yp_next)
 		continue;
@@ -1278,7 +1278,7 @@ register YP	yp1,
 YV	new_value (code)
 int	code;
 {
-	register YV    yv;
+	YV    yv;
 
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
 		yyerror ("out of memory");
@@ -1289,10 +1289,10 @@ int	code;
 
 
 YV	add_value (yp1, yp2)
-register YV	yp1,
+YV	yp1,
 		 yp2;
 {
-	register YV	    yv;
+	YV	    yv;
 
 	for (yv = yp1; yv -> yv_next; yv = yv -> yv_next)
 		continue;
@@ -1306,7 +1306,7 @@ register YV	yp1,
 YT	new_tag (class)
 PElementClass	class;
 {
-	register YT    yt;
+	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)
 		yyerror ("out of memory");
@@ -1318,9 +1318,9 @@ PElementClass	class;
 /*    STRINGS */
 
 char *
-new_string (register char *s)
+new_string (char *s)
 {
-	register char  *p;
+	char  *p;
 
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
 		yyerror ("out of memory");

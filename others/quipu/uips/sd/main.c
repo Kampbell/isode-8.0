@@ -67,8 +67,8 @@ main (unsigned int argc, char *argv[])
 void 
 read_args (unsigned int argc, char ***avptr)
 {
-	register char **av;
-	register char *cp;
+	char **av;
+	char *cp;
 
 	if (argc <= 1) return;
 

@@ -100,9 +100,9 @@ char *file_names[MAXTYPES];
 char dua_help_dir[SMALLSTRING];
 
 char *
-get_strioid (register char *ptr)
+get_strioid (char *ptr)
 {
-	register char *end_ptr;
+	char *end_ptr;
 
 	while(*ptr == '"') ptr++;
 	while(*ptr != '"') ptr++;
@@ -162,7 +162,7 @@ user_tailor (void) {
 			* myname;
 	extern  char * tailfile;
 
-	register char *str, *sptr, *p, *end;
+	char *str, *sptr, *p, *end;
 	char save;
 
 	DIR *config_directory;
@@ -625,7 +625,7 @@ Click on this window to exit.");
 void 
 set_default_type (void) {
 	int count;
-	register DN base_name;
+	DN base_name;
 	DN d_name;
 
 	if (*base_path != '\0') {
@@ -813,7 +813,7 @@ make_friendly_aux (char *fstr, char *rdn)
 void 
 make_friendly_rdn (char *friendly, char *object, char *base)
 {
-	register char *front;
+	char *front;
 	char save;
 	int count;
 
@@ -945,7 +945,7 @@ is_dit_leaf (char *name)
 }
 
 char *
-GetSurname (register char *name)
+GetSurname (char *name)
 {
 	while (*name != '\0') name++;
 	while (*name != ' ' && *name != '=') name--;
@@ -953,7 +953,7 @@ GetSurname (register char *name)
 }
 
 char *
-GetWholeRelName (register char *name)
+GetWholeRelName (char *name)
 {
 	while (*name!= '\0') name++;
 	while (*name != '=') name--;
@@ -964,10 +964,10 @@ GetWholeRelName (register char *name)
 str_seq SortList(list)
 str_seq list;
 {
-	register str_seq currEntry, lastSortedEntry , currSortedEntry;
+	str_seq currEntry, lastSortedEntry , currSortedEntry;
 	str_seq sortedList;
 	char *sortedName, *currName;
-	register DN curr_dn;
+	DN curr_dn;
 	DN dn;
 
 	if (!list) return 0;

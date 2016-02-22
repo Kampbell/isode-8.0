@@ -125,9 +125,9 @@ convtime (struct type_Idist_FileTime *fm)
  * part corresponding to `file'.
  */
 char *
-exptilde (char buf[], register char *file)
+exptilde (char buf[], char *file)
 {
-	register char *s1, *s2, *s3;
+	char *s1, *s2, *s3;
 	extern char homedir[];
 
 	if (*file != '~') {

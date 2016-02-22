@@ -160,14 +160,14 @@ struct timeval **tvpp, **otvpp;
 	struct timeval timeout;
 	struct tm *mtm;
 	struct tm radio_tm, *rtm = &radio_tm;
-	register int i;
-	register int millis;
-	register double diff;
+	int i;
+	int millis;
+	double diff;
 	int stat1, stat2;
 	fd_set readfds;
 	char message[256];
 #ifndef TCSETA
-	register char *cp;
+	char *cp;
 	int  need;
 #endif TCSETA
 
@@ -377,8 +377,8 @@ struct timeval **tvpp, **otvpp;
 
 static double
 reltime(tm, usec)
-register struct tm *tm;
-register int usec;
+struct tm *tm;
+int usec;
 {
 	return(tm->tm_year*(366.0*24.0*60.0*60.0) +
 		   tm->tm_yday*(24.0*60.0*60.0) +

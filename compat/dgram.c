@@ -90,12 +90,12 @@ static struct dgramblk *peers = NULL;
 int 
 start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 {
-	register int    port;
+	int    port;
 	int     sd;
 #ifdef	BSD43
 	int	    onoff;
 #endif
-	register struct dgramblk *up,
+	struct dgramblk *up,
 			*vp;
 
 	if (peers == NULL) {
@@ -188,7 +188,7 @@ start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2)
 	int	    onoff;
 #endif
 	u_char *cp;
-	register struct dgramblk *up,
+	struct dgramblk *up,
 			*vp;
 	struct sockaddr_iso *ifaddr = &sock -> osi_sockaddr;
 
@@ -294,8 +294,8 @@ join_dgram_aux (int fd, struct sockaddr *sock, int newfd)
 	int	    nfds,
 			sd;
 	fd_set  ifds;
-	register struct qbuf *qb;
-	register struct dgramblk *up;
+	struct qbuf *qb;
+	struct dgramblk *up;
 
 	if (fd < 0 || fd >= maxpeers || peers[fd].dgram_parent != fd) {
 		errno = EINVAL;
@@ -361,8 +361,8 @@ read_dgram_socket (int fd, struct qbuf **q)
 	int	    nfds;
 	fd_set  ifds,
 			mask;
-	register struct qbuf *qb;
-	register struct dgramblk *up;
+	struct qbuf *qb;
+	struct dgramblk *up;
 
 	if (fd < 0
 			|| fd >= maxpeers
@@ -399,7 +399,7 @@ read_dgram_socket (int fd, struct qbuf **q)
 int 
 hack_dgram_socket (int fd, struct sockaddr *sock)
 {
-	register struct dgramblk *up;
+	struct dgramblk *up;
 
 	if (fd < 0
 			|| fd >= maxpeers
@@ -429,9 +429,9 @@ hack_dgram_socket (int fd, struct sockaddr *sock)
 
 
 int 
-write_dgram_socket (int fd, register struct qbuf *qb)
+write_dgram_socket (int fd, struct qbuf *qb)
 {
-	register struct dgramblk *up;
+	struct dgramblk *up;
 
 	if (fd < 0
 			|| fd >= maxpeers
@@ -458,7 +458,7 @@ write_dgram_socket (int fd, register struct qbuf *qb)
 int 
 close_dgram_socket (int fd)
 {
-	register struct dgramblk *up,
+	struct dgramblk *up,
 			*vp;
 
 	if (fd < 0
@@ -487,14 +487,14 @@ close_dgram_socket (int fd)
 int 
 select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs)
 {
-	register int    fd;
+	int    fd;
 	int	    cc,
 			mfds,
 			result;
 	fd_set  ifds,
 			jfds;
-	register struct qbuf *qb;
-	register struct dgramblk *up,
+	struct qbuf *qb;
+	struct dgramblk *up,
 			*vp;
 	struct dgramblk *wp;
 	union sockaddr_un *sock;
@@ -675,7 +675,7 @@ inetprint (struct sockaddr_in *sin, char *bp)
 
 
 static 
-isoprint (register struct sockaddr_iso *siso, char *bp)
+isoprint (struct sockaddr_iso *siso, char *bp)
 {
 	int	    didone = 0;
 
@@ -704,7 +704,7 @@ isoprint (register struct sockaddr_iso *siso, char *bp)
 static 
 hexprint (char *bp, int n, u_char *buf, char *start, char *stop)
 {
-	register u_char *in = buf, *top = in + n;
+	u_char *in = buf, *top = in + n;
 
 	if (n == 0)
 		return;
@@ -744,7 +744,7 @@ int	fd;
 struct sockaddr *sock;
 {
 	char    buffer[BUFSIZ];
-	register struct printent *p;
+	struct printent *p;
 
 	if (!(compat_log -> ll_events & LLOG_TRACE))
 		return;

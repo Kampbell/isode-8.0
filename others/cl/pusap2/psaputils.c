@@ -77,16 +77,16 @@ static  struct psapblk   *PuHead = &psapque;
 int 
 ppdu2data (
 /*----------------------------------------------------------------------------*/
-    register struct psapblk *pb,
+    struct psapblk *pb,
     struct PSAPindication *pi,
     struct PuSAPstart *ps,
     struct type_PS_User__data *info
 )
 {
-	register int    i, j;
+	int    i, j;
 	int	    nctx, ctx, result;
 	PE	    pe;
-	register struct type_PS_Fully__encoded__data *full;
+	struct type_PS_Fully__encoded__data *full;
 	PE     *data;
 	int    *ndata;
 
@@ -128,8 +128,8 @@ ppdu2data (
 	case type_PS_User__data_complex:
 		for (full = info -> un.complex; full; full = full -> next) {
 			struct qbuf *qb;
-			register struct PSAPcontext *qp;
-			register struct type_PS_PDV__list *pdv = full -> PDV__list;
+			struct PSAPcontext *qp;
+			struct type_PS_PDV__list *pdv = full -> PDV__list;
 
 			ctx = pdv -> identifier;
 			nctx = ps -> ps_ctxlist.pc_nctx;
@@ -185,7 +185,7 @@ ppdu2data (
 /*----------------------------------------------------------------------------*/
 int	qb2_info (qb, pe)
 /*----------------------------------------------------------------------------*/
-register struct qbuf *qb;
+struct qbuf *qb;
 PE     *pe;
 {
 	int	    result;
@@ -193,7 +193,7 @@ PE     *pe;
 	int	    len;
 #endif
 	PE	    p;
-	register PS	    ps;
+	PS	    ps;
 
 	*pe = NULLPE;
 
@@ -247,13 +247,13 @@ PE     *pe;
 /*----------------------------------------------------------------------------*/
 struct qbuf *info2_qb (pe, qp, pi)
 /*----------------------------------------------------------------------------*/
-register PE pe;
-register struct qbuf *qp;
+PE pe;
+struct qbuf *qp;
 struct PSAPindication *pi;
 {
 	int	    len;
-	register struct qbuf *qb;
-	register PS	    ps;
+	struct qbuf *qb;
+	PS	    ps;
 
 	if ((qb = qp) == NULL) {
 		if ((qb = (struct qbuf *) malloc ((unsigned) sizeof *qb
@@ -322,22 +322,22 @@ out:
 /*----------------------------------------------------------------------------*/
 struct type_PS_User__data *info2_ppdu (pb, pi, data, ndata, ppdu)
 /*----------------------------------------------------------------------------*/
-register struct psapblk *pb;
+struct psapblk *pb;
 struct PSAPindication *pi;
 PE     *data;
 int	ndata,
 	ppdu;
 {
-	register int    i,
+	int    i,
 			 j;
-	register PE	   *d,
+	PE	   *d,
 			 pe;
-	register struct qbuf *qb;
-	register struct PSAPcontext *qp;
+	struct qbuf *qb;
+	struct PSAPcontext *qp;
 	OID	    atn;
 	struct type_PS_User__data *pdu;
-	register struct type_PS_Simply__encoded__data *simple;
-	register struct type_PS_Fully__encoded__data **complex,
+	struct type_PS_Simply__encoded__data *simple;
+	struct type_PS_Fully__encoded__data **complex,
 			*full;
 
 	if ((pdu = (struct type_PS_User__data *) calloc (1, sizeof *pdu))
@@ -447,7 +447,7 @@ no_mem:
 				(full -> PDV__list -> presentation__data__values ->
 				 un.single__ASN1__type = pe) -> pe_refcnt++;
 			} else {
-				register struct qbuf *qb2;
+				struct qbuf *qb2;
 
 				full -> PDV__list -> presentation__data__values ->
 				offset = choice_PS_0_octet__aligned;
@@ -481,7 +481,7 @@ out:
 /*    SSAP interface */
 /*----------------------------------------------------------------------------*/
 int 
-ss2pulose (register struct psapblk *pb, register struct PSAPindication *pi, char *event, register struct SSAPabort *sa)
+ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa)
 {
 	int     reason;
 	char   *cp,
@@ -583,14 +583,14 @@ pusaplose (struct PSAPindication *pi, int reason, char *what, char *fmt)
 static int 
 _pusaplose (	/* what, fmt, args ... */
 /*----------------------------------------------------------------------------*/
-    register struct PSAPindication *pi,
+    struct PSAPindication *pi,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct PSAPabort *pa;
+	struct PSAPabort *pa;
 
 	if (pi) {
 		bzero ((char *) pi, sizeof *pi);
@@ -652,7 +652,7 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 char *
 PuErrString (
 /*---------------------------------------------------------------------------*/
-    register int code
+    int code
 )
 {
 	static char buffer[BUFSIZ];
@@ -670,7 +670,7 @@ struct psapblk *
 newpublk (void)
 /*----------------------------------------------------------------------------*/
 {
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	pb = (struct psapblk   *) calloc (1, sizeof *pb);
 	if (pb == NULL)
@@ -692,10 +692,10 @@ newpublk (void)
 struct psapblk *
 findpublk (
 /*----------------------------------------------------------------------------*/
-    register int sd
+    int sd
 )
 {
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	if (once_only == 0)
 		return NULL;
@@ -713,11 +713,11 @@ findpublk (
 int 
 freepublk (
 /*----------------------------------------------------------------------------*/
-    register struct psapblk *pb
+    struct psapblk *pb
 )
 {
-	register int    i;
-	register struct PSAPcontext *qp;
+	int    i;
+	struct PSAPcontext *qp;
 
 	if (pb == NULL) return;
 

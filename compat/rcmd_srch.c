@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/rcmd_srch.c,v 9.0 19
 /*  */
 
 char *
-rcmd_srch (register int val, register CMD_TABLE *cmd)
+rcmd_srch (int val, CMD_TABLE *cmd)
 {
 	for(; cmd->cmd_key != NULLCP; cmd++)
 		if(val == cmd->cmd_value)

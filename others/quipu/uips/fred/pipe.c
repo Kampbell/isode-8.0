@@ -70,7 +70,7 @@ dish (char *command, int silent)
 			status;
 	char    buffer[BUFSIZ],
 			where[BUFSIZ];
-	register struct sockaddr_in *sock = &sin;
+	struct sockaddr_in *sock = &sin;
 	FILE   *fp;
 
 	if (watch) {
@@ -108,8 +108,8 @@ dish (char *command, int silent)
 			int	    portno;
 			char   *cp,
 				   *dp;
-			register struct hostent *hp;
-			register struct servent *sp;
+			struct hostent *hp;
+			struct servent *sp;
 
 			if ((dafd = start_tcp_client ((struct sockaddr_in *) 0, 0))
 					== NOTOK)
@@ -301,7 +301,7 @@ lost_dua:
 		}
 
 		if (!isdigit (buffer[0])) {
-			register char  *cp,
+			char  *cp,
 					 *ep;
 
 			cp = buffer + cc - 1;
@@ -739,7 +739,7 @@ int	cc;
 no_pager:
 	;
 	if (network && !mail) {
-		register char *cp,
+		char *cp,
 				 *dp;
 
 		for (dp = (cp = buffer) + cc; cp < dp; cp++) {
@@ -794,7 +794,7 @@ static	int	width = 0;
 static	mypager (fp)
 FILE   *fp;
 {
-	register char *bp;
+	char *bp;
 	char    buffer[BUFSIZ];
 #ifdef	TIOCGWINSZ
 	struct winsize    ws;
@@ -962,7 +962,7 @@ da_command (char *fmt)
 
 static int 
 da_response (void) {
-	register char *cp,
+	char *cp,
 			 *ep;
 
 	for (ep = (cp = da_reply) + sizeof da_reply - 1; cp < ep;) {
@@ -1005,9 +1005,9 @@ da_response (void) {
 
 int 
 sync_ufnrc (void) {
-	register char *bp;
+	char *bp;
 	char    buffer[BUFSIZ];
-	register struct area_guide *ag;
+	struct area_guide *ag;
 
 	(void) sprintf (bp = buffer, "fred -ufnrc");
 	bp += strlen (bp);
@@ -1050,9 +1050,9 @@ sync_ufnrc (void) {
 
 int 
 init_ufnrc (void) {
-	register int   i;
+	int   i;
 	int	    inprogress;
-	register char *bp,
+	char *bp,
 			 *cp,
 			 *ep;
 	char    buffer[BUFSIZ],
@@ -1099,7 +1099,7 @@ init_ufnrc (void) {
 		if (!isspace (*bp)) {
 			int	    lower,
 					upper;
-			register char *dp;
+			char *dp;
 
 			if ((cp = index (bp, ':')) == NULL) {
 				advise (NULLCP, "%s: missing ':' at line %d", ufnrc, i);

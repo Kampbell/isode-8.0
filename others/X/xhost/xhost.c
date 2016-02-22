@@ -95,7 +95,7 @@ char **argv;
 {
 	Display *dpy;
 	char host[256];
-	register char *arg;
+	char *arg;
 	int display, i, w, nhosts;
 	char *hostname, *get_hostname();
 	XHostAddress *list;

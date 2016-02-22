@@ -328,7 +328,7 @@ all_done:
 
 
 static	set_el () {
-	register envlist  en,
+	envlist  en,
 			 *ep;
 	DN	    local_dn,
 	 c_dn;

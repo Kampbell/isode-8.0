@@ -66,7 +66,7 @@ struct tsapkt *
 str2tpkt (char *buffer)
 {
 	char    packet[BUFSIZ];
-	register struct tsapkt *t;
+	struct tsapkt *t;
 
 	DLOG (tsap_log, LLOG_PDUS,
 		  ("read %d bytes, \"%s\"", strlen (buffer), buffer));
@@ -81,7 +81,7 @@ str2tpkt (char *buffer)
 /*  */
 
 static int 
-getfnx (int fd, register struct tsapkt *t, char *buffer, int n)
+getfnx (int fd, struct tsapkt *t, char *buffer, int n)
 {
 	static int  cc;
 
@@ -108,7 +108,7 @@ getfnx (int fd, register struct tsapkt *t, char *buffer, int n)
 static int 
 readfnx (int fd, char *buffer, int n)
 {
-	register int    i;
+	int    i;
 	static int  cc;
 	static char *bp;
 
@@ -129,10 +129,10 @@ readfnx (int fd, char *buffer, int n)
 /*  */
 
 static int 
-putfnx (struct tsapblk *tb, register struct tsapkt *t, char *cp, int n)
+putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n)
 {
-	register int    cc;
-	register struct udvec  *uv;
+	int    cc;
+	struct udvec  *uv;
 
 	cc = sizeof t -> t_li;
 	if (writefnx (tb, (char *) &t -> t_li, cc) != cc)

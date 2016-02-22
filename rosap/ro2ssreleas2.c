@@ -43,7 +43,7 @@ RoEndResponse (int sd, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (roi);
 
@@ -62,12 +62,12 @@ RoEndResponse (int sd, struct RoSAPindication *roi)
 /*  */
 
 static int 
-RoEndResponseAux (register struct assocblk *acb, struct RoSAPindication *roi)
+RoEndResponseAux (struct assocblk *acb, struct RoSAPindication *roi)
 {
 	int     result;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 
 	if (SRelResponse (acb -> acb_fd, SC_ACCEPT, NULLCP, 0, si) == NOTOK)
 		result = ss2roslose (acb, roi, "SRelResponse", sa);

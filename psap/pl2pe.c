@@ -88,10 +88,10 @@ static int pl_read ();
 /*  */
 
 PE 
-pl2pe (register PS ps)
+pl2pe (PS ps)
 {
 	struct PList    pls;
-	register PL	    pl = &pls;
+	PL	    pl = &pls;
 
 	if (pl_read_lex (ps, pl) == NOTOK) {
 		if (ps -> ps_errno == PS_ERR_EOF)
@@ -107,11 +107,11 @@ pl2pe (register PS ps)
 /*  */
 
 static PE 
-pl2pe_aux (register PS ps, register PL pl)
+pl2pe_aux (PS ps, PL pl)
 {
 	PElementClass   class;
 	PElementID	    id;
-	register PE	    pe;
+	PE	    pe;
 
 	if (pl_read_class (ps, pl, &class) == NOTOK)
 		return NULLPE;
@@ -151,9 +151,9 @@ you_lose:
 /*  */
 
 static int 
-pl_read_class (register PS ps, register PL pl, register PElementClass *class)
+pl_read_class (PS ps, PL pl, PElementClass *class)
 {
-	register int    i;
+	int    i;
 
 	if (pl_read_lex (ps, pl) == NOTOK)
 		return NOTOK;
@@ -170,10 +170,10 @@ pl_read_class (register PS ps, register PL pl, register PElementClass *class)
 /*  */
 
 static int 
-pl_read_id (register PS ps, register PL pl, int class, register PElementID *id)
+pl_read_id (PS ps, PL pl, int class, PElementID *id)
 {
-	register int    i;
-	register char **list;
+	int    i;
+	char **list;
 
 	if (pl_read_lex (ps, pl) == NOTOK)
 		return NOTOK;
@@ -212,10 +212,10 @@ pl_read_id (register PS ps, register PL pl, int class, register PElementID *id)
 /*  */
 
 static int 
-pl_read_name (register char *name, register char **list, register int n)
+pl_read_name (char *name, char **list, int n)
 {
-	register int    i;
-	register char  *bp;
+	int    i;
+	char  *bp;
 
 	for (i = n; i > 0; i--)
 		if ((bp = *list++) && strcmp (bp, name) == 0)
@@ -227,9 +227,9 @@ pl_read_name (register char *name, register char **list, register int n)
 /*  */
 
 static int 
-pl_read_cons (register PS ps, register PL pl, register PE *pe)
+pl_read_cons (PS ps, PL pl, PE *pe)
 {
-	register PE	    p,
+	PE	    p,
 			 q;
 
 	if ((p = pl2pe_aux (ps, pl)) == NULLPE)
@@ -257,12 +257,12 @@ pl_read_cons (register PS ps, register PL pl, register PE *pe)
 /*  */
 
 static int 
-pl_read_prim (register PS ps, register PL pl, register PE pe)
+pl_read_prim (PS ps, PL pl, PE pe)
 {
-	register int    i,
+	int    i,
 			 len,
 			 n;
-	register PElementData dp,
+	PElementData dp,
 			 ep;
 
 	if ((len = pl -> pl_num) == 0)
@@ -297,7 +297,7 @@ out:
 
 #ifdef	XXX
 static int 
-pl_read_lex (register PS ps, register PL pl)
+pl_read_lex (PS ps, PL pl)
 {
 	int     i = pl_read_lex_aux (ps, pl);
 
@@ -336,12 +336,12 @@ pl_read_lex (register PS ps, register PL pl)
 /*  */
 
 static int  pl_read_lex (ps, pl)
-register PS	ps;
-register PL	pl;
+PS	ps;
+PL	pl;
 {
-	register int    base,
+	int    base,
 			 n;
-	register char  *bp;
+	char  *bp;
 	byte    c;
 
 	do {
@@ -450,7 +450,7 @@ register PL	pl;
 /*  */
 
 static int 
-pl_read (register PS ps, register byte *c)
+pl_read (PS ps, byte *c)
 {
 	if (ps -> ps_scratch) {
 		*c = ps -> ps_scratch;

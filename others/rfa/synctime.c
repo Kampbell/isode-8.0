@@ -122,7 +122,7 @@ changeTimeWithRfatime (long dt)
 int 
 op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
 {
-	register struct type_RFA_SyncTimeArg *sta =
+	struct type_RFA_SyncTimeArg *sta =
 		(struct type_RFA_SyncTimeArg *) in;
 	struct type_RFA_SyncTimeRes	 str;
 	time_t lt, dt;

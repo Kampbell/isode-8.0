@@ -33,12 +33,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/oid_cpy.c,v 9.0 1992/0
 /*  */
 
 OID	oid_cpy (q)
-register OID q;
+OID q;
 {
-	register unsigned int   i,
+	unsigned int   i,
 			 *ip,
 			 *jp;
-	register OID	oid;
+	OID	oid;
 
 	if (q == NULLOID)
 		return NULLOID;

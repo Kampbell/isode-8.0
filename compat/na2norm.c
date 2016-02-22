@@ -44,16 +44,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/na2norm.c,v 9.0 1992
 /*  */
 
 struct NSAPaddr *
-na2norm (register struct NSAPaddr *na)
+na2norm (struct NSAPaddr *na)
 {
 	int	    ilen;
-	register char  *cp,
+	char  *cp,
 			 *dp;
 	char    nsap[NASIZE * 2 + 1];
-	register struct hostent *hp;
-	register struct ts_interim *ts;
+	struct hostent *hp;
+	struct ts_interim *ts;
 	static struct NSAPaddr nas;
-	register struct NSAPaddr *ca = &nas;
+	struct NSAPaddr *ca = &nas;
 
 	if (na -> na_stack == NA_NSAP) {
 		*ca = *na;	/* struct copy */

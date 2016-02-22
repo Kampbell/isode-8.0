@@ -43,10 +43,10 @@ tai_args (acptr,avptr)
 int *acptr;
 char ***avptr;
 {
-	register char ** av;
+	char ** av;
 
 	int cnt;
-	register char *cp;
+	char *cp;
 
 	if (acptr == (int *)NULL)
 		return;

@@ -57,7 +57,7 @@ Attr_Sequence  as;
 {
 	Attr_Sequence start;
 	Attr_Sequence ptr,ptr2;
-	register Attr_Sequence eptr;
+	Attr_Sequence eptr;
 
 	if (as == NULLATTR) {
 		return (NULLATTR);

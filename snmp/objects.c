@@ -63,7 +63,7 @@ int	THASH (name)
 char   *name;
 {
 	char    c;
-	register char *cp,
+	char *cp,
 			 *dp;
 
 	for (c = *(dp = cp = name); *cp; cp++)
@@ -88,7 +88,7 @@ OT    *a,
 			&& (!((*a) -> ot_access & OT_XXX)
 				|| !((*b) -> ot_access & OT_XXX))) {
 		OID	oid = (*a) -> ot_name;
-		register unsigned int *ip = oid -> oid_elements;
+		unsigned int *ip = oid -> oid_elements;
 
 		/* XXX: 0.0 is a special case */
 		if (oid -> oid_nelem == 2 && ip[0] == 0 && ip[1] == 0)
@@ -112,12 +112,12 @@ static char *roots[] = { "ccitt", "iso", "joint-iso-ccitt" };
 int	readobjects (file)
 char   *file;
 {
-	register char *cp,
+	char *cp,
 			 **ap;
 	char    buffer[BUFSIZ],
 			line[BUFSIZ],
 			*vec[NVEC + NSLACK + 1];
-	register OT	   ot;
+	OT	   ot;
 	FILE   *fp;
 
 	if (file == NULL)
@@ -247,8 +247,8 @@ you_lose:
 		int	again,
 			hit,
 			i;
-		register int   j = 0;
-		register OT   *op,
+		int   j = 0;
+		OT   *op,
 				 *ep;
 		OT     *base,
 		oz;
@@ -344,7 +344,7 @@ char   *name,
 	   *hash;
 {
 	int	    i;
-	register OT	   ot;
+	OT	   ot;
 
 	if (compile_flag < 1)
 		goto not_compiled;
@@ -396,7 +396,7 @@ static int  read_type (vec)
 char  **vec;
 {
 	int	    i;
-	register OT	   ot;
+	OT	   ot;
 
 	if (compile_flag < 1)
 		goto not_compiled;
@@ -483,10 +483,10 @@ get_rest:
 /* does not insert into THASH table... */
 
 int	add_objects (ot)
-register OT	ot;
+OT	ot;
 {
-	register OID oid = ot -> ot_name;
-	register OT	 ot2,
+	OID oid = ot -> ot_name;
+	OT	 ot2,
 			 *otp;
 
 	if (oid_cmp (chain -> ot_name, oid) < 0) {
@@ -508,7 +508,7 @@ register OT	ot;
 
 
 static int  add_objects_aux () {
-	register OT	    ot,
+	OT	    ot,
 			 ot2;
 
 	for (ot = anchor; ot; ot = ot -> ot_next) {
@@ -541,10 +541,10 @@ char   *name;
 {
 	int	    i,
 			j;
-	register unsigned int  *ip,
+	unsigned int  *ip,
 			 *jp;
 	unsigned int elements[NELEM + 1];
-	register char *cp;
+	char *cp;
 	OID	    oid,
 			new = NULLOID;
 
@@ -616,14 +616,14 @@ free_up:
 
 static OID  resolve (id, ot)
 char   *id;
-register OT	ot;
+OT	ot;
 {
 	int	    i;
 	unsigned int elements[NELEM + 1];
-	register char *cp;
-	register OT	   ot2;
+	char *cp;
+	OT	   ot2;
 	struct OIDentifier oids;
-	register OID   oid = &oids;
+	OID   oid = &oids;
 
 	oid -> oid_elements = elements;
 
@@ -668,11 +668,11 @@ register OT	ot;
 OT	name2obj (oid)
 OID	oid;
 {
-	register int    i,
+	int    i,
 			 j;
-	register unsigned *ip;
-	register OID   nm;
-	register OT	   ot;
+	unsigned *ip;
+	OID   nm;
+	OT	   ot;
 
 	if (oid == NULLOID
 			|| oid -> oid_nelem < 1
@@ -707,7 +707,7 @@ OID	oid;
 OT	text2obj (text)
 char   *text;
 {
-	register OT	   ot;
+	OT	   ot;
 
 	if (text == NULL || once_only_Tbuckets == 0)
 		return NULLOT;
@@ -728,11 +728,11 @@ char   *oid2ode_aux (oid, quoted)
 OID	oid;
 int	quoted;
 {
-	register int    i;
-	register char  *bp;
-	register unsigned int *ip;
-	register OID    oid2;
-	register OT	    ot;
+	int    i;
+	char  *bp;
+	unsigned int *ip;
+	OID    oid2;
+	OT	    ot;
 	static char buffer[BUFSIZ];
 
 	if ((oid -> oid_nelem == 2		       /* XXX: 0.0 is a special case */
@@ -760,7 +760,7 @@ OI	name2inst (oid)
 OID	oid;
 {
 	static object_instance ois;
-	register OI oi = &ois;
+	OI oi = &ois;
 
 	if ((oi -> oi_type = name2obj (oi -> oi_name = oid)) == NULLOT)
 		return NULLOI;
@@ -773,8 +773,8 @@ OI	next2inst (oid)
 OID	oid;
 {
 	static object_instance ois;
-	register OI oi = &ois;
-	register OT ot;
+	OI oi = &ois;
+	OT ot;
 
 	for (ot = anchor; ot; ot = ot -> ot_next) {
 #ifdef	noway
@@ -803,7 +803,7 @@ OI	text2inst (text)
 char   *text;
 {
 	static object_instance ois;
-	register OI oi = &ois;
+	OI oi = &ois;
 	static OID oid = NULLOID;
 
 	if (oid)
@@ -826,8 +826,8 @@ char   *text;
 #ifdef	DEBUG
 dump_objects_by_text () {
 	int	    hit;
-	register int    i;
-	register OT	    ot;
+	int    i;
+	OT	    ot;
 
 	for (i = 0; i < TBUCKETS; i++) {
 		hit = 0;
@@ -843,9 +843,9 @@ dump_objects_by_text () {
 
 
 dump_objects_by_tree () {
-	register char **ap;
+	char **ap;
 	char  **bp;
-	register OT	    ot;
+	OT	    ot;
 
 	for (bp = (ap = roots) + (sizeof roots / sizeof roots[0]); ap < bp; ap++) {
 		if (ot = text2obj (*ap))
@@ -859,7 +859,7 @@ dump_objects_by_tree () {
 
 
 dump_object_by_tree (ot, i)
-register OT	ot;
+OT	ot;
 int	i;
 {
 	if (ot == NULL)
@@ -872,7 +872,7 @@ int	i;
 
 
 dump_objects_by_xxx () {
-	register OT	    ot;
+	OT	    ot;
 
 	for (ot = anchor; ot; ot = ot -> ot_next)
 		dump_object (ot, 0);
@@ -882,7 +882,7 @@ dump_objects_by_xxx () {
 
 
 static	dump_object (ot, i)
-register OT	ot;
+OT	ot;
 int	i;
 {
 	printf ("%*.*s%s %s %s %s %d %d 0x%x\n", i, i, "",
@@ -914,8 +914,8 @@ char   *s;
 flobjects (fp)
 FILE   *fp;
 {
-	register int    i;
-	register OT     ot;
+	int    i;
+	OT     ot;
 
 	fprintf (fp, "static OT _Tbuckets[%d] = {\n", TBUCKETS);
 
@@ -934,8 +934,8 @@ loadobjects (file)\n\
 char   *file;\n\
 {\n\
     int	    i;\n\
-    register struct _syntax *sy;\n\
-    register OT	    ot;\n\
+    struct _syntax *sy;\n\
+    OT	    ot;\n\
     static int once_only = 0;\n\
 \n\
     if (file && !once_only)\n\

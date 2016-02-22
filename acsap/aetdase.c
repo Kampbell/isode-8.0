@@ -75,7 +75,7 @@ name2value_dase (char *name, char *context, int ontty, char *userdn, char *passw
 	PE	    pe = NULLPE,
 			result = NULLPE;
 	SFP	    istat;
-	register struct type_DASE_Query__REQ *parm = NULL;
+	struct type_DASE_Query__REQ *parm = NULL;
 
 	*real_name = NULLPE;
 
@@ -108,8 +108,8 @@ no_mem:
 		goto out;
 	}
 	{
-		register char **vp;
-		register struct element_DASE_0  *dl,
+		char **vp;
+		struct element_DASE_0  *dl,
 				**dp;
 
 		dp = &parm -> name;
@@ -199,11 +199,11 @@ you_lose:
 			break;
 
 		case type_DASE_Provider__RSP_answer: {
-			register char *pp,
+			char *pp,
 					 *ep;
-			register struct qbuf *p,
+			struct qbuf *p,
 					*q;
-			register struct type_DASE_Query__RSP *ans
+			struct type_DASE_Query__RSP *ans
 						= rsp -> un.answer;
 
 			if ((q = ans -> friendly) && ontty) {
@@ -265,10 +265,10 @@ dase_init (void) {
 	int	    i,
 			nfds;
 	fd_set  ifds;
-	register struct TSAPaddr *tz;
-	register struct TSAPconnect *tc = &tcs;
+	struct TSAPaddr *tz;
+	struct TSAPconnect *tc = &tcs;
 	struct TSAPdisconnect tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if ((tz = str2taddr (ns_address)) == NULL) {
 		PY_advise (NULLCP, "unable to parse nameservice address \"%s\"",
@@ -347,14 +347,14 @@ oops:
 /*  */
 
 static int 
-dase_callback (register struct type_DASE_Callback__REQ *arg)
+dase_callback (struct type_DASE_Callback__REQ *arg)
 {
-	register int i,
+	int i,
 			 j;
 	int	    result;
-	register struct element_DASE_3 *choice;
+	struct element_DASE_3 *choice;
 	struct type_DASE_Callback__RSP *rsp = NULL;
-	register struct type_DASE_Callback__RSP **rp = &rsp;
+	struct type_DASE_Callback__RSP **rp = &rsp;
 	PE	    pe = NULLPE;
 
 	i = 0;
@@ -376,7 +376,7 @@ dase_callback (register struct type_DASE_Callback__REQ *arg)
 
 	j = 1;
 	for (choice = arg -> choices; choice; choice = choice -> next) {
-		register struct type_DASE_Callback__RSP *yes;
+		struct type_DASE_Callback__RSP *yes;
 
 		(void) printf ("  ");
 		print_qb (choice -> Pair -> friendly);
@@ -495,7 +495,7 @@ again:
 static 
 print_qb (struct qbuf *q)
 {
-	register struct qbuf *p;
+	struct qbuf *p;
 
 	for (p = q -> qb_forw; p != q; p = p -> qb_forw)
 		(void) printf ("%*.*s", p -> qb_len, p -> qb_len, p -> qb_data);
@@ -505,15 +505,15 @@ print_qb (struct qbuf *q)
 
 static struct element_DASE_1 *
 read_el (void) {
-	register int   i;
-	register char *bp,
+	int   i;
+	char *bp,
 			 *cp;
 	char    buffer[BUFSIZ],
 			ufnrc[BUFSIZ];
 	FILE   *fp;
 	struct element_DASE_1 *top;
-	register struct element_DASE_1 **etail;
-	register struct element_DASE_2 **dtail;
+	struct element_DASE_1 **etail;
+	struct element_DASE_2 **dtail;
 
 	if (bp = getenv ("UFNRC"))
 		(void) strcpy (ufnrc, bp);
@@ -536,7 +536,7 @@ read_el (void) {
 	top = NULL, etail = &top, dtail = NULL;
 
 	for (i = 0; fgets (bp = buffer, sizeof buffer, fp); i++) {
-		register struct element_DASE_2 *dl;
+		struct element_DASE_2 *dl;
 
 		if (*buffer == '#')
 			continue;
@@ -550,9 +550,9 @@ read_el (void) {
 		}
 
 		if (!isspace (*bp)) {
-			register char *dp;
-			register struct element_DASE_1 *el;
-			register struct type_DASE_Environment *fl;
+			char *dp;
+			struct element_DASE_1 *el;
+			struct type_DASE_Environment *fl;
 
 			if ((el = (struct element_DASE_1 *) calloc (1, sizeof *el))
 					== NULL) {

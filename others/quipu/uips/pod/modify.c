@@ -58,7 +58,7 @@ dirEntry mods;
 	AttributeType attr_type = 0;
 	AttributeValue attr_val = 0;
 	AV_Sequence attrVal_seq = 0;
-	register modVals curr_val;
+	modVals curr_val;
 	dirAttrs attrs;
 	char err_buf[STRINGLEN], attr_val_buf[STRINGLEN];
 	short attr_removed;
@@ -477,7 +477,7 @@ make_attr_sequence(entry_string, attrs)
 char *entry_string;
 dirAttrs *attrs;
 {
-	register char *str, *sptr;
+	char *str, *sptr;
 	char save, buffer[RESBUF];
 	modVals curr_val = 0;
 	dirAttrs curr_attr = 0;

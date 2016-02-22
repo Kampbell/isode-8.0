@@ -140,7 +140,7 @@ install (char *src, char *dest, int destdir, int opts)
 int 
 sendf (char *rname, int opts)
 {
-	register struct subcmd *sc;
+	struct subcmd *sc;
 	struct stat stb;
 	int sizerr, f, u, len;
 	off_t i;

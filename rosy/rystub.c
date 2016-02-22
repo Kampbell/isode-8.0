@@ -57,7 +57,7 @@ static SFD	intrser ();
 
 int	RyStub (sd, ryo, op, id, linked, in, rfx, efx, class, roi)
 int	sd;
-register struct RyOperation *ryo;
+struct RyOperation *ryo;
 int	op,
 	id,
 	*linked,

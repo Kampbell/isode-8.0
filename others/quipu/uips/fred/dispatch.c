@@ -132,7 +132,7 @@ static	snarf ();
 int 
 fredloop (char **vec, int error)
 {
-	register struct dispatch *ds;
+	struct dispatch *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
 		return error;
@@ -163,12 +163,12 @@ fredloop (char **vec, int error)
 static struct dispatch *
 getds (char *name)
 {
-	register int    longest,
+	int    longest,
 			 nmatches;
-	register char  *p,
+	char  *p,
 			 *q;
 	char    buffer[BUFSIZ];
-	register struct dispatch   *ds,
+	struct dispatch   *ds,
 			*fs;
 
 	longest = nmatches = 0;
@@ -304,20 +304,20 @@ char    **getval ();
 static int 
 f_set (char **vec)
 {
-	register int    i,
+	int    i,
 			 j;
 	int     value,
 			vflag;
-	register char **cp,
+	char **cp,
 			 *dp;
-	register struct var *v;
+	struct var *v;
 
 	if (*++vec == NULL) {
-		register int    w;
+		int    w;
 		int     columns,
 				width,
 				lines;
-		register struct var *u;
+		struct var *u;
 
 		for (u = vars; u -> v_name; u++)
 			continue;
@@ -400,7 +400,7 @@ f_set (char **vec)
 	}
 
 	if (v -> v_value == NULLIP) {
-		register int    w;
+		int    w;
 
 		if (*v -> v_dvalue)
 			free (*v -> v_dvalue);
@@ -504,7 +504,7 @@ out_of_range:
 /*  */
 
 static 
-printvar (register struct var *v)
+printvar (struct var *v)
 {
 	int	    i;
 	char    buffer[BUFSIZ];
@@ -546,11 +546,11 @@ printvar (register struct var *v)
 /*  */
 
 static char **
-getval (register char *name, char **choices)
+getval (char *name, char **choices)
 {
-	register int    longest,
+	int    longest,
 			 nmatches;
-	register char  *p,
+	char  *p,
 			 *q,
 			 **cp,
 			 **fp;
@@ -598,15 +598,15 @@ static char *ignore[] = {
 
 
 static struct var *
-getvar (register char *name)
+getvar (char *name)
 {
-	register int    longest,
+	int    longest,
 			 nmatches;
-	register char  *p,
+	char  *p,
 			 *q,
 			 **ip;
 	char    buffer[BUFSIZ];
-	register struct var *v,
+	struct var *v,
 			*f;
 
 	if (runcom)
@@ -657,17 +657,17 @@ static int helpwidth;
 int 
 f_help (char **vec)
 {
-	register int    i,
+	int    i,
 			 j,
 			 w;
 	int     columns,
 			width,
 			lines;
-	register struct dispatch   *ds,
+	struct dispatch   *ds,
 			*es;
 
 	if (network || vec == NULL) {
-		register char **ap;
+		char **ap;
 
 		for (ap = whois_help; *ap; ap++)
 			(void) fprintf (stdfp, "%s%s", *ap, EOLN);
@@ -727,12 +727,12 @@ f_help (char **vec)
 
 int 
 rcinit (void) {
-	register int    w;
-	register char **cp,
+	int    w;
+	char **cp,
 			 *dp;
 	char    buffer[BUFSIZ];
-	register struct dispatch   *ds;
-	register struct var *v;
+	struct dispatch   *ds;
+	struct var *v;
 
 	if (fflag)
 		return;
@@ -787,7 +787,7 @@ static
 snarf (char *file, char *name, char **variable)
 {
 	int	    i;
-	register char   *bp,
+	char   *bp,
 			 *dp,
 			 *ep;
 	char    buffer[BUFSIZ];
@@ -847,10 +847,10 @@ set_variable:
 int 
 rcfile (char *file, int op, int isystem)
 {
-	register char *cp;
+	char *cp;
 	char    buffer[BUFSIZ + 1],
 			*vec[NVEC + 1];
-	register FILE *fp;
+	FILE *fp;
 	struct stat st;
 
 	if ((fp = fopen (file, "r")) == NULL)

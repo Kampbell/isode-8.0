@@ -39,7 +39,7 @@ baduser (char *file, char *user)
 {
 	int     hit,
 			tries;
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
 	FILE   *fp;
 

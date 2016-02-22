@@ -40,7 +40,7 @@ SExpdRequest (int sd, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (data);
 	if (cc > SX_EXSIZE)
@@ -62,10 +62,10 @@ SExpdRequest (int sd, char *data, int cc, struct SSAPindication *si)
 /*  */
 
 static int 
-SExpdRequestAux (register struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
+SExpdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	if (!(sb -> sb_requirements & SR_EXPEDITED))
 		return ssaplose (si, SC_OPERATION, NULLCP,

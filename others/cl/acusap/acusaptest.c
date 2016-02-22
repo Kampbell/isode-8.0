@@ -261,8 +261,8 @@ listenup (void)
 {
 	;
 	/*    struct TSAPaddr   *ta;
-	    register int    n = ta -> ta_naddr - 1;
-	    register struct NSAPaddr   *na = ta -> ta_addrs;
+	    int    n = ta -> ta_naddr - 1;
+	    struct NSAPaddr   *na = ta -> ta_addrs;
 	static struct TSAPaddr *tz;
 	static struct TSAPaddr  tas[NTADDRS];
 	    int	    port;
@@ -482,11 +482,11 @@ audtrebind (void)
 static 
 printsrv (
 /*-------------------------------------*/
-    register struct isoservent *is
+    struct isoservent *is
 )
 {
-	register int    n = is -> is_tail - is -> is_vec - 1;
-	register char **ap = is -> is_vec;
+	int    n = is -> is_tail - is -> is_vec - 1;
+	char **ap = is -> is_vec;
 
 	printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 			is -> is_entity, is -> is_provider,
@@ -503,7 +503,7 @@ printsrv (
 static 
 printpaddr (
 /*-------------------------------------*/
-    register struct PSAPaddr *pa
+    struct PSAPaddr *pa
 )
 {
 	struct SSAPaddr   *sa = &(pa -> pa_addr);
@@ -558,7 +558,7 @@ printpaddr (
 
 
 void 
-acs_adios (register struct AcSAPabort *aca, char *event)
+acs_adios (struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -567,7 +567,7 @@ acs_adios (register struct AcSAPabort *aca, char *event)
 
 
 void 
-acs_advise (register struct AcSAPabort *aca, char *event)
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 

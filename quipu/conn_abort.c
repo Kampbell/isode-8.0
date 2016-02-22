@@ -39,7 +39,7 @@ void			  conn_free();
 void			  ds_log ();
 
 net_send_abort(conn)
-register        struct connection       * conn;
+       struct connection       * conn;
 {
 	int				  result;
 	struct DSAPindication      di_s;

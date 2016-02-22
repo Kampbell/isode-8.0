@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/oid_free.c,v 9.0 1992/
 /*  */
 
 int	oid_free (oid)
-register OID oid;
+OID oid;
 {
 	if (oid == NULLOID)
 		return;

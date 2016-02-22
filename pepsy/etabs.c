@@ -761,7 +761,7 @@ char	*
 class2str(cl)
 PElementClass	cl;
 {
-	register char *p1;
+	char *p1;
 
 	switch (cl) {
 	case PE_CLASS_UNIV:
@@ -1910,7 +1910,7 @@ YP	oyp, yp;
 char	*t, *f;
 {
 	char	*p1;
-	register char	s = oyp->yp_prfexp;	/* type of value passing */
+	char	s = oyp->yp_prfexp;	/* type of value passing */
 
 
 	if (noindirect(f) && s != 'q' && s != 'a')

@@ -82,7 +82,7 @@ hookup(host, port)
 char *host;
 int port;
 {
-	register struct hostent *hp;
+	struct hostent *hp;
 	int s, len;
 
 	bzero((char *)&hisctladdr, sizeof (hisctladdr));
@@ -236,8 +236,8 @@ char   *fmt;
 getreply(expecteof)
 int expecteof;
 {
-	register int c, n;
-	register int code, dig;
+	int c, n;
+	int code, dig;
 	int originalcode = 0, continuation = 0;
 	char *mesg;
 
@@ -349,7 +349,7 @@ bad:
 int sendport = -1;
 
 initconn() {
-	register char *p, *a;
+	char *p, *a;
 	int result, len;
 #ifdef	BSD43
 	int	on = 1;

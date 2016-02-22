@@ -53,15 +53,15 @@ extern int errno;
 
 int 
 sstr2arg (
-    register char *srcptr,  /* source data */
+    char *srcptr,  /* source data */
     int maxpf,              /* maximum number of permitted fields */
     char *argv[],           /* where to put the pointers */
     char *dlmstr           /* Delimiting character */
 )
 {
 	char gotquote;		/* currently parsing quoted string */
-	register int ind;
-	register char *destptr;
+	int ind;
+	char *destptr;
 	char idex[256];
 
 	if (srcptr == 0)

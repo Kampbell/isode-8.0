@@ -43,7 +43,7 @@ str2sel (char *s, int quoted, char *sel, int n)
 {
 	int     i,
 			r;
-	register char  *cp;
+	char  *cp;
 
 	if (*s == NULL)
 		return 0;

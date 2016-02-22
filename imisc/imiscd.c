@@ -113,10 +113,10 @@ struct RoSAPindication *roi;
 {
 	long    clock;
 	char   *cp;
-	register struct tm *tm;
+	struct tm *tm;
 	struct UTCtime  uts;
-	register struct UTCtime *ut = &uts;
-	register struct type_IMISC_UTCResult *ur;
+	struct UTCtime *ut = &uts;
+	struct type_IMISC_UTCResult *ur;
 
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
@@ -161,10 +161,10 @@ struct RoSAPindication *roi;
 #if	defined(BSD42) || defined (HPUX)
 	struct timeval  tvs;
 #endif
-	register struct tm *tm;
+	struct tm *tm;
 	struct UTCtime  uts;
-	register struct UTCtime *ut = &uts;
-	register struct type_IMISC_GenResult *gr;
+	struct UTCtime *ut = &uts;
+	struct type_IMISC_GenResult *gr;
 
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
@@ -221,7 +221,7 @@ struct RoSAPindication *roi;
 {
 	long	clock;
 	struct type_IMISC_TimeResult trs;
-	register struct type_IMISC_TimeResult *tr = &trs;
+	struct type_IMISC_TimeResult *tr = &trs;
 
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
@@ -278,12 +278,12 @@ struct RoSAPindication *roi;
 #ifndef	SYS5
 	int	    ud;
 #endif
-	register char  *dp;
+	char  *dp;
 	char    buffer[BUFSIZ];
 	struct utmp uts;
-	register struct utmp   *ut = &uts;
+	struct utmp   *ut = &uts;
 	struct type_IMISC_IA5List *ia5;
-	register struct type_IMISC_IA5List **ia5p;
+	struct type_IMISC_IA5List **ia5p;
 
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
@@ -385,9 +385,9 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register int    i,
+	int    i,
 			 j;
-	register char  *dp,
+	char  *dp,
 			 *de,
 			 *rs,
 			 *rp,
@@ -395,7 +395,7 @@ struct RoSAPindication *roi;
 	char    line[LINSIZ + 1],
 			ring[BUFSIZ];
 	struct type_IMISC_IA5List *ia5;
-	register struct type_IMISC_IA5List **ia5p;
+	struct type_IMISC_IA5List **ia5p;
 
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
@@ -458,10 +458,10 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register int    i;
+	int    i;
 	char    buffer[BUFSIZ];
 	struct type_IMISC_IA5List *ia5;
-	register struct type_IMISC_IA5List **ia5p;
+	struct type_IMISC_IA5List **ia5p;
 
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
@@ -617,13 +617,13 @@ int	rand (), srand ();
 static int 
 pwdgen (char *pw)
 {
-	register int    i,
+	int    i,
 			 j;
-	register char   c,
+	char   c,
 			 *f,
 			 *s;
-	register struct pair   *pair;
-	register struct web *web;
+	struct pair   *pair;
+	struct web *web;
 	static int  latch = 0;
 
 	if (!latch) {
@@ -694,13 +694,13 @@ static struct obj {
 
 
 static int 
-object (register char *pw)
+object (char *pw)
 {
-	register int    n;
-	register char  *f,
+	int    n;
+	char  *f,
 			 *s;
 	char    buffer[BUFSIZ];
-	register struct obj *o;
+	struct obj *o;
 
 	for (f = buffer + strlen (s = pw), *f = NULL; *s; s++)
 		*--f = *s;
@@ -740,14 +740,14 @@ struct RoSAPindication *roi;
 			vecp,
 			vecq,
 			pd[2];
-	register char  *bp,
+	char  *bp,
 			 *dp;
 	char    buffer[BUFSIZ],
 			data[BUFSIZ],
 			*pgm,
 			*vec[NVEC + 1];
 	struct type_IMISC_IA5List *ia5;
-	register struct type_IMISC_IA5List **ia5p;
+	struct type_IMISC_IA5List **ia5p;
 
 	vecp = vecq = 0;
 	if (rox -> rox_nolinked == 0) {
@@ -926,7 +926,7 @@ struct RoSAPindication *roi;
 		   **vec,
 		   *vecl[NVEC + 1];
 	struct utmp uts;
-	register struct utmp   *ut = &uts;
+	struct utmp   *ut = &uts;
 	struct type_IMISC_IA5List  *ia5;
 
 	vecp = 0;
@@ -1121,7 +1121,7 @@ ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *ro
 struct type_IMISC_IA5List *
 str2ia5list (char *s)
 {
-	register struct type_IMISC_IA5List *ia5;
+	struct type_IMISC_IA5List *ia5;
 
 	if ((ia5 = (struct type_IMISC_IA5List  *) calloc (1, sizeof *ia5)) == NULL)
 		return NULL;

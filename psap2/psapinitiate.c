@@ -120,14 +120,14 @@ struct PSAPindication *pi;
 			len,
 			result;
 	PE	    pe;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPconnect scs;
-	register struct SSAPconnect *sc = &scs;
+	struct SSAPconnect *sc = &scs;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
-	register struct type_PS_CP__type *pdu;
-	register struct element_PS_0 *normal;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
+	struct type_PS_CP__type *pdu;
+	struct element_PS_0 *normal;
 
 	if ((pb = newpblk ()) == NULL)
 		return psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
@@ -195,9 +195,9 @@ no_mem:
 		goto no_mem;
 
 	if (ctxlist && ctxlist -> pc_nctx > 0) {
-		register struct type_PS_Definition__list *cd,
+		struct type_PS_Definition__list *cd,
 				**cp;
-		register struct PSAPcontext *pp,
+		struct PSAPcontext *pp,
 				*qp;
 
 		cp = &normal -> context__list;
@@ -259,7 +259,7 @@ no_mem:
 	}
 
 	if (defctxname) {
-		register struct PSAPcontext *pp;
+		struct PSAPcontext *pp;
 		oid_free (pb -> pb_asn);
 		if ((pb -> pb_asn = oid_cpy (defctxname)) == NULLOID
 				|| (normal -> default__context =
@@ -286,7 +286,7 @@ no_mem:
 	pb -> pb_result = PC_ACCEPT;
 
 	if ((pb -> pb_prequirements = prequirements) != PR_MYREQUIRE) {
-		register struct pair *pp;
+		struct pair *pp;
 
 		if ((normal -> presentation__fu = prim2bit (pe_alloc (PE_CLASS_UNIV,
 										  PE_FORM_PRIM,
@@ -307,7 +307,7 @@ no_mem:
 	if (pb -> pb_prequirements & PR_MANAGEMENT)
 		pb -> pb_srequirements |= SR_TYPEDATA;
 	if (pb -> pb_urequirements != pb -> pb_srequirements) {
-		register struct pair *pp;
+		struct pair *pp;
 
 		if ((normal -> session__fu = prim2bit (pe_alloc (PE_CLASS_UNIV,
 											   PE_FORM_PRIM,
@@ -394,12 +394,12 @@ PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 {
 	SBV     smask;
 	int     result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPconnect  scs;
-	register struct SSAPconnect *sc = &scs;
+	struct SSAPconnect *sc = &scs;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 
 	missingP (pc);
 	missingP (pi);
@@ -443,17 +443,17 @@ PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 /*  */
 
 static int 
-PAsynRetryAux (register struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication *si, struct PSAPconnect *pc, struct PSAPindication *pi)
+PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication *si, struct PSAPconnect *pc, struct PSAPindication *pi)
 {
 	int	    i,
 			result;
 	PE	    pe;
 	struct qbuf *qb;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPabort *sa = &si -> si_abort;
 	struct type_PS_CPA__type *cpa;
-	register struct element_PS_1 *cpa_normal;
+	struct element_PS_1 *cpa_normal;
 	struct type_PS_CPR__type *cpr;
-	register struct element_PS_2 *cpr_normal;
+	struct element_PS_2 *cpr_normal;
 	struct type_PS_ARP__PPDU *arp;
 
 	pe = NULLPE;
@@ -596,9 +596,9 @@ PAsynRetryAux (register struct psapblk *pb, struct SSAPconnect *sc, struct SSAPi
 	pc -> pc_responding = pb -> pb_responding;	/* struct copy */
 
 	{
-		register struct PSAPcontext *pp,
+		struct PSAPcontext *pp,
 				*qp;
-		register struct type_PS_Definition__result__list *lp,
+		struct type_PS_Definition__result__list *lp,
 				*mp;
 
 		i = 0;
@@ -655,7 +655,7 @@ PAsynRetryAux (register struct psapblk *pb, struct SSAPconnect *sc, struct SSAPi
 		i = pb -> pb_ncontext - 1;
 		for (qp = pb -> pb_contexts + i; i >= 0; i--, qp--)
 			if (qp -> pc_result != PC_ACCEPT) {
-				register struct PSAPcontext *qqp;
+				struct PSAPcontext *qqp;
 
 				qqp = pb -> pb_contexts + --pb -> pb_ncontext;
 				if (qp -> pc_asn) {
@@ -698,7 +698,7 @@ carry_on:
 
 	if (sc -> sc_result == SC_ACCEPT) {
 		if (cpa_normal -> presentation__fu) {
-			register struct pair *pp;
+			struct pair *pp;
 
 			if (!(pb -> pb_srequirements & SR_TYPEDATA)) {
 				(void) bit_off (cpa_normal -> presentation__fu,
@@ -721,7 +721,7 @@ carry_on:
 		pc -> pc_prequirements = pb -> pb_prequirements;
 
 		if (cpa_normal -> session__fu) {
-			register struct pair *pp;
+			struct pair *pp;
 
 			for (pp = preq_pairs; pp -> p_mask; pp++)
 				if (bit_test (cpa_normal -> session__fu, pp -> p_bitno) < 1)
@@ -782,12 +782,12 @@ PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi)
 {
 	SBV     smask;
 	int     result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPconnect  scs;
-	register struct SSAPconnect *sc = &scs;
+	struct SSAPconnect *sc = &scs;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 
 	missingP (pc);
 	missingP (pi);

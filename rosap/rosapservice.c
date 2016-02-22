@@ -41,7 +41,7 @@ RoSetService (int sd, IFP bfunc, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (bfunc);
 	missingP (roi);

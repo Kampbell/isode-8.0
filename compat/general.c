@@ -87,7 +87,7 @@ struct qelem   *elem;
 
 
 int     dup2 (d1, d2)
-register int    d1,
+int    d1,
 		 d2;
 {
 	int     d;

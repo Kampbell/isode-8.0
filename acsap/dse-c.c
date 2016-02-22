@@ -48,7 +48,7 @@ int
 build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm)
 {
 	int	    result;
-	register struct PSAPaddr *pa = (struct PSAPaddr *) parm;
+	struct PSAPaddr *pa = (struct PSAPaddr *) parm;
 	struct type_DSE_PSAPaddr *dse;
 
 	if ((dse = psap2dse (pa)) == NULL)
@@ -64,14 +64,14 @@ build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm)
 /*  */
 
 static struct type_DSE_PSAPaddr *
-psap2dse (register struct PSAPaddr *pa)
+psap2dse (struct PSAPaddr *pa)
 {
-	register int    n;
-	register struct type_DSE_PSAPaddr *dse;
-	register struct SSAPaddr *sa = &pa -> pa_addr;
-	register struct TSAPaddr *ta = &sa -> sa_addr;
-	register struct NSAPaddr *na;
-	register struct member_DSE_0  *nDSE,
+	int    n;
+	struct type_DSE_PSAPaddr *dse;
+	struct SSAPaddr *sa = &pa -> pa_addr;
+	struct TSAPaddr *ta = &sa -> sa_addr;
+	struct NSAPaddr *na;
+	struct member_DSE_0  *nDSE,
 			**oDSE;
 
 	if ((dse = (struct type_DSE_PSAPaddr *) calloc (1, sizeof *dse)) == NULL) {
@@ -90,7 +90,7 @@ psap2dse (register struct PSAPaddr *pa)
 
 	oDSE = &dse -> nAddress;
 	for (na = ta -> ta_addrs, n = ta -> ta_naddr; n > 0; na++, n--) {
-		register struct NSAPaddr *ca;
+		struct NSAPaddr *ca;
 
 		if ((nDSE = (struct member_DSE_0 *) calloc (1, sizeof *nDSE))
 				== NULL) {
@@ -117,10 +117,10 @@ losing:
 /*  */
 
 int 
-parse_DSE_PSAPaddr (register PE pe, int explicit, int *len, char **buffer, char *parm)
+parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm)
 {
 	int	    result;
-	register struct PSAPaddr *pa = (struct PSAPaddr *) parm;
+	struct PSAPaddr *pa = (struct PSAPaddr *) parm;
 	struct type_DSE_PSAPaddr *dse;
 
 	if (decode_DSE_PSAPaddr (pe, explicit, len, buffer, &dse) == NOTOK)
@@ -136,11 +136,11 @@ parse_DSE_PSAPaddr (register PE pe, int explicit, int *len, char **buffer, char 
 /*  */
 
 static int 
-dse2psap (register struct type_DSE_PSAPaddr *dse, register struct PSAPaddr *pa)
+dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa)
 {
-	register struct SSAPaddr *sa = &pa -> pa_addr;
-	register struct TSAPaddr *ta = &sa -> sa_addr;
-	register struct member_DSE_0 *nDSE;
+	struct SSAPaddr *sa = &pa -> pa_addr;
+	struct TSAPaddr *ta = &sa -> sa_addr;
+	struct member_DSE_0 *nDSE;
 
 	bzero ((char *) pa, sizeof *pa);
 

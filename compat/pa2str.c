@@ -36,12 +36,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/pa2str.c,v 9.0 1992/
 /*    Presentation Address to String */
 
 char *
-pa2str (register struct PSAPaddr *px)
+pa2str (struct PSAPaddr *px)
 {
-	register char *bp;
+	char *bp;
 	struct PSAPaddr pas;
-	register struct PSAPaddr *pa = &pas;
-	register struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
+	struct PSAPaddr *pa = &pas;
+	struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
 	static char buffer[BUFSIZ];
 
 	bp = buffer;
@@ -49,10 +49,10 @@ pa2str (register struct PSAPaddr *px)
 	*pa = *px;	/* struct copy */
 	if (ta -> ta_selectlen > 0
 			&& ta -> ta_selectlen < sizeof ta -> ta_selector) {
-		register char *dp,
+		char *dp,
 				 *ep;
-		register struct TSAPaddr *tz;
-		register int n, m;
+		struct TSAPaddr *tz;
+		int n, m;
 
 		/* does this look like an encoded TSEL? */
 		m = ta -> ta_selectlen;

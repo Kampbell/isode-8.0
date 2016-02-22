@@ -38,7 +38,7 @@ SMajSyncResponse (int sd, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 
@@ -57,7 +57,7 @@ SMajSyncResponse (int sd, char *data, int cc, struct SSAPindication *si)
 /*  */
 
 int 
-SMajSyncResponseAux (register struct ssapblk *sb, char *data, int cc, register struct SSAPindication *si)
+SMajSyncResponseAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
 

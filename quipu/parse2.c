@@ -294,11 +294,11 @@ char * version;
 int dtype;
 time_t cache_age;
 {
-	register Entry eptr = NULLENTRY;
+	Entry eptr = NULLENTRY;
 	Avlnode	*tree = NULLAVL;
 	int	entry_cmp();
 #ifndef TURBO_INDEX
-	register Entry trail;
+	Entry trail;
 #endif
 	Entry find_sibling();
 #ifdef TURBO_DISK

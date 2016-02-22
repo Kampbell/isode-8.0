@@ -69,14 +69,14 @@ enc_f (
 /* ARGSUSED */
     int typ,			/* which type it is */
     modtyp *mod,			/* Module it is from */
-    register PE *pe,
+    PE *pe,
     int explicit,
     int len,
     char *buf,
     char *parm
 )
 {
-	register ptpe *p;
+	ptpe *p;
 
 	if (typ < 0 || typ >= mod->md_nentries) {
 		(void) pepsylose (mod, NULLTPE, NULLPE, "enc_f:Illegal typ %d", typ);
@@ -177,9 +177,9 @@ bad:
  */
 static int 
 en_type (
-    register PEPYPARM parm,
-    register ptpe *p,
-    register modtyp *mod,			/* Module it is from */
+    PEPYPARM parm,
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
     PE *rpe		/* Return value PE */
 )
 {

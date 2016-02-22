@@ -50,7 +50,7 @@ extern int  errno;
 
 
 int	udpopen (pb, calling, called, pi, async)
-register struct psapblk *pb;
+struct psapblk *pb;
 struct NSAPaddr *calling,
 		*called;
 struct PSAPindication *pi;
@@ -59,9 +59,9 @@ int	async;
 	int	    fd;
 	struct sockaddr_in  lo_socket,
 			in_socket;
-	register struct sockaddr_in *lsock = &lo_socket,
+	struct sockaddr_in *lsock = &lo_socket,
 										 *isock = &in_socket;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	bzero ((char *) isock, sizeof *isock);
 
@@ -156,15 +156,15 @@ struct TSAPdisconnect *td;
 
 
 int	udprestore (pb, buffer, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 char   *buffer;
 struct PSAPindication *pi;
 {
 	int	    fd;
-	register char *cp;
+	char *cp;
 	char    domain1[NSAP_DOMAINLEN + 1 + 5 + 1],
 			domain2[NSAP_DOMAINLEN + 1 + 5 + 1];
-	register struct NSAPaddr *na;
+	struct NSAPaddr *na;
 
 	na = &pb -> pb_initiating;
 	na -> na_stack = NA_TCP;
@@ -206,7 +206,7 @@ struct PSAPindication *pi;
 /*  */
 
 static int  udpretry (pb, reason, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 int	reason;
 struct PSAPindication *pi;
 {
@@ -258,7 +258,7 @@ struct PSAPindication *pi;
 /*  */
 
 static int  udpcheck (pb, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 struct PSAPindication *pi;
 {
 	int	    nfds;
@@ -281,7 +281,7 @@ struct PSAPindication *pi;
 
 
 static int  PUservice (pb, fd)
-register struct psapblk *pb;
+struct psapblk *pb;
 int	fd;
 {
 	pb -> pb_fd = fd;

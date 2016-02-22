@@ -58,7 +58,7 @@ char 			dsp;
 char			authtype;
 {
 	Entry  entryptr,ptr;
-	register DN  dntop, dn = NULLDN;
+	DN  dntop, dn = NULLDN;
 	DN  trail = NULLDN;
 	extern Entry database_root;
 	ContinuationRef cont_ref_parent ();

@@ -44,7 +44,7 @@ RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct R
 {
 	SBV	    smask;
 	int     status;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (roi);
 
@@ -62,9 +62,9 @@ RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct R
 /*  */
 
 static int 
-RoResultRequestAux (register struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi)
+RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi)
 {
-	register PE pe,
+	PE pe,
 			 p,
 			 q;
 

@@ -40,7 +40,7 @@ RtEndResponse (int sd, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (rti);
 
@@ -59,12 +59,12 @@ RtEndResponse (int sd, struct RtSAPindication *rti)
 /*  */
 
 static int 
-RtEndResponseAux (register struct assocblk *acb, struct RtSAPindication *rti)
+RtEndResponseAux (struct assocblk *acb, struct RtSAPindication *rti)
 {
 	int     result;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 	if (acb -> acb_flags & ACB_ACS)
 		return rtsaplose (rti, RTS_OPERATION, NULLCP,

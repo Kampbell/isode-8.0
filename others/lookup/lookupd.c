@@ -86,7 +86,7 @@ struct RoSAPindication *roi;
 {
 	int     result;
 	char   *cp;
-	register struct type_PasswordLookup_UserName   *arg =
+	struct type_PasswordLookup_UserName   *arg =
 		(struct type_PasswordLookup_UserName   *) in;
 
 	if (rox -> rox_nolinked == 0) {
@@ -119,7 +119,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_PasswordLookup_UserID   *arg =
+	struct type_PasswordLookup_UserID   *arg =
 		(struct type_PasswordLookup_UserID   *) in;
 
 	if (rox -> rox_nolinked == 0) {
@@ -143,7 +143,7 @@ lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct RoSAPindicati
 	int	    result;
 
 	if (pw) {
-		register struct type_PasswordLookup_Passwd *res = NULL;
+		struct type_PasswordLookup_Passwd *res = NULL;
 
 		if (xalloc (res, struct type_PasswordLookup_Passwd *) == NULL
 				|| (res -> name = salloc (pw -> pw_name)) == NULL

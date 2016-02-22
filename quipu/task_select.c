@@ -479,10 +479,10 @@ struct task_act	* tk;
 
 
 schedule_operation (x)
-register struct oper_act *x;
+struct oper_act *x;
 {
 	struct oper_act *y;
-	register struct oper_act * on;
+	struct oper_act * on;
 	DN xdn;
 
 	if (x->on_dsas)

@@ -107,7 +107,7 @@ dsEnqError list_start() {
 	} else {
 		dn_number = 0;
 		if (result.CSR_entries != NULLENTRYINFO) {
-			register EntryInfo *ptr;
+			EntryInfo *ptr;
 
 			free_seq(dnseq);
 			dnseq = NULLDS;

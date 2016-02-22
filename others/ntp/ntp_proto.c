@@ -607,7 +607,7 @@ clock_update (struct ntp_peer *peer)
 
 		clock_watchdog = 0;	/* reset watchdog timer */
 		if (adj_logical(peer->estoffset) > 0) {
-			register struct ntp_peer *p = peer_list.head;
+			struct ntp_peer *p = peer_list.head;
 
 			advise (LLOG_NOTICE, NULLCP,
 					"adjust: STEP %s st %d off %f drft %f cmpl %f",
@@ -659,9 +659,9 @@ initialize (void) {
 
 /* 3.4.7 Clear Procedure */
 void 
-clear (register struct ntp_peer *peer)
+clear (struct ntp_peer *peer)
 {
-	register int i;
+	int i;
 
 	TRACE (3, ("clear: emptied filter for %s",
 			   paddr (&peer->src)));
@@ -685,7 +685,7 @@ clear (register struct ntp_peer *peer)
 
 /* 3.4.8 Poll Update Procedure */
 void 
-poll_update (register struct ntp_peer *peer, int new_hpoll)
+poll_update (struct ntp_peer *peer, int new_hpoll)
 {
 	int interval;
 
@@ -734,11 +734,11 @@ decrypt (void) {}
  */
 
 void 
-clock_filter (register struct ntp_peer *peer, double new_delay, double new_offset)
+clock_filter (struct ntp_peer *peer, double new_delay, double new_offset)
 {
 	double offset[PEER_SHIFT], delay[PEER_SHIFT];
-	register double temp, d, w;
-	register int i, j, samples;
+	double temp, d, w;
+	int i, j, samples;
 
 	if (peer->filter.samples < PEER_SHIFT)
 		peer->filter.samples++;
@@ -1060,7 +1060,7 @@ sanity_check (struct ntp_peer *peer)
 	   peer.refid must not match peer.dstadr */
 
 	if (peer->stratum > 1) {
-		register int i;
+		int i;
 		for (i = 1; i < nintf; i++) {
 			if ((addrs[i].flags & INTF_VALID) == 0)
 				continue;
@@ -1082,7 +1082,7 @@ sanity_check (struct ntp_peer *peer)
 	/* Sanity check 3.
 	   Both peer.estdelay and
 	   peer.estdisp to be less than NTP_MAXWGT, which insures that the
-	   filter register at least half full, yet avoids using data from
+	   filter at least half full, yet avoids using data from
 	   very noisy associations or broken implementations.  	*/
 	if (peer->estdisp > (float)NTP_MAXWGT ||
 			peer->estdelay > (float)NTP_MAXWGT)

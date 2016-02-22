@@ -102,7 +102,7 @@ main (int argc, char *argv[])
 {
 	int	cc;
 	extern char *optarg;
-	register int i;
+	int i;
 
 	if (myname = rindex (argv[0], '/'))
 		myname++;
@@ -218,7 +218,7 @@ doit (void) {
 	char *vec[4];
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
-	register int i;
+	int i;
 	int	newfd;
 
 	(void) gettimeofday(&tv, (struct timezone *) 0);
@@ -330,7 +330,7 @@ doit (void) {
 struct ntp_peer *
 check_peer (struct Naddr *dst, int sock)
 {
-	register struct ntp_peer *peer = peer_list.head;
+	struct ntp_peer *peer = peer_list.head;
 
 	while (peer != NULL) {
 		if (addr_compare (&peer->src, dst) &&
@@ -486,7 +486,7 @@ dropit:
 }
 
 int 
-enqueue (register struct list *l, struct ntp_peer *peer)
+enqueue (struct list *l, struct ntp_peer *peer)
 {
 	l->members++;
 	if (l->tail == NULL) {
@@ -508,7 +508,7 @@ static void
 timeout (int n)
 {
 	static int periodic = 0;
-	register struct ntp_peer *peer;
+	struct ntp_peer *peer;
 #ifndef	XADJTIME2
 	extern void adj_host_clock();
 
@@ -644,7 +644,7 @@ init_ntp (char *config)
 			TRACE (1, ("Ignoring line %s ...", argv[0]));
 	}
 	/*
-	 *  Read saved drift compensation register value.
+	 *  Read saved drift compensation value.
 	 */
 	if ((fp = fopen(driftcomp_file, "r")) != NULL) {
 		if (fscanf(fp, "%lf", &j) == 1 && j > -1.0 && j < 1.0) {
@@ -1184,7 +1184,7 @@ GetHostName (char *name, struct Naddr *addr)
 static void 
 hourly (void) {
 	char buf[200];
-	register int p = 0;
+	int p = 0;
 	static double drifts[5] = { 0.0, 0.0, 0.0, 0.0, 0.0 };
 	static int drift_count = 0;
 	extern double drift_comp, compliance;

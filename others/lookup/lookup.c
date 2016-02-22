@@ -90,7 +90,7 @@ main (int argc, char **argv, char **envp)
 /* ARGSUSED */
 
 static int 
-do_lookupUser (int sd, struct dispatch *ds, char **args, register struct type_PasswordLookup_UserName **arg)
+do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserName **arg)
 {
 	char   *cp;
 
@@ -110,7 +110,7 @@ do_lookupUser (int sd, struct dispatch *ds, char **args, register struct type_Pa
 /* ARGSUSED */
 
 static int 
-do_lookupUID (int sd, struct dispatch *ds, char **args, register struct type_PasswordLookup_UserID **arg)
+do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserID **arg)
 {
 	char   *cp;
 
@@ -134,7 +134,7 @@ do_lookupUID (int sd, struct dispatch *ds, char **args, register struct type_Pas
 
 static int  do_help (sd, ds, args, dummy)
 int	sd;
-register struct dispatch *ds;
+struct dispatch *ds;
 char  **args;
 caddr_t *dummy;
 {
@@ -156,10 +156,10 @@ char  **args;
 caddr_t *dummy;
 {
 	struct AcSAPrelease acrs;
-	register struct AcSAPrelease   *acr = &acrs;
+	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 
 	if (AcRelRequest (sd, ACF_NORMAL, NULLPEP, 0, NOTOK, acr, aci) == NOTOK)
 		acs_adios (aca, "A-RELEASE.REQUEST");
@@ -179,7 +179,7 @@ caddr_t *dummy;
 /* ARGSUSED */
 
 static int 
-lookup_result (int sd, int id, int dummy, register struct type_PasswordLookup_Passwd *result, struct RoSAPindication *roi)
+lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *result, struct RoSAPindication *roi)
 {
 	print_qb (result -> name);
 	putchar (':');
@@ -197,9 +197,9 @@ lookup_result (int sd, int id, int dummy, register struct type_PasswordLookup_Pa
 
 
 static 
-print_qb (register struct qbuf *q)
+print_qb (struct qbuf *q)
 {
-	register struct qbuf *p;
+	struct qbuf *p;
 
 	if (q == NULL)
 		return;
@@ -219,7 +219,7 @@ int	sd,
 caddr_t parameter;
 struct RoSAPindication *roi;
 {
-	register struct RyError *rye;
+	struct RyError *rye;
 
 	if (error == RY_REJECT) {
 		advise (NULLCP, "%s", RoErrString ((int) parameter));

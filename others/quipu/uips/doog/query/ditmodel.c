@@ -33,7 +33,7 @@ AttributeType parent_type, child_type;
 QBool need_subtree;
 {
 	ditRelation new_node, curr_node;
-	register objectType curr_child;
+	objectType curr_child;
 
 	for (curr_node = ditmodel;
 			curr_node != NULLDitRelation;
@@ -271,7 +271,7 @@ QBool is_oc_must(ocp, at)
 objectclass *ocp;
 AttributeType at;
 {
-	register table_seq optr;
+	table_seq optr;
 
 	for (optr = ocp->oc_must; optr != NULLTABLE_SEQ; optr = optr->ts_next)
 		if (optr->ts_oa == at)
@@ -289,7 +289,7 @@ QBool is_oc_may(ocp, at)
 objectclass *ocp;
 AttributeType at;
 {
-	register table_seq optr;
+	table_seq optr;
 
 	for (optr = ocp->oc_may; optr != NULLTABLE_SEQ; optr = optr->ts_next)
 		if (optr->ts_oa == at)

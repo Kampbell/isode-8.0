@@ -37,8 +37,8 @@ extern Entry database_root;
 static int build_result();
 
 do_ds_list (arg, error, result, binddn, target, di_p, dsp, authtype)
-register struct ds_list_arg          *arg;
-register struct ds_list_result       *result;
+struct ds_list_arg          *arg;
+struct ds_list_result       *result;
 struct DSError                      *error;
 DN                                  binddn;
 DN                                  target;
@@ -244,7 +244,7 @@ DN      dn;
 }
 
 static int build_result( arg, ptr, result, error, binddn, dsp, laclsizelimit )
-register Entry ptr;
+Entry ptr;
 struct ds_list_arg    *arg;
 struct ds_list_result *result;
 struct DSError * error;
@@ -347,8 +347,8 @@ int laclsizelimit;
 
 
 try_cache (arg,result,target)
-register struct ds_list_arg          *arg;
-register struct ds_list_result       *result;
+struct ds_list_arg          *arg;
+struct ds_list_result       *result;
 DN 					 target;
 {
 	struct list_cache *ptr;

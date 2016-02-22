@@ -144,8 +144,8 @@ usage:
 /*    ERRORS */
 
 static ps_die (ps, s)
-register PS	 ps;
-register char   *s;
+PS	 ps;
+char   *s;
 {
 	(void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
@@ -153,8 +153,8 @@ register char   *s;
 
 
 static pe_die (pe, s)
-register PE	 pe;
-register char   *s;
+PE	 pe;
+char   *s;
 {
 	(void) fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
 	exit (1);
@@ -187,7 +187,7 @@ int
 photo_end (char *name)
 {
 	if (passno == 1) {
-		register int	i;
+		int	i;
 
 		passno = 2;
 		x = maxx, y--;
@@ -214,7 +214,7 @@ int
 photo_black (int length)
 {
 	if (passno == 2) {
-		register int	i;
+		int	i;
 
 		for (i = length; i > 0; i--)
 			*bP++ = black;
@@ -245,7 +245,7 @@ caddr_t line;
 		if (x > maxx)
 			maxx = x;
 	} else {
-		register int	i;
+		int	i;
 
 #ifdef PBM4PARMS
 		pbm_writepbmrow (stdout, bitrow, maxx, 0);

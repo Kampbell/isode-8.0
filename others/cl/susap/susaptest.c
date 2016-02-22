@@ -51,10 +51,10 @@ main (int argc, char **argv, char **envp)
 	char buffer[80],                            /* Working input buffer */
 		 *bptr;                                 /* Pointer to our buffer */
 	struct udvec uvs[2];
-	register struct udvec *uv;
+	struct udvec *uv;
 	int  cc, result, data, mode;
 	u_short  pattern;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	struct SuSAPstart sunitdata;
 	struct SuSAPstart *sud = &sunitdata;
 	int	sd;
@@ -68,8 +68,8 @@ main (int argc, char **argv, char **envp)
 #define	NTADDRS		FD_SETSIZE
 
 	struct TSAPaddr   *ta;
-	register int    n = ta -> ta_naddr - 1;
-	register struct NSAPaddr   *na = ta -> ta_addrs;
+	int    n = ta -> ta_naddr - 1;
+	struct NSAPaddr   *na = ta -> ta_addrs;
 	static struct TSAPaddr *tz;
 	static struct TSAPaddr  tas[NTADDRS];
 	int	    port;
@@ -274,10 +274,10 @@ main (int argc, char **argv, char **envp)
 
 
 static 
-printsrv (register struct isoservent *is)
+printsrv (struct isoservent *is)
 {
-	register int    n = is -> is_tail - is -> is_vec - 1;
-	register char **ap = is -> is_vec;
+	int    n = is -> is_tail - is -> is_vec - 1;
+	char **ap = is -> is_vec;
 
 	printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 			is -> is_entity, is -> is_provider,
@@ -292,7 +292,7 @@ printsrv (register struct isoservent *is)
 /*  */
 
 static 
-printsaddr (register struct SSAPaddr *sa)
+printsaddr (struct SSAPaddr *sa)
 
 {
 
@@ -343,12 +343,12 @@ printsaddr (register struct SSAPaddr *sa)
 
 
 static 
-printtaddr (register struct TSAPaddr *ta)
+printtaddr (struct TSAPaddr *ta)
 
 {
 
-	register int    n;
-	register struct NSAPaddr   *na;
+	int    n;
+	struct NSAPaddr   *na;
 
 
 

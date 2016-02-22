@@ -46,10 +46,10 @@ struct PSAPindication *pi;
 {
 	SBV	    smask;
 	int	    result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	PE	    pe;
 	PS	    ps;
-	register struct type_PS_Abort__PDU *pdu;
+	struct type_PS_Abort__PDU *pdu;
 
 	toomuchP (data, ndata, NPDATA_PS, "abort");
 	if (ndata > 0) {

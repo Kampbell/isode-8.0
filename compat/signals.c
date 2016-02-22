@@ -85,7 +85,7 @@ sigser (int sig)
 int 
 sigblock (int mask)
 {
-	register int    sig,
+	int    sig,
 			 smask;
 	long    omask = blocked;
 
@@ -105,7 +105,7 @@ sigblock (int mask)
 int 
 sigsetmask (int mask)
 {
-	register int    sig,
+	int    sig,
 			 smask;
 	long    omask = blocked;
 

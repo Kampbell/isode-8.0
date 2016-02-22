@@ -27,7 +27,7 @@ extern int	errno;
 
 void
 rewinddir( dirp )
-register DIR		*dirp;	/* stream from opendir() */
+DIR		*dirp;	/* stream from opendir() */
 {
 	if ( dirp == NULL || dirp->dd_buf == NULL ) {
 		errno = EFAULT;

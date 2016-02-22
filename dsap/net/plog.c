@@ -37,7 +37,7 @@ SFP	abort_vector = NULL;
 
 
 void    ros_log(rop, event)
-register struct RoSAPpreject *rop;
+struct RoSAPpreject *rop;
 char   *event;
 {
 	int level = LLOG_EXCEPTIONS;
@@ -57,7 +57,7 @@ char   *event;
 }
 
 void    acs_log(aca, event)
-register struct AcSAPabort *aca;
+struct AcSAPabort *aca;
 char   *event;
 {
 	if(aca->aca_cc > 0)

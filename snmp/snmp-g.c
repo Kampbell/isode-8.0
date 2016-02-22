@@ -32,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmp-g.c,v 9.0 1992/06
 /*    SNMP GROUP */
 
 init_snmp () {
-	register OT	    ot;
+	OT	    ot;
 
 	bzero ((char *) &snmpstat, sizeof snmpstat);
 
@@ -123,7 +123,7 @@ OT	ot;
 int	hi;
 {
 	char   *name;
-	register OS	    os;
+	OS	    os;
 
 	if ((os = ot -> ot_syntax) == NULL)
 		adios (NULLCP, "no syntax defined for object \"%s\"", ot -> ot_text);

@@ -45,12 +45,12 @@ main (int argc, char **argv, char **envp)
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
 	struct SSAPstart sss;
-	register struct SSAPstart *ss = &sss;
+	struct SSAPstart *ss = &sss;
 	struct SSAPdata sxs;
-	register struct SSAPdata   *sx = &sxs;
+	struct SSAPdata   *sx = &sxs;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	AEI	    aei;
 	struct PSAPaddr *pa;
 	struct sblk incoming;

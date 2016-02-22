@@ -57,11 +57,11 @@ struct pair fconctl_pairs [] = {
 /*  */
 
 struct type_FTAM_Concurrency__Control *conctl2fpm (fsb, fc, fti)
-register struct ftamblk *fsb;
-register struct FTAMconcurrency *fc;
+struct ftamblk *fsb;
+struct FTAMconcurrency *fc;
 struct FTAMindication *fti;
 {
-	register struct type_FTAM_Concurrency__Control *fpm;
+	struct type_FTAM_Concurrency__Control *fpm;
 
 	if ((fpm = (struct type_FTAM_Concurrency__Control *)
 			   calloc (1, sizeof *fpm)) == NULL) {
@@ -100,8 +100,8 @@ no_mem:
 
 int	fpm2conctl (fsb, fpm, fc, fti)
 struct ftamblk *fsb;
-register struct type_FTAM_Concurrency__Control *fpm;
-register struct FTAMconcurrency *fc;
+struct type_FTAM_Concurrency__Control *fpm;
+struct FTAMconcurrency *fc;
 struct FTAMindication *fti;
 {
 	FCINIT (fc);
@@ -126,11 +126,11 @@ struct FTAMindication *fti;
 /*  */
 
 struct type_FTAM_Concurrency__Access *conacc2fpm (fsb, fc, fti)
-register struct ftamblk *fsb;
-register struct FTAMconcurrency *fc;
+struct ftamblk *fsb;
+struct FTAMconcurrency *fc;
 struct FTAMindication *fti;
 {
-	register struct type_FTAM_Concurrency__Access *fpm;
+	struct type_FTAM_Concurrency__Access *fpm;
 	int key;
 
 	if ((fpm = (struct type_FTAM_Concurrency__Access *)
@@ -163,8 +163,8 @@ struct FTAMindication *fti;
 
 int     fpm2conacc (fsb, fpm, fc, fti)
 struct ftamblk *fsb;
-register struct type_FTAM_Concurrency__Access *fpm;
-register struct FTAMconcurrency *fc;
+struct type_FTAM_Concurrency__Access *fpm;
+struct FTAMconcurrency *fc;
 struct FTAMindication *fti;
 {
 	int	    key;

@@ -39,12 +39,12 @@ int
 SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 {
 	int	    len;
-	register struct ssapblk *sb;
-	register struct ssapkt *s;
+	struct ssapblk *sb;
+	struct ssapkt *s;
 	struct TSAPstart tss;
-	register struct TSAPstart *ts = &tss;
+	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	isodetailor (NULLCP, 0);
 
@@ -61,7 +61,7 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 	if (vecp == 2 || TInit (vecp, vec, ts, td) != NOTOK) {
 		int	sd;
 		struct TSAPdata txs;
-		register struct TSAPdata *tx = &txs;
+		struct TSAPdata *tx = &txs;
 
 		if (vecp == 2) {
 			if (TRestoreState (vec[1], ts, td) == NOTOK) {
@@ -288,8 +288,8 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 {
 	int     result,
 			please;
-	register struct ssapkt *s;
-	register struct ssapblk *sb;
+	struct ssapkt *s;
+	struct ssapblk *sb;
 
 	if ((sb = findsblk (sd)) == NULL || (sb -> sb_flags & SB_CONN))
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid session descriptor");
@@ -442,13 +442,13 @@ out1:
 /*  */
 
 static int 
-refuse (register struct ssapblk *sb, register struct ssapkt *s, register struct SSAPindication *si)
+refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si)
 {
 	int     result;
 	struct TSAPdata txs;
-	register struct TSAPdata   *tx = &txs;
+	struct TSAPdata   *tx = &txs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	s -> s_mask |= SMASK_RF_DISC;
 	s -> s_rf_disconnect |= RF_DISC_RELEASE;

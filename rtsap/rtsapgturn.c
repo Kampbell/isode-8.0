@@ -38,7 +38,7 @@ RtGTurnRequest (int sd, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (rti);
 

@@ -183,14 +183,14 @@ static struct dispatch  dispatches[] = {
 /*  */
 
 struct dispatch *getds (name)
-register char *name;
+char *name;
 {
-	register int    longest,
+	int    longest,
 			 nmatches;
-	register char  *p,
+	char  *p,
 			 *q;
 	char    buffer[BUFSIZ];
-	register struct dispatch   *ds,
+	struct dispatch   *ds,
 			*fs;
 
 	longest = nmatches = 0;
@@ -374,20 +374,20 @@ char    **getval ();
 static int  f_set (vec)
 char  **vec;
 {
-	register int    i,
+	int    i,
 			 j;
 	int     value,
 			vflag;
-	register char **cp,
+	char **cp,
 			 *dp;
-	register struct var *v;
+	struct var *v;
 
 	if (*++vec == NULL) {
-		register int    w;
+		int    w;
 		int     columns,
 				width,
 				lines;
-		register struct var *u;
+		struct var *u;
 
 		for (u = vars; u -> v_name; u++)
 			continue;
@@ -448,7 +448,7 @@ char  **vec;
 	}
 
 	if (v -> v_value == NULLIP) {
-		register int    w;
+		int    w;
 
 		if (*v -> v_dvalue)
 			free (*v -> v_dvalue);
@@ -552,7 +552,7 @@ out_of_range:
 /*  */
 
 static printvar (v)
-register struct var *v;
+struct var *v;
 {
 	int	    i;
 	char    buffer[BUFSIZ];
@@ -635,7 +635,7 @@ static int  set_trace (v)
 struct var *v;
 {
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if (ftamfd == NOTOK)
 		return;
@@ -650,7 +650,7 @@ struct var *v;
 static int  set_type (v)
 struct var *v;
 {
-	register struct vfsmap *vf;
+	struct vfsmap *vf;
 
 	if (ftamfd == NOTOK)
 		return;
@@ -667,12 +667,12 @@ struct var *v;
 /*  */
 
 static char **getval (name, choices)
-register char *name;
+char *name;
 char   **choices;
 {
-	register int    longest,
+	int    longest,
 			 nmatches;
-	register char  *p,
+	char  *p,
 			 *q,
 			 **cp,
 			 **fp;
@@ -715,14 +715,14 @@ char   **choices;
 /*  */
 
 static struct var *getvar (name)
-register char *name;
+char *name;
 {
-	register int    longest,
+	int    longest,
 			 nmatches;
-	register char  *p,
+	char  *p,
 			 *q;
 	char    buffer[BUFSIZ];
-	register struct var *v,
+	struct var *v,
 			*f;
 
 	longest = nmatches = 0;
@@ -768,13 +768,13 @@ static int helpwidth;
 static int  f_help (vec)
 char  **vec;
 {
-	register int    i,
+	int    i,
 			 j,
 			 w;
 	int     columns,
 			width,
 			lines;
-	register struct dispatch   *ds,
+	struct dispatch   *ds,
 			*es;
 
 	for (es = dispatches; es -> ds_name; es++)
@@ -888,7 +888,7 @@ struct vfsmap *myvf;
 /*  */
 
 void	ftam_advise (fta, event)
-register struct FTAMabort *fta;
+struct FTAMabort *fta;
 char   *event;
 {
 	if (hash && marks >= BUFSIZ) {
@@ -960,11 +960,11 @@ char   *event;
 /*  */
 
 void	ftam_chrg (charges)
-register struct FTAMcharging *charges;
+struct FTAMcharging *charges;
 {
-	register int    i;
+	int    i;
 	char   *cp;
-	register struct fc_charge  *fc;
+	struct fc_charge  *fc;
 
 	cp = "charging information:\n    %s: %d %s\n";
 	for (fc = charges -> fc_charges, i = charges -> fc_ncharge - 1;
@@ -997,9 +997,9 @@ int	ndiag;
 int	peer,
 	action;
 {
-	register int    i;
+	int    i;
 	int     didit;
-	register struct FTAMdiagnostic *dp;
+	struct FTAMdiagnostic *dp;
 
 #ifdef	BRIDGE
 	ftam_error[0] = NULL;
@@ -1179,13 +1179,13 @@ print_it:
 
 rcinit () {
 #ifndef	BRIDGE
-	register int    w;
-	register char **cp;
-	register struct dispatch   *ds;
-	register struct var *v;
+	int    w;
+	char **cp;
+	struct dispatch   *ds;
+	struct var *v;
 #endif
-	register struct isodocument *id;
-	register struct vfsmap *vf;
+	struct isodocument *id;
+	struct vfsmap *vf;
 
 #ifndef	BRIDGE
 	if ((myhome = getenv ("HOME")) == NULL)
@@ -1304,7 +1304,7 @@ char   *action;
 
 
 static  tvsub (tdiff, t1, t0)
-register struct timeval *tdiff,
+struct timeval *tdiff,
 		*t1,
 		*t0;
 {

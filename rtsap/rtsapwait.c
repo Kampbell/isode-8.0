@@ -38,7 +38,7 @@ RtWaitRequest (int sd, int secs, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (rti);
 
@@ -56,14 +56,14 @@ RtWaitRequest (int sd, int secs, struct RtSAPindication *rti)
 /*  */
 
 int 
-RtWaitRequestAux (register struct assocblk *acb, int secs, int trans, register struct RtSAPindication *rti)
+RtWaitRequestAux (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti)
 {
 	if (!trans && (acb -> acb_flags & ACB_PLEASE)) {
 		acb -> acb_flags &= ~ACB_PLEASE;
 
 		rti -> rti_type = RTI_TURN;
 		{
-			register struct RtSAPturn  *rtu = &rti -> rti_turn;
+			struct RtSAPturn  *rtu = &rti -> rti_turn;
 
 			rtu -> rtu_please = 1;
 			rtu -> rtu_priority = acb -> acb_priority;

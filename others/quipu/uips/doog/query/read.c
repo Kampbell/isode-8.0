@@ -493,7 +493,7 @@ photo_start (char *name)
 int 
 photo_end (char *name)
 {
-	register int byte_width;
+	int byte_width;
 
 	if (photo_pass_two == FALSE) {
 		byte_width = (photo_width / 8) + 1;
@@ -511,8 +511,8 @@ photo_end (char *name)
 int 
 photo_black (int line_length)
 {
-	register unsigned char tmp_byte;
-	register int count;
+	unsigned char tmp_byte;
+	int count;
 
 	if (photo_pass_two == FALSE) {
 		tmp_width += line_length;
@@ -574,7 +574,7 @@ photo_black (int line_length)
 int 
 photo_white (int line_length)
 {
-	register int count;
+	int count;
 
 	if (photo_pass_two == FALSE) {
 		tmp_width += line_length;

@@ -469,7 +469,7 @@ get_runs (lineptr)
 bit_string * lineptr;
 
 {
-	register i;
+	i;
 	char     colour = WHITE;
 
 	*lineptr->run_pos++ = 0;

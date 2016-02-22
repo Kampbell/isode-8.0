@@ -89,7 +89,7 @@ static struct udpconn *peers = NULL;
  */
 
 int 
-udpinit (register struct tsapblk *tb)
+udpinit (struct tsapblk *tb)
 
 {
 
@@ -135,17 +135,17 @@ udpinit (register struct tsapblk *tb)
  */
 
 int 
-udp_open (register struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, int option, struct TSAPdisconnect *td)
+udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, int option, struct TSAPdisconnect *td)
 
 {
 
 	int     fd;
 	struct sockaddr_in  lo_socket,
 			in_socket;
-	register struct sockaddr_in *lsock = &lo_socket,
+	struct sockaddr_in *lsock = &lo_socket,
 										 *isock = &in_socket;
-	register struct hostent *hp;
-	register struct servent *sp;
+	struct hostent *hp;
+	struct servent *sp;
 
 	/*
 	 *  Check if we are creating a new socket or just rebinding
@@ -292,11 +292,11 @@ int
 udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 
 {
-	register int    port;
+	int    port;
 	int      sd;
 	int	     i;
-	register struct hostent *hp;
-	register struct udpconn *up;
+	struct hostent *hp;
+	struct udpconn *up;
 
 
 
@@ -542,8 +542,8 @@ join_udp_aux (int fd, struct sockaddr_in *sock, int newfd)
 	int	    nfds,
 			sd;
 	fd_set  ifds;
-	register struct qbuf *qb;
-	register struct udpconn *up;
+	struct qbuf *qb;
+	struct udpconn *up;
 
 	if (fd < 0 || fd >= maxpeers || peers[fd].udp_parent != fd) {
 		errno = EINVAL;
@@ -610,8 +610,8 @@ udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *fromsock,
 	fd_set  	ifds,
 				mask;
 	struct qbuf qbuff;
-	register struct qbuf 	*qb = &qbuff;
-	register struct udpconn 	*up;
+	struct qbuf 	*qb = &qbuff;
+	struct udpconn 	*up;
 	struct sockaddr_in 		*sock;
 	char 			*rbufptr;
 	int 			i;
@@ -740,10 +740,10 @@ udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *fromsock,
  */
 
 int 
-udp_write_socket (int fd, register char *data, int cc, struct TSAPdisconnect *td)
+udp_write_socket (int fd, char *data, int cc, struct TSAPdisconnect *td)
 
 {
-	register struct udpconn *up;
+	struct udpconn *up;
 	int	len;
 
 	/*
@@ -790,9 +790,9 @@ udp_write_socket (int fd, register char *data, int cc, struct TSAPdisconnect *td
 int 
 udp_close (int fd)
 {
-	register struct qbuf *qb,
+	struct qbuf *qb,
 			*qp;
-	register struct udpconn *up,
+	struct udpconn *up,
 			*vp;
 
 #ifdef HULADEBUG
@@ -860,15 +860,15 @@ fd_set *rfds,
 	   *efds;
 int	secs;
 {
-	register int    fd;
+	int    fd;
 	int	    cc,
 			len,
 			mfds,
 			result;
 	fd_set  ifds,
 			jfds;
-	register struct qbuf *qb;
-	register struct udpconn *up,
+	struct qbuf *qb;
+	struct udpconn *up,
 			*vp;
 	struct udpconn *wp;
 	struct sockaddr_in *sock;

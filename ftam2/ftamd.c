@@ -56,9 +56,9 @@ char  **argv,
 	int     result;
 	char   *ap;
 	struct FTAMstart    ftss;
-	register struct FTAMstart  *fts = &ftss;
+	struct FTAMstart  *fts = &ftss;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if (myname = rindex (argv[0], '/'))
 		myname++;
@@ -87,8 +87,8 @@ char  **argv,
 			fts -> fts_account ? fts -> fts_account : "");
 #ifdef	DEBUG
 	{
-		register int    i;
-		register struct FTAMcontent *fx;
+		int    i;
+		struct FTAMcontent *fx;
 
 		advise (LLOG_DEBUG, NULLCP,
 				" called AE title: %s, called PSAP address: %s",
@@ -172,7 +172,7 @@ char   *event;
 
 
 void	ftam_advise (fta, event)
-register struct FTAMabort *fta;
+struct FTAMabort *fta;
 char   *event;
 {
 	advise (LLOG_NOTICE, NULLCP, "%s: failed", event);
@@ -196,10 +196,10 @@ void	ftam_diag (diag, ndiag)
 struct FTAMdiagnostic diag[];
 int	ndiag;
 {
-	register int    i;
-	register char  *cp;
+	int    i;
+	char  *cp;
 	char    buffer[BUFSIZ];
-	register struct FTAMdiagnostic *dp;
+	struct FTAMdiagnostic *dp;
 
 	for (dp = diag, i = ndiag - 1; i >= 0; dp++, i--) {
 		cp = buffer;

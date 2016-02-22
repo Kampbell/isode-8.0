@@ -67,7 +67,7 @@ struct tree_struct * a, *b;
 
 /* ARGSUSED */
 static tree_struct_print (ps,tree,format)
-register PS ps;
+PS ps;
 struct   tree_struct * tree;
 int format;
 {

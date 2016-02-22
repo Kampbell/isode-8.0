@@ -51,7 +51,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/fileinfo.c,v 9.0
 int 
 op_listDir (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
 {
-	register struct type_RFA_FileName *arg = (struct type_RFA_FileName *) in;
+	struct type_RFA_FileName *arg = (struct type_RFA_FileName *) in;
 	struct type_RFA_FileInfoList *fi;
 	char *dir, *s;
 	struct RfaInfo *rfalist;

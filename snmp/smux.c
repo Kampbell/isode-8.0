@@ -72,9 +72,9 @@ int	smux_init (debug)
 int	debug;
 {
 	int	    onoff;
-	register struct sockaddr_in *isock = &in_socket;
-	register struct hostent *hp;
-	register struct servent *sp;
+	struct sockaddr_in *isock = &in_socket;
+	struct hostent *hp;
+	struct servent *sp;
 	static int inited = 0;
 
 	if (!inited) {
@@ -175,7 +175,7 @@ int	commlen;
 {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
-	register struct type_SNMP_SimpleOpen *simple;
+	struct type_SNMP_SimpleOpen *simple;
 
 	if (identity == NULL
 			|| description == NULL
@@ -186,7 +186,7 @@ int	commlen;
 		return smuxlose (invalidOperation, NULLCP, "SMUX not inited");
 	if (ps == NULLPS) {
 		fd_set	mask;
-		register struct sockaddr_in *isock = &in_socket;
+		struct sockaddr_in *isock = &in_socket;
 
 		FD_ZERO (&mask);
 		FD_SET (sd, &mask);
@@ -298,7 +298,7 @@ int	reason;
 {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
-	register struct type_SNMP_ClosePDU *close;
+	struct type_SNMP_ClosePDU *close;
 
 	if (ps == NULLPS)
 		return smuxlose (invalidOperation, NULLCP, "SMUX not opened");
@@ -342,14 +342,14 @@ int	reason;
 
 /*    REGISTER */
 
-int	smux_register (subtree, priority, operation)
+int	smux_(subtree, priority, operation)
 OID	subtree;
 int	priority,
 	operation;
 {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
-	register struct type_SNMP_RReqPDU *rreq;
+	struct type_SNMP_RReqPDU *rreq;
 
 	if (subtree == NULL)
 		return smuxlose (parameterMissing, NULLCP, "missing parameter");
@@ -482,7 +482,7 @@ struct type_SNMP_VarBindList *bindings;
 	int	    result;
 	struct timeval now;
 	struct type_SNMP_SMUX__PDUs pdu;
-	register struct type_SNMP_Trap__PDU *trap;
+	struct type_SNMP_Trap__PDU *trap;
 
 	if (ps == NULLPS)
 		return smuxlose (invalidOperation, NULLCP, "SMUX not opened");

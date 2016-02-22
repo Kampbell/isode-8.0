@@ -38,7 +38,7 @@ PE	bits;
 int    *names;
 struct FTAMindication *fti;
 {
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	if ((fsb = findfsblk (fd)) == NULL)
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
@@ -55,7 +55,7 @@ int     names;
 PE     *bits;
 struct FTAMindication *fti;
 {
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	if ((fsb = findfsblk (fd)) == NULL)
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
@@ -74,7 +74,7 @@ struct FTAMattributes *fa;
 struct type_FTAM_Read__Attributes **attrs;
 struct FTAMindication *fti;
 {
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	if ((fsb = findfsblk (fd)) == NULL)
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
@@ -93,7 +93,7 @@ struct type_FTAM_Read__Attributes *attrs;
 struct FTAMattributes *fa;
 struct FTAMindication *fti;
 {
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	if ((fsb = findfsblk (fd)) == NULL)
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,

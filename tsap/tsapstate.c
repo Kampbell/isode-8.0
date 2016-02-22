@@ -34,10 +34,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapstate.c,v 9.0 1992
 /*  */
 
 int 
-TSaveState (int sd, char **vec, register struct TSAPdisconnect *td)
+TSaveState (int sd, char **vec, struct TSAPdisconnect *td)
 {
 	SBV     smask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	static char buffer[sizeof *tb * 2 + 1];
 
 	missingP (vec);
@@ -68,10 +68,10 @@ TSaveState (int sd, char **vec, register struct TSAPdisconnect *td)
 /*  */
 
 int 
-TRestoreState (char *buffer, register struct TSAPstart *ts, register struct TSAPdisconnect *td)
+TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td)
 {
 	struct tsapblk  tbs;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	missingP (buffer);
 	missingP (ts);

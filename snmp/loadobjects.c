@@ -12280,8 +12280,8 @@ loadobjects (file)
 char   *file;
 {
 	int	    i;
-	register struct _syntax *sy;
-	register OT	    ot;
+	struct _syntax *sy;
+	OT	    ot;
 	static int once_only = 0;
 
 	if (file && !once_only)

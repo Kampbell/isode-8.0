@@ -67,7 +67,7 @@ static int  pe2pl_aux ();
 /*  */
 
 int 
-pe2pl (register PS ps, register PE pe)
+pe2pl (PS ps, PE pe)
 {
 	int     result;
 
@@ -80,16 +80,16 @@ pe2pl (register PS ps, register PE pe)
 /*  */
 
 static int 
-pe2pl_aux (register PS ps, register PE pe, int level)
+pe2pl_aux (PS ps, PE pe, int level)
 {
-	register int    i,
+	int    i,
 			 ia5,
 			 ia5ok;
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register PE	    p;
-	register PElementID id;
-	register PElementData dp,
+	PE	    p;
+	PElementID id;
+	PElementData dp,
 			 ep,
 			 fp,
 			 gp;

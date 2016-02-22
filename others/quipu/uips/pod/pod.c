@@ -1274,7 +1274,7 @@ char *entry_ptr;
 	Widget attr_list, val_list, sep_list;
 	Arg args[MAXARGS];
 	int count = 0, attr_count = 0;
-	register char *str_start, *str_end;
+	char *str_start, *str_end;
 	char save, vals[RESBUF], attrs[RESBUF], seps[RESBUF];
 	Dimension attr_width = 0, max_attr_width = 0;
 	Dimension val_width = 0, max_val_width = 0;
@@ -1708,7 +1708,7 @@ Cardinal num_params;
 {
 	Widget search_area = XtNameToWidget(outer,
 										"PosForm.PosScrolledWindow.PosWindow");
-	register char *end = base_path;
+	char *end = base_path;
 	int rdnlevel = atoi(params[0]);
 
 	if (rdnlevel == 0) *base_path = '\0';
@@ -1735,7 +1735,7 @@ XEvent *event;
 String *params;
 Cardinal num_params;
 {
-	register char *end;
+	char *end;
 	Widget search_area = XtNameToWidget(outer,
 										"PosForm.PosScrolledWindow.PosWindow");
 	int rdnlevel = atoi(params[0]);
@@ -3724,7 +3724,7 @@ char *istring;
 	Arg args[MAXARGS];
 	XFontStruct *font;
 	int max_width, text_width;
-	register char *sptr, *str;
+	char *sptr, *str;
 	char * string;
 
 	if (!widget) return 0;
@@ -3767,7 +3767,7 @@ char *string;
 	Arg args[MAXARGS];
 	XFontStruct *font;
 	int lines;
-	register char *str;
+	char *str;
 
 	if (!widget) return 0;
 

@@ -33,14 +33,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamattr.c,v 9.0 1992/
 /*  */
 
 struct type_FTAM_Read__Attributes *attr2fpm (fsb, fa, fti)
-register struct ftamblk *fsb;
-register struct FTAMattributes *fa;
+struct ftamblk *fsb;
+struct FTAMattributes *fa;
 struct FTAMindication *fti;
 {
-	register int    i;
-	register char  *cp,
+	int    i;
+	char  *cp,
 			 **ap;
-	register struct type_FTAM_Read__Attributes *fpm;
+	struct type_FTAM_Read__Attributes *fpm;
 
 	if ((fpm = (struct type_FTAM_Read__Attributes *) calloc (1, sizeof *fpm))
 			== NULL) {
@@ -55,7 +55,7 @@ out:
 	}
 
 	if (fa -> fa_present & FA_FILENAME) {
-		register struct type_FTAM_Filename__Attribute *fn,
+		struct type_FTAM_Filename__Attribute *fn,
 				**fc;
 
 		if (fa -> fa_novalue & FA_FILENAME) {
@@ -314,20 +314,20 @@ out:
 /*  */
 
 int	fpm2attr (fsb, fpm, fa, fti)
-register struct ftamblk *fsb;
-register struct type_FTAM_Read__Attributes *fpm;
-register struct FTAMattributes *fa;
+struct ftamblk *fsb;
+struct type_FTAM_Read__Attributes *fpm;
+struct FTAMattributes *fa;
 struct FTAMindication *fti;
 {
-	register char   *cp;
-	register UTC     u;
+	char   *cp;
+	UTC     u;
 
 	bzero ((char *) fa, sizeof *fa);
 
 	if (fpm -> filename) {
-		register int	n;
-		register char **ap;
-		register struct type_FTAM_Filename__Attribute *fn;
+		int	n;
+		char **ap;
+		struct type_FTAM_Filename__Attribute *fn;
 
 		fa -> fa_present |= FA_FILENAME;
 
@@ -502,9 +502,9 @@ no_mem:
 /*  */
 
 void	FAFREE (fa)
-register struct FTAMattributes *fa;
+struct FTAMattributes *fa;
 {
-	register int FAI;
+	int FAI;
 
 	for (FAI = (fa) -> fa_nfile - 1; FAI >= 0; FAI--)
 		if ((fa) -> fa_files[FAI])

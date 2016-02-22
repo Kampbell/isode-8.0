@@ -42,15 +42,15 @@ PExec (struct SSAPstart *ss, struct PSAPindication *pi, char *arg1, char *arg2, 
 			result,
 			result2;
 	char   *base;
-	register struct isoservent *is;
-	register struct psapblk *pb;
+	struct isoservent *is;
+	struct psapblk *pb;
 	PE	    pe;
 	struct SSAPref ref;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
+	struct SSAPindication *si = &sis;
 	struct type_PS_CP__type *cp;
-	register struct element_PS_0 *cp_normal;
-	register struct type_PS_CPR__type *cpr;
+	struct element_PS_0 *cp_normal;
+	struct type_PS_CPR__type *cpr;
 
 	missingP (ss);
 	missingP (pi);
@@ -161,7 +161,7 @@ out2:
 											  PE_CLASS_CONT, 0));
 			}
 		} else {
-			register struct element_PS_2 *cpr_normal;
+			struct element_PS_2 *cpr_normal;
 
 			cpr -> offset = type_PS_CPR__type_normal__mode;
 			if (cpr_normal = (struct element_PS_2 *)

@@ -61,7 +61,7 @@ AV_Sequence  avs;
 {
 	AV_Sequence start;
 	AV_Sequence ptr,ptr2;
-	register AV_Sequence eptr;
+	AV_Sequence eptr;
 
 	if (avs == NULLAV ) {
 		return (NULLAV);
@@ -82,7 +82,7 @@ AV_Sequence  avs;
 {
 	AV_Sequence start;
 	AV_Sequence ptr,ptr2;
-	register AV_Sequence eptr;
+	AV_Sequence eptr;
 
 	/* an AVS, and encode at the same time */
 

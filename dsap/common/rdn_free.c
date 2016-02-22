@@ -36,8 +36,8 @@ RDN rdn;
 rdn_free (rdn)
 RDN rdn;
 {
-	register RDN eptr;
-	register RDN next;
+	RDN eptr;
+	RDN next;
 
 	for (eptr=rdn; eptr!=NULLRDN; eptr=next) {
 		next = eptr->rdn_next;

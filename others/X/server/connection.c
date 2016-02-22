@@ -992,7 +992,7 @@ void
 CheckConnections() {
 	long		mask[mskcnt];
 	long		tmask[mskcnt];
-	register int	curclient;
+	int	curclient;
 	int			i;
 	struct timeval	notime;
 	ClientPtr           bad;

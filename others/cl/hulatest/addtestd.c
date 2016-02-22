@@ -78,8 +78,8 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_ADD_Sum *psum;
-	register struct type_ADD_Addends *paddends;
+	struct type_ADD_Sum *psum;
+	struct type_ADD_Addends *paddends;
 
 	if (rox -> rox_nolinked == 0) {
 		advise (NULLCP, LOG_INFO,

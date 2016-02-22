@@ -624,7 +624,7 @@ send_all() {	/*TEMP -- Should be supplied by Sector 5 actions*/
 /*  */
 
 void  acs_adios (aa, event)
-register struct AcSAPabort *aa;
+struct AcSAPabort *aa;
 char   *event;
 {
 	acs_advise (aa, event);
@@ -636,7 +636,7 @@ char   *event;
 
 
 static void  acs_advise (aa, event)
-register struct AcSAPabort *aa;
+struct AcSAPabort *aa;
 char   *event;
 {
 	char	buffer[BUFSIZ];
@@ -654,7 +654,7 @@ char   *event;
 
 
 static void  ps_adios (pab, event)
-register struct PSAPabort *pab;
+struct PSAPabort *pab;
 char   *event;
 {
 	ps_advise (pab, event);
@@ -666,7 +666,7 @@ char   *event;
 
 
 static void  ps_advise (pab, event)
-register struct PSAPabort *pab;
+struct PSAPabort *pab;
 char   *event;
 {
 	char    buffer[BUFSIZ];

@@ -115,21 +115,21 @@ char   *thehost,
 PE	data;
 {
 	struct SSAPref sfs;
-	register struct SSAPref *sf;
-	register struct PSAPaddr *pa;
+	struct SSAPref *sf;
+	struct PSAPaddr *pa;
 	struct AcSAPconnect accs;
-	register struct AcSAPconnect   *acc = &accs;
+	struct AcSAPconnect   *acc = &accs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	AEI	    aei;
 	OID	    ctx,
 			pci;
 	struct PSAPctxlist pcs;
-	register struct PSAPctxlist *pc = &pcs;
+	struct PSAPctxlist *pc = &pcs;
 	struct RoSAPindication rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject *rop = &roi -> roi_preject;
 
 	if ((aei = _str2aei (thehost, theservice, thecontext, 0, NULLCP, NULLCP))
 			== NULLAEI)
@@ -185,10 +185,10 @@ PE	data;
 int 
 closeconn (void) {
 	struct AcSAPrelease acrs;
-	register struct AcSAPrelease   *acr = &acrs;
+	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 
 	if (ry_sd == NOTOK)
 		return;
@@ -215,8 +215,8 @@ IFP	rfx, efx;
 {
 	int	    result;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 	extern int result_value;
 
 	switch (result = RyStub (ry_sd, table_Idist_Operations, op,
@@ -253,7 +253,7 @@ IFP	rfx, efx;
 SFD cleanup ();
 
 void 
-ros_adios (register struct RoSAPpreject *rop, char *event)
+ros_adios (struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -264,7 +264,7 @@ ros_adios (register struct RoSAPpreject *rop, char *event)
 
 
 void 
-ros_advise (register struct RoSAPpreject *rop, char *event)
+ros_advise (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -280,7 +280,7 @@ ros_advise (register struct RoSAPpreject *rop, char *event)
 /*  */
 
 void 
-acs_adios (register struct AcSAPabort *aca, char *event)
+acs_adios (struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -290,7 +290,7 @@ acs_adios (register struct AcSAPabort *aca, char *event)
 
 
 void 
-acs_advise (register struct AcSAPabort *aca, char *event)
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 

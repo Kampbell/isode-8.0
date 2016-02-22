@@ -43,7 +43,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	switch (action) {
 	case FACTION_SUCCESS:
@@ -72,7 +72,7 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FTransEndResponseAux (fsb, action, sharedASE, diag, ndiag, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	action;
 PE	sharedASE;
 struct FTAMdiagnostic diag[];
@@ -84,8 +84,8 @@ struct FTAMindication *fti;
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__TRANSFER__END__response *rsp;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__TRANSFER__END__response *rsp;
 
 	if (fsb -> fsb_flags & FSB_INIT)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not responder");

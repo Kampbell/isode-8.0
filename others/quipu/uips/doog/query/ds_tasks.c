@@ -79,7 +79,7 @@ int *task_id_ptr;
 void 
 _task_complete (int task_id)
 {
-	register DsTask prev_rec = NULLDsTask, task_rec = live_task_list;
+	DsTask prev_rec = NULLDsTask, task_rec = live_task_list;
 
 	while (task_rec != NULLDsTask && task_rec->task_id != task_id) {
 		prev_rec = task_rec;
@@ -105,7 +105,7 @@ _task_complete (int task_id)
 DsTask _get_task_of_id(task_id)
 int task_id;
 {
-	register DsTask task_rec = live_task_list;
+	DsTask task_rec = live_task_list;
 
 	while (task_rec != NULLDsTask && task_rec->task_id != task_id)
 		task_rec = task_rec->next;

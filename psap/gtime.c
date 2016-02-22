@@ -58,16 +58,16 @@ int	dmsize[] = {
 /*  */
 
 long 
-gtime (register struct tm *tm)
+gtime (struct tm *tm)
 {
-	register int    i,
+	int    i,
 			 sec,
 			 mins,
 			 hour,
 			 mday,
 			 mon,
 			 year;
-	register long   result;
+	long   result;
 #ifdef	notdef
 	long    local;
 	struct timeb    tb;

@@ -54,7 +54,7 @@ char isode_x25_errflag = 0;
 
 void	_asprintf (char*bp, char*what, char* fmt, va_list ap)	/* fmt, args, ... */
 {
-	register int    eindex;
+	int    eindex;
 	eindex = errno;
 
 	*bp = NULL;

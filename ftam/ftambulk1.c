@@ -45,7 +45,7 @@ struct FTAMindication *fti;
 	SBV      smask;
 	int     result,
 			state;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	switch (operation) {
 	case FA_OPS_READ:
@@ -96,7 +96,7 @@ struct FTAMindication *fti;
 
 static int  FReadWriteRequestAux (fsb, state, operation, identity, context,
 								  level, lock, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	state,
 	operation;
 struct FADUidentity *identity;
@@ -111,9 +111,9 @@ struct FTAMindication *fti;
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__READ__request *rd;
-	register struct type_FTAM_F__WRITE__request *wr;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__READ__request *rd;
+	struct type_FTAM_F__WRITE__request *wr;
 
 	if (!(fsb -> fsb_flags & FSB_INIT))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not initiator");
@@ -238,7 +238,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	missingP (fti);
 
@@ -257,7 +257,7 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FTransEndRequestAux (fsb, sharedASE, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 PE	sharedASE;
 struct FTAMindication *fti;
 {
@@ -266,7 +266,7 @@ struct FTAMindication *fti;
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
-	register struct type_FTAM_PDU *pdu;
+	struct type_FTAM_PDU *pdu;
 
 	if (!(fsb -> fsb_flags & FSB_INIT))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not initiator");

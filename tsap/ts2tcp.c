@@ -65,7 +65,7 @@ extern int  errno;
 /*    N-CONNECT.REQUEST */
 
 int 
-tcpopen (register struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async)
+tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async)
 {
 	int     fd;
 #ifdef	FIONBIO
@@ -73,10 +73,10 @@ tcpopen (register struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *r
 #endif
 	struct sockaddr_in  lo_socket,
 			in_socket;
-	register struct sockaddr_in *lsock = &lo_socket,
+	struct sockaddr_in *lsock = &lo_socket,
 										 *isock = &in_socket;
-	register struct hostent *hp;
-	register struct servent *sp;
+	struct hostent *hp;
+	struct servent *sp;
 
 #ifndef	NODELAY
 	if (async)
@@ -261,11 +261,11 @@ done:
 /*    init for read from network */
 
 static int 
-tcpinit (int fd, register struct tsapkt *t)
+tcpinit (int fd, struct tsapkt *t)
 {
-	register int    cc,
+	int    cc,
 			 i;
-	register char  *bp;
+	char  *bp;
 
 	for (bp = (char *) &t -> t_pkthdr, i = TPKT_HDRLEN (t);
 			i > 0;
@@ -305,14 +305,14 @@ tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td)
 /*  */
 
 int 
-tcprestore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
+tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 {
 	int     fd;
-	register char *cp;
+	char *cp;
 	char    domain1[NSAP_DOMAINLEN + 1 + 5 + 1],
 			domain2[NSAP_DOMAINLEN + 1 + 5 + 1];
-	register struct NSAPaddr *na;
-	register struct tsapADDR *ta;
+	struct NSAPaddr *na;
+	struct tsapADDR *ta;
 
 	ta = &tb -> tb_initiating;
 	ta -> ta_present = 1;
@@ -366,7 +366,7 @@ tcprestore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td
 /*  */
 
 int 
-TTService (register struct tsapblk *tb)
+TTService (struct tsapblk *tb)
 {
 	struct tsapkt *t;
 

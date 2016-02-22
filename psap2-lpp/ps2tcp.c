@@ -54,7 +54,7 @@ extern int  errno;
 /*  */
 
 int	tcpopen (pb, calling, called, pi, async)
-register struct psapblk *pb;
+struct psapblk *pb;
 struct NSAPaddr *calling,
 		*called;
 struct PSAPindication *pi;
@@ -66,9 +66,9 @@ int	async;
 #endif
 	struct sockaddr_in  lo_socket,
 			in_socket;
-	register struct sockaddr_in *lsock = &lo_socket,
+	struct sockaddr_in *lsock = &lo_socket,
 										 *isock = &in_socket;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 #ifndef	FIONBIO
 	if (async)
@@ -192,15 +192,15 @@ struct TSAPdisconnect *td;
 
 
 int	tcprestore (pb, buffer, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 char   *buffer;
 struct PSAPindication *pi;
 {
 	int	    fd;
-	register char *cp;
+	char *cp;
 	char    domain1[NSAP_DOMAINLEN + 1 + 5 + 1],
 			domain2[NSAP_DOMAINLEN + 1 + 5 + 1];
-	register struct NSAPaddr *na;
+	struct NSAPaddr *na;
 
 	na = &pb -> pb_initiating;
 	na -> na_stack = NA_TCP;
@@ -240,7 +240,7 @@ struct PSAPindication *pi;
 /* ARGSUSED */
 
 static int  tcpretry (pb, reason, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 int	reason;
 struct PSAPindication *pi;
 {
@@ -301,7 +301,7 @@ done:
 /*  */
 
 static int  tcpready (pb, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 struct PSAPindication *pi;
 {
 	PS	    ps;
@@ -331,7 +331,7 @@ struct PSAPindication *pi;
 
 
 static int  PTservice (pb, fd)
-register struct psapblk *pb;
+struct psapblk *pb;
 int	fd;
 {
 	pb -> pb_fd = fd;

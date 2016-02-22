@@ -33,16 +33,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamchrg.c,v 9.0 1992/
 /*  */
 
 struct type_FTAM_Charging *chrg2fpm (fsb, charging, fti)
-register struct ftamblk *fsb;
-register struct FTAMcharging *charging;
+struct ftamblk *fsb;
+struct FTAMcharging *charging;
 struct FTAMindication *fti;
 {
-	register int    i;
-	register struct fc_charge  *fc;
+	int    i;
+	struct fc_charge  *fc;
 	struct type_FTAM_Charging *fpmp;
-	register struct type_FTAM_Charging  *fpm,
+	struct type_FTAM_Charging  *fpm,
 			**fpc;
-	register struct charge_element *f1;
+	struct charge_element *f1;
 
 	fpmp = NULL, fpc = &fpmp;
 	for (fc = charging -> fc_charges, i = charging -> fc_ncharge - 1;
@@ -91,14 +91,14 @@ out:
 /*  */
 
 int	fpm2chrg (fsb, fpm, charging, fti)
-register struct ftamblk *fsb;
-register struct type_FTAM_Charging *fpm;
-register struct FTAMcharging *charging;
+struct ftamblk *fsb;
+struct type_FTAM_Charging *fpm;
+struct FTAMcharging *charging;
 struct FTAMindication *fti;
 {
-	register int    i;
-	register struct fc_charge *fc;
-	register struct charge_element *f1;
+	int    i;
+	struct fc_charge *fc;
+	struct charge_element *f1;
 
 	bzero ((char *) charging, sizeof *charging);
 

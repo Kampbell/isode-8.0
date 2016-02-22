@@ -506,7 +506,7 @@ isodesetailor (char *file)
 void 
 isodetailor (char *myname, int wantuser)
 {
-	register char *hp,
+	char *hp,
 			 *mp;
 	char   buffer[BUFSIZ];
 	static int  inited = 0;
@@ -541,10 +541,10 @@ isodetailor (char *myname, int wantuser)
 static int 
 tailor_read (char *file)
 {
-	register char  *bp,
+	char  *bp,
 			 *cp;
 	char    buffer[BUFSIZ];
-	register FILE *fp;
+	FILE *fp;
 
 	if (fp = fopen (file, "r")) {
 		while (fgets (buffer, sizeof buffer, fp)) {
@@ -590,7 +590,7 @@ tailor_read (char *file)
 int 
 isodesetvar (char *name, char *value, int dynamic)
 {
-	register struct bind   *b;
+	struct bind   *b;
 
 	for (b = binds; b -> b_key; b++)
 		if (strcmp (b -> b_key, name) == 0) {
@@ -650,15 +650,15 @@ isodexport (char *myname)
 #endif
 
 	{
-		register int  *ip,
+		int  *ip,
 				 *jp,
 				 *kp;
 		int	j;
-		register char *cp,
+		char *cp,
 				 *adrp,
 				 **ap,
 				 **cpp;
-		register struct ts_interim *ts;
+		struct ts_interim *ts;
 		static struct ts_interim *te = NULL;
 		char    buffer[BUFSIZ],
 				*vec[NVEC + NSLACK + 1];
@@ -676,7 +676,7 @@ isodexport (char *myname)
 		(void) str2vec (buffer, ap = vec);
 		j = SUBNET_DYNAMIC;
 		while (cp = *ap++) {
-			register struct ts_interim *tp;
+			struct ts_interim *tp;
 
 			ts -> ts_subnet = 0;
 			if (macro2comm (cp, ts) == NOTOK) {
@@ -922,11 +922,11 @@ isodexport (char *myname)
 
 
 static char *
-tailor_value (register char *s)
+tailor_value (char *s)
 {
-	register int    i,
+	int    i,
 			 r;
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
 
 	for (bp = buffer; *s; bp++, s++)
@@ -986,9 +986,9 @@ static int
 events_value (struct pair *pairs, char *s, char *var)
 {
 	int     value;
-	register char  *cp,
+	char  *cp,
 			 **ap;
-	register struct pair   *pp;
+	struct pair   *pp;
 	char    buffer[BUFSIZ],
 			*vec[NVEC + NSLACK + 1];
 
@@ -1014,7 +1014,7 @@ events_value (struct pair *pairs, char *s, char *var)
 #ifdef DEBUG
 int 
 tailorfree (void) {
-	register struct bind   *b;
+	struct bind   *b;
 
 	for (b = binds; b -> b_key; b++)
 		if (b -> b_dynamic && *b -> b_value) {
@@ -1044,7 +1044,7 @@ tailorfree (void) {
 
 
 int 
-ll_hdfree (register LLog *lp)
+ll_hdfree (LLog *lp)
 {
 	if (lp -> ll_stat & LLOGHDR)
 		free (lp -> ll_hdr);

@@ -41,8 +41,8 @@ static nvmatch ();
 int 
 setenv (const char *name, const char *value, int overwrite)
 {
-	register int    i;
-	register char **ep,
+	int    i;
+	char **ep,
 			 **nep,
 			 *cp;
 
@@ -94,7 +94,7 @@ unsetenv (const char *name)
 /*  */
 
 static 
-nvmatch (register char *s1, register char *s2)
+nvmatch (char *s1, char *s2)
 {
 	while (*s1 == *s2++)
 		if (*s1++ == '=')

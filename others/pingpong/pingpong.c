@@ -102,9 +102,9 @@ start_listener (void) {
 int 
 ping_address (void) {
 	struct TSAPstart tss;
-	register struct TSAPstart *ts = &tss;
+	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	struct TSAPconnect tcs;
 	struct TSAPconnect *tc = &tcs;
 

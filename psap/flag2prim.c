@@ -33,9 +33,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/flag2prim.c,v 9.0 1992
 /*  */
 
 PE 
-flag2prim (register int b, int class, int id)
+flag2prim (int b, int class, int id)
 {
-	register PE	    pe;
+	PE	    pe;
 
 	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
 		return NULLPE;

@@ -39,15 +39,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas3.c,v 9.0 
 /*    handle P-RELEASE.INDICATION */
 
 int 
-AcFINISHser (int sd, register struct PSAPfinish *pf, register struct AcSAPindication *aci)
+AcFINISHser (int sd, struct PSAPfinish *pf, struct AcSAPindication *aci)
 {
 	SBV	    smask;
 	int	    result;
 	PE	    pe;
-	register struct assocblk *acb;
-	register struct AcSAPfinish *acf;
+	struct assocblk *acb;
+	struct AcSAPfinish *acf;
 	struct type_ACS_ACSE__apdu *pdu;
-	register struct type_ACS_RLRQ__apdu *rlrq;
+	struct type_ACS_RLRQ__apdu *rlrq;
 
 	missingP (pf);
 	missingP (aci);

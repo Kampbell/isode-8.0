@@ -42,11 +42,11 @@ AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAP
 	SBV	    smask;
 	int     code,
 			result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	PE	    pe;
 	struct PSAPindication pis;
-	register struct PSAPabort  *pa = &pis.pi_abort;
-	register struct type_ACS_RLRE__apdu *pdu;
+	struct PSAPabort  *pa = &pis.pi_abort;
+	struct type_ACS_RLRE__apdu *pdu;
 
 	switch (status) {
 	case ACS_ACCEPT:
@@ -73,8 +73,8 @@ AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAP
 	}
 	toomuchP (data, ndata, NACDATA, "release");
 	if (data) {	    /* XXX: probably should have a more intensive check... */
-		register int    i;
-		register PE    *pep;
+		int    i;
+		PE    *pep;
 
 		for (pep = data, i = ndata; i > 0; pep++, i--)
 			if ((*pep) -> pe_context == PE_DFLT_CTX)

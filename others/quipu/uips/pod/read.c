@@ -32,7 +32,7 @@ dsEnqError do_read(), read_all(), read_config_types();
 Attr_Sequence sort_attrs(entry_attrs)
 Attr_Sequence entry_attrs;
 {
-	register Attr_Sequence last, next, curr, first, firstn;
+	Attr_Sequence last, next, curr, first, firstn;
 
 	first = curr = entry_attrs;
 	firstn = last = next = 0;
@@ -76,7 +76,7 @@ Attr_Sequence entry_attrs;
 Attr_Sequence get_sorted_attrs(entry_attrs, wanted_attrs)
 Attr_Sequence entry_attrs, wanted_attrs;
 {
-	register Attr_Sequence curr_ent_attr, curr_found,
+	Attr_Sequence curr_ent_attr, curr_found,
 			 curr_wanted, attrs_found, next;
 
 	attrs_found = NULLATTR;
@@ -245,7 +245,7 @@ int
 read_print (int (*func)(void), caddr_t ptr)
 {
 	PS ps;
-	register char *str;
+	char *str;
 
 	if ((ps = ps_alloc(str_open)) == NULLPS) return;
 	if (str_setup(ps, NULLCP, 0, 0) == NOTOK) return;
@@ -318,7 +318,7 @@ void
 rfc2greybook (char *string)
 {
 	char reversed[STRINGLEN];
-	register char *part;
+	char *part;
 
 	reversed[0] = '\0';
 	part = string + strlen(string);

@@ -39,8 +39,8 @@ STypedRequest (int sd, char *data, int cc, struct SSAPindication *si)
 	SBV	    smask;
 	int     result;
 	struct udvec uvs[2];
-	register struct udvec *uv = uvs;
-	register struct ssapblk *sb;
+	struct udvec *uv = uvs;
+	struct ssapblk *sb;
 
 	missingP (data);
 	if (cc <= 0)

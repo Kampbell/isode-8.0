@@ -56,7 +56,7 @@ extern unsigned watchdog_delta;
 *  alerting all the operations requesting it.
 */
 conn_request(cn)
-register        struct connection       * cn;
+       struct connection       * cn;
 {
 	struct DSAPconnect		* dc = &(cn->cn_connect.cc_dc);
 	struct DSAPindication	  di_s;
@@ -167,7 +167,7 @@ register        struct connection       * cn;
 * waiting operations in the process.
 */
 conn_req_aux(cn)
-register        struct connection       * cn;
+       struct connection       * cn;
 {
 
 	switch(cn->cn_connect.cc_dc.dc_result) {

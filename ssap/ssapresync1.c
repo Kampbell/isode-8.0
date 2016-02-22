@@ -57,7 +57,7 @@ SReSyncRequest (int sd, int type, long ssn, int settings, char *data, int cc, st
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	switch (type) {
 	case SYNC_RESTART:
@@ -96,7 +96,7 @@ SReSyncRequest (int sd, int type, long ssn, int settings, char *data, int cc, st
 /*  */
 
 static int 
-SReSyncRequestAux (register struct ssapblk *sb, int type, long ssn, int settings, char *data, int cc, register struct SSAPindication *si)
+SReSyncRequestAux (struct ssapblk *sb, int type, long ssn, int settings, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
 

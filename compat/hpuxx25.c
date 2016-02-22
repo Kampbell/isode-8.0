@@ -178,11 +178,11 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 /*  */
 
 int 
-join_x25_server (register int fd, register struct NSAPaddr *remote)
+join_x25_server (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB sbuf;
 	CONN_DB *sock = &sbuf;
-	register int nfd;
+	int nfd;
 
 	bzero(&sbuf, sizeof(CONN_DB));
 	sbuf.addr.x25_family = AF_CCITT;
@@ -245,7 +245,7 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 int 
 fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp)
 {
-	register int	i, j;
+	int	i, j;
 	int			returncode = OK;
 
 	memset (hp, 0, sizeof (FACILITY_DB));
@@ -307,7 +307,7 @@ fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp)
 void 
 fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt)
 {
-	register int	i;
+	int	i;
 
 	memset (ccitt, 0, sizeof (CCITT_FACILITY_DB));
 	i = 0;

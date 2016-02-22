@@ -81,7 +81,7 @@ struct mailbox * b;
 
 
 static mailbox_print (ps,mail,format)
-register PS ps;
+PS ps;
 struct   mailbox* mail;
 int format;
 {

@@ -48,7 +48,7 @@ static int  doRTSabort ();
 /*    bind underlying service */
 
 int 
-RoRtService (register struct assocblk *acb, struct RoSAPindication *roi)
+RoRtService (struct assocblk *acb, struct RoSAPindication *roi)
 {
 	if (!(acb -> acb_flags & ACB_RTS))
 		return rosaplose (roi, ROS_OPERATION, NULLCP,
@@ -74,10 +74,10 @@ RoRtService (register struct assocblk *acb, struct RoSAPindication *roi)
 /* ARGSUSED */
 
 int 
-ro2rtsasync (register struct assocblk *acb, IFP indication, struct RoSAPindication *roi)
+ro2rtsasync (struct assocblk *acb, IFP indication, struct RoSAPindication *roi)
 {
 	struct RtSAPindication  rtis;
-	register struct RtSAPabort *rta = &rtis.rti_abort;
+	struct RtSAPabort *rta = &rtis.rti_abort;
 
 	if (acb -> acb_rosindication = indication)
 		acb -> acb_flags |= ACB_ASYN;
@@ -108,10 +108,10 @@ ro2rtsasync (register struct assocblk *acb, IFP indication, struct RoSAPindicati
 /* ARGSUSED */
 
 int 
-ro2rtsmask (register struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi)
+ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 {
 	struct RtSAPindication  rtis;
-	register struct RtSAPabort *rta = &rtis.rti_abort;
+	struct RtSAPabort *rta = &rtis.rti_abort;
 
 	if (RtSelectMask (acb -> acb_fd, mask, nfds, &rtis) == NOTOK)
 		switch (rta -> rta_reason) {
@@ -133,11 +133,11 @@ ro2rtsmask (register struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAP
 
 
 int 
-ro2rtswait (register struct assocblk *acb, int *invokeID, int secs, register struct RoSAPindication *roi)
+ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi)
 {
 	int     result;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if (acb -> acb_apdu) {
 		result = acb2osdu (acb, NULLIP, acb -> acb_apdu, roi);
@@ -153,14 +153,14 @@ ro2rtswait (register struct assocblk *acb, int *invokeID, int secs, register str
 
 			roi -> roi_type = ROI_FINISH;
 			{
-				register struct AcSAPfinish  *acf = &roi -> roi_finish;
+				struct AcSAPfinish  *acf = &roi -> roi_finish;
 
 				*acf = acb -> acb_finish;	/* struct copy */
 			}
 		} else {
 			roi -> roi_type = ROI_END;
 			{
-				register struct RoSAPend   *roe = &roi -> roi_end;
+				struct RoSAPend   *roe = &roi -> roi_end;
 
 				bzero ((char *) roe, sizeof *roe);
 			}
@@ -222,11 +222,11 @@ ro2rtswait (register struct assocblk *acb, int *invokeID, int secs, register str
 /* ARGSUSED */
 
 int 
-ro2rtswrite (register struct assocblk *acb, register PE pe, PE fe, int priority, struct RoSAPindication *roi)
+ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi)
 {
 	int	    result;
 	struct RtSAPindication  rtis;
-	register struct RtSAPabort *rta = &rtis.rti_abort;
+	struct RtSAPabort *rta = &rtis.rti_abort;
 
 #ifdef	DEBUG
 	if (rosap_log -> ll_events & LLOG_PDUS)
@@ -257,11 +257,11 @@ ro2rtswrite (register struct assocblk *acb, register PE pe, PE fe, int priority,
 /*  */
 
 static int 
-doRTSturn (register struct assocblk *acb, register struct RtSAPturn *rtu, register struct RoSAPindication *roi)
+doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *roi)
 {
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort *rta = &rti -> rti_abort;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort *rta = &rti -> rti_abort;
 
 	if (rtu -> rtu_please) {
 		if (RtGTurnRequest (acb -> acb_fd, rti) == NOTOK)
@@ -276,7 +276,7 @@ doRTSturn (register struct assocblk *acb, register struct RtSAPturn *rtu, regist
 /* ARGSUSED */
 
 static int 
-doRTSclose (register struct assocblk *acb, struct RtSAPclose *rtc, register struct RoSAPindication *roi)
+doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication *roi)
 {
 	if (acb -> acb_flags & ACB_INIT) {
 		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
@@ -287,7 +287,7 @@ doRTSclose (register struct assocblk *acb, struct RtSAPclose *rtc, register stru
 
 	roi -> roi_type = ROI_END;
 	{
-		register struct RoSAPend   *roe = &roi -> roi_end;
+		struct RoSAPend   *roe = &roi -> roi_end;
 
 		bzero ((char *) roe, sizeof *roe);
 	}
@@ -298,7 +298,7 @@ doRTSclose (register struct assocblk *acb, struct RtSAPclose *rtc, register stru
 /*  */
 
 static int 
-doRTSfinish (register struct assocblk *acb, struct AcSAPfinish *acf, register struct RoSAPindication *roi)
+doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi)
 {
 	if (acb -> acb_flags & ACB_INIT) {
 		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
@@ -317,7 +317,7 @@ doRTSfinish (register struct assocblk *acb, struct AcSAPfinish *acf, register st
 /*  */
 
 static int 
-doRTSabort (register struct assocblk *acb, register struct RtSAPabort *rta, register struct RoSAPindication *roi)
+doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication *roi)
 {
 	if (!rta -> rta_peer) {
 		if (rta -> rta_reason == RTS_TIMER)
@@ -337,13 +337,13 @@ doRTSabort (register struct assocblk *acb, register struct RtSAPabort *rta, regi
 /*  */
 
 static int 
-rtsINDICATIONser (int sd, register struct RtSAPindication *rti)
+rtsINDICATIONser (int sd, struct RtSAPindication *rti)
 {
 	int     result;
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -386,12 +386,12 @@ rtsINDICATIONser (int sd, register struct RtSAPindication *rti)
 /*  */
 
 int 
-ro2rtsready (register struct assocblk *acb, int priority, struct RoSAPindication *roi)
+ro2rtsready (struct assocblk *acb, int priority, struct RoSAPindication *roi)
 {
 	int	    result;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort *rta = &rti -> rti_abort;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort *rta = &rti -> rti_abort;
 
 	if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING))
 		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
@@ -477,7 +477,7 @@ out:
 /*  */
 
 static int 
-rtslose (register struct assocblk *acb, register struct RoSAPindication *roi, char *event, register struct RtSAPabort *rta)
+rtslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct RtSAPabort *rta)
 {
 	int     reason;
 	char   *cp,

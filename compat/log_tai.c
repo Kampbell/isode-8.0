@@ -86,8 +86,8 @@ log_tai ( /* for now only alter the level - files etc later */
     int ac
 )
 {
-	register int i;
-	register char *p;
+	int i;
+	char *p;
 	int	 val;
 
 	for(i = 0; i < ac; i++) {

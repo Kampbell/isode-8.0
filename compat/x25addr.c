@@ -89,7 +89,7 @@ gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context)
 
 	if (x25_dnic_prefix[0] && *x25_dnic_prefix[0]) {
 		/* need DNIC on local calls? */
-		register int    i;
+		int    i;
 
 		if ( strncmp(generic -> na_dte, x25_dnic_prefix[0],
 					 i = strlen(x25_dnic_prefix[0])) == 0 ) {
@@ -147,7 +147,7 @@ gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context)
 	 */
 
 	if ((context == ADDR_LISTEN) && x25_local_dte && *x25_local_dte) {
-		register int    i;
+		int    i;
 
 		if ( strncmp(generic -> na_dte, x25_local_dte,
 					 i = strlen(x25_local_dte)) == 0 ) {
@@ -310,14 +310,14 @@ gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context)
 		iov = &(specific -> ccl_iovec[0]);
 		if (generic -> na_pidlen) {
 			/* listen on a PID */
-			register int i;
+			int i;
 			iov -> iov_base[0] = 'C';
 			bcopy(generic -> na_pid, iov -> iov_base + 1,
 				  i = generic -> na_pidlen);
 			iov -> iov_len = i + 1;
 		} else if (generic -> na_dtelen < 6) {
 			/* listen on a subaddress */
-			register int i;
+			int i;
 			iov -> iov_base[0] = 'S';
 			bcopy(generic -> na_dte, iov -> iov_base + 1,
 				  i = generic -> na_dtelen);
@@ -660,7 +660,7 @@ if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context)
 	if (specific->flags & X25FLG_CALLING_ADDR) {
 		/* Calling X.25 Addr. */
 
-		register int    i;
+		int    i;
 
 		dtelen = strlen(specific->calling_addr);
 		bcopy(specific->calling_addr, dte, dtelen);
@@ -692,7 +692,7 @@ if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context)
 
 
 	if (x25_dnic_prefix[0] && *x25_dnic_prefix[0]) {
-		register int    i;
+		int    i;
 
 		i = 0;
 		if (x25_intl_zero && dte[0] == '0' && dte[1] != '0')

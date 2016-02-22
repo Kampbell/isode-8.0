@@ -49,14 +49,14 @@ AEI
 str2aei_stub (char *designator, char *qualifier)
 {
 #ifdef	LPP
-	register int    n;
+	int    n;
 	int	    tcp_port,
 			udp_port;
-	register struct servent *sp;
+	struct servent *sp;
 #endif
-	register char  *cp;
-	register struct NSAPaddr *na;
-	register struct isoentity  *ie = &ies;
+	char  *cp;
+	struct NSAPaddr *na;
+	struct isoentity  *ie = &ies;
 
 	if (fetch_aet (designator, qualifier, &ies) == NOTOK) {
 #ifdef	LPP
@@ -68,8 +68,8 @@ str2aei_stub (char *designator, char *qualifier)
 	}
 
 	if (ie -> ie_addr.pa_addr.sa_addr.ta_naddr <= 0) {
-		register int	i;
-		register struct TSAPaddr *ta = &ie -> ie_addr.pa_addr.sa_addr;
+		int	i;
+		struct TSAPaddr *ta = &ie -> ie_addr.pa_addr.sa_addr;
 		struct PSAPaddr *pa;
 
 		if ((pa = str2paddr (designator)) != NULLPA) {
@@ -101,7 +101,7 @@ str2aei_stub (char *designator, char *qualifier)
 				if (!isxdigit ((u_char) *cp))
 					break;
 		if (*cp) {
-			register struct hostent *hp = gethostbystring (designator);
+			struct hostent *hp = gethostbystring (designator);
 
 			if (index (cp, '@') || index (cp, '=') || index (cp, ','))
 				return NULLAEI;
@@ -111,7 +111,7 @@ str2aei_stub (char *designator, char *qualifier)
 			if (hp) {
 				struct in_addr h_in_addr;
 #ifdef	h_addr
-				register char **ap;
+				char **ap;
 #endif
 
 				(void) bcopy ((char *) hp -> h_addr, (char *) &h_in_addr,
@@ -167,7 +167,7 @@ str2aei_stub (char *designator, char *qualifier)
 			n > 0;
 			na++, n--)
 		if (na -> na_stack == NA_TCP && na -> na_port == 0) {
-			register struct TSAPaddr *ta;
+			struct TSAPaddr *ta;
 
 			if (tcp_port) {
 				na -> na_port = (u_short) tcp_port;
@@ -176,7 +176,7 @@ str2aei_stub (char *designator, char *qualifier)
 				if (udp_port
 						&& (ta = &ie -> ie_addr.pa_addr.sa_addr) -> ta_naddr
 						< NTADDR) {
-					register struct NSAPaddr *ua =
+					struct NSAPaddr *ua =
 								ta -> ta_addrs + ta -> ta_naddr++;
 
 					bzero ((char *) ua, sizeof *ua);
@@ -210,17 +210,17 @@ static char objent[BUFSIZ];
 
 
 static int 
-lpp_aet (char *designator, char *qualifier, register struct isoentity *ie)
+lpp_aet (char *designator, char *qualifier, struct isoentity *ie)
 {
-	register int    nelem;
+	int    nelem;
 	int	    tcp_port,
 			udp_port;
 	char   *cp;
-	register struct servent *sp;
-	register OID	oid = &ie -> ie_identifier;
-	register struct PSAPaddr *pa = &ie -> ie_addr;
-	register struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
-	register struct NSAPaddr *na;
+	struct servent *sp;
+	OID	oid = &ie -> ie_identifier;
+	struct PSAPaddr *pa = &ie -> ie_addr;
+	struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
+	struct NSAPaddr *na;
 
 	cp = strncmp (qualifier, "isode ", 6) ? qualifier : qualifier + 6;
 	if (sp = getservbyname (cp, "lpp"))
@@ -269,8 +269,8 @@ lpp_aet (char *designator, char *qualifier, register struct isoentity *ie)
 struct PSAPaddr *
 aei2addr_stub (AEI aei)
 {
-	register struct isoentity  *ie = &ies;
-	register struct PSAPaddr   *pa;
+	struct isoentity  *ie = &ies;
+	struct PSAPaddr   *pa;
 
 	if (aei -> aei_ap_title
 			? oid_cmp (&ie -> ie_identifier, prim2oid (aei -> aei_ap_title))

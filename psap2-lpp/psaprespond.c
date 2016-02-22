@@ -46,7 +46,7 @@ char  **vec;
 struct PSAPstart *ps;
 struct PSAPindication *pi;
 {
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	isodetailor (NULLCP, 0);
 
@@ -96,7 +96,7 @@ out:
 /* ARGSUSED */
 
 static int  PInitAux (pb, vec, vecp, ps, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 char  **vec;
 int	vecp;
 struct PSAPstart *ps;
@@ -105,10 +105,10 @@ struct PSAPindication *pi;
 	int	    result;
 	PE	    pe;
 	OID	    oid;
-	register struct PSAPcontext *pp;
+	struct PSAPcontext *pp;
 	struct type_PS_PDUs *pdu;
-	register struct type_PS_ConnectRequest__PDU *cr;
-	register struct TSAPaddr *ta;
+	struct type_PS_ConnectRequest__PDU *cr;
+	struct TSAPaddr *ta;
 
 	if ((pe = ps2pe (pb -> pb_stream)) == NULLPE)
 		return pslose (pi, pb -> pb_stream -> ps_errno);
@@ -241,8 +241,8 @@ struct PSAPindication *pi;
 	int	    result;
 	PE	    pe;
 	PS	    ps;
-	register struct psapblk *pb;
-	register struct type_PS_ConnectResponse__PDU *pdu;
+	struct psapblk *pb;
+	struct type_PS_ConnectResponse__PDU *pdu;
 
 	if ((pb = findpblk (sd)) == NULL || (pb -> pb_flags & PB_CONN))
 		return psaplose (pi, PC_PARAMETER, NULLCP,
@@ -260,8 +260,8 @@ struct PSAPindication *pi;
 						 "bad value for status parameter");
 	}
 	if (ctxlist != NULL) {
-		register int	i;
-		register struct PSAPcontext *pp;
+		int	i;
+		struct PSAPcontext *pp;
 
 		i = ctxlist -> pc_nctx - 1;
 		for (pp = ctxlist -> pc_ctx; i >= 0; i--, pp++) {

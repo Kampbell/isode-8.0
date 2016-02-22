@@ -40,7 +40,7 @@ void ros_log ();
 * generate a D-ERROR.REQUEST and update the task block.
 */
 task_error(task)
-register        struct task_act * task;
+       struct task_act * task;
 {
 	int				  result;
 	struct DSAPindication	  di_s;

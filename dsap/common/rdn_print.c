@@ -45,7 +45,7 @@ RDN  rdn;
 PS   ps;
 int  format;
 {
-	register RDN eptr;
+	RDN eptr;
 
 	if (rdn ==  NULLRDN) {
 		if (format == READOUT)

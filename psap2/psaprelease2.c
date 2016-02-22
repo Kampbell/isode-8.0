@@ -41,9 +41,9 @@ PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication *pi
 			result;
 	char   *base,
 		   *realbase;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	toomuchP (data, ndata, NPDATA, "release");
 	missingP (pi);

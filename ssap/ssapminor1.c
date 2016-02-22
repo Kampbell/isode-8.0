@@ -40,7 +40,7 @@ SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPind
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	switch (type) {
 	case SYNC_CONFIRM:
@@ -69,7 +69,7 @@ SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPind
 /*  */
 
 static int 
-SMinSyncRequestAux (register struct ssapblk *sb, int type, long *ssn, char *data, int cc, register struct SSAPindication *si)
+SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
 

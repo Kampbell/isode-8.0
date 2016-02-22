@@ -31,7 +31,7 @@ copy_string (char *string)
 void 
 friendlify (char *name, char *fname)
 {
-	register char *start, *end;
+	char *start, *end;
 	char save;
 
 	*fname = '\0';

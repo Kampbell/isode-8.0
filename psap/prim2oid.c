@@ -38,13 +38,13 @@ static	OIDentifier oid;
 /*  */
 
 OID	prim2oid (pe)
-register PE	pe;
+PE	pe;
 {
-	register unsigned int i,
+	unsigned int i,
 			 *ip;
-	register PElementData dp,
+	PElementData dp,
 			 ep;
-	register OID	o = &oid;
+	OID	o = &oid;
 
 	if (once_only) {
 		bzero ((char *) o, sizeof *o);

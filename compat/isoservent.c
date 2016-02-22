@@ -74,8 +74,8 @@ struct isoservent *
 getisoservent (void) {
 	int	    mask,
 			vecp;
-	register char  *cp;
-	register struct isoservent *is = &iss;
+	char  *cp;
+	struct isoservent *is = &iss;
 	static char buffer[BUFSIZ + 1],
 		   file[BUFSIZ];
 	static char *vec[NVEC + NSLACK + 1];
@@ -119,10 +119,10 @@ getisoservent (void) {
 
 #ifdef	DEBUG
 int 
-_printsrv (register struct isoservent *is)
+_printsrv (struct isoservent *is)
 {
-	register int    n = is -> is_tail - is -> is_vec - 1;
-	register char **ap = is -> is_vec;
+	int    n = is -> is_tail - is -> is_vec - 1;
+	char **ap = is -> is_vec;
 
 	LLOG (addr_log, LLOG_DEBUG,
 		  ("\tENT: \"%s\" PRV: \"%s\" SEL: %s",

@@ -61,7 +61,7 @@ static int  read_file ();
 char *
 alias2name (char *name)
 {
-	register struct pair *p;
+	struct pair *p;
 
 	if (!inited)
 		read_aliases ();
@@ -78,7 +78,7 @@ alias2name (char *name)
 
 static int 
 read_aliases (void) {
-	register char   *hp;
+	char   *hp;
 	char   buffer[BUFSIZ];
 
 	if (inited)
@@ -100,10 +100,10 @@ read_aliases (void) {
 static int 
 read_file (char *file)
 {
-	register char *cp;
+	char *cp;
 	char   buffer[BUFSIZ + 1],
 		   *vec[NVEC + NSLACK + 1];
-	register FILE *fp;
+	FILE *fp;
 
 	if ((fp = fopen (file, "r")) == NULL)
 		return;
@@ -129,7 +129,7 @@ int
 add_alias (char *name, char *value)
 {
 	int	    i;
-	register struct pair *p;
+	struct pair *p;
 
 	if (!inited)
 		read_aliases ();

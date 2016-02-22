@@ -130,7 +130,7 @@ vname (char *name)
 int 
 vtag (int class, int id)
 {
-	register char *bp;
+	char *bp;
 	static char buffer[BUFSIZ];
 
 	if (didname)
@@ -220,7 +220,7 @@ vwrite (char *s)
 	if (vfp)
 		(*vfnx) (vfp, "%s", s);
 	else {
-		register char   c,
+		char   c,
 				 *cp;
 
 		if (vps)
@@ -239,9 +239,9 @@ vwrite (char *s)
 /*    VSTRING */
 
 int 
-vstring (register PE pe)
+vstring (PE pe)
 {
-	register PE	    p;
+	PE	    p;
 
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
@@ -261,11 +261,11 @@ vstring (register PE pe)
 /*  */
 
 static char *
-oct2str (register char *s, register int len)
+oct2str (char *s, int len)
 {
 	int     ia5ok;
-	register int    k;
-	register char  *bp,
+	int    k;
+	char  *bp,
 			 *cp,
 			 *dp,
 			 *zp;
@@ -362,11 +362,11 @@ char *
 bit2str (PE pe, char *s)
 {
 	int     ia5ok;
-	register int    hit,
+	int    hit,
 			 i,
 			 j,
 			 k;
-	register char  *bp,
+	char  *bp,
 			 *cp,
 			 *zp;
 
@@ -438,14 +438,14 @@ bit2str (PE pe, char *s)
 #endif
 
 int 
-vunknown (register PE pe)
+vunknown (PE pe)
 {
 	int     i;
 #ifdef	notyet	    /* could comment this in, but then all programs need -lm */
 	double  j;
 #endif
 	OID	    oid;
-	register PE	    p;
+	PE	    p;
 
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
@@ -601,7 +601,7 @@ vpopstr (void) {
 /*    VPUSHPP */
 
 int 
-vpushpp (caddr_t pv, IFP pfnx, register PE pe, char *text, int rw)
+vpushpp (caddr_t pv, IFP pfnx, PE pe, char *text, int rw)
 {
 	vfp = (FILE *) pv, vfnx = pfnx;
 
@@ -640,14 +640,14 @@ vpopquipu (void) {
 #undef	pvpdu
 
 pvpdu (lp, ind, mod, pe, text, rw)
-register LLog *lp;
+LLog *lp;
 int	ind;		/* index into tables */
 modtyp	*mod;		/* pointer to tables */
-register PE pe;
+PE pe;
 char   *text;
 int	rw;
 {
-	register char   *bp;
+	char   *bp;
 	char   buffer[BUFSIZ];
 
 	vfp = (FILE *) lp, vfnx = ll_printf;
@@ -700,9 +700,9 @@ newbuf (int i)
 /*  VPDU - support for backwards compatibility */
 
 int 
-_vpdu (register LLog *lp, IFP fnx, register PE pe, char *text, int rw)
+_vpdu (LLog *lp, IFP fnx, PE pe, char *text, int rw)
 {
-	register char   *bp;
+	char   *bp;
 	char   buffer[BUFSIZ];
 
 	vfp = (FILE *) lp, vfnx = ll_printf;

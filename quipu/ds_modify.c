@@ -428,7 +428,7 @@ AttributeType at;
 struct DSError *error;
 DN requestor,dn;
 {
-	register Attr_Sequence as, trail= NULLATTR, real_as;
+	Attr_Sequence as, trail= NULLATTR, real_as;
 
 	DLOG (log_dsap,LLOG_DEBUG,("remove attribute"));
 
@@ -482,8 +482,8 @@ DN requestor,dn;
 
 
 static check_remove_type (rdn,at)
-register RDN rdn;
-register AttributeType at;
+RDN rdn;
+AttributeType at;
 {
 
 	if ( AttrT_cmp (at,at_objectclass) == 0) {
@@ -505,10 +505,10 @@ register AttributeType at;
 }
 
 static check_remove_values (rdn,as)
-register RDN rdn;
-register Attr_Sequence as;
+RDN rdn;
+Attr_Sequence as;
 {
-	register AV_Sequence as_avs;
+	AV_Sequence as_avs;
 
 	/* check that the value trying to remove is not distinguished */
 	for (; rdn!=NULLRDN; rdn=rdn->rdn_next)
@@ -540,8 +540,8 @@ Attr_Sequence rmas;
 struct DSError *error;
 DN requestor,dn;
 {
-	register Attr_Sequence as, realas;
-	register AV_Sequence rmavs,avs,trail = NULLAV;
+	Attr_Sequence as, realas;
+	AV_Sequence rmavs,avs,trail = NULLAV;
 	int i;
 
 	DLOG (log_dsap,LLOG_DEBUG,("remove attribute value"));
@@ -710,7 +710,7 @@ Attr_Sequence newas;
 struct DSError *error;
 DN requestor,dn;
 {
-	register Attr_Sequence as, realas;
+	Attr_Sequence as, realas;
 	AV_Sequence avs;
 	char * dn2edbfile();
 

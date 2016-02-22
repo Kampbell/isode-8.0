@@ -89,7 +89,7 @@ Attr_Sequence  as;
 PS   ps;
 int  format;
 {
-	register Attr_Sequence eptr;
+	Attr_Sequence eptr;
 
 	for(eptr = as; eptr != NULLATTR; eptr=eptr->attr_link)
 		as_comp_print (ps,eptr,format);

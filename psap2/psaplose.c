@@ -47,11 +47,11 @@ int	ppktlose (struct psapblk*pb, ...)
 	result;
 	char   *base;
 	PE	    pe;
-	register struct PSAPindication *pi;
-	register struct PSAPabort *pa;
+	struct PSAPindication *pi;
+	struct PSAPabort *pa;
 	struct SSAPindication   sis;
 	struct type_PS_ARP__PPDU pdus;
-	register struct type_PS_ARP__PPDU *pdu = &pdus;
+	struct type_PS_ARP__PPDU *pdu = &pdus;
 	va_list ap;
 
 	va_start (ap, pb);
@@ -118,7 +118,7 @@ int	ppktlose (struct psapblk*pb, ...)
 /* VARARGS6 */
 
 int 
-ppktlose (register struct psapblk *pb, register struct PSAPindication *pi, int reason, int ppdu, char *what, char *fmt)
+ppktlose (struct psapblk *pb, struct PSAPindication *pi, int reason, int ppdu, char *what, char *fmt)
 {
 	return ppktlose (pb, pi, reason, ppdu, what, fmt);
 }
@@ -159,12 +159,12 @@ psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt)
 static int  _psaplose (struct PSAPindication*pi, int reason, ...) /*  what, fmt, args ... */
 {
 
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
 	va_list	ap;
 
 	va_start (ap, reason);
-	register struct PSAPabort *pa;
+	struct PSAPabort *pa;
 
 	if (pi) {
 		bzero ((char *) pi, sizeof *pi);

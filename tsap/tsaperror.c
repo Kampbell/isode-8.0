@@ -145,9 +145,9 @@ static char *cons_err1[] = {
 /*  */
 
 char *
-TErrString (register int code)
+TErrString (int code)
 {
-	register int    fcode;
+	int    fcode;
 	static char buffer[60];
 
 #ifdef	SUNLINK_7_0

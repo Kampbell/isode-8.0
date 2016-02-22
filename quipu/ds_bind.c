@@ -576,7 +576,7 @@ struct oper_act	* on;
 }
 
 do_ds_unbind (conn)
-register        struct connection       * conn;
+       struct connection       * conn;
 {
 	struct stat st;
 #ifndef NO_STATS
@@ -676,8 +676,8 @@ DN dn;
 static check_dn_length (dn)
 DN dn;
 {
-	register int i = 0;
-	register DN tmp;
+	int i = 0;
+	DN tmp;
 
 	for (tmp = dn; tmp != NULLDN ; tmp=tmp->dn_parent)
 		i++;

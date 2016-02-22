@@ -51,10 +51,10 @@ char qctx;	/* If TRUE - it is a Quipu context association */
 DN node;
 {
 	Attr_Sequence result = NULLATTR;
-	register Attr_Sequence trail;
-	register Attr_Sequence temp;
+	Attr_Sequence trail;
+	Attr_Sequence temp;
 	Attr_Sequence temp2;
-	register Attr_Sequence eptr;
+	Attr_Sequence eptr;
 
 	DLOG (log_dsap,LLOG_TRACE,("eis_select"));
 
@@ -184,10 +184,10 @@ DN dn;
 DN node;
 {
 	Attr_Sequence result = NULLATTR;
-	register Attr_Sequence trail;
-	register Attr_Sequence temp;
+	Attr_Sequence trail;
+	Attr_Sequence temp;
 	Attr_Sequence temp2;
-	register Attr_Sequence eptr;
+	Attr_Sequence eptr;
 
 	DLOG (log_dsap,LLOG_TRACE,("attr_eis_select"));
 
@@ -250,10 +250,10 @@ char qctx;	/* If TRUE - it is a Quipu context association */
 DN node;
 {
 	Attr_Sequence result = NULLATTR;
-	register Attr_Sequence trail;
-	register Attr_Sequence temp;
+	Attr_Sequence trail;
+	Attr_Sequence temp;
 	Attr_Sequence temp2;
-	register Attr_Sequence eptr;
+	Attr_Sequence eptr;
 	extern AttributeType at_acl;
 
 	DLOG (log_dsap,LLOG_TRACE,("dsa_eis_select"));
@@ -336,8 +336,8 @@ EntryInfoSelection eis;
 Entry entryptr;
 DN dn;
 {
-	register Attr_Sequence temp;
-	register Attr_Sequence as;
+	Attr_Sequence temp;
+	Attr_Sequence as;
 	DN node;
 
 	DLOG (log_dsap,LLOG_TRACE,("eis_check"));

@@ -774,7 +774,7 @@ YP      yp;
 int control_act (act)
 Action act;
 {
-	register char *p;
+	char *p;
 
 	for (p = act -> a_data; *p; p++)
 		if (!isspace (*p) && *p == '0')

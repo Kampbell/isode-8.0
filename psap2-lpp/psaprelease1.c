@@ -48,7 +48,7 @@ struct PSAPindication *pi;
 {
 	SBV	    smask;
 	int	    result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	if (data == NULL || ndata <= 0 || data[0] == NULLPE || ndata > NPDATA_PS)
 		return psaplose (pi, PC_PARAMETER, NULLCP, "bad release user data");
@@ -78,7 +78,7 @@ struct PSAPindication *pi;
 /*  */
 
 static int  PRelRequestAux (pb, data, pr, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 PE	data;
 struct PSAPrelease *pr;
 struct PSAPindication *pi;
@@ -87,7 +87,7 @@ struct PSAPindication *pi;
 	PE	    pe;
 	PS	    ps;
 	struct type_PS_PDUs *pdu;
-	register struct type_PS_ReleaseRequest__PDU *rr;
+	struct type_PS_ReleaseRequest__PDU *rr;
 
 	pdu = NULL;
 	if ((rr = (struct type_PS_ReleaseRequest__PDU *) malloc (sizeof *rr))
@@ -173,7 +173,7 @@ again:
 
 	switch (pdu -> offset) {
 	case type_PS_PDUs_releaseResponse: {
-		register struct type_PS_ReleaseResponse__PDU *rp =
+		struct type_PS_ReleaseResponse__PDU *rp =
 					pdu -> un.releaseResponse;
 
 		if (pb -> pb_reliability == LOW_QUALITY
@@ -199,8 +199,8 @@ bad_ref:
 	break;
 
 	case type_PS_PDUs_abort: {
-		register struct PSAPabort *pa = &pi -> pi_abort;
-		register struct type_PS_Abort__PDU *ab = pdu -> un.abort;
+		struct PSAPabort *pa = &pi -> pi_abort;
+		struct type_PS_Abort__PDU *ab = pdu -> un.abort;
 
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, ab -> reference))

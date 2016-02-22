@@ -75,13 +75,13 @@ main (int argc, char **argv)
 {
 	int initiate ();
 	char buf[BUFSIZ];
-	register struct dispatch   *ds;
+	struct dispatch   *ds;
 	AEI	    aei;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect  *td = &tds;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 	char *myname;
 
 	host = getlocalhost ();
@@ -109,7 +109,7 @@ main (int argc, char **argv)
 		adios (NULLCP, "%s-%s: unknown application-entity",
 			   host, myservice);
 
-	/*--- register operation to serve ---*/
+	/*--- operation to serve ---*/
 	advise (LLOG_EXCEPTIONS, NULLCP, "doing");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		if (RyDispatch (NOTOK, table_RFA_Operations, ds -> ds_operation,

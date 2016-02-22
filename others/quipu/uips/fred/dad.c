@@ -96,7 +96,7 @@ main (int argc, char **argv, char **envp)
 			sd;
 	fd_set  sfds;
 	struct sockaddr_in in_socket;
-	register struct sockaddr_in *isock = &in_socket;
+	struct sockaddr_in *isock = &in_socket;
 
 	arginit (argv);
 	envinit ();
@@ -257,7 +257,7 @@ dadser (int fd, struct sockaddr_in *isock)
 	for (;;) {
 		int	eof,
 			n;
-		register char   *cp,
+		char   *cp,
 				 *ep;
 		fd_set	ifds;
 
@@ -503,7 +503,7 @@ fork_again:
 
 static 
 rcfile (void) {
-	register char   *bp;
+	char   *bp;
 	char    buffer[BUFSIZ],
 			command[BUFSIZ],
 			*vec[NVEC + 1];
@@ -627,9 +627,9 @@ static void
 arginit (char **vec)
 {
 	int	    port;
-	register char  *ap;
-	register struct sockaddr_in *lsock = &lo_socket;
-	register struct servent *sp;
+	char  *ap;
+	struct sockaddr_in *lsock = &lo_socket;
+	struct servent *sp;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -672,7 +672,7 @@ arginit (char **vec)
 	}
 
 	{
-		register struct passwd *pw = getpwnam ("fred");
+		struct passwd *pw = getpwnam ("fred");
 
 		if (pw && pw -> pw_uid)
 			uid = pw -> pw_uid, gid = pw -> pw_gid;

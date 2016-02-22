@@ -51,10 +51,10 @@ int		size;		/* size of buf[] or malloc()ed memory */
 	struct stat	stat1, stat2;	/* info from stat() */
 	struct stat	*d = &stat1;	/* -> info about "." */
 	struct stat	*dd = &stat2;	/* -> info about ".." */
-	register char	*buffer;	/* local copy of buf, or malloc()ed */
+	char	*buffer;	/* local copy of buf, or malloc()ed */
 	char		*bufend;	/* -> buffer[size] */
-	register char	*endp;		/* -> end of reversed string */
-	register char	*dname;		/* entry name ("" for root) */
+	char	*endp;		/* -> end of reversed string */
+	char	*dname;		/* entry name ("" for root) */
 	int		serrno = errno;	/* save entry errno */
 
 	if ( size == 0 ) {
@@ -81,7 +81,7 @@ int		size;		/* size of buf[] or malloc()ed memory */
 
 		/* swap stat() info buffers */
 		{
-			register struct stat	*temp = d;
+			struct stat	*temp = d;
 
 			d = dd;			/* new current dir is old parent dir */
 			dd = temp;
@@ -145,7 +145,7 @@ append:
 			*endp++ = '/';
 
 		{
-			register char	*app;	/* traverses dname string */
+			char	*app;	/* traverses dname string */
 
 			for ( app = dname; *app != '\0'; ++app )
 				;
@@ -163,7 +163,7 @@ append:
 		(void)closedir( dirp );
 
 		if ( dname[0] == '\0' ) {	/* reached root; wrap it up */
-			register char	*startp;	/* -> buffer[.] */
+			char	*startp;	/* -> buffer[.] */
 
 			*endp = '\0';	/* plant null terminator */
 

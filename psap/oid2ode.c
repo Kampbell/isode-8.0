@@ -38,7 +38,7 @@ OID	identifier;
 int	quoted;
 {
 	int	    events;
-	register struct isobject *io;
+	struct isobject *io;
 	static char buffer[BUFSIZ];
 
 	events = addr_log -> ll_events;

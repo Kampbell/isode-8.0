@@ -67,7 +67,7 @@ struct TSAPdisconnect *td;
 {
 	int	    sd;
 	struct TSAPstart tss;
-	register struct TSAPstart  *ts = &tss;
+	struct TSAPstart  *ts = &tss;
 
 	if (TInit (*vecp, vec, ts, td) == NOTOK)
 		return NOTOK;

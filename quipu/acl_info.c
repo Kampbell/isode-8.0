@@ -32,12 +32,12 @@ extern AV_Sequence super_user;
 extern LLog * log_dsap;
 
 check_acl (who,mode,acl,node)
-register DN     who;
-register int    mode;
+DN     who;
+int    mode;
 struct acl_info *acl;
 DN     node;
 {
-	register struct acl_info *ptr;
+	struct acl_info *ptr;
 	AV_Sequence avs;
 
 	for (ptr=acl; ptr!= NULLACL_INFO; ptr=ptr->acl_next) {
@@ -97,7 +97,7 @@ DN     node;
 manager (dn)
 DN dn;
 {
-	register AV_Sequence avs;
+	AV_Sequence avs;
 
 	for (avs=super_user; avs != NULLAV;  avs=avs->avseq_next)
 		if ( dn_cmp (dn,(DN) avs->avseq_av.av_struct) == OK)

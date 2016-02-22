@@ -54,14 +54,14 @@ susaplose (struct SSAPindication *si, int reason, char *what, char *fmt)
 #ifndef	lint
 static int 
 _susaplose (	/* what, fmt, args ... */
-    register struct SSAPindication *si,
+    struct SSAPindication *si,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct SSAPabort *sa;
+	struct SSAPabort *sa;
 
 	if (si) {
 		bzero ((char *) si, sizeof *si);
@@ -84,7 +84,7 @@ _susaplose (	/* what, fmt, args ... */
 /*  */
 
 int 
-ts2suslose (register struct SSAPindication *si, char *event, register struct TSAPdisconnect *td)
+ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td)
 {
 	int     reason;
 	char   *cp,

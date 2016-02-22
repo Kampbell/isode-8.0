@@ -33,20 +33,20 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/obj2prim.c,v 9.0 1992/
 /*  */
 
 PE	obj2prim (o, class, id)
-register OID	o;
+OID	o;
 PElementClass	class;
 PElementID	id;
 {
-	register int    i,
+	int    i,
 			 m,
 			 n,
 			 *mp,
 			 *np;
-	register unsigned int j,
+	unsigned int j,
 			 *ip;
-	register PElementData dp,
+	PElementData dp,
 			 ep;
-	register PE	    pe;
+	PE	    pe;
 
 	if (o == NULLOID
 			|| o -> oid_nelem <= 1

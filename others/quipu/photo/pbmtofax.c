@@ -63,10 +63,10 @@ main (int argc, char **argv, char **envp)
 {
 	int     bitcount;
 	bit    *bitrow;
-	register bit *bP;
+	bit *bP;
 	unsigned char *byteP;
-	register int i;
-	register int j;
+	int i;
+	int j;
 	int	    cols,
 			format,
 			rows,

@@ -82,8 +82,8 @@ defineoid (name, oid)
 char	*name;
 OID	oid;
 {
-	register char	*p;
-	register OP		op;
+	char	*p;
+	OP		op;
 
 	if (oid == NULLOID) {
 		myyerror ("Warning Null oid in defineoid");

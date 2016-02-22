@@ -41,9 +41,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isohost.c,v 9.0 1992
 /*  */
 
 char   *getlocalhost () {
-	register char   *cp;
+	char   *cp;
 #ifdef	TCP
-	register struct hostent *hp;
+	struct hostent *hp;
 #endif
 #ifdef	SYS5
 	struct utsname uts;

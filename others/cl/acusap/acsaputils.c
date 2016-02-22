@@ -67,11 +67,11 @@ struct AcSAPindication *aci;
 PE     *data;
 int	ndata;
 {
-	register PE	    pe;
+	PE	    pe;
 	struct type_ACS_Association__information *info;
-	register struct type_ACS_Association__information **pp,
+	struct type_ACS_Association__information **pp,
 			*p;
-	register struct type_UNIV_EXTERNAL *q;
+	struct type_UNIV_EXTERNAL *q;
 
 	for (pp = &info; ndata-- > 0; pp = &p -> next) {
 		if ((*pp = p = (struct type_ACS_Association__information *)
@@ -111,9 +111,9 @@ struct type_ACS_Association__information *info;
 PE     *data;
 int    *ndata;
 {
-	register int    i;
-	register PE	    pe;
-	register struct type_UNIV_EXTERNAL *q;
+	int    i;
+	PE	    pe;
+	struct type_UNIV_EXTERNAL *q;
 
 	for (i = 0; info; info = info -> next, i++) {
 		if (i > NACDATA)
@@ -175,7 +175,7 @@ int	rw;
 struct assocblk *
 newacublk (void) {
 	/*---------------------------------------------------------------------------*/
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	acb = (struct assocblk   *) calloc (1, sizeof *acb);
 	if (acb == NULL)
@@ -197,10 +197,10 @@ newacublk (void) {
 struct assocblk *
 findacublk (
 /*---------------------------------------------------------------------------*/
-    register int sd
+    int sd
 )
 {
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	if (once_only == 0 || sd == NOTOK)
 		return NULL;
@@ -217,7 +217,7 @@ findacublk (
 int 
 freeacublk (
 /*---------------------------------------------------------------------------*/
-    register struct assocblk *acb
+    struct assocblk *acb
 )
 {
 	if (acb == NULL) return;
@@ -251,10 +251,10 @@ freeacublk (
 int 
 ps2aculose (
 /*---------------------------------------------------------------------------*/
-    register struct assocblk *acb,
-    register struct AcSAPindication *aci,
+    struct assocblk *acb,
+    struct AcSAPindication *aci,
     char *event,
-    register struct PSAPabort *pa
+    struct PSAPabort *pa
 )
 {
 	int     reason;
@@ -344,14 +344,14 @@ acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
 static int 
 _acusaplose (  /* what, fmt, args ... */
 /*---------------------------------------------------------------------------*/
-    register struct AcSAPindication *aci,
+    struct AcSAPindication *aci,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct AcSAPabort *aca;
+	struct AcSAPabort *aca;
 
 	if (aci) {
 		bzero ((char *) aci, sizeof *aci);
@@ -413,7 +413,7 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 char *
 AcuErrString (
 /*---------------------------------------------------------------------------*/
-    register int code
+    int code
 )
 {
 	static char buffer[BUFSIZ];

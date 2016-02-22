@@ -42,7 +42,7 @@ struct opsblk  *newopblk (sd, id)
 int	sd,
 	id;
 {
-	register struct opsblk *opb;
+	struct opsblk *opb;
 
 	opb = (struct opsblk   *) calloc (1, sizeof *opb);
 	if (opb == NULL)
@@ -66,7 +66,7 @@ int	sd,
 /*  */
 
 freeopblk (opb)
-register struct opsblk *opb;
+struct opsblk *opb;
 {
 	if (opb == NULL)
 		return;
@@ -92,11 +92,11 @@ register struct opsblk *opb;
 /*  */
 
 struct opsblk   *findopblk (sd, id, flags)
-register int	sd,
+int	sd,
 			id,
 			flags;
 {
-	register struct opsblk *opb;
+	struct opsblk *opb;
 
 	if (once_only == 0)
 		return NULL;
@@ -114,9 +114,9 @@ register int	sd,
 /*  */
 
 struct opsblk   *firstopblk (sd)
-register int	sd;
+int	sd;
 {
-	register struct opsblk *opb,
+	struct opsblk *opb,
 			*op2;
 
 	if (once_only == 0)
@@ -137,10 +137,10 @@ register int	sd;
 /*  */
 
 loseopblk (sd, reason)
-register int	sd;
+int	sd;
 int	reason;
 {
-	register struct opsblk *opb,
+	struct opsblk *opb,
 			*op2;
 	struct RoSAPindication  rois;
 

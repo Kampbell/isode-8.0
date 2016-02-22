@@ -388,7 +388,7 @@ vtd(f, p) {
 
 	for (;;) {
 		fd_set    ibits, obits;
-		register int c;
+		int c;
 
 		FD_ZERO (&ibits);
 		FD_ZERO (&obits);
@@ -506,7 +506,7 @@ interrupt() {
 }
 
 netflush() {
-	register char *cp;
+	char *cp;
 	int n;
 	int i, j;
 	int nl_flag;	/*Records if Newline is included in current PDU to
@@ -658,7 +658,7 @@ char	utmp[] = "/etc/utmp";
 long	lseek ();
 
 rmut() {
-	register f;
+	f;
 	int found = 0;
 
 	f = open(utmp, 2);

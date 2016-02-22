@@ -34,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_cpy.c,v 9
 #endif
 
 AttributeType AttrT_cpy (x)
-register AttributeType x;
+AttributeType x;
 {
 	return x;
 }

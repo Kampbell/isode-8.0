@@ -169,7 +169,7 @@ int len;
 {
 	int res;
 #ifdef	SOCKETS
-	register char *cp,
+	char *cp,
 			 *ep;
 #endif
 
@@ -221,7 +221,7 @@ int    *len;
 			i,
 			j,
 			res;
-	register char   *cp,
+	char   *cp,
 			 *dp,
 			 *ep;
 	char    buffer[BUFSIZ];
@@ -341,7 +341,7 @@ struct sockaddr_in *isock;
 	char buffer [BUFSIZ];
 	int     portno;
 	char   *dp;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	if ((ptr = getenv ("DISHPROC")) == NULLCP) {
 #ifdef	notanymore

@@ -117,7 +117,7 @@ PE *pe;
 	Filter_Substrings	*subs_temp;
 
 	PE	p91_z = NULLPE;
-	register PE *p91 = &p91_z;
+	PE *p91 = &p91_z;
 
 	if (((*pe) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SEQ)) == NULLPE) {
 		advise (NULLCP, "substrings: %s", PEPY_ERR_NOMEM);
@@ -152,7 +152,7 @@ PE *pe;
 		/* strings */
 		PE	p92 = NULLPE;
 		PE	p93_z = NULLPE;
-		register PE *p93 = &p93_z;
+		PE *p93 = &p93_z;
 
 		if (((*p91) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SEQ)) == NULLPE) {
 			advise (NULLCP, "strings: %s", PEPY_ERR_NOMEM);
@@ -182,7 +182,7 @@ PE *pe;
 					{
 						/* initial TAG PUSHDOWN */
 						PE p95_z;
-						register PE *p95 = &p95_z;
+						PE *p95 = &p95_z;
 
 						if ((*p95 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 0)) == NULLPE) {
 							advise (NULLCP, "initial: %s", PEPY_ERR_NOMEM);
@@ -209,7 +209,7 @@ PE *pe;
 					{
 						/* any TAG PUSHDOWN */
 						PE p96_z;
-						register PE *p96 = &p96_z;
+						PE *p96 = &p96_z;
 
 						if ((*p96 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 1)) == NULLPE) {
 							advise (NULLCP, "any: %s", PEPY_ERR_NOMEM);
@@ -228,7 +228,7 @@ PE *pe;
 					{
 						/* final TAG PUSHDOWN */
 						PE p97_z;
-						register PE *p97 = &p97_z;
+						PE *p97 = &p97_z;
 
 						if ((*p97 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 2)) == NULLPE) {
 							advise (NULLCP, "final: %s", PEPY_ERR_NOMEM);
@@ -264,7 +264,7 @@ PE *pe;
 	/*
 	 *	{	/* substrings TAG PUSHDOWN */
 	/*	    PE p98_z;
-	 *	    register PE *p98 = &p98_z;
+	 *	    PE *p98 = &p98_z;
 	 *
 	 *	    if ((*p98 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 1)) == NULLPE) {
 	 *		advise (NULLCP, "substrings: %s", PEPY_ERR_NOMEM);
@@ -360,14 +360,14 @@ PE pe;
 	Filter_Substrings	*subs_next;
 	struct filter_item *parm;
 
-	register PE p113 = pe;
+	PE p113 = pe;
 
 	parm = *pparm;
 
 #ifdef NOTANYMORE
 	{
 		/* substrings TAG PULLUP */
-		register PE p114;
+		PE p114;
 
 		if ((p114 = prim2set (p113)) == NULLPE) {
 			advise (NULLCP, "substrings %ssubstrings: %s", PEPY_ERR_BAD,
@@ -385,7 +385,7 @@ PE pe;
 #endif
 
 	{
-		register PE p115;
+		PE p115;
 
 
 		if (p113 -> pe_class != PE_CLASS_UNIV
@@ -415,7 +415,7 @@ PE pe;
 		p113 = p115;
 
 		{
-			register PE p116;
+			PE p116;
 
 			if ((p116 = first_member (p113)) != NULLPE) {
 				p115 = p116;
@@ -437,14 +437,14 @@ PE pe;
 		}
 
 		{
-			register PE p117;
+			PE p117;
 
 			if ((p117 = (p113 != p115 ? next_member (p113, p115) : first_member (p113))) != NULLPE) {
 				p115 = p117;
 
 				{
 					/* strings */
-					register PE p118;
+					PE p118;
 
 #ifdef DEBUG
 					(void) testdebug (p117, "strings");
@@ -475,11 +475,11 @@ PE pe;
 
 							switch (PE_ID (p118 -> pe_class, p118 -> pe_id)) {
 							case PE_ID (PE_CLASS_CONT, 0): {	/* initial */
-								register PE p119 = p118;
+								PE p119 = p118;
 
 								{
 									/* initial TAG PULLUP */
-									register PE p120;
+									PE p120;
 
 									if ((p120 = prim2set (p119)) == NULLPE) {
 										advise (NULLCP, "initial %sinitial: %s", PEPY_ERR_BAD,
@@ -519,11 +519,11 @@ PE pe;
 							}
 							break;
 							case PE_ID (PE_CLASS_CONT, 1): {	/* any */
-								register PE p121 = p118;
+								PE p121 = p118;
 
 								{
 									/* any TAG PULLUP */
-									register PE p122;
+									PE p122;
 
 									if ((p122 = prim2set (p121)) == NULLPE) {
 										advise (NULLCP, "any %sany: %s", PEPY_ERR_BAD,
@@ -562,11 +562,11 @@ PE pe;
 							}
 							break;
 							case PE_ID (PE_CLASS_CONT, 2): {	/* final */
-								register PE p123 = p118;
+								PE p123 = p118;
 
 								{
 									/* final TAG PULLUP */
-									register PE p124;
+									PE p124;
 
 									if ((p124 = prim2set (p123)) == NULLPE) {
 										advise (NULLCP, "final %sfinal: %s", PEPY_ERR_BAD,
@@ -698,7 +698,7 @@ PE * pe;
 	int	do_once;
 
 	PE	p23_z = NULLPE;
-	register PE *p23 = &p23_z;
+	PE *p23 = &p23_z;
 
 	if (((*pe) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET)) == NULLPE) {
 		advise (NULLCP, "TreeStructureSyntax: %s", PEPY_ERR_NOMEM);
@@ -720,7 +720,7 @@ PE * pe;
 	{
 		PE	p24 = NULLPE;
 		PE	p25_z = NULLPE;
-		register PE *p25 = &p25_z;
+		PE *p25 = &p25_z;
 
 		if (((*p23) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET)) == NULLPE) {
 			advise (NULLCP, "mandatoryObjectClasses: %s", PEPY_ERR_NOMEM);
@@ -733,7 +733,7 @@ PE * pe;
 
 			}
 			{
-				register OID p26;
+				OID p26;
 
 				p26 = oid_tmp;
 				if (p26 == NULLOID) {
@@ -761,7 +761,7 @@ PE * pe;
 		{
 			/* mandatoryObjectClasses TAG PUSHDOWN */
 			PE p27_z;
-			register PE *p27 = &p27_z;
+			PE *p27 = &p27_z;
 
 			if ((*p27 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 1)) == NULLPE) {
 				advise (NULLCP, "mandatoryObjectClasses: %s", PEPY_ERR_NOMEM);
@@ -800,7 +800,7 @@ PE * pe;
 		{
 			/* permittedRDNs TAG PUSHDOWN */
 			PE p30_z;
-			register PE *p30 = &p30_z;
+			PE *p30 = &p30_z;
 
 			if ((*p30 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 3)) == NULLPE) {
 				advise (NULLCP, "permittedRDNs: %s", PEPY_ERR_NOMEM);
@@ -895,7 +895,7 @@ PE pe;
 	char explicit = 0;
 
 	int p34_count = 0;
-	register PE p34;
+	PE p34;
 
 #ifdef DEBUG
 	(void) testdebug (pe, "Quipu.TreeStructureSyntax");
@@ -927,11 +927,11 @@ PE pe;
 	pe = p34;
 
 	if (p34 = set_find (pe, PE_CLASS_CONT, 1)) {
-		register PE p35 = p34;
+		PE p35 = p34;
 
 		{
 			/* mandatoryObjectClasses TAG PULLUP */
-			register PE p36;
+			PE p36;
 
 			if ((p36 = prim2set (p35)) == NULLPE) {
 				advise (NULLCP, "mandatoryObjectClasses %smandatoryObjectClasses: %s", PEPY_ERR_BAD,
@@ -946,7 +946,7 @@ PE pe;
 			p35 = first_member (p36);
 		}
 		{
-			register PE p37;
+			PE p37;
 
 #ifdef DEBUG
 			(void) testdebug (p35, "mandatoryObjectClasses");
@@ -968,7 +968,7 @@ PE pe;
 			p35 = p37;
 
 			for (p37 = first_member (p35); p37; p37 = next_member (p35, p37)) {
-				register OID p38;
+				OID p38;
 
 #ifdef DEBUG
 				(void) testdebug (p37, "member");
@@ -1013,11 +1013,11 @@ PE pe;
 	}
 
 	if (p34 = set_find (pe, PE_CLASS_CONT, 2)) {
-		register PE p39 = p34;
+		PE p39 = p34;
 
 		{
 			/* optionalObjectClasses TAG PULLUP */
-			register PE p40;
+			PE p40;
 
 			if ((p40 = prim2set (p39)) == NULLPE) {
 				advise (NULLCP, "optionalObjectClasses %soptionalObjectClasses: %s", PEPY_ERR_BAD,
@@ -1032,7 +1032,7 @@ PE pe;
 			p39 = first_member (p40);
 		}
 		{
-			register PE p41;
+			PE p41;
 
 #ifdef DEBUG
 			(void) testdebug (p39, "optionalObjectClasses");
@@ -1076,11 +1076,11 @@ PE pe;
 		p34_count ++;
 	}
 	if (p34 = set_find (pe, PE_CLASS_CONT, 3)) {
-		register PE p42 = p34;
+		PE p42 = p34;
 
 		{
 			/* permittedRDNs TAG PULLUP */
-			register PE p43;
+			PE p43;
 
 			if ((p43 = prim2set (p42)) == NULLPE) {
 				advise (NULLCP, "permittedRDNs %spermittedRDNs: %s", PEPY_ERR_BAD,
@@ -1095,7 +1095,7 @@ PE pe;
 			p42 = first_member (p43);
 		}
 		{
-			register PE p44;
+			PE p44;
 
 #ifdef DEBUG
 			(void) testdebug (p42, "permittedRDNs");
@@ -1117,7 +1117,7 @@ PE pe;
 			p42 = p44;
 
 			for (p44 = first_member (p42); p44; p44 = next_member (p42, p44)) {
-				register PE p45;
+				PE p45;
 
 #ifdef DEBUG
 				(void) testdebug (p44, "member");
@@ -1167,7 +1167,7 @@ PE *pe;
 	struct entry *ent_tmp;
 	PE  p31 = NULLPE;
 	PE  p32_z = NULLPE;
-	register PE *p32 = &p32_z;
+	PE *p32 = &p32_z;
 
 	if (parm->gr_encoded) {
 		*pe = parm->gr_pe;
@@ -1204,7 +1204,7 @@ PE pe;
 	Avlnode **tree;
 	struct entry *tmp;
 	int	entry_cmp();
-	register PE p46;
+	PE p46;
 
 	if (pe -> pe_class != PE_CLASS_UNIV
 			|| pe -> pe_form != PE_FORM_CONS

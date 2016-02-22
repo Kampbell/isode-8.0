@@ -70,9 +70,9 @@ endisobject (void) {
 
 struct isobject *
 getisobject (void) {
-	register int i;
-	register struct isobject *io = &ios;
-	register char  *cp;
+	int i;
+	struct isobject *io = &ios;
+	char  *cp;
 	static char buffer[BUFSIZ + 1];
 	static char *vec[NVEC + NSLACK + 1];
 	static unsigned int elements[NELEM + 1];

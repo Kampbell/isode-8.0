@@ -270,11 +270,11 @@ CommonArgs     *ca;
 }
 
 shuffle_up (argc, argv, start)
-register int    argc;
+int    argc;
 char          **argv;
-register int    start;
+int    start;
 {
-	register int    x;
+	int    x;
 
 	for (x = start; x < argc; x++)
 		if (x == argc - 1)	/* if it is the last one, then stick
@@ -331,7 +331,7 @@ add_sequence (adn)
 DN adn;
 {
 	struct dua_seq_entry * ptr;
-	register int x=1;
+	int x=1;
 
 	if (current_sequence == NULL_DS)
 		return (0);
@@ -356,7 +356,7 @@ DN sequence_dn(y)
 int y;
 {
 	struct dua_seq_entry * ptr;
-	register int x = 1;
+	int x = 1;
 
 	if (current_sequence == NULL_DS)
 		return (NULLDN);
@@ -381,7 +381,7 @@ char * str;
 char	ufn;
 {
 	struct dua_seq_entry * ptr;
-	register int x = 1;
+	int x = 1;
 
 	if (str != NULLCP)
 		set_sequence (str);

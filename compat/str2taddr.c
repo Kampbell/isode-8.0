@@ -37,7 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2taddr.c,v 9.0 19
 struct TSAPaddr *
 str2taddr (char *str)
 {
-	register struct PSAPaddr *pa;
+	struct PSAPaddr *pa;
 
 	if (pa = str2paddr (str))
 		return (&pa -> pa_addr.sa_addr);

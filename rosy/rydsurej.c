@@ -57,7 +57,7 @@ int	id,
 struct RoSAPindication *roi;
 {
 	int     result;
-	register struct opsblk *opb;
+	struct opsblk *opb;
 
 	missingP (roi);
 

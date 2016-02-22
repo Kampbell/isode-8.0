@@ -41,9 +41,9 @@ stringCell *sequence;
  *
  */
 stringCell copy_string_seq(sequence)
-register stringCell sequence;
+stringCell sequence;
 {
-	register stringCell curr;
+	stringCell curr;
 	stringCell head;
 
 	if (sequence == NULLStrCell)
@@ -107,7 +107,7 @@ stringCell *sequence;
 void free_string_seq(sequence)
 stringCell *sequence;
 {
-	register stringCell next_cell, curr_cell = *sequence;
+	stringCell next_cell, curr_cell = *sequence;
 
 	while (curr_cell != NULLStrCell) {
 		free(curr_cell->string);

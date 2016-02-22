@@ -54,12 +54,12 @@ tusaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt)
 #ifndef	lint
 static int 
 _tusaplose (	/* what, fmt, args ... */
-    register struct TSAPdisconnect *td,
+    struct TSAPdisconnect *td,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
 
 	if (td) {

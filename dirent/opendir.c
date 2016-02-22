@@ -38,8 +38,8 @@ DIR *
 opendir( dirname )
 char		*dirname;	/* name of directory */
 {
-	register DIR	*dirp;		/* -> malloc'ed storage */
-	register int	fd;		/* file descriptor for read */
+	DIR	*dirp;		/* -> malloc'ed storage */
+	int	fd;		/* file descriptor for read */
 	struct stat	sbuf;		/* result of fstat() */
 
 	if ( (fd = open( dirname, O_RDONLY )) < 0 )
@@ -54,7 +54,7 @@ char		*dirname;	/* name of directory */
 	if ( (dirp = (DIR *)malloc( sizeof(DIR) )) == NULL
 			|| (dirp->dd_buf = (char *)malloc( (unsigned)DIRBUF )) == NULL
 	   )	{
-		register int	serrno = errno;
+		int	serrno = errno;
 		/* errno set to ENOMEM by sbrk() */
 
 		if ( dirp != NULL )

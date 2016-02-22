@@ -35,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/na2str.c,v 9.0 1992/
 /*    Network Address to String */
 
 char *
-na2str (register struct NSAPaddr *na)
+na2str (struct NSAPaddr *na)
 {
 	switch (na -> na_stack) {
 	case NA_TCP:

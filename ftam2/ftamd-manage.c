@@ -35,7 +35,7 @@ struct FTAMgroup *ftg;
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	ftam_selection (ftg, ftm);
 

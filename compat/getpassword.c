@@ -45,10 +45,10 @@ char *
 getpassword (char *prompt)
 {
 #ifndef	BSD44
-	register int    c;
+	int    c;
 	int	    flags,
 			isopen;
-	register char  *bp,
+	char  *bp,
 			 *ep;
 #if	!defined(FEDORA) && !defined(SYS5) && !defined(XOS_2)
 	struct sgttyb   sg;

@@ -38,8 +38,8 @@ PS     ps;
 PE     pe;
 int     format;
 {
-	register char * ptr, *s;
-	register int i, j;
+	char * ptr, *s;
+	int i, j;
 	PS sps;
 	static char hex[] = "0123456789abcdef";
 	char buffer [LINESIZE];
@@ -93,7 +93,7 @@ char * str;
 {
 	char * ptr;
 	char * pe_ptr;
-	register int i,j;
+	int i,j;
 	PS sps;
 	void StripSpace ();
 	PE pe;

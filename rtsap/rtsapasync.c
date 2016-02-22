@@ -38,7 +38,7 @@ RtSetIndications (int sd, IFP indication, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	_iosignals_set = 1;
 

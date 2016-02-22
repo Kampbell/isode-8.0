@@ -41,7 +41,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	missingP (fti);
 
@@ -59,12 +59,12 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FDataRequestAux (fsb, fadus, nfadu, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 PE	fadus[];
 int	nfadu;
 struct FTAMindication *fti;
 {
-	register int    i;
+	int    i;
 	PE	    pe,
 	 *pep;
 	struct PSAPindication   pis;
@@ -131,7 +131,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	switch (action) {
 	case FACTION_SUCCESS:
@@ -160,7 +160,7 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FDataEndRequestAux (fsb, action, diag, ndiag, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	action;
 struct FTAMdiagnostic diag[];
 int	ndiag;
@@ -171,8 +171,8 @@ struct FTAMindication *fti;
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__DATA__END__request *req;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__DATA__END__request *req;
 
 	switch (fsb -> fsb_state) {
 	case FSB_DATAREAD:
@@ -261,7 +261,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	switch (action) {
 	case FACTION_SUCCESS:
@@ -290,7 +290,7 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FCancelRequestAux (fsb, action, sharedASE, diag, ndiag, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	action;
 PE	sharedASE;
 struct FTAMdiagnostic diag[];
@@ -304,8 +304,8 @@ struct FTAMindication *fti;
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__CANCEL__request *req;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__CANCEL__request *req;
 
 	switch (fsb -> fsb_state) {
 	case FSB_DATAREAD:
@@ -410,7 +410,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	switch (action) {
 	case FACTION_SUCCESS:
@@ -439,7 +439,7 @@ struct FTAMindication *fti;
 /*  */
 
 int	FCancelResponseAux (fsb, action, sharedASE, diag, ndiag, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	action;
 PE	sharedASE;
 struct FTAMdiagnostic diag[];
@@ -452,8 +452,8 @@ struct FTAMindication *fti;
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__CANCEL__response *rsp;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__CANCEL__response *rsp;
 
 	if (fsb -> fsb_state != FSB_DATACANCEL)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");

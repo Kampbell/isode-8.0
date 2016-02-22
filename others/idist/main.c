@@ -231,8 +231,8 @@ usage (void) {
 int 
 docmdargs (int nargs, char *args[])
 {
-	register struct namelist *nl, *prev;
-	register char *cp;
+	struct namelist *nl, *prev;
+	char *cp;
 	struct namelist *files, *hosts;
 	struct subcmd *cmds;
 	char *dest;
@@ -283,7 +283,7 @@ docmdargs (int nargs, char *args[])
  * Print a list of NAME blocks (mostly for debugging).
  */
 int 
-prnames (register struct namelist *nl)
+prnames (struct namelist *nl)
 {
 	(void) printf("( ");
 	while (nl != NULL) {

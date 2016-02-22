@@ -75,7 +75,7 @@ std_flush (PS ps)
 /*  */
 
 int 
-std_open (register PS ps)
+std_open (PS ps)
 {
 	ps -> ps_readP = std_read;
 	ps -> ps_writeP = std_write;

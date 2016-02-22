@@ -117,14 +117,14 @@ f_whois_aux (char **vec)
 			mailbox,
 			multiple,
 			result;
-	register char *bp,
+	char *bp,
 			 *cp,
 			 *dp;
 	char    buffer[BUFSIZ],
 			orgname[BUFSIZ];
-	register struct area_guide *ag;
+	struct area_guide *ag;
 	struct whois ws;
-	register struct whois *w = &ws;
+	struct whois *w = &ws;
 	FILE   *fp;
 
 	bzero ((char *) w, sizeof *w);
@@ -518,7 +518,7 @@ name_or_something:
 			w -> w_area++;
 
 	if (w -> w_inputype == W_NULL) {
-		register char **ap;
+		char **ap;
 
 		if (w -> w_record != W_NULL || w -> w_output != W_NULL) {
 			advise (NULLCP, "input-field missing");
@@ -652,13 +652,13 @@ out:
 /*  */
 
 static 
-whois_aux (register struct whois *w)
+whois_aux (struct whois *w)
 {
-	register char *bp,
+	char *bp,
 			 *cp;
 	char   *handle,
 		   buffer[BUFSIZ];
-	register struct area_guide *ag;
+	struct area_guide *ag;
 
 	for (ag = areas; ag -> ag_record; ag++)
 		if (ag -> ag_record == w -> w_record)
@@ -872,7 +872,7 @@ eqstr (char *s, int exact)
 static char *
 limits (int isearch)
 {
-	register char *bp;
+	char *bp;
 	static char buffer[100];
 
 	bp = buffer;
@@ -980,7 +980,7 @@ f_ufn (char **vec)
 int 
 test_ufn (char *cp)
 {
-	register char *dp;
+	char *dp;
 
 	if (*(dp = cp) == '!')
 		dp++;

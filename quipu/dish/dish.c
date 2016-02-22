@@ -130,7 +130,7 @@ int             *argc;
 char          ***argv;
 int	fn;
 {
-	register char   *ap;
+	char   *ap;
 	char  **argptr;
 	static char   *args[10];
 	static int     argp;

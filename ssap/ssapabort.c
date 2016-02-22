@@ -41,7 +41,7 @@ SUAbortRequest (int sd, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 
@@ -63,21 +63,21 @@ SUAbortRequest (int sd, char *data, int cc, struct SSAPindication *si)
 /*  */
 
 static int 
-SUAbortRequestAux (register struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
+SUAbortRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 	struct TSAPdata txs;
-	register struct TSAPdata   *tx = &txs;
+	struct TSAPdata   *tx = &txs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	sb -> sb_flags &= ~(SB_ED | SB_EDACK | SB_ERACK);
 
 	if ((sb -> sb_flags & SB_EXPD)
 			&& sb -> sb_version >= SB_VRSN2
 			&& cc > 9) {
-		register struct ssapkt *p;
+		struct ssapkt *p;
 
 		if (p = newspkt (SPDU_PR)) {
 			p -> s_mask |= SMASK_PR_TYPE;

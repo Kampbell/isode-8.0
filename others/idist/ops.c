@@ -309,9 +309,9 @@ struct RoSAPindication *roi;
 }
 
 static void 
-print_ia5list (register struct type_Idist_IA5List *ia5)
+print_ia5list (struct type_Idist_IA5List *ia5)
 {
-	register struct qbuf *p,
+	struct qbuf *p,
 			*q;
 
 	for (; ia5; ia5 = ia5 -> next) {

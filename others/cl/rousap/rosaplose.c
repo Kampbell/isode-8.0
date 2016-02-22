@@ -40,8 +40,8 @@ va_dcl {
 	int	    reason,
 	result,
 	value;
-	register struct assocblk *acb;
-	register struct RoSAPindication *roi;
+	struct assocblk *acb;
+	struct RoSAPindication *roi;
 	va_list ap;
 
 	va_start (ap);
@@ -99,9 +99,9 @@ int	rosapreject (va_alist)
 va_dcl {
 	int	    reason,
 	result;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi;
+	struct RoSAPindication *roi;
 	va_list ap;
 
 	va_start (ap);
@@ -169,14 +169,14 @@ rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
 #ifndef	lint
 static int 
 _rosaplose (  /* what, fmt, args ... */
-    register struct RoSAPindication *roi,
+    struct RoSAPindication *roi,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct RoSAPpreject *rop;
+	struct RoSAPpreject *rop;
 
 	if (roi) {
 		bzero ((char *) roi, sizeof *roi);

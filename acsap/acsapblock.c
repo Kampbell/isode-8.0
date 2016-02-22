@@ -40,7 +40,7 @@ static struct assocblk *ACHead = &assocque;
 
 struct assocblk *
 newacblk (void) {
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	acb = (struct assocblk   *) calloc (1, sizeof *acb);
 	if (acb == NULL)
@@ -62,7 +62,7 @@ newacblk (void) {
 /*  */
 
 int 
-freeacblk (register struct assocblk *acb)
+freeacblk (struct assocblk *acb)
 {
 	if (acb == NULL)
 		return;
@@ -111,9 +111,9 @@ freeacblk (register struct assocblk *acb)
 /*  */
 
 struct assocblk *
-findacblk (register int sd)
+findacblk (int sd)
 {
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	if (once_only == 0)
 		return NULL;

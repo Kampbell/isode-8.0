@@ -63,14 +63,14 @@ main (int argc, char **argv, char **envp)
 			sd,
 			result,
 			turn;
-	register char *cp,
+	char *cp,
 			 *user;
-	register struct passwd *pw;
+	struct passwd *pw;
 	struct RtSAPstart   rtss;
-	register struct RtSAPstart *rts = &rtss;
+	struct RtSAPstart *rts = &rtss;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort   *rta = &rti -> rti_abort;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort   *rta = &rti -> rti_abort;
 	struct type_RTF_Request *req;
 
 	if (myname = rindex (argv[0], '/'))
@@ -226,7 +226,7 @@ no_dice:
 
 		switch (rti -> rti_type) {
 		case RTI_TURN: {
-			register struct RtSAPturn *rtu = &rti -> rti_turn;
+			struct RtSAPturn *rtu = &rti -> rti_turn;
 
 			if (rtu -> rtu_please) {
 				if (RtGTurnRequest (sd, rti) == NOTOK)
@@ -238,7 +238,7 @@ no_dice:
 
 		case RTI_TRANSFER: {
 #ifndef	lint
-			register struct RtSAPtransfer *rtt = &rti -> rti_transfer;
+			struct RtSAPtransfer *rtt = &rti -> rti_transfer;
 #endif
 
 			if (nbytes == 0)
@@ -249,7 +249,7 @@ no_dice:
 		continue;
 
 		case RTI_ABORT: {
-			register struct RtSAPabort *rtb = &rti -> rti_abort;
+			struct RtSAPabort *rtb = &rti -> rti_abort;
 
 			if (rtb -> rta_peer)
 				rts_adios (rtb, "RT-U-ABORT.INDICATION");
@@ -261,7 +261,7 @@ no_dice:
 
 		case RTI_CLOSE: {
 #ifndef	lint
-			register struct RtSAPclose *rtc = &rti -> rti_close;
+			struct RtSAPclose *rtc = &rti -> rti_close;
 #endif
 
 			advise (LLOG_NOTICE, NULLCP, "RT-END.INDICATION");
@@ -290,9 +290,9 @@ no_dice:
 static int 
 downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti)
 {
-	register int    cc;
+	int    cc;
 	int	    n;
-	register char *dp,
+	char *dp,
 			 *ep;
 	static int bsize;
 	static char *bp = NULL;
@@ -365,8 +365,8 @@ struct RtSAPindication *rti;
 {
 	switch (type) {
 	case SI_DATA: {
-		register struct qbuf *qb = (struct qbuf *) addr;
-		register struct qbuf *qp;
+		struct qbuf *qb = (struct qbuf *) addr;
+		struct qbuf *qp;
 
 		for (qp = qb -> qb_forw; qp != qb; qp = qp -> qb_forw)
 			if (write (fd, qp -> qb_data, qp -> qb_len) !=qp -> qb_len)
@@ -378,7 +378,7 @@ struct RtSAPindication *rti;
 
 	case SI_SYNC: {
 #ifdef	DEBUG
-		register struct SSAPsync *sn = (struct SSAPsync *) addr;
+		struct SSAPsync *sn = (struct SSAPsync *) addr;
 
 		advise (LLOG_DEBUG, NULLCP, "S-MINOR-SYNC.INDICATION: %ld",
 				sn -> sn_ssn);
@@ -387,7 +387,7 @@ struct RtSAPindication *rti;
 	break;
 
 	case SI_ACTIVITY: {
-		register struct SSAPactivity *sv = (struct SSAPactivity *)addr;
+		struct SSAPactivity *sv = (struct SSAPactivity *)addr;
 
 		switch (sv -> sv_type) {
 		case SV_START:
@@ -433,7 +433,7 @@ struct RtSAPindication *rti;
 	break;
 
 	case SI_REPORT: {
-		register struct SSAPreport *sp = (struct SSAPreport *) addr;
+		struct SSAPreport *sp = (struct SSAPreport *) addr;
 
 		if (!sp -> sp_peer)
 			return rtsaplose (rti, RTS_TRANSFER, NULLCP,

@@ -41,7 +41,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	missingP (ftr);
 	missingP (fti);
@@ -60,7 +60,7 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FTerminateRequestAux (fsb, sharedASE, ftr, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 PE	sharedASE;
 struct FTAMrelease *ftr;
 struct FTAMindication *fti;
@@ -68,12 +68,12 @@ struct FTAMindication *fti;
 	int     result;
 	PE	    pe;
 	struct AcSAPrelease acrs;
-	register struct AcSAPrelease   *acr = &acrs;
+	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__TERMINATE__response *rsp;
+	struct type_FTAM_F__TERMINATE__response *rsp;
 
 	if (!(fsb -> fsb_flags & FSB_INIT))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not initiator");

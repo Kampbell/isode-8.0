@@ -118,7 +118,7 @@ addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_Addends **p
 
 static int  do_help (sd, ds, args, dummy)
 int	sd;
-register struct dispatch *ds;
+struct dispatch *ds;
 char  **args;
 caddr_t *dummy;
 {
@@ -155,7 +155,7 @@ caddr_t *dummy;
 /* ARGSUSED */
 
 static int 
-addit_result (int sd, int id, int dummy, register struct type_ADD_Sum *result, struct RoSAPindication *roi)
+addit_result (int sd, int id, int dummy, struct type_ADD_Sum *result, struct RoSAPindication *roi)
 {
 	printf ("\n sum = %d\n", result->parm );
 	printf ("\n");
@@ -176,7 +176,7 @@ addtest_error (
     struct RoSAPindication *roi
 )
 {
-	register struct RyError *rye;
+	struct RyError *rye;
 
 	if (error == RY_REJECT) {
 		advise (NULLCP, "%s", RoErrString ((int) parameter));

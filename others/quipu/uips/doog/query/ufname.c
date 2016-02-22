@@ -857,7 +857,7 @@ ufnResults *ufn_result;
 void name_part_free(name)
 namePart *name;
 {
-	register namePart part = *name;
+	namePart part = *name;
 	namePart next_part;
 
 	while (part) {
@@ -890,7 +890,7 @@ namePart str2ufname(str_ufn)
 char *str_ufn;
 {
 	namePart name_comp = NULLNamePart, new_comp;
-	register char *start, *end;
+	char *start, *end;
 	char save;
 
 	start = str_ufn;
@@ -1019,7 +1019,7 @@ struct DSResult *ds_result;
 	hit_count = 0;
 	if (search_result->CSR_entries != NULLENTRYINFO) {
 		EntryInfo *entry_ptr;
-		register stringCell curr_attr;
+		stringCell curr_attr;
 		attrValList got_attrs, curr_av;
 		char *curr_name, *match_str;
 		QBool good_match;

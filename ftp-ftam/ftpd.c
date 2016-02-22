@@ -614,7 +614,7 @@ int status;
  * to allow people such as uucp to be avoided.
  */
 checkuser(name)
-register char *name;
+char *name;
 {
 	char line[BUFSIZ];
 	FILE *fd, *fopen();
@@ -624,7 +624,7 @@ register char *name;
 	if (fd == NULL)
 		return (1);
 	while (fgets(line, sizeof (line), fd) != NULL) {
-		register char *cp = index(line, '\n');
+		char *cp = index(line, '\n');
 
 		if (cp)
 			*cp = '\0';

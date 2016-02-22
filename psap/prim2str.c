@@ -38,17 +38,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2str.c,v 9.0 1992/
    does NOT reflect this. */
 
 char *
-prim2str (register PE pe, register int *len)
+prim2str (PE pe, int *len)
 {
-	register int    i,
+	int    i,
 			 k;
 	int     j;
-	register char  *dp,
+	char  *dp,
 			 *ep,
 			 *fp;
-	register PElementClass class;
-	register PElementID id;
-	register PE	    p;
+	PElementClass class;
+	PElementID id;
+	PE	    p;
 
 	*len = 0;
 	switch (pe -> pe_form) {

@@ -50,7 +50,7 @@ static int TPid = NOTOK;
 
 struct tsapblk *
 newtublk (void) {
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);
 	if (tb == NULL)
@@ -72,10 +72,10 @@ newtublk (void) {
 
 
 int 
-freetublk (register struct tsapblk *tb)
+freetublk (struct tsapblk *tb)
 {
 	SBV     smask;
-	register struct qbuf *qb,
+	struct qbuf *qb,
 			*qp;
 #ifndef	SIGPOLL
 	struct TSAPdisconnect   tds;
@@ -134,9 +134,9 @@ freetublk (register struct tsapblk *tb)
 /*  */
 
 struct tsapblk *
-findtublk (register int sd)
+findtublk (int sd)
 {
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	if (tu_once_only == 0)
 		return NULL;

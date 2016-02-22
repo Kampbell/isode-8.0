@@ -339,10 +339,10 @@ f_null (void) {
  * pointers return 0 if they are the same non zero otherwise
  */
 int 
-bitscmp (register char *p1, register char *p2, int len)
+bitscmp (char *p1, char *p2, int len)
 {
-	register int i;
-	register unsigned int mask;
+	int i;
+	unsigned int mask;
 
 	if (len >= 8 && bcmp(p1, p2, len / 8))
 		return (1);
@@ -364,9 +364,9 @@ bitscmp (register char *p1, register char *p2, int len)
  * and non zero otherwise
  */
 int 
-ostrcmp (register char *p, register int len, register struct qbuf *qb)
+ostrcmp (char *p, int len, struct qbuf *qb)
 {
-	register struct qbuf *qp;
+	struct qbuf *qp;
 
 	if (len < 0 || qb == NULL || p == NULL)
 		return (1);
@@ -778,7 +778,7 @@ ismatch (
  * bascially skip over any ETAGS that (an arbitary number but almost always 1)
  */
 ptpe *
-fdflt_f (register ptpe *p)
+fdflt_f (ptpe *p)
 {
 	if (p->pe_type != DFLT_F)
 		ferr(1, "fdlt_f:Internal Error missing DFLT_F\n");
@@ -795,7 +795,7 @@ fdflt_f (register ptpe *p)
  * find the DFLT_B entry
  */
 ptpe *
-fdflt_b (register ptpe *p)
+fdflt_b (ptpe *p)
 {
 	for (p++; p->pe_type != PE_END; p++) {
 		if (p->pe_type == DFLT_B)

@@ -42,11 +42,11 @@ RtExec (struct SSAPstart *ss, struct RtSAPindication *rti, char *arg1, char *arg
 {
 	int     result,
 			result2;
-	register struct isoservent *is;
-	register PE	    pe;
+	struct isoservent *is;
+	PE	    pe;
 	struct SSAPref ref;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
+	struct SSAPindication *si = &sis;
 	struct type_OACS_PConnect	*pcon = NULL;
 
 	missingP (ss);

@@ -551,7 +551,7 @@ DN sequence_dn(y)
 int y;
 {
 	struct dua_seq_entry * ptr;
-	register int x = 1;
+	int x = 1;
 
 	if (current_sequence == NULL_DS)
 		return (NULLDN);

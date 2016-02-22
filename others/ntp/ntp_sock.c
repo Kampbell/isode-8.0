@@ -340,8 +340,8 @@ query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap)
 	extern struct list peer_list;
 	extern struct sysdata sys;
 	char packet[PKTBUF_SIZE];
-	register struct ntpinfo *nip = (struct ntpinfo *) packet;
-	register struct ntp_peer *peer;
+	struct ntpinfo *nip = (struct ntpinfo *) packet;
+	struct ntp_peer *peer;
 	struct clockinfo *cip;
 	int seq = 0;
 	int i;

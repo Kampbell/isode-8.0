@@ -40,7 +40,7 @@ SUReportRequest (int sd, int reason, char *data, int cc, struct SSAPindication *
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	if (!(SP_OK (reason)))
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid reason");
@@ -61,7 +61,7 @@ SUReportRequest (int sd, int reason, char *data, int cc, struct SSAPindication *
 /*  */
 
 static int 
-SUReportRequestAux (register struct ssapblk *sb, int reason, char *data, int cc, register struct SSAPindication *si)
+SUReportRequestAux (struct ssapblk *sb, int reason, char *data, int cc, struct SSAPindication *si)
 {
 	int	    result;
 

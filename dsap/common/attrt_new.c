@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_new.c,v 9
 #include "quipu/name.h"
 
 AttributeType AttrT_new (name)
-register char * name;
+char * name;
 {
 	oid_table * Current;
 	extern oid_table_attr attrOIDTable [];

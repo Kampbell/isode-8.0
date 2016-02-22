@@ -51,7 +51,7 @@ int	tpktlose (struct tsapblk* tb, ...)
 	int	    reason,
 	result;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td;
+	struct TSAPdisconnect  *td;
 	va_list ap;
 
 	va_start (ap, tb);
@@ -152,12 +152,12 @@ tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt)
 #ifndef	lint
 static int 
 _tsaplose (	/* what, fmt, args ... */
-    register struct TSAPdisconnect *td,
+    struct TSAPdisconnect *td,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
 
 	if (td) {

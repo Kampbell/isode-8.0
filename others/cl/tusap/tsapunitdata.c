@@ -110,10 +110,10 @@ TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdiscon
 {
 
 	int      result;
-	register int n = listen -> ta_naddr - 1;
-	register struct NSAPaddr *na = listen -> ta_addrs;
-	register struct NSAPaddr *la;
-	register struct tsapblk *tb;
+	int n = listen -> ta_naddr - 1;
+	struct NSAPaddr *na = listen -> ta_addrs;
+	struct NSAPaddr *la;
+	struct tsapblk *tb;
 
 
 #ifdef HULADEBUG
@@ -254,11 +254,11 @@ TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, struct
 {
 
 	int      result;
-	register int n;
-	register struct NSAPaddr *na;
-	register int l;
-	register struct NSAPaddr *la;
-	register struct tsapblk *tb;
+	int n;
+	struct NSAPaddr *na;
+	int l;
+	struct NSAPaddr *la;
+	struct tsapblk *tb;
 	int	 option;
 	SBV      smask;			 	/* signal save mask */
 
@@ -483,7 +483,7 @@ TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
 
 {
 
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	int	 result;
 	SBV      smask;			 	/* signal save mask */
 
@@ -534,13 +534,13 @@ TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
  */
 
 int 
-TuSave (int sd, register int vecp, register char **vec, register struct TSAPdisconnect *td)
+TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 
 {
 
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	char     domain[NASIZE];
-	register struct NSAPaddr *na;
+	struct NSAPaddr *na;
 	int      fd;
 	int	     result;
 	SBV      smask;			 	/* signal save mask */
@@ -656,7 +656,7 @@ TuSave (int sd, register int vecp, register char **vec, register struct TSAPdisc
  */
 
 int 
-TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, register struct udvec *uv, struct TSAPdisconnect *td)
+TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, struct udvec *uv, struct TSAPdisconnect *td)
 
 
 
@@ -719,7 +719,7 @@ TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct QOSt
  */
 
 int 
-TUnitDataWrite (int sd, register struct udvec *uv, register struct TSAPdisconnect td)
+TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 
 
 {
@@ -727,8 +727,8 @@ TUnitDataWrite (int sd, register struct udvec *uv, register struct TSAPdisconnec
 	int 	 n, cc, hlen;
 	SBV      smask;			 	/* signal save mask */
 	int      result; 		 	/* write result     */
-	register struct udvec	*vv;   		/* udvec            */
-	register struct tsapblk *tb;	 	/* transport blk ptr*/
+	struct udvec	*vv;   		/* udvec            */
+	struct tsapblk *tb;	 	/* transport blk ptr*/
 	char	 *data, *buffer, *hptr;	        /* data buffer ptr  */
 
 
@@ -918,17 +918,17 @@ TUnitDataWrite (int sd, register struct udvec *uv, register struct TSAPdisconnec
  */
 
 int 
-TUnitDataRead (int sd, register struct TSAPunitdata *tud, int secs, struct TSAPdisconnect *td)
+TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdisconnect *td)
 
 {
 
 	int	     cc, hlen;
 	SBV      smask;			 	/* signal save mask */
-	register struct tsapblk *tb;
-	register struct qbuf    *qb;
+	struct tsapblk *tb;
+	struct qbuf    *qb;
 	struct sockaddr_in 	    socket;
-	register struct hostent *hp;
-	register struct NSAPaddr *na;
+	struct hostent *hp;
+	struct NSAPaddr *na;
 
 
 
@@ -1060,7 +1060,7 @@ IFP	data;
 
 	SBV	    smask;
 	int     result;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	/*
 	 *  Check for missing parm.
@@ -1119,7 +1119,7 @@ int    *nfds;
 {
 
 	SBV     smask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	/*
 	 *  Check for missing parameters.
@@ -1189,10 +1189,10 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 	SBV	    smask;
 #endif
 	IFP	    disc;
-	register struct tsapblk *tb,
+	struct tsapblk *tb,
 			*tb2;
 	struct TSAPdata txs;
-	register struct TSAPdata   *tx = &txs;
+	struct TSAPdata   *tx = &txs;
 
 #ifndef	BSDSIGS
 	(void) signal (SIGEMT, UNITDATAser);
@@ -1265,7 +1265,7 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 #ifndef	SIGPOLL
 
 static int 
-TUnitDataWakeUp (register struct tsapblk *tb)
+TUnitDataWakeUp (struct tsapblk *tb)
 
 {
 	int     i,
@@ -1274,7 +1274,7 @@ TUnitDataWakeUp (register struct tsapblk *tb)
 	char    buf1[10],
 			buf2[10],
 			buf3[10];
-	register struct isoservent *is;
+	struct isoservent *is;
 	static int  inited = 0;
 
 	if (TPid > OK) {
@@ -1345,7 +1345,7 @@ TUnitDataWakeUp (register struct tsapblk *tb)
 
 static int  TUnitDataWakeUp (tb)
 
-register struct tsapblk *tb;
+struct tsapblk *tb;
 
 {
 	int	    result;
@@ -1404,10 +1404,10 @@ register struct tsapblk *tb;
 /*  */
 
 int 
-newtuaddr (register struct TSAPaddr *ta, register struct NSAPaddr *na, register struct TSAPaddr *tdest)
+newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
 
 {
-	register struct NSAPaddr *ndest = tdest -> ta_addrs;
+	struct NSAPaddr *ndest = tdest -> ta_addrs;
 
 	bzero ((char *) tdest, sizeof(struct TSAPaddr));
 
@@ -1440,11 +1440,11 @@ newtuaddr (register struct TSAPaddr *ta, register struct NSAPaddr *na, register 
 /*  */
 
 static struct TSAPaddr *
-newtuaddr (register struct TSAPaddr *ta, register struct NSAPaddr *na)
+newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na)
 {
 	static struct TSAPaddr tzs;
-	register struct TSAPaddr *tz = &tzs;
-	register struct NSAPaddr *nz = tz -> ta_addrs;
+	struct TSAPaddr *tz = &tzs;
+	struct NSAPaddr *nz = tz -> ta_addrs;
 
 	bzero ((char *) tz, sizeof *tz);
 

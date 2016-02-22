@@ -163,7 +163,7 @@ struct type_IMISC_IA5List *
 vec2ia5list (char **vec)
 {
 	struct type_IMISC_IA5List  *ia5;
-	register struct type_IMISC_IA5List **ia5p;
+	struct type_IMISC_IA5List **ia5p;
 
 	ia5 = NULL;
 	ia5p = &ia5;
@@ -185,9 +185,9 @@ vec2ia5list (char **vec)
 /*  */
 
 static 
-print_ia5list (register struct type_IMISC_IA5List *ia5)
+print_ia5list (struct type_IMISC_IA5List *ia5)
 {
-	register struct qbuf *p,
+	struct qbuf *p,
 			*q;
 
 	for (; ia5; ia5 = ia5 -> next) {
@@ -215,13 +215,13 @@ do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List *
 /* ARGSUSED */
 
 static int 
-do_tell (int sd, struct dispatch *ds, char **args, register struct type_IMISC_IA5List **ia5)
+do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5)
 {
 	char   *cp,
 		   *dp,
 		   buffer[BUFSIZ];
-	register struct type_IMISC_IA5List  *ia52;
-	register struct passwd *pw;
+	struct type_IMISC_IA5List  *ia52;
+	struct passwd *pw;
 
 	if (args[0] == NULL || args[1] == NULL) {
 		advise (NULLCP, "usage: tell user message ...");
@@ -252,7 +252,7 @@ do_tell (int sd, struct dispatch *ds, char **args, register struct type_IMISC_IA
 /* ARGSUSED */
 
 static int 
-do_data (int sd, struct dispatch *ds, char **args, register struct type_IMISC_Data **pep)
+do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep)
 {
 	char   *cp;
 
@@ -277,7 +277,7 @@ do_data (int sd, struct dispatch *ds, char **args, register struct type_IMISC_Da
 /* ARGSUSED */
 
 static int 
-do_help (int sd, register struct dispatch *ds, char **args, caddr_t *dummy)
+do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy)
 {
 	(void) printf ("\nCommands are:\n");
 	for (ds = dispatches; ds -> ds_name; ds++)
@@ -294,10 +294,10 @@ static int
 do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy)
 {
 	struct AcSAPrelease acrs;
-	register struct AcSAPrelease   *acr = &acrs;
+	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 
 	if (AcRelRequest (sd, ACF_NORMAL, NULLPEP, 0, NOTOK, acr, aci) == NOTOK)
 		acs_adios (aca, "A-RELEASE.REQUEST");
@@ -317,9 +317,9 @@ do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy)
 /* ARGSUSED */
 
 static int 
-utctime_result (int sd, int id, int dummy, register struct type_IMISC_UTCResult *result, struct RoSAPindication *roi)
+utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi)
 {
-	register struct qbuf *q;
+	struct qbuf *q;
 
 	for (q = result -> qb_forw; q != result; q = q -> qb_forw)
 		(void) printf ("%*.*s", q -> qb_len, q -> qb_len, q -> qb_data);
@@ -333,7 +333,7 @@ utctime_result (int sd, int id, int dummy, register struct type_IMISC_UTCResult 
 /* ARGSUSED */
 
 static int 
-timeofday_result (int sd, int id, int dummy, register struct type_IMISC_TimeResult *result, struct RoSAPindication *roi)
+timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi)
 {
 	long	s;
 
@@ -348,7 +348,7 @@ timeofday_result (int sd, int id, int dummy, register struct type_IMISC_TimeResu
 /* ARGSUSED */
 
 static int 
-ia5_result (int sd, int id, int dummy, register struct type_IMISC_IA5List *result, struct RoSAPindication *roi)
+ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi)
 {
 	print_ia5list (result);
 
@@ -395,9 +395,9 @@ echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct R
 /* ARGSUSED */
 
 static int 
-imisc_error (int sd, int id, int error, register struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi)
+imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi)
 {
-	register struct RyError *rye;
+	struct RyError *rye;
 
 	if (error == RY_REJECT) {
 		advise (NULLCP, "%s", RoErrString ((int) parameter));

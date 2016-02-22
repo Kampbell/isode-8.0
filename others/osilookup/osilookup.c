@@ -54,12 +54,12 @@ static char nib2hex[0x10] = {
 
 
 static int  explode (a, b, n)
-register char  *a;
-register u_char *b;
-register int    n;
+char  *a;
+u_char *b;
+int    n;
 {
-	register int    i;
-	register u_char c;
+	int    i;
+	u_char c;
 
 	for (i = 0; i < n; i++) {
 		c = *b++;

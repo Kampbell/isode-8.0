@@ -64,7 +64,7 @@ static	type_info ();
 
 
 void 
-spkt2text (register LLog *lp, register struct ssapkt *s, int read)
+spkt2text (LLog *lp, struct ssapkt *s, int read)
 {
 	char   *rw = read ? "<--- " : "---> ";
 

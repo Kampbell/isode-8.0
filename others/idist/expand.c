@@ -82,8 +82,8 @@ int	argcmp();
 struct namelist *
 expand (struct namelist *list, int wh)
 {
-	register struct namelist *nl, *prev;
-	register int n;
+	struct namelist *nl, *prev;
+	int n;
 	char pathbuf[BUFSIZ];
 	char *argvbuf[GAVSIZ];
 
@@ -93,7 +93,7 @@ expand (struct namelist *list, int wh)
 	}
 
 	if (wh == 0) {
-		register char *cp;
+		char *cp;
 
 		for (nl = list; nl != NULL; nl = nl->n_next)
 			for (cp = nl->n_name; *cp; cp++)
@@ -139,8 +139,8 @@ expand (struct namelist *list, int wh)
 int 
 expstr (char *s)
 {
-	register char *cp, *cp1;
-	register struct namelist *tp;
+	char *cp, *cp1;
+	struct namelist *tp;
 	char *tail;
 	char buf[BUFSIZ];
 	int savec, oeargc;
@@ -251,8 +251,8 @@ argcmp (char **a1, char **a2)
 int 
 expsh (char *s)
 {
-	register char *cp;
-	register char *spathp, *oldcp;
+	char *cp;
+	char *spathp, *oldcp;
 	struct stat stb;
 
 	spathp = pathp;
@@ -289,7 +289,7 @@ int
 matchdir (char *pattern)
 {
 	struct stat stb;
-	register struct dirent *dp;
+	struct dirent *dp;
 	DIR *dirp;
 
 	dirp = opendir(path);
@@ -329,7 +329,7 @@ int
 execbrc (char *p, char *s)
 {
 	char restbuf[BUFSIZ + 2];
-	register char *pe, *pm, *pl;
+	char *pe, *pm, *pl;
 	int brclev = 0;
 	char *lm, savec, *spathp;
 
@@ -407,8 +407,8 @@ doit:
 int 
 match (char *s, char *p)
 {
-	register int c;
-	register char *sentp;
+	int c;
+	char *sentp;
 	char sexpany = expany;
 
 	if (*s == '.' && *p != '.')
@@ -422,9 +422,9 @@ match (char *s, char *p)
 }
 
 int 
-amatch (register char *s, register char *p)
+amatch (char *s, char *p)
 {
-	register int scc;
+	int scc;
 	int ok, lc;
 	char *spathp;
 	struct stat stb;
@@ -509,9 +509,9 @@ slash:
 }
 
 int 
-smatch (register char *s, register char *p)
+smatch (char *s, char *p)
 {
-	register int scc;
+	int scc;
 	int ok, lc;
 	int c, cc;
 
@@ -566,10 +566,10 @@ smatch (register char *s, register char *p)
 }
 
 int 
-Cat (register char *s1, register char *s2)
+Cat (char *s1, char *s2)
 {
 	int len = strlen(s1) + strlen(s2) + 1;
-	register char *s;
+	char *s;
 
 	nleft -= len;
 	if (nleft <= 0 || ++eargc >= GAVSIZ)

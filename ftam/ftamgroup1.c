@@ -70,7 +70,7 @@ struct FTAMindication  *fti;
 {
 	SBV	    smask;
 	int	    result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	missingP (ftg);
 	missingP (fti);
@@ -90,12 +90,12 @@ struct FTAMindication  *fti;
 /*  */
 
 static int  FGroupRequestAux (fsb, ftg, state, fti)
-register struct ftamblk *fsb;
-register struct FTAMgroup  *ftg;
+struct ftamblk *fsb;
+struct FTAMgroup  *ftg;
 int	state;
 struct FTAMindication  *fti;
 {
-	register int    i;
+	int    i;
 	int     did_loop,
 			npdu,
 			result;
@@ -164,15 +164,15 @@ out:
 /*  */
 
 static int  figrpchk (fsb, ftg, type, fti)
-register struct ftamblk *fsb;
-register struct FTAMgroup *ftg;
+struct ftamblk *fsb;
+struct FTAMgroup *ftg;
 int	type;
 struct FTAMindication *fti;
 {
 	int     i,
 			request;
-	register struct FTAMpasswords  *fp;
-	register struct FTAMconcurrency *fc;
+	struct FTAMpasswords  *fp;
+	struct FTAMconcurrency *fc;
 
 	if (!(fsb -> fsb_flags & FSB_INIT))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not initiator");
@@ -274,7 +274,7 @@ finish_end:
 	i = 0;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		if (ftse -> ftse_attrs.fa_present != FA_FILENAME)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
@@ -291,7 +291,7 @@ finish_end:
 	}
 
 	if (ftg -> ftg_flags & FTG_CREATE) {
-		register struct FTAMcreate *ftce = &ftg -> ftg_create;
+		struct FTAMcreate *ftce = &ftg -> ftg_create;
 
 		switch (ftce -> ftce_override) {
 		case FOVER_FAIL:
@@ -362,7 +362,7 @@ finish_create:
 	}
 
 	if (ftg -> ftg_flags & FTG_CLOSE) {
-		register struct FTAMclose   *ftcl = &ftg -> ftg_close;
+		struct FTAMclose   *ftcl = &ftg -> ftg_close;
 
 		switch (ftcl -> ftcl_action) {
 		case FACTION_SUCCESS:
@@ -383,7 +383,7 @@ finish_create:
 	}
 
 	if (ftg -> ftg_flags & FTG_RDATTR) {
-		register struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
+		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
 
 		if (!(fsb -> fsb_attrs & FATTR_STORAGE)
 				&& (ftra -> ftra_attrnames & FA_STORAGE))
@@ -398,7 +398,7 @@ finish_create:
 	}
 
 	if (ftg -> ftg_flags & FTG_CHATTR) {
-		register struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
+		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
 
 		if (ftca -> ftca_attrs.fa_present & ftca -> ftca_attrs.fa_novalue)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
@@ -425,7 +425,7 @@ finish_create:
 		i++;
 
 	if (ftg -> ftg_flags & FTG_OPEN) {
-		register struct FTAMopen *ftop = &ftg -> ftg_open;
+		struct FTAMopen *ftop = &ftg -> ftg_open;
 
 		if ((request = ftop -> ftop_mode) & ~FA_MODE_MASK)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
@@ -468,20 +468,20 @@ finish_create:
 /*  */
 
 static int  figrp2pdus (fsb, ftg, pdus, texts, npdu, fti)
-register struct ftamblk *fsb;
-register struct FTAMgroup *ftg;
+struct ftamblk *fsb;
+struct FTAMgroup *ftg;
 struct type_FTAM_PDU *pdus[];
 char   *texts[];
 int    *npdu;
 struct FTAMindication *fti;
 {
 	int     i;
-	register struct type_FTAM_PDU *pdu;
+	struct type_FTAM_PDU *pdu;
 
 	i = 0;
 
 #define	new_pdu(t,o,u,x) \
-	register struct t *req; \
+	struct t *req; \
  \
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) \
 	    goto no_mem; \
@@ -510,7 +510,7 @@ struct FTAMindication *fti;
 	}
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		new_pdu (type_FTAM_F__SELECT__request,
 				 type_FTAM_PDU_f__select__request,
@@ -544,7 +544,7 @@ struct FTAMindication *fti;
 	}
 
 	if (ftg -> ftg_flags & FTG_CREATE) {
-		register struct FTAMcreate *ftce = &ftg -> ftg_create;
+		struct FTAMcreate *ftce = &ftg -> ftg_create;
 
 		new_pdu (type_FTAM_F__CREATE__request,
 				 type_FTAM_PDU_f__create__request,
@@ -554,7 +554,7 @@ struct FTAMindication *fti;
 										  fti)) == NULL)
 			return NOTOK;
 		if (ftce -> ftce_create) {
-			register struct type_FTAM_Password *p;
+			struct type_FTAM_Password *p;
 
 			if ((p = (struct type_FTAM_Password *) calloc (1, sizeof *p))
 					== NULL)
@@ -591,7 +591,7 @@ struct FTAMindication *fti;
 	}
 
 	if (ftg -> ftg_flags & FTG_CLOSE) {
-		register struct FTAMclose *ftcl = &ftg -> ftg_close;
+		struct FTAMclose *ftcl = &ftg -> ftg_close;
 
 		new_pdu (type_FTAM_F__CLOSE__request, type_FTAM_PDU_f__close__request,
 				 f__close__request, "F-CLOSE-request");
@@ -609,7 +609,7 @@ struct FTAMindication *fti;
 	}
 
 	if (ftg -> ftg_flags & FTG_RDATTR) {
-		register struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
+		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
 
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
@@ -623,7 +623,7 @@ struct FTAMindication *fti;
 	}
 
 	if (ftg -> ftg_flags & FTG_CHATTR) {
-		register struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
+		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
 
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
@@ -636,7 +636,7 @@ struct FTAMindication *fti;
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect *ftde = &ftg -> ftg_deselect;
 
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
@@ -650,7 +650,7 @@ struct FTAMindication *fti;
 	}
 
 	if (ftg -> ftg_flags & FTG_DELETE) {
-		register struct FTAMdelete *ftxe = &ftg -> ftg_delete;
+		struct FTAMdelete *ftxe = &ftg -> ftg_delete;
 
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
@@ -664,7 +664,7 @@ struct FTAMindication *fti;
 	}
 
 	if (ftg -> ftg_flags & FTG_OPEN) {
-		register struct FTAMopen *ftop = &ftg -> ftg_open;
+		struct FTAMopen *ftop = &ftg -> ftg_open;
 
 		new_pdu (type_FTAM_F__OPEN__request, type_FTAM_PDU_f__open__request,
 				 f__open__request, "F-OPEN-request");
@@ -679,7 +679,7 @@ struct FTAMindication *fti;
 				== NULL)
 			goto no_mem;
 		if (ftop -> ftop_contents) {
-			register struct type_FTAM_Contents__Type__Attribute *proposed;
+			struct type_FTAM_Contents__Type__Attribute *proposed;
 
 			req -> contents__type -> offset = choice_FTAM_0_proposed;
 			if ((proposed = (struct type_FTAM_Contents__Type__Attribute *)

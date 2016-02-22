@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/as_merge.c,v 9.
 Attr_Sequence as_merge (a,b)
 Attr_Sequence a,b;
 {
-	register Attr_Sequence aptr, bptr, result, trail, tmp;
+	Attr_Sequence aptr, bptr, result, trail, tmp;
 
 	if ( a == NULLATTR )
 		return (b);
@@ -93,7 +93,7 @@ Attr_Sequence a,b;
 Attr_Sequence as_merge_aux (a,b)
 Attr_Sequence a,b;
 {
-	register Attr_Sequence aptr, bptr, result, trail, tmp;
+	Attr_Sequence aptr, bptr, result, trail, tmp;
 
 	if ( a == NULLATTR )
 		return (b);
@@ -159,7 +159,7 @@ Attr_Sequence a,b;
 Attr_Sequence as_fast_merge (a,b,c,d)
 Attr_Sequence a,b,c,d;
 {
-	register Attr_Sequence aptr, bptr, result, trail, tmp;
+	Attr_Sequence aptr, bptr, result, trail, tmp;
 	static AV_Sequence fast_avs = NULLAV;
 	static AV_Sequence fast_tail = NULLAV;
 	extern AV_Sequence avs_fast_merge ();

@@ -94,7 +94,7 @@ main (int argc, char **argv, char **envp)
 	int	    vecp;
 	char   *vec[4];
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 
 	arginit (argv);
 	envinit ();
@@ -176,9 +176,9 @@ dased (int vecp, char **vec)
 {
 	int	    sd;
 	struct TSAPstart tss;
-	register struct TSAPstart *ts = &tss;
+	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 
 	if (TInit (vecp, vec, ts, td) == NOTOK)
 		ts_adios (td, "T-CONNECT.INDICATION failed");
@@ -233,18 +233,18 @@ dased (int vecp, char **vec)
 /*  */
 
 static 
-dase_aux (register struct type_DASE_Query__REQ *req)
+dase_aux (struct type_DASE_Query__REQ *req)
 {
-	register int    i;
+	int    i;
 	int	    vecp;
-	register char **vp;
+	char **vp;
 	char   *context,
 		   **vec;
-	register struct type_DASE_Query__RSP *rsp;
-	register struct element_DASE_0 *d0;
-	register struct element_DASE_1 *d1;
+	struct type_DASE_Query__RSP *rsp;
+	struct element_DASE_0 *d0;
+	struct element_DASE_1 *d1;
 	envlist el;
-	register envlist  en,
+	envlist  en,
 			 *ep;
 	DN	   *dn;
 	DNS	    dns;
@@ -276,8 +276,8 @@ no_mem:
 	el = NULL, ep = &el;
 	for (d1 = req -> envlist; d1; d1 = d1 -> next) {
 		struct type_DASE_Environment *ev = d1 -> Environment;
-		register struct element_DASE_2 *d2;
-		register struct dn_seq **dp;
+		struct element_DASE_2 *d2;
+		struct dn_seq **dp;
 
 		if ((en = (envlist) calloc (1, sizeof *en)) == NULL)
 			goto no_mem;
@@ -289,7 +289,7 @@ no_mem:
 		dp = &en -> Dns;
 		for (d2 = ev -> path; d2; d2 = d2 -> next) {
 			char   *cp;
-			register struct dn_seq *ds;
+			struct dn_seq *ds;
 
 			if ((ds = (struct dn_seq *) calloc (1, sizeof *ds)) == NULL)
 				goto no_mem;
@@ -501,7 +501,7 @@ bind_to_dsa (void) {
 /*  */
 
 static int 
-make_bind_args (register struct ds_bind_arg *ba, register struct ds_bind_arg *br, register struct ds_bind_error *be)
+make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be)
 {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
@@ -519,11 +519,11 @@ make_bind_args (register struct ds_bind_arg *ba, register struct ds_bind_arg *br
 static DNS 
 dase_interact (DNS dns, DN dn, char *s)
 {
-	register int i;
-	register struct type_DASE_Callback__REQ *req = NULL;
-	register struct element_DASE_3 **dp;
+	int i;
+	struct type_DASE_Callback__REQ *req = NULL;
+	struct element_DASE_3 **dp;
 	struct type_DASE_Callback__RSP *rsp = NULL;
-	register struct type_DASE_Callback__RSP *rp;
+	struct type_DASE_Callback__RSP *rp;
 	DNS	    ds,
 			*dq;
 	PE	    pe = NULLPE;
@@ -581,8 +581,8 @@ out:
 
 	dp = &req -> choices;
 	for (; dns; dns = ds) {
-		register struct element_DASE_3 *d3;
-		register struct type_DASE_Pair *pair;
+		struct element_DASE_3 *d3;
+		struct type_DASE_Pair *pair;
 
 		if ((d3 = (struct element_DASE_3 *) calloc (1, sizeof *d3)) == NULL)
 			goto no_mem;
@@ -751,10 +751,10 @@ static
 arginit (char **vec)
 {
 	int	    argp;
-	register char   *ap;
+	char   *ap;
 	char  **argptr,
 		  *args[4];
-	register struct TSAPaddr *ta = NULL;
+	struct TSAPaddr *ta = NULL;
 
 	if (pgmname = rindex (*vec, '/'))
 		pgmname++;
@@ -970,7 +970,7 @@ advise (int code, char *what, char *fmt)
 /*  */
 
 static void 
-ts_adios (register struct TSAPdisconnect *td, char *event)
+ts_adios (struct TSAPdisconnect *td, char *event)
 {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
@@ -980,7 +980,7 @@ ts_adios (register struct TSAPdisconnect *td, char *event)
 /*  */
 
 static void 
-ts_advise (register struct TSAPdisconnect *td, int code, char *event)
+ts_advise (struct TSAPdisconnect *td, int code, char *event)
 {
 	char    buffer[BUFSIZ];
 

@@ -34,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssthorn.c,v 9.0 19
 /*  */
 
 static PE 
-qb2Rpe (register struct qbuf *qb, int len, int *result)
+qb2Rpe (struct qbuf *qb, int len, int *result)
 {
 	return qb2pe (qb, len, 2, result);
 }
@@ -46,7 +46,7 @@ RoSetThorn (int sd, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int	    result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (roi);
 

@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2flag.c,v 9.0 1992
 /*  */
 
 int 
-prim2flag (register PE pe)
+prim2flag (PE pe)
 {
 	if (pe -> pe_form != PE_FORM_PRIM
 			|| pe -> pe_prim == NULLPED

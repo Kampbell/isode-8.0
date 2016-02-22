@@ -34,9 +34,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2ssdu.c,v 9.0 1992/0
 /*  */
 
 int 
-pe2ssdu (register PE pe, char **base, int *len)
+pe2ssdu (PE pe, char **base, int *len)
 {
-	register int plen, ret;
+	int plen, ret;
 
 	*len = 0;
 	plen  = ps_get_abs (pe);

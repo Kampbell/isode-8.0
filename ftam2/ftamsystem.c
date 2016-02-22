@@ -188,19 +188,19 @@ int	ftp_default = VFS_UBF;
 
 
 int	ftam_start (fts)
-register struct FTAMstart *fts;
+struct FTAMstart *fts;
 {
-	register int    i;
+	int    i;
 #ifndef	BRIDGE
 	int	    guest;
 	struct passwd *pw;
 #endif
 	struct stat st;
-	register struct isodocument *id;
-	register struct vfsmap *vf;
-	register struct FTAMcontent *fx;
+	struct isodocument *id;
+	struct vfsmap *vf;
+	struct FTAMcontent *fx;
 	struct FTAMdiagnostic   diags[NFDIAG];
-	register struct FTAMdiagnostic *dp = diags;
+	struct FTAMdiagnostic *dp = diags;
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
@@ -354,8 +354,8 @@ register struct FTAMstart *fts;
 			"initiator=%s, account=%s", initiator, fts -> fts_account);
 #endif
 	if ((account = fts -> fts_account) && ((int)strlen(fts -> fts_account) > 1)) {
-		register struct group *gr = getgrnam (account);
-		register char **gp;
+		struct group *gr = getgrnam (account);
+		char **gp;
 
 		if (gr == NULL) {
 bad_account:
@@ -513,7 +513,7 @@ bad1:
 /*  */
 
 int	ftam_indication (fti)
-register struct FTAMindication *fti;
+struct FTAMindication *fti;
 {
 	switch (fti -> fti_type) {
 	case FTI_FINISH:
@@ -571,12 +571,12 @@ struct FTAMfinish *ftf;
 #ifdef	DEBUG
 	long    now;
 	struct FTAMcharging fcs;
-	register struct FTAMcharging   *fc = &fcs;
+	struct FTAMcharging   *fc = &fcs;
 #else
 #define	fc	((struct FTAMcharging *) 0)
 #endif
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 #ifdef	BRIDGE
 	(void) ftp_quit ();
 #endif
@@ -625,7 +625,7 @@ closewtmp () {
 /*    ABORT */
 
 static ftam_abortindication (fta)
-register struct FTAMabort *fta;
+struct FTAMabort *fta;
 {
 	struct FTAMindication   ftis;
 

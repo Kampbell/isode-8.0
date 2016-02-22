@@ -60,8 +60,8 @@ static struct syment *hashtab[HASHSIZE];
 int 
 define (char *name)
 {
-	register char *cp, *s;
-	register struct namelist *nl;
+	char *cp, *s;
+	struct namelist *nl;
 	struct namelist *value;
 
 	if (debug)
@@ -123,9 +123,9 @@ define (char *name)
 struct namelist *
 lookup (char *name, int action, struct namelist *value)
 {
-	register unsigned n;
-	register char *cp;
-	register struct syment *s;
+	unsigned n;
+	char *cp;
+	struct syment *s;
 	char buf[256];
 
 	if (debug)

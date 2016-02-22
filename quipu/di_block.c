@@ -612,7 +612,7 @@ struct di_block * di;
 int rdns, aliases;
 DN object;
 {
-	register struct di_block *loop;
+	struct di_block *loop;
 
 	for (loop=di; loop!=NULL_DI_BLOCK; loop=loop->di_next) {
 		di->di_aliasedRDNs = aliases;

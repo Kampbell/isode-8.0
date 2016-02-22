@@ -34,16 +34,16 @@ int	f_mv (vec)
 char  **vec;
 {
 #ifdef	BRIDGE
-	register char *src;
+	char *src;
 #else
 	int	sglobbed;
-	register char  *bp,
+	char  *bp,
 			 **gp,
 			 **src;
 	char   *freedst = NULL,
 			buffer[BUFSIZ];
 #endif
-	register char  *dst;
+	char  *dst;
 
 	if (*++vec == NULL) {
 #ifdef	BRIDGE
@@ -61,7 +61,7 @@ char  **vec;
 	dst = *vec;
 #else
 	else {
-		register char **ap;
+		char **ap;
 
 		for (ap = vec; *ap; ap++)
 			continue;
@@ -232,9 +232,9 @@ char   *src,
 int	multi;
 {
 	struct FTAMgroup    ftgs;
-	register struct FTAMgroup  *ftg = &ftgs;
+	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	bzero ((char *) ftg, sizeof *ftg);
 	ftg -> ftg_flags |= FTG_BEGIN | FTG_END;
@@ -242,8 +242,8 @@ int	multi;
 
 	ftg -> ftg_flags |= FTG_SELECT;
 	{
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		fa -> fa_present = FA_FILENAME;
 		fa -> fa_nfile = 0;
@@ -256,8 +256,8 @@ int	multi;
 
 	ftg -> ftg_flags |= FTG_CHATTR;
 	{
-		register struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
-		register struct FTAMattributes *fa = &ftca -> ftca_attrs;
+		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
+		struct FTAMattributes *fa = &ftca -> ftca_attrs;
 
 		fa -> fa_present = FA_FILENAME;
 		fa -> fa_nfile = 0;
@@ -276,7 +276,7 @@ int	multi;
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		if (multi && ftse -> ftse_state != FSTATE_SUCCESS)
 			(void) printf ("%s\n", src);
@@ -287,14 +287,14 @@ int	multi;
 	}
 
 	if (ftg -> ftg_flags & FTG_CHATTR) {
-		register struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
+		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
 
 		ftam_diag (ftca -> ftca_diags, ftca -> ftca_ndiag, 1,
 				   ftca -> ftca_action);
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
 
 		ftam_diag (ftde -> ftde_diags, ftde -> ftde_ndiag, 1,
 				   ftde -> ftde_action);
@@ -333,7 +333,7 @@ char  **vec;
 	return rm (*vec, 0);
 #else
 	if (vec = xglob (vec, 1)) {
-		register char **gp;
+		char **gp;
 
 		multi = vec[1] ? 1 : 0;
 
@@ -373,9 +373,9 @@ char   *file;
 int	multi;
 {
 	struct FTAMgroup    ftgs;
-	register struct FTAMgroup  *ftg = &ftgs;
+	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	bzero ((char *) ftg, sizeof *ftg);
 	ftg -> ftg_flags |= FTG_BEGIN | FTG_END;
@@ -383,8 +383,8 @@ int	multi;
 
 	ftg -> ftg_flags |= FTG_SELECT;
 	{
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		fa -> fa_present = FA_FILENAME;
 		fa -> fa_nfile = 0;
@@ -406,7 +406,7 @@ int	multi;
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		if (multi && ftse -> ftse_state != FSTATE_SUCCESS)
 			(void) printf ("%s\n", file);
@@ -417,7 +417,7 @@ int	multi;
 	}
 
 	if (ftg -> ftg_flags & FTG_DELETE) {
-		register struct FTAMdelete   *ftxe = &ftg -> ftg_delete;
+		struct FTAMdelete   *ftxe = &ftg -> ftg_delete;
 
 		ftam_diag (ftxe -> ftxe_diags, ftxe -> ftxe_ndiag, 1,
 				   ftxe -> ftxe_action);
@@ -461,7 +461,7 @@ char  **vec;
 	}
 
 	if (vec = xglob (vec, 1)) {
-		register char **gp;
+		char **gp;
 
 		multi = vec[1] ? 1 : 0;
 
@@ -501,9 +501,9 @@ char   *group,
 int	multi;
 {
 	struct FTAMgroup    ftgs;
-	register struct FTAMgroup  *ftg = &ftgs;
+	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	bzero ((char *) ftg, sizeof *ftg);
 	ftg -> ftg_flags |= FTG_BEGIN | FTG_END;
@@ -511,8 +511,8 @@ int	multi;
 
 	ftg -> ftg_flags |= FTG_SELECT;
 	{
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		fa -> fa_present = FA_FILENAME;
 		fa -> fa_nfile = 0;
@@ -525,8 +525,8 @@ int	multi;
 
 	ftg -> ftg_flags |= FTG_CHATTR;
 	{
-		register struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
-		register struct FTAMattributes *fa = &ftca -> ftca_attrs;
+		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
+		struct FTAMattributes *fa = &ftca -> ftca_attrs;
 
 		fa -> fa_present = FA_ACCOUNT;
 		fa -> fa_account = group;
@@ -544,7 +544,7 @@ int	multi;
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		if (multi && ftse -> ftse_state != FSTATE_SUCCESS)
 			(void) printf ("%s\n", file);
@@ -555,14 +555,14 @@ int	multi;
 	}
 
 	if (ftg -> ftg_flags & FTG_CHATTR) {
-		register struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
+		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
 
 		ftam_diag (ftca -> ftca_diags, ftca -> ftca_ndiag, 1,
 				   ftca -> ftca_action);
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
 
 		ftam_diag (ftde -> ftde_diags, ftde -> ftde_ndiag, 1,
 				   ftde -> ftde_action);
@@ -586,7 +586,7 @@ char  **vec;
 {
 #ifndef	BRIDGE
 	int	    multi;
-	register char  *dir;
+	char  *dir;
 	char    buffer[BUFSIZ];
 #endif
 
@@ -622,9 +622,9 @@ char   *dir;
 int	multi;
 {
 	struct FTAMgroup    ftgs;
-	register struct FTAMgroup  *ftg = &ftgs;
+	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 	struct vfsmap *vf = &vfs[VFS_FDF];
 
 	if (vf -> vf_oid == NULLOID) {
@@ -638,8 +638,8 @@ int	multi;
 
 	ftg -> ftg_flags |= FTG_CREATE;
 	{
-		register struct FTAMcreate *ftce = &ftg -> ftg_create;
-		register struct FTAMattributes *fa = &ftce -> ftce_attrs;
+		struct FTAMcreate *ftce = &ftg -> ftg_create;
+		struct FTAMattributes *fa = &ftce -> ftce_attrs;
 
 		ftce -> ftce_override = FOVER_FAIL;
 
@@ -675,7 +675,7 @@ int	multi;
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_CREATE) {
-		register struct FTAMcreate *ftce = &ftg -> ftg_create;
+		struct FTAMcreate *ftce = &ftg -> ftg_create;
 
 		if (multi && ftce -> ftce_state != FSTATE_SUCCESS)
 			(void) printf ("%s\n", dir);
@@ -686,7 +686,7 @@ int	multi;
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
 
 		ftam_diag (ftde -> ftde_diags, ftde -> ftde_ndiag, 1,
 				   ftde -> ftde_action);

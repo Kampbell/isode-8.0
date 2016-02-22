@@ -41,12 +41,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapmisc.c,v 9.0 1992/
 int	TSelectOctets (sd, nbytes, td)
 int	sd;
 long   *nbytes;
-register struct TSAPdisconnect *td;
+struct TSAPdisconnect *td;
 {
 	int	    result;
 	long    value;
 	SBV	    smask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	missingP (nbytes);
 	missingP (td);
@@ -89,10 +89,10 @@ register struct TSAPdisconnect *td;
 /*    get TSAPs */
 
 int 
-TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, register struct TSAPdisconnect *td)
+TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td)
 {
 	SBV	    smask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	missingP (td);
 
@@ -114,10 +114,10 @@ TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding,
 
 #ifdef	MGMT
 int 
-TSetManager (int sd, IFP fnx, register struct TSAPdisconnect *td)
+TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td)
 {
 	SBV	    smask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	missingP (td);
 

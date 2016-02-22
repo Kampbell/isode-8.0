@@ -42,17 +42,17 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 			result,
 			result2;
 	char   *base;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	PE	    pe = NULLPE;
 	struct SSAPref ref;
 	struct SSAPstart    sss;
-	register struct SSAPstart *ss = &sss;
+	struct SSAPstart *ss = &sss;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 	struct type_PS_CP__type *cp;
-	register struct element_PS_0 *cp_normal;
-	register struct type_PS_CPR__type *cpr;
+	struct element_PS_0 *cp_normal;
+	struct type_PS_CPR__type *cpr;
 
 	isodetailor (NULLCP, 0);
 
@@ -150,9 +150,9 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 		goto congest;
 
 	{
-		register struct PSAPcontext *pp,
+		struct PSAPcontext *pp,
 				*qp;
-		register struct type_PS_Definition__list *lp;
+		struct type_PS_Definition__list *lp;
 
 		i = 0;
 		for (lp = cp_normal -> context__list,
@@ -160,8 +160,8 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 				qp = pb -> pb_contexts;
 				lp;
 				lp = lp -> next, pp++, qp++, i++) {
-			register struct element_PS_6 *pctx = lp -> element_PS_5;
-			register struct element_PS_7 *atn;
+			struct element_PS_6 *pctx = lp -> element_PS_5;
+			struct element_PS_7 *atn;
 
 			pp -> pc_id = qp -> pc_id = pctx -> identifier;
 
@@ -193,7 +193,7 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 
 	ps -> ps_defctxresult = PC_ACCEPT;
 	if (cp_normal -> default__context) {
-		register struct PSAPcontext *pp;
+		struct PSAPcontext *pp;
 		oid_free (pb -> pb_asn);
 		pb -> pb_asn = cp_normal -> default__context -> abstract__syntax;
 		cp_normal -> default__context -> abstract__syntax = NULLOID;
@@ -219,7 +219,7 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 	pb -> pb_result = ps -> ps_defctxresult;
 
 	if (cp_normal -> presentation__fu) {
-		register struct pair *pp;
+		struct pair *pp;
 
 		if (!(pb -> pb_srequirements & SR_TYPEDATA)) {
 			(void) bit_off (cp_normal -> presentation__fu,
@@ -235,7 +235,7 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi)
 	ps -> ps_prequirements = (pb -> pb_prequirements &= PR_MYREQUIRE);
 
 	if (cp_normal -> session__fu) {
-		register struct pair *pp;
+		struct pair *pp;
 
 		for (pp = sreq_pairs; pp -> p_mask; pp++)
 			if (bit_test (cp_normal -> session__fu, pp -> p_bitno) == 1)
@@ -278,7 +278,7 @@ congest:
 											  PE_CLASS_CONT, 0));
 			}
 		} else {
-			register struct element_PS_2 *cpr_normal;
+			struct element_PS_2 *cpr_normal;
 
 			cpr -> offset = type_PS_CPR__type_normal__mode;
 			if (cpr_normal = (struct element_PS_2 *)
@@ -332,14 +332,14 @@ PConnResponse (int sd, int status, struct PSAPaddr *responding, struct PSAPctxli
 			result2;
 	char   *base;
 	PE	    pe;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	struct type_PS_CPA__type *cpa;
-	register struct element_PS_1 *cpa_normal;
+	struct element_PS_1 *cpa_normal;
 	struct type_PS_CPR__type *cpr;
-	register struct element_PS_2 *cpr_normal;
+	struct element_PS_2 *cpr_normal;
 
 	if ((pb = findpblk (sd)) == NULL || (pb -> pb_flags & PB_CONN))
 		return psaplose (pi, PC_PARAMETER, NULLCP,
@@ -358,7 +358,7 @@ PConnResponse (int sd, int status, struct PSAPaddr *responding, struct PSAPctxli
 	}
 
 	if (ctxlist) {
-		register struct PSAPcontext *pp,
+		struct PSAPcontext *pp,
 				*qp;
 
 		if (ctxlist -> pc_nctx != pb -> pb_ncontext)
@@ -461,7 +461,7 @@ no_mem:
 	}
 
 	{
-		register struct qbuf *qb = NULL;
+		struct qbuf *qb = NULL;
 
 		if (responding
 				&& responding -> pa_selectlen > 0
@@ -476,8 +476,8 @@ no_mem:
 	}
 
 	if (pb -> pb_ncontext > 0) {
-		register struct PSAPcontext *qp;
-		register struct type_PS_Definition__result__list *cd,
+		struct PSAPcontext *qp;
+		struct type_PS_Definition__result__list *cd,
 				**cp;
 
 		if (status == PC_ACCEPT)
@@ -548,7 +548,7 @@ no_mem:
 		i = pb -> pb_ncontext - 1;
 		for (qp = pb -> pb_contexts + i; i >= 0; i--, qp--)
 			if (qp -> pc_result != PC_ACCEPT) {
-				register struct PSAPcontext *qqp;
+				struct PSAPcontext *qqp;
 
 				qqp = pb -> pb_contexts + --pb -> pb_ncontext;
 				if (qp -> pc_asn) {
@@ -569,7 +569,7 @@ no_mem:
 		pb -> pb_srequirements |= SR_TYPEDATA;
 	if (status == PC_ACCEPT) {
 		if ((pb -> pb_prequirements &= prequirements) != PR_MYREQUIRE) {
-			register struct pair *pp;
+			struct pair *pp;
 
 			if ((cpa_normal -> presentation__fu =
 						prim2bit (pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
@@ -588,7 +588,7 @@ no_mem:
 
 		if ((pb -> pb_urequirements &= srequirements)
 				!= pb -> pb_srequirements) {
-			register struct pair *pp;
+			struct pair *pp;
 
 			if ((cpa_normal -> session__fu = prim2bit (pe_alloc (PE_CLASS_UNIV,
 											 PE_FORM_PRIM,

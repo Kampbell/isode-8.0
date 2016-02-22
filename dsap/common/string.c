@@ -441,7 +441,7 @@ PE pe;
 }
 
 static char * quotechar (a,b)
-register char a, *b;
+char a, *b;
 {
 #ifdef NICER_ESCAPES
 #define CONT_CHAR	'\\'
@@ -488,7 +488,7 @@ register char a, *b;
 }
 
 static char * unquotechar (a,b)
-register char *a, *b;
+char *a, *b;
 {
 	int val;
 
@@ -540,7 +540,7 @@ register char *a, *b;
 
 
 check_print_string (str)
-register char * str;
+char * str;
 {
 
 	for (; *str != 0; str++) {
@@ -575,11 +575,11 @@ register char * str;
 
 struct qbuf *
 r_octparse (str)
-register char * str;
+char * str;
 {
 	static char 	*buf;
 	static int 		buflen = 0;
-	register char	*ptr;
+	char	*ptr;
 	int			left;
 	int			curlen;
 
@@ -615,11 +615,11 @@ register char * str;
 }
 
 char * octparse (str)
-register char * str;
+char * str;
 {
 	char buffer [BUFSIZ];
-	register char * ptr=buffer;
-	register int i;
+	char * ptr=buffer;
+	int i;
 
 	for (i=0; *str != 0; str++,i++) {
 		if (*str != '\\')
@@ -706,7 +706,7 @@ char * str;
 char * cryptstring (str)
 char * str;
 {
-	register char * p;
+	char * p;
 	/* This is a SIMPLE HACK to prevent passwords being revealed */
 	/* at a glance.  It buys virtually no extra security */
 
@@ -739,7 +739,7 @@ char *x;
 }
 
 pstrcmp (a,b)
-register char * a, *b;
+char * a, *b;
 {
 	while (*a == *b) {
 		if (*a++ == NULL)
@@ -755,7 +755,7 @@ register char * a, *b;
 }
 
 static tpstrcmp (a,b)
-register char *a, *b;
+char *a, *b;
 {
 	if (*a == T61_MARK)
 		a++;
@@ -775,7 +775,7 @@ register char *a, *b;
 }
 
 static tlexequ (a,b)
-register char *a, *b;
+char *a, *b;
 {
 
 	/* lexequ with T.61 knowledge */
@@ -811,7 +811,7 @@ telcmp (a, b)
 char   *a,
 	   *b;
 {
-	register char c1,
+	char c1,
 			 c2;
 
 	for (;;) {
@@ -852,7 +852,7 @@ char   *a,
 	   *b;
 int	len;
 {
-	register char c1,
+	char c1,
 			 c2;
 
 	for (;;) {
@@ -933,12 +933,12 @@ int format;
 {
 	char 	buf[MAXLINE + BUFSLOP];
 	register	char *str;
-	register 	char *ptr = buf;
+		char *ptr = buf;
 
-	register char	*pend = buf + MAXLINE;
-	register char	*optr = buf;
-	register int	cnt;
-	register struct qbuf *qp;
+	char	*pend = buf + MAXLINE;
+	char	*optr = buf;
+	int	cnt;
+	struct qbuf *qp;
 
 
 	for (qp = qb->qb_forw; qp != qb; qp = qp->qb_forw) {
@@ -1046,9 +1046,9 @@ qb_cmp(qb1, qb2)
 struct	qbuf	*qb1, *qb2;
 {
 	struct	qbuf	*qp1, *qp2;
-	register char	*po1, *po2;
-	register int	len1, len2;
-	register int	i;
+	char	*po1, *po2;
+	int	len1, len2;
+	int	i;
 
 	if (qb1 == NULL && qb2 == NULL)
 		return (0);
@@ -1109,9 +1109,9 @@ struct	qbuf	*qb1, *qb2;
  * len characters of string1 are greater, equal or less than string2
  */
 nbcmp(string1, string2, len)
-register char	*string1;
-register char	*string2;
-register int 	len;
+char	*string1;
+char	*string2;
+int 	len;
 {
 	while (len-- > 0) {
 		if (*string1++ == *string2++)
@@ -1172,10 +1172,10 @@ int	len;	/* number of characters in string */
 {
 	char 	buf[MAXLINE + BUFSLOP];
 	register	char *str;
-	register 	char *ptr = buf;
+		char *ptr = buf;
 
-	register char	*pend = buf + MAXLINE;
-	register char	*optr = buf;
+	char	*pend = buf + MAXLINE;
+	char	*optr = buf;
 
 
 	for (str = p; len > 0; len--, str++) {
@@ -1230,8 +1230,8 @@ int	*plen;		/* address of integer we set the length to */
 {
 	static char 	*buf;
 	static int 		buflen = 0;
-	register char	*str;
-	register char	*ptr;
+	char	*str;
+	char	*ptr;
 	int			left;
 	int			curlen;
 

@@ -154,8 +154,8 @@ char    **argv;
 #endif
 
 	{
-		register int	i;
-		register char  *cp,
+		int	i;
+		char  *cp,
 				 **ap,
 				 **sp;
 
@@ -470,7 +470,7 @@ int secs;
 #endif
 		int	    fd;
 		struct stat st;
-		register struct connection *cn;
+		struct connection *cn;
 		time_t  now;
 
 #ifndef	BSD42
@@ -536,7 +536,7 @@ int secs;
 #ifdef SBRK_DEBUG
 		unsigned proc_size;
 #endif
-		register struct connection *cn;
+		struct connection *cn;
 
 #ifndef	BSD42
 		(void) signal (SIGUSR2, list_status2);
@@ -897,7 +897,7 @@ fork_ok:
 	char          ***argv;
 	int	fn;
 	{
-		register char   *ap;
+		char   *ap;
 		char  **argptr;
 		static char   *args[10];
 		static int     argp;

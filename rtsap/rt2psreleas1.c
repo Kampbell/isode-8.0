@@ -40,7 +40,7 @@ RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct Rt
 {
 	SBV	    smask;
 	int	    result;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	missingP (acr);
 	missingP (rti);
@@ -59,12 +59,12 @@ RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct Rt
 /*  */
 
 static int 
-RtCloseRequestAux (register struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, register struct RtSAPindication *rti)
+RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti)
 {
 	int	    result;
 	struct AcSAPindication acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 
 	if (!(acb -> acb_flags & ACB_ACS))
 		return rtsaplose (rti, RTS_OPERATION, NULLCP,

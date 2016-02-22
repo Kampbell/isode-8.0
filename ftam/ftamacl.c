@@ -33,14 +33,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamacl.c,v 9.0 1992/0
 /*  */
 
 struct type_FTAM_Access__Control__List *acl2fpm (fsb, fe, fti)
-register struct ftamblk *fsb;
-register struct FTAMacelement *fe;
+struct ftamblk *fsb;
+struct FTAMacelement *fe;
 struct FTAMindication *fti;
 {
 	struct type_FTAM_Access__Control__List *fpmp;
-	register struct type_FTAM_Access__Control__List  *fpm,
+	struct type_FTAM_Access__Control__List  *fpm,
 			**fpc;
-	register struct type_FTAM_Access__Control__Element *ace;
+	struct type_FTAM_Access__Control__Element *ace;
 
 	fpmp = NULL, fpc = &fpmp;
 	for (; fe; fe = fe -> fe_next) {
@@ -106,14 +106,14 @@ out:
 /*  */
 
 int	fpm2acl (fsb, fpm, fe, fti)
-register struct ftamblk *fsb;
-register struct type_FTAM_Access__Control__List *fpm;
-register struct FTAMacelement **fe;
+struct ftamblk *fsb;
+struct type_FTAM_Access__Control__List *fpm;
+struct FTAMacelement **fe;
 struct FTAMindication *fti;
 {
-	register struct FTAMacelement *fc,
+	struct FTAMacelement *fc,
 			**fl;
-	register struct type_FTAM_Access__Control__Element *ace;
+	struct type_FTAM_Access__Control__Element *ace;
 
 	*(fl = fe) = NULL;
 

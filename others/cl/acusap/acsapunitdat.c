@@ -89,12 +89,12 @@ struct  AcSAPindication *aci;
 	SBV     smask;
 	int     result;
 	PE	    pe;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 	struct PSAPcontext *pp;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
-	register struct type_ACS_AUDT__apdu *pdu;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
+	struct type_ACS_AUDT__apdu *pdu;
 
 	isodetailor ("acsap");
 
@@ -215,12 +215,12 @@ struct  AcSAPindication *aci;
 {
 	SBV     smask;
 	int     result;
-	register int    i;
-	register struct assocblk *acb;
+	int    i;
+	struct assocblk *acb;
 	struct PSAPcontext *pp;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
 
 	isodetailor ("acsap");
 
@@ -324,10 +324,10 @@ struct  AcSAPindication *aci;
 {
 	SBV     smask;
 	int     result;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
 
 	missingP (calledaddr);
 	missingP (aci);
@@ -385,14 +385,14 @@ struct  AcSAPindication *aci;
 {
 	SBV     smask;
 	int     result;
-	register int    i;
+	int    i;
 	PE	    pe;
-	register struct assocblk *acb;
-	register struct PSAPcontext *pp;
+	struct assocblk *acb;
+	struct PSAPcontext *pp;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
-	register struct type_ACS_AUDT__apdu *pdu;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
+	struct type_ACS_AUDT__apdu *pdu;
 
 
 	missingP (data);
@@ -482,13 +482,13 @@ AcUnitDataRead (
 	SBV     smask;
 	int     result;
 	int     ctx;
-	register int    i;
+	int    i;
 	PE	    pe;
-	register struct assocblk *acb;
-	register struct PuSAPstart *ps;
+	struct assocblk *acb;
+	struct PuSAPstart *ps;
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 	struct type_ACS_AUDT__apdu *pdu;
 
 
@@ -597,10 +597,10 @@ AcUnitDataUnbind (
 {
 	SBV     smask;
 	int     result;
-	register struct assocblk  *acb;
+	struct assocblk  *acb;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 
 	missingP (aci);
 
@@ -649,10 +649,10 @@ AcuSave (
 )
 {
 	int     result;
-	register struct assocblk  *acb;
+	struct assocblk  *acb;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 
 	isodetailor ("acsap");
 
@@ -694,7 +694,7 @@ AEI	callingtitle,
 struct assocblk *acb;
 struct  AcSAPindication *aci;
 {
-	register AEI    pi, po;
+	AEI    pi, po;
 
 	if ( !callingtitle )
 		acb -> acb_callingtitle = NULLAEI;
@@ -790,14 +790,14 @@ ctx2block (
 /*---------------------------------------------------------------------------*/
     struct PSAPctxlist *ctxlist,
     struct assocblk *acb,
-    register struct PSAPcontext **ppcx,
+    struct PSAPcontext **ppcx,
     struct AcSAPindication *aci
 )
 {
-	register int ctx;
-	register int i;
-	register OID oid;
-	register struct PSAPcontext *pcx;
+	int ctx;
+	int i;
+	OID oid;
+	struct PSAPcontext *pcx;
 
 	acb -> acb_audtpci = NULLOID;
 	if (ctxlist -> pc_nctx >= NPCTX)
@@ -862,12 +862,12 @@ validaudtctx (
 /*---------------------------------------------------------------------------*/
     int ctx,
     struct assocblk *acb,
-    register struct PuSAPstart *ps,
+    struct PuSAPstart *ps,
     struct AcSAPindication *aci
 )
 {
-	register int i;
-	register struct PSAPcontext *pp;
+	int i;
+	struct PSAPcontext *pp;
 
 	/*  checks p-context on AUDT indication equals local AUDT PCI context */
 	/*  where AUDT PCI = ACSE PCI since HULA put AUDT in with ACSE */

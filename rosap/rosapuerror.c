@@ -43,7 +43,7 @@ RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (roi);
 
@@ -61,9 +61,9 @@ RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct
 /*  */
 
 static int 
-RoErrorRequestAux (register struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi)
+RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi)
 {
-	register PE	pe,
+	PE	pe,
 			 p;
 
 	if ((acb -> acb_flags & ACB_INIT) && (acb -> acb_flags & ACB_ROS))

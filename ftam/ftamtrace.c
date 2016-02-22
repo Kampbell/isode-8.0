@@ -75,7 +75,7 @@ IFP	tracing;
 struct FTAMindication *fti;
 {
 	SBV	    smask;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	missingP (fti);
 

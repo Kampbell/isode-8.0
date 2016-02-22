@@ -118,7 +118,7 @@ caddr_t	in;
 struct RoSAPindication *roi;
 {
 	char	*str;
-	register struct type_Idist_InitDir *arg =
+	struct type_Idist_InitDir *arg =
 		(struct type_Idist_InitDir *) in;
 
 	if (rox -> rox_nolinked == 0) {
@@ -158,7 +158,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_Idist_FileSpec *arg =
+	struct type_Idist_FileSpec *arg =
 		(struct type_Idist_FileSpec *) in;
 
 	if (rox -> rox_nolinked == 0) {
@@ -223,9 +223,9 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_Idist_Data *arg =
+	struct type_Idist_Data *arg =
 		(struct type_Idist_Data *) in;
-	register struct qbuf *qb;
+	struct qbuf *qb;
 
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_NOTICE, NULLCP,
@@ -256,7 +256,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_UNIV_IA5String *arg =
+	struct type_UNIV_IA5String *arg =
 		(struct type_UNIV_IA5String *) in;
 	struct type_Idist_QueryResult *qr;
 	char	*str;
@@ -295,7 +295,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_Idist_TermStatus *arg =
+	struct type_Idist_TermStatus *arg =
 		(struct type_Idist_TermStatus *) in;
 
 	if (rox -> rox_nolinked == 0) {
@@ -357,7 +357,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_UNIV_IA5String *arg =
+	struct type_UNIV_IA5String *arg =
 		(struct type_UNIV_IA5String *) in;
 	int	result;
 	char	*str;
@@ -396,7 +396,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_UNIV_IA5String *arg =
+	struct type_UNIV_IA5String *arg =
 		(struct type_UNIV_IA5String *) in;
 	int	result;
 	char	*str;

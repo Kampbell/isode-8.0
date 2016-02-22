@@ -42,7 +42,7 @@ RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPi
 	SBV	    smask;
 	int     result;
 	PElementID id;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	switch (reason) {
 	case ROS_IP_DUP: 	/* Invoke Problem */
@@ -97,9 +97,9 @@ RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPi
 /*  */
 
 int 
-RoURejectRequestAux (register struct assocblk *acb, int *invokeID, int reason, int id, int priority, struct RoSAPindication *roi)
+RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, int id, int priority, struct RoSAPindication *roi)
 {
-	register PE pe,
+	PE pe,
 			 p;
 
 	if (id == REJECT_COMPLETE)

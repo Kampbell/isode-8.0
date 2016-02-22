@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/lexequ.c,v 9.0 1992/
 /*  */
 
 int 
-lexequ (register char *str1, register char *str2)
+lexequ (char *str1, char *str2)
 {
 	if (str1 == NULL)
 		if (str2 == NULL)

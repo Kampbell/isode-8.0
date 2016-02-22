@@ -215,8 +215,8 @@ char *oldbuf;
 	OsCommPtr oc = (OsCommPtr)who->osPrivate;
 	int client = oc->fd;
 	int result, gotnow, needed;
-	register ConnectionInput *pBuff;
-	register xReq *request;
+	ConnectionInput *pBuff;
+	xReq *request;
 
 	/* ignore oldbuf, just assume we're done with prev. buffer */
 
@@ -556,9 +556,9 @@ outOfMem:
 
 void 
 FlushAllOutput (void) {
-	register int index, base, mask;
+	int index, base, mask;
 	OsCommPtr oc;
-	register ClientPtr client;
+	ClientPtr client;
 
 	if (! NewOutputPending)
 		return;

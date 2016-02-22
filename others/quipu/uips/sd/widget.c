@@ -134,7 +134,7 @@ int posnwidgets(thesewdgts, starty)
 int	starty;
 WIDGET	thesewdgts[];
 {
-	register int	cnt = 0, x = 0, hght = WDGTHGHT;
+	int	cnt = 0, x = 0, hght = WDGTHGHT;
 
 	/* If no explicit position provided, put on the next level */
 	if (starty < 0)
@@ -183,8 +183,8 @@ WIDGET	thesewdgts[];
 void makewidgets(wdgts)
 WIDGET	wdgts[];
 {
-	register int		cnt = 0;
-	register WIDGET		*wdgt;
+	int		cnt = 0;
+	WIDGET		*wdgt;
 
 	/* Now try to make, box and label the widget windows */
 	while (wdgts[cnt].type != FINISH) {
@@ -203,7 +203,7 @@ int	currx;
 WIDGET	*wdgt;
 {
 	char	expand;
-	register int	len = -1, cnt = -1;
+	int	len = -1, cnt = -1;
 
 	if (expand = (wdgt->wdth == EXPAND))
 		wdgt->wdth = COLS - currx;
@@ -251,7 +251,7 @@ WIDGET	*wdgt;
 void killwidgets(thesewdgts)
 WIDGET	*thesewdgts;
 {
-	register int	cnt = 0;
+	int	cnt = 0;
 
 	while (thesewdgts[cnt].type != FINISH)
 		if (thesewdgts[cnt].type != DUMMY) {
@@ -306,7 +306,7 @@ activeindex (int indx)
 /* Refresh each of the active widgets and the current text window */
 void 
 redraw (void) {
-	register int	i;
+	int	i;
 
 #ifndef QUICKREFRESH
 	clearok(curscr,TRUE);
@@ -331,9 +331,9 @@ WIDGET	*thesewdgts;
 /* Draw a perimeter box around WDGT, with horizontal char XCH etc */
 void boxwdgt(wdgt, xch, ych)
 char	xch, ych;
-register WIDGET	*wdgt;
+WIDGET	*wdgt;
 {
-	register int x, y;
+	int x, y;
 
 	mvwaddch(wdgt->wndw, 0, 0, '.');
 	for (x = 1; x < wdgt->wdth-1; x++)
@@ -419,7 +419,7 @@ printbar (int list_size, int first, int display_num)
 void printlabel(wdgt)
 WIDGET	*wdgt;
 {
-	register int	x, labellen, wdgtlen;
+	int	x, labellen, wdgtlen;
 
 	labellen = strlen(wdgt->label);
 	wdgtlen = wdgt->wdth - 2;
@@ -441,8 +441,8 @@ WIDGET	*wdgt;
 void printdialog(wdgt)
 WIDGET	*wdgt;
 {
-	register int	length, maxlen;
-	register char	*showptr;
+	int	length, maxlen;
+	char	*showptr;
 
 	(void) wclear(wdgt->wndw);
 	boxwdgt(wdgt, '-', '|');
@@ -487,7 +487,7 @@ WIDGET	*wdgt;
 /* Loop forever, calling widget callback functions when activated */
 void 
 interact (void) {
-	register int	ch, indx;
+	int	ch, indx;
 	void		int_quit(), jumpback();
 
 	for (;;) {
@@ -523,8 +523,8 @@ interact (void) {
 int 
 findactiveinput (int ch)
 {
-	register int	indx;
-	register WIDGET	*wdgts;
+	int	indx;
+	WIDGET	*wdgts;
 
 	if (ch > 'z' || ch < 'a') {
 		switch (ch) {
@@ -606,7 +606,7 @@ WIDGET *getwidget(wdgts, callch)
 int	callch;
 WIDGET	wdgts[];
 {
-	register int	indx;
+	int	indx;
 
 	indx = getwidgetindex(wdgts, callch);
 	if (indx >= 0) return(&(wdgts[indx]));
@@ -618,7 +618,7 @@ int getwidgetindex(wdgts, callch)
 int	callch;
 WIDGET	wdgts[];
 {
-	register int	cnt = 0;
+	int	cnt = 0;
 
 	while (wdgts[cnt].type != FINISH) {
 		if (callch == wdgts[cnt].callch)  break;
@@ -634,9 +634,9 @@ WIDGET	wdgts[];
 void dialog(wdgt)
 WIDGET	*wdgt;
 {
-	register int		i, length, labellen, maxlen;
-	register char		ch, *endptr, *showptr;
-	register char		*blanks;
+	int		i, length, labellen, maxlen;
+	char		ch, *endptr, *showptr;
+	char		*blanks;
 
 	labellen = strlen(wdgt->label);	/* The length of the prompt string  */
 	length = strlen(wdgt->dstr);	/* The length of the current string */
@@ -866,8 +866,8 @@ char	label[];
 /* Try to locate the bottom of the last set of widgets displayed */
 int 
 lowesty (void) {
-	register int		cnt = 0;
-	register WIDGET		*wdgts;
+	int		cnt = 0;
+	WIDGET		*wdgts;
 
 	if (activelist.count <= 0)  return(0);
 

@@ -41,9 +41,9 @@ PMinSyncRequest (int sd, int type, long *ssn, PE *data, int ndata, struct PSAPin
 			result;
 	char   *base,
 		   *realbase;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	toomuchP (data, ndata, NPDATA, "minorsync");
 	missingP (pi);

@@ -95,9 +95,9 @@ str2spkt (char *buffer)
 {
 	int	    cc;
 	char    packet[CONNECT_MAX + BUFSIZ];
-	register struct ssapkt *s;
+	struct ssapkt *s;
 	struct qbuf qbs;
-	register struct qbuf *qb = &qbs,
+	struct qbuf *qb = &qbs,
 								  *qp;
 
 	bzero ((char *) qb, sizeof *qb);

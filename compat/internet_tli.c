@@ -110,7 +110,7 @@ int	start_tcp_client (sock, priv)
 struct sockaddr_in *sock;
 int	priv;
 {
-	register int    port;
+	int    port;
 	int	    sd;
 
 	if ((sd = t_open (DEVTLI, O_RDWR, NULL)) == NOTOK)

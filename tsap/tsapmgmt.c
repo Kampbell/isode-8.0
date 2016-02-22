@@ -55,7 +55,7 @@ va_dcl {
 	result;
 	struct TSAPaddr *b;
 	unsigned int type;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	va_list ap;
 
 	va_start (ap);
@@ -176,9 +176,9 @@ TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b)
 static int 
 ManInit (void) {
 	struct sockaddr_in sin;
-	register struct sockaddr_in *sock = &sin;
-	register struct servent *sp;
-	register struct hostent *hp;
+	struct sockaddr_in *sock = &sin;
+	struct servent *sp;
+	struct hostent *hp;
 
 	if ((sp = getservbyname ("manager", "udp")) == NULL
 			|| (hp = gethostbyname ("localhost")) == NULL)

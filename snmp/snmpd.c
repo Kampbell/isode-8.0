@@ -277,9 +277,9 @@ char  **argv,
 	int	    failed,
 			listening,
 			nfds;
-	register struct TSAPaddr  *ta;
+	struct TSAPaddr  *ta;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 
 	arginit (argv);
 	envinit ();
@@ -296,7 +296,7 @@ char  **argv,
 			goto do_clts;
 #endif
 		} else {
-			register struct NSAPaddr *na = ta -> ta_addrs;
+			struct NSAPaddr *na = ta -> ta_addrs;
 
 			switch (na -> na_stack) {
 			case NA_TCP:
@@ -305,7 +305,7 @@ char  **argv,
 #ifdef	TCP
 				{
 					struct sockaddr_in lo_socket;
-					register struct sockaddr_in *lsock = &lo_socket;
+					struct sockaddr_in *lsock = &lo_socket;
 
 					bzero ((char *) lsock, sizeof *lsock);
 					lsock -> sin_family = AF_INET;
@@ -351,7 +351,7 @@ do_clts:
 				;
 				{
 					union sockaddr_osi lo_socket;
-					register union sockaddr_osi *lsock = &lo_socket;
+					union sockaddr_osi *lsock = &lo_socket;
 
 					(void) gen2tp4 (ta, lsock);
 					if ((clts = start_clts_server (lsock, 0, 0, 0))
@@ -404,9 +404,9 @@ do_clts:
 #ifdef	SMUX
 	{
 		struct sockaddr_in lo_socket;
-		register struct sockaddr_in *lsock = &lo_socket;
-		register struct servent *sp;
-		register struct smuxReserved *sr;
+		struct sockaddr_in *lsock = &lo_socket;
+		struct servent *sp;
+		struct smuxReserved *sr;
 		OT	ot;
 
 		PHead -> pb_forw = PHead -> pb_back = PHead;
@@ -443,7 +443,7 @@ do_clts:
 			secs;
 #ifdef	COTS
 		struct timeval tvs;
-		register struct timeval *tv = &tvs;
+		struct timeval *tv = &tvs;
 #endif
 		int	vecp;
 		fd_set  rfds;
@@ -565,7 +565,7 @@ do_clts:
 #endif
 #ifdef	SMUX
 			{
-				register struct smuxPeer *pb,
+				struct smuxPeer *pb,
 						*qb;
 
 				if (smux != NOTOK)
@@ -604,7 +604,7 @@ do_clts:
 /*  */
 
 static void  ts_advise (td, code, event)
-register struct TSAPdisconnect *td;
+struct TSAPdisconnect *td;
 int	code;
 char   *event;
 {
@@ -629,9 +629,9 @@ int	pd;
 	int	    fd;
 	char   *cp;
 	struct sockaddr_in in_socket;
-	register struct sockaddr_in *isock = &in_socket;
+	struct sockaddr_in *isock = &in_socket;
 	struct NSAPaddr nas;
-	register struct NSAPaddr *na = &nas;
+	struct NSAPaddr *na = &nas;
 
 	if ((fd = join_udp_client (pd, isock)) == NOTOK) {
 		if (errno == EWOULDBLOCK)
@@ -668,9 +668,9 @@ int	pd;
 	int	    fd;
 	char   *cp;
 	union sockaddr_osi in_socket;
-	register union sockaddr_osi *isock = &in_socket;
+	union sockaddr_osi *isock = &in_socket;
 	struct TSAPaddr tas;
-	register struct TSAPaddr *ta = &tas;
+	struct TSAPaddr *ta = &tas;
 
 	if ((fd = join_clts_client (pd, isock)) == NOTOK) {
 		if (errno == EWOULDBLOCK)
@@ -700,9 +700,9 @@ int	vecp;
 char  **vec;
 {
 	struct TSAPstart tss;
-	register struct TSAPstart *ts = &tss;
+	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 
 	if (TInit (vecp, vec, ts, td) == NOTOK) {
 		ts_advise (td, LLOG_EXCEPTIONS, "T-CONNECT.INDICATION");
@@ -847,7 +847,7 @@ out:
 	if (msg) {
 		/* BEGIN MOBY PEPSY HACK... */
 
-		register struct type_SNMP_VarBindList *vp =
+		struct type_SNMP_VarBindList *vp =
 					msg -> data -> un.get__request -> variable__bindings;
 
 		free_SNMP_VarBindList (vp);
@@ -873,7 +873,7 @@ out:
 #ifndef	SNMPT
 static int  process (ps, msg, na, size)
 PS	ps;
-register struct type_SNMP_Message *msg;
+struct type_SNMP_Message *msg;
 struct NSAPaddr *na;
 int	size;
 {
@@ -943,10 +943,10 @@ int	size;
 	int	    idx,
 			offset;
 	struct view *vu = comm -> c_view;
-	register struct type_SNMP_PDUs *pdu = msg -> data;
-	register struct type_SNMP_VarBindList *vp;
+	struct type_SNMP_PDUs *pdu = msg -> data;
+	struct type_SNMP_VarBindList *vp;
 	struct type_SNMP_VarBindList *op = NULL;
-	register struct type_SNMP_GetResponse__PDU *parm = pdu -> un.get__response;
+	struct type_SNMP_GetResponse__PDU *parm = pdu -> un.get__response;
 
 	idx = 0;
 	switch (pdu -> offset) {
@@ -1010,14 +1010,14 @@ bad_operation:
 	pdu -> offset = type_SNMP_PDUs_get__response;
 
 	{
-		register struct type_SNMP_VarBindList **opp;
+		struct type_SNMP_VarBindList **opp;
 
 		opp = &op;
 		for (vp = msg -> data -> un.get__request -> variable__bindings;
 				vp;
 				vp = vp -> next) {
-			register struct type_SNMP_VarBindList *bind;
-			register struct type_SNMP_VarBind *v;
+			struct type_SNMP_VarBindList *bind;
+			struct type_SNMP_VarBind *v;
 
 			if ((bind = (struct type_SNMP_VarBindList *)
 						calloc (1, sizeof *bind)) == NULL) {
@@ -1142,18 +1142,18 @@ struct view *vu;
 	int	    idx,
 			status;
 	object_instance ois;
-	register struct type_SNMP_PDUs *pdu = msg -> data;
-	register struct type_SNMP_VarBindList *vp;
-	register struct type_SNMP_GetResponse__PDU *parm = pdu -> un.get__response;
+	struct type_SNMP_PDUs *pdu = msg -> data;
+	struct type_SNMP_VarBindList *vp;
+	struct type_SNMP_GetResponse__PDU *parm = pdu -> un.get__response;
 	IFP	    method;
 
 	idx = 0;
 	for (vp = msg -> data -> un.get__request -> variable__bindings;
 			vp;
 			vp = vp -> next) {
-		register OI	oi;
-		register OT	ot;
-		register struct type_SNMP_VarBind *v = vp -> VarBind;
+		OI	oi;
+		OT	ot;
+		struct type_SNMP_VarBind *v = vp -> VarBind;
 
 		idx++;
 
@@ -1264,9 +1264,9 @@ get_next:
 
 static	gc_set () {
 #ifdef	SMUX
-	register struct smuxPeer *pb,
+	struct smuxPeer *pb,
 			*qb;
-	register struct smuxTree *tb,
+	struct smuxTree *tb,
 			*ub;
 
 	for (pb = PHead -> pb_forw; pb != PHead; pb = qb) {
@@ -1295,8 +1295,8 @@ struct type_SNMP_Message *msg;
 struct community *comm;
 {
 	int	    result;
-	register struct view *v = comm -> c_view;
-	register struct proxyque *pq;
+	struct view *v = comm -> c_view;
+	struct proxyque *pq;
 	PE	    pe;
 	PS	    ps;
 
@@ -1306,7 +1306,7 @@ struct community *comm;
 		return NOTOK;
 	}
 	if (pqs >= NPQ) {
-		register struct proxyque *qp;
+		struct proxyque *qp;
 
 		for (qp = (pq = pips) + NPQ; pq < qp; pq++)
 			if (pq -> pq_age < quantum) {
@@ -1382,7 +1382,7 @@ out:
 	;
 	msg -> community = NULL;
 	if (result == NOTOK) {
-		register struct proxyque *qp = pips + --pqs;
+		struct proxyque *qp = pips + --pqs;
 
 		if (pq -> pq_closefnx) {
 			ps_free (pq -> pq_ps);
@@ -1404,7 +1404,7 @@ static int  proxy2 (msg)
 struct type_SNMP_Message *msg;
 {
 	integer  request;
-	register struct proxyque *pq,
+	struct proxyque *pq,
 			*qp;
 	PE	    pe;
 
@@ -1460,7 +1460,7 @@ out:
 static	proxy_clear (fd)
 int	fd;
 {
-	register struct proxyque *pq,
+	struct proxyque *pq,
 			*qp;
 
 again:
@@ -1491,8 +1491,8 @@ again:
 static int  start_smux () {
 	int	    fd;
 	struct sockaddr_in in_socket;
-	register struct sockaddr_in *isock = &in_socket;
-	register struct smuxPeer *pb;
+	struct sockaddr_in *isock = &in_socket;
+	struct smuxPeer *pb;
 	static int smux_peerno = 0;
 
 	if ((fd = join_tcp_client (smux, isock)) == NOTOK) {
@@ -1548,7 +1548,7 @@ static int  doit_smux (fd)
 int	fd;
 {
 	PE	    pe;
-	register struct smuxPeer *pb;
+	struct smuxPeer *pb;
 	struct type_SNMP_SMUX__PDUs *pdu;
 
 	for (pb = PHead -> pb_forw; pb != PHead; pb = pb -> pb_forw)
@@ -1600,7 +1600,7 @@ out:
 /*  */
 
 static	smux_process (pb, pdu)
-register struct smuxPeer *pb;
+struct smuxPeer *pb;
 struct type_SNMP_SMUX__PDUs *pdu;
 {
 	int	    result = OK;
@@ -1610,9 +1610,9 @@ struct type_SNMP_SMUX__PDUs *pdu;
 		if (pb -> pb_identity)
 			goto unexpected;
 		{
-			register struct type_SNMP_SimpleOpen *simple =
+			struct type_SNMP_SimpleOpen *simple =
 						pdu -> un.simple;
-			register struct smuxEntry *se;
+			struct smuxEntry *se;
 
 			if (simple -> version != int_SNMP_version_version__1) {
 				advise (LLOG_EXCEPTIONS, NULLCP,
@@ -1673,14 +1673,14 @@ struct type_SNMP_SMUX__PDUs *pdu;
 		if (!pb -> pb_identity)
 			goto unexpected;
 		{
-			register struct type_SNMP_RReqPDU *rreq =
+			struct type_SNMP_RReqPDU *rreq =
 						pdu -> un.registerRequest;
 			struct type_SNMP_RRspPDU rrsp;
 			struct type_SNMP_SMUX__PDUs rsp;
-			register struct smuxReserved *sr;
-			register struct smuxTree *tb = NULL;
-			register struct smuxTree *qb;
-			register OID	oid = rreq -> subtree;
+			struct smuxReserved *sr;
+			struct smuxTree *tb = NULL;
+			struct smuxTree *qb;
+			OID	oid = rreq -> subtree;
 			OT	ot = NULLOT;
 			PE	pe;
 
@@ -1816,10 +1816,10 @@ no_dice:
 					if (tb
 							&& rreq -> operation
 							!= int_SNMP_operation_delete) {
-						register int    i;
-						register unsigned int *ip,
+						int    i;
+						unsigned int *ip,
 								 *jp;
-						register struct smuxTree **qpp;
+						struct smuxTree **qpp;
 
 						tb -> tb_subtree = ot;
 
@@ -1883,10 +1883,10 @@ no_dice:
 		{
 			struct qbuf *qb;
 			struct type_SNMP_Message msgs;
-			register struct type_SNMP_Message *msg = &msgs;
+			struct type_SNMP_Message *msg = &msgs;
 			struct type_SNMP_PDUs datas;
-			register struct type_SNMP_PDUs *data = &datas;
-			register struct type_SNMP_Trap__PDU *parm = pdu -> un.trap;
+			struct type_SNMP_PDUs *data = &datas;
+			struct type_SNMP_Trap__PDU *parm = pdu -> un.trap;
 
 			advise (LLOG_NOTICE, NULLCP,
 					"SMUX trap: %d %d (%s)",
@@ -1938,8 +1938,8 @@ unexpected:
 static int  smux_method (pdu, ot, pb, v, offset)
 struct type_SNMP_PDUs *pdu;
 OT	ot;
-register struct smuxPeer *pb;
-register struct type_SNMP_VarBind *v;
+struct smuxPeer *pb;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    status,
@@ -1949,7 +1949,7 @@ int	offset;
 	struct type_SNMP_SMUX__PDUs  req,
 			*rsp;
 	struct type_SNMP_SOutPDU cor;
-	register struct type_SNMP_GetResponse__PDU *get;
+	struct type_SNMP_GetResponse__PDU *get;
 	PE	    pe;
 
 	status = int_SNMP_error__status_noError;
@@ -2083,8 +2083,8 @@ lost_peer_again:
 
 	switch (status = get -> error__status) {
 	case int_SNMP_error__status_noError: {
-		register struct type_SNMP_VarBindList *vp;
-		register struct type_SNMP_VarBind *v2;
+		struct type_SNMP_VarBindList *vp;
+		struct type_SNMP_VarBind *v2;
 
 		if ((vp = get -> variable__bindings) == NULL) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
@@ -2139,9 +2139,9 @@ out:
 /*  */
 
 static	pb_free (pb)
-register struct smuxPeer *pb;
+struct smuxPeer *pb;
 {
-	register struct smuxTree *tb,
+	struct smuxTree *tb,
 			*ub;
 
 	if (pb == NULL)
@@ -2176,9 +2176,9 @@ register struct smuxPeer *pb;
 /*  */
 
 static	tb_free (tb)
-register struct smuxTree *tb;
+struct smuxTree *tb;
 {
-	register struct smuxTree *tp,
+	struct smuxTree *tp,
 			**tpp;
 
 	if (tb == NULL)
@@ -2201,7 +2201,7 @@ register struct smuxTree *tb;
 /*    VIEWS */
 
 static	start_view () {
-	register OT	    ot;
+	OT	    ot;
 
 	if (ot = text2obj ("view"))
 		viewTree = ot -> ot_name;
@@ -2217,10 +2217,10 @@ static	start_view () {
 /*  */
 
 static	export_view (ot)
-register OT	ot;
+OT	ot;
 {
-	register struct subtree *s;
-	register struct view  *v;
+	struct subtree *s;
+	struct view  *v;
 	OID	    name = ot -> ot_name;
 
 	ot -> ot_views = 0;
@@ -2240,9 +2240,9 @@ mark_it:
 
 static	struct community *str2comm (name, na)
 char   *name;
-register struct NSAPaddr *na;
+struct NSAPaddr *na;
 {
-	register struct community *c,
+	struct community *c,
 			*d;
 
 	d = NULL;
@@ -2300,10 +2300,10 @@ register struct NSAPaddr *na;
 static	start_trap () {
 #ifdef	TCP
 	char    myhost[BUFSIZ];
-	register struct hostent *hp;
+	struct hostent *hp;
 	struct type_SNMP_Message *msg;
-	register struct type_SNMP_PDUs *pdu;
-	register struct type_SNMP_Trap__PDU *parm;
+	struct type_SNMP_PDUs *pdu;
+	struct type_SNMP_Trap__PDU *parm;
 
 	if ((msg = (struct type_SNMP_Message *) calloc (1, sizeof *msg)) == NULL) {
 no_mem:
@@ -2376,7 +2376,7 @@ struct type_SNMP_VarBindList *bindings;
 {
 #ifdef	TCP
 	struct type_SNMP_Message *msg;
-	register struct type_SNMP_Trap__PDU *parm;
+	struct type_SNMP_Trap__PDU *parm;
 	OT	    ot;
 
 	if ((msg = trap) == NULL)
@@ -2420,15 +2420,15 @@ struct type_SNMP_VarBindList *bindings;
 
 #ifdef	TCP
 static	do_traps (msg, generic, specific)
-register struct type_SNMP_Message *msg;
+struct type_SNMP_Message *msg;
 integer	generic,
 		specific;
 {
 	int	    mask = 1 << 7 - generic;
-	register struct trap *t;
+	struct trap *t;
 
 	for (t = UHead -> t_forw; t != UHead; t = t -> t_forw) {
-		register struct view *v = t -> t_view;
+		struct view *v = t -> t_view;
 		PE	pe;
 		PS	ps;
 
@@ -2490,18 +2490,18 @@ integer	generic,
 
 static int  process (ps, msg, na, size)
 PS	ps;
-register struct type_SNMP_Message *msg;
+struct type_SNMP_Message *msg;
 struct NSAPaddr *na;
 {
 	char   *cp;
 	long    now;
 	PE	    pe,
 	 p;
-	register struct type_SNMP_PDUs *pdu = msg -> data;
-	register struct tm *tm;
+	struct type_SNMP_PDUs *pdu = msg -> data;
+	struct tm *tm;
 	struct UTCtime uts;
-	register struct UTCtime *ut = &uts;
-	register struct type_SNMP_Audit *au;
+	struct UTCtime *ut = &uts;
+	struct type_SNMP_Audit *au;
 
 	if (msg -> version != int_SNMP_version_version__1) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "badVersion: %d (%s)",
@@ -2580,7 +2580,7 @@ out:
 static	arginit (vec)
 char	**vec;
 {
-	register char  *ap;
+	char  *ap;
 #ifdef	SNMPT
 	char   *file = "snmp.traps";
 	FILE   *fp;
@@ -2588,7 +2588,7 @@ char	**vec;
 #ifdef	TCP
 	int	    port;
 	struct NSAPaddr *tcp_na;
-	register struct servent *sp;
+	struct servent *sp;
 #endif
 #ifdef	X25
 	struct NSAPaddr *x25_na;
@@ -2972,11 +2972,11 @@ static struct pair {
 /*  */
 
 static	readconfig () {
-	register char *cp;
+	char *cp;
 	char    buffer[BUFSIZ],
 			line[BUFSIZ],
 			*vec[NVEC + NSLACK + 1];
-	register struct pair *p;
+	struct pair *p;
 	struct stat st;
 	FILE   *fp;
 
@@ -3025,7 +3025,7 @@ static	readconfig () {
 static int  f_logging (vec)
 char  **vec;
 {
-	register char  **vp;
+	char  **vp;
 
 	for (vp = ++vec; *vp; vp++)
 		continue;

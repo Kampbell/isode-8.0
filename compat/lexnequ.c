@@ -33,9 +33,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/lexnequ.c,v 9.0 1992
 /*  */
 
 int 
-lexnequ (register char *str1, register char *str2, int len)
+lexnequ (char *str1, char *str2, int len)
 {
-	register int count = 1;
+	int count = 1;
 
 	if (str1 == NULL)
 		if (str2 == NULL)

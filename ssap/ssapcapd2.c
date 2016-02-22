@@ -40,7 +40,7 @@ SCapdResponse (int sd, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 
@@ -59,7 +59,7 @@ SCapdResponse (int sd, char *data, int cc, struct SSAPindication *si)
 /*  */
 
 static int 
-SCapdResponseAux (register struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
+SCapdResponseAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
 

@@ -44,8 +44,8 @@ int	rtpktlose (struct assocblk*acb, ...)
 	int	    reason,
 	result,
 	value;
-	register struct RtSAPindication *rti;
-	register struct RtSAPabort *rta;
+	struct RtSAPindication *rti;
+	struct RtSAPabort *rta;
 	va_list ap;
 
 	va_start (ap, acb);
@@ -132,14 +132,14 @@ rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt)
 #ifndef	lint
 static int 
 _rtsaplose (  /* what, fmt, args ... */
-    register struct RtSAPindication *rti,
+    struct RtSAPindication *rti,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct RtSAPabort *rta;
+	struct RtSAPabort *rta;
 
 	if (rti) {
 		bzero ((char *) rti, sizeof *rti);

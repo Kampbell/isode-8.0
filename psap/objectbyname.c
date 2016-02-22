@@ -36,7 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/objectbyname.c,v 9.0 1
 struct isobject *
 getisobjectbyname (char *descriptor)
 {
-	register struct isobject   *io;
+	struct isobject   *io;
 
 	isodetailor (NULLCP, 0);
 #ifdef	DEBUG

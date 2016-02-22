@@ -46,14 +46,14 @@ RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *r
 	int     len,
 			result;
 	char   *base;
-	register struct assocblk   *acb;
-	register PE	pe;
+	struct assocblk   *acb;
+	PE	pe;
 	struct SSAPref ref;
 	struct SSAPstart    sss;
-	register struct SSAPstart  *ss = &sss;
+	struct SSAPstart  *ss = &sss;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 	struct type_OACS_PConnect *pcon;
 	int sc_reason = SC_CONGESTION;
 
@@ -207,15 +207,15 @@ RtBeginResponse (int sd, int status, PE data, struct RtSAPindication *rti)
 	int	    len,
 			result;
 	char   *base;
-	register PE	pe,
+	PE	pe,
 			 p,
 			 q,
 			 r;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct SSAPref ref;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 
 	if ((acb = findacblk (sd)) == NULL || (acb -> acb_flags & ACB_CONN))
 		return rtsaplose (rti, RTS_PARAMETER, NULLCP,

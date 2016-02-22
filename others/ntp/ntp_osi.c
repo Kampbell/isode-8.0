@@ -55,7 +55,7 @@ TMagic (int *vecp, char **vec, struct TSAPdisconnect *td)
 {
 	int     sd;
 	struct TSAPstart tss;
-	register struct TSAPstart  *ts = &tss;
+	struct TSAPstart  *ts = &tss;
 
 	if (TInit (*vecp, vec, ts, td) == NOTOK)
 		return NOTOK;
@@ -77,7 +77,7 @@ create_osilisten (char *addr)
 {
 	int result_func (), query_func ();
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
 	struct PSAPaddr *pa;
@@ -118,8 +118,8 @@ int
 transmit_osi (struct ntp_peer *peer)
 {
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 	struct type_NTP_Packet *packet;
 	struct type_NTP_Leap *leap;
 	struct intf *ap;
@@ -578,8 +578,8 @@ recv_osi (struct intf *ap, struct timeval *tvp)
 {
 	caddr_t out;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	TRACE (2, ("Received OSI packet from %s", paddr (&ap->addr)));
 
@@ -599,7 +599,7 @@ recv_osi (struct intf *ap, struct timeval *tvp)
 }
 
 static void 
-ros_indication (int fd, struct intf *ap, register struct RoSAPindication *roi)
+ros_indication (int fd, struct intf *ap, struct RoSAPindication *roi)
 {
 	int	    result;
 
@@ -613,7 +613,7 @@ ros_indication (int fd, struct intf *ap, register struct RoSAPindication *roi)
 		break;
 
 	case ROI_UREJECT: {
-		register struct RoSAPureject   *rou = &roi -> roi_ureject;
+		struct RoSAPureject   *rou = &roi -> roi_ureject;
 
 		if (rou -> rou_noid)
 			advise (LLOG_EXCEPTIONS, NULLCP,
@@ -628,7 +628,7 @@ ros_indication (int fd, struct intf *ap, register struct RoSAPindication *roi)
 	break;
 
 	case ROI_PREJECT: {
-		register struct RoSAPpreject   *rop = &roi -> roi_preject;
+		struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 		ros_advise (rop, "RO-REJECT-P.INDICATION");
 		if (ROS_FATAL (rop -> rop_reason)) {
@@ -639,9 +639,9 @@ ros_indication (int fd, struct intf *ap, register struct RoSAPindication *roi)
 	break;
 
 	case ROI_FINISH: {
-		register struct AcSAPfinish *acf = &roi -> roi_finish;
+		struct AcSAPfinish *acf = &roi -> roi_finish;
 		struct AcSAPindication  acis;
-		register struct AcSAPabort *aca = &acis.aci_abort;
+		struct AcSAPabort *aca = &acis.aci_abort;
 
 		advise (LLOG_EXCEPTIONS, NULLCP, "A-RELEASE.INDICATION/%d: %d",
 				fd, acf -> acf_reason);
@@ -728,15 +728,15 @@ iso_accept (struct intf *ap)
 			i,
 			sd;
 	struct AcSAPstart   acss;
-	register struct AcSAPstart *acs = &acss;
+	struct AcSAPstart *acs = &acss;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort   *aca = &aci -> aci_abort;
-	register struct PSAPstart *ps = &acs -> acs_start;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort   *aca = &aci -> aci_abort;
+	struct PSAPstart *ps = &acs -> acs_start;
 	struct PSAPaddr *pa;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 	struct Naddr *adr;
 	struct ntp_peer *peer;
 	struct type_NTP_BindArgument *bindarg;
@@ -923,12 +923,12 @@ static int
 bindfailed (struct intf *ap, struct AcSAPstart *acs, int type, char *msg)
 {
 	PE	pe;
-	register struct PSAPstart *ps = &acs -> acs_start;
+	struct PSAPstart *ps = &acs -> acs_start;
 	struct type_NTP_BindError *binderr;
 	struct RoSAPindication rois;
 	struct RoSAPindication *roi = &rois;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
+	struct AcSAPindication *aci = &acis;
 
 	binderr = (struct type_NTP_BindError *)
 			  calloc (1, sizeof *binderr);
@@ -968,7 +968,7 @@ make_osi_conn (struct ntp_peer *peer, char *addr)
 	int	result = NOTOK;
 	struct intf *ap;
 	struct RoSAPindication rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	switch (peer->flags & PEER_FL_CONNSTATE) {
 	case PEER_FL_CONNECTED:
@@ -1064,18 +1064,18 @@ acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindication *roi)
 {
 	int	    sd;
 	struct SSAPref sfs;
-	register struct SSAPref *sf;
-	register struct PSAPaddr *pa, *pa2;
+	struct SSAPref *sf;
+	struct PSAPaddr *pa, *pa2;
 	struct AcSAPconnect accs;
-	register struct AcSAPconnect   *acc = &accs;
+	struct AcSAPconnect   *acc = &accs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort   *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort   *aca = &aci -> aci_abort;
 	OID	    ctx,
 			pci;
 	PE	pep[1];
 	struct PSAPctxlist pcs;
-	register struct PSAPctxlist *pc = &pcs;
+	struct PSAPctxlist *pc = &pcs;
 	struct intf *ap;
 	int	acount;
 	int	result;
@@ -1258,10 +1258,10 @@ static int
 acsap_retry (struct ntp_peer *peer, struct RoSAPindication *roi)
 {
 	struct AcSAPconnect accs;
-	register struct AcSAPconnect   *acc = &accs;
+	struct AcSAPconnect   *acc = &accs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	int	result;
 	struct intf *ap;
 
@@ -1352,7 +1352,7 @@ handle_reject (struct AcSAPconnect *acc, struct intf *ap)
 }
 
 void 
-ros_advise (register struct RoSAPpreject *rop, char *event)
+ros_advise (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -1368,7 +1368,7 @@ ros_advise (register struct RoSAPpreject *rop, char *event)
 }
 
 void 
-acs_advise (register struct AcSAPabort *aca, char *event)
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -1389,7 +1389,7 @@ ul2_fixed_to_double (struct type_NTP_TimeStamp *t)
 {
 	double a, b;
 #ifdef	GENERIC_UNS_BUG
-	register int i;
+	int i;
 
 	i = t->fraction;
 	a = (long)((i >> 1) & 0x7fffffff);
@@ -1421,7 +1421,7 @@ ul_fixed_to_doublep (struct l_fixedpt *t)
 {
 	double a, b;
 #ifdef	GENERIC_UNS_BUG
-	register int i;
+	int i;
 
 	i = t->fraction;
 	a = (long)((i >> 1) & 0x7fffffff);

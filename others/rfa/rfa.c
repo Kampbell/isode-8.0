@@ -725,7 +725,7 @@ do_slave (char **av)
 /* unregister							*/
 /*--------------------------------------------------------------*/
 int 
-do_unregister (char **av)
+do_un(char **av)
 {
 	int rc;
 	struct RfaInfo *rfalist, *rfa;
@@ -900,7 +900,7 @@ do_pwd (char **av)
 int 
 do_changeDir (char **av)
 {
-	register char *s, *r, *fn = *av;
+	char *s, *r, *fn = *av;
 
 	if (fn == NULL) {
 		*cwd_remote = '\0';
@@ -1049,7 +1049,7 @@ executeCommand (char *cmd)
 		},
 		{
 			"unregister",	do_unregister,
-			"unregister a previously MASTER or SLAVE file"
+			"una previously MASTER or SLAVE file"
 		},
 		{
 			"setreq",	do_setreq,

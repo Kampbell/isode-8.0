@@ -73,9 +73,9 @@ int	endsmuxEntry () {
 
 struct smuxEntry  *getsmuxEntry () {
 	int	    vecp;
-	register int i;
-	register struct smuxEntry *se = &ses;
-	register char  *cp;
+	int i;
+	struct smuxEntry *se = &ses;
+	char  *cp;
 	static char buffer[BUFSIZ + 1];
 	static char *vec[NVEC + NSLACK + 1];
 	static unsigned int elements[NELEM + 1];
@@ -114,7 +114,7 @@ struct smuxEntry  *getsmuxEntry () {
 struct smuxEntry *getsmuxEntrybyname (name)
 char   *name;
 {
-	register struct smuxEntry *se;
+	struct smuxEntry *se;
 
 	(void) setsmuxEntry (0);
 	while (se = getsmuxEntry ())
@@ -130,7 +130,7 @@ char   *name;
 struct smuxEntry *getsmuxEntrybyidentity (identity)
 OID	identity;
 {
-	register struct smuxEntry *se;
+	struct smuxEntry *se;
 
 	(void) setsmuxEntry (0);
 

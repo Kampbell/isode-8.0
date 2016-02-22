@@ -41,7 +41,7 @@ SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struc
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (sr);
 	missingP (si);
@@ -69,9 +69,9 @@ SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struc
 
 
 static int 
-SRelRequestAux (register struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
+SRelRequestAux (struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
 {
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	dotokens ();
 
@@ -114,7 +114,7 @@ SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindicatio
 {
 	SBV	    smask;
 	int	    result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (sr);
 	missingP (si);
@@ -137,11 +137,11 @@ SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindicatio
 /*  */
 
 static int 
-SRelRetryRequestAux (register struct ssapblk *sb, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
+SRelRetryRequestAux (struct ssapblk *sb, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
 {
 	int	    code,
 			result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	if (sb -> sb_flags & SB_RELEASE)
 		goto waiting;
@@ -169,7 +169,7 @@ again:
 waiting:
 	;
 	if ((s = sb2spkt (sb, si, secs, NULLTX)) == NULL) {
-		register struct SSAPabort  *sa = &si -> si_abort;
+		struct SSAPabort  *sa = &si -> si_abort;
 
 		if (sa -> sa_reason == SC_TIMER) {
 			sb -> sb_flags |= SB_RELEASE;
@@ -212,7 +212,7 @@ waiting:
 	case SPDU_AB:
 		si -> si_type = SI_ABORT;
 		{
-			register struct SSAPabort  *sa = &si -> si_abort;
+			struct SSAPabort  *sa = &si -> si_abort;
 
 			if (!(sa -> sa_peer = (s -> s_ab_disconnect & AB_DISC_USER)
 								  ? 1 : 0))

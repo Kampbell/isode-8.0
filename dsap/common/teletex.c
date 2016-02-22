@@ -110,7 +110,7 @@ struct teletex * b;
 
 
 static teletex_print (ps,teletex,format)
-register PS ps;
+PS ps;
 struct   teletex* teletex;
 int format;
 {

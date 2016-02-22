@@ -127,9 +127,9 @@ static	modsym_aux ();
 int 
 main (int argc, char **argv, char **envp)
 {
-	register char  *cp,
+	char  *cp,
 			 *sp;
-	register struct section *sectp;
+	struct section *sectp;
 
 	(void) fprintf (stderr, "%s\n", pepyversion);
 
@@ -313,7 +313,7 @@ prologue (void) {
 /*    ERRORS */
 
 int 
-yyerror (register char *s)
+yyerror (char *s)
 {
 	yyerror_aux (s);
 
@@ -352,7 +352,7 @@ warning (char *fmt)
 #endif
 
 int 
-yyerror_aux (register char *s)
+yyerror_aux (char *s)
 {
 	if (linepos)
 		(void) fprintf (stderr, "\n"), linepos = 0;
@@ -502,14 +502,14 @@ prologue3 (void) {
 /*  */
 
 pass1_type (encpref, decpref, prfpref, mod, id, yp)
-register char  *encpref,
+char  *encpref,
 		 *decpref,
 		 *prfpref,
 		 *mod,
 		 *id;
-register YP	yp;
+YP	yp;
 {
-	register SY	    sy;
+	SY	    sy;
 
 	if (pepydebug) {
 		if (linepos)
@@ -529,14 +529,14 @@ register YP	yp;
 
 int 
 pass2 (void) {
-	register SY	    sy;
-	register YP	    yp;
+	SY	    sy;
+	YP	    yp;
 
 	if (!sflag)
 		(void) fflush (stderr);
 
 	if (bflag) {
-		register int    i,
+		int    i,
 				 j;
 
 		i = 2, j = 10;
@@ -656,10 +656,10 @@ struct tuple tuples[] = {
 /*    PULLUP */
 
 choice_pullup (yp, partial)
-register YP	yp;
+YP	yp;
 int	partial;	/* pullup fully, or just enough? */
 {
-	register YP	   *x,
+	YP	   *x,
 			 y,
 			 z,
 			 *z1,
@@ -701,15 +701,15 @@ int	partial;	/* pullup fully, or just enough? */
 /*  */
 
 tag_pullup (yp, level, arg, whatsit)
-register YP	yp;
-register int	level;
+YP	yp;
+int	level;
 char   *arg,
 	   *whatsit;
 {
 	char   *narg;
 	char   *id = yp -> yp_flags & YP_ID ? yp -> yp_id : "member";
 
-	(void) printf ("%*s{\t/* %s TAG PULLUP */\n%*sregister PE %s;\n\n",
+	(void) printf ("%*s{\t/* %s TAG PULLUP */\n%*sPE %s;\n\n",
 				   level * 4, "", whatsit, (level + 1) * 4, "", narg = gensym ());
 	level++;
 
@@ -734,8 +734,8 @@ char   *arg,
 
 
 tag_pushdown (yp, level, arg, whatsit)
-register YP     yp;
-register int    level;
+YP     yp;
+int    level;
 char   *arg,
 	   *whatsit;
 {
@@ -744,7 +744,7 @@ char   *arg,
 	(void) printf ("%*s{\t/* %s TAG PUSHDOWN */\n%*sPE %s_z;\n",
 				   level * 4, "", whatsit, (level + 1) * 4, "", narg = gensym ());
 	level++;
-	(void) printf ("%*sregister PE *%s = &%s_z;\n\n", level * 4, "", narg, narg);
+	(void) printf ("%*sPE *%s = &%s_z;\n\n", level * 4, "", narg, narg);
 
 	(void) printf ("%*sif ((*%s = pe_alloc (PE_CLASS_%s, PE_FORM_CONS, %d)) == NULLPE) {\n",
 				   level * 4, "", narg, pe_classlist[yp -> yp_tag -> yt_class],
@@ -762,11 +762,11 @@ char   *arg,
 /*    TYPE HANDLING */
 
 tag_type (yp)
-register YP	yp;
+YP	yp;
 {
-	register struct tuple *t;
-	register YT	    yt;
-	register YP	    y;
+	struct tuple *t;
+	YT	    yt;
+	YP	    y;
 
 	switch (yp -> yp_code) {
 	case YP_IDEFINED:
@@ -810,10 +810,10 @@ register YP	yp;
 /*  */
 
 YP  lookup_type (mod, id)
-register char *mod,
+char *mod,
 		 *id;
 {
-	register SY	    sy;
+	SY	    sy;
 
 	for (sy = mysymbols; sy; sy = sy -> sy_next) {
 		if (mod) {
@@ -833,11 +833,11 @@ register char *mod,
 /*  */
 
 static YP  lookup_binding (mod, id, binding)
-register char  *mod,
+char  *mod,
 		 *id,
 		 *binding;
 {
-	register YP	    yp,
+	YP	    yp,
 			 z;
 
 	if ((yp = lookup_type (mod, id)) == NULLYP)
@@ -857,7 +857,7 @@ register char  *mod,
 /*  */
 
 int 
-check_type (register char *type, register int level, register char *class, register char *form, register char *id, register char *arg)
+check_type (char *type, int level, char *class, char *form, char *id, char *arg)
 {
 	int	    explicit;
 
@@ -897,9 +897,9 @@ check_type (register char *type, register int level, register char *class, regis
 /*  */
 
 int  is_any_type (yp)
-register YP	yp;
+YP	yp;
 {
-	register    YP z;
+	   YP z;
 
 	while (yp -> yp_code == YP_IDEFINED) {
 		if (yp -> yp_flags & YP_TAG)
@@ -921,9 +921,9 @@ register YP	yp;
 }
 
 int  is_nonimplicit_type (yp)
-register YP	yp;
+YP	yp;
 {
-	register    YP z;
+	   YP z;
 
 	while (yp -> yp_code == YP_IDEFINED) {
 		if ((yp -> yp_flags & (YP_TAG | YP_IMPLICIT)) ==
@@ -954,10 +954,10 @@ register YP	yp;
 /*  */
 
 uniqint (yv)
-register YV	yv;
+YV	yv;
 {
-	register int    i;
-	register YV	    y;
+	int    i;
+	YV	    y;
 
 	for (; yv; yv = yv -> yv_next) {
 		i = val2int (yv);
@@ -978,13 +978,13 @@ register YV	yv;
 /*  */
 
 uniqtag (y, z)
-register YP	y,
+YP	y,
 		 z;
 {
 	int     i;
-	register int    id;
-	register    YT yt;
-	register    YP yp;
+	int    id;
+	   YT yt;
+	   YP yp;
 
 	for (; y != z; y = y -> yp_next) {
 		if ((yt = lookup_tag (y)) == NULLYT)
@@ -1013,7 +1013,7 @@ register YP	y,
 /*  */
 
 int  val2int (yv)
-register YV	yv;
+YV	yv;
 {
 	switch (yv -> yv_code) {
 	case YV_BOOL:
@@ -1044,7 +1044,7 @@ register YV	yv;
 /* really need much more information in the .ph file... */
 
 static	read_ph_file (module, oid)
-register char *module;
+char *module;
 OID	oid;
 {
 	int     class,
@@ -1057,10 +1057,10 @@ OID	oid;
 			decpref[BUFSIZ],
 			printpref[BUFSIZ];
 	char    *p, *ep, *dp, *ppp;
-	register FILE  *fp;
-	register YP	    yp;
-	register YT	    yt;
-	register YV	    yv;
+	FILE  *fp;
+	YP	    yp;
+	YT	    yt;
+	YV	    yv;
 
 	(void) sprintf (file, "%s.ph", module);
 	if (oid)
@@ -1116,10 +1116,10 @@ write_ph_file (void) {
 	char    file[BUFSIZ];
 	char    fileoid[BUFSIZ];
 	char	*cp;
-	register FILE  *fp;
-	register SY	    sy;
-	register YT	    yt;
-	register YP	    yp;
+	FILE  *fp;
+	SY	    sy;
+	YT	    yt;
+	YP	    yp;
 
 	(void) sprintf (file, "%s.ph", mymodule);
 	if (mymoduleid)
@@ -1164,10 +1164,10 @@ char *fn,
 	 *fnoid,
 	 *mode;
 {
-	register char  *dst,
+	char  *dst,
 			 *path;
 	char    fnb[BUFSIZ];
-	register FILE  *fp;
+	FILE  *fp;
 	static char *pepypath = NULL;
 
 	if (*fn == '/')
@@ -1235,9 +1235,9 @@ char *fn,
 
 static int 
 pp (void) {
-	register int    c,
+	int    c,
 			 s;
-	register char  *bp,
+	char  *bp,
 			 *wp;
 	char    buffer[BUFSIZ];
 
@@ -1336,11 +1336,11 @@ flush:
 /*    DEBUG */
 
 print_type (yp, level)
-register YP	yp;
-register int	level;
+YP	yp;
+int	level;
 {
-	register YP	    y;
-	register YV	    yv;
+	YP	    y;
+	YV	    yv;
 
 	if (yp == NULLYP)
 		return;
@@ -1427,10 +1427,10 @@ register int	level;
 /*  */
 
 static	print_value (yv, level)
-register YV	yv;
-register int	level;
+YV	yv;
+int	level;
 {
-	register YV	    y;
+	YV	    y;
 
 	if (yv == NULLYV)
 		return;
@@ -1490,14 +1490,14 @@ register int	level;
 /*    SYMBOLS */
 
 static SY  new_symbol (encpref, decpref, prfpref, mod, id, type)
-register char  *encpref,
+char  *encpref,
 		 *decpref,
 		 *prfpref,
 		 *mod,
 		 *id;
-register YP	type;
+YP	type;
 {
-	register SY    sy;
+	SY    sy;
 
 	if ((sy = (SY) calloc (1, sizeof *sy)) == NULLSY)
 		yyerror ("out of memory");
@@ -1513,9 +1513,9 @@ register YP	type;
 
 
 static SY 
-add_symbol (register SY s1, register SY s2)
+add_symbol (SY s1, SY s2)
 {
-	register SY	    sy;
+	SY	    sy;
 
 	if (s1 == NULLSY)
 		return s2;
@@ -1533,7 +1533,7 @@ static MD  lookup_module (module, oid)
 char   *module;
 OID	oid;
 {
-	register MD	    md;
+	MD	    md;
 
 	for (md = mymodules; md; md = md -> md_next) {
 		if (module && md -> md_module && strcmp (md -> md_module, module) == 0)
@@ -1563,7 +1563,7 @@ OID	oid;
 YP	new_type (code)
 int	code;
 {
-	register YP    yp;
+	YP    yp;
 
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
 		yyerror ("out of memory");
@@ -1574,10 +1574,10 @@ int	code;
 
 
 YP	add_type (y, z)
-register YP	y,
+YP	y,
 		 z;
 {
-	register YP	    yp;
+	YP	    yp;
 
 	for (yp = y; yp -> yp_next; yp = yp -> yp_next)
 		continue;
@@ -1589,9 +1589,9 @@ register YP	y,
 /*  */
 
 YP	copy_type (yp)
-register YP	yp;
+YP	yp;
 {
-	register YP	    y;
+	YP	    y;
 
 	if (yp == NULLYP)
 		return NULLYP;
@@ -1701,7 +1701,7 @@ register YP	yp;
 YV	new_value (code)
 int	code;
 {
-	register YV    yv;
+	YV    yv;
 
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
 		yyerror ("out of memory");
@@ -1712,10 +1712,10 @@ int	code;
 
 
 YV	add_value (y, z)
-register YV	y,
+YV	y,
 		 z;
 {
-	register YV	    yv;
+	YV	    yv;
 
 	if (y == NULLYV)
 		return z;
@@ -1733,9 +1733,9 @@ register YV	y,
 /*  */
 
 YV	copy_value (yv)
-register YV	yv;
+YV	yv;
 {
-	register YV	    y;
+	YV	    y;
 
 	if (yv == NULLYV)
 		return NULLYV;
@@ -1793,7 +1793,7 @@ register YV	yv;
 YT	new_tag (class)
 PElementClass	class;
 {
-	register YT    yt;
+	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)
 		yyerror ("out of memory");
@@ -1805,9 +1805,9 @@ PElementClass	class;
 /*  */
 
 YT	copy_tag (yt)
-register YT	yt;
+YT	yt;
 {
-	register YT	    y;
+	YT	    y;
 
 	if (yt == NULLYT)
 		return NULLYT;
@@ -1822,14 +1822,14 @@ register YT	yt;
 /*  */
 
 YT  lookup_tag (yp)
-register YP	yp;
+YP	yp;
 {
-	register struct tuple *t;
+	struct tuple *t;
 	static struct ypt ypts;
-	register YT	    yt = &ypts;
+	YT	    yt = &ypts;
 	static struct ypv ypvs;
-	register YV	    yv = &ypvs;
-	register YP	    z;
+	YV	    yv = &ypvs;
+	YP	    z;
 
 	if (yp -> yp_flags & YP_TAG)
 		return yp -> yp_tag;
@@ -1866,9 +1866,9 @@ register YP	yp;
 /*    STRINGS */
 
 char *
-new_string (register char *s)
+new_string (char *s)
 {
-	register char  *p;
+	char  *p;
 
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
 		yyerror ("out of memory");
@@ -1907,13 +1907,13 @@ static struct triple {
 /*  */
 
 char *
-modsym (register char *module, register char *id, int direct)
+modsym (char *module, char *id, int direct)
 {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
 	char   *pref;
-	register struct triple *t;
+	struct triple *t;
 	static char buffer[BUFSIZ];
 
 	pref = NULLCP;
@@ -1949,9 +1949,9 @@ modsym (register char *module, register char *id, int direct)
 
 
 static 
-modsym_aux (register char *name, register char *bp)
+modsym_aux (char *name, char *bp)
 {
-	register char   c;
+	char   c;
 
 	while (c = *name++)
 		switch (c) {

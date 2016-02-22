@@ -3523,7 +3523,7 @@ int
 bit_cmp (PE b1, PE b2)
 {
 	int	len1, len2;
-	register char	*cp1, *cp2;
+	char	*cp1, *cp2;
 
 	if (b1 == NULLPE && b2 == NULLPE)
 		return (0);
@@ -3738,7 +3738,7 @@ mkext (int i)
  * they are and non zero if they are different
  */
 int 
-ext_cmp (register struct type_UNIV_EXTERNAL *e1, register struct type_UNIV_EXTERNAL *e2)
+ext_cmp (struct type_UNIV_EXTERNAL *e1, struct type_UNIV_EXTERNAL *e2)
 {
 	if (e1->direct__reference != NULLOID && e2->direct__reference != NULLOID) {
 		if (oid_cmp(e1->direct__reference, e2->direct__reference))
@@ -4047,9 +4047,9 @@ prntbits (PE pe)
  * characters given if they have any
  */
 static 
-pclen (register char *s, register int len)
+pclen (char *s, int len)
 {
-	register int cnt = 0;
+	int cnt = 0;
 
 	while (len-- > 0) {
 		if (cnt % 8 == 0)

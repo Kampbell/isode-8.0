@@ -39,12 +39,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/system.c,v 9.0 1992/06
 
 static int  o_sysUpTime (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	struct timeval now;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 	static   integer diff;
 
@@ -112,8 +112,8 @@ static struct sys_pair {
 
 init_system () {
 	char    buffer[BUFSIZ];
-	register OT	    ot;
-	register struct sys_pair *sp;
+	OT	    ot;
+	struct sys_pair *sp;
 
 	(void) gethostname (buffer, sizeof buffer);
 	pairs[SYS_NAME].s_text = buffer;

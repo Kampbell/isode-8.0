@@ -247,7 +247,7 @@ DN dn;
 EntryInfoSelection eis;
 DN target;
 {
-	register Attr_Sequence as;
+	Attr_Sequence as;
 	char dfltacl = FALSE;
 
 	if (dn == NULLDN)
@@ -305,8 +305,8 @@ DN target;
 int level;
 char dfltacl;
 {
-	register struct acl_attr * aa;
-	register struct oid_seq * oidptr;
+	struct acl_attr * aa;
+	struct oid_seq * oidptr;
 
 	/* see if more than cached data is required */
 	if (ptr->e_acl->ac_attributes == NULLACL_ATTR)

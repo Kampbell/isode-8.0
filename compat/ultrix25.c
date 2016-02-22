@@ -262,7 +262,7 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 	CONN_DB *sck = &zsck;
 	sockaddr_x25 template;
 
-	register int nfd;
+	int nfd;
 
 	if (remote == NULLNA || remote -> na_stack != NA_X25) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed",

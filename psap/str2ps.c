@@ -35,9 +35,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2ps.c,v 9.0 1992/06
 /* ARGSUSED */
 
 static int 
-str_read (register PS ps, PElementData data, PElementLen n, int in_line)
+str_read (PS ps, PElementData data, PElementLen n, int in_line)
 {
-	register int    cc;
+	int    cc;
 
 	if (ps -> ps_base == NULLCP || (cc = ps -> ps_cnt) <= 0)
 		return 0;
@@ -54,10 +54,10 @@ str_read (register PS ps, PElementData data, PElementLen n, int in_line)
 /* ARGSUSED */
 
 static int 
-str_write (register PS ps, PElementData data, PElementLen n, int in_line)
+str_write (PS ps, PElementData data, PElementLen n, int in_line)
 {
-	register int    cc;
-	register char  *cp;
+	int    cc;
+	char  *cp;
 
 	if (ps -> ps_base == NULLCP) {
 		if ((cp = malloc ((unsigned) (cc = n + BUFSIZ))) == NULLCP)
@@ -65,7 +65,7 @@ str_write (register PS ps, PElementData data, PElementLen n, int in_line)
 		ps -> ps_base = ps -> ps_ptr = cp;
 		ps -> ps_bufsiz = ps -> ps_cnt = cc;
 	} else if (ps -> ps_cnt < n) {
-		register int    curlen = ps -> ps_ptr - ps -> ps_base;
+		int    curlen = ps -> ps_ptr - ps -> ps_base;
 
 		if (ps -> ps_inline) {
 			n = ps -> ps_cnt;
@@ -91,7 +91,7 @@ partial:
 
 
 static int 
-str_close (register PS ps)
+str_close (PS ps)
 {
 	if (ps -> ps_base && !ps -> ps_inline)
 		free (ps -> ps_base);
@@ -102,7 +102,7 @@ str_close (register PS ps)
 /*  */
 
 int 
-str_open (register PS ps)
+str_open (PS ps)
 {
 	ps -> ps_readP = str_read;
 	ps -> ps_writeP = str_write;
@@ -113,9 +113,9 @@ str_open (register PS ps)
 
 
 int 
-str_setup (register PS ps, register char *cp, register int cc, int in_line)
+str_setup (PS ps, char *cp, int cc, int in_line)
 {
-	register char  *dp;
+	char  *dp;
 
 	if (in_line) {
 		ps -> ps_inline = 1;

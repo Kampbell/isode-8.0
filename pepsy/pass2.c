@@ -980,8 +980,8 @@ int
 addptr (char *p)
 {
 	int	ind;
-	register int i;
-	register char *s;
+	int i;
+	char *s;
 
 	/*
 	 * try to eliminate common pointers by returning a ponter if it matches
@@ -1081,7 +1081,7 @@ rm_indirect (char *p)
  * if it fails return NULLCP
  */
 char *
-getfldbit (register char *p, char **pstr)
+getfldbit (char *p, char **pstr)
 {
 	static char buf[STRSIZE];
 
@@ -1135,7 +1135,7 @@ skipspace (char *p)
  * else return NULLCP
  */
 char *
-getfield (register char *p)
+getfield (char *p)
 {
 	static char buf[STRSIZE];
 	char	*buf1;
@@ -1185,7 +1185,7 @@ getfield (register char *p)
  * get an identifier into the given buffer [A-Za-z_] are legal chars
  */
 char *
-getid (register char *p, register char *buf, register int len)
+getid (char *p, char *buf, int len)
 {
 	char	*fbuf;
 
@@ -1214,7 +1214,7 @@ getid (register char *p, register char *buf, register int len)
  * identifier - should really be called get field reference
  */
 char *
-getidordot (register char *p, register char *buf, register int len)
+getidordot (char *p, char *buf, int len)
 {
 	char	*fbuf;
 
@@ -1393,8 +1393,8 @@ FILE	*fp;
 YP	oyp;
 int	form;	/* what type of action is it */
 {
-	register YP	yp;
-	register YAL	yal;
+	YP	yp;
+	YAL	yal;
 
 	for (yp = oyp; yp; yp = yp->yp_next) {
 

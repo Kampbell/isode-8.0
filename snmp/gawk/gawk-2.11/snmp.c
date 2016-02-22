@@ -116,7 +116,7 @@ long	random ();
 
 int	snmp_init () {
 	char   *addr;
-	register struct hostent *hp;
+	struct hostent *hp;
 	struct sockaddr_in lo_socket;
 
 	snmp_onceonly ();
@@ -168,14 +168,14 @@ static struct pair {
 
 static	snmp_onceonly () {
 	int	    i;
-	register struct pair *pp;
-	register struct type_SNMP_Message *msg = &msgs;
-	register struct type_SNMP_PDUs *pdu = &pdus;
-	register struct type_SNMP_PDU *parm = &parms;
-	register struct type_SNMP_VarBindList *vp = &vps;
-	register struct type_SNMP_VarBind *v = &vs;
+	struct pair *pp;
+	struct type_SNMP_Message *msg = &msgs;
+	struct type_SNMP_PDUs *pdu = &pdus;
+	struct type_SNMP_PDU *parm = &parms;
+	struct type_SNMP_VarBindList *vp = &vps;
+	struct type_SNMP_VarBind *v = &vs;
 	OS	    os;
-	register OT	    ot,
+	OT	    ot,
 			 ot2;
 
 	Ndot_string = make_string (".", 1);
@@ -252,7 +252,7 @@ NODE   *r;
 char   *name;
 {
 	char    c;
-	register char   *cp;
+	char   *cp;
 	OT	    ot;
 
 	for (cp = name; is_identchar (*cp); cp++)
@@ -277,8 +277,8 @@ char   *instname;
 			retries,
 			status = -1;
 	struct type_SNMP_Message *msg = &msgs;
-	register struct type_SNMP_PDU *parm = msg -> data -> un.get__request;
-	register struct type_SNMP_VarBind *v =
+	struct type_SNMP_PDU *parm = msg -> data -> un.get__request;
+	struct type_SNMP_VarBind *v =
 				parm -> variable__bindings -> VarBind;
 	PE	    pe = NULLPE,
 			p = NULLPE;
@@ -295,10 +295,10 @@ char   *instname;
 
 	if (instname == NULL) {
 		if (ot -> ot_getfnx || snmp_scalars_as_arrays) {
-			register struct snmp_search *s;
+			struct snmp_search *s;
 
 			for (s = tail; s; s = s -> s_prev) {
-				register struct snmp_req *sr;
+				struct snmp_req *sr;
 
 				if (ot -> ot_name -> oid_nelem
 						!= (oid = s -> s_parent -> ot_name) -> oid_nelem + 1
@@ -308,7 +308,7 @@ char   *instname;
 								 * sizeof ot -> ot_name -> oid_elements[0]))
 					continue;
 				for (sr = s -> s_reqs; sr -> r_bindings; sr++) {
-					register struct type_SNMP_VarBindList *vp;
+					struct type_SNMP_VarBindList *vp;
 
 					for (vp = sr -> r_bindings; vp; vp = vp -> next) {
 						if (ot -> ot_name -> oid_nelem
@@ -342,8 +342,8 @@ no_mem_for_inst:
 		}
 		v -> name -> oid_elements[v -> name -> oid_nelem - 1] = 0;
 	} else {
-		register int	i;
-		register unsigned int *ip,
+		int	i;
+		unsigned int *ip,
 				 *jp;
 		OID	inst = str2oid (instname);
 
@@ -505,10 +505,10 @@ struct search *snmp_assoc_scan (symbol, instance)
 NODE   *symbol,
 	   *instance;
 {
-	register struct snmp_search *s;
+	struct snmp_search *s;
 	OID	    inst;
-	register OT	    ot = (OT) symbol -> magic;
-	register struct type_SNMP_VarBindList **vp,
+	OT	    ot = (OT) symbol -> magic;
+	struct type_SNMP_VarBindList **vp,
 			**vp2;
 
 	if (!ot -> ot_getfnx && (!snmp_scalars_as_arrays || instance))
@@ -546,11 +546,11 @@ NODE   *symbol,
 
 	vp = &s -> s_reqs[0].r_bindings, vp2 = &s -> s_prototype;
 	for (ot = ot -> ot_children; ot; ot = ot -> ot_sibling) {
-		register int    i;
-		register unsigned int *ip,
+		int    i;
+		unsigned int *ip,
 				 *jp;
-		register struct type_SNMP_VarBindList *bind;
-		register struct type_SNMP_VarBind *v,
+		struct type_SNMP_VarBindList *bind;
+		struct type_SNMP_VarBind *v,
 				*v2;
 
 		if (!ot -> ot_syntax)
@@ -607,12 +607,12 @@ int	done;
 {
 	int	    i;
 	char   *cp;
-	register struct snmp_search *s = (struct snmp_search *) lookat;
-	register struct search *l = &s -> s_search;
+	struct snmp_search *s = (struct snmp_search *) lookat;
+	struct search *l = &s -> s_search;
 	struct OIDentifier	oids;
 	OID	    oid;
 	OT	    ot = s -> s_parent;
-	register struct type_SNMP_VarBind *v;
+	struct type_SNMP_VarBind *v;
 
 	deref = l -> retval;
 	do_deref ();
@@ -621,7 +621,7 @@ int	done;
 	if (done
 			|| snmp_get_next (s) == NOTOK
 			|| s -> s_reqs[0].r_bindings == NULL) {
-		register struct snmp_req *sr;
+		struct snmp_req *sr;
 
 		if (s -> s_prototype)
 			free_SNMP_VarBindList (s -> s_prototype);
@@ -668,13 +668,13 @@ int	done;
 /*  */
 
 static int  snmp_get_next (s)
-register struct snmp_search *s;
+struct snmp_search *s;
 {
-	register struct type_SNMP_VarBindList  *vp,
+	struct type_SNMP_VarBindList  *vp,
 			*vp2,
 			**vpp,
 			**vpp2;
-	register struct snmp_req *sr,
+	struct snmp_req *sr,
 			*sp;
 
 	if (snmp_ready (0) == NOTOK || snmp_get_next_aux (s) == NOTOK)
@@ -757,16 +757,16 @@ register struct snmp_search *s;
 /*  */
 
 static int  snmp_get_next_aux (s)
-register struct snmp_search *s;
+struct snmp_search *s;
 {
 	int	    gotone,
 			result,
 			retries,
 			status = -1;
 	struct type_SNMP_Message *msg;
-	register struct type_SNMP_PDU *parm;
+	struct type_SNMP_PDU *parm;
 	struct type_SNMP_VarBindList  *vp;
-	register struct snmp_req *sr;
+	struct snmp_req *sr;
 	PE	    p = NULLPE;
 
 	vp = msgs.data -> un.get__request -> variable__bindings;
@@ -864,9 +864,9 @@ again:
 			break;
 
 		case int_SNMP_error__status_tooBig: {
-			register int    i;
-			register struct type_SNMP_VarBindList **vpp;
-			register struct snmp_req *sp;
+			int    i;
+			struct type_SNMP_VarBindList **vpp;
+			struct snmp_req *sp;
 			struct snmp_req *sz;
 
 make_smaller:
@@ -970,17 +970,17 @@ out:
 /*  */
 
 static int  req_ready (sr, do_val)
-register struct snmp_req *sr;
+struct snmp_req *sr;
 int	do_val;
 {
-	register struct type_SNMP_Message *msg = &msgs;
-	register struct type_SNMP_PDU *parm = msg -> data -> un.get__request;
+	struct type_SNMP_Message *msg = &msgs;
+	struct type_SNMP_PDU *parm = msg -> data -> un.get__request;
 
 	if (do_val) {
-		register struct type_SNMP_VarBindList *vp;
+		struct type_SNMP_VarBindList *vp;
 
 		for (vp = sr -> r_bindings; vp; vp = vp -> next) {
-			register struct type_SNMP_VarBind *v = vp -> VarBind;
+			struct type_SNMP_VarBind *v = vp -> VarBind;
 
 			if (v -> value)
 				pe_free (v -> value);
@@ -1013,8 +1013,8 @@ void	snmp_set () {
 			retries,
 			status = -1;
 	struct type_SNMP_Message *msg = &msgs;
-	register struct type_SNMP_PDU *parm = msg -> data -> un.get__request;
-	register struct type_SNMP_VarBind *v =
+	struct type_SNMP_PDU *parm = msg -> data -> un.get__request;
+	struct type_SNMP_VarBind *v =
 				parm -> variable__bindings -> VarBind;
 	PE	    pe = NULLPE,
 			p = NULLPE,
@@ -1034,10 +1034,10 @@ void	snmp_set () {
 
 	if (!SET_inst) {
 		if (ot -> ot_getfnx || snmp_scalars_as_arrays) {
-			register struct snmp_search *s;
+			struct snmp_search *s;
 
 			for (s = tail; s; s = s -> s_prev) {
-				register struct snmp_req *sr;
+				struct snmp_req *sr;
 
 				if (ot -> ot_name -> oid_nelem
 						!= (oid = s -> s_parent -> ot_name) -> oid_nelem + 1
@@ -1047,10 +1047,10 @@ void	snmp_set () {
 								 * sizeof ot -> ot_name -> oid_elements[0]))
 					continue;
 				for (sr = s -> s_reqs; sr -> r_bindings; sr++) {
-					register struct type_SNMP_VarBindList *vp;
+					struct type_SNMP_VarBindList *vp;
 
 					for (vp = sr -> r_bindings; vp; vp = vp -> next) {
-						register struct type_SNMP_VarBind *vv;
+						struct type_SNMP_VarBind *vv;
 
 						if (ot -> ot_name -> oid_nelem
 								>= (vv = vp -> VarBind) -> name -> oid_nelem)
@@ -1086,8 +1086,8 @@ no_mem_for_inst:
 		}
 		v -> name -> oid_elements[v -> name -> oid_nelem - 1] = 0;
 	} else {
-		register int	i;
-		register unsigned int *ip,
+		int	i;
+		unsigned int *ip,
 				 *jp;
 		char   *instname = force_string (SET_inst) -> stptr;
 		OID	inst = str2oid (instname);
@@ -1289,7 +1289,7 @@ NODE   *x;
 PE     *pe;
 {
 	int	    i;
-	register char *cp,
+	char *cp,
 			 *ep;
 	char   *tmp = force_string (x) -> stptr;
 	PE	    p;
@@ -1395,7 +1395,7 @@ PE     *pe;
 	char   *tmp = force_string (x) -> stptr;
 	struct hostent *hp;
 	struct sockaddr_in lo_socket;
-	register struct sockaddr_in *lsock = &lo_socket;
+	struct sockaddr_in *lsock = &lo_socket;
 
 	if (!(hp = gethostbystring (tmp))) {
 		(void) sprintf (PY_pepy, "invalid IP-address: \"%s\"", tmp);
@@ -1473,11 +1473,11 @@ static NODE *make_octet_node (base, len)
 char   *base;
 int	len;
 {
-	register char *bp,
+	char *bp,
 			 *cp,
 			 *ep;
 	char   *s = "";
-	register NODE *r;
+	NODE *r;
 
 	r = newnode (Node_val);
 	emalloc (r -> stptr, char *, len * 3 + 1, "make_octet_node");
@@ -1670,11 +1670,11 @@ int	do_id;
 	int	    changed = 0;
 	char   *pp;
 	struct sockaddr_in lo_socket;
-	register struct sockaddr_in *lsock = &lo_socket;
-	register struct sockaddr_in *isock = &in_socket;
-	register struct hostent *hp;
-	register struct servent *sp;
-	register NODE   *tmp;
+	struct sockaddr_in *lsock = &lo_socket;
+	struct sockaddr_in *isock = &in_socket;
+	struct hostent *hp;
+	struct servent *sp;
+	NODE   *tmp;
 
 	deref = DIAGNOSTIC_node -> var_value;
 	do_deref ();
@@ -1707,7 +1707,7 @@ int	do_id;
 
 	tmp = force_string (COMMUNITY_node -> var_value);
 	if (snmp_community == NULL || strcmp (snmp_community, tmp -> stptr)) {
-		register struct type_SNMP_Message *msg = &msgs;
+		struct type_SNMP_Message *msg = &msgs;
 
 		if (snmp_community)
 			free (snmp_community), snmp_community = NULL;
@@ -1822,7 +1822,7 @@ struct sockaddr_in *isock;
 	u_long	hostaddr,
 			netmask,
 			netaddr;
-	register char *cp;
+	char *cp;
 	char    buffer[BUFSIZ + 1],
 			*vec[NVEC + 1];
 	FILE   *fp;
@@ -1947,10 +1947,10 @@ int	i;
 
 
 static char *snmp_variable (parm, idx)
-register struct type_SNMP_PDU *parm;
+struct type_SNMP_PDU *parm;
 integer	idx;
 {
-	register struct type_SNMP_VarBindList *vp;
+	struct type_SNMP_VarBindList *vp;
 
 	if (idx <= 0 || (vp = parm -> variable__bindings) == NULL)
 		return NULL;

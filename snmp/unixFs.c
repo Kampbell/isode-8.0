@@ -403,7 +403,7 @@ struct fs *fsp;
  * some systems (sun386) do not have this funtion
  *-----------------------------------------------------------------*/
 char * strstr(s1, s2)
-register char *s1, *s2;
+char *s1, *s2;
 {
 	int s2len = strlen(s2); /* length of the second string */
 

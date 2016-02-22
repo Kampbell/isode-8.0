@@ -37,7 +37,7 @@ int
 RtSetDownTrans (int sd, IFP fnx, struct RtSAPindication *rti)
 {
 	SBV	    smask;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (rti);
 

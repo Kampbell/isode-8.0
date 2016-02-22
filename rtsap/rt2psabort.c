@@ -43,7 +43,7 @@ RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int	    result;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	missingP (rti);
 
@@ -61,14 +61,14 @@ RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti)
 /*  */
 
 static int 
-RtUAbortRequestAux (register struct assocblk *acb, PE data, register struct RtSAPindication *rti)
+RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindication *rti)
 {
 	int	    result;
 	PE	    pe,
 	 p;
 	struct AcSAPindication acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 
 	if (!(acb -> acb_flags & ACB_ACS))
 		return rtsaplose (rti, RTS_OPERATION, NULLCP,

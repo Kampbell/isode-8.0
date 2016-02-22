@@ -53,10 +53,10 @@ int
 main (int argc, char **argv, char **envp)
 {
 	AEI	    aei;
-	register struct PSAPaddr *pa;
-	register struct isoentity  *ie;
-	register struct isobject  *io;
-	register struct isoservent  *is;
+	struct PSAPaddr *pa;
+	struct isoentity  *ie;
+	struct isobject  *io;
+	struct isoservent  *is;
 
 	isodetailor (argv[0], 1);
 
@@ -135,7 +135,7 @@ you_lose:
 /*  */
 
 static 
-printent (register struct isoentity *ie, AEI aei, register struct PSAPaddr *pa)
+printent (struct isoentity *ie, AEI aei, struct PSAPaddr *pa)
 {
 	if (ie)
 		(void) printf ("Entity:  %s (%s)\n", ie -> ie_descriptor,
@@ -146,7 +146,7 @@ printent (register struct isoentity *ie, AEI aei, register struct PSAPaddr *pa)
 
 	if (pa) {
 		struct PSAPaddr pas;
-		register struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
+		struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
 		PE	    pe;
 
 		(void) printf ("Address: %s\n", paddr2str (pa, NULLNA));
@@ -195,7 +195,7 @@ dont_touch:
 /*  */
 
 static 
-printobj (register struct isobject *io)
+printobj (struct isobject *io)
 {
 	(void) printf ("ODE: \"%s\"\nOID: %s\n\n", io -> io_descriptor,
 				   sprintoid (&io -> io_identity));
@@ -204,10 +204,10 @@ printobj (register struct isobject *io)
 /*  */
 
 static 
-printsrv (register struct isoservent *is)
+printsrv (struct isoservent *is)
 {
-	register int    n = is -> is_tail - is -> is_vec - 1;
-	register char **ap = is -> is_vec;
+	int    n = is -> is_tail - is -> is_vec - 1;
+	char **ap = is -> is_vec;
 
 	(void) printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 				   is -> is_entity, is -> is_provider,

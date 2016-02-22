@@ -33,9 +33,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_cpy.c,v 9.0 1992/06
 /*  */
 
 PE 
-pe_cpy (register PE pe)
+pe_cpy (PE pe)
 {
-	register PE	    p,
+	PE	    p,
 			 *q,
 			 r;
 

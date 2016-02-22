@@ -150,7 +150,7 @@ static	yyerror_aux ();
 int 
 main (int argc, char **argv, char **envp)
 {
-	register char  *cp,
+	char  *cp,
 			 *sp;
 
 	(void) fprintf (stderr, "%s\n", rosyversion);
@@ -296,7 +296,7 @@ usage:
 /*    ERRORS */
 
 int 
-yyerror (register char *s)
+yyerror (char *s)
 {
 	yyerror_aux (s);
 
@@ -341,7 +341,7 @@ warning (char *fmt)
 #endif
 
 static 
-yyerror_aux (register char *s)
+yyerror_aux (char *s)
 {
 	if (linepos)
 		(void) fprintf (stderr, "\n"), linepos = 0;
@@ -477,8 +477,8 @@ pass1 (void) {
 int 
 pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int opcode)
 {
-	register SY	    sy;
-	register YO	    yo;
+	SY	    sy;
+	YO	    yo;
 
 	if ((yo = (YO) calloc (1, sizeof *yo)) == NULLYO)
 		yyerror ("out of memory");
@@ -510,8 +510,8 @@ pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int opco
 int 
 pass1_err (char *mod, char *id, YP param, int errcode)
 {
-	register SY	    sy;
-	register YE	    ye;
+	SY	    sy;
+	YE	    ye;
 
 	if ((ye = (YE) calloc (1, sizeof *ye)) == NULLYE)
 		yyerror ("out of memory");
@@ -539,9 +539,9 @@ pass1_err (char *mod, char *id, YP param, int errcode)
 /*  */
 
 int 
-pass1_type (register char *encpref, register char *decpref, register char *prfpref, register char *mod, register char *id, register YP yp)
+pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp)
 {
-	register SY	    sy;
+	SY	    sy;
 
 	if (dflag && lookup_type (mod, id))	/* no duplicate entries, please... */
 		return;
@@ -566,9 +566,9 @@ pass1_type (register char *encpref, register char *decpref, register char *prfpr
 int 
 pass2 (void) {
 	int	    i;
-	register SY	    sy,
+	SY	    sy,
 			 sy2;
-	register YP	    yp;
+	YP	    yp;
 
 	if (!bflag)
 		bflag = mymodule;
@@ -766,11 +766,11 @@ pass2 (void) {
 /* ARGSUSED */
 
 static 
-do_op1 (register YO yo, char *id)
+do_op1 (YO yo, char *id)
 {
-	register YE	    ye;
-	register YP	    yp;
-	register YV	    yv;
+	YE	    ye;
+	YP	    yp;
+	YV	    yv;
 
 	(void) fprintf (fdef, "\t\t\t\t\t/* OPERATION %s */\n", yo -> yo_name);
 	(void) fprintf (fdef, "#define operation_%s\t%d\n\n",
@@ -891,9 +891,9 @@ do_op1 (register YO yo, char *id)
 /* ARGSUSED */
 
 static 
-do_op2 (register YO yo, char *id)
+do_op2 (YO yo, char *id)
 {
-	register YP	    yp;
+	YP	    yp;
 
 	(void) fprintf (fdef, "\n#define stub_%s(sd,id,in,rfx,efx,class,roi)\\\n",
 					modsym (mymodule, yo -> yo_name, NULLCP));
@@ -1013,9 +1013,9 @@ do_op2 (register YO yo, char *id)
 /* ARGSUSED */
 
 static 
-do_err1 (register YE ye, char *id)
+do_err1 (YE ye, char *id)
 {
-	register YP	    yp;
+	YP	    yp;
 
 	(void) fprintf (fdef, "\t\t\t\t\t/* ERROR %s */\n", ye -> ye_name);
 	(void) fprintf (fdef, "#define error_%s\t%d\n\n",
@@ -1073,9 +1073,9 @@ do_err1 (register YE ye, char *id)
 /* ARGSUSED */
 
 static 
-do_err2 (register YE ye, char *id)
+do_err2 (YE ye, char *id)
 {
-	register YP	yp;
+	YP	yp;
 
 	(void) fprintf (ftbl, "\t\t\t\t\t/* ERROR %s */\n", ye -> ye_name);
 
@@ -1107,11 +1107,11 @@ do_err2 (register YE ye, char *id)
 /* ARGSUSED */
 
 static 
-do_type (register YP yp, int level, char *id)
+do_type (YP yp, int level, char *id)
 {
-	register YP	    y;
-	register YV	    yv;
-	register YT	    yt;
+	YP	    y;
+	YV	    yv;
+	YT	    yt;
 
 	(void) printf ("%*s", level * 4, "");
 
@@ -1405,9 +1405,9 @@ do_type (register YP yp, int level, char *id)
 static YE 
 lookup_err (YV yv)
 {
-	register char  *id,
+	char  *id,
 			 *mod;
-	register    SY sy;
+	   SY sy;
 
 	if (yv -> yv_code != YV_IDEFINED)
 		myyerror ("unexpected value: %d", yv -> yv_code);
@@ -1435,9 +1435,9 @@ lookup_err (YV yv)
 /*    TYPE HANDLING */
 
 static YP 
-lookup_type (register char *mod, register char *id)
+lookup_type (char *mod, char *id)
 {
-	register SY	    sy;
+	SY	    sy;
 
 	for (sy = mytypes; sy; sy = sy -> sy_next) {
 		if (mod) {
@@ -1460,7 +1460,7 @@ static
 normalize (YP *yp, char *id)
 {
 	int	    i;
-	register YP	    y,
+	YP	    y,
 			 z;
 	char    buffer[BUFSIZ];
 
@@ -1484,7 +1484,7 @@ normalize (YP *yp, char *id)
 /*    VALUE HANDLING */
 
 static int 
-val2int (register YV yv)
+val2int (YV yv)
 {
 	switch (yv -> yv_code) {
 	case YV_BOOL:
@@ -1516,9 +1516,9 @@ val2int (register YV yv)
 /*  */
 
 static 
-val2prf (register YV yv, int level)
+val2prf (YV yv, int level)
 {
-	register YV    y;
+	YV    y;
 
 	if (yv -> yv_flags & YV_ID)
 		(void) printf ("%s ", yv -> yv_id);
@@ -1587,7 +1587,7 @@ dump_real (double r)
 	(void) printf ("{ %s%s, 10, %d }", sign ? "-" : "", sbuf,
 				   decpt - strlen (sbuf));
 #else
-	register char   *cp,
+	char   *cp,
 			 *dp,
 			 *sp;
 	char    sbuf[128];
@@ -1614,10 +1614,10 @@ dump_real (double r)
 static 
 act2prf (char *cp, int level, char *e1, char *e2)
 {
-	register int    i,
+	int    i,
 			 j,
 			 l4;
-	register char  *dp,
+	char  *dp,
 			 *ep,
 			 *fp;
 	char   *gp;
@@ -1677,9 +1677,9 @@ out:
 
 
 static 
-expand (register char *dp, register char *ep, char **gp)
+expand (char *dp, char *ep, char **gp)
 {
-	register int    i;
+	int    i;
 
 	*gp = NULL;
 	for (i = 0; dp < ep; dp++) {
@@ -1705,7 +1705,7 @@ expand (register char *dp, register char *ep, char **gp)
 /*    DEBUG */
 
 static 
-print_op (register YO yo, register int level)
+print_op (YO yo, int level)
 {
 	if (yo == NULLYO)
 		return;
@@ -1730,7 +1730,7 @@ print_op (register YO yo, register int level)
 /*  */
 
 static 
-print_err (register YE ye, register int level)
+print_err (YE ye, int level)
 {
 	if (ye == NULLYE)
 		return;
@@ -1747,10 +1747,10 @@ print_err (register YE ye, register int level)
 /*  */
 
 int 
-print_type (register YP yp, register int level)
+print_type (YP yp, int level)
 {
-	register YP	    y;
-	register YV	    yv;
+	YP	    y;
+	YV	    yv;
 
 	if (yp == NULLYP)
 		return;
@@ -1838,9 +1838,9 @@ print_type (register YP yp, register int level)
 /*  */
 
 static 
-print_value (register YV yv, register int level)
+print_value (YV yv, int level)
 {
-	register YV	    y;
+	YV	    y;
 
 	if (yv == NULLYV)
 		return;
@@ -1900,9 +1900,9 @@ print_value (register YV yv, register int level)
 /*    SYMBOLS */
 
 static SY 
-new_symbol (register char *encpref, register char *decpref, register char *prfpref, register char *mod, register char *id)
+new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id)
 {
-	register SY    sy;
+	SY    sy;
 
 	if ((sy = (SY) calloc (1, sizeof *sy)) == NULLSY)
 		yyerror ("out of memory");
@@ -1917,9 +1917,9 @@ new_symbol (register char *encpref, register char *decpref, register char *prfpr
 
 
 static SY 
-add_symbol (register SY s1, register SY s2)
+add_symbol (SY s1, SY s2)
 {
-	register SY	    sy;
+	SY	    sy;
 
 	if (s1 == NULLSY)
 		return s2;
@@ -1936,7 +1936,7 @@ add_symbol (register SY s1, register SY s2)
 YP 
 new_type (int code)
 {
-	register YP    yp;
+	YP    yp;
 
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
 		yyerror ("out of memory");
@@ -1947,9 +1947,9 @@ new_type (int code)
 
 
 YP 
-add_type (register YP y, register YP z)
+add_type (YP y, YP z)
 {
-	register YP	    yp;
+	YP	    yp;
 
 	for (yp = y; yp -> yp_next; yp = yp -> yp_next)
 		continue;
@@ -1963,7 +1963,7 @@ add_type (register YP y, register YP z)
 YV 
 new_value (int code)
 {
-	register YV    yv;
+	YV    yv;
 
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
 		yyerror ("out of memory");
@@ -1974,9 +1974,9 @@ new_value (int code)
 
 
 YV 
-add_value (register YV y, register YV z)
+add_value (YV y, YV z)
 {
-	register YV	    yv;
+	YV	    yv;
 
 	for (yv = y; yv -> yv_next; yv = yv -> yv_next)
 		continue;
@@ -1990,7 +1990,7 @@ add_value (register YV y, register YV z)
 YT 
 new_tag (int class)
 {
-	register YT    yt;
+	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)
 		yyerror ("out of memory");
@@ -2002,9 +2002,9 @@ new_tag (int class)
 /*    STRINGS */
 
 char *
-new_string (register char *s)
+new_string (char *s)
 {
-	register char  *p;
+	char  *p;
 
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
 		yyerror ("out of memory");
@@ -2043,12 +2043,12 @@ static struct triple {
 /*  */
 
 static char *
-modsym (register char *module, register char *id, char *prefix)
+modsym (char *module, char *id, char *prefix)
 {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
-	register struct triple *t;
+	struct triple *t;
 	static char buffer[BUFSIZ];
 
 	if (module == NULLCP)
@@ -2077,12 +2077,12 @@ modsym (register char *module, register char *id, char *prefix)
  * underscore to be compatiable with pepsy. Hence name Compress MODule SYMbol
  */
 static char *
-cmodsym (register char *module, register char *id, char *prefix, register char *realid)
+cmodsym (char *module, char *id, char *prefix, char *realid)
 {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
-	register struct triple *t;
+	struct triple *t;
 	static char buffer[BUFSIZ];
 
 	if (module == NULLCP)
@@ -2109,12 +2109,12 @@ cmodsym (register char *module, register char *id, char *prefix, register char *
  * name symmod
  */
 static char *
-csymmod (register char *module, register char *id, char *prefix)
+csymmod (char *module, char *id, char *prefix)
 {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
-	register struct triple *t;
+	struct triple *t;
 	static char buffer[BUFSIZ];
 
 	if (module == NULLCP)
@@ -2137,9 +2137,9 @@ csymmod (register char *module, register char *id, char *prefix)
 }
 
 static 
-modsym_aux (register char *name, register char *bp)
+modsym_aux (char *name, char *bp)
 {
-	register char   c;
+	char   c;
 
 	while (c = *name++)
 		switch (c) {
@@ -2157,9 +2157,9 @@ modsym_aux (register char *name, register char *bp)
 }
 
 static 
-cmodsym_aux (register char *name, register char *bp)
+cmodsym_aux (char *name, char *bp)
 {
-	register char   c;
+	char   c;
 
 	while (c = *name++)
 		switch (c) {

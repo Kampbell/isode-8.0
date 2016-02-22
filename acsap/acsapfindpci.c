@@ -38,7 +38,7 @@ int
 AcFindPCI (int sd, int *pci, struct AcSAPindication *aci)
 {
 	SBV     smask;
-	register struct assocblk  *acb;
+	struct assocblk  *acb;
 
 	missingP (pci);
 	missingP (aci);

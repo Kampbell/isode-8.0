@@ -74,16 +74,16 @@ RoBeginRequestAux (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, 
 			settings;
 	char   *base;
 #ifdef	notdef
-	register struct isoservent *is;
+	struct isoservent *is;
 #endif
 	PE	pe;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 	struct SSAPref ref;
 	struct SSAPconnect scs;
-	register struct SSAPconnect *sc = &scs;
+	struct SSAPconnect *sc = &scs;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	struct type_OACS_PConnect pcnnct;
 	struct type_OACS_DataTransferSyntax dts;
 	struct member_OACS_1 udata;

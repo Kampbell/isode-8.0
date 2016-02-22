@@ -241,7 +241,7 @@ static	ftamloop (vec, error)
 char  **vec;
 int	error;
 {
-	register struct dispatch   *ds;
+	struct dispatch   *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
 		return error;
@@ -303,7 +303,7 @@ int	error;
 static	arginit (vec)
 char  **vec;
 {
-	register char  *ap,
+	char  *ap,
 			 *pp;
 
 	if (myname = rindex (*vec, '/'))
@@ -403,8 +403,8 @@ int	getline (prompt, buffer)
 char   *prompt,
 	   *buffer;
 {
-	register int    i;
-	register char  *cp,
+	int    i;
+	char  *cp,
 			 *ep;
 	static int  sticky = 0;
 

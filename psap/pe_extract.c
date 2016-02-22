@@ -37,7 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_extract.c,v 9.0 199
 int 
 pe_extract (PE pe, PE r)
 {
-	register PE	   *p,
+	PE	   *p,
 			 q;
 
 	switch (pe -> pe_form) {

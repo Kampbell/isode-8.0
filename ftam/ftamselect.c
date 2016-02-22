@@ -40,9 +40,9 @@ int    *nfds;
 struct FTAMindication *fti;
 {
 	SBV     smask;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 	struct PSAPindication   pis;
-	register struct PSAPabort  *pa = &pis.pi_abort;
+	struct PSAPabort  *pa = &pis.pi_abort;
 
 	missingP (mask);
 	missingP (nfds);

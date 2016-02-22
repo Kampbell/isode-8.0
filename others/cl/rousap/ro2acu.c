@@ -56,7 +56,7 @@ int	aculose ();
 int 
 RoAcuService (
 /*---------------------------------------------------------------------------*/
-    register struct assocblk *acb,
+    struct assocblk *acb,
     struct RoSAPindication *roi
 )
 {
@@ -83,7 +83,7 @@ RoAcuService (
 #define	e(i)	(indication ? (i) : NULLIFP)
 * ARGSUSED *
 int	ro2acuasync (acb, indication, roi)
-register struct assocblk   *acb;
+struct assocblk   *acb;
 IFP	indication;
 struct RoSAPindication *roi;
 {
@@ -96,14 +96,14 @@ struct RoSAPindication *roi;
 *    map association descriptors for select() *
 * ARGSUSED *
 int	ro2acumask (acb, mask, nfds, roi)
-register struct assocblk   *acb;
+struct assocblk   *acb;
 fd_set *mask;
 int    *nfds;
 struct RoSAPindication *roi;
 {
     struct AcSAPindication   acis;
-    register struct AcSAPindication *aci = &acis;
-    register struct AcSAPabort *aca = &acis.aci_abort;
+    struct AcSAPindication *aci = &acis;
+    struct AcSAPabort *aca = &acis.aci_abort;
 
     if (AcuSelectMask (acb -> acb_fd, mask, nfds, aci) == NOTOK)
 	switch (aca -> aca_reason) {
@@ -125,19 +125,19 @@ struct RoSAPindication *roi;
 int 
 ro2acuwait (
 /*---------------------------------------------------------------------------*/
-    register struct assocblk *acb,
+    struct assocblk *acb,
     int *invokeID,
     int secs,
-    register struct RoSAPindication *roi
+    struct RoSAPindication *roi
 )
 {
 	int     fd, result;
-	register PE  pe;
+	PE  pe;
 	struct  AcuSAPstart acss;
 	struct AcuSAPstart *acs = &acss;
 	struct AcSAPindication   acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &acis.aci_abort;
 
 	fd = acb -> acb_fd;
 
@@ -189,7 +189,7 @@ ro2acuwait (
 /*---------------------------------------------------------------------------*/
 int	ro2acuwrite (acb, pe, fe, priority, roi)
 /*---------------------------------------------------------------------------*/
-register struct assocblk *acb;
+struct assocblk *acb;
 PE	pe,
  fe;
 int	priority;
@@ -197,8 +197,8 @@ struct RoSAPindication *roi;
 {
 	int	    result;
 	struct AcSAPindication   acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &acis.aci_abort;
 
 	pe -> pe_context = acb -> acb_rosid;
 
@@ -275,10 +275,10 @@ ValidBinding (
 static int 
 aculose (
 /*---------------------------------------------------------------------------*/
-    register struct assocblk *acb,
-    register struct RoSAPindication *roi,
+    struct assocblk *acb,
+    struct RoSAPindication *roi,
     char *event,
-    register struct AcSAPabort *aca
+    struct AcSAPabort *aca
 )
 {
 	int     reason;

@@ -140,8 +140,8 @@ fetch_face (char *host, char *user)
 static int 
 getline (char *buffer)
 {
-	register int    i;
-	register char  *cp,
+	int    i;
+	char  *cp,
 			 *ep;
 	static int  sticky = 0;
 
@@ -178,7 +178,7 @@ static
 arginit (char **vec)
 {
 	int	    n;
-	register char  *ap,
+	char  *ap,
 			 *cp;
 
 	if (myname = rindex (*vec, '/'))
@@ -438,7 +438,7 @@ XWINser (int io)
 	int	    ww,
 			wh;
 	XEvent   xevent;
-	register XEvent *xe = &xevent;
+	XEvent *xe = &xevent;
 
 	while (XPending (DISP)) {
 		XNextEvent (DISP, xe);
@@ -510,7 +510,7 @@ int
 startsocket (int portno)
 {
 	struct sockaddr_in in_socket;
-	register struct sockaddr_in *isock = &in_socket;
+	struct sockaddr_in *isock = &in_socket;
 
 	isock -> sin_family = AF_INET;
 	isock -> sin_port = htons ((u_short) portno);

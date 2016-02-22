@@ -274,7 +274,7 @@ PE pe;
 {
 	struct postaddr * m;
 	struct postaddr * a;
-	register int i = 0;
+	int i = 0;
 	int len;
 
 	if (decode_SA_PostalAddress (pe,1,NULLIP,NULLVP,&m) == NOTOK)

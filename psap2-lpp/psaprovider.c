@@ -52,7 +52,7 @@ struct PSAPindication *pi;
 {
 	SBV	    smask;
 	int	    result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	if (data == NULL || ndata <= 0 || data[0] == NULLPE || ndata > NPDATA_PS)
 		return psaplose (pi, PC_PARAMETER, NULLCP, "bad user data");
@@ -76,7 +76,7 @@ struct PSAPindication *pi;
 /*  */
 
 static int  PDataRequestAux (pb, data, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 PE	data;
 struct PSAPindication *pi;
 {
@@ -143,7 +143,7 @@ struct PSAPindication *pi;
 	int	    nfds,
 			result;
 	fd_set  mask;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct PSAPabort *pa = &pi -> pi_abort;
 
 	missingP (px);
@@ -160,7 +160,7 @@ struct PSAPindication *pi;
 	for (;;) {
 		fd_set	 ifds,
 				 efds;
-		register PS 	ps = pb -> pb_stream;
+		PS 	ps = pb -> pb_stream;
 
 		ifds = mask;	/* struct copy */
 		efds = mask;	/* struct copy */
@@ -190,7 +190,7 @@ struct PSAPindication *pi;
 /*  */
 
 static int  PReadRequestAux (pb, px, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 struct PSAPdata *px;
 struct PSAPindication *pi;
 {
@@ -224,8 +224,8 @@ struct PSAPindication *pi;
 
 	switch (pdu -> offset) {
 	case type_PS_PDUs_releaseRequest: {
-		register struct PSAPfinish *pf = &pi -> pi_finish;
-		register struct type_PS_ReleaseRequest__PDU *rr =
+		struct PSAPfinish *pf = &pi -> pi_finish;
+		struct type_PS_ReleaseRequest__PDU *rr =
 					pdu -> un.releaseRequest;
 
 		if (pb -> pb_reliability == LOW_QUALITY
@@ -255,8 +255,8 @@ bad_ref2:
 	break;
 
 	case type_PS_PDUs_abort: {
-		register struct PSAPabort *pa = &pi -> pi_abort;
-		register struct type_PS_Abort__PDU *ab = pdu -> un.abort;
+		struct PSAPabort *pa = &pi -> pi_abort;
+		struct type_PS_Abort__PDU *ab = pdu -> un.abort;
 
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, (pref = ab -> reference)))
@@ -319,7 +319,7 @@ bad_ref2:
 	break;
 
 	case type_PS_PDUs_cL__userData: {
-		register struct type_PS_CL__UserData__PDU *cl =
+		struct type_PS_CL__UserData__PDU *cl =
 					pdu -> un.cL__userData;
 
 		if (pb -> pb_reliability == LOW_QUALITY
@@ -385,7 +385,7 @@ struct PSAPindication *pi;
 /*    INTERNAL */
 
 struct psapblk  *newpblk () {
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	pb = (struct psapblk   *) calloc (1, sizeof *pb);
 	if (pb == NULL)
@@ -405,11 +405,11 @@ struct psapblk  *newpblk () {
 
 
 int	freepblk (pb)
-register struct psapblk *pb;
+struct psapblk *pb;
 {
 #ifdef	notdef
-	register int    i;
-	register struct PSAPcontext *qp;
+	int    i;
+	struct PSAPcontext *qp;
 #endif
 
 	if (pb == NULL)
@@ -453,9 +453,9 @@ register struct psapblk *pb;
 /*  */
 
 struct psapblk   *findpblk (sd)
-register int sd;
+int sd;
 {
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	if (once_only == 0)
 		return NULL;
@@ -470,7 +470,7 @@ register int sd;
 /*  */
 
 int	refcmp (ref1, ref2)
-register struct type_PS_SessionConnectionIdentifier *ref1,
+struct type_PS_SessionConnectionIdentifier *ref1,
 		*ref2;
 {
 	if (ref1 == NULLRF)
@@ -492,15 +492,15 @@ register struct type_PS_SessionConnectionIdentifier *ref1,
 
 
 static int  qb_cmp (qb1, qb2)
-register struct qbuf *qb1,
+struct qbuf *qb1,
 		*qb2;
 {
-	register int    i,
+	int    i,
 			 len1,
 			 len2;
-	register char  *cp1,
+	char  *cp1,
 			 *cp2;
-	register struct qbuf *qp1,
+	struct qbuf *qp1,
 			*qp2;
 
 	if (qb1 == NULL)
@@ -550,11 +550,11 @@ register struct qbuf *qb1,
 /*  */
 
 struct SSAPref *pdu2ref (ref)
-register struct type_PS_SessionConnectionIdentifier *ref;
+struct type_PS_SessionConnectionIdentifier *ref;
 {
 	int	    i;
 	static struct SSAPref sfs;
-	register struct SSAPref *sf = &sfs;
+	struct SSAPref *sf = &sfs;
 
 	pdu2sel (sf -> sr_udata, &i, sizeof sf -> sr_udata,
 			 ref -> callingSSUserReference);
@@ -578,11 +578,11 @@ register struct type_PS_SessionConnectionIdentifier *ref;
 int	pdu2sel (sel, len, i, pb)
 char   *sel;
 int    *len;
-register int i;
-register struct qbuf *pb;
+int i;
+struct qbuf *pb;
 {
-	register char  *cp;
-	register struct qbuf *qb;
+	char  *cp;
+	struct qbuf *qb;
 
 	if (pb == NULL) {
 		*len = 0;

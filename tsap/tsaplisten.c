@@ -230,14 +230,14 @@ extern int  errno;
 /*  */
 
 int	TNetListen (ta, td)
-register struct TSAPaddr *ta;
+struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
 	return TNetWork (ta, td, startlb, NULLIFP);
 }
 
 int	TNetListenAux (ta, magic, td)
-register struct TSAPaddr *ta;
+struct TSAPaddr *ta;
 IFP	magic;
 struct TSAPdisconnect *td;
 {
@@ -246,7 +246,7 @@ struct TSAPdisconnect *td;
 
 
 int	TNetUnique (ta, td)
-register struct TSAPaddr *ta;
+struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
 	return TNetWork (ta, td, uniqlb, NULLIFP);
@@ -255,20 +255,20 @@ struct TSAPdisconnect *td;
 /*  */
 
 static int  TNetWork (ta, td, fnx, magic)
-register struct TSAPaddr *ta;
+struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 IFP	fnx;
 IFP	magic;
 {
-	register int    n;
+	int    n;
 	int     lstn = NOTOK;
 	int	    fd;
-	register struct NSAPaddr   *na;
-	register struct nsapent *ns;
+	struct NSAPaddr   *na;
+	struct nsapent *ns;
 	struct TSAPdisconnect tds;
 #ifdef	MGMT
 	struct TSAPaddr tas;
-	register struct NSAPaddr   *ca;
+	struct NSAPaddr   *ca;
 #endif
 
 	if ((n = ta -> ta_naddr) > NTADDR)
@@ -369,14 +369,14 @@ out:
 /*  */
 
 static int  startlb (ta, na, ns, magic, td)
-register struct TSAPaddr *ta;
-register struct NSAPaddr *na;
-register struct nsapent *ns;
+struct TSAPaddr *ta;
+struct NSAPaddr *na;
+struct nsapent *ns;
 IFP	magic;
 struct TSAPdisconnect *td;
 {
 	struct TSAPaddr tas;
-	register struct listenblk *lb;
+	struct listenblk *lb;
 
 	bzero ((char *) &tas, sizeof tas);
 	bcopy (ta -> ta_selector, tas.ta_selector,
@@ -413,15 +413,15 @@ struct TSAPdisconnect *td;
 /*  */
 
 static int  uniqlb (ta, na, ns, magic, td)
-register struct TSAPaddr *ta;
-register struct NSAPaddr *na;
-register struct nsapent *ns;
+struct TSAPaddr *ta;
+struct NSAPaddr *na;
+struct nsapent *ns;
 IFP	magic;
 struct TSAPdisconnect *td;
 {
 	int	    fd;
 	struct TSAPaddr tas;
-	register struct listenblk *lb;
+	struct listenblk *lb;
 
 	bzero ((char *) &tas, sizeof tas);
 	bcopy (ta -> ta_selector, tas.ta_selector,
@@ -472,7 +472,7 @@ struct TSAPdisconnect *td;
 	fd_set  ifds,
 			ofds,
 			xfds;
-	register struct listenblk  *lb, *lb2;
+	struct listenblk  *lb, *lb2;
 	static int  inited = 0;
 
 	if (!inited) {
@@ -800,10 +800,10 @@ struct TSAPdisconnect *td;
 /*  */
 
 int	TNetClose (ta, td)
-register struct TSAPaddr *ta;
+struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
-	register struct listenblk  *lb,
+	struct listenblk  *lb,
 			*lp;
 
 	if (ta == NULLTA) {
@@ -817,8 +817,8 @@ struct TSAPdisconnect *td;
 	} else {
 		if (ta -> ta_naddr > 1) {
 			int	    gotone;
-			register int n = ta -> ta_naddr;
-			register struct NSAPaddr *na = ta -> ta_addrs;
+			int n = ta -> ta_naddr;
+			struct NSAPaddr *na = ta -> ta_addrs;
 			struct TSAPaddr tas;
 
 			tas = *ta;			/* struct copy */
@@ -1085,8 +1085,8 @@ struct TSAPdisconnect *td;
 #ifndef	LPP
 	{
 		struct TSAPstart   tss;
-		register struct TSAPstart  *ts = &tss;
-		register struct tsapblk *tb;
+		struct TSAPstart  *ts = &tss;
+		struct tsapblk *tb;
 
 		if (TInit (vecp, vec, ts, td) == NOTOK) {
 			SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP,
@@ -1148,14 +1148,14 @@ struct TSAPdisconnect *td;
 
 #ifdef	TCP
 static int  tcplisten (lb, ta, td)
-register struct listenblk *lb;
-register struct TSAPaddr *ta;
+struct listenblk *lb;
+struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
 	int	    fd;
-	register struct sockaddr_in *isock = &lb -> lb_loc_isock;
-	register struct hostent *hp;
-	register struct NSAPaddr *na;
+	struct sockaddr_in *isock = &lb -> lb_loc_isock;
+	struct hostent *hp;
+	struct NSAPaddr *na;
 
 	if (ta -> ta_naddr < 1)
 		return tsaplose (td, DR_ADDRESS, NULLCP, "TCP address not specified");
@@ -1171,7 +1171,7 @@ struct TSAPdisconnect *td;
 	bzero ((char *) isock, sizeof *isock);
 	isock -> sin_family = hp ? hp -> h_addrtype : AF_INET;
 	if (na -> na_port == 0) {
-		register struct servent *sp;
+		struct servent *sp;
 
 		if ((sp = getservbyname ("tsap", "tcp")) == NULL)
 			sp = getservbyname ("iso-tsap", "tcp");
@@ -1208,15 +1208,15 @@ char   *udpsave ();
 
 
 static int  tcpaccept1 (lb, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 struct TSAPdisconnect *td;
 {
 	int     fd,
 			tset = lb -> lb_addr.ta_addrs -> na_tset;
 	struct listenblk *lb2;
-	register struct tsapblk *tb = NULL;
+	struct tsapblk *tb = NULL;
 #ifndef	LPP
-	register struct tsapkt *t = NULL;
+	struct tsapkt *t = NULL;
 #endif
 
 	if ((lb2 = newlblk (LB_ACCEPT, NULLTA)) == NULL) {
@@ -1300,7 +1300,7 @@ out:
 /*  */
 
 static int tcpaccept2 (lb, vecp, vec, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 int    *vecp;
 char  **vec;
 struct TSAPdisconnect *td;
@@ -1317,8 +1317,8 @@ struct TSAPdisconnect *td;
 	int len;
 #endif
 #ifndef	LPP
-	register struct tsapblk *tb = lb -> lb_tb;
-	register struct tsapkt *t = NULL;
+	struct tsapblk *tb = lb -> lb_tb;
+	struct tsapkt *t = NULL;
 #endif
 
 	fd = lb -> lb_fd;
@@ -1419,15 +1419,15 @@ out:
 /*  */
 
 static int  tcpunique (ta, td)
-register struct TSAPaddr *ta;
+struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
 	int	    fd;
 	char   *cp;
 	struct sockaddr_in in_socket;
-	register struct sockaddr_in *isock = &in_socket;
-	register struct hostent *hp;
-	register struct NSAPaddr *na = ta -> ta_addrs;
+	struct sockaddr_in *isock = &in_socket;
+	struct hostent *hp;
+	struct NSAPaddr *na = ta -> ta_addrs;
 
 	cp = na -> na_domain[0] ? na -> na_domain : TLocalHostName ();
 	if ((hp = gethostbystring (cp)) == NULL)
@@ -1486,11 +1486,11 @@ struct TSAPdisconnect *td;
 /*  */
 
 static int  x25accept1 (lb, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 struct TSAPdisconnect *td;
 {
 	int     fd;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	struct listenblk *lb2;
 
 	if ((lb2 = newlblk (LB_ACCEPT, NULLTA)) == NULL) {
@@ -1550,13 +1550,13 @@ out:
 /*  */
 
 static int x25accept2 (lb, vecp, vec, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 int	*vecp;
 char	**vec;
 struct TSAPdisconnect *td;
 {
-	register struct tsapblk *tb = lb -> lb_tb;
-	register struct tsapkt *t = NULL;
+	struct tsapblk *tb = lb -> lb_tb;
+	struct tsapkt *t = NULL;
 	int	fd;
 
 
@@ -1626,7 +1626,7 @@ struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
 	int     fd;
-	register struct NSAPaddr *na = ta -> ta_addrs;
+	struct NSAPaddr *na = ta -> ta_addrs;
 
 	bzero ((char *) na, sizeof *na);
 	na -> na_stack = NA_X25;
@@ -1650,7 +1650,7 @@ struct TSAPdisconnect *td;
 
 static int  tp4listen (lb, ta, td)
 struct listenblk *lb;
-register struct TSAPaddr *ta;
+struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
 	return start_tp4_server (ta, SOMAXCONN, _listen_opts, SO_KEEPALIVE, td);
@@ -1659,11 +1659,11 @@ struct TSAPdisconnect *td;
 /*  */
 
 static int  tp4accept1 (lb, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 struct TSAPdisconnect *td;
 {
 	int	    fd;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	struct listenblk *lb2;
 	char    udata[TS_SIZE];
 	static char buffer[BUFSIZ];
@@ -1729,13 +1729,13 @@ out:
 /*  */
 
 static int tp4accept2 (lb, vecp, vec, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 int	*vecp;
 char	**vec;
 struct TSAPdisconnect *td;
 {
 	int	    fd = lb -> lb_fd;
-	register struct tsapblk *tb = lb -> lb_tb;
+	struct tsapblk *tb = lb -> lb_tb;
 
 	vec[0] = "tsaplisten";		/* any value will do */
 
@@ -1775,7 +1775,7 @@ static int  tp4unique (ta, td)
 struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
-	register struct NSAPaddr *na = ta -> ta_addrs;
+	struct NSAPaddr *na = ta -> ta_addrs;
 
 	bzero ((char *) na, sizeof *na);
 	na -> na_stack = NA_NSAP;
@@ -1791,7 +1791,7 @@ struct TSAPdisconnect *td;
 
 static int  tp4listen (lb, ta, td)
 struct listenblk *lb;
-register struct TSAPaddr *ta;
+struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
 	return start_tp4_server (ta, SOMAXCONN, _listen_opts, SO_KEEPALIVE, td);
@@ -1800,11 +1800,11 @@ struct TSAPdisconnect *td;
 /*  */
 
 static int  tp4accept1 (lb, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 struct TSAPdisconnect *td;
 {
 	int	    fd;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	struct listenblk *lb2;
 
 	if ((lb2 = newlblk (LB_ACCEPTNOW, NULLTA)) == NULL) {
@@ -1853,7 +1853,7 @@ out:
 /*  */
 
 static int  tp4accept2 (lb, vecp, vec, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 int	*vecp;
 char	**vec;
 struct TSAPdisconnect *td;
@@ -1863,7 +1863,7 @@ struct TSAPdisconnect *td;
 			fd = lb -> lb_fd,
 			len;
 	char    udata[TS_SIZE];
-	register struct tsapblk *tb = lb -> lb_tb;
+	struct tsapblk *tb = lb -> lb_tb;
 	union sockaddr_osi	sock;
 	struct sockaddr_iso	*ifaddr = &sock.osi_sockaddr;
 	static char buffer[BUFSIZ];
@@ -1923,7 +1923,7 @@ struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
 	int	    fd;
-	register struct NSAPaddr *na = ta -> ta_addrs;
+	struct NSAPaddr *na = ta -> ta_addrs;
 
 	bzero ((char *) na, sizeof *na);
 	na -> na_stack = NA_NSAP;
@@ -1939,7 +1939,7 @@ struct TSAPdisconnect *td;
 
 static int  tp4listen (lb, ta, td)
 struct listenblk *lb;
-register struct TSAPaddr *ta;
+struct TSAPaddr *ta;
 struct TSAPdisconnect *td;
 {
 	return start_tp4_server (ta, SOMAXCONN, 0, 0, td);
@@ -1948,11 +1948,11 @@ struct TSAPdisconnect *td;
 /*  */
 
 static int  tp4accept1 (lb, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 struct TSAPdisconnect *td;
 {
 	int	    fd;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	struct listenblk *lb2;
 
 	if ((lb2 = newlblk (LB_ACCEPT, NULLTA)) == NULL) {
@@ -2001,7 +2001,7 @@ out:
 /*  */
 
 static int tp4accept2 (lb, vecp, vec, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 int	*vecp;
 char	**vec;
 struct TSAPdisconnect *td;
@@ -2011,8 +2011,8 @@ struct TSAPdisconnect *td;
 			header_len,
 			len;
 	char    data[TC_SIZE];
-	register struct tsapblk *tb = lb -> lb_tb;
-	register struct tp4pkt *tp = NULL;
+	struct tsapblk *tb = lb -> lb_tb;
+	struct tp4pkt *tp = NULL;
 	static char buffer[BUFSIZ];
 
 	if ((tp = newtp4pkt ((TP_EVENT) 0)) == NULL) {
@@ -2091,7 +2091,7 @@ static struct listenblk  *newlblk (type, ta)
 int	type;
 struct TSAPaddr *ta;
 {
-	register struct listenblk  *lb;
+	struct listenblk  *lb;
 
 	lb = (struct listenblk *) calloc (1, sizeof *lb);
 	if (lb == NULLLBP)
@@ -2114,7 +2114,7 @@ struct TSAPaddr *ta;
 
 
 static void freelblk (lb)
-register struct listenblk *lb;
+struct listenblk *lb;
 {
 	if (lb == NULLLBP)
 		return;
@@ -2140,10 +2140,10 @@ register struct listenblk *lb;
 /*  */
 
 static struct listenblk  *findlblk (ta, type)
-register struct TSAPaddr *ta;
+struct TSAPaddr *ta;
 int	type;
 {
-	register struct listenblk  *lb;
+	struct listenblk  *lb;
 
 	if (once_only == 0)
 		return NULLLBP;
@@ -2159,7 +2159,7 @@ int	type;
 static struct listenblk  *findlblkbyfd (fd)
 int	fd;
 {
-	register struct listenblk  *lb;
+	struct listenblk  *lb;
 
 	if (once_only == 0)
 		return NULLLBP;
@@ -2194,11 +2194,11 @@ char   *what,
 
 #ifndef	LPP
 static int  TNetQueue (tb, insert, td)
-register struct tsapblk *tb;
+struct tsapblk *tb;
 int	insert;
 struct TSAPdisconnect *td;
 {
-	register struct listenblk *lb;
+	struct listenblk *lb;
 
 	if (once_only == 0) {
 		LHead -> lb_forw = LHead -> lb_back = LHead;
@@ -2237,10 +2237,10 @@ struct TSAPdisconnect *td;
 /*  */
 
 static int  TDoQueues (lb, td)
-register struct listenblk *lb;
+struct listenblk *lb;
 struct TSAPdisconnect *td;
 {
-	register struct tsapblk *tb = lb -> lb_tb;
+	struct tsapblk *tb = lb -> lb_tb;
 
 	switch ((*tb -> tb_drainPfnx) (tb, td)) {
 	case NOTOK:
@@ -2259,7 +2259,7 @@ struct TSAPdisconnect *td;
 /*  */
 
 static int  TFreeQueues (lb)
-register struct listenblk *lb;
+struct listenblk *lb;
 {
 	if (lb -> lb_fd + 1 == qw_nfds)
 		qw_nfds--;
@@ -2280,7 +2280,7 @@ struct TSAPdisconnect *td;
 {
 	int	    result;
 	SBV	    smask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	missingP (td);
 

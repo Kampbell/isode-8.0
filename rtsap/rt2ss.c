@@ -52,7 +52,7 @@ static int  doSStoken ();
 /*  */
 
 int 
-rt2sspturn (register struct assocblk *acb, int priority, register struct RtSAPindication *rti)
+rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti)
 {
 	int     result,
 			len;
@@ -94,7 +94,7 @@ rt2sspturn (register struct assocblk *acb, int priority, register struct RtSAPin
 /*  */
 
 int 
-rt2ssgturn (register struct assocblk *acb, register struct RtSAPindication *rti)
+rt2ssgturn (struct assocblk *acb, struct RtSAPindication *rti)
 {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
@@ -122,19 +122,19 @@ rt2ssgturn (register struct assocblk *acb, register struct RtSAPindication *rti)
 /*  */
 
 int 
-rt2sstrans (register struct assocblk *acb, register PE data, int secs, register struct RtSAPindication *rti)
+rt2sstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti)
 {
-	register int    cc,
+	int    cc,
 			 size;
 	int     result,
 			len;
 	long    clock,
 			limit;
-	register char  *dp;
+	char  *dp;
 	char   *base;
 	PE	    pe;
 	struct SSAPactid    ids;
-	register struct SSAPactid  *id = &ids;
+	struct SSAPactid  *id = &ids;
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
@@ -326,13 +326,13 @@ out:
 /*  */
 
 int 
-rt2sswait (register struct assocblk *acb, int secs, int trans, register struct RtSAPindication *rti)
+rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti)
 {
 	int     result;
 	struct SSAPdata sxs;
-	register struct SSAPdata   *sx = &sxs;
+	struct SSAPdata   *sx = &sxs;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
+	struct SSAPindication *si = &sis;
 
 	for (;;) {
 		switch (result = SReadRequest (acb -> acb_fd, sx, secs, si)) {
@@ -398,7 +398,7 @@ rt2sswait (register struct assocblk *acb, int secs, int trans, register struct R
 
 
 int 
-rt2ssasync (register struct assocblk *acb, IFP indication, struct RtSAPindication *rti)
+rt2ssasync (struct assocblk *acb, IFP indication, struct RtSAPindication *rti)
 {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
@@ -432,7 +432,7 @@ rt2ssasync (register struct assocblk *acb, IFP indication, struct RtSAPindicatio
 /*    map association descriptors for select() */
 
 int 
-rt2ssmask (register struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti)
+rt2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti)
 {
 	struct SSAPindication   sis;
 	struct SSAPindication  *si = &sis;
@@ -455,7 +455,7 @@ rt2ssmask (register struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPi
 /*    protocol-level abort */
 
 int 
-rt2sslose (register struct assocblk *acb, int result)
+rt2sslose (struct assocblk *acb, int result)
 {
 	int     len;
 	char   *base;
@@ -488,12 +488,12 @@ rt2sslose (register struct assocblk *acb, int result)
 /*    SSAP interface */
 
 static int 
-doSSdata (register struct assocblk *acb, register struct SSAPdata *sx, struct RtSAPindication *rti)
+doSSdata (struct assocblk *acb, struct SSAPdata *sx, struct RtSAPindication *rti)
 {
-	register struct qbuf *qb;
+	struct qbuf *qb;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 	if (!(acb -> acb_flags & ACB_ACT)
 			|| (acb -> acb_flags & ACB_TURN)
@@ -513,7 +513,7 @@ doSSdata (register struct assocblk *acb, register struct SSAPdata *sx, struct Rt
 
 	if (acb -> acb_len > 0) {
 		unsigned int    i;
-		register char  *cp,
+		char  *cp,
 				 *dp;
 
 		i = acb -> acb_len + sx -> sx_cc;
@@ -573,13 +573,13 @@ out:
 /*  */
 
 static int 
-doSStoken (register struct assocblk *acb, register struct SSAPtoken *st, int trans, struct RtSAPindication *rti)
+doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPindication *rti)
 {
 	int     result;
-	register PE	    pe;
+	PE	    pe;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 	struct type_OACS_Priority	*priority;
 
 	if (acb -> acb_flags & ACB_TWA)
@@ -593,7 +593,7 @@ doSStoken (register struct assocblk *acb, register struct SSAPtoken *st, int tra
 
 			rti -> rti_type = RTI_TURN;
 			{
-				register struct RtSAPturn  *rtu = &rti -> rti_turn;
+				struct RtSAPturn  *rtu = &rti -> rti_turn;
 
 				rtu -> rtu_please = 0;
 			}
@@ -644,7 +644,7 @@ doSStoken (register struct assocblk *acb, register struct SSAPtoken *st, int tra
 
 			rti -> rti_type = RTI_TURN;
 			{
-				register struct RtSAPturn  *rtu = &rti -> rti_turn;
+				struct RtSAPturn  *rtu = &rti -> rti_turn;
 
 				rtu -> rtu_please = 1;
 				rtu -> rtu_priority = priority -> parm;
@@ -669,11 +669,11 @@ out:
 /*  */
 
 static int 
-doSSsync (register struct assocblk *acb, register struct SSAPsync *sn, struct RtSAPindication *rti)
+doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti)
 {
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 	SNFREE (sn);
 
@@ -722,13 +722,13 @@ out:
 /*  */
 
 static int 
-doSSactivity (register struct assocblk *acb, register struct SSAPactivity *sv, struct RtSAPindication *rti)
+doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindication *rti)
 {
 	int     result;
-	register PE	    pe;
+	PE	    pe;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 	SVFREE (sv);
 
@@ -845,7 +845,7 @@ end_it:
 
 		rti -> rti_type = RTI_TRANSFER;
 		{
-			register struct RtSAPtransfer  *rtt = &rti -> rti_transfer;
+			struct RtSAPtransfer  *rtt = &rti -> rti_transfer;
 
 			rtt -> rtt_data = pe;
 		}
@@ -873,11 +873,11 @@ out:
 /*  */
 
 static int 
-doSSreport (register struct assocblk *acb, register struct SSAPreport *sp, struct RtSAPindication *rti)
+doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RtSAPindication *rti)
 {
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 	SPFREE (sp);
 
@@ -924,7 +924,7 @@ out1:
 /* ARGSUSED */
 
 static int 
-doSSfinish (register struct assocblk *acb, struct SSAPfinish *sf, struct RtSAPindication *rti)
+doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RtSAPindication *rti)
 {
 	SFFREE (sf);
 
@@ -944,7 +944,7 @@ doSSfinish (register struct assocblk *acb, struct SSAPfinish *sf, struct RtSAPin
 	acb -> acb_flags |= ACB_FINN;
 	rti -> rti_type = RTI_CLOSE;
 	{
-		register struct RtSAPclose *rtc = &rti -> rti_close;
+		struct RtSAPclose *rtc = &rti -> rti_close;
 
 		bzero ((char *) rtc, sizeof *rtc);
 	}
@@ -959,10 +959,10 @@ out:
 /*  */
 
 int 
-ss2rtsabort (register struct assocblk *acb, register struct SSAPabort *sa, struct RtSAPindication *rti)
+ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication *rti)
 {
 	int     result;
-	register PE	    pe;
+	PE	    pe;
 	struct type_OACS_AbortInformation *pabi = 0;
 
 	if (!sa -> sa_peer) {
@@ -1028,12 +1028,12 @@ out:
 /*  */
 
 static int 
-ssDATAser (int sd, register struct SSAPdata *sx)
+ssDATAser (int sd, struct SSAPdata *sx)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1046,12 +1046,12 @@ ssDATAser (int sd, register struct SSAPdata *sx)
 /*  */
 
 static int 
-ssTOKENser (int sd, register struct SSAPtoken *st)
+ssTOKENser (int sd, struct SSAPtoken *st)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1064,12 +1064,12 @@ ssTOKENser (int sd, register struct SSAPtoken *st)
 /*  */
 
 static int 
-ssSYNCser (int sd, register struct SSAPsync *sn)
+ssSYNCser (int sd, struct SSAPsync *sn)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1082,12 +1082,12 @@ ssSYNCser (int sd, register struct SSAPsync *sn)
 /*  */
 
 static int 
-ssACTIVITYser (int sd, register struct SSAPactivity *sv)
+ssACTIVITYser (int sd, struct SSAPactivity *sv)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1100,12 +1100,12 @@ ssACTIVITYser (int sd, register struct SSAPactivity *sv)
 /*  */
 
 static int 
-ssREPORTser (int sd, register struct SSAPreport *sp)
+ssREPORTser (int sd, struct SSAPreport *sp)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1121,9 +1121,9 @@ static int
 ssFINISHser (int sd, struct SSAPfinish *sf)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1137,12 +1137,12 @@ ssFINISHser (int sd, struct SSAPfinish *sf)
 /*  */
 
 static int 
-ssABORTser (int sd, register struct SSAPabort *sa)
+ssABORTser (int sd, struct SSAPabort *sa)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1156,7 +1156,7 @@ ssABORTser (int sd, register struct SSAPabort *sa)
 /*  */
 
 int 
-ss2rtslose (register struct assocblk *acb, register struct RtSAPindication *rti, char *event, register struct SSAPabort *sa)
+ss2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct SSAPabort *sa)
 {
 	int     reason;
 	char   *cp,

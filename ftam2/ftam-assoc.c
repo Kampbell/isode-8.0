@@ -37,7 +37,7 @@ static struct PSAPaddr vfs_bound;
 int	f_open (vec)
 char  **vec;
 {
-	register int    i;
+	int    i;
 	int     manage;
 	char    passwd[BUFSIZ];
 #ifndef	BRIDGE
@@ -45,15 +45,15 @@ char  **vec;
 			prompt[BUFSIZ];
 #endif
 	AEI	    aei;
-	register struct vfsmap *vf;
-	register struct PSAPaddr   *pa;
+	struct vfsmap *vf;
+	struct PSAPaddr   *pa;
 	struct FTAMcontentlist  fcs;
-	register struct FTAMcontentlist *fc = &fcs;
-	register struct FTAMcontent *fx;
+	struct FTAMcontentlist *fc = &fcs;
+	struct FTAMcontent *fx;
 	struct FTAMconnect  ftcs;
-	register struct FTAMconnect *ftc = &ftcs;
+	struct FTAMconnect *ftc = &ftcs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if (*++vec == NULL) {
 #ifdef	BRIDGE
@@ -311,9 +311,9 @@ int	f_close (vec)
 char  **vec;
 {
 	struct FTAMrelease  ftrs;
-	register struct FTAMrelease *ftr = &ftrs;
+	struct FTAMrelease *ftr = &ftrs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 #ifdef	BRIDGE
 	if (ftamfd == NOTOK)
@@ -366,7 +366,7 @@ int	f_status (vec)
 char  **vec;
 {
 	int	    hit;
-	register struct vfsmap *vf;
+	struct vfsmap *vf;
 
 	(void) printf ("associated with virtual filestore on \"%s\"\n  at %s\n",
 				   host, pa2str (&vfs_bound));

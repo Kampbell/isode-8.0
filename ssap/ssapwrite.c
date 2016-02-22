@@ -33,15 +33,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapwrite.c,v 9.0 1992
 /*  */
 
 int 
-SWriteRequestAux (register struct ssapblk *sb, int code, char *data, int cc, int type, long ssn, int settings, struct SSAPactid *id, struct SSAPactid *oid, struct SSAPref *ref, struct SSAPindication *si)
+SWriteRequestAux (struct ssapblk *sb, int code, char *data, int cc, int type, long ssn, int settings, struct SSAPactid *id, struct SSAPactid *oid, struct SSAPref *ref, struct SSAPindication *si)
 {
 	int     result;
-	register struct ssapkt *s,
+	struct ssapkt *s,
 			*p;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 	struct udvec    uvs[3];
-	register struct udvec  *uv;
+	struct udvec  *uv;
 
 	if (sb -> sb_flags & SB_EXPD)
 		switch (code) {

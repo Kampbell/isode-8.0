@@ -64,13 +64,13 @@ static struct udpstat udpstat;
 
 static int  o_udp (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register struct udpstat *udps = &udpstat;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct udpstat *udps = &udpstat;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
 	ifvar = (int) ot -> ot_info;
@@ -165,18 +165,18 @@ struct udptab *get_udpent ();
 
 static int  o_udp_listen (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct udptab *ut;
+	struct udptab *ut;
 	struct sockaddr_in netaddr;
-	register OID    oid = oi -> oi_name;
+	OID    oid = oi -> oi_name;
 	OID	    new;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	if (get_listeners (offset) == NOTOK)
 		return generr (offset);
@@ -282,17 +282,17 @@ struct udptab **a,
 static int  get_listeners (offset)
 int	offset;
 {
-	register int    i;
-	register unsigned int  *cp;
-	register struct udptab *us,
+	int    i;
+	unsigned int  *cp;
+	struct udptab *us,
 			*up,
 			**usp;
-	register struct inpcb  *ip;
+	struct inpcb  *ip;
 	struct inpcb *head,
 			udb,
 			zdb;
 	struct nlist nzs;
-	register struct nlist *nz = &nzs;
+	struct nlist *nz = &nzs;
 	static   int first_time = 1;
 	static   int lastq = -1;
 
@@ -320,7 +320,7 @@ int	offset;
 	usp = &uts, i = 0;
 	ip = &udb;
 	while (ip -> inp_next != head) {
-		register struct udptab *uz;
+		struct udptab *uz;
 		OIDentifier	oids;
 
 		if ((us = (struct udptab *) calloc (1, sizeof *us)) == NULL)
@@ -371,7 +371,7 @@ int	offset;
 	first_time = 0;
 
 	if (i > 1) {
-		register struct udptab **base,
+		struct udptab **base,
 				**use;
 
 		if ((base = (struct udptab **) malloc ((unsigned) (i * sizeof *base)))
@@ -402,10 +402,10 @@ int	offset;
 /*  */
 
 static struct udptab *get_udpent (ip, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	isnext;
 {
-	register struct udptab *ut;
+	struct udptab *ut;
 
 	for (ut = uts; ut; ut = ut -> ut_next)
 		switch (elem_cmp (ut -> ut_instance, UT_SIZE, ip, UT_SIZE)) {
@@ -430,7 +430,7 @@ out:
 /*  */
 
 init_udp () {
-	register OT	    ot;
+	OT	    ot;
 
 #ifdef	udpInDatagrams
 	if (ot = text2obj ("udpInDatagrams"))

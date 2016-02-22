@@ -54,7 +54,7 @@ int	flush_rt_cache = 0;
 int	get_routes (offset)
 int	offset;
 {
-	register int   i;
+	int   i;
 	int	    rthashsize,
 			tblsize;
 #ifdef	ultrix
@@ -66,10 +66,10 @@ int	offset;
 			**rtnet,
 			**rthost;
 #endif
-	register struct rtetab  *rt,
+	struct rtetab  *rt,
 			*rp;
 	struct nlist nzs;
-	register struct nlist *nz = &nzs;
+	struct nlist *nz = &nzs;
 	static   int lastq = -1;
 
 	if (quantum == lastq)
@@ -127,7 +127,7 @@ int	offset;
 		for (i = 0; i < rthashsize; i++) {
 #ifdef	ultrix
 			struct rtentry ree;
-			register struct rtentry *re;
+			struct rtentry *re;
 
 			for (re = rtaddr[i];
 					nz -> n_value = (unsigned long) re;
@@ -137,9 +137,9 @@ int	offset;
 				if (get_route (&ree) == NOTOK)
 					goto out2;
 #else
-			register struct mbuf *m;
+			struct mbuf *m;
 			struct mbuf    ms;
-			register struct rtentry *re;
+			struct rtentry *re;
 
 			for (m = rtaddr[i];
 					nz -> n_value = (unsigned long) m;
@@ -197,7 +197,7 @@ out1:
 /*  */
 
 static int  rt_compar (a, b)
-register struct rtetab **a,
+struct rtetab **a,
 		**b;
 {
 	int	    i;
@@ -211,7 +211,7 @@ register struct rtetab **a,
 
 
 sort_rtetab () {
-	register struct rtetab  *rt,
+	struct rtetab  *rt,
 			**base,
 			**rte;
 
@@ -272,14 +272,14 @@ sort_rtetab () {
 /*  */
 
 static int  get_route (re)
-register struct rtentry *re;
+struct rtentry *re;
 {
-	register struct rtetab *rt,
+	struct rtetab *rt,
 			*rz;
 #ifdef	BSD44
 	union sockaddr_un rtsock;
 	struct nlist nzs;
-	register struct nlist *nz = &nzs;
+	struct nlist *nz = &nzs;
 #endif
 	OIDentifier	oids;
 
@@ -372,7 +372,7 @@ static int  get_radix_nodes () {
 	struct radix_node_head *rnh,
 			head;
 	struct nlist nzs;
-	register struct nlist *nz = &nzs;
+	struct nlist *nz = &nzs;
 
 	if (getkmem (nl + N_RADIX_NODE_HEAD, (caddr_t) &rnh, sizeof rnh) == NOTOK)
 		return NOTOK;
@@ -402,7 +402,7 @@ struct radix_node *rn;
 	struct radix_node rnode;
 	struct rtentry rtentry;
 	struct nlist nzs;
-	register struct nlist *nz = &nzs;
+	struct nlist *nz = &nzs;
 
 	for (;;) {
 		nz -> n_name = "struct radix_node",
@@ -437,13 +437,13 @@ struct radix_node *rn;
 /*  */
 
 struct rtetab *get_rtent (ip, len, head, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 struct rtetab *head;
 int	isnext;
 {
 	int	    family;
-	register struct rtetab *rt;
+	struct rtetab *rt;
 
 	if (head)
 		family = head -> rt_dst.sa.sa_family;

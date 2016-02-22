@@ -479,11 +479,11 @@ int	wl;
 }
 
 cnt_escp(ptr, len)
-register char	*ptr;
+char	*ptr;
 int	len;
 {
-	register char	*p;
-	register int		cnt;
+	char	*p;
+	int		cnt;
 
 	for (cnt = 0, p = ptr + len - 1; p >= ptr; p--) {
 		if (*p != CONT_CHAR)
@@ -498,7 +498,7 @@ srealloc(p, nsize)
 char	*p;
 int     nsize;
 {
-	register char *ptr;
+	char *ptr;
 
 	if ((ptr = realloc(p, (unsigned) nsize)) == NULL) {
 		LLOG (compat_log,LLOG_FATAL, ("realloc() failure"));
@@ -514,9 +514,9 @@ int     nsize;
 Attr_Sequence fget_attributes_aux (file)
 FILE * file;
 {
-	register Attr_Sequence as = NULLATTR;
+	Attr_Sequence as = NULLATTR;
 	Attr_Sequence as_combine ();
-	register char * ptr;
+	char * ptr;
 
 	if ((ptr = fgetline (file)) == NULLCP)
 		return (NULLATTR);
@@ -550,9 +550,9 @@ GDBM_FILE	file;
 FILE * file;
 #endif
 {
-	register Attr_Sequence as = NULLATTR;
+	Attr_Sequence as = NULLATTR;
 	Attr_Sequence as_combine ();
-	register char * ptr;
+	char * ptr;
 
 	if ((ptr = getline (file)) == NULLCP)
 		return (NULLATTR);
@@ -706,7 +706,7 @@ Entry make_path (dn)
 DN dn;
 {
 	Entry ptr;
-	register RDN    b_rdn;
+	RDN    b_rdn;
 	Entry	parent, new;
 	Avlnode	*kids;
 	int	entryrdn_cmp(), entry_cmp();

@@ -37,7 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaprovider.c,v 9.0 
 /*    PSAP interface */
 
 int 
-ps2acslose (register struct assocblk *acb, register struct AcSAPindication *aci, char *event, register struct PSAPabort *pa)
+ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, struct PSAPabort *pa)
 {
 	int     reason;
 	char   *cp,
@@ -111,11 +111,11 @@ ps2acslose (register struct assocblk *acb, register struct AcSAPindication *aci,
 struct type_ACS_Association__information *
 info2apdu (struct assocblk *acb, struct AcSAPindication *aci, PE *data, int ndata)
 {
-	register PE	    pe;
+	PE	    pe;
 	struct type_ACS_Association__information *info;
-	register struct type_ACS_Association__information **pp,
+	struct type_ACS_Association__information **pp,
 			*p;
-	register struct type_UNIV_EXTERNAL *q;
+	struct type_UNIV_EXTERNAL *q;
 
 	for (pp = &info; ndata-- > 0; pp = &p -> next) {
 		if ((*pp = p = (struct type_ACS_Association__information *)
@@ -155,9 +155,9 @@ out:
 int 
 apdu2info (struct assocblk *acb, struct AcSAPindication *aci, struct type_ACS_Association__information *info, PE *data, int *ndata)
 {
-	register int    i;
-	register PE	    pe;
-	register struct type_UNIV_EXTERNAL *q;
+	int    i;
+	PE	    pe;
+	struct type_UNIV_EXTERNAL *q;
 
 	for (i = 0; info; info = info -> next, i++) {
 		if (i > NACDATA)

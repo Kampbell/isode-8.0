@@ -42,14 +42,14 @@ int
 RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi)
 {
 	int     result;
-	register struct assocblk   *acb;
-	register PE	pe;
+	struct assocblk   *acb;
+	PE	pe;
 	struct SSAPref ref;
 	struct SSAPstart    sss;
-	register struct SSAPstart  *ss = &sss;
+	struct SSAPstart  *ss = &sss;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 	struct type_OACS_PConnect	*pconn;
 
 	isodetailor (NULLCP, 0);
@@ -147,11 +147,11 @@ RoBeginResponse (int sd, int status, PE data, struct RoSAPindication *roi)
 			result;
 	char   *base;
 	PE	pe;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct SSAPref ref;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	struct type_OACS_PAccept	paccpt;
 	struct type_OACS_DataTransferSyntax	dts;
 	struct type_OACS_ConnectionData condata;

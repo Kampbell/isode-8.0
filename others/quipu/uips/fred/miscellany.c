@@ -90,7 +90,7 @@ f_area (char **vec)
 		   *dp,
 		   *ep,
 		   buffer[BUFSIZ];
-	register struct area_guide *ag;
+	struct area_guide *ag;
 
 	if ((cp = *++vec) == NULL) {
 		if (myarea == NULL) {
@@ -179,7 +179,7 @@ f_area (char **vec)
 int 
 f_dish (char **vec)
 {
-	register char *bp,
+	char *bp,
 			 *cp;
 	char    buffer[BUFSIZ];
 
@@ -277,7 +277,7 @@ f_manual (char **vec)
 int 
 f_report (char **vec)
 {
-	register char   *bp;
+	char   *bp;
 	char   *cp,
 		   buffer[BUFSIZ];
 
@@ -342,7 +342,7 @@ f_report (char **vec)
 int 
 f_thisis (char **vec)
 {
-	register char   *bp;
+	char   *bp;
 	char   *cp,
 		   buffer[BUFSIZ];
 

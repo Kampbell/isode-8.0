@@ -43,13 +43,13 @@ OID	dctx;
 {
 	int	    ctx,
 			i;
-	register PE	    pe;
-	register struct assocblk   *acb;
-	register struct PSAPstart *ps;
-	register struct AcSAPstart *acs;
+	PE	    pe;
+	struct assocblk   *acb;
+	struct PSAPstart *ps;
+	struct AcSAPstart *acs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication  *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication  *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	struct type_RTS_RTSE__apdus *rtpdu;
 	struct type_RTS_RTORQapdu *prtorq;
 
@@ -141,8 +141,8 @@ OID	dctx;
 	ctx = pe -> pe_context;
 
 	{
-		register OID	oid;
-		register struct PSAPcontext *pp;
+		OID	oid;
+		struct PSAPcontext *pp;
 
 		if (dctx)
 			oid = dctx;
@@ -238,10 +238,10 @@ struct RtSAPindication *rti;
 	PE	    pe,
 	 p,
 	 q;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct AcSAPindication acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 
 	if ((acb = findacblk (sd)) == NULL || (acb -> acb_flags & ACB_CONN))
 		return rtsaplose (rti, RTS_PARAMETER, NULLCP,
@@ -292,8 +292,8 @@ no_mem:
 	}
 
 	if (ctxlist) {
-		register int	i;
-		register struct PSAPcontext *pp;
+		int	i;
+		struct PSAPcontext *pp;
 
 		if (ctxlist -> pc_nctx > NPCTX) {
 			(void) rtsaplose (rti, RTS_PARAMETER, NULLCP, "too many contexts");

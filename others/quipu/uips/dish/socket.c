@@ -46,7 +46,7 @@ int	pid,
 	static char parent [BUFSIZ];
 	int     portno;
 	char   *dp;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	if ((myppid = pid) == 0)
 		myppid = getppid ();

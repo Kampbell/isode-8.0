@@ -232,7 +232,7 @@ static int  snmploop (vec, error)
 char  **vec;
 int	error;
 {
-	register struct dispatch *ds;
+	struct dispatch *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
 		return error;
@@ -254,12 +254,12 @@ int	error;
 static struct dispatch *getds (name)
 char   *name;
 {
-	register int    longest,
+	int    longest,
 			 nmatches;
-	register char  *p,
+	char  *p,
 			 *q;
 	char    buffer[BUFSIZ];
-	register struct dispatch   *ds,
+	struct dispatch   *ds,
 			*fs;
 
 	longest = nmatches = 0;
@@ -366,7 +366,7 @@ char  **vec;
 	longtimeago = now - 6L * 30L * 24L * 60L * 60L;
 
 	if (follow < 0) {
-		register long    offset,
+		long    offset,
 				 *lp,
 				 *ep;
 		long   *opp;
@@ -487,7 +487,7 @@ char  **vec;
 {
 	int	    result;
 	IFP	    fnx = bulk1;
-	register struct type_SNMP_VarBindList **vp;
+	struct type_SNMP_VarBindList **vp;
 	struct type_SNMP_VarBindList *vb;
 	OT	    et = NULL;
 
@@ -528,8 +528,8 @@ char  **vec;
 
 	vp = &vb, vb = NULL;
 	for (result = NOTOK; *vec; vec++) {
-		register struct type_SNMP_VarBindList *bind;
-		register struct type_SNMP_VarBind *v;
+		struct type_SNMP_VarBindList *bind;
+		struct type_SNMP_VarBind *v;
 		OT	ot;
 
 		if ((ot = text2obj (*vec)) == NULL) {
@@ -538,7 +538,7 @@ char  **vec;
 		}
 
 		if (et) {
-			register OID    eid = et -> ot_name,
+			OID    eid = et -> ot_name,
 							oid = ot -> ot_name;
 
 			if (eid -> oid_nelem != oid -> oid_nelem - 1
@@ -613,7 +613,7 @@ static char *status_t[] = { "obsolete",
 static int  f_compile (vec)
 char  **vec;
 {
-	register int    i,
+	int    i,
 			 j,
 			 k;
 	int	    fast,
@@ -621,9 +621,9 @@ char  **vec;
 	char   *cp,
 		   *file,
 		   sysout[BUFSIZ];
-	register OS	    os;
+	OS	    os;
 	OS	    first;
-	register OT	    ot;
+	OT	    ot;
 	FILE   *fp;
 
 	fast = source = 0;
@@ -684,7 +684,7 @@ char  **vec;
 		fprintf (fp, "static unsigned int _elems[] = {\n");
 		v = 0;
 		for (ot = text2obj ("ccitt"); ot; ot = ot -> ot_next) {
-			register unsigned int *ip = ot -> ot_name -> oid_elements;
+			unsigned int *ip = ot -> ot_name -> oid_elements;
 
 			fprintf (fp, "     ");
 			for (j = ot -> ot_name -> oid_nelem; j > 0; j--)
@@ -801,8 +801,8 @@ char  **vec;
 	OID	    oid;
 	PE	    pe;
 	struct type_SNMP_Message *msg;
-	register struct type_SNMP_PDU *parm;
-	register struct type_SNMP_VarBindList *vp;
+	struct type_SNMP_PDU *parm;
+	struct type_SNMP_VarBindList *vp;
 	struct timeval  tvs,
 			now;
 
@@ -895,9 +895,9 @@ try_again:
 
 	for (vp = parm -> variable__bindings; vp; vp = vp -> next) {
 		caddr_t	 value;
-		register OI	oi;
-		register OS	os;
-		register struct type_SNMP_VarBind *v = vp -> VarBind;
+		OI	oi;
+		OS	os;
+		struct type_SNMP_VarBind *v = vp -> VarBind;
 
 		if (oid
 				&& (oid -> oid_nelem > v -> name -> oid_nelem
@@ -1001,10 +1001,10 @@ static struct type_SNMP_Message *new_message (offset, vec)
 int	offset;
 char  **vec;
 {
-	register struct type_SNMP_Message *msg;
-	register struct type_SNMP_PDUs *pdu;
-	register struct type_SNMP_PDU *parm;
-	register struct type_SNMP_VarBindList **vp;
+	struct type_SNMP_Message *msg;
+	struct type_SNMP_PDUs *pdu;
+	struct type_SNMP_PDU *parm;
+	struct type_SNMP_VarBindList **vp;
 
 	if ((msg = (struct type_SNMP_Message *) calloc (1, sizeof *msg)) == NULL)
 		adios (NULLCP, "out of memory");
@@ -1034,8 +1034,8 @@ char  **vec;
 
 	vp = &parm -> variable__bindings;
 	for (vec++; *vec; vec++) {
-		register struct type_SNMP_VarBindList *bind;
-		register struct type_SNMP_VarBind *v;
+		struct type_SNMP_VarBindList *bind;
+		struct type_SNMP_VarBind *v;
 
 		if ((bind = (struct type_SNMP_VarBindList *) calloc (1, sizeof *bind))
 				== NULL)
@@ -1058,16 +1058,16 @@ char  **vec;
 /*  */
 
 static int  get_ava (v, ava, offset)
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 char   *ava;
 int	offset;
 {
 	int	    result;
 	caddr_t value;
-	register char *cp;
-	register OI	   oi;
-	register OT	   ot;
-	register OS	   os;
+	char *cp;
+	OI	   oi;
+	OT	   ot;
+	OS	   os;
 	OID	    oid;
 
 	if (cp = index (ava, '=')) {
@@ -1129,8 +1129,8 @@ struct type_SNMP_Message *msg;
 {
 	int	    request_id;
 	PE	    pe;
-	register struct type_SNMP_PDU *parm;
-	register struct type_SNMP_VarBindList *vp;
+	struct type_SNMP_PDU *parm;
+	struct type_SNMP_VarBindList *vp;
 
 	if (msg == NULL)
 		return OK;
@@ -1190,9 +1190,9 @@ try_again:
 
 	for (vp = parm -> variable__bindings; vp; vp = vp -> next) {
 		caddr_t	 value;
-		register OI	oi;
-		register OS	os;
-		register struct type_SNMP_VarBind *v = vp -> VarBind;
+		OI	oi;
+		OS	os;
+		struct type_SNMP_VarBind *v = vp -> VarBind;
 
 		if ((oi = name2inst (v -> name)) == NULL) {
 			advise (NULLCP, "unknown variable \"%s\"", oid2ode (v -> name));
@@ -1235,13 +1235,13 @@ out:
 static int  f_help (vec)
 char  **vec;
 {
-	register int    i,
+	int    i,
 			 j,
 			 w;
 	int     columns,
 			width,
 			lines;
-	register struct dispatch   *ds,
+	struct dispatch   *ds,
 			*es;
 
 	for (es = dispatches; es -> ds_name; es++)
@@ -1466,9 +1466,9 @@ OS	os;
 static	moresyntax (check)
 int	check;
 {
-	register struct ivar *iv;
-	register OT	   ot;
-	register OS	   os;
+	struct ivar *iv;
+	OT	   ot;
+	OS	   os;
 
 	for (iv = ivars; iv -> iv_object; iv++)
 		if (ot = text2obj (iv -> iv_object)) {
@@ -1501,19 +1501,19 @@ static	arginit (vec)
 char    **vec;
 {
 	int	    w;
-	register char  *ap,
+	char  *ap,
 			 *pp;
-	register struct dispatch *ds;
+	struct dispatch *ds;
 #ifdef	TCP
 	int	    port;
 	struct sockaddr_in in_socket;
-	register struct sockaddr_in *isock = &in_socket;
-	register struct hostent *hp;
-	register struct servent *sp;
+	struct sockaddr_in *isock = &in_socket;
+	struct hostent *hp;
+	struct servent *sp;
 #endif
-	register struct TSAPaddr *ta = &snmp_ta,
+	struct TSAPaddr *ta = &snmp_ta,
 									  *tz;
-	register struct NSAPaddr *na = ta -> ta_addrs;
+	struct NSAPaddr *na = ta -> ta_addrs;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -1628,7 +1628,7 @@ char    **vec;
 #ifdef	TCP
 	{
 		struct sockaddr_in lo_socket;
-		register struct sockaddr_in *lsock = &lo_socket;
+		struct sockaddr_in *lsock = &lo_socket;
 
 		bzero ((char *) lsock, sizeof *lsock);
 		if ((hp = gethostbystring (pp = getlocalhost ())) == NULL)
@@ -1685,7 +1685,7 @@ char    **vec;
 #ifdef	CLTS
 	{
 		union sockaddr_osi lo_socket;
-		register union sockaddr_osi *lsock = &lo_socket;
+		union sockaddr_osi *lsock = &lo_socket;
 
 		bzero ((char *) lsock, sizeof *lsock);
 		if ((sd = start_clts_client (lsock, 0, 0, 0)) == NOTOK)
@@ -1724,9 +1724,9 @@ cots:
 		;
 		{
 			struct TSAPconnect tcs;
-			register struct TSAPconnect *tc = &tcs;
+			struct TSAPconnect *tc = &tcs;
 			struct TSAPdisconnect tds;
-			register struct TSAPdisconnect *td = &tds;
+			struct TSAPdisconnect *td = &tds;
 
 			if (verbose) {
 				fprintf (stderr, "%s... ", taddr2str (ta));
@@ -1781,8 +1781,8 @@ static int  getline (prompt, buffer)
 char   *prompt,
 	   *buffer;
 {
-	register int    i;
-	register char  *cp,
+	int    i;
+	char  *cp,
 			 *ep;
 	static int  sticky = 0;
 

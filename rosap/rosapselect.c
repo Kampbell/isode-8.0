@@ -43,7 +43,7 @@ RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (mask);
 	missingP (nfds);

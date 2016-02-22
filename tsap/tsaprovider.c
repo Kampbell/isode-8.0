@@ -70,8 +70,8 @@ TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 	SFP	    istat;
 	int     result;
 	struct udvec uvs[2];
-	register struct udvec *uv = uvs;
-	register struct tsapblk *tb;
+	struct udvec *uv = uvs;
+	struct tsapblk *tb;
 
 	missingP (data);
 	if (cc <= 0)
@@ -111,8 +111,8 @@ TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 	SFP	    istat;
 	int     result;
 	struct udvec uvs[2];
-	register struct udvec *uv = uvs;
-	register struct tsapblk *tb;
+	struct udvec *uv = uvs;
+	struct tsapblk *tb;
 
 	missingP (data);
 	toomuchP (data, cc, TX_SIZE, "expedited");
@@ -152,13 +152,13 @@ TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 int 
 TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td)
 {
-	register int    n;
+	int    n;
 	SBV     smask,
 			imask;
 	SFP	    istat;
 	int     result;
-	register struct tsapblk *tb;
-	register struct udvec *vv;
+	struct tsapblk *tb;
+	struct udvec *vv;
 
 	missingP (uv);
 	n = 0;
@@ -190,7 +190,7 @@ TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td)
 /*    T-READ.REQUEST (pseudo; synchronous read) */
 
 int 
-TReadRequest (int sd, register struct TSAPdata *tx, int secs, register struct TSAPdisconnect *td)
+TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *td)
 {
 	SBV	    smask,
 			imask;
@@ -201,7 +201,7 @@ TReadRequest (int sd, register struct TSAPdata *tx, int secs, register struct TS
 	fd_set  ifds,
 			efds,
 			mask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	missingP (tx);
 	missingP (td);
@@ -265,11 +265,11 @@ out:
 /*    T-DISCONNECT.REQUEST */
 
 int 
-TDiscRequest (int sd, char *data, int cc, register struct TSAPdisconnect *td)
+TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 {
 	SBV     smask;
 	int     result;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	toomuchP (data, cc, TD_SIZE, "disconnect");
 
@@ -298,7 +298,7 @@ TSetIndications (int sd, IFP data, IFP disc, struct TSAPdisconnect *td)
 {
 	SBV	    smask;
 	int     result;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	if (data || disc) {
 		missingP (data);
@@ -337,10 +337,10 @@ TSetIndications (int sd, IFP data, IFP disc, struct TSAPdisconnect *td)
 /*    map transport descriptors for select() */
 
 int 
-TSelectMask (int sd, fd_set *mask, int *nfds, register struct TSAPdisconnect *td)
+TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td)
 {
 	SBV     smask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	missingP (mask);
 	missingP (nfds);
@@ -394,12 +394,12 @@ struct sigcontext *sc;
 	SBV	    smask;
 #endif
 	IFP	    disc;
-	register struct tsapblk *tb,
+	struct tsapblk *tb,
 			*tb2;
 	struct TSAPdata txs;
-	register struct TSAPdata   *tx = &txs;
+	struct TSAPdata   *tx = &txs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 #ifndef	BSDSIGS
 	(void) signal (SIGEMT, DATAser);
@@ -465,7 +465,7 @@ struct sigcontext *sc;
 
 #ifndef	SIGPOLL
 static int 
-TWakeUp (register struct tsapblk *tb, struct TSAPdisconnect *td)
+TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	int     i,
 			nfds;
@@ -473,7 +473,7 @@ TWakeUp (register struct tsapblk *tb, struct TSAPdisconnect *td)
 	char    buf1[10],
 			buf2[10],
 			buf3[10];
-	register struct isoservent *is;
+	struct isoservent *is;
 	static int  inited = 0;
 
 	if (TPid > OK) {
@@ -542,7 +542,7 @@ TWakeUp (register struct tsapblk *tb, struct TSAPdisconnect *td)
 
 
 static int 
-TWakeUp (register struct tsapblk *tb, struct TSAPdisconnect *td)
+TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td)
 {
 	int	    result;
 #ifndef	SUNOS4
@@ -612,7 +612,7 @@ TWakeUp (register struct tsapblk *tb, struct TSAPdisconnect *td)
 
 struct tsapblk *
 newtblk (void) {
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);
 	if (tb == NULL)
@@ -635,7 +635,7 @@ newtblk (void) {
 
 
 int 
-freetblk (register struct tsapblk *tb)
+freetblk (struct tsapblk *tb)
 {
 	SBV     smask;
 #ifndef	SIGPOLL
@@ -696,9 +696,9 @@ freetblk (register struct tsapblk *tb)
 /*  */
 
 struct tsapblk *
-findtblk (register int sd)
+findtblk (int sd)
 {
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	if (once_only == 0)
 		return NULL;

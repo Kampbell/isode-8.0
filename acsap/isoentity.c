@@ -94,7 +94,7 @@ getisoentity (void) {
 int 
 _startisoentity (char *descriptor)
 {
-	register char  *cp,
+	char  *cp,
 			 *dp;
 	char   *ep;
 
@@ -135,8 +135,8 @@ _startisoentity (char *descriptor)
 int 
 _stopisoentity (char *descriptor, struct isoentity *iep)
 {
-	register int    i;
-	register struct isoentity  *ie = &ies;
+	int    i;
+	struct isoentity  *ie = &ies;
 	OID		oid = &ie -> ie_identifier;
 	struct PSAPaddr *pa = &ie -> ie_addr;
 	struct PSAPaddr *pz;
@@ -171,7 +171,7 @@ _stopisoentity (char *descriptor, struct isoentity *iep)
 /*  */
 
 int 
-_printent (register struct isoentity *ie)
+_printent (struct isoentity *ie)
 {
 	LLOG (addr_log, LLOG_DEBUG,
 		  ("Entity:  %s (%s)", ie -> ie_descriptor,

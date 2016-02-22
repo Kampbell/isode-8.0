@@ -181,7 +181,7 @@ char  **vec;
 
 	result = OK;
 	if (vec = xglob (vec, 1)) {
-		register char **gp;
+		char **gp;
 
 		didrecurse = 0;
 		multi = vec[1] ? 1 : 0;
@@ -219,9 +219,9 @@ int	top,
 	char   *s;
 	UTC	    ut;
 	struct FTAMgroup    ftgs;
-	register struct FTAMgroup  *ftg = &ftgs;
+	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 	struct vfsmap *vf = &vfs[VFS_FDF];
 
 	bzero ((char *) ftg, sizeof *ftg);
@@ -230,8 +230,8 @@ int	top,
 
 	ftg -> ftg_flags |= FTG_SELECT;
 	{
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		fa -> fa_present = FA_FILENAME;
 		fa -> fa_nfile = 0;
@@ -244,7 +244,7 @@ int	top,
 
 	ftg -> ftg_flags |= FTG_RDATTR;
 	{
-		register struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
+		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
 
 		ftra -> ftra_attrnames = FA_FILENAME | FA_CONTENTS;
 		if (dashl)
@@ -269,8 +269,8 @@ int	top,
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		if (multi && ftse -> ftse_state != FSTATE_SUCCESS)
 			(void) printf ("%s\n", fa -> fa_files[0]);
@@ -285,8 +285,8 @@ int	top,
 	recurse = 0;
 
 	if (ftg -> ftg_flags & FTG_RDATTR) {
-		register struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
-		register struct FTAMattributes *fa = &ftra -> ftra_attrs;
+		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
+		struct FTAMattributes *fa = &ftra -> ftra_attrs;
 
 		ftam_diag (ftra -> ftra_diags, ftra -> ftra_ndiag, 1,
 				   ftra -> ftra_action);
@@ -316,7 +316,7 @@ int	top,
 				 : NULLUTC;
 
 			if (fa -> fa_present & FA_CONTENTS) {
-				register struct vfsmap *uf;
+				struct vfsmap *uf;
 
 				for (uf = vfs; uf -> vf_entry; uf++)
 					if (oid_cmp (uf -> vf_oid, fa -> fa_contents) == 0)
@@ -351,7 +351,7 @@ int	top,
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
 
 		ftam_diag (ftde -> ftde_diags, ftde -> ftde_ndiag, 1,
 				   ftde -> ftde_action);
@@ -360,7 +360,7 @@ int	top,
 
 	if (recurse) {
 		struct FADUidentity faduids;
-		register struct FADUidentity *faduid = &faduids;
+		struct FADUidentity *faduid = &faduids;
 
 		faduid -> fa_type = FA_FIRSTLAST;
 		faduid -> fa_firstlast = FA_FIRST;
@@ -391,7 +391,7 @@ you_lose:
 static int  fdfls (file)
 char   *file;
 {
-	register int    i,
+	int    i,
 			 j,
 			 w;
 	int     columns,
@@ -399,7 +399,7 @@ char   *file;
 			lines;
 	char   *bp,
 		   buffer[BUFSIZ];
-	register struct filent *fi,
+	struct filent *fi,
 			**xi,
 			**yi;
 
@@ -532,16 +532,16 @@ char   *file;
 
 int	fdffnx (fd, px, status)
 int	fd;
-register struct PSAPdata *px;
+struct PSAPdata *px;
 int	status;
 {
-	register int    i;
-	register PE	    pe,
+	int    i;
+	PE	    pe,
 			 *pep;
-	register struct filent *fi;
+	struct filent *fi;
 
 	if (px == NULL) {
-		register struct filent *gi;
+		struct filent *gi;
 
 		for (fi = filents; fi; fi = gi) {
 			gi = fi -> fi_next;
@@ -561,7 +561,7 @@ int	status;
 		int	result;
 		struct type_DOCS_NBS__9__Datatype1 *d9;
 		struct FTAMattributes fas;
-		register struct FTAMattributes *fa = &fas;
+		struct FTAMattributes *fa = &fas;
 		struct FTAMindication ftis;
 
 		if ((pe = *pep) == NULLPE)
@@ -590,7 +590,7 @@ int	status;
 		free_DOCS_NBS__9__Datatype1 (d9);
 
 		if (result == NOTOK) {
-			register struct FTAMabort *fta = &ftis.fti_abort;
+			struct FTAMabort *fta = &ftis.fti_abort;
 
 			if (silent)
 				globerr = "unable to interpret datatype";

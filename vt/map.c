@@ -877,7 +877,7 @@ struct	ltchars noltc =	{
 
 int
 tmode(f)
-register int f;
+int f;
 {
 	static int prevmode = 0;
 	struct tchars *tc;

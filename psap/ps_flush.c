@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_flush.c,v 9.0 1992/
 /*  */
 
 int 
-ps_flush (register PS ps)
+ps_flush (PS ps)
 {
 	if (ps -> ps_flushP)
 		return (*ps -> ps_flushP) (ps);

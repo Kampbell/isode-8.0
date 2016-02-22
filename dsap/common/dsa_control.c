@@ -100,9 +100,9 @@ PE pe;
 }
 
 dsa_control_print (ps, dsa_controlptr, format)
-register PS ps;
-register struct dsa_control * dsa_controlptr;
-register int format;
+PS ps;
+struct dsa_control * dsa_controlptr;
+int format;
 {
 	if (format == READOUT) {
 		ps_printf(ps, "Write attribute only - No READ printing. SPT\n") ;

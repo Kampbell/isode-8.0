@@ -110,15 +110,15 @@ static	int	flush_if_cache = 0;
 
 static int  o_interfaces (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifnum,
 			ifvar;
-	register struct interface *is;
-	register struct ifnet *ifn;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct interface *is;
+	struct ifnet *ifn;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 #ifdef	ifLastChange
 	static   int lastq = -1;
 	static   integer diff;
@@ -160,7 +160,7 @@ int	offset;
 			v -> name = new;
 		} else {
 			int	i = ot -> ot_name -> oid_nelem;
-			register struct interface *iz;
+			struct interface *iz;
 
 			if ((ifnum = oid -> oid_elements[i]) == 0) {
 				if ((is = ifs) == NULL)
@@ -306,16 +306,16 @@ stuff_ifnum:
 
 static int  s_interfaces (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifnum;
-	register int    i;
-	register struct interface *is;
+	int    i;
+	struct interface *is;
 	struct ifreq    ifreq;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 	caddr_t value;
 
 	switch (offset) {
@@ -404,8 +404,8 @@ char   *name,
 {
 	int	    i;
 	u_long  l;
-	register char   *cp;
-	register struct interface *is;
+	char   *cp;
+	struct interface *is;
 
 	for (is = ifs; is; is = is -> ifn_next)
 		if (strcmp (is -> ifn_descr, name) == 0)
@@ -460,14 +460,14 @@ malformed:
 init_interfaces () {
 	int	    i;
 	struct ifnet *ifnet;
-	register OT	    ot;
-	register struct interface  *is,
+	OT	    ot;
+	struct interface  *is,
 			**ifp;
 	struct nlist nzs;
-	register struct nlist *nz = &nzs;
+	struct nlist *nz = &nzs;
 
 	if (getkmem (nl + N_IFNET, (caddr_t) &ifnet, sizeof ifnet) == NOTOK) {
-		register struct interface *ip;
+		struct interface *ip;
 
 disabled:
 		;
@@ -484,7 +484,7 @@ disabled:
 
 	ifp = &ifs;
 	for (i = 0; ifnet; i++) {
-		register struct ifnet *ifn;
+		struct ifnet *ifn;
 
 		if ((is = (struct interface *) calloc (1, sizeof *is)) == NULL)
 			adios (NULLCP, "out of memory");
@@ -638,7 +638,7 @@ disabled:
 /*  */
 
 static int  adr_compar (a, b)
-register struct address **a,
+struct address **a,
 		**b;
 {
 	int    i;
@@ -656,8 +656,8 @@ int	get_interfaces (offset)
 int	offset;
 {
 	int	    adrNumber = 0;
-	register struct interface  *is;
-	register struct address    *as,
+	struct interface  *is;
+	struct address    *as,
 			*ap,
 			**base,
 			**afe,
@@ -688,24 +688,24 @@ int	offset;
 	afp = &afs;
 	for (is = ifs; is; is = is -> ifn_next) {
 		struct arpcom ifns;
-		register struct ifnet *ifn = &ifns.ac_if;
+		struct ifnet *ifn = &ifns.ac_if;
 #ifdef	BSD43
 		struct ifaddr ifaddr;
-		register struct ifaddr *ifa;
+		struct ifaddr *ifa;
 #ifdef	BSD44
 		union sockaddr_un ifsocka,
 				ifsockb;
 #endif
 		union sockaddr_un ifsockc;
-		register union sockaddr_un *ia,
+		union sockaddr_un *ia,
 				*ib;
-		register union sockaddr_un *ic = &ifsockc;
+		union sockaddr_un *ic = &ifsockc;
 #endif
 #ifndef	BSD44
 		struct ifreq ifreq;
 #endif
 		struct nlist nzs;
-		register struct nlist *nz = &nzs;
+		struct nlist *nz = &nzs;
 
 		nz -> n_name = "struct ifnet", nz -> n_value = is -> ifn_offset;
 		if (getkmem (nz, (caddr_t) ifn, sizeof ifns) == NOTOK)
@@ -966,12 +966,12 @@ int	offset;
 /*  */
 
 struct address *find_address (addr)
-register union sockaddr_un *addr;
+union sockaddr_un *addr;
 {
-	register struct address *as;
-	register struct in_addr *in;
+	struct address *as;
+	struct in_addr *in;
 #ifdef	BSD44
-	register struct iso_addr *iso;
+	struct iso_addr *iso;
 #endif
 
 	switch (addr -> sa.sa_family) {
@@ -1010,13 +1010,13 @@ register union sockaddr_un *addr;
 /*  */
 
 struct address *get_addrent (ip, len, head, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 struct address *head;
 int	isnext;
 {
 	int	    family;
-	register struct address *as;
+	struct address *as;
 
 	if (head)
 		family = head -> adr_address.sa.sa_family;

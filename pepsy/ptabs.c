@@ -987,7 +987,7 @@ YP	oyp, yp;
 char	*t, *f;
 {
 	char	*p1;
-	register char	s = oyp->yp_prfexp;	/* type of value passing */
+	char	s = oyp->yp_prfexp;	/* type of value passing */
 	int		idx;
 
 

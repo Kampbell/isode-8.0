@@ -38,7 +38,7 @@ static int  readx ();
 struct tsapkt *
 fd2tpkt (int fd, IFP initfnx, IFP readfnx)
 {
-	register struct tsapkt *t;
+	struct tsapkt *t;
 
 	if ((t = newtpkt (0)) == NULL)
 		return NULL;
@@ -62,12 +62,12 @@ fd2tpkt (int fd, IFP initfnx, IFP readfnx)
 /*  */
 
 static int 
-fd2tpktaux (int fd, register struct tsapkt *t, IFP initfnx, IFP readfnx)
+fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx)
 {
-	register int    code,
+	int    code,
 			 len,
 			 vlen;
-	register char  *vptr;
+	char  *vptr;
 
 	if ((code = (*initfnx) (fd, t)) != OK)
 		return code;
@@ -127,8 +127,8 @@ fd2tpktaux (int fd, register struct tsapkt *t, IFP initfnx, IFP readfnx)
 					break;
 
 				case VDAT_ALTERNATE: {
-					register int i;
-					register char *ap;
+					int i;
+					char *ap;
 
 					for (ap = vptr, i = len; i > 0; ap++, i--)
 						t -> t_cr.cr_alternate |=
@@ -317,9 +317,9 @@ fd2tpktaux (int fd, register struct tsapkt *t, IFP initfnx, IFP readfnx)
 static int 
 readx (int fd, char *buffer, int n, IFP readfnx)
 {
-	register int    i,
+	int    i,
 			 cc;
-	register char   *bp;
+	char   *bp;
 
 	for (bp = buffer, i = n; i > 0; bp += cc, i -= cc) {
 		switch (cc = (*readfnx) (fd, bp, i)) {
@@ -341,7 +341,7 @@ readx (int fd, char *buffer, int n, IFP readfnx)
 /*  */
 
 int 
-tpkt2fd (register struct tsapblk *tb, register struct tsapkt *t, IFP writefnx)
+tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx)
 {
 	int     i,
 			ilen,
@@ -349,7 +349,7 @@ tpkt2fd (register struct tsapblk *tb, register struct tsapkt *t, IFP writefnx)
 	char   *cp,
 		   *vptr,
 		   *outptr;
-	register struct udvec  *uv;
+	struct udvec  *uv;
 	SFP	    pstat;
 	SBV	    smask;
 
@@ -490,7 +490,7 @@ tpkt2fd (register struct tsapblk *tb, register struct tsapkt *t, IFP writefnx)
 struct tsapkt *
 newtpkt (int code)
 {
-	register struct tsapkt *t;
+	struct tsapkt *t;
 
 	t = (struct tsapkt *) calloc (1, sizeof *t);
 	if (t == NULL)
@@ -504,7 +504,7 @@ newtpkt (int code)
 
 
 int 
-freetpkt (register struct tsapkt *t)
+freetpkt (struct tsapkt *t)
 {
 	if (t == NULL)
 		return;

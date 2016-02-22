@@ -106,8 +106,8 @@ main (int argc, char **argv)
 /*    ERRORS */
 
 static ps_die (ps, s)
-register PS	 ps;
-register char   *s;
+PS	 ps;
+char   *s;
 {
 	(void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
@@ -115,8 +115,8 @@ register char   *s;
 
 
 static pe_die (pe, s)
-register PE	 pe;
-register char   *s;
+PE	 pe;
+char   *s;
 {
 	(void) fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
 	exit (1);

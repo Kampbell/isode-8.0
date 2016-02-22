@@ -39,11 +39,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb2prim.c,v 9.0 1992/0
 /*  */
 
 PE 
-qb2prim_aux (register struct qbuf *qb, int class, int id, int in_line)
+qb2prim_aux (struct qbuf *qb, int class, int id, int in_line)
 {
-	register PE	    pe,
+	PE	    pe,
 			 p;
-	register struct qbuf *qp;
+	struct qbuf *qp;
 
 	if (qb == NULL)
 		return NULLPE;

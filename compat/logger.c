@@ -70,7 +70,7 @@ long	lseek ();
 /*  */
 
 int 
-ll_open (register LLog *lp)
+ll_open (LLog *lp)
 {
 	int	    mask,
 			mode;
@@ -124,7 +124,7 @@ you_lose:
 /*  */
 
 int 
-ll_close (register LLog *lp)
+ll_close (LLog *lp)
 {
 	int	    status;
 
@@ -170,7 +170,7 @@ ll_log (LLog *lp, int event, char *what, char *fmt)
 
 int 
 _ll_log (	/* what, fmt, args ... */
-    register LLog *lp,
+    LLog *lp,
     int event,
     va_list ap
 )
@@ -279,9 +279,9 @@ error:
 /*  */
 
 void 
-ll_hdinit (register LLog *lp, char *prefix)
+ll_hdinit (LLog *lp, char *prefix)
 {
-	register char  *cp,
+	char  *cp,
 			 *up;
 	char    buffer[BUFSIZ],
 			user[10];
@@ -320,9 +320,9 @@ ll_hdinit (register LLog *lp, char *prefix)
 /*  */
 
 void 
-ll_dbinit (register LLog *lp, char *prefix)
+ll_dbinit (LLog *lp, char *prefix)
 {
-	register char  *cp;
+	char  *cp;
 	char    buffer[BUFSIZ];
 
 	ll_hdinit (lp, prefix);
@@ -381,7 +381,7 @@ int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 {
 	int	    cc,
 			status;
-	register char   *bp;
+	char   *bp;
 	char     buffer[BUFSIZ];
 	char    *fmt;
 	va_list fp;
@@ -447,7 +447,7 @@ int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 /*  */
 
 int 
-ll_sync (register LLog *lp)
+ll_sync (LLog *lp)
 {
 	if (lp -> ll_stat & LLOGCLS)
 		return ll_close (lp);
@@ -484,7 +484,7 @@ ll_preset (char *fmt)
 /*  */
 
 int 
-ll_check (register LLog *lp)
+ll_check (LLog *lp)
 {
 #ifndef	BSD42
 	int	    fd;
@@ -543,7 +543,7 @@ ll_defmhdr (
 )
 {
 	time_t    clock;
-	register struct tm *tm;
+	struct tm *tm;
 
 	(void) time (&clock);
 	tm = localtime (&clock);

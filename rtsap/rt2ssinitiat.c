@@ -90,20 +90,20 @@ RtBeginRequestAux (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode
 			settings;
 	char   *base;
 #ifdef	notdef
-	register struct isoservent *is;
+	struct isoservent *is;
 #endif
-	register PE	pe,
+	PE	pe,
 			 p,
 			 q,
 			 r;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 	struct SSAPref srs;
-	register struct SSAPref *sr = &srs;
+	struct SSAPref *sr = &srs;
 	struct SSAPconnect scs;
-	register struct SSAPconnect *sc = &scs;
+	struct SSAPconnect *sc = &scs;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	struct type_OACS_PAccept *paccpt = (struct type_OACS_PAccept *)0;
 
 	if ((acb = newacblk ()) == NULL)

@@ -68,9 +68,9 @@ int fd;
 /*    N-CONNECT.REQUEST */
 
 int 
-x25open (register struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async)
+x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async)
 {
-	register int    fd;
+	int    fd;
 	int     onoff;
 
 	/*
@@ -239,9 +239,9 @@ static int  bl;
 
 
 static int 
-x25init (int fd, register struct tsapkt *t)
+x25init (int fd, struct tsapkt *t)
 {
-	register int    cc;
+	int    cc;
 
 	/* XXX: cc should be set to the maximum acceptable NSDU length.
 	   Longer NSDUs will be truncated without notification.
@@ -281,7 +281,7 @@ x25init (int fd, register struct tsapkt *t)
 /* ARGSUSED */
 
 static int 
-read_nsdu_buffer (int fd, register char *buffer, register int cc)
+read_nsdu_buffer (int fd, char *buffer, int cc)
 {
 	if (cc > bl)
 		cc = bl;
@@ -342,13 +342,13 @@ x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconne
 
 
 int 
-x25restore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
+x25restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 {
 	int     fd;
 	char    dte1[NASIZE + 1],
 			dte2[NASIZE + 1];
-	register struct NSAPaddr   *na;
-	register struct tsapADDR   *ta;
+	struct NSAPaddr   *na;
+	struct tsapADDR   *ta;
 
 #ifdef ULTRIX_X25_DEMSA
 
@@ -403,13 +403,13 @@ x25restore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td
 
 #ifdef AEF_NSAP
 int 
-x25nsaprestore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
+x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 {
 	int     fd;
 	char    dte1[NASIZE*2 + 1],
 			dte2[NASIZE*2 + 1];
-	register struct NSAPaddr   *na;
-	register struct tsapADDR   *ta;
+	struct NSAPaddr   *na;
+	struct tsapADDR   *ta;
 
 	if (sscanf (buffer, "%d %s %s", &fd, dte1, dte2) != 3 || fd < 0)
 		return tsaplose (td, DR_PARAMETER, NULLCP,
@@ -443,7 +443,7 @@ x25nsaprestore (register struct tsapblk *tb, char *buffer, struct TSAPdisconnect
 /*  */
 
 int 
-XTService (register struct tsapblk *tb)
+XTService (struct tsapblk *tb)
 {
 #ifndef	UBC_X25
 	int     maxnsdu = MAXNSDU;

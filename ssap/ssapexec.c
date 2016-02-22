@@ -39,12 +39,12 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
 {
 	int	    sd;
 	char   *cp;
-	register struct isoservent *is;
-	register struct ssapkt *s;
+	struct isoservent *is;
+	struct ssapkt *s;
 	struct TSAPdata txs;
-	register struct TSAPdata  *tx = &txs;
+	struct TSAPdata  *tx = &txs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if (TReadRequest (sd = ts -> ts_sd, tx, NOTOK, td) == NOTOK)
 		return ts2sslose (si, "TReadRequest", td);

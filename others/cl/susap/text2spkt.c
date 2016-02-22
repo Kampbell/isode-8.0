@@ -46,8 +46,8 @@ static char *rcsid = "$Header: /f/iso/ssap/RCS/text2spkt.c,v 5.0 88/07/21 14:58:
 
 
 void	spkt2text (fp, s, read)
-register FILE	*fp;
-register struct ssapkt *s;
+FILE	*fp;
+struct ssapkt *s;
 int	read;
 {
 	char   *rw = read ? "<--- " : "---> ";

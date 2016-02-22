@@ -38,7 +38,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbysel.c,v 9.0 19
 struct isoservent *
 getisoserventbyselector (char *provider, char *selector, int selectlen)
 {
-	register struct isoservent *is;
+	struct isoservent *is;
 
 	isodetailor (NULLCP, 0);
 	DLOG (addr_log, LLOG_TRACE,

@@ -192,11 +192,11 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 /*  */
 
 int 
-join_x25_server (register int fd, register struct NSAPaddr *remote)
+join_x25_server (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB sbuf;
 	CONN_DB *sock = &sbuf;
-	register int nfd;
+	int nfd;
 
 	if ((sock = gen2if (remote, sock, ADDR_REMOTE)) == NULL)
 		return NOTOK;

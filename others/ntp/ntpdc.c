@@ -99,8 +99,8 @@ usage:
 int 
 answer (char *host)
 {
-	register struct ntpinfo *msg = (struct ntpinfo *) packet;
-	register struct clockinfo *n;
+	struct ntpinfo *msg = (struct ntpinfo *) packet;
+	struct clockinfo *n;
 	struct sockaddr_in from;
 	int fromlen = sizeof(from);
 	int count, cc;
@@ -171,7 +171,7 @@ int
 query (char *host)
 {
 	struct sockaddr_in watcher;
-	register struct ntpdata *msg = (struct ntpdata *) packet;
+	struct ntpdata *msg = (struct ntpdata *) packet;
 	struct hostent *hp;
 	static struct servent *sp = NULL;
 	long HostAddr;
@@ -306,7 +306,7 @@ char *
 cvthname (struct sockaddr_in *f)
 {
 	struct hostent *hp;
-	register char *p;
+	char *p;
 	extern char *inet_ntoa();
 
 	if (f->sin_family != AF_INET) {

@@ -43,8 +43,8 @@ AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrel
 {
 	SBV	    smask;
 	int	    result;
-	register struct assocblk *acb;
-	register struct type_ACS_RLRQ__apdu *rlrq;
+	struct assocblk *acb;
+	struct type_ACS_RLRQ__apdu *rlrq;
 
 	switch (reason) {
 	case ACF_NORMAL:
@@ -58,8 +58,8 @@ AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrel
 	}
 	toomuchP (data, ndata, NACDATA, "release");
 	if (data) {	    /* XXX: probably should have a more intensive check... */
-		register int    i;
-		register PE    *pep;
+		int    i;
+		PE    *pep;
 
 		for (pep = data, i = ndata; i > 0; pep++, i--)
 			if ((*pep) -> pe_context == PE_DFLT_CTX)
@@ -129,7 +129,7 @@ AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindic
 {
 	SBV	    smask;
 	int	    result;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	missingP (acr);
 	missingP (aci);
@@ -152,18 +152,18 @@ AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindic
 /*  */
 
 static int 
-AcRelRetryRequestAux (register struct assocblk *acb, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
+AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
 {
 	int	    result;
 	char   *id = acb -> acb_flags & ACB_RELEASE ? "PRelRetryRequest"
 				 : "PRelRequest";
 	PE	    pe;
 	struct PSAPrelease prs;
-	register struct PSAPrelease *pr = &prs;
+	struct PSAPrelease *pr = &prs;
 	struct PSAPindication pis;
-	register struct PSAPabort  *pa = &pis.pi_abort;
+	struct PSAPabort  *pa = &pis.pi_abort;
 	struct type_ACS_ACSE__apdu *pdu = NULL;
-	register struct type_ACS_RLRE__apdu *rlre;
+	struct type_ACS_RLRE__apdu *rlre;
 
 	bzero ((char *) pr, sizeof *pr);
 

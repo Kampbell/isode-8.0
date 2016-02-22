@@ -121,12 +121,12 @@ static int
 SConnRequestAux (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr *called, int requirements, int settings, long isn, char *data, int cc, struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si, int async)
 {
 	int     result;
-	register struct ssapkt *s;
-	register struct ssapblk *sb;
+	struct ssapkt *s;
+	struct ssapblk *sb;
 	struct TSAPconnect  tcs;
-	register struct TSAPconnect *tc = &tcs;
+	struct TSAPconnect *tc = &tcs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if ((sb = newsblk ()) == NULL)
 		return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
@@ -233,11 +233,11 @@ SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	SBV     smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct TSAPconnect  tcs;
-	register struct TSAPconnect *tc = &tcs;
+	struct TSAPconnect *tc = &tcs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	missingP (sc);
 	missingP (si);
@@ -292,11 +292,11 @@ SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	SBV     smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct TSAPconnect  tcs;
-	register struct TSAPconnect *tc = &tcs;
+	struct TSAPconnect *tc = &tcs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	missingP (sc);
 	missingP (si);
@@ -382,10 +382,10 @@ SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 /*  */
 
 static int 
-SAsynRetryAux1 (register struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si)
+SAsynRetryAux1 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	int	    result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	s = sb -> sb_retry;
 	/*
@@ -439,11 +439,11 @@ SAsynRetryAux1 (register struct ssapblk *sb, struct TSAPconnect *tc, struct SSAP
 }
 
 static int 
-SAsynRetryAux2 (register struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si)
+SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	int	    len,
 			result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	if (s = sb -> sb_retry) { /* ASSIGN */
 		s -> s_mask &= ~SMASK_UDATA_PGI;
@@ -599,7 +599,7 @@ SAsynRetryAux2 (register struct ssapblk *sb, struct TSAPconnect *tc, struct SSAP
 		sc -> sc_realdata = s -> s_rdata, s -> s_rdata = NULL;
 		si -> si_type = SI_ABORT;
 		{
-			register struct SSAPabort  *sa = &si -> si_abort;
+			struct SSAPabort  *sa = &si -> si_abort;
 
 			sa -> sa_peer = 0;
 			sa -> sa_reason = sc -> sc_result;
@@ -614,7 +614,7 @@ SAsynRetryAux2 (register struct ssapblk *sb, struct TSAPconnect *tc, struct SSAP
 		sc -> sc_result = SC_ABORT;
 		si -> si_type = SI_ABORT;
 		{
-			register struct SSAPabort  *sa = &si -> si_abort;
+			struct SSAPabort  *sa = &si -> si_abort;
 
 			if (!(sa -> sa_peer = (s -> s_ab_disconnect & AB_DISC_USER)
 								  ? 1 : 0))

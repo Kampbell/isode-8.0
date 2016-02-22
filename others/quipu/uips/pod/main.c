@@ -95,7 +95,7 @@ main (unsigned int argc, char **argv)
 void 
 read_args (unsigned int *acptr, char ***avptr)
 {
-	register char *cp;
+	char *cp;
 	char **av;
 
 	if (acptr == (unsigned int *) NULL) return;
@@ -129,7 +129,7 @@ read_args (unsigned int *acptr, char ***avptr)
 void 
 read_bind_args (unsigned int *acptr, char ***avptr)
 {
-	register char *cp;
+	char *cp;
 	char **av;
 	bool got_user_name = FALSE,
 		 got_password = FALSE;

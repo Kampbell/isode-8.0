@@ -160,7 +160,7 @@ cannon (char *name)
 int 
 chkparent (char *name)
 {
-	register char *cp;
+	char *cp;
 	struct stat stb;
 
 	cp = rindex(name, '/');
@@ -424,7 +424,7 @@ query (char *str)
 static struct type_Idist_IA5List *
 str2ia5list (char *s, int len)
 {
-	register struct type_Idist_IA5List *ia5;
+	struct type_Idist_IA5List *ia5;
 
 	if ((ia5 = (struct type_Idist_IA5List  *) calloc (1, sizeof *ia5))
 			== NULL)
@@ -441,7 +441,7 @@ str2ia5list (char *s, int len)
 struct type_Idist_FileList *
 do_listcdir (void) {
 	DIR	*d;
-	register struct dirent *dp;
+	struct dirent *dp;
 	struct type_Idist_FileList *base, **flp;
 	char	buf[BUFSIZ];
 	struct stat stb;
@@ -578,7 +578,7 @@ chog(file, owner, group, imode)
 char *file, *owner, *group;
 integer imode;
 {
-	register int i;
+	int i;
 	int uid, gid;
 	extern char user[];
 	extern int userid;

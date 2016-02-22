@@ -81,7 +81,7 @@ extern Attr_Sequence entry_find_type();
 
 do_ds_search(arg, error, result, dnbind, target, local, refer, di_p,
 			 dsp, quipu_ctx, tktime, entryonly, authtype)
-register struct ds_search_arg *arg;
+struct ds_search_arg *arg;
 struct ds_search_result *result;
 struct DSError *error;
 DN              dnbind;
@@ -101,7 +101,7 @@ char            authtype;
 	qctx = quipu_ctx;
 
 	if ((timelimit = tktime) == (time_t) 0) {
-		register int    i;
+		int    i;
 
 		for (i = NBBY * sizeof timelimit - 1; i > 0; i--)
 			timelimit <<= 1, timelimit |= 1;
@@ -110,7 +110,7 @@ char            authtype;
 		ismanager = manager(dnbind);
 
 	if (ismanager && big_size == 0) {
-		register int    i;
+		int    i;
 
 		for (i = NBBY * sizeof big_size - 1; i > 0; i--)
 			big_size <<= 1, big_size |= 1;
@@ -518,7 +518,7 @@ struct ds_search_task **st;
 
 
 static          check_filter_presrch(fltr, error, dn)
-register Filter fltr;
+Filter fltr;
 struct DSError *error;
 DN              dn;
 {
@@ -552,11 +552,11 @@ DN              dn;
 }
 
 static          check_filterop_presrch(fltr, error, dn)
-register Filter fltr;
+Filter fltr;
 struct DSError *error;
 DN              dn;
 {
-	register Filter ptr;
+	Filter ptr;
 	int             i;
 
 #ifndef NO_STATS
@@ -578,14 +578,14 @@ DN              dn;
 static          prepare_string(c)
 caddr_t         c;
 {
-	register char  *p;
+	char  *p;
 
 	for (p = (char *) c; *p; p++)
 		*p = chrcnv[*p];
 }
 
 static          check_filteritem_presrch(fitem, error, dn)
-register struct filter_item *fitem;
+struct filter_item *fitem;
 struct DSError *error;
 DN              dn;
 {
@@ -1123,7 +1123,7 @@ char		authtype;
 int		*saclerror;
 {
 	EntryInfo      *einfo = NULLENTRYINFO;
-	register int    tmp = 0;
+	int    tmp = 0;
 	char            domore = TRUE;
 	Avlnode        *ptr;
 	struct search_kid_arg ska;
@@ -1372,14 +1372,14 @@ int             ismanager;
 EntryInfo      *filterentry(arg, entryptr, binddn,
 							authtype, saclerror, local, dosacl)
 struct ds_search_arg 	*arg;
-register Entry  	entryptr;
+Entry  	entryptr;
 DN              	binddn;
 char			authtype;
 int            		*saclerror;
 struct ds_search_task 	*local;
 char			dosacl;
 {
-	register EntryInfo	*einfo;
+	EntryInfo	*einfo;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("search: filter entry"));
 
@@ -1423,11 +1423,11 @@ char			dosacl;
  */
 
 static          check_filter(fltr, entryptr, binddn)
-register Filter fltr;
-register Entry  entryptr;
+Filter fltr;
+Entry  entryptr;
 DN              binddn;
 {
-	register int    i;
+	int    i;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("in check filter"));
 	switch (fltr->flt_type) {
@@ -1448,12 +1448,12 @@ DN              binddn;
 }
 
 static          check_filterop(fltr, entryptr, op, binddn)
-register Filter fltr;
-register Entry  entryptr;
+Filter fltr;
+Entry  entryptr;
 int             op;
 DN              binddn;
 {
-	register Filter ptr;
+	Filter ptr;
 	int             result;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("in filter op"));
@@ -1499,11 +1499,11 @@ DN              binddn;
  */
 
 static          check_filteritem(fitem, entryptr, binddn)
-register struct filter_item *fitem;
-register Entry  entryptr;
+struct filter_item *fitem;
+Entry  entryptr;
 DN              binddn;
 {
-	register Attr_Sequence as;
+	Attr_Sequence as;
 	Attr_Sequence   ias = NULLATTR;
 	AttributeType   at;
 	Attr_Sequence   ptr;
@@ -1599,9 +1599,9 @@ DN              binddn;
 }
 
 static          test_avs(fitem, avs, mode)
-register struct filter_item *fitem;
-register AV_Sequence avs;
-register int    mode;
+struct filter_item *fitem;
+AV_Sequence avs;
+int    mode;
 {
 
 	for (; avs != NULLAV; avs = avs->avseq_next) {
@@ -1631,8 +1631,8 @@ register int    mode;
  */
 
 static          substr_search(fitem, avs)
-register struct filter_item *fitem;
-register AV_Sequence avs;
+struct filter_item *fitem;
+AV_Sequence avs;
 {
 
 	phoneflag = telephone_match(fitem->UNAVA.ava_type->oa_syntax);
@@ -1649,10 +1649,10 @@ struct filter_item *fitem;
 AV_Sequence     avs;
 char            chrmatch[];
 {
-	register AV_Sequence loopavs;
-	register char  *compstr;
+	AV_Sequence loopavs;
+	char  *compstr;
 	char           *top;
-	register char  *temp;
+	char  *temp;
 	char           *temp2;
 	int             offset;
 
@@ -1721,12 +1721,12 @@ char            chrmatch[];
 }
 
 attr_substr(str1, av, chrmatch)
-register char  *str1;
+char  *str1;
 AttributeValue  av;
 char            chrmatch[];
 {
-	register char  *str2;
-	register int    count;
+	char  *str2;
+	int    count;
 	char           *top, *top2;
 	char            found = 0;
 

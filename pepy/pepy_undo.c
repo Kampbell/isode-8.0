@@ -46,18 +46,18 @@ static	undo_components_set ();
 /*  */
 
 undo_type (yp, level, id, arg, Vflag)
-register YP	yp;
-register int	level;
-register char  *id,
+YP	yp;
+int	level;
+char  *id,
 		 *arg;
 int	Vflag;
 {
-	register int    i,
+	int    i,
 			 j;
-	register char  *narg;
-	register struct tuple *t;
-	register YP	    y;
-	register YV	    yv;
+	char  *narg;
+	struct tuple *t;
+	YP	    y;
+	YV	    yv;
 
 	if (yp -> yp_flags & YP_COMPONENTS) {
 		yyerror_aux ("oops, I shouldn't be here!");
@@ -72,7 +72,7 @@ int	Vflag;
 					   && yp -> yp_code != YP_NULL
 					   && (yp -> yp_code != YP_CHOICE
 						   || (yp -> yp_flags & YP_CONTROLLED))
-					   ? "register " : "");
+					   ? "" : "");
 		(void) printf ("int    *len;\nchar  **buffer;\n%s parm;\n{\n",
 					   yp -> yp_param_type ? yp -> yp_param_type : "PEPYPARM");
 
@@ -91,7 +91,7 @@ int	Vflag;
 			break;		/* else fall */
 	case YP_INTLIST:
 	case YP_ENUMLIST:
-		(void) printf ("%*sregister integer %s;\n\n", level * 4, "",
+		(void) printf ("%*sinteger %s;\n\n", level * 4, "",
 					   narg = gensym ());
 		break;
 
@@ -100,7 +100,7 @@ int	Vflag;
 								  || yp -> yp_strexp)))
 			break;		/* else fall */
 	case YP_BITLIST:
-		(void) printf ("%*sregister PE %s;\n\n", level * 4, "",
+		(void) printf ("%*sPE %s;\n\n", level * 4, "",
 					   narg = gensym ());
 		break;
 
@@ -109,10 +109,10 @@ int	Vflag;
 					   || yp -> yp_strexp)) {
 			narg = gensym ();
 			if (!Vflag && yp -> yp_prfexp == 'q')
-				(void) printf ("%*sregister struct qbuf *%s;\n\n",
+				(void) printf ("%*sstruct qbuf *%s;\n\n",
 							   level * 4, "", narg);
 			else
-				(void) printf ("%*sregister char *%s;\n%*sint %s_len;\n\n",
+				(void) printf ("%*schar *%s;\n%*sint %s_len;\n\n",
 							   level * 4, "", narg, level * 4, "", narg);
 		}
 		break;
@@ -121,7 +121,7 @@ int	Vflag;
 		if (!dflag && ((level == 1) || yp -> yp_action2
 					   || yp -> yp_strexp)) {
 			narg = gensym ();
-			(void) printf ("%*sregister double %s;\n\n", level * 4, "", narg);
+			(void) printf ("%*sdouble %s;\n\n", level * 4, "", narg);
 		}
 		break;
 
@@ -136,7 +136,7 @@ int	Vflag;
 		if (!Vflag && (dflag || (!yp -> yp_action2 && !yp -> yp_strexp
 								 && level != 1)))
 			break;		/* else fall */
-		(void) printf ("%*sregister OID %s;\n\n", level * 4, "",
+		(void) printf ("%*sOID %s;\n\n", level * 4, "",
 					   narg = gensym ());
 		break;
 
@@ -149,7 +149,7 @@ int	Vflag;
 		narg = gensym ();
 		if (yp -> yp_code == YP_SETLIST)
 			(void) printf ("%*sint %s_count = 0;\n", level * 4, "", narg);
-		(void) printf ("%*sregister PE %s;\n\n", level * 4, "", narg);
+		(void) printf ("%*sPE %s;\n\n", level * 4, "", narg);
 		break;
 
 	default:
@@ -396,7 +396,7 @@ int	Vflag;
 		}
 #ifdef	notdef
 		if (!rflag) {
-			register int	j;
+			int	j;
 
 			for (yv = yp -> yp_value, i = 0; yv; yv = yv -> yv_next)
 				if ((j = val2int (yv)) > i)
@@ -586,7 +586,7 @@ int	Vflag;
 		if (Vflag)
 			(void) printf ("%*svpop ();\n", level * 4, "");
 		for (y = yp -> yp_type; y; y = y -> yp_next) {
-			register YP	z;
+			YP	z;
 
 			if (!(y -> yp_flags & (YP_OPTIONAL | YP_DEFAULT))
 					|| lookup_tag (y) == NULLYT)
@@ -790,19 +790,19 @@ int	Vflag;
 /*  */
 
 static	undo_type_element (yp, level, first, last, id, arg, narg, Vflag)
-register YP	yp;
-register int	level;
+YP	yp;
+int	level;
 int	first,
 	last;
-register char  *id,
+char  *id,
 		 *arg,
 		 *narg;
 int	Vflag;
 {
-	register char  *narg2;
-	register YT yt;
+	char  *narg2;
+	YT yt;
 
-	(void) printf ("%*s{\n%*sregister PE %s;\n\n",
+	(void) printf ("%*s{\n%*sPE %s;\n\n",
 				   level * 4, "", (level + 1) * 4, "", narg2 = gensym ());
 	level++;
 
@@ -838,7 +838,7 @@ int	Vflag;
 						   val2int (yt -> yt_value), (level + 1) * 4, "", narg2);
 		} else {
 			ype zy;
-			register YP y = &zy;
+			YP y = &zy;
 
 			y -> yp_type = copy_type (yp2); /* XXX */
 			y -> yp_type -> yp_next = NULLYP;
@@ -912,8 +912,8 @@ int	Vflag;
 /*  */
 
 static	undo_type_member (yp, level, arg, narg, Vflag)
-register YP	yp;
-register int	level;
+YP	yp;
+int	level;
 char   *arg,
 	   *narg;
 int	Vflag;
@@ -940,7 +940,7 @@ int	Vflag;
 					   val2int (yp -> yp_tag -> yt_value));
 	else {
 		ype zy;
-		register YP y = &zy;
+		YP y = &zy;
 
 		y -> yp_type = copy_type(yp);	/* XXXX !!! */
 		y -> yp_type -> yp_next = NULLYP;
@@ -974,7 +974,7 @@ int	Vflag;
 	}
 
 	if (pullup) {
-		(void) printf ("%*sregister PE %s = %s;\n\n", level * 4, "",
+		(void) printf ("%*sPE %s = %s;\n\n", level * 4, "",
 					   narg2 = gensym (), narg);
 		tag_pullup (yp, level, narg2, id);
 		(void) printf ("%*s{\n", level * 4, "");
@@ -1014,9 +1014,9 @@ int	Vflag;
 /*  */
 
 static int  undo_type_choice (yp, level, narg, Vflag)
-register YP	yp;
-register int	level;
-register char  *narg;
+YP	yp;
+int	level;
+char  *narg;
 int	Vflag;
 {
 	int	    pullup = 0;
@@ -1030,7 +1030,7 @@ int	Vflag;
 		result = 1;
 	} else if (!(yp -> yp_flags & YP_TAG) && yp->yp_code == YP_IDEFINED) {
 		ype zy;
-		register YP y = &zy;
+		YP y = &zy;
 
 		result = 0;
 		y -> yp_type = copy_type(yp);	/* XXXX !!! */
@@ -1074,7 +1074,7 @@ int	Vflag;
 			pullup = 1;
 	}
 	if (pullup) {
-		(void) printf ("%*sregister PE %s = %s;\n\n", level * 4, "",
+		(void) printf ("%*sPE %s = %s;\n\n", level * 4, "",
 					   narg2 = gensym (), narg);
 		tag_pullup (yp, level, narg2, id);
 		(void) printf ("%*s{\n", level * 4, "");
@@ -1098,8 +1098,8 @@ int	Vflag;
 
 static undo_components_seq (yp, level, first, last, id, arg, narg, Vflag)
 YP	yp;
-register int level, first, last;
-register char	*id,
+int level, first, last;
+char	*id,
 		   *arg,
 		   *narg;
 int	Vflag;
@@ -1136,8 +1136,8 @@ int	Vflag;
 }
 
 static	undo_components_set (yp, level, arg, narg, Vflag)
-register YP	yp;
-register int	level;
+YP	yp;
+int	level;
 char   *arg,
 	   *narg;
 int	Vflag;

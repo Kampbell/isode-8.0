@@ -39,7 +39,7 @@ entryList *entry_list_ptr;
 AttributeType object_type;
 {
 	entryList element, new_element;
-	register char *sort_key;
+	char *sort_key;
 	char *entry_name;
 
 	element = *entry_list_ptr;
@@ -78,7 +78,7 @@ entryList *entry_list_ptr;
 AttributeType object_type;
 {
 	entryList element, new_element;
-	register char *sort_key;
+	char *sort_key;
 	char *entry_name;
 	int lexcmp;
 

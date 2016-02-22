@@ -152,7 +152,7 @@ char  **argv,
 static	arginit (vec)
 char	**vec;
 {
-	register char  *ap;
+	char  *ap;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -305,7 +305,7 @@ losing:
 
 	for (tc = triples; tc -> t_tree; tc++)
 		if (tc -> t_name) {
-			if (smux_register (tc -> t_name, -1, tc -> t_access) == NOTOK) {
+			if (smux_(tc -> t_name, -1, tc -> t_access) == NOTOK) {
 				advise (LLOG_EXCEPTIONS, NULLCP, "smux_register: %s [%s]",
 						smux_error (smux_errno), smux_info);
 				goto losing;
@@ -353,7 +353,7 @@ losing:
 		}
 		for (tc++; tc -> t_tree; tc++)
 			if (tc -> t_name) {
-				if (smux_register (tc -> t_name, -1, tc -> t_access)
+				if (smux_(tc -> t_name, -1, tc -> t_access)
 						== NOTOK) {
 					advise (LLOG_EXCEPTIONS, NULLCP,
 							"smux_register: %s [%s]",
@@ -386,7 +386,7 @@ losing:
 		break;
 
 	case type_SNMP_SMUX__PDUs_commitOrRollback: {
-		register struct triple *tz;
+		struct triple *tz;
 
 		for (tz = triples; tz -> t_tree; tz++)
 			if (tz -> t_name)
@@ -422,21 +422,21 @@ unexpected:
 /*  */
 
 static	do_smux (pdu, offset)
-register struct type_SNMP_GetRequest__PDU *pdu;
+struct type_SNMP_GetRequest__PDU *pdu;
 int	offset;
 {
 	int	    idx,
 			status;
 	object_instance ois;
-	register struct type_SNMP_VarBindList *vp;
+	struct type_SNMP_VarBindList *vp;
 	IFP	    method;
 
 	quantum = pdu -> request__id;
 	idx = 0;
 	for (vp = pdu -> variable__bindings; vp; vp = vp -> next) {
-		register OI	oi;
-		register OT	ot;
-		register struct type_SNMP_VarBind *v = vp -> VarBind;
+		OI	oi;
+		OT	ot;
+		struct type_SNMP_VarBind *v = vp -> VarBind;
 
 		idx++;
 

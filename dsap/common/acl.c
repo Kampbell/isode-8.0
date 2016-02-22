@@ -45,7 +45,7 @@ static int acl_info_comp_cmp ();
 static struct acl * str2acl_aux ();
 
 static acl_free (aclptr)
-register struct acl * aclptr;
+struct acl * aclptr;
 {
 	acl_info_free (aclptr->ac_child);
 	acl_info_free (aclptr->ac_entry);
@@ -55,10 +55,10 @@ register struct acl * aclptr;
 }
 
 static acl_attr_free (aclptr)
-register struct acl * aclptr;
+struct acl * aclptr;
 {
-	register struct acl_attr * ptr;
-	register struct acl_attr * next;
+	struct acl_attr * ptr;
+	struct acl_attr * next;
 
 	for (ptr=aclptr->ac_attributes ; ptr!=NULLACL_ATTR; ptr=next ) {
 		next = ptr->aa_next;
@@ -70,10 +70,10 @@ register struct acl * aclptr;
 }
 
 void acl_info_free (aclptr)
-register struct acl_info * aclptr;
+struct acl_info * aclptr;
 {
-	register struct acl_info * ptr;
-	register struct acl_info * next;
+	struct acl_info * ptr;
+	struct acl_info * next;
 
 	if (test_acl_default(aclptr) == OK)
 		return;
@@ -89,7 +89,7 @@ register struct acl_info * aclptr;
 static int acl_default_cmp (a)
 struct acl	* a;
 {
-	register struct acl_attr * ptr;
+	struct acl_attr * ptr;
 
 	/* Is 'a' the default ACL ? return 0 if it is. */
 
@@ -278,10 +278,10 @@ struct acl_info	* acl_info2;
 
 
 struct acl_info * acl_info_new (x,y,z)
-register int x,y;
+int x,y;
 struct dn_seq * z;
 {
-	register struct acl_info * ptr;
+	struct acl_info * ptr;
 
 	ptr = acl_info_alloc ();
 	acl_info_fill (ptr,x,y,z);
@@ -290,9 +290,9 @@ struct dn_seq * z;
 }
 
 static struct acl * acl_cpy (aclptr)
-register struct acl * aclptr;
+struct acl * aclptr;
 {
-	register struct acl * ptr;
+	struct acl * ptr;
 
 	ptr = (struct acl *) smalloc (sizeof (struct acl));
 	ptr->ac_child = acl_info_cpy (aclptr->ac_child);
@@ -326,9 +326,9 @@ static struct acl_attr * acl_attr_cpy (aclptr,dflt)
 struct acl_attr * aclptr;
 struct acl_info * dflt;
 {
-	register struct acl_attr * ptr;
-	register struct acl_attr * ptr2;
-	register struct acl_attr * result = NULLACL_ATTR;
+	struct acl_attr * ptr;
+	struct acl_attr * ptr2;
+	struct acl_attr * result = NULLACL_ATTR;
 
 	for (ptr=aclptr ; ptr!=NULLACL_ATTR; ptr=ptr->aa_next ) {
 		ptr2 = acl_attr_alloc ();
@@ -347,9 +347,9 @@ struct acl_info * dflt;
 static struct acl_info * acl_info_cpy (aclptr)
 struct acl_info * aclptr;
 {
-	register struct acl_info * ptr;
-	register struct acl_info * ptr2;
-	register struct acl_info * result = NULLACL_INFO;
+	struct acl_info * ptr;
+	struct acl_info * ptr2;
+	struct acl_info * result = NULLACL_INFO;
 
 	if (test_acl_default(aclptr) == OK) {
 		return (defaultacl);
@@ -504,9 +504,9 @@ char * acl_sel  []  = {
 };
 
 static acl_info_comp_print (ps,aclptr,format)
-register PS ps;
-register struct acl_info * aclptr;
-register int format;
+PS ps;
+struct acl_info * aclptr;
+int format;
 {
 	if (format == READOUT) {
 		switch (aclptr->acl_selector_type) {
@@ -534,13 +534,13 @@ register int format;
 }
 
 static acl_info_print (ps,aclptr,format,acl_type,oidseq)
-register PS ps;
+PS ps;
 struct   acl_info * aclptr;
-register int format;
+int format;
 char * acl_type;
 struct oid_seq *oidseq;
 {
-	register struct acl_info * ptr;
+	struct acl_info * ptr;
 	char printed = FALSE;
 
 	if (dsa_mode && (test_acl_default(aclptr) == OK))
@@ -579,12 +579,12 @@ struct oid_seq *oidseq;
 }
 
 static acl_print (ps,aclptr,format)
-register PS ps;
+PS ps;
 struct   acl * aclptr;
-register int format;
+int format;
 {
 	char printed = FALSE;
-	register struct acl_attr * ptr;
+	struct acl_attr * ptr;
 
 	if ( (!dsa_mode) || (test_acl_default(aclptr->ac_child) != OK)) {
 		acl_info_print (ps,aclptr->ac_child,format, "child", NULLOIDSEQ);

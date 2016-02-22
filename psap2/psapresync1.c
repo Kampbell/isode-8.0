@@ -41,9 +41,9 @@ PReSyncRequest (int sd, int type, long ssn, int settings, PE *data, int ndata, s
 			result;
 	char   *base,
 		   *realbase;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	toomuchP (data, ndata, NPDATA, "resync");
 	missingP (pi);

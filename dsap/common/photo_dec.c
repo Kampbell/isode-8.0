@@ -802,8 +802,8 @@ bit_string * lineptr;
 int  length;
 char xcolour;
 {
-	register i;
-	register l;
+	i;
+	l;
 
 	/*
 	    if ( length < 0 ) {

@@ -68,7 +68,7 @@ static int reason_err8_cnt = sizeof reason_err8 / sizeof reason_err8[0];
 char *
 SReportString (int code)
 {
-	register int    fcode;
+	int    fcode;
 	static char buffer[BUFSIZ];
 
 	if (code == SP_PROTOCOL)
@@ -88,7 +88,7 @@ SReportString (int code)
 /*  */
 
 void 
-rts_adios (register struct RtSAPabort *rta, char *event)
+rts_adios (struct RtSAPabort *rta, char *event)
 {
 	rts_advise (rta, event);
 
@@ -97,7 +97,7 @@ rts_adios (register struct RtSAPabort *rta, char *event)
 
 
 void 
-rts_advise (register struct RtSAPabort *rta, char *event)
+rts_advise (struct RtSAPabort *rta, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -228,7 +228,7 @@ timer (int cc)
 
 
 static 
-tvsub (register struct timeval *tdiff, register struct timeval *t1, register struct timeval *t0)
+tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
 {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;

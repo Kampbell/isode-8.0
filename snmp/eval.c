@@ -95,13 +95,13 @@ static struct expr *roofexpr;
 
 static int  o_funct (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
 	integer arg1,
 			arg2;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	ifvar = (int) ot -> ot_info;
 	switch (offset) {
@@ -256,14 +256,14 @@ int	offset;
 
 static int  o_expressions (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifnum,
 			ifvar;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register struct expr *e;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	struct expr *e;
 
 	ifvar = (int) ot -> ot_info;
 	switch (offset) {
@@ -343,7 +343,7 @@ int	offset;
 /*  */
 
 static int  eval_expr (e)
-register struct expr *e;
+struct expr *e;
 {
 	PElementClass class;
 	PElementForm  form;
@@ -462,8 +462,8 @@ int	len;
 PElementForm  form;
 integer *result;
 {
-	register integer    i;
-	register PElementData dp,
+	integer    i;
+	PElementData dp,
 			 ep;
 
 	if (form != PE_FORM_PRIM) {
@@ -495,12 +495,12 @@ int	len;
 PElementForm  form;
 OID   *ox;
 {
-	register unsigned int i,
+	unsigned int i,
 			 *ip;
-	register PElementData dp,
+	PElementData dp,
 			 ep;
 	static OIDentifier oid;
-	register OID	o = &oid;
+	OID	o = &oid;
 
 	if (form != PE_FORM_PRIM
 			|| (dp = (PElementData) base) == NULLPED
@@ -642,7 +642,7 @@ losing:
 
 static int  s_expressions (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifnum
@@ -651,10 +651,10 @@ int	offset;
 	ifvar
 #endif
 	;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
-	register struct expr *e;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
+	struct expr *e;
 	struct qbuf *qb;
 
 #ifndef	lint
@@ -721,7 +721,7 @@ int	offset;
 /*  */
 
 init_eval () {
-	register OT	    ot;
+	OT	    ot;
 
 	roof = (tos = fstack) + (sizeof fstack / sizeof fstack[0]);
 	roofexpr = exprs + NEXPR;
@@ -820,8 +820,8 @@ int	f_expression (vec)
 char  **vec;
 {
 	int	    i;
-	register char *cp;
-	register struct expr *e;
+	char *cp;
+	struct expr *e;
 	PE	    pe;
 	PS	    ps;
 

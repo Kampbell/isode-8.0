@@ -120,7 +120,7 @@ OID	tctx;
 struct RtSAPconnect *rtc;
 struct RtSAPindication *rti;
 {
-	register int    i;
+	int    i;
 	int	    result,
 			requirements,
 			offset,
@@ -129,14 +129,14 @@ struct RtSAPindication *rti;
 	PE	    pe,
 	 p,
 	 q;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 	struct SSAPref *sr;
-	register struct PSAPcontext *pp;
-	register struct AcSAPconnect *acc = &rtc -> rtc_connect;
-	register struct PSAPconnect *pc = &acc -> acc_connect;
+	struct PSAPcontext *pp;
+	struct AcSAPconnect *acc = &rtc -> rtc_connect;
+	struct PSAPconnect *pc = &acc -> acc_connect;
 	struct AcSAPindication acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	struct type_RTS_RTSE__apdus *rtpdu;
 	struct type_RTS_RTOACapdu *prtoac;
 
@@ -195,8 +195,8 @@ no_mem:
 		goto out1;
 	}
 	{
-		register int ctx;
-		register OID oid;
+		int ctx;
+		OID oid;
 
 		if (tctx)
 			oid = tctx;	/* override standard context */

@@ -175,7 +175,7 @@ struct attrQoS *a;
 static ditQoS_free (a)
 struct ditQoS *a;
 {
-	register struct attrsQoS *p,
+	struct attrsQoS *p,
 			*q;
 
 	if (!a)
@@ -213,7 +213,7 @@ static struct ditQoS *ditQoS_cpy (a)
 struct ditQoS *a;
 {
 	struct ditQoS *b;
-	register struct attrsQoS  *p,
+	struct attrsQoS  *p,
 			**q,
 			*r;
 
@@ -329,7 +329,7 @@ struct ditQoS *a;
 int	format;
 {
 	char   *ptr = rcmd_srch (a -> dit_namespace, ditQoS_tab);
-	register struct attrsQoS  *p;
+	struct attrsQoS  *p;
 
 	ps_printf (ps, format == READOUT
 			   ? "completeness of namespace: %s\n%*sdefault: "
@@ -401,7 +401,7 @@ char   *str;
 	char   *ptr,
 		   *qtr;
 	struct ditQoS *a;
-	register struct attrsQoS  *p,
+	struct attrsQoS  *p,
 			**q;
 
 	a = (struct ditQoS *) smalloc (sizeof *a);
@@ -546,7 +546,7 @@ CMD_TABLE *cmd;
 {
 	int	    result;
 	char    c;
-	register char *p;
+	char *p;
 
 	for (p = str + strlen (str) - 1; p >= str && isspace ((u_char) *p); p--)
 		continue;

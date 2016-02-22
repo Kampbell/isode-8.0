@@ -45,15 +45,15 @@ int	spktlose (int sd, ...)
 	result,
 	secs,
 	value;
-	register struct ssapblk *sb;
-	register struct ssapkt *s;
+	struct ssapblk *sb;
+	struct ssapkt *s;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si;
-	register struct SSAPabort *sa;
+	struct SSAPindication *si;
+	struct SSAPabort *sa;
 	struct TSAPdata txs;
-	register struct TSAPdata   *tx = &txs;
+	struct TSAPdata   *tx = &txs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 	va_list ap;
 
 	va_start (ap, sd);
@@ -182,14 +182,14 @@ ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt)
 #ifndef	lint
 static int 
 _ssaplose (	/* what, fmt, args ... */
-    register struct SSAPindication *si,
+    struct SSAPindication *si,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct SSAPabort *sa;
+	struct SSAPabort *sa;
 
 	if (si) {
 		bzero ((char *) si, sizeof *si);

@@ -38,7 +38,7 @@ SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *s
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (ssn);
 	missingP (si);
@@ -58,7 +58,7 @@ SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *s
 /*  */
 
 int 
-SMajSyncRequestAux (register struct ssapblk *sb, long *ssn, char *data, int cc, int opts, register struct SSAPindication *si)
+SMajSyncRequestAux (struct ssapblk *sb, long *ssn, char *data, int cc, int opts, struct SSAPindication *si)
 {
 	int     result;
 

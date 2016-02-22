@@ -39,18 +39,18 @@ char  **argv,
 {
 	struct TSAPaddr tas;
 	struct TSAPaddr *ta = &tas;
-	register struct SSAPaddr *sz;
+	struct SSAPaddr *sz;
 	struct SSAPconnect scs;
-	register struct SSAPconnect *sc = &scs;
+	struct SSAPconnect *sc = &scs;
 	struct SSAPstart sss;
-	register struct SSAPstart *ss = &sss;
+	struct SSAPstart *ss = &sss;
 	struct SSAPdata sxs;
-	register struct SSAPdata   *sx = &sxs;
+	struct SSAPdata   *sx = &sxs;
 	struct SSAPrelease  srs;
-	register struct SSAPrelease *sr = &srs;
+	struct SSAPrelease *sr = &srs;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	struct sblk incoming,
 			outgoing;
 	SB	    sbi = &incoming,

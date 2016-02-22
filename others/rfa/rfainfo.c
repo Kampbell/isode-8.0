@@ -116,7 +116,7 @@ char *status2str(stat)
 int stat;
 {
 	static char sbuf[5];
-	register char *s = sbuf;
+	char *s = sbuf;
 
 	switch(RI_STATUS(stat)) {
 	case RI_UNREGISTERED:
@@ -163,7 +163,7 @@ int stat;
 struct RfaInfo *
 mallocRfaInfo (char *fn)
 {
-	register struct RfaInfo *rfa;
+	struct RfaInfo *rfa;
 
 	if ((rfa = (struct RfaInfo *) malloc(sizeof(struct RfaInfo))) == NULL) {
 		sprintf(rfaErrStr, "out of memory");
@@ -371,7 +371,7 @@ char *dirname;
 FILE *f;
 struct RfaInfo **rfap;
 {
-	register char *s, *d;
+	char *s, *d;
 	char buf[BUFSIZ];
 	char line[BUFSIZ];
 	int rc = 1;
@@ -643,7 +643,7 @@ remRfaInfo (char *fn, struct RfaInfo **rfap)
  * findRfaInfo - find RFA file info by filename
  *------------------------------------------------------*/
 struct RfaInfo *
-findRfaInfo (char *fn, register struct RfaInfo *rfa)
+findRfaInfo (char *fn, struct RfaInfo *rfa)
 {
 	for (; rfa; rfa = rfa->ri_next)
 		if (strcmp(fn, rfa->ri_filename) == 0)

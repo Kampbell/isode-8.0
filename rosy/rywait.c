@@ -58,7 +58,7 @@ struct RoSAPindication *roi;
 {
 	int     reason,
 			result;
-	register struct opsblk *opb;
+	struct opsblk *opb;
 
 #ifdef	notdef
 	missingP (out);
@@ -113,7 +113,7 @@ struct RoSAPindication *roi;
 
 int	RyWaitAux (sd, opb, out, secs, roi)
 int	sd;
-register struct opsblk *opb;
+struct opsblk *opb;
 int	secs;
 caddr_t *out;
 struct RoSAPindication *roi;
@@ -123,10 +123,10 @@ struct RoSAPindication *roi;
 			result;
 	char   *cp;
 	caddr_t in;
-	register struct dspblk *dsb;
-	register struct opsblk *op2;
-	register struct RyError **rye;
-	register struct RyOperation *ryo;
+	struct dspblk *dsb;
+	struct opsblk *op2;
+	struct RyError **rye;
+	struct RyOperation *ryo;
 
 	missingP (roi);
 
@@ -137,7 +137,7 @@ struct RoSAPindication *roi;
 		switch (roi -> roi_type) {
 		case ROI_INVOKE: {
 			struct RoSAPinvoke roxs;
-			register struct RoSAPinvoke *rox = &roxs;
+			struct RoSAPinvoke *rox = &roxs;
 
 			*rox = roi -> roi_invoke;	/* struct copy */
 
@@ -242,7 +242,7 @@ bad_request:
 		}
 
 		case ROI_RESULT: {
-			register struct RoSAPresult *ror = &roi -> roi_result;
+			struct RoSAPresult *ror = &roi -> roi_result;
 
 			if ((op2 = findopblk (sd, ror -> ror_id, OPB_INITIATOR))
 					== NULLOPB
@@ -352,7 +352,7 @@ waiting:
 		}
 
 		case ROI_ERROR: {
-			register struct RoSAPerror *roe = &roi -> roi_error;
+			struct RoSAPerror *roe = &roi -> roi_error;
 
 			if ((op2 = findopblk (sd, roe -> roe_id, OPB_INITIATOR))
 					== NULLOPB
@@ -446,7 +446,7 @@ bad_error:
 		}
 
 		case ROI_UREJECT: {
-			register struct RoSAPureject *rou = &roi -> roi_ureject;
+			struct RoSAPureject *rou = &roi -> roi_ureject;
 
 			if (rou -> rou_noid)
 				op2 = opb;
@@ -485,7 +485,7 @@ bad_error:
 bad_response:
 		;
 		{
-			register struct RoSAPureject   *rou = &roi -> roi_ureject;
+			struct RoSAPureject   *rou = &roi -> roi_ureject;
 
 			(void) RoURejectRequest (op2 -> opb_fd, &op2 -> opb_id,
 									 result, ROS_NOPRIO, roi);

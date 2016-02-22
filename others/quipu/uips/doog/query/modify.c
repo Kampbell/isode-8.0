@@ -673,7 +673,7 @@ struct DSResult *ds_result;
 			   tmp;
 	modifyValue curr_oclass;
 	objectclass *ocp;
-	register table_seq optr;
+	table_seq optr;
 
 	/* This shouldn't happen */
 	if ((task_rec = _get_task_of_id(task_id)) == NULLDsTask)
@@ -1215,7 +1215,7 @@ attrValList attr_list;
 static modifyAttr remove_common_attrs(primary, secondary)
 modifyAttr primary, secondary;
 {
-	register modifyAttr curr_sec, last_sec;
+	modifyAttr curr_sec, last_sec;
 	modifyAttr tmp;
 
 	if (primary == NULLModifyAttr || secondary == NULLModifyAttr)
@@ -1257,7 +1257,7 @@ modifyAttr primary, secondary;
 static modifyAttr remove_double_attrs(primary)
 modifyAttr primary;
 {
-	register modifyAttr curr_attr, last_attr;
+	modifyAttr curr_attr, last_attr;
 	modifyAttr curr_primary, tmp;
 
 	if (primary == NULLModifyAttr)

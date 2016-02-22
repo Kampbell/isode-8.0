@@ -596,7 +596,7 @@ put2spdu (int code, int li, char *value, struct local_buf *c)
 /*  */
 
 int 
-spkt2tsdu (register struct ssapkt *s, char **base, int *len)
+spkt2tsdu (struct ssapkt *s, char **base, int *len)
 {
 	struct local_buf    c;
 	char    isn[SIZE_CN_ISN + 1];
@@ -1071,10 +1071,10 @@ spkt2tsdu (register struct ssapkt *s, char **base, int *len)
 /*  */
 
 static u_long str2ssn (s, n)
-register char  *s;
-register int	n;
+char  *s;
+int	n;
 {
-	register u_long u;
+	u_long u;
 
 	for (u = 0L; n > 0; n--)
 		u = u * 10 + *s++ - '0';
@@ -1100,10 +1100,10 @@ register int	n;
 static char *
 pullqb (struct qbuf *qb, int n)
 {
-	register int    i;
+	int    i;
 	int	    once;
-	register char  *cp;
-	register struct qbuf *qp;
+	char  *cp;
+	struct qbuf *qp;
 	static char *buffer = NULL;
 
 	if (n > SEGMENT_MAX)
@@ -1144,18 +1144,18 @@ pullqb (struct qbuf *qb, int n)
 struct ssapkt *
 tsdu2spkt (struct qbuf *qb, int len, int *cc)
 {
-	register int    li;
+	int    li;
 	int     cat0,
 			nread,
 			pktlen,
 			pgilen,
 			pmask,
 			xlen;
-	register char *base;
+	char *base;
 	char   *xbase;
 	unsigned char   code,
 			 si;
-	register struct ssapkt  *s;
+	struct ssapkt  *s;
 
 	if (cc) {
 		cat0 = *cc;
@@ -1755,7 +1755,7 @@ do_pgi:
 		*cc = nread;
 	{
 		/* "dangling" qbuf */
-		register struct qbuf *qp;
+		struct qbuf *qp;
 
 		if ((qp = qb -> qb_forw) != qb && qp -> qb_len <= 0) {
 			remque (qp);
@@ -1857,16 +1857,16 @@ do_pgi:
 struct ssapkt *
 udtsdu2spkt (struct qbuf *qb, int len)
 {
-	register int    li;
+	int    li;
 	int     nread,
 			pktlen,
 			pmask,
 			xlen;
-	register char *base;
+	char *base;
 
 	unsigned char   code,
 			 si;
-	register struct ssapkt  *s;
+	struct ssapkt  *s;
 
 
 	/*
@@ -2063,7 +2063,7 @@ udtsdu2spkt (struct qbuf *qb, int len)
 struct ssapkt *
 newspkt (int code)
 {
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	s = (struct ssapkt *) calloc (1, sizeof *s);
 	if (s == NULL)
@@ -2077,9 +2077,9 @@ newspkt (int code)
 
 
 int 
-freespkt (register struct ssapkt *s)
+freespkt (struct ssapkt *s)
 {
-	register struct qbuf *qb,
+	struct qbuf *qb,
 			*qp;
 
 	if (s == NULL)

@@ -81,7 +81,7 @@ void
 init_aka (char *pgm, int stayopen, char *dit)
 {
 	char   *cp;
-	register struct aka *ak;
+	struct aka *ak;
 	static int once_only = 0;
 
 	if (once_only == 0) {
@@ -122,7 +122,7 @@ init_aka (char *pgm, int stayopen, char *dit)
 static struct aka *
 mbox2ak (char *local, char *domain)
 {
-	register struct aka *ak,
+	struct aka *ak,
 			*am;
 
 	if (domain == NULL)
@@ -173,7 +173,7 @@ struct dn_seq *dm2dn_seq_aux ();
 static struct dn_seq *
 dm2dn_seq (char *dm)
 {
-	register char *dp;
+	char *dp;
 
 	for (dp = dm; *dp; dp++)
 		if (isupper (*dp))
@@ -194,15 +194,15 @@ char   *dm;
 DN	dn;
 struct dn_seq *dlist;
 {
-	register char   *dp;
+	char   *dp;
 	char   buffer[BUFSIZ];
 	struct ds_search_arg search_arg;
-	register struct ds_search_arg *sa = &search_arg;
+	struct ds_search_arg *sa = &search_arg;
 	struct ds_search_result search_result;
-	register CommonArgs *ca;
-	register struct ds_search_result *sr = &search_result;
+	CommonArgs *ca;
+	struct ds_search_result *sr = &search_result;
 	struct DSError error;
-	register struct DSError *se = &error;
+	struct DSError *se = &error;
 	PS	    ps;
 
 	if ((ps = ps_alloc (str_open))
@@ -232,8 +232,8 @@ struct dn_seq *dlist;
 	for (;;) {
 		int	    i;
 		EntryInfo  *ptr;
-		register s_filter *fi;
-		register AttributeType at;
+		s_filter *fi;
+		AttributeType at;
 
 		if (debug)
 			(void) fprintf (stderr, "-- dlevel=%d dp=%s(%d) dn=%s\n",
@@ -318,16 +318,16 @@ free_filter:
 /*  */
 
 static  PE  image_search (ak)
-register struct aka *ak;
+struct aka *ak;
 {
-	register struct dn_seq *dlist;
+	struct dn_seq *dlist;
 	struct ds_search_arg search_arg;
-	register struct ds_search_arg *sa = &search_arg;
+	struct ds_search_arg *sa = &search_arg;
 	struct ds_search_result search_result;
-	register CommonArgs *ca;
-	register struct ds_search_result *sr = &search_result;
+	CommonArgs *ca;
+	struct ds_search_result *sr = &search_result;
 	struct DSError error;
-	register struct DSError *se = &error;
+	struct DSError *se = &error;
 	PE	    pe = NULLPE;
 
 	bzero ((char *) sa, sizeof *sa);
@@ -348,8 +348,8 @@ register struct aka *ak;
 	}
 
 	for (dlist = ak -> ak_bases; dlist; dlist = dlist -> dns_next) {
-		register s_filter *fi;
-		register AttributeType at;
+		s_filter *fi;
+		AttributeType at;
 
 		if ((sa -> sra_baseobject = dlist -> dns_dn) == NULL)
 			continue;
@@ -426,10 +426,10 @@ static
 do_bind (void) {
 	struct ds_bind_arg bind_arg,
 			bind_result;
-	register struct ds_bind_arg *ba = &bind_arg,
+	struct ds_bind_arg *ba = &bind_arg,
 										 *br = &bind_result;
 	struct ds_bind_error bind_error;
-	register struct ds_bind_error *be = &bind_error;
+	struct ds_bind_error *be = &bind_error;
 
 	bzero ((char *) ba, sizeof *ba);
 	ba -> dba_version = DBA_VERSION_V1988;
@@ -463,7 +463,7 @@ fetch_image (char *local, char *domain)
 {
 	PE	    pe;
 	PS	    ps;
-	register struct aka *ak;
+	struct aka *ak;
 
 	if ((ak = mbox2ak (local, domain)) == NULL)
 		return NULL;
@@ -545,7 +545,7 @@ int
 photo_end (char *name)
 {
 	int	    len;
-	register struct qbuf *qb,
+	struct qbuf *qb,
 			*pb;
 
 	if (passno == 1) {
@@ -591,9 +591,9 @@ int
 photo_black (int length)
 {
 	if (passno == 2) {
-		register int    i,
+		int    i,
 				 j;
-		register unsigned char *cp;
+		unsigned char *cp;
 
 		cp = (unsigned char *) im -> data -> qb_forw -> qb_data
 			 + ((im -> width + 7) / 8) * y + x / 8;

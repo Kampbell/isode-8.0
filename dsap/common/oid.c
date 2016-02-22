@@ -89,9 +89,9 @@ IFP oc_macro_add = NULLIFP;
 int load_oid_table (table)
 char * table;
 {
-	register char * name;
+	char * name;
 	char filename [FILNSIZE];
-	register char * extension;
+	char * extension;
 	char *isodetable;
 
 	if (NumEntries != 0)
@@ -158,7 +158,7 @@ int c;
 char * d;
 {
 	int	    i;
-	register struct pair *p;
+	struct pair *p;
 
 	for (p = Pbuckets[PHASH (a)];
 			p && lexequ (p -> p_name, a);
@@ -217,7 +217,7 @@ static add_entry (newname,towho)
 char * newname;
 int towho;
 {
-	register char *nptr, *ptr, *sep;
+	char *nptr, *ptr, *sep;
 	OID oid;
 	oid_table * Current;
 	char * alias = NULLCP;
@@ -325,9 +325,9 @@ char * get_oid (str)
 char * str;
 {
 	static char * buffer = NULLCP;
-	register char * ptr;
-	register char * dotptr;
-	register char * soid;
+	char * ptr;
+	char * dotptr;
+	char * soid;
 	char deref = FALSE;
 	char got_dot = FALSE;
 
@@ -383,8 +383,8 @@ static char * name2gen (nodename)
 char * nodename;
 {
 #ifdef NOT_ANY_MORE
-	register int i;
-	register oid_table * tblptr = &OIDTable[0];
+	int i;
+	oid_table * tblptr = &OIDTable[0];
 
 	for (i=0; i<NumEntries; i++,tblptr++) {
 		if (lexequ (tblptr->ot_name, nodename) == 0)
@@ -417,8 +417,8 @@ char * nodename;
 static char * soid2gen (soid)
 char * soid;
 {
-	register int i;
-	register oid_table * tblptr = &OIDTable[0];
+	int i;
+	oid_table * tblptr = &OIDTable[0];
 	for (i=0; i<NumEntries; i++,tblptr++) {
 		if (strcmp (tblptr->ot_stroid, soid) == 0)
 			return (tblptr->ot_name);
@@ -430,11 +430,11 @@ char * soid;
 static char * get_line () {
 	static char * buffer;
 	static int buflen;
-	register char * buf;
-	register char * ptr;
-	register int done;
-	register int left;
-	register int size;
+	char * buf;
+	char * ptr;
+	int done;
+	int left;
+	int size;
 
 	if (buffer == NULLCP) {
 		buffer = smalloc (LINESIZE);
@@ -478,8 +478,8 @@ static char * get_line () {
 }
 
 static char * get_entry () {
-	register char * buf;
-	register char * ptr;
+	char * buf;
+	char * ptr;
 
 	/* read next line - test for macro defs */
 	while (1) { /* return out */
@@ -502,10 +502,10 @@ static char * get_entry () {
 oid_table_attr *name2attr(nodename)
 char * nodename;
 {
-	register int i;
-	register char * ptr;
+	int i;
+	char * ptr;
 	char * str;
-	register oid_table_attr * atrptr = &attrOIDTable[0];
+	oid_table_attr * atrptr = &attrOIDTable[0];
 
 	attr_index = 0;
 
@@ -561,8 +561,8 @@ AttributeType x;
 oid_table_attr *oid2attr(oid)
 OID oid;
 {
-	register int i;
-	register oid_table_attr * ptr = &attrOIDTable[0];
+	int i;
+	oid_table_attr * ptr = &attrOIDTable[0];
 
 	for (i=0; i<attrNumEntries; i++,ptr++) {
 		if (oid_cmp (ptr->oa_ot.ot_oid, oid) == 0)
@@ -576,12 +576,12 @@ OID oid;
 }
 
 objectclass *name2oc(nodename)
-register char * nodename;
+char * nodename;
 {
-	register int i;
-	register char * ptr;
+	int i;
+	char * ptr;
 	char * str;
-	register objectclass * oc = & ocOIDTable[0];
+	objectclass * oc = & ocOIDTable[0];
 
 	if ((ptr = rindex (nodename,DOT)) == 0) {
 		struct pair *p;
@@ -619,8 +619,8 @@ register char * nodename;
 objectclass *oid2oc(oid)
 OID oid;
 {
-	register int i;
-	register objectclass * oc = &ocOIDTable[0];
+	int i;
+	objectclass * oc = &ocOIDTable[0];
 
 	for (i=0; i<ocNumEntries; i++,oc++) {
 		if (oid_cmp (oc->oc_ot.ot_oid, oid) == 0)
@@ -637,9 +637,9 @@ static char * full_gen (ot)
 oid_table * ot;
 {
 	static char * buffer;
-	register char * ptr;
-	register char * soid;
-	register char * str;
+	char * ptr;
+	char * soid;
+	char * str;
 
 	if (buffer == NULLCP)
 		buffer = smalloc (LINESIZE);
@@ -674,9 +674,9 @@ static char * part_gen (ot)
 oid_table * ot;
 {
 	static char * buffer = NULLCP;
-	register char * ptr;
-	register char * soid;
-	register char * str;
+	char * ptr;
+	char * soid;
+	char * str;
 	char * last;
 
 	if (buffer == NULLCP)
@@ -713,7 +713,7 @@ oid_table * ot;
 
 #ifndef attr2name_aux
 char *attr2name_aux (oa)
-register oid_table_attr *oa;
+oid_table_attr *oa;
 {
 	if ( oa != NULLTABLE_ATTR)
 		return (oa->oa_ot.ot_name);
@@ -725,7 +725,7 @@ register oid_table_attr *oa;
 #endif
 
 char *attr2name(oa,format)
-register oid_table_attr *oa;
+oid_table_attr *oa;
 int format;
 {
 	int x;
@@ -751,7 +751,7 @@ int format;
 
 
 char *oc2name(oc,format)
-register objectclass *oc;
+objectclass *oc;
 int format;
 {
 	if ( oc != NULLOBJECTCLASS)
@@ -773,8 +773,8 @@ int format;
 {
 	oid_table_attr * at;
 	objectclass * oc;
-	register int i;
-	register oid_table* ptr = &OIDTable[0];
+	int i;
+	oid_table* ptr = &OIDTable[0];
 	char * sptr;
 
 	/* try attribute first */
@@ -808,9 +808,9 @@ int format;
 }
 
 OID name2oid (str)
-register char * str;
+char * str;
 {
-	register struct pair *p;
+	struct pair *p;
 	OID ptr;
 
 	if (*str == 0)

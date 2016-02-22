@@ -41,7 +41,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/uvec2ps.c,v 9.0 1992/0
 static int 
 uvec_write (PS ps, PElementData data, PElementLen n, int in_line)
 {
-	register struct udvec *uv;
+	struct udvec *uv;
 
 	if (in_line && n < PSDU_MAGIC)
 		in_line = 0;
@@ -98,7 +98,7 @@ uvec_write (PS ps, PElementData data, PElementLen n, int in_line)
 
 
 static int 
-uvec_flush (register PS ps)
+uvec_flush (PS ps)
 {
 	if (ps -> ps_cur) {
 		if (ps -> ps_cur -> uv_base)
@@ -115,9 +115,9 @@ uvec_flush (register PS ps)
 
 
 static int 
-uvec_close (register PS ps)
+uvec_close (PS ps)
 {
-	register struct udvec *uv;
+	struct udvec *uv;
 
 	if (ps -> ps_head) {
 		for (uv = ps -> ps_head; uv -> uv_base; uv++)
@@ -135,7 +135,7 @@ uvec_close (register PS ps)
 /*  */
 
 int 
-uvec_open (register PS ps)
+uvec_open (PS ps)
 {
 	ps -> ps_writeP = uvec_write;
 	ps -> ps_flushP = uvec_flush;
@@ -146,9 +146,9 @@ uvec_open (register PS ps)
 
 
 int 
-uvec_setup (register PS ps, int len)
+uvec_setup (PS ps, int len)
 {
-	register struct udvec *uv;
+	struct udvec *uv;
 
 	ps -> ps_elems = NPSUV;
 	if ((uv = (struct udvec *) calloc ((unsigned) ps -> ps_elems, sizeof *uv))
@@ -171,10 +171,10 @@ uvec_setup (register PS ps, int len)
 /*  */
 
 int 
-ps_get_plen (register PE pe)
+ps_get_plen (PE pe)
 {
-	register PElementLen len;
-	register PE	    p;
+	PElementLen len;
+	PE	    p;
 
 	len = 0;
 	switch (pe -> pe_form) {

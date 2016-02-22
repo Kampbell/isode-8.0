@@ -39,18 +39,18 @@ struct FTAMstart *fts;
 IFP	tracing;
 struct FTAMindication *fti;
 {
-	register int    i;
+	int    i;
 	PE	    pe = NULLPE;
 	struct AcSAPstart acss;
-	register struct AcSAPstart *acs = &acss;
-	register struct PSAPstart *ps = &acs -> acs_start;
+	struct AcSAPstart *acs = &acss;
+	struct PSAPstart *ps = &acs -> acs_start;
 	struct AcSAPindication acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
-	register struct ftamblk *fsb;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
+	struct ftamblk *fsb;
 	struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__INITIALIZE__request *req;
-	register struct type_FTAM_F__INITIALIZE__response *rsp;
+	struct type_FTAM_F__INITIALIZE__request *req;
+	struct type_FTAM_F__INITIALIZE__response *rsp;
 
 	missingP (vec);
 	missingP (fts);
@@ -221,11 +221,11 @@ no_mem:
 #define	PC_XXX	(-2)		/* unique code */
 
 		int	acsid;
-		register struct type_FTAM_Contents__Type__List *dtn;
-		register struct FTAMcontent *fx,
+		struct type_FTAM_Contents__Type__List *dtn;
+		struct FTAMcontent *fx,
 				*fx2;
-		register struct PSAPcontext *px;
-		register struct isodocument *id;
+		struct PSAPcontext *px;
+		struct isodocument *id;
 #ifdef COMPAT_OLD_NBS9OID
 		int			    nbs9_marked = 0;
 #endif /* COMPAT_OLD_NBS9OID */
@@ -346,7 +346,7 @@ no_mem:
 			&& (fts -> fts_account = qb2str (req -> account)) == NULL)
 		goto no_mem;
 	if (req -> filestore__password) {	/* both choices are qbufs... */
-		register struct qbuf *qb = req -> filestore__password -> un.graphic;
+		struct qbuf *qb = req -> filestore__password -> un.graphic;
 
 		if ((fts -> fts_password = qb2str (qb)) == NULL)
 			goto no_mem;
@@ -439,18 +439,18 @@ struct FTAMdiagnostic diag[];
 int	ndiag;
 struct FTAMindication *fti;
 {
-	register int    i;
+	int    i;
 	int	    result,
 			status;
 	PE	    pe;
-	register struct FTAMcontentlist *pl;
-	register struct FTAMcontent *px;
+	struct FTAMcontentlist *pl;
+	struct FTAMcontent *px;
 	struct AcSAPindication acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
-	register struct ftamblk *fsb;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__INITIALIZE__response *rsp;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
+	struct ftamblk *fsb;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__INITIALIZE__response *rsp;
 
 	if ((fsb = findfsblk (sd)) == NULL || (fsb -> fsb_flags & FSB_CONN))
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
@@ -578,7 +578,7 @@ too_many:
 	pl = &fsb -> fsb_contents;
 	if (contents) {
 		int	acsid;
-		register struct FTAMcontent *fx = contents -> fc_contents;
+		struct FTAMcontent *fx = contents -> fc_contents;
 
 		if (contents -> fc_ncontent != pl -> fc_ncontent)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
@@ -672,7 +672,7 @@ no_mem:
 	rsp -> ftam__quality__of__service -> parm = fsb -> fsb_fqos;
 	if (contents) {
 		struct type_FTAM_Contents__Type__List *fpm;
-		register struct type_FTAM_Contents__Type__List **fpc;
+		struct type_FTAM_Contents__Type__List **fpc;
 
 		fpc = &rsp -> contents__type__list;
 		for (px = pl -> fc_contents, i = pl -> fc_ncontent - 1;

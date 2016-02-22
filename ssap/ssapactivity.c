@@ -44,7 +44,7 @@ SGControlRequest (int sd, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	smask = sigioblock ();
 
@@ -60,10 +60,10 @@ SGControlRequest (int sd, struct SSAPindication *si)
 /*  */
 
 static int 
-SGControlRequestAux (register struct ssapblk *sb, register struct SSAPindication *si)
+SGControlRequestAux (struct ssapblk *sb, struct SSAPindication *si)
 {
 	int     result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	if (SDoActivityAux (sb, si, 1, 1) == NOTOK)
 		return NOTOK;
@@ -92,7 +92,7 @@ SActStartRequest (int sd, struct SSAPactid *id, char *data, int cc, struct SSAPi
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (id);
 	idmuchP (id);
@@ -113,7 +113,7 @@ SActStartRequest (int sd, struct SSAPactid *id, char *data, int cc, struct SSAPi
 /*  */
 
 static int 
-SActStartRequestAux (register struct ssapblk *sb, struct SSAPactid *id, char *data, int cc, register struct SSAPindication *si)
+SActStartRequestAux (struct ssapblk *sb, struct SSAPactid *id, char *data, int cc, struct SSAPindication *si)
 {
 	int result;
 
@@ -138,7 +138,7 @@ SActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (id);
 	idmuchP (id);
@@ -168,7 +168,7 @@ SActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn
 /*  */
 
 static int 
-SActResumeRequestAux (register struct ssapblk *sb, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, char *data, int cc, register struct SSAPindication *si)
+SActResumeRequestAux (struct ssapblk *sb, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, char *data, int cc, struct SSAPindication *si)
 {
 	int	    result;
 
@@ -194,7 +194,7 @@ SActIntrRequest (int sd, int reason, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	if (!(SP_OK (reason)))
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid reason");
@@ -218,7 +218,7 @@ SActIntrRequest (int sd, int reason, struct SSAPindication *si)
 /*  */
 
 static int 
-SActIntrRequestAux (register struct ssapblk *sb, int reason, int type, register struct SSAPindication *si)
+SActIntrRequestAux (struct ssapblk *sb, int reason, int type, struct SSAPindication *si)
 {
 	int	    result;
 
@@ -256,7 +256,7 @@ SActIntrResponse (int sd, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 
@@ -274,7 +274,7 @@ SActIntrResponse (int sd, struct SSAPindication *si)
 /*  */
 
 static int 
-SActIntrResponseAux (register struct ssapblk *sb, int type, register struct SSAPindication *si)
+SActIntrResponseAux (struct ssapblk *sb, int type, struct SSAPindication *si)
 {
 	int	    result;
 
@@ -306,7 +306,7 @@ SActDiscRequest (int sd, int reason, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	if (!(SP_OK (reason)))
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid reason");
@@ -334,7 +334,7 @@ SActDiscResponse (int sd, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 
@@ -356,7 +356,7 @@ SActEndRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (ssn);
 	missingP (si);
@@ -380,7 +380,7 @@ SActEndResponse (int sd, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 

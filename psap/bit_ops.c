@@ -47,10 +47,10 @@ static PE	ffb_pe ();
 /*  */
 
 int 
-bit_on (register PE pe, register int i)
+bit_on (PE pe, int i)
 {
 	int	    mask;
-	register PElementData bp;
+	PElementData bp;
 
 	if ((bp = ffb (pe, i, &mask, 1)) == NULLPED)
 		return pe_seterr (pe, PE_ERR_NMEM, NOTOK);
@@ -63,10 +63,10 @@ bit_on (register PE pe, register int i)
 /*  */
 
 int 
-bit_off (register PE pe, register int i)
+bit_off (PE pe, int i)
 {
 	int	    mask;
-	register PElementData bp;
+	PElementData bp;
 
 	if ((bp = ffb (pe, i, &mask, 1)) == NULLPED)
 		return pe_seterr (pe, PE_ERR_NMEM, NOTOK);
@@ -79,10 +79,10 @@ bit_off (register PE pe, register int i)
 /*  */
 
 int 
-bit_test (register PE pe, register int i)
+bit_test (PE pe, int i)
 {
 	int	    mask;
-	register PElementData bp;
+	PElementData bp;
 
 	if ((bp = ffb (pe, i, &mask, 0)) == NULLPED)
 		return pe_seterr (pe, PE_ERR_BIT, NOTOK);
@@ -93,13 +93,13 @@ bit_test (register PE pe, register int i)
 /*  */
 
 static PElementData 
-ffb (register PE pe, register int n, register int *mask, register int xtnd)
+ffb (PE pe, int n, int *mask, int xtnd)
 {
-	register int    len,
+	int    len,
 			 i;
 	int     j;
-	register PElementData bp;
-	register PE    *p,
+	PElementData bp;
+	PE    *p,
 			 q,
 			 r;
 
@@ -154,12 +154,12 @@ ffb (register PE pe, register int n, register int *mask, register int xtnd)
 /*  */
 
 static PElementData 
-ffb_aux (register PE pe, register int *n, register int *mask)
+ffb_aux (PE pe, int *n, int *mask)
 {
-	register int    i,
+	int    i,
 			 nbits;
-	register PElementData bp;
-	register PE	    p;
+	PElementData bp;
+	PE	    p;
 
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
@@ -183,9 +183,9 @@ ffb_aux (register PE pe, register int *n, register int *mask)
 /*  */
 
 static PE 
-ffb_pe (register PE pe)
+ffb_pe (PE pe)
 {
-	register PE	    p,
+	PE	    p,
 			 q;
 
 	for (p = pe -> pe_cons, q = NULLPE; p; q = p, p = p -> pe_next)

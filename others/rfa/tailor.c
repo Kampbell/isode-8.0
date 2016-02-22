@@ -64,7 +64,7 @@ int backup = 0;
 char *
 cut (char *s)
 {
-	register char *s1;
+	char *s1;
 
 	for (; *s && isspace(*s); s++)
 		;

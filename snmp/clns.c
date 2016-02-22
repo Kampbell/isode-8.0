@@ -128,16 +128,16 @@ struct clnp_stat clnp_stat;
 
 static int  o_clnp (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
-	register int   *dp,
+	int   *dp,
 			 *ep,
 			 j;
 	int	    ifvar;
-	register struct clnp_stat *cns = &clnp_stat;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct clnp_stat *cns = &clnp_stat;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
 	ifvar = (int) ot -> ot_info;
@@ -407,7 +407,7 @@ int	offset;
 static int  clnp_er_index (p)
 u_char p;
 {
-	register u_char *cp = clnp_er_codes + CLNP_ERRORS;
+	u_char *cp = clnp_er_codes + CLNP_ERRORS;
 
 	while (cp-- > clnp_er_codes)
 		if (*cp == p)
@@ -420,13 +420,13 @@ u_char p;
 
 static int  s_clnp (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 
 	ifvar = (int) ot -> ot_info;
 	switch (offset) {
@@ -528,16 +528,16 @@ int	offset;
 
 static int  o_clnp_addr (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
-	register int   i;
+	int   i;
 	int	    ifvar;
-	register unsigned int *ip,
+	unsigned int *ip,
 			 *jp;
-	register struct address   *as;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct address   *as;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 
 	if (get_interfaces (offset) == NOTOK)
 		return generr (offset);
@@ -645,17 +645,17 @@ int	offset;
 
 static int  o_clnp_route (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct rtetab *rt;
-	register OID    oid = oi -> oi_name;
+	struct rtetab *rt;
+	OID    oid = oi -> oi_name;
 	OID	    new;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	if (get_routes (offset) == NOTOK)
 		return generr (offset);
@@ -730,7 +730,7 @@ try_again:
 						   (struct sockaddr_iso *) &rt -> rt_dst);
 
 	case clnpRouteIfIndex: {
-		register struct interface *is;
+		struct interface *is;
 
 		for (is = ifs; is; is = is -> ifn_next)
 			if ((caddr_t) is -> ifn_offset
@@ -842,18 +842,18 @@ static struct adrtab *get_arpent ();
 
 static int  o_address (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
-	register int    i;
+	int    i;
 	int	    ifvar,
 			isnpa;
-	register unsigned int *ip,
+	unsigned int *ip,
 			 *jp;
-	register struct adrtab *at;
+	struct adrtab *at;
 	struct sockaddr_iso netaddr;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 
 	if (get_arptab (offset) == NOTOK)
 		return generr (offset);
@@ -976,7 +976,7 @@ int	offset;
 /*  */
 
 static int  adn_compar (a, b)
-register struct adrtab **a,
+struct adrtab **a,
 		**b;
 {
 	return elem_cmp ((*a) -> adn_instance, (*a) -> adn_insize,
@@ -985,7 +985,7 @@ register struct adrtab **a,
 
 
 static int  adm_compar (a, b)
-register struct adrtab **a,
+struct adrtab **a,
 		**b;
 {
 	return elem_cmp ((*a) -> adm_instance, (*a) -> adm_insize,
@@ -1002,15 +1002,15 @@ int	offset;
 			rlen,
 			tblsize;
 	char   *snpac;
-	register char *sc,
+	char *sc,
 			 *se;
-	register struct adrtab *at,
+	struct adrtab *at,
 			*ap,
 			**base,
 			**afe,
 			**afp;
-	register struct interface *is;
-	register struct rt_msghdr *rtm;
+	struct interface *is;
+	struct rt_msghdr *rtm;
 	static  int first_time = 1;
 	static  int lastq = -1;
 
@@ -1042,8 +1042,8 @@ int	offset;
 
 	afp = &adn;
 	for (se = (sc = snpac) + rlen; sc < se; sc += rtm -> rtm_msglen) {
-		register struct sockaddr_dl *sdl;
-		register struct sockaddr *sa;
+		struct sockaddr_dl *sdl;
+		struct sockaddr *sa;
 		struct iso_addr nsap;
 
 		rtm = (struct rt_msghdr *) sc;
@@ -1148,12 +1148,12 @@ int	offset;
 /*  */
 
 static struct adrtab *get_arpent (ip, len, isnpa, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnpa,
 	isnext;
 {
-	register struct adrtab *at;
+	struct adrtab *at;
 
 	if (isnpa)
 		for (at = adm; at; at = at -> adm_next)
@@ -1205,13 +1205,13 @@ static	struct esis_stat esis_stat;
 
 static int  o_esis (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register struct esis_stat *es = &esis_stat;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct esis_stat *es = &esis_stat;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
 	ifvar = (int) ot -> ot_info;
@@ -1276,7 +1276,7 @@ int	offset;
 /*  */
 
 init_clns () {
-	register OT	    ot;
+	OT	    ot;
 
 	if (nl[N_ISO_SYSTYPE].n_value == 0)
 		return;

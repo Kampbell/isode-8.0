@@ -118,7 +118,7 @@ static struct macro *Mbuckets[MBUCKETS];
 static struct macro *
 name2macro (char *name)
 {
-	register struct macro *m;
+	struct macro *m;
 
 	read_macros ();
 
@@ -142,10 +142,10 @@ name2macro (char *name)
 static struct macro *
 value2macro (char *value)
 {
-	register int   i,
+	int   i,
 			 j,
 			 k;
-	register struct macro *m,
+	struct macro *m,
 			*p,
 			**np,
 			**pp;
@@ -176,7 +176,7 @@ value2macro (char *value)
 
 static int 
 read_macros (void) {
-	register char *hp;
+	char *hp;
 	char    buffer[BUFSIZ];
 
 	if (inited)
@@ -198,10 +198,10 @@ read_macros (void) {
 static int 
 read_file (char *file)
 {
-	register char *cp;
+	char *cp;
 	char    buffer[BUFSIZ + 1],
 			*vec[NVEC + NSLACK + 1];
-	register FILE *fp;
+	FILE *fp;
 
 	if ((fp = fopen (file, "r")) == NULL)
 		return;
@@ -227,9 +227,9 @@ static int
 add_macro (char *name, char *value)
 {
 	int	    i;
-	register char  *cp;
+	char  *cp;
 	char    buffer[BUFSIZ];
-	register struct macro *m,
+	struct macro *m,
 			*p;
 
 	if (cp = index (value, '=')) {
@@ -273,7 +273,7 @@ add_macro (char *name, char *value)
 char *
 macro2str (char *name)
 {
-	register struct macro *m = name2macro (name);
+	struct macro *m = name2macro (name);
 
 	return (m ? m -> m_value : NULLCP);
 }
@@ -315,9 +315,9 @@ static char *sels[3] = {
 
 #define	IMPLODE(intres,octres,octval,intval,losing,loslab) \
 { \
-    register int   z = (intval); \
-    register char *y = (octval); \
-    register char *zp = y + z; \
+    int   z = (intval); \
+    char *y = (octval); \
+    char *zp = y + z; \
  \
     while (zp-- > y) \
 	if (!isxdigit ((u_char) *zp)) { \
@@ -337,11 +337,11 @@ loslab: ; \
 struct PSAPaddr *
 str2paddr (char *str)
 {
-	register int    state,
+	int    state,
 			 *lp;
 	int	    j,
 			lens[3];
-	register char  *cp,
+	char  *cp,
 			 *dp,
 			 *ep,
 			 *fp,
@@ -350,14 +350,14 @@ str2paddr (char *str)
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			nsap[NASIZE * 2 + 1];
-	register struct macro *m;
-	register struct afi_info *pp;
+	struct macro *m;
+	struct afi_info *pp;
 	static int i = 0;
 	static struct PSAPaddr pas[2];
-	register struct PSAPaddr *pa = &pas[i++];
-	register struct SSAPaddr *sa = &pa -> pa_addr;
-	register struct TSAPaddr *ta = &sa -> sa_addr;
-	register struct NSAPaddr *na = ta -> ta_addrs;
+	struct PSAPaddr *pa = &pas[i++];
+	struct SSAPaddr *sa = &pa -> pa_addr;
+	struct TSAPaddr *ta = &sa -> sa_addr;
+	struct NSAPaddr *na = ta -> ta_addrs;
 
 #ifdef ULTRIX_X25_DEMSA
 	int n_colon;
@@ -457,10 +457,10 @@ stuff_selectors:
 			}
 
 			{
-				register int    k,
+				int    k,
 						 l,
 						 n;
-				register struct ts_interim *ts,
+				struct ts_interim *ts,
 						*tp;
 
 				tp = NULL, n = 0;
@@ -637,9 +637,9 @@ handle_dsp:
 					if (strncmp ("RFC-1006+", ep,
 								 sizeof "RFC-1006+" - 1) == 0) {
 #ifdef	h_addr
-						register char **ap;
+						char **ap;
 #endif
-						register struct hostent *hp;
+						struct hostent *hp;
 
 						na -> na_stack = NA_TCP;
 						ep += sizeof "RFC-1006+" - 1;
@@ -774,8 +774,8 @@ invalid_field:
 next:
 			;
 			if (na -> na_stack == NA_NSAP) {
-				register int n = 0;
-				register struct ts_interim *ts, *tp;
+				int n = 0;
+				struct ts_interim *ts, *tp;
 
 				tp = NULL;
 				for (ts = ts_interim; ts -> ts_name; ts++)
@@ -822,11 +822,11 @@ next:
 /*  */
 
 int 
-macro2comm (char *name, register struct ts_interim *ts)
+macro2comm (char *name, struct ts_interim *ts)
 {
 	int	    j,
 			len;
-	register char  *ap,
+	char  *ap,
 			 *cp,
 			 *dp,
 			 *ep,
@@ -835,7 +835,7 @@ macro2comm (char *name, register struct ts_interim *ts)
 	char    padchar,
 			addr[NASIZE * 2 + 1],
 			buffer[BUFSIZ];
-	register struct afi_info *pp;
+	struct afi_info *pp;
 
 	ts -> ts_length = 0, ts -> ts_syntax = NA_NSAP;
 	if ((cp = macro2str (name)) == NULLCP)
@@ -1009,7 +1009,7 @@ out:
 static char *
 SEL2STR (char *sel, int len)
 {
-	register char  *cp,
+	char  *cp,
 			 *dp,
 			 *ep;
 	static char buffer[PSSIZE * 2 + 4];
@@ -1048,17 +1048,17 @@ SEL2STR (char *sel, int len)
 /*  */
 
 char *
-_paddr2str (register struct PSAPaddr *pa, register struct NSAPaddr *na, int compact)
+_paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact)
 {
-	register int   n;
+	int   n;
 	int	    first;
-	register char *bp,
+	char *bp,
 			 *cp,
 			 *dp;
-	register struct macro *m;
-	register struct SSAPaddr *sa;
-	register struct TSAPaddr *ta;
-	register struct NSAPaddr *ca;
+	struct macro *m;
+	struct SSAPaddr *sa;
+	struct TSAPaddr *ta;
+	struct NSAPaddr *ca;
 	static int    i = 0;
 	static char buf1[BUFSIZ],
 		   buf2[BUFSIZ];
@@ -1111,7 +1111,7 @@ bad_pa:
 		goto bad_pa;
 
 	for (first = 1; n > 0; na++, n--) {
-		register struct ts_interim *ts;
+		struct ts_interim *ts;
 
 		if (first)
 			first = 0;
@@ -1275,8 +1275,8 @@ bad_pa:
 #ifdef DEBUG
 int 
 free_macros (void) {
-	register int    i;
-	register struct macro *m,
+	int    i;
+	struct macro *m,
 			*p;
 
 	for (i = MBUCKETS; i-- > 0; )

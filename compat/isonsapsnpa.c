@@ -79,9 +79,9 @@ struct NSAPinfo *
 getisonsapsnpa (void) {
 	int	    mask,
 			vecp;
-	register char  *cp;
+	char  *cp;
 	static struct NSAPinfo iss;
-	register struct NSAPinfo *is = &iss;
+	struct NSAPinfo *is = &iss;
 	static char buffer[BUFSIZ + 1];
 	static char *vec[NVEC + NSLACK + 1];
 	struct TSAPaddr *ta;

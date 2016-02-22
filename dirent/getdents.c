@@ -143,8 +143,8 @@ NameLen (				/* return # chars in embedded name */
     char name[]		/* -> name embedded in struct direct */
 )
 {
-	register char	*s;		/* -> name[.] */
-	register char	*stop = &name[DIRSIZ];	/* -> past end of name field */
+	char	*s;		/* -> name[.] */
+	char	*stop = &name[DIRSIZ];	/* -> past end of name field */
 
 	for ( s = &name[1];		/* (empty names are impossible) */
 			*s != '\0'		/* not NUL terminator */
@@ -193,13 +193,13 @@ getdents (		/* returns # bytes read;
 		/* directory file block buffer */
 		struct direct	dummy;	/* just for alignment */
 	}	u;		/* (avoids having to malloc()) */
-	register struct direct	*dp;	/* -> u.dblk[.] */
-	register struct dirent	*bp;	/* -> buf[.] */
+	struct direct	*dp;	/* -> u.dblk[.] */
+	struct dirent	*bp;	/* -> buf[.] */
 
 #ifdef UNK
 	switch ( state ) {
 		void		(*shdlr)();	/* entry SIGSYS handler */
-		register int	retval;	/* return from _getdents() if any */
+		int	retval;	/* return from _getdents() if any */
 
 	case yes:			/* _getdents() is known to work */
 		return _getdents( fildes, buf, nbyte );
@@ -271,7 +271,7 @@ getdents (		/* returns # bytes read;
 
 			if ( dp->d_fileno != 0 ) {
 				/* non-empty; copy to user buffer */
-				register int	reclen =
+				int	reclen =
 					DIRENTSIZ( NameLen( dp->d_name ) );
 
 				if ( (char *)bp + reclen > &buf[nbyte] ) {

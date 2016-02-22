@@ -46,18 +46,18 @@ static  do_components_set ();
 /*  */
 
 do_type (yp, level, id, arg)
-register YP	yp;
-register int	level;
-register char  *id,
+YP	yp;
+int	level;
+char  *id,
 		 *arg;
 {
-	register int    i;
-	register char  *narg;
+	int    i;
+	char  *narg;
 	char   *narg2,
 		   *narg3;
-	register struct tuple *t;
-	register YP     y;
-	register YV     yv;
+	struct tuple *t;
+	YP     y;
+	YV     yv;
 	char	   *class, *value, *form;
 	char	    tbuf1[32], tbuf2[32];
 	int		    pushdown = 0;
@@ -74,7 +74,7 @@ register char  *id,
 					   && yp -> yp_code != YP_NULL
 					   && (yp -> yp_code != YP_CHOICE
 						   || (yp -> yp_flags & YP_CONTROLLED))
-					   ? "register " : "");
+					   ? "" : "");
 		(void) printf ("int\tlen;\nchar   *buffer;\n%s parm;\n{\n",
 					   yp -> yp_param_type ? yp -> yp_param_type : "PEPYPARM");
 
@@ -105,20 +105,20 @@ register char  *id,
 
 	switch (yp -> yp_code) {
 	case YP_BOOL:
-		(void) printf ("%*sregister int %s = %s;\n\n", level * 4, "",
+		(void) printf ("%*sint %s = %s;\n\n", level * 4, "",
 					   narg = gensym (), yp -> yp_intexp ? yp -> yp_intexp
 					   : level == 1 ? "len" : "0");
 		break;
 	case YP_INT:
 	case YP_INTLIST:
 	case YP_ENUMLIST:
-		(void) printf ("%*sregister integer %s = %s;\n\n", level * 4, "",
+		(void) printf ("%*sinteger %s = %s;\n\n", level * 4, "",
 					   narg = gensym (), yp -> yp_intexp ? yp -> yp_intexp
 					   : level == 1 ? "len" : "0");
 		break;
 
 	case YP_REAL:
-		(void) printf ("%*sregister double %s = 0.0;\n\n", level * 4, "",
+		(void) printf ("%*sdouble %s = 0.0;\n\n", level * 4, "",
 					   narg = gensym ());
 		if (yp -> yp_strexp)
 			(void) printf ("%*s%s = %s;\n", level * 4, "", narg,
@@ -129,7 +129,7 @@ register char  *id,
 	case YP_BITLIST:
 		(void) printf ("%*sPE\t%s_z = NULLPE;\n", level * 4, "",
 					   narg = gensym ());
-		(void) printf ("%*sregister PE *%s = &%s_z;\n\n", level * 4, "",
+		(void) printf ("%*sPE *%s = &%s_z;\n\n", level * 4, "",
 					   narg, narg);
 		narg = add_point (narg);
 		(void) printf ("%*schar *%s;\n%*sint %s;\n", level * 4, "",
@@ -152,7 +152,7 @@ register char  *id,
 	case YP_OCT:
 		narg = gensym ();
 		if (yp -> yp_prfexp != 'q') {
-			(void) printf ("%*sregister char *%s;\n%*sint %s_len;\n\n",
+			(void) printf ("%*schar *%s;\n%*sint %s_len;\n\n",
 						   level * 4, "", narg, level * 4, "", narg);
 			if (yp -> yp_strexp) {
 				(void) printf ("%*s%s = %s;\n", level * 4, "",
@@ -173,7 +173,7 @@ register char  *id,
 				(void) printf ("%*s%s = NULLCP;\n%*s%s_len = 0;\n",
 							   level * 4, "", narg, level * 4, "", narg);
 		} else {
-			(void) printf ("%*sregister struct qbuf *%s;\n\n",
+			(void) printf ("%*sstruct qbuf *%s;\n\n",
 						   level * 4, "", narg);
 			(void) printf ("%*s%s = %s;\n", level * 4, "", narg, yp -> yp_strexp);
 		}
@@ -200,7 +200,7 @@ register char  *id,
 		break;
 
 	case YP_OID:
-		(void) printf ("%*sregister OID %s;\n\n", level * 4, "",
+		(void) printf ("%*sOID %s;\n\n", level * 4, "",
 					   narg = gensym ());
 		if (yp -> yp_strexp)
 			(void) printf ("%*s%s = %s;\n", level * 4, "", narg, yp -> yp_strexp);
@@ -220,7 +220,7 @@ register char  *id,
 	case YP_SETLIST:
 		(void) printf ("%*sPE\t%s_z = NULLPE;\n", level * 4, "",
 					   narg = gensym ());
-		(void) printf ("%*sregister PE *%s = &%s_z;\n\n", level * 4, "",
+		(void) printf ("%*sPE *%s = &%s_z;\n\n", level * 4, "",
 					   narg, narg);
 		narg = add_point(narg);
 		break;
@@ -323,7 +323,7 @@ register char  *id,
 			(void) printf ("%*s%s -> pe_class = %s;\n%*s%s -> pe_id = %s;\n",
 						   level * 4, "", narg, class, level * 4, "", narg, value);
 		if (yp -> yp_code == YP_BITLIST) {
-			register int	j;
+			int	j;
 
 			for (yv = yp -> yp_value, i = -1; yv; yv = yv -> yv_next)
 				if ((j = val2int (yv)) > i)
@@ -475,7 +475,7 @@ register char  *id,
 			}
 		}
 		for (y = yp -> yp_type; y; y = y -> yp_next) {
-			register YP     z;
+			YP     z;
 
 			if (!(y -> yp_flags & (YP_OPTIONAL | YP_DEFAULT))
 					|| lookup_tag (y) == NULLYT)
@@ -647,8 +647,8 @@ add_point (char *arg)
 /*  */
 
 static  do_type_member (yp, level, narg)
-register YP     yp;
-register int    level;
+YP     yp;
+int    level;
 char   *narg;
 {
 	int     pushdown = (yp -> yp_flags & (YP_TAG | YP_IMPLICIT)) == YP_TAG;
@@ -692,10 +692,10 @@ char   *narg;
 /*  */
 
 static  do_type_choice (yp, caseindex, level, narg)
-register YP     yp;
-register int    caseindex,
+YP     yp;
+int    caseindex,
 		 level;
-register char  *narg;
+char  *narg;
 {
 	int     pushdown = (yp -> yp_flags & YP_TAG)
 					   && !(yp -> yp_flags & YP_IMPLICIT);
@@ -725,9 +725,9 @@ register char  *narg;
 /*  */
 
 int 
-do_action (register char *action, register int level, register char *arg, int lineno)
+do_action (char *action, int level, char *arg, int lineno)
 {
-	register char   c,
+	char   c,
 			 d;
 
 	(void) printf ("%*s{\n", level * 4, "");
@@ -770,11 +770,11 @@ do_action (register char *action, register int level, register char *arg, int li
 /* ARGSUSED */
 
 static  do_type_element (yp, level, last, id, narg)
-register YP     yp;
-register int    level;
+YP     yp;
+int    level;
 int     last;
 char   *id;
-register char  *narg;
+char  *narg;
 {
 	(void) printf ("%*s%s = NULLPE;\n\n", level * 4, "", narg);
 	if (yp -> yp_flags & (YP_OPTIONAL | YP_DEFAULT)) {
@@ -798,8 +798,8 @@ register char  *narg;
 
 static do_components_seq (yp, level, last, id, arg, narg)
 YP	yp;
-register int level;
-register char	*id,
+int level;
+char	*id,
 		   *arg,
 		   *narg;
 {
@@ -840,7 +840,7 @@ register char	*id,
 		}
 	}
 	for (y = newyp -> yp_type; y; y = y -> yp_next) {
-		register YP     z;
+		YP     z;
 
 		if (!(y -> yp_flags & (YP_OPTIONAL | YP_DEFAULT))
 				|| lookup_tag (y) == NULLYT)
@@ -860,8 +860,8 @@ register char	*id,
 
 
 static  do_components_set (yp, level, arg, id, narg)
-register YP     yp;
-register int    level;
+YP     yp;
+int    level;
 char   *narg, *arg, *id;
 {
 

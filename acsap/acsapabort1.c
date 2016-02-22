@@ -41,12 +41,12 @@ AcUAbortRequest (int sd, PE *data, int ndata, struct AcSAPindication *aci)
 {
 	SBV     smask;
 	int     result;
-	register struct assocblk  *acb;
+	struct assocblk  *acb;
 	PE	    pe;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
-	register struct type_ACS_ABRT__apdu *pdu;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
+	struct type_ACS_ABRT__apdu *pdu;
 
 	toomuchP (data, ndata, NACDATA, "release");
 	missingP (aci);

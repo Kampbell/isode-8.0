@@ -43,10 +43,10 @@ PUAbortRequest (int sd, PE *data, int ndata, struct PSAPindication *pi)
 			result;
 	char   *base;
 	PE	    pe;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
-	register struct type_PS_ARU__PPDU *pdu;
+	struct SSAPabort  *sa = &sis.si_abort;
+	struct type_PS_ARU__PPDU *pdu;
 
 	toomuchP (data, ndata, NPDATA, "abort");
 	missingP (pi);

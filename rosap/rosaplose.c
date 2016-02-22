@@ -46,8 +46,8 @@ int	ropktlose (struct assocblk*acb, ...)
 	int	    reason,
 	result,
 	value;
-	register struct RoSAPindication *roi;
-	register struct RoSAPpreject *rop;
+	struct RoSAPindication *roi;
+	struct RoSAPpreject *rop;
 	va_list ap;
 
 	va_start (ap, acb);
@@ -108,7 +108,7 @@ int	rosapreject (struct assocblk*acb, ...)
 	int	    reason,
 	result;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi;
+	struct RoSAPindication *roi;
 	va_list ap;
 
 	va_start (ap, acb);
@@ -173,14 +173,14 @@ rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
 #ifndef	lint
 static int 
 _rosaplose (  /* what, fmt, args ... */
-    register struct RoSAPindication *roi,
+    struct RoSAPindication *roi,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct RoSAPpreject *rop;
+	struct RoSAPpreject *rop;
 
 	if (roi) {
 		bzero ((char *) roi, sizeof *roi);

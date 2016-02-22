@@ -72,12 +72,12 @@ struct	PSAPindication *pi;
 	int     result;
 	int	    i, len;
 	PE	    pe;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
-	register struct type_PS_UD__type *pdu;
-	register struct type_PS_User__data *info;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
+	struct type_PS_UD__type *pdu;
+	struct type_PS_User__data *info;
 
 	isodetailor ("pusap2");
 
@@ -241,12 +241,12 @@ PUnitDataBind (
 	int     result;
 	int	    i, len;
 	PE	    pe;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
-	register struct type_PS_UD__type *pdu;
-	register struct type_PS_User__data *info;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
+	struct type_PS_UD__type *pdu;
+	struct type_PS_User__data *info;
 
 	isodetailor ("pusap2");
 
@@ -354,11 +354,11 @@ PUnitDataRebind (
 {
 	SBV     smask;
 	int     result;
-	register struct psapblk *pb;
-	register struct PSAPaddr *calling;
+	struct psapblk *pb;
+	struct PSAPaddr *calling;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 
 	missingP (called);
 	missingP (pi);
@@ -421,14 +421,14 @@ struct  PSAPindication *pi;
 	int     result;
 	int	    i, len;
 	PE	    pe;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
-	register struct type_PS_UD__type *pdu;
-	register struct type_PS_User__data *info;
-	register struct PSAPaddr *calling;
-	register struct PSAPaddr *called;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
+	struct type_PS_UD__type *pdu;
+	struct type_PS_User__data *info;
+	struct PSAPaddr *calling;
+	struct PSAPaddr *called;
 
 
 	missingP (data);
@@ -543,12 +543,12 @@ PUnitDataRead (
 	int     result, i, len;
 	PE	    pe = NULLPE;
 	char    *base;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SuSAPstart sss;
-	register struct SuSAPstart *ss = &sss;
+	struct SuSAPstart *ss = &sss;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	struct type_PS_UD__type *pdu;
 
 	missingP (ps);
@@ -665,10 +665,10 @@ PUnitDataUnbind (
 {
 	SBV     smask;
 	int     result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 
 	missingP (pi);
 	smask = sigioblock ();
@@ -714,10 +714,10 @@ PuSave (
 )
 {
 	int     result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 
 	isodetailor ("psap");
 
@@ -757,7 +757,7 @@ addrs2block (
     struct PSAPindication *pi
 )
 {
-	register struct PSAPaddr *pa;
+	struct PSAPaddr *pa;
 
 	if ( !calledaddr )
 		pb -> pb_called = NULLPA;
@@ -798,7 +798,7 @@ contexts2block (
 )
 {
 	int i;
-	register struct PSAPcontext *pp, *qp;
+	struct PSAPcontext *pp, *qp;
 
 	i = nctx - 1;
 	for (pp = contexts, qp = pb -> pb_contexts;
@@ -855,8 +855,8 @@ contexts2pdu (
 )
 {
 	int i;
-	register struct PSAPcontext  *qp;
-	register struct type_PS_Definition__list *cd, **cp;
+	struct PSAPcontext  *qp;
+	struct type_PS_Definition__list *cd, **cp;
 
 	cp = &pdu -> context__list;
 
@@ -905,16 +905,16 @@ pdu2contexts (
 )
 {
 	int i, j, result;
-	register struct PSAPcontext  *pp, *qp;
-	register struct type_PS_Definition__list *lp;
+	struct PSAPcontext  *pp, *qp;
+	struct type_PS_Definition__list *lp;
 
 	result = OK;
 	i = 0;
 	for (lp = ctxdeflist, pp = ctxlist -> pc_ctx;
 			lp;
 			lp = lp -> next, pp++, i++) {
-		register struct element_PS_6 *pctx = lp -> element_PS_5;
-		register struct element_PS_7 *atn;
+		struct element_PS_6 *pctx = lp -> element_PS_5;
+		struct element_PS_7 *atn;
 
 		pp -> pc_id = pctx -> identifier;
 		pp -> pc_asn = pctx -> abstract__syntax;

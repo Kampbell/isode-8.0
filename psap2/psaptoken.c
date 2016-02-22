@@ -38,9 +38,9 @@ PGTokenRequest (int sd, int tokens, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int     result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	missingP (pi);
 
@@ -77,9 +77,9 @@ PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindication *
 			result;
 	char   *base,
 		   *realbase;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	toomuchP (data, ndata, NPDATA, "token");
 	missingP (pi);

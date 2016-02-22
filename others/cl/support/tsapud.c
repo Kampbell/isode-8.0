@@ -118,12 +118,12 @@ char  **argv,
 			vecp;
 	int     sd;
 	char   *vec[4];
-	register struct NSAPaddr  *na;
-	register struct TSAPaddr  *ta;
+	struct NSAPaddr  *na;
+	struct TSAPaddr  *ta;
 	struct TSAPunitdata       tuds;
-	register struct TSAPunitdata *tud = &tuds;
+	struct TSAPunitdata *tud = &tuds;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	int	    pid;
 	char buffer1[BUFSIZ];
 
@@ -225,12 +225,12 @@ static int
 tsapud (int vecp, char **vec)
 {
 	char    buffer[BUFSIZ];
-	register struct isoservent *is;
+	struct isoservent *is;
 	struct tsapblk *tb;
 	struct TSAPunitdata   tuds;
-	register struct TSAPunitdata *tud = &tuds;
+	struct TSAPunitdata *tud = &tuds;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	IFP	    hook;
 
 	/* begin UGLY */
@@ -294,7 +294,7 @@ out:
 /*  */
 
 static void 
-ts_advise (register struct TSAPdisconnect *td, int code, char *event)
+ts_advise (struct TSAPdisconnect *td, int code, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -315,7 +315,7 @@ static
 arginit (char **vec)
 {
 	int	    rflag;
-	register char  *ap;
+	char  *ap;
 #ifdef	TCP
 	int	    port;
 	struct NSAPaddr *tcp_na;
@@ -331,7 +331,7 @@ arginit (char **vec)
 	struct NSAPaddr *bridge_na;
 #endif
 #ifdef	TP4
-	register struct isoservent *is;
+	struct isoservent *is;
 #endif
 	struct stat st;
 

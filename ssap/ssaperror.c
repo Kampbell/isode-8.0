@@ -64,9 +64,9 @@ static int reject_err8_cnt = sizeof reject_err8 / sizeof reject_err8[0];
 /*  */
 
 char *
-SErrString (register int code)
+SErrString (int code)
 {
-	register int    fcode;
+	int    fcode;
 	static char buffer[50];
 
 	code &= 0xff;

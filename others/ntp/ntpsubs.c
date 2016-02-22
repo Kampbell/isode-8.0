@@ -26,7 +26,7 @@ ul_fixed_to_double (struct l_fixedpt *t)
 {
 	double a, b;
 #ifdef	GENERIC_UNS_BUG
-	register int i;
+	int i;
 
 	i = ntohl(t->fraction);
 	a = (long)((i >> 1) & 0x7fffffff);

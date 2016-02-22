@@ -46,8 +46,8 @@ int
 main (int argc, char **argv, char **envp)
 {
 	char   *cp;
-	register PE pe;
-	register PS ps;
+	PE pe;
+	PS ps;
 
 	argc--, argv++;
 	if (argc != 1) {
@@ -69,7 +69,7 @@ usage:
 
 	if (strcmp (*argv, "string") == 0) {
 		int	onceonly = 1;
-		register PE *pep;
+		PE *pep;
 
 		if ((pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_PRIM_OCTS))
 				== NULLPE) {
@@ -81,7 +81,7 @@ no_pe:
 		pep = &pe -> pe_cons;
 		for (;;) {
 			int	    i;
-			register PE p;
+			PE p;
 
 			if (onceonly) {
 				struct stat st;
@@ -207,7 +207,7 @@ doit:
 /*    ERRORS */
 
 static 
-ps_die (register PS ps, register char *s)
+ps_die (PS ps, char *s)
 {
 	(void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);

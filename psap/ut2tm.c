@@ -44,10 +44,10 @@ static  int makewkday ();
 /*  */
 
 struct tm *
-ut2tm (register UTC ut)
+ut2tm (UTC ut)
 {
 	static struct tm   tms;
-	register struct tm *tm = &tms;
+	struct tm *tm = &tms;
 
 	bzero ((char *) tm, sizeof *tm);
 

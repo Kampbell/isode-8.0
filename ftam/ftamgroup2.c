@@ -70,7 +70,7 @@ struct FTAMindication  *fti;
 {
 	SBV	    smask;
 	int	    result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	missingP (ftg);
 	missingP (fti);
@@ -90,12 +90,12 @@ struct FTAMindication  *fti;
 /*  */
 
 static int  FGroupResponseAux (fsb, ftg, state, fti)
-register struct ftamblk *fsb;
-register struct FTAMgroup  *ftg;
+struct ftamblk *fsb;
+struct FTAMgroup  *ftg;
 int	state;
 struct FTAMindication  *fti;
 {
-	register int    i;
+	int    i;
 	int     did_loop,
 			npdu,
 			result,
@@ -178,8 +178,8 @@ out:
 /*  */
 
 static int  frgrpchk (fsb, ftg, type, fti)
-register struct ftamblk *fsb;
-register struct FTAMgroup *ftg;
+struct ftamblk *fsb;
+struct FTAMgroup *ftg;
 int	type;
 struct FTAMindication *fti;
 {
@@ -219,7 +219,7 @@ wrong_state:
 	}
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		switch (ftse -> ftse_state) {
 		case FSTATE_SUCCESS:
@@ -249,7 +249,7 @@ wrong_state:
 	}
 
 	if (ftg -> ftg_flags & FTG_CREATE) {
-		register struct FTAMcreate *ftce = &ftg -> ftg_create;
+		struct FTAMcreate *ftce = &ftg -> ftg_create;
 
 		switch (ftce -> ftce_state) {
 		case FSTATE_SUCCESS:
@@ -296,7 +296,7 @@ wrong_state:
 	}
 
 	if (ftg -> ftg_flags & FTG_CLOSE) {
-		register struct FTAMclose     *ftcl = &ftg -> ftg_close;
+		struct FTAMclose     *ftcl = &ftg -> ftg_close;
 
 		switch (ftcl -> ftcl_action) {
 		case FACTION_SUCCESS:
@@ -314,7 +314,7 @@ wrong_state:
 	}
 
 	if (ftg -> ftg_flags & FTG_RDATTR) {
-		register struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
+		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
 
 		switch (ftra -> ftra_action) {
 		case FACTION_SUCCESS:
@@ -340,7 +340,7 @@ wrong_state:
 	}
 
 	if (ftg -> ftg_flags & FTG_CHATTR) {
-		register struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
+		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
 
 		switch (ftca -> ftca_action) {
 		case FACTION_SUCCESS:
@@ -369,7 +369,7 @@ wrong_state:
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
 
 		switch (ftde -> ftde_action) {
 		case FACTION_SUCCESS:
@@ -394,7 +394,7 @@ wrong_state:
 	}
 
 	if (ftg -> ftg_flags & FTG_DELETE) {
-		register struct FTAMdelete *ftxe = &ftg -> ftg_delete;
+		struct FTAMdelete *ftxe = &ftg -> ftg_delete;
 
 		switch (ftxe -> ftxe_action) {
 		case FACTION_SUCCESS:
@@ -415,8 +415,8 @@ wrong_state:
 	}
 
 	if (ftg -> ftg_flags & FTG_OPEN) {
-		register struct FTAMopen *ftop = &ftg -> ftg_open;
-		register struct FTAMconcurrency *fc;
+		struct FTAMopen *ftop = &ftg -> ftg_open;
+		struct FTAMconcurrency *fc;
 
 		switch (ftop -> ftop_state) {
 		case FSTATE_SUCCESS:
@@ -459,8 +459,8 @@ wrong_state:
 /*  */
 
 static int  frgrp2pdus (fsb, ftg, pdus, texts, npdu, fti)
-register struct ftamblk *fsb;
-register struct FTAMgroup *ftg;
+struct ftamblk *fsb;
+struct FTAMgroup *ftg;
 struct type_FTAM_PDU *pdus[];
 char   *texts[];
 int    *npdu;
@@ -468,12 +468,12 @@ struct FTAMindication *fti;
 {
 	int     flags,
 			i;
-	register struct type_FTAM_PDU *pdu;
+	struct type_FTAM_PDU *pdu;
 
 	i = 0;
 
 #define	new_pdu(t,o,u,x) \
-	register struct t *req; \
+	struct t *req; \
  \
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) \
 	    goto no_mem; \
@@ -521,7 +521,7 @@ struct FTAMindication *fti;
 	}
 
 	if (flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		new_pdu (type_FTAM_F__SELECT__response,
 				 type_FTAM_PDU_f__select__response,
@@ -543,7 +543,7 @@ struct FTAMindication *fti;
 	}
 
 	if (flags & FTG_CREATE) {
-		register struct FTAMcreate *ftce = &ftg -> ftg_create;
+		struct FTAMcreate *ftce = &ftg -> ftg_create;
 
 		new_pdu (type_FTAM_F__CREATE__response,
 				 type_FTAM_PDU_f__create__response,
@@ -565,7 +565,7 @@ struct FTAMindication *fti;
 	}
 
 	if (flags & FTG_CLOSE) {
-		register struct FTAMclose *ftcl = &ftg -> ftg_close;
+		struct FTAMclose *ftcl = &ftg -> ftg_close;
 
 		new_pdu (type_FTAM_F__CLOSE__response,
 				 type_FTAM_PDU_f__close__response,
@@ -583,7 +583,7 @@ struct FTAMindication *fti;
 	}
 
 	if (flags & FTG_RDATTR) {
-		register struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
+		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
 
 		new_pdu (type_FTAM_F__READ__ATTRIB__response,
 				 type_FTAM_PDU_f__read__attrib__response,
@@ -601,7 +601,7 @@ struct FTAMindication *fti;
 	}
 
 	if (flags & FTG_CHATTR) {
-		register struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
+		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
 
 		new_pdu (type_FTAM_F__CHANGE__ATTRIB__response,
 				 type_FTAM_PDU_f__change__attrib__response,
@@ -619,7 +619,7 @@ struct FTAMindication *fti;
 	}
 
 	if (flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
 
 		new_pdu (type_FTAM_F__DESELECT__response,
 				 type_FTAM_PDU_f__deselect__response,
@@ -641,7 +641,7 @@ struct FTAMindication *fti;
 	}
 
 	if (flags & FTG_DELETE) {
-		register struct FTAMdelete *ftxe = &ftg -> ftg_delete;
+		struct FTAMdelete *ftxe = &ftg -> ftg_delete;
 
 		new_pdu (type_FTAM_F__DELETE__response,
 				 type_FTAM_PDU_f__delete__response,
@@ -663,8 +663,8 @@ struct FTAMindication *fti;
 	}
 
 	if (flags & FTG_OPEN) {
-		register struct FTAMopen *ftop = &ftg -> ftg_open;
-		register struct type_FTAM_Contents__Type__Attribute *proposed;
+		struct FTAMopen *ftop = &ftg -> ftg_open;
+		struct type_FTAM_Contents__Type__Attribute *proposed;
 
 		new_pdu (type_FTAM_F__OPEN__response,
 				 type_FTAM_PDU_f__open__response,

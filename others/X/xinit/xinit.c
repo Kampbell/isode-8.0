@@ -144,11 +144,11 @@ Execute (
 }
 
 int 
-main (int argc, register char **argv)
+main (int argc, char **argv)
 {
-	register char **sptr = server;
-	register char **cptr = client;
-	register char **ptr;
+	char **sptr = server;
+	char **cptr = client;
+	char **ptr;
 	int pid, i;
 	int client_given = 0, server_given = 0;
 	int client_args_given = 0, server_args_given = 0;

@@ -34,7 +34,7 @@ extern LLog * log_dsap;
 extern char quipu_shutdown;
 
 dsa_work(tk)
-register        struct task_act * tk;
+       struct task_act * tk;
 {
 	struct DSArgument   *arg;
 	struct DSError      *err;

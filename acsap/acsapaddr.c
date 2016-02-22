@@ -76,7 +76,7 @@ AEI
 _str2aei (char *designator, char *qualifier, char *context, int interactive, char *userdn, char *passwd)
 {
 	AEI	    aei;
-	register struct mapping *m;
+	struct mapping *m;
 
 	if (qualifier == NULLCP) {
 		if (context)

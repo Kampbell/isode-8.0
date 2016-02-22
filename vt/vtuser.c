@@ -526,7 +526,7 @@ getch() {
 
 #define	PFIN(px) \
 { \
-    register int PXI; \
+    int PXI; \
  \
     if ((px) -> px_realinfo) \
 		pe_free ((px) -> px_realinfo), (px) -> px_realinfo = NULLPE; \
@@ -1091,9 +1091,9 @@ PE data;
 	ts_bound = acc -> acc_connect.pc_responding;	/* struct copy */
 #ifdef	DEBUG
 	{
-		register int    i;
-		register struct PSAPconnect *pc = &acc -> acc_connect;
-		register struct PSAPctxlist *pl = &pc -> pc_ctxlist;
+		int    i;
+		struct PSAPconnect *pc = &acc -> acc_connect;
+		struct PSAPctxlist *pl = &pc -> pc_ctxlist;
 
 		advise (LLOG_DEBUG, NULLCP,  "context: %s",
 				oid2ode (acc -> acc_context));
@@ -1153,7 +1153,7 @@ ass_ind (argc, argv)
 int	argc;
 char  **argv;
 {
-	register struct PSAPctxlist *pl;
+	struct PSAPctxlist *pl;
 
 
 	aca = &aci->aci_abort;

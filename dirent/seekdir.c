@@ -33,10 +33,10 @@ typedef int	bool;			/* Boolean data type */
 
 void
 seekdir( dirp, loc )
-register DIR	*dirp;		/* stream from opendir() */
-register off_t	loc;		/* position from telldir() */
+DIR	*dirp;		/* stream from opendir() */
+off_t	loc;		/* position from telldir() */
 {
-	register bool	rewind;		/* "start over when stymied" flag */
+	bool	rewind;		/* "start over when stymied" flag */
 
 	if ( dirp == NULL || dirp->dd_buf == NULL ) {
 		errno = EFAULT;
@@ -62,7 +62,7 @@ register off_t	loc;		/* position from telldir() */
 	/* else save time by starting at current dirp->dd_loc */
 
 	for ( rewind = true; ; ) {
-		register struct dirent	*dp;
+		struct dirent	*dp;
 
 		/* See whether the matching entry is in the current buffer. */
 

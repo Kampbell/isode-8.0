@@ -38,7 +38,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbyname.c,v 9.0 1
 struct isoservent *
 getisoserventbyname (char *entity, char *provider)
 {
-	register struct isoservent *is;
+	struct isoservent *is;
 
 	isodetailor (NULLCP, 0);
 	DLOG (addr_log, LLOG_TRACE,

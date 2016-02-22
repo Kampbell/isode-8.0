@@ -40,7 +40,7 @@ SReSyncResponse (int sd, long ssn, int settings, char *data, int cc, struct SSAP
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 
@@ -59,7 +59,7 @@ SReSyncResponse (int sd, long ssn, int settings, char *data, int cc, struct SSAP
 /*  */
 
 static int 
-SReSyncResponseAux (register struct ssapblk *sb, long ssn, int settings, char *data, int cc, register struct SSAPindication *si)
+SReSyncResponseAux (struct ssapblk *sb, long ssn, int settings, char *data, int cc, struct SSAPindication *si)
 {
 	int	    result;
 

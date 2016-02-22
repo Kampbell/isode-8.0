@@ -53,9 +53,9 @@ static int  process ();
 int 
 PY_pp (int argc, char **argv, char **envp, IFP pfx)
 {
-	register int    status = 0;
-	register char  *cp;
-	register FILE  *fp;
+	int    status = 0;
+	char  *cp;
+	FILE  *fp;
 
 	if (myname = rindex (argv[0], '/'))
 		myname++;
@@ -95,12 +95,12 @@ PY_pp (int argc, char **argv, char **envp, IFP pfx)
 /*  */
 
 static int  process (file, fp, pfx)
-register char *file;
-register FILE *fp;
+char *file;
+FILE *fp;
 IFP	pfx;
 {
-	register PE	    pe;
-	register PS	    ps;
+	PE	    pe;
+	PS	    ps;
 
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		ps_advise (ps, "ps_alloc");

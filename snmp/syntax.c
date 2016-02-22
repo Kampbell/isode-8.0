@@ -213,10 +213,10 @@ static int  string_print (x, os)
 struct qbuf *x;
 OS	os;
 {
-	register char *cp,
+	char *cp,
 			 *ep;
 	char   *p;
-	register struct qbuf *qb;
+	struct qbuf *qb;
 
 	p = "0x";
 	for (qb = x -> qb_forw; qb != x; qb = qb -> qb_forw)
@@ -233,7 +233,7 @@ static int  string_display (x, os)
 struct qbuf *x;
 OS	os;
 {
-	register struct qbuf *qb;
+	struct qbuf *qb;
 
 	printf ("\"");
 	for (qb = x -> qb_forw; qb != x; qb = qb -> qb_forw)
@@ -434,8 +434,8 @@ static int  ipaddr_parse (x, s)
 struct sockaddr_in **x;
 char   *s;
 {
-	register struct hostent *hp = gethostbystring (s);
-	register struct sockaddr_in *isock;
+	struct hostent *hp = gethostbystring (s);
+	struct sockaddr_in *isock;
 
 	if (hp == NULL)
 		return NOTOK;
@@ -477,10 +477,10 @@ static	add_netaddr () {
 /*    UNSIGNED LONGs */
 
 u_long	prim2ulong (pe)		/* also used in SNMP-capable gawk... */
-register PE	pe;
+PE	pe;
 {
-	register u_long   i;
-	register PElementData dp,
+	u_long   i;
+	PElementData dp,
 			 ep;
 
 	if (pe -> pe_form != PE_FORM_PRIM || (dp = pe -> pe_prim) == NULLPED)
@@ -502,15 +502,15 @@ register PE	pe;
 
 
 PE  ulong2prim (i, class, id)	/* also used in SNMP-capable gawk... */
-register u_long i;
+u_long i;
 PElementClass	class;
 PElementID	id;
 {
 	int	    extend;
-	register int    n;
-	register u_long mask;
-	register PElementData dp;
-	register PE	    pe;
+	int    n;
+	u_long mask;
+	PElementData dp;
+	PE	    pe;
 
 	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
 		return NULLPE;
@@ -728,7 +728,7 @@ static int  clnpaddr_parse (x, s)
 struct sockaddr_iso **x;
 char   *s;
 {
-	register struct sockaddr_iso *isock;
+	struct sockaddr_iso *isock;
 
 	if ((isock = (struct sockaddr_iso *) calloc (1, sizeof *isock)) == NULL)
 		return NOTOK;
@@ -787,7 +787,7 @@ IFP	f_encode,
 	f_print;
 {
 	int	    i;
-	register OS	    os = synlast++;
+	OS	    os = synlast++;
 
 	if ((i = synlast - syntaxes) >= MAXSYN)
 		return NOTOK;
@@ -808,7 +808,7 @@ IFP	f_encode,
 OS	text2syn (name)
 char   *name;
 {
-	register OS	    os;
+	OS	    os;
 
 	for (os = syntaxes; os < synlast; os++)
 		if (strcmp (os -> os_name, name) == 0)

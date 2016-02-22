@@ -99,7 +99,7 @@ main (int argc, char **argv, char **envp)
 	int	    eof,
 			status,
 			vecp;
-	register char   *cp;
+	char   *cp;
 	char    address[BUFSIZ],
 			buffer[BUFSIZ],
 			*vec[NVEC + 1];
@@ -117,9 +117,9 @@ main (int argc, char **argv, char **envp)
 	status = 0;
 
 	if (mail) {
-		register int   c;
-		register char *ep;
-		register struct pair *p;
+		int   c;
+		char *ep;
+		struct pair *p;
 		FILE   *fp;
 
 		for (;;) {
@@ -259,7 +259,7 @@ main (int argc, char **argv, char **envp)
 			(void) strcpy (address, "peer");
 		}
 	} else {
-		register struct hostent *hp;
+		struct hostent *hp;
 
 		(void) strcpy (address, getlocalhost ());
 
@@ -320,7 +320,7 @@ main (int argc, char **argv, char **envp)
 		vecp = 0;
 		if (nametype > 1
 				&& (strcmp (myname, "whois") == 0 || (*op && **op == 'w'))) {
-			register char **pp;
+			char **pp;
 			char    *bp = "";
 
 			if (strcmp (myname, "whois") && *op)
@@ -419,7 +419,7 @@ were_out_of_here:
 static 
 arginit (char **vec)
 {
-	register char  *ap;
+	char  *ap;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -504,8 +504,8 @@ arginit (char **vec)
 int 
 getline (char *prompt, char *buffer)
 {
-	register int    i;
-	register char  *cp,
+	int    i;
+	char  *cp,
 			 *ep;
 	static int  sticky = 0;
 
@@ -567,12 +567,12 @@ getline (char *prompt, char *buffer)
 
 
 static int  fetchline (s, n, iop)
-register char  *s;
-register int	n;
-register FILE  *iop;
+char  *s;
+int	n;
+FILE  *iop;
 {
-	register int    c;
-	register char  *p;
+	int    c;
+	char  *p;
 
 	p = s;
 	while (--n > 0 && (c = getc (iop)) != EOF) {
@@ -707,7 +707,7 @@ int
 str2vecY (char *buffer, char **vec)
 {
 	int	    i;
-	register char *cp,
+	char *cp,
 			 *dp;
 
 	if (nametype <= 1) {
@@ -757,7 +757,7 @@ rcmap (struct sockaddr_in *isock)
 	u_long	hostaddr,
 			netmask,
 			netaddr;
-	register char *cp;
+	char *cp;
 	char    buffer[BUFSIZ + 1],
 			*vec[NVEC + 1];
 	FILE   *fp;
@@ -921,7 +921,7 @@ static	log_utmp () {
 #endif
 	char   *line;
 	struct utmp uts;
-	register struct utmp *ut = &uts;
+	struct utmp *ut = &uts;
 
 	if ((line = ttyname (fileno (stdin))) == NULL)
 		return;

@@ -199,7 +199,7 @@ char  **vec;
 	int	    seqno;
 	char   *cp,
 		   mbox[BUFSIZ];
-	register struct dn_seq *dlist,
+	struct dn_seq *dlist,
 			*dp;
 
 	if (n > 0 && strcmp (*vec, "-list") == 0) {
@@ -266,14 +266,14 @@ char  **vec;
 	{
 		char	buffer[BUFSIZ];
 		struct ds_search_arg search_arg;
-		register struct ds_search_arg *sa = &search_arg;
+		struct ds_search_arg *sa = &search_arg;
 		struct ds_search_result search_result;
-		register struct ds_search_result *sr = &search_result;
+		struct ds_search_result *sr = &search_result;
 		struct DSError error;
-		register struct DSError *se = &error;
+		struct DSError *se = &error;
 		Filter	fi;
 		EntryInfo *ptr;
-		register struct dn_seq *result = NULL;
+		struct dn_seq *result = NULL;
 		PS	nps;
 
 		bzero ((char *) sa, sizeof *sa);
@@ -370,7 +370,7 @@ free_filter:
 static struct dn_seq *dm2dn_seq (dm)
 char   *dm;
 {
-	register char *dp;
+	char *dp;
 
 	for (dp = dm; *dp; dp++)
 		if (isupper (*dp))
@@ -389,13 +389,13 @@ char   *dm;
 DN	dn;
 struct dn_seq *dlist;
 {
-	register char   *dp;
+	char   *dp;
 	struct ds_search_arg search_arg;
-	register struct ds_search_arg *sa = &search_arg;
+	struct ds_search_arg *sa = &search_arg;
 	struct ds_search_result search_result;
-	register struct ds_search_result *sr = &search_result;
+	struct ds_search_result *sr = &search_result;
 	struct DSError error;
-	register struct DSError *se = &error;
+	struct DSError *se = &error;
 
 	bzero ((char *) sa, sizeof *sa);
 
@@ -415,7 +415,7 @@ struct dn_seq *dlist;
 	for (;;) {
 		int	    i;
 		EntryInfo  *ptr;
-		register s_filter *fi;
+		s_filter *fi;
 
 		if ((dsa_status = rebind ()) != OK)
 			return dlist;
@@ -539,13 +539,13 @@ DN	dn;
 int    *complete;
 {
 	struct ds_list_arg list_arg;
-	register struct ds_list_arg *la = &list_arg;
+	struct ds_list_arg *la = &list_arg;
 	struct ds_list_result list_result;
-	register struct ds_list_result *lr = &list_result;
+	struct ds_list_result *lr = &list_result;
 	struct DSError list_error;
-	register struct DSError *le = &list_error;
-	register struct subordinate *sub;
-	register struct list_cache *ptr;
+	struct DSError *le = &list_error;
+	struct subordinate *sub;
+	struct list_cache *ptr;
 	DN	    adn,
 	 newdn;
 	struct dn_seq *result = NULLDNSEQ;
@@ -610,15 +610,15 @@ DN	dn;
 int    *complete;
 {
 	struct ds_search_arg search_arg;
-	register struct ds_search_arg *sa = &search_arg;
+	struct ds_search_arg *sa = &search_arg;
 	struct ds_search_result search_result;
-	register struct ds_search_result *sr = &search_result;
+	struct ds_search_result *sr = &search_result;
 	struct DSError error;
-	register struct DSError *se = &error;
+	struct DSError *se = &error;
 	Filter	fi1,
 			fi2;
 	EntryInfo *ptr;
-	register struct dn_seq *result = NULLDNSEQ;
+	struct dn_seq *result = NULLDNSEQ;
 
 	bzero ((char *) sa, sizeof *sa);
 
@@ -691,14 +691,14 @@ int	argc;
 char  **argv;
 {
 	envlist	el;
-	register envlist  en,
+	envlist  en,
 			 *ep;
 
 	el = NULL, ep = &el;
 	while (argc >= 3) {
-		register char *cp;
+		char *cp;
 		char   *xp;
-		register struct dn_seq **dp;
+		struct dn_seq **dp;
 
 		if ((en = (envlist) calloc (1, sizeof *en)) == NULL) {
 no_mem:
@@ -714,7 +714,7 @@ no_mem:
 
 		dp = &en -> Dns;
 		for (cp = argv[2]; *cp; cp = xp) {
-			register struct dn_seq *ds;
+			struct dn_seq *ds;
 
 			if (xp = index (cp, '$'))
 				*xp++ = NULL;
@@ -948,7 +948,7 @@ char   *s;
 
 	if (fred_list && frompipe && i > 1) {
 #define	NCHOICES	25
-		register int *ip;
+		int *ip;
 		int	chosen[NCHOICES];
 		char   *bp;
 
@@ -1136,7 +1136,7 @@ static int	dns_sort (dns, i)
 struct dn_seq **dns;
 int	i;
 {
-	register struct dn_seq *ptr;
+	struct dn_seq *ptr;
 
 	if (i == 0)
 		for (ptr = *dns; ptr; ptr = ptr -> dns_next)
@@ -1174,7 +1174,7 @@ struct dn_seq *dns;
 char   *fancy;
 {
 	int	    i;
-	register struct dn_seq *ptr;
+	struct dn_seq *ptr;
 
 	if (dns == NULL) {
 		if (ufn_partials) {
@@ -1461,9 +1461,9 @@ subdisplay;
 	nchild,
 	pos,
 	seqno;
-	register struct template *t;
-	register Attr_Sequence eptr;
-	register AV_Sequence avs,
+	struct template *t;
+	Attr_Sequence eptr;
+	AV_Sequence avs,
 	avp;
 	AttributeType rdn_at,
 	inf_at;
@@ -1487,8 +1487,8 @@ subdisplay;
 	}
 
 	if (mydn) {
-		register DN	adn;
-		register RDN	rdn;
+		DN	adn;
+		RDN	rdn;
 
 		/*
 			if (islong == FALSE) {
@@ -1500,7 +1500,7 @@ subdisplay;
 			continue;
 		myrdn = adn -> dn_rdn;
 		if (myrdn -> rdn_next) {
-			register int    i;
+			int    i;
 			RDN	    *base;
 
 			i = 1;
@@ -1582,7 +1582,7 @@ subdisplay;
 					if (rdn_av
 							&& (ps = ps_alloc (str_open)) != NULLPS
 							&& str_setup (ps, NULLCP, 0, 0) != NOTOK) {
-						register RDN rdn;
+						RDN rdn;
 
 						AttrV_print (ps, rdn_av, EDBOUT);
 						for (rdn = myrdn -> rdn_next;
@@ -1800,13 +1800,13 @@ out:
 
 static	fred_children (parentdn, ptr, prob)
 DN	parentdn;
-register struct subordinate *ptr;
+struct subordinate *ptr;
 int	prob;
 {
 	int	    i,
 	nchild;
-	register struct subordinate *qtr;
-	register DN	adn,
+	struct subordinate *qtr;
+	DN	adn,
 	newdn;
 
 	newdn = dn_comp_new (rdn_comp_new (NULLAttrT, NULLAttrV));
@@ -1842,7 +1842,7 @@ int	prob;
 /*  */
 
 static showfredattr (av)
-register AttributeValue av;
+AttributeValue av;
 {
 	int	    seqno;
 
@@ -1886,8 +1886,8 @@ static struct pair {
 /*  */
 
 static	fred_init () {
-	register struct pair *p;
-	register struct template *t;
+	struct pair *p;
+	struct template *t;
 	static int once_only = 1;
 
 	if (!once_only)
@@ -1910,7 +1910,7 @@ static  Entry fredentry (adn, islong)
 DN	adn;
 char	islong;
 {
-	register Entry newentry;
+	Entry newentry;
 
 	struct ds_read_arg read_arg;
 	struct ds_read_result read_result;
@@ -1958,8 +1958,8 @@ showfredDNs (dn, islong)
 DN	dn;
 int	islong;
 {
-	register Attr_Sequence eptr;
-	register AV_Sequence avs;
+	Attr_Sequence eptr;
+	AV_Sequence avs;
 	Entry    theEntry;
 	PS	     nps;
 
@@ -2016,7 +2016,7 @@ int	islong;
 				int	    cc,
 				i,
 				j;
-				register char *cp,
+				char *cp,
 				*dp;
 				char    buffer[BUFSIZ],
 				faxtopbm[BUFSIZ],
@@ -2192,8 +2192,8 @@ Attr_Sequence fred_full () {
 	static Attr_Sequence as = NULL;
 
 	if (!as) {
-		register struct pair *p;
-		register struct template *t;
+		struct pair *p;
+		struct template *t;
 		AttributeType at;
 
 		fred_init ();
@@ -2220,7 +2220,7 @@ Attr_Sequence fred_full () {
 											NULLACL_INFO));
 		else {
 			int	    i;
-			register Attr_Sequence  ptr,
+			Attr_Sequence  ptr,
 			*pptr;
 
 			for (pptr = &as, ptr = *pptr;

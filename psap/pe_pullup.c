@@ -36,11 +36,11 @@ static PElementData	pe_pullup_aux ();
 /*  */
 
 int 
-pe_pullup (register PE pe)
+pe_pullup (PE pe)
 {
 	PElementLen	    len;
-	register PElementData dp;
-	register PE	    p;
+	PElementData dp;
+	PE	    p;
 
 	if (pe -> pe_form != PE_FORM_CONS)
 		return OK;
@@ -61,17 +61,17 @@ pe_pullup (register PE pe)
 /*  */
 
 static PElementData 
-pe_pullup_aux (register PE pe, register int *len)
+pe_pullup_aux (PE pe, int *len)
 {
-	register int    i,
+	int    i,
 			 k;
 	int     j;
-	register PElementClass class;
-	register PElementID id;
-	register PElementData dp,
+	PElementClass class;
+	PElementID id;
+	PElementData dp,
 			 ep,
 			 fp;
-	register PE	    p;
+	PE	    p;
 
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:

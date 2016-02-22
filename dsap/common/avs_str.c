@@ -32,10 +32,10 @@ short acl_sntx = -1;
 IFP merge_acl = NULLIFP;
 
 AV_Sequence str2avs (str,at)
-register char * str;
+char * str;
 AttributeType at;
 {
-	register char * ptr;
+	char * ptr;
 	char * save,val;
 	AV_Sequence avs = NULLAV;
 	AV_Sequence newavs;
@@ -89,10 +89,10 @@ AttributeType at;
 
 
 AV_Sequence fast_str2avs (str,at)
-register char * str;
+char * str;
 AttributeType at;
 {
-	register char * ptr;
+	char * ptr;
 	char * save,val;
 	AV_Sequence avs = NULLAV;
 	AV_Sequence newavs;

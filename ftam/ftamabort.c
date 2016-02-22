@@ -42,7 +42,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	switch (action) {
 	case FACTION_SUCCESS:
@@ -71,7 +71,7 @@ struct FTAMindication *fti;
 /*  */
 
 int	FAbortRequestAux (fsb, id, action, diag, ndiag, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	id,
 	action;
 struct FTAMdiagnostic diag[];
@@ -81,10 +81,10 @@ struct FTAMindication *fti;
 	int     result;
 	PE	    pe;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__U__ABORT__request *req;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__U__ABORT__request *req;
 
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 		goto carry_on;

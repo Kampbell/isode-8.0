@@ -146,7 +146,7 @@ static QE_error_code process_ufsearch(ufsrec)
 ufsearchRec ufsrec;
 {
 	entryList to_follow;
-	register objectTypeList curr_type, child_types;
+	objectTypeList curr_type, child_types;
 	QCardinal succeeded = 0;
 
 	/* If ds searches outstanding, then do nothing. */
@@ -632,7 +632,7 @@ struct DSResult *ds_result;
 	hit_count = 0;
 	if (search_result->CSR_entries != NULLENTRYINFO) {
 		EntryInfo *entry_ptr;
-		register stringCell curr_attr;
+		stringCell curr_attr;
 		attrValList got_attrs = NULLAVList, curr_av;
 		searchPair search_vals, curr_val_list;
 		stringCell curr_val;

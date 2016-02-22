@@ -38,9 +38,9 @@ PGControlRequest (int sd, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int     result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	missingP (pi);
 
@@ -77,9 +77,9 @@ PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct PSAP
 			result;
 	char   *base,
 		   *realbase;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	toomuchP (data, ndata, NPDATA, "activity start");
 	missingP (pi);
@@ -128,9 +128,9 @@ PActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn
 			result;
 	char   *base,
 		   *realbase;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	toomuchP (data, ndata, NPDATA, "activity resume");
 	missingP (pi);
@@ -177,9 +177,9 @@ PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc, ch
 {
 	SBV	    smask;
 	int     result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	missingP (pi);
 	missingP (sfunc);
@@ -213,9 +213,9 @@ PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *stype)
 {
 	SBV	    smask;
 	int     result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	missingP (pi);
 	missingP (sfunc);

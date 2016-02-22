@@ -47,7 +47,7 @@ struct PSAPindication *pi;
 {
 	SBV	    smask;
 	int	    result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	if (status != SC_ACCEPT)
 		return psaplose (pi, PC_PARAMETER, NULLCP,
@@ -75,14 +75,14 @@ struct PSAPindication *pi;
 /*  */
 
 static int  PRelResponseAux (pb, data, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 PE	data;
 struct PSAPindication *pi;
 {
 	int	    result;
 	PE	    pe;
 	PS	    ps;
-	register struct type_PS_ReleaseResponse__PDU *pdu;
+	struct type_PS_ReleaseResponse__PDU *pdu;
 
 	if ((pdu = (struct type_PS_ReleaseResponse__PDU *) malloc (sizeof *pdu))
 			== NULL)

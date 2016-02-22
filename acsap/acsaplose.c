@@ -46,10 +46,10 @@ int	acpktlose (struct assocblk*acb, ...)
 	int	    reason,
 	result;
 	PE	    pe;
-	register struct AcSAPindication *aci;
+	struct AcSAPindication *aci;
 	struct PSAPindication   pis;
 	struct type_ACS_ABRT__apdu pdus;
-	register struct type_ACS_ABRT__apdu *pdu = &pdus;
+	struct type_ACS_ABRT__apdu *pdu = &pdus;
 	va_list ap;
 
 	va_start (ap, acb);
@@ -132,14 +132,14 @@ acsaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
 #ifndef	lint
 static int 
 _acsaplose (  /* what, fmt, args ... */
-    register struct AcSAPindication *aci,
+    struct AcSAPindication *aci,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct AcSAPabort *aca;
+	struct AcSAPabort *aca;
 
 	if (aci) {
 		bzero ((char *) aci, sizeof *aci);

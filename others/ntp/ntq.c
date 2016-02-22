@@ -80,20 +80,20 @@ mk_connect (char *addr)
 {
 	int sd;
 	struct SSAPref sfs;
-	register struct SSAPref *sf;
-	register struct PSAPaddr *pa;
+	struct SSAPref *sf;
+	struct PSAPaddr *pa;
 	struct AcSAPconnect accs;
-	register struct AcSAPconnect   *acc = &accs;
+	struct AcSAPconnect   *acc = &accs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	OID     ctx,
 			pci;
 	struct PSAPctxlist pcs;
-	register struct PSAPctxlist *pc = &pcs;
+	struct PSAPctxlist *pc = &pcs;
 	struct RoSAPindication rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject *rop = &roi -> roi_preject;
 
 	PE pep[1];
 
@@ -208,8 +208,8 @@ int
 send_request (int sd)
 {
 	struct RoSAPindication rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject *rop = &roi -> roi_preject;
 
 	switch (RyStub (sd, table_NTP_Operations, operation_NTP_query,
 					RyGenID (sd), NULLIP, NULLCP,
@@ -235,7 +235,7 @@ send_request (int sd)
 
 /* ARGSUSED */
 int 
-query_result (int sd, int id, int dummy, register struct type_NTP_ClockInfoList *result, struct RoSAPindication *roi)
+query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, struct RoSAPindication *roi)
 {
 	struct type_NTP_ClockInfo *clock;
 	char	*p, c;
@@ -285,9 +285,9 @@ query_result (int sd, int id, int dummy, register struct type_NTP_ClockInfoList 
 
 /* ARGSUSED */
 int 
-query_error (int sd, int id, int error, register struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi)
+query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi)
 {
-	register struct RyError *rye;
+	struct RyError *rye;
 
 	if (error == RY_REJECT) {
 		advise (NULLCP, "%s", RoErrString ((int) parameter));
@@ -328,7 +328,7 @@ static PE build_bind_arg () {
 }
 
 void 
-ros_adios (register struct RoSAPpreject *rop, char *event)
+ros_adios (struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -337,7 +337,7 @@ ros_adios (register struct RoSAPpreject *rop, char *event)
 
 
 void 
-ros_advise (register struct RoSAPpreject *rop, char *event)
+ros_advise (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -353,7 +353,7 @@ ros_advise (register struct RoSAPpreject *rop, char *event)
 /* ^L */
 
 void 
-acs_adios (register struct AcSAPabort *aca, char *event)
+acs_adios (struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -362,7 +362,7 @@ acs_adios (register struct AcSAPabort *aca, char *event)
 
 
 void 
-acs_advise (register struct AcSAPabort *aca, char *event)
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 

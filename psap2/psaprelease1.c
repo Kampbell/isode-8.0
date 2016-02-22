@@ -40,7 +40,7 @@ PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, stru
 {
 	SBV	    smask;
 	int	    result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	toomuchP (data, ndata, NPDATA, "release");
 	missingP (pr);
@@ -89,7 +89,7 @@ PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindicatio
 {
 	SBV	    smask;
 	int	    result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	missingP (pr);
 	missingP (pi);
@@ -118,9 +118,9 @@ PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struc
 	char   *id = pb -> pb_flags & PB_RELEASE ? "SRelRetryRequest"
 				 : "SRelRequest";
 	struct SSAPrelease   srs;
-	register struct SSAPrelease   *sr = &srs;
+	struct SSAPrelease   *sr = &srs;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	bzero ((char *) sr, sizeof *sr);
 

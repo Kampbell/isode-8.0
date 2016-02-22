@@ -33,11 +33,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/sprintoid.c,v 9.0 1992
 /*  */
 
 char   *sprintoid (oid)
-register OID oid;
+OID oid;
 {
-	register int    i;
-	register unsigned int  *ip;
-	register char  *bp,
+	int    i;
+	unsigned int  *ip;
+	char  *bp,
 			 *cp;
 	static char buffer[BUFSIZ];
 

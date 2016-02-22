@@ -48,11 +48,11 @@ char			dsp;
 char			authtype;
 {
 	Entry  entryptr;
-	register Attr_Sequence  as;
+	Attr_Sequence  as;
 	Attr_Sequence ias = NULLATTR;
-	register AV_Sequence tmp;
+	AV_Sequence tmp;
 	struct acl_info  * acl;
-	register int i;
+	int i;
 	int retval;
 	DN realtarget;
 	int authp;
@@ -250,8 +250,8 @@ OID at;
 DN target;
 int level;
 {
-	register struct acl_attr * aa;
-	register struct oid_seq * oidptr;
+	struct acl_attr * aa;
+	struct oid_seq * oidptr;
 
 	/* FACT: the attribute is not present in the entry.
 	 * PROBLEM: should it be ?

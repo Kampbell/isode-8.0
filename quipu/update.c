@@ -212,7 +212,7 @@ DN who;
 }
 
 static allowed_to_send (a,b)
-register DN  a,b;
+DN  a,b;
 {
 	/* Return TRUE if the DNs are the same */
 	/* Return TRUE if all components of 'a' match, but 'b' has one extra */

@@ -58,7 +58,7 @@ static int pe_maxerror = sizeof pe_errorlist / sizeof pe_errorlist[0];
 char *
 pe_error (int c)
 {
-	register char  *bp;
+	char  *bp;
 	static char buffer[30];
 
 	if (c < pe_maxerror && (bp = pe_errorlist[c]))

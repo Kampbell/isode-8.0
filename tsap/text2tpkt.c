@@ -45,10 +45,10 @@ static	type_data ();
 
 
 void 
-tpkt2text (register LLog *lp, register struct tsapkt *t, int isread)
+tpkt2text (LLog *lp, struct tsapkt *t, int isread)
 {
 	char   *rw = isread ? "<--- " : "---> ";
-	register struct udvec *uv;
+	struct udvec *uv;
 
 	LLOG (lp, LLOG_ALL, ("dump of TPKT 0x%x, errno=0x%x version=0x%x length=%d", t, t -> t_errno, t -> t_vrsn, t -> t_length));
 	(void) ll_printf (lp, "%s(\n", rw);
@@ -146,7 +146,7 @@ type_data (LLog *lp, char *type, char *rw, int len, char *data)
 /*  */
 
 void 
-text2tpkt (register struct tsapkt *t)
+text2tpkt (struct tsapkt *t)
 {
 	char buffer[80],                            /* Working input buffer */
 		 *bptr;                                 /* Pointer to our buffer */

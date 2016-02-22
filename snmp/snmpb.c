@@ -203,12 +203,12 @@ char   *community;
 {
 	int	    backoff,
 			rows;
-	register struct thread *t;
-	register struct binding **bp;
+	struct thread *t;
+	struct binding **bp;
 	struct binding *bl;
 	struct timeval  tvs,
 			now;
-	register OID    a,
+	OID    a,
 			 b;
 	OID	    arg;
 
@@ -244,15 +244,15 @@ char   *community;
 
 	bp = &bl, bl = NULL, rows = 0;
 	for (timelap = 0; THead -> t_forw != THead; timelap++) {
-		register struct binding *bv;
+		struct binding *bv;
 		struct thread *u;
 
 		if ((backoff = wait_for_action (sd, ps)) == NOTOK)
 			break;
 
 		for (t = THead -> t_forw; t != THead; t = u) {
-			register struct binding **bz;
-			register struct type_SNMP_VarBindList *vp,
+			struct binding **bz;
+			struct type_SNMP_VarBindList *vp,
 					*vb2;
 			struct OIDentifier oids;
 
@@ -405,11 +405,11 @@ PS	ps;
 	fd_set  rfds;
 	struct timeval tvs;
 	struct type_SNMP_Message *msg;
-	register struct type_SNMP_PDU *parm;
-	register struct invocation *i;
-	register struct request *r,
+	struct type_SNMP_PDU *parm;
+	struct invocation *i;
+	struct request *r,
 			*u;
-	register struct thread  *t,
+	struct thread  *t,
 			*s;
 	PE	    pe;
 
@@ -574,10 +574,10 @@ invalid_index:
 					goto drop_request;
 				}
 				{
-					register int    j;
-					register struct bound  *b,
+					int    j;
+					struct bound  *b,
 							**bp;
-					register struct type_SNMP_VarBindList  *v,
+					struct type_SNMP_VarBindList  *v,
 							**vp;
 
 					bp = &r -> r_bounds;
@@ -762,7 +762,7 @@ struct type_SNMP_VarBindList *vb;
 int	partial;
 {
 	int	    i;
-	register struct binding *bv,
+	struct binding *bv,
 			*bz;
 
 	if (partial)
@@ -770,7 +770,7 @@ int	partial;
 
 	i = strlen ("row");
 	for (bv = bl; bv; bv = bv -> b_next) {
-		register int    j;
+		int    j;
 		char   *cp = sprintoid (bv -> b_name);
 
 		if (i < (j = strlen (cp)))
@@ -782,7 +782,7 @@ int	partial;
 		printf ("\t%s", oid2ode (vb -> VarBind -> name));
 
 	for (bv = bl; bv; bv = bz) {
-		register struct binding *bp,
+		struct binding *bp,
 				*bq;
 
 		bz = bv -> b_next;
@@ -796,8 +796,8 @@ int	partial;
 
 			if (bp -> b_value) {
 				caddr_t	value;
-				register OI	oi;
-				register OS	os;
+				OI	oi;
+				OS	os;
 
 				if ((oi = name2inst (bp -> b_name)) == NULL
 						|| (os = oi -> oi_type -> ot_syntax) == NULL
@@ -832,10 +832,10 @@ struct type_SNMP_VarBindList *vb;
 char   *community;
 int	next;
 {
-	register struct type_SNMP_Message *msg;
-	register struct type_SNMP_PDUs *pdu;
-	register struct type_SNMP_PDU *parm;
-	register struct type_SNMP_VarBindList **vp;
+	struct type_SNMP_Message *msg;
+	struct type_SNMP_PDUs *pdu;
+	struct type_SNMP_PDU *parm;
+	struct type_SNMP_VarBindList **vp;
 
 	if ((msg = (struct type_SNMP_Message *) calloc (1, sizeof *msg)) == NULL)
 		adios (NULLCP, "out of memory");
@@ -859,8 +859,8 @@ int	next;
 	pdu -> un.get__request = parm;
 
 	for (vp = &parm -> variable__bindings; vb; vb = vb -> next) {
-		register struct type_SNMP_VarBindList *bind;
-		register struct type_SNMP_VarBind *v;
+		struct type_SNMP_VarBindList *bind;
+		struct type_SNMP_VarBind *v;
 
 		if ((bind = (struct type_SNMP_VarBindList *) calloc (1, sizeof *bind))
 				== NULL)
@@ -894,7 +894,7 @@ char   *community;
 OID	start,
 	stop;
 {
-	register struct thread *t;
+	struct thread *t;
 
 	t = (struct thread *) calloc (1, sizeof *t);
 	if (t == NULL)
@@ -931,7 +931,7 @@ struct type_SNMP_VarBindList *vb;
 char   *community;
 struct binding *bp;
 {
-	register struct thread *t;
+	struct thread *t;
 
 	t = (struct thread *) calloc (1, sizeof *t);
 	if (t == NULL)
@@ -955,7 +955,7 @@ struct binding *bp;
 /*  */
 
 static	free_thread (t)
-register struct thread *t;
+struct thread *t;
 {
 	if (debug && t -> t_lo) {
 		fprintf (stderr, "thread from %s to ", oid2ode (t -> t_lo));
@@ -983,7 +983,7 @@ register struct thread *t;
 /*  */
 
 static int  next_thread (t, ps, next)
-register struct thread *t;
+struct thread *t;
 PS	ps;
 int	next;
 {
@@ -1026,18 +1026,18 @@ int	next;
 bulk2 (ps, sd, vb, community)
 PS	ps;
 int	sd;
-register struct type_SNMP_VarBindList *vb;
+struct type_SNMP_VarBindList *vb;
 char   *community;
 {
 	int	    backoff,
 			evalreq,
 			rows;
-	register struct request  *r;
-	register struct binding **bp;
+	struct request  *r;
+	struct binding **bp;
 	struct binding *bl;
 	struct timeval  tvs,
 			now;
-	register OID    a,
+	OID    a,
 			 b;
 	OID	    arg;
 
@@ -1081,10 +1081,10 @@ char   *community;
 			goto losing;
 
 		for (r = RHead -> r_forw; r != RHead; r = u) {
-			register struct bound  *br,
+			struct bound  *br,
 					*bz,
 					**bb;
-			register struct type_SNMP_VarBindList  *vr,
+			struct type_SNMP_VarBindList  *vr,
 					**vv;
 
 			u = r -> r_forw;
@@ -1095,7 +1095,7 @@ char   *community;
 			vv = &r -> r_msg -> data -> un.get__request -> variable__bindings;
 			evalreq = 0;
 			while (br = *bb) {
-				register struct binding *bv,
+				struct binding *bv,
 						*bv2;
 				struct OIDentifier oids;
 
@@ -1231,11 +1231,11 @@ static int  bulk2_aux (ps, sd, bl, vb, community)
 PS	ps;
 int	sd;
 struct binding *bl;
-register struct type_SNMP_VarBindList *vb;
+struct type_SNMP_VarBindList *vb;
 char   *community;
 {
 	int	    backoff;
-	register struct thread *t;
+	struct thread *t;
 
 	curthreads = maxthreads = tothreads = nilthreads = dedthreads = 0;
 	timelap2 = 0;
@@ -1258,9 +1258,9 @@ char   *community;
 			break;
 
 		for (t = THead -> t_forw; t != THead; t = u) {
-			register struct binding  *bv,
+			struct binding  *bv,
 					**bz;
-			register struct type_SNMP_VarBindList *vp;
+			struct type_SNMP_VarBindList *vp;
 
 			u = t -> t_forw;
 			if (!t -> t_info)
@@ -1317,7 +1317,7 @@ losing:
 static struct request *new_request (community)
 char   *community;
 {
-	register struct request *r;
+	struct request *r;
 
 	r = (struct request *) calloc (1, sizeof *r);
 	if (r == NULL)
@@ -1340,9 +1340,9 @@ char   *community;
 /*  */
 
 static	free_request (r)
-register struct request *r;
+struct request *r;
 {
-	register struct bound *bp,
+	struct bound *bp,
 			*bq;
 
 	currequests--;
@@ -1369,10 +1369,10 @@ char   *community;
 OID	start,
 	stop;
 {
-	register struct request *r;
-	register struct bound *b;
-	register struct type_SNMP_VarBindList *vb;
-	register struct type_SNMP_VarBind *v;
+	struct request *r;
+	struct bound *b;
+	struct type_SNMP_VarBindList *vb;
+	struct type_SNMP_VarBind *v;
 
 	if (once_only == 0) {
 		THead -> t_forw = THead -> t_back = THead;
@@ -1413,7 +1413,7 @@ OID	start,
 /*  */
 
 static	free_bound (b)
-register struct bound *b;
+struct bound *b;
 {
 	if (debug && b -> r_lo)  {
 		fprintf (stderr, "%d get-nexts on bound: %s to",
@@ -1438,18 +1438,18 @@ PS	ps;
 char   *community;
 int	onemore;
 {
-	register int    nbound,
+	int    nbound,
 			 nrequest,
 			 tbound;
 	int	    new,
 			wen;
-	register struct request *r;
+	struct request *r;
 	struct request *u;
-	register struct bound  *bn,
+	struct bound  *bn,
 			*bz,
 			**bp;
 	struct bound *b;
-	register struct type_SNMP_VarBindList  *vz,
+	struct type_SNMP_VarBindList  *vz,
 			**vp;
 	struct type_SNMP_VarBindList *v;
 
@@ -1532,9 +1532,9 @@ int	onemore;
 	if (b == NULL)
 		goto send_them;
 	for (r = RHead -> r_forw; r != RHead; r = r -> r_forw) {
-		register int	i;
-		register struct bound **inb;
-		register struct type_SNMP_VarBindList **inv;
+		int	i;
+		struct bound **inb;
+		struct type_SNMP_VarBindList **inv;
 
 		if (!r -> r_info)
 			continue;
@@ -1613,10 +1613,10 @@ static OID  oid_median (a, b)
 OID	a,
 	b;
 {
-	register int    i;
-	register unsigned int *ap,
+	int    i;
+	unsigned int *ap,
 			 *bp;
-	register OID    c = NULL;
+	OID    c = NULL;
 
 	if (oid_cmp (a, b) >= 0) {
 		char    buffer[BUFSIZ];

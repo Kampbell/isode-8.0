@@ -69,7 +69,7 @@ extern char isode_x25_errflag;
 static int  TConnRequestAux ();
 static int  TConnAttempt ();
 
-	struct TSAPaddr *ta2norm (register struct TSAPaddr *ta);
+	struct TSAPaddr *ta2norm (struct TSAPaddr *ta);
 static struct TSAPaddr *newtaddr ();
 static struct TSAPaddr *maketsbaddr ();
 
@@ -78,7 +78,7 @@ static struct TSAPaddr *maketsbaddr ();
 int 
 TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async)
 {
-	register int  n;
+	int  n;
 	SBV     smask;
 	int     result;
 
@@ -116,10 +116,10 @@ TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedit
 /*  */
 
 static int 
-TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, register struct TSAPconnect *tc, register struct TSAPdisconnect *td, int async)
+TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async)
 {
 	int	    result;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	if ((tb = newtblk ()) == NULL)
 		return tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
@@ -196,15 +196,15 @@ out:
 static int 
 TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async)
 {
-	register int   n;
+	int   n;
 	int	    didone,
 			l,
 			result;
-	register struct TSAPaddr *called, *calling;
+	struct TSAPaddr *called, *calling;
 	struct TSAPaddr *realcalled;
-	register struct NSAPaddr *na, *la;
+	struct NSAPaddr *na, *la;
 	struct NSAPaddr *realna;
-	register struct TSAPdisconnect *te = td;
+	struct TSAPdisconnect *te = td;
 	struct TSAPdisconnect tds;
 
 	calling = tb -> tb_calling;
@@ -214,9 +214,9 @@ TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async)
 	for (na = called -> ta_addrs, n = called -> ta_naddr - 1;
 			n >= 0;
 			na++, n--) {
-		register int   *ip;
-		register char **ap;
-		register struct nsapent *ns;
+		int   *ip;
+		char **ap;
+		struct nsapent *ns;
 
 		realcalled = called;
 		realna = na;
@@ -330,7 +330,7 @@ TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 {
 	SBV     smask;
 	int     result;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	struct TSAPaddr *ta;
 
 	missingP (tc);
@@ -410,7 +410,7 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 {
 	SBV     smask;
 	int     result;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	struct TSAPaddr *ta;
 
 	missingP (tc);
@@ -476,11 +476,11 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 /*  */
 
 static struct TSAPaddr *
-newtaddr (register struct TSAPaddr *ta, register struct NSAPaddr *na, int n)
+newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n)
 {
 	static struct TSAPaddr tzs;
-	register struct TSAPaddr *tz = &tzs;
-	register struct NSAPaddr *nz = tz -> ta_addrs;
+	struct TSAPaddr *tz = &tzs;
+	struct NSAPaddr *nz = tz -> ta_addrs;
 
 	bzero ((char *) tz, sizeof *tz);
 
@@ -496,13 +496,13 @@ newtaddr (register struct TSAPaddr *ta, register struct NSAPaddr *na, int n)
 /*  */
 
 struct TSAPaddr *
-ta2norm (register struct TSAPaddr *ta)
+ta2norm (struct TSAPaddr *ta)
 {
-	register int    n,
+	int    n,
 			 *ip;
 	static struct TSAPaddr tzs;
-	register struct TSAPaddr *tz = &tzs;
-	register struct NSAPaddr *na,
+	struct TSAPaddr *tz = &tzs;
+	struct NSAPaddr *na,
 			*ca;
 
 	SLOG (addr_log, LLOG_TRACE, NULLCP,
@@ -552,7 +552,7 @@ static struct TSAPaddr *
 maketsbaddr (char *cp, struct NSAPaddr *na, struct TSAPaddr *ta)
 {
 	static struct TSAPaddr newta;
-	register struct TSAPaddr *nta = &newta;
+	struct TSAPaddr *nta = &newta;
 	struct TSAPaddr *taz;
 	struct NSAPaddr *nna;
 

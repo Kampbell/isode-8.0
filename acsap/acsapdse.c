@@ -50,8 +50,8 @@ str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd)
 	char   *alias,
 		   name[BUFSIZ];
 	PE	    pe;
-	register AEI aei = &aeis;
-	register struct PSAPaddr *pa = &pas;
+	AEI aei = &aeis;
+	struct PSAPaddr *pa = &pas;
 	static int first_time = 1;
 
 	if (first_time)
@@ -93,7 +93,7 @@ str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd)
 struct PSAPaddr *
 aei2addr_dse (AEI aei)
 {
-	register struct PSAPaddr *pa;
+	struct PSAPaddr *pa;
 
 	if (aei != &aeis) {
 		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,

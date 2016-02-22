@@ -37,9 +37,9 @@ int
 PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi)
 {
 	SBV     smask;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	missingP (mask);
 	missingP (nfds);

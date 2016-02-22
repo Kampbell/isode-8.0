@@ -34,13 +34,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapselect.c,v 9.0 199
 /*    map session descriptors for select() */
 
 int 
-SSelectMask (int sd, fd_set *mask, int *nfds, register struct SSAPindication *si)
+SSelectMask (int sd, fd_set *mask, int *nfds, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	missingP (mask);
 	missingP (nfds);

@@ -43,7 +43,7 @@ struct FTAMindication *fti;
 	SBV      smask;
 	int     result,
 			state;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	switch (operation) {
 	case FA_OPS_LOCATE:
@@ -75,7 +75,7 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FAccessRequestAux (fsb, state, identity, lock, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	state;
 struct FADUidentity *identity;
 int	lock;
@@ -86,8 +86,8 @@ struct FTAMindication *fti;
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__LOCATE__request *req;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__LOCATE__request *req;
 
 	if (!(fsb -> fsb_flags & FSB_INIT))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not initiator");

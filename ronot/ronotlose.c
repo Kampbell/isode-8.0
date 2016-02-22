@@ -71,12 +71,12 @@ ronotlose (struct RoNOTindication *rni, int reason, char *what, char *fmt)
 #ifndef	lint
 static int 
 _ronotlose (  /* what, fmt, args ... */
-    register struct RoNOTindication *rni,
+    struct RoNOTindication *rni,
     int reason,
     va_list ap
 )
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
 
 	if (rni) {

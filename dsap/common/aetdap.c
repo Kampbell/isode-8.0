@@ -115,7 +115,7 @@ PE     *real_name;
 
 	{
 		char *qualifier = NULLCP;
-		register struct mapping *m;
+		struct mapping *m;
 
 		for (m = sac2cn; m -> m_key; m++)
 			if (strcmp (m -> m_key, context) == 0) {

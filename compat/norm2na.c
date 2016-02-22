@@ -49,14 +49,14 @@ norm2na (char *p, int len, struct NSAPaddr *na)
 
 	if ((len == 8) && ((p[0] == 0x36) || (p[0] == 0x37))) {
 		int	xlen;			/* SEK - X121 form */
-		register char   *cp,
+		char   *cp,
 				 *cp2,
 				 *dp;
 		char	nsap[14];
 
 		dp = nsap;
 		for (cp2 = (cp = p + 1) + 7; cp < cp2; cp++) {
-			register int     j;
+			int     j;
 
 			if ((j = ((*cp & 0xf0) >> 4)) > 9)
 				goto concrete;
@@ -78,7 +78,7 @@ norm2na (char *p, int len, struct NSAPaddr *na)
 		na -> na_stack = NA_X25;
 		na -> na_community = SUBNET_INT_X25;
 	} else {
-		register struct ts_interim *ts,
+		struct ts_interim *ts,
 				*tp;
 
 		tp = NULL;
@@ -91,7 +91,7 @@ norm2na (char *p, int len, struct NSAPaddr *na)
 			int	    i,
 					ilen,
 					rlen;
-			register char   *cp,
+			char   *cp,
 					 *dp,
 					 *ep;
 			char    nsap[NASIZE * 2 + 1];
@@ -102,7 +102,7 @@ norm2na (char *p, int len, struct NSAPaddr *na)
 			for (cp = p + tp -> ts_length, ep = p + len;
 					cp < ep;
 					cp++) {
-				register int     j;
+				int     j;
 
 				if ((j = ((*cp & 0xf0) >> 4)) > 9) {
 concrete:

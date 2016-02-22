@@ -291,7 +291,7 @@ struct DSError *err;
 ds_error_free (err)
 struct DSError * err;
 {
-	register struct DSE_at_problem *at_prob;
+	struct DSE_at_problem *at_prob;
 
 	if ((struct DSError *)0 == err)
 		return;

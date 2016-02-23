@@ -82,7 +82,7 @@ static struct dispatch dispatches[] = {
 struct type_IMISC_IA5List *str2ia5list ();
 
 
-extern int  errno;
+
 char	*getlocalhost();
 
 

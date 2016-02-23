@@ -54,7 +54,7 @@ char oldfile[BUFSIZ];			/* file name (as above) with suffix */
 
 extern void adios (), advise ();
 
-extern int errno;
+
 
 extern char *isodetcpath;
 extern char *isodebinpath;

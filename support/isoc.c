@@ -3210,7 +3210,7 @@ static void  _advise (char*what, va_list ap)
 
 	fmt= va_arg(ap, char*);
 
-    asprintf (buffer, what, fmt, ap);
+     _asprintf (buffer, what, fmt, ap);
 
      fflush (stdout);
 

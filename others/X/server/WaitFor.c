@@ -62,7 +62,7 @@ extern Bool AnyClientsWriteBlocked;
 extern void CheckConnections();
 extern void EstablishNewConnections();
 
-extern int errno;
+
 
 int isItTimeToYield = 1;
 

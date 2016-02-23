@@ -18,7 +18,7 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntpdc.c,v 9.0 19
 #define	STIME	500000		/* usec to wait for another response */
 #define	MAXPACKETSIZE 1500
 
-extern int errno;
+
 int debug;
 int s;
 int timedout;

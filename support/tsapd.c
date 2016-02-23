@@ -177,7 +177,7 @@ static  envinit ();
 static	arginit ();
 #endif
 
-extern int  errno;
+
 
 /*  */
 
@@ -1655,11 +1655,13 @@ char   *what,
 #ifndef	lint
 void	advise (int code, ...)
 {
+	char* what;
 	va_list ap;
 
 	va_start (ap, code);
+	what = va_arg(ap, char*);
 
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, ap);
 
 	va_end (ap);
 }

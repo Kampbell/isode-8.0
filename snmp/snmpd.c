@@ -141,7 +141,7 @@ void	adios (), advise ();
 void	ts_advise ();
 
 
-extern int  errno;
+
 
 /*  */
 

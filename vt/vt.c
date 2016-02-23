@@ -86,9 +86,6 @@ char	line[BUFSIZ];
 jmp_buf	toplevel;
 jmp_buf	peerdied;
 
-extern	int errno;
-
-
 struct dispatch {
 	char   *ds_name;
 	IFP	    ds_fnx;

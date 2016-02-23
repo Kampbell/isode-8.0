@@ -142,15 +142,16 @@ ll_close (LLog *lp)
 #ifndef	lint
 int	ll_log (LLog*lp, ...)
 {
-	int	    event,
-	result;
+	int	    event, result;
+	char* what;
 	va_list ap;
 
 	va_start (ap, lp);
 
 	event = va_arg (ap, int);
+	what = va_arg (ap, char*);
 
-	result = _ll_log (lp, event, ap);
+	result = _ll_log (lp, event, what, ap);
 
 	va_end (ap);
 
@@ -169,16 +170,12 @@ ll_log (LLog *lp, int event, char *what, char *fmt)
 /*  */
 
 int 
-_ll_log (	/* what, fmt, args ... */
-    LLog *lp,
-    int event,
-    va_list ap
-)
+_ll_log (LLog *lp, int event, char* what, va_list ap)	/* fmt, args ... */
 {
 	int	    cc, status;
 	char *bp;
-	char   *what, buffer[BUFSIZ];
 	char* fmt;
+	char buffer[BUFSIZ];
 
 	if (!(lp -> ll_events & event))
 		return OK;
@@ -190,7 +187,6 @@ _ll_log (	/* what, fmt, args ... */
 
 	bp += strlen (bp);
 
-	what = va_arg (ap, char *);
 	fmt = va_arg(ap, char*);
 	_asprintf (bp, what, fmt, ap);
 

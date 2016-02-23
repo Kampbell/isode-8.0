@@ -20,7 +20,7 @@ extern void adios ();
 extern void receive();
 
 #ifdef	TEST
-extern int errno;
+
 
 int 
 main  {

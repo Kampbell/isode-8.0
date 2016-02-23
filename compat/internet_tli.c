@@ -48,7 +48,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet_tli.c,v 9.0
 #include "internet.h"
 
 
-extern int  errno;
 extern int t_nerr, t_errno;
 extern char *t_errlist[];
 

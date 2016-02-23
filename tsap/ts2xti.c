@@ -58,7 +58,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2xti.c,v 9.0 1992/06
 extern char *	xti_tp4_ident;
 extern char *	xti_tp0_ident;
 
-extern int      errno;
 extern int      t_errno;
 char           *t_errlist[] = {"Incorrect Address Format",
 							   "Incorrect Option Format",

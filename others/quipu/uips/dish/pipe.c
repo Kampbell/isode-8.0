@@ -31,7 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/pipe
 #include "general.h"
 #include "usr.dirent.h"
 
-extern int      errno;
+
 
 #ifdef SOCKETS   	/* USE INTERNET SOCKETS */
 

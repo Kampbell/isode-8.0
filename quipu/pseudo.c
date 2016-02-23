@@ -32,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/pseudo.c,v 9.0 1992/0
 #include "tailor.h"
 #include <sys/stat.h>
 #include <errno.h>
-extern int errno;
+
 
 #define cacheEDB  "0.9.2342.19200300.99.1.29"
 

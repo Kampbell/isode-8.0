@@ -58,7 +58,7 @@ extern Bool AnyClientsWriteBlocked;
 static Bool CriticalOutputPending;
 static int timesThisConnection = 0;
 
-extern int errno;
+
 
 #define request_length(req, cli) ((cli->swapped ? \
 	lswaps((req)->length) : (req)->length) << 2)

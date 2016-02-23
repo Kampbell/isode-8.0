@@ -95,7 +95,7 @@ char          **argv;
 		char *cp, *dp;
 		FILE *fp;
 		struct stat st;
-		extern int errno;
+		
 
 		if ((fp = fopen (fname, "r+")) == NULL) {
 			ps_printf (OPT, "unable to open %s for rw: %s\n",

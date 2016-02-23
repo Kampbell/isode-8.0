@@ -34,8 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/select.c,v 9.0 1992/
 #include <sys/stat.h>
 
 
-extern int errno;
-
 
 int	xselect_blocking_on_intr = 0;
 
@@ -458,8 +456,7 @@ int	xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
 				if (efds && FD_ISSET (fd, &xfds))
 					FD_SET (fd, efds);
 
-				SLOG (compat_log, LLOG_EXCEPTIONS, "",
-					  ("fd %d has gone bad", fd));
+				SLOG (compat_log, LLOG_EXCEPTIONS, "", ("fd %d has gone bad", fd));
 				n++;
 			}
 

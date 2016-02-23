@@ -41,7 +41,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2udp.c,v 9.0 19
 #include "internet.h"
 
 
-extern int  errno;
+
 
 /*  */
 

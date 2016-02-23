@@ -56,7 +56,7 @@ struct sockaddr_in isock = {AF_INET};
 struct sockaddr_in dst = {AF_INET};
 struct servent *sp;
 extern double ul_fixed_to_double(), s_fixed_to_double();
-extern int errno;
+
 int set, verbose, force;
 int debug;
 extern int optind;

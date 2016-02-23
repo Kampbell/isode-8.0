@@ -49,7 +49,7 @@ static  fd_set  inprogress;
 static struct sockaddr_in *peers = NULL;
 #endif
 
-extern int  errno;
+
 
 /*  */
 

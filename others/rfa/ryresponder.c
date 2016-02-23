@@ -46,7 +46,7 @@ IFP	stopfnx;
 
 static jmp_buf toplevel;
 
-extern int  errno;
+
 
 
 int 

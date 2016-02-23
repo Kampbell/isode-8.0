@@ -85,7 +85,7 @@ void  advise (int code, ...);
 void	ts_advise ();
 
 
-extern int  errno;
+
 
 /*  */
 

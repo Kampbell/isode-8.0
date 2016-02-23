@@ -60,8 +60,6 @@ static struct sockaddr_in *peers = NULL;
 extern t_list_of_conn_desc list_of_conn_desc[our_TABLE_SIZE];
 #endif
 
-extern int  errno;
-
 /*    N-CONNECT.REQUEST */
 
 int 

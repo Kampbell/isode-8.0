@@ -153,7 +153,7 @@ static int  ps_main ();
 static int  ss_main ();
 static int  ts_main ();
 
-extern int  errno;
+
 
 /*    MAIN */
 
@@ -2561,11 +2561,13 @@ adios (char *what, char *fmt)
 #ifndef	lint
 void	advise (int code, ...)
 {
+	char* what;
 	va_list ap;
 
 	va_start (ap, code);
+	what = va_arg(ap, char**);
 
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, ap);
 
 	va_end (ap);
 }

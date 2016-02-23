@@ -35,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/entry_load.c,v 9.0 19
 
 extern char * treedir;
 extern LLog * log_dsap;
-extern int errno;
+
 extern int parse_status;
 extern DN mydsadn;
 struct acl_info * acl_dflt ();

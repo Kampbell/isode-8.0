@@ -48,7 +48,7 @@ static struct dispatch dispatches[] = {
 };
 
 /* TYPES */
-extern int  errno;
+
 char	*getlocalhost();
 
 

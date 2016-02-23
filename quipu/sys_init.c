@@ -41,7 +41,7 @@ extern time_t slave_timeout;
 extern char * edbtmp_path;
 extern char * treedir;
 
-extern int errno;
+
 
 static int rmFiles();
 

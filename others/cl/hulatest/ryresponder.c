@@ -62,7 +62,7 @@ static IFP	stopfnx;
 int	ros_init (), ros_work (), ros_indication (), ros_lose ();
 
 
-extern int  errno;
+
 
 /*    RESPONDER */
 

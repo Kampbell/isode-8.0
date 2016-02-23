@@ -41,7 +41,7 @@ char *fsBase = FS_BASE;
 
 extern char *rindex();
 extern char *realpath();
-extern int errno;
+
 int commandMode = 0;
 
 char *

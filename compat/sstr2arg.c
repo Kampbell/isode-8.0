@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sstr2arg.c,v 9.0 199
 #include "manifest.h"
 #include "general.h"
 #include <errno.h>
-extern int errno;
 
 /*  */
 

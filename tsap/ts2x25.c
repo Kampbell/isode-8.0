@@ -49,8 +49,6 @@ static  struct NSAPaddr **peers = NULL;
 extern t_list_of_conn_desc list_of_conn_desc[our_TABLE_SIZE];
 #endif
 
-extern int errno;
-
 #ifdef HEAVY_X25_DEBUG
 #ifdef SUN_X25
 #undef close_x25_socket

@@ -97,7 +97,7 @@ char * filename;
 	FILE * fptr;
 	PS entryps;
 	extern char * parse_file;
-	extern int errno;
+	
 
 	um = umask (0177);
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {

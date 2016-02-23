@@ -55,7 +55,7 @@ static IFP	stopfnx;
 static int	ros_init (), ros_work (), ros_indication (), ros_lose ();
 
 
-extern int  errno;
+
 
 /*    RESPONDER */
 
@@ -376,11 +376,15 @@ adios (char *what, char *fmt)
 #ifndef	lint
 void	advise (int code, ...)
 {
+	char* what;
+
 	va_list ap;
 
 	va_start (ap, code);
 
-	_ll_log (pgm_log, code, ap);
+	what = va_arg(ap, char*);
+
+	_ll_log (pgm_log, code, what, ap);
 
 	va_end (ap);
 }

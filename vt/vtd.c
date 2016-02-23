@@ -122,7 +122,6 @@ struct passwd *pwd;
 int	pty, net;
 int	inter;
 extern	char **environ;
-extern	int errno;
 char	line[] = "/dev/ptyp0";
 char	*envinit[] = { "TERM=network", 0 };
 SFD	cleanup();

@@ -179,7 +179,7 @@ static  envinit ();
 static	arginit ();
 #endif
 
-extern int  errno;
+
 
 /*  */
 

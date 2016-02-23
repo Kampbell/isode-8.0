@@ -30,7 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/unbi
 #include "tailor.h"
 #include "general.h"
 
-extern int      errno;
+
 
 
 #ifdef SOCKETS   	/* USE INTERNET SOCKETS */

@@ -52,7 +52,6 @@ STATIC struct msghdr msgs;
 STATIC union osi_control_msg ocm;
 
 
-extern int  errno;
 int tp4_disconnect_reason;
 
 /* Ancillary routines */

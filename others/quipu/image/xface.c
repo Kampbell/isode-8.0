@@ -81,7 +81,7 @@ static GC  forepix, highpix;
 int	ALRMser (), XWINser ();
 
 
-extern int  errno;
+
 
 char   *getenv ();
 

@@ -225,8 +225,6 @@ static SFD	chldser ();
 #endif
 
 
-extern int  errno;
-
 /*  */
 
 int	TNetListen (ta, td)

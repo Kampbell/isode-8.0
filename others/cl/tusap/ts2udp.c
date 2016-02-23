@@ -58,7 +58,7 @@
 #include "internet.h"
 
 
-extern int  errno;
+
 
 /*  */
 

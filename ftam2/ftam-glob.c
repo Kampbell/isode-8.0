@@ -59,7 +59,6 @@ char	**glob();
 char	*globerr;
 static char *home;
 struct	passwd *getpwnam();
-extern	int errno;
 static	char *strspl(), **copyblk(), *strend();
 
 static	int globcnt;

@@ -90,8 +90,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2sunlink.c,v 9.0 199
 
 /*    DATA */
 
-extern int  errno;
-
 /*    UPPER HALF */
 
 static int 

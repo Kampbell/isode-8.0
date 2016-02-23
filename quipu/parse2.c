@@ -57,7 +57,7 @@ char * fname;
 	char *version;
 	Avlnode	*tree;
 	Avlnode	*get_entries_aux();
-	extern int errno;
+	
 	time_t cache_age;
 
 #ifdef TURBO_DISK

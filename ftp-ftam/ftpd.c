@@ -78,7 +78,6 @@ void adios (), advise ();
  */
 #define	FTPUSERS	"/usr/etc/ftpusers"
 
-extern	int errno;
 extern	char *sys_errlist[];
 extern  char ftam_error[];
 extern	char version[];

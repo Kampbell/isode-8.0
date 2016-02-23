@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/idistd.c,v 9.0
  *
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <varargs.h>
 #include "Idist-types.h"      /* type definitions */
@@ -492,7 +493,6 @@ i_strerror (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPind
 static int 
 syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
-	extern	int errno;
 
 	return i_strerror (sd, err, sys_errname (errno), rox, roi);
 }

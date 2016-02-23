@@ -92,7 +92,7 @@ extern char *icl_tli_responder;
 /* why do we need this ? */
 #define	TP4SLOP		  12	/* estimate of largest DT PCI */
 
-extern int  errno;
+
 extern int t_nerr, t_errno;
 extern char *t_errlist[];
 

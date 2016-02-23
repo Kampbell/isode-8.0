@@ -60,7 +60,7 @@ void	adios (), advise ();
 char   *version ();
 
 
-extern int errno;
+
 
 extern char  *quipuversion;
 

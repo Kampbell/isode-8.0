@@ -47,7 +47,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/fred.c,v 9.0 199
 #define	RPS	(!frompipe || opt -> ps_byteno == 0 ? rps : opt)
 extern	char	frompipe;
 extern	PS	opt, rps;
-extern int errno;
+
 
 extern	char	dad_flag;
 #ifndef	NO_STATS

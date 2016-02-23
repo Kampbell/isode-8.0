@@ -83,7 +83,7 @@ static int  do_the_tell ();
 static int  object ();
 static int  pwdgen ();
 
-extern int  errno;
+
 
 char   *ctime ();
 

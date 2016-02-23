@@ -100,7 +100,7 @@ Entry myentry;
 	extern char * treedir;
 	extern char * parse_file;
 	Entry liststart;
-	extern int errno;
+	
 
 	if (myentry == NULLENTRY) {
 		LLOG (log_dsap,LLOG_FATAL,("update edb problem"));

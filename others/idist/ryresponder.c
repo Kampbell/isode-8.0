@@ -46,7 +46,7 @@ int	ros_init (), ros_work (), ros_indication (), ros_lose ();
 
 SFD cleanup ();
 
-extern int  errno;
+
 
 /*    RESPONDER */
 

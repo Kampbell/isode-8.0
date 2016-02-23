@@ -49,7 +49,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/dgram.c,v 9.0 1992/0
 static	action ();
 #endif
 
-extern int  errno;
 extern IFP set_check_fd ();
 
 /*  */

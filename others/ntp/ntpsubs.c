@@ -13,7 +13,7 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntpsubs.c,v 9.0 
 
 #include "ntp.h"
 
-extern int errno;
+
 
 #define	TRUE	1
 #define	FALSE	0

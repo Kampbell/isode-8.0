@@ -90,7 +90,7 @@ char          **argv;
 		if (test_arg (argv[x], "-template", 1)) {
 			int	i;
 			FILE *in, *out;
-			extern int errno;
+			
 
 			draft_flag = 1;
 			if (++x == argc) {

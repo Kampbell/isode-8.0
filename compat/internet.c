@@ -46,7 +46,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet.c,v 9.0 199
 #include "internet.h"
 
 
-extern int  errno;
+
 
 /*    Berkeley UNIX: 4.2 */
 

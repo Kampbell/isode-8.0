@@ -158,12 +158,17 @@ _tsaplose (	/* what, fmt, args ... */
 )
 {
 	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
+
+	what = va_arg(ap, char*);
+	fmt = va_arg(ap, char*);
 
 	if (td) {
 		bzero ((char *) td, sizeof *td);
 
-		asprintf (bp = buffer, ap);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		td -> td_reason = reason;

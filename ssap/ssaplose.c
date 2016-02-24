@@ -188,6 +188,8 @@ _ssaplose (	/* what, fmt, args ... */
 )
 {
 	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
 	struct SSAPabort *sa;
 
@@ -196,7 +198,9 @@ _ssaplose (	/* what, fmt, args ... */
 		si -> si_type = SI_ABORT;
 		sa = &si -> si_abort;
 
-		asprintf (bp = buffer, ap);
+		what = va_arg(ap, char*);
+		fmt  = va_arg(ap, char*);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		sa -> sa_peer = 0;

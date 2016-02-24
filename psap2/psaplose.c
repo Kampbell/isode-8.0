@@ -35,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaplose.c,v 9.0 1992
 
 /*  */
 #ifndef	lint
-static int  _psaplose (struct PSAPindication*pi, int reason, ...);
+static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap);
 #endif
 
 #ifndef	lint
@@ -156,22 +156,24 @@ psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int  _psaplose (struct PSAPindication*pi, int reason, ...) /*  what, fmt, args ... */
+static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap) /*  what, fmt, args ... */
 {
 
 	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
-	va_list	ap;
 
-	va_start (ap, reason);
 	struct PSAPabort *pa;
 
+	what = va_arg(ap, char*);
+	fmt = va_arg(ap, char*);
 	if (pi) {
 		bzero ((char *) pi, sizeof *pi);
 		pi -> pi_type = PI_ABORT;
 		pa = &pi -> pi_abort;
 
-		asprintf (bp = buffer, ap);
+		asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		pa -> pa_peer = 0;
@@ -179,6 +181,8 @@ static int  _psaplose (struct PSAPindication*pi, int reason, ...) /*  what, fmt,
 		pa -> pa_ninfo = 0;
 		copyPSAPdata (buffer, bp - buffer, pa);
 	}
+
+	va_end(ap);
 
 	return NOTOK;
 }

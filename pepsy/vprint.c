@@ -653,7 +653,7 @@ int	rw;
 	vfp = (FILE *) lp, vfnx = ll_printf;
 
 	bp = buffer;
-	 sprintf (bp, "%s %s", rw ? "read" : "wrote",
+	sprintf (bp, "%s %s", rw ? "read" : "wrote",
 					text ? text : "pdu");
 	bp += strlen (bp);
 	if (pe -> pe_context != PE_DFLT_CTX) {

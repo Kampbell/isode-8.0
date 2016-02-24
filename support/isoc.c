@@ -493,13 +493,11 @@ static long ssn;
 static int nmodes;
 static int datamodes[4];
 
-static char userdata[1024];
+static char userdata[512];
 
 /*  */
 
-static int  ss_main (is, addr)
-struct isoservent *is;
-char   *addr;
+static int  ss_main ( struct isoservent *is, char   *addr)
 {
     int     sd,
 	    cc,
@@ -2170,9 +2168,7 @@ char   *reason;
 
 /*  */
 
-static void  ps_adios (pa, event)
-struct PSAPabort *pa;
-char   *event;
+static void  ps_adios ( struct PSAPabort *pa, char   *event)
 {
     ps_advise (pa, event);
 
@@ -2180,9 +2176,7 @@ char   *event;
 }
 
 
-static void  ps_advise (pa, event)
-struct PSAPabort *pa;
-char   *event;
+static void  ps_advise ( struct PSAPabort *pa, char   *event)
 {
     char    buffer[BUFSIZ];
 

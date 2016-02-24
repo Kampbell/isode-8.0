@@ -77,13 +77,15 @@ _ronotlose (  /* what, fmt, args ... */
 )
 {
 	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
 
 	if (rni) {
 		bzero ((char *) rni, sizeof *rni);
 		rni -> rni_reason = reason;
 
-		asprintf (bp = buffer, ap);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		copyRoNOTdata (buffer, bp - buffer, rni);

@@ -37,8 +37,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 199
 /*  */
 
 #ifndef	lint
-static int  _acsaplose ();
+static int _acsaplose (struct AcSAPindication *aci, int reason, va_list ap); /* what, fmt, args ... */
 #endif
+
+int	acsaplose (struct AcSAPindication*aci, ...);
 
 #ifndef	lint
 int	acpktlose (struct assocblk*acb, ...)
@@ -130,14 +132,11 @@ acsaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
-_acsaplose (  /* what, fmt, args ... */
-    struct AcSAPindication *aci,
-    int reason,
-    va_list ap
-)
+static int _acsaplose (  struct AcSAPindication *aci, int reason, va_list ap) /* what, fmt, args ... */
 {
 	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
 	struct AcSAPabort *aca;
 
@@ -146,7 +145,9 @@ _acsaplose (  /* what, fmt, args ... */
 		aci -> aci_type = ACI_ABORT;
 		aca = &aci -> aci_abort;
 
-		asprintf (bp = buffer, ap);
+		what = va_arg(ap, char*);
+		fmt = va_arg(ap, char*);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		aca -> aca_source = ACA_LOCAL;

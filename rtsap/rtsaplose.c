@@ -138,6 +138,8 @@ _rtsaplose (  /* what, fmt, args ... */
 )
 {
 	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
 	struct RtSAPabort *rta;
 
@@ -146,7 +148,7 @@ _rtsaplose (  /* what, fmt, args ... */
 		rti -> rti_type = RTI_ABORT;
 		rta = &rti -> rti_abort;
 
-		asprintf (bp = buffer, ap);
+		asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		rta -> rta_peer = 0;

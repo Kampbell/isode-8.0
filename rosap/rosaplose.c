@@ -179,6 +179,8 @@ _rosaplose (  /* what, fmt, args ... */
 )
 {
 	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
 	struct RoSAPpreject *rop;
 
@@ -187,7 +189,7 @@ _rosaplose (  /* what, fmt, args ... */
 		roi -> roi_type = ROI_PREJECT;
 		rop = &roi -> roi_preject;
 
-		asprintf (bp = buffer, ap);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		rop -> rop_reason = reason;

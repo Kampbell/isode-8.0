@@ -34,28 +34,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapinitiate.c,v 9.0 
 #include "isoservent.h"
 #include "tailor.h"
 
-static int  PConnRequestAux ();
-static int  PAsynRetryAux ();
+static int	PAsynConnRequestAux (struct PSAPaddr *calling, struct PSAPaddr *called, struct PSAPctxlist *ctxlist, OID defctxname,
+	int	prequirements, int srequirements, long	isn, int settings, struct SSAPref *ref, PE    *data,
+	int	ndata, struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, int	async);
+
+static int PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication *si, struct PSAPconnect *pc, struct PSAPindication *pi);
 
 /*    P-(ASYN-)CONNECT.REQUEST */
 
-int	PAsynConnRequest (calling, called, ctxlist, defctxname, prequirements,
-					  srequirements, isn, settings, ref, data, ndata, qos, pc, pi, async)
-struct PSAPaddr *calling,
-		*called;
-int	prequirements,
-	srequirements,
-	settings,
-	ndata,
-	async;
-long	isn;
-struct PSAPctxlist *ctxlist;
-OID	defctxname;
-struct SSAPref *ref;
-PE    *data;
-struct QOStype *qos;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
+int	PAsynConnRequest ( struct PSAPaddr *calling, struct PSAPaddr *called, struct PSAPctxlist *ctxlist, OID defctxname,
+	int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE*data,
+	int ndata, struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, int async)
 {
 	SBV     smask;
 	int     result;
@@ -86,7 +75,7 @@ struct PSAPindication *pi;
 
 	smask = sigioblock ();
 
-	result = PConnRequestAux (calling, called, ctxlist, defctxname,
+	result = PAsynConnRequestAux (calling, called, ctxlist, defctxname,
 							  prequirements, srequirements, isn, settings, ref, data, ndata,
 							  qos, pc, pi, async);
 
@@ -97,28 +86,11 @@ struct PSAPindication *pi;
 
 /*  */
 
-static int  PConnRequestAux (calling, called, ctxlist, defctxname,
-							 prequirements, srequirements, isn, settings, ref, data, ndata, qos,
-							 pc, pi, async)
-struct PSAPaddr *calling,
-		*called;
-int	prequirements,
-	srequirements,
-	settings,
-	ndata,
-	async;
-long	isn;
-struct PSAPctxlist *ctxlist;
-OID	defctxname;
-struct SSAPref *ref;
-PE    *data;
-struct QOStype *qos;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
+static int PAsynConnRequestAux (struct PSAPaddr *calling, struct PSAPaddr *called, struct PSAPctxlist *ctxlist, OID	defctxname,
+	int prequirements, int	srequirements, long isn, int settings, struct SSAPref *ref, PE* data,
+	int ndata, struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, int async)
 {
-	int	    i,
-			len,
-			result;
+	int	    i, len, result;
 	PE	    pe;
 	struct psapblk *pb;
 	struct SSAPconnect scs;

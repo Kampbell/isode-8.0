@@ -24,7 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ode2oid.c,v 9.0 1992/0
  *
  */
 
-#ifndef FIXME
+#ifdef FIXME
 #include <psap.h>
 OID	ode2oid (char* descriptor) {
 	return NULLOID;
@@ -45,11 +45,17 @@ OID	ode2oid (char* descriptor) {
 #undef missingP
 #undef pylose
 #undef toomuchP
+
 #define ACSE
-#define assocblk assocblkxxx
-#define newacblk newacblkxxx
-#define findacblk findacblkxxx
-#include "acpkt.h"
+// AC_ASN below copied from acpkt.h"
+#ifdef	ACSE
+#define	AC_ASN		"acse pci version 1"
+#if	USE_BUILTIN_OIDS
+#define AC_ASN_OID	str2oid ("2.2.1.0.1")
+#else
+#define AC_ASN_OID	ode2oid (AC_ASN)
+#endif
+#endif
 
 /*  */
 #define ODECACHESIZE 10
@@ -140,7 +146,7 @@ ode2oid (char *descriptor)
 
 #ifdef DEBUG
 int 
-free_oid_cache  {
+free_oid_cache()  {
 	struct la_cache *cp;
 	int i;
 

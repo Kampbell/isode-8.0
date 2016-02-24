@@ -38,7 +38,7 @@ OID	identifier;
 int	quoted;
 {
 	int	    events;
-	register struct isobject *io;
+	struct isobject *io;
 	static char buffer[BUFSIZ];
 
 	events = addr_log -> ll_events;
@@ -49,7 +49,7 @@ int	quoted;
 	addr_log -> ll_events = events;
 
 	if (io) {
-		(void) sprintf (buffer, quoted ? "\"%s\"" : "%s",
+		 sprintf (buffer, quoted ? "\"%s\"" : "%s",
 						io -> io_descriptor);
 		return buffer;
 	}

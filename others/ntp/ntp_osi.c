@@ -50,14 +50,12 @@ static PE build_bind_arg ();
 static int check_accept ();
 static int handle_reject ();
 
-static int  TMagic (vecp, vec, td)
-int     *vecp;
-char   **vec;
-struct TSAPdisconnect *td;
+static int 
+TMagic (int *vecp, char **vec, struct TSAPdisconnect *td)
 {
 	int     sd;
 	struct TSAPstart tss;
-	register struct TSAPstart  *ts = &tss;
+	struct TSAPstart  *ts = &tss;
 
 	if (TInit (*vecp, vec, ts, td) == NOTOK)
 		return NOTOK;
@@ -74,12 +72,12 @@ struct TSAPdisconnect *td;
 	return OK;
 }
 
-void create_osilisten (addr)
-char	*addr;
+void 
+create_osilisten (char *addr)
 {
 	int result_func (), query_func ();
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
 	struct PSAPaddr *pa;
@@ -116,12 +114,12 @@ extern struct sysdata sys;
 static void process_packet_osi ();
 static void terminate ();
 
-int transmit_osi (peer)
-struct ntp_peer *peer;
+int 
+transmit_osi (struct ntp_peer *peer)
 {
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 	struct type_NTP_Packet *packet;
 	struct type_NTP_Leap *leap;
 	struct intf *ap;
@@ -173,7 +171,7 @@ struct ntp_peer *peer;
 	packet -> originateTimestamp = sstamp (&peer -> org);
 	packet -> receiveTimestamp = sstamp (&peer -> rec);
 
-	(void) gettimeofday (&txtv, (struct timezone *)0);
+	 gettimeofday (&txtv, (struct timezone *)0);
 	tstamp_osi (&peer->xmt, &txtv);
 	packet -> transmitTimestamp = sstamp (&peer -> xmt);
 
@@ -348,7 +346,7 @@ struct RoSAPindication *roi;
 	case ACT_XMIT:
 		process_packet_osi(dst, result, osi_tvp, peer);
 		poll_update(peer, (int)peer->ppoll);
-		(void) transmit_osi(peer);
+		 transmit_osi(peer);
 		break;
 
 	default:
@@ -359,11 +357,8 @@ struct RoSAPindication *roi;
 
 /* 3.4.3 Packet procedure */
 
-static void process_packet_osi (dst, pkt, tvp, peer)
-struct Naddr *dst;
-struct type_NTP_Packet *pkt;
-struct timeval *tvp;
-struct ntp_peer *peer;
+static void 
+process_packet_osi (struct Naddr *dst, struct type_NTP_Packet *pkt, struct timeval *tvp, struct ntp_peer *peer)
 {
 	double t1, t2, t3, t4, offset, delay;
 	short duplicate, bogus;
@@ -463,8 +458,8 @@ struct ntp_peer *peer;
 	clock_update(peer);		/* call clock update procedure */
 }
 
-struct l_fixedpt gstamp (ts)
-struct type_NTP_TimeStamp *ts;
+struct l_fixedpt 
+gstamp (struct type_NTP_TimeStamp *ts)
 {
 	static struct l_fixedpt fp;
 
@@ -473,8 +468,8 @@ struct type_NTP_TimeStamp *ts;
 	return fp;
 }
 
-struct s_fixedpt gfixed (ts)
-struct type_NTP_SmallFixed *ts;
+struct s_fixedpt 
+gfixed (struct type_NTP_SmallFixed *ts)
 {
 	static struct s_fixedpt fp;
 
@@ -494,7 +489,7 @@ struct type_NTP_ClockIdentifier *ci;
 	case type_NTP_ClockIdentifier_referenceClock:
 		rid.rid_type = RID_STRING;
 		p = qb2str (ci->un.referenceClock);
-		(void) strncpy (rid.rid_string, p, 4);
+		 strncpy (rid.rid_string, p, 4);
 		free (p);
 		break;
 	case type_NTP_ClockIdentifier_inetaddr:
@@ -511,15 +506,15 @@ struct type_NTP_ClockIdentifier *ci;
 		free (p);
 		break;
 	default:
-		(void) strncpy (rid.rid_string, "????", 4);
+		 strncpy (rid.rid_string, "????", 4);
 		rid.rid_type = RID_STRING;
 	}
 	return &rid;
 }
 
 
-struct type_NTP_TimeStamp *sstamp (ts)
-struct l_fixedpt *ts;
+struct type_NTP_TimeStamp *
+sstamp (struct l_fixedpt *ts)
 {
 	struct type_NTP_TimeStamp *nts;
 
@@ -529,8 +524,8 @@ struct l_fixedpt *ts;
 	return nts;
 }
 
-struct type_NTP_SmallFixed *sfixed (ts)
-struct s_fixedpt *ts;
+struct type_NTP_SmallFixed *
+sfixed (struct s_fixedpt *ts)
 {
 	struct type_NTP_SmallFixed *nts;
 
@@ -578,14 +573,13 @@ Refid	*rid;
 }
 
 
-int	recv_osi (ap, tvp)
-struct intf *ap;
-struct timeval *tvp;
+int 
+recv_osi (struct intf *ap, struct timeval *tvp)
 {
 	caddr_t out;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	TRACE (2, ("Received OSI packet from %s", paddr (&ap->addr)));
 
@@ -604,10 +598,8 @@ struct timeval *tvp;
 	return 0;
 }
 
-static void ros_indication (fd, ap, roi)
-int	fd;
-struct intf *ap;
-register struct RoSAPindication *roi;
+static void 
+ros_indication (int fd, struct intf *ap, struct RoSAPindication *roi)
 {
 	int	    result;
 
@@ -621,7 +613,7 @@ register struct RoSAPindication *roi;
 		break;
 
 	case ROI_UREJECT: {
-		register struct RoSAPureject   *rou = &roi -> roi_ureject;
+		struct RoSAPureject   *rou = &roi -> roi_ureject;
 
 		if (rou -> rou_noid)
 			advise (LLOG_EXCEPTIONS, NULLCP,
@@ -636,7 +628,7 @@ register struct RoSAPindication *roi;
 	break;
 
 	case ROI_PREJECT: {
-		register struct RoSAPpreject   *rop = &roi -> roi_preject;
+		struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 		ros_advise (rop, "RO-REJECT-P.INDICATION");
 		if (ROS_FATAL (rop -> rop_reason)) {
@@ -647,9 +639,9 @@ register struct RoSAPindication *roi;
 	break;
 
 	case ROI_FINISH: {
-		register struct AcSAPfinish *acf = &roi -> roi_finish;
+		struct AcSAPfinish *acf = &roi -> roi_finish;
 		struct AcSAPindication  acis;
-		register struct AcSAPabort *aca = &acis.aci_abort;
+		struct AcSAPabort *aca = &acis.aci_abort;
 
 		advise (LLOG_EXCEPTIONS, NULLCP, "A-RELEASE.INDICATION/%d: %d",
 				fd, acf -> acf_reason);
@@ -672,17 +664,16 @@ register struct RoSAPindication *roi;
 	}
 }
 
-static void terminate (ap, roi)
-struct intf *ap;
-struct RoSAPindication *roi;
+static void 
+terminate (struct intf *ap, struct RoSAPindication *roi)
 {
 	struct AcSAPindication  acsis;
 	extern struct list peer_list;
 	struct ntp_peer *peer;
 	int	fd = ap -> fd;
 
-	(void) AcUAbortRequest (fd, NULLPEP, 0, &acsis);
-	(void) RyLose (fd, roi);
+	 AcUAbortRequest (fd, NULLPEP, 0, &acsis);
+	 RyLose (fd, roi);
 	if (fd >= 0) {
 		FD_CLR (fd, &globmask);
 		FD_CLR (fd, &globwmask);
@@ -702,10 +693,8 @@ struct RoSAPindication *roi;
 			"Connection on %d if %d TERMINATED", ap -> fd, fd);
 }
 
-void iso_init (vecp, vec, fd)
-int vecp;
-char **vec;
-int fd;
+void 
+iso_init (int vecp, char **vec, int fd)
 {
 	struct intf *ap;
 	int	acount;
@@ -732,22 +721,22 @@ int fd;
 	TRACE (1, ("Incoming Connection pending on %d", fd));
 }
 
-iso_accept (ap)
-struct intf *ap;
+int 
+iso_accept (struct intf *ap)
 {
 	int     result,
 			i,
 			sd;
 	struct AcSAPstart   acss;
-	register struct AcSAPstart *acs = &acss;
+	struct AcSAPstart *acs = &acss;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort   *aca = &aci -> aci_abort;
-	register struct PSAPstart *ps = &acs -> acs_start;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort   *aca = &aci -> aci_abort;
+	struct PSAPstart *ps = &acs -> acs_start;
 	struct PSAPaddr *pa;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 	struct Naddr *adr;
 	struct ntp_peer *peer;
 	struct type_NTP_BindArgument *bindarg;
@@ -926,23 +915,20 @@ struct intf *ap;
 	TRACE (2, ("Association accepted from %s sd %d if %d",
 			   paddr (adr), sd, ap -> inum));
 	if (peer && peer -> flags & PEER_FL_CONFIG)
-		(void) transmit_osi (peer);
+		 transmit_osi (peer);
 	return OK;
 }
 
-static int bindfailed (ap, acs, type, msg)
-struct intf *ap;
-struct AcSAPstart *acs;
-int	type;
-char	*msg;
+static int 
+bindfailed (struct intf *ap, struct AcSAPstart *acs, int type, char *msg)
 {
 	PE	pe;
-	register struct PSAPstart *ps = &acs -> acs_start;
+	struct PSAPstart *ps = &acs -> acs_start;
 	struct type_NTP_BindError *binderr;
 	struct RoSAPindication rois;
 	struct RoSAPindication *roi = &rois;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
+	struct AcSAPindication *aci = &acis;
 
 	binderr = (struct type_NTP_BindError *)
 			  calloc (1, sizeof *binderr);
@@ -960,7 +946,7 @@ char	*msg;
 	PLOG (pgm_log, print_NTP_BindError, pe, "NTP.BindError", 0);
 	pe -> pe_context = 3;
 	free_NTP_BindError (binderr);
-	(void) AcAssocResponse (ap -> fd, ACS_REJECT, ACS_USER_NULL,
+	 AcAssocResponse (ap -> fd, ACS_REJECT, ACS_USER_NULL,
 							NULLOID, NULLAEI, NULLPA, NULLPC,
 							ps -> ps_defctxresult,
 							ps -> ps_prequirements,
@@ -976,14 +962,13 @@ char	*msg;
 char	*mycontext = "ntp";
 char	*mypci = "ntp pci";
 
-int make_osi_conn (peer, addr)
-struct ntp_peer *peer;
-char	*addr;
+int 
+make_osi_conn (struct ntp_peer *peer, char *addr)
 {
 	int	result = NOTOK;
 	struct intf *ap;
 	struct RoSAPindication rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	switch (peer->flags & PEER_FL_CONNSTATE) {
 	case PEER_FL_CONNECTED:
@@ -1074,25 +1059,23 @@ char	*addr;
 }
 
 /* ARGSUSED */
-static int acsap_initial (peer, addr, roi)
-struct ntp_peer *peer;
-char *addr;
-struct RoSAPindication *roi;
+static int 
+acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindication *roi)
 {
 	int	    sd;
 	struct SSAPref sfs;
-	register struct SSAPref *sf;
-	register struct PSAPaddr *pa, *pa2;
+	struct SSAPref *sf;
+	struct PSAPaddr *pa, *pa2;
 	struct AcSAPconnect accs;
-	register struct AcSAPconnect   *acc = &accs;
+	struct AcSAPconnect   *acc = &accs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort   *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort   *aca = &aci -> aci_abort;
 	OID	    ctx,
 			pci;
 	PE	pep[1];
 	struct PSAPctxlist pcs;
-	register struct PSAPctxlist *pc = &pcs;
+	struct PSAPctxlist *pc = &pcs;
 	struct intf *ap;
 	int	acount;
 	int	result;
@@ -1139,7 +1122,7 @@ struct RoSAPindication *roi;
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
 	result = AcAsynAssocRequest (ctx, NULLAEI, NULLAEI, pa2, pa,
@@ -1176,10 +1159,8 @@ struct RoSAPindication *roi;
 	return NOTOK;
 }
 
-static int check_accept (acc, ap, peer)
-struct AcSAPconnect *acc;
-struct intf *ap;
-struct ntp_peer *peer;
+static int 
+check_accept (struct AcSAPconnect *acc, struct intf *ap, struct ntp_peer *peer)
 {
 	struct RoSAPindication rois;
 	struct RoSAPindication *roi = &rois;
@@ -1249,9 +1230,9 @@ struct ntp_peer *peer;
 	bindarg -> version =
 		pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
 				  PE_PRIM_BITS);
-	(void) bit_on (bindarg -> version,
+	 bit_on (bindarg -> version,
 				   bit_NTP_version_version__1);
-	(void) bit_on (bindarg -> version,
+	 bit_on (bindarg -> version,
 				   bit_NTP_version_version__2);
 
 	bindarg -> mode = (struct type_NTP_BindMode *)
@@ -1273,15 +1254,14 @@ struct ntp_peer *peer;
 }
 
 
-static int acsap_retry (peer, roi)
-struct ntp_peer *peer;
-struct RoSAPindication *roi;
+static int 
+acsap_retry (struct ntp_peer *peer, struct RoSAPindication *roi)
 {
 	struct AcSAPconnect accs;
-	register struct AcSAPconnect   *acc = &accs;
+	struct AcSAPconnect   *acc = &accs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	int	result;
 	struct intf *ap;
 
@@ -1311,9 +1291,8 @@ struct RoSAPindication *roi;
 	return NOTOK;
 }
 
-static int handle_reject (acc, ap)
-struct AcSAPconnect *acc;
-struct intf *ap;
+static int 
+handle_reject (struct AcSAPconnect *acc, struct intf *ap)
 {
 	if (acc -> acc_ninfo > 0) {
 		struct type_NTP_BindError *binderr;
@@ -1372,48 +1351,45 @@ struct intf *ap;
 	return NOTOK;
 }
 
-void    ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_advise (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]",
+		 sprintf (buffer, "[%s]",
 						RoErrString (rop -> rop_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
-void    acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]",
+		 sprintf (buffer, "[%s]",
 						AcErrString (aca -> aca_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
 
-static double
-ul2_fixed_to_double(t)
-struct type_NTP_TimeStamp *t;
+static double 
+ul2_fixed_to_double (struct type_NTP_TimeStamp *t)
 {
 	double a, b;
 #ifdef	GENERIC_UNS_BUG
-	register int i;
+	int i;
 
 	i = t->fraction;
 	a = (long)((i >> 1) & 0x7fffffff);
@@ -1440,13 +1416,12 @@ struct type_NTP_TimeStamp *t;
 	return (a + b);
 }
 
-static double
-ul_fixed_to_doublep(t)
-struct l_fixedpt *t;
+static double 
+ul_fixed_to_doublep (struct l_fixedpt *t)
 {
 	double a, b;
 #ifdef	GENERIC_UNS_BUG
-	register int i;
+	int i;
 
 	i = t->fraction;
 	a = (long)((i >> 1) & 0x7fffffff);
@@ -1474,10 +1449,8 @@ struct l_fixedpt *t;
 }
 
 #ifdef	SUN_FLT_BUG
-static void
-tstamp_osi (stampp, tvp)
-struct l_fixedpt *stampp;
-struct timeval *tvp;
+static void 
+tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp)
 {
 	int tt;
 	double dd;
@@ -1488,10 +1461,8 @@ struct timeval *tvp;
 	stampp->fraction = tt << 1;
 }
 #else
-static void
-tstamp_osi (stampp, tvp)
-struct l_fixedpt *stampp;
-struct timeval *tvp;
+static void 
+tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp)
 {
 	stampp->int_part = JAN_1970 + tvp->tv_sec;
 	stampp->fraction = (float) tvp->tv_usec * 4294.967295;
@@ -1532,8 +1503,8 @@ Refid refid;
 }
 
 
-struct type_NTP_ClockInfo *peer2clock (peer)
-struct ntp_peer *peer;
+struct type_NTP_ClockInfo *
+peer2clock (struct ntp_peer *peer)
 {
 	struct type_NTP_ClockInfo *ci;
 	char	*cp;
@@ -1549,7 +1520,7 @@ struct ntp_peer *peer;
 	cp = paddr (&peer -> src);
 	ci -> remoteAddress = str2qb (cp, strlen (cp), 1);
 	ci -> flags = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_BITS);
-#define setflbit(x,y) if (peer -> flags & (x)) (void) bit_on (ci -> flags, (y))
+#define setflbit(x,y) if (peer -> flags & (x))  bit_on (ci -> flags, (y))
 	setflbit (PEER_FL_CONFIG, bit_NTP_flags_configured);
 	setflbit (PEER_FL_AUTHENABLE, bit_NTP_flags_authentable);
 	setflbit (PEER_FL_SANE, bit_NTP_flags_sane);
@@ -1560,7 +1531,7 @@ struct ntp_peer *peer;
 	setflbit (PEER_FL_SELECTED, bit_NTP_flags_selected);
 	setflbit (PEER_FL_SNOOZE, bit_NTP_flags_inactive);
 	if (sys.peer == peer)
-		(void) bit_on (ci -> flags, bit_NTP_flags_selected);
+		 bit_on (ci -> flags, bit_NTP_flags_selected);
 #undef setflbit
 	ci -> packetsSent = peer -> pkt_sent;
 	ci -> packetsReceived = peer -> pkt_rcvd;

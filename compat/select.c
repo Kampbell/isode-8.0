@@ -34,8 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/select.c,v 9.0 1992/
 #include <sys/stat.h>
 
 
-extern int errno;
-
 
 int	xselect_blocking_on_intr = 0;
 
@@ -64,8 +62,8 @@ static fd_set in_rfds, in_wfds, in_efds;
 static fd_set out_rfds, out_wfds, out_efds;
 static int out_n;
 
-void rhandler(fd)
-int fd;
+void 
+rhandler (int fd)
 {
 	if ( FD_ISSET(fd,&in_rfds) ) {
 		FD_SET(fd,&out_rfds);
@@ -73,8 +71,8 @@ int fd;
 	}
 }
 
-void whandler(fd)
-int fd;
+void 
+whandler (int fd)
 {
 	if ( FD_ISSET(fd,&in_wfds) ) {
 		FD_SET(fd,&out_wfds);
@@ -82,8 +80,8 @@ int fd;
 	}
 }
 
-void xhandler(fd)
-int fd;
+void 
+xhandler (int fd)
 {
 	if ( FD_ISSET(fd,&in_efds) ) {
 		FD_SET(fd,&out_efds);
@@ -94,12 +92,8 @@ int fd;
 #endif
 #endif
 
-int	selsocket (nfds, rfds, wfds, efds, secs)
-int	nfds;
-fd_set *rfds,
-	   *wfds,
-	   *efds;
-int	secs;
+int 
+selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs)
 {
 	int     n;
 	fd_set  ifds,
@@ -112,7 +106,7 @@ int	secs;
 
 	int     error;
 	struct timeval  tvs;
-	register struct timeval *tv = &tvs;
+	struct timeval *tv = &tvs;
 
 	if (secs != NOTOK)
 		tv -> tv_sec = secs, tv -> tv_usec = 0;
@@ -125,7 +119,7 @@ int	secs;
 	int msecs;
 #else
 	struct timeval  tvs;
-	register struct timeval *tv = &tvs;
+	struct timeval *tv = &tvs;
 #endif
 
 #if defined(masscomp) && defined(_ATT)
@@ -248,14 +242,9 @@ int	secs;
 #include "sys/soioctl.h"
 
 
-int	selsocket (nfds, rfds, wfds, efds, secs)
-int	nfds;
-fd_set *rfds,
-	   *wfds,
-	   *efds;
-int	secs;
+int	selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
 {
-	register int    fd;
+	int    fd;
 	int     n;
 	fd_set  ifds,
 			ofds;
@@ -307,10 +296,7 @@ int	secs;
 #if defined(TLI_TP) && defined(TLI_POLL)
 #include <poll.h>
 
-int selsocket (nfds, rfds, wfds, efds, secs)
-int	nfds;
-fd_set	*rfds, *wfds, *efds;
-int	secs;
+int selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
 {
 	int i, j, n;
 	struct pollfd pollfds[128];
@@ -398,14 +384,9 @@ caddr_t	data;
 #if !(defined(_AIX) && defined(X25))
 /* We have an AIX specific version if X25 is defined */
 
-int	xselect (nfds, rfds, wfds, efds, secs)
-int	nfds;
-fd_set *rfds,
-	   *wfds,
-	   *efds;
-int	secs;
+int	xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
 {
-	register int    fd;
+	int    fd;
 	int	    n;
 	fd_set  ifds,
 			ofds,
@@ -475,8 +456,7 @@ int	secs;
 				if (efds && FD_ISSET (fd, &xfds))
 					FD_SET (fd, efds);
 
-				SLOG (compat_log, LLOG_EXCEPTIONS, "",
-					  ("fd %d has gone bad", fd));
+				SLOG (compat_log, LLOG_EXCEPTIONS, "", ("fd %d has gone bad", fd));
 				n++;
 			}
 

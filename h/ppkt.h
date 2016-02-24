@@ -130,7 +130,6 @@
 	ppktlose (pb, pi, PC_UNRECOGNIZED, (p), NULLCP, "%s", PY_pepy)
 
 
-int	ppktlose (), psaplose ();
 
 /*  */
 
@@ -221,6 +220,9 @@ struct psapblk {
 #endif
 };
 #define	NULLPB		((struct psapblk *) 0)
+
+int	ppktlose (struct psapblk*pb, ...);
+int	psaplose (struct PSAPindication*pi, ...);
 
 int	freepblk ();
 struct psapblk *newpblk (), *findpblk ();

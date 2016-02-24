@@ -52,18 +52,12 @@ static int  SReSyncRequestAux ();
 
 /*  */
 
-int	SReSyncRequest (sd, type, ssn, settings, data, cc, si)
-int	sd;
-int	type,
-	settings;
-long	ssn;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SReSyncRequest (int sd, int type, long ssn, int settings, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	switch (type) {
 	case SYNC_RESTART:
@@ -94,21 +88,15 @@ struct SSAPindication *si;
 
 	result = SReSyncRequestAux (sb, type, ssn, settings, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  SReSyncRequestAux (sb, type, ssn, settings, data, cc, si)
-register struct ssapblk *sb;
-int	type,
-	settings;
-long	ssn;
-char   *data;
-int	cc;
-register struct SSAPindication *si;
+static int 
+SReSyncRequestAux (struct ssapblk *sb, int type, long ssn, int settings, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
 

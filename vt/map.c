@@ -170,16 +170,16 @@ DO_UPDATE *doptr;
 				if (tcgetattr(pty, &term) == -1)
 					perror("ioctl");
 				else
-					(void)putch(erase_char=term.c_cc[VERASE]);	/* XXX what if _POSIX_VDISABLE */
+					putch(erase_char=term.c_cc[VERASE]);	/* XXX what if _POSIX_VDISABLE */
 #else
 				if (ioctl(pty,TIOCGETP,(char*)&ttyb) == -1) {
 					perror("ioctl");
 					adios(NULLCP, "ioctl failed");
 				}
-				(void)putch(ttyb.sg_erase);
+				putch(ttyb.sg_erase);
 				erase_char = ttyb.sg_erase;
 #endif
-			} else (void)putch(erase_char);
+			} else putch(erase_char);
 		} else if((doptr->do_cmd.erase.start_erase.ptr_type == 3) &&
 				  (doptr->do_cmd.erase.end_erase.ptr_type == 6)) {
 			if(my_right == ACCEPTOR) {
@@ -187,16 +187,16 @@ DO_UPDATE *doptr;
 				if (tcgetattr(pty, &term) == -1)
 					perror("ioctl");
 				else
-					(void)putch(erase_line=term.c_cc[VKILL]);	/* XXX what if _POSIX_VDISABLE */
+					putch(erase_line=term.c_cc[VKILL]);	/* XXX what if _POSIX_VDISABLE */
 #else
 				if (ioctl(pty,TIOCGETP,(char*)&ttyb) == -1) {
 					perror("ioctl");
 					adios(NULLCP, "ioctl failed");
 				}
-				(void)putch(ttyb.sg_kill);
+				putch(ttyb.sg_kill);
 				erase_line = ttyb.sg_kill;
 #endif
-			} else (void)putch(erase_line);
+			} else putch(erase_line);
 		}
 		break;
 
@@ -307,14 +307,14 @@ CO_UPDATE *coptr;
 				{
 					na_image |= ECHO_OBJ;
 					if(showoptions)
-						(void)printf("Remote Echo Update Received\r\n");
+						printf("Remote Echo Update Received\r\n");
 					if(ECHO_OBJ & nego_state) { /*If now in Remote Echo*/
 						if(ni_image & ECHO_OBJ) { /*No request outstatnding*/
 							if(showoptions)
-								(void)printf("Server Request ignored--Now in Remote echo\r\n");
+								printf("Server Request ignored--Now in Remote echo\r\n");
 						} else {
 							if(showoptions)
-								(void)printf("Request for Local Echo Denied by Server\r\n");
+								printf("Request for Local Echo Denied by Server\r\n");
 							ni_image |= ECHO_OBJ;
 						}
 					} else {	/*Else Not in Remote Echo*/
@@ -322,20 +322,20 @@ CO_UPDATE *coptr;
 							/*This must be confirmation*/
 						{
 							if(showoptions)
-								(void)printf("Server agreed to do Remote Echo\r\n");
+								printf("Server agreed to do Remote Echo\r\n");
 						} else {	/*Request to do Remote Echo*/
 							if(showoptions)
-								(void)printf("Server Requested Remote Echo\r\n");
+								printf("Server Requested Remote Echo\r\n");
 							ni_image |= ECHO_OBJ;
 							vt_set_nego(ni_image,ECHO_OBJ);/*Respond "WILL"*/
 						}
-						(void) tmode(1);
+						 tmode(1);
 						nego_state |= ECHO_OBJ;
 						cur_emode = ECHO_NOW;	/*Want Server to Echo*/
 					}
 				} else {	/*Request from server for Local Echo*/
 					if(showoptions)
-						(void)printf("NA--Local Echo\r\n");
+						printf("NA--Local Echo\r\n");
 					cur_emode = NOT_ECHO_NOW;
 					na_image &= ~ECHO_OBJ;
 					if(nego_state & ECHO_OBJ) { /*If now in Remote Echo*/
@@ -343,29 +343,29 @@ CO_UPDATE *coptr;
 							/*Must be request from sender*/
 						{
 							if(showoptions)
-								(void)printf("Server requested Local Echo -- O.K.\r\n");
+								printf("Server requested Local Echo -- O.K.\r\n");
 							ni_image &= ~ECHO_OBJ;
 							vt_set_nego(ni_image,ECHO_OBJ);/*Respond "WILL"*/
 						} else {
 							if(showoptions)
-								(void)printf("User request for Local Echo Accepted\r\n");
+								printf("User request for Local Echo Accepted\r\n");
 						}
 						nego_state &= ~ECHO_OBJ;
 						/*			    sb = ottyb;
 						/*			    sb.sg_flags |= ECHO|CRMOD|CBREAK;
 						/*			    ioctl(fileno(stdin),TIOCSETP,(char*)&sb);
 						*/
-						(void)tmode(2);
+						tmode(2);
 					} else {	/*Else now in Local Echo*/
 						if(ni_image & ECHO_OBJ) /*If requeset pending*/
 							/*Must be negative response*/
 						{
 							ni_image &= ~ECHO_OBJ;
 							if(showoptions)
-								(void)printf("Request for Remote Echo Denied by Server\r\n");
+								printf("Request for Remote Echo Denied by Server\r\n");
 						} else { /*Else no request pending*/
 							if(showoptions)
-								(void)printf("Server Request Ignored--Now in Local Echo\r\n");
+								printf("Server Request Ignored--Now in Local Echo\r\n");
 						}
 					}
 				}
@@ -375,7 +375,7 @@ CO_UPDATE *coptr;
 			{
 				if(SUP_GA & *coptr->co_cmd.bool_update.value) {
 					if(showoptions)
-						(void)printf("Suppress Go Ahead\r\n");
+						printf("Suppress Go Ahead\r\n");
 					na_image |= SUP_GA;
 					if((ni_image & SUP_GA) == (nego_state & SUP_GA))
 						/*If no outstanding request from User*/
@@ -390,7 +390,7 @@ CO_UPDATE *coptr;
 					nego_state |= SUP_GA;/*Either here now or entering*/
 				} else {
 					if(showoptions)
-						(void)printf("Go Ahead\r\n");
+						printf("Go Ahead\r\n");
 					na_image &= ~SUP_GA;
 					if( (ni_image & SUP_GA) == (nego_state & SUP_GA) )
 						/*Must be request from Server*/
@@ -399,7 +399,7 @@ CO_UPDATE *coptr;
 						vt_set_nego(ni_image,SUP_GA);/*Reply "Won't"*/
 					} else {	/*Else response to my request to Suppress*/
 						if(showoptions)
-							(void)printf("Server refuses to Suppress Go Ahead\r\n");
+							printf("Server refuses to Suppress Go Ahead\r\n");
 						ni_image &= ~SUP_GA;	/*Give Up*/
 						/*May want to terminate Association here*/
 					}
@@ -410,7 +410,7 @@ CO_UPDATE *coptr;
 			{
 				if(DISP_BIN & *coptr->co_cmd.bool_update.value) {
 					if(showoptions)
-						(void)printf("WACA requested Binary Repertoire on DI\r\n");
+						printf("WACA requested Binary Repertoire on DI\r\n");
 					if((ni_image & DISP_BIN) == (nego_state & DISP_BIN))
 						/*No request outstanding from Initiator*/
 					{
@@ -423,7 +423,7 @@ CO_UPDATE *coptr;
 					ni_image |= DISP_BIN;
 				} else {
 					if(showoptions)
-						(void)printf("WACA requested ASCII Repertoire on DI\r\n");
+						printf("WACA requested ASCII Repertoire on DI\r\n");
 					if((ni_image & DISP_BIN) == (nego_state & DISP_BIN)) {
 						if(nego_state & DISP_BIN) { /*If not now ASCII*/
 							ni_image &= ~DISP_BIN;
@@ -439,7 +439,7 @@ CO_UPDATE *coptr;
 			{
 				if(KBD_BIN & *coptr->co_cmd.bool_update.value) {
 					if(showoptions)
-						(void)printf("WACA requested Binary Repertoire on KB\r\n");
+						printf("WACA requested Binary Repertoire on KB\r\n");
 					if((ni_image & KBD_BIN) == (nego_state & KBD_BIN))
 						/*If no initiator request outstanding*/
 					{
@@ -457,7 +457,7 @@ CO_UPDATE *coptr;
 					nego_state |= KBD_BIN;
 				} else {
 					if(showoptions)
-						(void)printf("Acceptor requested ASCII Repertoire on KB\r\n");
+						printf("Acceptor requested ASCII Repertoire on KB\r\n");
 					if((ni_image & KBD_BIN) == (nego_state & KBD_BIN))
 						/*Request from Acceptor*/
 					{
@@ -554,13 +554,13 @@ CO_UPDATE *coptr;
 				{
 					ni_image |= ECHO_OBJ;
 					if(showoptions)
-						(void)printf("Remote Echo Update Received\n");
+						printf("Remote Echo Update Received\n");
 					if(ECHO_OBJ & nego_state) { /*If now in Remote Echo*/
 						if(na_image & ECHO_OBJ) /*No request outstatnding*/
 							advise(LLOG_NOTICE,NULLCP,  "User Request ignored--Now in Remote echo");
 						else { /*Must be user's response to a request*/
 							if(showoptions)
-								(void)printf("Request for Local Echo Denied by User\n");
+								printf("Request for Local Echo Denied by User\n");
 							na_image |= ECHO_OBJ;
 						}
 					} else {	/*Else Not in Remote Echo*/
@@ -568,10 +568,10 @@ CO_UPDATE *coptr;
 							/*This must be confirmation*/
 						{
 							if(showoptions)
-								(void)printf("User agreed to do Remote Echo\n");
+								printf("User agreed to do Remote Echo\n");
 						} else {	/*Request to do Remote Echo*/
 							if(showoptions)
-								(void)printf("User Requested Remote Echo--O.K.\n");
+								printf("User Requested Remote Echo--O.K.\n");
 							na_image |= ECHO_OBJ;
 							vt_set_nego(na_image,ECHO_OBJ);/*Respond "WILL"*/
 						}
@@ -593,7 +593,7 @@ CO_UPDATE *coptr;
 					}
 				} else {	/*Request from user for Local Echo*/
 					if(showoptions)
-						(void)printf("NI--Local Echo\n");
+						printf("NI--Local Echo\n");
 					cur_emode = NOT_ECHO_NOW;
 					ni_image &= ~ECHO_OBJ;
 					if(nego_state & ECHO_OBJ) { /*If now in Remote Echo*/
@@ -603,7 +603,7 @@ CO_UPDATE *coptr;
 
 #ifdef DO_LOCAL_ECHO
 							if(showoptions)
-								(void)printf("User requested Local Echo -- O.K.\n");
+								printf("User requested Local Echo -- O.K.\n");
 
 							na_image &= ~ECHO_OBJ;
 							nego_state &= ~ECHO_OBJ;
@@ -615,13 +615,13 @@ CO_UPDATE *coptr;
 #else
 							na_image |= ECHO_OBJ;
 							if(showoptions)
-								(void)printf("User requested Local Echo -- Denied\n");
+								printf("User requested Local Echo -- Denied\n");
 #endif
 
 							vt_set_nego(na_image,ECHO_OBJ);	/*Respond "WILL"*/
 						} else {
 							if(showoptions)
-								(void)printf("Server request for Local Echo Accepted\n");
+								printf("Server request for Local Echo Accepted\n");
 							nego_state &= ~ECHO_OBJ;
 #ifdef TERMIOS
 							ptyecho(0);
@@ -635,10 +635,10 @@ CO_UPDATE *coptr;
 						{
 							na_image &= ~ECHO_OBJ;
 							if(showoptions)
-								(void)printf("Request for Remote Echo Denied by User\n");
+								printf("Request for Remote Echo Denied by User\n");
 						} else { /*Else no request pending*/
 							if(showoptions)
-								(void)printf("User Request Ignored--Now in Local Echo\n");
+								printf("User Request Ignored--Now in Local Echo\n");
 						}
 					}
 				}
@@ -648,7 +648,7 @@ CO_UPDATE *coptr;
 			{
 				if(SUP_GA & *coptr->co_cmd.bool_update.value) {
 					if(showoptions)
-						(void)printf("Suppress Go Ahead\n");
+						printf("Suppress Go Ahead\n");
 					ni_image |= SUP_GA;
 					if((na_image & SUP_GA) == (nego_state &SUP_GA))
 						/*If no request from Acceptor outstanding*/
@@ -663,7 +663,7 @@ CO_UPDATE *coptr;
 					nego_state |= SUP_GA; /*Entering or already there*/
 				} else {
 					if(showoptions)
-						(void)printf("Don't Suppress Go Ahead\n");
+						printf("Don't Suppress Go Ahead\n");
 					ni_image &= ~SUP_GA;
 					if((na_image & SUP_GA) == (nego_state & SUP_GA))
 						/*Must be request from Initiator*/
@@ -672,7 +672,7 @@ CO_UPDATE *coptr;
 						vt_set_nego(na_image,SUP_GA);/*Reply "Won't"*/
 					} else { /*Else reply to my request*/
 						if(showoptions)
-							(void)printf("User refuses to Suppress Go Ahead\n");
+							printf("User refuses to Suppress Go Ahead\n");
 						na_image &= ~SUP_GA;	/*Give up*/
 					}
 				}
@@ -682,7 +682,7 @@ CO_UPDATE *coptr;
 			{
 				if(DISP_BIN & *coptr->co_cmd.bool_update.value) {
 					if(showoptions)
-						(void)printf("Initiator requested Binary Repertoire on DI\n");
+						printf("Initiator requested Binary Repertoire on DI\n");
 					if((na_image & DISP_BIN) == (nego_state & DISP_BIN))
 						/*No request outstanding from Acceptor*/
 					{
@@ -699,7 +699,7 @@ CO_UPDATE *coptr;
 					na_image |= DISP_BIN;
 				} else {
 					if(showoptions)
-						(void)printf("Initiator requested ASCII Repertoire on DI\n");
+						printf("Initiator requested ASCII Repertoire on DI\n");
 					if((na_image & DISP_BIN) == (nego_state & DISP_BIN)) {
 						if(nego_state & DISP_BIN) { /*If not now ASCII*/
 							na_image &= ~DISP_BIN;
@@ -719,7 +719,7 @@ CO_UPDATE *coptr;
 			{
 				if(KBD_BIN & *coptr->co_cmd.bool_update.value) {
 					if(showoptions)
-						(void)printf("Initiator requested Binary Repertoire on KB\n");
+						printf("Initiator requested Binary Repertoire on KB\n");
 					if((na_image & KBD_BIN) == (nego_state & KBD_BIN))
 						/*If no Acceptor request outstanding*/
 					{
@@ -732,7 +732,7 @@ CO_UPDATE *coptr;
 					nego_state |= KBD_BIN;
 				} else {
 					if(showoptions)
-						(void)printf("Initiator requested ASCII Repertoire on KB\n");
+						printf("Initiator requested ASCII Repertoire on KB\n");
 					if((na_image & KBD_BIN) == (nego_state & KBD_BIN))
 						/*Request from Initator*/
 					{
@@ -789,15 +789,15 @@ DO_UPDATE *doptr;
 			if(doptr->do_cmd.wrt_attrib.attr_val == 1) {
 				if(showoptions)
 					if(my_right == INITIATOR)
-						(void)printf("Switching to ASCII Repertoire\r\n");
+						printf("Switching to ASCII Repertoire\r\n");
 				transparent = 0;
 			} else if(doptr->do_cmd.wrt_attrib.attr_val == 2) {
 				if(showoptions)
 					if(my_right == INITIATOR)
-						(void)printf("Switching to Transparent profile.\r\n");
+						printf("Switching to Transparent profile.\r\n");
 				transparent = 1;
-			} else (void)printf("Attribute for unavailable repertoire\n");
-		} else (void)printf("Attribute update with invalid extent (%d)\n",
+			} else printf("Attribute for unavailable repertoire\n");
+		} else printf("Attribute update with invalid extent (%d)\n",
 								doptr->do_cmd.wrt_attrib.attr_ext);
 	} else
 		advise(LLOG_NOTICE,NULLCP,  "Attribute Update with invalid I.D. (%d)\n", doptr->do_cmd.wrt_attrib.attr_id);
@@ -877,7 +877,7 @@ struct	ltchars noltc =	{
 
 int
 tmode(f)
-register int f;
+int f;
 {
 	static int prevmode = 0;
 	struct tchars *tc;
@@ -949,13 +949,13 @@ kill_proc() {	/*Terminate current UNIX process using UNIX interrupt char*/
 	if (tcgetattr(pty, &term) == -1)
 		perror("tcgetattr");
 	else if (term.c_cc[VINTR] != _POSIX_VDISABLE)
-		(void) putch(term.c_cc[VINTR]);
+		 putch(term.c_cc[VINTR]);
 #else
 	if(ioctl(pty,TIOCGETC,(char *)&otc) == -1) {
 		perror("ioctl");
 		adios(NULLCP, "ioctl failed");
 	}
-	(void) putch(otc.t_intrc);
+	 putch(otc.t_intrc);
 #endif
 }
 
@@ -971,9 +971,9 @@ CO_UPDATE *coptr;
 	if (active & ECHO_OBJ) {
 		if(*coptr->co_cmd.bool_update.value & ECHO_OBJ)
 			/*True means do local echo*/
-			(void) tmode(2);
+			 tmode(2);
 		else
-			(void) tmode(1);
+			 tmode(1);
 	}
 }
 #ifdef TERMIOS

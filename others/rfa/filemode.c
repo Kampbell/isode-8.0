@@ -53,9 +53,8 @@ static int runAsRoot = 0;  /* we started with effective uid of root */
 /*		the eff. uid of root is REALLY needed (see 	*/
 /*		below)						*/
 /*--------------------------------------------------------------*/
-int initUserId(uid, gid, user)
-int uid, gid;
-char *user;
+int 
+initUserId (int uid, int gid, char *user)
 {
 	if (geteuid() == 0) {
 		runAsRoot++;
@@ -75,9 +74,8 @@ char *user;
 /*--------------------------------------------------------------*/
 /*  getFileOwner                                                */
 /*--------------------------------------------------------------*/
-int getFileOwner (fn, uidp, gidp)
-char *fn;
-int *uidp, *gidp;
+int 
+getFileOwner (char *fn, int *uidp, int *gidp)
 {
 	struct stat st;
 
@@ -92,9 +90,8 @@ int *uidp, *gidp;
 /*--------------------------------------------------------------*/
 /*  changeFileOwner                                             */
 /*--------------------------------------------------------------*/
-int changeFileOwner(fn, rfa)
-char *fn;
-struct RfaInfo *rfa;
+int 
+changeFileOwner (char *fn, struct RfaInfo *rfa)
 {
 	struct group *gr;
 	struct passwd *pw;
@@ -151,10 +148,8 @@ struct RfaInfo *rfa;
 /*--------------------------------------------------------------*/
 /*  changeFileMode                                              */
 /*--------------------------------------------------------------*/
-int changeFileMode(fn, mode, errmsg)
-char *fn;
-int mode;
-char *errmsg;
+int 
+changeFileMode (char *fn, int mode, char *errmsg)
 {
 	int changedUID = 0;
 	int rc = OK;
@@ -196,9 +191,8 @@ char *errmsg;
 /*--------------------------------------------------------------*/
 /*  makeFileReadOnly						*/
 /*--------------------------------------------------------------*/
-int makeFileReadOnly(fn, rfa)
-struct RfaInfo *rfa;
-char *fn;
+int 
+makeFileReadOnly (char *fn, struct RfaInfo *rfa)
 {
 	if (doChmod && (rfa->ri_mode & 0222)) {
 		rfa->ri_mode &= ~0222;
@@ -210,9 +204,8 @@ char *fn;
 /*--------------------------------------------------------------*/
 /*  makeFileReadWrite						*/
 /*--------------------------------------------------------------*/
-int makeFileReadWrite(fn, rfa)
-struct RfaInfo *rfa;
-char *fn;
+int 
+makeFileReadWrite (char *fn, struct RfaInfo *rfa)
 {
 	if (doChmod) {
 		rfa->ri_mode |= 0220;

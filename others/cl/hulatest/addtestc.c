@@ -84,10 +84,8 @@ char   *ctime ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
 				 table_ADD_Operations, dispatches, do_quit);
@@ -100,11 +98,8 @@ char  **argv,
 
 /* ARGSUSED */
 
-static int  addit_arg (sd, ds, args, ppaddends)
-int	sd;
-struct dispatch *ds;
-char  **args;
-struct type_ADD_Addends **ppaddends;
+static int 
+addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_Addends **ppaddends)
 {
 	struct type_ADD_Addends *paddends;
 
@@ -123,7 +118,7 @@ struct type_ADD_Addends **ppaddends;
 
 static int  do_help (sd, ds, args, dummy)
 int	sd;
-register struct dispatch *ds;
+struct dispatch *ds;
 char  **args;
 caddr_t *dummy;
 {
@@ -159,12 +154,8 @@ caddr_t *dummy;
 
 /* ARGSUSED */
 
-static int  addit_result (sd, id, dummy, result, roi)
-int	sd,
-	id,
-	dummy;
-register struct type_ADD_Sum *result;
-struct RoSAPindication *roi;
+static int 
+addit_result (int sd, int id, int dummy, struct type_ADD_Sum *result, struct RoSAPindication *roi)
 {
 	printf ("\n sum = %d\n", result->parm );
 	printf ("\n");
@@ -176,14 +167,16 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-static int  addtest_error (sd, id, error, parameter, roi)
-int	sd,
-	id,
-	error;
-char *parameter; /*???*/
-struct RoSAPindication *roi;
+static int 
+addtest_error (
+    int sd,
+    int id,
+    int error,
+    char *parameter, /*???*/
+    struct RoSAPindication *roi
+)
 {
-	register struct RyError *rye;
+	struct RyError *rye;
 
 	if (error == RY_REJECT) {
 		advise (NULLCP, "%s", RoErrString ((int) parameter));

@@ -35,10 +35,11 @@ static struct termio t;
 /* ought to be a bit friendlier than this - but at least this attempts
    to be safe */
 
-setRawMode() {
+int 
+setRawMode  {
 
 	if (ioctl(0, TCGETA, &t) == -1) {
-		(void) fprintf(stderr, "Couldn't go into raw mode (1), aaaaaagggggghhhhh!!!!\n");
+		 fprintf(stderr, "Couldn't go into raw mode (1), aaaaaagggggghhhhh!!!!\n");
 		cleanup(-1);
 	}
 	savemode = t.c_lflag;
@@ -46,17 +47,18 @@ setRawMode() {
 	t.c_lflag &= ~(ICANON|ECHO|ISIG);
 	t.c_cc[VMIN] = 1;
 	if (ioctl(0, TCSETA, &t) == -1) {
-		(void) fprintf(stderr, "Couldn't go into raw mode (2), aaaaaagggggghhhhh!!!!\n");
+		 fprintf(stderr, "Couldn't go into raw mode (2), aaaaaagggggghhhhh!!!!\n");
 		cleanup(-1);
 	}
 }
 
-unsetRawMode() {
+int 
+unsetRawMode  {
 
 	t.c_lflag = savemode;
 	t.c_cc[VMIN] = savemin;
 	if (ioctl(0, TCSETA, &t) == -1) {
-		(void) fprintf(stderr, "Couldn't get out of raw mode, aaaaaagggggghhhhh!!!!\n");
+		 fprintf(stderr, "Couldn't get out of raw mode, aaaaaagggggghhhhh!!!!\n");
 		cleanup(-1);
 	}
 }

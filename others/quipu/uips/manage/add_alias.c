@@ -44,9 +44,8 @@ extern	PS	rps;
 extern	Entry	current_entry;
 static	char	new_draft;
 
-call_add_alias (argc, argv)
-int             argc;
-char          **argv;
+int 
+call_add_alias (int argc, char **argv)
 {
 	DN		oj_dn, aoj_dn ;
 	DN		save_dn, dnptr, trail ;
@@ -103,10 +102,10 @@ char          **argv;
 		return ;
 	}
 	contact_showentry[5] = (char *) malloc ((unsigned)strlen(argv[2])+1) ;
-	(void)strcpy(contact_showentry[5], argv[2]) ;
+	strcpy(contact_showentry[5], argv[2]) ;
 
 	contact_compare[3] = (char *) malloc ((unsigned)strlen("objectClass=alias.")) ;
-	(void)strcpy(contact_compare[3], "objectClass=alias") ;
+	strcpy(contact_compare[3], "objectClass=alias") ;
 
 	if (service_control (OPT, 6, contact_compare, &compare_arg.cma_common) == -1) {
 		ps_print(OPT, "Problems with compare service control flags.\n") ;
@@ -114,16 +113,16 @@ char          **argv;
 	}
 
 	if (home = getenv ("HOME"))
-		(void) sprintf (fname, "%s/.dishdraft", home);
+		 sprintf (fname, "%s/.dishdraft", home);
 	else
-		(void) strcpy (fname, "./.dishdraft");
+		 strcpy (fname, "./.dishdraft");
 	new_draft = FALSE;
 
 	if ((argc = service_control (OPT, argc, argv, &add_arg.ada_common)) == -1)
 		return ;
 
-	(void)strcpy(objectname, argv[1]) ;
-	(void)strcpy(aliasobjectname, argv[2]) ;
+	strcpy(objectname, argv[1]) ;
+	strcpy(aliasobjectname, argv[2]) ;
 
 	/* Turn a sequence number back into a DN */
 	if (*aliasobjectname >= '0' && *aliasobjectname <= '9') {
@@ -220,7 +219,7 @@ char          **argv;
 
 	call_showentry(6, contact_showentry) ;
 	contact_showentry[5] = (char *) malloc ((unsigned)strlen(argv[2])+1) ;
-	(void)strcpy(contact_showentry[5], argv[2]) ;
+	strcpy(contact_showentry[5], argv[2]) ;
 
 	if (current_entry == NULLENTRY) {
 		ps_print(OPT, "Can't read ") ;
@@ -266,13 +265,13 @@ char          **argv;
 	trail->dn_parent = NULLDN;
 
 	contact_showentry[1] = ( char *) malloc ((unsigned)strlen("-noshow") + 1) ;
-	(void)strcpy(contact_showentry[1], "-noshow") ;
+	strcpy(contact_showentry[1], "-noshow") ;
 	contact_showentry[2] = ( char *) malloc ((unsigned)strlen("-all") + 1) ;
-	(void)strcpy(contact_showentry[2], "-all") ;
+	strcpy(contact_showentry[2], "-all") ;
 	contact_showentry[3] = ( char *) malloc ((unsigned)strlen("-nokey") + 1) ;
-	(void)strcpy(contact_showentry[3], "-nokey") ;
+	strcpy(contact_showentry[3], "-nokey") ;
 	contact_showentry[4] = ( char *) malloc ((unsigned)strlen("-dontdereferencealias") + 1) ;
-	(void)strcpy(contact_showentry[4], "-dontdereferencealias") ;
+	strcpy(contact_showentry[4], "-dontdereferencealias") ;
 
 	call_showentry(5, contact_showentry) ;
 
@@ -324,7 +323,7 @@ char          **argv;
 		return ;
 	}
 
-	(void)fprintf(fd, "aliasedObjectName= ") ;
+	fprintf(fd, "aliasedObjectName= ") ;
 	if ( ((tmp = ps_alloc (std_open)) != NULLPS) &&
 			(std_setup (tmp, fd) != NOTOK) ) {
 		dn_print(tmp, aoj_dn, EDBOUT) ;
@@ -332,8 +331,8 @@ char          **argv;
 		ps_print(OPT, "Unable to open appropriate ps. Aborting..\n") ;
 		return ;
 	}
-	(void)fprintf(fd, "\nobjectClass= quipuObject & alias & top\n") ;
-	(void) fclose(fd) ;
+	fprintf(fd, "\nobjectClass= quipuObject & alias & top\n") ;
+	 fclose(fd) ;
 
 	if (move (objectname) != OK) {
 		ps_printf (OPT,"Unknown option %s\n",objectname);
@@ -347,7 +346,7 @@ char          **argv;
 	}
 	entry_ptr = get_default_entry (NULLENTRY);
 	entry_ptr->e_attributes = get_attributes (fd);
-	(void) fclose (fd);
+	 fclose (fd);
 	if (parse_status != 0)
 		return ;
 

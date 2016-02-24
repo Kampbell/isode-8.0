@@ -152,7 +152,7 @@ char  **argv,
 static	arginit (vec)
 char	**vec;
 {
-	register char  *ap;
+	char  *ap;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -205,14 +205,14 @@ static  envinit () {
 			break;
 		}
 
-		(void) chdir ("/");
+		 chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			(void) dup2 (sd, 0), (void) close (sd);
-		(void) dup2 (0, 1);
-		(void) dup2 (0, 2);
+			 dup2 (sd, 0),  close (sd);
+		 dup2 (0, 1);
+		 dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -220,14 +220,14 @@ static  envinit () {
 #endif
 #ifdef	TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			(void) ioctl (sd, TIOCNOTTY, NULLCP);
-			(void) close (sd);
+			 ioctl (sd, TIOCNOTTY, NULLCP);
+			 close (sd);
 		}
 #else
 #ifdef	SYS5
-		(void) setpgrp ();
-		(void) signal (SIGINT, SIG_IGN);
-		(void) signal (SIGQUIT, SIG_IGN);
+		 setpgrp ();
+		 signal (SIGINT, SIG_IGN);
+		 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -236,19 +236,19 @@ static  envinit () {
 #ifndef	sun		/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			(void) close (sd);
+			 close (sd);
 #endif
 
-	(void) signal (SIGPIPE, SIG_IGN);
+	 signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, myname);
 
 	mibinit ();
 
-	(void) sprintf (file, "/etc/%s.pid", myname);
+	 sprintf (file, "/etc/%s.pid", myname);
 	if (fp = fopen (file, "w")) {
-		(void) fprintf (fp, "%d\n", getpid ());
-		(void) fclose (fp);
+		 fprintf (fp, "%d\n", getpid ());
+		 fclose (fp);
 	}
 
 	advise (LLOG_NOTICE, NULLCP, "starting");
@@ -271,7 +271,7 @@ static  mibinit () {
 	for (tc = triples; tc -> t_tree; tc++)
 		if (ot = text2obj (tc -> t_tree)) {
 			tc -> t_name = ot -> ot_name;
-			(void) (*tc -> t_init) ();
+			 (*tc -> t_init) ();
 		} else
 			advise (LLOG_EXCEPTIONS, NULLCP, "text2obj (\"%s\") fails",
 					tc -> t_tree);
@@ -305,7 +305,7 @@ losing:
 
 	for (tc = triples; tc -> t_tree; tc++)
 		if (tc -> t_name) {
-			if (smux_register (tc -> t_name, -1, tc -> t_access) == NOTOK) {
+			if (smux_(tc -> t_name, -1, tc -> t_access) == NOTOK) {
 				advise (LLOG_EXCEPTIONS, NULLCP, "smux_register: %s [%s]",
 						smux_error (smux_errno), smux_info);
 				goto losing;
@@ -353,7 +353,7 @@ losing:
 		}
 		for (tc++; tc -> t_tree; tc++)
 			if (tc -> t_name) {
-				if (smux_register (tc -> t_name, -1, tc -> t_access)
+				if (smux_(tc -> t_name, -1, tc -> t_access)
 						== NOTOK) {
 					advise (LLOG_EXCEPTIONS, NULLCP,
 							"smux_register: %s [%s]",
@@ -367,7 +367,7 @@ losing:
 		if (!tc -> t_tree) {
 			if (!got_at_least_one) {
 				dont_bother_anymore = 1;
-				(void) smux_close (goingDown);
+				 smux_close (goingDown);
 				goto losing;
 			}
 			if (smux_trap (int_SNMP_generic__trap_coldStart, 0,
@@ -386,11 +386,11 @@ losing:
 		break;
 
 	case type_SNMP_SMUX__PDUs_commitOrRollback: {
-		register struct triple *tz;
+		struct triple *tz;
 
 		for (tz = triples; tz -> t_tree; tz++)
 			if (tz -> t_name)
-				(void) (*tz -> t_sync) (event -> un.commitOrRollback
+				 (*tz -> t_sync) (event -> un.commitOrRollback
 										-> parm);
 	}
 	break;
@@ -408,13 +408,13 @@ unexpected:
 		;
 		advise (LLOG_EXCEPTIONS, NULLCP, "unexpectedOperation: %d",
 				event -> offset);
-		(void) smux_close (protocolError);
+		 smux_close (protocolError);
 		goto losing;
 
 	default:
 		advise (LLOG_EXCEPTIONS, NULLCP, "badOperation: %d",
 				event -> offset);
-		(void) smux_close (protocolError);
+		 smux_close (protocolError);
 		goto losing;
 	}
 }
@@ -422,21 +422,21 @@ unexpected:
 /*  */
 
 static	do_smux (pdu, offset)
-register struct type_SNMP_GetRequest__PDU *pdu;
+struct type_SNMP_GetRequest__PDU *pdu;
 int	offset;
 {
 	int	    idx,
 			status;
 	object_instance ois;
-	register struct type_SNMP_VarBindList *vp;
+	struct type_SNMP_VarBindList *vp;
 	IFP	    method;
 
 	quantum = pdu -> request__id;
 	idx = 0;
 	for (vp = pdu -> variable__bindings; vp; vp = vp -> next) {
-		register OI	oi;
-		register OT	ot;
-		register struct type_SNMP_VarBind *v = vp -> VarBind;
+		OI	oi;
+		OT	ot;
+		struct type_SNMP_VarBind *v = vp -> VarBind;
 
 		idx++;
 

@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotlose.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "tailor.h"
 #include "logger.h"
 #include "ronot.h"
@@ -40,16 +40,14 @@ static int  _ronotlose ();
 /*  */
 
 #ifndef	lint
-int	ronotlose (va_alist)
-va_dcl {
+int	ronotlose (struct RoNOTindication*rni, ...)
+{
 	int	    reason,
 	result;
-	struct RoNOTindication *rni;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, rni);
 
-	rni = va_arg (ap, struct RoNOTindication *);
 	reason = va_arg (ap, int);
 
 	result = _ronotlose (rni, reason, ap);
@@ -61,11 +59,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	ronotlose (rni, reason, what, fmt)
-struct RoNOTindication *rni;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+ronotlose (struct RoNOTindication *rni, int reason, char *what, char *fmt)
 {
 	return ronotlose (rni, reason, what, fmt);
 }
@@ -74,19 +69,23 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _ronotlose (rni, reason, ap)  /* what, fmt, args ... */
-register struct RoNOTindication *rni;
-int     reason;
-va_list	ap;
+static int 
+_ronotlose (  /* what, fmt, args ... */
+    struct RoNOTindication *rni,
+    int reason,
+    va_list ap
+)
 {
-	register char  *bp;
+	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
 
 	if (rni) {
 		bzero ((char *) rni, sizeof *rni);
 		rni -> rni_reason = reason;
 
-		asprintf (bp = buffer, ap);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		copyRoNOTdata (buffer, bp - buffer, rni);
@@ -98,10 +97,8 @@ va_list	ap;
 
 /*    ACSAP interface */
 
-int	  acs2ronotlose (rni, event, aca)
-struct RoNOTindication	* rni;
-char			* event;
-struct AcSAPabort	* aca;
+int 
+acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *aca)
 {
 
 	char	* cp;
@@ -121,10 +118,10 @@ struct AcSAPabort	* aca;
 
 	/*
 		if (event)
-			(void) sprintf (cp = buffer, " {%s} (%s at ACSE)",
+			 sprintf (cp = buffer, " {%s} (%s at ACSE)",
 				event, AcErrString (aca->aca_reason));
 		else
-			(void) sprintf (cp = buffer, " (%s at ACSE)",
+			 sprintf (cp = buffer, " (%s at ACSE)",
 				AcErrString (aca->aca_reason));
 	*/
 

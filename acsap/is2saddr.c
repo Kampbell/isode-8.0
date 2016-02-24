@@ -34,10 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/is2saddr.c,v 9.0 1992
 
 /*  */
 
-struct SSAPaddr *is2saddr (host, service, is)
-char   *host,
-	   *service;
-struct isoservent *is;
+struct SSAPaddr *
+is2saddr (char *host, char *service, struct isoservent *is)
 {
 	AEI	    aei;
 	struct PSAPaddr *pa;

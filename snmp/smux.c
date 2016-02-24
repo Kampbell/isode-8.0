@@ -72,9 +72,9 @@ int	smux_init (debug)
 int	debug;
 {
 	int	    onoff;
-	register struct sockaddr_in *isock = &in_socket;
-	register struct hostent *hp;
-	register struct servent *sp;
+	struct sockaddr_in *isock = &in_socket;
+	struct hostent *hp;
+	struct servent *sp;
 	static int inited = 0;
 
 	if (!inited) {
@@ -109,7 +109,7 @@ int	debug;
 	if ((sd = start_tcp_client ((struct sockaddr_in *) NULL, 0)) == NOTOK)
 		return smuxlose (systemError, "failed", "start_tcp_client");
 
-	(void) ioctl (sd, FIONBIO, (onoff = 1, (char *) &onoff));
+	 ioctl (sd, FIONBIO, (onoff = 1, (char *) &onoff));
 
 	if (join_tcp_server (sd, isock) == NOTOK)
 		switch (errno) {
@@ -120,15 +120,15 @@ int	debug;
 			break;
 
 		default:
-			(void) smuxlose (systemError, "failed", "join_tcp_server");
-			(void) close_tcp_socket (sd);
+			 smuxlose (systemError, "failed", "join_tcp_server");
+			 close_tcp_socket (sd);
 			return (sd = NOTOK);
 		}
 
 	if (smuxalloc () == NOTOK)
 		return NOTOK;
 
-	(void) gettimeofday (&my_boottime, (struct timezone *) 0);
+	 gettimeofday (&my_boottime, (struct timezone *) 0);
 
 	return sd;
 }
@@ -141,14 +141,14 @@ static int  smuxalloc () {
 	if ((ps = ps_alloc (fdx_open)) == NULLPS || fdx_setup (ps, sd) == NOTOK) {
 		if (ps) {
 			ps_free (ps), ps = NULLPS;
-			(void) smuxlose (youLoseBig, NULLCP, "fdx_setup: %s",
+			 smuxlose (youLoseBig, NULLCP, "fdx_setup: %s",
 							 ps_error (ps -> ps_errno));
 		} else
-			(void) smuxlose (youLoseBig, NULLCP, "ps_alloc: failed");
+			 smuxlose (youLoseBig, NULLCP, "ps_alloc: failed");
 
 you_lose:
 		;
-		(void) close_tcp_socket (sd);
+		 close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
 
@@ -156,7 +156,7 @@ you_lose:
 					 (len = sizeof in_socket, &len)) == NOTOK)
 		bzero ((char *) &in_socket.sin_addr, 4);
 	if ((smux_addr = str2qb ((char *) &in_socket.sin_addr, 4, 1)) == NULL) {
-		(void) smuxlose (youLoseBig, NULLCP, "str2qb: failed");
+		 smuxlose (youLoseBig, NULLCP, "str2qb: failed");
 
 		ps_free (ps), ps = NULLPS;
 		goto you_lose;
@@ -175,7 +175,7 @@ int	commlen;
 {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
-	register struct type_SNMP_SimpleOpen *simple;
+	struct type_SNMP_SimpleOpen *simple;
 
 	if (identity == NULL
 			|| description == NULL
@@ -186,7 +186,7 @@ int	commlen;
 		return smuxlose (invalidOperation, NULLCP, "SMUX not inited");
 	if (ps == NULLPS) {
 		fd_set	mask;
-		register struct sockaddr_in *isock = &in_socket;
+		struct sockaddr_in *isock = &in_socket;
 
 		FD_ZERO (&mask);
 		FD_SET (sd, &mask);
@@ -204,8 +204,8 @@ not_yet:
 				break;
 
 			default:
-				(void) smuxlose (systemError, "failed", "join_tcp_server");
-				(void) close_tcp_socket (sd);
+				 smuxlose (systemError, "failed", "join_tcp_server");
+				 close_tcp_socket (sd);
 				return (sd = NOTOK);
 			}
 
@@ -219,12 +219,12 @@ not_yet:
 			== NULL) {
 no_mem:
 		;
-		(void) smuxlose (congestion, NULLCP, "out of memory");
+		 smuxlose (congestion, NULLCP, "out of memory");
 		if (simple)
 			free_SNMP_SimpleOpen (simple);
 
 		ps_free (ps), ps = NULLPS;
-		(void) close_tcp_socket (sd);
+		 close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
 	pdu.offset = type_SNMP_SMUX__PDUs_simple;
@@ -265,7 +265,7 @@ struct type_SNMP_SMUX__PDUs *pdu;
 
 #ifdef	DEBUG
 	if (smux_debug)
-		(void) print_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP,
+		 print_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP,
 									  (struct type_SNMP_SMUX__PDUs *) 0);
 #endif
 
@@ -284,7 +284,7 @@ out:
 
 	if (result == NOTOK) {
 		ps_free (ps), ps = NULLPS;
-		(void) close_tcp_socket (sd);
+		 close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
 
@@ -298,7 +298,7 @@ int	reason;
 {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
-	register struct type_SNMP_ClosePDU *close;
+	struct type_SNMP_ClosePDU *close;
 
 	if (ps == NULLPS)
 		return smuxlose (invalidOperation, NULLCP, "SMUX not opened");
@@ -312,7 +312,7 @@ int	reason;
 			free_SNMP_ClosePDU (close);
 
 		ps_free (ps), ps = NULLPS;
-		(void) close_tcp_socket (sd);
+		 close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
 	pdu.offset = type_SNMP_SMUX__PDUs_close;
@@ -325,7 +325,7 @@ int	reason;
 	free_SNMP_ClosePDU (close);
 
 	ps_free (ps), ps = NULLPS;
-	(void) close_tcp_socket (sd);
+	 close_tcp_socket (sd);
 	sd = NOTOK;
 
 	if (smux_pe)
@@ -342,14 +342,14 @@ int	reason;
 
 /*    REGISTER */
 
-int	smux_register (subtree, priority, operation)
+int	smux_(subtree, priority, operation)
 OID	subtree;
 int	priority,
 	operation;
 {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
-	register struct type_SNMP_RReqPDU *rreq;
+	struct type_SNMP_RReqPDU *rreq;
 
 	if (subtree == NULL)
 		return smuxlose (parameterMissing, NULLCP, "missing parameter");
@@ -368,7 +368,7 @@ no_mem:
 			free_SNMP_RReqPDU (rreq);
 
 		ps_free (ps), ps = NULLPS;
-		(void) close_tcp_socket (sd);
+		 close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
 	pdu.offset = type_SNMP_SMUX__PDUs_registerRequest;
@@ -410,20 +410,20 @@ int	secs;
 	}
 
 	if ((pe = ps2pe (ps)) == NULLPE) {
-		(void) smuxlose (youLoseBig, NULLCP, "ps2pe: %s",
+		 smuxlose (youLoseBig, NULLCP, "ps2pe: %s",
 						 ps_error (ps -> ps_errno));
 		goto out;
 	}
 
 	if (decode_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP, event) == NOTOK) {
-		(void) smuxlose (youLoseBig, NULLCP, "encode_SNMP_SMUX__PDUs: %s",
+		 smuxlose (youLoseBig, NULLCP, "encode_SNMP_SMUX__PDUs: %s",
 						 PY_pepy);
 		goto out;
 	}
 
 #ifdef	DEBUG
 	if (smux_debug)
-		(void) print_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP,
+		 print_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP,
 									  (struct type_SNMP_SMUX__PDUs *) 0);
 #endif
 
@@ -436,7 +436,7 @@ int	secs;
 
 	if (smux_pdu -> offset == type_SNMP_SMUX__PDUs_close) {
 		ps_free (ps), ps = NULLPS;
-		(void) close_tcp_socket (sd);
+		 close_tcp_socket (sd);
 		sd = NOTOK;
 	}
 	return OK;
@@ -447,7 +447,7 @@ out:
 		pe_free (pe);
 
 	ps_free (ps), ps = NULLPS;
-	(void) close_tcp_socket (sd);
+	 close_tcp_socket (sd);
 	return (sd = NOTOK);
 }
 
@@ -482,7 +482,7 @@ struct type_SNMP_VarBindList *bindings;
 	int	    result;
 	struct timeval now;
 	struct type_SNMP_SMUX__PDUs pdu;
-	register struct type_SNMP_Trap__PDU *trap;
+	struct type_SNMP_Trap__PDU *trap;
 
 	if (ps == NULLPS)
 		return smuxlose (invalidOperation, NULLCP, "SMUX not opened");
@@ -496,7 +496,7 @@ struct type_SNMP_VarBindList *bindings;
 			free_SNMP_Trap__PDU (trap);
 
 		ps_free (ps), ps = NULLPS;
-		(void) close_tcp_socket (sd);
+		 close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
 	pdu.offset = type_SNMP_SMUX__PDUs_trap;
@@ -507,7 +507,7 @@ struct type_SNMP_VarBindList *bindings;
 	trap -> generic__trap = generic;
 	trap -> specific__trap = specific;
 	trap -> time__stamp = smux_stamp;
-	(void) gettimeofday (&now, (struct timezone *) 0);
+	 gettimeofday (&now, (struct timezone *) 0);
 	trap -> time__stamp -> parm = (now.tv_sec - my_boottime.tv_sec) * 100
 								  + ((now.tv_usec - my_boottime.tv_usec)
 									 / 10000);
@@ -590,7 +590,7 @@ integer	i;
 	if (0 <= i && i < j)
 		return ap[i];
 
-	(void) sprintf (buffer, "SMUX error %s%d", ap == errors_down ? "-" : "",i);
+	 sprintf (buffer, "SMUX error %s%d", ap == errors_down ? "-" : "",i);
 
 	return buffer;
 }

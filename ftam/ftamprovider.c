@@ -144,7 +144,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	missingP (fti);
 
@@ -154,7 +154,7 @@ struct FTAMindication *fti;
 
 	result = FWaitRequestAux (fsb, secs, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -162,15 +162,15 @@ struct FTAMindication *fti;
 /*  */
 
 int	FWaitRequestAux (fsb, secs, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	secs;
 struct FTAMindication *fti;
 {
 	int     result;
 	struct PSAPdata pxs;
-	register struct PSAPdata   *px = &pxs;
+	struct PSAPdata   *px = &pxs;
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
+	struct PSAPindication *pi = &pis;
 
 	for (;;) {
 		if (fsb -> fsb_data.px_ninfo > 0) {
@@ -243,15 +243,15 @@ do_data:
 /*  */
 
 static int  doPSdata (fsb, px, fti)
-register struct ftamblk   *fsb;
-register struct PSAPdata *px;
+struct ftamblk   *fsb;
+struct PSAPdata *px;
 struct FTAMindication *fti;
 {
 	int     next;
-	register int    i;
-	register PE	pe,
+	int    i;
+	PE	pe,
 			 *pep;
-	register struct FTAMgroup  *ftg = &fti -> fti_group;
+	struct FTAMgroup  *ftg = &fti -> fti_group;
 	struct type_FTAM_PDU *pdu;
 
 	fti -> fti_type = FTI_FINISH;		/* temporary for group */
@@ -281,7 +281,7 @@ got_fadu:
 
 		default:
 			if (next > 0) {
-				register struct PSAPdata *fx = &fsb -> fsb_data;
+				struct PSAPdata *fx = &fsb -> fsb_data;
 
 copy_psdu:
 				;
@@ -306,7 +306,7 @@ copy_psdu:
 			if (!(fsb -> fsb_flags & FSB_INIT)) {
 unexpected_fadu:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 								 "unexpected FADU; state=0x%x",
 								 fsb -> fsb_state);
 				goto out;
@@ -331,7 +331,7 @@ unexpected_fadu:
 
 		fti -> fti_type = FTI_DATA;
 		{
-			register struct PSAPdata   *fx = &fti -> fti_data;
+			struct PSAPdata   *fx = &fti -> fti_data;
 
 			*fx = *px;		/* struct copy */
 		}
@@ -344,7 +344,7 @@ unexpected_fadu:
 		if ((pe = *pep) == NULLPE)
 			continue;
 		if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
-			(void) fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
+			 fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 							 "unable to parse PDU: %s", PY_pepy);
 			goto out;
 		}
@@ -368,7 +368,7 @@ do_begin:
 			if (!(fsb -> fsb_units & FUNIT_GROUPING)) {
 no_grouping:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERRFUNIT, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRFUNIT, NULLCP,
 								 "grouping not permitted");
 				goto out;
 			}
@@ -381,8 +381,8 @@ no_grouping:
 				goto unexpected_fpdu;
 			ftg -> ftg_flags |= FTG_SELECT;
 			{
-				register struct FTAMselect *ftse = &ftg -> ftg_select;
-				register struct type_FTAM_F__SELECT__request *req =
+				struct FTAMselect *ftse = &ftg -> ftg_select;
+				struct type_FTAM_F__SELECT__request *req =
 							pdu -> un.f__select__request;
 
 				if (fpm2attr (fsb, req -> attributes, &ftse -> ftse_attrs,
@@ -414,7 +414,7 @@ no_grouping:
 						== NULL) {
 no_mem:
 					;
-					(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+					 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 									 "out of memory");
 					goto out;
 				}
@@ -428,8 +428,8 @@ no_mem:
 				goto unexpected_fpdu;
 			ftg -> ftg_flags |= FTG_SELECT;
 			{
-				register struct FTAMselect *ftse = &ftg -> ftg_select;
-				register struct type_FTAM_F__SELECT__response *rsp =
+				struct FTAMselect *ftse = &ftg -> ftg_select;
+				struct type_FTAM_F__SELECT__response *rsp =
 							pdu -> un.f__select__response;
 
 				ftse -> ftse_state = rsp -> state__result
@@ -463,14 +463,14 @@ no_mem:
 			if (!(fsb -> fsb_units & FUNIT_LIMITED)) {
 no_limited:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "limited file management not permitted");
 				goto out;
 			}
 			ftg -> ftg_flags |= FTG_CREATE;
 			{
-				register struct FTAMcreate *ftce = &ftg -> ftg_create;
-				register struct type_FTAM_F__CREATE__request *req =
+				struct FTAMcreate *ftce = &ftg -> ftg_create;
+				struct type_FTAM_F__CREATE__request *req =
 							pdu -> un.f__create__request;
 
 				ftce -> ftce_override = req -> override;
@@ -480,7 +480,7 @@ no_limited:
 				if ((ftce -> ftce_attrs.fa_present &
 						(FA_FILENAME | FA_ACTIONS | FA_CONTENTS))
 						!= (FA_FILENAME | FA_ACTIONS | FA_CONTENTS)) {
-					(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+					 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 									 "missing mandatory parameters in F-CREATE-request");
 					goto out;
 				}
@@ -490,7 +490,7 @@ no_limited:
 				if (!(fsb -> fsb_attrs & FATTR_SECURITY))
 					ftce -> ftce_attrs.fa_present &= ~FA_SECURITY;
 				if (req->create__password) {/* both choices are qbufs... */
-					register struct qbuf *qb =
+					struct qbuf *qb =
 								req -> create__password -> un.graphic;
 
 					if ((ftce -> ftce_create = qb2str (qb)) == NULL)
@@ -533,8 +533,8 @@ no_limited:
 				goto no_limited;
 			ftg -> ftg_flags |= FTG_CREATE;
 		{
-				register struct FTAMcreate *ftce = &ftg -> ftg_create;
-				register struct type_FTAM_F__CREATE__response *rsp =
+				struct FTAMcreate *ftce = &ftg -> ftg_create;
+				struct type_FTAM_F__CREATE__response *rsp =
 							pdu -> un.f__create__response;
 
 				ftce -> ftce_state = rsp -> state__result
@@ -573,8 +573,8 @@ no_limited:
 				goto no_limited;
 			ftg -> ftg_flags |= FTG_RDATTR;
 		{
-				register struct FTAMreadattr  *ftra = &ftg -> ftg_readattr;
-				register struct type_FTAM_F__READ__ATTRIB__request *req =
+				struct FTAMreadattr  *ftra = &ftg -> ftg_readattr;
+				struct type_FTAM_F__READ__ATTRIB__request *req =
 							pdu -> un.f__read__attrib__request;
 
 				if (fpm2bits (fsb, fname_pairs, req,
@@ -597,8 +597,8 @@ no_limited:
 				goto no_limited;
 			ftg -> ftg_flags |= FTG_RDATTR;
 		{
-				register struct FTAMreadattr  *ftra = &ftg -> ftg_readattr;
-				register struct type_FTAM_F__READ__ATTRIB__response *rsp =
+				struct FTAMreadattr  *ftra = &ftg -> ftg_readattr;
+				struct type_FTAM_F__READ__ATTRIB__response *rsp =
 							pdu -> un.f__read__attrib__response;
 
 				ftra -> ftra_action = rsp -> action__result
@@ -629,21 +629,21 @@ no_limited:
 			if (!(fsb -> fsb_units & FUNIT_ENHANCED)) {
 no_enhanced:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "enhanced file management not permitted");
 				goto out;
 			}
 			ftg -> ftg_flags |= FTG_CHATTR;
 			{
-				register struct FTAMchngattr  *ftca = &ftg -> ftg_chngattr;
-				register struct type_FTAM_F__CHANGE__ATTRIB__request *req =
+				struct FTAMchngattr  *ftca = &ftg -> ftg_chngattr;
+				struct type_FTAM_F__CHANGE__ATTRIB__request *req =
 							pdu -> un.f__change__attrib__request;
 
 				if (fpm2attr (fsb, req, &ftca -> ftca_attrs, fti) == NOTOK)
 					goto out;
 				if (ftca -> ftca_attrs.fa_present
 						& ftca -> ftca_attrs.fa_novalue) {
-					(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+					 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 									 "attributes can not be changed to no value available");
 					goto out;
 				}
@@ -664,8 +664,8 @@ no_enhanced:
 				goto no_enhanced;
 			ftg -> ftg_flags |= FTG_CHATTR;
 			{
-				register struct FTAMchngattr  *ftca = &ftg -> ftg_chngattr;
-				register struct type_FTAM_F__CHANGE__ATTRIB__response *rsp =
+				struct FTAMchngattr  *ftca = &ftg -> ftg_chngattr;
+				struct type_FTAM_F__CHANGE__ATTRIB__response *rsp =
 							pdu -> un.f__change__attrib__response;
 
 				ftca -> ftca_action = rsp -> action__result
@@ -699,8 +699,8 @@ no_enhanced:
 				goto unexpected_fpdu;
 			ftg -> ftg_flags |= FTG_OPEN;
 		{
-				register struct FTAMopen *ftop = &ftg -> ftg_open;
-				register struct type_FTAM_F__OPEN__request *req =
+				struct FTAMopen *ftop = &ftg -> ftg_open;
+				struct type_FTAM_F__OPEN__request *req =
 							pdu -> un.f__open__request;
 
 				if (req -> processing__mode) {
@@ -712,7 +712,7 @@ no_enhanced:
 					ftop -> ftop_mode = FA_PERM_READ;
 				if (req -> contents__type -> offset
 						== choice_FTAM_0_proposed) {
-					register struct type_FTAM_Contents__Type__Attribute
+					struct type_FTAM_Contents__Type__Attribute
 							*proposed = req -> contents__type -> un.proposed;
 
 					ftop -> ftop_contents =
@@ -746,10 +746,10 @@ no_enhanced:
 				goto unexpected_fpdu;
 			ftg -> ftg_flags |= FTG_OPEN;
 		{
-				register struct FTAMopen *ftop = &ftg -> ftg_open;
-				register struct type_FTAM_F__OPEN__response *rsp =
+				struct FTAMopen *ftop = &ftg -> ftg_open;
+				struct type_FTAM_F__OPEN__response *rsp =
 							pdu -> un.f__open__response;
-				register struct type_FTAM_Contents__Type__Attribute
+				struct type_FTAM_Contents__Type__Attribute
 						*proposed = rsp -> contents__type;
 
 				ftop -> ftop_state = rsp -> state__result
@@ -798,8 +798,8 @@ do_close:
 			ftg -> ftg_flags |= FTG_CLOSE;
 		{
 				/* F-CLOSE-response is identical... */
-				register struct FTAMclose *ftcl = &ftg -> ftg_close;
-				register struct type_FTAM_F__CLOSE__request *req =
+				struct FTAMclose *ftcl = &ftg -> ftg_close;
+				struct type_FTAM_F__CLOSE__request *req =
 							pdu -> un.f__close__request;
 
 				ftcl -> ftcl_action = req -> action__result
@@ -824,8 +824,8 @@ do_close:
 				goto unexpected_fpdu;
 			ftg -> ftg_flags |= FTG_DESELECT;
 		{
-				register struct FTAMdeselect  *ftde = &ftg -> ftg_deselect;
-				register struct type_FTAM_F__DESELECT__request *req =
+				struct FTAMdeselect  *ftde = &ftg -> ftg_deselect;
+				struct type_FTAM_F__DESELECT__request *req =
 							pdu -> un.f__deselect__request;
 
 				if (req
@@ -841,8 +841,8 @@ do_close:
 				goto unexpected_fpdu;
 			ftg -> ftg_flags |= FTG_DESELECT;
 		{
-				register struct FTAMdeselect  *ftde = &ftg -> ftg_deselect;
-				register struct type_FTAM_F__DESELECT__response *rsp =
+				struct FTAMdeselect  *ftde = &ftg -> ftg_deselect;
+				struct type_FTAM_F__DESELECT__response *rsp =
 							pdu -> un.f__deselect__response;
 
 				ftde -> ftde_action = rsp -> action__result
@@ -873,8 +873,8 @@ do_close:
 				goto no_limited;
 			ftg -> ftg_flags |= FTG_DELETE;
 		{
-				register struct FTAMdelete  *ftxe = &ftg -> ftg_delete;
-				register struct type_FTAM_F__DELETE__request *req =
+				struct FTAMdelete  *ftxe = &ftg -> ftg_delete;
+				struct type_FTAM_F__DELETE__request *req =
 							pdu -> un.f__delete__request;
 
 				if (req
@@ -892,8 +892,8 @@ do_close:
 				goto no_limited;
 			ftg -> ftg_flags |= FTG_DELETE;
 		{
-				register struct FTAMdelete  *ftxe = &ftg -> ftg_delete;
-				register struct type_FTAM_F__DELETE__response *rsp =
+				struct FTAMdelete  *ftxe = &ftg -> ftg_delete;
+				struct type_FTAM_F__DELETE__response *rsp =
 							pdu -> un.f__delete__response;
 
 				ftxe -> ftxe_action = rsp -> action__result
@@ -942,14 +942,14 @@ do_end:
 			if (!(fsb -> fsb_units & FUNIT_ACCESS)) {
 no_access:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "file access not permitted");
 				goto out;
 			}
 			fti -> fti_type = FTI_ACCESS;
 			{
-				register struct FTAMaccess *ftac = &fti -> fti_access;
-				register struct type_FTAM_F__LOCATE__request *req =
+				struct FTAMaccess *ftac = &fti -> fti_access;
+				struct type_FTAM_F__LOCATE__request *req =
 							pdu -> un.f__locate__request;
 
 				ftac -> ftac_operation = FA_OPS_LOCATE;
@@ -972,8 +972,8 @@ no_access:
 				goto no_access;
 			fti -> fti_type = FTI_ACCESS;
 		{
-				register struct FTAMaccess *ftac = &fti -> fti_access;
-				register struct type_FTAM_F__LOCATE__response *rsp =
+				struct FTAMaccess *ftac = &fti -> fti_access;
+				struct type_FTAM_F__LOCATE__response *rsp =
 							pdu -> un.f__locate__response;
 
 				ftac -> ftac_operation = FA_OPS_LOCATE;
@@ -1004,8 +1004,8 @@ no_access:
 				goto no_access;
 			fti -> fti_type = FTI_ACCESS;
 		{
-				register struct FTAMaccess *ftac = &fti -> fti_access;
-				register struct type_FTAM_F__ERASE__request *req =
+				struct FTAMaccess *ftac = &fti -> fti_access;
+				struct type_FTAM_F__ERASE__request *req =
 							pdu -> un.f__erase__request;
 
 				ftac -> ftac_operation = FA_OPS_ERASE;
@@ -1025,8 +1025,8 @@ no_access:
 				goto no_access;
 			fti -> fti_type = FTI_ACCESS;
 		{
-				register struct FTAMaccess *ftac = &fti -> fti_access;
-				register struct type_FTAM_F__ERASE__response *rsp =
+				struct FTAMaccess *ftac = &fti -> fti_access;
+				struct type_FTAM_F__ERASE__response *rsp =
 							pdu -> un.f__erase__response;
 
 				ftac -> ftac_operation = FA_OPS_ERASE;
@@ -1048,14 +1048,14 @@ no_access:
 					|| fsb -> fsb_state != FSB_DATAIDLE)
 				goto unexpected_fpdu;
 			if (!(fsb -> fsb_units & FUNIT_READ)) {
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "reading not permitted");
 				goto out;
 			}
 			fti -> fti_type = FTI_READWRITE;
 			{
-				register struct FTAMreadwrite *ftrw = &fti -> fti_readwrite;
-				register struct type_FTAM_F__READ__request *req =
+				struct FTAMreadwrite *ftrw = &fti -> fti_readwrite;
+				struct type_FTAM_F__READ__request *req =
 							pdu -> un.f__read__request;
 
 				ftrw -> ftrw_operation = FA_OPS_READ;
@@ -1071,7 +1071,7 @@ no_access:
 						ftrw -> ftrw_level =
 							req -> access__context -> level__number;
 					else {
-						(void) fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
+						 fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 										 "level-number missing for access-context FL");
 						goto out;
 					}
@@ -1091,14 +1091,14 @@ no_access:
 					|| fsb -> fsb_state != FSB_DATAIDLE)
 				goto unexpected_fpdu;
 			if (!(fsb -> fsb_units & FUNIT_WRITE)) {
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "writing not permitted");
 				goto out;
 			}
 			fti -> fti_type = FTI_READWRITE;
 			{
-				register struct FTAMreadwrite *ftrw = &fti -> fti_readwrite;
-				register struct type_FTAM_F__WRITE__request *req =
+				struct FTAMreadwrite *ftrw = &fti -> fti_readwrite;
+				struct type_FTAM_F__WRITE__request *req =
 							pdu -> un.f__write__request;
 
 				ftrw -> ftrw_operation =
@@ -1138,7 +1138,7 @@ no_access:
 			default:
 unexpected_data_end:
 				;
-				(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 								 "unexpected data end; state=0x%x",
 								 fsb -> fsb_state);
 				goto out;
@@ -1148,8 +1148,8 @@ unexpected_data_end:
 
 			fti -> fti_type = FTI_DATAEND;
 			{
-				register struct FTAMdataend *ftda = &fti -> fti_dataend;
-				register struct type_FTAM_F__DATA__END__request *req =
+				struct FTAMdataend *ftda = &fti -> fti_dataend;
+				struct type_FTAM_F__DATA__END__request *req =
 							pdu -> un.f__data__end__request;
 
 				ftda -> ftda_action = req -> action__result
@@ -1190,8 +1190,8 @@ do_cancel:
 			fti -> fti_type = FTI_CANCEL;
 			{
 				/* F-CANCEL-response is identical... */
-				register struct FTAMcancel *ftcn = &fti -> fti_cancel;
-				register struct type_FTAM_F__CANCEL__request *req =
+				struct FTAMcancel *ftcn = &fti -> fti_cancel;
+				struct type_FTAM_F__CANCEL__request *req =
 							pdu -> un.f__cancel__request;
 
 				ftcn -> ftcn_action = req -> action__result
@@ -1233,8 +1233,8 @@ do_cancel:
 			}
 			fti -> fti_type = FTI_TRANSEND;
 			{
-				register struct FTAMtransend *ftre = &fti -> fti_transend;
-				register struct type_FTAM_F__TRANSFER__END__request *req =
+				struct FTAMtransend *ftre = &fti -> fti_transend;
+				struct type_FTAM_F__TRANSFER__END__request *req =
 							pdu -> un.f__transfer__end__request;
 
 				if (req
@@ -1252,8 +1252,8 @@ do_cancel:
 				goto unexpected_fpdu;
 			fti -> fti_type = FTI_TRANSEND;
 		{
-				register struct FTAMtransend *ftre = &fti -> fti_transend;
-				register struct type_FTAM_F__TRANSFER__END__response *rsp =
+				struct FTAMtransend *ftre = &fti -> fti_transend;
+				struct type_FTAM_F__TRANSFER__END__response *rsp =
 							pdu -> un.f__transfer__end__response;
 
 				ftre -> ftre_action = rsp -> action__result
@@ -1276,7 +1276,7 @@ do_cancel:
 		default:
 unexpected_fpdu:
 			;
-			(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+			 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 							 "FPDU mismatch; expecting one of 0x%x, found tag %s/%d/0x%x; state=0x%x",
 							 next, pe_classlist[pe -> pe_class], pe -> pe_form,
 							 pe -> pe_id, fsb -> fsb_state);
@@ -1288,7 +1288,7 @@ unexpected_fpdu:
 	}
 
 	if (next) {
-		(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+		 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 						 "missing FPDU(s) in group; expecting one of 0x%x next",
 						 next);
 		goto out;
@@ -1323,7 +1323,7 @@ unexpected_fpdu:
 
 			fsbtrace (fsb, (fsb -> fsb_fd, "resolving CANCEL collision",
 							NULLCP, NULLPE, -1));
-			(void) FCancelResponseAux (fsb, fsb -> fsb_cancelaction,
+			 FCancelResponseAux (fsb, fsb -> fsb_cancelaction,
 									   fsb -> fsb_cancelshared,
 									   fsb -> fsb_canceldiags,
 									   fsb -> fsb_cancelndiag,
@@ -1355,7 +1355,7 @@ unexpected_fpdu:
 
 	if (!(fsb -> fsb_flags & FSB_INIT)
 			&& ftg -> ftg_threshold != px -> px_ninfo - 2) {
-		(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+		 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 						 "threshold mismatch; expecting %d, found %d",
 						 px -> px_ninfo - 2, ftg -> ftg_threshold);
 		goto out;
@@ -1380,7 +1380,7 @@ unexpected_fpdu:
 
 			if (fsb -> fsb_flags & FSB_INIT) {
 				if (ftg -> ftg_flags & ~fsb -> fsb_group) {
-					(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+					 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 									 "management reply mismatch; expecting 0x%x, found 0x%x",
 									 fsb -> fsb_group, ftg -> ftg_flags);
 					goto out;
@@ -1422,7 +1422,7 @@ unexpected_fpdu:
 				int	state;
 
 				if (ftg -> ftg_flags & ~fsb -> fsb_group) {
-					(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+					 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 									 "bulk transfer reply mismatch; expecting 0x%x found 0x%x",
 									 fsb -> fsb_group, ftg -> ftg_flags);
 					goto out;
@@ -1472,7 +1472,7 @@ unexpected_fpdu:
 			if (fsb -> fsb_state != FSB_BULKEND)
 				goto unexpected_group;
 			if (ftg -> ftg_flags & ~fsb -> fsb_group) {
-				(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+				 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 								 "bulk transfer reply mismatch; expecting 0x%x found 0x%x",
 								 fsb -> fsb_group, ftg -> ftg_flags);
 				goto out;
@@ -1490,7 +1490,7 @@ unexpected_fpdu:
 
 unexpected_group:
 	;
-	(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+	 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 					 "unexpected group type 0x%x; state=0x%x", ftg -> ftg_flags,
 					 fsb -> fsb_state);
 	goto out;
@@ -1540,11 +1540,11 @@ out:
 /*  */
 
 static int  doPStokens (fsb, pt, fti)
-register struct ftamblk   *fsb;
-register struct PSAPtoken *pt;
+struct ftamblk   *fsb;
+struct PSAPtoken *pt;
 struct FTAMindication *fti;
 {
-	(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+	 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 					 "unexpected token indication (0x%x)", pt -> pt_type);
 	PTFREE (pt);
 
@@ -1555,13 +1555,13 @@ struct FTAMindication *fti;
 /*  */
 
 static int  doPSsync (fsb, pn, fti)
-register struct ftamblk   *fsb;
-register struct PSAPsync *pn;
+struct ftamblk   *fsb;
+struct PSAPsync *pn;
 struct FTAMindication *fti;
 {
-	register int i;
+	int i;
 	struct PSAPdata pxs;
-	register struct PSAPdata *px = &pxs;
+	struct PSAPdata *px = &pxs;
 
 	switch (pn -> pn_type) {
 	case SN_RESETCNF:
@@ -1571,7 +1571,7 @@ struct FTAMindication *fti;
 			break;		/* else fall */
 
 	default:
-		(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+		 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 						 "unexpected sync indication (0x%x)", pn -> pn_type);
 		PNFREE (pn);
 
@@ -1602,7 +1602,7 @@ struct FTAMindication *fti;
 #undef	dotoken
 
 	if (pn -> pn_type == SN_RESETCNF && pn -> pn_ninfo == 0) {
-		register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+		struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 		bzero ((char *) ftcn, sizeof *ftcn);
 		ftcn -> ftcn_action = FACTION_SUCCESS;/* what else can be done? */
@@ -1628,11 +1628,11 @@ struct FTAMindication *fti;
 /*  */
 
 static int  doPSactivity (fsb, pv, fti)
-register struct ftamblk   *fsb;
-register struct PSAPactivity *pv;
+struct ftamblk   *fsb;
+struct PSAPactivity *pv;
 struct FTAMindication *fti;
 {
-	(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+	 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 					 "unexpected activity indication (0x%x)", pv -> pv_type);
 	PVFREE (pv);
 
@@ -1643,11 +1643,11 @@ struct FTAMindication *fti;
 /*  */
 
 static int  doPSreport (fsb, pp, fti)
-register struct ftamblk   *fsb;
-register struct PSAPreport *pp;
+struct ftamblk   *fsb;
+struct PSAPreport *pp;
 struct FTAMindication *fti;
 {
-	(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
+	 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 					 "unexpected exception report indication (0x%x)", pp -> pp_peer);
 	PPFREE (pp);
 
@@ -1658,42 +1658,42 @@ struct FTAMindication *fti;
 /*  */
 
 static int  doPSfinish (fsb, pf, fti)
-register struct ftamblk   *fsb;
-register struct PSAPfinish *pf;
+struct ftamblk   *fsb;
+struct PSAPfinish *pf;
 struct FTAMindication *fti;
 {
 	PE	    pe;
 	struct AcSAPindication  acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
-	register struct AcSAPfinish *acf = &acis.aci_finish;
+	struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPfinish *acf = &acis.aci_finish;
 	struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__TERMINATE__request *req;
+	struct type_FTAM_F__TERMINATE__request *req;
 
 	pdu = NULL;
 	if ((fsb -> fsb_flags & FSB_INIT) || fsb -> fsb_state != FSB_INITIALIZED) {
-		(void) fpktlose (fsb, fti, FS_ACS_MGMT, NULLCP,
+		 fpktlose (fsb, fti, FS_ACS_MGMT, NULLCP,
 						 "association management botched");
 		PFFREE (pf);
 		goto out1;
 	}
 
 	if (AcFINISHser (fsb -> fsb_fd, pf, &acis) == NOTOK) {
-		(void) acs2ftamlose (fsb, fti, "AcFINISHser", aca);
+		 acs2ftamlose (fsb, fti, "AcFINISHser", aca);
 		goto out1;
 	}
 
 	if (acf -> acf_ninfo < 1 || (pe = acf -> acf_info[0]) == NULLPE) {
-		(void) fpktlose (fsb, fti, FS_PRO_ERR, NULLCP, NULLCP);
+		 fpktlose (fsb, fti, FS_PRO_ERR, NULLCP, NULLCP);
 		goto out2;
 	}
 
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
-		(void) fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
+		 fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 						 "unable to parse PDU: %s", PY_pepy);
 		goto out2;
 	}
 	if (pdu -> offset != type_FTAM_PDU_f__terminate__request) {
-		(void) fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
+		 fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 						 "expecting F-TERMINATE-request, got %d",
 						 pdu -> offset);
 		goto out2;
@@ -1707,7 +1707,7 @@ struct FTAMindication *fti;
 
 	fti -> fti_type = FTI_FINISH;
 	{
-		register struct FTAMfinish *ftf = &fti -> fti_finish;
+		struct FTAMfinish *ftf = &fti -> fti_finish;
 
 		bzero ((char *) ftf, sizeof *ftf);
 		if (req && fpm2shared (fsb, req, &ftf -> ftf_sharedASE, fti) == NOTOK)
@@ -1732,18 +1732,18 @@ out1:
 /*  */
 
 static int  doPSabort (fsb, pa, fti)
-register struct ftamblk *fsb;
-register struct PSAPabort *pa;
+struct ftamblk *fsb;
+struct PSAPabort *pa;
 struct FTAMindication *fti;
 {
 	struct AcSAPindication  acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPabort *aca = &acis.aci_abort;
 
 	if (!pa -> pa_peer && pa -> pa_reason == PC_TIMER)
 		return ftamlose (fti, FS_PRO_TIMEOUT, 0, NULLCP, NULLCP);
 
 	if (AcABORTser (fsb -> fsb_fd, pa, &acis) == NOTOK) {
-		(void) acs2ftamlose (fsb, fti, "AcABORTser", aca);
+		 acs2ftamlose (fsb, fti, "AcABORTser", aca);
 		fsb -> fsb_fd = NOTOK;
 		freefsblk (fsb);
 
@@ -1757,12 +1757,12 @@ struct FTAMindication *fti;
 
 static int  psDATAser (sd, px)
 int	sd;
-register struct PSAPdata *px;
+struct PSAPdata *px;
 {
 	IFP	    handler;
-	register struct ftamblk   *fsb;
+	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
@@ -1776,12 +1776,12 @@ register struct PSAPdata *px;
 
 static int  psTOKENser (sd, pt)
 int	sd;
-register struct PSAPtoken *pt;
+struct PSAPtoken *pt;
 {
 	IFP	    handler;
-	register struct ftamblk   *fsb;
+	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
@@ -1795,12 +1795,12 @@ register struct PSAPtoken *pt;
 
 static int  psSYNCser (sd, pn)
 int	sd;
-register struct PSAPsync *pn;
+struct PSAPsync *pn;
 {
 	IFP	    handler;
-	register struct ftamblk   *fsb;
+	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
@@ -1814,12 +1814,12 @@ register struct PSAPsync *pn;
 
 static int  psACTIVITYser (sd, pv)
 int	sd;
-register struct PSAPactivity *pv;
+struct PSAPactivity *pv;
 {
 	IFP	    handler;
-	register struct ftamblk   *fsb;
+	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
@@ -1833,12 +1833,12 @@ register struct PSAPactivity *pv;
 
 static int  psREPORTser (sd, pp)
 int	sd;
-register struct PSAPreport *pp;
+struct PSAPreport *pp;
 {
 	IFP	    handler;
-	register struct ftamblk   *fsb;
+	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
@@ -1855,9 +1855,9 @@ int	sd;
 struct PSAPfinish *pf;
 {
 	IFP	    handler;
-	register struct ftamblk   *fsb;
+	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
@@ -1871,12 +1871,12 @@ struct PSAPfinish *pf;
 
 static int  psABORTser (sd, pa)
 int	sd;
-register struct PSAPabort *pa;
+struct PSAPabort *pa;
 {
 	IFP	    handler;
-	register struct ftamblk   *fsb;
+	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
@@ -1897,9 +1897,9 @@ IFP	indication;
 struct FTAMindication *fti;
 {
 	SBV     smask;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 	struct PSAPindication   pis;
-	register struct PSAPabort  *pa = &pis.pi_abort;
+	struct PSAPabort  *pa = &pis.pi_abort;
 
 	missingP (fti);
 
@@ -1919,17 +1919,17 @@ struct FTAMindication *fti;
 		fsb -> fsb_flags &= ~FSB_ASYN;
 		switch (pa -> pa_reason) {
 		case PC_WAITING:
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return ftamlose (fti, FS_GEN_WAITING, 0, NULLCP, NULLCP);
 
 		default:
-			(void) ps2ftamlose (fsb, fti, "PSetIndications", pa);
+			 ps2ftamlose (fsb, fti, "PSetIndications", pa);
 			freefsblk (fsb);
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return NOTOK;
 		}
 	}
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }
@@ -1939,10 +1939,10 @@ struct FTAMindication *fti;
 /*    AcSAP interface */
 
 int	acs2ftamlose (fsb, fti, event, aca)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 struct FTAMindication *fti;
 char   *event;
-register struct AcSAPabort *aca;
+struct AcSAPabort *aca;
 {
 	int     observer,
 			reason;
@@ -1951,10 +1951,10 @@ register struct AcSAPabort *aca;
 
 	if (fsb && fsb -> fsb_trace && event) {
 		cp = buffer;
-		(void) sprintf (cp, "%s: %s", event, AcErrString (aca -> aca_reason));
+		 sprintf (cp, "%s: %s", event, AcErrString (aca -> aca_reason));
 		if (aca -> aca_cc > 0) {
 			cp += strlen (cp);
-			(void) sprintf (cp, " [%*.*s]", aca -> aca_cc, aca -> aca_cc,
+			 sprintf (cp, " [%*.*s]", aca -> aca_cc, aca -> aca_cc,
 							aca -> aca_data);
 		}
 
@@ -1965,16 +1965,16 @@ register struct AcSAPabort *aca;
 	switch (aca -> aca_reason) {
 	case ACS_ADDRESS:
 		reason = FS_PRO_LOWADDR;
-		(void) sprintf (cp = buffer, " (%s)", AcErrString (ACS_ADDRESS));
+		 sprintf (cp = buffer, " (%s)", AcErrString (ACS_ADDRESS));
 		break;
 
 	case ACS_REFUSED:
 		reason = FS_PRO_LOWFAIL;
-		(void) sprintf (cp = buffer, " (%s)", AcErrString (ACS_REFUSED));
+		 sprintf (cp = buffer, " (%s)", AcErrString (ACS_REFUSED));
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at association control)",
+		 sprintf (cp = buffer, " (%s at association control)",
 						AcErrString (aca -> aca_reason));
 	case ACS_CONGEST:
 	case ACS_PARAMETER:
@@ -2004,29 +2004,29 @@ register struct AcSAPabort *aca;
 /*  */
 
 int	acs2ftamabort (fsb, aca, fti)
-register struct ftamblk *fsb;
-register struct AcSAPabort *aca;
+struct ftamblk *fsb;
+struct AcSAPabort *aca;
 struct FTAMindication *fti;
 {
 	int     peer;
 	PE	    pe;
-	register struct FTAMabort  *fta = &fti -> fti_abort;
+	struct FTAMabort  *fta = &fti -> fti_abort;
 	struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__U__ABORT__request *req;
+	struct type_FTAM_F__U__ABORT__request *req;
 
 	pdu = NULL;
 	if (aca -> aca_source != ACA_USER) {
-		(void) acs2ftamlose (fsb, fti, NULLCP, aca);
+		 acs2ftamlose (fsb, fti, NULLCP, aca);
 		goto out;
 	}
 
 	if (aca -> aca_ninfo < 1 || (pe = aca -> aca_info[0]) == NULLPE) {
-		(void) ftamlose (fti, FS_PRO_ERR, 1, NULLCP, NULLCP);
+		 ftamlose (fti, FS_PRO_ERR, 1, NULLCP, NULLCP);
 		goto out;
 	}
 
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_PRO_ERRMSG, 1, NULLCP,
+		 ftamlose (fti, FS_PRO_ERRMSG, 1, NULLCP,
 						 "unable to parse PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -2042,7 +2042,7 @@ struct FTAMindication *fti;
 		break;
 
 	default:
-		(void) ftamlose (fti, FS_PRO_ERRPROC, 1, NULLCP,
+		 ftamlose (fti, FS_PRO_ERRPROC, 1, NULLCP,
 						 "expecting F-{U,P}-ABORT-request, got %d",
 						 pdu -> offset);
 		goto out;
@@ -2058,7 +2058,7 @@ struct FTAMindication *fti;
 	fta -> fta_action = req -> action__result ? req -> action__result -> parm
 						:int_FTAM_Action__Result_success;
 	if (req -> diagnostic)
-		(void) fpm2diag (fsb, req -> diagnostic, fta -> fta_diags,
+		 fpm2diag (fsb, req -> diagnostic, fta -> fta_diags,
 						 &fta -> fta_ndiag, fti);
 
 out:
@@ -2076,10 +2076,10 @@ out:
 /*    PSAP interface */
 
 int	ps2ftamlose (fsb, fti, event, pa)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 struct FTAMindication *fti;
 char   *event;
-register struct PSAPabort *pa;
+struct PSAPabort *pa;
 {
 	int     observer,
 			reason;
@@ -2088,10 +2088,10 @@ register struct PSAPabort *pa;
 
 	if (fsb && fsb -> fsb_trace && event) {
 		cp = buffer;
-		(void) sprintf (cp, "%s: %s", event, PErrString (pa -> pa_reason));
+		 sprintf (cp, "%s: %s", event, PErrString (pa -> pa_reason));
 		if (pa -> pa_cc > 0) {
 			cp += strlen (cp);
-			(void) sprintf (cp, " [%*.*s]", pa -> pa_cc, pa -> pa_cc,
+			 sprintf (cp, " [%*.*s]", pa -> pa_cc, pa -> pa_cc,
 							pa -> pa_data);
 		}
 
@@ -2103,7 +2103,7 @@ register struct PSAPabort *pa;
 	case PC_PARAMETER:
 	case PC_OPERATION:
 	default:
-		(void) sprintf (cp = buffer, " (%s at presentation)",
+		 sprintf (cp = buffer, " (%s at presentation)",
 						PErrString (pa -> pa_reason));
 	case PC_CONGEST:
 	case PC_SESSION:
@@ -2131,7 +2131,7 @@ register struct PSAPabort *pa;
 /*    INTERNAL */
 
 struct ftamblk *newfsblk () {
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	fsb = (struct ftamblk  *) calloc (1, sizeof *fsb);
 	if (fsb == NULL)
@@ -2152,11 +2152,11 @@ struct ftamblk *newfsblk () {
 /*  */
 
 freefsblk (fsb)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 {
-	register int    i;
-	register struct PSAPcontext *pp;
-	register struct FTAMcontent *fcont;
+	int    i;
+	struct PSAPcontext *pp;
+	struct FTAMcontent *fcont;
 
 	if (fsb == NULL)
 		return;
@@ -2167,7 +2167,7 @@ register struct ftamblk *fsb;
 		fsbtrace (fsb, (fsb -> fsb_fd, "A-ABORT.REQUEST(discard)",
 						NULLCP, NULLPE, 0));
 
-		(void) AcUAbortRequest (fsb -> fsb_fd, NULLPEP, 0, &acis);
+		 AcUAbortRequest (fsb -> fsb_fd, NULLPEP, 0, &acis);
 	}
 
 	if (fsb -> fsb_context)
@@ -2203,9 +2203,9 @@ register struct ftamblk *fsb;
 /*  */
 
 struct ftamblk   *findfsblk (sd)
-register int sd;
+int sd;
 {
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	if (once_only == 0)
 		return NULL;

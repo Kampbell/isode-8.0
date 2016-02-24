@@ -53,11 +53,12 @@ QCardinal requests_made = 0, requests_failed = 0;
 
 jmp_buf env;
 
-void interact() {
+void 
+interact  {
 	char commandline[LINESIZE];
 
-	(void) setjmp(env);
-	(void) signal(SIGINT, intquit);
+	 setjmp(env);
+	 signal(SIGINT, intquit);
 
 	for (;;) {
 		uprint(":- ");
@@ -65,11 +66,12 @@ void interact() {
 		if (gets(commandline) == NULL) quitfn("");
 		callcommand(commandline);
 
-		(void) signal(SIGINT, intquit);
+		 signal(SIGINT, intquit);
 	}
 }
 
-void intquit() {
+void 
+intquit  {
 	char input[LINESIZE];
 
 	while (1) {
@@ -87,19 +89,19 @@ void intquit() {
 }
 
 /* ARGSUSED */
-void quitfn(params)
-char *params;
+void 
+quitfn (char *params)
 {
 	uprint("\nOK, exiting.\n");
 	exit(0);
 }
 
-void ufnsearch(params)
-char *params;
+void 
+ufnsearch (char *params)
 {
 	char *str;
 
-	(void) signal(SIGINT, abort_command);
+	 signal(SIGINT, abort_command);
 
 	/* Zero current list */
 	dn_list_free(&currentlist);
@@ -128,7 +130,7 @@ char *params;
 	ufnresolve(params, NULLEntryList, unknown);
 
 	if (requests_failed > 0) {
-		(void) sprintf(message,
+		 sprintf(message,
 					   "%d requests were sent of which %d failed.\n",
 					   requests_made,
 					   requests_failed);
@@ -145,7 +147,7 @@ char *params;
 		break;
 
 	default:
-		(void) sprintf(message, "\nFound %d good matches.\n", currlistsize);
+		 sprintf(message, "\nFound %d good matches.\n", currlistsize);
 		uprint(message);
 
 		print_entry_list(currentlist);
@@ -181,7 +183,7 @@ known is_leaf;
 
 	if (do_ufn_resolve(baselist, ufname, is_leaf, &request_id) == QERR_ok) {
 		request_state request_status = RQ_processing;
-		(void) signal(SIGINT, abort_query);
+		 signal(SIGINT, abort_query);
 
 		do {
 			do {
@@ -198,7 +200,7 @@ known is_leaf;
 								(struct timeval *) NULL) <= 0);
 			} while (directory_wait(&request_list) == 0);
 
-			(void) signal(SIGINT, abort_command);
+			 signal(SIGINT, abort_command);
 
 			results = get_ufn_results(request_id);
 			free((char *) request_list);
@@ -224,7 +226,7 @@ known is_leaf;
 				break;
 
 			case PoorComplete:
-				(void) sprintf(message,
+				 sprintf(message,
 							   "Made poor matches for `%s'.\n",
 							   results->resolved_part);
 
@@ -256,7 +258,7 @@ known is_leaf;
 				break;
 
 			case PoorPartial:
-				(void) sprintf(message,
+				 sprintf(message,
 							   "Made poor matches for `%s'.\n",
 							   results->resolved_part);
 
@@ -282,8 +284,8 @@ known is_leaf;
 	_request_complete(request_id);
 }
 
-void readentry(params)
-char *params;
+void 
+readentry (char *params)
 {
 	fd_set association, writefds, exceptfds;
 	int assoc_des;
@@ -294,7 +296,7 @@ char *params;
 	readResults results;
 	QCardinal *request_list;
 
-	(void) signal(SIGINT, abort_command);
+	 signal(SIGINT, abort_command);
 
 	if (currentlist == NULLEntryList) {
 		uprint("No current entry list!\n");
@@ -340,7 +342,7 @@ char *params;
 		return;
 	}
 
-	(void) signal(SIGINT, abort_query);
+	 signal(SIGINT, abort_query);
 
 	do {
 		do {
@@ -356,7 +358,7 @@ char *params;
 						(struct timeval *) NULL) <= 0);
 	} while (directory_wait(&request_list) == 0);
 
-	(void) signal(SIGINT, abort_command);
+	 signal(SIGINT, abort_command);
 	results = get_read_results(request_id);
 
 	free((char *) request_list);
@@ -387,11 +389,11 @@ char *baseobject;
 
 	friendlify(baseobject, fname);
 
-	(void) sprintf(message, "Read `%s'.\n", fname);
+	 sprintf(message, "Read `%s'.\n", fname);
 	uprint(message);
 
 	if (error_count > 0) {
-		(void) sprintf(message, "Errors encountered: %d.\n\n", error_count);
+		 sprintf(message, "Errors encountered: %d.\n\n", error_count);
 		uprint(message);
 	}
 
@@ -401,7 +403,7 @@ char *baseobject;
 		for (val_list = entry_attrs->val_list;
 				val_list != NULLStrCell;
 				val_list = val_list->next) {
-			(void) sprintf(message,
+			 sprintf(message,
 						   " %-21s- %s\n",
 						   entry_attrs->attr_name->string,
 						   val_list->string);
@@ -424,13 +426,13 @@ entryList entries;
 
 			if (line_count >= 15) {
 				uprint("< ** Press return to continue ** >");
-				(void) fgetc(stdin);
+				 fgetc(stdin);
 				line_count = 0;
 			}
 
 			friendlify(entries->string_dn, fname);
 
-			(void) sprintf(message, " %d %s\n", entry_count, fname);
+			 sprintf(message, " %d %s\n", entry_count, fname);
 
 			if ((int)strlen(message) > 80)
 				line_count += 2;
@@ -445,26 +447,26 @@ entryList entries;
 }
 
 /* ARGSUSED */
-void printcommands(params)
-char *params;
+void 
+printcommands (char *params)
 {
 	char buffer[LINESIZE];
 
-	(void) signal(SIGINT, abort_command);
+	 signal(SIGINT, abort_command);
 
 	uprint("* Commands *\n\n");
 
-	(void) strcpy(buffer, "quit, q\t\t\tQuit this application.\n\n");
+	 strcpy(buffer, "quit, q\t\t\tQuit this application.\n\n");
 	uprint(buffer);
 
-	(void) strcpy(buffer, "<name>, find <name>\tSearch for the named object,\n");
-	(void) strcat(buffer,"\t\t\tfor example ");
-	(void) strcat(buffer, "`damanjit, manufacturing, brunel, gb'.\n");
+	 strcpy(buffer, "<name>, find <name>\tSearch for the named object,\n");
+	 strcat(buffer,"\t\t\tfor example ");
+	 strcat(buffer, "`damanjit, manufacturing, brunel, gb'.\n");
 	uprint(buffer);
 
-	(void) strcpy(buffer,	"curr\t\t\tLook at the list of entries returned");
-	(void) strcat(buffer, "by the last search.\n");
-	(void) strcat(buffer, "This is referred to as the current list\n\n");
+	 strcpy(buffer,	"curr\t\t\tLook at the list of entries returned");
+	 strcat(buffer, "by the last search.\n");
+	 strcat(buffer, "This is referred to as the current list\n\n");
 	uprint(buffer);
 
 	uprint("<number>\t\tView numbered entry in current list.\n\n");
@@ -472,8 +474,8 @@ char *params;
 	uprint("help, ?\t\t\tView commands.\n");
 }
 
-void callcommand(commandline)
-char *commandline;
+void 
+callcommand (char *commandline)
 {
 	char *params;
 
@@ -516,10 +518,10 @@ ufnResults results;
 }
 
 /* ARGSUSED */
-void looklist(params)
-char *params;
+void 
+looklist (char *params)
 {
-	(void) signal(SIGINT, abort_command);
+	 signal(SIGINT, abort_command);
 
 	if (currentlist == NULLEntryList) {
 		uprint("No current list at present!\n");
@@ -544,7 +546,7 @@ entryList *returnlist;
 			curr_poor_match = curr_poor_match->next) {
 		friendlify(curr_poor_match->string_dn, fname);
 
-		(void) sprintf(message, "`%s'? [y/n/q]\n:- ", fname);
+		 sprintf(message, "`%s'? [y/n/q]\n:- ", fname);
 		uprint(message);
 
 		while (1) {
@@ -553,7 +555,7 @@ entryList *returnlist;
 				uprint("y, n or q only!\n:- ");
 				continue;
 			} else if (*input == 'y' || *input == 'Y') {
-				(void) dn_list_add(curr_poor_match->string_dn,
+				 dn_list_add(curr_poor_match->string_dn,
 								   &good_matches,
 								   NULLAttrT);
 				break;
@@ -573,23 +575,26 @@ entryList *returnlist;
 	return TRUE;
 }
 
-void nullfn() {
+void 
+nullfn  {
 }
 
-void abort_query() {
+void 
+abort_query  {
 	uprint("\nQuery interrupted.\n");
 	abort_request(request_id);
 	longjmp(env, 0);
 }
 
-void abort_command() {
+void 
+abort_command  {
 	uprint("\nCommand interrupted.\n");
 	longjmp(env, 0);
 }
 
 
-static void uprint(printstring)
-char *printstring;
+static void 
+uprint (char *printstring)
 {
-	(void) fprintf(stderr, "%s", printstring);
+	 fprintf(stderr, "%s", printstring);
 }

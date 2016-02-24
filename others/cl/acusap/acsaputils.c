@@ -67,11 +67,11 @@ struct AcSAPindication *aci;
 PE     *data;
 int	ndata;
 {
-	register PE	    pe;
+	PE	    pe;
 	struct type_ACS_Association__information *info;
-	register struct type_ACS_Association__information **pp,
+	struct type_ACS_Association__information **pp,
 			*p;
-	register struct type_UNIV_EXTERNAL *q;
+	struct type_UNIV_EXTERNAL *q;
 
 	for (pp = &info; ndata-- > 0; pp = &p -> next) {
 		if ((*pp = p = (struct type_ACS_Association__information *)
@@ -94,7 +94,7 @@ int	ndata;
 out:
 	;
 	free_ACS_Association__information (info);
-	(void) acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+	 acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 	return NULL;
 }
 
@@ -111,9 +111,9 @@ struct type_ACS_Association__information *info;
 PE     *data;
 int    *ndata;
 {
-	register int    i;
-	register PE	    pe;
-	register struct type_UNIV_EXTERNAL *q;
+	int    i;
+	PE	    pe;
+	struct type_UNIV_EXTERNAL *q;
 
 	for (i = 0; info; info = info -> next, i++) {
 		if (i > NACDATA)
@@ -151,20 +151,20 @@ int	rw;
 	if (strcmp (acsapfile, "-")) {
 		char	file[BUFSIZ];
 
-		(void) sprintf (file, acsapfile, getpid ());
+		 sprintf (file, acsapfile, getpid ());
 		fp = fopen (file, "a"), isopen = 1;
 	} else
-		fp = stderr, isopen = 0, (void) fflush (stdout);
+		fp = stderr, isopen = 0,  fflush (stdout);
 
 	if (fp) {
 		vpushfp (fp, pe, text, rw);
-		(void) print_ACS_ACSE__apdu (pe, 1, NULLIP, NULLVP, NULLCP);
+		 print_ACS_ACSE__apdu (pe, 1, NULLIP, NULLVP, NULLCP);
 		vpopfp ();
 
 		if (isopen)
-			(void) fclose (fp);
+			 fclose (fp);
 		else
-			(void) fflush (fp);
+			 fflush (fp);
 	}
 }
 #endif
@@ -172,9 +172,10 @@ int	rw;
 
 /*    ASSOCIATION BLOCKS */
 /*---------------------------------------------------------------------------*/
-struct assocblk  *newacublk () {
+struct assocblk *
+newacublk  {
 	/*---------------------------------------------------------------------------*/
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	acb = (struct assocblk   *) calloc (1, sizeof *acb);
 	if (acb == NULL)
@@ -193,11 +194,13 @@ struct assocblk  *newacublk () {
 
 /*  */
 /*---------------------------------------------------------------------------*/
-struct assocblk   *findacublk (sd)
+struct assocblk *
+findacublk (
 /*---------------------------------------------------------------------------*/
-register int sd;
+    int sd
+)
 {
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	if (once_only == 0 || sd == NOTOK)
 		return NULL;
@@ -211,9 +214,11 @@ register int sd;
 
 /*  */
 /*---------------------------------------------------------------------------*/
-freeacublk (acb)
+int 
+freeacublk (
 /*---------------------------------------------------------------------------*/
-register struct assocblk *acb;
+    struct assocblk *acb
+)
 {
 	if (acb == NULL) return;
 
@@ -243,12 +248,14 @@ register struct assocblk *acb;
 /*---------------------------------------------------------------------------*/
 /*    PSAP interface */
 /*---------------------------------------------------------------------------*/
-int	ps2aculose (acb, aci, event, pa)
+int 
+ps2aculose (
 /*---------------------------------------------------------------------------*/
-register struct assocblk *acb;
-register struct AcSAPindication *aci;
-char   *event;
-register struct PSAPabort *pa;
+    struct assocblk *acb,
+    struct AcSAPindication *aci,
+    char *event,
+    struct PSAPabort *pa
+)
 {
 	int     reason;
 	char   *cp,
@@ -283,7 +290,7 @@ register struct PSAPabort *pa;
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at presentation)",
+		 sprintf (cp = buffer, " (%s at presentation)",
 						PuErrString (pa -> pa_reason));
 	case PC_SESSION:
 		reason = ACS_PRESENTATION;
@@ -321,11 +328,8 @@ va_dcl {
 }
 #else
 /* VARARGS */
-int	acusaplose (aci, reason, what, fmt)
-struct AcSAPindication *aci;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
 {
 	return acusaplose (aci, reason, what, fmt);
 }
@@ -337,15 +341,17 @@ char   *what,
 #ifndef	lint
 
 /*---------------------------------------------------------------------------*/
-static int  _acusaplose (aci, reason, ap)  /* what, fmt, args ... */
+static int 
+_acusaplose (  /* what, fmt, args ... */
 /*---------------------------------------------------------------------------*/
-register struct AcSAPindication *aci;
-int     reason;
-va_list	ap;
+    struct AcSAPindication *aci,
+    int reason,
+    va_list ap
+)
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct AcSAPabort *aca;
+	struct AcSAPabort *aca;
 
 	if (aci) {
 		bzero ((char *) aci, sizeof *aci);
@@ -404,15 +410,17 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
 /*  */
 /*---------------------------------------------------------------------------*/
-char   *AcuErrString (code)
+char *
+AcuErrString (
 /*---------------------------------------------------------------------------*/
-register int code;
+    int code
+)
 {
 	static char buffer[BUFSIZ];
 
 	if (code < reject_err0_cnt)
 		return reject_err0[code];
 
-	(void) sprintf (buffer, "unknown error code %d", code);
+	 sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }

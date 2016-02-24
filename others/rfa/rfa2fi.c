@@ -42,9 +42,8 @@ extern char *fsBase;
 /*--------------------------------------------------------------------
  * rfa2fi  - RfaInfo to type_RFA_FileInfo
  *--------------------------------------------------------------------*/
-struct type_RFA_FileInfo *rfa2fi(dir, rfa)
-char *dir;
-struct RfaInfo *rfa;
+struct type_RFA_FileInfo *
+rfa2fi (char *dir, struct RfaInfo *rfa)
 {
 	struct type_RFA_FileInfo *fi;
 	char *l;
@@ -84,9 +83,8 @@ struct RfaInfo *rfa;
 /*--------------------------------------------------------------------
  * rfa2fil  - RfaInfo to type_RFA_FileInfoList
  *--------------------------------------------------------------------*/
-struct type_RFA_FileInfoList *rfa2fil(dir, rfa)
-char *dir;
-struct RfaInfo *rfa;
+struct type_RFA_FileInfoList *
+rfa2fil (char *dir, struct RfaInfo *rfa)
 {
 	struct type_RFA_FileInfoList *fil, **filp;
 
@@ -111,8 +109,8 @@ struct RfaInfo *rfa;
 /*--------------------------------------------------------------------
  * fi2rfa  - type_RFA_FileInfoList to RfaInfo
  *--------------------------------------------------------------------*/
-struct RfaInfo *fi2rfa(fil)
-struct type_RFA_FileInfoList *fil;
+struct RfaInfo *
+fi2rfa (struct type_RFA_FileInfoList *fil)
 {
 	struct type_RFA_FileInfo *fi;
 	struct RfaInfo *rfa, *rfaNew;

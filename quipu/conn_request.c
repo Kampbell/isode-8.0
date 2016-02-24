@@ -56,7 +56,7 @@ extern unsigned watchdog_delta;
 *  alerting all the operations requesting it.
 */
 conn_request(cn)
-register        struct connection       * cn;
+       struct connection       * cn;
 {
 	struct DSAPconnect		* dc = &(cn->cn_connect.cc_dc);
 	struct DSAPindication	  di_s;
@@ -167,7 +167,7 @@ register        struct connection       * cn;
 * waiting operations in the process.
 */
 conn_req_aux(cn)
-register        struct connection       * cn;
+       struct connection       * cn;
 {
 
 	switch(cn->cn_connect.cc_dc.dc_result) {
@@ -205,7 +205,7 @@ register        struct connection       * cn;
 #ifndef NO_STATS
 		{
 			char buf [LINESIZE];
-			(void) sprintf (buf,"Bound using %s DSP context (%d)",
+			 sprintf (buf,"Bound using %s DSP context (%d)",
 							cn->cn_ctx == DS_CTX_QUIPU_DSP ? "QUIPU" :
 							cn->cn_ctx == DS_CTX_INTERNET_DSP ? "Internet" : "X500",
 							cn->cn_ad);

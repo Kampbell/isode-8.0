@@ -57,13 +57,14 @@ int interactive = 1;
 int retcode;
 
 
-cleanup() {}
+int 
+cleanup  {}
 
 /*--------------------------------------------------------------*/
 /*  errMsg                                                      */
 /*--------------------------------------------------------------*/
-char *errMsg(type)
-int type;
+char *
+errMsg (int type)
 {
 	if(type == NOTOK)
 		return rfaErrStr;
@@ -74,10 +75,8 @@ int type;
 /*--------------------------------------------------------------*/
 /*  getLocalFileRfaInfo						*/
 /*--------------------------------------------------------------*/
-int getLocalRfaInfo(fn, rfap, rfalp, reg)
-char **fn;
-struct RfaInfo **rfap, **rfalp;
-int reg;
+int 
+getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int reg)
 {
 	int rc;
 
@@ -126,8 +125,8 @@ int reg;
 /*--------------------------------------------------------------*/
 /*  unlockFile							*/
 /*--------------------------------------------------------------*/
-do_lunlock(fn)
-char *fn;
+int 
+do_lunlock (char *fn)
 {
 	int rc;
 	struct RfaInfo *rfalist, *rfa;
@@ -165,8 +164,8 @@ char *fn;
 /*--------------------------------------------------------------*/
 /*  lockFile							*/
 /*--------------------------------------------------------------*/
-do_llock(fn)
-char *fn;
+int 
+do_llock (char *fn)
 {
 	int res, rc;
 	struct RfaInfo *rfalist, *rfa;
@@ -185,7 +184,7 @@ char *fn;
 		}
 		SET_LOCKINFO(rfa->ri_status, RI_LOCKED);
 		rfa->ri_lckname = strdup(getenv("USER"));
-		(void)time(&(rfa->ri_lcksince));
+		time(&(rfa->ri_lcksince));
 		if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err,
@@ -203,9 +202,8 @@ char *fn;
 }
 
 
-main (ac, av)
-int ac;
-char **av;
+int 
+main (int ac, char **av)
 {
 	char c, *cwd, buf[BUFSIZ];
 	char *cmd=NULL;
@@ -243,7 +241,7 @@ char **av;
 	}
 
 	/*--- init cwd ---*/
-	(void)getwd(buf);
+	getwd(buf);
 	if (strncmp(buf, fsBase, strlen(fsBase)) == 0)
 		strcpy(cwd_remote, buf + strlen(fsBase));
 

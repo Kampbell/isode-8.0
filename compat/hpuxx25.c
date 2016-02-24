@@ -67,9 +67,8 @@ void    print_x25_facilities ();
 
 /* ARGSUSED */
 
-int     start_x25_client (local, priv)
-struct  NSAPaddr *local;
-int     priv;
+int 
+start_x25_client (struct NSAPaddr *local, int priv)
 {
 	int     sd, pgrp;
 
@@ -89,11 +88,8 @@ int     priv;
 
 /*  */
 
-int     start_x25_server (local, backlog, opt1, opt2)
-struct  NSAPaddr *local;
-int     backlog,
-		opt1,
-		opt2;
+int 
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 {
 	CONN_DB	sbuf;
 	CONN_DB	*sock;
@@ -118,7 +114,7 @@ int     backlog,
 		strcpy (sbuf.addr.x25ifname, "x25_0");
 		if (ioctl (sd, X25_RD_HOSTADR, (char *) &sbuf.addr) == NOTOK) {
 			SLOG (x25_log, LLOG_EXCEPTIONS, "failed", ("X25_RD_HOSTADR"));
-			(void) close_x25_socket (sd);
+			 close_x25_socket (sd);
 			return NOTOK;
 		}
 		sbuf.addr.x25ifname [0] = '\0';
@@ -139,40 +135,40 @@ int     backlog,
 	if (sock->cudf.x25_cud_len)
 		if (ioctl (sd, X25_WR_USER_DATA, &sock->cudf) == -1) {
 			SLOG (x25_log, LLOG_EXCEPTIONS, "failed", ("X25_WR_USER_DATA"));
-			(void) close_x25_socket (sd);
+			 close_x25_socket (sd);
 			return NOTOK;
 		}
 	if (bind (sd, (X25_ADDR *) &sock->addr, sizeof(X25_ADDR)) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-		(void) close_x25_socket (sd);
+		 close_x25_socket (sd);
 		return NOTOK;
 	}
 
 #ifndef	BSD43
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
+		 setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
 #else
 	onoff = 1;
 	if (opt1)
-		(void) setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
 	if (opt2)
-		(void) setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
+		 setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
 
 	if (set_x25_facilities(sd, CALLED, "Acceptable") == NOTOK) {
-		(void) close_x25_socket (sd);
+		 close_x25_socket (sd);
 		return NOTOK;
 	}
 
-	(void) listen (sd, backlog);
+	 listen (sd, backlog);
 
 	onoff = 0;
 	if (ioctl (sd, X25_CALL_ACPT_APPROVAL, (char *) &onoff) == NOTOK) {
 		SLOG (x25_log, LLOG_EXCEPTIONS, "failed",
 			  ("X25_CALL_ACPT_APPROVAL"));
-		(void) close_x25_socket (sd);
+		 close_x25_socket (sd);
 		return NOTOK;
 	}
 
@@ -181,13 +177,12 @@ int     backlog,
 
 /*  */
 
-int     join_x25_server (fd, remote)
-register int fd;
-register struct NSAPaddr *remote;
+int 
+join_x25_server (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB sbuf;
 	CONN_DB *sock = &sbuf;
-	register int nfd;
+	int nfd;
 
 	bzero(&sbuf, sizeof(CONN_DB));
 	sbuf.addr.x25_family = AF_CCITT;
@@ -208,7 +203,7 @@ register struct NSAPaddr *remote;
 	}
 #ifdef  DEBUG
 	else if (x25_log -> ll_events & LLOG_DEBUG)
-		(void) log_x25_facilities(fd, CALLING, "Effective Calling");
+		 log_x25_facilities(fd, CALLING, "Effective Calling");
 #endif
 
 	remote = if2gen (remote, sock, ADDR_REMOTE);
@@ -218,9 +213,8 @@ register struct NSAPaddr *remote;
 
 /*  */
 
-int     join_x25_client (fd, remote)
-int     fd;
-struct  NSAPaddr *remote;
+int 
+join_x25_client (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB     sbuf;
 	CONN_DB     *sock = &sbuf;
@@ -239,7 +233,7 @@ struct  NSAPaddr *remote;
 
 #ifdef  DEBUG
 	if (x25_log -> ll_events & LLOG_DEBUG)
-		(void) log_x25_facilities(fd, CALLED, "Effective Called");
+		 log_x25_facilities(fd, CALLED, "Effective Called");
 #endif
 	remote = if2gen (remote, sock, ADDR_REMOTE);
 
@@ -248,11 +242,10 @@ struct  NSAPaddr *remote;
 
 /*  */
 
-int fac_ccitt2hp (ccitt, hp)
-CCITT_FACILITY_DB	*ccitt;
-FACILITY_DB		*hp;
+int 
+fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp)
 {
-	register int	i, j;
+	int	i, j;
 	int			returncode = OK;
 
 	memset (hp, 0, sizeof (FACILITY_DB));
@@ -311,11 +304,10 @@ FACILITY_DB		*hp;
 }
 
 
-void fac_hp2ccitt (hp, ccitt)
-FACILITY_DB		*hp;
-CCITT_FACILITY_DB	*ccitt;
+void 
+fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt)
 {
-	register int	i;
+	int	i;
 
 	memset (ccitt, 0, sizeof (CCITT_FACILITY_DB));
 	i = 0;
@@ -366,9 +358,8 @@ CCITT_FACILITY_DB	*ccitt;
 }
 
 
-int     set_x25_facilities(sd, coc, caption)
-int     sd, coc;
-char *caption;
+int 
+set_x25_facilities (int sd, int coc, char *caption)
 {
 	FACILITY_DB		facilities;
 	CCITT_FACILITY_DB	ccitt_facilities;
@@ -503,8 +494,8 @@ char *caption;
 
 /*  */
 
-int     log_cause_and_diag(fd)
-int fd;
+int 
+log_cause_and_diag (int fd)
 {
 	char buf [MAX_EVENT_SIZE];
 	int	buflen;
@@ -551,18 +542,17 @@ int fd;
 			close_x25_socket (fd);
 			break;
 		}
-		(void) elucidate_x25_err (flags, &buf [2]);
+		 elucidate_x25_err (flags, &buf [2]);
 	}
 }
 
 
-void sigurg (sig, code, scp)
-int  sig, code;
-struct sigcontext *scp;
+void 
+sigurg (int sig, int code, struct sigcontext *scp)
 {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
-	(void) signal (SIGURG, sigurg);
+	 signal (SIGURG, sigurg);
 	while (fdlp != NULL) {
 		log_cause_and_diag (fdlp->fd);
 		fdlp = fdlp->next;
@@ -575,12 +565,12 @@ struct sigcontext *scp;
 		scp->sc_syscall_action = SIG_RESTART;
 }
 
-void setup_sigurg (fd)
-int fd;
+void 
+setup_sigurg (int fd)
 {
 	struct fdl_st *fdlp = fdl;
 
-	(void) signal (SIGURG, sigurg);
+	 signal (SIGURG, sigurg);
 	while (fdlp != NULL)
 		if (fdlp->fd == fd)
 			return;
@@ -595,8 +585,8 @@ int fd;
 	fdl = fdlp;
 }
 
-void clear_sigurg (fd)
-int fd;
+void 
+clear_sigurg (int fd)
 {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
@@ -629,10 +619,8 @@ int fd;
 
 #ifdef  DEBUG
 
-static int  log_x25_facilities (fd, coc, caption)
-int     fd;
-int     coc;
-char   *caption;
+static int 
+log_x25_facilities (int fd, int coc, char *caption)
 {
 	FACILITY_DB        hp;
 	CCITT_FACILITY_DB  ccitt;
@@ -650,10 +638,8 @@ char   *caption;
 
 /*  */
 
-static void  print_x25_facilities (hp, coc, caption)
-FACILITY_DB *hp;
-int     coc;
-char   *caption;
+static void 
+print_x25_facilities (FACILITY_DB *hp, int coc, char *caption)
 {
 	int     i, baud;
 
@@ -907,12 +893,14 @@ print_send:
 }
 #endif
 #else
-int _hpuxx25_stub2 () {
+int 
+_hpuxx25_stub2()  {
 	;
 }
 #endif
 #else
-int _hpuxx25_stub () {
+int 
+_hpuxx25_stub()  {
 	;
 }
 #endif

@@ -131,11 +131,11 @@ OS	os;
 
 
 static	add_integer () {
-	(void) add_syntax ("INTEGER", integer_encode, integer_decode, integer_free,
+	 add_syntax ("INTEGER", integer_encode, integer_decode, integer_free,
 					   integer_parse, integer_print);
-	(void) add_syntax ("Services", integer_encode, integer_decode,
+	 add_syntax ("Services", integer_encode, integer_decode,
 					   integer_free, integer_parse, services_print);
-	(void) add_syntax ("Privileges", integer_encode, integer_decode,
+	 add_syntax ("Privileges", integer_encode, integer_decode,
 					   integer_free, integer_parse, privs_print);
 }
 
@@ -213,10 +213,10 @@ static int  string_print (x, os)
 struct qbuf *x;
 OS	os;
 {
-	register char *cp,
+	char *cp,
 			 *ep;
 	char   *p;
-	register struct qbuf *qb;
+	struct qbuf *qb;
 
 	p = "0x";
 	for (qb = x -> qb_forw; qb != x; qb = qb -> qb_forw)
@@ -233,7 +233,7 @@ static int  string_display (x, os)
 struct qbuf *x;
 OS	os;
 {
-	register struct qbuf *qb;
+	struct qbuf *qb;
 
 	printf ("\"");
 	for (qb = x -> qb_forw; qb != x; qb = qb -> qb_forw)
@@ -243,11 +243,11 @@ OS	os;
 
 
 static	add_string () {
-	(void) add_syntax ("OctetString", string_encode, string_decode, qb_free,
+	 add_syntax ("OctetString", string_encode, string_decode, qb_free,
 					   string_parse, string_print);
-	(void) add_syntax ("DisplayString", string_encode, string_decode, qb_free,
+	 add_syntax ("DisplayString", string_encode, string_decode, qb_free,
 					   string_parse, string_display);
-	(void) add_syntax ("PhysAddress", string_encode, string_decode, qb_free,
+	 add_syntax ("PhysAddress", string_encode, string_decode, qb_free,
 					   string_parse, string_print);
 }
 
@@ -300,7 +300,7 @@ OS	os;
 	char  *cp,
 		  ode[BUFSIZ];
 
-	(void) strcpy (ode, oid2ode (x));
+	 strcpy (ode, oid2ode (x));
 	printf ("%s", ode);
 	if (strcmp (ode, cp = sprintoid (x)))
 		printf (" (%s)", cp);
@@ -308,7 +308,7 @@ OS	os;
 
 
 static	add_object () {
-	(void) add_syntax ("ObjectID", object_encode, object_decode, oid_free,
+	 add_syntax ("ObjectID", object_encode, object_decode, oid_free,
 					   object_parse, object_print);
 }
 
@@ -372,7 +372,7 @@ OS	os;
 
 
 static	add_null () {
-	(void) add_syntax ("NULL", null_encode, null_decode, null_free, null_parse,
+	 add_syntax ("NULL", null_encode, null_decode, null_free, null_parse,
 					   null_print);
 }
 
@@ -434,8 +434,8 @@ static int  ipaddr_parse (x, s)
 struct sockaddr_in **x;
 char   *s;
 {
-	register struct hostent *hp = gethostbystring (s);
-	register struct sockaddr_in *isock;
+	struct hostent *hp = gethostbystring (s);
+	struct sockaddr_in *isock;
 
 	if (hp == NULL)
 		return NOTOK;
@@ -461,7 +461,7 @@ OS	os;
 
 
 static	add_ipaddr () {
-	(void) add_syntax ("IpAddress", ipaddr_encode, ipaddr_decode, ipaddr_free,
+	 add_syntax ("IpAddress", ipaddr_encode, ipaddr_decode, ipaddr_free,
 					   ipaddr_parse, ipaddr_print);
 }
 
@@ -470,17 +470,17 @@ static	add_ipaddr () {
 /* good enough for now (and probably forever)... */
 
 static	add_netaddr () {
-	(void) add_syntax ("NetworkAddress", ipaddr_encode, ipaddr_decode,
+	 add_syntax ("NetworkAddress", ipaddr_encode, ipaddr_decode,
 					   ipaddr_free, ipaddr_parse, ipaddr_print);
 }
 
 /*    UNSIGNED LONGs */
 
 u_long	prim2ulong (pe)		/* also used in SNMP-capable gawk... */
-register PE	pe;
+PE	pe;
 {
-	register u_long   i;
-	register PElementData dp,
+	u_long   i;
+	PElementData dp,
 			 ep;
 
 	if (pe -> pe_form != PE_FORM_PRIM || (dp = pe -> pe_prim) == NULLPED)
@@ -502,15 +502,15 @@ register PE	pe;
 
 
 PE  ulong2prim (i, class, id)	/* also used in SNMP-capable gawk... */
-register u_long i;
+u_long i;
 PElementClass	class;
 PElementID	id;
 {
 	int	    extend;
-	register int    n;
-	register u_long mask;
-	register PElementData dp;
-	register PE	    pe;
+	int    n;
+	u_long mask;
+	PElementData dp;
+	PE	    pe;
 
 	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
 		return NULLPE;
@@ -596,7 +596,7 @@ OS	os;
 
 
 static	add_counter () {
-	(void) add_syntax ("Counter", counter_encode, counter_decode, counter_free,
+	 add_syntax ("Counter", counter_encode, counter_decode, counter_free,
 					   counter_parse, counter_print);
 }
 
@@ -614,7 +614,7 @@ PE     *pe;
 
 
 static	add_gauge () {
-	(void) add_syntax ("Gauge", gauge_encode, counter_decode, counter_free,
+	 add_syntax ("Gauge", gauge_encode, counter_decode, counter_free,
 					   counter_parse, counter_print);
 }
 
@@ -663,7 +663,7 @@ OS	os;
 
 
 static	add_timeticks () {
-	(void) add_syntax ("TimeTicks", timeticks_encode, counter_decode,
+	 add_syntax ("TimeTicks", timeticks_encode, counter_decode,
 					   counter_free, counter_parse, timeticks_print);
 }
 
@@ -728,7 +728,7 @@ static int  clnpaddr_parse (x, s)
 struct sockaddr_iso **x;
 char   *s;
 {
-	register struct sockaddr_iso *isock;
+	struct sockaddr_iso *isock;
 
 	if ((isock = (struct sockaddr_iso *) calloc (1, sizeof *isock)) == NULL)
 		return NOTOK;
@@ -756,7 +756,7 @@ OS	os;
 
 
 static	add_clnpaddr () {
-	(void) add_syntax ("ClnpAddress", clnpaddr_encode, clnpaddr_decode,
+	 add_syntax ("ClnpAddress", clnpaddr_encode, clnpaddr_decode,
 					   clnpaddr_free, clnpaddr_parse, clnpaddr_print);
 }
 
@@ -787,7 +787,7 @@ IFP	f_encode,
 	f_print;
 {
 	int	    i;
-	register OS	    os = synlast++;
+	OS	    os = synlast++;
 
 	if ((i = synlast - syntaxes) >= MAXSYN)
 		return NOTOK;
@@ -808,7 +808,7 @@ IFP	f_encode,
 OS	text2syn (name)
 char   *name;
 {
-	register OS	    os;
+	OS	    os;
 
 	for (os = syntaxes; os < synlast; os++)
 		if (strcmp (os -> os_name, name) == 0)

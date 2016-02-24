@@ -77,7 +77,7 @@ Entry eptr;
 Attr_Sequence as;
 struct DSError * error;
 {
-	register Attr_Sequence at;
+	Attr_Sequence at;
 	table_seq optr;
 	AV_Sequence avs;
 	AV_Sequence avs_oc;

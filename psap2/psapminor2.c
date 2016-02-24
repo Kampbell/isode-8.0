@@ -33,21 +33,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapminor2.c,v 9.0 19
 
 /*    P-MINOR-SYNC.RESPONSE */
 
-int	PMinSyncResponse (sd, ssn, data, ndata, pi)
-int	sd;
-long	ssn;
-int	ndata;
-PE     *data;
-struct PSAPindication *pi;
+int 
+PMinSyncResponse (int sd, long ssn, PE *data, int ndata, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int     len,
 			result;
 	char   *base,
 		   *realbase;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	toomuchP (data, ndata, NPDATA, "minorsync");
 	missingP (pi);
@@ -62,9 +58,9 @@ struct PSAPindication *pi;
 
 	if ((result = SMinSyncResponse (sd, ssn, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SMinSyncResponse", sa);
+			 ss2pslose (pb, pi, "SMinSyncResponse", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SMinSyncResponse", sa);
+			 ss2pslose (NULLPB, pi, "SMinSyncResponse", sa);
 			goto out1;
 		}
 
@@ -81,7 +77,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

@@ -70,19 +70,18 @@ char homedir[BUFSIZ];
 
 /*   MAIN */
 
-main (argc, argv)
-int argc;
-char  **argv;
+int 
+main (int argc, char **argv)
 {
 	int initiate ();
 	char buf[BUFSIZ];
-	register struct dispatch   *ds;
+	struct dispatch   *ds;
 	AEI	    aei;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect  *td = &tds;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 	char *myname;
 
 	host = getlocalhost ();
@@ -95,7 +94,7 @@ char  **argv;
 	sprintf(buf,"HOME=%s", RFA_TAILDIR);
 	putenv(buf);
 	isodetailor (myname, 1);
-	(void)initLog(myname);
+	initLog(myname);
 
 	/*--- rfa tailoring ---*/
 	sprintf(buf, "%s/rfatailor", isodetcpath);
@@ -110,7 +109,7 @@ char  **argv;
 		adios (NULLCP, "%s-%s: unknown application-entity",
 			   host, myservice);
 
-	/*--- register operation to serve ---*/
+	/*--- operation to serve ---*/
 	advise (LLOG_EXCEPTIONS, NULLCP, "doing");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		if (RyDispatch (NOTOK, table_RFA_Operations, ds -> ds_operation,
@@ -139,7 +138,8 @@ char  **argv;
 }
 
 
-cleanup() {
+int 
+cleanup  {
 }
 
 
@@ -178,7 +178,7 @@ PE  *pe;
 
 	userid = pw -> pw_uid;
 	groupid = pw -> pw_gid;
-	(void) strcpy (homedir, pw -> pw_dir);
+	 strcpy (homedir, pw -> pw_dir);
 
 	cp = qb2str (initial -> password);
 

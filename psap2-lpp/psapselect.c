@@ -45,7 +45,7 @@ struct PSAPindication *pi;
 	SBV     smask;
 	int	    reason,
 			result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	missingP (mask);
 	missingP (nfds);
@@ -54,7 +54,7 @@ struct PSAPindication *pi;
 	smask = sigioblock ();
 
 	if ((pb = findpblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
@@ -69,7 +69,7 @@ struct PSAPindication *pi;
 			*nfds = pb -> pb_fd + 1;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

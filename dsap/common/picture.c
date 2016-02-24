@@ -69,7 +69,7 @@ int 	len;
 	if (picture_process == NULLCP)
 		return ("(No external process defined !)");
 
-	(void) sstr2arg (picture_process, NVEC, argv, " \t");
+	 sstr2arg (picture_process, NVEC, argv, " \t");
 
 	/* get next two file descriptors  used for data xfer */
 	ret = pipe(pd);
@@ -78,8 +78,8 @@ int 	len;
 
 	ret = pipe(pd2);
 	if (ret == -1) {
-		(void) close (pd[1]);
-		(void) close (pd[0]);
+		 close (pd[1]);
+		 close (pd[0]);
 		return ("ERROR: could not create 2nd pipe");
 	}
 
@@ -89,12 +89,12 @@ int 	len;
 	cl = (ChildList *) malloc(sizeof(ChildList));
 	/* generate one parent and one child process */
 	if ((cl->childpid = fork()) == -1) {
-		(void) free ((char *) cl);
-		(void) close (pd[1]);
-		(void) close (pd[0]);
-		(void) close (pd2[1]);
-		(void) close (pd2[0]);
-		(void) signal (SIGPIPE, pstat);
+		 free ((char *) cl);
+		 close (pd[1]);
+		 close (pd[0]);
+		 close (pd2[1]);
+		 close (pd2[0]);
+		 signal (SIGPIPE, pstat);
 		return ("ERROR: could not fork");
 	}
 	if (rootChildList == NULL)
@@ -106,17 +106,17 @@ int 	len;
 	if (cl->childpid != 0) {
 
 		/* in parent process */
-		(void) close (pd[0]);
-		(void) close (pd2[1]);
+		 close (pd[0]);
+		 close (pd2[1]);
 
 		if (write (pd[1], picture, len) != len) {
-			(void) close (pd[1]);
-			(void) close (pd2[0]);
-			(void) signal (SIGPIPE, pstat);
+			 close (pd[1]);
+			 close (pd2[0]);
+			 signal (SIGPIPE, pstat);
 			return("ERROR: length error");
 		}
 
-		(void) close (pd[1]);
+		 close (pd[1]);
 
 		for (cp = buffer, len = BUFLEN - 1; len > 0;) {
 			if ((ret = read (pd2[0], cp, len)) <= 0)
@@ -129,11 +129,11 @@ int 	len;
 				cp++;
 			*cp = NULL;
 		} else
-			(void) sprintf (buffer, "%s invoked", argv[0]);
+			 sprintf (buffer, "%s invoked", argv[0]);
 
-		(void) close (pd2[0]);
+		 close (pd2[0]);
 
-		(void) signal (SIGPIPE, pstat);
+		 signal (SIGPIPE, pstat);
 
 		if ( ret < 0 )
 			return ("ERROR: read error");
@@ -143,25 +143,25 @@ int 	len;
 	}
 
 	/* you're in child process */
-	(void) signal (SIGPIPE, pstat);
+	 signal (SIGPIPE, pstat);
 
 	if (dup2(pd[0], 0) == -1)
 		_exit (-1);
-	(void) close (pd[0]);
-	(void) close (pd[1]);
+	 close (pd[0]);
+	 close (pd[1]);
 
 	if (dup2(pd2[1], 1) == -1)
 		_exit (-1);
-	(void) close (pd2[0]);
-	(void) close (pd2[1]);
+	 close (pd2[0]);
+	 close (pd2[1]);
 
-	(void) execv (argv[0],argv);
+	 execv (argv[0],argv);
 
 	while (read (0, buffer, sizeof buffer) > 0)
 		continue;
-	(void) printf ("ERROR: can't execute '%s'",argv[0]);
+	 printf ("ERROR: can't execute '%s'",argv[0]);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 	/* safety catch */
 	_exit (-1);
 	/* NOTREACHED */
@@ -177,7 +177,7 @@ char * proc;
 	PS sps;
 	PE pe, grab_pe();
 
-	(void) ps_flush (ps);
+	 ps_flush (ps);
 
 	if ((sps = ps_alloc (str_open)) == NULLPS)
 		return;
@@ -187,7 +187,7 @@ char * proc;
 	}
 
 	pe = grab_pe (av);
-	(void) pe2ps (sps,pe);
+	 pe2ps (sps,pe);
 
 	ptr = show_picture (sps->ps_base,proc,ps_get_abs(pe));
 	ps_print (ps,ptr);
@@ -206,13 +206,13 @@ hide_picture () {
 
 	cl = rootChildList;
 	while (cl != NULL) {
-		(void) kill (cl->childpid, SIGTERM);
+		 kill (cl->childpid, SIGTERM);
 		while ((pid = wait (&status)) != NOTOK && cl->childpid != pid)
 			continue;
 
 		cl1 = cl;
 		cl = cl->next;
-		(void) free((char *) cl1);
+		 free((char *) cl1);
 	}
 	rootChildList = NULL;
 }
@@ -231,7 +231,7 @@ int format;
 extern int quipu_pe_cmp();
 
 photo_syntax () {
-	(void) add_attribute_syntax ("photo",
+	 add_attribute_syntax ("photo",
 								 (IFP)pe_cpy,	NULLIFP,
 								 NULLIFP,	picture_print,
 								 (IFP)pe_cpy,	quipu_pe_cmp,
@@ -239,7 +239,7 @@ photo_syntax () {
 								 NULLIFP,	TRUE );
 
 
-	(void) add_attribute_syntax ("jpeg",
+	 add_attribute_syntax ("jpeg",
 								 (IFP)pe_cpy,	NULLIFP,
 								 NULLIFP,	picture_print,
 								 (IFP)pe_cpy,	quipu_pe_cmp,

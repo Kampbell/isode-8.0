@@ -39,7 +39,7 @@ void ros_log ();
 * generate an RO-RESULT.REQUEST and update the task block.
 */
 task_result(task)
-register        struct task_act * task;
+       struct task_act * task;
 {
 	int				  result;
 	struct DSAPindication	  di_s;

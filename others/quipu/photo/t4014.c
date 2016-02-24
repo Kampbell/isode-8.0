@@ -50,8 +50,8 @@ SFD photo_quit () {
 }
 
 /* ARGSUSED */
-photo_start (name)
-char * name;
+int 
+photo_start (char *name)
 {
 	putch (035);	/* Enter graphic mode */
 
@@ -59,7 +59,7 @@ char * name;
 	erase ();
 	linemod ("solid");
 
-	(void) signal (SIGTERM,photo_quit);
+	 signal (SIGTERM,photo_quit);
 	/* return 0 if sucessful -1 if not */
 
 	return (0);
@@ -67,30 +67,30 @@ char * name;
 
 
 /* ARGSUSED */
-photo_end (name)
-char * name;
+int 
+photo_end (char *name)
 {
 	/* Decoding has finished - display the photo */
 	move (0,Y_OFFSET - 100);
 	closepl();
 
-	(void) printf ("\n");
-	(void) fflush (stdout);
-	(void) close (1);	/* this is needed for QUIPU */
+	 printf ("\n");
+	 fflush (stdout);
+	 close (1);	/* this is needed for QUIPU */
 	/* wait until signalled to Terminate */
 	for (;;)
 		;
 }
 
 /* ARGSUSED */
-photo_black (length)
-int length;
+int 
+photo_black (int length)
 {
 	;
 }
 
-photo_white (length)
-int length;
+int 
+photo_white (int length)
 {
 	line ((position*SCALE)+X_OFFSET,y,((length+position-1)*SCALE)+X_OFFSET,y);
 }

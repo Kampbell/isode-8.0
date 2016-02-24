@@ -43,8 +43,8 @@
 
 int  T_UnitDataWrite (tb, uv, hptr, td)
 
-register struct tsapblk *tb;
-register struct udvec *uv;
+struct tsapblk *tb;
+struct udvec *uv;
 char	              **hptr;
 struct TSAPdisconnect *td;
 {
@@ -107,11 +107,8 @@ struct TSAPdisconnect *td;
 
 /* returns header length */
 
-int  T_UnitDataRead (tb, tud, td)
-
-register struct tsapblk *tb;
-register struct TSAPunitdata *tud;
-struct TSAPdisconnect *td;
+int 
+T_UnitDataRead (struct tsapblk *tb, struct TSAPunitdata *tud, struct TSAPdisconnect *td)
 
 {
 	int		code;

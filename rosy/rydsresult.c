@@ -58,8 +58,8 @@ struct RoSAPindication *roi;
 {
 	int	    result;
 	PE	    pe;
-	register struct opsblk *opb;
-	register struct RyOperation *ryo;
+	struct opsblk *opb;
+	struct RyOperation *ryo;
 
 	missingP (roi);
 

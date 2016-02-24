@@ -44,12 +44,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/error.c,v 9.0 19
 /*--------------------------------------------------------------*/
 /*  aux_error							*/
 /*--------------------------------------------------------------*/
-int  aux_error (sd, err, param, rox, roi)
-int sd,
-	err;
-caddr_t param;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+int 
+aux_error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
@@ -60,11 +56,8 @@ struct RoSAPindication *roi;
 /*--------------------------------------------------------------*/
 /*  str_error							*/
 /*--------------------------------------------------------------*/
-int str_error (sd, err, str, rox, roi)
-int sd, err;
-char	*str;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+int 
+str_error (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	struct type_RFA_Reason *qb;
 	int r;
@@ -81,10 +74,8 @@ struct RoSAPindication *roi;
 /*--------------------------------------------------------------*/
 /*  syserror							*/
 /*--------------------------------------------------------------*/
-int syserror (sd, err, rox, roi)
-int sd, err;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+int 
+syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	return str_error (sd, err, sys_errname (errno), rox, roi);
 }
@@ -93,10 +84,8 @@ struct RoSAPindication *roi;
 /*--------------------------------------------------------------*/
 /*  error							*/
 /*--------------------------------------------------------------*/
-int error(sd, err, type, rox, roi)
-int sd, err, type;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+int 
+error (int sd, int err, int type, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	if(type == NOTOK)
 		return str_error(sd, err, rfaErrStr, rox, roi);
@@ -108,8 +97,8 @@ struct RoSAPindication *roi;
 /*--------------------------------------------------------------*/
 /*  errMsg							*/
 /*--------------------------------------------------------------*/
-char *errMsg(type)
-int type;
+char *
+errMsg (int type)
 {
 	if(type == NOTOK)
 		return rfaErrStr;
@@ -122,13 +111,8 @@ int type;
 /*--------------------------------------------------------------*/
 /*  statusError							*/
 /*--------------------------------------------------------------*/
-int statusError (sd, reason, user, since, rox, roi)
-int sd;
-int reason;
-char *user;
-long since;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+int 
+statusError (int sd, int reason, char *user, long since, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	struct type_RFA_StatusErrorParm se, *sep = & se;
 

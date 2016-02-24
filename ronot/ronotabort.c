@@ -36,9 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotabort.c,v 9.0 19
 
 /* ARGSUSED */
 
-int	  RoBindUAbort (sd, rni)
-int			  sd;
-struct RoNOTindication	* rni;
+int 
+RoBindUAbort (int sd, struct RoNOTindication *rni)
 {
 	int			  result;
 	struct AcSAPindication    aci_s;

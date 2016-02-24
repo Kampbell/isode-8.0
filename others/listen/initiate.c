@@ -36,21 +36,19 @@ static char *mycontext = "isode listen demo";
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
-	register struct SSAPaddr *sz;
+	struct SSAPaddr *sz;
 	struct SSAPconnect scs;
-	register struct SSAPconnect *sc = &scs;
+	struct SSAPconnect *sc = &scs;
 	struct SSAPdata sxs;
-	register struct SSAPdata   *sx = &sxs;
+	struct SSAPdata   *sx = &sxs;
 	struct SSAPrelease  srs;
-	register struct SSAPrelease *sr = &srs;
+	struct SSAPrelease *sr = &srs;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	AEI	    aei;
 	struct PSAPaddr *pa;
 	struct sblk outgoing;

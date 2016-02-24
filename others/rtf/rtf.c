@@ -55,26 +55,24 @@ char   *getenv ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    result,
 			sd;
 	char   *file;
-	register struct isoservent *is;
+	struct isoservent *is;
 	struct SSAPaddr *sa;
 	struct RtSAPaddr rtzs;
-	register struct RtSAPaddr *rtz = &rtzs;
+	struct RtSAPaddr *rtz = &rtzs;
 	struct RtSAPconnect rtcs;
-	register struct RtSAPconnect   *rtc = &rtcs;
+	struct RtSAPconnect   *rtc = &rtcs;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort   *rta = &rti -> rti_abort;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort   *rta = &rti -> rti_abort;
 	PE	    pe;
 	struct type_RTF_Request reqs;
-	register struct type_RTF_Request *req = &reqs;
+	struct type_RTF_Request *req = &reqs;
 
 	arginit (argv);
 
@@ -106,7 +104,7 @@ char  **argv,
 	rtz -> rta_addr = *sa;	/* struct copy */
 
 	fprintf (stderr, "%s...", host);
-	(void) fflush (stderr);
+	 fflush (stderr);
 	if (RtBeginRequest (rtz, RTS_TWA, turn, pe, rtc, rti) == NOTOK) {
 		fprintf (stderr, "failed\n");
 		rts_adios (rta, "RT-BEGIN.REQUEST");
@@ -140,7 +138,7 @@ char  **argv,
 		else
 			timer (nbytes);
 
-		(void) close (fd);
+		 close (fd);
 	} else {
 		if (RtSetUpTrans (sd, uptrans, rti) == NOTOK)
 			rts_adios (rta, "set UpTrans upcall");
@@ -159,7 +157,7 @@ char  **argv,
 
 			switch (rti -> rti_type) {
 			case RTI_TURN: {
-				register struct RtSAPturn *rtu = &rti -> rti_turn;
+				struct RtSAPturn *rtu = &rti -> rti_turn;
 
 				if (rtu -> rtu_please) {
 					if (RtGTurnRequest (sd, rti) == NOTOK)
@@ -171,7 +169,7 @@ char  **argv,
 
 			case RTI_TRANSFER: {
 #ifndef	lint
-				register struct RtSAPtransfer *rtt =
+				struct RtSAPtransfer *rtt =
 							&rti -> rti_transfer;
 #endif
 
@@ -185,7 +183,7 @@ char  **argv,
 			continue;
 
 			case RTI_ABORT: {
-				register struct RtSAPabort *rtb = &rti -> rti_abort;
+				struct RtSAPabort *rtb = &rti -> rti_abort;
 
 				if (rtb -> rta_peer)
 					rts_adios (rtb, "RT-U-ABORT.INDICATION");
@@ -218,18 +216,12 @@ char  **argv,
 
 /* ARGSUSED */
 
-static int  downtrans (sd, base, len, size, ssn, ack, rti)
-int	sd;
-char  **base;
-int    *len,
-	   size;
-long	ssn,
-		ack;
-struct RtSAPindication *rti;
+static int 
+downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti)
 {
-	register int    cc;
+	int    cc;
 	int	    n;
-	register char *dp,
+	char *dp,
 			 *ep;
 	static int bsize;
 	static char *bp = NULL;
@@ -301,8 +293,8 @@ struct RtSAPindication *rti;
 {
 	switch (type) {
 	case SI_DATA: {
-		register struct qbuf *qb = (struct qbuf *) addr;
-		register struct qbuf *qp;
+		struct qbuf *qb = (struct qbuf *) addr;
+		struct qbuf *qp;
 
 		for (qp = qb -> qb_forw; qp != qb; qp = qp -> qb_forw)
 			if (write (fd, qp -> qb_data, qp -> qb_len) !=qp -> qb_len)
@@ -314,7 +306,7 @@ struct RtSAPindication *rti;
 
 	case SI_SYNC: {
 #ifdef	DEBUG
-		register struct SSAPsync *sn = (struct SSAPsync *) addr;
+		struct SSAPsync *sn = (struct SSAPsync *) addr;
 
 		advise (LLOG_DEBUG, NULLCP, "S-MINOR-SYNC.INDICATION: %ld",
 				sn -> sn_ssn);
@@ -323,7 +315,7 @@ struct RtSAPindication *rti;
 	break;
 
 	case SI_ACTIVITY: {
-		register struct SSAPactivity *sv = (struct SSAPactivity *)addr;
+		struct SSAPactivity *sv = (struct SSAPactivity *)addr;
 
 		switch (sv -> sv_type) {
 		case SV_START:
@@ -371,7 +363,7 @@ struct RtSAPindication *rti;
 	break;
 
 	case SI_REPORT: {
-		register struct SSAPreport *sp = (struct SSAPreport *) addr;
+		struct SSAPreport *sp = (struct SSAPreport *) addr;
 
 		if (!sp -> sp_peer)
 			return rtsaplose (rti, RTS_TRANSFER, NULLCP,
@@ -393,10 +385,10 @@ struct RtSAPindication *rti;
 
 /*  */
 
-static	arginit (vec)
-char  **vec;
+static 
+arginit (char **vec)
 {
-	register char *ap;
+	char *ap;
 	char    prompt[BUFSIZ];
 
 	if (myname = rindex (*vec, '/'))
@@ -455,7 +447,7 @@ usage:
 
 	if (password == NULL) {
 		if (strcmp (user, "ANON")) {
-			(void) sprintf (prompt, "password (%s:%s): ", host, user);
+			 sprintf (prompt, "password (%s:%s): ", host, user);
 			password = getpassword (prompt);
 		} else
 			password = user ? user : "";

@@ -71,10 +71,10 @@ static int pending = 0;
 
 static SFP handler[NSIG];
 
-static SFD sigser (sig)
-int	sig;
+static SFD 
+sigser (int sig)
 {
-	(void) signal (sig, sigser);
+	 signal (sig, sigser);
 
 	pending |= sigmask (sig);
 }
@@ -82,10 +82,10 @@ int	sig;
 /*  */
 #ifndef SVR4_UCB
 
-int	sigblock (mask)
-int	mask;
+int 
+sigblock (int mask)
 {
-	register int    sig,
+	int    sig,
 			 smask;
 	long    omask = blocked;
 
@@ -102,10 +102,10 @@ int	mask;
 	return omask;
 }
 
-int	sigsetmask (mask)
-int	mask;
+int 
+sigsetmask (int mask)
 {
-	register int    sig,
+	int    sig,
 			 smask;
 	long    omask = blocked;
 
@@ -119,11 +119,11 @@ int	mask;
 			blocked |= smask;
 		} else if (smask & blocked) {
 			blocked &= ~smask;
-			(void) signal (sig, handler[sig] != BADSIG ? handler[sig]
+			 signal (sig, handler[sig] != BADSIG ? handler[sig]
 						   : SIG_DFL);
 			if (smask & pending) {
 				pending &= ~smask;
-				(void) kill (getpid (), sig);
+				 kill (getpid (), sig);
 			}
 		}
 

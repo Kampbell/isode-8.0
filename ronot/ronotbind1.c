@@ -100,7 +100,7 @@ int			  async;
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : RoAsynBindRequest failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
-		(void) acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
+		 acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
@@ -116,7 +116,7 @@ int			  async;
 		} else if (acc->acc_result != ACS_PERMANENT ) {
 			LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : not ACS_ACCEPT [%d,%d]",acc->acc_result,aci->aci_type));
 			if (aci->aci_type == ACI_ABORT) {
-				(void) acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
+				 acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
 				ACAFREE (aca);
 				return result;
 			}
@@ -138,11 +138,8 @@ int			  async;
 
 /* ARGSUSED */
 
-int	  RoAsynBindRetry (ad, do_next_nsap, acc, rni)
-int			  ad;
-int			  do_next_nsap;
-struct AcSAPconnect	* acc;
-struct RoNOTindication	* rni;
+int 
+RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNOTindication *rni)
 {
 	int			  result;
 	struct AcSAPindication	  aci_s;
@@ -159,7 +156,7 @@ struct RoNOTindication	* rni;
 
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.RETRY : AcAsynRetryRequest failed"));
-		(void) acs2ronotlose (rni, "RO-BIND.RETRY", aca);
+		 acs2ronotlose (rni, "RO-BIND.RETRY", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
@@ -175,7 +172,7 @@ struct RoNOTindication	* rni;
 		} else if (acc->acc_result != ACS_PERMANENT ) {
 			LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : not ACS_ACCEPT"));
 			if (aci->aci_type == ACI_ABORT) {
-				(void) acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
+				 acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
 				ACAFREE (aca);
 				return result;
 			}
@@ -192,9 +189,8 @@ struct RoNOTindication	* rni;
 	return (result);
 }
 
-int	  ParseRoBindResponse (acc, rni)
-struct AcSAPconnect *acc;
-struct RoNOTindication	* rni;
+int 
+ParseRoBindResponse (struct AcSAPconnect *acc, struct RoNOTindication *rni)
 {
 	PE	  pe;
 

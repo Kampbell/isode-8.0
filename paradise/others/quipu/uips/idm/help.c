@@ -101,28 +101,28 @@ int help;
 	char str[LINESIZE];
 	char tmp[LINESIZE];
 
-	(void) strcpy(str, "dm/dm");
-	(void) strcat(str, filename);
+	 strcpy(str, "dm/dm");
+	 strcat(str, filename);
 	if ((fname = fopen(isodefile(str, 0), "r")) == (FILE *) NULL) {
 		if (help == TRUE) {
 			if (deLogLevel)
-				(void) ll_log (de_log, LLOG_NOTICE, NULLCP, "NoHelp: %s", str + 5);
-			(void) fprintf(stderr, "No help available for `%s'\n", filename);
-			(void) fprintf(stderr, "\nHELP about HELP available by typing ?? or ?HELP\n\n");
+				 ll_log (de_log, LLOG_NOTICE, NULLCP, "NoHelp: %s", str + 5);
+			 fprintf(stderr, "No help available for `%s'\n", filename);
+			 fprintf(stderr, "\nHELP about HELP available by typing ?? or ?HELP\n\n");
 		} else if (deLogLevel)
-			(void) ll_log (de_log, LLOG_NOTICE, NULLCP, "No such file: %s", str + 5);
+			 ll_log (de_log, LLOG_NOTICE, NULLCP, "No such file: %s", str + 5);
 	} else {
 		pagerOn(NUMBER_NOT_ALLOWED);
 		if (help == TRUE)
 			if (deLogLevel)
-				(void) ll_log (de_log, LLOG_NOTICE, NULLCP, "Help: %s", str + 5);
+				 ll_log (de_log, LLOG_NOTICE, NULLCP, "Help: %s", str + 5);
 		while(fgets(linebuf, sizeof(linebuf), fname) != NULLCP) {
-			(void) sprintf(tmp, "%s", linebuf);
+			 sprintf(tmp, "%s", linebuf);
 			pageprint(tmp);
 		}
-		(void) fclose(fname);
+		 fclose(fname);
 		if (help == TRUE) {
-			(void) sprintf(tmp, "%s", "\nHELP about HELP available by typing ??\n\n");
+			 sprintf(tmp, "%s", "\nHELP about HELP available by typing ??\n\n");
 			pageprint(tmp);
 		}
 	}
@@ -154,16 +154,16 @@ char * helpstr;
 	extern void turnInverseVideoOn(), turnInverseVideoOff();
 
 	if (lexequ(helpstr, "settings") == 0) {
-		(void) printf("It is possible to modify some values used by this program, for example the\n");
-		(void) printf("number of lines on the user's screen.  ");
+		 printf("It is possible to modify some values used by this program, for example the\n");
+		 printf("number of lines on the user's screen.  ");
 
-		(void) displayCurrentSettings();
+		 displayCurrentSettings();
 
 		if (signal(SIGINT, SIG_IGN) != SIG_IGN)
-			(void) signal(SIGINT, onint1);
+			 signal(SIGINT, onint1);
 		for (;;) {
-			(void) writeInverse("\nDo you want to change any settings (y/n) ?");
-			(void) putchar(' ');
+			 writeInverse("\nDo you want to change any settings (y/n) ?");
+			 putchar(' ');
 			if (gets(buf) == NULLCP) {
 				clearerr(stdin);
 				goto resetSignal;
@@ -176,8 +176,8 @@ char * helpstr;
 			if (lexnequ(cp, "yes", strlen(cp)) != 0)
 				continue;
 enterVarType:
-			(void) writeInverse("Enter name of variable you wish to modify:");
-			(void) putchar(' ');
+			 writeInverse("Enter name of variable you wish to modify:");
+			 putchar(' ');
 			if (gets(varname) == NULLCP) { /* user obviously not interested */
 				clearerr(stdin);
 				goto resetSignal;
@@ -193,18 +193,18 @@ enterVarType:
 			for (i = 0, found = 0; settableVars[i].varname != NULLCP; i++) {
 				if ((n = strlen(cp)) >= settableVars[i].musttype)
 					if (strncmp(settableVars[i].varname, cp, n) == 0) {
-						(void) strcpy(varname, settableVars[i].varname);
+						 strcpy(varname, settableVars[i].varname);
 						found = 1;
 						break;
 					}
 			}
 			if (found == 0) {
-				(void) printf("No such variable <%s>\n", varname);
+				 printf("No such variable <%s>\n", varname);
 				goto enterVarType;
 			}
 enterVarVal:
-			(void) writeInverse("Enter value of variable:");
-			(void) putchar(' ');
+			 writeInverse("Enter value of variable:");
+			 putchar(' ');
 			if (gets(varval) == NULLCP) { /* retain old value */
 				clearerr(stdin);
 				continue;
@@ -218,9 +218,9 @@ enterVarVal:
 			/* treat termtype specially */
 			if (lexequ(varname, "termtype") == 0) {
 				cp = checkSetTerm(cp, term);
-				(void) printf("\nNote that resetting the terminal type may reset the width and length of\n");
-				(void) printf("the screen to the default sizes for that terminal type.  Readjust these\n");
-				(void) printf("variables if you wish\n");
+				 printf("\nNote that resetting the terminal type may reset the width and length of\n");
+				 printf("the screen to the default sizes for that terminal type.  Readjust these\n");
+				 printf("variables if you wish\n");
 			}
 			/* treat inv video specially */
 			if (lexequ(varname, "invvideo") == 0) {
@@ -235,7 +235,7 @@ enterVarVal:
 				*((int *)settableVars[i].varval) = atoi(cp);
 				break;
 			case 2:
-				(void) strcpy(settableVars[i].varval, cp);
+				 strcpy(settableVars[i].varval, cp);
 				break;
 			case 3:
 				if (strcmp(cp, "on") == 0)
@@ -244,12 +244,12 @@ enterVarVal:
 					*((int *)settableVars[i].varval) = 0;
 				break;
 			}
-			(void) putchar('\n');
+			 putchar('\n');
 			displayCurrentSettings();
 		}
 resetSignal:
 		if (signal(SIGINT, SIG_IGN) != SIG_IGN)
-			(void) signal(SIGINT, cleanupok);
+			 signal(SIGINT, cleanupok);
 		return;
 	} else
 		displayFile(helpstr, TRUE); /* TRUE says this is a help file */
@@ -285,24 +285,24 @@ void
 displayCurrentSettings() {
 	int i;
 
-	(void) printf("These are the current settings:\n\n");
-	(void) printf("VARIABLE     VALUE           DESCRIPTION\n  NAME\n");
+	 printf("These are the current settings:\n\n");
+	 printf("VARIABLE     VALUE           DESCRIPTION\n  NAME\n");
 	for (i = 0; settableVars[i].varname != NULLCP; i++) {
-		(void) printf("%-8s  ", settableVars[i].varname);
+		 printf("%-8s  ", settableVars[i].varname);
 		switch (settableVars[i].vartype) {
 		case 1: /* integer */
-			(void) printf("%8d", *((int *)(settableVars[i].varval)));
+			 printf("%8d", *((int *)(settableVars[i].varval)));
 			break;
 		case 2: /* string */
-			(void) printf("%8s", settableVars[i].varval);
+			 printf("%8s", settableVars[i].varval);
 			break;
 		case 3: /* boolean */
 			if (*((int *)(settableVars[i].varval)) == 1)
-				(void) printf("%8s", "on");
+				 printf("%8s", "on");
 			else
-				(void) printf("%8s", "off");
+				 printf("%8s", "off");
 			break;
 		}
-		(void) printf("  %s\n", settableVars[i].desc);
+		 printf("  %s\n", settableVars[i].desc);
 	}
 }

@@ -95,7 +95,7 @@ OID	nullSpecific = NULLOID;
 #endif
 
 init_mib () {
-	register struct nlist *nz;
+	struct nlist *nz;
 
 	if (nlist (VMUNIX, nl) == NOTOK)
 		adios (VMUNIX, "unable to nlist");
@@ -115,7 +115,7 @@ init_mib () {
 /*  */
 
 fin_mib () {
-	register OT	    ot;
+	OT	    ot;
 
 	for (ot = text2obj ("ccitt"); ot; ot = ot -> ot_next)
 		if (ot -> ot_status == OT_MANDATORY
@@ -137,8 +137,8 @@ char   *name,
 	   *newvalue;
 {
 	caddr_t  value;
-	register OT	    ot = text2obj (name);
-	register OS	    os;
+	OT	    ot = text2obj (name);
+	OS	    os;
 
 	if (ot == NULLOT) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "unknown object \"%s\"", name);
@@ -224,7 +224,7 @@ struct nlist *n;
 {
 	if (n == NULL) {
 		if (wd != NOTOK)
-			(void) close (wd), wd = NOTOK;
+			 close (wd), wd = NOTOK;
 
 		return OK;
 	}

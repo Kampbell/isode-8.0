@@ -40,9 +40,9 @@ int    *nfds;
 struct FTAMindication *fti;
 {
 	SBV     smask;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 	struct PSAPindication   pis;
-	register struct PSAPabort  *pa = &pis.pi_abort;
+	struct PSAPabort  *pa = &pis.pi_abort;
 
 	missingP (mask);
 	missingP (nfds);
@@ -59,17 +59,17 @@ struct FTAMindication *fti;
 		case PC_WAITING:
 waiting:
 			;
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return ftamlose (fti, FS_GEN_WAITING, 0, NULLCP, NULLCP);
 
 		default:
-			(void) ps2ftamlose (fsb, fti, "PSelectMask", pa);
+			 ps2ftamlose (fsb, fti, "PSelectMask", pa);
 			freefsblk (fsb);
-			(void) sigiomask (smask);
+			 sigiomask (smask);
 			return NOTOK;
 		}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }

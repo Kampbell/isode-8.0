@@ -15,12 +15,12 @@ char *str;
 
 	cp = index(str, ' ');
 	if (cp == NULLCP) {
-		(void) fprintf(stderr, "%s", log_err_c_par);
+		 fprintf(stderr, "%s", log_err_c_par);
 		return;
 	}
 	*cp = '\0';
 	if (strlen(str) != 2) {
-		(void) fprintf(stderr, "%s", log_err_c_not_2);
+		 fprintf(stderr, "%s", log_err_c_not_2);
 		return;
 	}
 	cp++;

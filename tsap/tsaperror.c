@@ -144,10 +144,10 @@ static char *cons_err1[] = {
 
 /*  */
 
-char *TErrString(code)
-register int	code;
+char *
+TErrString (int code)
 {
-	register int    fcode;
+	int    fcode;
 	static char buffer[60];
 
 #ifdef	SUNLINK_7_0
@@ -160,7 +160,7 @@ register int	code;
 				code <= R_CU_X25_255)
 			return cons_err1[code - R_CP_OSI_NETWORK_SERVICE_PROBLEM];
 
-		(void) sprintf (buffer, "unknown CONS error code 0x%x", code);
+		 sprintf (buffer, "unknown CONS error code 0x%x", code);
 		return buffer;
 	}
 #endif
@@ -172,6 +172,6 @@ register int	code;
 	} else if (code < disc_err0_cnt)
 		return disc_err0[code];
 
-	(void) sprintf (buffer, "unknown error code 0x%x", code);
+	 sprintf (buffer, "unknown error code 0x%x", code);
 	return buffer;
 }

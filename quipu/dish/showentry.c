@@ -140,7 +140,7 @@ char          **argv;
 		return;
 	}
 	if (full_edb_flag) {
-		(void) mod_template(temp_file_name,0);
+		 mod_template(temp_file_name,0);
 		return;
 	}
 
@@ -164,7 +164,7 @@ char          **argv;
 			dn_free (new_dn);
 		}
 
-		(void) showfred (current_dn, fred_long, fred_subdisplay);
+		 showfred (current_dn, fred_long, fred_subdisplay);
 	} else {
 		if (name_flag) {
 			dn_print (RPS,dn,EDBOUT);

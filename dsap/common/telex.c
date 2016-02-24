@@ -88,7 +88,7 @@ struct telex * b;
 
 
 static telex_print (ps,telex,format)
-register PS ps;
+PS ps;
 struct   telex* telex;
 int format;
 {
@@ -170,7 +170,7 @@ struct telex * m;
 {
 	PE ret_pe;
 
-	(void) encode_SA_TelexNumber (&ret_pe,0,0,NULLCP,m);
+	 encode_SA_TelexNumber (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -199,7 +199,7 @@ PE pe;
 }
 
 telex_syntax () {
-	(void) add_attribute_syntax ("TelexNumber",
+	 add_attribute_syntax ("TelexNumber",
 								 (IFP) telex_enc,	(IFP) telex_dec,
 								 (IFP) str2telex,	telex_print,
 								 (IFP) telex_cpy,	telex_cmp,

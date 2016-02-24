@@ -103,20 +103,15 @@ int	TUNITDATAser ();
  ****************************************************************
  */
 
-int	SUnitDataBind (sd, local, remote, qos, si)
-
-int    			sd;
-struct SSAPaddr 	*local;
-struct SSAPaddr 	*remote;
-struct QOStype  	*qos;
-struct SSAPindication 	*si;
+int 
+SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct QOStype *qos, struct SSAPindication *si)
 
 {
 
 	int     fd;
 	SBV     smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct  TSAPdisconnect  td;
 
 #ifdef HULADEBUG
@@ -179,7 +174,7 @@ struct SSAPindication 	*si;
 									  NULLCP,
 									  SuErrString(UDERR_NO_MEMORY));
 			} else {
-				(void) sigsetmask (smask);
+				 sigsetmask (smask);
 				return susaplose (si,
 								  SC_PARAMETER,
 								  NULLCP,
@@ -275,14 +270,12 @@ struct SSAPindication 	*si;
  ****************************************************************
  */
 
-int     SUnitDataUnbind (sd, si)
-
-int	sd;
-struct  SSAPindication *si;
+int 
+SUnitDataUnbind (int sd, struct SSAPindication *si)
 
 {
 
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	int	 result;
 	SBV      smask;			 	/* signal save mask */
 	struct  TSAPdisconnect  td;
@@ -335,16 +328,12 @@ struct  SSAPindication *si;
  ****************************************************************
  */
 
-int	SuSave (sd, vecp, vec, si)
-
-int	 	 sd;
-register int     vecp;
-register char  **vec;
-register struct  SSAPindication *si;
+int 
+SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 
 {
 
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct   TSAPdisconnect tds;
 	struct   TSAPdisconnect *td = &tds;
 	int	     result;
@@ -377,7 +366,7 @@ register struct  SSAPindication *si;
 
 		if ((sb = findsublk (sd)) == NULL) {
 
-			(void) sigsetmask (smask);
+			 sigsetmask (smask);
 			return susaplose (si,
 							  SC_PARAMETER,
 							  NULLCP,
@@ -416,14 +405,8 @@ register struct  SSAPindication *si;
  ****************************************************************
  */
 
-int     SUnitDataRequest (calling, called, data, cc, qos, si)
-
-struct SSAPaddr *calling,
-		*called;
-register char	*data;
-int		cc;
-struct QOStype  *qos;
-struct  SSAPindication *si;
+int 
+SUnitDataRequest (struct SSAPaddr *calling, struct SSAPaddr *called, char *data, int cc, struct QOStype *qos, struct SSAPindication *si)
 
 
 {
@@ -483,25 +466,21 @@ struct  SSAPindication *si;
  ****************************************************************
  */
 
-int     SUnitDataWrite (sd, data, cc, si)
-
-int 	 	sd;
-register char	*data;
-int		cc;
-struct  SSAPindication *si;
+int 
+SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 
 {
 
 	int 	 n, len, j;
 	SBV      smask;			 	/* signal save mask */
 	int      result; 		 	/* write result     */
-	register struct ssapblk *sb;	 	/* ssap ctl blk ptr */
+	struct ssapblk *sb;	 	/* ssap ctl blk ptr */
 
-	register struct ssapkt *s;
+	struct ssapkt *s;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 	struct udvec vvs[3];
-	register struct udvec  *vv, *xv;
+	struct udvec  *vv, *xv;
 
 
 #ifdef HULADEBUG
@@ -644,7 +623,7 @@ struct  SSAPindication *si;
 	*  Restore the mask.
 	*/
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	if (result == NOTOK)
 		return NOTOK;
@@ -679,10 +658,8 @@ struct  SSAPindication *si;
  ****************************************************************
  */
 
-int     SUnitDataWriteV (sd, uv, si)
-
-int 	 sd;
-register struct udvec	*uv;
+int 
+SUnitDataWriteV (int sd, struct udvec *uv, int si)
 
 
 {
@@ -690,13 +667,13 @@ register struct udvec	*uv;
 	int 	 n, cc, len, j;
 	SBV      smask;			 	/* signal save mask */
 	int      result; 		 	/* write result     */
-	register struct ssapblk *sb;	 	/* ssap ctl blk ptr */
+	struct ssapblk *sb;	 	/* ssap ctl blk ptr */
 
-	register struct ssapkt *s;
+	struct ssapkt *s;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 	struct udvec vvs[NSPUV];
-	register struct udvec  *vv, *xv;
+	struct udvec  *vv, *xv;
 
 
 #ifdef HULADEBUG
@@ -885,7 +862,7 @@ register struct udvec	*uv;
 	*  Restore the mask.
 	*/
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	if (result == NOTOK)
 		return NOTOK;
@@ -914,19 +891,15 @@ register struct udvec	*uv;
  ****************************************************************
  */
 
-int	SUnitDataRead (sd, sud, secs, si)
-
-int	sd;
-struct  SuSAPstart     *sud;
-int	secs;
-struct  SSAPindication *si;
+int 
+SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *si)
 
 {
 
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
-	register struct TSAPunitdata tx;
+	struct ssapblk *sb;
+	struct TSAPunitdata tx;
 
 #ifdef HULADEBUG
 	printf ("\n     in SUnitDataRead \n");
@@ -958,7 +931,7 @@ struct  SSAPindication *si;
 	 *  Restore the mask.
 	 */
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	/*
 	 *  Return the result.
@@ -988,18 +961,12 @@ struct  SSAPindication *si;
  ****************************************************************
  */
 
-static int  SUnitDataReadAux (sb, sud, secs, si, async, tud)
-
-register struct ssapblk *sb;
-register struct SuSAPstart *sud;
-int	secs;
-struct SSAPindication *si;
-int	async;
-register struct TSAPunitdata   *tud;
+static int 
+SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int secs, struct SSAPindication *si, int async, struct TSAPunitdata *tud)
 
 
 {
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 #ifdef HULADEBUG
 	printf ("\n     in SUnitDataReadAux \n");
@@ -1131,9 +1098,9 @@ IFP	data,
 struct SSAPindication *si;
 {
 	SBV     smask;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if (data || tokens || sync || activity || report || finish || abort) {
 		missingP (data);
@@ -1166,7 +1133,7 @@ struct SSAPindication *si;
 	sb -> sb_ReleaseIndication = finish;
 	sb -> sb_AbortIndication = abort;
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }
@@ -1179,18 +1146,14 @@ struct SSAPindication *si;
 
 /*  */
 
-struct ssapkt   *sb2udspkt (sb, si, secs, tud)
-
-register struct ssapblk *sb;
-register struct SSAPindication *si;
-int     secs;
-register struct TSAPunitdata   *tud;
+struct ssapkt *
+sb2udspkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPunitdata *tud)
 
 {
 	int     			cc;
-	register struct ssapkt   	*s;
+	struct ssapkt   	*s;
 	struct TSAPdisconnect  	tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	/*
 	 *  Read the tsap datagram.
@@ -1281,17 +1244,16 @@ register struct TSAPunitdata   *tud;
  ****************************************************************
  */
 
-static int  TUNITDATAser (sd, tud)
-int     sd;
-register struct TSAPunitdata   *tx;
+static int 
+TUNITDATAser (int sd, int tud)
 {
 	IFP	    abort;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct SSAPdata sxs;
-	register struct SSAPdata   *sx = &sxs;
+	struct SSAPdata   *sx = &sxs;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 	if ((sb = findsublk (sd)) == NULL)
 		return;

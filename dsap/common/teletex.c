@@ -110,7 +110,7 @@ struct teletex * b;
 
 
 static teletex_print (ps,teletex,format)
-register PS ps;
+PS ps;
 struct   teletex* teletex;
 int format;
 {
@@ -275,7 +275,7 @@ struct teletex * m;
 {
 	PE ret_pe;
 
-	(void) encode_SA_TeletexTerminalIdentifier (&ret_pe,0,0,NULLCP,m);
+	 encode_SA_TeletexTerminalIdentifier (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -298,7 +298,7 @@ PE pe;
 }
 
 teletex_syntax () {
-	(void) add_attribute_syntax ("TeletexTerminalIdentifier",
+	 add_attribute_syntax ("TeletexTerminalIdentifier",
 								 (IFP) teletex_enc,	(IFP) teletex_dec,
 								 (IFP) str2teletex,	teletex_print,
 								 (IFP) teletex_cpy,	teletex_cmp,

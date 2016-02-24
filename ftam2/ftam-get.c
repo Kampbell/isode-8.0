@@ -43,8 +43,8 @@ char  **vec;
 {
 #ifndef	BRIDGE
 	int     sglobbed;
-	register char  *bp;
-	register char  *dst,
+	char  *bp;
+	char  *dst,
 			 **gp,
 			 **src;
 	char   *freedst = NULL,
@@ -52,7 +52,7 @@ char  **vec;
 	struct stat st;
 #endif
 	struct FADUidentity faduids;
-	register struct FADUidentity   *faduid = &faduids;
+	struct FADUidentity   *faduid = &faduids;
 	struct vfsmap  *vf = &vfs[tmode];
 
 	if (vf == &vfs[VFS_DEF]
@@ -72,7 +72,7 @@ char  **vec;
 			return OK;
 		dst = NULL;
 	} else {
-		register char **ap;
+		char **ap;
 
 		for (ap = vec; *ap; ap++)
 			continue;
@@ -149,10 +149,10 @@ ask_it:
 				   && (st.st_mode & S_IFMT) == S_IFDIR) {
 #ifdef apollo
 			if (*dst == '/')
-				(void) sprintf (bp = buffer, "%s", dst);
+				 sprintf (bp = buffer, "%s", dst);
 			else
 #endif
-				(void) sprintf (bp = buffer, "%s/", dst);
+				 sprintf (bp = buffer, "%s/", dst);
 			bp += strlen (bp);
 			switch (realstore) {
 			case RFS_UNIX:
@@ -165,13 +165,13 @@ ask_it:
 			default:
 				break;
 			}
-			(void) strcpy (bp, dst);
+			 strcpy (bp, dst);
 			dst = buffer;
 			goto ask_it;
 		}
 
 		if (check_get (dst) != NOTOK)
-			(void) getvf (*src, dst, faduid, vf, ubffnx);
+			 getvf (*src, dst, faduid, vf, ubffnx);
 		goto out;
 	}
 
@@ -183,10 +183,10 @@ ask_it:
 	case RFS_UNIX:
 #ifdef apollo
 		if (dst && dst[strlen (dst) - 1] == '/')
-			(void) sprintf (bp = buffer, "%s", dst);
+			 sprintf (bp = buffer, "%s", dst);
 		else
 #endif
-			(void) sprintf (bp = buffer, "%s/", dst ? dst : ".");
+			 sprintf (bp = buffer, "%s/", dst ? dst : ".");
 		bp += strlen (bp);
 		break;
 
@@ -217,7 +217,7 @@ ask_it:
 			dst = *gp;
 			break;
 		}
-		(void) strcpy (bp, dst);
+		 strcpy (bp, dst);
 		dst = buffer;
 
 		if (sglobbed) {
@@ -239,7 +239,7 @@ ask_it:
 
 		if (check_get (dst) == NOTOK)
 			break;
-		(void) getvf (*gp, dst, faduid, vf, ubffnx);
+		 getvf (*gp, dst, faduid, vf, ubffnx);
 
 		if (ftamfd == NOTOK)
 			break;
@@ -262,7 +262,7 @@ static int  check_get (dst)
 char   *dst;
 {
 	int	    result;
-	register char  *cp;
+	char  *cp;
 
 	if ((result = access (dst, W_OK)) == NOTOK && errno == ENOENT)
 		if (cp = rindex (dst, '/')) {
@@ -285,8 +285,8 @@ char   *dst;
 int	getvf (src, dst, faduid, vf, wfnx)
 char   *src,
 	   *dst;
-register struct FADUidentity *faduid;
-register struct vfsmap *vf;
+struct FADUidentity *faduid;
+struct vfsmap *vf;
 IFP	wfnx;
 {
 	int	    fd,
@@ -296,10 +296,10 @@ IFP	wfnx;
 #endif
 	PE	    param;
 	struct FTAMgroup    ftgs;
-	register struct FTAMgroup  *ftg = &ftgs;
+	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
-	register struct FTAMabort *fta = &fti -> fti_abort;
+	struct FTAMindication *fti = &ftis;
+	struct FTAMabort *fta = &fti -> fti_abort;
 
 	if (vf == &vfs[VFS_DEF]) {
 		if (!(vf = findvf (src))) {
@@ -326,8 +326,8 @@ IFP	wfnx;
 
 	ftg -> ftg_flags |= FTG_SELECT;
 	{
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		fa -> fa_present = FA_FILENAME;
 		fa -> fa_nfile = 0;
@@ -342,7 +342,7 @@ IFP	wfnx;
 
 	ftg -> ftg_flags |= FTG_OPEN;
 	{
-		register struct FTAMopen *ftop = &ftg -> ftg_open;
+		struct FTAMopen *ftop = &ftg -> ftg_open;
 
 		ftop -> ftop_mode = FA_PERM_READ;
 		ftop -> ftop_contents = vf -> vf_oid;
@@ -374,7 +374,7 @@ IFP	wfnx;
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		ftam_diag (ftse -> ftse_diags, ftse -> ftse_ndiag, 1,
 				   ftse -> ftse_action);
@@ -383,7 +383,7 @@ IFP	wfnx;
 	}
 
 	if (ftg -> ftg_flags & FTG_OPEN) {
-		register struct FTAMopen *ftop = &ftg -> ftg_open;
+		struct FTAMopen *ftop = &ftg -> ftg_open;
 
 		ftam_diag (ftop -> ftop_diags, ftop -> ftop_ndiag, 1,
 				   ftop -> ftop_action);
@@ -410,7 +410,7 @@ IFP	wfnx;
 					switch (myvf - vfs) {
 					case VFS_UTF: {
 						PElementID	id;
-						register struct type_DOCS_FTAM__1__Parameters *p1 =
+						struct type_DOCS_FTAM__1__Parameters *p1 =
 							(struct type_DOCS_FTAM__1__Parameters *)
 							parm;
 
@@ -449,7 +449,7 @@ IFP	wfnx;
 						break;
 					}
 				if (parm)
-					(void) fre_obj (parm,
+					 fre_obj (parm,
 									_ZDOCS_mod.md_dtab[myvf -> vf_number],
 									&_ZDOCS_mod, 1);
 			}
@@ -487,7 +487,7 @@ IFP	wfnx;
 		if ((fd = open (dst, O_WRONLY | O_CREAT | O_TRUNC, 0666)) == NOTOK) {
 #endif
 			struct FTAMdiagnostic   diags[NFDIAG];
-			register struct FTAMdiagnostic *dp = diags;
+			struct FTAMdiagnostic *dp = diags;
 
 			advise (dst, "unable to write");
 #ifdef	BRIDGE
@@ -498,7 +498,7 @@ IFP	wfnx;
 			dp -> ftd_identifier = FS_ACC_LCL;
 			dp -> ftd_observer = dp -> ftd_source = EREF_IFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
-			(void) sprintf (dp -> ftd_data, "unable to write %s: %s",
+			 sprintf (dp -> ftd_data, "unable to write %s: %s",
 							dst, sys_errname (errno));
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
@@ -507,12 +507,12 @@ IFP	wfnx;
 								dp - diags, fti) == NOTOK) {
 				ftam_advise (fta, "F-CANCEL.REQUEST");
 				if (fd != NOTOK)
-					(void) close (fd);
+					 close (fd);
 				return NOTOK;
 			}
 
 			if (fti -> fti_type == FTI_CANCEL) {
-				register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+				struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 				ftam_diag (ftcn -> ftcn_diags, ftcn -> ftcn_ndiag, 1,
 						   ftcn -> ftcn_action);
@@ -531,7 +531,7 @@ IFP	wfnx;
 
 	if (fd != NOTOK) {
 		(*wfnx) (fd, (struct PSAPdata *) 0, DONE);
-		(void) close (fd);
+		 close (fd);
 	}
 
 	switch (result) {
@@ -553,7 +553,7 @@ IFP	wfnx;
 
 	switch (fti -> fti_type) {
 	case FTI_TRANSEND: {
-		register struct FTAMtransend *ftre = &fti -> fti_transend;
+		struct FTAMtransend *ftre = &fti -> fti_transend;
 
 		ftam_diag (ftre -> ftre_diags, ftre -> ftre_ndiag, 1,
 				   ftre -> ftre_action);
@@ -562,7 +562,7 @@ IFP	wfnx;
 	break;
 
 	case FTI_CANCEL: {
-		register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+		struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 		advise (NULLCP, "data transfer cancelled!");
 		ftam_diag (ftcn -> ftcn_diags, ftcn -> ftcn_ndiag, 1,
@@ -606,14 +606,14 @@ done_transfer:
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_CLOSE) {
-		register struct FTAMclose     *ftcl = &ftg -> ftg_close;
+		struct FTAMclose     *ftcl = &ftg -> ftg_close;
 
 		ftam_diag (ftcl -> ftcl_diags, ftcl -> ftcl_ndiag, 1,
 				   ftcl -> ftcl_action);
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
 
 		ftam_diag (ftde -> ftde_diags, ftde -> ftde_ndiag, 1,
 				   ftde -> ftde_action);
@@ -639,9 +639,9 @@ static struct vfsmap *findvf (file)
 char   *file;
 {
 	struct FTAMgroup    ftgs;
-	register struct FTAMgroup  *ftg = &ftgs;
+	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 	struct vfsmap *vf;
 
 	bzero ((char *) ftg, sizeof *ftg);
@@ -650,8 +650,8 @@ char   *file;
 
 	ftg -> ftg_flags |= FTG_SELECT;
 	{
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		fa -> fa_present = FA_FILENAME;
 		fa -> fa_nfile = 0;
@@ -664,7 +664,7 @@ char   *file;
 
 	ftg -> ftg_flags |= FTG_RDATTR;
 	{
-		register struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
+		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
 
 		ftra -> ftra_attrnames = FA_FILENAME | FA_CONTENTS;
 	}
@@ -681,7 +681,7 @@ char   *file;
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		if (debug)
 			ftam_diag (ftse -> ftse_diags, ftse -> ftse_ndiag, 1,
@@ -692,8 +692,8 @@ char   *file;
 
 	vf = NULL;
 	if (ftg -> ftg_flags & FTG_RDATTR) {
-		register struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
-		register struct FTAMattributes *fa = &ftra -> ftra_attrs;
+		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
+		struct FTAMattributes *fa = &ftra -> ftra_attrs;
 
 		if (debug)
 			ftam_diag (ftra -> ftra_diags, ftra -> ftra_ndiag, 1,
@@ -708,7 +708,7 @@ char   *file;
 						&& oid_cmp (vf -> vf_oid, fa -> fa_contents) == 0) {
 					if (fa -> fa_parameter && vf -> vf_number >= 0) {
 						if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
-							(void) fre_obj (vf -> vf_parameter,
+							 fre_obj (vf -> vf_parameter,
 											_ZDOCS_mod.md_dtab[vf
 															   -> vf_number],
 											&_ZDOCS_mod, 1);
@@ -739,7 +739,7 @@ char   *file;
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
 
 		if (debug) {
 			ftam_diag (ftde -> ftde_diags, ftde -> ftde_ndiag, 1,
@@ -767,8 +767,8 @@ IFP	wfnx;
 	int	    reason,
 			result;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
-	register struct FTAMabort  *fta = &fti -> fti_abort;
+	struct FTAMindication *fti = &ftis;
+	struct FTAMabort  *fta = &fti -> fti_abort;
 
 	for (;;) {
 		if (!interrupted) {
@@ -779,7 +779,7 @@ IFP	wfnx;
 			FD_ZERO (&rfds);
 			/* interrupt causes EINTR */
 			if (FSelectMask (ftamfd, &rfds, &nfds, fti) == OK)
-				(void) xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
+				 xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
 		}
 
 		if (interrupted) {
@@ -807,7 +807,7 @@ IFP	wfnx;
 		case FTI_DATA:
 			if ((*wfnx) (fd, &fti -> fti_data, OK) == NOTOK) {
 				struct FTAMdiagnostic   diags[NFDIAG];
-				register struct FTAMdiagnostic *dp;
+				struct FTAMdiagnostic *dp;
 
 				advise (dst, "error writing");
 				reason = FS_ACC_WRITE;
@@ -820,7 +820,7 @@ do_cancel:
 				dp -> ftd_identifier = reason;
 				dp -> ftd_observer = dp -> ftd_source = EREF_IFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
-				(void) strcpy (dp -> ftd_data, sys_errname (errno));
+				 strcpy (dp -> ftd_data, sys_errname (errno));
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				dp++;
 
@@ -831,7 +831,7 @@ do_cancel:
 				}
 
 				if (fti -> fti_type == FTI_CANCEL) {
-					register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+					struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 					ftam_diag (ftcn -> ftcn_diags, ftcn -> ftcn_ndiag, 1,
 							   ftcn -> ftcn_action);
@@ -846,7 +846,7 @@ do_cancel:
 			return OK;
 
 		case FTI_CANCEL: {
-			register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+			struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 			advise (NULLCP, "data transfer cancelled!");
 			ftam_diag (ftcn -> ftcn_diags, ftcn -> ftcn_ndiag, 1,
@@ -873,12 +873,12 @@ do_cancel:
 
 static int  ubffnx (fd, px, status)
 int	fd;
-register struct PSAPdata *px;
+struct PSAPdata *px;
 int	status;
 {
-	register int    i,
+	int    i,
 			 n;
-	register PE	    pe,
+	PE	    pe,
 			 *pep;
 	static int	    cc;
 
@@ -927,11 +927,11 @@ int	status;
 			cc += n;
 		if (hash) {
 			if (hash > 1)
-				(void) printf ("%d\r", cc);
+				 printf ("%d\r", cc);
 			else
 				for (; marks < cc; marks += BUFSIZ)
-					(void) putchar ('#');
-			(void) fflush (stdout);
+					 putchar ('#');
+			 fflush (stdout);
 		}
 	}
 

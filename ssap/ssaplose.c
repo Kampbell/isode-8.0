@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaplose.c,v 9.0 1992/
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "spkt.h"
 #include "tailor.h"
 
@@ -39,27 +39,24 @@ static int  _ssaplose ();
 #endif
 
 #ifndef	lint
-int	spktlose (va_alist)
-va_dcl {
+int	spktlose (int sd, ...)
+{
 	int	    reason,
 	result,
-	sd,
 	secs,
 	value;
-	register struct ssapblk *sb;
-	register struct ssapkt *s;
+	struct ssapblk *sb;
+	struct ssapkt *s;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si;
-	register struct SSAPabort *sa;
+	struct SSAPindication *si;
+	struct SSAPabort *sa;
 	struct TSAPdata txs;
-	register struct TSAPdata   *tx = &txs;
+	struct TSAPdata   *tx = &txs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 	va_list ap;
 
-	va_start (ap);
-
-	sd = va_arg (ap, int);
+	va_start (ap, sd);
 
 	si = va_arg (ap, struct SSAPindication *);
 	if (si == NULL)
@@ -144,12 +141,8 @@ va_dcl {
 #else
 /* VARARGS5 */
 
-int	spktlose (sd, si, reason, what, fmt)
-int	sd,
-	reason;
-struct SSAPindication *si;
-char   *what,
-	   *fmt;
+int 
+spktlose (int sd, struct SSAPindication *si, int reason, char *what, char *fmt)
 {
 	return spktlose (sd, si, reason, what, fmt);
 }
@@ -158,16 +151,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	ssaplose (va_alist)
-va_dcl {
+int	ssaplose (struct SSAPindication*si, ...)
+{
 	int	    reason,
 	result;
-	struct SSAPindication *si;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, si);
 
-	si = va_arg (ap, struct SSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _ssaplose (si, reason, ap);
@@ -179,11 +170,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	ssaplose (si, reason, what, fmt)
-struct SSAPindication *si;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt)
 {
 	return ssaplose (si, reason, what, fmt);
 }
@@ -192,21 +180,27 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _ssaplose (si, reason, ap)	/* what, fmt, args ... */
-register struct SSAPindication *si;
-int	reason;
-va_list	ap;
+static int 
+_ssaplose (	/* what, fmt, args ... */
+    struct SSAPindication *si,
+    int reason,
+    va_list ap
+)
 {
-	register char  *bp;
+	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
-	register struct SSAPabort *sa;
+	struct SSAPabort *sa;
 
 	if (si) {
 		bzero ((char *) si, sizeof *si);
 		si -> si_type = SI_ABORT;
 		sa = &si -> si_abort;
 
-		asprintf (bp = buffer, ap);
+		what = va_arg(ap, char*);
+		fmt  = va_arg(ap, char*);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		sa -> sa_peer = 0;

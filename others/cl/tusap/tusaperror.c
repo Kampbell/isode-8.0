@@ -56,10 +56,10 @@ static int  disc_uerr8_cnt = sizeof disc_uerr8 / sizeof disc_uerr8[0];
 
 /*  */
 
-char *TuErrString(code)
-register int	code;
+char *
+TuErrString (int code)
 {
-	register int    fcode;
+	int    fcode;
 	static char buffer[BUFSIZ];
 
 	code &= 0xff;
@@ -73,6 +73,6 @@ register int	code;
 	} else if (code < disc_uerr0_cnt)
 		return disc_uerr0[code];
 
-	(void) sprintf (buffer, "unknown error code 0x%x", code);
+	 sprintf (buffer, "unknown error code 0x%x", code);
 	return buffer;
 }

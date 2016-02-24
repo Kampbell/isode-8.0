@@ -22,9 +22,9 @@ extern int	errno;
 
 int
 closedir( dirp )
-register DIR	*dirp;		/* stream from opendir() */
+DIR	*dirp;		/* stream from opendir() */
 {
-	register int	fd;
+	int	fd;
 
 	if ( dirp == NULL || dirp->dd_buf == NULL ) {
 		errno = EFAULT;
@@ -37,7 +37,8 @@ register DIR	*dirp;		/* stream from opendir() */
 	return close( fd );
 }
 #else
-int	_closedir_stub () {
+int 
+_closedir_stub()  {
 	;
 }
 #endif

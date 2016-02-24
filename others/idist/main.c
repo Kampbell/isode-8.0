@@ -82,9 +82,8 @@ struct	passwd *pw;	/* pointer to static area used by getpwent */
 struct	group *gr;	/* pointer to static area used by getgrent */
 char	*myname = "idist";
 
-main(argc, argv)
-int argc;
-char *argv[];
+int 
+main (int argc, char *argv[])
 {
 	int cmdargs = 0;
 	char *dhosts[NHOSTS], **hp = dhosts;
@@ -103,8 +102,8 @@ char *argv[];
 	if (pw == NULL)
 		adios (NULLCP, "Who are you?");
 
-	(void) strcpy(user, pw->pw_name);
-	(void) strcpy(homedir, pw->pw_dir);
+	 strcpy(user, pw->pw_name);
+	 strcpy(homedir, pw->pw_dir);
 	groupid = pw->pw_gid;
 	host = getlocalhost ();
 
@@ -194,7 +193,7 @@ char *argv[];
 	argc -= optind;
 	argv += optind;
 
-	(void) mktemp(utmpfile);
+	 mktemp(utmpfile);
 
 	if (cmdargs)
 		docmdargs(argc, argv);
@@ -209,7 +208,7 @@ char *argv[];
 				adios (distfile, "Can't open file");
 			}
 		}
-		(void) yyparse();
+		 yyparse();
 		if (nerrs == 0)
 			docmds(dhosts, argc, argv);
 	}
@@ -217,7 +216,8 @@ char *argv[];
 	return(nerrs != 0);
 }
 
-usage() {
+int 
+usage  {
 	advise (NULLCP,
 			"Usage: %s [-nqbhirvwyD] [-f distfile] [-d var=value] [-m host] [file ...]\n",
 			myname);
@@ -228,12 +228,11 @@ usage() {
 /*
  * rcp like interface for distributing files.
  */
-docmdargs(nargs, args)
-int nargs;
-char *args[];
+int 
+docmdargs (int nargs, char *args[])
 {
-	register struct namelist *nl, *prev;
-	register char *cp;
+	struct namelist *nl, *prev;
+	char *cp;
 	struct namelist *files, *hosts;
 	struct subcmd *cmds;
 	char *dest;
@@ -271,9 +270,9 @@ char *args[];
 	}
 
 	if (debug) {
-		(void) printf("docmdargs()\nfiles = ");
+		 printf("docmdargs()\nfiles = ");
 		prnames(files);
-		(void) printf("hosts = ");
+		 printf("hosts = ");
 		prnames(hosts);
 	}
 	insert((char *)NULL, files, hosts, cmds);
@@ -283,13 +282,13 @@ char *args[];
 /*
  * Print a list of NAME blocks (mostly for debugging).
  */
-prnames(nl)
-register struct namelist *nl;
+int 
+prnames (struct namelist *nl)
 {
-	(void) printf("( ");
+	 printf("( ");
 	while (nl != NULL) {
-		(void) printf("%s ", nl->n_name);
+		 printf("%s ", nl->n_name);
 		nl = nl->n_next;
 	}
-	(void) printf(")\n");
+	 printf(")\n");
 }

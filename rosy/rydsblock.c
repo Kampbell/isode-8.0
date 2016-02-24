@@ -42,7 +42,7 @@ struct dspblk  *newdsblk (sd, ryo)
 int	sd;
 struct RyOperation *ryo;
 {
-	register struct dspblk *dsb;
+	struct dspblk *dsb;
 
 	dsb = (struct dspblk   *) calloc (1, sizeof *dsb);
 	if (dsb == NULL)
@@ -64,7 +64,7 @@ struct RyOperation *ryo;
 /*  */
 
 freedsblk (dsb)
-register struct dspblk *dsb;
+struct dspblk *dsb;
 {
 	if (dsb == NULL)
 		return;
@@ -77,10 +77,10 @@ register struct dspblk *dsb;
 /*  */
 
 struct dspblk   *finddsblk (sd, op)
-register int	sd,
+int	sd,
 			op;
 {
-	register struct dspblk *dsb;
+	struct dspblk *dsb;
 
 	if (once_only == 0)
 		return NULL;
@@ -95,9 +95,9 @@ register int	sd,
 /*  */
 
 losedsblk (sd)
-register int	sd;
+int	sd;
 {
-	register struct dspblk *dsb,
+	struct dspblk *dsb,
 			*ds2;
 
 	if (once_only == 0)

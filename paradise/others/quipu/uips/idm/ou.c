@@ -143,7 +143,7 @@ struct namelist ** listp;
 		filtnumber = 0;
 	}
 	if (quipuMastersCo ==FALSE) { /* try read first */
-		(void)sprintf(rstr, "%s@ou=%s", parentstr, thisstr);
+		sprintf(rstr, "%s@ou=%s", parentstr, thisstr);
 		if (readExactOrg(rstr, listp) == OK) {
 			return OK;
 		}

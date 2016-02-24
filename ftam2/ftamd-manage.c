@@ -35,17 +35,17 @@ struct FTAMgroup *ftg;
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	ftam_selection (ftg, ftm);
 
 	if (myfd != NOTOK) {
 #ifndef	BRIDGE
 		unlock ();
-		(void) close (myfd);
+		 close (myfd);
 #else
-		(void) close (myfd);
-		(void) ftp_reply ();
+		 close (myfd);
+		 ftp_reply ();
 #endif
 		myfd = NOTOK;
 	}

@@ -62,10 +62,10 @@ static int reject_uerr8_cnt = sizeof reject_uerr8 / sizeof reject_uerr8[0];
 
 /*  */
 
-char   *SuErrString(code)
-register int	code;
+char *
+SuErrString (int code)
 {
-	register int    fcode;
+	int    fcode;
 	static char buffer[BUFSIZ];
 
 	code &= 0xff;
@@ -79,6 +79,6 @@ register int	code;
 	} else if (code < reject_uerr0_cnt)
 		return reject_uerr0[code];
 
-	(void) sprintf (buffer, "unknown error code 0x%x", code);
+	 sprintf (buffer, "unknown error code 0x%x", code);
 	return buffer;
 }

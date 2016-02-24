@@ -124,10 +124,8 @@ static struct host *hosts;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    nfds;
 	fd_set  rfds;
@@ -146,7 +144,7 @@ char  **argv,
 		fd_set	ifds;
 
 		ifds = rfds;
-		(void) xselect (nfds, &ifds, NULLFD, NULLFD, sleepsw);
+		 xselect (nfds, &ifds, NULLFD, NULLFD, sleepsw);
 
 		update_X ();
 	}
@@ -154,15 +152,15 @@ char  **argv,
 
 /*    ARGINIT */
 
-arginit (vec)
-char  **vec;
+int 
+arginit (char **vec)
 {
 	int	    n,
 			nhosts;
-	register char  *ap,
+	char  *ap,
 			 *cp,
 			 *lp;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -221,7 +219,7 @@ char  **vec;
 					== NULL)
 				adios (NULLCP, "out of memory");
 
-			(void) strcpy (*host_end++ = ap, hp -> h_name);
+			 strcpy (*host_end++ = ap, hp -> h_name);
 		}
 
 	init_aka (myname, 1, lp);
@@ -230,7 +228,7 @@ char  **vec;
 		ll_dbinit (pgm_log, myname);
 	else
 		ll_hdinit (pgm_log, myname);
-	(void) ll_open (pgm_log);
+	 ll_open (pgm_log);
 
 	if ((DISP = XOpenDisplay (display)) == NULL)
 		adios (NULLCP, "unable to open display \"%s\"",
@@ -273,9 +271,10 @@ char  **vec;
 
 /*    XWINDOWS */
 
-static	update_X () {
-	register struct host   *hp;
-	register struct face   *fp;
+static 
+update_X  {
+	struct host   *hp;
+	struct face   *fp;
 	XGCValues gcvalues;
 
 	service_X ();
@@ -298,7 +297,7 @@ static	update_X () {
 			}
 
 			if (debug)
-				(void) fprintf (stderr, "%s: %dx%d+%d+%d/%d\n",
+				 fprintf (stderr, "%s: %dx%d+%d+%d/%d\n",
 								hp -> h_name, hp -> h_frame.width,
 								hp -> h_frame.height, hp -> h_frame.x,
 								hp -> h_frame.y, hp -> h_frame.bdrwidth);
@@ -329,7 +328,7 @@ static	update_X () {
 					XDestroyWindow (DISP, fp -> f_window);
 
 				if (debug)
-					(void) fprintf (stderr, "%s: %dx%d+%d+%d/%d\n",
+					 fprintf (stderr, "%s: %dx%d+%d+%d/%d\n",
 									fp -> f_name, fp -> f_frame.width,
 									fp -> f_frame.height, fp -> f_frame.x,
 									fp -> f_frame.y, fp -> f_frame.bdrwidth);
@@ -353,14 +352,15 @@ static	update_X () {
 
 /*  */
 
-static int  service_X () {
+static int 
+service_X  {
 	int	    wh,
 			ww;
-	register Window w;
-	register struct face   *fp;
-	register struct host   *hp;
+	Window w;
+	struct face   *fp;
+	struct host   *hp;
 	XEvent xevent;
-	register XEvent *xe = &xevent;
+	XEvent *xe = &xevent;
 
 	while (XPending (DISP)) {
 		XNextEvent (DISP, xe);
@@ -393,14 +393,14 @@ static int  service_X () {
 
 		case MapNotify:
 			if (debug)
-				(void) fprintf (stderr, "MapNotify\n");
+				 fprintf (stderr, "MapNotify\n");
 			mapped = 1;
 			display_top ();
 			break;
 
 		case ConfigureNotify:
 			if (debug)
-				(void) fprintf (stderr, "ConfigureNotify %dx%d\n",
+				 fprintf (stderr, "ConfigureNotify %dx%d\n",
 								((XConfigureEvent *) xe) -> height,
 								((XConfigureEvent *) xe) -> width);
 			if (((XConfigureEvent *) xe) -> window == mywindow
@@ -411,18 +411,18 @@ static int  service_X () {
 
 		case UnmapNotify:
 			if (debug)
-				(void) fprintf (stderr, "UnmapNotify\n");
+				 fprintf (stderr, "UnmapNotify\n");
 			mapped = 0;
 			break;
 
 		case ReparentNotify:
 			if (debug)
-				(void) fprintf (stderr, "ReparentNotify\n");
+				 fprintf (stderr, "ReparentNotify\n");
 			break;
 
 		default:
 			if (debug)
-				(void) fprintf (stderr, "Event %d\n", xe -> type);
+				 fprintf (stderr, "Event %d\n", xe -> type);
 			break;
 		}
 	}
@@ -430,7 +430,8 @@ static int  service_X () {
 
 /*  */
 
-static init_X () {
+static 
+init_X  {
 	char    def[BUFSIZ];
 
 	myframe.bdrwidth = bwidth;
@@ -442,11 +443,11 @@ static init_X () {
 		myframe.width = DisplayWidth (DISP, SCRN) - bwidth * 2;
 	myframe.x = DisplayWidth (DISP, SCRN) - (myframe.width + bwidth * 2);
 	myframe.y = 0;
-	(void) sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
+	 sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
 					myframe.x, myframe.y);
 
 	if (debug)
-		(void) fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
+		 fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
 						myframe.width, myframe.height, myframe.x, myframe.y,
 						myframe.bdrwidth);
 
@@ -477,10 +478,11 @@ static init_X () {
 
 /*  */
 
-static	layout_X () {
+static 
+layout_X  {
 	int     h;
-	register struct face   *fp;
-	register struct host   *hp;
+	struct face   *fp;
+	struct host   *hp;
 	XCharStruct mychar;
 
 	h = largest_w = 0;
@@ -559,17 +561,18 @@ static	layout_X () {
 
 /*  */
 
-static	display_top () {
+static 
+display_top  {
 	if (debug)
-		(void) fprintf (stderr, "top window\n");
+		 fprintf (stderr, "top window\n");
 }
 
 
-static	display_host (hp)
-register struct host *hp;
+static 
+display_host (struct host *hp)
 {
 	if (debug)
-		(void) fprintf (stderr, "%s:\n", hp -> h_name);
+		 fprintf (stderr, "%s:\n", hp -> h_name);
 
 	XDrawImageString (DISP, hp -> h_window, hp -> h_gc, 0, hp -> h_ascent,
 					  hp -> h_string, strlen (hp -> h_string));
@@ -577,8 +580,8 @@ register struct host *hp;
 
 /*  */
 
-static	display_face (fp)
-register struct face *fp;
+static 
+display_face (struct face *fp)
 {
 	int     sx,
 			sy,
@@ -586,8 +589,8 @@ register struct face *fp;
 			dy;
 	unsigned int    h,
 			 w;
-	register struct type_IMAGE_Image *im = fp -> f_imap;
-	register OpaqueFrame *xm = &fp -> f_frame;
+	struct type_IMAGE_Image *im = fp -> f_imap;
+	OpaqueFrame *xm = &fp -> f_frame;
 	XImage *image;
 
 	sx = max (im -> width - (int) xm -> width, 0) / 2;
@@ -598,9 +601,9 @@ register struct face *fp;
 	h = min (xm -> height, im -> height);
 
 	if (debug) {
-		(void) fprintf (stderr, "im: %dx%d frame:%dx%d\n",
+		 fprintf (stderr, "im: %dx%d frame:%dx%d\n",
 						im -> width, im -> height, xm -> width, xm -> height);
-		(void) fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
+		 fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
 						sx, sy, dx, dy, w, h);
 	}
 
@@ -619,37 +622,36 @@ register struct face *fp;
 
 /*  */
 
-static int facecmp (f1, f2)
-struct face **f1,
-		**f2;
+static int 
+facecmp (struct face **f1, struct face **f2)
 {
 	return strcmp ((*f1) -> f_name, (*f2) -> f_name);
 }
 
 
-static int hostcmp (h1, h2)
-struct host **h1,
-		**h2;
+static int 
+hostcmp (struct host **h1, struct host **h2)
 {
 	return strcmp ((*h1) -> h_name, (*h2) -> h_name);
 }
 
 
-static	read_X () {
+static 
+read_X  {
 	int	    fd,
 			n;
 	long    now;
-	register struct dirent *dp;
-	register struct face *fp,
+	struct dirent *dp;
+	struct face *fp,
 			**fpp;
-	register struct host *hp,
+	struct host *hp,
 			**hpp;
 	struct whod wds;
-	register struct whod *wd = &wds;
-	register struct whoent *we;
+	struct whod *wd = &wds;
+	struct whoent *we;
 	static DIR *dd = NULL;
 
-	(void) time (&now);
+	 time (&now);
 	for (hp = hosts; hp; hp = hp -> h_next) {
 		hp -> h_up = 0;
 		for (fp = hp -> h_faces; fp; fp = fp -> f_next)
@@ -672,7 +674,7 @@ static	read_X () {
 		if ((fd = open (dp -> d_name, O_RDONLY)) == NOTOK)
 			continue;
 		n = read (fd, (char *) wd, sizeof *wd);
-		(void) close (fd);
+		 close (fd);
 		if ((n -= sizeof *wd - sizeof wd -> wd_we) < 0)
 			continue;
 
@@ -689,9 +691,9 @@ static	read_X () {
 			hp -> h_next = hosts;
 			hosts = hp;
 
-			(void) strncpy (hp -> h_name, wd -> wd_hostname,
+			 strncpy (hp -> h_name, wd -> wd_hostname,
 							sizeof wd -> wd_hostname);
-			(void) sprintf (hp -> h_string, "%s:", hp -> h_name);
+			 sprintf (hp -> h_string, "%s:", hp -> h_name);
 			hp -> h_frame.width = XTextWidth (myfont, hp -> h_string,
 											  strlen (hp -> h_string));
 		}
@@ -712,7 +714,7 @@ static	read_X () {
 				fp -> f_next = hp -> h_faces;
 				hp -> h_faces = fp;
 
-				(void) strncpy (fp -> f_name, we -> we_utmp.out_name,
+				 strncpy (fp -> f_name, we -> we_utmp.out_name,
 								sizeof we -> we_utmp.out_name);
 
 				if (display_this_host (hp -> h_name)
@@ -754,19 +756,19 @@ static	read_X () {
 	}
 
 	{
-		register int    i;
-		register struct host **hq;
+		int    i;
+		struct host **hq;
 
 		i = 0;
 		for (hp = hosts; hp; hp = hp -> h_next) {
-			register int j;
-			register struct face **fq;
+			int j;
+			struct face **fq;
 
 			i++, j = 0;
 			for (fp = hp -> h_faces; fp; fp = fp -> f_next)
 				j++;
 			if (j > 1) {
-				register struct face **faces;
+				struct face **faces;
 
 				if ((faces = (struct face **)
 							 calloc ((unsigned) j, sizeof *faces)) == NULL)
@@ -786,7 +788,7 @@ static	read_X () {
 		}
 
 		if (i > 1) {
-			register struct host **hostz;
+			struct host **hostz;
 
 			if ((hostz = (struct host **)
 						 calloc ((unsigned) i, sizeof *hostz)) == NULL)
@@ -809,10 +811,10 @@ out:
 
 /*  */
 
-static int  display_this_host (n)
-register char *n;
+static int 
+display_this_host (char *n)
 {
-	register char **ap;
+	char **ap;
 
 	if (host_list == host_end)
 		return 1;

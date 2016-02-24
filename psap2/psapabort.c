@@ -35,21 +35,18 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapabort.c,v 9.0 199
 
 /*    P-U-ABORT.REQUEST */
 
-int	PUAbortRequest (sd, data, ndata, pi)
-int	sd;
-PE     *data;
-int	ndata;
-struct PSAPindication *pi;
+int 
+PUAbortRequest (int sd, PE *data, int ndata, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int	    len,
 			result;
 	char   *base;
 	PE	    pe;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
-	register struct type_PS_ARU__PPDU *pdu;
+	struct SSAPabort  *sa = &sis.si_abort;
+	struct type_PS_ARU__PPDU *pdu;
 
 	toomuchP (data, ndata, NPDATA, "abort");
 	missingP (pi);
@@ -57,7 +54,7 @@ struct PSAPindication *pi;
 	smask = sigioblock ();
 
 	if ((pb = findpblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
@@ -68,7 +65,7 @@ struct PSAPindication *pi;
 	if ((pdu = (struct type_PS_ARU__PPDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	pdu -> offset = type_PS_ARU__PPDU_normal__mode;
@@ -90,7 +87,7 @@ no_mem:
 	}
 
 	if (encode_PS_ARU__PPDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						 PY_pepy);
 		goto out2;
 	}
@@ -102,10 +99,10 @@ no_mem:
 
 	if ((result = SUAbortRequest (pb -> pb_fd, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason)) {
-			(void) ss2pslose (pb, pi, "SUAbortRequest", sa);
+			 ss2pslose (pb, pi, "SUAbortRequest", sa);
 			goto out2;
 		} else {
-			(void) ss2pslose (NULLPB, pi, "SUAbortRequest", sa);
+			 ss2pslose (NULLPB, pi, "SUAbortRequest", sa);
 			goto out1;
 		}
 
@@ -125,7 +122,7 @@ out1:
 	if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

@@ -33,9 +33,8 @@ void user_tailor(), main_bind(), cnnct_bind(), interact(), help_init();
 
 void exit();
 
-main(argc, argv)
-unsigned int     argc;
-char    *argv[];
+int 
+main (unsigned int argc, char *argv[])
 {
 	print_parse_errors = FALSE;
 	quipu_syntaxes();
@@ -65,12 +64,11 @@ char    *argv[];
 	return(0);
 }
 
-void read_args(argc, avptr)
-unsigned int argc;
-char ***avptr;
+void 
+read_args (unsigned int argc, char ***avptr)
 {
-	register char **av;
-	register char *cp;
+	char **av;
+	char *cp;
 
 	if (argc <= 1) return;
 
@@ -80,10 +78,10 @@ char ***avptr;
 	while ((cp = *av) && (*cp == '-')) {
 		switch (*++cp) {
 		case 'u':
-			if (*++av != NULLCP) (void) strcpy(namestr, *av);
+			if (*++av != NULLCP)  strcpy(namestr, *av);
 			break;
 		case 'p':
-			if (*++av != NULLCP) (void) strcpy(passwd, *av);
+			if (*++av != NULLCP)  strcpy(passwd, *av);
 			break;
 		case 'T':
 			if (*++av != NULLCP) oidtable = *av;
@@ -103,36 +101,37 @@ char ***avptr;
 	}
 }
 
-void setsignals() {
+void 
+setsignals  {
 	int     i;
 
 	for (i=0; i<18; i++)
-		(void) signal(i, SIG_DFL);
+		 signal(i, SIG_DFL);
 }
 
-void eprint(str)
-char    *str;
+void 
+eprint (char *str)
 {
 	tprint(str);
 }
 
-void sd_quit() {
+void 
+sd_quit  {
 	quit("\n", 0);
 }
 
-void quit(error, sig)
-char    *error;
-int     sig;
+void 
+quit (char *error, int sig)
 {
 	endwidgets();
-	(void) ds_unbind();
+	 ds_unbind();
 	hide_picture();
-	(void) printf(error);
+	 printf(error);
 	exit(sig);
 }
 
-void int_quit(sig)
-int sig;
+void 
+int_quit (int sig)
 {
 	quit("\n", sig);
 }
@@ -148,7 +147,7 @@ va_dcl {
 
 	code = va_arg (ap, int);
 
-	(void) _ll_log (log_dsap, code, ap);
+	 _ll_log (log_dsap, code, ap);
 
 	va_end (ap);
 }

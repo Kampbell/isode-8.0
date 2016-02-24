@@ -75,9 +75,8 @@ int (*closefn[])() = {
 	close, TDiscFromServer
 };
 
-static
-int iso_conn(server)
-char *server;
+static int 
+iso_conn (char *server)
 {
 	struct TSAPconnect tcs;
 	struct TSAPconnect *tc = &tcs;
@@ -179,16 +178,18 @@ char *server;
  * of the form hostname:number.screen ("::" if DECnet) is returned in a result
  * parameter. The screen number to use is also returned.
  */
-int _XConnectDisplay (display_name, expanded_name, prop_name, screen_num)
-char *display_name;
-char *expanded_name;	/* return */
-char *prop_name;		/* return */
-int *screen_num;		/* return */
+int 
+_XConnectDisplay (
+    char *display_name,
+    char *expanded_name,	/* return */
+    char *prop_name,		/* return */
+    int *screen_num		/* return */
+)
 
 {
 	char displaybuf[256];		/* Display string buffer */
-	register char *display_ptr;	/* Display string buffer pointer */
-	register char *numbuf_ptr;	/* Server number buffer pointer */
+	char *display_ptr;	/* Display string buffer pointer */
+	char *numbuf_ptr;	/* Server number buffer pointer */
 	char *screen_ptr;		/* Pointer for locating screen num */
 	int display_num;		/* Display number */
 	struct sockaddr_in inaddr;	/* INET socket address. */
@@ -226,7 +227,7 @@ int *screen_num;		/* return */
 	 * NOTE - if DECnet is to be used, the display name is formatted
 	 * as "host::number"
 	 */
-	(void) strncpy(displaybuf, display_name, sizeof(displaybuf));
+	 strncpy(displaybuf, display_name, sizeof(displaybuf));
 	if ((display_ptr = SearchString(displaybuf,':')) == NULL) return (-1);
 #ifdef DNETCONN
 	if (*(display_ptr + 1) == ':') {
@@ -300,7 +301,7 @@ int *screen_num;		/* return */
 	if (displaybuf[0] == '\0')
 #ifdef DNETCONN
 		if (dnet)
-			(void) strcpy (displaybuf, "0");
+			 strcpy (displaybuf, "0");
 		else
 #endif
 #ifdef UNIXCONN
@@ -317,7 +318,7 @@ int *screen_num;		/* return */
 			strcpy(displaybuf, name.nodename);
 		}
 #else
-			(void) gethostname (displaybuf, sizeof(displaybuf));
+			 gethostname (displaybuf, sizeof(displaybuf));
 #endif /* hpux */
 #endif /* UNIXCONN else TCPCONN (assumed) */
 
@@ -354,7 +355,7 @@ int *screen_num;		/* return */
 					(strcmp("unix", displaybuf) == 0)) {
 				/* Connect locally using Unix domain. */
 				unaddr.sun_family = AF_UNIX;
-				(void) strcpy(unaddr.sun_path, X_UNIX_PATH);
+				 strcpy(unaddr.sun_path, X_UNIX_PATH);
 				strcat(unaddr.sun_path, display_ptr);
 				addr = (struct sockaddr *) &unaddr;
 				addrlen = strlen(unaddr.sun_path) + 2;
@@ -431,7 +432,7 @@ int *screen_num;		/* return */
 
 
 			if (connect(fd, addr, addrlen) == -1) {
-				(void) close (fd);
+				 close (fd);
 				return(-1); 	    /* errno set by system call. */
 			}
 		}
@@ -452,7 +453,7 @@ int *screen_num;		/* return */
 			ioctl(fd, FIOSNBIO, &arg);
 		}
 #else
-		(void) fcntl(fd, F_SETFL, FNDELAY);
+		 fcntl(fd, F_SETFL, FNDELAY);
 #endif /* FIOSNBIO */
 
 #ifdef ISOCONN
@@ -485,7 +486,7 @@ int *screen_num;		/* return */
 		for (cp = prop_name; *cp; cp++) *(display_ptr++) = *cp;
 	}
 	*display_ptr = '\0';
-	(void) strcpy(expanded_name, displaybuf);
+	 strcpy(expanded_name, displaybuf);
 	return(fd);
 
 }
@@ -494,15 +495,14 @@ int *screen_num;		/* return */
  * Disconnect from server.
  */
 
-int _XDisconnectDisplay (server)
-
-int server;
+int 
+_XDisconnectDisplay (int server)
 
 {
 #ifdef ISOCONN
-	(void)CloseToServer(server);
+	CloseToServer(server);
 #else /* ISOCONN */
-	(void) close(server);
+	 close(server);
 #endif /* ISOCONN */
 }
 
@@ -564,8 +564,8 @@ Display *dpy;
 		if (ANYSET(r_mask)) {
 			char buf[BUFSIZE];
 			long pend_not_register;
-			register long pend;
-			register xEvent *ev;
+			long pend;
+			xEvent *ev;
 
 			/* find out how much data can be read */
 			if (BytesReadable(dpy->fd, (char *) &pend_not_register) < 0)
@@ -677,7 +677,7 @@ xConnClientPrefix *client;
 			bptr += padlength[auth_strlen & 3];
 		}
 	}
-	(void) WriteToServer(dpy->fd, buffer, bytes);
+	 WriteToServer(dpy->fd, buffer, bytes);
 	return;
 }
 

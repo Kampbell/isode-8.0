@@ -44,10 +44,10 @@ va_dcl {
 	int	    reason,
 	result;
 	PE	    pe;
-	register struct psapblk *pb;
-	register struct PSAPindication *pi;
-	register struct PSAPabort *pa;
-	register struct type_PS_Abort__PDU *pdu;
+	struct psapblk *pb;
+	struct PSAPindication *pi;
+	struct PSAPabort *pa;
+	struct type_PS_Abort__PDU *pdu;
 	struct type_PS_SessionConnectionIdentifier *pref;
 	va_list ap;
 
@@ -112,7 +112,7 @@ va_dcl {
 		if (encode_PS_Abort__PDU (&pe, 1, 0, NULLCP, pdu) != NOTOK) {
 			PLOGP (psap2_log,PS_PDUs, pe, "Abort-PDU", 0);
 
-			(void) pe2ps (pb -> pb_stream, pe);
+			 pe2ps (pb -> pb_stream, pe);
 		}
 		if (pe)
 			pe_free (pe);
@@ -127,8 +127,8 @@ va_dcl {
 /* VARARGS6 */
 
 int	ppktlose (pb, pi, reason, pref, what, fmt)
-register struct psapblk *pb;
-register struct PSAPindication *pi;
+struct psapblk *pb;
+struct PSAPindication *pi;
 int	reason;
 struct type_PS_SessionConnectionIdentifier *pref;
 char   *what,
@@ -176,13 +176,13 @@ char   *what,
 
 #ifndef	lint
 static int  _psaplose (pi, reason, ap)	/* what, fmt, args ... */
-register struct PSAPindication *pi;
+struct PSAPindication *pi;
 int     reason;
 va_list	ap;
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct PSAPabort *pa;
+	struct PSAPabort *pa;
 
 	if (pi) {
 		bzero ((char *) pi, sizeof *pi);

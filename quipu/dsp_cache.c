@@ -183,7 +183,7 @@ DN binddn;
 		break;
 	case OP_SEARCH:
 		for (ptr = res->res_sr.CSR_entries; ptr != NULLENTRYINFO; ptr = ptr->ent_next)
-			(void) cache_dsp_entry (ptr);
+			 cache_dsp_entry (ptr);
 		break;
 	case OP_LIST:
 		if (ctx == DS_CTX_QUIPU_DSP)

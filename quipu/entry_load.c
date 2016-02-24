@@ -35,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/entry_load.c,v 9.0 19
 
 extern char * treedir;
 extern LLog * log_dsap;
-extern int errno;
+
 extern int parse_status;
 extern DN mydsadn;
 struct acl_info * acl_dflt ();
@@ -93,7 +93,7 @@ char * file;
 	char *ptr, *newname, *tmp, *getline();
 #endif	/* TURBO_DISK */
 	extern int parse_line;
-	register int i;
+	int i;
 
 	if ((mapfp = fopen (file,"r")) == (FILE *)NULL) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Cannot read \"%s\" (%d)",file,errno));
@@ -109,7 +109,7 @@ char * file;
 	{
 		if ((newname = rindex(ptr,'#')) == NULLCP) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS,("Seperator missing in map file \"%s\", line %d",file,parse_line));
-			(void) fclose (mapfp);
+			 fclose (mapfp);
 			return FALSE;
 		}
 		tmp = newname;
@@ -123,13 +123,13 @@ char * file;
 			aps->ps_ptr -= i;
 			aps->ps_cnt += i;
 			ps_print (aps,SkipSpace(newname));
-			(void) fclose (mapfp);
+			 fclose (mapfp);
 			return TRUE;
 		}
 	}
 
 	DLOG (log_dsap, LLOG_DEBUG,("%s not found in map file %s",name,file));
-	(void) fclose (mapfp);
+	 fclose (mapfp);
 	return FALSE;
 }
 
@@ -142,7 +142,7 @@ char * file;
 	char mapname[LINESIZE];
 	char sname[LINESIZE];
 	char *mptr, *nptr;
-	register int i;
+	int i;
 #ifdef TEMPNAM
 	char mapdir[LINESIZE];
 	char *cp;
@@ -166,8 +166,8 @@ char * file;
 		if (isascii(*nptr) && (isalnum(*nptr) || *nptr ==  '-'))
 			*mptr++ = *nptr, i++;
 
-	(void) strcpy (sname,name);
-	(void) strcpy (mptr,"XXXXXX");
+	 strcpy (sname,name);
+	 strcpy (mptr,"XXXXXX");
 	i = strlen (name);
 	nptr = (aps->ps_ptr -= i);
 	aps->ps_cnt += i;
@@ -182,19 +182,19 @@ char * file;
 			*mptr++ = *nptr, i++;
 	*mptr = '\0';
 
-	(void) strcpy (sname,name);
+	 strcpy (sname,name);
 
 	i = strlen (name);
 	aps->ps_ptr -= i;
 	aps->ps_cnt += i;
 	*aps->ps_ptr = 0;
 
-	(void) sprintf (mapdir, "%s", aps->ps_base);
+	 sprintf (mapdir, "%s", aps->ps_base);
 
 	if ((cp = tempnam (mapdir, mapname)) == NULLCP)
 		return FALSE;
 
-	(void) sprintf (aps->ps_base, "%s", cp);
+	 sprintf (aps->ps_base, "%s", cp);
 	free (cp);
 
 	nptr = (aps->ps_base + strlen (mapdir));
@@ -215,7 +215,7 @@ char * file;
 		int um;
 		um = umask (0177);
 		mapfp = fopen (file,"w");
-		(void) umask (um);
+		 umask (um);
 	}
 
 	if (mapfp == (FILE *)NULL) {
@@ -246,7 +246,7 @@ char make;
 
 	/* look for EDB.map file */
 	*aps->ps_ptr = 0;
-	(void) sprintf (mapbuf, "%sEDB.map",aps->ps_base);
+	 sprintf (mapbuf, "%sEDB.map",aps->ps_base);
 
 	rdn_print (aps,rdn,DIROUT);
 	*aps->ps_ptr = 0;
@@ -357,8 +357,8 @@ DN dn;
 }
 
 static file_check (offset,entryptr)
-register int offset;
-register Entry entryptr;
+int offset;
+Entry entryptr;
 {
 	ps->ps_ptr = filename + offset;
 	ps->ps_cnt = LINESIZE - offset;
@@ -448,7 +448,7 @@ int     offset;
 
 static entry_load_kids (entryptr,offset)
 Avlnode	*entryptr;	/* in this case, entryptr is really a tree of kids */
-register int offset;
+int offset;
 {
 	Entry	akid, parent;
 
@@ -512,7 +512,7 @@ Avlnode *oldtree;
 		newentry->e_allchildrenpresent = p->e_allchildrenpresent;
 		newentry->e_children = p->e_children;
 
-		(void) avl_apply(newentry->e_children, parent_link, (caddr_t) newentry,
+		 avl_apply(newentry->e_children, parent_link, (caddr_t) newentry,
 						 NOTOK, AVL_PREORDER);
 
 		if (p->e_edbversion != NULLCP)
@@ -552,7 +552,7 @@ DN dn;
 		return (NULLENTRY);
 	}
 
-	(void) dn2filename (ps,dn,FALSE);
+	 dn2filename (ps,dn,FALSE);
 	if (*(ps->ps_ptr - 1) != '/')
 		ps_print (ps,"/EDB");
 	else
@@ -570,7 +570,7 @@ DN dn;
 		 * tree previously loaded.
 		 */
 
-		(void) avl_apply(treetop, merge_entry, (caddr_t) parent->e_children,
+		 avl_apply(treetop, merge_entry, (caddr_t) parent->e_children,
 						 NOTOK, AVL_PREORDER);
 
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
@@ -579,7 +579,7 @@ DN dn;
 		got_subtree = TRUE;
 
 		/* free the old tree and set got_subtree */
-		(void) avl_free(parent->e_children, check_entry_free);
+		 avl_free(parent->e_children, check_entry_free);
 
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
 			parent->e_allchildrenpresent = 2;

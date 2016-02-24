@@ -46,18 +46,18 @@ static	undo_components_set ();
 /*  */
 
 undo_type (yp, level, id, arg, Vflag)
-register YP	yp;
-register int	level;
-register char  *id,
+YP	yp;
+int	level;
+char  *id,
 		 *arg;
 int	Vflag;
 {
-	register int    i,
+	int    i,
 			 j;
-	register char  *narg;
-	register struct tuple *t;
-	register YP	    y;
-	register YV	    yv;
+	char  *narg;
+	struct tuple *t;
+	YP	    y;
+	YV	    yv;
 
 	if (yp -> yp_flags & YP_COMPONENTS) {
 		yyerror_aux ("oops, I shouldn't be here!");
@@ -66,20 +66,20 @@ int	Vflag;
 	}
 
 	if (level == 1) {
-		(void) printf ("(pe, explicit, len, buffer, parm)\n");
-		(void) printf ("%sPE\tpe;\nint\texplicit;\n",
+		 printf ("(pe, explicit, len, buffer, parm)\n");
+		 printf ("%sPE\tpe;\nint\texplicit;\n",
 					   yp -> yp_code != YP_ANY
 					   && yp -> yp_code != YP_NULL
 					   && (yp -> yp_code != YP_CHOICE
 						   || (yp -> yp_flags & YP_CONTROLLED))
-					   ? "register " : "");
-		(void) printf ("int    *len;\nchar  **buffer;\n%s parm;\n{\n",
+					   ? "" : "");
+		 printf ("int    *len;\nchar  **buffer;\n%s parm;\n{\n",
 					   yp -> yp_param_type ? yp -> yp_param_type : "PEPYPARM");
 
 		if (yp -> yp_action0) {
 			if (!Pflag && *sysin)
-				(void) printf ("# line %d \"%s\"\n", yp -> yp_act0_lineno, sysin);
-			(void) printf ("%*s%s\n", level * 4, "", yp -> yp_action0);
+				 printf ("# line %d \"%s\"\n", yp -> yp_act0_lineno, sysin);
+			 printf ("%*s%s\n", level * 4, "", yp -> yp_action0);
 		}
 	}
 
@@ -91,7 +91,7 @@ int	Vflag;
 			break;		/* else fall */
 	case YP_INTLIST:
 	case YP_ENUMLIST:
-		(void) printf ("%*sregister integer %s;\n\n", level * 4, "",
+		 printf ("%*sinteger %s;\n\n", level * 4, "",
 					   narg = gensym ());
 		break;
 
@@ -100,7 +100,7 @@ int	Vflag;
 								  || yp -> yp_strexp)))
 			break;		/* else fall */
 	case YP_BITLIST:
-		(void) printf ("%*sregister PE %s;\n\n", level * 4, "",
+		 printf ("%*sPE %s;\n\n", level * 4, "",
 					   narg = gensym ());
 		break;
 
@@ -109,10 +109,10 @@ int	Vflag;
 					   || yp -> yp_strexp)) {
 			narg = gensym ();
 			if (!Vflag && yp -> yp_prfexp == 'q')
-				(void) printf ("%*sregister struct qbuf *%s;\n\n",
+				 printf ("%*sstruct qbuf *%s;\n\n",
 							   level * 4, "", narg);
 			else
-				(void) printf ("%*sregister char *%s;\n%*sint %s_len;\n\n",
+				 printf ("%*schar *%s;\n%*sint %s_len;\n\n",
 							   level * 4, "", narg, level * 4, "", narg);
 		}
 		break;
@@ -121,7 +121,7 @@ int	Vflag;
 		if (!dflag && ((level == 1) || yp -> yp_action2
 					   || yp -> yp_strexp)) {
 			narg = gensym ();
-			(void) printf ("%*sregister double %s;\n\n", level * 4, "", narg);
+			 printf ("%*sdouble %s;\n\n", level * 4, "", narg);
 		}
 		break;
 
@@ -136,7 +136,7 @@ int	Vflag;
 		if (!Vflag && (dflag || (!yp -> yp_action2 && !yp -> yp_strexp
 								 && level != 1)))
 			break;		/* else fall */
-		(void) printf ("%*sregister OID %s;\n\n", level * 4, "",
+		 printf ("%*sOID %s;\n\n", level * 4, "",
 					   narg = gensym ());
 		break;
 
@@ -148,8 +148,8 @@ int	Vflag;
 	case YP_SETLIST:
 		narg = gensym ();
 		if (yp -> yp_code == YP_SETLIST)
-			(void) printf ("%*sint %s_count = 0;\n", level * 4, "", narg);
-		(void) printf ("%*sregister PE %s;\n\n", level * 4, "", narg);
+			 printf ("%*sint %s_count = 0;\n", level * 4, "", narg);
+		 printf ("%*sPE %s;\n\n", level * 4, "", narg);
 		break;
 
 	default:
@@ -157,24 +157,24 @@ int	Vflag;
 	}
 
 	if (!Vflag) {
-		(void) printf ("#ifdef DEBUG\n%*s(void) testdebug (%s, \"",
+		 printf ("#ifdef DEBUG\n%*s testdebug (%s, \"",
 					   level * 4, "", arg);
 		if (level == 1)
-			(void) printf ("%s.", mymodule);
-		(void) printf ("%s\");\n#endif\n\n", id);
+			 printf ("%s.", mymodule);
+		 printf ("%s\");\n#endif\n\n", id);
 	}
 
 	if (level == 1 && (yp -> yp_flags & YP_TAG)) {
-		(void) printf ("%*sif (explicit\n%*s&& PE_ID (%s -> pe_class, %s -> pe_id)\n",
+		 printf ("%*sif (explicit\n%*s&& PE_ID (%s -> pe_class, %s -> pe_id)\n",
 					   level * 4, "", (level + 2) * 4, "", arg, arg);
-		(void) printf ("%*s!= PE_ID (PE_CLASS_%s, %d)) {\n",
+		 printf ("%*s!= PE_ID (PE_CLASS_%s, %d)) {\n",
 					   (level + 4) * 4, "", pe_classlist[yp -> yp_tag -> yt_class],
 					   val2int (yp -> yp_tag -> yt_value));
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s/0x%%x\", PEPY_ERR_BAD_CLASS,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s/0x%%x\", PEPY_ERR_BAD_CLASS,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_classlist[%s -> pe_class], %s -> pe_id);\n",
+		 printf ("%*spe_classlist[%s -> pe_class], %s -> pe_id);\n",
 					   (level + 3) * 4, "", arg, arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n",
+		 printf ("%*sreturn NOTOK;\n%*s}\n",
 					   (level + 1) * 4, "", (level * 4), "");
 	} else if (!(yp -> yp_flags & YP_IMPLICIT)) {
 		for (t = tuples; t -> t_type != YP_UNDF; t++)
@@ -194,14 +194,14 @@ int	Vflag;
 
 	if (Vflag) {
 		if (yp -> yp_flags & YP_ID)
-			(void) printf ("%*svname (\"%s\");\n", level * 4, "", yp -> yp_id);
+			 printf ("%*svname (\"%s\");\n", level * 4, "", yp -> yp_id);
 		else {
 			if (hflag && yp -> yp_code == YP_IDEFINED)
-				(void) printf ("%*svname (\"%s\");\n", level * 4, "",
+				 printf ("%*svname (\"%s\");\n", level * 4, "",
 							   yp -> yp_identifier);
 			else if ((yp -> yp_flags & YP_TAG)
 					 && (yp -> yp_flags & (YP_OPTIONAL | YP_DEFAULT)))
-				(void) printf ("%*svtag (%d, %d);\n", level * 4, "",
+				 printf ("%*svtag (%d, %d);\n", level * 4, "",
 							   yp -> yp_tag -> yt_class,
 							   val2int (yp -> yp_tag -> yt_value));
 		}
@@ -215,199 +215,199 @@ int	Vflag;
 	case YP_BOOL:
 		if (Vflag || (!dflag && ((level == 1) || yp -> yp_action2
 								 || yp -> yp_intexp)))
-			(void) printf ("%*sif ((%s = prim2flag (%s)) == NOTOK) {\n",
+			 printf ("%*sif ((%s = prim2flag (%s)) == NOTOK) {\n",
 						   level * 4, "", narg, arg);
 		else
-			(void) printf ("%*sif (prim2flag (%s) == NOTOK) {\n",
+			 printf ("%*sif (prim2flag (%s) == NOTOK) {\n",
 						   level * 4, "", arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_BOOLEAN,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_BOOLEAN,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
 		if (!dflag && yp -> yp_intexp)
-			(void) printf ("%*s%s = %s;\n", level * 4, "", yp -> yp_intexp, narg);
+			 printf ("%*s%s = %s;\n", level * 4, "", yp -> yp_intexp, narg);
 		if (!dflag && (level == 1))
-			(void) printf ("%*sif (len)\n%*s*len = %s;\n", level * 4, "",
+			 printf ("%*sif (len)\n%*s*len = %s;\n", level * 4, "",
 						   (level + 1) * 4, "", narg);
 		if (Vflag)
-			(void) printf ("%*svprint (%s ? \"TRUE\" : \"FALSE\");\n",
+			 printf ("%*svprint (%s ? \"TRUE\" : \"FALSE\");\n",
 						   level * 4, "", narg);
 		break;
 
 	case YP_INT:
 		if (Vflag || (!dflag && ((level == 1) || yp -> yp_action2
 								 || yp -> yp_intexp)))
-			(void) printf ("%*sif ((%s = prim2num (%s)) == NOTOK\n",
+			 printf ("%*sif ((%s = prim2num (%s)) == NOTOK\n",
 						   level * 4, "", narg, arg);
 		else
-			(void) printf ("%*sif (prim2num (%s) == NOTOK\n",
+			 printf ("%*sif (prim2num (%s) == NOTOK\n",
 						   level * 4, "", arg);
-		(void) printf ("%*s&& %s -> pe_errno != PE_ERR_NONE) {\n",
+		 printf ("%*s&& %s -> pe_errno != PE_ERR_NONE) {\n",
 					   (level + 2) * 4, "", arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_INTEGER,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_INTEGER,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
 		if (!dflag && yp -> yp_intexp)
-			(void) printf ("%*s%s = %s;\n", level * 4, "", yp -> yp_intexp, narg);
+			 printf ("%*s%s = %s;\n", level * 4, "", yp -> yp_intexp, narg);
 		if (!dflag && (level == 1))
-			(void) printf ("%*sif (len)\n%*s*len = %s;\n", level * 4, "",
+			 printf ("%*sif (len)\n%*s*len = %s;\n", level * 4, "",
 						   (level + 1) * 4, "", narg);
 		if (Vflag)
-			(void) printf ("%*svprint (\"%%d\", %s);\n", level * 4, "", narg);
+			 printf ("%*svprint (\"%%d\", %s);\n", level * 4, "", narg);
 		break;
 
 	case YP_REAL:
 		if (Vflag || (!dflag && ((level == 1) || yp -> yp_action2
 								 || yp -> yp_strexp)))
-			(void) printf ("%*sif ((%s = prim2real (%s)) == NOTOK\n",
+			 printf ("%*sif ((%s = prim2real (%s)) == NOTOK\n",
 						   level * 4, "", narg, arg);
 		else
-			(void) printf ("%*sif (prim2real (%s) == NOTOK\n",
+			 printf ("%*sif (prim2real (%s) == NOTOK\n",
 						   level * 4, "", arg);
-		(void) printf ("%*s&& %s -> pe_errno != PE_ERR_NONE) {\n",
+		 printf ("%*s&& %s -> pe_errno != PE_ERR_NONE) {\n",
 					   (level + 2) * 4, "", arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_REAL,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_REAL,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
 		if (!dflag && yp -> yp_strexp)
-			(void) printf ("%*s%s = %s;\n", level * 4, "",
+			 printf ("%*s%s = %s;\n", level * 4, "",
 						   yp -> yp_strexp, narg);
 		if (Vflag)
-			(void) printf ("%*svprint (\"%%g\", %s);\n", level * 4, "", narg);
+			 printf ("%*svprint (\"%%g\", %s);\n", level * 4, "", narg);
 		break;
 
 	case YP_INTLIST:
 	case YP_ENUMLIST:
-		(void) printf ("%*sif ((%s = prim2%snum (%s)) == NOTOK\n",
+		 printf ("%*sif ((%s = prim2%snum (%s)) == NOTOK\n",
 					   level * 4, "", narg,
 					   yp->yp_code == YP_ENUMLIST ? "e" : "",
 					   arg);
-		(void) printf ("%*s&& %s -> pe_errno != PE_ERR_NONE) {\n",
+		 printf ("%*s&& %s -> pe_errno != PE_ERR_NONE) {\n",
 					   (level + 2) * 4, "", arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_INTEGER,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_INTEGER,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
 		if (!dflag && yp -> yp_intexp)
-			(void) printf ("%*s%s = %s;\n", level * 4, "", yp -> yp_intexp, narg);
+			 printf ("%*s%s = %s;\n", level * 4, "", yp -> yp_intexp, narg);
 		if (!dflag && (level == 1))
-			(void) printf ("%*sif (len)\n%*s*len = %s;\n", level * 4, "",
+			 printf ("%*sif (len)\n%*s*len = %s;\n", level * 4, "",
 						   (level + 1) * 4, "", narg);
 		uniqint (yp -> yp_value);
-		(void) printf ("%*sswitch (%s) {\n", level * 4, "", narg);
+		 printf ("%*sswitch (%s) {\n", level * 4, "", narg);
 		for (yv = yp -> yp_value; yv; yv = yv -> yv_next) {
-			(void) printf ("%*scase %d:", (level + 1) * 4, "", val2int (yv));
+			 printf ("%*scase %d:", (level + 1) * 4, "", val2int (yv));
 			if (yv -> yv_flags & YV_NAMED)
-				(void) printf ("\t/* %s */", yv -> yv_named);
-			(void) printf ("\n");
+				 printf ("\t/* %s */", yv -> yv_named);
+			 printf ("\n");
 			if (Vflag) {
 				if (yv -> yv_flags & YV_NAMED)
-					(void) printf ("%*svprint (\"%s\");\n", (level + 2) * 4, "",
+					 printf ("%*svprint (\"%s\");\n", (level + 2) * 4, "",
 								   yv -> yv_named);
 				else
-					(void) printf ("%*svprint (\"%%d\", %s);\n", (level + 2) * 4,
+					 printf ("%*svprint (\"%%d\", %s);\n", (level + 2) * 4,
 								   "", narg);
 			}
 			if (!dflag && yv -> yv_action)
 				do_action (yv -> yv_action, level + 2, narg,
 						   yv -> yv_act_lineno);
-			(void) printf ("%*sbreak;\n", (level + 2) * 4, "");
+			 printf ("%*sbreak;\n", (level + 2) * 4, "");
 		}
 		if (!rflag && yp -> yp_code == YP_ENUMLIST) {
-			(void) printf ("%*sdefault:\n", (level + 1) * 4, "");
-			(void) printf ("%*sadvise (NULLCP, \"%s %%s%%d\", PEPY_ERR_UNK_COMP, %s);\n",
+			 printf ("%*sdefault:\n", (level + 1) * 4, "");
+			 printf ("%*sadvise (NULLCP, \"%s %%s%%d\", PEPY_ERR_UNK_COMP, %s);\n",
 						   (level + 2) * 4, "", id, narg);
-			(void) printf ("%*sreturn NOTOK;\n", (level + 2) * 4, "");
+			 printf ("%*sreturn NOTOK;\n", (level + 2) * 4, "");
 		} else if (Vflag) {
-			(void) printf ("%*sdefault:\n", (level + 1) * 4, "");
-			(void) printf ("%*svprint (\"%%d\", %s);\n", (level + 2) * 4, "",
+			 printf ("%*sdefault:\n", (level + 1) * 4, "");
+			 printf ("%*svprint (\"%%d\", %s);\n", (level + 2) * 4, "",
 						   narg);
-			(void) printf ("%*sbreak;\n", (level + 2) * 4, "");
+			 printf ("%*sbreak;\n", (level + 2) * 4, "");
 		}
-		(void) printf ("%*s}\n", level * 4, "");
+		 printf ("%*s}\n", level * 4, "");
 		break;
 
 	case YP_BIT:
 		if (Vflag || (!dflag && ((level == 1) || yp -> yp_action2
 								 || yp -> yp_strexp)))
-			(void) printf ("%*sif ((%s = prim2bit (%s)) == NULLPE) {\n",
+			 printf ("%*sif ((%s = prim2bit (%s)) == NULLPE) {\n",
 						   level * 4, "", narg, arg);
 		else
-			(void) printf ("%*sif (prim2bit (%s) == NULLPE) {\n",
+			 printf ("%*sif (prim2bit (%s) == NULLPE) {\n",
 						   level * 4, "", arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_BITS,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_BITS,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
 		if (!dflag && yp -> yp_strexp)
-			(void) printf ("%*s%s = bitstr2strb (%s, &(%s));\n",
+			 printf ("%*s%s = bitstr2strb (%s, &(%s));\n",
 						   level * 4, "", yp -> yp_strexp, arg, yp -> yp_intexp);
 		if (!dflag && (level == 1)) {
-			(void) printf ("%*sif (buffer && len)\n", level * 4, "");
+			 printf ("%*sif (buffer && len)\n", level * 4, "");
 			if (yp -> yp_strexp)
-				(void) printf ("%*s*buffer = %s, *len = %s;\n",
+				 printf ("%*s*buffer = %s, *len = %s;\n",
 							   (level + 1) * 4, "", yp -> yp_strexp, yp -> yp_intexp);
 			else
-				(void) printf ("%*s*buffer = bitstr2strb (%s, len);\n",
+				 printf ("%*s*buffer = bitstr2strb (%s, len);\n",
 							   (level + 1) * 4, "", arg);
 		}
 		if (Vflag) {
-			(void) printf ("%*sif (%s -> pe_nbits < 128)\n",
+			 printf ("%*sif (%s -> pe_nbits < 128)\n",
 						   level * 4, "", narg);
-			(void) printf ("%*svprint (\"%%s\", bit2str (%s, \"\\020\"));\n",
+			 printf ("%*svprint (\"%%s\", bit2str (%s, \"\\020\"));\n",
 						   (level + 1) * 4, "", narg);
-			(void) printf ("%*selse\n%*svunknown (%s);\n",
+			 printf ("%*selse\n%*svunknown (%s);\n",
 						   level * 4, "", (level + 1) * 4, "", narg);
 		}
 		break;
 
 	case YP_BITLIST:
-		(void) printf ("%*sif ((%s = prim2bit (%s)) == NULLPE) {\n",
+		 printf ("%*sif ((%s = prim2bit (%s)) == NULLPE) {\n",
 					   level * 4, "", narg, arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_BITS,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_BITS,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
 		if (!dflag && yp -> yp_strexp)
-			(void) printf ("%*s%s = bitstr2strb (%s, &(%s));\n",
+			 printf ("%*s%s = bitstr2strb (%s, &(%s));\n",
 						   level * 4, "", yp -> yp_strexp, arg, yp -> yp_intexp);
 		if (!dflag && (level == 1)) {
-			(void) printf ("%*sif (buffer && len)\n", level * 4, "");
+			 printf ("%*sif (buffer && len)\n", level * 4, "");
 			if (yp -> yp_strexp)
-				(void) printf ("%*s*buffer = %s, *len = %s;\n",
+				 printf ("%*s*buffer = %s, *len = %s;\n",
 							   (level + 1) * 4, "", yp -> yp_strexp, yp -> yp_intexp);
 			else
-				(void) printf ("%*s*buffer = bitstr2strb (%s, len);\n",
+				 printf ("%*s*buffer = bitstr2strb (%s, len);\n",
 							   (level + 1) * 4, "", arg);
 		}
 #ifdef	notdef
 		if (!rflag) {
-			register int	j;
+			int	j;
 
 			for (yv = yp -> yp_value, i = 0; yv; yv = yv -> yv_next)
 				if ((j = val2int (yv)) > i)
 					i = j;
 			i++;
-			(void) printf ("%*sif (%s -> pe_nbits > %d) {\n",
+			 printf ("%*sif (%s -> pe_nbits > %d) {\n",
 						   level * 4, "", narg, i);
-			(void) printf ("%*sadvise (NULLCP, \"%s %%s(%d): %%d\", PEPY_ERR_TOO_MANY_BITS,\n",
+			 printf ("%*sadvise (NULLCP, \"%s %%s(%d): %%d\", PEPY_ERR_TOO_MANY_BITS,\n",
 						   (level + 1) * 4, "", id, i);
-			(void) printf ("%*s%s -> pe_nbits);\n", (level + 3) * 4, "", narg);
-			(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+			 printf ("%*s%s -> pe_nbits);\n", (level + 3) * 4, "", narg);
+			 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 						   level * 4, "");
 		}
 #endif
@@ -417,163 +417,163 @@ int	Vflag;
 				pyyerror (yp, "invalid bit number in BIT STRING");
 			else if (j > i)
 				i = j;
-		(void) printf ("#define\tBITS\t\"\\020");
+		 printf ("#define\tBITS\t\"\\020");
 		if (i < sizeof (int) * 8) {		/* NBBY */
 			for (yv = yp -> yp_value; yv; yv = yv -> yv_next)
 				if (yv -> yv_flags & YV_NAMED)
-					(void) printf ("\\0%o%s", val2int (yv) + 1, yv -> yv_named);
+					 printf ("\\0%o%s", val2int (yv) + 1, yv -> yv_named);
 				else
-					(void) printf ("\\0%oBIT%d", val2int (yv) + 1, val2int (yv));
+					 printf ("\\0%oBIT%d", val2int (yv) + 1, val2int (yv));
 		}
-		(void) printf ("\"\n");
+		 printf ("\"\n");
 		uniqint (yp -> yp_value);
 		if (!dflag)
 			for (yv = yp -> yp_value; yv; yv = yv -> yv_next) {
 				if (!yv -> yv_action)
 					continue;
-				(void) printf ("%*sif (bit_test (%s, %d) > OK) {",
+				 printf ("%*sif (bit_test (%s, %d) > OK) {",
 							   level * 4, "", narg, val2int (yv));
 				if (yv -> yv_flags & YV_NAMED)
-					(void) printf ("\t/* %s */", yv -> yv_named);
-				(void) printf ("\n");
+					 printf ("\t/* %s */", yv -> yv_named);
+				 printf ("\n");
 				do_action (yv -> yv_action, level + 1, narg,
 						   yv -> yv_act_lineno);
-				(void) printf ("%*s}\n", level * 4, "");
+				 printf ("%*s}\n", level * 4, "");
 			}
 		if (Vflag)
-			(void) printf ("%*svprint (\"%%s\", bit2str (%s, BITS));\n",
+			 printf ("%*svprint (\"%%s\", bit2str (%s, BITS));\n",
 						   level * 4, "", narg);
 		break;
 
 	case YP_OCT:
 		if (!dflag && ((level == 1) || yp -> yp_action2
 					   || yp -> yp_strexp)) {
-			(void) printf ("%*sif ((%s = ", level * 4, "", narg);
+			 printf ("%*sif ((%s = ", level * 4, "", narg);
 			if (!Vflag && yp -> yp_prfexp == 'q')
-				(void) printf ("prim2qb (%s)) == (struct qbuf *)0) {\n", arg);
+				 printf ("prim2qb (%s)) == (struct qbuf *)0) {\n", arg);
 			else
-				(void) printf ("prim2str (%s, &%s_len)) == NULLCP) {\n",
+				 printf ("prim2str (%s, &%s_len)) == NULLCP) {\n",
 							   arg, narg);
-			(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_OCTET,\n",
+			 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_OCTET,\n",
 						   (level + 1) * 4, "", id);
-			(void) printf ("%*spe_error (%s -> pe_errno));\n",
+			 printf ("%*spe_error (%s -> pe_errno));\n",
 						   (level + 3) * 4, "", arg);
-			(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+			 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 						   level * 4, "");
 		}
 		if (!dflag && yp -> yp_strexp) {
 			if (! (yp -> yp_prfexp == 'q' && Vflag))
-				(void) printf ("%*s%s = %s;\n",
+				 printf ("%*s%s = %s;\n",
 							   level * 4, "", yp -> yp_strexp, narg);
 		}
 		if (!dflag && yp -> yp_intexp && yp -> yp_prfexp != 'q')
-			(void) printf ("%*s%s = %s_len;\n",
+			 printf ("%*s%s = %s_len;\n",
 						   level * 4, "", yp -> yp_intexp, narg);
 		if (Vflag)
-			(void) printf ("%*svstring (%s);\n", level * 4, "", arg);
+			 printf ("%*svstring (%s);\n", level * 4, "", arg);
 		break;
 
 	case YP_ANY:
 		if (!dflag && yp -> yp_strexp)
-			(void) printf ("%*s(%s = %s) -> pe_refcnt++;\n",
+			 printf ("%*s(%s = %s) -> pe_refcnt++;\n",
 						   level * 4, "", yp -> yp_strexp, arg);
 		if (Vflag)
-			(void) printf ("%*svunknown (%s);\n", level * 4, "", arg);
+			 printf ("%*svunknown (%s);\n", level * 4, "", arg);
 		break;
 
 	case YP_NULL:
 		if (Vflag)
-			(void) printf ("%*svprint (\"NULL\");\n", level * 4, "");
+			 printf ("%*svprint (\"NULL\");\n", level * 4, "");
 		break;
 
 	case YP_OID:
 		if (Vflag || (!dflag && (yp -> yp_action2 || yp -> yp_strexp
 								 || level == 1)))
-			(void) printf ("%*sif ((%s = prim2oid (%s)) == NULLOID) {\n",
+			 printf ("%*sif ((%s = prim2oid (%s)) == NULLOID) {\n",
 						   level * 4, "", narg, arg);
 		else
-			(void) printf ("%*sif (prim2oid (%s) == NULLOID) {\n",
+			 printf ("%*sif (prim2oid (%s) == NULLOID) {\n",
 						   level * 4, "", arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_OID,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_OID,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
 		if (!dflag && level == 1) {
-			(void) printf ("%*sif (buffer)\n", level * 4, "");
-			(void) printf ("%*s*buffer = sprintoid (%s);\n",
+			 printf ("%*sif (buffer)\n", level * 4, "");
+			 printf ("%*s*buffer = sprintoid (%s);\n",
 						   (level + 1) * 4, "", narg);
 		}
 		if(!dflag && yp -> yp_strexp)
-			(void) printf ("%*s%s = oid_cpy (%s);\n", level * 4, "",
+			 printf ("%*s%s = oid_cpy (%s);\n", level * 4, "",
 						   yp -> yp_strexp, narg);
 		if (Vflag)
-			(void) printf ("%*svprint (\"%%s\", oid2ode (%s));\n", level * 4,
+			 printf ("%*svprint (\"%%s\", oid2ode (%s));\n", level * 4,
 						   "", narg);
 		break;
 
 	case YP_SEQ:
-		(void) printf ("%*sif ((%s = prim2seq (%s)) == NULLPE) {\n",
+		 printf ("%*sif ((%s = prim2seq (%s)) == NULLPE) {\n",
 					   level * 4, "", narg, arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SEQ,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SEQ,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
-		(void) printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
+		 printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
 		if (!dflag && yp -> yp_strexp)
-			(void) printf ("%*s(%s = %s) -> pe_refcnt++;\n",
+			 printf ("%*s(%s = %s) -> pe_refcnt++;\n",
 						   level * 4, "", yp -> yp_strexp, narg);
 		if (Vflag)
-			(void) printf ("%*svunknown (%s);\n", level * 4, "", narg);
+			 printf ("%*svunknown (%s);\n", level * 4, "", narg);
 		break;
 
 	case YP_SEQTYPE:
-		(void) printf ("%*sif ((%s = prim2seq (%s)) == NULLPE) {\n",
+		 printf ("%*sif ((%s = prim2seq (%s)) == NULLPE) {\n",
 					   level * 4, "", narg, arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SEQ,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SEQ,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
-		(void) printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
+		 printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
 		if (Vflag)
-			(void) printf ("%*svpush ();\n", level * 4, "");
+			 printf ("%*svpush ();\n", level * 4, "");
 		if (yp -> yp_type) {
-			(void) printf ("%*sfor (%s = first_member (%s); %s; %s = next_member (%s, %s)) {\n",
+			 printf ("%*sfor (%s = first_member (%s); %s; %s = next_member (%s, %s)) {\n",
 						   level * 4, "", narg, arg, narg, narg, arg, narg);
 			if (!dflag && yp -> yp_action3) {
 				do_action (yp -> yp_action3, ++level, arg,
 						   yp -> yp_act3_lineno);
-				(void) printf ("%*s{\n", level * 4, "");
+				 printf ("%*s{\n", level * 4, "");
 			}
 			undo_type (yp -> yp_type, level + 1, "element", narg, Vflag);
 			if (!dflag && yp -> yp_action3 && yp -> yp_action2 )
 				do_action (yp -> yp_action2, level + 1, arg,
 						   yp -> yp_act2_lineno);
 			if (!dflag && yp -> yp_action3)
-				(void) printf ("%*s}\n", level-- * 4, "");
-			(void) printf ("%*s}\n", level * 4, "");
+				 printf ("%*s}\n", level-- * 4, "");
+			 printf ("%*s}\n", level * 4, "");
 		}
 		if (Vflag)
-			(void) printf ("%*svpop ();\n", level * 4, "");
+			 printf ("%*svpop ();\n", level * 4, "");
 		break;
 
 	case YP_SEQLIST:
-		(void) printf ("%*sif ((%s = prim2seq (%s)) == NULLPE) {\n",
+		 printf ("%*sif ((%s = prim2seq (%s)) == NULLPE) {\n",
 					   level * 4, "", narg, arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SEQ,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SEQ,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
-		(void) printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
+		 printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
 		if (Vflag)
-			(void) printf ("%*svpush ();\n", level * 4, "");
+			 printf ("%*svpush ();\n", level * 4, "");
 		for (y = yp -> yp_type, i = 0; y; y = y -> yp_next)
 			if (y -> yp_flags & YP_COMPONENTS)
 				i += undo_components_seq (y, level, y == yp -> yp_type,
@@ -584,9 +584,9 @@ int	Vflag;
 				i++;
 			}
 		if (Vflag)
-			(void) printf ("%*svpop ();\n", level * 4, "");
+			 printf ("%*svpop ();\n", level * 4, "");
 		for (y = yp -> yp_type; y; y = y -> yp_next) {
-			register YP	z;
+			YP	z;
 
 			if (!(y -> yp_flags & (YP_OPTIONAL | YP_DEFAULT))
 					|| lookup_tag (y) == NULLYT)
@@ -601,77 +601,77 @@ int	Vflag;
 			y = z;
 		}
 		if (!rflag) {
-			(void) printf ("\n%*sif (%s -> pe_cardinal > %d) {\n",
+			 printf ("\n%*sif (%s -> pe_cardinal > %d) {\n",
 						   level * 4, "", arg, i);
-			(void) printf ("%*sadvise (NULLCP, \"%s %%s(%d): %%d\", PEPY_ERR_TOO_MANY_ELEMENTS,\n",
+			 printf ("%*sadvise (NULLCP, \"%s %%s(%d): %%d\", PEPY_ERR_TOO_MANY_ELEMENTS,\n",
 						   (level + 1) * 4, "", id, i);
-			(void) printf ("%*s%s -> pe_cardinal);\n", (level + 3) * 4, "", arg);
-			(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+			 printf ("%*s%s -> pe_cardinal);\n", (level + 3) * 4, "", arg);
+			 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 						   level * 4, "");
 		}
 		break;
 
 	case YP_SET:
-		(void) printf ("%*sif ((%s = prim2set (%s)) == NULLPE) {\n",
+		 printf ("%*sif ((%s = prim2set (%s)) == NULLPE) {\n",
 					   level * 4, "", narg, arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SET,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SET,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
-		(void) printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
+		 printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
 		if (!dflag && yp -> yp_strexp)
-			(void) printf ("%*s(%s = %s) -> pe_refcnt++;\n",
+			 printf ("%*s(%s = %s) -> pe_refcnt++;\n",
 						   level * 4, "", yp -> yp_strexp, narg);
 		if (Vflag)
-			(void) printf ("%*svunknown (%s);\n", level * 4, "", narg);
+			 printf ("%*svunknown (%s);\n", level * 4, "", narg);
 		break;
 
 	case YP_SETTYPE:
-		(void) printf ("%*sif ((%s = prim2set (%s)) == NULLPE) {\n",
+		 printf ("%*sif ((%s = prim2set (%s)) == NULLPE) {\n",
 					   level * 4, "", narg, arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SET,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SET,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
-		(void) printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
+		 printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
 		if (Vflag)
-			(void) printf ("%*svpush ();\n", level * 4, "");
+			 printf ("%*svpush ();\n", level * 4, "");
 		if (yp -> yp_type) {
-			(void) printf ("%*sfor (%s = first_member (%s); %s; %s = next_member (%s, %s)) {\n",
+			 printf ("%*sfor (%s = first_member (%s); %s; %s = next_member (%s, %s)) {\n",
 						   level * 4, "", narg, arg, narg, narg, arg, narg);
 			if (!dflag && yp -> yp_action3) {
 				do_action (yp -> yp_action3, ++level, arg,
 						   yp -> yp_act3_lineno);
-				(void) printf ("%*s{\n", level * 4, "");
+				 printf ("%*s{\n", level * 4, "");
 			}
 			undo_type (yp -> yp_type, level + 1, "member", narg, Vflag);
 			if (!dflag && yp -> yp_action3 && yp -> yp_action2 )
 				do_action (yp -> yp_action2, level + 1, arg,
 						   yp -> yp_act2_lineno);
 			if (!dflag && yp -> yp_action3)
-				(void) printf ("%*s}\n", level-- * 4, "");
-			(void) printf ("%*s}\n", level * 4, "");
+				 printf ("%*s}\n", level-- * 4, "");
+			 printf ("%*s}\n", level * 4, "");
 		}
 		if (Vflag)
-			(void) printf ("%*svpop ();\n", level * 4, "");
+			 printf ("%*svpop ();\n", level * 4, "");
 		break;
 
 	case YP_SETLIST:
-		(void) printf ("%*sif ((%s = prim2set (%s)) == NULLPE) {\n",
+		 printf ("%*sif ((%s = prim2set (%s)) == NULLPE) {\n",
 					   level * 4, "", narg, arg);
-		(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SET,\n",
+		 printf ("%*sadvise (NULLCP, \"%s %%s%%s\", PEPY_ERR_BAD_SET,\n",
 					   (level + 1) * 4, "", id);
-		(void) printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
+		 printf ("%*spe_error (%s -> pe_errno));\n", (level + 3) * 4, "",
 					   arg);
-		(void) printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+		 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
 					   level * 4, "");
-		(void) printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
+		 printf ("%*s%s = %s;\n\n", level * 4, "", arg, narg);
 		if (Vflag)
-			(void) printf ("%*svpush ();\n", level * 4, "");
+			 printf ("%*svpush ();\n", level * 4, "");
 		if (yp -> yp_type) {
 			for (y = yp -> yp_type; y; y = y -> yp_next)
 				if (y -> yp_flags & YP_COMPONENTS)
@@ -681,26 +681,26 @@ int	Vflag;
 			choice_pullup (y = copy_type (yp), CH_FULLY);
 			uniqtag (y -> yp_type, NULLYP);
 			if (!rflag) {
-				(void) printf ("%*sif (%s_count != %s -> pe_cardinal)\n",
+				 printf ("%*sif (%s_count != %s -> pe_cardinal)\n",
 							   level * 4, "", narg, arg);
-				(void) printf ("%*sadvise (NULLCP, \"%%s\", PEPY_ERR_EXTRA_MEMBERS);\n",
+				 printf ("%*sadvise (NULLCP, \"%%s\", PEPY_ERR_EXTRA_MEMBERS);\n",
 							   (level + 1) * 4, "");
 			}
 		}
 		if (Vflag)
-			(void) printf ("%*svpop ();\n", level * 4, "");
+			 printf ("%*svpop ();\n", level * 4, "");
 		break;
 
 	case YP_CHOICE:
 		if (Vflag)
-			(void) printf ("%*svpush ();\n", level * 4, "");
+			 printf ("%*svpush ();\n", level * 4, "");
 		if (yp -> yp_type) {
 			int	didefault;
 
 			if ((yp -> yp_flags & YP_TAG)
 					&& !(yp -> yp_flags & YP_PULLEDUP))
 				tag_pullup (yp, level, arg, "choice");
-			(void) printf ("%*sswitch (PE_ID (%s -> pe_class, %s -> pe_id)) {\n",
+			 printf ("%*sswitch (PE_ID (%s -> pe_class, %s -> pe_id)) {\n",
 						   level * 4, "", arg, arg);
 			choice_pullup (yp, CH_PARTIAL);
 			didefault = 0;
@@ -710,44 +710,44 @@ int	Vflag;
 				yyerror_aux ("multiple non-tagged ANYs in CHOICE");
 			uniqtag (yp -> yp_type, NULLYP);
 			if (!didefault && !rflag) {
-				(void) printf ("\n%*sdefault:\n", (level + 1) * 4, "");
-				(void) printf ("%*sadvise (NULLCP, \"%s %%s%%s/%%d/0x%%x\", PEPY_ERR_UNKNOWN_CHOICE,\n",
+				 printf ("\n%*sdefault:\n", (level + 1) * 4, "");
+				 printf ("%*sadvise (NULLCP, \"%s %%s%%s/%%d/0x%%x\", PEPY_ERR_UNKNOWN_CHOICE,\n",
 							   (level + 2) * 4, "", id);
-				(void) printf ("%*spe_classlist[%s -> pe_class], %s -> pe_form, %s -> pe_id);\n",
+				 printf ("%*spe_classlist[%s -> pe_class], %s -> pe_form, %s -> pe_id);\n",
 							   (level + 4) * 4, "", arg, arg, arg);
-				(void) printf ("%*sreturn NOTOK;\n", (level + 2) * 4, "");
+				 printf ("%*sreturn NOTOK;\n", (level + 2) * 4, "");
 			}
-			(void) printf ("%*s}\n", level * 4, "");
+			 printf ("%*s}\n", level * 4, "");
 		}
 		if (Vflag)
-			(void) printf ("%*svpop ();\n", level * 4, "");
+			 printf ("%*svpop ();\n", level * 4, "");
 		break;
 
 	case YP_IDEFINED:
-		(void) printf ("%*sif (%s (", level * 4, "", modsym (yp -> yp_module,
+		 printf ("%*sif (%s (", level * 4, "", modsym (yp -> yp_module,
 					   yp -> yp_identifier, Vflag ? YP_PRINTER : YP_DECODER));
-		(void) printf ("%s, ", arg);
+		 printf ("%s, ", arg);
 		if (level != 1 || (yp -> yp_flags & YP_IMPLICIT))
-			(void) printf ("%d, ", (yp -> yp_flags & YP_IMPLICIT) ? 0 : 1);
+			 printf ("%d, ", (yp -> yp_flags & YP_IMPLICIT) ? 0 : 1);
 		else
-			(void) printf ("explicit, ");
+			 printf ("explicit, ");
 		if (yp -> yp_intexp)
-			(void) printf ("&(%s), ", yp -> yp_intexp);
+			 printf ("&(%s), ", yp -> yp_intexp);
 		else if (level == 1)
-			(void) printf ("len, ");
+			 printf ("len, ");
 		else
-			(void) printf ("NULLIP, ");
+			 printf ("NULLIP, ");
 		if (yp -> yp_strexp)
-			(void) printf ("&(%s)", yp -> yp_strexp);
+			 printf ("&(%s)", yp -> yp_strexp);
 		else if (level == 1)
-			(void) printf ("buffer");
+			 printf ("buffer");
 		else
-			(void) printf ("NULLVP");
+			 printf ("NULLVP");
 		if (yp -> yp_flags & YP_PARMVAL)
-			(void) printf (", %s", yp -> yp_parm);
+			 printf (", %s", yp -> yp_parm);
 		else
-			(void) printf (", NullParm");
-		(void) printf (") == NOTOK)\n%*sreturn NOTOK;\n", (level + 1) * 4, "");
+			 printf (", NullParm");
+		 printf (") == NOTOK)\n%*sreturn NOTOK;\n", (level + 1) * 4, "");
 		break;
 
 	default:
@@ -760,24 +760,24 @@ int	Vflag;
 
 	switch (yp -> yp_code) {
 	case YP_BITLIST:
-		(void) printf ("#undef\tBITS\n");
+		 printf ("#undef\tBITS\n");
 		break;
 
 	case YP_OCT:
 		if (!dflag && yp -> yp_prfexp != 'q' &&
 				((level == 1) || yp -> yp_action2)) {
 			if (level == 1) {
-				(void) printf ("%*sif (len)\n", level * 4, "");
-				(void) printf ("%*s*len = %s_len;\n", (level + 1) * 4, "", narg);
-				(void) printf ("%*sif (buffer)\n", level * 4, "");
-				(void) printf ("%*s*buffer = %s;\n", (level + 1) * 4, "", narg);
-				(void) printf ("%*selse\n", level * 4, "");
+				 printf ("%*sif (len)\n", level * 4, "");
+				 printf ("%*s*len = %s_len;\n", (level + 1) * 4, "", narg);
+				 printf ("%*sif (buffer)\n", level * 4, "");
+				 printf ("%*s*buffer = %s;\n", (level + 1) * 4, "", narg);
+				 printf ("%*selse\n", level * 4, "");
 			}
-			(void) printf ("%*s", (level + 1) * 4, "");
+			 printf ("%*s", (level + 1) * 4, "");
 			if (yp -> yp_strexp)
-				(void) printf ("/* do nothing */;\n");
+				 printf ("/* do nothing */;\n");
 			else
-				(void) printf ("if (%s)\n%*sfree (%s);\n", narg, (level + 2) * 4,
+				 printf ("if (%s)\n%*sfree (%s);\n", narg, (level + 2) * 4,
 							   "", narg);
 		}
 		break;
@@ -790,19 +790,19 @@ int	Vflag;
 /*  */
 
 static	undo_type_element (yp, level, first, last, id, arg, narg, Vflag)
-register YP	yp;
-register int	level;
+YP	yp;
+int	level;
 int	first,
 	last;
-register char  *id,
+char  *id,
 		 *arg,
 		 *narg;
 int	Vflag;
 {
-	register char  *narg2;
-	register YT yt;
+	char  *narg2;
+	YT yt;
 
-	(void) printf ("%*s{\n%*sregister PE %s;\n\n",
+	 printf ("%*s{\n%*sPE %s;\n\n",
 				   level * 4, "", (level + 1) * 4, "", narg2 = gensym ());
 	level++;
 
@@ -821,24 +821,24 @@ int	Vflag;
 				break;
 			}
 		}
-		(void) printf ("%*sif ((%s = ", level * 4, "", narg2);
+		 printf ("%*sif ((%s = ", level * 4, "", narg2);
 		if (first)
-			(void) printf ("first_member (%s)) != NULLPE", arg);
+			 printf ("first_member (%s)) != NULLPE", arg);
 		else {
-			(void) printf ("(%s != %s ? next_member (%s, %s) : first_member (%s))",
+			 printf ("(%s != %s ? next_member (%s, %s) : first_member (%s))",
 						   arg, narg, arg, narg, arg);
-			(void) printf (") \n%*s!= NULLPE", (level + 3) * 4, "");
+			 printf (") \n%*s!= NULLPE", (level + 3) * 4, "");
 		}
 		if (yp2 -> yp_flags & YP_TAG && !last) {
 			yt = yp2 -> yp_tag;
-			(void) printf ("\n%*s&& PE_ID (%s -> pe_class, %s -> pe_id)\n",
+			 printf ("\n%*s&& PE_ID (%s -> pe_class, %s -> pe_id)\n",
 						   (level + 2) * 4, "", narg2, narg2);
-			(void) printf ("%*s!= PE_ID (PE_CLASS_%s, %d))\n%*s%s = NULLPE;\n",
+			 printf ("%*s!= PE_ID (PE_CLASS_%s, %d))\n%*s%s = NULLPE;\n",
 						   (level + 4) * 4, "", pe_classlist[yt -> yt_class],
 						   val2int (yt -> yt_value), (level + 1) * 4, "", narg2);
 		} else {
 			ype zy;
-			register YP y = &zy;
+			YP y = &zy;
 
 			y -> yp_type = copy_type (yp2); /* XXX */
 			y -> yp_type -> yp_next = NULLYP;
@@ -846,26 +846,26 @@ int	Vflag;
 			for (y = y -> yp_type; y; y = y -> yp_next) {
 				if (!(y -> yp_flags & YP_TAG))
 					tag_type (y);
-				(void) printf ("\n%*s&& PE_ID (%s -> pe_class, %s -> pe_id)\n",
+				 printf ("\n%*s&& PE_ID (%s -> pe_class, %s -> pe_id)\n",
 							   (level + 2) * 4, "", narg2, narg2);
-				(void) printf ("%*s!= PE_ID (PE_CLASS_%s, %d)",
+				 printf ("%*s!= PE_ID (PE_CLASS_%s, %d)",
 							   (level + 4) * 4, "",
 							   pe_classlist[y -> yp_tag -> yt_class],
 							   val2int (y -> yp_tag -> yt_value));
 			}
-			(void) printf (")\n%*s%s = NULLPE;\n", (level + 1) * 4, "", narg2);
+			 printf (")\n%*s%s = NULLPE;\n", (level + 1) * 4, "", narg2);
 		}
-		(void) printf ("%*sif (%s != NULLPE", level * 4, "", narg2);
+		 printf ("%*sif (%s != NULLPE", level * 4, "", narg2);
 	} else {
-		(void) printf ("%*sif ((%s = ", level * 4, "", narg2);
+		 printf ("%*sif ((%s = ", level * 4, "", narg2);
 		if (first)
-			(void) printf ("first_member (%s)", arg);
+			 printf ("first_member (%s)", arg);
 		else
-			(void) printf ("(%s != %s ? next_member (%s, %s) : first_member (%s))",
+			 printf ("(%s != %s ? next_member (%s, %s) : first_member (%s))",
 						   arg, narg, arg, narg, arg);
-		(void) printf (") != NULLPE");
+		 printf (") != NULLPE");
 	}
-	(void) printf (") {\n%*s%s = %s;\n\n", (level + 1) * 4, "", narg, narg2);
+	 printf (") {\n%*s%s = %s;\n\n", (level + 1) * 4, "", narg, narg2);
 	level++;
 
 	if (yp -> yp_code != YP_CHOICE && (yp -> yp_flags & YP_TAG)) {
@@ -873,47 +873,47 @@ int	Vflag;
 				is_nonimplicit_type (yp))
 			tag_pullup (yp, level, narg2, "element");
 	}
-	(void) printf ("%*s{", level * 4, "");
+	 printf ("%*s{", level * 4, "");
 	level++;
 	if (yp -> yp_flags & YP_ID)
-		(void) printf ("\t/* %s */", yp -> yp_id);
-	(void) printf ("\n");
+		 printf ("\t/* %s */", yp -> yp_id);
+	 printf ("\n");
 
 	undo_type (yp, level, yp -> yp_flags & YP_ID ? yp -> yp_id : "element",
 			   narg2, Vflag);
 
 	level--;
-	(void) printf ("%*s}\n", level * 4, "");
+	 printf ("%*s}\n", level * 4, "");
 
 	level--;
-	(void) printf ("%*s}\n", level * 4, "");
+	 printf ("%*s}\n", level * 4, "");
 
 	if ((yp -> yp_flags & YP_DEFAULT) || !(yp -> yp_flags & YP_OPTIONAL)) {
-		(void) printf ("%*selse {\n", level * 4, "");
+		 printf ("%*selse {\n", level * 4, "");
 
 		if (yp -> yp_flags & YP_DEFAULT)
-			(void) printf ("%*s/* set default here using yp -> yp_default */\n",
+			 printf ("%*s/* set default here using yp -> yp_default */\n",
 						   (level + 1) * 4, "");
 		else {
-			(void) printf ("%*sadvise (NULLCP, \"%s %%s",
+			 printf ("%*sadvise (NULLCP, \"%s %%s",
 						   (level + 1) * 4, "", id);
 			if (yp -> yp_flags & YP_ID)
-				(void) printf ("%s ", yp -> yp_id);
-			(void) printf ("element\", PEPY_ERR_MISSING);\n%*sreturn NOTOK;\n", (level + 1) * 4, "");
+				 printf ("%s ", yp -> yp_id);
+			 printf ("element\", PEPY_ERR_MISSING);\n%*sreturn NOTOK;\n", (level + 1) * 4, "");
 		}
 
-		(void) printf ("%*s}\n\n", level * 4, "");
+		 printf ("%*s}\n\n", level * 4, "");
 	}
 
 	level--;
-	(void) printf ("%*s}\n\n", level * 4, "");
+	 printf ("%*s}\n\n", level * 4, "");
 }
 
 /*  */
 
 static	undo_type_member (yp, level, arg, narg, Vflag)
-register YP	yp;
-register int	level;
+YP	yp;
+int	level;
 char   *arg,
 	   *narg;
 int	Vflag;
@@ -934,13 +934,13 @@ int	Vflag;
 		}
 	}
 	if (yp -> yp_flags & YP_TAG)
-		(void) printf ("%*sif (%s = set_find (%s, PE_CLASS_%s, %d)) {\n",
+		 printf ("%*sif (%s = set_find (%s, PE_CLASS_%s, %d)) {\n",
 					   level * 4, "", narg, arg,
 					   pe_classlist[yp -> yp_tag -> yt_class],
 					   val2int (yp -> yp_tag -> yt_value));
 	else {
 		ype zy;
-		register YP y = &zy;
+		YP y = &zy;
 
 		y -> yp_type = copy_type(yp);	/* XXXX !!! */
 		y -> yp_type -> yp_next = NULLYP;
@@ -950,19 +950,19 @@ int	Vflag;
 		if (y) {
 			if (!(y -> yp_flags & YP_TAG))
 				tag_type (y);
-			(void) printf ("%*sif ( (%s = set_find (%s, PE_CLASS_%s, %d))",
+			 printf ("%*sif ( (%s = set_find (%s, PE_CLASS_%s, %d))",
 						   level * 4, "", narg, arg,
 						   pe_classlist[y->yp_tag->yt_class],
 						   val2int (y -> yp_tag -> yt_value));
 			for (y = y -> yp_next; y; y = y -> yp_next) {
 				if (!(y -> yp_flags & YP_TAG))
 					tag_type (y);
-				(void) printf ("\n%*s|| (%s = set_find (%s, PE_CLASS_%s, %d))",
+				 printf ("\n%*s|| (%s = set_find (%s, PE_CLASS_%s, %d))",
 							   (level + 1) * 4, "", narg, arg,
 							   pe_classlist[y -> yp_tag -> yt_class],
 							   val2int (y -> yp_tag -> yt_value));
 			}
-			(void) printf (" ) {\n");
+			 printf (" ) {\n");
 		}
 	}
 	level ++;
@@ -974,10 +974,10 @@ int	Vflag;
 	}
 
 	if (pullup) {
-		(void) printf ("%*sregister PE %s = %s;\n\n", level * 4, "",
+		 printf ("%*sPE %s = %s;\n\n", level * 4, "",
 					   narg2 = gensym (), narg);
 		tag_pullup (yp, level, narg2, id);
-		(void) printf ("%*s{\n", level * 4, "");
+		 printf ("%*s{\n", level * 4, "");
 		level++;
 		yp -> yp_flags |= YP_PULLEDUP;
 	} else
@@ -987,36 +987,36 @@ int	Vflag;
 
 	if (pullup) {
 		level--;
-		(void) printf ("%*s}\n", level * 4, "");
+		 printf ("%*s}\n", level * 4, "");
 	}
 
-	(void) printf ("%*s%s_count ++;\n", level * 4, "", narg);
+	 printf ("%*s%s_count ++;\n", level * 4, "", narg);
 	level--;
-	(void) printf ("%*s}\n", level * 4, "");
+	 printf ("%*s}\n", level * 4, "");
 
 	if ((yp -> yp_flags & YP_DEFAULT) || !(yp -> yp_flags & YP_OPTIONAL)) {
-		(void) printf ("%*selse {\n", level * 4, "");
+		 printf ("%*selse {\n", level * 4, "");
 
 		if (yp -> yp_flags & YP_DEFAULT)
-			(void) printf ("%*s/* set default here using yp -> yp_default */\n",
+			 printf ("%*s/* set default here using yp -> yp_default */\n",
 						   (level + 1) * 4, "");
 		else {
-			(void) printf ("%*sadvise (NULLCP, \"%s %%s ",
+			 printf ("%*sadvise (NULLCP, \"%s %%s ",
 						   (level + 1) * 4, "", id);
 			if (yp -> yp_flags & YP_ID)
-				(void) printf ("%s ", yp -> yp_id);
-			(void) printf ("member\", PEPY_ERR_MISSING);\n%*sreturn NOTOK;\n", (level + 1) * 4, "");
+				 printf ("%s ", yp -> yp_id);
+			 printf ("member\", PEPY_ERR_MISSING);\n%*sreturn NOTOK;\n", (level + 1) * 4, "");
 		}
 
-		(void) printf ("%*s}\n\n", level * 4, "");
+		 printf ("%*s}\n\n", level * 4, "");
 	}
 }
 /*  */
 
 static int  undo_type_choice (yp, level, narg, Vflag)
-register YP	yp;
-register int	level;
-register char  *narg;
+YP	yp;
+int	level;
+char  *narg;
 int	Vflag;
 {
 	int	    pullup = 0;
@@ -1025,12 +1025,12 @@ int	Vflag;
 	char   *narg2;
 
 	if (is_any_type (yp)) {
-		(void) printf ("%*sdefault:", level * 4, "");
+		 printf ("%*sdefault:", level * 4, "");
 
 		result = 1;
 	} else if (!(yp -> yp_flags & YP_TAG) && yp->yp_code == YP_IDEFINED) {
 		ype zy;
-		register YP y = &zy;
+		YP y = &zy;
 
 		result = 0;
 		y -> yp_type = copy_type(yp);	/* XXXX !!! */
@@ -1039,13 +1039,13 @@ int	Vflag;
 		/* this is dependant on choice_pullup coding..*/
 		for (y = y -> yp_type; y; y = y -> yp_next) {
 			if (is_any_type (y)) {
-				(void) printf ("%*sdefault:%s", level * 4, "",
+				 printf ("%*sdefault:%s", level * 4, "",
 							   y -> yp_next ? "\n" : "");
 				result ++;
 			} else {
 				if (!(y -> yp_flags & YP_TAG))
 					tag_type(y);
-				(void) printf("%*scase PE_ID (PE_CLASS_%s, %d):%s", level * 4, "",
+				 printf("%*scase PE_ID (PE_CLASS_%s, %d):%s", level * 4, "",
 							  pe_classlist [y -> yp_tag -> yt_class],
 							  val2int (y -> yp_tag -> yt_value),
 							  y -> yp_next ? "\n" : "");
@@ -1054,18 +1054,18 @@ int	Vflag;
 	} else {
 		if (!(yp -> yp_flags & YP_TAG))
 			tag_type (yp);
-		(void) printf ("%*scase PE_ID (PE_CLASS_%s, %d):", level * 4, "",
+		 printf ("%*scase PE_ID (PE_CLASS_%s, %d):", level * 4, "",
 					   pe_classlist [yp -> yp_tag -> yt_class],
 					   val2int (yp -> yp_tag -> yt_value));
 
 		result = 0;
 	}
 	if (yp -> yp_flags & YP_ID)
-		(void) printf ("\t/* %s */", yp -> yp_id);
-	(void) printf ("\n");
+		 printf ("\t/* %s */", yp -> yp_id);
+	 printf ("\n");
 	level++;
 
-	(void) printf ("%*s{\n", level * 4, "");
+	 printf ("%*s{\n", level * 4, "");
 	level++;
 
 	if (yp -> yp_flags & YP_TAG) {
@@ -1074,10 +1074,10 @@ int	Vflag;
 			pullup = 1;
 	}
 	if (pullup) {
-		(void) printf ("%*sregister PE %s = %s;\n\n", level * 4, "",
+		 printf ("%*sPE %s = %s;\n\n", level * 4, "",
 					   narg2 = gensym (), narg);
 		tag_pullup (yp, level, narg2, id);
-		(void) printf ("%*s{\n", level * 4, "");
+		 printf ("%*s{\n", level * 4, "");
 		level++;
 		yp -> yp_flags |= YP_PULLEDUP;
 	} else
@@ -1087,19 +1087,19 @@ int	Vflag;
 
 	if (pullup) {
 		level--;
-		(void) printf ("%*s}\n", level * 4, "");
+		 printf ("%*s}\n", level * 4, "");
 	}
 
 	level--;
-	(void) printf ("%*s}\n%*sbreak;\n", level * 4, "", level * 4, "");
+	 printf ("%*s}\n%*sbreak;\n", level * 4, "", level * 4, "");
 
 	return result;
 }
 
 static undo_components_seq (yp, level, first, last, id, arg, narg, Vflag)
 YP	yp;
-register int level, first, last;
-register char	*id,
+int level, first, last;
+char	*id,
 		   *arg,
 		   *narg;
 int	Vflag;
@@ -1136,8 +1136,8 @@ int	Vflag;
 }
 
 static	undo_components_set (yp, level, arg, narg, Vflag)
-register YP	yp;
-register int	level;
+YP	yp;
+int	level;
 char   *arg,
 	   *narg;
 int	Vflag;

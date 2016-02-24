@@ -66,9 +66,8 @@ static int  pe2pl_aux ();
 
 /*  */
 
-int	pe2pl (ps, pe)
-register PS	ps;
-register PE	pe;
+int 
+pe2pl (PS ps, PE pe)
 {
 	int     result;
 
@@ -80,24 +79,22 @@ register PE	pe;
 
 /*  */
 
-static int  pe2pl_aux (ps, pe, level)
-register PS	ps;
-register PE	pe;
-int	level;
+static int 
+pe2pl_aux (PS ps, PE pe, int level)
 {
-	register int    i,
+	int    i,
 			 ia5,
 			 ia5ok;
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register PE	    p;
-	register PElementID id;
-	register PElementData dp,
+	PE	    p;
+	PElementID id;
+	PElementData dp,
 			 ep,
 			 fp,
 			 gp;
 
-	(void) sprintf (buffer, "%*s( %s ",
+	 sprintf (buffer, "%*s( %s ",
 					level * 4, "", pe_classlist[pe -> pe_class]);
 	bf_write ();
 
@@ -129,7 +126,7 @@ int	level;
 	case PE_CLASS_CONT:
 no_code:
 		;
-		(void) sprintf (buffer, "0x%x", pe -> pe_id);
+		 sprintf (buffer, "0x%x", pe -> pe_id);
 		bf_write ();
 		break;
 	}
@@ -138,7 +135,7 @@ no_code:
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
 	case PE_FORM_ICONS:
-		(void) sprintf (buffer, " 0x%x%c",
+		 sprintf (buffer, " 0x%x%c",
 						pe -> pe_len, pe -> pe_len ? '\n' : ' ');
 		bf_write ();
 
@@ -186,11 +183,11 @@ no_code:
 						break;
 					}
 				}
-				(void) sprintf (buffer, ia5 ? "%*s\"" : "%*s0x",
+				 sprintf (buffer, ia5 ? "%*s\"" : "%*s0x",
 								level * 4, "");
 				bp = buffer + strlen (buffer);
 				while (i-- > 0) {
-					(void) sprintf (bp, ia5 ? (i ? "%c" : "%c\"\n")
+					 sprintf (bp, ia5 ? (i ? "%c" : "%c\"\n")
 									: (i ? "%02x" : "%02x\n"), *dp++);
 					bp += strlen (bp);
 				}
@@ -218,7 +215,7 @@ no_code:
 	}
 	level--;
 
-	(void) sprintf (buffer, "%*s)\n", level * 4, "");
+	 sprintf (buffer, "%*s)\n", level * 4, "");
 	bf_write ();
 
 	return OK;

@@ -72,17 +72,11 @@ static struct mapping {
 
 /*  */
 
-AEI	_str2aei (designator, qualifier, context, interactive, userdn,
-			  passwd)
-char   *designator,
-	   *qualifier,
-	   *context,
-	   *userdn,
-	   *passwd;
-int	interactive;
+AEI 
+_str2aei (char *designator, char *qualifier, char *context, int interactive, char *userdn, char *passwd)
 {
 	AEI	    aei;
-	register struct mapping *m;
+	struct mapping *m;
 
 	if (qualifier == NULLCP) {
 		if (context)
@@ -120,8 +114,8 @@ int	interactive;
 							   passwd)) {
 			lookup = aei2addr_dse;
 #ifndef	NOSTUB
-			(void) strcpy (fallback1, designator);
-			(void) strcpy (fallback2, qualifier);
+			 strcpy (fallback1, designator);
+			 strcpy (fallback2, qualifier);
 			goto out;
 #endif
 		} else
@@ -151,8 +145,8 @@ out:
 
 /*  */
 
-struct PSAPaddr *aei2addr (aei)
-AEI	aei;
+struct PSAPaddr *
+aei2addr (AEI aei)
 {
 	struct PSAPaddr *pa;
 

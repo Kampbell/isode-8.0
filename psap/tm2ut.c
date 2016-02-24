@@ -38,9 +38,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/tm2ut.c,v 9.0 1992/06/
 
 /*  */
 
-void	tm2ut (tm, ut)
-register struct tm *tm;
-register UTC	ut;
+void 
+tm2ut (struct tm *tm, UTC ut)
 {
 	bzero ((char *) ut, sizeof *ut);
 

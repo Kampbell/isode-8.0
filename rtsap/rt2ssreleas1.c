@@ -35,13 +35,12 @@ static int  RtEndRequestAux ();
 
 /*    RT-END.REQUEST (X.410 CLOSE.REQUEST) */
 
-int	RtEndRequest (sd, rti)
-int	sd;
-struct RtSAPindication *rti;
+int 
+RtEndRequest (int sd, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (rti);
 
@@ -51,23 +50,22 @@ struct RtSAPindication *rti;
 
 	result = RtEndRequestAux (acb, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  RtEndRequestAux (acb, rti)
-register struct assocblk   *acb;
-struct RtSAPindication *rti;
+static int 
+RtEndRequestAux (struct assocblk *acb, struct RtSAPindication *rti)
 {
 	int     result;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 	struct SSAPrelease  srs;
-	register struct SSAPrelease *sr = &srs;
+	struct SSAPrelease *sr = &srs;
 
 	if (acb -> acb_flags & ACB_ACS)
 		return rtsaplose (rti, RTS_OPERATION, NULLCP,

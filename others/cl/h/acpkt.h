@@ -112,7 +112,6 @@
 #define	ACS_PROV_BASE	ACS_PROV_NULL
 
 
-int	acpktlose (), acsaplose ();
 #ifdef  HULA
 int     acusaplose ();
 #endif

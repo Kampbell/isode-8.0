@@ -31,11 +31,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/entryinfo.c,v 9
 #include "quipu/commonarg.h"
 
 entryinfo_comp_free (a,state)
-register EntryInfo *a;
+EntryInfo *a;
 int state;
 {
-	register EntryInfo * einfo, *e2;
-	register Attr_Sequence as;
+	EntryInfo * einfo, *e2;
+	Attr_Sequence as;
 
 	if (a == NULLENTRYINFO)
 		return;
@@ -67,8 +67,8 @@ int state;
 }
 
 entryinfo_free (a,state)
-register EntryInfo * a;
-register int state;
+EntryInfo * a;
+int state;
 {
 	if (a == NULLENTRYINFO)
 		return;
@@ -77,8 +77,8 @@ register int state;
 }
 
 entryinfo_cpy (a,b)
-register EntryInfo *a;
-register EntryInfo *b;
+EntryInfo *a;
+EntryInfo *b;
 {
 	a->ent_dn        = dn_cpy (b->ent_dn);
 	a->ent_attr      = as_cpy (b->ent_attr);
@@ -88,9 +88,9 @@ register EntryInfo *b;
 }
 
 entryinfo_append (a,b)
-register EntryInfo *a,*b;
+EntryInfo *a,*b;
 {
-	register EntryInfo *ptr;
+	EntryInfo *ptr;
 
 	if ( a  == NULLENTRYINFO )
 		return;
@@ -102,10 +102,10 @@ register EntryInfo *a,*b;
 }
 
 entryinfo_merge (a,b,fast)
-register EntryInfo *a,*b;
+EntryInfo *a,*b;
 int fast;
 {
-	register EntryInfo *ptr;
+	EntryInfo *ptr;
 	EntryInfo *tmp, *prev, *trail;
 
 	if (( a == NULLENTRYINFO )
@@ -148,7 +148,7 @@ PS  ps;
 EntryInfo *entryinfo;
 int format;
 {
-	register EntryInfo *einfo;
+	EntryInfo *einfo;
 
 	for (einfo= entryinfo; einfo!=NULLENTRYINFO; einfo=einfo->ent_next) {
 		dn_print(ps,einfo->ent_dn,EDBOUT);

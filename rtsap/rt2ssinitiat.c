@@ -40,13 +40,8 @@ static int  RtBeginRequestAux ();
 
 /*    RT-BEGIN.REQUEST (X.410 OPEN.REQUEST) */
 
-int	RtBeginRequest2 (called, calling, mode, turn, data, rtc, rti)
-struct RtSAPaddr *called, *calling;
-int	mode,
-	turn;
-PE	data;
-struct RtSAPconnect *rtc;
-struct RtSAPindication *rti;
+int 
+RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti)
 {
 	SBV     smask;
 	int     result;
@@ -80,40 +75,35 @@ struct RtSAPindication *rti;
 
 	result = RtBeginRequestAux (called, calling, mode, turn, data, rtc, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  RtBeginRequestAux (called, calling, mode, turn, data, rtc, rti)
-struct RtSAPaddr *called, *calling;
-int	mode,
-	turn;
-PE	data;
-struct RtSAPconnect *rtc;
-struct RtSAPindication *rti;
+static int 
+RtBeginRequestAux (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti)
 {
 	int	    len,
 			result,
 			settings;
 	char   *base;
 #ifdef	notdef
-	register struct isoservent *is;
+	struct isoservent *is;
 #endif
-	register PE	pe,
+	PE	pe,
 			 p,
 			 q,
 			 r;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 	struct SSAPref srs;
-	register struct SSAPref *sr = &srs;
+	struct SSAPref *sr = &srs;
 	struct SSAPconnect scs;
-	register struct SSAPconnect *sc = &scs;
+	struct SSAPconnect *sc = &scs;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	struct type_OACS_PAccept *paccpt = (struct type_OACS_PAccept *)0;
 
 	if ((acb = newacblk ()) == NULL)
@@ -163,7 +153,7 @@ no_mem:
 		goto no_mem;
 
 	if (data)
-		(void) pe_extract (pe, data), data = NULLPE;
+		 pe_extract (pe, data), data = NULLPE;
 	pe_free (pe);
 	pe = NULLPE;
 
@@ -218,7 +208,7 @@ no_mem:
 	} else if (sc -> sc_result == SC_ABORT) {
 		acb -> acb_fd = NOTOK;
 
-		(void) ss2rtsabort (acb, sa, rti);
+		 ss2rtsabort (acb, sa, rti);
 
 		rtc -> rtc_sd = NOTOK;
 		rtc -> rtc_result = RTS_ABORTED;
@@ -232,7 +222,7 @@ no_mem:
 			bzero ((char *) sa, sizeof *sa);
 			sa -> sa_reason = sc -> sc_result;
 			acb -> acb_fd = NOTOK;
-			(void) ss2rtslose (acb, rti, "SConnRequest(pseudo)", sa);
+			 ss2rtslose (acb, rti, "SConnRequest(pseudo)", sa);
 
 			rtc -> rtc_sd = NOTOK;
 			rtc -> rtc_result = rti -> rti_abort.rta_reason;
@@ -367,7 +357,7 @@ out1:
 	SCFREE (sc);
 	if (pe) {
 		if (data)
-			(void) pe_extract (pe, data);
+			 pe_extract (pe, data);
 		pe_free (pe);
 	}
 	freeacblk (acb);

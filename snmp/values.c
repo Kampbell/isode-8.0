@@ -45,12 +45,12 @@ IFP	o_advise = NULLIFP;
 
 int	o_generic (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
@@ -111,12 +111,12 @@ int	offset;
 
 int	s_generic (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
@@ -180,12 +180,12 @@ integer	number;				/* actual param: often a constant */
 
 int	o_number (oi, v, number)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 caddr_t	number;
 {
 	int	    result;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 
 	if (os == NULLOS) {
 		ADVISE (LLOG_EXCEPTIONS, NULLCP,
@@ -213,14 +213,14 @@ caddr_t	number;
 
 int	o_string (oi, v, base, len)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 char   *base;
 int	len;
 {
 	int	    result;
 	struct qbuf *value;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 
 	if (os == NULLOS) {
 		ADVISE (LLOG_EXCEPTIONS, NULLCP,
@@ -255,12 +255,12 @@ int	len;
 
 int	o_qbstring (oi, v, value)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 struct qbuf *value;
 {
 	int	    result;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 
 	if (os == NULLOS) {
 		ADVISE (LLOG_EXCEPTIONS, NULLCP,
@@ -288,12 +288,12 @@ struct qbuf *value;
 
 int	o_specific (oi, v, value)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 caddr_t	value;
 {
 	int	    result;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 
 	if (os == NULLOS) {
 		ADVISE (LLOG_EXCEPTIONS, NULLCP,
@@ -320,12 +320,12 @@ caddr_t	value;
 /*  */
 
 int	mediaddr2oid (ip, addr, len, islen)
-register unsigned int *ip;
-register u_char *addr;
+unsigned int *ip;
+u_char *addr;
 int	len,
 	islen;
 {
-	register int   i;
+	int   i;
 
 	if (islen)
 		*ip++ = len & 0xff;
@@ -339,10 +339,10 @@ int	len,
 /*  */
 
 OID	oid_extend (q, howmuch)
-register OID	q;
+OID	q;
 int	howmuch;
 {
-	register unsigned int   i,
+	unsigned int   i,
 			 *ip,
 			 *jp;
 	OID	    oid;
@@ -372,12 +372,12 @@ int	howmuch;
 /*  */
 
 OID	oid_normalize (q, howmuch, bigvalue)
-register OID	q;
+OID	q;
 int	howmuch,
 	bigvalue;
 {
-	register int	i;
-	register unsigned int   *ip,
+	int	i;
+	unsigned int   *ip,
 			 *jp;
 	OID	    oid;
 

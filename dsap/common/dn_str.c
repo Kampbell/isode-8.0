@@ -35,9 +35,9 @@ extern char * SkipSpace ();
 short syntax_dn = 0;
 
 DN str2dn (str)
-register char * str;
+char * str;
 {
-	register char *ptr;
+	char *ptr;
 	char *save,val, sep = '@';
 	char * aliasptr;
 	DN dn = NULLDN, newdn, tmpdn;
@@ -121,7 +121,7 @@ register char * str;
 	}
 
 	if (rfcformat == 1) {
-		register char * p;
+		char * p;
 		p = str;
 		while (*p && *p != '>')
 			p++;
@@ -163,9 +163,9 @@ char *alias;
 }
 
 DN str2dnX (str)
-register char * str;
+char * str;
 {
-	register char * ptr;
+	char * ptr;
 
 	if ((ptr = rindex (str,'#')) != 0) {
 		/* a bit or reverse compatability... */
@@ -194,7 +194,7 @@ DN dn;
 {
 	PE ret_pe;
 
-	(void) encode_IF_DistinguishedName (&ret_pe,0,0,NULLCP,dn);
+	 encode_IF_DistinguishedName (&ret_pe,0,0,NULLCP,dn);
 	return (ret_pe);
 }
 

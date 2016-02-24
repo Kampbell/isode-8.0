@@ -35,15 +35,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapexpd.c,v 9.0 1992/
 
 static int  SExpdRequestAux ();
 
-int	SExpdRequest (sd, data, cc, si)
-int	sd;
-char   *data;
-int	cc;
-struct SSAPindication  *si;
+int 
+SExpdRequest (int sd, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (data);
 	if (cc > SX_EXSIZE)
@@ -57,21 +54,18 @@ struct SSAPindication  *si;
 
 	result = SExpdRequestAux (sb, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  SExpdRequestAux (sb, data, cc, si)
-register struct ssapblk *sb;
-char   *data;
-int	cc;
-struct SSAPindication  *si;
+static int 
+SExpdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	if (!(sb -> sb_requirements & SR_EXPEDITED))
 		return ssaplose (si, SC_OPERATION, NULLCP,

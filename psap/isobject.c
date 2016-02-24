@@ -43,8 +43,8 @@ static struct isobject    ios;
 
 /*  */
 
-int	setisobject (f)
-int	f;
+int 
+setisobject (int f)
 {
 	if (servf == NULL)
 		servf = fopen (isodefile (isobjects, 0), "r");
@@ -56,9 +56,10 @@ int	f;
 }
 
 
-int	endisobject () {
+int 
+endisobject()  {
 	if (servf && !stayopen) {
-		(void) fclose (servf);
+		 fclose (servf);
 		servf = NULL;
 	}
 
@@ -67,10 +68,11 @@ int	endisobject () {
 
 /*  */
 
-struct isobject  *getisobject () {
-	register int i;
-	register struct isobject *io = &ios;
-	register char  *cp;
+struct isobject *
+getisobject()  {
+	int i;
+	struct isobject *io = &ios;
+	char  *cp;
 	static char buffer[BUFSIZ + 1];
 	static char *vec[NVEC + NSLACK + 1];
 	static unsigned int elements[NELEM + 1];

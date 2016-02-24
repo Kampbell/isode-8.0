@@ -48,7 +48,7 @@ struct FTAMgroup *ftg;
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	ftam_selection (ftg, ftm);
 
@@ -63,7 +63,7 @@ struct FTAMgroup *ftg;
 #ifndef	BRIDGE
 		unlock ();
 #endif
-		(void) close (myfd);
+		 close (myfd);
 		myfd = NOTOK;
 	}
 
@@ -96,11 +96,11 @@ int	ftam_readwriteindication (ftrw)
 struct FTAMreadwrite *ftrw;
 {
 	int	    result;
-	register struct FADUidentity *fa = &ftrw -> ftrw_identity;
+	struct FADUidentity *fa = &ftrw -> ftrw_identity;
 	struct FTAMdiagnostic   diags[NFDIAG];
 	struct FTAMdiagnostic *dp = diags;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	mylocation = *fa;		/* struct copy */
 	mylevel = ftrw -> ftrw_level;
@@ -177,9 +177,9 @@ bad_operation:
 			dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
 #ifdef	BRIDGE
-			(void) strcpy (dp -> ftd_data, ftp_error);
+			 strcpy (dp -> ftd_data, ftp_error);
 #else
-			(void) strcpy (dp -> ftd_data, sys_errname (errno));
+			 strcpy (dp -> ftd_data, sys_errname (errno));
 #endif
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
@@ -233,7 +233,7 @@ do_cancel:
 		ftam_adios (&fti -> fti_abort, "F-CANCEL-REQUEST");
 
 	if (fti -> fti_type == FTI_CANCEL) {
-		register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+		struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 		advise (LLOG_NOTICE, NULLCP, "F-CANCEL.RESPONSE: %d",
 				ftcn -> ftcn_action);
@@ -245,9 +245,9 @@ do_cancel:
 /*  */
 
 static	uxfget (diags)
-register struct FTAMdiagnostic **diags;
+struct FTAMdiagnostic **diags;
 {
-	register int    n;
+	int    n;
 	int	    bsize,
 			effector,
 			gd,
@@ -257,12 +257,12 @@ register struct FTAMdiagnostic **diags;
 			cancelled = OK;
 	PE	    pe,
 	 de;
-	register struct FTAMdiagnostic *dp = *diags;
+	struct FTAMdiagnostic *dp = *diags;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
-	register struct FTAMabort *fta = &fti -> fti_abort;
-	register struct type_DOCS_FTAM__1__Parameters *p1;
-	register struct type_DOCS_FTAM__3__Parameters *p3;
+	struct FTAMindication *fti = &ftis;
+	struct FTAMabort *fta = &fti -> fti_abort;
+	struct type_DOCS_FTAM__1__Parameters *p1;
+	struct type_DOCS_FTAM__3__Parameters *p3;
 	FILE   *fp;
 #ifdef	BRIDGE
 	char line[BUFSIZ];
@@ -275,7 +275,7 @@ register struct FTAMdiagnostic **diags;
 		dp -> ftd_identifier = FS_ACC_LCL;
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		(void) strcpy (dp -> ftd_data, "failed file access on remote host");
+		 strcpy (dp -> ftd_data, "failed file access on remote host");
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
@@ -291,12 +291,12 @@ register struct FTAMdiagnostic **diags;
 		if ((gd = dup (myfd)) == NOTOK
 				|| (fp = fdopen (gd, "r")) == NULL) {
 			if (gd != NOTOK)
-				(void) close (gd);
+				 close (gd);
 			if (myfd != NOTOK) {
 #ifdef	BRIDGE
-				(void) close (myfd);
+				 close (myfd);
 				myfd = NOTOK;
-				(void) ftp_reply ();
+				 ftp_reply ();
 #endif
 			}
 			goto no_mem;
@@ -401,34 +401,34 @@ no_mem:
 		dp -> ftd_identifier = FS_ACC_LCL;
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		(void) strcpy (dp -> ftd_data, "out of memory");
+		 strcpy (dp -> ftd_data, "out of memory");
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
 error_return:
 		;
-		(void) de2fadu (NULLPE, 0);
+		 de2fadu (NULLPE, 0);
 		if (pe)
 			pe_free (pe);
 		if (fp)
-			(void) fclose (fp);
+			 fclose (fp);
 		*diags = dp;
 		return NOTOK;
 	}
 
 	for (;;) {
-		register char  *bp,
+		char  *bp,
 				 *ep;
 
 		for (ep = (bp = (char *) pe -> pe_prim) + size - (fp ? 2 : 0), nc = 0;
 				bp < ep; ) {
 			if (fp) {
-				register char *cp;
+				char *cp;
 
 #ifdef	BRIDGE
 				if (strlen (line) || fgets (line, BUFSIZ, fp)) {
 					if (((int)strlen (line) + 1) < (ep - bp + 1)) {
-						(void) strcpy (bp, line);
+						 strcpy (bp, line);
 						line[0] = NULL;
 					} else
 						break;
@@ -531,7 +531,7 @@ error_return:
 	pe_free (pe);
 
 	if (fp)
-		(void) fclose (fp);
+		 fclose (fp);
 
 	if (n == DONE || cancelled == DONE)
 		return DONE;
@@ -541,13 +541,13 @@ error_return:
 		dp -> ftd_identifier = FS_ACC_LCLDEV;
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		(void) strcpy (dp -> ftd_data, sys_errname (errno));
+		 strcpy (dp -> ftd_data, sys_errname (errno));
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
 		*diags = dp;
 
-		(void) de2fadu (NULLPE, 0);
+		 de2fadu (NULLPE, 0);
 		return NOTOK;
 	}
 
@@ -567,7 +567,7 @@ error_return:
 /*  */
 
 static	fdfget (diags)
-register struct FTAMdiagnostic **diags;
+struct FTAMdiagnostic **diags;
 {
 	int	    names,
 			len,
@@ -581,15 +581,15 @@ register struct FTAMdiagnostic **diags;
 	char   *ptr,
 		   line[BUFSIZ];
 #else
-	register struct dirent *d;
-	register DIR *dd;
+	struct dirent *d;
+	DIR *dd;
 #endif
 	struct stat st;
-	register struct FTAMdiagnostic *dp = *diags;
+	struct FTAMdiagnostic *dp = *diags;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
-	register struct FTAMabort *fta = &fti -> fti_abort;
-	register struct type_DOCS_NBS__9__Parameters *p9;
+	struct FTAMindication *fti = &ftis;
+	struct FTAMabort *fta = &fti -> fti_abort;
+	struct type_DOCS_NBS__9__Parameters *p9;
 	struct type_DOCS_NBS__9__Datatype1 *d9;
 
 	if (strcmp (myfile, ".") == 0) {
@@ -599,12 +599,12 @@ register struct FTAMdiagnostic **diags;
 	} else
 #ifdef apollo
 		if (strcmp (myfile, "/") == 0 || strcmp (myfile, "//") == 0) {
-			(void) sprintf (pp = path, "%s", myfile);
+			 sprintf (pp = path, "%s", myfile);
 			pp += (len = strlen (pp));
 		} else
 #endif
 		{
-			(void) sprintf (pp = path, "%s/", myfile);
+			 sprintf (pp = path, "%s/", myfile);
 			pp += (len = strlen (pp));
 		}
 
@@ -621,23 +621,23 @@ no_mem:
 		dp -> ftd_identifier = FS_ACC_LCL;
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		(void) strcpy (dp -> ftd_data, "out of memory");
+		 strcpy (dp -> ftd_data, "out of memory");
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
 error_return:
 		;
-		(void) de2fadu (NULLPE, 0);
+		 de2fadu (NULLPE, 0);
 		if (pe)
 			pe_free (pe);
 #ifdef	BRIDGE
 		if (dd) {
-			(void) close (dd);
-			(void) ftp_reply ();
+			 close (dd);
+			 ftp_reply ();
 		}
 #else
 		if (dd)
-			(void) closedir (dd);
+			 closedir (dd);
 #endif
 		*diags = dp;
 		return NOTOK;
@@ -646,7 +646,7 @@ error_return:
 
 	p9 = (struct type_DOCS_NBS__9__Parameters *) myparam;
 	if (fdf_p2names (ftamfd, p9, &names, fti) == NOTOK) {
-		register struct FTAMdiagnostic *d2 = fti -> fti_abort.fta_diags;
+		struct FTAMdiagnostic *d2 = fti -> fti_abort.fta_diags;
 
 		dp = d2;	/* struct copy */
 		dp++;
@@ -660,9 +660,9 @@ error_return:
 	for (errno = 0; d = readdir (dd); errno = 0) {
 #endif
 		struct FTAMattributes fas;
-		register struct FTAMattributes *fa = &fas;
+		struct FTAMattributes *fa = &fas;
 #ifndef	BRIDGE
-		register struct vfsmap *vf;
+		struct vfsmap *vf;
 #endif
 
 #ifdef	BRIDGE
@@ -692,9 +692,9 @@ error_return:
 			continue;
 
 #ifdef	BRIDGE
-		(void) strcpy (pp, line);
+		 strcpy (pp, line);
 #else
-		(void) strcpy (pp, d -> d_name);
+		 strcpy (pp, d -> d_name);
 #endif
 
 #ifndef	BRIDGE
@@ -706,15 +706,15 @@ error_return:
 		bzero ((char *) fa, sizeof *fa);
 		*diags = dp;
 #ifdef	BRIDGE
-		(void) readattrs (names, fa, vfs[VFS_UTF].vf_oid, NULLPE, path, &st,
+		 readattrs (names, fa, vfs[VFS_UTF].vf_oid, NULLPE, path, &st,
 						  diags);
 #else
-		(void) readattrs (names, fa, vf -> vf_oid, NULLPE, path, &st, diags);
+		 readattrs (names, fa, vf -> vf_oid, NULLPE, path, &st, diags);
 #endif
 		dp = *diags;
 
 		if (fdf_attrs2d (ftamfd, fa, &d9, fti) == NOTOK) {
-			register struct FTAMdiagnostic *d2 = fti -> fti_abort.fta_diags;
+			struct FTAMdiagnostic *d2 = fti -> fti_abort.fta_diags;
 
 			dp = d2;	/* struct copy */
 			dp++;
@@ -726,7 +726,7 @@ error_return:
 			dp -> ftd_identifier = FS_ACC_LCL;
 			dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
-			(void) sprintf (dp -> ftd_data, "error encoding Datatype1: %s",
+			 sprintf (dp -> ftd_data, "error encoding Datatype1: %s",
 							PY_pepy);
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
@@ -755,23 +755,23 @@ error_return:
 	}
 
 #ifdef	BRIDGE
-	(void) fclose (df);
-	(void) close (dd);
-	(void) ftp_reply ();
+	 fclose (df);
+	 close (dd);
+	 ftp_reply ();
 #else
 	if (errno != 0) {
 		dp -> ftd_type = DIAG_PERM;
 		dp -> ftd_identifier = FS_ACC_LCL;
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		(void) sprintf (dp -> ftd_data, "%s: %s", myfile, sys_errname (errno));
+		 sprintf (dp -> ftd_data, "%s: %s", myfile, sys_errname (errno));
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
 		goto error_return;
 
 	}
-	(void) closedir (dd);
+	 closedir (dd);
 #endif
 
 	if (n == OK)
@@ -797,8 +797,8 @@ PE	pe;
 int	concat;
 {
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
-	register struct FTAMabort  *fta = &fti -> fti_abort;
+	struct FTAMindication *fti = &ftis;
+	struct FTAMabort  *fta = &fti -> fti_abort;
 	static int ninfo = 0;
 	static int size = 0;
 	static PE info[NPDATA];
@@ -827,7 +827,7 @@ int	concat;
 						"de2fadu flushing on %d FADUs, estimated size %d/%d",
 						ninfo, size, fadusize);
 
-			(void) de2fadu (NULLPE, 1);
+			 de2fadu (NULLPE, 1);
 			flush = 1;
 		} else
 			flush = 0;
@@ -861,7 +861,7 @@ int	concat;
 	}
 
 	if (fti -> fti_type == FTI_CANCEL) {
-		register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+		struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 		advise (LLOG_NOTICE, NULLCP, "F-CANCEL.INDICATION: %d",
 				ftcn -> ftcn_action);
@@ -879,17 +879,17 @@ int	concat;
 /*  */
 
 int	ftam_dataindication (px)
-register struct PSAPdata *px;
+struct PSAPdata *px;
 {
-	register int    i;
+	int    i;
 	int	    effector,
 			n;
-	register PE     pe,
+	PE     pe,
 			 *pep;
 	struct FTAMdiagnostic   diags[NFDIAG];
-	register struct FTAMdiagnostic *dp = diags;
+	struct FTAMdiagnostic *dp = diags;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	effector = 1;
 	switch (myvf - vfs) {
@@ -899,7 +899,7 @@ register struct PSAPdata *px;
 
 	case VFS_UTF: {
 		PElementID    id;
-		register struct type_DOCS_FTAM__1__Parameters *p1 =
+		struct type_DOCS_FTAM__1__Parameters *p1 =
 			(struct type_DOCS_FTAM__1__Parameters *) myparam;
 
 		if (p1
@@ -972,7 +972,7 @@ register struct PSAPdata *px;
 
 		default:
 			dp -> ftd_identifier = FS_ACC_WRITE;
-			(void) strcpy (dp -> ftd_data, sys_errname (errno));
+			 strcpy (dp -> ftd_data, sys_errname (errno));
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			break;
 		}
@@ -985,7 +985,7 @@ register struct PSAPdata *px;
 			ftam_adios (&fti -> fti_abort, "F-CANCEL-REQUEST");
 
 		if (fti -> fti_type == FTI_CANCEL) {
-			register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+			struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 			advise (LLOG_NOTICE, NULLCP, "F-CANCEL.RESPONSE: %d",
 					ftcn -> ftcn_action);
@@ -1009,17 +1009,17 @@ struct FTAMdataend *ftda;
 
 #if     !defined(SYS5) || defined(SVR4)
 	if (ftda -> ftda_action == FACTION_SUCCESS)
-		(void) fsync (myfd);
+		 fsync (myfd);
 #endif
 }
 
 /*  */
 
 int	ftam_cancelindication (ftcn)
-register struct FTAMcancel *ftcn;
+struct FTAMcancel *ftcn;
 {
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	advise (LLOG_NOTICE, NULLCP, "F-CANCEL.INDICATION: %d",
 			ftcn -> ftcn_action);
@@ -1039,7 +1039,7 @@ int	ftam_transendindication (ftre)
 struct FTAMtransend *ftre;
 {
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	if (FTransEndResponse (ftamfd, FACTION_SUCCESS, NULLPE,
 						   (struct FTAMdiagnostic *) 0, 0, fti) == NOTOK)
@@ -1054,17 +1054,17 @@ struct FTAMgroup *ftg;
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 
 	ftam_selection (ftg, ftm);
 
 	if (myfd != NOTOK) {
 #ifdef	BRIDGE
-		(void) close (myfd);
-		(void) ftp_reply ();
+		 close (myfd);
+		 ftp_reply ();
 #else
 		unlock ();
-		(void) close (myfd);
+		 close (myfd);
 #endif
 		myfd = NOTOK;
 	}
@@ -1094,10 +1094,10 @@ char   *action;
 	static struct timeval   start;
 
 	if (cc == 0) {
-		(void) gettimeofday (&start, (struct timezone *) 0);
+		 gettimeofday (&start, (struct timezone *) 0);
 		return;
 	} else
-		(void) gettimeofday (&stop, (struct timezone  *) 0);
+		 gettimeofday (&stop, (struct timezone  *) 0);
 
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
@@ -1110,7 +1110,7 @@ char   *action;
 
 
 static  tvsub (tdiff, t1, t0)
-register struct timeval *tdiff,
+struct timeval *tdiff,
 		*t1,
 		*t0;
 {

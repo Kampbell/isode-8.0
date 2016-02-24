@@ -35,7 +35,8 @@ DIR	*dirp;			/* stream from opendir() */
 		return lseek( dirp->dd_fd, (off_t)0, SEEK_CUR );
 }
 #else
-int	_telldir_stub () {
+int 
+_telldir_stub()  {
 	;
 }
 #endif

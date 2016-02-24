@@ -195,7 +195,8 @@ extern int GiveUp();
 
 static struct sockaddr_un unsock;
 
-static int open_unix_socket () {
+static int 
+open_unix_socket  {
 	int oldUmask;
 	int request;
 
@@ -214,7 +215,7 @@ static int open_unix_socket () {
 			Error ("Binding Unix socket");
 		if (listen (request, 5)) Error ("Unix Listening");
 	}
-	(void)umask(oldUmask);
+	umask(oldUmask);
 	return request;
 }
 #endif /*UNIXCONN */
@@ -226,8 +227,8 @@ static int open_unix_socket () {
  *    with TCP-IP with LSB first.
  *****************/
 
-void
-CreateWellKnownSockets() {
+void 
+CreateWellKnownSockets  {
 	int		request, i;
 	int		whichbyte;	    /* used to figure out whether this is
    					 LSB or MSB */
@@ -419,8 +420,8 @@ CreateWellKnownSockets() {
 	}
 }
 
-void
-ResetWellKnownSockets () {
+void 
+ResetWellKnownSockets  {
 #ifdef UNIXCONN
 	if (unixDomainConnection != -1) {
 		/*
@@ -432,8 +433,8 @@ ResetWellKnownSockets () {
 				(statb.st_mode & S_IFMT) != S_IFSOCK) {
 			ErrorF ("Unix domain socket %s trashed, recreating\n",
 					unsock.sun_path);
-			(void) unlink (unsock.sun_path);
-			(void) close (unixDomainConnection);
+			 unlink (unsock.sun_path);
+			 close (unixDomainConnection);
 			WellKnownConnections &= ~(1L << unixDomainConnection);
 			unixDomainConnection = open_unix_socket ();
 			if (unixDomainConnection != -1)
@@ -450,9 +451,8 @@ ResetWellKnownSockets () {
  * data, size = buffer
  * nonblock = NOTOK, blocks, OK, non blocks
  */
-TReadFromClient(client, data, size, nonblock)
-int client, size, nonblock;
-char *data;
+int 
+TReadFromClient (int client, char *data, int size, int nonblock)
 {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -557,7 +557,8 @@ char *data;
  */
 
 jmp_buf	env;
-void TimeOut() {
+void 
+TimeOut  {
 	longjmp(env, 1);
 }
 static Bool
@@ -610,10 +611,8 @@ int charsWanted;
 /*
  * Who's calling us?
  */
-getISOpeername (conn, from, alen)
-int conn;
-struct TSAPaddr *from;
-int *alen;
+int 
+getISOpeername (int conn, struct TSAPaddr *from, int *alen)
 {
 	struct TSAPdisconnect td;
 	if (TGetAddresses (conn, from, NULLTA, &td) == NOTOK) {
@@ -643,11 +642,12 @@ int *alen;
  *
  *****************************************************************/
 
-int
-ClientAuthorized(conn, pswapped, reason)
-long conn;
-int  *pswapped;
-char **reason;   /* if authorization fails, put reason in here */
+int 
+ClientAuthorized (
+    long conn,
+    int *pswapped,
+    char **reason   /* if authorization fails, put reason in here */
+)
 {
 	short slen;
 	union {
@@ -910,7 +910,7 @@ int 		*nnew;
 							}
 
 #ifdef ISOCONN
-							(void)SWrite(newconn, (char *)&c, sizeof(xConnSetupPrefix));
+							SWrite(newconn, (char *)&c, sizeof(xConnSetupPrefix));
 #else /* ISOCONN */
 							write(newconn, (char *)&c, sizeof(xConnSetupPrefix));
 #endif /* ISOCONN */
@@ -992,7 +992,7 @@ void
 CheckConnections() {
 	long		mask[mskcnt];
 	long		tmask[mskcnt];
-	register int	curclient;
+	int	curclient;
 	int			i;
 	struct timeval	notime;
 	ClientPtr           bad;

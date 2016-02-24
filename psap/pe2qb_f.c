@@ -18,7 +18,7 @@
 /*    DATA */
 
 #define moveit(c, l)        if(Qcp + l > Ecp) { \
-				(void) printf("pe2qb_f: Qcp %o Ecp %o len %d\n", \
+				 printf("pe2qb_f: Qcp %o Ecp %o len %d\n", \
 					Qcp, Ecp, l); \
 				return(NOTOK); \
 			    } \
@@ -40,16 +40,16 @@ int Len;
 
 /*  */
 
-int	pe2qb_f (pe)
-register PE	pe;
+int 
+pe2qb_f (PE pe)
 {
-	register PE	    p;
-	register int elm_len;
+	PE	    p;
+	int elm_len;
 	byte    elmbuffer[1 + sizeof(PElementLen)];
-	register byte  *bp,  *ep;
+	byte  *bp,  *ep;
 	PElementForm    form;
-	register PElementID id;
-	register PElementLen len;
+	PElementID id;
+	PElementLen len;
 
 	if ((form = pe -> pe_form) == PE_FORM_ICONS) {
 		elm_len = pe->pe_len;
@@ -67,7 +67,7 @@ register PE	pe;
 		Len++;
 	} else {
 		byte    idbuffer[1 + sizeof (PElementID)];
-		register PElementID jd;
+		PElementID jd;
 
 		ep = (bp = idbuffer);
 		*bp = *Qcp | PE_ID_XTND;

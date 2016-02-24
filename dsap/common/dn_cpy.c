@@ -29,9 +29,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_cpy.c,v 9.0 
 extern LLog * log_dsap;
 
 DN  dn_comp_cpy (dn)
-register DN  dn;
+DN  dn;
 {
-	register DN ptr;
+	DN ptr;
 	if (dn==NULLDN) {
 		return (NULLDN);
 	}
@@ -42,10 +42,10 @@ register DN  dn;
 }
 
 DN  dn_cpy (dn)
-register DN  dn;
+DN  dn;
 {
 	DN start;
-	register DN eptr,ptr,ptr2;
+	DN eptr,ptr,ptr2;
 
 	if (dn == NULLDN) {
 		return (NULLDN);

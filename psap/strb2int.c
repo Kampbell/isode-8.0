@@ -31,11 +31,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/strb2int.c,v 9.0 1992/
 #include "psap.h"
 
 
-int	strb2int (cp, len)
-register char   *cp;
-register int	len;
+int 
+strb2int (char *cp, int len)
 {
-	register int    i,
+	int    i,
 			 j,
 			 bit,
 			 mask,

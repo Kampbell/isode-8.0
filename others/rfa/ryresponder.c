@@ -46,25 +46,24 @@ IFP	stopfnx;
 
 static jmp_buf toplevel;
 
-extern int  errno;
 
 
-int  ros_init (vecp, vec)
-int	vecp;
-char  **vec;
+
+int 
+ros_init (int vecp, char **vec)
 {
 	int	    reply,
 			result,
 			sd;
 	struct AcSAPstart   acss;
-	register struct AcSAPstart *acs = &acss;
+	struct AcSAPstart *acs = &acss;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort   *aca = &aci -> aci_abort;
-	register struct PSAPstart *ps = &acs -> acs_start;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort   *aca = &aci -> aci_abort;
+	struct PSAPstart *ps = &acs -> acs_start;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 	PE pe[1];
 
 	if (AcInit (vecp, vec, acs, aci) == NOTOK) {
@@ -107,15 +106,15 @@ char  **vec;
 }
 
 
-int  ros_work (fd)
-int	fd;
+int 
+ros_work (int fd)
 {
 	int	    result;
 	caddr_t out;
 	struct AcSAPindication  acis;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	switch (setjmp (toplevel)) {
 	case OK:
@@ -125,8 +124,8 @@ int	fd;
 		if (stopfnx)
 			(*stopfnx) (fd, (struct AcSAPfinish *) 0);
 	case DONE:
-		(void) AcUAbortRequest (fd, NULLPEP, 0, &acis);
-		(void) RyLose (fd, roi);
+		 AcUAbortRequest (fd, NULLPEP, 0, &acis);
+		 RyLose (fd, roi);
 		return NOTOK;
 	}
 
@@ -147,9 +146,8 @@ int	fd;
 }
 
 
-int ros_indication (sd, roi)
-int	sd;
-register struct RoSAPindication *roi;
+int 
+ros_indication (int sd, struct RoSAPindication *roi)
 {
 	int	    reply,
 			result;
@@ -162,7 +160,7 @@ register struct RoSAPindication *roi;
 		break;
 
 	case ROI_UREJECT: {
-		register struct RoSAPureject   *rou = &roi -> roi_ureject;
+		struct RoSAPureject   *rou = &roi -> roi_ureject;
 
 		if (rou -> rou_noid)
 			advise (LLOG_EXCEPTIONS, NULLCP, "RO-REJECT-U.INDICATION/%d: %s",
@@ -176,7 +174,7 @@ register struct RoSAPindication *roi;
 	break;
 
 	case ROI_PREJECT: {
-		register struct RoSAPpreject   *rop = &roi -> roi_preject;
+		struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 		if (ROS_FATAL (rop -> rop_reason))
 			ros_adios (rop, "RO-REJECT-P.INDICATION");
@@ -185,9 +183,9 @@ register struct RoSAPindication *roi;
 	break;
 
 	case ROI_FINISH: {
-		register struct AcSAPfinish *acf = &roi -> roi_finish;
+		struct AcSAPfinish *acf = &roi -> roi_finish;
 		struct AcSAPindication  acis;
-		register struct AcSAPabort *aca = &acis.aci_abort;
+		struct AcSAPabort *aca = &acis.aci_abort;
 
 		advise (LLOG_NOTICE, NULLCP, "A-RELEASE.INDICATION/%d: %d",
 				sd, acf -> acf_reason);
@@ -213,8 +211,8 @@ register struct RoSAPindication *roi;
 }
 
 
-int  ros_lose (td)
-struct TSAPdisconnect *td;
+int 
+ros_lose (struct TSAPdisconnect *td)
 {
 	if (td -> td_cc > 0)
 		adios (NULLCP, "TNetAccept: [%s] %*.*s",
@@ -225,9 +223,8 @@ struct TSAPdisconnect *td;
 }
 
 
-void	ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_adios (struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -237,34 +234,32 @@ char   *event;
 }
 
 
-void	ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_advise (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
 
-void	acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -275,11 +270,8 @@ char   *event;
 /*--------------------------------------------------------------*/
 /*  ureject							*/
 /*--------------------------------------------------------------*/
-int  ureject (sd, reason, rox, roi)
-int sd,
-	reason;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+int 
+ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");

@@ -72,7 +72,7 @@ int searchparent, pdet;
 								SHORT_OU, strlen(SHORT_OU)) == 0)
 						if (strcmp(lastsavedcomp, savestr) != 0) {
 							printLastComponent(INDENTON, savestr, ORGUNIT, 0);
-							(void) strcpy(lastsavedcomp, savestr);
+							 strcpy(lastsavedcomp, savestr);
 						}
 				}
 				free (savestr);
@@ -426,7 +426,7 @@ struct s_filter ** fpp;
 	   firstnamepart = all up to the first space
 	   lastnamepart  = all after last space */
 	if (index(prrstr, ' ') != NULLCP) {
-		(void) strcpy(firststring, prrstr);
+		 strcpy(firststring, prrstr);
 		fsp = index(firststring, ' ');
 		*fsp = '\0';
 		lsp = rindex(fsp + 1, ' ');
@@ -471,7 +471,7 @@ struct s_filter ** fpp;
 	   this means that "paul barker" will match entries of "p barker" */
 	*fpp = NULLFILTER;
 	if (index(prrstr, ' ') != NULLCP) {
-		(void) strcpy(firststring, prrstr);
+		 strcpy(firststring, prrstr);
 		if (strlen(firststring) == 1)
 			return;
 		fsp = index(firststring, ' ');

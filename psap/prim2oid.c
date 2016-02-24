@@ -38,13 +38,13 @@ static	OIDentifier oid;
 /*  */
 
 OID	prim2oid (pe)
-register PE	pe;
+PE	pe;
 {
-	register unsigned int i,
+	unsigned int i,
 			 *ip;
-	register PElementData dp,
+	PElementData dp,
 			 ep;
-	register OID	o = &oid;
+	OID	o = &oid;
 
 	if (once_only) {
 		bzero ((char *) o, sizeof *o);
@@ -98,7 +98,8 @@ register PE	pe;
 /*  */
 
 #ifdef DEBUG
-free_static_oid () {
+int 
+free_static_oid()  {
 	if (!once_only && oid.oid_elements) {
 		free ((char *) oid.oid_elements);
 		oid.oid_elements = NULL;

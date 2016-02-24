@@ -57,17 +57,17 @@ struct pair fconctl_pairs [] = {
 /*  */
 
 struct type_FTAM_Concurrency__Control *conctl2fpm (fsb, fc, fti)
-register struct ftamblk *fsb;
-register struct FTAMconcurrency *fc;
+struct ftamblk *fsb;
+struct FTAMconcurrency *fc;
 struct FTAMindication *fti;
 {
-	register struct type_FTAM_Concurrency__Control *fpm;
+	struct type_FTAM_Concurrency__Control *fpm;
 
 	if ((fpm = (struct type_FTAM_Concurrency__Control *)
 			   calloc (1, sizeof *fpm)) == NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		if (fpm)
 			free_FTAM_Concurrency__Control (fpm);
 		return NULL;
@@ -100,8 +100,8 @@ no_mem:
 
 int	fpm2conctl (fsb, fpm, fc, fti)
 struct ftamblk *fsb;
-register struct type_FTAM_Concurrency__Control *fpm;
-register struct FTAMconcurrency *fc;
+struct type_FTAM_Concurrency__Control *fpm;
+struct FTAMconcurrency *fc;
 struct FTAMindication *fti;
 {
 	FCINIT (fc);
@@ -126,16 +126,16 @@ struct FTAMindication *fti;
 /*  */
 
 struct type_FTAM_Concurrency__Access *conacc2fpm (fsb, fc, fti)
-register struct ftamblk *fsb;
-register struct FTAMconcurrency *fc;
+struct ftamblk *fsb;
+struct FTAMconcurrency *fc;
 struct FTAMindication *fti;
 {
-	register struct type_FTAM_Concurrency__Access *fpm;
+	struct type_FTAM_Concurrency__Access *fpm;
 	int key;
 
 	if ((fpm = (struct type_FTAM_Concurrency__Access *)
 			   calloc (1, sizeof *fpm)) == NULL) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		if (fpm)
 			free_FTAM_Concurrency__Access (fpm);
 		return NULL;
@@ -163,8 +163,8 @@ struct FTAMindication *fti;
 
 int     fpm2conacc (fsb, fpm, fc, fti)
 struct ftamblk *fsb;
-register struct type_FTAM_Concurrency__Access *fpm;
-register struct FTAMconcurrency *fc;
+struct type_FTAM_Concurrency__Access *fpm;
+struct FTAMconcurrency *fc;
 struct FTAMindication *fti;
 {
 	int	    key;
@@ -174,7 +174,7 @@ struct FTAMindication *fti;
 #define dolock(s,t) \
 { \
     key = fc -> t; \
-    (void) fpm2bits (fsb, fconctl_pairs, fpm -> s, &key, fti); \
+     fpm2bits (fsb, fconctl_pairs, fpm -> s, &key, fti); \
 }
 	dolock (read, fc_readlock);
 	dolock (insert, fc_insertlock);

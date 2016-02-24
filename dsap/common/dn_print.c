@@ -31,7 +31,7 @@ DN  dn;
 PS   ps;
 int  format;
 {
-	register DN eptr;
+	DN eptr;
 
 	if (dn == NULLDN) {
 		if (format == READOUT)
@@ -106,7 +106,7 @@ int multiline;
 	if (localdn == NULLDN)
 		localdn = str2dn (local_dit);
 
-	(void) ufn_dn_print_aux (ps,dn,localdn,multiline);
+	 ufn_dn_print_aux (ps,dn,localdn,multiline);
 }
 
 
@@ -150,7 +150,7 @@ void ufn_rdn_print (ps,rdn)
 RDN  rdn;
 PS   ps;
 {
-	register RDN eptr;
+	RDN eptr;
 
 	if (rdn ==  NULLRDN)
 		return;

@@ -82,7 +82,7 @@ int 		sizelimit;
 {
 	struct list_cache *cache;
 	struct subordinate *sub;
-	register int i;
+	int i;
 
 	if ((cache = find_list_cache (dn,0)) == NULLCACHE) {
 		cache = (struct list_cache *) smalloc (sizeof (struct list_cache));
@@ -289,7 +289,7 @@ DN                      object;
 char deref;
 {
 	Entry  the_entry;
-	register RDN    b_rdn;
+	RDN    b_rdn;
 	DN     dn;
 	Avlnode	*kids;
 
@@ -343,9 +343,9 @@ char deref;
 DN get_copy_dn (entryptr)
 Entry entryptr;
 {
-	register DN dn;
-	register DN dnptr;
-	register Entry ptr;
+	DN dn;
+	DN dnptr;
+	Entry ptr;
 
 	if ((entryptr == NULLENTRY) || (entryptr->e_parent == NULLENTRY))
 		return NULLDN;
@@ -390,7 +390,7 @@ char * new_version () {
 	time_t clock;
 	struct UTCtime ut;
 
-	(void) time (&clock);
+	 time (&clock);
 	tm2ut (gmtime (&clock),&ut);
 	return (strdup(utct2str(&ut)));
 }

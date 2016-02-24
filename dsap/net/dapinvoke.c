@@ -475,7 +475,7 @@ char * dir;
 	pdu_dir = strdup (dir);
 	LLOG (log_dsap, LLOG_NOTICE, ("PDU Tracing enabled - %s",dir));
 
-	(void) mkdir (pdu_dir,0755);
+	 mkdir (pdu_dir,0755);
 }
 
 pdu_dump (pe,type,op)
@@ -533,7 +533,7 @@ int op;
 	if (strcmp (type,DUMP_ERR) == 0)
 		oper = "oper";
 
-	(void) sprintf (filename, "%s/%s_%s.%d",pdu_dir,oper,type,pdu_count);
+	 sprintf (filename, "%s/%s_%s.%d",pdu_dir,oper,type,pdu_count);
 	DLOG (log_dsap,LLOG_DEBUG,("Writing PDU to file %s",filename));
 
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
@@ -543,13 +543,13 @@ int op;
 
 	ps = ps_alloc (std_open);
 	if (std_setup (ps,fptr) != OK) {
-		(void) fclose (fptr);
+		 fclose (fptr);
 		return;
 	}
 
-	(void) pe2pl (ps,pe);
+	 pe2pl (ps,pe);
 
-	(void) fclose (fptr);
+	 fclose (fptr);
 	ps_free (ps);
 
 }

@@ -45,7 +45,7 @@ struct DSError              *error;
 
 	++(*id);
 
-	(void) DapAbandon (ad, (*id), arg, di, ROS_INTR);
+	 DapAbandon (ad, (*id), arg, di, ROS_INTR);
 
 	error->dse_type = DSE_NOERROR;
 

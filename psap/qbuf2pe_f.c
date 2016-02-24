@@ -72,19 +72,18 @@ static int pe_id_overshift = PE_ID_MASK << (PE_ID_BITS - PE_ID_SHIFT);
 
 /*  */
 
-PE
-qbuf2pe_f (result)
-int	*result;
+PE 
+qbuf2pe_f (int *result)
 {
-	register PE	pe;
-	register struct qbuf *qp;
+	PE	pe;
+	struct qbuf *qp;
 	byte c, d;
-	register PElementClass class;
-	register PElementForm form;
-	register PElementID id;
-	register PElementLen   len;
-	register int    i;
-	register PElementLen j;
+	PElementClass class;
+	PElementForm form;
+	PElementID id;
+	PElementLen   len;
+	int    i;
+	PElementLen j;
 
 	pe = NULLPE;
 
@@ -219,13 +218,11 @@ you_lose:
 
 /*  */
 
-static	int  qb_read_cons (pe, len, cresult)
-register PE	*pe;
-register PElementLen len;
-register int *cresult;
+static int 
+qb_read_cons (PE *pe, PElementLen len, int *cresult)
 {
-	register int    cc;
-	register PE    p, q;
+	int    cc;
+	PE    p, q;
 	int result;
 
 	*pe = NULLPE;
@@ -288,12 +285,11 @@ no_cons:
 
 /*  */
 
-static	qbuf2data(data, len)
-PElementData data;
-PElementLen len;
+static 
+qbuf2data (PElementData data, PElementLen len)
 {
-	register struct qbuf *qp;
-	register int i, cc;
+	struct qbuf *qp;
+	int i, cc;
 
 	for (qp = Qb, cc = 0; len > 0; data += i, cc += i, len -= i) {
 		if (qp == Hqb)
@@ -318,17 +314,18 @@ leave:
 /*  */
 
 #ifdef DEBUG
-qbprintf() {
+int 
+qbprintf()  {
 	int len;
 	struct qbuf *qb;
 	char *cp;
 
 	for(qb = Fqb, cp = qb->qb_data; qb != Hqb; qb = qb->qb_forw) {
 		for(len = 0; len < qb->qb_len; cp++, len++) {
-			(void) ll_printf (psap_log, "%x ", *cp);
-			if((len % 15) == 0) (void) ll_printf(psap_log, "\n");
+			 ll_printf (psap_log, "%x ", *cp);
+			if((len % 15) == 0)  ll_printf(psap_log, "\n");
 		}
 	}
-	(void) ll_sync (psap_log);
+	 ll_sync (psap_log);
 }
 #endif

@@ -64,9 +64,9 @@ char  **vec;
 
 		if (getcwd (cwd, MAXPATHLEN) && strcmp (cp, cwd))
 #ifdef	apollo
-			(void) printf ("/%s\n", lcwd = strdup (cwd));	/* network root */
+			 printf ("/%s\n", lcwd = strdup (cwd));	/* network root */
 #else
-			(void) printf ("%s\n", lcwd = strdup (cwd));
+			 printf ("%s\n", lcwd = strdup (cwd));
 #endif
 		else
 			lcwd = cp, cp = NULL;
@@ -140,9 +140,9 @@ int	silent;
 {
 	int	    result;
 	struct FTAMgroup    ftgs;
-	register struct FTAMgroup  *ftg = &ftgs;
+	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
+	struct FTAMindication *fti = &ftis;
 	struct vfsmap *vf = &vfs[VFS_FDF];
 
 	result = OK;
@@ -158,8 +158,8 @@ int	silent;
 
 	ftg -> ftg_flags |= FTG_SELECT;
 	{
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		fa -> fa_present = FA_FILENAME;
 		fa -> fa_nfile = 0;
@@ -172,7 +172,7 @@ int	silent;
 
 	ftg -> ftg_flags |= FTG_RDATTR;
 	{
-		register struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
+		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
 
 		ftra -> ftra_attrnames = FA_FILENAME | FA_CONTENTS;
 	}
@@ -190,7 +190,7 @@ int	silent;
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		if (!silent)
 			ftam_diag (ftse -> ftse_diags, ftse -> ftse_ndiag, 1,
@@ -200,8 +200,8 @@ int	silent;
 	}
 
 	if (ftg -> ftg_flags & FTG_RDATTR) {
-		register struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
-		register struct FTAMattributes *fa = &ftra -> ftra_attrs;
+		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
+		struct FTAMattributes *fa = &ftra -> ftra_attrs;
 
 		if (!silent)
 			ftam_diag (ftra -> ftra_diags, ftra -> ftra_ndiag, 1,
@@ -210,7 +210,7 @@ int	silent;
 			fa -> fa_present = 0;
 
 		if ((fa -> fa_present & FA_FILENAME) && fa -> fa_nfile == 1 && dp)
-			(void) strcpy (dp, fa -> fa_files[0]);
+			 strcpy (dp, fa -> fa_files[0]);
 
 		if (fa -> fa_present & FA_CONTENTS)
 			if (oid_cmp (vf -> vf_oid, fa -> fa_contents)) {
@@ -222,7 +222,7 @@ int	silent;
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
 
 		if (!silent) {
 			ftam_diag (ftde -> ftde_diags, ftde -> ftde_ndiag, 1,
@@ -253,17 +253,17 @@ char  **vec;
 	if (lcwd == NULL)
 		lcwd = strdup (getcwd (cwd, MAXPATHLEN) ? cwd : ".");
 #ifdef	apollo
-	(void) printf ("local directory: /%s\n", lcwd);	/* network root */
+	 printf ("local directory: /%s\n", lcwd);	/* network root */
 #else
-	(void) printf ("local directory: %s\n", lcwd);
+	 printf ("local directory: %s\n", lcwd);
 #endif
 #endif
 
 	if (rcwd)
 #ifndef	BRIDGE
-		(void) printf ("virtual filestore directory: %s\n", rcwd);
+		 printf ("virtual filestore directory: %s\n", rcwd);
 #else
-		(void) sprintf (ftam_error, "virtual filestore directory: %s\n", rcwd);
+		 sprintf (ftam_error, "virtual filestore directory: %s\n", rcwd);
 #endif
 
 	return OK;
@@ -274,7 +274,7 @@ char  **vec;
 char   *str2file (s)
 char   *s;
 {
-	register char  *bp;
+	char  *bp;
 	static int  i = 0;
 	static char buffer1[BUFSIZ],
 		   buffer2[BUFSIZ];
@@ -291,10 +291,10 @@ char   *s;
 
 #ifdef apollo
 		if (strcmp (rcwd, "/") == 0 || strcmp (rcwd, "//") == 0)
-			(void) sprintf (bp, "%s%s", rcwd, s);
+			 sprintf (bp, "%s%s", rcwd, s);
 		else
 #endif
-			(void) sprintf (bp, "%s/%s", rcwd, s);
+			 sprintf (bp, "%s/%s", rcwd, s);
 		break;
 
 #ifdef	BRIDGE

@@ -47,10 +47,8 @@ static int  doPStoken ();
 
 /*  */
 
-int	rt2pspturn (acb, priority, rti)
-register struct assocblk *acb;
-int	priority;
-register struct RtSAPindication *rti;
+int 
+rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti)
 {
 	int     result;
 	PE	    pe;
@@ -77,7 +75,7 @@ register struct RtSAPindication *rti;
 	pe_free (pe);
 
 	if (result == NOTOK) {
-		(void) ps2rtslose (acb, rti, "PPTokenRequest", pa);
+		 ps2rtslose (acb, rti, "PPTokenRequest", pa);
 		freeacblk (acb);
 	}
 
@@ -86,9 +84,8 @@ register struct RtSAPindication *rti;
 
 /*  */
 
-int	rt2psgturn (acb, rti)
-register struct assocblk *acb;
-register struct RtSAPindication *rti;
+int 
+rt2psgturn (struct assocblk *acb, struct RtSAPindication *rti)
 {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
@@ -103,7 +100,7 @@ register struct RtSAPindication *rti;
 		return rtsaplose (rti, RTS_OPERATION, NULLCP, "transfer in progress");
 
 	if (PGControlRequest (acb -> acb_fd, pi) == NOTOK) {
-		(void) ps2rtslose (acb, rti, "PGControlRequest", pa);
+		 ps2rtslose (acb, rti, "PGControlRequest", pa);
 		freeacblk (acb);
 		return NOTOK;
 	}
@@ -115,23 +112,20 @@ register struct RtSAPindication *rti;
 
 /*  */
 
-int	rt2pstrans (acb, data, secs, rti)
-register struct assocblk *acb;
-register PE	data;
-int	secs;
-register struct RtSAPindication *rti;
+int 
+rt2pstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti)
 {
-	register int    cc,
+	int    cc,
 			 size;
 	int     result,
 			len;
 	long    clock,
 			limit;
-	register char  *dp;
+	char  *dp;
 	char   *base;
 	PE	    pe;
 	struct SSAPactid    ids;
-	register struct SSAPactid  *id = &ids;
+	struct SSAPactid  *id = &ids;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
@@ -156,18 +150,18 @@ register struct RtSAPindication *rti;
 		pe -> pe_inline = 1;
 		pe -> pe_context = acb -> acb_rtsid;
 	} else {
-		(void) rtsaplose (rti, RTS_CONGEST, NULLCP, NULLCP);
+		 rtsaplose (rti, RTS_CONGEST, NULLCP, NULLCP);
 		goto out;
 	}
 	if (PActStartRequest (acb -> acb_fd, id, NULLPEP, 0, pi) == NOTOK) {
-		(void) ps2rtslose (acb, rti, "PActStartRequest", pa);
+		 ps2rtslose (acb, rti, "PActStartRequest", pa);
 		goto out;
 	}
 
 	acb -> acb_flags |= ACB_ACT;
 
 	if (data && pe2ssdu (data, &base, &len) == NOTOK) {
-		(void) rtsaplose (rti, RTS_CONGEST, NULLCP, NULLCP);
+		 rtsaplose (rti, RTS_CONGEST, NULLCP, NULLCP);
 		goto out;
 	}
 
@@ -179,7 +173,7 @@ register struct RtSAPindication *rti;
 bad_trans:
 				;
 				if (PActDiscRequest (acb -> acb_fd, SP_LOCAL, pi) == NOTOK) {
-					(void) ps2rtslose (acb, rti, "PActDiscRequest", pa);
+					 ps2rtslose (acb, rti, "PActDiscRequest", pa);
 					goto out;
 				}
 				goto done;
@@ -193,7 +187,7 @@ bad_trans:
 		pe -> pe_prim = (PElementData) base, pe -> pe_len = (PElementLen) len;
 
 		if (PDataRequest (acb -> acb_fd, &pe, 1, pi) == NOTOK) {
-			(void) ps2rtslose (acb, rti, "PDataRequest", pa);
+			 ps2rtslose (acb, rti, "PDataRequest", pa);
 			goto out;
 		}
 	} else {
@@ -202,7 +196,7 @@ bad_trans:
 			size = min (size, acb -> acb_ssdusize);
 		acb -> acb_ssn = acb -> acb_ack = 0L;
 		if (secs != NOTOK) {
-			(void) time (&limit);
+			 time (&limit);
 			limit += secs;
 		}
 
@@ -220,7 +214,7 @@ bad_trans:
 		dp = base, cc = min (len, size);
 		pe -> pe_prim = (PElementData) dp, pe -> pe_len = (PElementLen) cc;
 		if (PDataRequest (acb -> acb_fd, &pe, 1, pi) == NOTOK) {
-			(void) ps2rtslose (acb, rti, "PDataRequest", pa);
+			 ps2rtslose (acb, rti, "PDataRequest", pa);
 			goto out;
 		}
 
@@ -240,7 +234,7 @@ bad_trans:
 			}
 
 			if (secs != NOTOK) {
-				(void) time (&clock);
+				 time (&clock);
 				if (limit < clock) {
 					result = NOTOK;
 					break;
@@ -249,7 +243,7 @@ bad_trans:
 
 			if (PMinSyncRequest (acb -> acb_fd, SYNC_CONFIRM,
 								 &acb -> acb_ssn, NULLPEP, 0, pi) == NOTOK) {
-				(void) ps2rtslose (acb, rti, "PMinSyncRequest", pa);
+				 ps2rtslose (acb, rti, "PMinSyncRequest", pa);
 				goto out;
 			}
 
@@ -278,7 +272,7 @@ bad_trans:
 			cc = min (len, size);
 			pe -> pe_prim = (PElementData) dp, pe -> pe_len = cc;
 			if (PDataRequest (acb -> acb_fd, &pe, 1, pi) == NOTOK) {
-				(void) ps2rtslose (acb, rti, "PDataRequest", pa);
+				 ps2rtslose (acb, rti, "PDataRequest", pa);
 				goto out;
 			}
 		}
@@ -293,7 +287,7 @@ done:
 	case OK:
 		if (PActEndRequest (acb -> acb_fd, &acb -> acb_ssn, NULLPEP, 0,
 							pi) == NOTOK) {
-			(void) ps2rtslose (acb, rti, "PActEndRequest", pa);
+			 ps2rtslose (acb, rti, "PActEndRequest", pa);
 			goto out;
 		}
 		break;
@@ -301,7 +295,7 @@ done:
 	default:
 		acb -> acb_flags |= ACB_TIMER;
 		if (PActDiscRequest (acb -> acb_fd, SP_LOCAL, pi) == NOTOK) {
-			(void) ps2rtslose (acb, rti, "PActDiscRequest", pa);
+			 ps2rtslose (acb, rti, "PActDiscRequest", pa);
 			goto out;
 		}
 		break;
@@ -336,17 +330,14 @@ out:
 
 /*  */
 
-int	rt2pswait (acb, secs, trans, rti)
-register struct assocblk *acb;
-int     secs,
-		trans;
-register struct RtSAPindication *rti;
+int 
+rt2pswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti)
 {
 	int     result;
 	struct PSAPdata pxs;
-	register struct PSAPdata   *px = &pxs;
+	struct PSAPdata   *px = &pxs;
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
+	struct PSAPindication *pi = &pis;
 
 	for (;;) {
 		switch (result = PReadRequest (acb -> acb_fd, px, secs, pi)) {
@@ -387,7 +378,7 @@ register struct RtSAPindication *rti;
 				return doPSfinish (acb, &pi -> pi_finish, rti);
 
 			default:
-				(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+				 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 								  "unknown indication (0x%x) from presentation",
 								  pi -> pi_type);
 				break;
@@ -395,7 +386,7 @@ register struct RtSAPindication *rti;
 			break;
 
 		default:
-			(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+			 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 							  "unexpected return from PReadRequest=%d", result);
 			break;
 		}
@@ -411,10 +402,8 @@ register struct RtSAPindication *rti;
 #define	e(i)	(indication ? (i) : NULLIFP)
 
 
-int	rt2psasync (acb, indication, rti)
-register struct assocblk   *acb;
-IFP	indication;
-struct RtSAPindication *rti;
+int 
+rt2psasync (struct assocblk *acb, IFP indication, struct RtSAPindication *rti)
 {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
@@ -434,7 +423,7 @@ struct RtSAPindication *rti;
 			return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) ps2rtslose (acb, rti, "PSetIndications", pa);
+			 ps2rtslose (acb, rti, "PSetIndications", pa);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -447,11 +436,8 @@ struct RtSAPindication *rti;
 
 /*    map association descriptors for select() */
 
-int	rt2psmask (acb, mask, nfds, rti)
-register struct assocblk   *acb;
-fd_set *mask;
-int    *nfds;
-struct RtSAPindication *rti;
+int 
+rt2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti)
 {
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
@@ -463,7 +449,7 @@ struct RtSAPindication *rti;
 			return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) ps2rtslose (acb, rti, "PSelectMask", pa);
+			 ps2rtslose (acb, rti, "PSelectMask", pa);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -473,9 +459,8 @@ struct RtSAPindication *rti;
 
 /*    protocol-level abort */
 
-int	rt2pslose (acb, result)
-register struct assocblk   *acb;
-int	result;
+int 
+rt2pslose (struct assocblk *acb, int result)
 {
 	PE	    pe;
 	struct AcSAPindication  acis;
@@ -488,7 +473,7 @@ int	result;
 
 		PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTABapdu", 0);
 
-		(void) AcUAbortRequest (acb -> acb_fd, &pe, 1, &acis);
+		 AcUAbortRequest (acb -> acb_fd, &pe, 1, &acis);
 		pe_free (pe);
 	}
 	/* end RTAB APDU */
@@ -496,11 +481,8 @@ int	result;
 
 /*    AcSAP interface */
 
-int	acs2rtslose (acb, rti, event, aca)
-register struct assocblk *acb;
-register struct RtSAPindication *rti;
-char   *event;
-register struct AcSAPabort *aca;
+int 
+acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct AcSAPabort *aca)
 {
 	int     reason;
 	char   *cp,
@@ -535,7 +517,7 @@ register struct AcSAPabort *aca;
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at association control)",
+		 sprintf (cp = buffer, " (%s at association control)",
 						AcErrString (aca -> aca_reason));
 	case ACS_PRESENTATION:
 		reason = RTS_ACS;
@@ -557,10 +539,8 @@ register struct AcSAPabort *aca;
 
 /*  */
 
-int	acs2rtsabort (acb, aca, rti)
-register struct assocblk *acb;
-register struct AcSAPabort *aca;
-struct RtSAPindication *rti;
+int 
+acs2rtsabort (struct assocblk *acb, struct AcSAPabort *aca, struct RtSAPindication *rti)
 {
 	int     result;
 	PE	    pe;
@@ -568,12 +548,12 @@ struct RtSAPindication *rti;
 	struct type_RTS_RTABapdu	*prtab;
 
 	if (aca -> aca_source != ACA_USER) {
-		(void) acs2rtslose (acb, rti, NULLCP, aca);
+		 acs2rtslose (acb, rti, NULLCP, aca);
 		goto out;
 	}
 
 	if (aca -> aca_ninfo == 0) {
-		(void) rtsaplose (rti, RTS_ABORTED, NULLCP, NULLCP);
+		 rtsaplose (rti, RTS_ABORTED, NULLCP, NULLCP);
 		goto out;
 	}
 
@@ -587,21 +567,21 @@ struct RtSAPindication *rti;
 #endif
 	if (result != NOTOK) {
 		if (rtpdu -> offset != type_RTS_RTSE__apdus_rtab__apdu) {
-			(void) rtsaplose (rti, RTS_PROTOCOL, "Unexpected PDU");
+			 rtsaplose (rti, RTS_PROTOCOL, "Unexpected PDU");
 			ACAFREE (aca);
 			goto out;
 		}
 		prtab = rtpdu -> un.rtab__apdu;
 
 		if (prtab->userdataAB != NULLPE)
-			(void) pe_extract (pe, prtab->userdataAB);
+			 pe_extract (pe, prtab->userdataAB);
 		else
 			pe = NULLPE;
 	}
 	ACAFREE (aca);
 
 	if (result == NOTOK) {
-		(void) rtsaplose (rti, RTS_PROTOCOL, "%s", PY_pepy);
+		 rtsaplose (rti, RTS_PROTOCOL, "%s", PY_pepy);
 		goto out;
 	}
 	if (prtab->abortReason) {
@@ -624,7 +604,7 @@ struct RtSAPindication *rti;
 		break;
 	}
 	if (result == RTS_ABORTED) {
-		register struct RtSAPabort *rta = &rti -> rti_abort;
+		struct RtSAPabort *rta = &rti -> rti_abort;
 
 		rti -> rti_type = RTI_ABORT;
 		bzero ((char *) rta, sizeof *rta);
@@ -634,7 +614,7 @@ struct RtSAPindication *rti;
 		rta -> rta_udata = prtab->userdataAB;
 		prtab->userdataAB = NULLPE;
 	} else {
-		(void) rtsaplose (rti, result, NULLCP, NULLCP);
+		 rtsaplose (rti, result, NULLCP, NULLCP);
 	}
 
 out:
@@ -652,23 +632,21 @@ out:
 
 /*    PSAP interface */
 
-static int  doPSdata (acb, px, rti)
-register struct assocblk   *acb;
-register struct PSAPdata *px;
-struct RtSAPindication *rti;
+static int 
+doPSdata (struct assocblk *acb, struct PSAPdata *px, struct RtSAPindication *rti)
 {
 	unsigned int    i;
-	register char  *dp;
-	register PE	    pe;
+	char  *dp;
+	PE	    pe;
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 
 	pe = NULLPE;
 	if (!(acb -> acb_flags & ACB_ACT)
 			|| (acb -> acb_flags & ACB_TURN)
 			|| px -> px_type != SX_NORMAL) {
-		(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+		 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						  "unexpected data indication (0x%x)", px -> px_type);
 		PXFREE (px);
 		goto out;
@@ -679,7 +657,7 @@ struct RtSAPindication *rti;
 
 	if (acb -> acb_uptrans) {
 		int	result;
-		register struct qbuf *qb;
+		struct qbuf *qb;
 
 		if ((qb = prim2qb (pe)) == NULL)
 			goto congested;
@@ -702,7 +680,7 @@ congested:
 				;
 				if (PUReportRequest (acb -> acb_fd, SP_LOCAL, NULLPEP, 0, pi)
 						== NOTOK) {
-					(void) ps2rtslose (acb, rti, "PUReportRequest", pa);
+					 ps2rtslose (acb, rti, "PUReportRequest", pa);
 					goto out;
 				}
 				FREEACB (acb);
@@ -747,16 +725,13 @@ out:
 
 /*  */
 
-static int  doPStoken (acb, pt, trans, rti)
-register struct assocblk   *acb;
-register struct PSAPtoken *pt;
-int	trans;
-struct RtSAPindication *rti;
+static int 
+doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, struct RtSAPindication *rti)
 {
-	register PE	    pe;
+	PE	    pe;
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 	struct type_RTS_RTSE__apdus *rtpdu;
 	struct type_RTS_RTTPapdu *prttp;
 
@@ -773,7 +748,7 @@ struct RtSAPindication *rti;
 
 			rti -> rti_type = RTI_TURN;
 			{
-				register struct RtSAPturn  *rtu = &rti -> rti_turn;
+				struct RtSAPturn  *rtu = &rti -> rti_turn;
 
 				rtu -> rtu_please = 0;
 			}
@@ -782,13 +757,13 @@ struct RtSAPindication *rti;
 		case ST_PLEASE:
 			pe = pt -> pt_info[0];
 			if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
-				(void) pylose ();
+				 pylose ();
 				goto out;
 			}
 
 			PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTTPapdu", 1);
 			if (rtpdu -> offset != type_RTS_RTSE__apdus_rttp__apdu) {
-				(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+				 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 								  "unexpected PDU");
 				free_RTS_RTSE__apdus (rtpdu);
 				goto out;
@@ -804,7 +779,7 @@ struct RtSAPindication *rti;
 												 0L, 0L, rti) == NOTOK
 							&& PActIntrRequest (acb -> acb_fd, SP_LOCAL,
 												pi) == NOTOK) {
-						(void) ps2rtslose (acb, rti, "PActIntrRequest",pa);
+						 ps2rtslose (acb, rti, "PActIntrRequest",pa);
 						free_RTS_RTSE__apdus (rtpdu);
 						goto out;
 					}
@@ -818,7 +793,7 @@ struct RtSAPindication *rti;
 
 			rti -> rti_type = RTI_TURN;
 			{
-				register struct RtSAPturn  *rtu = &rti -> rti_turn;
+				struct RtSAPturn  *rtu = &rti -> rti_turn;
 
 				rtu -> rtu_please = 1;
 				rtu -> rtu_priority = prttp -> parm;
@@ -829,7 +804,7 @@ struct RtSAPindication *rti;
 		default:
 			break;
 		}
-	(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+	 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 					  "unexpected token indication (0x%x)", pt -> pt_type);
 
 out:
@@ -842,14 +817,12 @@ out:
 
 /*  */
 
-static int  doPSsync (acb, pn, rti)
-register struct assocblk   *acb;
-register struct PSAPsync *pn;
-struct RtSAPindication *rti;
+static int 
+doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RtSAPindication *rti)
 {
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 
 	PNFREE (pn);
 
@@ -863,7 +836,7 @@ struct RtSAPindication *rti;
 										   (caddr_t) pn, rti) == NOTOK) {
 					if (PUReportRequest (acb -> acb_fd, SP_LOCAL,
 										 NULLPEP, 0, pi) == NOTOK) {
-						(void) ps2rtslose (acb, rti, "PUReportRequest",pa);
+						 ps2rtslose (acb, rti, "PUReportRequest",pa);
 						goto out;
 					}
 					return OK;
@@ -871,7 +844,7 @@ struct RtSAPindication *rti;
 			}
 			if (PMinSyncResponse (acb -> acb_fd, pn -> pn_ssn,
 								  NULLPEP, 0, pi) == NOTOK) {
-				(void) ps2rtslose (acb, rti, "PMinSyncResponse", pa);
+				 ps2rtslose (acb, rti, "PMinSyncResponse", pa);
 				goto out;
 			}
 			return OK;
@@ -885,7 +858,7 @@ struct RtSAPindication *rti;
 		default:
 			break;
 		}
-	(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+	 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 					  "unexpected sync indication (0x%x)", pn -> pn_type);
 
 out:
@@ -897,16 +870,14 @@ out:
 
 /*  */
 
-static int  doPSactivity (acb, pv, rti)
-register struct assocblk   *acb;
-register struct PSAPactivity *pv;
-struct RtSAPindication *rti;
+static int 
+doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RtSAPindication *rti)
 {
 	int     result;
-	register PE	    pe;
+	PE	    pe;
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 
 	PVFREE (pv);
 
@@ -919,7 +890,7 @@ struct RtSAPindication *rti;
 									   (caddr_t) pv, rti) == NOTOK) {
 				if (PUReportRequest (acb -> acb_fd, SP_LOCAL,
 									 NULLPEP, 0, pi) == NOTOK) {
-					(void) ps2rtslose (acb, rti, "PUReportRequest", pa);
+					 ps2rtslose (acb, rti, "PUReportRequest", pa);
 					goto out;
 				}
 				return OK;
@@ -933,7 +904,7 @@ struct RtSAPindication *rti;
 			break;
 		if (PUReportRequest (acb -> acb_fd, SP_PROCEDURAL, NULLPEP, 0,
 							 pi) == NOTOK) {
-			(void) ps2rtslose (acb, rti, "PUReportRequest", pa);
+			 ps2rtslose (acb, rti, "PUReportRequest", pa);
 			goto out;
 		}
 		acb -> acb_flags |= ACB_ACT;
@@ -945,12 +916,12 @@ struct RtSAPindication *rti;
 				|| (acb -> acb_flags & ACB_TURN))
 			break;
 		if (acb -> acb_uptrans)
-			(void) (*acb -> acb_uptrans) (acb -> acb_fd, SI_ACTIVITY,
+			 (*acb -> acb_uptrans) (acb -> acb_fd, SI_ACTIVITY,
 										  (caddr_t) pv, rti);
 		if ((pv -> pv_type == SV_INTRIND
 				? PActIntrResponse (acb -> acb_fd, pi)
 				: PActDiscResponse (acb -> acb_fd, pi)) == NOTOK) {
-			(void) ps2rtslose (acb, rti, pv -> pv_type == SV_INTRIND
+			 ps2rtslose (acb, rti, pv -> pv_type == SV_INTRIND
 							   ? "PActIntrResponse" : "PActDiscResponse", pa);
 			goto out;
 		}
@@ -964,7 +935,7 @@ struct RtSAPindication *rti;
 				|| !(acb -> acb_flags & ACB_TURN))
 			break;
 		acb -> acb_flags &= ~ACB_ACT;
-		(void) rtsaplose (rti, acb -> acb_flags & ACB_TIMER ? RTS_TIMER
+		 rtsaplose (rti, acb -> acb_flags & ACB_TIMER ? RTS_TIMER
 						  : RTS_TRANSFER, NULLCP, NULLCP);
 		return OK;
 
@@ -977,7 +948,7 @@ struct RtSAPindication *rti;
 									   (caddr_t) pv, rti) == NOTOK) {
 				if (PUReportRequest (acb -> acb_fd, SP_LOCAL, NULLPEP, 0,
 									 pi) == NOTOK) {
-					(void) ps2rtslose (acb, rti, "PUReportRequest", pa);
+					 ps2rtslose (acb, rti, "PUReportRequest", pa);
 					goto out;
 				}
 
@@ -999,13 +970,13 @@ struct RtSAPindication *rti;
 		FREEACB (acb);
 		if (pe == NULLPE) {
 			if (result != PS_ERR_NMEM) {
-				(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP, "%s",
+				 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP, "%s",
 								  ps_error (result));
 				goto out;
 			}
 			if (PUReportRequest (acb -> acb_fd, SP_LOCAL, NULLPEP, 0, pi)
 					== NOTOK) {
-				(void) ps2rtslose (acb, rti, "PUReportRequest", pa);
+				 ps2rtslose (acb, rti, "PUReportRequest", pa);
 				goto out;
 			}
 			return OK;
@@ -1013,7 +984,7 @@ struct RtSAPindication *rti;
 end_it:
 		;
 		if (PActEndResponse (acb -> acb_fd, NULLPEP, 0, pi) == NOTOK) {
-			(void) ps2rtslose (acb, rti, "PActEndResponse", pa);
+			 ps2rtslose (acb, rti, "PActEndResponse", pa);
 			if (pe)
 				pe_free (pe);
 			goto out;
@@ -1022,7 +993,7 @@ end_it:
 
 		rti -> rti_type = RTI_TRANSFER;
 		{
-			register struct RtSAPtransfer  *rtt = &rti -> rti_transfer;
+			struct RtSAPtransfer  *rtt = &rti -> rti_transfer;
 
 			rtt -> rtt_data = pe;
 		}
@@ -1038,7 +1009,7 @@ end_it:
 	default:
 		break;
 	}
-	(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+	 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 					  "unexpected activity indication (0x%x)", pv -> pv_type);
 
 out:
@@ -1049,14 +1020,12 @@ out:
 
 /*  */
 
-static int  doPSreport (acb, pp, rti)
-register struct assocblk   *acb;
-register struct PSAPreport *pp;
-struct RtSAPindication *rti;
+static int 
+doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RtSAPindication *rti)
 {
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 
 	PPFREE (pp);
 
@@ -1069,7 +1038,7 @@ struct RtSAPindication *rti;
 		/* XXX: should try lots of things here, based on how many checkpoints have
 			been acknowledged, but, for now we'll treate everything as severe... */
 
-		(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+		 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						  "unrecoverable provider-initiated exception report");
 	}
 
@@ -1077,7 +1046,7 @@ struct RtSAPindication *rti;
 			|| !(acb -> acb_flags & ACB_TURN)) {
 out2:
 		;
-		(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+		 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						  "unexpected exception report indication (0x%x)",
 						  pp -> pp_peer);
 		goto out1;
@@ -1087,11 +1056,11 @@ out2:
 		but, for now we'll treat everything as SP_NOREASON... */
 
 	if (acb -> acb_uptrans)
-		(void) (*acb -> acb_uptrans) (acb -> acb_fd, SI_REPORT,
+		 (*acb -> acb_uptrans) (acb -> acb_fd, SI_REPORT,
 									  (caddr_t) pp, rti);
 	if (PActDiscRequest (acb -> acb_fd, SP_NOREASON, pi) != NOTOK)
 		return OK;
-	(void) ps2rtslose (acb, rti, "PActDiscRequest", pa);
+	 ps2rtslose (acb, rti, "PActDiscRequest", pa);
 
 out1:
 	;
@@ -1101,24 +1070,22 @@ out1:
 
 /*  */
 
-static int  doPSfinish (acb, pf, rti)
-register struct assocblk   *acb;
-struct PSAPfinish *pf;
-struct RtSAPindication *rti;
+static int 
+doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RtSAPindication *rti)
 {
 	struct AcSAPindication acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPabort *aca = &acis.aci_abort;
 
 	if (((acb -> acb_flags & ACB_INIT) && (acb -> acb_flags & ACB_TWA))
 			|| (acb -> acb_flags & ACB_TURN)) {
-		(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+		 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						  "association management botched");
 		PFFREE (pf);
 		goto out;
 	}
 
 	if (acb -> acb_flags & ACB_ACT) {
-		(void) rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+		 rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						  "unexpected release indication");
 		PFFREE (pf);
 		goto out;
@@ -1126,7 +1093,7 @@ struct RtSAPindication *rti;
 
 	rti -> rti_type = RTI_FINISH;
 	{
-		register struct AcSAPfinish *acf = &rti -> rti_finish;
+		struct AcSAPfinish *acf = &rti -> rti_finish;
 
 		if (AcFINISHser (acb -> acb_fd, pf, &acis) == NOTOK)
 			return acs2rtslose (acb, rti, "AcFINISHser", aca);
@@ -1144,19 +1111,17 @@ out:
 
 /*  */
 
-static int  doPSabort (acb, pa, rti)
-register struct assocblk   *acb;
-register struct PSAPabort *pa;
-struct RtSAPindication *rti;
+static int 
+doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RtSAPindication *rti)
 {
 	struct AcSAPindication  acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPabort *aca = &acis.aci_abort;
 
 	if (!pa -> pa_peer && pa -> pa_reason == PC_TIMER)
 		return rtsaplose (rti, RTS_TIMER, NULLCP, NULLCP);
 
 	if (AcABORTser (acb -> acb_fd, pa, &acis) == NOTOK) {
-		(void) acs2rtslose (acb, rti, "AcABORTser", aca);
+		 acs2rtslose (acb, rti, "AcABORTser", aca);
 		if (!(acb -> acb_flags & ACB_STICKY))
 			acb -> acb_fd = NOTOK;
 		freeacblk (acb);
@@ -1169,14 +1134,13 @@ struct RtSAPindication *rti;
 
 /*  */
 
-static int  psDATAser (sd, px)
-int	sd;
-register struct PSAPdata *px;
+static int 
+psDATAser (int sd, struct PSAPdata *px)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1188,14 +1152,13 @@ register struct PSAPdata *px;
 
 /*  */
 
-static int  psTOKENser (sd, pt)
-int	sd;
-register struct PSAPtoken *pt;
+static int 
+psTOKENser (int sd, struct PSAPtoken *pt)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1207,14 +1170,13 @@ register struct PSAPtoken *pt;
 
 /*  */
 
-static int  psSYNCser (sd, pn)
-int	sd;
-register struct PSAPsync *pn;
+static int 
+psSYNCser (int sd, struct PSAPsync *pn)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1226,14 +1188,13 @@ register struct PSAPsync *pn;
 
 /*  */
 
-static int  psACTIVITYser (sd, pv)
-int	sd;
-register struct PSAPactivity *pv;
+static int 
+psACTIVITYser (int sd, struct PSAPactivity *pv)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1245,14 +1206,13 @@ register struct PSAPactivity *pv;
 
 /*  */
 
-static int  psREPORTser (sd, pp)
-int	sd;
-register struct PSAPreport *pp;
+static int 
+psREPORTser (int sd, struct PSAPreport *pp)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -1264,51 +1224,46 @@ register struct PSAPreport *pp;
 
 /*  */
 
-static int  psFINISHser (sd, pf)
-int	sd;
-struct PSAPfinish *pf;
+static int 
+psFINISHser (int sd, struct PSAPfinish *pf)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
 
-	(void) doPSfinish (acb, pf, rti);
+	 doPSfinish (acb, pf, rti);
 
 	(*handler) (sd, rti);
 }
 
 /*  */
 
-static int  psABORTser (sd, pa)
-int	sd;
-register struct PSAPabort *pa;
+static int 
+psABORTser (int sd, struct PSAPabort *pa)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
 
-	(void) doPSabort (acb, pa, rti);
+	 doPSabort (acb, pa, rti);
 
 	(*handler) (sd, rti);
 }
 
 /*  */
 
-int	ps2rtslose (acb, rti, event, pa)
-register struct assocblk *acb;
-register struct RtSAPindication *rti;
-char   *event;
-register struct PSAPabort *pa;
+int 
+ps2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct PSAPabort *pa)
 {
 	int     reason;
 	char   *cp,
@@ -1335,7 +1290,7 @@ register struct PSAPabort *pa;
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at presentation)",
+		 sprintf (cp = buffer, " (%s at presentation)",
 						PErrString (pa -> pa_reason));
 	case PC_SESSION:
 		reason = RTS_PRESENTATION;

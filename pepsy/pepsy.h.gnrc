@@ -308,11 +308,7 @@ extern char *yyprfdflt;
 extern int yydebug;
 extern int yylineno;
 
-#ifndef	HPUX
-extern char yytext[];
-#else
-extern unsigned char yytext[];
-#endif
+extern char* yytext;
 
 extern char *mymodule;
 

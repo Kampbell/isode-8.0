@@ -19,9 +19,9 @@ extern int	errno;
 
 struct dirent *
 readdir( dirp )
-register DIR		*dirp;	/* stream from opendir() */
+DIR		*dirp;	/* stream from opendir() */
 {
-	register struct dirent	*dp;	/* -> directory data */
+	struct dirent	*dp;	/* -> directory data */
 
 	if ( dirp == NULL || dirp->dd_buf == NULL ) {
 		errno = EFAULT;
@@ -46,7 +46,8 @@ register DIR		*dirp;	/* stream from opendir() */
 	return dp;
 }
 #else
-int	_readdir_stub () {
+int 
+_readdir_stub()  {
 	;
 }
 #endif

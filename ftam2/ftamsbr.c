@@ -52,10 +52,10 @@ OID	proposed;
 int	ftamfd;
 {
 #ifndef	BRIDGE
-	register int    fmt;
-	register struct vfsmap *lf;
+	int    fmt;
+	struct vfsmap *lf;
 #endif
-	register struct vfsmap *vf;
+	struct vfsmap *vf;
 
 #ifndef	BRIDGE
 	fmt = st -> st_mode & S_IFMT;
@@ -120,7 +120,7 @@ int	ftamfd;
 
 		if (vf -> vf_flags & VF_OK) {
 			if (vf -> vf_peek)
-				(void) (*vf -> vf_peek) (vf, fd, file, st, ftamfd);
+				 (*vf -> vf_peek) (vf, fd, file, st, ftamfd);
 			return vf;
 		}
 	}
@@ -137,7 +137,7 @@ int	binarycheck (param, data)
 caddr_t param;
 char   *data;
 {
-	register struct type_DOCS_FTAM__3__Parameters *p3 =
+	struct type_DOCS_FTAM__3__Parameters *p3 =
 		(struct type_DOCS_FTAM__3__Parameters *) param;
 
 	if (p3 -> optionals
@@ -153,7 +153,7 @@ char   *data;
 			& opt_DOCS_FTAM__3__Parameters_string__significanz)
 			&& p3 -> string__significanz
 			== int_DOCS_string__significanz_fixed) {
-		(void) strcpy (data,
+		 strcpy (data,
 					   "filestore does not support fixed-length strings");
 		return NOTOK;
 	}
@@ -168,7 +168,7 @@ int	textcheck (param, data)
 caddr_t param;
 char   *data;
 {
-	register struct type_DOCS_FTAM__1__Parameters *p1 =
+	struct type_DOCS_FTAM__1__Parameters *p1 =
 		(struct type_DOCS_FTAM__1__Parameters *) param;
 
 	if (!(p1 -> optionals
@@ -183,7 +183,7 @@ char   *data;
 		break;
 
 	default:
-		(void) sprintf (data,
+		 sprintf (data,
 						"filestore does not support strings of universal class number %d",
 						p1 -> universal__class__number);
 		return NOTOK;
@@ -202,7 +202,7 @@ char   *data;
 			& opt_DOCS_FTAM__1__Parameters_string__significance)
 			&& p1 -> string__significance
 			== int_DOCS_string__significance_fixed) {
-		(void) strcpy (data,
+		 strcpy (data,
 					   "filestore does not support fixed-length strings");
 		return NOTOK;
 	}
@@ -216,17 +216,17 @@ char   *data;
 /* ARGSUSED */
 
 int	binarypeek (vf, fd, file, st, ftamfd)
-register struct vfsmap *vf;
+struct vfsmap *vf;
 int	fd;
 char   *file;
 struct stat *st;
 int	ftamfd;
 {
 	static struct type_DOCS_FTAM__3__Parameters p3s;
-	register struct type_DOCS_FTAM__3__Parameters *p3 = &p3s;
+	struct type_DOCS_FTAM__3__Parameters *p3 = &p3s;
 
 	if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
-		(void) fre_obj (vf -> vf_parameter,
+		 fre_obj (vf -> vf_parameter,
 						_ZDOCS_mod.md_dtab[vf -> vf_number], &_ZDOCS_mod, 1);
 
 	vf -> vf_parameter = (caddr_t) p3, vf -> vf_flags &= ~VF_PARM;
@@ -268,7 +268,7 @@ int	ftamfd;
 /* ARGSUSED */
 
 int	textpeek (vf, fd, file, st, ftamfd)
-register struct vfsmap *vf;
+struct vfsmap *vf;
 int	fd;
 char   *file;
 struct stat *st;
@@ -277,15 +277,15 @@ int	ftamfd;
 #ifndef	BRIDGE
 	int     gd,
 			n;
-	register char *cp;
+	char *cp;
 	char    buffer[BLKSIZE];
 	long    pos;
 #endif
 	static struct type_DOCS_FTAM__1__Parameters p1s;
-	register struct type_DOCS_FTAM__1__Parameters *p1 = &p1s;
+	struct type_DOCS_FTAM__1__Parameters *p1 = &p1s;
 
 	if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
-		(void) fre_obj (vf -> vf_parameter,
+		 fre_obj (vf -> vf_parameter,
 						_ZDOCS_mod.md_dtab[vf -> vf_number], &_ZDOCS_mod, 1);
 
 	vf -> vf_parameter = (caddr_t) p1, vf -> vf_flags &= ~VF_PARM;
@@ -330,7 +330,7 @@ int	ftamfd;
 
 	if (fd != NOTOK) {
 		pos = lseek (gd, 0L, L_INCR);
-		(void) lseek (gd, 0L, L_SET);
+		 lseek (gd, 0L, L_SET);
 	}
 #ifndef	MAXBSIZE
 	n = read (gd, buffer, sizeof buffer);
@@ -340,10 +340,10 @@ int	ftamfd;
 	n = read (gd, buffer, n);
 #endif
 	if (fd != NOTOK && pos != -1L)
-		(void) lseek (gd, pos, L_SET);
+		 lseek (gd, pos, L_SET);
 
 	if (fd == NOTOK)
-		(void) close (gd);
+		 close (gd);
 
 	for (cp = buffer + n - 1; cp >= buffer; cp--)
 		if (!isIA5 (*cp))
@@ -359,7 +359,7 @@ int	ftamfd;
 /* ARGSUSED */
 
 int	fdfpeek (vf, fd, file, st, ftamfd)
-register struct vfsmap *vf;
+struct vfsmap *vf;
 int	fd;
 char   *file;
 struct stat *st;
@@ -369,7 +369,7 @@ int	ftamfd;
 	struct FTAMindication ftis;
 
 	if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
-		(void) fre_obj (vf -> vf_parameter,
+		 fre_obj (vf -> vf_parameter,
 						_ZDOCS_mod.md_dtab[vf -> vf_number], &_ZDOCS_mod, 1);
 
 	vf -> vf_parameter = NULLCP, vf -> vf_flags &= ~VF_PARM;
@@ -397,12 +397,12 @@ PE	pe;
 int	text,
 	effector;
 {
-	register int    i,
+	int    i,
 			 n;
-	register char  *bp,
+	char  *bp,
 			 *cp,
 			 *ep;
-	register PE	    p;
+	PE	    p;
 
 	if (pe -> pe_form == PE_FORM_CONS) {
 		for (p = pe -> pe_cons, n = 0; p; p = p -> pe_next, n += i)
@@ -440,7 +440,7 @@ int	text,
 			switch (*++bp) {
 			case 0x28:	/* G0: 02/08 04/02 */
 				if (*++bp == 0x42) {
-					register char *dp;
+					char *dp;
 
 write_it:
 					;
@@ -504,9 +504,9 @@ outside:
 
 
 int	compath (f)
-register char  *f;
+char  *f;
 {
-	register char  *cp,
+	char  *cp,
 			 *dp;
 
 	if (*f != '/')
@@ -529,7 +529,7 @@ register char  *f;
 #endif
 				for (dp = cp; *dp == '/'; dp++)
 					continue;
-				(void) strcpy (cp--, dp);
+				 strcpy (cp--, dp);
 				continue;
 
 			case '.':
@@ -554,12 +554,12 @@ register char  *f;
 							break;
 					if (dp <= f)
 						dp = f;
-					(void) strcpy (dp, cp + NPWD - 1);
+					 strcpy (dp, cp + NPWD - 1);
 					cp = dp;
 					continue;
 				}
 				if (strncmp (cp, CWD, NCWD) == 0) {
-					(void) strcpy (cp - 1, cp + NCWD - 1);
+					 strcpy (cp - 1, cp + NCWD - 1);
 					cp--;
 					continue;
 				}

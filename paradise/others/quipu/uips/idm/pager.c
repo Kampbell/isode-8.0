@@ -53,7 +53,7 @@ va_dcl /* no ; */
 	for (i = 0; buf[i] != '\0'; i++) {
 		if (buf[i] == '\n') {
 			charsInLine = 0;
-			(void) putchar(buf[i]);
+			 putchar(buf[i]);
 			lineno++;
 			if (lineno >= lines - 1) {
 				putPagePrompt();
@@ -69,7 +69,7 @@ va_dcl /* no ; */
 					break;
 				}
 				if ((pagerNumber == -1) && ((c == VEOF) || (c == VKILL)))
-					(void) kill(getpid(), 2); /* let the signal handling sort it out */
+					 kill(getpid(), 2); /* let the signal handling sort it out */
 				if (((pagerNumber == -1)&& (c == 'q')) || (pagerNumber != -1)) {
 					discardInput = TRUE;
 					break;
@@ -79,7 +79,7 @@ va_dcl /* no ; */
 			/* optionally discard chars that would cause line wrapping */
 			if (isWrapOn() ||
 					(charsInLine < (cols - 1))) {
-				(void) putchar(buf[i]);
+				 putchar(buf[i]);
 				charsInLine++;
 				if (isWrapOn()) {
 					if (charsInLine == cols) {
@@ -111,7 +111,7 @@ getPagerInput() {
 			  || (c == VKILL) || (c == VEOF))) {
 		if ((numOK == TRUE) && isdigit(c)) {
 			for (i = 0; isdigit(c); i++) {
-				(void) putchar(c);
+				 putchar(c);
 				numstr[i] = c;
 				c = getchar();
 			}

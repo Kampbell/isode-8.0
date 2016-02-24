@@ -39,18 +39,18 @@ struct FTAMstart *fts;
 IFP	tracing;
 struct FTAMindication *fti;
 {
-	register int    i;
+	int    i;
 	PE	    pe = NULLPE;
 	struct AcSAPstart acss;
-	register struct AcSAPstart *acs = &acss;
-	register struct PSAPstart *ps = &acs -> acs_start;
+	struct AcSAPstart *acs = &acss;
+	struct PSAPstart *ps = &acs -> acs_start;
 	struct AcSAPindication acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
-	register struct ftamblk *fsb;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
+	struct ftamblk *fsb;
 	struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__INITIALIZE__request *req;
-	register struct type_FTAM_F__INITIALIZE__response *rsp;
+	struct type_FTAM_F__INITIALIZE__request *req;
+	struct type_FTAM_F__INITIALIZE__response *rsp;
 
 	missingP (vec);
 	missingP (fts);
@@ -65,7 +65,7 @@ struct FTAMindication *fti;
 	pdu = NULL;
 
 	if (AcInit (vecp, vec, acs, aci) == NOTOK) {
-		(void) acs2ftamlose (fsb, fti, "AcInit", aca);
+		 acs2ftamlose (fsb, fti, "AcInit", aca);
 		goto out1;
 	}
 
@@ -91,7 +91,7 @@ struct FTAMindication *fti;
 		break; \
  \
 	    default: \
-		(void) ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, \
+		 ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, \
 			    EREF_IFPM, NULLCP, \
 			    "%s token management botched", type); \
 		goto out2; \
@@ -100,7 +100,7 @@ struct FTAMindication *fti;
 	dotokens ();
 #undef	dotoken
 	if (fsb -> fsb_owned != 0) {
-		(void) ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_IFPM, NULLCP,
+		 ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_IFPM, NULLCP,
 						 "token management botched");
 		goto out2;
 	}
@@ -110,18 +110,18 @@ struct FTAMindication *fti;
 	fsb -> fsb_prequirements = ps -> ps_prequirements;
 
 	if (acs -> acs_ninfo < 1 || (pe = acs -> acs_info[0]) == NULLPE) {
-		(void) ftamoops (fti, FS_PRO_ERR, 1, EREF_RFPM, EREF_IFPM, NULLCP,
+		 ftamoops (fti, FS_PRO_ERR, 1, EREF_RFPM, EREF_IFPM, NULLCP,
 						 NULLCP);
 		goto out2;
 	}
 
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
-		(void) ftamoops (fti, FS_PRO_ERRMSG, 1, EREF_RFPM, EREF_RFPM,
+		 ftamoops (fti, FS_PRO_ERRMSG, 1, EREF_RFPM, EREF_RFPM,
 						 NULLCP, "unable to parse PDU: %s", PY_pepy);
 		goto out3;
 	}
 	if (pdu -> offset != type_FTAM_PDU_f__initialize__request) {
-		(void) ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_RFPM,
+		 ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_RFPM,
 						 NULLCP, "expecting F-INITIALIZE-request, got %d",
 						 pdu -> offset);
 		goto out3;
@@ -161,19 +161,19 @@ struct FTAMindication *fti;
 		fsb -> fsb_units |= FUNITS_MANAGE;
 	if (!(fsb -> fsb_class &=
 				(FCLASS_TRANSFER | FCLASS_TM | FCLASS_MANAGE | FCLASS_ACCESS))) {
-		(void) ftamoops (fti, FS_ACS_CLASS, 1, EREF_RFPM, EREF_IFPM,
+		 ftamoops (fti, FS_ACS_CLASS, 1, EREF_RFPM, EREF_IFPM,
 						 NULLCP, NULLCP);
 		goto out3;
 	}
 	if (!(fsb -> fsb_units & FUNIT_LIMITED)
 			&& (fsb -> fsb_units & FUNIT_ENHANCED)) {
-		(void) ftamoops (fti, FS_PRO_ERRFUNIT, 1, EREF_RFPM, EREF_IFPM,
+		 ftamoops (fti, FS_PRO_ERRFUNIT, 1, EREF_RFPM, EREF_IFPM,
 						 NULLCP,
 						 "enhanced-file-management requires limited-file-management");
 		goto out3;
 	}
 	if (!(fsb -> fsb_units & FUNIT_GROUPING)) {	/* XXX: should be OPTIONAL */
-		(void) ftamoops (fti, FS_PRO_ERRFUNIT, 1, EREF_RFPM, EREF_IFPM,
+		 ftamoops (fti, FS_PRO_ERRFUNIT, 1, EREF_RFPM, EREF_IFPM,
 						 NULLCP,
 						 "insufficient functional units for service class");
 		goto out3;
@@ -185,7 +185,7 @@ struct FTAMindication *fti;
 #ifdef	notdef
 	if ((fsb -> fsb_attrs & FATTR_SECURITY)
 			&& !(fsb -> fsb_attrs & FATTR_STORAGE)) {
-		(void) ftamoops (fti, FS_ACS_GRP, 1, EREF_RFPM, EREF_IFPM,
+		 ftamoops (fti, FS_ACS_GRP, 1, EREF_RFPM, EREF_IFPM,
 						 NULLCP, NULLCP);
 		goto out3;
 	}
@@ -199,7 +199,7 @@ struct FTAMindication *fti;
 	if ((fsb -> fsb_context = oid_cpy (acs -> acs_context)) == NULLOID) {
 no_mem:
 		;
-		(void) ftamoops (fti, FS_GEN_NOREASON, 1, EREF_RFPM, EREF_RFPM,
+		 ftamoops (fti, FS_GEN_NOREASON, 1, EREF_RFPM, EREF_RFPM,
 						 NULLCP, "out of memory");
 		goto out3;
 	}
@@ -221,11 +221,11 @@ no_mem:
 #define	PC_XXX	(-2)		/* unique code */
 
 		int	acsid;
-		register struct type_FTAM_Contents__Type__List *dtn;
-		register struct FTAMcontent *fx,
+		struct type_FTAM_Contents__Type__List *dtn;
+		struct FTAMcontent *fx,
 				*fx2;
-		register struct PSAPcontext *px;
-		register struct isodocument *id;
+		struct PSAPcontext *px;
+		struct isodocument *id;
 #ifdef COMPAT_OLD_NBS9OID
 		int			    nbs9_marked = 0;
 #endif /* COMPAT_OLD_NBS9OID */
@@ -235,7 +235,7 @@ no_mem:
 
 		fx = fts -> fts_contents.fc_contents;
 
-		(void) AcFindPCI (fsb -> fsb_fd, &acsid, aci);
+		 AcFindPCI (fsb -> fsb_fd, &acsid, aci);
 
 		fx2 = fsb -> fsb_contents.fc_contents;
 		fsb -> fsb_contents.fc_ncontent = 0;
@@ -333,7 +333,7 @@ no_mem:
 
 #undef	PC_XXX
 	} else if (req -> contents__type__list) {
-		(void) ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_IFPM,
+		 ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_IFPM,
 						 NULLCP, "content types management botched");
 		goto out3;
 	}
@@ -346,7 +346,7 @@ no_mem:
 			&& (fts -> fts_account = qb2str (req -> account)) == NULL)
 		goto no_mem;
 	if (req -> filestore__password) {	/* both choices are qbufs... */
-		register struct qbuf *qb = req -> filestore__password -> un.graphic;
+		struct qbuf *qb = req -> filestore__password -> un.graphic;
 
 		if ((fts -> fts_password = qb2str (qb)) == NULL)
 			goto no_mem;
@@ -402,7 +402,7 @@ carry_on:
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-ASSOCIATE.RESPONSE(reject)",
 					"F-INITIALIZE-response", pe, 0));
 
-	(void) AcAssocResponse (acs -> acs_sd, ACS_TRANSIENT, ACS_USER_NOREASON,
+	 AcAssocResponse (acs -> acs_sd, ACS_TRANSIENT, ACS_USER_NOREASON,
 							NULLOID, NULLAEI, NULLPA, NULLPC, ps -> ps_defctxresult, 0, 0,
 							SERIAL_NONE, 0, &ps -> ps_connect, pe ? &pe : NULLPEP,
 							pe ? 1 : 0, aci);
@@ -439,18 +439,18 @@ struct FTAMdiagnostic diag[];
 int	ndiag;
 struct FTAMindication *fti;
 {
-	register int    i;
+	int    i;
 	int	    result,
 			status;
 	PE	    pe;
-	register struct FTAMcontentlist *pl;
-	register struct FTAMcontent *px;
+	struct FTAMcontentlist *pl;
+	struct FTAMcontent *px;
 	struct AcSAPindication acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
-	register struct ftamblk *fsb;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__INITIALIZE__response *rsp;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
+	struct ftamblk *fsb;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__INITIALIZE__response *rsp;
 
 	if ((fsb = findfsblk (sd)) == NULL || (fsb -> fsb_flags & FSB_CONN))
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
@@ -578,13 +578,13 @@ too_many:
 	pl = &fsb -> fsb_contents;
 	if (contents) {
 		int	acsid;
-		register struct FTAMcontent *fx = contents -> fc_contents;
+		struct FTAMcontent *fx = contents -> fc_contents;
 
 		if (contents -> fc_ncontent != pl -> fc_ncontent)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "proposed/resulting content types mismatch");
 
-		(void) AcFindPCI (fsb -> fsb_fd, &acsid, aci);
+		 AcFindPCI (fsb -> fsb_fd, &acsid, aci);
 		for (px = pl -> fc_contents, i = pl -> fc_ncontent - 1;
 				i >= 0;
 				px++, i--) {
@@ -672,7 +672,7 @@ no_mem:
 	rsp -> ftam__quality__of__service -> parm = fsb -> fsb_fqos;
 	if (contents) {
 		struct type_FTAM_Contents__Type__List *fpm;
-		register struct type_FTAM_Contents__Type__List **fpc;
+		struct type_FTAM_Contents__Type__List **fpc;
 
 		fpc = &rsp -> contents__type__list;
 		for (px = pl -> fc_contents, i = pl -> fc_ncontent - 1;
@@ -698,7 +698,7 @@ no_mem:
 	rsp -> checkpoint__window = 1;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -722,7 +722,7 @@ no_mem:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) acs2ftamlose (fsb, fti, "AcAssocResponse", aca);
+		 acs2ftamlose (fsb, fti, "AcAssocResponse", aca);
 		goto out;
 	}
 
@@ -768,7 +768,7 @@ carry_on:
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-ASSOCIATE.RESPONSE(reject)",
 					"F-INITIALIZE-response", pe, 0));
 
-	(void) AcAssocResponse (fsb -> fsb_fd, ACS_TRANSIENT, ACS_USER_NOREASON,
+	 AcAssocResponse (fsb -> fsb_fd, ACS_TRANSIENT, ACS_USER_NOREASON,
 							NULLOID, NULLAEI, NULLPA, NULLPC, PC_ACCEPT, 0, 0, SERIAL_NONE,
 							0, &fsb -> fsb_connect, pe ? &pe : NULLPEP, pe ? 1 : 0, aci);
 	if (pe)

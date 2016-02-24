@@ -31,7 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/rdn_cmp.c,v 9.0
 rdn_cmp_comp (a,b)
 RDN  a,b;
 {
-	register int j;
+	int j;
 
 	if (a->rdn_at != b->rdn_at)
 		return ((a->rdn_at > b->rdn_at) ? 1 : -1);

@@ -61,7 +61,7 @@ char *** avptr;
 		cnt = *acptr;
 		ptr = *avptr;
 	}
-	(void) tai_args (acptr,avptr);
+	 tai_args (acptr,avptr);
 
 	if (dsap_tai_init() != OK)
 		fatal (-1,"Tailor failure");
@@ -73,9 +73,9 @@ char *** avptr;
 			fatal (-1, "dsa_address not set");
 
 	if (acptr != (int *)NULL)
-		(void) tai_args (&cnt,&ptr);  /* second call IS needed */
+		 tai_args (&cnt,&ptr);  /* second call IS needed */
 	else
-		(void) tai_args (acptr,avptr);
+		 tai_args (acptr,avptr);
 
 	LLOG (log_dsap,LLOG_NOTICE,("Loading oid table (%s)",oidtable));
 	if (load_oid_table (oidtable) == NOTOK)

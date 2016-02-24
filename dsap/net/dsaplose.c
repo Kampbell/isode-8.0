@@ -75,11 +75,11 @@ char   *what,
 
 #ifndef	lint
 static int  _dsaplose (di, reason, ap)  /* what, fmt, args ... */
-register struct DSAPindication *di;
+struct DSAPindication *di;
 int     reason;
 va_list	ap;
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
 	struct DSAPabort	* da;
 
@@ -138,12 +138,12 @@ char   *what,
 
 #ifndef	lint
 static int  _dsapreject (di, reason, id, ap)  /* what, fmt, args ... */
-register struct DSAPindication *di;
+struct DSAPindication *di;
 int     reason;
 int	id;
 va_list	ap;
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
 	struct DSAPpreject	* dp;
 

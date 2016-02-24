@@ -28,24 +28,21 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/serror.c,v 9.0 1992/
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <string.h>
 #include "general.h"
 #include "manifest.h"
 
 /*    DATA */
 
-extern	int sys_nerr;
-extern  char *sys_errlist[];
 
 /*  */
 
-char   *sys_errname (i)
-int	i;
+char *
+sys_errname (int no)
 {
-	static char buffer[30];
+	static char buffer[128];
 
-	if (0 < i && i < sys_nerr)
-		return sys_errlist[i];
-	(void) sprintf (buffer, "Error %d", i);
+	strerror_r(no, buffer, sizeof(buffer));	
 
 	return buffer;
 }

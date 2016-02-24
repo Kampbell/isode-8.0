@@ -32,36 +32,43 @@ void tprint(), scrollbar();
 
 void get_help();
 
-void help_cncs() {
+void 
+help_cncs  {
 	get_help("help", "   Press <KEY> to get detailed help.\n");
 }
 
-void help_init() {
+void 
+help_init  {
 	get_help("help", "   SD X.500 Directory Agent - Concise Help\n");
 }
 
-void help_up() {
+void 
+help_up  {
 	get_help("widen", "   The \"Widen Area\" Function.\n");
 }
 
-void help_back() {
+void 
+help_back  {
 	get_help("look", "   The \"Look Back\" Function.\n");
 }
 
-void help_number() {
+void 
+help_number  {
 	get_help("number", "   The \"Go To Number\" Function.\n");
 }
 
-void help_srch() {
+void 
+help_srch  {
 	get_help("search", "   The \"Search\" Function");
 }
 
-void help_list() {
+void 
+help_list  {
 	get_help("list", "   The \"List\" Function");
 }
 
-void get_help(filename, line)
-char *filename, *line;
+void 
+get_help (char *filename, char *line)
 {
 	FILE * helpfp;
 	char helpbuf[BUFLEN];
@@ -76,9 +83,9 @@ char *filename, *line;
 	curr_dnseq = 0;
 	textseq = 0;
 
-	(void) strcpy(filebuf, HELPDIR);
-	(void) strcat(filebuf, filename);
-	(void) strcpy(helpbuf, isodefile(filebuf, 0));
+	 strcpy(filebuf, HELPDIR);
+	 strcat(filebuf, filename);
+	 strcpy(helpbuf, isodefile(filebuf, 0));
 
 	if ((helpfp = fopen(helpbuf, "r")) == (FILE *)NULL ) {
 		tprint("Can't open help file '%s'.\n",helpbuf);
@@ -98,7 +105,7 @@ char *filename, *line;
 		entry_number++;
 	}
 
-	(void) fclose(helpfp);
+	 fclose(helpfp);
 	scrollbar('\0');
 }
 

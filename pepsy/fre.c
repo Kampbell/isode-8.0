@@ -52,11 +52,8 @@ static fre_choice();
  * first time freeing all the "children" of the data structure - then
  * the second time free the structure itself
  */
-fre_obj(parm, p, mod, dofree)
-modtyp *mod;
-ptpe    *p;
-char   *parm;
-int	dofree;
+int 
+fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree)
 {
 	char   *malptr = NULL;	/* Have we seen a malloc */
 	int	    ndofree = dofree;	/* Does the function below deallocate space */
@@ -65,7 +62,7 @@ int	dofree;
 		return (OK);
 
 	if (p->pe_type != PE_START) {
-		(void) pepsylose (mod, p, NULLPE, "fre_obj: missing PE_START\n");
+		 pepsylose (mod, p, NULLPE, "fre_obj: missing PE_START\n");
 		return (NOTOK);
 	}
 
@@ -103,11 +100,13 @@ int	dofree;
  * fall back to this so we can put the code to free something just
  * here once and it will handle all the cases else where
  */
-fre_type(parm, p, mod, dofree)
-char   *parm;
-ptpe    *p;
-modtyp *mod;			/* Module it is from */
-int	dofree;
+int 
+fre_type (
+    char *parm,
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    int dofree
+)
 {
 
 	if (parm == 0)
@@ -206,7 +205,7 @@ again:
 
 	case SEXTOBJ:
 		if (p[1].pe_type != EXTMOD) {
-			(void) pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
+			 pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
 			return (NOTOK);
 		}
 		if (fre_obj(parm + p->pe_ucode, (EXT2MOD(mod, (p + 1)))->md_dtab[p->pe_tag],
@@ -216,7 +215,7 @@ again:
 
 	case EXTOBJ:
 		if (p[1].pe_type != EXTMOD) {
-			(void) pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
+			 pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
 			return (NOTOK);
 		}
 		if (fre_obj(*(char **) (parm + p->pe_ucode),
@@ -312,7 +311,7 @@ again:
 		break;
 
 	default:
-		(void) pepsylose (mod, p, NULLPE, "fre_type: %d not implemented\n",
+		 pepsylose (mod, p, NULLPE, "fre_type: %d not implemented\n",
 						  p->pe_type);
 		return (NOTOK);
 	}
@@ -323,11 +322,13 @@ again:
 /*
  * free elements of a sequential type. e.g. sequence or set
  */
-static fre_seq(parm, p, mod, dofree)
-char   *parm;
-ptpe    *p;
-modtyp *mod;			/* Module it is from */
-int	dofree;
+static 
+fre_seq (
+    char *parm,
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    int dofree
+)
 {
 	/*    int    *popt = NULL;	Pointer to optional field */
 	char   *malptr = NULL;	/* Have we seen a malloc */
@@ -339,7 +340,7 @@ int	dofree;
 
 	if (p->pe_type != SEQ_START && p->pe_type != SET_START
 			&& p->pe_type != SSEQ_START && p->pe_type != SSET_START) {
-		(void) pepsylose (mod, p, NULLPE, "fre_seq: bad starting item %d\n",
+		 pepsylose (mod, p, NULLPE, "fre_seq: bad starting item %d\n",
 						  p->pe_type);
 		return (NOTOK);
 	}
@@ -421,7 +422,7 @@ int	dofree;
 
 		case SEXTOBJ:
 			if (p[1].pe_type != EXTMOD) {
-				(void) pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
+				 pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
 				return (NOTOK);
 			}
 			if (fre_obj(parm + p->pe_ucode, (EXT2MOD(mod, (p + 1)))->md_dtab[p->pe_tag],
@@ -431,7 +432,7 @@ int	dofree;
 
 		case EXTOBJ:
 			if (p[1].pe_type != EXTMOD) {
-				(void) pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
+				 pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
 				return (NOTOK);
 			}
 			if (fre_obj(*(char **) (parm + p->pe_ucode),
@@ -461,11 +462,13 @@ int	dofree;
  * free all the fields in a SET OF/SEQUENCE OF type structure. We
  * must follow the linked list until the end
  */
-static fre_seqof(parm, p, mod, dofree)
-char   *parm;
-ptpe    *p;
-modtyp *mod;			/* Module it is from */
-int	dofree;
+static 
+fre_seqof (
+    char *parm,
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    int dofree
+)
 {
 	ptpe    *start;		/* first entry in list */
 	char   *oparm;
@@ -475,7 +478,7 @@ int	dofree;
 
 	if (p->pe_type != SEQOF_START && p->pe_type != SETOF_START
 			&& p->pe_type != SSEQOF_START && p->pe_type != SSETOF_START) {
-		(void) pepsylose (mod, p, NULLPE, "fre_seqof: illegal field");
+		 pepsylose (mod, p, NULLPE, "fre_seqof: illegal field");
 		return (NOTOK);
 	}
 	for (start = p; (char *) parm != NULL; p = start) {
@@ -548,7 +551,7 @@ int	dofree;
 
 			case SEXTOBJ:
 				if (p[1].pe_type != EXTMOD) {
-					(void) pepsylose (mod, p, NULLPE,
+					 pepsylose (mod, p, NULLPE,
 									  "fre_seqof: missing EXTMOD");
 					return (NOTOK);
 				}
@@ -559,7 +562,7 @@ int	dofree;
 
 			case EXTOBJ:
 				if (p[1].pe_type != EXTMOD) {
-					(void) pepsylose (mod, p, NULLPE,
+					 pepsylose (mod, p, NULLPE,
 									  "fre_seqof: missing EXTMOD");
 					return (NOTOK);
 				}
@@ -594,11 +597,13 @@ int	dofree;
  * which item is present and then call the appropriate routine to
  * free it
  */
-static fre_choice(parm, p, mod, dofree)
-char   *parm;
-ptpe    *p;
-modtyp *mod;			/* Module it is from */
-int	dofree;
+static 
+fre_choice (
+    char *parm,
+    ptpe *p,
+    modtyp *mod,			/* Module it is from */
+    int dofree
+)
 {
 	int     cnt;
 	char   *malptr = NULL;	/* Have we seen a malloc */
@@ -608,7 +613,7 @@ int	dofree;
 		return OK;
 
 	if (p->pe_type != CHOICE_START && p->pe_type != SCHOICE_START) {
-		(void) pepsylose (mod, p, NULLPE,
+		 pepsylose (mod, p, NULLPE,
 						  "fre_choice:CHOICE_START missing found %d\n", p->pe_type);
 	}
 	p++;
@@ -624,7 +629,7 @@ int	dofree;
 		p++;
 	}
 	if (p->pe_type != SCTRL) {
-		(void) pepsylose (mod, p, NULLPE,
+		 pepsylose (mod, p, NULLPE,
 						  "fre_choice: missing SCTRL information\n");
 		return (NOTOK);
 	}
@@ -632,7 +637,7 @@ int	dofree;
 	if (cnt != 0)
 		cnt--;
 	if (cnt < 0) {
-		(void) pepsylose (mod, p, NULLPE,"fre_choice:offset negative %d", cnt);
+		 pepsylose (mod, p, NULLPE,"fre_choice:offset negative %d", cnt);
 		return (NOTOK);
 	}
 	for (p++; p->pe_type != PE_END; NEXT_TPE(p)) {
@@ -650,7 +655,7 @@ int	dofree;
 		}
 	}
 
-	(void) pepsylose (mod, p, NULLPE, "fre_choice: no choice taken");
+	 pepsylose (mod, p, NULLPE, "fre_choice: no choice taken");
 	return (NOTOK);
 }
 /*
@@ -659,9 +664,8 @@ int	dofree;
  * Basically we have to stop FN_CALL being tested by hasdata which will call
  * the decoding function which is illegal and gives rubbish.
  */
-callsfn(p, mod)
-ptpe	*p;
-modtyp	*mod;
+int 
+callsfn (ptpe *p, modtyp *mod)
 {
 
 	while (p->pe_type != PE_END) {
@@ -684,7 +688,7 @@ modtyp	*mod;
 		}
 	}
 
-	(void) pepsylose (mod, p, NULLPE,"callsfn:Corrupted tables:PE_END found\n");
+	 pepsylose (mod, p, NULLPE,"callsfn:Corrupted tables:PE_END found\n");
 	ferr(1, "callsfn:Mangled tables\n");
 	/*NOTREACHED*/
 

@@ -95,7 +95,7 @@ int	  secs;
 			else
 				SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP,
 					  ("fd=%d for connection block(1)", cn -> cn_ad));
-			(void) sprintf(wbp, ", %d.", cn->cn_ad);
+			 sprintf(wbp, ", %d.", cn->cn_ad);
 			wbp += (strlen(wbp) - 1);
 		} else {
 			if (cn->cn_ad > 0)
@@ -103,7 +103,7 @@ int	  secs;
 			else
 				SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP,
 					  ("fd=%d for connection block(2)", cn -> cn_ad));
-			(void) sprintf(ibp, ", %d.", cn->cn_ad);
+			 sprintf(ibp, ", %d.", cn->cn_ad);
 			ibp += (strlen(ibp) - 1);
 		}
 
@@ -152,7 +152,7 @@ int	  secs;
 	}
 	watch_dog_reset();
 
-	(void) time (&timenow);
+	 time (&timenow);
 
 	if (vecp > 0) {
 		conn_pre_init (newfd,vecp,vec);
@@ -213,7 +213,7 @@ int	  secs;
 				closing_analyse(cn) ;
 #endif /* QUIPU_CONSOLE */
 
-				(void) conn_release_retry(cn);
+				 conn_release_retry(cn);
 				result = OK;
 			}
 			break;
@@ -333,7 +333,7 @@ struct connection *cn ;
 	open_call->initiated_by_dsa = cn->cn_initiator ;
 	open_call->usersDN = dn_cpy(cn->cn_dn);
 	open_call->net_address = strdup(pa2str(cn->cn_start.cs_ds.ds_start.acs_start.ps_calling)) ;
-	(void) time(&timenow) ;
+	 time(&timenow) ;
 	tm2ut(gmtime(&timenow), &ut) ;
 	open_call->start_time = strdup(utct2str(&ut)) ;
 	open_call->finish_time = (char *) 0 ;

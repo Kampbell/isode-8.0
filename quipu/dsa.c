@@ -154,8 +154,8 @@ char    **argv;
 #endif
 
 	{
-		register int	i;
-		register char  *cp,
+		int	i;
+		char  *cp,
 				 **ap,
 				 **sp;
 
@@ -226,7 +226,7 @@ no_copy:
 
 	DLOG (log_dsap,LLOG_DEBUG,( "About to dsa_init()"));
 
-	(void) chdir(treedir);
+	 chdir(treedir);
 
 #ifdef SBRK_DEBUG
 	proc_size = (unsigned) sbrk(0);
@@ -250,7 +250,7 @@ no_copy:
 
 	if (startup_update) {
 		/* Will generate a list of EDB operations! */
-		(void) time (&timenow);
+		 time (&timenow);
 		slave_update();
 	}
 
@@ -258,10 +258,10 @@ no_copy:
 		char    filebuf[BUFSIZ];
 		FILE   *fp;
 
-		(void) sprintf (filebuf, "%sPID", treedir);
+		 sprintf (filebuf, "%sPID", treedir);
 		if (fp = fopen (filebuf, "w")) {
-			(void) fprintf (fp, "%d\n", getpid ());
-			(void) fclose (fp);
+			 fprintf (fp, "%d\n", getpid ());
+			 fclose (fp);
 		} else
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("Can't open PID file %s",filebuf));
 	}
@@ -270,28 +270,28 @@ no_copy:
 	* Do stop_dsa() on receiving a Ctrl-C
 	*/
 
-	(void) signal (SIGINT, stop_dsa);
-	(void) signal (SIGTERM,stop_dsa);
-	(void) signal (SIGHUP, stop_dsa);
+	 signal (SIGINT, stop_dsa);
+	 signal (SIGTERM,stop_dsa);
+	 signal (SIGHUP, stop_dsa);
 
 	/* now started don't stop on core dumps !!! */
-	(void) signal (SIGQUIT, attempt_restart);
-	(void) signal (SIGILL,  attempt_restart);
-	(void) signal (SIGBUS,  attempt_restart);
-	(void) signal (SIGSEGV, attempt_restart);
-	(void) signal (SIGSYS,  attempt_restart);
-	(void) signal (SIGPIPE,  attempt_restart);
+	 signal (SIGQUIT, attempt_restart);
+	 signal (SIGILL,  attempt_restart);
+	 signal (SIGBUS,  attempt_restart);
+	 signal (SIGSEGV, attempt_restart);
+	 signal (SIGSYS,  attempt_restart);
+	 signal (SIGPIPE,  attempt_restart);
 #ifdef	SIGUSR1
-	(void) signal (SIGUSR1, list_status);
+	 signal (SIGUSR1, list_status);
 #ifdef	SIGUSR2
-	(void) signal (SIGUSR2, list_status2);
+	 signal (SIGUSR2, list_status2);
 #endif
 #endif
 
 	abort_vector = attempt_restart;
 	parse_line = 0;
 
-	(void) sprintf (start_buf,"DSA %s has started on %s",mydsaname,
+	 sprintf (start_buf,"DSA %s has started on %s",mydsaname,
 					paddr2str(dsaladdr,NULLNA));
 
 	LLOG (log_dsap,LLOG_NOTICE,(start_buf));
@@ -300,7 +300,7 @@ no_copy:
 #endif
 
 	if (debug)
-		(void) fprintf (stderr,"%s\n",start_buf);
+		 fprintf (stderr,"%s\n",start_buf);
 
 #ifdef SBRK_DEBUG
 	proc_size = (unsigned) sbrk(0);
@@ -324,10 +324,10 @@ no_copy:
 			open_call_avs_clearup() ;
 #endif /* QUIPU_CONSOLE */
 
-			(void) dsa_wait(secs);	/* Check network with timeout of secs */
+			 dsa_wait(secs);	/* Check network with timeout of secs */
 		} else {
 			dsa_work(task);	/* Process the DSA task selected */
-			(void) dsa_wait(0);
+			 dsa_wait(0);
 		}
 	} /* forever */
 } /* main */
@@ -416,10 +416,10 @@ int secs;
 					watch_dog_final_reset();
 					return;
 				} else
-					(void) dsa_wait(1);
+					 dsa_wait(1);
 			} else {
 				dsa_work(task);	/* Process the DSA task selected */
-				(void) dsa_wait(0);
+				 dsa_wait(0);
 			}
 		}
 
@@ -430,14 +430,14 @@ int secs;
 	int sig;
 	{
 
-		(void) signal (sig, SIG_DFL); /* to stop recursion */
+		 signal (sig, SIG_DFL); /* to stop recursion */
 
 		LLOG (log_dsap,LLOG_FATAL,("*** Stopping on signal %d ***",sig));
 
 		dsa_abort(0);
 
 		if (debug) {
-			(void) fprintf (stderr,"DSA %s has Stopped\n",mydsaname);
+			 fprintf (stderr,"DSA %s has Stopped\n",mydsaname);
 #ifdef DEBUG
 			directory_free (database_root);
 			as_free (dsa_real_attr);
@@ -470,11 +470,11 @@ int secs;
 #endif
 		int	    fd;
 		struct stat st;
-		register struct connection *cn;
+		struct connection *cn;
 		time_t  now;
 
 #ifndef	BSD42
-		(void) signal (SIGUSR1, list_status);
+		 signal (SIGUSR1, list_status);
 #endif
 
 #ifdef SBRK_DEBUG
@@ -515,7 +515,7 @@ int secs;
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("logs dsap=%d", log_dsap -> ll_fd));
 #endif
 
-		(void) time (&now);
+		 time (&now);
 		for (cn = connlist; cn; cn = cn -> cn_next)
 			if (cn -> cn_ad != NOTOK)
 				LLOG (log_dsap, LLOG_EXCEPTIONS,
@@ -536,10 +536,10 @@ int secs;
 #ifdef SBRK_DEBUG
 		unsigned proc_size;
 #endif
-		register struct connection *cn;
+		struct connection *cn;
 
 #ifndef	BSD42
-		(void) signal (SIGUSR2, list_status2);
+		 signal (SIGUSR2, list_status2);
 #endif
 
 #ifdef SBRK_DEBUG
@@ -580,9 +580,9 @@ fork_ok:
 			if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 				adios ("/dev/null", "unable to read");
 			if (sd != 0)
-				(void) dup2 (sd, 0), (void) close (sd);
-			(void) dup2 (0, 1);
-			(void) dup2 (0, 2);
+				 dup2 (sd, 0),  close (sd);
+			 dup2 (0, 1);
+			 dup2 (0, 2);
 
 #ifdef	SETSID
 			if (setsid () == NOTOK)
@@ -590,14 +590,14 @@ fork_ok:
 #endif
 #ifdef  TIOCNOTTY
 			if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-				(void) ioctl (sd, TIOCNOTTY, NULLCP);
-				(void) close (sd);
+				 ioctl (sd, TIOCNOTTY, NULLCP);
+				 close (sd);
 			}
 #else
 #ifdef  SYS5
-			(void) setpgrp ();
-			(void) signal (SIGINT, SIG_IGN);
-			(void) signal (SIGQUIT, SIG_IGN);
+			 setpgrp ();
+			 signal (SIGINT, SIG_IGN);
+			 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 		}
@@ -615,11 +615,11 @@ fork_ok:
 			if (log_stat -> ll_fd == sd)
 				continue;
 #endif
-			(void) close (sd);
+			 close (sd);
 		}
 #endif
 
-		(void) signal (SIGPIPE, SIG_IGN);
+		 signal (SIGPIPE, SIG_IGN);
 
 		ll_hdinit (log_dsap, myname);
 #ifdef	DEBUG
@@ -642,7 +642,7 @@ fork_ok:
 		va_end (ap);
 
 		if (debug)
-			(void) fprintf (stderr,"adios exit - see dsap.log\n");
+			 fprintf (stderr,"adios exit - see dsap.log\n");
 		dsa_abort(0);
 		_exit (-18);
 	}
@@ -667,7 +667,7 @@ fork_ok:
 
 		code = va_arg (ap, int);
 
-		(void) _ll_log (log_dsap, code, ap);
+		 _ll_log (log_dsap, code, ap);
 
 		va_end (ap);
 	}
@@ -689,7 +689,7 @@ fork_ok:
 		struct stat buf;
 		extern char * treedir;
 
-		(void) stat (treedir,&buf);
+		 stat (treedir,&buf);
 
 		if (setgid (buf.st_gid) == -1)
 			LLOG (log_dsap,LLOG_NOTICE,("Can't set gid %d (database directory \"%s\")",buf.st_uid,treedir));
@@ -716,7 +716,7 @@ fork_ok:
 
 		if (here_again) {
 			for (sd = 0; sd < NSIG ; sd++)
-				(void) signal (sd, SIG_DFL); /* to stop recursion */
+				 signal (sd, SIG_DFL); /* to stop recursion */
 
 			if (here_again++ > 1) {
 				fatal (1, "Signal looping");
@@ -727,16 +727,16 @@ fork_ok:
 		here_again++;
 
 		for (sd = 0; sd < NSIG ; sd++)
-			(void) signal (sd, SIG_DFL); /* to stop recursion */
+			 signal (sd, SIG_DFL); /* to stop recursion */
 
-		(void) signal (SIGQUIT, attempt_restart);
-		(void) signal (SIGILL,  attempt_restart);
-		(void) signal (SIGBUS,  attempt_restart);
-		(void) signal (SIGSEGV, attempt_restart);
-		(void) signal (SIGSYS,  attempt_restart);
+		 signal (SIGQUIT, attempt_restart);
+		 signal (SIGILL,  attempt_restart);
+		 signal (SIGBUS,  attempt_restart);
+		 signal (SIGSEGV, attempt_restart);
+		 signal (SIGSYS,  attempt_restart);
 
 		if (sig >= 0 && debug)
-			(void) fprintf (stderr,"DSA %s has a problem\n",mydsaname);
+			 fprintf (stderr,"DSA %s has a problem\n",mydsaname);
 
 		dsa_abort (1);
 
@@ -759,7 +759,7 @@ fork_ok:
 			if (log_stat -> ll_fd == sd)
 				continue;
 #endif
-			(void) close (sd);
+			 close (sd);
 		}
 
 		if ( sig == -2 || (fpid = fork()) == 0) {
@@ -771,7 +771,7 @@ fork_ok:
 			}
 
 			sleep (secs);	/* give connections time to clear */
-			(void) execv (isodefile(sargv[0], 1),sargv);
+			 execv (isodefile(sargv[0], 1),sargv);
 			exit (-19);
 		}
 
@@ -897,7 +897,7 @@ fork_ok:
 	char          ***argv;
 	int	fn;
 	{
-		register char   *ap;
+		char   *ap;
 		char  **argptr;
 		static char   *args[10];
 		static int     argp;

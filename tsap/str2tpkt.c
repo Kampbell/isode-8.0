@@ -36,14 +36,14 @@ static int	readfnx (), getfnx (), writefnx (), putfnx ();
 
 /*  */
 
-char   *tpkt2str (t)
-struct tsapkt *t;
+char *
+tpkt2str (struct tsapkt *t)
 {
 	int	    cc;
 	char    packet[BUFSIZ];
 	static char buffer[2 * sizeof packet + 1];
 
-	(void) writefnx ((struct tsapblk *) NOTOK, packet, 0);
+	 writefnx ((struct tsapblk *) NOTOK, packet, 0);
 	if (tpkt2fd ((struct tsapblk *) 0, t, putfnx) == NOTOK)
 		return NULLCP;
 
@@ -62,16 +62,16 @@ struct tsapkt *t;
 
 /*  */
 
-struct tsapkt *str2tpkt (buffer)
-char  *buffer;
+struct tsapkt *
+str2tpkt (char *buffer)
 {
 	char    packet[BUFSIZ];
-	register struct tsapkt *t;
+	struct tsapkt *t;
 
 	DLOG (tsap_log, LLOG_PDUS,
 		  ("read %d bytes, \"%s\"", strlen (buffer), buffer));
 
-	(void) getfnx (NOTOK, NULLPKT, packet,
+	 getfnx (NOTOK, NULLPKT, packet,
 				   implode ((u_char *) packet, buffer, strlen (buffer)));
 	t = fd2tpkt (0, getfnx, readfnx);
 
@@ -80,16 +80,13 @@ char  *buffer;
 
 /*  */
 
-static int  getfnx (fd, t, buffer, n)
-int	fd;
-register struct tsapkt *t;
-char   *buffer;
-int	n;
+static int 
+getfnx (int fd, struct tsapkt *t, char *buffer, int n)
 {
 	static int  cc;
 
 	if (fd == NOTOK) {
-		(void) readfnx (NOTOK, buffer, cc = n);
+		 readfnx (NOTOK, buffer, cc = n);
 		return OK;
 	}
 
@@ -108,12 +105,10 @@ int	n;
 }
 
 
-static int  readfnx (fd, buffer, n)
-int	fd,
-	n;
-char   *buffer;
+static int 
+readfnx (int fd, char *buffer, int n)
 {
-	register int    i;
+	int    i;
 	static int  cc;
 	static char *bp;
 
@@ -133,14 +128,11 @@ char   *buffer;
 
 /*  */
 
-static int  putfnx (tb, t, cp, n)
-struct tsapblk *tb;
-register struct tsapkt *t;
-char   *cp;
-int	n;
+static int 
+putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n)
 {
-	register int    cc;
-	register struct udvec  *uv;
+	int    cc;
+	struct udvec  *uv;
 
 	cc = sizeof t -> t_li;
 	if (writefnx (tb, (char *) &t -> t_li, cc) != cc)
@@ -171,10 +163,8 @@ int	n;
 
 /*  */
 
-static int  writefnx (tb, buffer, n)
-struct tsapblk *tb;
-int	n;
-char   *buffer;
+static int 
+writefnx (struct tsapblk *tb, char *buffer, int n)
 {
 	static int  cc;
 	static char *bp;

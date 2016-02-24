@@ -15,23 +15,23 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/doog/query/RC
 #include "util.h"
 #include "quipu/util.h"
 
-char *copy_string(string)
-char *string;
+char *
+copy_string (char *string)
 {
 	char *new_string;
 
 	if (string == NULLCP) return NULLCP;
 
 	new_string = (char *) smalloc(strlen(string) + 1);
-	(void) strcpy(new_string, string);
+	 strcpy(new_string, string);
 
 	return new_string;
 }
 
-void friendlify(name, fname)
-char *name, *fname;
+void 
+friendlify (char *name, char *fname)
 {
-	register char *start, *end;
+	char *start, *end;
 	char save;
 
 	*fname = '\0';
@@ -51,9 +51,9 @@ char *name, *fname;
 		while (isspace(*start)) start++;
 
 		if (!isnull(*fname))
-			(void) strcat(fname, ", ");
+			 strcat(fname, ", ");
 
-		(void) strcat(fname, start);
+		 strcat(fname, start);
 
 		*end = save;
 

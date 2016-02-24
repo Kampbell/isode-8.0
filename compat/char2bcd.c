@@ -29,11 +29,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/char2bcd.c,v 9.0 199
 #include "general.h"
 
 int  char2bcd (s, n, d)
-register char   *s;
+char   *s;
 int n;
-register u_char *d;
+u_char *d;
 {
-	register int    c,
+	int    c,
 			 i;
 
 	for (i = 0; *s && n-- > 0; i++) {

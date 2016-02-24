@@ -35,13 +35,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/pa2str.c,v 9.0 1992/
 
 /*    Presentation Address to String */
 
-char   *pa2str (px)
-register struct PSAPaddr *px;
+char *
+pa2str (struct PSAPaddr *px)
 {
-	register char *bp;
+	char *bp;
 	struct PSAPaddr pas;
-	register struct PSAPaddr *pa = &pas;
-	register struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
+	struct PSAPaddr *pa = &pas;
+	struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
 	static char buffer[BUFSIZ];
 
 	bp = buffer;
@@ -49,10 +49,10 @@ register struct PSAPaddr *px;
 	*pa = *px;	/* struct copy */
 	if (ta -> ta_selectlen > 0
 			&& ta -> ta_selectlen < sizeof ta -> ta_selector) {
-		register char *dp,
+		char *dp,
 				 *ep;
-		register struct TSAPaddr *tz;
-		register int n, m;
+		struct TSAPaddr *tz;
+		int n, m;
 
 		/* does this look like an encoded TSEL? */
 		m = ta -> ta_selectlen;
@@ -81,7 +81,7 @@ register struct PSAPaddr *px;
 		if (dp >= ep && (tz = str2taddr (ta -> ta_selector))) {
 			pa -> pa_addr.sa_addr = *tz;	    /* struct copy */
 bridge:
-			(void) sprintf (bp, "%s through TS bridge at ",
+			 sprintf (bp, "%s through TS bridge at ",
 							paddr2str (pa, NULLNA));
 			bp += strlen (bp);
 
@@ -91,7 +91,7 @@ bridge:
 		}
 	}
 normal:
-	(void) strcpy (bp, paddr2str (pa, NULLNA));
+	 strcpy (bp, paddr2str (pa, NULLNA));
 
 	return buffer;
 }

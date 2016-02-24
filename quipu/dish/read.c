@@ -194,7 +194,7 @@ set_read_flags (argc,argv)
 int argc;
 char ** argv;
 {
-	register int x;
+	int x;
 	AttributeType at;
 	extern char allow_move;
 

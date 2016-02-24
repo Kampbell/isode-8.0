@@ -111,7 +111,7 @@ PE pe;
 		adios(NULLCP, "a1_3: no result field");
 	if(vrsl == FAILURE) {
 		clear_vte();
-		(void) asr(pe,FAILURE);
+		 asr(pe,FAILURE);
 	} else {
 		/*Set draft-VTE parameters according to list in primitive
 		/* (SetVTPmV(L) in 9041)
@@ -121,7 +121,7 @@ PE pe;
 
 		vena = TRUE;	/*Current VTE agreed to*/
 		waca = TRUE;
-		(void) asr(pe,SUCCESS);
+		 asr(pe,SUCCESS);
 		if(vrsl == SUCCESS) {
 			sector = 5;
 			state = S5_400B;
@@ -152,7 +152,7 @@ PE pe;
 		adios(NULLCP,"a1_4: no result field");
 	if(vrsl == FAILURE) {
 		clear_vte();	/*Discard VTE (DisVTE)*/
-		(void) asr(pe,FAILURE);	/*Send the ASR to peer*/
+		 asr(pe,FAILURE);	/*Send the ASR to peer*/
 	} else {
 		/*Set draft-VTE parameters according to list in primitive
 		/* (SetVTPmV(L) in 9041)
@@ -161,7 +161,7 @@ PE pe;
 		/*Set current VTE from draft VTE (SetCuVTE) */
 
 		vena = TRUE;	/*Current VTE agreed to*/
-		(void) asr(pe,SUCCESS);
+		 asr(pe,SUCCESS);
 		if(vrsl == SUCCESS) {
 			sector = 5;
 			if(vtok)state = S5_40T;
@@ -269,7 +269,7 @@ PE pe;
 		/*		system("reset");	*/
 		finalbye ();
 		advise(LLOG_NOTICE,NULLCP,"association released by terminal service");
-		(void)fflush (stdout);
+		fflush (stdout);
 		exit(0);
 	} else {	/*Result was failure*/
 		send_rlr(pe);	/*Send the RLR*/
@@ -443,11 +443,11 @@ PE pe;
 
 	result = read_asq(pe);	/*Unpack ASQ*/
 	if(result == PROFILE_NG) {
-		(void)send_bad_asr(PROFILE_NG); /*Send Failure ASR with reason*/
+		send_bad_asr(PROFILE_NG); /*Send Failure ASR with reason*/
 		return(NOTOK);
 	}
 	if(result == 0) {
-		(void)send_bad_asr(0);	/*Send failure ASR w/ no reason*/
+		send_bad_asr(0);	/*Send failure ASR w/ no reason*/
 		return(NOTOK);
 	}
 
@@ -574,7 +574,7 @@ PE pe;
 		/*VDATind-n(Vnt)*/
 		vnt = 0;
 	}
-	(void)vrelind();	/*Tell user that peer requested release*/
+	vrelind();	/*Tell user that peer requested release*/
 	state = S1_51R;
 	return(OK);
 }
@@ -609,7 +609,7 @@ int
 a1_25(pe)	/*RLQ (Release Request) in 10B (Environment not agreed) */
 PE pe;
 {
-	(void)vrelind();
+	vrelind();
 	state = S1_51R;
 	return(OK);
 }
@@ -619,7 +619,7 @@ int
 a1_26(pe)	/*RLQ (Release Request) in state 10N*/
 PE pe;
 {
-	(void)vrelind();
+	vrelind();
 	state = S1_51R;
 	return(OK);
 

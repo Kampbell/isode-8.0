@@ -33,29 +33,27 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/cname.
 extern struct cnamelist * cnamelp;
 static struct cnamelist * taillp;
 
-void
-addToCoList(str)
-char *str;
+void 
+addToCoList (char *str)
 {
 	char * cp;
 
 	cp = index(str, ' ');
 	if (cp == NULLCP) {
-		(void) fprintf(stderr, "log an error message about parsing of country name mappings...\n");
+		 fprintf(stderr, "log an error message about parsing of country name mappings...\n");
 		return;
 	}
 	*cp = '\0';
 	if (strlen(str) != 2) {
-		(void) fprintf(stderr, "log an error message about short country name not 2 chars\n");
+		 fprintf(stderr, "log an error message about short country name not 2 chars\n");
 		return;
 	}
 	cp++;
 	addCoNode(str, cp);
 }
 
-void
-addCoNode(shortname, longname)
-char * shortname, * longname;
+void 
+addCoNode (char *shortname, char *longname)
 {
 	struct cnamelist * colp;
 
@@ -71,8 +69,7 @@ char * shortname, * longname;
 }
 
 char *
-mapCoName(shortname)
-char * shortname;
+mapCoName (char *shortname)
 {
 	struct cnamelist * cnlp;
 

@@ -37,8 +37,8 @@ extern LLog * log_dsap;
 filter_free (filt)
 Filter filt;
 {
-	register Filter ptr;
-	register Filter next;
+	Filter ptr;
+	Filter next;
 
 	for (ptr = filt; ptr != NULLFILTER; ptr=next) {
 		if (ptr->flt_type  == FILTER_ITEM) {
@@ -71,7 +71,7 @@ Filter filt;
 filter_append (a,b)
 Filter a,b;
 {
-	register Filter ptr,trail;
+	Filter ptr,trail;
 
 	if ( a == NULLFILTER)
 		DLOG (log_dsap,LLOG_DEBUG,("appending to null filter !"));
@@ -112,7 +112,7 @@ char type;
 		if (dp = index (s, '*')) {
 			char    buffer[BUFSIZ];
 
-			(void) strcpy (buffer, s);
+			 strcpy (buffer, s);
 			dp = buffer + (dp - s);
 			s = buffer;
 
@@ -228,12 +228,12 @@ int	format;
 
 print_filter (nps, fi, level)
 PS nps;
-register Filter	fi;
+Filter	fi;
 int	level;
 {
 	char   *cp;
-	register Filter    fi2;
-	register struct filter_item *fi3;
+	Filter    fi2;
+	struct filter_item *fi3;
 
 	switch (fi -> flt_type) {
 	case FILTER_ITEM:

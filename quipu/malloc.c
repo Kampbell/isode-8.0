@@ -181,7 +181,7 @@ char * f;
 		malloc_started = 1;
 	} else {
 		malloc_file = open (malloc_fname,1);
-		(void) lseek (malloc_file,0l,2);
+		 lseek (malloc_file,0l,2);
 	}
 #else
 	malloc_file = 0;
@@ -191,7 +191,7 @@ char * f;
 stop_malloc_trace () {
 #ifdef MALLOCTRACE
 	if (malloc_file)
-		(void) close (malloc_file);
+		 close (malloc_file);
 #endif
 	malloc_file = 0;
 }
@@ -202,7 +202,7 @@ stop_malloc_trace () {
 static write_string (p)
 char *p;
 {
-	register char *q;
+	char *q;
 
 	if (!malloc_file)
 		return;
@@ -210,7 +210,7 @@ char *p;
 	q = p;
 	while (*q++)
 		;
-	(void) write(malloc_file, p, q-p-1);
+	 write(malloc_file, p, q-p-1);
 }
 
 static write_addr(addr)
@@ -227,7 +227,7 @@ char *addr;
 	x = (int) addr;
 
 	if (x == 0) {
-		(void) write(malloc_file, "0 ",2);
+		 write(malloc_file, "0 ",2);
 		return;
 	}
 
@@ -237,9 +237,9 @@ char *addr;
 	*ptr = 0;
 
 	while (ptr != buf)
-		(void) write(malloc_file, --ptr,1);
+		 write(malloc_file, --ptr,1);
 
-	(void) write (malloc_file," ",1);
+	 write (malloc_file," ",1);
 }
 
 static write_int(x)
@@ -253,7 +253,7 @@ unsigned x;
 		return;
 
 	if (x == 0) {
-		(void) write(malloc_file, "0 ",2);
+		 write(malloc_file, "0 ",2);
 		return;
 	}
 
@@ -262,9 +262,9 @@ unsigned x;
 		*ptr++ = dec[x % 10], x /= 10;
 
 	while (ptr != buf)
-		(void) write(malloc_file, --ptr,1);
+		 write(malloc_file, --ptr,1);
 
-	(void) write (malloc_file," ",1);
+	 write (malloc_file," ",1);
 }
 
 static log_realloc (oldlen,newlen,bsize,addr)
@@ -449,8 +449,8 @@ struct header *ptr;
 static add_free (x)
 struct header * x;
 {
-	register struct freelist *next, *c;
-	register unsigned * p = sizes;
+	struct freelist *next, *c;
+	unsigned * p = sizes;
 
 	x->use &= ~INUSE;
 
@@ -488,9 +488,9 @@ struct header * x;
 	return_freelist(a); }
 
 static struct header * next_free_block (ptr)
-register struct header * ptr;
+struct header * ptr;
 {
-	register struct header * next;
+	struct header * next;
 
 	next = (struct header *)((char *)ptr + ptr->smallsize);
 
@@ -505,7 +505,7 @@ register struct header * ptr;
 }
 
 #define use_block(ptr,size) if ((ptr->smallsize != size) && (ptr->smallsize >= size + sizeof (struct freehead))) { \
-	register struct header *unext; \
+	struct header *unext; \
 	unext = (struct header *)((char *)ptr + size); \
 	unext->smallsize = ptr->smallsize - size; \
 	unext->use = ptr->use & ~INUSE; \
@@ -525,9 +525,9 @@ unsigned size;
 	struct header *head;
 	unsigned realsize, blocksize;
 	struct freelist * top;
-	register struct freelist * ptr;
-	register int i;
-	register unsigned * p = sizes;
+	struct freelist * ptr;
+	int i;
+	unsigned * p = sizes;
 
 	if (first_malloc) {
 #ifdef	BSD42
@@ -647,8 +647,8 @@ free(s)
 #endif
 char *s;
 {
-	register struct header * ptr;
-	register struct header * next;
+	struct header * ptr;
+	struct header * next;
 
 	ptr = (struct header *) (s - ALIGN (sizeof (struct header)));
 
@@ -699,10 +699,10 @@ x_realloc(s, n)
 realloc(s, n)
 #endif
 char *s;
-register unsigned n;
+unsigned n;
 {
 	char * mem;
-	register unsigned realsize;
+	unsigned realsize;
 	struct header * ptr;
 	struct header * next;
 	unsigned copysize;

@@ -58,7 +58,7 @@ struct RoSAPindication *roi;
 {
 	int     reason,
 			result;
-	register struct opsblk *opb;
+	struct opsblk *opb;
 
 #ifdef	notdef
 	missingP (out);
@@ -113,7 +113,7 @@ struct RoSAPindication *roi;
 
 int	RyWaitAux (sd, opb, out, secs, roi)
 int	sd;
-register struct opsblk *opb;
+struct opsblk *opb;
 int	secs;
 caddr_t *out;
 struct RoSAPindication *roi;
@@ -123,10 +123,10 @@ struct RoSAPindication *roi;
 			result;
 	char   *cp;
 	caddr_t in;
-	register struct dspblk *dsb;
-	register struct opsblk *op2;
-	register struct RyError **rye;
-	register struct RyOperation *ryo;
+	struct dspblk *dsb;
+	struct opsblk *op2;
+	struct RyError **rye;
+	struct RyOperation *ryo;
 
 	missingP (roi);
 
@@ -137,17 +137,17 @@ struct RoSAPindication *roi;
 		switch (roi -> roi_type) {
 		case ROI_INVOKE: {
 			struct RoSAPinvoke roxs;
-			register struct RoSAPinvoke *rox = &roxs;
+			struct RoSAPinvoke *rox = &roxs;
 
 			*rox = roi -> roi_invoke;	/* struct copy */
 
 			if (op2 = findopblk (sd, rox -> rox_id, OPB_RESPONDER)) {
-				(void) rosaplose (roi, result = ROS_IP_DUP, NULLCP,
+				 rosaplose (roi, result = ROS_IP_DUP, NULLCP,
 								  "duplicate invocation %d", rox -> rox_id);
 
 bad_request:
 				;
-				(void) RoURejectRequest (sd, &rox -> rox_id, result,
+				 RoURejectRequest (sd, &rox -> rox_id, result,
 										 ROS_NOPRIO, roi);
 				ROXFREE (rox);
 
@@ -159,7 +159,7 @@ bad_request:
 			if ((dsb = finddsblk (sd, rox -> rox_op)) == NULLDSB
 					&& (dsb = finddsblk (NOTOK, rox -> rox_op))
 					== NULLDSB) {
-				(void) rosaplose (roi, result = ROS_IP_UNRECOG, NULLCP,
+				 rosaplose (roi, result = ROS_IP_UNRECOG, NULLCP,
 								  "unexpected invocation %d of operation %d",
 								  rox -> rox_id, rox -> rox_op);
 				goto bad_request;
@@ -173,7 +173,7 @@ bad_request:
 #else
 				if (!ryo -> ryo_arg_decode) {	/* XXX: MISTYPED? */
 #endif
-					(void) rosaplose (roi, result = ROS_IP_MISTYPED,
+					 rosaplose (roi, result = ROS_IP_MISTYPED,
 									  NULLCP,
 									  "unexpected argument for invocation %d of operation %s/%d",
 									  rox -> rox_id, ryo -> ryo_name, ryo -> ryo_op);
@@ -189,7 +189,7 @@ bad_request:
 				if ((*ryo -> ryo_arg_decode) (rox -> rox_args, 1, NULLIP,
 											  NULLVP, &in) == NOTOK) {
 #endif
-					(void) rosaplose (roi, result = ROS_IP_MISTYPED,
+					 rosaplose (roi, result = ROS_IP_MISTYPED,
 									  NULLCP,
 									  "mistyped argument for invocation %d of operation %s/%d [%s]",
 									  rox -> rox_id, ryo -> ryo_name, ryo -> ryo_op,
@@ -200,7 +200,7 @@ bad_request:
 
 			if (ryo -> ryo_result || ryo -> ryo_errors) {
 				if ((op2 = newopblk (sd, rox -> rox_id)) == NULLOPB) {
-					(void) rosaplose (roi, result = ROS_IP_LIMIT, NULLCP,
+					 rosaplose (roi, result = ROS_IP_LIMIT, NULLCP,
 									  "unable to allocate opblock for invocation %d of operation %s/%d",
 									  rox -> rox_id, ryo -> ryo_name, ryo -> ryo_op);
 					goto bad_request;
@@ -213,13 +213,13 @@ bad_request:
 			result = (*dsb -> dsb_vector) (sd, ryo, rox, in, roi);
 #ifdef PEPSY_DEFINITIONS
 			if (in && ryo -> ryo_arg_mod)
-				(void) fre_obj (in,
+				 fre_obj (in,
 								ryo -> ryo_arg_mod
 								-> md_dtab[ryo -> ryo_arg_index],
 								ryo -> ryo_arg_mod, 1);
 #else
 			if (in && ryo -> ryo_arg_free)
-				(void) (*ryo -> ryo_arg_free) (in);
+				 (*ryo -> ryo_arg_free) (in);
 #endif
 			ROXFREE (rox);
 
@@ -242,12 +242,12 @@ bad_request:
 		}
 
 		case ROI_RESULT: {
-			register struct RoSAPresult *ror = &roi -> roi_result;
+			struct RoSAPresult *ror = &roi -> roi_result;
 
 			if ((op2 = findopblk (sd, ror -> ror_id, OPB_INITIATOR))
 					== NULLOPB
 					|| (op2 -> opb_flags & OPB_EVENT)) {
-				(void) RoURejectRequest (sd, &ror -> ror_id,
+				 RoURejectRequest (sd, &ror -> ror_id,
 										 ROS_RRP_UNRECOG, ROS_NOPRIO, roi);
 				RORFREE (ror);
 				goto next;
@@ -352,12 +352,12 @@ waiting:
 		}
 
 		case ROI_ERROR: {
-			register struct RoSAPerror *roe = &roi -> roi_error;
+			struct RoSAPerror *roe = &roi -> roi_error;
 
 			if ((op2 = findopblk (sd, roe -> roe_id, OPB_INITIATOR))
 					== NULLOPB
 					|| (op2 -> opb_flags & OPB_EVENT)) {
-				(void) RoURejectRequest (sd, &roe -> roe_id,
+				 RoURejectRequest (sd, &roe -> roe_id,
 										 ROS_REP_UNRECOG, ROS_NOPRIO, roi);
 				ROEFREE (roe);
 				goto next;
@@ -446,7 +446,7 @@ bad_error:
 		}
 
 		case ROI_UREJECT: {
-			register struct RoSAPureject *rou = &roi -> roi_ureject;
+			struct RoSAPureject *rou = &roi -> roi_ureject;
 
 			if (rou -> rou_noid)
 				op2 = opb;
@@ -485,9 +485,9 @@ bad_error:
 bad_response:
 		;
 		{
-			register struct RoSAPureject   *rou = &roi -> roi_ureject;
+			struct RoSAPureject   *rou = &roi -> roi_ureject;
 
-			(void) RoURejectRequest (op2 -> opb_fd, &op2 -> opb_id,
+			 RoURejectRequest (op2 -> opb_fd, &op2 -> opb_id,
 									 result, ROS_NOPRIO, roi);
 
 			roi -> roi_type = ROI_UREJECT;

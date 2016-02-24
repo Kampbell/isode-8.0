@@ -66,16 +66,16 @@ int * assoc;
 		if (username != NULL && bind_arg.dba_dn == NULLDN) {
 			return INV_USERNAME;
 		}
-		(void) sprintf(passwd, "%s", password);
-		(void) strcpy(bind_arg.dba_passwd, passwd);
+		 sprintf(passwd, "%s", password);
+		 strcpy(bind_arg.dba_passwd, passwd);
 		bind_arg.dba_passwd_len = strlen(passwd);
 	} else {
 		if (!(strcmp(addorg, yes_string))) {
 			if (strlen(init_user) <= 0) {
-				(void) printf("init_user required in tailor file for adding temporary organisations \n");
+				 printf("init_user required in tailor file for adding temporary organisations \n");
 				return NOTOK;
 			} else if(strlen(init_pswd) <= 0) {
-				(void) printf("init_pswd required in tailor file for adding temporary organisations\n");
+				 printf("init_pswd required in tailor file for adding temporary organisations\n");
 				return NOTOK;
 			}
 			bind_arg.dba_dn = NULLDN;
@@ -83,8 +83,8 @@ int * assoc;
 			if (strlen(init_user) > 0 && (bind_arg.dba_dn == NULLDN)) {
 				return INV_USERNAME;
 			}
-			(void) sprintf(passwd, "%s", init_pswd);
-			(void) strcpy(bind_arg.dba_passwd, passwd);
+			 sprintf(passwd, "%s", init_pswd);
+			 strcpy(bind_arg.dba_passwd, passwd);
 			bind_arg.dba_passwd_len = strlen(passwd);
 		} else {
 			if (strlen(init_user) <= 0) {
@@ -96,8 +96,8 @@ int * assoc;
 					bind_arg.dba_passwd_len = 0;
 				} else {
 					/* Must verify they are correct and set them accordingly */
-					(void) sprintf(passwd, "%s", init_pswd);
-					(void) strcpy(bind_arg.dba_passwd, passwd);
+					 sprintf(passwd, "%s", init_pswd);
+					 strcpy(bind_arg.dba_passwd, passwd);
 					bind_arg.dba_passwd_len = strlen(passwd);
 				}
 			}
@@ -113,12 +113,12 @@ int * assoc;
 	bind_arg.dba_version = DBA_VERSION_V1988;
 
 	if ((addr = str2paddr (dsa_address)) == NULLPA) {
-		(void) fprintf(stderr, "%s", addr_fmt_pbm);
+		 fprintf(stderr, "%s", addr_fmt_pbm);
 		exit(-1);
 	}
 	bindres = DapAsynBindRequest(addr, &bind_arg, &dc, &di, ROS_ASYNC);
 	if (bindres == NOTOK) {
-		(void) fprintf(stderr, "\n\n%s", srvr_unava);
+		 fprintf(stderr, "\n\n%s", srvr_unava);
 		return NOTOK;
 	}
 
@@ -150,14 +150,14 @@ int wantToBlock;
 
 		if (bindres == CONNECTING_1) {
 			if (PSelectMask (assoc, &wfds, &nfds, pi) == NOTOK) {
-				(void) fprintf(stderr, "%s", pSel_wrt_fail);
+				 fprintf(stderr, "%s", pSel_wrt_fail);
 				return NOTOK;
 			}
 		}
 
 		if (bindres == CONNECTING_2) {
 			if (PSelectMask (assoc, &rfds, &nfds, pi) == NOTOK) {
-				(void) fprintf(stderr, "%s", pSel_rd_fail);
+				 fprintf(stderr, "%s", pSel_rd_fail);
 				return NOTOK;
 			}
 		}
@@ -165,7 +165,7 @@ int wantToBlock;
 		nevents = xselect (nfds, &rfds, &wfds, NULLFD, NOTOK);
 
 		if (nevents == NOTOK) {
-			(void) fprintf(stderr, "%s", net_conn_ref);
+			 fprintf(stderr, "%s", net_conn_ref);
 			return NOTOK;
 		} else {
 			/*
@@ -183,28 +183,28 @@ int wantToBlock;
 				/* Error in connection */
 				if ((dc.dc_un.dc_bind_err.dbe_type == DBE_TYPE_SECURITY) &&
 						dc.dc_un.dc_bind_err.dbe_value == DSE_SC_INVALIDCREDENTIALS) {
-					(void) printf(errmsg_pwd);
+					 printf(errmsg_pwd);
 
 					if (pswd_intrctv == FALSE) {
 						if (username_intrctv == TRUE) {
-							(void) printf(usrpsw_nomatch);
+							 printf(usrpsw_nomatch);
 							de_exit(-1);
 						} else {
-							(void) printf(errmsg_byepswd);
+							 printf(errmsg_byepswd);
 							de_exit(-1);
 						}
 					} else {
 						return INV_PSWD;
 					}
 				} else {
-					(void) printf(errmsg_bind);
+					 printf(errmsg_bind);
 					boundToDSA = FALSE;
 					return NOTOK;
 				}
 			}
 			boundToDSA = TRUE;
 			if (deLogLevel)
-				(void) ll_log (de_log, LLOG_NOTICE, NULLCP, "Bound: %s", callingDteNumber);
+				 ll_log (de_log, LLOG_NOTICE, NULLCP, "Bound: %s", callingDteNumber);
 			return OK;
 		}
 		if (bindres == NOTOK) {
@@ -216,7 +216,7 @@ int wantToBlock;
 
 de_unbind() {
 	if (deLogLevel)
-		(void) ll_log (de_log, LLOG_NOTICE, NULLCP, "Unbind:");
-	(void) ds_unbind();
+		 ll_log (de_log, LLOG_NOTICE, NULLCP, "Unbind:");
+	 ds_unbind();
 	boundToDSA = FALSE;
 }

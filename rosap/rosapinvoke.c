@@ -39,19 +39,12 @@ static int  RoInvokeRequestAux ();
 
 /*    RO-INVOKE.REQUEST */
 
-int	RoInvokeRequest (sd, op, class, args, invokeID, linkedID, priority, roi)
-int	sd;
-int	op,
-	class,
-	invokeID,
-	*linkedID,
-	priority;
-PE	args;
-struct RoSAPindication *roi;
+int 
+RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	switch (class) {
 	case ROS_SYNC:
@@ -71,23 +64,15 @@ struct RoSAPindication *roi;
 	result = RoInvokeRequestAux (acb, op, class, args, invokeID, linkedID,
 								 priority, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  RoInvokeRequestAux (acb, op, class, args, invokeID, linkedID,
-								priority, roi)
-register struct assocblk   *acb;
-int	op,
-	class,
-	invokeID,
-	*linkedID,
-	priority;
-PE	args;
-struct RoSAPindication *roi;
+static int 
+RoInvokeRequestAux (struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
 {
 	PE	pe;
 

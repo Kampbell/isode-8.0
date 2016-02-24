@@ -58,7 +58,7 @@
 #include "internet.h"
 
 
-extern int  errno;
+
 
 /*  */
 
@@ -88,9 +88,8 @@ static struct udpconn *peers = NULL;
  **********************************************************
  */
 
-int	udpinit (tb)
-
-register struct tsapblk	*tb;
+int 
+udpinit (struct tsapblk *tb)
 
 {
 
@@ -135,23 +134,18 @@ register struct tsapblk	*tb;
  **********************************************************
  */
 
-int 	udp_open (tb, local, remote, option, td)
-
-register struct tsapblk *tb;
-struct NSAPaddr *local,
-		*remote;
-int		option;
-struct TSAPdisconnect *td;
+int 
+udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, int option, struct TSAPdisconnect *td)
 
 {
 
 	int     fd;
 	struct sockaddr_in  lo_socket,
 			in_socket;
-	register struct sockaddr_in *lsock = &lo_socket,
+	struct sockaddr_in *lsock = &lo_socket,
 										 *isock = &in_socket;
-	register struct hostent *hp;
-	register struct servent *sp;
+	struct hostent *hp;
+	struct servent *sp;
 
 	/*
 	 *  Check if we are creating a new socket or just rebinding
@@ -252,7 +246,7 @@ struct TSAPdisconnect *td;
 		if ((hp = gethostbystring (remote -> na_domain)) == NULL)
 			tusaplose (td, DR_ADDRESS, NULLCP, TuErrString(UDERR_RHOST_UNKNOWN));
 
-		(void) strncpy (remote -> na_domain,
+		 strncpy (remote -> na_domain,
 						hp -> h_name,
 						sizeof remote -> na_domain);
 
@@ -294,18 +288,15 @@ struct TSAPdisconnect *td;
 
 #ifdef EXOS
 
-int	udp_start_client (sock, opt1, opt2)
-
-struct 	sockaddr_in *sock;
-int	opt1,
-	opt2;
+int 
+udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 
 {
-	register int    port;
+	int    port;
 	int      sd;
 	int	     i;
-	register struct hostent *hp;
-	register struct udpconn *up;
+	struct hostent *hp;
+	struct udpconn *up;
 
 
 
@@ -483,12 +474,8 @@ int	opt1,
  **********************************************************
  */
 
-int	udp_join_server (sd, sock, opt1, opt2)
-
-int	sd;
-struct 	sockaddr_in *sock;
-int	opt1,
-	opt2;
+int 
+udp_join_server (int sd, struct sockaddr_in *sock, int opt1, int opt2)
 
 {
 
@@ -523,7 +510,7 @@ int	opt1,
 			 */
 			return OK;
 		default:
-			(void) udp_close (sd);
+			 udp_close (sd);
 			return NOTOK;
 		}
 	}
@@ -548,18 +535,15 @@ int	opt1,
  **********************************************************
  */
 
-int 	join_udp_aux (fd, sock, newfd)
-
-int	fd,
-	newfd;
-struct sockaddr_in *sock;
+int 
+join_udp_aux (int fd, struct sockaddr_in *sock, int newfd)
 
 {
 	int	    nfds,
 			sd;
 	fd_set  ifds;
-	register struct qbuf *qb;
-	register struct udpconn *up;
+	struct qbuf *qb;
+	struct udpconn *up;
 
 	if (fd < 0 || fd >= maxpeers || peers[fd].udp_parent != fd) {
 		errno = EINVAL;
@@ -616,13 +600,8 @@ struct sockaddr_in *sock;
  **********************************************************
  */
 
-int	udp_read_socket (fd, q, secs, fromsock, td)
-
-int	    	fd;
-struct qbuf 	*q;
-int	    	secs;
-struct sockaddr_in 	*fromsock;
-struct TSAPdisconnect   *td;
+int 
+udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *fromsock, struct TSAPdisconnect *td)
 
 
 {
@@ -631,8 +610,8 @@ struct TSAPdisconnect   *td;
 	fd_set  	ifds,
 				mask;
 	struct qbuf qbuff;
-	register struct qbuf 	*qb = &qbuff;
-	register struct udpconn 	*up;
+	struct qbuf 	*qb = &qbuff;
+	struct udpconn 	*up;
 	struct sockaddr_in 		*sock;
 	char 			*rbufptr;
 	int 			i;
@@ -760,15 +739,11 @@ struct TSAPdisconnect   *td;
  **********************************************************
  */
 
-int	udp_write_socket (fd, data, cc, td)
-
-int	fd;
-register char *data;
-int	cc;
-struct TSAPdisconnect *td;
+int 
+udp_write_socket (int fd, char *data, int cc, struct TSAPdisconnect *td)
 
 {
-	register struct udpconn *up;
+	struct udpconn *up;
 	int	len;
 
 	/*
@@ -812,12 +787,12 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-int	udp_close (fd)
-int	fd;
+int 
+udp_close (int fd)
 {
-	register struct qbuf *qb,
+	struct qbuf *qb,
 			*qp;
-	register struct udpconn *up,
+	struct udpconn *up,
 			*vp;
 
 #ifdef HULADEBUG
@@ -885,15 +860,15 @@ fd_set *rfds,
 	   *efds;
 int	secs;
 {
-	register int    fd;
+	int    fd;
 	int	    cc,
 			len,
 			mfds,
 			result;
 	fd_set  ifds,
 			jfds;
-	register struct qbuf *qb;
-	register struct udpconn *up,
+	struct qbuf *qb;
+	struct udpconn *up,
 			*vp;
 	struct udpconn *wp;
 	struct sockaddr_in *sock;

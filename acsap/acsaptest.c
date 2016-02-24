@@ -49,16 +49,14 @@ static	printsrv ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	AEI	    aei;
-	register struct PSAPaddr *pa;
-	register struct isoentity  *ie;
-	register struct isobject  *io;
-	register struct isoservent  *is;
+	struct PSAPaddr *pa;
+	struct isoentity  *ie;
+	struct isobject  *io;
+	struct isoservent  *is;
 
 	isodetailor (argv[0], 1);
 
@@ -66,7 +64,7 @@ char  **argv,
 	switch (argc) {
 	case 1:
 		if (strcmp (*argv, "-version") == 0) {
-			(void) printf ("%s\n", acsapversion);
+			 printf ("%s\n", acsapversion);
 			break;
 		}
 		if (!(pa = str2paddr (*argv)))
@@ -81,7 +79,7 @@ char  **argv,
 
 			if ((cp  = macro2str (argv[1])) == NULL)
 				goto you_lose;
-			(void) printf ("%s\n", cp);
+			 printf ("%s\n", cp);
 			break;
 		}
 
@@ -92,35 +90,35 @@ char  **argv,
 
 			ufn_notify = 1;
 
-			(void) set_lookup_ufn (0);
+			 set_lookup_ufn (0);
 		}
 #endif
 
 		if (!(aei = _str2aei (argv[0], *argv[1] ? argv[1] : NULLCP,
 							  argv[2], isatty (fileno (stdin)), NULLCP,
 							  NULLCP))) {
-			(void) fprintf (stderr, "name translation failed: %s\n", PY_pepy);
+			 fprintf (stderr, "name translation failed: %s\n", PY_pepy);
 			goto you_lose;
 		}
 		printent (NULLIE, aei, NULLPA);
 
 		if (!(pa = aei2addr (aei))) {
-			(void) fprintf (stderr, "address translation failed\n");
+			 fprintf (stderr, "address translation failed\n");
 			goto you_lose;
 		}
 		printent (NULLIE, NULLAEI, pa);
 		break;
 
 	default:
-		(void) printf ("ISO Entities Database\n");
+		 printf ("ISO Entities Database\n");
 		while (ie = getisoentity ())
 			printent (ie, oid2aei (&ie -> ie_identifier), &ie -> ie_addr);
 
-		(void) printf ("\nISO Objects Database\n");
+		 printf ("\nISO Objects Database\n");
 		while (io = getisobject ())
 			printobj (io);
 
-		(void) printf ("\nISO Services Database\n");
+		 printf ("\nISO Services Database\n");
 		while (is = getisoservent ())
 			printsrv (is);
 		break;
@@ -130,49 +128,47 @@ char  **argv,
 
 you_lose:
 	;
-	(void) fprintf (stderr, "no such luck\n");
+	 fprintf (stderr, "no such luck\n");
 	exit (1);			/* NOTREACHED */
 }
 
 /*  */
 
-static	printent (ie, aei, pa)
-register struct isoentity  *ie;
-AEI	aei;
-register struct PSAPaddr *pa;
+static 
+printent (struct isoentity *ie, AEI aei, struct PSAPaddr *pa)
 {
 	if (ie)
-		(void) printf ("Entity:  %s (%s)\n", ie -> ie_descriptor,
+		 printf ("Entity:  %s (%s)\n", ie -> ie_descriptor,
 					   oid2ode (&ie -> ie_identifier));
 
 	if (aei)
-		(void) printf ("AE info: %s\n", sprintaei (aei));
+		 printf ("AE info: %s\n", sprintaei (aei));
 
 	if (pa) {
 		struct PSAPaddr pas;
-		register struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
+		struct TSAPaddr *ta = &pa -> pa_addr.sa_addr;
 		PE	    pe;
 
-		(void) printf ("Address: %s\n", paddr2str (pa, NULLNA));
+		 printf ("Address: %s\n", paddr2str (pa, NULLNA));
 
 		pe = NULLPE;
 		if (build_DSE_PSAPaddr (&pe, 1, NULL, NULLCP, (char *) pa) == NOTOK) {
-			(void) printf ("build of PSAPaddr failed: %s\n", PY_pepy);
+			 printf ("build of PSAPaddr failed: %s\n", PY_pepy);
 			goto dont_touch;
 		}
 
 		bzero ((char *) &pas, sizeof pas);
 		if (parse_DSE_PSAPaddr (pe, 1, NULLIP, NULLVP, (char *) &pas) ==NOTOK) {
-			(void) printf ("parse of PSAPaddr failed: %s\n", PY_pepy);
+			 printf ("parse of PSAPaddr failed: %s\n", PY_pepy);
 			goto dont_touch;
 		}
 
-		(void) print_DSE_PSAPaddr (pe, 1, NULLIP, NULLVP, NULLCP);
+		 print_DSE_PSAPaddr (pe, 1, NULLIP, NULLVP, NULLCP);
 
 		if (bcmp ((char *) pa, (char *) &pas, sizeof pas)) {
-			(void) printf ("*** NOT EQUAL ***\n");
-			(void) printf ("\told %s\n", paddr2str (pa, NULLNA));
-			(void) printf ("\tnew %s\n", paddr2str (&pas, NULLNA));
+			 printf ("*** NOT EQUAL ***\n");
+			 printf ("\told %s\n", paddr2str (pa, NULLNA));
+			 printf ("\tnew %s\n", paddr2str (&pas, NULLNA));
 		}
 
 dont_touch:
@@ -185,39 +181,39 @@ dont_touch:
 
 			if (tz) {
 				if (bcmp ((char *) ta, (char *) tz, sizeof *tz))
-					(void) printf ("NORM:    %s\n", taddr2str (tz));
+					 printf ("NORM:    %s\n", taddr2str (tz));
 			} else
-				(void) printf ("*** ta2norm FAILED ***\n");
+				 printf ("*** ta2norm FAILED ***\n");
 		}
 
 	}
 
 	if (ie || aei || pa)
-		(void) printf ("\n");
+		 printf ("\n");
 }
 
 /*  */
 
-static	printobj (io)
-register struct isobject *io;
+static 
+printobj (struct isobject *io)
 {
-	(void) printf ("ODE: \"%s\"\nOID: %s\n\n", io -> io_descriptor,
+	 printf ("ODE: \"%s\"\nOID: %s\n\n", io -> io_descriptor,
 				   sprintoid (&io -> io_identity));
 }
 
 /*  */
 
-static	printsrv (is)
-register struct isoservent *is;
+static 
+printsrv (struct isoservent *is)
 {
-	register int    n = is -> is_tail - is -> is_vec - 1;
-	register char **ap = is -> is_vec;
+	int    n = is -> is_tail - is -> is_vec - 1;
+	char **ap = is -> is_vec;
 
-	(void) printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
+	 printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 				   is -> is_entity, is -> is_provider,
 				   sel2str (is -> is_selector, is -> is_selectlen, 1));
 
 	for (; n >= 0; ap++, n--)
-		(void) printf ("\t%d: \"%s\"\n", ap - is -> is_vec, *ap);
-	(void) printf ("\n");
+		 printf ("\t%d: \"%s\"\n", ap - is -> is_vec, *ap);
+	 printf ("\n");
 }

@@ -76,13 +76,11 @@ PE	pe_active = NULLPE;
 
 /*  */
 
-PE	pe_alloc (class, form, id)
-PElementClass class;
-PElementForm  form;
-PElementID id;
+PE 
+pe_alloc (int class, int form, int id)
 {
-	register int    i;
-	register PE	    pe;
+	int    i;
+	PE	    pe;
 
 	if (pe = pe_list)
 		pe_list = pe -> pe_next;

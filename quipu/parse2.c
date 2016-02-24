@@ -57,7 +57,7 @@ char * fname;
 	char *version;
 	Avlnode	*tree;
 	Avlnode	*get_entries_aux();
-	extern int errno;
+	
 	time_t cache_age;
 
 #ifdef TURBO_DISK
@@ -102,11 +102,11 @@ char * fname;
 #ifdef TURBO_DISK
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		(void) gdbm_close (file);
+		 gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
-		(void) fclose (file);
+		 fclose (file);
 		return (NULLAVL);
 #endif
 	}
@@ -131,12 +131,12 @@ char * fname;
 		p_parent->e_children = NULLAVL ;
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		(void) gdbm_close (file);
+		 gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
 		p_parent->e_children = NULLAVL;
-		(void) fclose (file);
+		 fclose (file);
 		return(NULLAVL) ;
 #endif
 	}
@@ -149,11 +149,11 @@ char * fname;
 #ifdef TURBO_DISK
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		(void) gdbm_close (file);
+		 gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
-		(void) fclose (file);
+		 fclose (file);
 		return(NULLAVL);
 #endif
 	}
@@ -174,11 +174,11 @@ char * fname;
 #ifdef TURBO_DISK
 	save_heap = mem_heap;
 	GENERAL_HEAP;
-	(void) gdbm_close (file);
+	 gdbm_close (file);
 	mem_heap = save_heap;
 	return(tree);
 #else
-	(void) fclose (file);
+	 fclose (file);
 	return (tree);
 #endif
 }
@@ -294,11 +294,11 @@ char * version;
 int dtype;
 time_t cache_age;
 {
-	register Entry eptr = NULLENTRY;
+	Entry eptr = NULLENTRY;
 	Avlnode	*tree = NULLAVL;
 	int	entry_cmp();
 #ifndef TURBO_INDEX
-	register Entry trail;
+	Entry trail;
 #endif
 	Entry find_sibling();
 #ifdef TURBO_DISK

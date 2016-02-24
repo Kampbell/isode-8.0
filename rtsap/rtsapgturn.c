@@ -33,13 +33,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapgturn.c,v 9.0 19
 
 /*    RT-TURN-GIVE.REQUEST */
 
-int	RtGTurnRequest (sd, rti)
-int	sd;
-struct RtSAPindication *rti;
+int 
+RtGTurnRequest (int sd, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (rti);
 
@@ -49,7 +48,7 @@ struct RtSAPindication *rti;
 
 	result = (*acb -> acb_gturnrequest) (acb, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

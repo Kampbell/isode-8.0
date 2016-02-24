@@ -624,7 +624,7 @@ send_all() {	/*TEMP -- Should be supplied by Sector 5 actions*/
 /*  */
 
 void  acs_adios (aa, event)
-register struct AcSAPabort *aa;
+struct AcSAPabort *aa;
 char   *event;
 {
 	acs_advise (aa, event);
@@ -636,17 +636,17 @@ char   *event;
 
 
 static void  acs_advise (aa, event)
-register struct AcSAPabort *aa;
+struct AcSAPabort *aa;
 char   *event;
 {
 	char	buffer[BUFSIZ];
 
 	if (aa -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aa -> aca_reason),
 						aa -> aca_cc, aa -> aca_cc, aa -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aa -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aa -> aca_reason));
 
 	advise (LLOG_NOTICE,NULLCP,  "%s: %s (source %d)", event, buffer,
 			aa -> aca_source);
@@ -654,7 +654,7 @@ char   *event;
 
 
 static void  ps_adios (pab, event)
-register struct PSAPabort *pab;
+struct PSAPabort *pab;
 char   *event;
 {
 	ps_advise (pab, event);
@@ -666,17 +666,17 @@ char   *event;
 
 
 static void  ps_advise (pab, event)
-register struct PSAPabort *pab;
+struct PSAPabort *pab;
 char   *event;
 {
 	char    buffer[BUFSIZ];
 
 	if (pab -> pa_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						PErrString (pab -> pa_reason),
 						pab -> pa_cc, pab -> pa_cc, pab -> pa_data);
 	else
-		(void) sprintf (buffer, "[%s]", PErrString (pab -> pa_reason));
+		 sprintf (buffer, "[%s]", PErrString (pab -> pa_reason));
 
 	advise (LLOG_NOTICE,NULLCP,  "%s: %s%s", event, buffer,
 			pab -> pa_peer ? " (peer initiated)" : "");

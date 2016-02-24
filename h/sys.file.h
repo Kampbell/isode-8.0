@@ -44,5 +44,6 @@
 #ifdef SYS5
 #include <termio.h>
 #endif
+#include <termios.h>
 
 #endif

@@ -40,7 +40,9 @@ static char *myname = "pp";
 static enum { ps2pp, pl2pp } mode = ps2pp;
 
 
-void	adios (), advise ();
+static void adios (char*what, ...);
+
+static void advise (char*what, ...);
 
 static int  process ();
 
@@ -48,15 +50,12 @@ static int  process ();
 
 /* ARGSUSED */
 
-int	PY_pp (argc, argv, envp, pfx)
-int	argc;
-char  **argv,
-	  **envp;
-IFP	pfx;
+int 
+PY_pp (int argc, char **argv, char **envp, IFP pfx)
 {
-	register int    status = 0;
-	register char  *cp;
-	register FILE  *fp;
+	int    status = 0;
+	char  *cp;
+	FILE  *fp;
 
 	if (myname = rindex (argv[0], '/'))
 		myname++;
@@ -87,7 +86,7 @@ IFP	pfx;
 				continue;
 			}
 			status += process (cp, fp, pfx);
-			(void) fclose (fp);
+			 fclose (fp);
 		}
 
 	return status;
@@ -96,12 +95,12 @@ IFP	pfx;
 /*  */
 
 static int  process (file, fp, pfx)
-register char *file;
-register FILE *fp;
+char *file;
+FILE *fp;
 IFP	pfx;
 {
-	register PE	    pe;
-	register PS	    ps;
+	PE	    pe;
+	PS	    ps;
 
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		ps_advise (ps, "ps_alloc");
@@ -140,7 +139,7 @@ done:
 			break;
 		}
 
-		(void) (*pfx) (pe, 1, NULLIP, NULLVP, NULLCP);
+		 (*pfx) (pe, 1, NULLIP, NULLVP, NULLCP);
 
 		pe_free (pe);
 	}
@@ -148,20 +147,20 @@ done:
 
 /*    ERRORS */
 
-#include <varargs.h>
+#include <stdarg.h>
 
 
 #ifndef	lint
-void	_advise ();
+static void	_advise (char*what, ...);
 
 
-static void  adios (va_alist)
-va_dcl {
+static void  adios (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_advise (ap);
+	_advise (what, ap);
 
 	va_end (ap);
 
@@ -170,9 +169,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void  adios (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -180,39 +178,43 @@ char   *what,
 
 
 #ifndef	lint
-static void  advise (va_alist)
-va_dcl {
+static void  advise (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_advise (ap);
+	_advise (what, ap);
 
 	va_end (ap);
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void  _advise (char*what, ...)
 {
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+	va_list ap;
 
-	(void) fflush (stdout);
+	va_start (ap, what);
 
-	(void) fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	asprintf (buffer, what, ap);
 
-	(void) fflush (stderr);
+	 fflush (stdout);
+
+	 fprintf (stderr, "%s: ", myname);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
+
+	 fflush (stderr);
+
+	va_end (ap);
 }
 #else
 /* VARARGS */
 
-static void  advise (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }

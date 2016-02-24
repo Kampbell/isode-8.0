@@ -77,7 +77,7 @@ int format;
 
 	if (format != READOUT) {
 		for (p = qb -> qb_forw; p != qb; p = p -> qb_forw)
-			(void) ps_write (ps,(PElementData)p->qb_data,p->qb_len);
+			 ps_write (ps,(PElementData)p->qb_data,p->qb_len);
 		return;
 	}
 
@@ -94,44 +94,44 @@ int format;
 	switch (childpid = fork()) {
 
 	case -1:
-		(void) close (pd[1]);
-		(void) close (pd[0]);
-		(void) signal (SIGPIPE, pstat);
+		 close (pd[1]);
+		 close (pd[0]);
+		 signal (SIGPIPE, pstat);
 		ps_print (ps,"ERROR: could not fork");
 		return;
 
 	case 0:
-		(void) signal (SIGPIPE, pstat);
+		 signal (SIGPIPE, pstat);
 
 		if (dup2(pd[0], 0) == -1)
 			_exit (-1);
-		(void) close (pd[0]);
-		(void) close (pd[1]);
+		 close (pd[0]);
+		 close (pd[1]);
 
-		(void) sprintf (execvector,"%splay",BINPATH);
+		 sprintf (execvector,"%splay",BINPATH);
 
-		(void) execl (execvector,execvector,NULLCP);
+		 execl (execvector,execvector,NULLCP);
 
 		while (read (0, buffer, sizeof buffer) > 0)
 			continue;
-		(void) printf ("ERROR: can't execute '%s'",execvector);
+		 printf ("ERROR: can't execute '%s'",execvector);
 
-		(void) fflush (stdout);
+		 fflush (stdout);
 		/* safety catch */
 		_exit (-1);
 	/* NOTREACHED */
 
 	default:
-		(void) close (pd[0]);
+		 close (pd[0]);
 		for (p = qb -> qb_forw; p != qb; p = p -> qb_forw) {
 			if (write (pd[1],p->qb_data,p->qb_len) != p->qb_len) {
-				(void) close (pd[1]);
-				(void) signal (SIGPIPE, pstat);
+				 close (pd[1]);
+				 signal (SIGPIPE, pstat);
 				ps_print (ps,"ERROR: write error");
 				return;
 			}
 		}
-		(void) close (pd[1]);
+		 close (pd[1]);
 		ps_printf (ps,"%splay invoked",BINPATH);
 
 #ifdef SVR4
@@ -143,7 +143,7 @@ int format;
 
 			continue;
 
-		(void) signal (SIGPIPE, pstat);
+		 signal (SIGPIPE, pstat);
 
 		return;
 	}
@@ -160,7 +160,7 @@ char   *str;
 }
 
 audio_syntax () {
-	(void) add_attribute_syntax ("audio",
+	 add_attribute_syntax ("audio",
 								 (IFP)r_octenc,		(IFP) r_octsdec,
 								 (IFP)audio_parse,	audio_print,
 								 (IFP)qb_cpy,		qb_cmp,

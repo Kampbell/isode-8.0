@@ -493,8 +493,8 @@ static char   *tailor_value ();
 
 /*  */
 
-char  *isodesetailor (file)
-char  *file;
+char *
+isodesetailor (char *file)
 {
 	char   *ofile = isotailor;
 
@@ -506,11 +506,10 @@ char  *file;
 
 /*  */
 
-void	isodetailor (myname, wantuser)
-char   *myname;
-int	wantuser;
+void 
+isodetailor (char *myname, int wantuser)
 {
-	register char *hp,
+	char *hp,
 			 *mp;
 	char   buffer[BUFSIZ];
 	static int  inited = 0;
@@ -533,7 +532,7 @@ int	wantuser;
 				mp = myname;
 		} else
 			mp = "isode";
-		(void) sprintf (buffer, "%s/.%s_tailor", hp, mp);
+		 sprintf (buffer, "%s/.%s_tailor", hp, mp);
 		tailor_read (buffer);
 	}
 
@@ -542,25 +541,25 @@ int	wantuser;
 
 /*  */
 
-static int  tailor_read (file)
-char   *file;
+static int 
+tailor_read (char *file)
 {
-	register char  *bp,
+	char  *bp,
 			 *cp;
 	char    buffer[BUFSIZ];
-	register FILE *fp;
+	FILE *fp;
 
 	if (fp = fopen (file, "r")) {
 		while (fgets (buffer, sizeof buffer, fp)) {
 			if ((cp = index (buffer, '\n')) == NULL) {
-				(void) fprintf (stderr, "%s: line too long\n", file);
+				 fprintf (stderr, "%s: line too long\n", file);
 				break;
 			}
 			*cp = NULL;
 			if (*buffer == '#' || *buffer == NULL)
 				continue;
 			if ((bp = index (buffer, ':')) == NULL) {
-				(void) fprintf (stderr, "%s: invalid syntax in \"%s\"\n",
+				 fprintf (stderr, "%s: invalid syntax in \"%s\"\n",
 								file, buffer);
 				break;
 			}
@@ -585,18 +584,16 @@ char   *file;
 				free (cp);
 		}
 
-		(void) fclose (fp);
+		 fclose (fp);
 	}
 }
 
 /*  */
 
-int	isodesetvar (name, value, dynamic)
-char   *name,
-	   *value;
-int	dynamic;
+int 
+isodesetvar (char *name, char *value, int dynamic)
 {
-	register struct bind   *b;
+	struct bind   *b;
 
 	for (b = binds; b -> b_key; b++)
 		if (strcmp (b -> b_key, name) == 0) {
@@ -611,8 +608,8 @@ int	dynamic;
 
 /*  */
 
-void	isodexport (myname)
-char   *myname;
+void 
+isodexport (char *myname)
 {
 	compat_log -> ll_events = events_value (ll_pairs, compatdebug, "compatlevel");
 	addr_log -> ll_events = events_value (ll_pairs, addrdebug, "addrlevel");
@@ -656,15 +653,15 @@ char   *myname;
 #endif
 
 	{
-		register int  *ip,
+		int  *ip,
 				 *jp,
 				 *kp;
 		int	j;
-		register char *cp,
+		char *cp,
 				 *adrp,
 				 **ap,
 				 **cpp;
-		register struct ts_interim *ts;
+		struct ts_interim *ts;
 		static struct ts_interim *te = NULL;
 		char    buffer[BUFSIZ],
 				*vec[NVEC + NSLACK + 1];
@@ -673,27 +670,27 @@ char   *myname;
 			te -> ts_name = NULL;
 		for (ts = ts_interim; ts -> ts_name; ts++)
 			if (macro2comm (ts -> ts_name, ts) == NOTOK)
-				(void) fprintf (stderr, "internal error for community \"%s\"\n",
+				 fprintf (stderr, "internal error for community \"%s\"\n",
 								ts -> ts_name);
 		if (te == NULL)
 			te = ts;
 
-		(void) strcpy (buffer, _ts_interim);
-		(void) str2vec (buffer, ap = vec);
+		 strcpy (buffer, _ts_interim);
+		 str2vec (buffer, ap = vec);
 		j = SUBNET_DYNAMIC;
 		while (cp = *ap++) {
-			register struct ts_interim *tp;
+			struct ts_interim *tp;
 
 			ts -> ts_subnet = 0;
 			if (macro2comm (cp, ts) == NOTOK) {
-				(void) fprintf (stderr, "invalid community name \"%s\"\n", cp);
+				 fprintf (stderr, "invalid community name \"%s\"\n", cp);
 				break;
 			}
 			for (tp = ts_interim; tp < ts; tp++)
 				if (tp -> ts_length == ts -> ts_length
 						&& bcmp (tp -> ts_prefix, ts -> ts_prefix,
 								 tp -> ts_length) == 0) {
-					(void) fprintf (stderr,
+					 fprintf (stderr,
 									"duplicate prefixes for communities \"%s\" and \"%s\"\n",
 									tp -> ts_name, cp);
 					break;
@@ -708,8 +705,8 @@ char   *myname;
 		}
 		ts -> ts_name = NULL;
 
-		(void) strcpy (buffer, _ts_communities);
-		(void) str2vec (buffer, ap = vec);
+		 strcpy (buffer, _ts_communities);
+		 str2vec (buffer, ap = vec);
 		ip = ts_communities;
 		while (cp = *ap++) {
 			if (strcmp (cp, "all") == 0) {
@@ -727,7 +724,7 @@ char   *myname;
 				if (lexequ (ts -> ts_name, cp) == 0)
 					break;
 			if (!ts -> ts_name) {
-				(void) fprintf (stderr,
+				 fprintf (stderr,
 								"unknown community name \"%s\" for variable ts_communities\n",
 								cp);
 				continue;
@@ -743,12 +740,12 @@ char   *myname;
 
 		for (ap = tsb_addresses; *ap; ap++)
 			free (*ap);
-		(void) strcpy (buffer, _tsb_config);
-		(void) str2vec (buffer, ap = vec);
+		 strcpy (buffer, _tsb_config);
+		 str2vec (buffer, ap = vec);
 		ip = tsb_communities, cpp = tsb_addresses;
 		while (cp = *ap++) {
 			if ((adrp = *ap++) == NULLCP) {
-				(void) fprintf (stderr,
+				 fprintf (stderr,
 								"missing address for tsb_community \"%s\"\n", cp);
 				break;
 			}
@@ -757,7 +754,7 @@ char   *myname;
 				if (lexequ (ts -> ts_name, cp) == 0)
 					break;
 			if (!ts -> ts_name) {
-				(void) fprintf (stderr,
+				 fprintf (stderr,
 								"unknown community name \"%s\" for variable tsb_communities\n",
 								cp);
 				continue;
@@ -785,7 +782,7 @@ char   *myname;
 		if (ts -> ts_name && ts -> ts_syntax == NA_NSAP)
 			ts_comm_nsap_default = ts -> ts_subnet;
 		else
-			(void) fprintf (stderr,
+			 fprintf (stderr,
 							"bad community name \"%s\" for variable default_nsap_community\n",
 							cp);
 
@@ -796,7 +793,7 @@ char   *myname;
 		if (ts -> ts_name && ts -> ts_syntax == NA_X25)
 			ts_comm_x25_default = ts -> ts_subnet;
 		else
-			(void) fprintf (stderr,
+			 fprintf (stderr,
 							"bad community name \"%s\" for variable default_x25_community\n",
 							cp);
 
@@ -807,7 +804,7 @@ char   *myname;
 		if (ts -> ts_name && ts -> ts_syntax == NA_TCP)
 			ts_comm_tcp_default = ts -> ts_subnet;
 		else
-			(void) fprintf (stderr,
+			 fprintf (stderr,
 							"bad community name \"%s\" for variable default_tcp_community\n",
 							cp);
 
@@ -848,12 +845,12 @@ char   *myname;
 
 		for (ap = x25_lines; *ap; ap++)
 			free (*ap);
-		(void) strcpy (buffer, _x25_line_config);
-		(void) str2vec (buffer, ap = vec);
+		 strcpy (buffer, _x25_line_config);
+		 str2vec (buffer, ap = vec);
 		ip = x25_communities, cpp = x25_lines;
 		while (cp = *ap++) {
 			if ((adrp = *ap++) == NULLCP) {
-				(void) fprintf (stderr,
+				 fprintf (stderr,
 								"missing line for x25_community \"%s\"\n", cp);
 				break;
 			}
@@ -862,7 +859,7 @@ char   *myname;
 				if (lexequ (ts -> ts_name, cp) == 0)
 					break;
 			if (!ts -> ts_name) {
-				(void) fprintf (stderr,
+				 fprintf (stderr,
 								"unknown community name \"%s\" for variable x25_communities\n",
 								cp);
 				continue;
@@ -882,8 +879,8 @@ char   *myname;
 
 		for (ap = x25_dnic_prefix; *ap; ap++)
 			free (*ap);
-		(void) strcpy (buffer, _x25_dnic_prefix);
-		(void) str2vec (buffer, ap = vec);
+		 strcpy (buffer, _x25_dnic_prefix);
+		 str2vec (buffer, ap = vec);
 		cpp = x25_dnic_prefix;
 		while (cp = *ap++)
 			*cpp++ = strdup (cp);
@@ -927,12 +924,12 @@ char   *myname;
 #define	QUOTE	'\\'
 
 
-static char *tailor_value (s)
-register char   *s;
+static char *
+tailor_value (char *s)
 {
-	register int    i,
+	int    i,
 			 r;
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
 
 	for (bp = buffer; *s; bp++, s++)
@@ -981,28 +978,26 @@ register char   *s;
 	*bp = NULL;
 
 	if ((bp = malloc ((unsigned) (strlen (buffer) + 1))) != NULL)
-		(void) strcpy (bp, buffer);
+		 strcpy (bp, buffer);
 
 	return bp;
 }
 
 /*  */
 
-static int  events_value (pairs, s, var)
-struct pair *pairs;
-char   *s,
-	   *var;
+static int 
+events_value (struct pair *pairs, char *s, char *var)
 {
 	int     value;
-	register char  *cp,
+	char  *cp,
 			 **ap;
-	register struct pair   *pp;
+	struct pair   *pp;
 	char    buffer[BUFSIZ],
 			*vec[NVEC + NSLACK + 1];
 
 	value = 0;
-	(void) strcpy (buffer, s);
-	(void) str2vec (buffer, ap = vec);
+	 strcpy (buffer, s);
+	 str2vec (buffer, ap = vec);
 	while (cp = *ap++) {
 		for (pp = pairs; pp -> p_name; pp++)
 			if (strcmp (pp -> p_name, cp) == 0) {
@@ -1010,7 +1005,7 @@ char   *s,
 				break;
 			}
 		if (!pp -> p_name)
-			(void) fprintf (stderr, "unknown value \"%s\" for variable %s\n",
+			 fprintf (stderr, "unknown value \"%s\" for variable %s\n",
 							cp, var);
 	}
 
@@ -1020,8 +1015,9 @@ char   *s,
 /*  */
 
 #ifdef DEBUG
-tailorfree () {
-	register struct bind   *b;
+int 
+tailorfree()  {
+	struct bind   *b;
 
 	for (b = binds; b -> b_key; b++)
 		if (b -> b_dynamic && *b -> b_value) {
@@ -1050,8 +1046,8 @@ tailorfree () {
 }
 
 
-ll_hdfree (lp)
-register LLog *lp;
+int 
+ll_hdfree (LLog *lp)
 {
 	if (lp -> ll_stat & LLOGHDR)
 		free (lp -> ll_hdr);

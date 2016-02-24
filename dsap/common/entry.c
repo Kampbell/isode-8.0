@@ -47,7 +47,7 @@ Entry directory;
 			turbo_index_delete(directory);
 
 		if (directory->e_children != NULLAVL)
-			(void) avl_free(directory->e_children, directory_free);
+			 avl_free(directory->e_children, directory_free);
 
 		switch (directory->e_data) {
 		case E_TYPE_SLAVE:
@@ -108,9 +108,9 @@ Entry   new;
 }
 
 Entry entry_cpy (entryptr)
-register Entry entryptr;
+Entry entryptr;
 {
-	register Entry ptr;
+	Entry ptr;
 
 	if (entryptr == NULLENTRY)
 		return (NULLENTRY);
@@ -138,7 +138,7 @@ register Entry entryptr;
 Entry get_default_entry (parent)
 Entry parent;
 {
-	register Entry eptr;
+	Entry eptr;
 
 	eptr = entry_alloc();
 	eptr->e_leaf = TRUE;

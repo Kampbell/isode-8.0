@@ -36,7 +36,7 @@ int	fd;
 IFP	initfnx,
 	readfnx;
 {
-	register struct tsapkt *t;
+	struct tsapkt *t;
 
 	if ((t = newtpkt (0)) == NULL)
 		return NULL;
@@ -55,13 +55,13 @@ IFP	initfnx,
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			(void) sprintf (file, tsapfile, getpid ());
+			 sprintf (file, tsapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				tpkt2text (fp, t, 1);
-				(void) fclose (fp);
+				 fclose (fp);
 			}
 		} else {
-			(void) fflush (stdout);
+			 fflush (stdout);
 			tpkt2text (stderr, t, 1);
 		}
 	}
@@ -74,14 +74,14 @@ IFP	initfnx,
 
 static int  fd2tpktaux (fd, t, initfnx, readfnx)
 int	fd;
-register struct tsapkt *t;
+struct tsapkt *t;
 IFP	initfnx,
 	readfnx;
 {
-	register int    code,
+	int    code,
 			 len,
 			 vlen;
-	register char  *vptr;
+	char  *vptr;
 
 	if ((code = (*initfnx) (fd, t)) != OK)
 		return code;
@@ -141,8 +141,8 @@ IFP	initfnx,
 					break;
 
 				case VDAT_ALTERNATE: {
-					register int i;
-					register char *ap;
+					int i;
+					char *ap;
 
 					for (ap = vptr, i = len; i > 0; ap++, i--)
 						t -> t_cr.cr_alternate |=
@@ -328,9 +328,9 @@ char    *buffer;
 int	n;
 IFP	readfnx;
 {
-	register int    i,
+	int    i,
 			 cc;
-	register char   *bp;
+	char   *bp;
 
 	for (bp = buffer, i = n; i > 0; bp += cc, i -= cc) {
 		switch (cc = (*readfnx) (fd, bp, i)) {
@@ -353,7 +353,7 @@ IFP	readfnx;
 
 int	tpkt2fd (fd, t, writefnx)
 int	fd;
-register struct tsapkt *t;
+struct tsapkt *t;
 IFP	writefnx;
 {
 	SBV	    smask;
@@ -363,7 +363,7 @@ IFP	writefnx;
 	char   *cp,
 		   *vptr,
 		   *outptr;
-	register struct udvec  *uv;
+	struct udvec  *uv;
 	SFP	    pstat;
 
 	if (t -> t_errno != OK)
@@ -483,13 +483,13 @@ IFP	writefnx;
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			(void) sprintf (file, tsapfile, getpid ());
+			 sprintf (file, tsapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				tpkt2text (fp, t, 0);
-				(void) fclose (fp);
+				 fclose (fp);
 			}
 		} else {
-			(void) fflush (stdout);
+			 fflush (stdout);
 			tpkt2text (stderr, t, 0);
 		}
 	}
@@ -500,18 +500,18 @@ IFP	writefnx;
 
 	i = (*writefnx) (fd, t, outptr, ilen);
 
-	(void) sigiomask (smask);
-	(void) signal (SIGPIPE, pstat);
+	 sigiomask (smask);
+	 signal (SIGPIPE, pstat);
 
 	return (i != NOTOK ? OK : DR_NETWORK);
 }
 
 /*  */
 
-struct tsapkt *newtpkt (code)
-int	code;
+struct tsapkt *
+newtpkt (int code)
 {
-	register struct tsapkt *t;
+	struct tsapkt *t;
 
 	t = (struct tsapkt *) calloc (1, sizeof *t);
 	if (t == NULL)
@@ -524,8 +524,8 @@ int	code;
 }
 
 
-int	freetpkt (t)
-register struct tsapkt *t;
+int 
+freetpkt (struct tsapkt *t)
 {
 	if (t == NULL)
 		return;

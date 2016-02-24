@@ -41,8 +41,8 @@ int de_Delete() {
 
 	fillMostRmArg();
 
-	(void) sprintf(default_person, ""); /* Clear default value */
-	(void) sprintf(more, yes_string);  /* Enter loop */
+	 sprintf(default_person, ""); /* Clear default value */
+	 sprintf(more, yes_string);  /* Enter loop */
 
 	highNumber = 0;
 
@@ -50,17 +50,17 @@ int de_Delete() {
 		enterString(DELETE, person, plp);
 
 		if (!(strcmp(person, quit_String))) {
-			(void) sprintf(more, no_string);
+			 sprintf(more, no_string);
 			if (noEntries > 0) {
 				freePRRs(&plp);
 			}
 			continue;
 		}
 		if (strlen(person) <= 0) {
-			(void) printf("%s %s %s", enter_entry_name, quit_String, to_quit);
+			 printf("%s %s %s", enter_entry_name, quit_String, to_quit);
 			continue;
 		}
-		(void) printf("\n");
+		 printf("\n");
 
 
 		if (noEntries > 0) {
@@ -75,13 +75,13 @@ int de_Delete() {
 		noEntries = listlen(plp);
 
 		if (noEntries == 0) {
-			(void) printf(no_ent_found);
+			 printf(no_ent_found);
 			freePRRs(&plp);
 		} else if (noEntries == 1) {
 			rdn = copy_string(lastComponent(plp->name, PERSON));
 			status = get_objectClassPRR(plp, &objectType);
 			if (status != OK) {
-				(void) printf(no_p_rl_rm);
+				 printf(no_p_rl_rm);
 				continue;
 			} else if (objectType == PERSON) {
 				if (listPRRs(posdit, rdn, &plp) != OK) {
@@ -102,7 +102,7 @@ int de_Delete() {
 			de_prompt_yesno(sure_delete, sure, no_string);
 			if (!(strcmp(sure, yes_string))) {
 				/* Delete the entry */
-				(void) dm_Delete_entry();
+				 dm_Delete_entry();
 				freePRRs(&plp);
 			} else {
 				freePRRs(&plp);
@@ -148,19 +148,19 @@ int dm_Delete_entry() {
 	rmarg.rma_object = str2dn(plp->name);
 	rfrl_msg = TRUE;
 	status = REFERRAL;
-	(void) printf("%s   %s... ", del_entry, please_wait );
-	(void) fflush(stdout);
+	 printf("%s   %s... ", del_entry, please_wait );
+	 fflush(stdout);
 	while (status == REFERRAL) {
 		status = ds_removeentry(&rmarg, &error);
 		if (status != DS_OK) {
 			rfrl_msg = FALSE;
 			status = check_error(error);
 			if (status != REFERRAL) {
-				(void) printf(delete_failure);
+				 printf(delete_failure);
 				return OK;
 			}
 		} else {
-			(void) printf(done);
+			 printf(done);
 		}
 	}
 	rfrl_msg = TRUE;

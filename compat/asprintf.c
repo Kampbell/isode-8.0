@@ -27,26 +27,24 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/asprintf.c,v 9.0 199
 
 /* LINTLIBRARY */
 
+#include <errno.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "general.h"
 #include "manifest.h"
 
+#ifndef ASPRINTF
 /*    DATA */
 
-extern int errno;
 
 /*  */
 
-void	asprintf (bp, ap)		/* what, fmt, args, ... */
-char *bp;
-va_list	ap;
+void	asprintf (char*bp, char*what, char*fmt, ...)		/* fmt, args, ... */
 {
-	char   *what;
-
-	what = va_arg (ap, char *);
-
-	_asprintf (bp, what, ap);
+	va_list ap;
+	va_start(ap, fmt);
+	_asprintf (bp, what, fmt, ap);
+	va_end(ap);
 }
 
 #ifdef X25
@@ -54,18 +52,12 @@ unsigned char isode_x25_err[2];
 char isode_x25_errflag = 0;
 #endif
 
-void	_asprintf (bp, what, ap)	/* fmt, args, ... */
-register char *bp;
-char   *what;
-va_list	ap;
+void	_asprintf (char*bp, char*what, char* fmt, va_list ap)	/* fmt, args, ... */
 {
-	register int    eindex;
-	char   *fmt;
-
+	int    eindex;
 	eindex = errno;
 
 	*bp = NULL;
-	fmt = va_arg (ap, char *);
 
 	if (fmt) {
 #ifndef	VSPRINTF
@@ -87,7 +79,7 @@ va_list	ap;
 		_doprnt (fmt, ap, &iob);
 		putc (NULL, &iob);
 #else
-		(void) vsprintf (bp, fmt, ap);
+		 vsprintf (bp, fmt, ap);
 #endif
 		bp += strlen (bp);
 
@@ -95,15 +87,15 @@ va_list	ap;
 
 	if (what) {
 		if (*what) {
-			(void) sprintf (bp, " %s: ", what);
+			 sprintf (bp, " %s: ", what);
 			bp += strlen (bp);
 		}
-		(void) strcpy (bp, sys_errname (eindex));
+		 strcpy (bp, sys_errname (eindex));
 		bp += strlen (bp);
 
 #ifdef X25
 		if (isode_x25_errflag) {
-			(void) sprintf (bp, " (%02x %02x)",isode_x25_err[0],isode_x25_err[1]);
+			 sprintf (bp, " (%02x %02x)",isode_x25_err[0],isode_x25_err[1]);
 			bp += strlen (bp);
 		}
 #endif
@@ -112,3 +104,4 @@ va_list	ap;
 
 	errno = eindex;
 }
+#endif

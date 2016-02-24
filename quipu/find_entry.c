@@ -289,7 +289,7 @@ struct di_block	**di_p;
 	Entry parent;
 	Avlnode *kids;
 	int entryrdn_cmp ();
-	register RDN b_rdn;
+	RDN b_rdn;
 	DN     tdn, dn, dn_trail = NULLDN;
 	DN     aliasdn = NULLDN;
 	int rdns, aliases;

@@ -119,14 +119,14 @@ char * str;
 #define enumparse intparse
 
 integer_syntax () {
-	(void) add_attribute_syntax ("integer",
+	 add_attribute_syntax ("integer",
 								 (IFP) intenc,	(IFP) intdec,
 								 (IFP) intparse,	intprint,
 								 (IFP) intdup,	intcmp,
 								 intfree,	NULLCP,
 								 NULLIFP,	FALSE);
 
-	(void) add_attribute_syntax("enumerated",
+	 add_attribute_syntax("enumerated",
 								(IFP) enumenc, 	(IFP)enumdec,
 								(IFP) enumparse,	enumprint,
 								(IFP) enumdup,	enumcmp,

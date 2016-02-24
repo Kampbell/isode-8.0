@@ -73,14 +73,14 @@ char          **argv;
 	char	       *home;
 
 	if (home = getenv ("DISHDRAFT"))
-		(void) strcpy (fname, home);
+		 strcpy (fname, home);
 	else if (dad_flag) {
-		(void) strcpy (fname, "/tmp/dishXXXXXX");
-		(void) unlink (mktemp (fname));
+		 strcpy (fname, "/tmp/dishXXXXXX");
+		 unlink (mktemp (fname));
 	} else if (home = getenv ("HOME"))
-		(void) sprintf (fname, "%s/.dishdraft", home);
+		 sprintf (fname, "%s/.dishdraft", home);
 	else
-		(void) strcpy (fname, "./.dishdraft");
+		 strcpy (fname, "./.dishdraft");
 	new_draft = FALSE;
 
 	if ((argc = service_control (OPT, argc, argv, &add_arg.ada_common)) == -1)
@@ -90,7 +90,7 @@ char          **argv;
 		if (test_arg (argv[x], "-template", 1)) {
 			int	i;
 			FILE *in, *out;
-			extern int errno;
+			
 
 			draft_flag = 1;
 			if (++x == argc) {
@@ -105,23 +105,23 @@ char          **argv;
 			}
 			i = umask (0177);
 			out = fopen (fname, "w");
-			(void) umask (i);
+			 umask (i);
 			if (out == NULL) {
 				ps_printf (OPT, "unable to write draft %s: %s\n",
 						   fname, sys_errname (errno));
-				(void) fclose (in);
+				 fclose (in);
 				return;
 			}
 			while ((i = getc (in)) != EOF)
 				if (putc (i, out) == EOF) {
 					ps_printf (OPT, "error writing draft %s: %s\n",
 							   fname, sys_errname (errno));
-					(void) fclose (in);
-					(void) fclose (out);
+					 fclose (in);
+					 fclose (out);
 					return;
 				}
-			(void) fclose (in);
-			(void) fclose (out);
+			 fclose (in);
+			 fclose (out);
 		} else if (test_arg (argv[x], "-draft", 1)) {
 			draft_flag = 1;
 			if (++x == argc) {
@@ -129,7 +129,7 @@ char          **argv;
 				Usage (argv[0]);
 				return;
 			}
-			(void) strcpy (fname, argv[x]);
+			 strcpy (fname, argv[x]);
 		} else if (test_arg (argv[x], "-objectclass",1)) {
 			if (++x == argc) {
 				ps_printf (OPT, "Object Class missing\n");
@@ -181,7 +181,7 @@ char          **argv;
 	entry_ptr->e_attributes = get_attributes (fd);
 #endif
 
-	(void) fclose (fd);
+	 fclose (fd);
 	if (parse_status != 0)
 		return ;
 
@@ -231,13 +231,13 @@ char commit;
 	char newname[LINESIZE];
 
 	if (dad_flag) {
-		(void) unlink (file);
+		 unlink (file);
 		return;
 	}
 
 	if (commit == 0) {
-		(void) sprintf (newname, "%s.old", file);
-		(void) rename (file, newname);
+		 sprintf (newname, "%s.old", file);
+		 rename (file, newname);
 	}
 }
 
@@ -289,7 +289,7 @@ char           *objclass;
 
 	if (!new_draft)
 		if ((fptr = fopen (name, "r")) != NULL) {
-			(void) fclose (fptr);
+			 fclose (fptr);
 			if (!yesno ("Use existing draft file ? "))
 				return OK;
 			else
@@ -300,7 +300,7 @@ char           *objclass;
 		ps_printf (OPT, "Can't open template entry %s\n", name);
 		return (-1);
 	}
-	(void) umask (um);
+	 umask (um);
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		return (-1);
 	}
@@ -308,7 +308,7 @@ char           *objclass;
 		return (-1);
 	}
 
-	(void) sprintf (obuf, "objectClass=%s", objclass);
+	 sprintf (obuf, "objectClass=%s", objclass);
 	if ((ocas = str2as (obuf)) == NULLATTR)
 		return (-1);
 
@@ -319,7 +319,7 @@ char           *objclass;
 
 	as_free (as);
 	ps_free (ps);
-	(void) fclose (fptr);
+	 fclose (fptr);
 
 	return (OK);
 

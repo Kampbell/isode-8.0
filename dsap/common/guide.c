@@ -548,7 +548,7 @@ struct Guide * m;
 {
 	PE ret_pe;
 
-	(void) encode_SA_Guide (&ret_pe,0,0,NULLCP,m);
+	 encode_SA_Guide (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -570,7 +570,7 @@ struct Guide * m;
 {
 	PE ret_pe;
 
-	(void) encode_SA_NadfGuide (&ret_pe,0,0,NULLCP,m);
+	 encode_SA_NadfGuide (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -676,14 +676,14 @@ struct Guide *a, *b;
 }
 
 guide_syntax () {
-	(void) add_attribute_syntax ("Guide",
+	 add_attribute_syntax ("Guide",
 								 (IFP) guideenc,	(IFP) guidedec,
 								 (IFP) guideparse,guideprint,
 								 (IFP) guidecpy,	guidecmp,
 								 guidefree,	NULLCP,
 								 NULLIFP,	TRUE);
 
-	(void) add_attribute_syntax ("NadfGuide",
+	 add_attribute_syntax ("NadfGuide",
 								 (IFP) nadfenc,	(IFP) nadfdec,
 								 (IFP) nadfparse,guideprint,
 								 (IFP) guidecpy,	guidecmp,

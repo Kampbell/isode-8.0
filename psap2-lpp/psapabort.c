@@ -46,10 +46,10 @@ struct PSAPindication *pi;
 {
 	SBV	    smask;
 	int	    result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	PE	    pe;
 	PS	    ps;
-	register struct type_PS_Abort__PDU *pdu;
+	struct type_PS_Abort__PDU *pdu;
 
 	toomuchP (data, ndata, NPDATA_PS, "abort");
 	if (ndata > 0) {
@@ -63,13 +63,13 @@ struct PSAPindication *pi;
 	smask = sigioblock ();
 
 	if ((pb = findpblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
 
 	if ((pdu = (struct type_PS_Abort__PDU *) malloc (sizeof *pdu)) == NULL) {
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 	pdu -> reference = pb -> pb_reliability == LOW_QUALITY ? pb -> pb_reference
@@ -88,11 +88,11 @@ struct PSAPindication *pi;
 		PLOGP (psap2_log,PS_PDUs, pe, "Abort-PDU", 0);
 
 		if ((result = pe2ps (ps = pb -> pb_stream, pe)) == NOTOK)
-			(void) pslose (pi, ps -> ps_errno);
+			 pslose (pi, ps -> ps_errno);
 		else
 			result = OK;
 	} else
-		(void) psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 						 PY_pepy);
 
 	if (pe)
@@ -102,7 +102,7 @@ out:
 	;
 	freepblk (pb);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

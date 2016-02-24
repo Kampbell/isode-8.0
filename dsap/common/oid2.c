@@ -79,7 +79,7 @@ static struct oc_seq *oc_seq_merge (a,b)
 struct oc_seq *a;
 struct oc_seq *b;
 {
-	register struct oc_seq  *aptr, *bptr, *result, *trail;
+	struct oc_seq  *aptr, *bptr, *result, *trail;
 
 	if ( a == NULLOCSEQ )
 		return (b);
@@ -139,10 +139,10 @@ struct oc_seq *b;
 
 
 static get_oc_bits (str)
-register char * str;
+char * str;
 {
-	register char * ptr;
-	register char * ptr2;
+	char * ptr;
+	char * ptr2;
 	struct oc_seq * oidseq = NULLOCSEQ, *oidseqptr = oidseq;
 	objectclass * oc;
 
@@ -193,9 +193,9 @@ register char * str;
 
 static table_seq undo_macro (top,ptr)
 table_seq top;
-register char * ptr;
+char * ptr;
 {
-	register int i;
+	int i;
 	table_seq tab;
 	table_seq tab_top;
 	table_seq trail = NULLTABLE_SEQ;
@@ -220,9 +220,9 @@ register char * ptr;
 }
 
 static table_seq table_seq_new (str)
-register char * str;
+char * str;
 {
-	register char * ptr;
+	char * ptr;
 	table_seq tptr;
 	table_seq top = NULLTABLE_SEQ;
 	oid_table_attr * at;
@@ -263,19 +263,19 @@ register char * str;
 
 
 void	dumpalloid () {
-	register int i;
-	register objectclass      * oc = &ocOIDTable[0];
-	register oid_table_attr   * at = &attrOIDTable[0];
-	register oid_table        * oi = &OIDTable[0];
+	int i;
+	objectclass      * oc = &ocOIDTable[0];
+	oid_table_attr   * at = &attrOIDTable[0];
+	oid_table        * oi = &OIDTable[0];
 
 	for (i=0; i<ocNumEntries; i++,oc++)
-		(void) printf("\"%s\"\t\t%s\n", oc->oc_ot.ot_name, oc->oc_ot.ot_stroid);
+		 printf("\"%s\"\t\t%s\n", oc->oc_ot.ot_name, oc->oc_ot.ot_stroid);
 
 	for (i=0; i<attrNumEntries; i++,at++)
-		(void) printf("\"%s\"\t\t%s\n", at->oa_ot.ot_name, at->oa_ot.ot_stroid);
+		 printf("\"%s\"\t\t%s\n", at->oa_ot.ot_name, at->oa_ot.ot_stroid);
 
 	for (i=0; i<NumEntries; i++,oi++)
-		(void) printf("\"%s\"\t\t%s\n", oi->ot_name, oi->ot_stroid);
+		 printf("\"%s\"\t\t%s\n", oi->ot_name, oi->ot_stroid);
 
 }
 
@@ -283,8 +283,8 @@ void	dumpalloid () {
 add_oc_macro (buf,ptr)
 char * buf, *ptr;
 {
-	(void) strcpy(macro[NumMacro].name,buf);
-	(void) strcpy(macro[NumMacro++].value,ptr);
+	 strcpy(macro[NumMacro].name,buf);
+	 strcpy(macro[NumMacro++].value,ptr);
 }
 
 void	table_seq_free (ts)
@@ -300,10 +300,10 @@ table_seq ts;
 }
 
 void	free_oid_table () {
-	register int i;
-	register objectclass      * oc = &ocOIDTable[0];
-	register oid_table_attr   * at = &attrOIDTable[0];
-	register oid_table        * oi = &OIDTable[0];
+	int i;
+	objectclass      * oc = &ocOIDTable[0];
+	oid_table_attr   * at = &attrOIDTable[0];
+	oid_table        * oi = &OIDTable[0];
 
 	for (i=0; i<ocNumEntries; i++,oc++) {
 		free (oc->oc_ot.ot_stroid);

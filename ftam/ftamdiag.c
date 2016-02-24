@@ -33,18 +33,18 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamdiag.c,v 9.0 1992/
 /*  */
 
 struct type_FTAM_Diagnostic *diag2fpm (fsb, magic, diag, ndiag, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	magic;
 struct FTAMdiagnostic diag[];
 int	ndiag;
 struct FTAMindication *fti;
 {
-	register int    i;
-	register struct FTAMdiagnostic *dp;
+	int    i;
+	struct FTAMdiagnostic *dp;
 	struct type_FTAM_Diagnostic *fpmp;
-	register struct type_FTAM_Diagnostic  *fpm,
+	struct type_FTAM_Diagnostic  *fpm,
 			**fpc;
-	register struct diag_element *f3;
+	struct diag_element *f3;
 
 	fpmp = NULL, fpc = &fpmp;
 	for (dp = diag, i = ndiag - 1; i >= 0; dp++, i--) {
@@ -52,7 +52,7 @@ struct FTAMindication *fti;
 				== NULL) {
 no_mem:
 			;
-			(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+			 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 			;
 			if (fpmp)
@@ -74,7 +74,7 @@ out:
 		default:
 bad_dp:
 			;
-			(void) ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "bad diagnostic type/observer/source (%d/%d/%d) at slot %d",
 							 dp -> ftd_type, dp -> ftd_observer, dp -> ftd_source,
 							 ndiag - i - 1);
@@ -150,15 +150,15 @@ bad_dp:
 /*  */
 
 int	fpm2diag (fsb, fpm, diag, ndiag, fti)
-register struct ftamblk *fsb;
-register struct type_FTAM_Diagnostic *fpm;
+struct ftamblk *fsb;
+struct type_FTAM_Diagnostic *fpm;
 struct FTAMdiagnostic diag[];
 int   *ndiag;
 struct FTAMindication *fti;
 {
-	register int    i;
-	register struct FTAMdiagnostic *dp;
-	register struct diag_element *f3;
+	int    i;
+	struct FTAMdiagnostic *dp;
+	struct diag_element *f3;
 
 	*ndiag = 0;
 
@@ -178,12 +178,12 @@ struct FTAMindication *fti;
 		else
 			dp -> ftd_delay = DIAG_NODELAY;
 		if (f3 -> further__details) {
-			register char   *cp;
+			char   *cp;
 
 			if ((cp = qb2str (f3 -> further__details)) == NULL)
 				return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 								 "out of memory");
-			(void) strncpy (dp -> ftd_data, cp, sizeof dp -> ftd_data);
+			 strncpy (dp -> ftd_data, cp, sizeof dp -> ftd_data);
 			dp -> ftd_data[sizeof dp -> ftd_data - 1] = NULL;
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			free (cp);

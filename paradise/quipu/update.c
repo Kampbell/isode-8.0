@@ -100,7 +100,7 @@ Entry myentry;
 	extern char * treedir;
 	extern char * parse_file;
 	Entry liststart;
-	extern int errno;
+	
 
 	if (myentry == NULLENTRY) {
 		LLOG (log_dsap,LLOG_FATAL,("update edb problem"));
@@ -133,26 +133,26 @@ Entry myentry;
 			return NOTOK;
 		}
 
-		(void) strcpy (newfile,filename);
-		(void) strcat (newfile,".new");
+		 strcpy (newfile,filename);
+		 strcat (newfile,".new");
 
 		if ( write_edb(liststart,newfile) != OK) {
-			(void) unlink (newfile);
+			 unlink (newfile);
 			dn_free (dn);
 			return NOTOK;
 		}
 
-		(void) strcpy (savefile,filename);
-		(void) strcat (savefile,".bak");
+		 strcpy (savefile,filename);
+		 strcat (savefile,".bak");
 
-		(void) unlink (savefile);
+		 unlink (savefile);
 		if (link (filename, savefile) == NOTOK)
 			SLOG (log_dsap, LLOG_EXCEPTIONS, savefile,
 				  ("unable to link %s to", filename));
 #ifdef ISC  /* Interactive UNIX V R3 */
 		else
 			/* dangerous - but rename will fail without it */
-			(void) unlink (filename);
+			 unlink (filename);
 #endif
 		if (rename (newfile, filename) == NOTOK) {
 			SLOG (log_dsap, LLOG_EXCEPTIONS, filename,
@@ -233,7 +233,7 @@ DN who;
 }
 
 static allowed_to_send (a,b)
-register DN  a,b;
+DN  a,b;
 {
 	/* Return TRUE if the DNs are the same */
 	/* Return TRUE if all components of 'a' match, but 'b' has one extra */
@@ -369,7 +369,7 @@ int fd;
 }
 
 slave_update () {
-	(void) update_aux (NULLDN, 0);
+	 update_aux (NULLDN, 0);
 	shadow_update ();
 	lastedb_update = timenow;
 }
@@ -427,7 +427,7 @@ int	isroot;
 			break;
 
 #ifdef USE_DSA_WAIT
-		(void) dsa_wait (0);	/* accept any results of previous ops */
+		 dsa_wait (0);	/* accept any results of previous ops */
 #endif
 	}
 	avs_free (avs_head);
@@ -467,7 +467,7 @@ DN dn,from;
 				LLOG (log_dsap, LLOG_NOTICE, ("%s", buffer));
 			}
 
-			(void) ps_free (ps);
+			 ps_free (ps);
 		}
 
 #ifdef DEBUG
@@ -519,7 +519,7 @@ DN dn,from;
 				LLOG (log_dsap, LLOG_NOTICE, ("%s", buffer));
 			}
 
-			(void) ps_free (ps);
+			 ps_free (ps);
 		}
 
 		return(OK);
@@ -604,7 +604,7 @@ Avlnode *oldkids;
 	turbo_add2index(e);
 
 	/* link children to their new parent */
-	(void) avl_apply(e->e_children, parent_link, (caddr_t) e,
+	 avl_apply(e->e_children, parent_link, (caddr_t) e,
 					 NOTOK, AVL_PREORDER);
 	/* And unravel them to set new ACL pointers */
 	/* MAY need to make this recursive */
@@ -716,7 +716,7 @@ struct oper_act	** newop;
 
 
 #ifdef USE_DSA_WAIT
-	(void) dsa_wait (0);	/* progress any other connections before writing EDB */
+	 dsa_wait (0);	/* progress any other connections before writing EDB */
 #endif
 	if (eptr->e_children == NULLAVL)
 		slave_edbs++;
@@ -761,7 +761,7 @@ out:
 	;
 
 	if (on->on_conn) {
-		(void) time (&timenow);
+		 time (&timenow);
 		on->on_conn->cn_last_used = timenow - conn_timeout + nsap_timeout;
 	}
 
@@ -787,7 +787,7 @@ struct oper_act	* on;
 		log_ds_error (& on -> on_resp.di_error.de_err);
 
 		if (on->on_conn) {
-			(void) time (&timenow);
+			 time (&timenow);
 			on->on_conn->cn_last_used =
 				timenow - conn_timeout + nsap_timeout;
 		}
@@ -919,7 +919,7 @@ out:
 		if (pe)
 			pe_free (pe);
 		if (fptr)
-			(void) fclose (fptr);
+			 fclose (fptr);
 		error->dse_type = DSE_SERVICEERROR;
 		error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNAVAILABLE;
 		return (DS_X500_ERROR);
@@ -927,7 +927,7 @@ out:
 
 	/* This is a slow process, take a look at the network... */
 #ifdef USE_DSA_WAIT
-	(void) dsa_wait (0);
+	 dsa_wait (0);
 #endif
 	/* write PE to file */
 
@@ -935,7 +935,7 @@ out:
 	   old files etc.  Worry about optimization later.
 	*/
 
-	(void) sprintf (buffer,"%s/%s.XXXXXX",edbtmp_path,result->gr_version);
+	 sprintf (buffer,"%s/%s.XXXXXX",edbtmp_path,result->gr_version);
 	if ((fname = mktemp (strdup(buffer))) == NULLCP) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,
 			  ("Too many getedbs at once '%s'",fname));
@@ -944,7 +944,7 @@ out:
 
 	um = umask (0177);
 	if ((fptr = fopen (fname,"w")) != NULL) {
-		(void) umask (um);
+		 umask (um);
 		if ((fps = ps_alloc (std_open)) == NULLPS) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,
 				  ("Could not alloc PS file '%s'",fname));
@@ -957,7 +957,7 @@ out:
 			goto out;
 		}
 	} else {
-		(void) umask (um);
+		 umask (um);
 		LLOG ( log_dsap,LLOG_EXCEPTIONS,
 			   ("Could not open EDB/PE file '%s'",fname));
 		goto out;
@@ -1022,7 +1022,7 @@ out:
 
 	/* This is a slow process, take a look at the network... */
 #ifdef USE_DSA_WAIT
-	(void) dsa_wait (0);
+	 dsa_wait (0);
 #endif
 
 	pe_free (pe);
@@ -1049,12 +1049,12 @@ int fd;
 			continue;
 		}
 
-		(void) fclose ((FILE *)nextop->edb_ps->ps_addr);
+		 fclose ((FILE *)nextop->edb_ps->ps_addr);
 		ps_free (nextop -> edb_ps);
 		dn_free (nextop -> edb_name);
 		dn_free (nextop -> bind_name);
 
-		(void) unlink (nextop -> edb_fname);
+		 unlink (nextop -> edb_fname);
 		free (nextop -> edb_fname);
 		free (nextop -> edb_version);
 
@@ -1131,12 +1131,12 @@ out:
 	result->gr_pe = pe;
 	result->gr_nextEntryPos = 0;
 
-	(void) fclose ((FILE *)nextop->edb_ps->ps_addr);
+	 fclose ((FILE *)nextop->edb_ps->ps_addr);
 	ps_free (nextop -> edb_ps);
 	dn_free (nextop -> edb_name);
 	dn_free (nextop -> bind_name);
 
-	(void) unlink (nextop -> edb_fname);
+	 unlink (nextop -> edb_fname);
 	free (nextop -> edb_fname);
 	free (nextop -> edb_version);
 
@@ -1298,7 +1298,7 @@ struct getedb_result *result;
 	pe_free(pe);
 
 #ifdef USE_DSA_WAIT
-	(void) dsa_wait (0);	/* accept any results of previous ops */
+	 dsa_wait (0);	/* accept any results of previous ops */
 #endif
 
 	return TRUE;

@@ -79,13 +79,11 @@ static void tsbridge (), do_the_biz (), copy_tsdu (), arginit (), envinit ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char	**argv,
-		**envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	struct TSAPaddr tas, *ta = &tas;
 	int	vecp;
 	char	*vec[4];
@@ -132,15 +130,13 @@ char	**argv,
 
 /*  */
 
-static	void tsbridge (vecp, vec, ta)
-int	vecp;
-char	**vec;
-struct TSAPaddr *ta;
+static void 
+tsbridge (int vecp, char **vec, struct TSAPaddr *ta)
 {
 	struct TSAPstart tss;
-	register struct TSAPstart *ts = &tss;
+	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	struct TSAPaddr *tota;
 	struct TSAPaddr *fromta;
 	struct TSAPconnect tcs;
@@ -189,7 +185,7 @@ struct TSAPaddr *ta;
 	if (TConnRequest (fromta, tota, ts -> ts_expedited,
 					  ts -> ts_data, ts -> ts_cc, &ts -> ts_qos,
 					  tc, td) == NOTOK) {
-		(void) TDiscRequest (sd, td -> td_data, td -> td_cc, td);
+		 TDiscRequest (sd, td -> td_data, td -> td_cc, td);
 		ts_adios(td, "T-CONNECT.REQUEST");
 	}
 	if (TConnResponse (sd, NULLTA,
@@ -205,13 +201,13 @@ struct TSAPaddr *ta;
 
 /*  */
 
-static void	do_the_biz (sd1, sd2)
-int	sd1, sd2;
+static void 
+do_the_biz (int sd1, int sd2)
 {
 	int nfds = 0;
 	fd_set rmask, imask;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 
 	FD_ZERO (&rmask);
 
@@ -233,13 +229,13 @@ int	sd1, sd2;
 
 /*  */
 
-static	void copy_tsdu (s1, s2)
-int	s1, s2;
+static void 
+copy_tsdu (int s1, int s2)
 {
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	struct TSAPdata txs;
-	register struct TSAPdata *tx = &txs;
+	struct TSAPdata *tx = &txs;
 	int	result;
 	char	*p;
 
@@ -305,9 +301,8 @@ int	s1, s2;
 
 /*  */
 
-static void ts_discon (td, sd)
-struct TSAPdisconnect *td;
-int	sd;
+static void 
+ts_discon (struct TSAPdisconnect *td, int sd)
 {
 	ts_close (sd, "Normal Disconnect");
 	ts_advise (td, LLOG_NOTICE, "T-DISCONNECT.INDICATION");
@@ -317,12 +312,11 @@ int	sd;
 
 /*  */
 
-static void ts_close (sd, event)
-int	sd;
-char	*event;
+static void 
+ts_close (int sd, char *event)
 {
 	struct TSAPdisconnect tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if ((int)strlen (event) >= TD_SIZE)
 		event = NULLCP;
@@ -333,9 +327,8 @@ char	*event;
 
 /*  */
 
-static void  ts_adios (td, event)
-register struct TSAPdisconnect *td;
-char	*event;
+static void 
+ts_adios (struct TSAPdisconnect *td, char *event)
 {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
@@ -344,19 +337,17 @@ char	*event;
 
 /*  */
 
-static void  ts_advise (td, code, event)
-register struct TSAPdisconnect *td;
-int     code;
-char   *event;
+static void 
+ts_advise (struct TSAPdisconnect *td, int code, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						TErrString (td -> td_reason),
 						td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		(void) sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
@@ -364,10 +355,8 @@ char   *event;
 /*  */
 static int isnew = 1;
 
-static struct TSAPaddr *getnewta (ta, sd, ctp)
-struct TSAPaddr *ta;
-int	sd;
-ContTbl *ctp;
+static struct TSAPaddr *
+getnewta (struct TSAPaddr *ta, int sd, ContTbl *ctp)
 {
 	static struct TSAPaddr newta;
 	struct TSAPaddr *nta = &newta;
@@ -428,13 +417,11 @@ ContTbl *ctp;
 
 /*  */
 
-static struct TSAPaddr *maketa (ta, type, ctp)
-struct TSAPaddr *ta;
-long	type;
-ContTbl *ctp;
+static struct TSAPaddr *
+maketa (struct TSAPaddr *ta, long type, ContTbl *ctp)
 {
 	static struct TSAPaddr newta;
-	register struct TSAPaddr *nta = &newta;
+	struct TSAPaddr *nta = &newta;
 	char	*p;
 	int	i;
 	struct PSAPaddr pas;
@@ -510,8 +497,8 @@ ContTbl *ctp;
 
 /*  */
 
-static ContTbl *find_connection (ta)
-struct TSAPaddr *ta;
+static ContTbl *
+find_connection (struct TSAPaddr *ta)
 {
 	ContTbl *ctp;
 	struct NSAPaddr *na1, *na2;
@@ -566,11 +553,11 @@ struct TSAPaddr *ta;
 
 /*  */
 
-static void	arginit (vec)
-char	**vec;
+static void 
+arginit (char **vec)
 {
-	register char   *ap;
-	register struct TSAPaddr *ta;
+	char   *ap;
+	struct TSAPaddr *ta;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -583,7 +570,7 @@ char	**vec;
 			case 'T':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -T tailorfile", myname);
-				(void) isodesetailor (ap);
+				 isodesetailor (ap);
 				isodetailor (myname, 0);
 				ll_hdinit (pgm_log, myname);
 				continue;
@@ -628,8 +615,8 @@ char	**vec;
 
 /*  */
 
-static void read_file (file)
-char	*file;
+static void 
+read_file (char *file)
 {
 	FILE	*fp;
 	char	buf[BUFSIZ];
@@ -693,12 +680,13 @@ char	*file;
 	}
 
 	if (strcmp (file, "-") != 0)
-		(void) fclose (fp);
+		 fclose (fp);
 }
 
 /*  */
 
-static	void envinit () {
+static void 
+envinit  {
 	int     i,
 			sd;
 
@@ -720,14 +708,14 @@ static	void envinit () {
 			break;
 		}
 
-		(void) chdir ("/");
+		 chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			(void) dup2 (sd, 0), (void) close (sd);
-		(void) dup2 (0, 1);
-		(void) dup2 (0, 2);
+			 dup2 (sd, 0),  close (sd);
+		 dup2 (0, 1);
+		 dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -735,14 +723,14 @@ static	void envinit () {
 #endif
 #ifdef  TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			(void) ioctl (sd, TIOCNOTTY, NULLCP);
-			(void) close (sd);
+			 ioctl (sd, TIOCNOTTY, NULLCP);
+			 close (sd);
 		}
 #else
 #ifdef  SYS5
-		(void) setpgrp ();
-		(void) signal (SIGINT, SIG_IGN);
-		(void) signal (SIGQUIT, SIG_IGN);
+		 setpgrp ();
+		 signal (SIGINT, SIG_IGN);
+		 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -751,10 +739,10 @@ static	void envinit () {
 #ifndef sun			/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			(void) close (sd);
+			 close (sd);
 #endif
 
-	(void) signal (SIGPIPE, SIG_IGN);
+	 signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, myname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
@@ -778,9 +766,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void    adios (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -804,10 +791,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void    advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int     code;
+static void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }

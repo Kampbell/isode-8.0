@@ -49,12 +49,12 @@ static  fd_set  inprogress;
 static struct sockaddr_in *peers = NULL;
 #endif
 
-extern int  errno;
+
 
 /*  */
 
 int	tcpopen (pb, calling, called, pi, async)
-register struct psapblk *pb;
+struct psapblk *pb;
 struct NSAPaddr *calling,
 		*called;
 struct PSAPindication *pi;
@@ -66,9 +66,9 @@ int	async;
 #endif
 	struct sockaddr_in  lo_socket,
 			in_socket;
-	register struct sockaddr_in *lsock = &lo_socket,
+	struct sockaddr_in *lsock = &lo_socket,
 										 *isock = &in_socket;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 #ifndef	FIONBIO
 	if (async)
@@ -88,7 +88,7 @@ int	async;
 		return psaplose (pi, PC_ADDRESS, NULLCP, "%s: unknown host",
 						 called -> na_domain);
 #ifdef	notanymore
-	(void) strncpy (called -> na_domain, hp -> h_name,
+	 strncpy (called -> na_domain, hp -> h_name,
 					sizeof called -> na_domain);
 #endif
 
@@ -96,7 +96,7 @@ int	async;
 	inaddr_copy (hp, isock);
 
 #ifndef	notanymore
-	(void) strcpy (called -> na_domain, inet_ntoa (isock -> sin_addr));
+	 strcpy (called -> na_domain, inet_ntoa (isock -> sin_addr));
 #endif
 
 	if (calling && calling -> na_domain[0]) {
@@ -119,7 +119,7 @@ int	async;
 
 #ifdef	FIONBIO
 	if (async)
-		(void) ioctl (fd, FIONBIO, (onoff = 1, (char *) &onoff));
+		 ioctl (fd, FIONBIO, (onoff = 1, (char *) &onoff));
 #endif
 	PTservice (pb, fd);
 
@@ -133,9 +133,9 @@ int	async;
 							calloc ((unsigned) getdtablesize (),
 									sizeof *peers);
 					if (peers == NULL) {
-						(void) psaplose (pi, PC_CONGEST, NULLCP,
+						 psaplose (pi, PC_CONGEST, NULLCP,
 										 "out of memory");
-						(void) close_tcp_socket (fd);
+						 close_tcp_socket (fd);
 						return (pb -> pb_fd = NOTOK);
 					}
 
@@ -153,8 +153,8 @@ int	async;
 			}
 #endif
 
-		(void) psaplose (pi, PC_REFUSED, "connection", "unable to establish");
-		(void) close_tcp_socket (fd);
+		 psaplose (pi, PC_REFUSED, "connection", "unable to establish");
+		 close_tcp_socket (fd);
 		return (pb -> pb_fd = NOTOK);
 	}
 #ifdef	FIONBIO
@@ -162,11 +162,11 @@ done:
 	;
 
 	if (async)
-		(void) ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
+		 ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
 #endif
 
 	if (tcpready (pb, pi) == NOTOK) {
-		(void) close_tcp_socket (fd);
+		 close_tcp_socket (fd);
 		pb -> pb_fd = NOTOK;
 	}
 
@@ -185,22 +185,22 @@ struct TSAPdisconnect *td;
 {
 	static char	buffer[BUFSIZ];
 
-	(void) sprintf (buffer, "%c%d %s %s", PT_TCP, fd, cp1, cp2);
+	 sprintf (buffer, "%c%d %s %s", PT_TCP, fd, cp1, cp2);
 
 	return buffer;
 }
 
 
 int	tcprestore (pb, buffer, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 char   *buffer;
 struct PSAPindication *pi;
 {
 	int	    fd;
-	register char *cp;
+	char *cp;
 	char    domain1[NSAP_DOMAINLEN + 1 + 5 + 1],
 			domain2[NSAP_DOMAINLEN + 1 + 5 + 1];
-	register struct NSAPaddr *na;
+	struct NSAPaddr *na;
 
 	na = &pb -> pb_initiating;
 	na -> na_stack = NA_TCP;
@@ -214,7 +214,7 @@ struct PSAPindication *pi;
 		*cp++ = NULL;
 		na -> na_port = htons ((u_short) atoi (cp));
 	}
-	(void) strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
+	 strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
 
 	PTservice (pb, fd);
 
@@ -226,7 +226,7 @@ struct PSAPindication *pi;
 		*cp++ = NULL;
 		na -> na_port = htons ((u_short) atoi (cp));
 	}
-	(void) strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
+	 strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
 
 	if ((pb -> pb_stream = ps_alloc (fdx_open)) == NULLPS
 			|| fdx_setup (pb -> pb_stream, pb -> pb_fd) == NOTOK)
@@ -240,7 +240,7 @@ struct PSAPindication *pi;
 /* ARGSUSED */
 
 static int  tcpretry (pb, reason, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 int	reason;
 struct PSAPindication *pi;
 {
@@ -276,19 +276,19 @@ struct PSAPindication *pi;
 			break;
 		}
 
-		(void) psaplose (pi, PC_REFUSED, "connection", "unable to establish");
+		 psaplose (pi, PC_REFUSED, "connection", "unable to establish");
 		FD_CLR (fd, &inprogress);
-		(void) close_tcp_socket (fd);
+		 close_tcp_socket (fd);
 		return (pb -> pb_fd = NOTOK);
 	}
 done:
 	;
 
-	(void) ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
+	 ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
 	FD_CLR (fd, &inprogress);
 
 	if (tcpready (pb, pi) == NOTOK) {
-		(void) close_tcp_socket (fd);
+		 close_tcp_socket (fd);
 		return (pb -> pb_fd = NOTOK);
 	}
 
@@ -301,7 +301,7 @@ done:
 /*  */
 
 static int  tcpready (pb, pi)
-register struct psapblk *pb;
+struct psapblk *pb;
 struct PSAPindication *pi;
 {
 	PS	    ps;
@@ -331,7 +331,7 @@ struct PSAPindication *pi;
 
 
 static int  PTservice (pb, fd)
-register struct psapblk *pb;
+struct psapblk *pb;
 int	fd;
 {
 	pb -> pb_fd = fd;

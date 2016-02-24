@@ -60,7 +60,7 @@ attrTypeList *list_ptr;
 			*list_ptr = curr_cell->next;
 		else {
 			last_cell->next = curr_cell->next;
-			(void) free((char *) curr_cell);
+			 free((char *) curr_cell);
 		}
 
 		return TRUE;
@@ -80,7 +80,7 @@ attrTypeList *list_ptr;
 			curr_cell = next_cell) {
 		next_cell = curr_cell->next;
 
-		(void) free((char *) curr_cell);
+		 free((char *) curr_cell);
 	}
 
 	*list_ptr = NULLAttrTypeList;

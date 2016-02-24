@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/idistd.c,v 9.0
  *
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <varargs.h>
 #include "Idist-types.h"      /* type definitions */
@@ -93,17 +94,15 @@ struct group *gr;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int initiate ();
 	oumask = umask (0);
 
 	host = getlocalhost ();
 
-	(void) ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
+	 ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
 						dispatches, table_Idist_Operations, initiate,
 						NULLIFP);
 
@@ -120,7 +119,7 @@ caddr_t	in;
 struct RoSAPindication *roi;
 {
 	char	*str;
-	register struct type_Idist_InitDir *arg =
+	struct type_Idist_InitDir *arg =
 		(struct type_Idist_InitDir *) in;
 
 	if (rox -> rox_nolinked == 0) {
@@ -160,7 +159,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_Idist_FileSpec *arg =
+	struct type_Idist_FileSpec *arg =
 		(struct type_Idist_FileSpec *) in;
 
 	if (rox -> rox_nolinked == 0) {
@@ -225,9 +224,9 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_Idist_Data *arg =
+	struct type_Idist_Data *arg =
 		(struct type_Idist_Data *) in;
-	register struct qbuf *qb;
+	struct qbuf *qb;
 
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_NOTICE, NULLCP,
@@ -258,7 +257,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_UNIV_IA5String *arg =
+	struct type_UNIV_IA5String *arg =
 		(struct type_UNIV_IA5String *) in;
 	struct type_Idist_QueryResult *qr;
 	char	*str;
@@ -297,7 +296,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_Idist_TermStatus *arg =
+	struct type_Idist_TermStatus *arg =
 		(struct type_Idist_TermStatus *) in;
 
 	if (rox -> rox_nolinked == 0) {
@@ -315,10 +314,10 @@ struct RoSAPindication *roi;
 		if (cfile == NULL)
 			return i_strerror (sd, error_Idist_protocol,
 							   "File not open", rox, roi);
-		(void) fflush (cfile);
+		 fflush (cfile);
 		if (ferror (cfile))
 			return syserror (sd, error_Idist_writeerror, rox, roi);
-		(void) fclose (cfile);
+		 fclose (cfile);
 		if ( fixup () < 0)
 			return error (sd, error_Idist_fileproblem,
 						  (caddr_t) ia5list, rox, roi);
@@ -359,7 +358,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_UNIV_IA5String *arg =
+	struct type_UNIV_IA5String *arg =
 		(struct type_UNIV_IA5String *) in;
 	int	result;
 	char	*str;
@@ -398,7 +397,7 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_UNIV_IA5String *arg =
+	struct type_UNIV_IA5String *arg =
 		(struct type_UNIV_IA5String *) in;
 	int	result;
 	char	*str;
@@ -415,7 +414,7 @@ struct RoSAPindication *roi;
 				sd, ryo -> ryo_name);
 
 	str = qb2str (arg);
-	(void) sprintf (buf, "%s/%s", target, str);
+	 sprintf (buf, "%s/%s", target, str);
 	free (str);
 	result = i_remove (buf);
 
@@ -483,23 +482,17 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-static int i_strerror (sd, err, str, rox, roi)
-int	sd, err;
-char	*str;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+i_strerror (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	addtoia5 (str, strlen(str));
 
 	return error (sd, err, (caddr_t)ia5list, rox, roi);
 }
 
-static int syserror (sd, err, rox, roi)
-int	sd, err;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
-	extern	int errno;
 
 	return i_strerror (sd, err, sys_errname (errno), rox, roi);
 }
@@ -507,11 +500,8 @@ struct RoSAPindication *roi;
 
 /*    U-REJECT */
 
-static int  ureject (sd, reason, rox, roi)
-int	sd,
-	reason;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
@@ -543,7 +533,7 @@ PE	*pe;
 		return init_lose (ACS_PERMANENT, pe, "Version mismatch");
 
 	cp = qb2str (initial -> user);
-	(void) strcpy (user, cp);
+	 strcpy (user, cp);
 	free (cp);
 
 	if (baduser (NULLCP, user)) {
@@ -559,7 +549,7 @@ PE	*pe;
 
 	userid = pw -> pw_uid;
 	groupid = pw -> pw_gid;
-	(void) strcpy (homedir, pw -> pw_dir);
+	 strcpy (homedir, pw -> pw_dir);
 
 	cp = qb2str (initial -> passwd);
 
@@ -590,7 +580,7 @@ PE	*pe;
 		return init_lose (ACS_PERMANENT, pe, "Can't set user id");
 	}
 
-	(void) mktemp (utmpfile);
+	 mktemp (utmpfile);
 
 	return ACS_ACCEPT;
 }

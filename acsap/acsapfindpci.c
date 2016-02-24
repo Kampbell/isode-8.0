@@ -34,13 +34,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapfindpci.c,v 9.0 
 
 /*  */
 
-int	AcFindPCI (sd, pci, aci)
-int	sd;
-int    *pci;
-struct AcSAPindication *aci;
+int 
+AcFindPCI (int sd, int *pci, struct AcSAPindication *aci)
 {
 	SBV     smask;
-	register struct assocblk  *acb;
+	struct assocblk  *acb;
 
 	missingP (pci);
 	missingP (aci);
@@ -48,14 +46,14 @@ struct AcSAPindication *aci;
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
 
 	*pci = acb -> acb_id;
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }

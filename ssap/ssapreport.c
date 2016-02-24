@@ -35,16 +35,12 @@ static int  SUReportRequestAux ();
 
 /*    S-U-EXCEPTION-REPORT.REQUEST */
 
-int	SUReportRequest (sd, reason, data, cc, si)
-int	sd;
-int	reason;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SUReportRequest (int sd, int reason, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	if (!(SP_OK (reason)))
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid reason");
@@ -57,19 +53,15 @@ struct SSAPindication *si;
 
 	result = SUReportRequestAux (sb, reason, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  SUReportRequestAux (sb, reason, data, cc, si)
-register struct ssapblk *sb;
-int	reason;
-char   *data;
-int	cc;
-register struct SSAPindication *si;
+static int 
+SUReportRequestAux (struct ssapblk *sb, int reason, char *data, int cc, struct SSAPindication *si)
 {
 	int	    result;
 

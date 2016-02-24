@@ -115,7 +115,7 @@ char   *mycrypt ();
 /*  */
 
 static int  pw_compar (a, b)
-register struct pw *a,
+struct pw *a,
 		*b;
 {
 	return elem_cmp (a -> pw_instance, a -> pw_insize,
@@ -126,12 +126,12 @@ register struct pw *a,
 static int  get_pw (offset)
 int	offset;
 {
-	register int    i,
+	int    i,
 			 j;
 	int	    cc;
-	register char  *dp;
+	char  *dp;
 	char   *ep;
-	register struct pw *pw;
+	struct pw *pw;
 	struct stat st;
 	static int lastq = -1;
 
@@ -157,14 +157,14 @@ int	offset;
 		advise (LLOG_EXCEPTIONS, "/etc/passwd", "unable to flock");
 ohoh:
 		;
-		(void) close (pw_fd), pw_fd = NOTOK;
+		 close (pw_fd), pw_fd = NOTOK;
 		return NOTOK;
 	}
 	if (fstat (pw_fd, &st) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "/etc/passwd", "unable to fstat");
 oops:
 		;
-		(void) flock (pw_fd, LOCK_UN);
+		 flock (pw_fd, LOCK_UN);
 		goto ohoh;
 	}
 	if ((cc = st.st_size) == 0) {
@@ -209,8 +209,8 @@ losing:
 	}
 	pw_touched = 0;
 	if (offset != type_SNMP_SMUX__PDUs_set__request) {
-		(void) flock (pw_fd, LOCK_UN);
-		(void) close (pw_fd), pw_fd = NOTOK;
+		 flock (pw_fd, LOCK_UN);
+		 close (pw_fd), pw_fd = NOTOK;
 	}
 
 	for (pw = pw_head, dp = pw_data; dp < ep; pw++) {
@@ -220,9 +220,9 @@ again:
 
 		for (;;) {
 			if (*dp == ':') {
-				register unsigned int *ip;
-				register char   *cp;
-				register struct pw *qw;
+				unsigned int *ip;
+				char   *cp;
+				struct pw *qw;
 
 				*dp++ = NULL;
 				while (++dp < ep)
@@ -267,9 +267,9 @@ out:
 
 
 static	fill_pw (pwp)
-register struct passwd *pwp;
+struct passwd *pwp;
 {
-	register char  *cp,
+	char  *cp,
 			 *dp;
 
 	if (dp = index (cp = pwp -> pw_name + strlen (pwp -> pw_name) + 1, '\n'))
@@ -304,11 +304,11 @@ register struct passwd *pwp;
 
 
 static	free_pw () {
-	register struct pw *pw;
+	struct pw *pw;
 
 	if (pw_head) {
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++) {
-			register struct passwd *pwp = &pw -> pw_pw;
+			struct passwd *pwp = &pw -> pw_pw;
 
 			if (pw -> pw_malloc) {
 				if (pwp -> pw_name)
@@ -334,19 +334,19 @@ static	free_pw () {
 		free (pw_data), pw_data = NULL;
 
 	if (pw_fd != NOTOK) {
-		(void) flock (pw_fd, LOCK_UN);
-		(void) close (pw_fd), pw_fd = NOTOK;
+		 flock (pw_fd, LOCK_UN);
+		 close (pw_fd), pw_fd = NOTOK;
 	}
 }
 
 /*  */
 
 static struct pw *get_pwent (ip, len, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnext;
 {
-	register struct pw *pw;
+	struct pw *pw;
 
 	for (pw = pw_head; pw -> pw_pw.pw_name; pw++)
 		switch (elem_cmp (pw -> pw_instance, pw -> pw_insize, ip, len)) {
@@ -367,7 +367,7 @@ int	isnext;
 /*  */
 
 static int  gr_compar (a, b)
-register struct gr *a,
+struct gr *a,
 		*b;
 {
 	return elem_cmp (a -> gr_instance, a -> gr_insize,
@@ -378,12 +378,12 @@ register struct gr *a,
 static int  get_gr (offset)
 int	offset;
 {
-	register int    i,
+	int    i,
 			 j;
 	int	    cc;
-	register char  *dp;
+	char  *dp;
 	char   *ep;
-	register struct gr *gr;
+	struct gr *gr;
 	struct stat st;
 	static int lastq = -1;
 
@@ -409,14 +409,14 @@ int	offset;
 		advise (LLOG_EXCEPTIONS, "/etc/group", "unable to flock");
 ohoh:
 		;
-		(void) close (gr_fd), gr_fd = NOTOK;
+		 close (gr_fd), gr_fd = NOTOK;
 		return NOTOK;
 	}
 	if (fstat (gr_fd, &st) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "/etc/group", "unable to fstat");
 oops:
 		;
-		(void) flock (gr_fd, LOCK_UN);
+		 flock (gr_fd, LOCK_UN);
 		goto ohoh;
 	}
 	if ((cc = st.st_size) == 0) {
@@ -461,8 +461,8 @@ losing:
 	}
 	gr_touched = 0;
 	if (offset != type_SNMP_SMUX__PDUs_set__request) {
-		(void) flock (gr_fd, LOCK_UN);
-		(void) close (gr_fd), gr_fd = NOTOK;
+		 flock (gr_fd, LOCK_UN);
+		 close (gr_fd), gr_fd = NOTOK;
 	}
 
 	for (gr = gr_head, dp = gr_data; dp < ep; gr++) {
@@ -473,9 +473,9 @@ again:
 
 		for (;;) {
 			if (*dp == ':') {
-				register unsigned int *ip;
-				register char   *cp;
-				register struct gr *qw;
+				unsigned int *ip;
+				char   *cp;
+				struct gr *qw;
 
 				*dp++ = NULL;
 				while (++dp < ep)
@@ -520,9 +520,9 @@ out:
 
 
 static	fill_gr (grp)
-register struct group *grp;
+struct group *grp;
 {
-	register char *cp,
+	char *cp,
 			 *dp;
 
 	if (dp = index (cp = grp -> gr_name + strlen (grp -> gr_name) + 1, '\n'))
@@ -536,13 +536,13 @@ register struct group *grp;
 
 
 static	free_gr () {
-	register struct gr *gr;
+	struct gr *gr;
 
 	if (gr_head) {
-		register struct gu *gu;
+		struct gu *gu;
 
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++) {
-			register struct group *grp = &gr -> gr_gr;
+			struct group *grp = &gr -> gr_gr;
 
 			if (gr -> gr_malloc) {
 				if (grp -> gr_name)
@@ -570,19 +570,19 @@ static	free_gr () {
 		free (gr_data), gr_data = NULL;
 
 	if (gr_fd != NOTOK) {
-		(void) flock (gr_fd, LOCK_UN);
-		(void) close (gr_fd), gr_fd = NOTOK;
+		 flock (gr_fd, LOCK_UN);
+		 close (gr_fd), gr_fd = NOTOK;
 	}
 }
 
 /*  */
 
 static struct gr *get_grent (ip, len, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnext;
 {
-	register struct gr *gr;
+	struct gr *gr;
 
 	for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 		switch (elem_cmp (gr -> gr_instance, gr -> gr_insize, ip, len)) {
@@ -603,7 +603,7 @@ int	isnext;
 /*  */
 
 static int  gu_compar (a, b)
-register struct gu *a,
+struct gu *a,
 		*b;
 {
 	return elem_cmp (a -> gu_instance, a -> gu_insize,
@@ -622,11 +622,11 @@ char  **a,
 static int  get_gu (offset)
 int	offset;
 {
-	register int     i;
-	register char   *cp,
+	int     i;
+	char   *cp,
 			 **ap;
-	register struct gr *gr;
-	register struct gu *gu;
+	struct gr *gr;
+	struct gu *gu;
 
 	if (get_gr (offset) == NOTOK)
 		return NOTOK;
@@ -635,8 +635,8 @@ int	offset;
 
 	for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 		if (!gr -> gr_gr.gr_mem) {
-			register char  *dp;
-			register struct group *grp = &gr -> gr_gr;
+			char  *dp;
+			struct group *grp = &gr -> gr_gr;
 
 			if (!grp -> gr_passwd)
 				fill_gr (grp);
@@ -660,7 +660,7 @@ int	offset;
 
 			dp = cp;
 			for (ap = grp -> gr_mem;; ap++) {
-				register char **bp;
+				char **bp;
 
 again:
 				;
@@ -697,7 +697,7 @@ again:
 	gu = gu_head;
 	for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 		for (ap = gr -> gr_gr.gr_mem; *ap; ap++) {
-			register unsigned int *ip;
+			unsigned int *ip;
 
 			ip = gu -> gu_instance, i = 0;
 			for (cp = gr -> gr_gr.gr_name; *cp; i++)
@@ -722,11 +722,11 @@ again:
 /*  */
 
 static struct gu *get_guent (ip, len, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnext;
 {
-	register struct gu *gu;
+	struct gu *gu;
 
 	if (!gu_head)
 		return NULL;
@@ -762,18 +762,18 @@ int	isnext;
 
 static int  o_user (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct pw *pw;
-	register struct passwd *pwp;
-	register OID    oid = oi -> oi_name;
+	struct pw *pw;
+	struct passwd *pwp;
+	OID    oid = oi -> oi_name;
 	OID	    new;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	if (get_pw (offset) == NOTOK) {
 losing:
@@ -875,10 +875,10 @@ try_again:
 
 	case userGroup: {
 		char    buffer[BUFSIZ];
-		register struct gr *gr;
+		struct gr *gr;
 
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++) {
-			register struct group *grp = &gr -> gr_gr;
+			struct group *grp = &gr -> gr_gr;
 
 			if (!grp -> gr_passwd)
 				fill_gr (grp);
@@ -887,7 +887,7 @@ try_again:
 								 strlen (grp -> gr_name));
 		}
 
-		(void) sprintf (buffer, "%d", pwp -> pw_gid);
+		 sprintf (buffer, "%d", pwp -> pw_gid);
 		return o_string (oi, v, buffer, strlen (buffer));
 	}
 
@@ -931,20 +931,20 @@ try_again:
 
 static int  s_user (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar,
 			result;
-	register int    i;
-	register unsigned int *ip;
+	int    i;
+	unsigned int *ip;
 	char   *cp,
 		   **ap;
-	register struct pw *pw;
-	register struct passwd *pwp;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	struct pw *pw;
+	struct passwd *pwp;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
 	if (get_pw (offset) == NOTOK)
@@ -958,7 +958,7 @@ int	offset;
 	if ((pw = get_pwent (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
 						 i = oid -> oid_nelem - ot -> ot_name -> oid_nelem, 0))
 			== NULL) {
-		register unsigned int *jp;
+		unsigned int *jp;
 		char    name[PW_SIZE + 1];
 
 		if (i > PW_SIZE)
@@ -1122,11 +1122,11 @@ bad_value:
 		(*os -> os_free) (value);
 		{
 			int	gid;
-			register struct gr *gr;
+			struct gr *gr;
 
 			for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 				if (strcmp (gr -> gr_gr.gr_name, cp) == 0) {
-					register struct group *grp = &gr -> gr_gr;
+					struct group *grp = &gr -> gr_gr;
 
 					if (!grp -> gr_passwd)
 						fill_gr (grp);
@@ -1178,7 +1178,7 @@ do_string:
 			goto bad_value;
 		}
 		if (ifvar == userHome) {
-			register char *dp;
+			char *dp;
 
 			if (*cp != '/') {
 				free (cp);
@@ -1230,18 +1230,18 @@ do_string:
 
 static int  o_group (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct gr *gr;
-	register struct group *grp;
-	register OID    oid = oi -> oi_name;
+	struct gr *gr;
+	struct group *grp;
+	OID    oid = oi -> oi_name;
 	OID	    new;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	if (get_gr (offset) == NOTOK)
 		return generr (offset);
@@ -1348,19 +1348,19 @@ try_again:
 
 static int  s_group (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar,
 			result;
-	register int    i;
-	register unsigned int *ip;
+	int    i;
+	unsigned int *ip;
 	char   *cp;
-	register struct gr *gr;
-	register struct group *grp;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	struct gr *gr;
+	struct group *grp;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
 	if (get_gr (offset) == NOTOK || get_gu (offset) == NOTOK)
@@ -1372,7 +1372,7 @@ int	offset;
 	if ((gr = get_grent (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
 						 i = oid -> oid_nelem - ot -> ot_name -> oid_nelem, 0))
 			== NULL) {
-		register unsigned int *jp;
+		unsigned int *jp;
 		char    name[GR_SIZE + 1];
 
 		if (i > GR_SIZE)
@@ -1528,17 +1528,17 @@ bad_value:
 
 static int  o_gruser (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct gu *gu;
-	register OID    oid = oi -> oi_name;
+	struct gu *gu;
+	OID    oid = oi -> oi_name;
 	OID	    new;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	if (get_gu (offset) == NOTOK)
 		return generr (offset);
@@ -1615,17 +1615,17 @@ int	offset;
 
 static int  s_gruser (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip;
+	int    i;
+	unsigned int *ip;
 	char   *cp;
-	register struct gu *gu;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	struct gu *gu;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
 	if (get_gu (offset) == NOTOK)
@@ -1637,10 +1637,10 @@ int	offset;
 	if ((gu = get_guent (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
 						 i = oid -> oid_nelem - ot -> ot_name -> oid_nelem, 0))
 			== NULL) {
-		register unsigned int *jp;
+		unsigned int *jp;
 		char    group[GU_SIZE + 1],
 				user[PW_SIZE + 1];
-		register struct gr *gr;
+		struct gr *gr;
 
 		if (i > GU_SIZE)
 			return int_SNMP_error__status_noSuchName;
@@ -1755,7 +1755,7 @@ char   *s;
 	long    v;
 	char    salt[3];
 
-	(void) srandom ((int) time ((long *) 0));
+	 srandom ((int) time ((long *) 0));
 	salt[0] = itoa64[(v = random ()) & 0x3f];
 	salt[1] = itoa64[(v >> 6) & 0x3f];
 	salt[2] = NULL;
@@ -1766,7 +1766,7 @@ char   *s;
 /*  */
 
 int	init_users () {
-	register OT	    ot;
+	OT	    ot;
 
 	if (ot = text2obj ("userName"))
 		ot -> ot_getfnx = o_user,
@@ -1833,7 +1833,7 @@ int	init_users () {
 /*  */
 
 static int  pw_sort (a, b)
-register struct pw *a,
+struct pw *a,
 		*b;
 {
 	int	    i;
@@ -1852,7 +1852,7 @@ register struct pw *a,
 
 
 static int  gr_sort (a, b)
-register struct gr *a,
+struct gr *a,
 		*b;
 {
 	int	    i;
@@ -1878,9 +1878,9 @@ integer	cor;
 			ngr,
 			npw;
 	char    tmpfil[BUFSIZ];
-	register struct pw *pw;
-	register struct gr *gr;
-	register struct gu *gu;
+	struct pw *pw;
+	struct gr *gr;
+	struct gu *gu;
 	FILE   *fp;
 
 	switch (cor) {
@@ -1888,8 +1888,8 @@ integer	cor;
 		if (!pw_touched)
 			goto check_gr;
 		invalid = 0;
-		(void) strcpy (tmpfil, "/etc/ptmpXXXXXX");
-		(void) unlink (mktemp (tmpfil));
+		 strcpy (tmpfil, "/etc/ptmpXXXXXX");
+		 unlink (mktemp (tmpfil));
 		if (!(fp = fopen (tmpfil, "w"))) {
 			advise (LLOG_FATAL, tmpfil, "unable to write");
 			goto flush_pw;
@@ -1910,7 +1910,7 @@ integer	cor;
 			qsort ((char *) pw_head, npw, sizeof *pw_head, pw_sort);
 
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++) {
-			register struct passwd *pwp = &pw -> pw_pw;
+			struct passwd *pwp = &pw -> pw_pw;
 
 			if (pw -> pw_status == PW_INVALID) {
 				invalid = 1;
@@ -1927,13 +1927,13 @@ integer	cor;
 						"unable to set permissions for %s", pwp -> pw_dir);
 		}
 
-		(void) fflush (fp);
+		 fflush (fp);
 		if (iserr = ferror (fp))
 			advise (LLOG_FATAL, tmpfil, "error writing");
-		(void) fclose (fp);
+		 fclose (fp);
 
 		if (iserr)
-			(void) unlink (tmpfil);
+			 unlink (tmpfil);
 		else {
 			if (access ("/etc/passwd.orig", F_OK) == NOTOK
 					&& errno == ENOENT
@@ -1962,8 +1962,8 @@ check_gr:
 		if (!gr_touched)
 			break;
 		invalid = 0;
-		(void) strcpy (tmpfil, "/etc/gtmpXXXXXX");
-		(void) unlink (mktemp (tmpfil));
+		 strcpy (tmpfil, "/etc/gtmpXXXXXX");
+		 unlink (mktemp (tmpfil));
 		if (!(fp = fopen (tmpfil, "w"))) {
 			advise (LLOG_FATAL, tmpfil, "unable to write");
 			goto flush_gr;
@@ -1989,7 +1989,7 @@ check_gr:
 
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++) {
 			char   *cp = "";
-			register struct group *grp = &gr -> gr_gr;
+			struct group *grp = &gr -> gr_gr;
 
 			if (gr -> gr_status == GR_INVALID) {
 				invalid = 1;
@@ -2007,12 +2007,12 @@ check_gr:
 			fprintf (fp, "\n");
 		}
 
-		(void) fflush (fp);
+		 fflush (fp);
 		if (iserr = ferror (fp))
 			advise (LLOG_FATAL, tmpfil, "error writing");
-		(void) fclose (fp);
+		 fclose (fp);
 		if (iserr)
-			(void) unlink (tmpfil);
+			 unlink (tmpfil);
 		else {
 			if (access ("/etc/group.orig", F_OK) == NOTOK
 					&& errno == ENOENT
@@ -2053,15 +2053,15 @@ flush_gr:
 
 	pw_touched = 0;
 	if (pw_fd != NOTOK) {
-		(void) fstat (pw_fd, &pw_st);
-		(void) flock (pw_fd, LOCK_UN);
-		(void) close (pw_fd), pw_fd = NOTOK;
+		 fstat (pw_fd, &pw_st);
+		 flock (pw_fd, LOCK_UN);
+		 close (pw_fd), pw_fd = NOTOK;
 	}
 
 	gr_touched = 0;
 	if (gr_fd != NOTOK) {
-		(void) fstat (gr_fd, &gr_st);
-		(void) flock (gr_fd, LOCK_UN);
-		(void) close (gr_fd), gr_fd = NOTOK;
+		 fstat (gr_fd, &gr_st);
+		 flock (gr_fd, LOCK_UN);
+		 close (gr_fd), gr_fd = NOTOK;
 	}
 }

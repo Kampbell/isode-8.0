@@ -57,7 +57,7 @@ int	f;
 
 int	endisodocument () {
 	if (servf && !stayopen) {
-		(void) fclose (servf);
+		 fclose (servf);
 		servf = NULL;
 	}
 
@@ -67,8 +67,8 @@ int	endisodocument () {
 /*  */
 
 struct isodocument *getisodocument () {
-	register char  *cp;
-	register struct isodocument *id = &ids;
+	char  *cp;
+	struct isodocument *id = &ids;
 	static char buffer[BUFSIZ + 1];
 	static char *vec[NVEC + NSLACK + 1];
 
@@ -152,13 +152,13 @@ free1:
 struct isodocument *getisodocumentbyentry (entry)
 char    *entry;
 {
-	register struct isodocument *id;
+	struct isodocument *id;
 
-	(void) setisodocument (0);
+	 setisodocument (0);
 	while (id = getisodocument ())
 		if (strcmp (id -> id_entry, entry) == 0)
 			break;
-	(void) endisodocument ();
+	 endisodocument ();
 
 	return id;
 }
@@ -168,13 +168,13 @@ char    *entry;
 struct isodocument *getisodocumentbytype (type)
 OID	type;
 {
-	register struct isodocument *id;
+	struct isodocument *id;
 
-	(void) setisodocument (0);
+	 setisodocument (0);
 	while (id = getisodocument ())
 		if (oid_cmp (id -> id_type, type) == 0)
 			break;
-	(void) endisodocument ();
+	 endisodocument ();
 
 	return id;
 }

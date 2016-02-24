@@ -39,7 +39,7 @@ struct protected_password *x;
 {
 	PE result = NULLPE;
 
-	(void) encode_Quipu_ProtectedPassword (&result, 0, 0, NULLCP, x);
+	 encode_Quipu_ProtectedPassword (&result, 0, 0, NULLCP, x);
 	return (result);
 }
 
@@ -242,7 +242,7 @@ struct protected_password *parm;
 }
 
 protected_password_syntax () {
-	(void) add_attribute_syntax ("ProtectedPassword",
+	 add_attribute_syntax ("ProtectedPassword",
 								 (IFP) prot_enc,	(IFP) prot_dec,
 								 (IFP) str2prot,	prot_print,
 								 (IFP) prot_cpy,	prot_cmp,

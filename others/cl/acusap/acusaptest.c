@@ -83,10 +83,8 @@ void advise();
 
 /* ARGSUSED */
 
-int main(argc, argv, envp)
-int argc;
-char **argv,
-	 **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	char buffer[80], *bptr;
 
@@ -150,7 +148,7 @@ char **argv,
 			break;
 		}
 		printf("\nCommand: ");
-		(void)fflush(stdout);
+		fflush(stdout);
 		bptr = gets(buffer);
 		if (feof (stdin))
 			exit (1);
@@ -160,7 +158,8 @@ char **argv,
 
 
 /*-------------------------------------*/
-togglemode()
+int 
+togglemode 
 /*-------------------------------------*/
 {
 	printf ("\n Current mode is ");
@@ -177,7 +176,8 @@ togglemode()
 
 
 /*-------------------------------------*/
-int	bind()
+int 
+bind 
 /*-------------------------------------*/
 {
 	/*  set binding variables: title, presentation address, and ctxlist */
@@ -206,7 +206,8 @@ int	bind()
 }
 
 /*-------------------------------------*/
-initbindvars()
+int 
+initbindvars 
 /*-------------------------------------*/
 {
 	/*  set up bind static variables for test */
@@ -233,7 +234,8 @@ initbindvars()
 
 
 /*-------------------------------------*/
-int	unbind()
+int 
+unbind 
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -253,13 +255,14 @@ int	unbind()
 
 
 /*-------------------------------------*/
-int	listenup()
+int 
+listenup 
 /*-------------------------------------*/
 {
 	;
 	/*    struct TSAPaddr   *ta;
-	    register int    n = ta -> ta_naddr - 1;
-	    register struct NSAPaddr   *na = ta -> ta_addrs;
+	    int    n = ta -> ta_naddr - 1;
+	    struct NSAPaddr   *na = ta -> ta_addrs;
 	static struct TSAPaddr *tz;
 	static struct TSAPaddr  tas[NTADDRS];
 	    int	    port;
@@ -295,7 +298,8 @@ int	listenup()
 }
 
 /*-------------------------------------*/
-int audtsendreq()
+int 
+audtsendreq 
 /*-------------------------------------*/
 {
 	/*  first set binding variables: title, presentation address, and ctxlist */
@@ -324,7 +328,8 @@ int audtsendreq()
 }
 
 /*-------------------------------------*/
-int audtsend()
+int 
+audtsend 
 /*-------------------------------------*/
 {
 	int	sum, result;
@@ -362,7 +367,8 @@ int audtsend()
 
 
 /*-------------------------------------*/
-int audtread()
+int 
+audtread 
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -406,10 +412,12 @@ rfail:
 }
 
 /*-------------------------------------*/
-int validbinding ( sd, acs )
+int 
+validbinding (
 /*-------------------------------------*/
-int sd;
-struct  AcuSAPstart	*acs;
+    int sd,
+    struct AcuSAPstart *acs
+)
 {
 	struct assocblk *acb;
 
@@ -439,7 +447,8 @@ struct  AcuSAPstart	*acs;
 
 
 /*-------------------------------------*/
-int audtrebind()
+int 
+audtrebind 
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE)
@@ -470,12 +479,14 @@ int audtrebind()
 
 
 /*-------------------------------------*/
-static	printsrv (is)
+static 
+printsrv (
 /*-------------------------------------*/
-register struct isoservent *is;
+    struct isoservent *is
+)
 {
-	register int    n = is -> is_tail - is -> is_vec - 1;
-	register char **ap = is -> is_vec;
+	int    n = is -> is_tail - is -> is_vec - 1;
+	char **ap = is -> is_vec;
 
 	printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 			is -> is_entity, is -> is_provider,
@@ -489,9 +500,11 @@ register struct isoservent *is;
 
 /*  */
 /*-------------------------------------*/
-static	printpaddr (pa)
+static 
+printpaddr (
 /*-------------------------------------*/
-register struct PSAPaddr *pa;
+    struct PSAPaddr *pa
+)
 {
 	struct SSAPaddr   *sa = &(pa -> pa_addr);
 	struct TSAPaddr   *ta = &(sa -> sa_addr);
@@ -544,9 +557,8 @@ register struct PSAPaddr *pa;
 
 
 
-void	acs_adios (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_adios (struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -554,18 +566,17 @@ char   *event;
 }
 
 
-void	acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcuErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -586,9 +597,8 @@ va_dcl {
 }
 #else
 /* VARARGS */
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -604,24 +614,23 @@ va_dcl {
 	va_end (ap);
 }
 
-static void  _advise (ap)
-va_list	ap;
+static void 
+_advise (va_list ap)
 {
 	char    buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
-	(void) fflush (stdout);
+	 fflush (stdout);
 	fprintf (stderr, "%s: ", myservice);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
-	(void) fflush (stderr);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
+	 fflush (stderr);
 }
 #else
 /* VARARGS */
 
-void	advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }
@@ -640,9 +649,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	ryr_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
 	ryr_advise (what, fmt);
 }

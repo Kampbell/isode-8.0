@@ -52,8 +52,8 @@ extern char *isodesbinpath;
  *  changeTimeWithRfatime - change time by executing external
  *			    rfatime command as root
  *-------------------------------------------------------------*/
-int changeTimeWithRfatime (dt)
-long dt;
+int 
+changeTimeWithRfatime (long dt)
 {
 	char buf[BUFSIZ];
 	char dtbuf[BUFSIZ];
@@ -119,19 +119,15 @@ long dt;
 /*--------------------------------------------------------------
  *  op_syncTime - synchronize time with peer
  *-------------------------------------------------------------*/
-int  op_syncTime (sd, ryo, rox, in, roi)
-int sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t in;
-struct RoSAPindication *roi;
+int 
+op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
 {
-	register struct type_RFA_SyncTimeArg *sta =
+	struct type_RFA_SyncTimeArg *sta =
 		(struct type_RFA_SyncTimeArg *) in;
 	struct type_RFA_SyncTimeRes	 str;
 	time_t lt, dt;
 
-	(void)time(&lt);
+	time(&lt);
 
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_NOTICE, NULLCP,
@@ -147,7 +143,7 @@ struct RoSAPindication *roi;
 			return str_error(sd, error_RFA_miscError,"remote is not TIME master"
 							 , rox, roi);
 		}
-		(void)time(&(str.parm));
+		time(&(str.parm));
 		str.parm += SENDTIME_DELAY;
 	} else {
 		if (!timeSlave) {

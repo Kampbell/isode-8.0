@@ -81,7 +81,7 @@ char   *type;
 		char *t1;
 		/* we have a [[ P type ]] specification */
 		if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-			(void) fprintf(stderr,
+			 fprintf(stderr,
 						   "\ntdec_typ:SETLIST can't extract direct type from %s\n",
 						   yp->yp_param_type);
 			exit(1);
@@ -123,7 +123,7 @@ char   *type;
 				break;		/* S* type entry - doesn't need a
 				 * malloc */
 
-			(void) fprintf(fp, "\t{ MEMALLOC, 0, sizeof (%s), 0, %s },\n",
+			 fprintf(fp, "\t{ MEMALLOC, 0, sizeof (%s), 0, %s },\n",
 						   t, genstrform(yp));
 			break;
 		}
@@ -132,7 +132,7 @@ char   *type;
 
 	if ((yp->yp_flags & YP_PARMVAL) && yp->yp_parm) {
 		if ((f = getfield(yp->yp_parm)) == NULLCP) {
-			(void) fprintf(stderr, "\ntdec_typ: can't extract field from %s\n",
+			 fprintf(stderr, "\ntdec_typ: can't extract field from %s\n",
 						   yp->yp_parm);
 			exit(1);
 		}
@@ -146,24 +146,24 @@ char   *type;
 		char *bitno;
 
 		if (yp -> yp_optional_act && yp -> yp_optional_act -> yal_dec) {
-			(void) fprintf (fp, "\t{ BOPTIONAL, %d, 0, FL_USELECT, %s},\n",
+			 fprintf (fp, "\t{ BOPTIONAL, %d, 0, FL_USELECT, %s},\n",
 							control_act(yp -> yp_optional_act -> yal_dec),
 							genstrform(yp));
 		} else {
 			if ((f1 = getfldbit(yp->yp_optcontrol, &bitno)) == NULLCP) {
-				(void) fprintf(stderr,
+				 fprintf(stderr,
 							   "\ntdec_typ:BOPTIONAL: can't extract field from %s\n",
 							   yp->yp_optcontrol);
 				exit(1);
 			}
-			(void) fprintf(fp, "\t{ BOPTIONAL, AOFFSET(%s, %s), %s, 0, %s},\n", t,
+			 fprintf(fp, "\t{ BOPTIONAL, AOFFSET(%s, %s), %s, 0, %s},\n", t,
 						   f1, bitno, genstrform(yp));
 		}
 	}
 
 	if (yp->yp_flags & YP_TAG && !(yp->yp_flags & YP_IMPLICIT)) {
-		(void) fprintf(fp, "\t{ ETAG, 0, ");
-		(void) fprintf(fp, "%s, %s, %s },\n", ec_tag(yp), ec_class(yp),
+		 fprintf(fp, "\t{ ETAG, 0, ");
+		 fprintf(fp, "%s, %s, %s },\n", ec_tag(yp), ec_class(yp),
 					   genstrform(yp));
 	}
 
@@ -250,7 +250,7 @@ char   *type;
 		}
 		t = NULL;
 		p1 = NULL;
-		(void) fprintf(fp, "\t{ SBITSTRING, 0, %s, %s, %s },\n",
+		 fprintf(fp, "\t{ SBITSTRING, 0, %s, %s, %s },\n",
 					   c_tag(yp), c_class(yp), genstrform(yp));
 		break;
 
@@ -289,7 +289,7 @@ char   *type;
 				break;
 
 			default:
-				(void) fprintf(stderr,"\ntdec_typ: Unknown Octet string specifier %c\n",
+				 fprintf(stderr,"\ntdec_typ: Unknown Octet string specifier %c\n",
 							   yp->yp_prfexp);
 				exit(1);
 			}
@@ -301,7 +301,7 @@ char   *type;
 		}
 		t = NULL;
 		p1 = NULL;
-		(void) fprintf(fp, "\t{ SOCTETSTRING, 0, %s, %s, %s },\n",
+		 fprintf(fp, "\t{ SOCTETSTRING, 0, %s, %s, %s },\n",
 					   c_tag(yp), c_class(yp), genstrform(yp));
 		break;
 
@@ -314,7 +314,7 @@ char   *type;
 		}
 		t = NULL;
 		p1 = NULL;
-		(void) fprintf(fp, "\t{ SOBJID, 0, %s, %s, %s },\n",
+		 fprintf(fp, "\t{ SOBJID, 0, %s, %s, %s },\n",
 					   c_tag(yp), c_class(yp), genstrform(yp));
 		break;
 
@@ -329,7 +329,7 @@ char   *type;
 		}
 		t = NULL;
 		p1 = NULL;
-		(void) fprintf(fp, "\t{ SANY, 0, %s, %s, %s },\n",
+		 fprintf(fp, "\t{ SANY, 0, %s, %s, %s },\n",
 					   c_tag(yp), c_class(yp), genstrform(yp));
 		break;
 
@@ -388,7 +388,7 @@ char   *type;
 		}
 do_obj:
 		if (yp->yp_flags & YP_TAG && yp->yp_flags & YP_IMPLICIT)
-			(void) fprintf(fp, "\t{ IMP_OBJ, 0, %s, %s, %s },\n",
+			 fprintf(fp, "\t{ IMP_OBJ, 0, %s, %s, %s },\n",
 						   c_tag(yp), c_class(yp), genstrform(yp));
 		if (yp->yp_module == NULL
 				|| strcmp(yp->yp_module, mymodule) == 0) {
@@ -410,7 +410,7 @@ do_obj:
 				prtfield(fp, "EXTOBJ", t, f,
 						 concat("_Z", strp2name(yp->yp_identifier, yp->yp_module)),
 						 c_class(yp), yp);
-			(void) fprintf(fp, "\t{ EXTMOD, %d, 0, 0, %s },\n",
+			 fprintf(fp, "\t{ EXTMOD, %d, 0, 0, %s },\n",
 						   gen_modref(yp->yp_module), genstrform(yp));
 		}
 out:
@@ -433,7 +433,7 @@ out:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntdec_typ:SEQLIST can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -450,13 +450,13 @@ out:
 				genmalloc(fp, yp);
 
 			if (optfield(y)) {
-				(void) fprintf(fp,
+				 fprintf(fp,
 							   "\t{ OPTL, OFFSET(%s, optionals), 0, 0, %s },\n",
 							   yp->yp_structname, genstrform(y));
 			}
 			tdec_loop(fp, y, id, yp->yp_structname);
 		}
-		(void) fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n", genstrform(yp));
+		 fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n", genstrform(yp));
 		break;
 
 	case YP_SETLIST:
@@ -475,7 +475,7 @@ out:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntdec_typ:SETLIST can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -492,13 +492,13 @@ out:
 				genmalloc(fp, yp);
 
 			if (optfield(y)) {
-				(void) fprintf(fp,
+				 fprintf(fp,
 							   "\t{ OPTL, OFFSET(%s, optionals), 0, 0, %s },\n",
 							   yp->yp_structname, genstrform(y));
 			}
 			tdec_loop(fp, y, id, yp->yp_structname);
 		}
-		(void) fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n", genstrform(yp));
+		 fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n", genstrform(yp));
 		break;
 
 	case YP_SEQTYPE:		/* What is the difference ?? */
@@ -514,7 +514,7 @@ out:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntdec_typ:SEQTYPE can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -536,17 +536,17 @@ out:
 			char *f1;
 
 			if ((f1 = getfield(yp->yp_control)) == NULLCP) {
-				(void) fprintf(stderr, "\ntdec_typ:SEQ OF: can't extract field from %s\n",
+				 fprintf(stderr, "\ntdec_typ:SEQ OF: can't extract field from %s\n",
 							   yp->yp_control);
 				exit(1);
 			}
-			(void) fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0, %s },\n",
+			 fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0, %s },\n",
 						   yp->yp_structname, f1, genstrform(yp));
 		} else if (yp->yp_structname != NULL)
-			(void) fprintf(fp, "\t{ PE_END, OFFSET(%s, next), 0, 0, %s },\n",
+			 fprintf(fp, "\t{ PE_END, OFFSET(%s, next), 0, 0, %s },\n",
 						   yp->yp_structname, genstrform(yp));
 		else
-			(void) fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n",
+			 fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n",
 						   genstrform(yp));
 		break;
 
@@ -564,7 +564,7 @@ out:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntdec_typ:SETTYPE can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -586,17 +586,17 @@ out:
 			char *f1;
 
 			if ((f1 = getfield(yp->yp_control)) == NULLCP) {
-				(void) fprintf(stderr, "\ntdec_typ:SET OF: can't extract field from %s\n",
+				 fprintf(stderr, "\ntdec_typ:SET OF: can't extract field from %s\n",
 							   yp->yp_control);
 				exit(1);
 			}
-			(void) fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0, %s },\n",
+			 fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0, %s },\n",
 						   yp->yp_structname, f1, genstrform(yp));
 		} else if (yp->yp_structname != NULL)
-			(void) fprintf(fp, "\t{ PE_END, OFFSET(%s, next), 0, 0, %s },\n",
+			 fprintf(fp, "\t{ PE_END, OFFSET(%s, next), 0, 0, %s },\n",
 						   yp->yp_structname, genstrform(yp));
 		else
-			(void) fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n", genstrform(yp));
+			 fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n", genstrform(yp));
 		break;
 
 	case YP_CHOICE:
@@ -620,7 +620,7 @@ out:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntdec_typ:CHOICE can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -638,21 +638,21 @@ out:
 
 
 			if (yp -> yp_control_act && yp->yp_control_act->yal_dec) {
-				(void) fprintf (fp, "\t{ SCTRL, %d, 0, FL_USELECT, %s },\n",
+				 fprintf (fp, "\t{ SCTRL, %d, 0, FL_USELECT, %s },\n",
 								control_act(yp->yp_control_act -> yal_dec),
 								genstrform(yp));
 			} else if (yp->yp_flags & YP_CONTROLLED) {
 				char *f1;
 
 				if ((f1 = getfield(yp->yp_control)) == NULLCP) {
-					(void) fprintf(stderr, "\ntdec_typ:CHOICE: can't extract field from %s\n",
+					 fprintf(stderr, "\ntdec_typ:CHOICE: can't extract field from %s\n",
 								   yp->yp_control);
 					exit(1);
 				}
-				(void) fprintf(fp, "\t{ SCTRL, OFFSET(%s, %s), 0, 0, %s },\n",
+				 fprintf(fp, "\t{ SCTRL, OFFSET(%s, %s), 0, 0, %s },\n",
 							   yp->yp_structname, f1, genstrform(yp));
 			} else if (yp->yp_structname != NULL)
-				(void) fprintf(fp,"\t{ SCTRL, OFFSET(%s, offset), 0, 0, %s },\n",
+				 fprintf(fp,"\t{ SCTRL, OFFSET(%s, offset), 0, 0, %s },\n",
 							   yp->yp_structname, genstrform(yp));
 			else
 				ferr(1, "\nCHOICE missing SCTRL\n");
@@ -660,7 +660,7 @@ out:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					(void) fprintf(stderr,
+					 fprintf(stderr,
 								   "\ntdec_typ:CHOICE can't extract direct type from %s\n",
 								   yp->yp_param_type);
 					exit(1);
@@ -674,7 +674,7 @@ out:
 				yp->yp_structname = t;
 			tdec_loop(fp, y, id, yp->yp_structname);
 		}
-		(void) fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n", genstrform(yp));
+		 fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n", genstrform(yp));
 		break;
 
 	default:
@@ -715,7 +715,7 @@ FILE	*fp;
 YP      yp;
 {
 	if (hasdatstr(yp))
-		(void) fprintf(fp, "\t{ MEMALLOC, 0, sizeof (%s), 0, %s },\n",
+		 fprintf(fp, "\t{ MEMALLOC, 0, sizeof (%s), 0, %s },\n",
 					   yp->yp_structname, genstrform(yp));
 }
 /*
@@ -774,7 +774,7 @@ YP      yp;
 int control_act (act)
 Action act;
 {
-	register char *p;
+	char *p;
 
 	for (p = act -> a_data; *p; p++)
 		if (!isspace (*p) && *p == '0')
@@ -796,12 +796,12 @@ YP	yp;
 	char	*fn;
 
 	if (yp->yp_yfn && (fn = yp->yp_yfn->yfn_fre)) {
-		(void) fprintf(fp, "\t{ FFN_CALL, %d, 0, 0, %s},\n",
+		 fprintf(fp, "\t{ FFN_CALL, %d, 0, 0, %s},\n",
 					   addptr(fn), genstrform(yp));
 		return (1);	/* don't free as per normal */
 	}
 
-	(void) fprintf(fp, "\t{ FREE_ONLY, 0, 0, 0, %s},\n",
+	 fprintf(fp, "\t{ FREE_ONLY, 0, 0, 0, %s},\n",
 				   genstrform(yp));
 	return (0);
 

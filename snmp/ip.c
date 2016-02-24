@@ -93,13 +93,13 @@ static struct ipstat ipstat;
 
 static int  o_ip (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register struct ipstat *ips = &ipstat;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct ipstat *ips = &ipstat;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
 	ifvar = (int) ot -> ot_info;
@@ -239,13 +239,13 @@ int	offset;
 
 static int  s_ip (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 
 	ifvar = (int) ot -> ot_info;
 	switch (offset) {
@@ -350,17 +350,17 @@ int	offset;
 
 static int  o_ip_addr (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
-	register int   i;
+	int   i;
 	int	    ifvar;
-	register unsigned int *ip,
+	unsigned int *ip,
 			 *jp;
-	register struct address   *as;
-	register OID    oid = oi -> oi_name;
+	struct address   *as;
+	OID    oid = oi -> oi_name;
 	OID	    new;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	if (get_interfaces (offset) == NOTOK)
 		return generr (offset);
@@ -475,17 +475,17 @@ int	offset;
 
 static int  o_ip_route (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct rtetab *rt;
-	register OID    oid = oi -> oi_name;
+	struct rtetab *rt;
+	OID    oid = oi -> oi_name;
 	OID	    new;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	if (get_routes (offset) == NOTOK)
 		return generr (offset);
@@ -579,7 +579,7 @@ try_again:
 		return o_ipaddr (oi, v, (struct sockaddr_in *) &rt -> rt_dst);
 
 	case ipRouteIfIndex: {
-		register struct interface *is;
+		struct interface *is;
 
 		if (get_interfaces (type_SNMP_PDUs_get__request) == NOTOK)
 			return generr (offset);
@@ -667,16 +667,16 @@ try_again:
 #ifndef	BSD44
 static int  s_ip_route (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip;
-	register struct rtetab *rt;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	int    i;
+	unsigned int *ip;
+	struct rtetab *rt;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
 	ifvar = (int) ot -> ot_info;
@@ -716,7 +716,7 @@ int	offset;
 		}
 
 		if (i > IFN_SIZE) {
-			register struct rtetab *rz;
+			struct rtetab *rz;
 
 			for (rz = rts; rz; rz = rz -> rt_next)
 				if (rz -> rt_dst.sa.sa_family == AF_INET
@@ -742,8 +742,8 @@ bad_magic:
 
 		rt -> rt_rt.rt_flags |= RTF_UP;
 		{
-			register u_char *cp;
-			register unsigned int *jp,
+			u_char *cp;
+			unsigned int *jp,
 					 *kp;
 			struct sockaddr_in *sin;
 
@@ -806,7 +806,7 @@ bad_magic:
 			i = *((integer *) value);
 			(*os -> os_free) (value);
 			{
-				register struct interface *is;
+				struct interface *is;
 
 				if (get_interfaces (type_SNMP_PDUs_get__request)
 						== NOTOK)
@@ -976,13 +976,13 @@ static struct rtstat rtstat;
 
 static int  o_ip_routing_stats (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register struct rtstat *rts = &rtstat;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct rtstat *rts = &rtstat;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
 	ifvar = (int) ot -> ot_info;
@@ -1104,18 +1104,18 @@ static struct adrtab *get_arpent ();
 
 static int  o_address (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
-	register int    i;
+	int    i;
 	int	    ifvar,
 			isnpa;
-	register unsigned int *ip,
+	unsigned int *ip,
 			 *jp;
-	register struct adrtab *at;
+	struct adrtab *at;
 	struct sockaddr_in netaddr;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 
 	if (get_arptab (offset) == NOTOK)
 		return generr (offset);
@@ -1259,18 +1259,18 @@ int	offset;
 
 static int  s_address (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
-	register int    i;
+	int    i;
 	int	    ifvar,
 			isnpa;
-	register unsigned int *ip;
-	register struct adrtab *at;
-	register struct interface *is;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	unsigned int *ip;
+	struct adrtab *at;
+	struct interface *is;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
 	switch (ifvar = (int) ot -> ot_info) {
@@ -1334,8 +1334,8 @@ int	offset;
 		at -> adr_type = DYNAMIC_MAPPING;
 
 		{
-			register u_char *cp;
-			register unsigned int *jp,
+			u_char *cp;
+			unsigned int *jp,
 					 *kp;
 
 			cp = (u_char *) &at -> adn_address;
@@ -1387,9 +1387,9 @@ int	offset;
 			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			{
-				register int	len;
-				register u_char *d;
-				register struct qbuf *q,
+				int	len;
+				u_char *d;
+				struct qbuf *q,
 						*p;
 
 				p = (q = (struct qbuf *) value) -> qb_forw, len = 0;
@@ -1479,7 +1479,7 @@ bad_value:
 
 			bzero ((char *) &arpreq, sizeof arpreq);
 			{
-				register struct sockaddr_in *netaddr
+				struct sockaddr_in *netaddr
 					= (struct sockaddr_in *) &arpreq.arp_pa;
 
 				netaddr -> sin_family = AF_INET;
@@ -1521,7 +1521,7 @@ losing_noop:
 
 						/* initialize arpreq.arp_flags for ATF_PERM
 						   below... */
-						(void) ioctl (nd, SIOCGARP, &arpreq);
+						 ioctl (nd, SIOCGARP, &arpreq);
 
 						s = "SIOCDARP";
 						if (ioctl (nd, SIOCDARP, &arpreq) == NOTOK)
@@ -1566,13 +1566,13 @@ int	offset;
 {
 	int	    arptab_size,
 			tblsize;
-	register struct arptab *ac,
+	struct arptab *ac,
 			*ae;
 	struct arptab *arptab;
-	register struct adrtab *at,
+	struct adrtab *at,
 			*ap,
 			**afp;
-	register struct interface *is;
+	struct interface *is;
 	static  int first_time = 1;
 	static  int lastq = -1;
 
@@ -1662,7 +1662,7 @@ no_dice:
 
 				oids.oid_elements = at -> adn_instance + 1;
 				oids.oid_nelem = at -> adn_insize - 1;
-				(void) strcpy (buffer, sprintoid (&oids));
+				 strcpy (buffer, sprintoid (&oids));
 				oids.oid_elements = at -> adm_instance;
 				oids.oid_nelem = at -> adm_insize;
 				advise (LLOG_DEBUG, NULLCP,
@@ -1687,7 +1687,7 @@ no_dice:
 /*  */
 
 static int  adn_compar (a, b)
-register struct adrtab **a,
+struct adrtab **a,
 		**b;
 {
 	return elem_cmp ((*a) -> adn_instance, (*a) -> adn_insize,
@@ -1696,7 +1696,7 @@ register struct adrtab **a,
 
 
 static int  adm_compar (a, b)
-register struct adrtab **a,
+struct adrtab **a,
 		**b;
 {
 	return elem_cmp ((*a) -> adm_instance, (*a) -> adm_insize,
@@ -1704,7 +1704,7 @@ register struct adrtab **a,
 }
 
 static int  ada_compar (a, b)
-register struct adrtab **a,
+struct adrtab **a,
 		**b;
 {
 	return elem_cmp ((*a) -> ada_instance, (*a) -> ada_insize,
@@ -1713,7 +1713,7 @@ register struct adrtab **a,
 
 
 static	sort_arptab () {
-	register struct adrtab *at,
+	struct adrtab *at,
 			**base,
 			**afe,
 			**afp;
@@ -1762,12 +1762,12 @@ static	sort_arptab () {
 /*  */
 
 static struct adrtab *get_arpent (ip, len, isnpa, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnpa,
 	isnext;
 {
-	register struct adrtab *at;
+	struct adrtab *at;
 
 	switch (isnpa) {
 	case 0:
@@ -1829,7 +1829,7 @@ out:
 /*  */
 
 init_ip () {
-	register OT	    ot;
+	OT	    ot;
 
 	if (ot = text2obj ("ipForwarding"))
 		ot -> ot_getfnx = o_ip,

@@ -36,10 +36,10 @@ struct dispatch {
 };
 
 
-void	adios (), advise ();
+void	adios (char*, ...), advise (int code, ...);
 void	acs_advise ();
 void	ros_adios (), ros_advise ();
-void	ryr_advise ();
+void	ryr_advise (char*, ...);
 
 int	ryresponder ();
 

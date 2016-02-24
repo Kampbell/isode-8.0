@@ -57,7 +57,7 @@ static SFD	intrser ();
 
 int	RyStub (sd, ryo, op, id, linked, in, rfx, efx, class, roi)
 int	sd;
-register struct RyOperation *ryo;
+struct RyOperation *ryo;
 int	op,
 	id,
 	*linked,
@@ -114,7 +114,7 @@ again:
 
 						/* interrupt causes EINTR */
 						if (RoSelectMask (sd, &rfds, &nfds, roi) == OK)
-							(void) xselect (nfds, &rfds, NULLFD,
+							 xselect (nfds, &rfds, NULLFD,
 											NULLFD, NOTOK);
 					}
 					if (interrupted) {
@@ -161,7 +161,7 @@ again:
 	}
 
 	if (class == ROS_INTR)
-		(void) signal (SIGINT, istat);
+		 signal (SIGINT, istat);
 
 	return result;
 }
@@ -170,11 +170,11 @@ again:
 
 /* ARGSUSED */
 
-static  SFD intrser (sig)
-int	sig;
+static SFD 
+intrser (int sig)
 {
 #ifndef	BSDSIGS
-	(void) signal (SIGINT, intrser);
+	 signal (SIGINT, intrser);
 #endif
 
 	interrupted++;

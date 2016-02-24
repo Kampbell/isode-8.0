@@ -53,9 +53,8 @@ static int  doPSabort ();
 
 /*    bind underlying service */
 
-int	RoPService (acb, roi)
-register struct assocblk   *acb;
-struct RoSAPindication *roi;
+int 
+RoPService (struct assocblk *acb, struct RoSAPindication *roi)
 {
 	if (!(acb -> acb_flags & ACB_ACS) || (acb -> acb_flags & ACB_RTS))
 		return rosaplose (roi, ROS_OPERATION, NULLCP,
@@ -78,13 +77,11 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2psasync (acb, indication, roi)
-register struct assocblk   *acb;
-IFP	indication;
-struct RoSAPindication *roi;
+int 
+ro2psasync (struct assocblk *acb, IFP indication, struct RoSAPindication *roi)
 {
 	struct PSAPindication   pis;
-	register struct PSAPabort  *pa = &pis.pi_abort;
+	struct PSAPabort  *pa = &pis.pi_abort;
 
 	if (acb -> acb_rosindication = indication)
 		acb -> acb_flags |= ACB_ASYN;
@@ -100,7 +97,7 @@ struct RoSAPindication *roi;
 			return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) pslose (acb, roi, "PSetIndications", pa);
+			 pslose (acb, roi, "PSetIndications", pa);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -115,11 +112,8 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2psmask (acb, mask, nfds, roi)
-register struct assocblk   *acb;
-fd_set *mask;
-int    *nfds;
-struct RoSAPindication *roi;
+int 
+ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 {
 	struct PSAPindication   pis;
 	struct PSAPabort   *pa = &pis.pi_abort;
@@ -130,7 +124,7 @@ struct RoSAPindication *roi;
 			return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) pslose (acb, roi, "PSelectMask", pa);
+			 pslose (acb, roi, "PSelectMask", pa);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -140,11 +134,8 @@ struct RoSAPindication *roi;
 
 /*    AcSAP interface */
 
-static int acslose (acb, roi, event, aca)
-register struct assocblk *acb;
-register struct RoSAPindication *roi;
-char   *event;
-register struct AcSAPabort *aca;
+static int 
+acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct AcSAPabort *aca)
 {
 	int     reason;
 	char   *cp,
@@ -171,7 +162,7 @@ register struct AcSAPabort *aca;
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at association control)",
+		 sprintf (cp = buffer, " (%s at association control)",
 						AcErrString (aca -> aca_reason));
 	case ACS_PRESENTATION:
 		reason = ROS_ACS;
@@ -187,17 +178,14 @@ register struct AcSAPabort *aca;
 
 /*    PSAP interface */
 
-int	ro2pswait (acb, invokeID, secs, roi)
-register struct assocblk *acb;
-int    *invokeID,
-	   secs;
-register struct RoSAPindication *roi;
+int 
+ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi)
 {
 	int     result;
 	struct PSAPdata pxs;
-	register struct PSAPdata   *px = &pxs;
+	struct PSAPdata   *px = &pxs;
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
+	struct PSAPindication *pi = &pis;
 
 	for (;;) {
 		switch (result = PReadRequest (acb -> acb_fd, px, secs, pi)) {
@@ -237,7 +225,7 @@ register struct RoSAPindication *roi;
 				return DONE;
 
 			default:
-				(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+				 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 								  "unknown indication (0x%x) from presentation",
 								  pi -> pi_type);
 				break;
@@ -245,7 +233,7 @@ register struct RoSAPindication *roi;
 			break;
 
 		default:
-			(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+			 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 							  "unexpected return from PReadRequest=%d", result);
 			break;
 		}
@@ -261,28 +249,24 @@ register struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2pswrite (acb, pe, fe, priority, roi)
-register struct assocblk *acb;
-PE	pe,
- fe;
-int	priority;
-struct RoSAPindication *roi;
+int 
+ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi)
 {
 	int	    result;
 	struct PSAPindication   pis;
-	register struct PSAPabort  *pa = &pis.pi_abort;
+	struct PSAPabort  *pa = &pis.pi_abort;
 
 	pe -> pe_context = acb -> acb_rosid;
 
 	PLOGP (rosap_log,ROS_ROSEapdus, pe, "ROSEapdus", 0);
 
 	if ((result = PDataRequest (acb -> acb_fd, &pe, 1, &pis)) == NOTOK) {
-		(void) pslose (acb, roi, "PDataRequest", pa);
+		 pslose (acb, roi, "PDataRequest", pa);
 		freeacblk (acb);
 	}
 
 	if (fe)
-		(void) pe_extract (pe, fe);
+		 pe_extract (pe, fe);
 
 	pe_free (pe);
 
@@ -291,16 +275,13 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doPSdata (acb, invokeID, px, roi)
-register struct assocblk   *acb;
-int    *invokeID;
-register struct PSAPdata *px;
-struct RoSAPindication *roi;
+static int 
+doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi)
 {
-	register PE	    pe;
+	PE	    pe;
 
 	if (px -> px_type != SX_NORMAL) {
-		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+		 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 						  "unexpected data indication (0x%x)", px -> px_type);
 		PXFREE (px);
 
@@ -316,12 +297,10 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doPStokens (acb, pt, roi)
-register struct assocblk   *acb;
-register struct PSAPtoken *pt;
-struct RoSAPindication *roi;
+static int 
+doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected token indication (0x%x)", pt -> pt_type);
 	PTFREE (pt);
 
@@ -331,12 +310,10 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doPSsync (acb, pn, roi)
-register struct assocblk   *acb;
-register struct PSAPsync *pn;
-struct RoSAPindication *roi;
+static int 
+doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected sync indication (0x%x)", pn -> pn_type);
 	PNFREE (pn);
 
@@ -346,12 +323,10 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doPSactivity (acb, pv, roi)
-register struct assocblk   *acb;
-register struct PSAPactivity *pv;
-struct RoSAPindication *roi;
+static int 
+doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected activity indication (0x%x)", pv -> pv_type);
 	PVFREE (pv);
 
@@ -361,12 +336,10 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doPSreport (acb, pp, roi)
-register struct assocblk   *acb;
-register struct PSAPreport *pp;
-struct RoSAPindication *roi;
+static int 
+doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected exception report indication (0x%x)", pp -> pp_peer);
 	PPFREE (pp);
 
@@ -378,16 +351,14 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-static int  doPSfinish (acb, pf, roi)
-register struct assocblk   *acb;
-struct PSAPfinish *pf;
-struct RoSAPindication *roi;
+static int 
+doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication *roi)
 {
 	struct AcSAPindication acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPabort *aca = &acis.aci_abort;
 
 	if (acb -> acb_flags & ACB_INIT) {
-		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+		 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 						  "association management botched");
 		PFFREE (pf);
 		freeacblk (acb);
@@ -396,7 +367,7 @@ struct RoSAPindication *roi;
 
 	roi -> roi_type = ROI_FINISH;
 	{
-		register struct AcSAPfinish   *acf = &roi -> roi_finish;
+		struct AcSAPfinish   *acf = &roi -> roi_finish;
 
 		if (AcFINISHser (acb -> acb_fd, pf, &acis) == NOTOK)
 			return acslose (acb, roi, "AcFINISHser", aca);
@@ -409,27 +380,25 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doPSabort (acb, pa, roi)
-register struct assocblk   *acb;
-register struct PSAPabort *pa;
-struct RoSAPindication *roi;
+static int 
+doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RoSAPindication *roi)
 {
 	struct AcSAPindication acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPabort *aca = &acis.aci_abort;
 	struct RoSAPpreject *rop = &roi -> roi_preject;
 
 	if (!pa -> pa_peer && pa -> pa_reason == PC_TIMER)
 		return rosaplose (roi, ROS_TIMER, NULLCP, NULLCP);
 
 	if (AcABORTser (acb -> acb_fd, pa, &acis) == NOTOK) {
-		(void) acslose (acb, roi, "AcABORTser", aca);
+		 acslose (acb, roi, "AcABORTser", aca);
 		goto out;
 	}
 
 	if (aca -> aca_source != ACA_USER)
-		(void) acslose (acb, roi, NULLCP, aca);
+		 acslose (acb, roi, NULLCP, aca);
 	else
-		(void) rosaplose (roi, ROS_ABORTED, NULLCP, NULLCP);
+		 rosaplose (roi, ROS_ABORTED, NULLCP, NULLCP);
 
 	if (aca->aca_ninfo > 0) {
 		rop -> rop_apdu = aca->aca_info[0];
@@ -447,14 +416,13 @@ out:
 
 /*  */
 
-static int  psDATAser (sd, px)
-int	sd;
-register struct PSAPdata *px;
+static int 
+psDATAser (int sd, struct PSAPdata *px)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -466,14 +434,13 @@ register struct PSAPdata *px;
 
 /*  */
 
-static int  psTOKENser (sd, pt)
-int	sd;
-register struct PSAPtoken *pt;
+static int 
+psTOKENser (int sd, struct PSAPtoken *pt)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -485,14 +452,13 @@ register struct PSAPtoken *pt;
 
 /*  */
 
-static int  psSYNCser (sd, pn)
-int	sd;
-register struct PSAPsync *pn;
+static int 
+psSYNCser (int sd, struct PSAPsync *pn)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -504,14 +470,13 @@ register struct PSAPsync *pn;
 
 /*  */
 
-static int  psACTIVITYser (sd, pv)
-int	sd;
-register struct PSAPactivity *pv;
+static int 
+psACTIVITYser (int sd, struct PSAPactivity *pv)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -523,14 +488,13 @@ register struct PSAPactivity *pv;
 
 /*  */
 
-static int  psREPORTser (sd, pp)
-int	sd;
-register struct PSAPreport *pp;
+static int 
+psREPORTser (int sd, struct PSAPreport *pp)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -542,51 +506,46 @@ register struct PSAPreport *pp;
 
 /*  */
 
-static int  psFINISHser (sd, pf)
-int	sd;
-struct PSAPfinish *pf;
+static int 
+psFINISHser (int sd, struct PSAPfinish *pf)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
 
-	(void) doPSfinish (acb, pf, roi);
+	 doPSfinish (acb, pf, roi);
 
 	(*handler) (sd, roi);
 }
 
 /*  */
 
-static int  psABORTser (sd, pa)
-int	sd;
-register struct PSAPabort *pa;
+static int 
+psABORTser (int sd, struct PSAPabort *pa)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
 
-	(void) doPSabort (acb, pa, roi);
+	 doPSabort (acb, pa, roi);
 
 	(*handler) (sd, roi);
 }
 
 /*  */
 
-static int pslose (acb, roi, event, pa)
-register struct assocblk *acb;
-register struct RoSAPindication *roi;
-char   *event;
-register struct PSAPabort *pa;
+static int 
+pslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct PSAPabort *pa)
 {
 	int     reason;
 	char   *cp,
@@ -613,7 +572,7 @@ register struct PSAPabort *pa;
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at presentation)",
+		 sprintf (cp = buffer, " (%s at presentation)",
 						PErrString (pa -> pa_reason));
 	case PC_SESSION:
 		reason = ROS_PRESENTATION;

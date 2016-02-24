@@ -60,7 +60,8 @@ static int triedBackup = FALSE;
 static int bindStarted = FALSE;
 static int boundOnce = FALSE;
 
-int tryBackup() {
+int 
+tryBackup  {
 
 	if (triedBackup == TRUE)
 		return NOTOK;
@@ -78,21 +79,21 @@ int tryBackup() {
  * bind_to_ds - Bind to directory
  *
  */
-int init_bind_to_ds(assoc)
-int * assoc;
+int 
+init_bind_to_ds (int *assoc)
 {
 	struct ds_bind_arg bind_arg;
 	struct PSAPaddr             *addr;
 	void exit();
 
 	if (dsa_address == NULLCP) {
-		(void) fprintf(stderr, "No dsa address has been configured in dsaptailor or detailor\n\n");
+		 fprintf(stderr, "No dsa address has been configured in dsaptailor or detailor\n\n");
 		exit(-1);
 	}
 
 	if (triedBackup == FALSE)
 		if (boundOnce == FALSE)
-			(void)printf("Connecting to the Directory - wait just a moment please ...\n");
+			printf("Connecting to the Directory - wait just a moment please ...\n");
 
 	bind_arg.dba_version = DBA_VERSION_V1988;
 	bind_arg.dba_auth_type = DBA_AUTH_SIMPLE;
@@ -105,14 +106,14 @@ int * assoc;
 try_bind:
 
 	if ((addr = str2paddr (dsa_address)) == NULLPA) {
-		(void) fprintf(stderr, "DSA address format problem\n");
+		 fprintf(stderr, "DSA address format problem\n");
 		exit(-1);
 	}
 	bindres = DapAsynBindRequest(addr, &bind_arg, &dc, &di, ROS_ASYNC);
 	if (bindres == NOTOK) {
-		(void) fprintf(stderr, "\n\nDirectory server temporarily unavailable\n\n");
+		 fprintf(stderr, "\n\nDirectory server temporarily unavailable\n\n");
 		if (tryBackup == OK) {
-			(void) fprintf(stderr, "Trying another server ...\n\n");
+			 fprintf(stderr, "Trying another server ...\n\n");
 			goto try_bind;
 		}
 		return NOTOK;
@@ -123,9 +124,8 @@ try_bind:
 }
 
 
-int wait_bind_to_ds(assoc, wantToBlock)
-int assoc;
-int wantToBlock;
+int 
+wait_bind_to_ds (int assoc, int wantToBlock)
 {
 	struct PSAPindication   pi_s;
 	struct PSAPindication   * pi = &(pi_s);
@@ -144,14 +144,14 @@ int wantToBlock;
 
 		if (bindres == CONNECTING_1) {
 			if (PSelectMask (assoc, &wfds, &nfds, pi) == NOTOK) {
-				(void) fprintf(stderr, "PSelectMask (write) failed\n");
+				 fprintf(stderr, "PSelectMask (write) failed\n");
 				return NOTOK;
 			}
 		}
 
 		if (bindres == CONNECTING_2) {
 			if (PSelectMask (assoc, &rfds, &nfds, pi) == NOTOK) {
-				(void) fprintf(stderr, "PSelectMask (read) failed\n");
+				 fprintf(stderr, "PSelectMask (read) failed\n");
 				return NOTOK;
 			}
 		}
@@ -159,7 +159,7 @@ int wantToBlock;
 		nevents = xselect (nfds, &rfds, &wfds, NULLFD, NOTOK);
 
 		if (nevents == NOTOK) {
-			(void) fprintf(stderr, "xselect failed\n");
+			 fprintf(stderr, "xselect failed\n");
 			return NOTOK;
 		} else {
 			/*
@@ -175,37 +175,36 @@ int wantToBlock;
 			if (dc.dc_result != DC_RESULT) {
 				if ((dc.dc_un.dc_bind_err.dbe_type == DBE_TYPE_SECURITY) &&
 						(dc.dc_un.dc_bind_err.dbe_value == DSE_SC_INVALIDCREDENTIALS))
-					(void)fprintf(stderr, "\nBind error - check the username in the detailor file\n");
+					fprintf(stderr, "\nBind error - check the username in the detailor file\n");
 				else
-					(void)fprintf(stderr, "\nBind error - type %d, code %d\n",
+					fprintf(stderr, "\nBind error - type %d, code %d\n",
 								  dc.dc_un.dc_bind_err.dbe_type, dc.dc_un.dc_bind_err.dbe_value);
 				return NOTOK;
 			}
 			boundToDSA = TRUE;
 			boundOnce = TRUE;
 			if (deLogLevel)
-				(void) ll_log (de_log, LLOG_NOTICE, NULLCP, "Bound: %s", callingDteNumber);
+				 ll_log (de_log, LLOG_NOTICE, NULLCP, "Bound: %s", callingDteNumber);
 			return OK;
 		}
 	}
 	if (tryBackup() == OK)
 		if (init_bind_to_ds(&assoc) == OK)
 			return OK;
-	(void)fprintf(stderr, "\nCouldn't bind to the DSA - probably something wrong with the DSA address\n\n");
+	fprintf(stderr, "\nCouldn't bind to the DSA - probably something wrong with the DSA address\n\n");
 	return NOTOK; /* exit this way if can't talk to access point(s) */
 } /* bind_to_ds */
 
-int
-rebind() {
+int 
+rebind  {
 	if (boundToDSA == FALSE)
 		return(de_bind(TRUE));
 	else
 		return OK;
 }
 
-int
-de_bind(wantToBlock)
-int wantToBlock;
+int 
+de_bind (int wantToBlock)
 {
 	static int assoc;
 
@@ -221,10 +220,11 @@ int wantToBlock;
 	return OK;
 }
 
-de_unbind() {
+int 
+de_unbind  {
 	if (deLogLevel)
-		(void) ll_log (de_log, LLOG_NOTICE, NULLCP, "Unbind:");
-	(void) ds_unbind();
+		 ll_log (de_log, LLOG_NOTICE, NULLCP, "Unbind:");
+	 ds_unbind();
 	boundToDSA = FALSE;
 	bindStarted = FALSE;
 }

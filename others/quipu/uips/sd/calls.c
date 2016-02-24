@@ -99,10 +99,10 @@ Filter search_filter;
 FILE *config_file;
 char *file_names[MAXTYPES];
 
-char *get_strioid(ptr)
-register char *ptr;
+char *
+get_strioid (char *ptr)
 {
-	register char *end_ptr;
+	char *end_ptr;
 
 	while(*ptr == '"') ptr++;
 	while(*ptr != '"') ptr++;
@@ -116,7 +116,8 @@ register char *ptr;
 	return ptr;
 }
 
-void user_tailor() {
+void 
+user_tailor  {
 	char           *part1;
 	char           *part2;
 	char           *getenv ();
@@ -158,30 +159,30 @@ void user_tailor() {
 
 	cache[0] = '\0';
 
-	(void) strcpy (user_home, getenv ("HOME"));
-	(void) strcpy(read_path, user_home);
-	(void) strcpy(type_path, user_home);
-	(void) strcpy(type_defaults_path, user_home);
+	 strcpy (user_home, getenv ("HOME"));
+	 strcpy(read_path, user_home);
+	 strcpy(type_path, user_home);
+	 strcpy(type_defaults_path, user_home);
 
-	(void) strcat(user_home, ptr);
-	(void) strcat(read_path, config_dir);
-	(void) strcat(read_path, readTypes);
-	(void) strcat(type_path, config_dir);
-	(void) strcat(type_path, type_dir);
-	(void) strcat(type_defaults_path, config_dir);
-	(void) strcat(type_defaults_path, typeDefaults);
+	 strcat(user_home, ptr);
+	 strcat(read_path, config_dir);
+	 strcat(read_path, readTypes);
+	 strcat(type_path, config_dir);
+	 strcat(type_path, type_dir);
+	 strcat(type_defaults_path, config_dir);
+	 strcat(type_defaults_path, typeDefaults);
 
 	if (testing) {
-		(void) strcpy(type_path, "./sd/duaconfig/");
-		(void) strcat(type_path, type_dir);
+		 strcpy(type_path, "./sd/duaconfig/");
+		 strcat(type_path, type_dir);
 		if (!(config_directory = opendir(type_path))) {
-			(void) fprintf(stderr, "File error! Test sd should be run from source directory!\n");
+			 fprintf(stderr, "File error! Test sd should be run from source directory!\n");
 			int_quit(1);
 		}
 	} else {
 		if (!(config_directory = opendir(type_path))) {
-			(void) strcpy(type_path, isodefile(isode_config_dir,0));
-			(void) strcat(type_path, type_dir);
+			 strcpy(type_path, isodefile(isode_config_dir,0));
+			 strcat(type_path, type_dir);
 			if(!(config_directory = opendir(type_path))) {
 				quit("Can't find directory filterTypes.\n", 1);
 			}
@@ -195,12 +196,12 @@ void user_tailor() {
 			file_names[filt_num] =
 				(char *) malloc((unsigned)
 								(strlen(dir_ent->d_name) + strlen(type_path) + 2));
-			(void) strcpy(file_names[filt_num], type_path);
-			(void) strcat(file_names[filt_num], dir_ent->d_name);
+			 strcpy(file_names[filt_num], type_path);
+			 strcat(file_names[filt_num], dir_ent->d_name);
 			filt_num++;
 		}
 	}
-	(void) closedir(config_directory);
+	 closedir(config_directory);
 
 	if ((config_file = fopen (user_home, "r")) == 0);
 	else {
@@ -217,41 +218,41 @@ void user_tailor() {
 			part2 = TidyString(part2);
 
 			if ((lexequ(part1, "username") == 0) && namestr[0] == '\0')
-				(void) strcpy (namestr, part2);
+				 strcpy (namestr, part2);
 			else if ((lexequ(part1, "password") == 0) && passwd[0] == '\0')
-				(void) strcpy (passwd, part2);
+				 strcpy (passwd, part2);
 			else if (lexequ(part1, "prefergreybook") == 0)
 				mailformat = greybook;
 			else if (lexequ(part1, "dsap") == 0)
-				(void) tai_string (part2);
+				 tai_string (part2);
 			else if (lexequ(part1, "isode") == 0) {
 				char * split;
 				if ((split = index(part2,' ')) != NULLCP) {
 					*split++ = 0;
-					(void) isodesetvar(part2,split,0);
+					 isodesetvar(part2,split,0);
 				}
 			} else if(strcmp (part1, "service") == 0)
 				new_service (part2);
 			else if (lexequ(part1, "history") == 0) {
-				(void) sscanf(part2, "%d", &histlimit);
+				 sscanf(part2, "%d", &histlimit);
 				if (histlimit < 1) histlimit = 1;
 			}
 		}
 		isodexport (NULLCP);
-		(void) fclose(config_file);
+		 fclose(config_file);
 	}
 
 	if (testing) {
-		(void) strcpy(read_path, "./sd/duaconfig/");
-		(void) strcat(read_path, readTypes);
+		 strcpy(read_path, "./sd/duaconfig/");
+		 strcat(read_path, readTypes);
 		if (!(config_file = fopen(read_path, "r"))) {
-			(void) fprintf(stderr, "File error! Test sd must be run from source directory!\n");
+			 fprintf(stderr, "File error! Test sd must be run from source directory!\n");
 			int_quit(1);
 		}
 	} else {
 		if (!(config_file = fopen(read_path, "r"))) {
-			(void) strcpy(read_path, isodefile(isode_config_dir,0));
-			(void) strcat(read_path, readTypes);
+			 strcpy(read_path, isodefile(isode_config_dir,0));
+			 strcat(read_path, readTypes);
 			if (!(config_file = fopen(read_path, "r"))) {
 				quit("Can't find file readTypes.\n", 1);
 			}
@@ -261,7 +262,7 @@ void user_tailor() {
 	/*  load_oid_table("oidtable");*/
 
 	while(fgets(Read_in_Stuff, STRINGLEN, config_file) != 0) {
-		(void) strcpy(stroid_buf, get_strioid(Read_in_Stuff));
+		 strcpy(stroid_buf, get_strioid(Read_in_Stuff));
 		if (*stroid_buf) {
 			if (!read_types)
 				read_types = as_comp_new(AttrT_new(stroid_buf), NULLAV, NULLACL_INFO);
@@ -271,7 +272,7 @@ void user_tailor() {
 			}
 		}
 	}
-	(void) fclose(config_file);
+	 fclose(config_file);
 
 #ifdef USE_PP
 
@@ -295,29 +296,29 @@ void user_tailor() {
 		filtvalue[curr_filt] = (char *) malloc(STRINGLEN);
 		*filtvalue[curr_filt] = '\0';
 
-		(void) yyparse();
-		(void) fclose(config_file);
+		 yyparse();
+		 fclose(config_file);
 	}
 	filttype[curr_filt] = NULLCP;
 	for (count = 0; count < filt_num; count++)
 		free(file_names[count]);
 
 	if (testing) {
-		(void) strcpy(type_defaults_path, "./sd/duaconfig/");
-		(void) strcat(type_defaults_path, typeDefaults);
+		 strcpy(type_defaults_path, "./sd/duaconfig/");
+		 strcat(type_defaults_path, typeDefaults);
 		if (!(config_file = fopen(type_defaults_path, "r"))) {
-			(void) fprintf(stderr, "File error! Test sd must be run from source directory.\n");
+			 fprintf(stderr, "File error! Test sd must be run from source directory.\n");
 			int_quit(1);
 		}
 	} else {
 		if (!(config_file = fopen(type_defaults_path, "r"))) {
-			(void) strcpy(type_defaults_path, isodefile(isode_config_dir,0));
-			(void) strcat(type_defaults_path, typeDefaults);
+			 strcpy(type_defaults_path, isodefile(isode_config_dir,0));
+			 strcat(type_defaults_path, typeDefaults);
 			if (!(config_file = fopen(type_defaults_path, "r"))) {
-				(void) strcpy(type_defaults_path, "./sd/duaconfig/");
-				(void) strcat(type_defaults_path, typeDefaults);
+				 strcpy(type_defaults_path, "./sd/duaconfig/");
+				 strcat(type_defaults_path, typeDefaults);
 				if (!(config_file = fopen(type_defaults_path, "r"))) {
-					(void) fprintf(stderr, "Can't open typeDefaults file\n");
+					 fprintf(stderr, "Can't open typeDefaults file\n");
 					int_quit(1);
 				}
 			}
@@ -352,7 +353,7 @@ void user_tailor() {
 										   (int) (end - part2))) n++;
 
 			if (n == filt_num) {
-				(void) fprintf(stderr, "Parsing error in typeDefaults file!");
+				 fprintf(stderr, "Parsing error in typeDefaults file!");
 				int_quit(1);
 			} else {
 				tempints[count] = n;
@@ -361,7 +362,7 @@ void user_tailor() {
 				while (!isalpha(*part2) && *part2 != ':' && part2 != '\0') part2++;
 
 				if (*part2 == '\0') {
-					(void) fprintf(stderr, "Parsing error in typeDefaults file!");
+					 fprintf(stderr, "Parsing error in typeDefaults file!");
 					int_quit(1);
 				}
 
@@ -371,7 +372,7 @@ void user_tailor() {
 					while (!isspace(*end) && *end != ',' &&
 							*end != ':' && *end != '\0') end++;
 					if (*end == '\0') {
-						(void) fprintf(stderr, "Parsing error in typeDefaults file!");
+						 fprintf(stderr, "Parsing error in typeDefaults file!");
 						int_quit(1);
 					}
 				} else end = part2;
@@ -387,13 +388,13 @@ void user_tailor() {
 			while (n < filt_num && strcmp(filttype[n], p)) n++;
 
 			if (n == filt_num) {
-				(void) fprintf(stderr, "Parsing error in typeDefaults file!");
+				 fprintf(stderr, "Parsing error in typeDefaults file!");
 				int_quit(1);
 			} else {
 				num = 0;
 				while (num < count && n != tempints[num]) num++;
 				if (num == count) {
-					(void) fprintf(stderr, "Parsing error in typeDefaults file!");
+					 fprintf(stderr, "Parsing error in typeDefaults file!");
 					int_quit(1);
 				}
 			}
@@ -411,29 +412,33 @@ void user_tailor() {
 			default_num++;
 		}
 	}
-	(void) fclose(config_file);
+	 fclose(config_file);
 }
 
-void main_help() {
+void 
+main_help  {
 	cleartext();
 	killwidgets(mainwdgts);
 	setwidgets(dethelpwdgts,-1);
 	help_cncs();
 }
 
-void main_bind() {
+void 
+main_bind  {
 	cleartext();
 	if (*passwd != 0)
-		(void) strcpy(bindpass,"******");
+		 strcpy(bindpass,"******");
 	else
 		bindpass[0] = '\0';
 }
 
-void cnnct_quit () {
+void 
+cnnct_quit  {
 	quit("Exiting sd.\n", 0);
 }
 
-void cnnct_bind() {
+void 
+cnnct_bind  {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -452,9 +457,9 @@ void cnnct_bind() {
 	}
 	while(fgets(buf, sizeof(buf), fp) != NULLCP)
 		if ( (*buf != '#') && (*buf != '\n') )
-			(void) tai_string(buf);
+			 tai_string(buf);
 
-	(void) fclose(fp);
+	 fclose(fp);
 
 	if (dsa_address == NULLCP)
 		dsa_address = myname;
@@ -462,7 +467,7 @@ void cnnct_bind() {
 	/* set password */
 	if (bindpass[0] != 0) {
 		if (strcmp (bindpass,"******") != 0)
-			(void) strcpy (passwd,bindpass);
+			 strcpy (passwd,bindpass);
 	} else
 		passwd[0] = 0;
 
@@ -473,7 +478,7 @@ void cnnct_bind() {
 		bindarg.dba_passwd [0] = '\0';
 	} else {
 		bindarg.dba_passwd_len = strlen(passwd);
-		(void) strcpy (bindarg.dba_passwd, passwd);
+		 strcpy (bindarg.dba_passwd, passwd);
 	}
 
 	bindarg.dba_dn = (*namestr == 0? NULLDN: str2dn(namestr));
@@ -492,16 +497,16 @@ void cnnct_bind() {
 		user_name = bindarg.dba_dn;
 
 		if(local_dit && *local_dit)
-			(void) strcpy(base_path, local_dit);
+			 strcpy(base_path, local_dit);
 		else
-			(void) strcpy(base_path, "The World");
+			 strcpy(base_path, "The World");
 
 		oclass = as_comp_new(AttrT_new("objectClass"), NULLAV, NULLACL_INFO);
 		make_friendly(friendly_base_path, base_path);
 		printdialog(getwidget(mainwdgts,'\0'));
 		set_default_type();
 
-		(void) strcpy (buf, "TERM");
+		 strcpy (buf, "TERM");
 
 #ifndef NO_STATS
 		LLOG (log_stat,LLOG_NOTICE,("bound ('%s' to '%s')",namestr,dsa_address));
@@ -517,7 +522,8 @@ void cnnct_bind() {
 	text_state = TEXT;
 }
 
-void rd_start() {
+void 
+rd_start  {
 	struct ds_read_arg read_arg;
 	struct ds_read_result   result;
 	struct DSError          error;
@@ -588,7 +594,8 @@ void rd_start() {
 	}
 }
 
-void back_start() {
+void 
+back_start  {
 	if (!back_buf_num) {
 		cleartext();
 		tprint("History Buffer Empty!\n");
@@ -608,8 +615,9 @@ void back_start() {
 	scrollbar('\0');
 }
 
-void widen() {
-	register char *str, *sptr;
+void 
+widen  {
+	char *str, *sptr;
 	int count = 0;
 	str_seq first;
 
@@ -642,7 +650,7 @@ void widen() {
 				str = sptr;
 			*str = '\0';
 		} else
-			(void) strcpy(base_path, "The World");
+			 strcpy(base_path, "The World");
 
 		make_friendly(friendly_base_path, base_path);
 		set_default_type();
@@ -651,7 +659,8 @@ void widen() {
 	}
 }
 
-void set_default_type() {
+void 
+set_default_type  {
 	int count, lastindx;
 	WIDGET *wdgt, *vwdgt;
 	DN base_name;
@@ -684,9 +693,9 @@ void set_default_type() {
 
 			if (count < filt_num) {
 				if (lastindx)
-					(void) strcpy(filtvalue[lastindx], vwdgt->dstr);
+					 strcpy(filtvalue[lastindx], vwdgt->dstr);
 				wdgt->tindx = count;
-				(void) strcpy(vwdgt->dstr, filtvalue[wdgt->tindx]);
+				 strcpy(vwdgt->dstr, filtvalue[wdgt->tindx]);
 			}
 		}
 	} else {
@@ -701,9 +710,9 @@ void set_default_type() {
 		count = typeindx;
 		if (count < filt_num) {
 			if (lastindx)
-				(void) strcpy(filtvalue[lastindx], vwdgt->dstr);
+				 strcpy(filtvalue[lastindx], vwdgt->dstr);
 			wdgt->tindx = count;
-			(void) strcpy(vwdgt->dstr, filtvalue[wdgt->tindx]);
+			 strcpy(vwdgt->dstr, filtvalue[wdgt->tindx]);
 		}
 	}
 
@@ -715,7 +724,8 @@ void set_default_type() {
 
 /* These are the functions called by the list level widgets */
 
-void list_start() {
+void 
+list_start  {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -775,7 +785,7 @@ void list_start() {
 		cleartext();
 		correlate_search_results (&result);
 		if (result.CSR_entries != NULLENTRYINFO) {
-			register EntryInfo *ptr;
+			EntryInfo *ptr;
 
 			xprint ("Result of search ...\n");
 			if (result.CSR_common.cr_aliasdereferenced) {
@@ -860,10 +870,11 @@ char * cptr;
 	ps_free(ps);
 	*ps->ps_ptr = 0;
 
-	(void) strcpy(cptr, buffer);
+	 strcpy(cptr, buffer);
 }
 
-void srch_start() {
+void 
+srch_start  {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -907,7 +918,7 @@ void srch_start() {
 
 	if ((search_arg.sra_filter = make_filter(filt_arr[gettogglindx(wdgt)]))
 			== NULLFILTER) {
-		(void) xprint("Invalid search filter!");
+		 xprint("Invalid search filter!");
 		return;
 	}
 
@@ -931,7 +942,7 @@ void srch_start() {
 		correlate_search_results (&result);
 
 		if (result.CSR_entries != NULLENTRYINFO) {
-			register EntryInfo *ptr;
+			EntryInfo *ptr;
 
 			if (result.CSR_common.cr_aliasdereferenced) {
 				xprint (" (Alias dereferenced - object is ");
@@ -963,10 +974,10 @@ void srch_start() {
 					get_listed_object('1', (WIDGET *) 0);
 				} else {
 					char temp[1024];
-					(void) strcpy(temp, base_path);
-					(void) strcpy(base_path, goto_path);
+					 strcpy(temp, base_path);
+					 strcpy(base_path, goto_path);
 					rd_start();
-					(void) strcpy(base_path, temp);
+					 strcpy(base_path, temp);
 				}
 			}
 		} else if(result.CSR_limitproblem != LSR_TIMELIMITEXCEEDED) {
@@ -1024,7 +1035,7 @@ char * cptr;
 
 	ps_free (ps);
 
-	(void) strcpy(cptr, buffer);
+	 strcpy(cptr, buffer);
 }
 
 
@@ -1036,7 +1047,7 @@ caddr_t ptr;
 	char buffer [RESBUF];
 	char save;
 	int i, size;
-	register char *str, *sptr;
+	char *str, *sptr;
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) return ;
 
@@ -1065,7 +1076,7 @@ caddr_t ptr;
 			*sptr = '\0';
 
 			if (mailformat == greybook && indexstring(str, "rfc822") >= 0)
-				(void) rfc2jnt(str);
+				 rfc2jnt(str);
 			add_seq(&textseq, str);
 
 			str = sptr+1;
@@ -1082,7 +1093,7 @@ caddr_t ptr;
 	PS ps;
 	char buffer [RESBUF];
 	int count;
-	register char *str, *sptr;
+	char *str, *sptr;
 	char save;
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) return ;
@@ -1107,8 +1118,8 @@ caddr_t ptr;
 	} while (*sptr != '\0');
 }
 
-void quipu_error(err)
-struct DSError *err;
+void 
+quipu_error (struct DSError *err)
 {
 	switch(err->dse_type) {
 	case DSE_LOCALERROR:
@@ -1138,7 +1149,8 @@ struct DSError *err;
 	}
 }
 
-void returnmain() {
+void 
+returnmain  {
 	QUITFN();
 	setwidgets (mainwdgts,-1);
 	rd_start();
@@ -1190,7 +1202,7 @@ WIDGET *wdgt;
 				back_buf_num++;
 			}
 
-			(void) strcpy(base_path, sptr);
+			 strcpy(base_path, sptr);
 			make_friendly(friendly_base_path, base_path);
 			wdgt = getwidget(mainwdgts, '\0');
 			printdialog(wdgt);
@@ -1198,21 +1210,21 @@ WIDGET *wdgt;
 			typetoggled = 0;
 			set_default_type();
 		} else {
-			(void) strcpy(buffer, base_path);
-			(void) strcpy(base_path, sptr);
+			 strcpy(buffer, base_path);
+			 strcpy(base_path, sptr);
 			make_friendly(friendly_base_path, base_path);
 			rd_start();
-			(void) strcpy(base_path, buffer);
+			 strcpy(base_path, buffer);
 		}
 	*srchvalue = '\0';
 }
 
-void scrollbar(command)
-char command;
+void 
+scrollbar (int command)
 {
-	register char *str;
+	char *str;
 	char *base_rdn;
-	register int rdn_count = 0;
+	int rdn_count = 0;
 	int lines, count = 0;
 	str_seq thisseq;
 
@@ -1303,16 +1315,15 @@ char command;
 	return;
 }
 
-void make_friendly(fstr, str)
-char *fstr;
-register char *str;
+void 
+make_friendly (char *fstr, char *str)
 {
-	register char *end_ptr;
+	char *end_ptr;
 	char save;
 
 	*fstr = '\0';
 	if (!strcmp(str, "The World")) {
-		(void) strcpy(fstr, str);
+		 strcpy(fstr, str);
 		return;
 	}
 
@@ -1325,23 +1336,24 @@ register char *str;
 		save = *end_ptr;
 		*end_ptr = '\0';
 		if (*fstr == '\0')
-			(void) strcpy(fstr, str);
+			 strcpy(fstr, str);
 		else
-			(void) strcat(fstr, str);
+			 strcat(fstr, str);
 		*end_ptr = save;
 		str = end_ptr;
 		if (*str != '\0')
-			(void) strcat(fstr, ", ");
+			 strcat(fstr, ", ");
 	}
 }
 
-void goto_addr() {
+void 
+goto_addr  {
 	set_default_type();
 	rd_start();
 }
 
-int isleafnode(name)
-char *name;
+int 
+isleafnode (char *name)
 {
 	struct ds_list_arg list_arg;
 	struct ds_list_result   list_result;
@@ -1400,11 +1412,10 @@ int size;
 	ps_free(ps);
 }
 
-int issubstr(str, substr)
-char *str;
-char *substr;
+int 
+issubstr (char *str, char *substr)
 {
-	register char *sptr;
+	char *sptr;
 	char c;
 	int substrlen = strlen(substr);
 	int count;
@@ -1426,10 +1437,10 @@ char *substr;
 	}
 }
 
-int indexstring(string, substring)
-char *string, *substring;
+int 
+indexstring (char *string, char *substring)
 {
-	register char *sub, *str;
+	char *sub, *str;
 	char c, s;
 	int indx = 0;
 
@@ -1452,12 +1463,12 @@ char *string, *substring;
 	}
 }
 
-void rfc2jnt(string)
-char *string;
+void 
+rfc2jnt (char *string)
 {
 	char reversed[STRINGLEN];
 	char front[STRINGLEN];
-	register char *part;
+	char *part;
 	char *mailbox;
 
 	mailbox = string;
@@ -1472,29 +1483,29 @@ char *string;
 		while (*part != '.' && *part != '@') --part;
 
 		if (*part == '.') {
-			if (reversed[0] != '\0') (void) strcat(reversed, ".");
+			if (reversed[0] != '\0')  strcat(reversed, ".");
 			part++;
-			(void) strcat(reversed, part);
+			 strcat(reversed, part);
 			*--part = '\0';
 			--part;
 		} else {
 			part++;
-			(void) strcat(reversed, ".");
-			(void) strcat(reversed, part);
+			 strcat(reversed, ".");
+			 strcat(reversed, part);
 			*part-- = '\0';
 			while (!isspace(*part)) --part;
 			++part;
-			(void) strcpy(front, part);
-			(void) strcpy(string, "mailbox               - ");
-			(void) strcat(string, front);
-			(void) strcat(string, reversed);
+			 strcpy(front, part);
+			 strcpy(string, "mailbox               - ");
+			 strcat(string, front);
+			 strcat(string, reversed);
 			return;
 		}
 	}
 }
 
-struct attrcomp *sort_attrs(entry_attrs)
-struct attrcomp *entry_attrs;
+struct attrcomp *
+sort_attrs (struct attrcomp *entry_attrs)
 {
 	struct attrcomp *last, *next, *curr, *first, *firstn;
 
@@ -1537,16 +1548,16 @@ struct attrcomp *entry_attrs;
 }
 
 
-char *GetSurname(name)
-register char *name;
+char *
+GetSurname (char *name)
 {
 	while (*name != '\0') name++;
 	while (*name != ' ' && *name != '=') name--;
 	return ++name;
 }
 
-char *GetWholeRelName(name)
-register char *name;
+char *
+GetWholeRelName (char *name)
 {
 	while (*name!= '\0') name++;
 	while (*name != '=') name--;
@@ -1557,10 +1568,10 @@ register char *name;
 str_seq SortList(list)
 str_seq list;
 {
-	register str_seq currEntry, lastSortedEntry , currSortedEntry;
+	str_seq currEntry, lastSortedEntry , currSortedEntry;
 	str_seq sortedList;
 	char *sortedName, *currName;
-	register DN curr_dn;
+	DN curr_dn;
 	DN dn;
 
 	if (!list) return 0;

@@ -67,7 +67,7 @@ DN dn;
 PS ps;
 int format;
 {
-	register DN eptr;
+	DN eptr;
 
 	if (dn == NULLDN) {
 		if (format == READOUT)
@@ -104,7 +104,7 @@ QBool is_good_match(match_str, dn_str)
 char *match_str, *dn_str;
 {
 	char *match_from;
-	register char *str1, *str2;
+	char *str1, *str2;
 	QCardinal match_char_num = 0, max_char_matches = 0, words_matched = 0;
 
 	for (str1 = dn_str; isspace(*str1); str1++)
@@ -217,7 +217,7 @@ char *filter_str;
 Filter *ex_filter_ptr;
 Filter *ap_filter_ptr;
 {
-	register char *start, *end;
+	char *start, *end;
 	char *str_attr_type, *str_attr_value;
 	char save;
 	AttributeType attr_type;
@@ -311,10 +311,10 @@ Filter *ap_filter_ptr;
  * Return the attribute name of the RDN of the given entry name.
  *
  */
-char *get_entry_type_name(entry_name)
-register char *entry_name;
+char *
+get_entry_type_name (char *entry_name)
 {
-	register char *start, *end;
+	char *start, *end;
 	char *type_name;
 	char save;
 

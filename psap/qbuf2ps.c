@@ -34,15 +34,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qbuf2ps.c,v 9.0 1992/0
 
 /* ARGSUSED */
 
-static int  qbuf_read (ps, data, n, in_line)
-register PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+qbuf_read (PS ps, PElementData data, PElementLen n, int in_line)
 {
-	register int cc,
+	int cc,
 			 i;
-	register struct qbuf *qb,
+	struct qbuf *qb,
 			*qp;
 
 	if ((qb = (struct qbuf *) ps -> ps_addr) == NULL)
@@ -68,10 +65,10 @@ int	in_line;
 }
 
 
-static int  qbuf_close (ps)
-register PS	ps;
+static int 
+qbuf_close (PS ps)
 {
-	register struct qbuf   *qb;
+	struct qbuf   *qb;
 
 	if ((qb = (struct qbuf *) ps -> ps_addr) == NULL)
 		return;
@@ -81,8 +78,8 @@ register PS	ps;
 
 /*  */
 
-int	qbuf_open (ps)
-register PS	ps;
+int 
+qbuf_open (PS ps)
 {
 	ps -> ps_readP = qbuf_read;
 	ps -> ps_closeP = qbuf_close;

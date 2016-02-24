@@ -35,17 +35,12 @@ static int  PRelRetryRequestAux ();
 
 /*    P-RELEASE.REQUEST */
 
-int	PRelRequest (sd, data, ndata, secs, pr, pi)
-int	sd;
-PE     *data;
-int	ndata;
-int	secs;
-struct PSAPrelease *pr;
-struct PSAPindication *pi;
+int 
+PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int	    result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	toomuchP (data, ndata, NPDATA, "release");
 	missingP (pr);
@@ -82,22 +77,19 @@ struct PSAPindication *pi;
 
 out:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*    P-RELEASE-RETRY.REQUEST (pseudo) */
 
-int	PRelRetryRequest (sd, secs, pr, pi)
-int	sd;
-int	secs;
-struct PSAPrelease *pr;
-struct PSAPindication *pi;
+int 
+PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int	    result;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 
 	missingP (pr);
 	missingP (pi);
@@ -112,26 +104,23 @@ struct PSAPindication *pi;
 	else
 		result = PRelRetryRequestAux (pb, secs, pr, pi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  PRelRetryRequestAux (pb, secs, pr, pi)
-struct psapblk *pb;
-int	secs;
-struct PSAPrelease *pr;
-struct PSAPindication *pi;
+static int 
+PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi)
 {
 	int	    result;
 	char   *id = pb -> pb_flags & PB_RELEASE ? "SRelRetryRequest"
 				 : "SRelRequest";
 	struct SSAPrelease   srs;
-	register struct SSAPrelease   *sr = &srs;
+	struct SSAPrelease   *sr = &srs;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	bzero ((char *) sr, sizeof *sr);
 
@@ -147,14 +136,14 @@ struct PSAPindication *pi;
 		}
 
 		if (sa -> sa_peer) {
-			(void) ss2psabort (pb, sa, pi);
+			 ss2psabort (pb, sa, pi);
 			goto out1;
 		}
 		if (SC_FATAL (sa -> sa_reason)) {
-			(void) ss2pslose (pb, pi, id, sa);
+			 ss2pslose (pb, pi, id, sa);
 			goto out2;
 		} else {
-			(void) ss2pslose (NULLPB, pi, id, sa);
+			 ss2pslose (NULLPB, pi, id, sa);
 			goto out1;
 		}
 	}

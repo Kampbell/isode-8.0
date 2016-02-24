@@ -36,54 +36,48 @@ static int  SUAbortRequestAux ();
 
 /*    S-U-ABORT.REQUEST */
 
-int	SUAbortRequest (sd, data, cc, si)
-int	sd;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SUAbortRequest (int sd, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 
 	smask = sigioblock ();
 
 	if ((sb = findsblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid session descriptor");
 	}
 	toomuchP (sb, data, cc, SA_SIZE, "abort");
 
 	result = SUAbortRequestAux (sb, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  SUAbortRequestAux (sb, data, cc, si)
-register struct ssapblk *sb;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+static int 
+SUAbortRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 	struct TSAPdata txs;
-	register struct TSAPdata   *tx = &txs;
+	struct TSAPdata   *tx = &txs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	sb -> sb_flags &= ~(SB_ED | SB_EDACK | SB_ERACK);
 
 	if ((sb -> sb_flags & SB_EXPD)
 			&& sb -> sb_version >= SB_VRSN2
 			&& cc > 9) {
-		register struct ssapkt *p;
+		struct ssapkt *p;
 
 		if (p = newspkt (SPDU_PR)) {
 			p -> s_mask |= SMASK_PR_TYPE;

@@ -47,7 +47,7 @@ int *acptr;
 char ***avptr;
 {
 	char ** av;
-	register char *cp;
+	char *cp;
 	int cnt;
 	extern char quipu_faststart;
 

@@ -27,7 +27,7 @@ extern int	errno;
 
 void
 rewinddir( dirp )
-register DIR		*dirp;	/* stream from opendir() */
+DIR		*dirp;	/* stream from opendir() */
 {
 	if ( dirp == NULL || dirp->dd_buf == NULL ) {
 		errno = EFAULT;
@@ -35,10 +35,11 @@ register DIR		*dirp;	/* stream from opendir() */
 	}
 
 	dirp->dd_loc = dirp->dd_size = 0;	/* invalidate buffer */
-	(void)lseek( dirp->dd_fd, (off_t)0, SEEK_SET );	/* may set errno */
+	lseek( dirp->dd_fd, (off_t)0, SEEK_SET );	/* may set errno */
 }
 #else
-int	_rewinddir_stub () {
+int 
+_rewinddir_stub()  {
 	;
 }
 #endif

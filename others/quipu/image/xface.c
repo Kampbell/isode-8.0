@@ -81,7 +81,7 @@ static GC  forepix, highpix;
 int	ALRMser (), XWINser ();
 
 
-extern int  errno;
+
 
 char   *getenv ();
 
@@ -89,10 +89,8 @@ char   *getenv ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	char    buffer[BUFSIZ],
 			*vec[NVEC + 1];
@@ -118,7 +116,7 @@ char  **argv,
 		fetch_face (vec[0], vec[1]);
 
 		if (debug)
-			(void) fflush (stderr);
+			 fflush (stderr);
 	}
 
 	return (0);
@@ -126,9 +124,8 @@ char  **argv,
 
 /*  */
 
-static	fetch_face (host, user)
-char   *host,
-	   *user;
+static 
+fetch_face (char *host, char *user)
 {
 	if ((myim = fetch_image (user, host)) == NULL && recording)
 		LLOG (pgm_log, LLOG_NOTICE,
@@ -140,11 +137,11 @@ char   *host,
 
 /*  */
 
-static int  getline (buffer)
-char   *buffer;
+static int 
+getline (char *buffer)
 {
-	register int    i;
-	register char  *cp,
+	int    i;
+	char  *cp,
 			 *ep;
 	static int  sticky = 0;
 
@@ -153,12 +150,12 @@ char   *buffer;
 		return NOTOK;
 	}
 
-	(void) printf ("%s> ", myname);
-	(void) fflush (stdout);
+	 printf ("%s> ", myname);
+	 fflush (stdout);
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
-			(void) printf ("\n");
+			 printf ("\n");
 			if (cp != buffer) {
 				sticky++;
 				break;
@@ -177,11 +174,11 @@ char   *buffer;
 
 /*    ARGINIT */
 
-static	arginit (vec)
-char  **vec;
+static 
+arginit (char **vec)
 {
 	int	    n;
-	register char  *ap,
+	char  *ap,
 			 *cp;
 
 	if (myname = rindex (*vec, '/'))
@@ -255,7 +252,8 @@ char  **vec;
 
 /*  */
 
-static	envinit () {
+static 
+envinit  {
 	int     i,
 			pid;
 
@@ -278,7 +276,8 @@ static	envinit () {
 
 /*  */
 
-static	display_X () {
+static 
+display_X  {
 	if (mywindow == NULL) {
 		int	bwidth;
 		char   *opt,
@@ -329,11 +328,11 @@ static	display_X () {
 			myframe.width = DisplayWidth (DISP, SCRN) - bwidth * 2;
 		myframe.x = DisplayWidth (DISP, SCRN) - (myframe.width + bwidth * 2);
 		myframe.y = 0;
-		(void) sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
+		 sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
 						myframe.x, myframe.y);
 
 		if (debug)
-			(void) fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
+			 fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
 							myframe.width, myframe.height, myframe.x, myframe.y,
 							myframe.bdrwidth);
 
@@ -372,7 +371,8 @@ static	display_X () {
 
 /*  */
 
-static	Redisplay () {
+static 
+Redisplay  {
 	int     sx,
 			sy,
 			dx,
@@ -394,9 +394,9 @@ static	Redisplay () {
 	h = min (myframe.height, myim -> height);
 
 	if (debug) {
-		(void) fprintf (stderr, "im: %dx%d frame:%dx%d\n",
+		 fprintf (stderr, "im: %dx%d frame:%dx%d\n",
 						myim -> width, myim -> height, myframe.width, myframe.height);
-		(void) fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
+		 fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
 						sx, sy, dx, dy, w, h);
 	}
 
@@ -415,7 +415,8 @@ static	Redisplay () {
 
 /*  */
 
-static int  ALRMser () {
+static int 
+ALRMser  {
 	if (mywindow && mapped) {
 		if (parent)
 			XClearWindow (DISP, mywindow);
@@ -431,13 +432,13 @@ static int  ALRMser () {
 
 /* ARGSUSED */
 
-static int  XWINser (io)
-int	io;
+static int 
+XWINser (int io)
 {
 	int	    ww,
 			wh;
 	XEvent   xevent;
-	register XEvent *xe = &xevent;
+	XEvent *xe = &xevent;
 
 	while (XPending (DISP)) {
 		XNextEvent (DISP, xe);
@@ -445,7 +446,7 @@ int	io;
 		switch (xe -> type) {
 		case Expose:
 			if (debug)
-				(void) fprintf (stderr, "Expose %d\n",
+				 fprintf (stderr, "Expose %d\n",
 								((XExposeEvent *) xe) -> count);
 			if (myim) {
 				if (((XExposeEvent *) xe) -> count > 0)
@@ -464,7 +465,7 @@ unmap:
 
 		case MapNotify:
 			if (debug)
-				(void) fprintf (stderr, "MapNotify (0x%x)\n",
+				 fprintf (stderr, "MapNotify (0x%x)\n",
 								myim);
 			if (myim) {
 				mapped = 1;
@@ -475,7 +476,7 @@ unmap:
 
 		case ConfigureNotify:
 			if (debug)
-				(void) fprintf (stderr, "ConfigureNotify %dx%d\n",
+				 fprintf (stderr, "ConfigureNotify %dx%d\n",
 								((XConfigureEvent *) xe) -> height,
 								((XConfigureEvent *) xe) -> width);
 			if ((wh = ((XConfigureEvent *) xe) -> height) > 0
@@ -485,19 +486,19 @@ unmap:
 
 		case UnmapNotify:
 			if (debug)
-				(void) fprintf (stderr, "UnmapNotify\n");
+				 fprintf (stderr, "UnmapNotify\n");
 			mapped = 0;
 			break;
 
 		case ReparentNotify:
 			if (debug)
-				(void) fprintf (stderr, "ReparentNotify\n");
+				 fprintf (stderr, "ReparentNotify\n");
 			parent = 1;
 			break;
 
 		default:
 			if (debug)
-				(void) fprintf (stderr, "Event %d\n", xe -> type);
+				 fprintf (stderr, "Event %d\n", xe -> type);
 			break;
 		}
 	}
@@ -505,11 +506,11 @@ unmap:
 
 /*    SOCKET */
 
-int	startsocket (portno)
-int	portno;
+int 
+startsocket (int portno)
 {
 	struct sockaddr_in in_socket;
-	register struct sockaddr_in *isock = &in_socket;
+	struct sockaddr_in *isock = &in_socket;
 
 	isock -> sin_family = AF_INET;
 	isock -> sin_port = htons ((u_short) portno);
@@ -524,8 +525,8 @@ int	portno;
 
 /*  */
 
-int	readsocket (buffer)
-char   *buffer;
+int 
+readsocket (char *buffer)
 {
 	int     cc;
 
@@ -553,7 +554,7 @@ char   *buffer;
 				continue;
 
 			if (ppidsw > 0 && kill (ppidsw, 0) == NOTOK) {
-				(void) close (sd);
+				 close (sd);
 				return NOTOK;
 			}
 
@@ -564,7 +565,7 @@ char   *buffer;
 		}
 
 		if (ppidsw > 0 && kill (ppidsw, 0) == NOTOK) {
-			(void) close (sd);
+			 close (sd);
 			return NOTOK;
 		}
 

@@ -45,8 +45,8 @@ static struct isoservent    iss;
 
 /*  */
 
-int	setisoservent (f)
-int	f;
+int 
+setisoservent (int f)
 {
 	if (servf == NULL)
 		servf = fopen (isodefile (isoservices, 0), "r");
@@ -58,7 +58,8 @@ int	f;
 }
 
 
-int	endisoservent () {
+int 
+endisoservent (void) {
 	if (servf && !stayopen) {
 		(void) fclose (servf);
 		servf = NULL;
@@ -69,11 +70,12 @@ int	endisoservent () {
 
 /*  */
 
-struct isoservent  *getisoservent () {
+struct isoservent *
+getisoservent (void) {
 	int	    mask,
 			vecp;
-	register char  *cp;
-	register struct isoservent *is = &iss;
+	char  *cp;
+	struct isoservent *is = &iss;
 	static char buffer[BUFSIZ + 1],
 		   file[BUFSIZ];
 	static char *vec[NVEC + NSLACK + 1];
@@ -116,11 +118,11 @@ struct isoservent  *getisoservent () {
 /*  */
 
 #ifdef	DEBUG
-_printsrv (is)
-register struct isoservent *is;
+int 
+_printsrv (struct isoservent *is)
 {
-	register int    n = is -> is_tail - is -> is_vec - 1;
-	register char **ap = is -> is_vec;
+	int    n = is -> is_tail - is -> is_vec - 1;
+	char **ap = is -> is_vec;
 
 	LLOG (addr_log, LLOG_DEBUG,
 		  ("\tENT: \"%s\" PRV: \"%s\" SEL: %s",

@@ -39,7 +39,7 @@ void ros_log ();
 extern char quipu_shutdown;
 
 oper_send_invoke(oper)
-register        struct oper_act * oper;
+       struct oper_act * oper;
 {
 	int				  result;
 	struct DSAPindication	  di_s;

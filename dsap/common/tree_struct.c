@@ -67,7 +67,7 @@ struct tree_struct * a, *b;
 
 /* ARGSUSED */
 static tree_struct_print (ps,tree,format)
-register PS ps;
+PS ps;
 struct   tree_struct * tree;
 int format;
 {
@@ -95,7 +95,7 @@ struct tree_struct * ts;
 {
 	PE ret_pe;
 
-	(void) encode_Quipu_TreeStructureSyntax(&ret_pe,0,0,NULLCP,ts);
+	 encode_Quipu_TreeStructureSyntax(&ret_pe,0,0,NULLCP,ts);
 
 	return (ret_pe);
 }
@@ -112,7 +112,7 @@ PE pe;
 }
 
 schema_syntax () {
-	(void) add_attribute_syntax ("schema",
+	 add_attribute_syntax ("schema",
 								 (IFP) ts_enc,		(IFP) ts_dec,
 								 (IFP) str2schema,	tree_struct_print,
 								 (IFP) tree_struct_cpy,	tree_struct_cmp,

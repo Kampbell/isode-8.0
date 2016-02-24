@@ -1,56 +1,5 @@
-/* osilookup.c - convert entry in /etc/osi.hosts to isoentities format */
-
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/osilookup/RCS/osilookup.c,v 9.0 1992/06/16 12:43:08 isode Rel $";
-#endif
-
-/*
- * $Header: /xtel/isode/isode/others/osilookup/RCS/osilookup.c,v 9.0 1992/06/16 12:43:08 isode Rel $
- *
- * Contributed by John A. Scott, the MITRE Corporation
- *
- * N.B.:	I whipped up this code quickly to fill a need I had.  I
- *		do not, it any way, shape, or form, warrant its output.
- *
- *
- * $Log: osilookup.c,v $
- * Revision 9.0  1992/06/16  12:43:08  isode
- * Release 8.0
- *
- */
-
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
-
-
-#include "config.h"
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#ifndef	SUNLINK_6_0
-#include <sys/ieee802.h>
-#else
-#include <net/if_ieee802.h>
-#endif
-#include <netosi/osi.h>
-#include <netosi/osi_addr.h>
-#include <sunosi/mapds_user.h>
-
-/*  */
-
-/* ARGSUSED */
-
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+__END_DECLS 
+main (int argc, char **argv, char **envp)
 {
 	int	    len,
 			paddr_type;
@@ -105,12 +54,12 @@ static char nib2hex[0x10] = {
 
 
 static int  explode (a, b, n)
-register char  *a;
-register u_char *b;
-register int    n;
+char  *a;
+u_char *b;
+int    n;
 {
-	register int    i;
-	register u_char c;
+	int    i;
+	u_char c;
 
 	for (i = 0; i < n; i++) {
 		c = *b++;

@@ -38,7 +38,7 @@ struct certificate *parm;
 {
 	PE pe;
 
-	(void) encode_AF_Certificate(&pe, 0, 0, NULLCP, parm);
+	 encode_AF_Certificate(&pe, 0, 0, NULLCP, parm);
 	return (pe);
 }
 
@@ -175,7 +175,7 @@ int *len;
 	*cp = malloc((unsigned)(l+1)/2);
 	*len = 8*((l+1)/2) - k;
 	for (i=0; i<(l+1)/2; i++) {
-		(void) sscanf(str+2*i, "%02x", &tmp);
+		 sscanf(str+2*i, "%02x", &tmp);
 		(*cp)[i] = tmp & 255;
 	}
 }
@@ -490,7 +490,7 @@ struct certificate *a, *b;
 }
 
 certificate_syntax() {
-	(void) add_attribute_syntax(
+	 add_attribute_syntax(
 		"Certificate",
 		(IFP) cert_enc, (IFP) cert_dec,
 		(IFP) str2cert, (IFP) printcert,

@@ -67,7 +67,7 @@ static struct pair pairs[] = {
 /*  */
 
 static	fax_free (f)
-register struct fax *f;
+struct fax *f;
 {
 	free (f -> number);
 
@@ -80,9 +80,9 @@ register struct fax *f;
 /*  */
 
 static struct fax *fax_cpy (a)
-register struct fax *a;
+struct fax *a;
 {
-	register struct fax *f;
+	struct fax *f;
 
 	f = (struct fax *) smalloc (sizeof *f);
 
@@ -95,8 +95,8 @@ register struct fax *a;
 /*  */
 
 static int  fax_cmp (a, b)
-register struct fax *a;
-register struct fax *b;
+struct fax *a;
+struct fax *b;
 {
 	int	    i;
 
@@ -114,13 +114,13 @@ register struct fax *b;
 /*  */
 
 static	fax_print (ps, f, format)
-register PS ps;
-register struct fax *f;
+PS ps;
+struct fax *f;
 int	format;
 {
-	register int   i;
-	register struct pair *p;
-	register PE    pe;
+	int   i;
+	struct pair *p;
+	PE    pe;
 
 	if (format == READOUT) {
 		ps_printf (ps, "%s", f -> number);
@@ -167,14 +167,14 @@ int	format;
 /*  */
 
 static struct fax *str2fax (str)
-register char  *str;
+char  *str;
 {
 	int	    value;
-	register char  *ptr,
+	char  *ptr,
 			 **ap;
 	char   *vec[NVEC + 1];
-	register struct fax *f;
-	register struct pair *p;
+	struct fax *f;
+	struct pair *p;
 
 	f = (struct fax *) smalloc (sizeof *f);
 
@@ -197,7 +197,7 @@ register char  *str;
 	ptr = strdup (ptr);
 
 	bzero ((char *) vec, sizeof vec);
-	(void) str2vec (ptr, vec);
+	 str2vec (ptr, vec);
 
 	for (ap = vec; *ap; ap++) {
 		if (sscanf (*ap, "%d", &value) == 1 && value >= 0)
@@ -253,7 +253,7 @@ struct fax *f;
 
 	f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
 
-	(void) encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
+	 encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
 
 	if (f -> fax_bits)
 		free (f -> fax_bits);
@@ -291,7 +291,7 @@ PE	pe;
 /*  */
 
 fax_syntax () {
-	(void) add_attribute_syntax ("FacsimileTelephoneNumber",
+	 add_attribute_syntax ("FacsimileTelephoneNumber",
 								 (IFP) fax_enc,	(IFP) fax_dec,
 								 (IFP) str2fax,	fax_print,
 								 (IFP) fax_cpy,	fax_cmp,

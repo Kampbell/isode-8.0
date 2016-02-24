@@ -105,7 +105,7 @@ real_unravel_attribute (eptr,error)
 Entry eptr;
 struct DSError * error;
 {
-	register Attr_Sequence as;
+	Attr_Sequence as;
 	Attr_Sequence ias;
 	RDN new_rdn, rdn_test;
 	AttributeType at;
@@ -343,9 +343,9 @@ struct DSError * error;
 		for ( as = eptr->e_attributes; as != NULLATTR; as = as->attr_link)
 			as->attr_acl = acl->ac_default;
 	} else {
-		register struct acl_attr * aa;
+		struct acl_attr * aa;
 		struct acl_attr * found_aa;
-		register struct oid_seq * oidptr;
+		struct oid_seq * oidptr;
 		char once;
 
 		/* The following is probably in efficient */
@@ -489,8 +489,8 @@ Attr_Sequence entry_find_type (a,b)
 Entry a;
 AttributeType b;
 {
-	register int i;
-	register Attr_Sequence ptr;
+	int i;
+	Attr_Sequence ptr;
 
 	/* if Attr_cmp returns <0 no point in continuing due to ordering */
 

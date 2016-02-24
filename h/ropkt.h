@@ -167,7 +167,9 @@
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP, "%s", PY_pepy)
 
 
-int	ropktlose (), rosapreject (), rosaplose ();
+int	ropktlose (struct assocblk*acb, ...);
+int	rosapreject (struct assocblk*acb, ...);
+int	rosaplose (struct RoSAPindication*, ...);
 
 /*  */
 

@@ -51,14 +51,12 @@ static int  SPTokenRequestAux ();
 
 /*  */
 
-int	SGTokenRequest (sd, tokens, si)
-int	sd;
-int	tokens;
-struct SSAPindication *si;
+int 
+SGTokenRequest (int sd, int tokens, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 
@@ -68,21 +66,19 @@ struct SSAPindication *si;
 
 	result = SGTokenRequestAux (sb, tokens, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  SGTokenRequestAux (sb, tokens, si)
-register struct ssapblk *sb;
-int	tokens;
-struct SSAPindication *si;
+static int 
+SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si)
 {
 	int     result,
 			settings;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	settings = 0;
 	dotokens ();
@@ -134,16 +130,12 @@ struct SSAPindication *si;
 
 /*  */
 
-int	SPTokenRequest (sd, tokens, data, cc, si)
-int	sd;
-int	tokens,
-	cc;
-char   *data;
-struct SSAPindication *si;
+int 
+SPTokenRequest (int sd, int tokens, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (si);
 
@@ -154,23 +146,19 @@ struct SSAPindication *si;
 
 	result = SPTokenRequestAux (sb, tokens, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  SPTokenRequestAux (sb, tokens, data, cc, si)
-register struct ssapblk *sb;
-int	tokens,
-	cc;
-char   *data;
-struct SSAPindication *si;
+static int 
+SPTokenRequestAux (struct ssapblk *sb, int tokens, char *data, int cc, struct SSAPindication *si)
 {
 	int     result,
 			settings;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	settings = 0;
 	dotokens ();

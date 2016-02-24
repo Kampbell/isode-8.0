@@ -57,15 +57,15 @@ static struct syment *hashtab[HASHSIZE];
 /*
  * Define a variable from a command line argument.
  */
-define(name)
-char *name;
+int 
+define (char *name)
 {
-	register char *cp, *s;
-	register struct namelist *nl;
+	char *cp, *s;
+	struct namelist *nl;
 	struct namelist *value;
 
 	if (debug)
-		(void) printf("define(%s)\n", name);
+		 printf("define(%s)\n", name);
 
 	cp = index(name, '=');
 	if (cp == NULL)
@@ -110,7 +110,7 @@ char *name;
 			cp = s;
 		}
 	}
-	(void) lookup(name, REPLACE, value);
+	 lookup(name, REPLACE, value);
 }
 
 /*
@@ -121,18 +121,15 @@ char *name;
  */
 
 struct namelist *
-lookup(name, action, value)
-char *name;
-int action;
-struct namelist *value;
+lookup (char *name, int action, struct namelist *value)
 {
-	register unsigned n;
-	register char *cp;
-	register struct syment *s;
+	unsigned n;
+	char *cp;
+	struct syment *s;
 	char buf[256];
 
 	if (debug)
-		(void) printf("lookup(%s, %d, %x)\n", name, action, value);
+		 printf("lookup(%s, %d, %x)\n", name, action, value);
 
 	n = 0;
 	for (cp = name; *cp; )
@@ -144,7 +141,7 @@ struct namelist *value;
 			continue;
 		if (action != LOOKUP) {
 			if (action != INSERT || s->s_type != CONST) {
-				(void) sprintf(buf, "%s redefined", name);
+				 sprintf(buf, "%s redefined", name);
 				yyerror(buf);
 			}
 		}
@@ -152,7 +149,7 @@ struct namelist *value;
 	}
 
 	if (action == LOOKUP) {
-		(void) sprintf(buf, "%s undefined", name);
+		 sprintf(buf, "%s undefined", name);
 		yyerror(buf);
 		return(NULL);
 	}

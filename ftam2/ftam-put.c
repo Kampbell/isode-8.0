@@ -39,10 +39,10 @@ char  **vec;
 	int     append;
 #ifdef	BRIDGE
 	int     result;
-	register char  *dst;
+	char  *dst;
 #else
 	int	    sglobbed;
-	register char  *bp,
+	char  *bp,
 			 *dst,
 			 **gp,
 			 **src;
@@ -64,7 +64,7 @@ char  **vec;
 #ifdef	BRIDGE
 		dst = *vec;
 #else
-		register char **ap;
+		char **ap;
 
 		for (ap = vec; *ap; ap++)
 			continue;
@@ -141,16 +141,16 @@ ask_it:
 					break;
 #ifdef apollo
 				if (*dst == '/')
-					(void) sprintf (bp = buffer, "%s", dst);
+					 sprintf (bp = buffer, "%s", dst);
 				else
 #endif
-					(void) sprintf (bp = buffer, "%s/", dst);
+					 sprintf (bp = buffer, "%s/", dst);
 				bp += strlen (bp);
 				if (dst = rindex (*src, '/'))
 					dst++;
 				if (dst == NULL || *dst == NULL)
 					dst = *src;
-				(void) strcpy (bp, dst);
+				 strcpy (bp, dst);
 				dst = buffer;
 				goto ask_it;
 
@@ -159,7 +159,7 @@ ask_it:
 			}
 
 		dst = str2file (dst);
-		(void) put (*src, dst, append);
+		 put (*src, dst, append);
 		goto out;
 	}
 
@@ -172,15 +172,15 @@ ask_it:
 		if (dst)
 #ifdef apollo
 			if (*(bp = str2file (dst)) == '/') {
-				(void) strcpy (buffer, bp);
+				 strcpy (buffer, bp);
 				bp = buffer;
 			} else
 #endif
-				(void) sprintf (bp = buffer, "%s/", str2file (dst));
+				 sprintf (bp = buffer, "%s/", str2file (dst));
 		else if (rcwd)
-			(void) sprintf (bp = buffer, "%s", str2file (""));
+			 sprintf (bp = buffer, "%s", str2file (""));
 		else
-			(void) strcpy (bp = buffer, "./");
+			 strcpy (bp = buffer, "./");
 		bp += strlen (bp);
 		break;
 
@@ -205,7 +205,7 @@ ask_it:
 			dst = *gp;
 			break;
 		}
-		(void) strcpy (bp, dst);
+		 strcpy (bp, dst);
 		dst = str2file (buffer);
 
 		if (sglobbed) {
@@ -226,7 +226,7 @@ ask_it:
 						dst);
 		}
 
-		(void) put (*gp, dst, append);
+		 put (*gp, dst, append);
 
 		if (ftamfd == NOTOK)
 			break;
@@ -285,7 +285,7 @@ int	append;
 		advise (src, "unable to fstat");
 you_lose:
 		;
-		(void) close (fd);
+		 close (fd);
 		return NOTOK;
 	}
 	if ((st.st_mode & S_IFMT) != S_IFREG) {
@@ -315,7 +315,7 @@ you_lose:
 #ifdef	BRIDGE
 you_lose:
 		;
-		(void) close (fd);
+		 close (fd);
 		return NOTOK;
 #else
 		goto you_lose;
@@ -352,8 +352,8 @@ you_lose:
 #endif
 	if (watch) {
 #ifndef	BRIDGE
-		(void) printf ("Selecting FADU size of %d\n", size);
-		(void) printf ("based on blksize of %d and estimated integral FADU size of %d\n",
+		 printf ("Selecting FADU size of %d\n", size);
+		 printf ("based on blksize of %d and estimated integral FADU size of %d\n",
 					   bsize, magic);
 #endif
 	}
@@ -372,7 +372,7 @@ you_lose:
 
 	pe_free (pe);
 
-	(void) close (fd);
+	 close (fd);
 
 	return result;
 }
@@ -393,7 +393,7 @@ PE      pe;
 struct vfsmap  *vf;
 int	size;
 {
-	register int    n;
+	int    n;
 	int     cc,
 			effector,
 			gd,
@@ -406,12 +406,12 @@ int	size;
 	char line[BUFSIZ];
 #endif
 	struct FADUidentity faduids;
-	register struct FADUidentity   *faduid = &faduids;
+	struct FADUidentity   *faduid = &faduids;
 	struct FTAMgroup    ftgs;
-	register struct FTAMgroup  *ftg = &ftgs;
+	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
-	register struct FTAMabort  *fta = &fti -> fti_abort;
+	struct FTAMindication *fti = &ftis;
+	struct FTAMabort  *fta = &fti -> fti_abort;
 	FILE *fp;
 
 	pe -> pe_context = vf -> vf_id;
@@ -434,8 +434,8 @@ int	size;
 	if (units & FUNIT_LIMITED) {
 		ftg -> ftg_flags |= FTG_CREATE;
 		{
-			register struct FTAMcreate *ftce = &ftg -> ftg_create;
-			register struct FTAMattributes *fa = &ftce -> ftce_attrs;
+			struct FTAMcreate *ftce = &ftg -> ftg_create;
+			struct FTAMattributes *fa = &ftce -> ftce_attrs;
 
 			ftce -> ftce_override = append ? FOVER_SELECT : omode;
 
@@ -459,8 +459,8 @@ int	size;
 	} else {
 		ftg -> ftg_flags |= FTG_SELECT;
 		{
-			register struct FTAMselect *ftse = &ftg -> ftg_select;
-			register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+			struct FTAMselect *ftse = &ftg -> ftg_select;
+			struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 			if (!append && omode == FOVER_FAIL) {
 				advise (NULLCP,
@@ -481,7 +481,7 @@ int	size;
 
 	ftg -> ftg_flags |= FTG_OPEN;
 	{
-		register struct FTAMopen   *ftop = &ftg -> ftg_open;
+		struct FTAMopen   *ftop = &ftg -> ftg_open;
 
 		ftop -> ftop_contents = vf -> vf_oid;
 		ftop -> ftop_parameter = param;
@@ -511,14 +511,14 @@ int	size;
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		ftam_diag (ftse -> ftse_diags, ftse -> ftse_ndiag, 1,
 				   ftse -> ftse_action);
 		if (ftse -> ftse_state != FSTATE_SUCCESS)
 			goto you_lose;
 	} else if (ftg -> ftg_flags & FTG_CREATE) {
-		register struct FTAMcreate *ftce = &ftg -> ftg_create;
+		struct FTAMcreate *ftce = &ftg -> ftg_create;
 
 		ftam_diag (ftce -> ftce_diags, ftce -> ftce_ndiag, 1,
 				   ftce -> ftce_action);
@@ -527,7 +527,7 @@ int	size;
 	}
 
 	if (ftg -> ftg_flags & FTG_OPEN) {
-		register struct FTAMopen   *ftop = &ftg -> ftg_open;
+		struct FTAMopen   *ftop = &ftg -> ftg_open;
 
 		ftam_diag (ftop -> ftop_diags, ftop -> ftop_ndiag, 1,
 				   ftop -> ftop_action);
@@ -558,7 +558,7 @@ int	size;
 				else
 					switch (myvf - vfs) {
 					case VFS_UTF: {
-						register struct type_DOCS_FTAM__1__Parameters *p1 =
+						struct type_DOCS_FTAM__1__Parameters *p1 =
 							(struct type_DOCS_FTAM__1__Parameters *)
 							parm;
 
@@ -597,7 +597,7 @@ int	size;
 						break;
 					}
 				if (parm)
-					(void) fre_obj (parm,
+					 fre_obj (parm,
 									_ZDOCS_mod.md_dtab[myvf -> vf_number],
 									&_ZDOCS_mod, 1);
 			}
@@ -633,7 +633,7 @@ int	size;
 	case VFS_UTF:
 		if ((gd = dup (fd)) == NOTOK || (fp = fdopen (gd, "r")) == NULL) {
 			if (gd != NOTOK)
-				(void) close (gd);
+				 close (gd);
 
 #ifdef	BRIDGE
 			advise (dst, gd != NOTOK ? "fdopen failed" : "unable to dup");
@@ -663,7 +663,7 @@ int	size;
 #endif
 
 	for (;;) {
-		register char  *bp,
+		char  *bp,
 				 *ep;
 
 		if (!interrupted) {
@@ -674,7 +674,7 @@ int	size;
 			FD_ZERO (&wfds);
 			/* interrupt causes EINTR */
 			if (FSelectMask (ftamfd, &wfds, &nfds, fti) == OK)
-				(void) xselect (nfds, NULLFD, &wfds, NULLFD, NOTOK);
+				 xselect (nfds, NULLFD, &wfds, NULLFD, NOTOK);
 		}
 
 		if (interrupted) {
@@ -688,12 +688,12 @@ int	size;
 		for (ep = (bp = (char *) pe -> pe_prim) + size - (fp ? 2 : 0), nc = 0;
 				bp < ep; ) {
 			if (fp) {
-				register char  *cp;
+				char  *cp;
 
 #ifdef	BRIDGE
 				if (strlen (line) || fgets (line, BUFSIZ, fp)) {
 					if ((int)(strlen(line) + 1) < (ep - bp - 1)) {
-						(void) strcpy (bp, line);
+						 strcpy (bp, line);
 						line[0] = NULL;
 					} else
 						break;
@@ -780,7 +780,7 @@ int	size;
 		switch (de2fadu (de, pe != de ? 1 : 0)) {
 		case NOTOK:
 			if (fp)
-				(void) fclose (fp);
+				 fclose (fp);
 			return NOTOK;
 
 		case OK:
@@ -789,18 +789,18 @@ int	size;
 				cc += (n - nc), nc = 0;
 			if (hash) {
 				if (hash > 1)
-					(void) printf ("%d\r", cc);
+					 printf ("%d\r", cc);
 				else
 					for (; marks < cc; marks += BUFSIZ)
-						(void) putchar ('#');
-				(void) fflush (stdout);
+						 putchar ('#');
+				 fflush (stdout);
 			}
 			break;
 
 		case DONE:
-			(void) de2fadu (NULLPE, 0);
+			 de2fadu (NULLPE, 0);
 			if (fp)
-				(void) fclose (fp);
+				 fclose (fp);
 			goto done_transfer;
 		}
 	}
@@ -809,11 +809,11 @@ int	size;
 		timer (cc, "sent");
 
 	if (fp)
-		(void) fclose (fp);
+		 fclose (fp);
 
 	if (n == NOTOK) {
 		struct FTAMdiagnostic   diags[NFDIAG];
-		register struct FTAMdiagnostic *dp;
+		struct FTAMdiagnostic *dp;
 
 #ifdef	BRIDGE
 		advise (dst, "error reading");
@@ -830,11 +830,11 @@ do_cancel:
 		dp -> ftd_identifier = reason;
 		dp -> ftd_observer = dp -> ftd_source = EREF_IFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		(void) strcpy (dp -> ftd_data, sys_errname (errno));
+		 strcpy (dp -> ftd_data, sys_errname (errno));
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
-		(void) de2fadu (NULLPE, 0);
+		 de2fadu (NULLPE, 0);
 
 		if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags, dp - diags,
 							fti) == NOTOK) {
@@ -843,7 +843,7 @@ do_cancel:
 		}
 
 		if (fti -> fti_type == FTI_CANCEL) {
-			register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+			struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 			ftam_diag (ftcn -> ftcn_diags, ftcn -> ftcn_ndiag, 1,
 					   ftcn -> ftcn_action);
@@ -869,7 +869,7 @@ do_cancel:
 
 	switch (fti -> fti_type) {
 	case FTI_TRANSEND: {
-		register struct FTAMtransend   *ftre = &fti -> fti_transend;
+		struct FTAMtransend   *ftre = &fti -> fti_transend;
 
 		ftam_diag (ftre -> ftre_diags, ftre -> ftre_ndiag, 1,
 				   ftre -> ftre_action);
@@ -878,7 +878,7 @@ do_cancel:
 	break;
 
 	case FTI_CANCEL: {
-		register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+		struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 		advise (NULLCP, "data transfer canceled!");
 		ftam_diag (ftcn -> ftcn_diags, ftcn -> ftcn_ndiag, 1,
@@ -918,14 +918,14 @@ done_transfer:
 	ftg = &fti -> fti_group;
 
 	if (ftg -> ftg_flags & FTG_CLOSE) {
-		register struct FTAMclose  *ftcl = &ftg -> ftg_close;
+		struct FTAMclose  *ftcl = &ftg -> ftg_close;
 
 		ftam_diag (ftcl -> ftcl_diags, ftcl -> ftcl_ndiag, 1,
 				   ftcl -> ftcl_action);
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
 
 		ftam_diag (ftde -> ftde_diags, ftde -> ftde_ndiag, 1,
 				   ftde -> ftde_action);
@@ -949,8 +949,8 @@ int	concat;
 {
 	int	    result;
 	struct FTAMindication   ftis;
-	register struct FTAMindication *fti = &ftis;
-	register struct FTAMabort  *fta = &fti -> fti_abort;
+	struct FTAMindication *fti = &ftis;
+	struct FTAMabort  *fta = &fti -> fti_abort;
 	static int ninfo = 0;
 	static int size = 0;
 	static PE info[NPDATA];
@@ -1024,7 +1024,7 @@ int	concat;
 	}
 
 	if (fti -> fti_type == FTI_CANCEL) {
-		register struct FTAMcancel *ftcn = &fti -> fti_cancel;
+		struct FTAMcancel *ftcn = &fti -> fti_cancel;
 
 		advise (NULLCP, "data transfer cancelled!");
 		ftam_diag (ftcn -> ftcn_diags, ftcn -> ftcn_ndiag, 1,

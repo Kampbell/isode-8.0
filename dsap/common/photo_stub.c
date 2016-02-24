@@ -34,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/photo_stub.c,v 
 photo_start (name)
 char * name;
 {
-	(void) fprintf (stderr,"PHOTO: NYI (1)");
+	 fprintf (stderr,"PHOTO: NYI (1)");
 	return (-1);
 }
 
@@ -43,9 +43,9 @@ char * name;
 photo_end (name)
 char * name;
 {
-	(void) printf ("PHOTO: NYI (2)");
-	(void) fflush (stdout);
-	(void) close (1);
+	 printf ("PHOTO: NYI (2)");
+	 fflush (stdout);
+	 close (1);
 	return (-1);
 }
 

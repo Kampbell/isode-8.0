@@ -69,9 +69,8 @@ extern char *getstring ();
  * destdir = 1 if destination should be a directory
  * (i.e., more than one source is being copied to the same destination).
  */
-install(src, dest, destdir, opts)
-char *src, *dest;
-int destdir, opts;
+int 
+install (char *src, char *dest, int destdir, int opts)
 {
 	char *rname;
 	char destcopy[BUFSIZ];
@@ -82,7 +81,7 @@ int destdir, opts;
 	}
 
 	if (nflag || debug) {
-		(void) printf("%s%s%s%s%s%s %s %s\n",
+		 printf("%s%s%s%s%s%s %s %s\n",
 					  opts & VERIFY ? "verify":"install",
 					  opts & WHOLE ? " -w" : "",
 					  opts & YOUNGER ? " -y" : "",
@@ -97,7 +96,7 @@ int destdir, opts;
 	if (rname == NULL)
 		return;
 	tp = target;
-	(void) strcpy (basename, target);
+	 strcpy (basename, target);
 	while (*tp)
 		tp++;
 	/*
@@ -118,14 +117,14 @@ int destdir, opts;
 			rname++;
 	}
 	if (debug)
-		(void) printf("target = %s, rname = %s\n", target, rname);
+		 printf("target = %s, rname = %s\n", target, rname);
 	/*
 	 * Pass the destination file/directory name to remote.
 	 */
 	if (initdir (destdir, dest) < 0)
 		return;
 
-	(void) strcpy(destcopy, dest);
+	 strcpy(destcopy, dest);
 	Tdest = destcopy;
 
 	sendf(rname, opts);
@@ -138,11 +137,10 @@ int destdir, opts;
  * Transfer the file or directory in target[].
  * rname is the name of the file on the remote host.
  */
-sendf(rname, opts)
-char *rname;
-int opts;
+int 
+sendf (char *rname, int opts)
 {
-	register struct subcmd *sc;
+	struct subcmd *sc;
 	struct stat stb;
 	int sizerr, f, u, len;
 	off_t i;
@@ -154,7 +152,7 @@ int opts;
 	static char uname[15], group[15];
 
 	if (debug)
-		(void) printf("sendf(%s, %x)\n", rname, opts);
+		 printf("sendf(%s, %x)\n", rname, opts);
 
 	if (except(target))
 		return;
@@ -164,7 +162,7 @@ int opts;
 	}
 	if ((u = update(rname, opts, &stb)) == 0) {
 		if ((stb.st_mode & S_IFMT) == S_IFREG && stb.st_nlink > 1)
-			(void) savelink(&stb, opts);
+			 savelink(&stb, opts);
 		return;
 	}
 
@@ -172,13 +170,13 @@ int opts;
 		if ((pw = getpwuid(stb.st_uid)) == NULL) {
 			log(lfp, "%s: no password entry for uid \n", target);
 			pw = NULL;
-			(void) sprintf(uname, ":%d", stb.st_uid);
+			 sprintf(uname, ":%d", stb.st_uid);
 		}
 	if (gr == NULL || gr->gr_gid != stb.st_gid)
 		if ((gr = getgrgid(stb.st_gid)) == NULL) {
 			log(lfp, "%s: no name for group %d\n", target);
 			gr = NULL;
-			(void) sprintf(group, ":%d", stb.st_gid);
+			 sprintf(group, ":%d", stb.st_gid);
 		}
 	if (u == 1) {
 #ifdef UW
@@ -205,12 +203,12 @@ int opts;
 					  stb.st_mode & 07777, (off_t)0, (time_t)0,
 					  protoname (), protogroup (),
 					  rname, "") < 0) {
-			(void) closedir (d);
+			 closedir (d);
 			return;
 		}
 
 		if (opts & REMOVE)
-			(void) rmchk(opts);
+			 rmchk(opts);
 
 		otp = tp;
 		len = tp - target;
@@ -231,8 +229,8 @@ int opts;
 			tp--;
 			sendf(dp->d_name, opts);
 		}
-		(void) closedir(d);
-		(void) terminate (S_IFDIR, OK);
+		 closedir(d);
+		 terminate (S_IFDIR, OK);
 		tp = otp;
 		*tp = '\0';
 		return;
@@ -245,11 +243,11 @@ int opts;
 
 			if ((lp = savelink(&stb, opts)) != NULL) {
 				if (*lp -> target == 0)
-					(void) strcpy (buf, lp -> pathname);
-				else	(void) sprintf (buf, "%s/%s",
+					 strcpy (buf, lp -> pathname);
+				else	 sprintf (buf, "%s/%s",
 											lp -> target,
 											lp -> pathname);
-				(void) transfer ((unsigned short)0, opts,
+				 transfer ((unsigned short)0, opts,
 								 (unsigned short)0, (off_t)0,
 								 (time_t)0, "", "",
 								 rname, buf);
@@ -258,7 +256,7 @@ int opts;
 		}
 		sizerr = (readlink(target, buf, BUFSIZ) != stb.st_size);
 		if (debug)
-			(void) printf("readlink = %.*s\n", stb.st_size, buf);
+			 printf("readlink = %.*s\n", stb.st_size, buf);
 		if (transfer (stb.st_mode & S_IFMT, opts, stb.st_mode & 07777,
 					  stb.st_size, stb.st_mtime,
 					  protoname (), protogroup (), rname,
@@ -287,11 +285,11 @@ int opts;
 
 		if ((lp = savelink(&stb, opts)) != NULL) {
 			if (*lp -> target == 0)
-				(void) strcpy (buf, lp -> pathname);
-			else	(void) sprintf (buf, "%s/%s",
+				 strcpy (buf, lp -> pathname);
+			else	 sprintf (buf, "%s/%s",
 										lp -> target,
 										lp -> pathname);
-			(void) transfer ((unsigned short)0, opts,
+			 transfer ((unsigned short)0, opts,
 							 (unsigned short)0, (off_t)0,
 							 (time_t)0, "", "",
 							 rname, buf);
@@ -307,7 +305,7 @@ int opts;
 				   stb.st_size,
 				   stb.st_mtime, protoname (), protogroup (),
 				   rname, "") < 0) {
-		(void) close (f);
+		 close (f);
 		return;
 	}
 	sizerr = 0;
@@ -320,7 +318,7 @@ int opts;
 		if (tran_data (tranbuf, amt) == NOTOK)
 			break;
 	}
-	(void) close(f);
+	 close(f);
 	if (sizerr) {
 		advise (NULLCP, "%s: file changed size", target);
 		if (terminate (S_IFREG, NOTOK) < 0)
@@ -346,17 +344,15 @@ dospecial:
 		log(lfp, "special \"%s\"\n", sc->sc_name);
 		if (opts & VERIFY)
 			continue;
-		(void) sprintf(buf, "FILE=%s;export FILE;%s",
+		 sprintf(buf, "FILE=%s;export FILE;%s",
 					   target, sc->sc_name);
-		(void) runspecial (buf);
+		 runspecial (buf);
 
 	}
 }
 
 struct linkbuf *
-savelink(sp, opts)
-struct stat *sp;
-int	opts;
+savelink (struct stat *sp, int opts)
 {
 	struct linkbuf *lp;
 	extern	char *makestr ();
@@ -393,10 +389,8 @@ int	opts;
 	return(NULL);
 }
 
-update(rname, opts, sp)
-char *rname;
-int opts;
-struct stat *sp;
+int 
+update (char *rname, int opts, struct stat *sp)
 {
 	off_t size;
 	time_t mtime;
@@ -404,7 +398,7 @@ struct stat *sp;
 	int	retval;
 
 	if (debug)
-		(void) printf("update(%s, %x, %x)\n", rname, opts, sp);
+		 printf("update(%s, %x, %x)\n", rname, opts, sp);
 
 	/*
 	 * Check to see if the file exists on the remote machine.
@@ -467,24 +461,23 @@ int a1, a2, a3;
 {
 	/* Print changes locally if not quiet mode */
 	if (!qflag)
-		(void) printf(fmt, a1, a2, a3);
+		 printf(fmt, a1, a2, a3);
 
 	/* Save changes (for mailing) if really updating files */
 	if (!(options & VERIFY) && fp != NULL)
-		(void) fprintf(fp, fmt, a1, a2, a3);
+		 fprintf(fp, fmt, a1, a2, a3);
 }
 
 /*
  * Remove temporary files and do any cleanup operations before exiting.
  */
 SFD cleanup() {
-	(void) unlink(utmpfile);
+	 unlink(utmpfile);
 	exit(1);
 }
 
-query (mess, mode, name)
-int	mode;
-char	*mess, *name;
+int 
+query (char *mess, int mode, char *name)
 {
 	char	buf[BUFSIZ];
 	char	*cp;
@@ -505,7 +498,7 @@ char	*mess, *name;
 		break;
 	}
 
-	(void) sprintf (buf, "%s %s %s? ", mess, cp,
+	 sprintf (buf, "%s %s %s? ", mess, cp,
 					name == NULLCP ? target : name);
 	for (;;) {
 		cp = getstring (buf);

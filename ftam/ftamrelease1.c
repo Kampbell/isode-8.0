@@ -41,7 +41,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	missingP (ftr);
 	missingP (fti);
@@ -52,7 +52,7 @@ struct FTAMindication *fti;
 
 	result = FTerminateRequestAux (fsb, sharedASE, ftr, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -60,7 +60,7 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FTerminateRequestAux (fsb, sharedASE, ftr, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 PE	sharedASE;
 struct FTAMrelease *ftr;
 struct FTAMindication *fti;
@@ -68,12 +68,12 @@ struct FTAMindication *fti;
 	int     result;
 	PE	    pe;
 	struct AcSAPrelease acrs;
-	register struct AcSAPrelease   *acr = &acrs;
+	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__TERMINATE__response *rsp;
+	struct type_FTAM_F__TERMINATE__response *rsp;
 
 	if (!(fsb -> fsb_flags & FSB_INIT))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not initiator");
@@ -86,7 +86,7 @@ struct FTAMindication *fti;
 
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -104,7 +104,7 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -125,7 +125,7 @@ out:
 		if (aca -> aca_source == ACA_USER)
 			return acs2ftamabort (fsb, aca, fti);
 
-		(void) acs2ftamlose (fsb, fti, "AcRelRequest", aca);
+		 acs2ftamlose (fsb, fti, "AcRelRequest", aca);
 		goto out;
 	}
 

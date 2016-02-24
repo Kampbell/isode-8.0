@@ -40,8 +40,8 @@ va_dcl {
 	int	    reason,
 	result,
 	value;
-	register struct assocblk *acb;
-	register struct RoSAPindication *roi;
+	struct assocblk *acb;
+	struct RoSAPindication *roi;
 	va_list ap;
 
 	va_start (ap);
@@ -85,12 +85,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-int	ropktlose (acb, roi, reason, what, fmt)
-struct assocblk *acb;
-struct RoSAPindication *roi;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt)
 {
 	return ropktlose (acb, roi, reason, what, fmt);
 }
@@ -103,9 +99,9 @@ int	rosapreject (va_alist)
 va_dcl {
 	int	    reason,
 	result;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi;
+	struct RoSAPindication *roi;
 	va_list ap;
 
 	va_start (ap);
@@ -130,12 +126,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-int	rosapreject (acb, roi, reason, what, fmt)
-struct assocblk *acb;
-struct RoSAPindication *roi;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt)
 {
 	return rosapreject (acb, roi, reason, what, fmt);
 }
@@ -165,11 +157,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-int	rosaplose (roi, reason, what, fmt)
-struct RoSAPindication *roi;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
 {
 	return rosaplose (roi, reason, what, fmt);
 }
@@ -178,14 +167,16 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _rosaplose (roi, reason, ap)  /* what, fmt, args ... */
-register struct RoSAPindication *roi;
-int     reason;
-va_list	ap;
+static int 
+_rosaplose (  /* what, fmt, args ... */
+    struct RoSAPindication *roi,
+    int reason,
+    va_list ap
+)
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct RoSAPpreject *rop;
+	struct RoSAPpreject *rop;
 
 	if (roi) {
 		bzero ((char *) roi, sizeof *roi);

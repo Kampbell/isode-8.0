@@ -85,25 +85,23 @@ void  advise (int code, ...);
 void	ts_advise ();
 
 
-extern int  errno;
+
 
 /*  */
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int     argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    listening,
 			vecp;
 	char   *vec[4];
-	register struct NSAPaddr  *na;
-	register struct TSAPaddr  *ta;
-	register struct dispatch  *dp;
+	struct NSAPaddr  *na;
+	struct TSAPaddr  *ta;
+	struct dispatch  *dp;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 
 	arginit (argv);
 	envinit ();
@@ -166,14 +164,12 @@ char  **argv,
 
 /* ARGSUSED */
 
-static int  lppd (vecp, vec, ta)
-int	vecp;
-char  **vec;
-struct TSAPaddr *ta;
+static int 
+lppd (int vecp, char **vec, struct TSAPaddr *ta)
 {
-	register u_short port = ta -> ta_addrs[0].na_port;
-	register struct dispatch *dp;
-	register struct isoservent *is;
+	u_short port = ta -> ta_addrs[0].na_port;
+	struct dispatch *dp;
+	struct isoservent *is;
 
 	for (dp = dps; dp < dz; dp++)
 		if (dp -> dp_port == port)
@@ -193,41 +189,39 @@ struct TSAPaddr *ta;
 	advise (LLOG_NOTICE, NULLCP, "exec \"%s\" for \"%s\"", *is -> is_vec,
 			dp -> dp_entity);
 
-	(void) execv (*is -> is_vec, is -> is_vec);
+	 execv (*is -> is_vec, is -> is_vec);
 
 	adios (*is -> is_vec, "unable to exec");
 }
 
 /*  */
 
-static void  ts_advise (td, code, event)
-register struct TSAPdisconnect *td;
-int	code;
-char   *event;
+static void 
+ts_advise (struct TSAPdisconnect *td, int code, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						TErrString (td -> td_reason),
 						td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		(void) sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
 /*  */
 
-static	arginit (vec)
-char	**vec;
+static 
+arginit (char **vec)
 {
-	register int    n;
-	register char  *ap;
+	int    n;
+	char  *ap;
 	struct stat st;
-	register struct isoservent *is;
-	register struct PSAPaddr *pa;
-	register struct NSAPaddr *na;
+	struct isoservent *is;
+	struct PSAPaddr *pa;
+	struct NSAPaddr *na;
 	AEI	    aei;
 
 	if (myname = rindex (*vec, '/'))
@@ -243,7 +237,7 @@ char	**vec;
 			&& st.st_uid != 0)
 		adios (NULLCP, "%s not owned by root", ap);
 
-	(void) strcpy (myhost, TLocalHostName ());
+	 strcpy (myhost, TLocalHostName ());
 
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
@@ -255,7 +249,7 @@ char	**vec;
 			case 's':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -s service-designator");
-				(void) strcpy (myhost, ap);
+				 strcpy (myhost, ap);
 				continue;
 
 			default:
@@ -271,7 +265,7 @@ char	**vec;
 	bzero ((char *) dps, sizeof dps);
 	dz = dps;
 
-	(void) setisoservent (0);
+	 setisoservent (0);
 	while (is = getisoservent ())
 		if (strcmp (is -> is_provider, "lpp") == 0
 				&& access (*is -> is_vec, X_OK) != NOTOK) {
@@ -309,19 +303,20 @@ char	**vec;
 							malloc ((unsigned) (strlen (is -> is_entity) + 1)))
 						== NULL)
 					adios (NULLCP, "out of memory");
-				(void) strcpy (dz -> dp_entity, is -> is_entity);
+				 strcpy (dz -> dp_entity, is -> is_entity);
 				dz -> dp_port = na -> na_port;
 				dz++;
 			}
 		}
 no_more:
 	;
-	(void) endisoservent ();
+	 endisoservent ();
 }
 
 /*  */
 
-static  envinit () {
+static 
+envinit  {
 	int     i,
 			sd;
 
@@ -343,14 +338,14 @@ static  envinit () {
 			break;
 		}
 
-		(void) chdir ("/");
+		 chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			(void) dup2 (sd, 0), (void) close (sd);
-		(void) dup2 (0, 1);
-		(void) dup2 (0, 2);
+			 dup2 (sd, 0),  close (sd);
+		 dup2 (0, 1);
+		 dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -358,14 +353,14 @@ static  envinit () {
 #endif
 #ifdef	TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			(void) ioctl (sd, TIOCNOTTY, NULLCP);
-			(void) close (sd);
+			 ioctl (sd, TIOCNOTTY, NULLCP);
+			 close (sd);
 		}
 #else
 #ifdef	SYS5
-		(void) setpgrp ();
-		(void) signal (SIGINT, SIG_IGN);
-		(void) signal (SIGQUIT, SIG_IGN);
+		 setpgrp ();
+		 signal (SIGINT, SIG_IGN);
+		 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -374,10 +369,10 @@ static  envinit () {
 #ifndef	sun		/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			(void) close (sd);
+			 close (sd);
 #endif
 
-	(void) signal (SIGPIPE, SIG_IGN);
+	 signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, myname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
@@ -413,9 +408,8 @@ void  adios (char* what, char* fmt, ...)
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -447,10 +441,8 @@ void  advise (int code, ...)
 #else
 /* VARARGS */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }

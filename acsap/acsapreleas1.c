@@ -38,19 +38,13 @@ static int  AcRelRetryRequestAux ();
 
 /*    A-RELEASE.REQUEST */
 
-int	AcRelRequest (sd, reason, data, ndata, secs, acr, aci)
-int	sd;
-int	reason;
-PE     *data;
-int	ndata;
-int	secs;
-struct AcSAPrelease *acr;
-struct AcSAPindication *aci;
+int 
+AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
 {
 	SBV	    smask;
 	int	    result;
-	register struct assocblk *acb;
-	register struct type_ACS_RLRQ__apdu *rlrq;
+	struct assocblk *acb;
+	struct type_ACS_RLRQ__apdu *rlrq;
 
 	switch (reason) {
 	case ACF_NORMAL:
@@ -64,8 +58,8 @@ struct AcSAPindication *aci;
 	}
 	toomuchP (data, ndata, NACDATA, "release");
 	if (data) {	    /* XXX: probably should have a more intensive check... */
-		register int    i;
-		register PE    *pep;
+		int    i;
+		PE    *pep;
 
 		for (pep = data, i = ndata; i > 0; pep++, i--)
 			if ((*pep) -> pe_context == PE_DFLT_CTX)
@@ -82,7 +76,7 @@ struct AcSAPindication *aci;
 
 	if ((rlrq = (struct type_ACS_RLRQ__apdu *) calloc (1, sizeof *rlrq))
 			== NULL) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	rlrq -> optionals |= opt_ACS_RLRQ__apdu_reason;
@@ -99,7 +93,7 @@ struct AcSAPindication *aci;
 	rlrq = NULL;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 						  PY_pepy);
 		goto out2;
 	}
@@ -123,22 +117,19 @@ out2:
 
 out1:
 	;
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*    A-RELEASE-RETRY.REQUEST (pseudo) */
 
-int	AcRelRetryRequest (sd, secs, acr, aci)
-int	sd;
-int	secs;
-struct AcSAPrelease *acr;
-struct AcSAPindication *aci;
+int 
+AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
 {
 	SBV	    smask;
 	int	    result;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	missingP (acr);
 	missingP (aci);
@@ -153,29 +144,26 @@ struct AcSAPindication *aci;
 	else
 		result = AcRelRetryRequestAux (acb, secs, acr, aci);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  AcRelRetryRequestAux (acb, secs, acr, aci)
-register struct assocblk *acb;
-int	secs;
-struct AcSAPrelease *acr;
-struct AcSAPindication *aci;
+static int 
+AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
 {
 	int	    result;
 	char   *id = acb -> acb_flags & ACB_RELEASE ? "PRelRetryRequest"
 				 : "PRelRequest";
 	PE	    pe;
 	struct PSAPrelease prs;
-	register struct PSAPrelease *pr = &prs;
+	struct PSAPrelease *pr = &prs;
 	struct PSAPindication pis;
-	register struct PSAPabort  *pa = &pis.pi_abort;
+	struct PSAPabort  *pa = &pis.pi_abort;
 	struct type_ACS_ACSE__apdu *pdu = NULL;
-	register struct type_ACS_RLRE__apdu *rlre;
+	struct type_ACS_RLRE__apdu *rlre;
 
 	bzero ((char *) pr, sizeof *pr);
 
@@ -190,14 +178,14 @@ struct AcSAPindication *aci;
 		}
 
 		if (pa -> pa_peer) {
-			(void) AcABORTser (acb -> acb_fd, pa, aci);
+			 AcABORTser (acb -> acb_fd, pa, aci);
 			goto out1;
 		}
 		if (PC_FATAL (pa -> pa_reason)) {
-			(void) ps2acslose (acb, aci, id, pa);
+			 ps2acslose (acb, aci, id, pa);
 			goto out2;
 		} else {
-			(void) ps2acslose (NULLACB, aci, id, pa);
+			 ps2acslose (NULLACB, aci, id, pa);
 			goto out1;
 		}
 	}
@@ -222,12 +210,12 @@ struct AcSAPindication *aci;
 	pe = pr -> pr_info[0] = NULLPE;
 
 	if (result == NOTOK) {
-		(void) acpktlose (acb, aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
+		 acpktlose (acb, aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto out3;
 	}
 
 	if (pdu -> offset != type_ACS_ACSE__apdu_rlre) {
-		(void) acpktlose (acb, aci, ACS_PROTOCOL, NULLCP,
+		 acpktlose (acb, aci, ACS_PROTOCOL, NULLCP,
 						  "unexpected PDU %d on P-RELEASE", pdu -> offset);
 		goto out3;
 	}

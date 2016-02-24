@@ -26,7 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isod.c,v 9.0 1992/0
 
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "rosap.h"
 #include "rtsap.h"
 #include "acsap.h"
@@ -62,7 +62,8 @@ struct dispatch {
 };
 
 
-void	adios (), advise ();
+void	adios (char*, ...);
+void	advise (int code, ...);
 
 
 static void	ts_adios (), ts_advise ();
@@ -152,18 +153,16 @@ static int  ps_main ();
 static int  ss_main ();
 static int  ts_main ();
 
-extern int  errno;
+
 
 /*    MAIN */
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int     argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
-	register char  *cp;
+	char  *cp;
 
 	if (myname = rindex (argv[0], '/'))
 		myname++;
@@ -207,21 +206,20 @@ char  **argv,
 
 /*    TSAP */
 
-static int  ts_main (argc, argv)
-int	argc;
-char  **argv;
+static int 
+ts_main (int argc, char **argv)
 {
 	int     async,
 			sd;
 	char    buffer[BUFSIZ];
-	register struct dispatch *ds;
-	register struct isoservent *is;
+	struct dispatch *ds;
+	struct isoservent *is;
 	struct TSAPstart    tss;
-	register struct TSAPstart  *ts = &tss;
+	struct TSAPstart  *ts = &tss;
 	struct TSAPdata txs;
-	register struct TSAPdata   *tx = &txs;
+	struct TSAPdata   *tx = &txs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if (TInit (argc, argv, ts, td) == NOTOK)
 		ts_adios (td, "(T)initialization fails");
@@ -269,7 +267,7 @@ char  **argv;
 		break;
 
 	default:
-		(void) strcpy (buffer, "entity unknown or unavailable");
+		 strcpy (buffer, "entity unknown or unavailable");
 		if (TDiscRequest (sd, buffer, strlen (buffer) + 1, td) == NOTOK)
 			ts_adios (td, "T-DISCONNECT.REQUEST");
 		advise (LLOG_NOTICE, NULLCP, "rejected");
@@ -282,7 +280,7 @@ char  **argv;
 			ts_adios (td, "set ASYNC fails");
 
 		for (;;)
-			(void) pause ();
+			 pause ();
 	}
 
 	for (;;) {
@@ -295,15 +293,14 @@ char  **argv;
 
 /*  */
 
-static int  ts_dataindication (sd, tx)
-int	sd;
-register struct TSAPdata *tx;
+static int 
+ts_dataindication (int sd, struct TSAPdata *tx)
 {
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if (mymode == echo) {
-		register char *p = qb2str (&tx -> tx_qbuf);
+		char *p = qb2str (&tx -> tx_qbuf);
 
 		if ((tx -> tx_expedited
 				? TExpdRequest (sd, p, tx -> tx_cc, td)
@@ -326,9 +323,8 @@ register struct TSAPdata *tx;
 
 /* ARGSUSED */
 
-static int  ts_discindication (sd, td)
-int	sd;
-register struct TSAPdisconnect *td;
+static int 
+ts_discindication (int sd, struct TSAPdisconnect *td)
 {
 	if (td -> td_reason != DR_NORMAL)
 		ts_adios (td, "T-DISCONNECT.INDICATION");
@@ -343,9 +339,8 @@ register struct TSAPdisconnect *td;
 
 /*  */
 
-static void  ts_adios (td, event)
-register struct TSAPdisconnect *td;
-char   *event;
+static void 
+ts_adios (struct TSAPdisconnect *td, char *event)
 {
 	ts_advise (td, event);
 
@@ -353,18 +348,17 @@ char   *event;
 }
 
 
-static void  ts_advise (td, event)
-register struct TSAPdisconnect *td;
-char   *event;
+static void 
+ts_advise (struct TSAPdisconnect *td, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						TErrString (td -> td_reason),
 						td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		(void) sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
@@ -412,23 +406,22 @@ static struct SSAPdata *hx = &hxs;
 
 /*  */
 
-static int ss_main (argc, argv)
-int	argc;
-char  **argv;
+static int 
+ss_main (int argc, char **argv)
 {
 	int     async,
 			result,
 			sd;
 	char    buffer[BUFSIZ];
-	register struct dispatch   *ds;
-	register struct isoservent *is;
+	struct dispatch   *ds;
+	struct isoservent *is;
 	struct SSAPstart    sss;
-	register struct SSAPstart  *ss = &sss;
+	struct SSAPstart  *ss = &sss;
 	struct SSAPdata sxs;
-	register struct SSAPdata   *sx = &sxs;
+	struct SSAPdata   *sx = &sxs;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 	if (SInit (argc, argv, ss, si) == NOTOK)
 		ss_adios (sa, "(S)initialization fails");
@@ -491,7 +484,7 @@ char  **argv;
 		break;
 
 	default:
-		(void) strcpy (buffer, "entity unknown or unavailable");
+		 strcpy (buffer, "entity unknown or unavailable");
 		if (SConnResponse (sd, &ss -> ss_connect, NULLSA,
 						   SC_REJECTED, 0, 0, SERIAL_NONE, buffer,
 						   strlen (buffer + 1), si)
@@ -508,7 +501,7 @@ char  **argv;
 			ss_adios (sa, "set ASYNC fails");
 
 		for (;;)
-			(void) pause ();
+			 pause ();
 	}
 
 	for (;;)
@@ -557,15 +550,14 @@ char  **argv;
 
 /*  */
 
-static int ss_dataindication (sd, sx)
-int	sd;
-register struct SSAPdata *sx;
+static int 
+ss_dataindication (int sd, struct SSAPdata *sx)
 {
 	char   *p,
 		   buffer[BUFSIZ];
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 #ifdef	DEBUG
 	switch (sx -> sx_type) {
@@ -606,7 +598,7 @@ register struct SSAPdata *sx;
 			break;
 		if (requirements & SR_HALFDUPLEX) {
 			if (hx -> sx_cc > 0) {
-				(void) strcpy (buffer, "protocol screw-up");
+				 strcpy (buffer, "protocol screw-up");
 				if (SUAbortRequest (sd, buffer, strlen (buffer) + 1, si) == NOTOK)
 					ss_adios (sa, "S-U-ABORT.REQUEST");
 				else
@@ -664,13 +656,12 @@ register struct SSAPdata *sx;
 
 /*  */
 
-static int ss_tokenindication (sd, st)
-int	sd;
-register struct SSAPtoken *st;
+static int 
+ss_tokenindication (int sd, struct SSAPtoken *st)
 {
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 
 #ifdef	DEBUG
 	advise (LLOG_DEBUG, NULLCP, "%s tokens: %s, %d bytes",
@@ -723,13 +714,12 @@ register struct SSAPtoken *st;
 
 /*  */
 
-static int ss_syncindication (sd, sn)
-int	sd;
-register struct SSAPsync *sn;
+static int 
+ss_syncindication (int sd, struct SSAPsync *sn)
 {
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 #ifdef	DEBUG
 	switch (sn -> sn_type) {
@@ -837,13 +827,12 @@ register struct SSAPsync *sn;
 
 /*  */
 
-static int ss_actindication (sd, sv)
-int	sd;
-register struct SSAPactivity *sv;
+static int 
+ss_actindication (int sd, struct SSAPactivity *sv)
 {
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 #ifdef	DEBUG
 	switch (sv -> sv_type) {
@@ -944,13 +933,12 @@ register struct SSAPactivity *sv;
 
 /*  */
 
-static int ss_reportindication (sd, sp)
-int	sd;
-struct SSAPreport *sp;
+static int 
+ss_reportindication (int sd, struct SSAPreport *sp)
 {
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 #ifdef	DEBUG
 	advise (LLOG_DEBUG, NULLCP, "%s report %d, %d bytes",
@@ -975,13 +963,12 @@ struct SSAPreport *sp;
 
 /*  */
 
-static int ss_finishindication (sd, sf)
-int	sd;
-register struct SSAPfinish *sf;
+static int 
+ss_finishindication (int sd, struct SSAPfinish *sf)
 {
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 
 	if (sf -> sf_cc > 0)
 		advise (LLOG_NOTICE, NULLCP, "S-RELEASE.INDICATION: %d bytes",
@@ -1001,9 +988,8 @@ register struct SSAPfinish *sf;
 
 /* ARGSUSED */
 
-static int ss_abortindication (sd, sa)
-int	sd;
-register struct SSAPabort *sa;
+static int 
+ss_abortindication (int sd, struct SSAPabort *sa)
 {
 	if (!sa -> sa_peer)
 		ss_adios (sa, "S-P-ABORT.INDICATION");
@@ -1018,9 +1004,8 @@ register struct SSAPabort *sa;
 
 /*  */
 
-static void  ss_adios (sa, event)
-register struct SSAPabort *sa;
-char   *event;
+static void 
+ss_adios (struct SSAPabort *sa, char *event)
 {
 	ss_advise (sa, event);
 
@@ -1028,18 +1013,17 @@ char   *event;
 }
 
 
-static void  ss_advise (sa, event)
-register struct SSAPabort *sa;
-char   *event;
+static void 
+ss_advise (struct SSAPabort *sa, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (sa -> sa_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						SErrString (sa -> sa_reason),
 						sa -> sa_cc, sa -> sa_cc, sa -> sa_prdata);
 	else
-		(void) sprintf (buffer, "[%s]", SErrString (sa -> sa_reason));
+		 sprintf (buffer, "[%s]", SErrString (sa -> sa_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 
@@ -1085,9 +1069,8 @@ static struct PSAPdata *ix = &ixs;
 
 /*  */
 
-static int  ps_main (argc, argv)
-int	argc;
-char  **argv;
+static int 
+ps_main (int argc, char **argv)
 {
 	int     async,
 			result,
@@ -1095,20 +1078,20 @@ char  **argv;
 #ifdef	DEBUG
 	int	    i;
 #endif
-	register struct dispatch   *ds;
-	register struct isoservent *is;
+	struct dispatch   *ds;
+	struct isoservent *is;
 	struct PSAPdata pxs;
-	register struct PSAPdata   *px = &pxs;
+	struct PSAPdata   *px = &pxs;
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 	struct AcSAPstart   acss;
-	register struct AcSAPstart   *acs = &acss;
-	register struct PSAPstart  *ps = &acs -> acs_start;
-	register struct PSAPctxlist *pl = &ps -> ps_ctxlist;
+	struct AcSAPstart   *acs = &acss;
+	struct PSAPstart  *ps = &acs -> acs_start;
+	struct PSAPctxlist *pl = &ps -> ps_ctxlist;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication  *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication  *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 
 	if (isacs) {
 		if (AcInit (argc, argv, acs, aci) == NOTOK)
@@ -1248,7 +1231,7 @@ char  **argv;
 
 		{
 			struct RoSAPindication rois;
-			register struct RoSAPpreject *rop = &rois.roi_preject;
+			struct RoSAPpreject *rop = &rois.roi_preject;
 
 			if (RoSetService (sd, RoPService, &rois) == NOTOK)
 				ros_adios (rop, "set RO/PS fails");
@@ -1295,7 +1278,7 @@ char  **argv;
 			ps_adios (pa, "set ASYNC fails");
 
 		for (;;)
-			(void) pause ();
+			 pause ();
 	}
 
 	for (;;)
@@ -1344,13 +1327,12 @@ char  **argv;
 
 /*  */
 
-static int ps_dataindication (sd, px)
-int	sd;
-register struct PSAPdata *px;
+static int 
+ps_dataindication (int sd, struct PSAPdata *px)
 {
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 
 #ifdef	DEBUG
 	switch (px -> px_type) {
@@ -1439,13 +1421,12 @@ register struct PSAPdata *px;
 
 /*  */
 
-static int ps_tokenindication (sd, pt)
-int	sd;
-register struct PSAPtoken *pt;
+static int 
+ps_tokenindication (int sd, struct PSAPtoken *pt)
 {
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
 
 #ifdef	DEBUG
 	advise (LLOG_DEBUG, NULLCP, "%s tokens: %s, %d elements",
@@ -1494,13 +1475,12 @@ register struct PSAPtoken *pt;
 
 /*  */
 
-static int ps_syncindication (sd, pn)
-int	sd;
-register struct PSAPsync *pn;
+static int 
+ps_syncindication (int sd, struct PSAPsync *pn)
 {
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 
 #ifdef	DEBUG
 	switch (pn -> pn_type) {
@@ -1607,13 +1587,12 @@ register struct PSAPsync *pn;
 
 /*  */
 
-static int ps_actindication (sd, pv)
-int	sd;
-register struct PSAPactivity *pv;
+static int 
+ps_actindication (int sd, struct PSAPactivity *pv)
 {
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 
 #ifdef	DEBUG
 	switch (pv -> pv_type) {
@@ -1708,13 +1687,12 @@ register struct PSAPactivity *pv;
 
 /*  */
 
-static int ps_reportindication (sd, pp)
-int	sd;
-register struct PSAPreport *pp;
+static int 
+ps_reportindication (int sd, struct PSAPreport *pp)
 {
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 
 #ifdef	DEBUG
 	advise (LLOG_NOTICE, NULLCP, "%s report %d, %d elements",
@@ -1740,16 +1718,15 @@ register struct PSAPreport *pp;
 
 /*  */
 
-static int ps_finishindication (sd, pf)
-int	sd;
-register struct PSAPfinish *pf;
+static int 
+ps_finishindication (int sd, struct PSAPfinish *pf)
 {
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
 	struct AcSAPindication  acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
-	register struct AcSAPfinish *acf = &acis.aci_finish;
+	struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPfinish *acf = &acis.aci_finish;
 
 	if (isacs) {
 		if (AcFINISHser (sd, pf, &acis) == NOTOK)
@@ -1773,13 +1750,12 @@ register struct PSAPfinish *pf;
 
 /* ARGSUSED */
 
-static int ps_abortindication (sd, pa)
-int	sd;
-register struct PSAPabort *pa;
+static int 
+ps_abortindication (int sd, struct PSAPabort *pa)
 {
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 
 	if (isacs) {
 		if (AcABORTser (sd, pa, aci) == NOTOK)
@@ -1805,9 +1781,8 @@ register struct PSAPabort *pa;
 
 /*  */
 
-static void  ps_adios (pa, event)
-register struct PSAPabort *pa;
-char   *event;
+static void 
+ps_adios (struct PSAPabort *pa, char *event)
 {
 	ps_advise (pa, event);
 
@@ -1815,27 +1790,25 @@ char   *event;
 }
 
 
-static void  ps_advise (pa, event)
-register struct PSAPabort *pa;
-char   *event;
+static void 
+ps_advise (struct PSAPabort *pa, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (pa -> pa_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						PErrString (pa -> pa_reason),
 						pa -> pa_cc, pa -> pa_cc, pa -> pa_data);
 	else
-		(void) sprintf (buffer, "[%s]", PErrString (pa -> pa_reason));
+		 sprintf (buffer, "[%s]", PErrString (pa -> pa_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
 
 /*    AcSAP */
 
-static void  acs_adios (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+static void 
+acs_adios (struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -1843,18 +1816,17 @@ char   *event;
 }
 
 
-static void  acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+static void 
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -1862,9 +1834,8 @@ char   *event;
 
 /*    RtSAP */
 
-static int  rts_main (argc, argv)
-int	argc;
-char  **argv;
+static int 
+rts_main (int argc, char **argv)
 {
 	int     async,
 			result,
@@ -1876,13 +1847,13 @@ char  **argv;
 	struct dispatch *ds;
 	struct isoservent  *is;
 	struct RtSAPstart   rtss;
-	register struct RtSAPstart *rts = &rtss;
+	struct RtSAPstart *rts = &rtss;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort   *rta = &rti -> rti_abort;
-	register struct AcSAPstart *acs = &rts -> rts_start;
-	register struct PSAPstart *ps = &acs -> acs_start;
-	register struct PSAPctxlist *pl = &ps -> ps_ctxlist;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort   *rta = &rti -> rti_abort;
+	struct AcSAPstart *acs = &rts -> rts_start;
+	struct PSAPstart *ps = &acs -> acs_start;
+	struct PSAPctxlist *pl = &ps -> ps_ctxlist;
 
 	if (isacs) {
 		if (RtInit (argc, argv, rts, rti) == NOTOK)
@@ -2056,7 +2027,7 @@ accept:
 
 	if (ros) {
 		struct RoSAPindication rois;
-		register struct RoSAPpreject *rop = &rois.roi_preject;
+		struct RoSAPpreject *rop = &rois.roi_preject;
 
 		if (RoSetService (sd, RoRtService, &rois) == NOTOK)
 			ros_adios (rop, "set RO/RT fails");
@@ -2070,7 +2041,7 @@ accept:
 			rts_adios (rta, "set ASYNC fails");
 
 		for (;;)
-			(void) pause ();
+			 pause ();
 	}
 
 	for (;;)
@@ -2088,9 +2059,8 @@ accept:
 
 /*  */
 
-static int  rts_indication (sd, rti)
-int	sd;
-register struct RtSAPindication *rti;
+static int 
+rts_indication (int sd, struct RtSAPindication *rti)
 {
 	switch (rti -> rti_type) {
 	case RTI_TURN:
@@ -2120,13 +2090,12 @@ register struct RtSAPindication *rti;
 
 /*  */
 
-static int  rts_turn (sd, rtu)
-int	sd;
-register struct RtSAPturn *rtu;
+static int 
+rts_turn (int sd, struct RtSAPturn *rtu)
 {
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort *rta = &rti -> rti_abort;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort *rta = &rti -> rti_abort;
 
 	if (rtu -> rtu_please) {
 		if (RtGTurnRequest (sd, rti) == NOTOK)
@@ -2141,13 +2110,12 @@ register struct RtSAPturn *rtu;
 
 /*  */
 
-static int  rts_transfer (sd, rtt)
-int	sd;
-register struct RtSAPtransfer *rtt;
+static int 
+rts_transfer (int sd, struct RtSAPtransfer *rtt)
 {
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort *rta = &rti -> rti_abort;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort *rta = &rti -> rti_abort;
 	static int  priority = 1;
 
 	if (mymode == echo) {
@@ -2164,9 +2132,8 @@ register struct RtSAPtransfer *rtt;
 
 /* ARGSUSED */
 
-static int  rts_abort (sd, rta)
-int	sd;
-register struct RtSAPabort *rta;
+static int 
+rts_abort (int sd, struct RtSAPabort *rta)
 {
 	if (rta -> rta_peer)
 		rts_adios (rta, "RT-U-ABORT.INDICATION");
@@ -2180,13 +2147,12 @@ register struct RtSAPabort *rta;
 
 /* ARGSUSED */
 
-static int  rts_close (sd, rtc)
-int	sd;
-struct RtSAPclose *rtc;
+static int 
+rts_close (int sd, struct RtSAPclose *rtc)
 {
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort *rta = &rti -> rti_abort;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort *rta = &rti -> rti_abort;
 
 	advise (LLOG_NOTICE, NULLCP, "RT-END.INDICATION");
 
@@ -2198,13 +2164,12 @@ struct RtSAPclose *rtc;
 
 /*  */
 
-static int  rts_finish (sd, acf)
-int	sd;
-register struct AcSAPfinish *acf;
+static int 
+rts_finish (int sd, struct AcSAPfinish *acf)
 {
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort *rta = &rti -> rti_abort;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort *rta = &rti -> rti_abort;
 
 	advise (LLOG_NOTICE, NULLCP, "RT-CLOSE.INDICATION: %d, %d elements",
 			acf -> acf_reason, acf -> acf_ninfo);
@@ -2220,9 +2185,8 @@ register struct AcSAPfinish *acf;
 
 /*  */
 
-static void  rts_adios (rta, event)
-register struct RtSAPabort *rta;
-char   *event;
+static void 
+rts_adios (struct RtSAPabort *rta, char *event)
 {
 	rts_advise (rta, event);
 
@@ -2230,26 +2194,24 @@ char   *event;
 }
 
 
-static void  rts_advise (rta, event)
-register struct RtSAPabort *rta;
-char   *event;
+static void 
+rts_advise (struct RtSAPabort *rta, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (rta -> rta_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),
+		 sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),
 						rta -> rta_cc, rta -> rta_cc, rta -> rta_data);
 	else
-		(void) sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
+		 sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
 
 /*    RoSAP */
 
-static int  ros_main (argc, argv)
-int	argc;
-char  **argv;
+static int 
+ros_main (int argc, char **argv)
 {
 	int     async,
 			result,
@@ -2257,10 +2219,10 @@ char  **argv;
 	struct dispatch *ds;
 	struct isoservent  *is;
 	struct RoSAPstart   ross;
-	register struct RoSAPstart *ros = &ross;
+	struct RoSAPstart *ros = &ross;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	if (RoInit (argc, argv, ros, roi) == NOTOK)
 		ros_adios (rop, "(Ro)initialization fails");
@@ -2328,14 +2290,13 @@ char  **argv;
 
 /*  */
 
-static int  do_ros (sd, async)
-int	sd,
-	async;
+static int 
+do_ros (int sd, int async)
 {
 	int     result;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	if ((nullpe = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_NULL))
 			== NULLPE)
@@ -2346,7 +2307,7 @@ int	sd,
 			ros_adios (rop, "set ASYNC fails");
 
 		for (;;)
-			(void) pause ();
+			 pause ();
 	}
 
 	for (;;)
@@ -2364,9 +2325,8 @@ int	sd,
 
 /*  */
 
-static int ros_indication (sd, roi)
-int	sd;
-register struct RoSAPindication *roi;
+static int 
+ros_indication (int sd, struct RoSAPindication *roi)
 {
 	switch (roi -> roi_type) {
 	case ROI_INVOKE:
@@ -2404,13 +2364,12 @@ register struct RoSAPindication *roi;
 
 /*  */
 
-static int  ros_invoke (sd, rox)
-int	sd;
-register struct RoSAPinvoke *rox;
+static int 
+ros_invoke (int sd, struct RoSAPinvoke *rox)
 {
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 	static int  ff = 0;
 
 	if (ff++ & 0x01) {
@@ -2430,13 +2389,12 @@ register struct RoSAPinvoke *rox;
 
 /*  */
 
-static int  ros_result (sd, ror)
-int	sd;
-register struct RoSAPresult *ror;
+static int 
+ros_result (int sd, struct RoSAPresult *ror)
 {
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	if (RoURejectRequest (sd, &ror -> ror_id, ROS_RRP_UNRECOG, ROS_NOPRIO, roi)
 			== NOTOK)
@@ -2447,13 +2405,12 @@ register struct RoSAPresult *ror;
 
 /*  */
 
-static int  ros_error (sd, roe)
-int	sd;
-register struct RoSAPerror *roe;
+static int 
+ros_error (int sd, struct RoSAPerror *roe)
 {
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	if (RoURejectRequest (sd, &roe -> roe_id, ROS_REP_UNRECOG, ROS_NOPRIO, roi)
 			== NOTOK)
@@ -2466,9 +2423,8 @@ register struct RoSAPerror *roe;
 
 /* ARGSUSED */
 
-static int  ros_ureject (sd, rou)
-int	sd;
-register struct RoSAPureject *rou;
+static int 
+ros_ureject (int sd, struct RoSAPureject *rou)
 {
 	if (rou -> rou_noid)
 		advise (LLOG_NOTICE, NULLCP, "RO-REJECT-U.INDICATION: %s",
@@ -2482,9 +2438,8 @@ register struct RoSAPureject *rou;
 
 /* ARGSUSED */
 
-static int  ros_preject (sd, rop)
-int	sd;
-register struct RoSAPpreject *rop;
+static int 
+ros_preject (int sd, struct RoSAPpreject *rop)
 {
 	if (ROS_FATAL (rop -> rop_reason))
 		ros_adios (rop, "RO-REJECT-P.INDICATION");
@@ -2495,22 +2450,21 @@ register struct RoSAPpreject *rop;
 
 /* ARGSUSED */
 
-static int  ros_end (sd, roe)
-int	sd;
-struct RoSAPend *roe;
+static int 
+ros_end (int sd, struct RoSAPend *roe)
 {
 	if (isrts) {
 		struct RtSAPindication  rtis;
-		register struct RtSAPindication *rti = &rtis;
-		register struct RtSAPabort *rta = &rti -> rti_abort;
+		struct RtSAPindication *rti = &rtis;
+		struct RtSAPabort *rta = &rti -> rti_abort;
 
 		advise (LLOG_NOTICE, NULLCP, "RT-END.INDICATION");
 		if (RtEndResponse (sd, rti) == NOTOK)
 			rts_adios (rta, "RT-END.RESPONSE");
 	} else {
 		struct RoSAPindication  rois;
-		register struct RoSAPindication *roi = &rois;
-		register struct RoSAPpreject   *rop = &roi -> roi_preject;
+		struct RoSAPindication *roi = &rois;
+		struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 		advise (LLOG_NOTICE, NULLCP, "RO-END.INDICATION");
 		if (RoEndResponse (sd, roi) == NOTOK)
@@ -2522,13 +2476,12 @@ struct RoSAPend *roe;
 
 /*  */
 
-static int  ros_finish (sd, acf)
-int	sd;
-register struct AcSAPfinish *acf;
+static int 
+ros_finish (int sd, struct AcSAPfinish *acf)
 {
 	if (isrts) {
 		struct RtSAPindication  rtis;
-		register struct RtSAPabort *rta = &rtis.rti_abort;
+		struct RtSAPabort *rta = &rtis.rti_abort;
 
 		advise (LLOG_NOTICE, NULLCP, "RT-CLOSE.INDICATION: %d, %d elements",
 				acf -> acf_reason, acf -> acf_ninfo);
@@ -2538,7 +2491,7 @@ register struct AcSAPfinish *acf;
 			rts_adios (rta, "RT-CLOSE.RESPONSE");
 	} else {
 		struct AcSAPindication  acis;
-		register struct AcSAPabort *aca = &acis.aci_abort;
+		struct AcSAPabort *aca = &acis.aci_abort;
 
 		advise (LLOG_NOTICE, NULLCP, "A-RELEASE.INDICATION: %d, %d elements",
 				acf -> acf_reason, acf -> acf_ninfo);
@@ -2556,9 +2509,8 @@ register struct AcSAPfinish *acf;
 
 /*  */
 
-static void  ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+static void 
+ros_adios (struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -2566,17 +2518,16 @@ char   *event;
 }
 
 
-static void  ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+static void 
+ros_advise (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
@@ -2584,13 +2535,13 @@ char   *event;
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, ap);
 
 	va_end (ap);
 
@@ -2599,9 +2550,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -2609,26 +2559,23 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, ...)
+{
+	char* what;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, code);
+	what = va_arg(ap, char**);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, ap);
 
 	va_end (ap);
 }
 #else
 /* VARARGS */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }

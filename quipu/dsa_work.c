@@ -34,7 +34,7 @@ extern LLog * log_dsap;
 extern char quipu_shutdown;
 
 dsa_work(tk)
-register        struct task_act * tk;
+       struct task_act * tk;
 {
 	struct DSArgument   *arg;
 	struct DSError      *err;
@@ -65,7 +65,7 @@ register        struct task_act * tk;
 			force_close (tk->tk_conn->cn_ad,
 						 (struct DSAPindication *)NULL);
 		else
-			(void) conn_release(tk->tk_conn);
+			 conn_release(tk->tk_conn);
 
 		task_extract(tk);
 
@@ -392,9 +392,9 @@ struct task_act * tk;
 	}
 
 	if (log_stat -> ll_events & LLOG_DEBUG)
-		(void) sprintf (buf,"%s (%d) [%d]",op,ad,tk->tk_dx.dx_id);
+		 sprintf (buf,"%s (%d) [%d]",op,ad,tk->tk_dx.dx_id);
 	else
-		(void) sprintf (buf,"%s (%d)",op,ad);
+		 sprintf (buf,"%s (%d)",op,ad);
 
 	if (context == DS_CTX_X500_DAP)
 		pslog (log_stat,LLOG_NOTICE,buf,(IFP)dn_print,(caddr_t)daptarget);

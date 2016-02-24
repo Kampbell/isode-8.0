@@ -38,14 +38,8 @@ static SFD	intrser ();
 
 /*    RO-INVOKE.REQUEST (interruptable) */
 
-int	RoIntrRequest (sd, op, args, invokeID, linkedID, priority, roi)
-int	sd;
-int	op,
-	invokeID,
-	*linkedID,
-	priority;
-PE	args;
-struct RoSAPindication *roi;
+int 
+RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
 {
 	int	    nfds,
 			result;
@@ -65,7 +59,7 @@ struct RoSAPindication *roi;
 
 		/* interrupt causes EINTR */
 		if (RoSelectMask (sd, &rfds, &nfds, roi) == OK)
-			(void) xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
+			 xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
 
 		if (interrupted) {
 			result = rosaplose (roi, ROS_INTERRUPTED, NULLCP, NULLCP);
@@ -77,7 +71,7 @@ struct RoSAPindication *roi;
 			break;
 	}
 
-	(void) signal (SIGINT, istat);
+	 signal (SIGINT, istat);
 
 	return result;
 }
@@ -86,11 +80,11 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-static  SFD intrser (sig)
-int	sig;
+static SFD 
+intrser (int sig)
 {
 #ifndef	BSDSIGS
-	(void) signal (SIGINT, intrser);
+	 signal (SIGINT, intrser);
 #endif
 
 	interrupted++;

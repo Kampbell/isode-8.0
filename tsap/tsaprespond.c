@@ -37,13 +37,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprespond.c,v 9.0 19
 
 /*    T-CONNECT.INDICATION */
 
-int     TInit (vecp, vec, ts, td)
-register int     vecp;
-register char  **vec;
-register struct TSAPstart *ts;
-register struct TSAPdisconnect *td;
+int 
+TInit (int vecp, char **vec, struct TSAPstart *ts, struct TSAPdisconnect *td)
 {
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	isodetailor (NULLCP, 0);
 
@@ -122,7 +119,7 @@ register struct TSAPdisconnect *td;
 #endif
 
 	default:
-		(void) tsaplose (td, DR_PARAMETER, NULLCP,
+		 tsaplose (td, DR_PARAMETER, NULLCP,
 						 "unknown network type: 0x%x (%c)", *vec[0], *vec[0]);
 		goto out;
 	}
@@ -138,7 +135,7 @@ register struct TSAPdisconnect *td;
 
 not_supported:
 	;
-	(void) tsaplose (td, DR_PARAMETER, NULLCP,
+	 tsaplose (td, DR_PARAMETER, NULLCP,
 					 "not configured for network type: 0x%x (%c)",
 					 *vec[0], *vec[0]);
 
@@ -151,17 +148,11 @@ out:
 
 /*    T-CONNECT.RESPONSE */
 
-int     TConnResponse (sd, responding, expedited, data, cc, qos, td)
-int	sd;
-register struct TSAPaddr *responding;
-int	expedited,
-	cc;
-char   *data;
-struct QOStype *qos;
-register struct TSAPdisconnect *td;
+int 
+TConnResponse (int sd, struct TSAPaddr *responding, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td)
 {
 	int	    result;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	struct tsapADDR tas;
 
 	if ((tb = findtblk (sd)) == NULL || (tb -> tb_flags & TB_CONN))

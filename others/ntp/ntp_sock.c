@@ -20,16 +20,17 @@ extern void adios ();
 extern void receive();
 
 #ifdef	TEST
-extern int errno;
 
-main() {
+
+int 
+main  {
 	int i, cc, val;
 	char foo[10];
 
 	advise(LLOG_DEBUG, NULLCP, "ifconfig test");
 	create_sockets(htons(43242));
 	for (i = 0; i < nintf; i++) {
-		(void) printf("%d: %s fd %d  addr %s  mask %x ",
+		 printf("%d: %s fd %d  addr %s  mask %x ",
 					  i, addrs[i].name, addrs[i].fd,
 					  paddr (addrs[i].addr),
 					  ntohl(addrs[i].mask.sin_addr.s_addr));
@@ -39,21 +40,21 @@ main() {
 			perror("getsockopt");
 			exit(1);
 		}
-		(void) printf("BCAST opt %d", val);
+		 printf("BCAST opt %d", val);
 		cc = sizeof(val);
 		if (getsockopt(addrs[0].fd, SOL_SOCKET, SO_RCVBUF,
 					   (char*)&val, &cc)) {
 			perror("getsockopt");
 			exit(1);
 		}
-		(void) printf("sockbuf size = %d ", val);
-		(void) putchar('\n');
+		 printf("sockbuf size = %d ", val);
+		 putchar('\n');
 	}
 
 	for (i=0; i < nintf; i++) {
-		(void) fprintf(stderr, "Read fd %d.. ", addrs[i].fd);
+		 fprintf(stderr, "Read fd %d.. ", addrs[i].fd);
 		cc = read(addrs[i].fd, foo, 10);
-		(void) fprintf(stderr, " returns %d ", cc);
+		 fprintf(stderr, " returns %d ", cc);
 		perror("read errno");
 	}
 }
@@ -64,8 +65,8 @@ main() {
  *  If we can't determine the interface configuration, just listen with one
  *  socket at the INADDR_ANY address.
  */
-create_sockets(port)
-unsigned int port;
+int 
+create_sockets (unsigned int port)
 {
 	struct intf *ap;
 	int	no;
@@ -99,8 +100,8 @@ unsigned int port;
  *  Grab interface configuration, and create a socket for each interface
  *  address.
  */
-create_sockets(port)
-unsigned int port;
+int 
+create_sockets (unsigned int port)
 {
 	char	buf[1024];
 	struct intf *ap;
@@ -193,7 +194,7 @@ unsigned int port;
 next:
 		;
 	}
-	(void) close(vs);
+	 close(vs);
 
 	for (i = 0; i < nintf; i++) {
 		if ((addrs[i].flags & INTF_VALID) == 0)
@@ -250,9 +251,8 @@ next:
 
 #endif
 
-recv_inet (ap, tvp)
-struct intf *ap;
-struct timeval *tvp;
+int 
+recv_inet (struct intf *ap, struct timeval *tvp)
 {
 	int	dstlen;
 	int	cc;
@@ -282,7 +282,7 @@ struct timeval *tvp;
 	if (cc < sizeof(*pkt)) {
 #ifdef	DEBUG
 		if (debug)
-			(void) printf("Runt packet from %s\n",
+			 printf("Runt packet from %s\n",
 						  paddr (peer));
 #endif
 		return -1;
@@ -294,7 +294,7 @@ struct timeval *tvp;
 	}
 #ifdef	DEBUG
 	if (debug > 3) {
-		(void) printf ("\nInput ");
+		 printf ("\nInput ");
 		dump_pkt(peer, pkt, (struct ntp_peer *)NULL);
 	}
 #endif
@@ -309,11 +309,8 @@ struct timeval *tvp;
 	return 0;
 }
 
-send_inet (ap, pkt, size, peer)
-struct intf *ap;
-char	*pkt;
-int	size;
-struct Naddr *peer;
+int 
+send_inet (struct intf *ap, char *pkt, int size, struct Naddr *peer)
 {
 	if (ap -> addr.type != AF_INET) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
@@ -337,16 +334,14 @@ struct Naddr *peer;
 #define	N_NTP_PKTS \
       ((PKTBUF_SIZE - sizeof(struct ntpinfo))/(sizeof(struct clockinfo)))
 
-query_mode(dst, ntp, ap)
-struct Naddr *dst;
-struct ntpdata *ntp;
-struct intf *ap;
+int 
+query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap)
 {
 	extern struct list peer_list;
 	extern struct sysdata sys;
 	char packet[PKTBUF_SIZE];
-	register struct ntpinfo *nip = (struct ntpinfo *) packet;
-	register struct ntp_peer *peer;
+	struct ntpinfo *nip = (struct ntpinfo *) packet;
+	struct ntp_peer *peer;
 	struct clockinfo *cip;
 	int seq = 0;
 	int i;
@@ -419,7 +414,7 @@ struct intf *ap;
 		cip++;
 		if (nip->count++ >= N_NTP_PKTS - 1) {
 			nip->seq =seq++;
-			(void) send_inet (ap, (char *)packet,
+			 send_inet (ap, (char *)packet,
 							  sizeof (packet), dst);
 			nip->type = INFO_REPLY;
 			nip->count = 0;
@@ -428,7 +423,7 @@ struct intf *ap;
 	}
 	if (nip->count) {
 		nip->seq = seq;
-		(void) send_inet (ap, (char *)packet,
+		 send_inet (ap, (char *)packet,
 						  sizeof (packet), dst);
 	}
 }

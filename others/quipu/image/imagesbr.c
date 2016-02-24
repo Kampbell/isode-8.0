@@ -77,13 +77,11 @@ PE	grab_pe ();
 
 /*  */
 
-void	init_aka (pgm, stayopen, dit)
-char   *pgm,
-	   *dit;
-int	stayopen;
+void 
+init_aka (char *pgm, int stayopen, char *dit)
 {
 	char   *cp;
-	register struct aka *ak;
+	struct aka *ak;
 	static int once_only = 0;
 
 	if (once_only == 0) {
@@ -121,11 +119,10 @@ int	stayopen;
 
 /*  */
 
-static struct aka *mbox2ak (local, domain)
-char   *local,
-	   *domain;
+static struct aka *
+mbox2ak (char *local, char *domain)
 {
-	register struct aka *ak,
+	struct aka *ak,
 			*am;
 
 	if (domain == NULL)
@@ -173,10 +170,10 @@ static int dlevel = 0;
 struct dn_seq *dm2dn_seq_aux ();
 
 
-static struct dn_seq *dm2dn_seq (dm)
-char   *dm;
+static struct dn_seq *
+dm2dn_seq (char *dm)
 {
-	register char *dp;
+	char *dp;
 
 	for (dp = dm; *dp; dp++)
 		if (isupper (*dp))
@@ -197,15 +194,15 @@ char   *dm;
 DN	dn;
 struct dn_seq *dlist;
 {
-	register char   *dp;
+	char   *dp;
 	char   buffer[BUFSIZ];
 	struct ds_search_arg search_arg;
-	register struct ds_search_arg *sa = &search_arg;
+	struct ds_search_arg *sa = &search_arg;
 	struct ds_search_result search_result;
-	register CommonArgs *ca;
-	register struct ds_search_result *sr = &search_result;
+	CommonArgs *ca;
+	struct ds_search_result *sr = &search_result;
 	struct DSError error;
-	register struct DSError *se = &error;
+	struct DSError *se = &error;
 	PS	    ps;
 
 	if ((ps = ps_alloc (str_open))
@@ -215,10 +212,10 @@ struct dn_seq *dlist;
 	} else
 		buffer[0] = NULL;
 	if (ps)
-		(void) ps_free (ps);
+		 ps_free (ps);
 
 	if (debug)
-		(void) fprintf (stderr, "dlevel=%d dm=%s dn=%s\n", dlevel, dm, buffer);
+		 fprintf (stderr, "dlevel=%d dm=%s dn=%s\n", dlevel, dm, buffer);
 
 	bzero ((char *) sa, sizeof *sa);
 
@@ -235,11 +232,11 @@ struct dn_seq *dlist;
 	for (;;) {
 		int	    i;
 		EntryInfo  *ptr;
-		register s_filter *fi;
-		register AttributeType at;
+		s_filter *fi;
+		AttributeType at;
 
 		if (debug)
-			(void) fprintf (stderr, "-- dlevel=%d dp=%s(%d) dn=%s\n",
+			 fprintf (stderr, "-- dlevel=%d dp=%s(%d) dn=%s\n",
 							dlevel, dp, strlen (dp), buffer);
 
 		if ((i = strlen (dp)) < dlevel)
@@ -259,7 +256,7 @@ struct dn_seq *dlist;
 				LLOG (pgm_log, LLOG_EXCEPTIONS,
 					  ("search operation failed"));
 
-			(void) ds_unbind ();
+			 ds_unbind ();
 
 			bound = 0;
 
@@ -321,16 +318,16 @@ free_filter:
 /*  */
 
 static  PE  image_search (ak)
-register struct aka *ak;
+struct aka *ak;
 {
-	register struct dn_seq *dlist;
+	struct dn_seq *dlist;
 	struct ds_search_arg search_arg;
-	register struct ds_search_arg *sa = &search_arg;
+	struct ds_search_arg *sa = &search_arg;
 	struct ds_search_result search_result;
-	register CommonArgs *ca;
-	register struct ds_search_result *sr = &search_result;
+	CommonArgs *ca;
+	struct ds_search_result *sr = &search_result;
 	struct DSError error;
-	register struct DSError *se = &error;
+	struct DSError *se = &error;
 	PE	    pe = NULLPE;
 
 	bzero ((char *) sa, sizeof *sa);
@@ -351,8 +348,8 @@ register struct aka *ak;
 	}
 
 	for (dlist = ak -> ak_bases; dlist; dlist = dlist -> dns_next) {
-		register s_filter *fi;
-		register AttributeType at;
+		s_filter *fi;
+		AttributeType at;
 
 		if ((sa -> sra_baseobject = dlist -> dns_dn) == NULL)
 			continue;
@@ -376,7 +373,7 @@ register struct aka *ak;
 			if (recording)
 				LLOG (pgm_log, LLOG_EXCEPTIONS, ("search operation failed"));
 
-			(void) ds_unbind ();
+			 ds_unbind ();
 
 			bound = 0;
 
@@ -425,13 +422,14 @@ free_filter:
 
 /*  */
 
-static	do_bind () {
+static 
+do_bind  {
 	struct ds_bind_arg bind_arg,
 			bind_result;
-	register struct ds_bind_arg *ba = &bind_arg,
+	struct ds_bind_arg *ba = &bind_arg,
 										 *br = &bind_result;
 	struct ds_bind_error bind_error;
-	register struct ds_bind_error *be = &bind_error;
+	struct ds_bind_error *be = &bind_error;
 
 	bzero ((char *) ba, sizeof *ba);
 	ba -> dba_version = DBA_VERSION_V1988;
@@ -460,13 +458,12 @@ static struct type_IMAGE_Image *im = NULL;
 
 /*  */
 
-struct type_IMAGE_Image *fetch_image (local, domain)
-char   *local,
-	   *domain;
+struct type_IMAGE_Image *
+fetch_image (char *local, char *domain)
 {
 	PE	    pe;
 	PS	    ps;
-	register struct aka *ak;
+	struct aka *ak;
 
 	if ((ak = mbox2ak (local, domain)) == NULL)
 		return NULL;
@@ -480,7 +477,7 @@ char   *local,
 		return NULL;
 
 	if (!stay_bound) {
-		(void) ds_unbind ();
+		 ds_unbind ();
 		bound = 0;
 	}
 
@@ -488,20 +485,20 @@ char   *local,
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) {
 		if (debug)
-			(void) fprintf (stderr, "ps_alloc: failed\n");
+			 fprintf (stderr, "ps_alloc: failed\n");
 
 		goto out;
 	}
 	if (str_setup (ps, NULLCP, 0, 0) == NOTOK) {
 		if (debug)
-			(void) fprintf (stderr, "ps_alloc: %s\n", ps_error (ps -> ps_errno));
+			 fprintf (stderr, "ps_alloc: %s\n", ps_error (ps -> ps_errno));
 
 		goto out;
 	}
 
 	if (pe2ps (ps, pe) == NOTOK) {
 		if (debug)
-			(void) fprintf (stderr, "pe2ps: %s\n", pe_error (pe -> pe_errno));
+			 fprintf (stderr, "pe2ps: %s\n", pe_error (pe -> pe_errno));
 
 		goto out;
 	}
@@ -509,7 +506,7 @@ char   *local,
 	for (passno = 1; passno < 3; passno++)
 		if (decode_t4 (ps -> ps_base, PHOTO, ps -> ps_ptr - ps -> ps_base)
 				== NOTOK) {
-			(void) fprintf (stderr, "\n");
+			 fprintf (stderr, "\n");
 			if (im) {
 				qb_free (im -> data);
 				free ((char *) im);
@@ -531,8 +528,8 @@ out:
 
 /* ARGSUSED */
 
-photo_start (name)
-char   *name;
+int 
+photo_start (char *name)
 {
 	if (passno == 1)
 		maxx = 0;
@@ -544,24 +541,24 @@ char   *name;
 
 /* ARGSUSED */
 
-photo_end (name)
-char   *name;
+int 
+photo_end (char *name)
 {
 	int	    len;
-	register struct qbuf *qb,
+	struct qbuf *qb,
 			*pb;
 
 	if (passno == 1) {
 		x = maxx, y--;
 
 		if (debug)
-			(void) fprintf (stderr, "ending pass one for \"%s\", %dx%d\n",
+			 fprintf (stderr, "ending pass one for \"%s\", %dx%d\n",
 							name, x, y);
 
 		if ((im = (struct type_IMAGE_Image *) calloc (1, sizeof *im))
 				== NULL) {
 			if (debug)
-				(void) fprintf (stderr, "calloc fails");
+				 fprintf (stderr, "calloc fails");
 			return NOTOK;
 		}
 		im -> width = x, im -> height = y;
@@ -569,7 +566,7 @@ char   *name;
 		len = ((im -> width + 7) / 8) * im -> height;
 		if ((im -> data = qb = (struct qbuf *) malloc (sizeof *qb)) == NULL) {
 			if (debug)
-				(void) fprintf (stderr, "unable to allocate qbuf");
+				 fprintf (stderr, "unable to allocate qbuf");
 			return NOTOK;
 		}
 		qb -> qb_forw = qb -> qb_back = qb;
@@ -578,7 +575,7 @@ char   *name;
 		if ((pb = (struct qbuf *) calloc ((unsigned) (sizeof *pb + len), 1))
 				== NULL) {
 			if (debug)
-				(void) fprintf (stderr, "unable to allocate qbuf (%d+%d)",
+				 fprintf (stderr, "unable to allocate qbuf (%d+%d)",
 								sizeof *qb, len);
 			return NOTOK;
 		}
@@ -590,13 +587,13 @@ char   *name;
 }
 
 
-photo_black (length)
-int	length;
+int 
+photo_black (int length)
 {
 	if (passno == 2) {
-		register int    i,
+		int    i,
 				 j;
-		register unsigned char *cp;
+		unsigned char *cp;
 
 		cp = (unsigned char *) im -> data -> qb_forw -> qb_data
 			 + ((im -> width + 7) / 8) * y + x / 8;
@@ -615,8 +612,8 @@ int	length;
 }
 
 
-photo_white (length)
-int	length;
+int 
+photo_white (int length)
 {
 	x += length;
 
@@ -657,9 +654,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -679,29 +675,28 @@ va_dcl {
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void 
+_advise (va_list ap)
 {
 	char    buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	if (errsw != NOTOK) {
-		(void) fprintf (stderr, "%s: ", myname);
-		(void) fputs (buffer, stderr);
-		(void) fputc ('\n', stderr);
+		 fprintf (stderr, "%s: ", myname);
+		 fputs (buffer, stderr);
+		 fputc ('\n', stderr);
 
-		(void) fflush (stderr);
+		 fflush (stderr);
 	}
 }
 #else
 /* VARARGS */
 
-void	advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }

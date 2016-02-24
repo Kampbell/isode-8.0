@@ -32,13 +32,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/set_find.c,v 9.0 1992/
 
 /*  */
 
-PE	set_find (pe, class, id)
-register PE	pe;
-register PElementClass class;
-register PElementID id;
+PE 
+set_find (PE pe, int class, int id)
 {
-	register int    pe_id;
-	register PE	    p;
+	int    pe_id;
+	PE	    p;
 	PE pfound = NULLPE;
 
 	pe_id = PE_ID (class, id);

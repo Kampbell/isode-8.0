@@ -52,8 +52,8 @@ static char calling_dte[NSAP_DTELEN + 1];
 
 /*  */
 
-int     start_x25_client (local)
-struct NSAPaddr *local;
+int 
+start_x25_client (struct NSAPaddr *local)
 {
 	int     sd, pgrp;
 	CONN_DB l_iov;
@@ -79,11 +79,8 @@ struct NSAPaddr *local;
 
 /*  */
 
-int     start_x25_server (local, backlog, opt1, opt2)
-struct NSAPaddr *local;
-int     backlog,
-		opt1,
-		opt2;
+int 
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 {
 	int     sd, pgrp;
 	CONN_DB b_iov;
@@ -105,7 +102,7 @@ int     backlog,
 	if (local != NULLNA) {
 		local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
 		if (local -> na_dtelen == 0) {
-			(void) strcpy (local -> na_dte, x25_local_dte);
+			 strcpy (local -> na_dte, x25_local_dte);
 			local -> na_dtelen = strlen(x25_local_dte);
 			if (local -> na_pidlen == 0 && *x25_local_pid)
 				local -> na_pidlen =
@@ -113,7 +110,7 @@ int     backlog,
 		}
 	}
 
-	(void) gen2if (local, &b_iov, ADDR_LISTEN);
+	 gen2if (local, &b_iov, ADDR_LISTEN);
 	if (bind (sd, &b_iov, sizeof(b_iov)) != NOTOK) {
 		if (ioctl(sd, CCL_AUTO_ACCEPT, 1) < 0) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed",
@@ -121,19 +118,18 @@ int     backlog,
 			close (sd);
 			return NOTOK;
 		}
-		(void) listen (sd, backlog);
+		 listen (sd, backlog);
 		return sd;
 	}
 
-	(void) close (sd);
+	 close (sd);
 	return NOTOK;
 }
 
 /*  */
 
-int     join_x25_client (fd, remote)
-int     fd;
-struct NSAPaddr *remote;
+int 
+join_x25_client (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB     sck;
 	struct iovec *iov;
@@ -156,14 +152,13 @@ struct NSAPaddr *remote;
 	iov[4].iov_len = iov[5].iov_len = iov[6].iov_len = 0;
 	if (ioctl(nfd, CCL_FETCH_CONNECT, &iov[0]) < 0)
 		return NOTOK;
-	(void) if2gen (remote, &sck, ADDR_REMOTE);
+	 if2gen (remote, &sck, ADDR_REMOTE);
 	ioctl (nfd, CCL_SEND_TYPE, 0);
 	return nfd;
 }
 
-int     join_x25_server (fd, remote)
-int     fd;
-struct NSAPaddr *remote;
+int 
+join_x25_server (int fd, struct NSAPaddr *remote)
 {
 	CONN_DB zsck;
 	CONN_DB *sck = &zsck;
@@ -186,7 +181,7 @@ struct NSAPaddr *remote;
 	iov[3].iov_base = param4;
 	iov[4].iov_len = iov[5].iov_len = iov[6].iov_len = 0;
 
-	(void) gen2if (remote, sck, ADDR_REMOTE);
+	 gen2if (remote, sck, ADDR_REMOTE);
 	if ((r = connect (fd, sck, sizeof (CONN_DB))) >= 0)
 		ioctl (fd, CCL_SEND_TYPE, 0);
 	bzero(calling_dte, sizeof calling_dte );
@@ -250,8 +245,10 @@ char    *buffer;
 	return count;
 }
 #else 	/* CAMTEC_CCL */
-int	_camtec_sunlink_stub2 () {}
+int 
+_camtec_sunlink_stub2()  {}
 #endif  /* CAMTEC_CCL */
 #else	/* X25 */
-int	_camtec_sunlink_stub () {}
+int 
+_camtec_sunlink_stub()  {}
 #endif  /* X25 */

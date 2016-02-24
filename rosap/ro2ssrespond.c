@@ -38,21 +38,18 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssrespond.c,v 9.0 
 
 /*    RO-BEGIN.INDICATION */
 
-int	RoInit (vecp, vec, ros, roi)
-int	vecp;
-char  **vec;
-struct RoSAPstart *ros;
-struct RoSAPindication *roi;
+int 
+RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi)
 {
 	int     result;
-	register struct assocblk   *acb;
-	register PE	pe;
+	struct assocblk   *acb;
+	PE	pe;
 	struct SSAPref ref;
 	struct SSAPstart    sss;
-	register struct SSAPstart  *ss = &sss;
+	struct SSAPstart  *ss = &sss;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 	struct type_OACS_PConnect	*pconn;
 
 	isodetailor (NULLCP, 0);
@@ -64,10 +61,10 @@ struct RoSAPindication *roi;
 	if ((acb = newacblk ()) == NULL)
 		return rosaplose (roi, ROS_CONGEST, NULLCP, "out of memory");
 	acb -> acb_flags |= ACB_ROS;
-	(void) RoSService (acb, roi);
+	 RoSService (acb, roi);
 
 	if (SInit (vecp, vec, ss, si) == NOTOK) {
-		(void) ss2roslose (acb, roi, "SInit", sa);
+		 ss2roslose (acb, roi, "SInit", sa);
 		goto out1;
 	}
 
@@ -80,7 +77,7 @@ struct RoSAPindication *roi;
 	else if (acb -> acb_requirements & SR_HALFDUPLEX)
 		acb -> acb_requirements = SR_HALFDUPLEX;
 	else {
-		(void) rosaplose (roi, ROS_PROTOCOL, NULLCP,
+		 rosaplose (roi, ROS_PROTOCOL, NULLCP,
 						  "desired session requirements unavailable");
 		goto out2;
 	}
@@ -97,7 +94,7 @@ struct RoSAPindication *roi;
 
 	if ((pe = ssdu2pe (ss -> ss_data, ss -> ss_cc, NULLCP, &result))
 			== NULLPE) {
-		(void) rosaplose (roi, result != PS_ERR_NMEM ? ROS_PROTOCOL
+		 rosaplose (roi, result != PS_ERR_NMEM ? ROS_PROTOCOL
 						  : ROS_CONGEST, NULLCP, "%s", ps_error (result));
 		goto out2;
 	}
@@ -105,7 +102,7 @@ struct RoSAPindication *roi;
 	SSFREE (ss);
 
 	if (parse_OACS_PConnect (pe, 1, NULLIP, NULLVP, &pconn) == NOTOK) {
-		(void) pylose ();
+		 pylose ();
 		pe_free (pe);
 		goto out2;
 	}
@@ -129,7 +126,7 @@ struct RoSAPindication *roi;
 out2:
 	;
 	bzero ((char *) &ref, sizeof ref);
-	(void) SConnResponse (acb -> acb_fd, &ref, NULLSA, SC_CONGEST, 0, 0,
+	 SConnResponse (acb -> acb_fd, &ref, NULLSA, SC_CONGEST, 0, 0,
 						  SERIAL_NONE, NULLCP, 0, si);
 	acb -> acb_fd = NOTOK;
 
@@ -143,21 +140,18 @@ out1:
 
 /*    RO-BEGIN.RESPONSE */
 
-int	RoBeginResponse (sd, status, data, roi)
-int	sd;
-int	status;
-PE	data;
-struct RoSAPindication *roi;
+int 
+RoBeginResponse (int sd, int status, PE data, struct RoSAPindication *roi)
 {
 	int	    len,
 			result;
 	char   *base;
 	PE	pe;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct SSAPref ref;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	struct type_OACS_PAccept	paccpt;
 	struct type_OACS_DataTransferSyntax	dts;
 	struct type_OACS_ConnectionData condata;
@@ -207,7 +201,7 @@ struct RoSAPindication *roi;
 		if (encode_OACS_PAccept (&pe, 1, 0, NULLCP, &paccpt) == NOTOK) {
 no_mem:
 			;
-			(void) rosaplose (roi, ROS_CONGEST, NULLCP, "out of memory");
+			 rosaplose (roi, ROS_CONGEST, NULLCP, "out of memory");
 			goto out1;
 		}
 		status = SC_ACCEPT;
@@ -240,7 +234,7 @@ no_mem:
 					   acb -> acb_requirements, acb -> acb_settings, SERIAL_NONE,
 					   base, len, si) == NOTOK) {
 		acb -> acb_fd = NOTOK;
-		(void) ss2roslose (acb, roi, "SConnResponse", sa);
+		 ss2roslose (acb, roi, "SConnResponse", sa);
 		goto out3;
 	}
 
@@ -256,7 +250,7 @@ out2:
 	;
 	if (pe) {
 		if (data)
-			(void) pe_extract (pe, data);
+			 pe_extract (pe, data);
 		pe_free (pe);
 	}
 	if (base)
@@ -266,7 +260,7 @@ out2:
 
 out1:
 	;
-	(void) SConnResponse (acb -> acb_fd, &ref, NULLSA, SC_CONGEST, 0, 0,
+	 SConnResponse (acb -> acb_fd, &ref, NULLSA, SC_CONGEST, 0, 0,
 						  SERIAL_NONE, NULLCP, 0, si);
 	acb -> acb_fd = NOTOK;
 out3:

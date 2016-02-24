@@ -48,8 +48,9 @@ static int TPid = NOTOK;
 
 /*    INTERNAL */
 
-struct tsapblk   *newtublk () {
-	register struct tsapblk *tb;
+struct tsapblk *
+newtublk  {
+	struct tsapblk *tb;
 
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);
 	if (tb == NULL)
@@ -70,11 +71,11 @@ struct tsapblk   *newtublk () {
 }
 
 
-freetublk (tb)
-register struct tsapblk *tb;
+int 
+freetublk (struct tsapblk *tb)
 {
 	SBV     smask;
-	register struct qbuf *qb,
+	struct qbuf *qb,
 			*qp;
 #ifndef	SIGPOLL
 	struct TSAPdisconnect   tds;
@@ -94,14 +95,14 @@ register struct tsapblk *tb;
 #endif
 
 	if (tb -> tb_fd != NOTOK)
-		(void) (*tb -> tb_closefnx) (tb -> tb_fd);
+		 (*tb -> tb_closefnx) (tb -> tb_fd);
 
 	if (tb -> tb_retry)
 		freetpkt (tb -> tb_retry);
 
 #ifndef	SIGPOLL
 	if ((tb -> tb_flags & TB_ASYN) && TPid > OK) {
-		(void) kill (TPid, SIGTERM);
+		 kill (TPid, SIGTERM);
 		TPid = NOTOK;
 	}
 #endif
@@ -121,21 +122,21 @@ register struct tsapblk *tb;
 	for (tb = TuHead -> tb_forw; tb != TuHead; tb = tb -> tb_forw)
 		if (tb -> tb_fd != NOTOK && (tb -> tb_flags & TB_ASYN)) {
 			if (tb -> tb_flags & TB_CLNS)
-				/* (void) TUnitDataWakeUp (tb); */
+				/*  TUnitDataWakeUp (tb); */
 				;
 			break;
 		}
 #endif
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 }
 
 /*  */
 
-struct tsapblk   *findtublk (sd)
-register int sd;
+struct tsapblk *
+findtublk (int sd)
 {
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	if (tu_once_only == 0)
 		return NULL;

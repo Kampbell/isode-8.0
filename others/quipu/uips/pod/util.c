@@ -1,10 +1,9 @@
 #include "util.h"
 
-int issubstr(str, substr)
-char *str;
-char *substr;
+int 
+issubstr (char *str, char *substr)
 {
-	register char *sptr;
+	char *sptr;
 	char c;
 	int substrlen = strlen(substr);
 	int count;
@@ -26,10 +25,10 @@ char *substr;
 	}
 }
 
-int indexstring(string, substring)
-char *string, *substring;
+int 
+indexstring (char *string, char *substring)
 {
-	register char *sub, *str;
+	char *sub, *str;
 	char c, s;
 	int indx = 0;
 

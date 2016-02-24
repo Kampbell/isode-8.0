@@ -56,9 +56,8 @@ char *incstr = "\t*** INCONSISTENCY : ";
 /*--------------------------------------------------------------*/
 /*  createEmptyFile						*/
 /*--------------------------------------------------------------*/
-int createEmptyFile(dir, rfa)
-char *dir;
-struct RfaInfo *rfa;
+int 
+createEmptyFile (char *dir, struct RfaInfo *rfa)
 {
 	int fd;
 	char buf[BUFSIZ];
@@ -100,8 +99,8 @@ struct RfaInfo *rfa;
 /*--------------------------------------------------------------*/
 /*  removeDir - check if dir is empty and remove it		*/
 /*--------------------------------------------------------------*/
-int removeDir(dir)
-char *dir;
+int 
+removeDir (char *dir)
 {
 	struct dirent *dp;
 	DIR *dirp;
@@ -130,10 +129,8 @@ char *dir;
 /*  checkState - check state of files and perform actions to    */
 /*               resolve inconsistencies if possible		*/
 /*--------------------------------------------------------------*/
-int checkState(rfa, rrfa, dir, wrp)
-struct RfaInfo *rfa, *rrfa;
-char *dir;
-int *wrp;
+int 
+checkState (struct RfaInfo *rfa, struct RfaInfo *rrfa, char *dir, int *wrp)
 {
 	char fn[BUFSIZ];
 
@@ -263,9 +260,8 @@ int *wrp;
 /*  checkMasterSlave - do a consistency check on master and     */
 /*		       slave file infos				*/
 /*--------------------------------------------------------------*/
-int checkMasterSlave(m, s, ms, ss)
-struct RfaInfo *m, *s;
-char *ms, *ss;
+int 
+checkMasterSlave (struct RfaInfo *m, struct RfaInfo *s, char *ms, char *ss)
 {
 	if (m->ri_modTime < s->ri_modTime) {
 		fprintf(err,"%s %s SLAVE version of '%s' is newer than %s MASTER ***\n"
@@ -283,12 +279,8 @@ char *ms, *ss;
 /*--------------------------------------------------------------*/
 /*  handleDir							*/
 /*--------------------------------------------------------------*/
-int handleDir(dir, localRfaListPtr, rrfa, rec, wrp)
-char *dir;
-struct RfaInfo **localRfaListPtr;
-struct RfaInfo *rrfa;
-int rec;
-int *wrp;
+int 
+handleDir (char *dir, struct RfaInfo **localRfaListPtr, struct RfaInfo *rrfa, int rec, int *wrp)
 {
 	struct RfaInfo *rfa;
 	char fn[BUFSIZ];
@@ -377,9 +369,8 @@ int *wrp;
 /*--------------------------------------------------------------*/
 /*  syncDir							*/
 /*--------------------------------------------------------------*/
-int syncDir (dir, rec)
-char *dir;
-int rec;
+int 
+syncDir (char *dir, int rec)
 {
 	struct RfaInfo *rfa, *localRfaList, *rrfa, *remoteRfaList;
 	char buf[BUFSIZ];
@@ -502,7 +493,7 @@ int rec;
 				SET_STATUS(rfa->ri_status, RI_SLAVE);
 				SET_LOCKINFO(rfa->ri_status, RI_UNLOCKED);
 				SET_TRANSFER(rfa->ri_status, RI_TRANSFER(rrfa->ri_status));
-				(void)time(&(rfa->ri_lastChange));
+				time(&(rfa->ri_lastChange));
 				rfa->ri_modTime = 0L;
 				rfa->ri_mode = rrfa->ri_mode;
 				rfa->ri_next = localRfaList;
@@ -558,7 +549,7 @@ int rec;
 					rfa->ri_filename);
 		}
 
-	(void)releaseRfaInfoList(dir, localRfaList);
+	releaseRfaInfoList(dir, localRfaList);
 	freeRfaInfoList(remoteRfaList);
 
 	/*-- look for .rfaexec script --*/
@@ -568,8 +559,8 @@ int rec;
 /*--------------------------------------------------------------*/
 /*  rfaMake							*/
 /*--------------------------------------------------------------*/
-int rfaMake(dir, fns)
-char *dir, *fns;
+int 
+rfaMake (char *dir, char *fns)
 {
 	struct RfaInfo *rfa, *rrfa, *localRfaList, *remoteRfaList;
 	char execfn[BUFSIZ];

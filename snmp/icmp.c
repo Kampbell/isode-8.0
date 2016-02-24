@@ -78,13 +78,13 @@ static struct icmpstat icmpstat;
 
 static int  o_icmp (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register struct icmpstat *icps = &icmpstat;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct icmpstat *icps = &icmpstat;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
 	ifvar = (int) ot -> ot_info;
@@ -235,7 +235,7 @@ int	offset;
 /*  */
 
 init_icmp () {
-	register OT	    ot;
+	OT	    ot;
 
 	if (ot = text2obj ("icmpInMsgs"))
 		ot -> ot_getfnx = o_icmp,

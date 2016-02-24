@@ -63,7 +63,7 @@ int	THASH (name)
 char   *name;
 {
 	char    c;
-	register char *cp,
+	char *cp,
 			 *dp;
 
 	for (c = *(dp = cp = name); *cp; cp++)
@@ -88,17 +88,17 @@ OT    *a,
 			&& (!((*a) -> ot_access & OT_XXX)
 				|| !((*b) -> ot_access & OT_XXX))) {
 		OID	oid = (*a) -> ot_name;
-		register unsigned int *ip = oid -> oid_elements;
+		unsigned int *ip = oid -> oid_elements;
 
 		/* XXX: 0.0 is a special case */
 		if (oid -> oid_nelem == 2 && ip[0] == 0 && ip[1] == 0)
 			return 0;
 
 		if (PY_pepy[0])
-			(void) sprintf (PY_pepy + strlen (PY_pepy), ", ");
+			 sprintf (PY_pepy + strlen (PY_pepy), ", ");
 		else
-			(void) sprintf (PY_pepy, "duplicate objects: ");
-		(void) sprintf (PY_pepy + strlen (PY_pepy), "\"%s\" and \"%s\"",
+			 sprintf (PY_pepy, "duplicate objects: ");
+		 sprintf (PY_pepy + strlen (PY_pepy), "\"%s\" and \"%s\"",
 						(*a) -> ot_text, (*b) -> ot_text);
 		(*a) -> ot_access |= OT_XXX, (*b) -> ot_access |= OT_XXX;
 	}
@@ -112,19 +112,19 @@ static char *roots[] = { "ccitt", "iso", "joint-iso-ccitt" };
 int	readobjects (file)
 char   *file;
 {
-	register char *cp,
+	char *cp,
 			 **ap;
 	char    buffer[BUFSIZ],
 			line[BUFSIZ],
 			*vec[NVEC + NSLACK + 1];
-	register OT	   ot;
+	OT	   ot;
 	FILE   *fp;
 
 	if (file == NULL)
 		file = "objects.defs";
 	if ((fp = fopen (file, "r")) == NULL
 			&& (fp = fopen (cp = isodefile (file, 0), "r")) == NULL) {
-		(void) sprintf (PY_pepy, "unable to read %s: %s",
+		 sprintf (PY_pepy, "unable to read %s: %s",
 						cp, sys_errname (errno));
 		return NOTOK;
 	}
@@ -154,13 +154,13 @@ char   *file;
 				if ((compile_heap1 = (OT) calloc ((unsigned) i,
 												  sizeof *compile_heap1))
 						== NULL) {
-					(void) sprintf (PY_pepy,
+					 sprintf (PY_pepy,
 									"out of memory allocating %d objects", i);
 					goto you_lose;
 				}
 
 				if ((compile_heap2 = malloc ((unsigned) j)) == NULL) {
-					(void) sprintf (PY_pepy,
+					 sprintf (PY_pepy,
 									"out of memory allocating %d octets", j);
 					goto you_lose;
 				}
@@ -168,7 +168,7 @@ char   *file;
 				if ((compile_heap3 = (unsigned int *)
 									 calloc ((unsigned) k, sizeof *compile_heap3))
 						== NULL) {
-					(void) sprintf (PY_pepy,
+					 sprintf (PY_pepy,
 									"out of memory allocating %d sub-identitifers",
 									k);
 					goto you_lose;
@@ -177,28 +177,28 @@ char   *file;
 				if ((compile_heap4 = (OID) calloc ((unsigned) i,
 												   sizeof *compile_heap4))
 						== NULL) {
-					(void) sprintf (PY_pepy,
+					 sprintf (PY_pepy,
 									"out of memory allocating %d identitifers",
 									i);
 					goto you_lose;
 				}
 			} else {
-				(void) sprintf (PY_pepy,
+				 sprintf (PY_pepy,
 								"old-style compiled file %s: re-compile", cp);
 				goto you_lose;
 			}
 		} else {
 			compile_flag = 0;
-			(void) rewind (fp);
+			 rewind (fp);
 
 			for (ap = roots + (sizeof roots / sizeof roots[0]) - 1;
 					ap >= roots;
 					ap--) {
-				(void) sprintf (buffer, "%d", ap - roots);
+				 sprintf (buffer, "%d", ap - roots);
 				if (read_name (*ap, buffer, NULLCP) == NOTOK) {
 you_lose:
 					;
-					(void) fclose (fp);
+					 fclose (fp);
 					return NOTOK;
 				}
 			}
@@ -206,7 +206,7 @@ you_lose:
 
 		once_only_Tbuckets = 1;
 	} else if (compile_flag > 0) {
-		(void) sprintf (PY_pepy, "only one compiled file is allowed");
+		 sprintf (PY_pepy, "only one compiled file is allowed");
 		goto you_lose;
 	}
 
@@ -215,7 +215,7 @@ you_lose:
 			continue;
 		if (cp = index (buffer, '\n'))
 			*cp = NULL;
-		(void) strcpy (line, buffer);
+		 strcpy (line, buffer);
 
 		bzero ((char *) vec, sizeof vec);
 		switch (str2vec (buffer, vec)) {
@@ -235,20 +235,20 @@ you_lose:
 			break;
 
 		default:
-			(void) sprintf (PY_pepy, "malformed line: \"%s\"", line);
+			 sprintf (PY_pepy, "malformed line: \"%s\"", line);
 			goto you_lose;
 		}
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 
 	PY_pepy[0] = NULL;
 	if (compile_flag < 1) {
 		int	again,
 			hit,
 			i;
-		register int   j = 0;
-		register OT   *op,
+		int   j = 0;
+		OT   *op,
 				 *ep;
 		OT     *base,
 		oz;
@@ -256,7 +256,7 @@ you_lose:
 		hit = 1, oz = NULLOT;
 		do {
 			if (!hit) {
-				(void) sprintf (PY_pepy, "unable to resolve object \"%s\"",
+				 sprintf (PY_pepy, "unable to resolve object \"%s\"",
 								oz -> ot_text);
 				return NOTOK;
 			}
@@ -281,7 +281,7 @@ you_lose:
 		/* j > 1 ALWAYS */
 
 		if ((base = (OT *) malloc ((unsigned) (j * sizeof *base))) == NULL) {
-			(void) sprintf (PY_pepy, "out of memory");
+			 sprintf (PY_pepy, "out of memory");
 			return NOTOK;
 		}
 
@@ -311,7 +311,7 @@ you_lose:
 			if ((i = str2elem (ot -> ot_id, ip = compile_heap3)) < 1
 					|| ip[0] > 2
 					|| (i > 1 && ip[0] < 2 && ip[1] > 39)) {
-				(void) sprintf (PY_pepy,
+				 sprintf (PY_pepy,
 								"invalid OID (%s) for \"%s\" in compiled file",
 								ot -> ot_id, ot -> ot_text);
 				return NOTOK;
@@ -344,15 +344,15 @@ char   *name,
 	   *hash;
 {
 	int	    i;
-	register OT	   ot;
+	OT	   ot;
 
 	if (compile_flag < 1)
 		goto not_compiled;
 
 	ot = compile_heap1++;
-	(void) strcpy (ot -> ot_text = compile_heap2, name);
+	 strcpy (ot -> ot_text = compile_heap2, name);
 	compile_heap2 += strlen (compile_heap2) + 1;
-	(void) strcpy (ot -> ot_id = compile_heap2, value);
+	 strcpy (ot -> ot_id = compile_heap2, value);
 	compile_heap2 += strlen (compile_heap2) + 1;
 
 	ot -> ot_chain = Tbuckets[i = *hash ? atoi (hash) : THASH (name)];
@@ -369,18 +369,18 @@ char   *name,
 not_compiled:
 	;
 	if (text2obj (name)) {
-		(void) sprintf (PY_pepy, "duplicate object \"%s\"", name);
+		 sprintf (PY_pepy, "duplicate object \"%s\"", name);
 		return NOTOK;
 	}
 
 	if ((ot = (OT) calloc (1, sizeof *ot)) == NULL) {
-		(void) sprintf (PY_pepy, "out of memory");
+		 sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
 
 	if ((ot -> ot_text = strdup (name)) == NULL
 			|| (ot -> ot_id = strdup (value)) == NULL) {
-		(void) sprintf (PY_pepy, "out of memory");
+		 sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
 
@@ -396,15 +396,15 @@ static int  read_type (vec)
 char  **vec;
 {
 	int	    i;
-	register OT	   ot;
+	OT	   ot;
 
 	if (compile_flag < 1)
 		goto not_compiled;
 
 	ot = compile_heap1++;
-	(void) strcpy (ot -> ot_text = compile_heap2, *vec++);
+	 strcpy (ot -> ot_text = compile_heap2, *vec++);
 	compile_heap2 += strlen (compile_heap2) + 1;
-	(void) strcpy (ot -> ot_id = compile_heap2, *vec++);
+	 strcpy (ot -> ot_id = compile_heap2, *vec++);
 	compile_heap2 += strlen (compile_heap2) + 1;
 
 	ot -> ot_chain = Tbuckets[i = *vec[3] ? atoi (vec[3])
@@ -419,18 +419,18 @@ char  **vec;
 not_compiled:
 	;
 	if (text2obj (*vec)) {
-		(void) sprintf (PY_pepy, "duplicate object \"%s\"", *vec);
+		 sprintf (PY_pepy, "duplicate object \"%s\"", *vec);
 		return NOTOK;
 	}
 
 	if ((ot = (OT) calloc (1, sizeof *ot)) == NULL) {
-		(void) sprintf (PY_pepy, "out of memory");
+		 sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
 
 	if ((ot -> ot_text = strdup (*vec++)) == NULL
 			|| (ot -> ot_id = strdup (*vec++)) == NULL) {
-		(void) sprintf (PY_pepy, "out of memory");
+		 sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
 
@@ -483,10 +483,10 @@ get_rest:
 /* does not insert into THASH table... */
 
 int	add_objects (ot)
-register OT	ot;
+OT	ot;
 {
-	register OID oid = ot -> ot_name;
-	register OT	 ot2,
+	OID oid = ot -> ot_name;
+	OT	 ot2,
 			 *otp;
 
 	if (oid_cmp (chain -> ot_name, oid) < 0) {
@@ -508,7 +508,7 @@ register OT	ot;
 
 
 static int  add_objects_aux () {
-	register OT	    ot,
+	OT	    ot,
 			 ot2;
 
 	for (ot = anchor; ot; ot = ot -> ot_next) {
@@ -541,10 +541,10 @@ char   *name;
 {
 	int	    i,
 			j;
-	register unsigned int  *ip,
+	unsigned int  *ip,
 			 *jp;
 	unsigned int elements[NELEM + 1];
-	register char *cp;
+	char *cp;
 	OID	    oid,
 			new = NULLOID;
 
@@ -616,14 +616,14 @@ free_up:
 
 static OID  resolve (id, ot)
 char   *id;
-register OT	ot;
+OT	ot;
 {
 	int	    i;
 	unsigned int elements[NELEM + 1];
-	register char *cp;
-	register OT	   ot2;
+	char *cp;
+	OT	   ot2;
 	struct OIDentifier oids;
-	register OID   oid = &oids;
+	OID   oid = &oids;
 
 	oid -> oid_elements = elements;
 
@@ -668,11 +668,11 @@ register OT	ot;
 OT	name2obj (oid)
 OID	oid;
 {
-	register int    i,
+	int    i,
 			 j;
-	register unsigned *ip;
-	register OID   nm;
-	register OT	   ot;
+	unsigned *ip;
+	OID   nm;
+	OT	   ot;
 
 	if (oid == NULLOID
 			|| oid -> oid_nelem < 1
@@ -707,7 +707,7 @@ OID	oid;
 OT	text2obj (text)
 char   *text;
 {
-	register OT	   ot;
+	OT	   ot;
 
 	if (text == NULL || once_only_Tbuckets == 0)
 		return NULLOT;
@@ -728,11 +728,11 @@ char   *oid2ode_aux (oid, quoted)
 OID	oid;
 int	quoted;
 {
-	register int    i;
-	register char  *bp;
-	register unsigned int *ip;
-	register OID    oid2;
-	register OT	    ot;
+	int    i;
+	char  *bp;
+	unsigned int *ip;
+	OID    oid2;
+	OT	    ot;
 	static char buffer[BUFSIZ];
 
 	if ((oid -> oid_nelem == 2		       /* XXX: 0.0 is a special case */
@@ -741,13 +741,13 @@ int	quoted;
 			|| (ot = name2obj (oid)) == NULLOT)
 		return sprintoid (oid);
 
-	(void) strcpy (bp = buffer, ot -> ot_text);
+	 strcpy (bp = buffer, ot -> ot_text);
 	bp += strlen (bp);
 	for (ip = oid -> oid_elements + (oid2 = ot -> ot_name) -> oid_nelem,
 			i = oid -> oid_nelem - oid2 -> oid_nelem;
 			i-- > 0;
 			ip++) {
-		(void) sprintf (bp, ".%u", *ip);
+		 sprintf (bp, ".%u", *ip);
 		bp += strlen (bp);
 	}
 
@@ -760,7 +760,7 @@ OI	name2inst (oid)
 OID	oid;
 {
 	static object_instance ois;
-	register OI oi = &ois;
+	OI oi = &ois;
 
 	if ((oi -> oi_type = name2obj (oi -> oi_name = oid)) == NULLOT)
 		return NULLOI;
@@ -773,8 +773,8 @@ OI	next2inst (oid)
 OID	oid;
 {
 	static object_instance ois;
-	register OI oi = &ois;
-	register OT ot;
+	OI oi = &ois;
+	OT ot;
 
 	for (ot = anchor; ot; ot = ot -> ot_next) {
 #ifdef	noway
@@ -803,7 +803,7 @@ OI	text2inst (text)
 char   *text;
 {
 	static object_instance ois;
-	register OI oi = &ois;
+	OI oi = &ois;
 	static OID oid = NULLOID;
 
 	if (oid)
@@ -826,8 +826,8 @@ char   *text;
 #ifdef	DEBUG
 dump_objects_by_text () {
 	int	    hit;
-	register int    i;
-	register OT	    ot;
+	int    i;
+	OT	    ot;
 
 	for (i = 0; i < TBUCKETS; i++) {
 		hit = 0;
@@ -843,9 +843,9 @@ dump_objects_by_text () {
 
 
 dump_objects_by_tree () {
-	register char **ap;
+	char **ap;
 	char  **bp;
-	register OT	    ot;
+	OT	    ot;
 
 	for (bp = (ap = roots) + (sizeof roots / sizeof roots[0]); ap < bp; ap++) {
 		if (ot = text2obj (*ap))
@@ -859,7 +859,7 @@ dump_objects_by_tree () {
 
 
 dump_object_by_tree (ot, i)
-register OT	ot;
+OT	ot;
 int	i;
 {
 	if (ot == NULL)
@@ -872,7 +872,7 @@ int	i;
 
 
 dump_objects_by_xxx () {
-	register OT	    ot;
+	OT	    ot;
 
 	for (ot = anchor; ot; ot = ot -> ot_next)
 		dump_object (ot, 0);
@@ -882,7 +882,7 @@ dump_objects_by_xxx () {
 
 
 static	dump_object (ot, i)
-register OT	ot;
+OT	ot;
 int	i;
 {
 	printf ("%*.*s%s %s %s %s %d %d 0x%x\n", i, i, "",
@@ -902,7 +902,7 @@ char   *s;
 	char   *p;
 
 	if (p = malloc ((unsigned) (strlen (s) + 1)))
-		(void) strcpy (p, s);
+		 strcpy (p, s);
 
 	return p;
 }
@@ -914,8 +914,8 @@ char   *s;
 flobjects (fp)
 FILE   *fp;
 {
-	register int    i;
-	register OT     ot;
+	int    i;
+	OT     ot;
 
 	fprintf (fp, "static OT _Tbuckets[%d] = {\n", TBUCKETS);
 
@@ -934,15 +934,15 @@ loadobjects (file)\n\
 char   *file;\n\
 {\n\
     int	    i;\n\
-    register struct _syntax *sy;\n\
-    register OT	    ot;\n\
+    struct _syntax *sy;\n\
+    OT	    ot;\n\
     static int once_only = 0;\n\
 \n\
     if (file && !once_only)\n\
 	return readobjects (file);\n\
 \n\
     if (once_only) {\n\
-	(void) sprintf (PY_pepy, \"loadobjects called more than once!\");\n\
+	 sprintf (PY_pepy, \"loadobjects called more than once!\");\n\
 	return NOTOK;\n\
     }\n\
     once_only = 1;\n\
@@ -953,7 +953,7 @@ char   *file;\n\
     readsyntax ();\n\
     for (sy = _syntaxes; sy -> name; sy++)\n\
 	if ((sy -> value = text2syn (sy -> name)) == NULLOS) {\n\
-	    (void) sprintf (PY_pepy, \"lost \\\"%%s\\\" syntax\", sy -> name);\n\
+	     sprintf (PY_pepy, \"lost \\\"%%s\\\" syntax\", sy -> name);\n\
 	    return NOTOK;\n\
 	}\n\
 \n\

@@ -224,8 +224,8 @@ static index_free( pindex )
 Index	*pindex;
 {
 	dn_free( pindex->i_dn );
-	(void) avl_free( pindex->i_root, indexav_free );
-	(void) avl_free( pindex->i_sroot, soundex_free );
+	 avl_free( pindex->i_root, indexav_free );
+	 avl_free( pindex->i_sroot, soundex_free );
 	free( (char *) pindex );
 }
 
@@ -310,9 +310,9 @@ int		ps;
 {
 	int	i;
 
-	(void) printf( "\t(%s)\n",n->in_value );
+	 printf( "\t(%s)\n",n->in_value );
 	for ( i = 0; i < n->in_num; i++ )
-		(void) printf( "\t\t%s\n",
+		 printf( "\t\t%s\n",
 					   n->in_entries[i]->e_name->rdn_av.av_struct);
 	return( OK );
 }
@@ -616,14 +616,14 @@ Entry	e;		/* the entry these attrs belong to */
 
 		/* sibling index */
 		if ( sibindex ) {
-			(void) turbo_attr_insert( sibindex, e, as->attr_type,
+			 turbo_attr_insert( sibindex, e, as->attr_type,
 									  as->attr_value );
 		}
 
 		savedn = NULLDN;
 		while ( dn->dn_parent != NULLDN ) {
 			if ( subindex = get_subtree_index( dn ) ) {
-				(void) turbo_attr_insert( subindex, e,
+				 turbo_attr_insert( subindex, e,
 										  as->attr_type, as->attr_value );
 			}
 
@@ -836,14 +836,14 @@ Entry	e;
 
 		/* sibling index */
 		if ( sibindex ) {
-			(void) turbo_attr_delete( sibindex, e, as->attr_type,
+			 turbo_attr_delete( sibindex, e, as->attr_type,
 									  as->attr_value );
 		}
 
 		savedn = NULLDN;
 		while ( dn->dn_parent != NULLDN ) {
 			if ( subindex = get_subtree_index( dn ) ) {
-				(void) turbo_attr_delete( subindex, e,
+				 turbo_attr_delete( subindex, e,
 										  as->attr_type, as->attr_value );
 			}
 

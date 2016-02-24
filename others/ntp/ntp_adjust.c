@@ -40,8 +40,8 @@ int	firstpass = 1;
 #define	abs(x)	((x) < 0 ? -(x) : (x))
 #endif
 
-void
-init_logical_clock() {
+void 
+init_logical_clock  {
 	if (kern_tickadj)
 		adj_precision = kern_tickadj;
 	else
@@ -69,9 +69,8 @@ init_logical_clock() {
  *  corrections to my code.
  */
 
-int
-adj_logical(offset)
-double offset;
+int 
+adj_logical (double offset)
 {
 	struct timeval tv1, tv2;
 #ifdef	XADJTIME2
@@ -88,7 +87,7 @@ double offset;
 	if (offset > CLOCK_MAX || offset < -CLOCK_MAX) {
 		double steptime = offset;
 
-		(void) gettimeofday(&tv2, (struct timezone *) 0);
+		 gettimeofday(&tv2, (struct timezone *) 0);
 		steptime += tv2.tv_sec;
 		steptime += tv2.tv_usec / 1000000.0;
 		tv1.tv_sec = steptime;
@@ -146,7 +145,7 @@ double offset;
 #ifdef XADJTIME2
 		delta.tv_sec = offset;
 		delta.tv_usec = (offset - delta.tv_sec) * 1000;
-		(void) adjtime2(&delta, &olddelta);
+		 adjtime2(&delta, &olddelta);
 #endif
 		return(0);
 	}
@@ -171,9 +170,8 @@ extern int adjtime();
  */
 double adjustment;
 
-void
-adj_host_clock(n)
-int	n;
+void 
+adj_host_clock (int n)
 {
 
 	struct timeval delta, olddelta;

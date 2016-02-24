@@ -34,9 +34,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/objectbyoid.c,v 9.0 19
 /*  */
 
 struct isobject *getisobjectbyoid (oid)
-register OID	oid;
+OID	oid;
 {
-	register struct isobject   *io;
+	struct isobject   *io;
 
 	isodetailor (NULLCP, 0);
 #ifdef	DEBUG
@@ -44,11 +44,11 @@ register OID	oid;
 		  ("getisobjectbyoid %s", sprintoid (oid)));
 #endif
 
-	(void) setisobject (0);
+	 setisobject (0);
 	while (io = getisobject ())
 		if (oid_cmp (oid, &io -> io_identity) == 0)
 			break;
-	(void) endisobject ();
+	 endisobject ();
 
 	if (io) {
 #ifdef	DEBUG

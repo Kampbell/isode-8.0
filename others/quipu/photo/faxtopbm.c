@@ -44,10 +44,8 @@ static	bit	black, white;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	char   *cp;
 	char   *data;
@@ -81,7 +79,7 @@ char  **argv,
 		} else if (file) {
 usage:
 			;
-			(void) fprintf (stderr, "usage: faxtopbm [-2d] [file]\n");
+			 fprintf (stderr, "usage: faxtopbm [-2d] [file]\n");
 			exit (1);
 		} else {
 			file = cp;
@@ -102,7 +100,7 @@ usage:
 
 	data = (char *)malloc ((unsigned int)ALLOCATION_SIZE);
 	if ( !data ) {
-		(void) fputs ("faxtopbm: out of memory\n", stderr);
+		 fputs ("faxtopbm: out of memory\n", stderr);
 		exit (1);
 	}
 	limit = ALLOCATION_SIZE;
@@ -112,7 +110,7 @@ usage:
 		if (size + ALLOCATION_SIZE > limit) {
 			newData = (char *)realloc (data, (unsigned int)(limit + ALLOCATION_SIZE));
 			if ( !newData ) {
-				(void) fputs ("faxtopbm: out of memory\n", stderr);
+				 fputs ("faxtopbm: out of memory\n", stderr);
 				exit (1);
 			}
 			data = newData;
@@ -128,13 +126,13 @@ usage:
 	}
 
 	if (size < 1) {
-		(void) fprintf (stderr, "%s: is not a fax image\n", file);
+		 fprintf (stderr, "%s: is not a fax image\n", file);
 		exit (1);
 	}
 
 	if (decode_t4 (data, file, (int)size) == -1
 			|| decode_t4 (data, file, (int)size) == -1) {
-		(void) fprintf (stderr,"\n");
+		 fprintf (stderr,"\n");
 		exit (-1);
 	}
 
@@ -146,19 +144,19 @@ usage:
 /*    ERRORS */
 
 static ps_die (ps, s)
-register PS	 ps;
-register char   *s;
+PS	 ps;
+char   *s;
 {
-	(void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
+	 fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
 }
 
 
 static pe_die (pe, s)
-register PE	 pe;
-register char   *s;
+PE	 pe;
+char   *s;
 {
-	(void) fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
+	 fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
 	exit (1);
 }
 
@@ -172,8 +170,8 @@ static	bit    *bitrow, *bP;
 
 /* ARGSUSED */
 
-photo_start(name)
-char   *name;
+int 
+photo_start (char *name)
 {
 	if (passno == 1)
 		maxx = 0;
@@ -185,11 +183,11 @@ char   *name;
 
 /* ARGSUSED */
 
-photo_end (name)
-char   *name;
+int 
+photo_end (char *name)
 {
 	if (passno == 1) {
-		register int	i;
+		int	i;
 
 		passno = 2;
 		x = maxx, y--;
@@ -212,11 +210,11 @@ char   *name;
 }
 
 
-photo_black (length)
-int	length;
+int 
+photo_black (int length)
 {
 	if (passno == 2) {
-		register int	i;
+		int	i;
 
 		for (i = length; i > 0; i--)
 			*bP++ = black;
@@ -227,8 +225,8 @@ int	length;
 }
 
 
-photo_white (length)
-int	length;
+int 
+photo_white (int length)
 {
 	if (passno == 2)
 		bP += length;
@@ -247,7 +245,7 @@ caddr_t line;
 		if (x > maxx)
 			maxx = x;
 	} else {
-		register int	i;
+		int	i;
 
 #ifdef PBM4PARMS
 		pbm_writepbmrow (stdout, bitrow, maxx, 0);

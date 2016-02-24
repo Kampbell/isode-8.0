@@ -147,7 +147,7 @@ struct dsaQoS *a;
 {
 	PE	    pe;
 
-	(void) encode_Thorn_DSAQualitySyntax (&pe, 0, 0, NULLCP, a);
+	 encode_Thorn_DSAQualitySyntax (&pe, 0, 0, NULLCP, a);
 
 	return pe;
 }
@@ -175,7 +175,7 @@ struct attrQoS *a;
 static ditQoS_free (a)
 struct ditQoS *a;
 {
-	register struct attrsQoS *p,
+	struct attrsQoS *p,
 			*q;
 
 	if (!a)
@@ -213,7 +213,7 @@ static struct ditQoS *ditQoS_cpy (a)
 struct ditQoS *a;
 {
 	struct ditQoS *b;
-	register struct attrsQoS  *p,
+	struct attrsQoS  *p,
 			**q,
 			*r;
 
@@ -329,7 +329,7 @@ struct ditQoS *a;
 int	format;
 {
 	char   *ptr = rcmd_srch (a -> dit_namespace, ditQoS_tab);
-	register struct attrsQoS  *p;
+	struct attrsQoS  *p;
 
 	ps_printf (ps, format == READOUT
 			   ? "completeness of namespace: %s\n%*sdefault: "
@@ -401,7 +401,7 @@ char   *str;
 	char   *ptr,
 		   *qtr;
 	struct ditQoS *a;
-	register struct attrsQoS  *p,
+	struct attrsQoS  *p,
 			**q;
 
 	a = (struct ditQoS *) smalloc (sizeof *a);
@@ -501,7 +501,7 @@ struct ditQoS *a;
 {
 	PE	    pe;
 
-	(void) encode_Thorn_DataQualitySyntax (&pe, 0, 0, NULLCP, a);
+	 encode_Thorn_DataQualitySyntax (&pe, 0, 0, NULLCP, a);
 
 	return pe;
 }
@@ -518,7 +518,7 @@ PE	pe;
 }
 
 QoS_syntax () {
-	(void) add_attribute_syntax ("DSAQualitySyntax",
+	 add_attribute_syntax ("DSAQualitySyntax",
 								 (IFP) dsaQoS_enc,
 								 (IFP) dsaQoS_dec,
 								 (IFP) str2dsaQoS,
@@ -527,7 +527,7 @@ QoS_syntax () {
 								 dsaQoS_cmp,
 								 dsaQoS_free,
 								 NULLCP, NULLIFP, TRUE);
-	(void) add_attribute_syntax ("DataQualitySyntax",
+	 add_attribute_syntax ("DataQualitySyntax",
 								 (IFP) ditQoS_enc,
 								 (IFP) ditQoS_dec,
 								 (IFP) str2ditQoS,
@@ -546,7 +546,7 @@ CMD_TABLE *cmd;
 {
 	int	    result;
 	char    c;
-	register char *p;
+	char *p;
 
 	for (p = str + strlen (str) - 1; p >= str && isspace ((u_char) *p); p--)
 		continue;

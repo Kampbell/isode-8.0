@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_cmp.c,v 9.0 
 #include "quipu/name.h"
 
 dn_cmp (a,b)
-register DN  a,b;
+DN  a,b;
 {
 	int res;
 
@@ -45,7 +45,7 @@ register DN  a,b;
 }
 
 dn_cmp_prefix (a,b)
-register DN  a,b;
+DN  a,b;
 {
 	for (; a != NULLDN && b != NULLDN ; a = a->dn_parent, b = b->dn_parent)
 		if ( dn_comp_cmp (a,b) == NOTOK) {
@@ -61,7 +61,7 @@ register DN  a,b;
 }
 
 dn_order_cmp (a,b)
-register DN  a,b;
+DN  a,b;
 {
 	int     i;
 

@@ -31,9 +31,9 @@ AttributeType last_at;
 int avs_count = 1;
 
 AttrT_print (ps,x,format)
-register PS ps;
-register AttributeType x;
-register int format;
+PS ps;
+AttributeType x;
+int format;
 {
 	if (x == NULLAttrT) {
 		ps_print(ps,"Unknown Type");

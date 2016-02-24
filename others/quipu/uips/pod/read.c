@@ -32,7 +32,7 @@ dsEnqError do_read(), read_all(), read_config_types();
 Attr_Sequence sort_attrs(entry_attrs)
 Attr_Sequence entry_attrs;
 {
-	register Attr_Sequence last, next, curr, first, firstn;
+	Attr_Sequence last, next, curr, first, firstn;
 
 	first = curr = entry_attrs;
 	firstn = last = next = 0;
@@ -76,7 +76,7 @@ Attr_Sequence entry_attrs;
 Attr_Sequence get_sorted_attrs(entry_attrs, wanted_attrs)
 Attr_Sequence entry_attrs, wanted_attrs;
 {
-	register Attr_Sequence curr_ent_attr, curr_found,
+	Attr_Sequence curr_ent_attr, curr_found,
 			 curr_wanted, attrs_found, next;
 
 	attrs_found = NULLATTR;
@@ -241,12 +241,11 @@ Attr_Sequence attrs_to_read;
 	}
 }
 
-read_print(func, ptr)
-int (*func) ();
-caddr_t ptr;
+int 
+read_print (int (*func), caddr_t ptr)
 {
 	PS ps;
-	register char *str;
+	char *str;
 
 	if ((ps = ps_alloc(str_open)) == NULLPS) return;
 	if (str_setup(ps, NULLCP, 0, 0) == NOTOK) return;
@@ -285,7 +284,7 @@ int format;
 
 		two_passes = 0;
 
-		(void) pe2ps(sps, picture);
+		 pe2ps(sps, picture);
 		if (decode_t4(sps->ps_base, "photo", sps->ps_ptr - sps->ps_base ) == -1)
 			goto out;
 
@@ -301,10 +300,8 @@ out:
 	}
 }
 
-entry2str(ptr, cptr, size)
-caddr_t ptr;
-char *cptr;
-int size;
+int 
+entry2str (caddr_t ptr, char *cptr, int size)
 {
 	PS ps;
 
@@ -317,11 +314,11 @@ int size;
 	ps_free(ps);
 }
 
-void rfc2greybook(string)
-char *string;
+void 
+rfc2greybook (char *string)
 {
 	char reversed[STRINGLEN];
-	register char *part;
+	char *part;
 
 	reversed[0] = '\0';
 	part = string + strlen(string);
@@ -332,18 +329,18 @@ char *string;
 		while (*part != '.' && *part != '@') --part;
 
 		if (*part == '.') {
-			if (reversed[0] != '\0') (void) strcat(reversed, ".");
+			if (reversed[0] != '\0')  strcat(reversed, ".");
 			part++;
-			(void) strcat(reversed, part);
+			 strcat(reversed, part);
 			*--part = '\0';
 			--part;
 		} else {
 			part++;
-			(void) strcat(reversed, ".");
-			(void) strcat(reversed, part);
+			 strcat(reversed, ".");
+			 strcat(reversed, part);
 			*part = '\0';
 			/*       while (!isspace(*part)) --part; */
-			(void) strcat(string, reversed);
+			 strcat(string, reversed);
 			return;
 		}
 	}

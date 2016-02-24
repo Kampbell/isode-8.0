@@ -41,16 +41,16 @@ char   *getpass ();
 
 /* roll our own since want to get past UNIX's limit of 8 octets... */
 
-char *getpassword (prompt)
-char *prompt;
+char *
+getpassword (char *prompt)
 {
 #ifndef	BSD44
-	register int    c;
+	int    c;
 	int	    flags,
 			isopen;
-	register char  *bp,
+	char  *bp,
 			 *ep;
-#if	!defined(SYS5) && !defined(XOS_2)
+#if	!defined(FEDORA) && !defined(SYS5) && !defined(XOS_2)
 	struct sgttyb   sg;
 #else
 	struct termio   sg;
@@ -66,7 +66,7 @@ char *prompt;
 		setbuf (fp, NULLCP), isopen = 1;
 	else {
 		if (c != NOTOK)
-			(void) close (c);
+			 close (c);
 
 		fp = stdin, isopen = 0;
 	}
@@ -74,24 +74,24 @@ char *prompt;
 
 	istat = signal (SIGINT, SIG_IGN);
 
-#if	!defined(SYS5) && !defined(XOS_2)
-	(void) gtty (fileno (fp), &sg);
+#if	!defined(FEDORA) && !defined(SYS5) && !defined(XOS_2)
+	 gtty (fileno (fp), &sg);
 	flags = sg.sg_flags;
 	sg.sg_flags &= ~ECHO;
-	(void) stty (fileno (fp), &sg);
+	 stty (fileno (fp), &sg);
 #else
-	(void) ioctl (fileno (fp), TCGETA, (char *) &sg);
+	 ioctl (fileno (fp), TCGETA, (char *) &sg);
 	flags = sg.c_lflag;
 	sg.c_lflag &= ~ECHO;
-	(void) ioctl (fileno (fp), TCSETAW, (char *) &sg);
+	 ioctl (fileno (fp), TCSETAW, (char *) &sg);
 #endif
 
 #ifdef SUNLINK_7_0
-	(void) fprintf (stdout, "%s", prompt);
-	(void) fflush (stdout);
+	 fprintf (stdout, "%s", prompt);
+	 fflush (stdout);
 #else
-	(void) fprintf (stderr, "%s", prompt);
-	(void) fflush (stderr);
+	 fprintf (stderr, "%s", prompt);
+	 fflush (stderr);
 #endif
 
 	for (ep = (bp = buffer) + sizeof buffer - 1; (c = getc (fp)) != EOF;)
@@ -106,25 +106,25 @@ char *prompt;
 	*bp = NULL;
 
 #ifdef SUNLINK_7_0
-	(void) fprintf (stdout, "\n");
-	(void) fflush (stdout);
+	 fprintf (stdout, "\n");
+	 fflush (stdout);
 #else
-	(void) fprintf (stderr, "\n");
-	(void) fflush (stderr);
+	 fprintf (stderr, "\n");
+	 fflush (stderr);
 #endif
 
-#if	!defined(SYS5) && !defined(XOS_2)
+#if	!defined(FEDORA) && !defined(SYS5) && !defined(XOS_2)
 	sg.sg_flags = flags;
-	(void) stty (fileno (fp), &sg);
+	 stty (fileno (fp), &sg);
 #else
 	sg.c_lflag = flags;
-	(void) ioctl (fileno (fp), TCSETAW, (char *) &sg);
+	 ioctl (fileno (fp), TCSETAW, (char *) &sg);
 #endif
 
-	(void) signal (SIGINT, istat);
+	 signal (SIGINT, istat);
 
 	if (isopen)
-		(void) fclose (fp);
+		 fclose (fp);
 
 	return buffer;
 #else

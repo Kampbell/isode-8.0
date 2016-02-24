@@ -116,17 +116,17 @@ static FamilyMap familyMap[] = {
  * for this fd and add them to the selfhosts list.
  * HPUX version - hpux does not have SIOCGIFCONF ioctl;
  */
-DefineSelf (fd)
-int fd;
+int 
+DefineSelf (int fd)
 {
-	register int n;
+	int n;
 	int	len;
 	caddr_t	addr;
 	int		family;
-	register HOST	*host;
+	HOST	*host;
 
 	struct utsname name;
-	register struct hostent  *hp;
+	struct hostent  *hp;
 
 	union {
 		struct  sockaddr   sa;
@@ -169,17 +169,17 @@ int fd;
 /* Define this host for access control.  Find all the hosts the OS knows about
  * for this fd and add them to the selfhosts list.
  */
-DefineSelf (fd)
-int fd;
+int 
+DefineSelf (int fd)
 {
 	char		buf[2048];
 	struct ifconf	ifc;
-	register int	n;
+	int	n;
 	int 		len;
 	pointer 		addr;
 	int 		family;
-	register HOST 	*host;
-	register struct ifreq *ifr;
+	HOST 	*host;
+	struct ifreq *ifr;
 #ifdef ISOCONN
 	AEI			aei;
 	struct PSAPaddr    *pa;
@@ -255,10 +255,10 @@ int fd;
 #endif hpux
 
 /* Reset access control list to initial hosts */
-ResetHosts (display)
-char *display;
+int 
+ResetHosts (char *display)
 {
-	register HOST	*host, *self;
+	HOST	*host, *self;
 	char 		hostname[120];
 	char		fname[32];
 	FILE		*fd;
@@ -282,7 +282,7 @@ char *display;
 	int			family;
 	int			len;
 	pointer		addr;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	AccessEnabled = DEFAULT_ACCESS_CONTROL;
 	while (host = validhosts) {
@@ -382,7 +382,7 @@ ClientPtr client;
 	struct sockaddr	from;
 #endif
 	pointer		addr;
-	register HOST	*host;
+	HOST	*host;
 #ifdef ISOCONN
 	struct TSAPaddr	from;
 #endif /* ISOCONN */
@@ -428,7 +428,7 @@ unsigned            length;        /* of bytes in pAddr */
 pointer             pAddr;
 {
 	int			len;
-	register HOST	*host;
+	HOST	*host;
 	int                 unixFamily;
 
 	if (!AuthorizedClient(client))
@@ -472,7 +472,7 @@ short	family;
 pointer	addr;
 {
 	int		len;
-	register HOST *host;
+	HOST *host;
 
 	if ((len = CheckFamily (DONT_CHECK, family)) < 0)
 		return;
@@ -508,7 +508,7 @@ pointer             pAddr;
 {
 	int			len,
 				unixFamily;
-	register HOST	*host, **prev;
+	HOST	*host, **prev;
 
 	if (!AuthorizedClient(client))
 		return(BadAccess);
@@ -545,9 +545,9 @@ int			*pnHosts;
 BOOL		*pEnabled;
 {
 	int			len;
-	register int 	n = 0;
-	register pointer	ptr;
-	register HOST	*host;
+	int 	n = 0;
+	pointer	ptr;
+	HOST	*host;
 	int			nHosts = 0;
 	int			*lengths = (int *) NULL;
 
@@ -597,9 +597,8 @@ BOOL		*pEnabled;
  * Return address length.
  */
 
-CheckFamily (connection, family)
-int			connection;
-int			family;
+int 
+CheckFamily (int connection, int family)
 {
 #ifdef ISOCONN
 	struct TSAPaddr 	from;
@@ -608,7 +607,7 @@ int			family;
 #endif /* ISOCONN */
 	int	 		alen;
 	pointer		addr;
-	register HOST	*host;
+	HOST	*host;
 	int 		len;
 
 	switch (family) {
@@ -661,17 +660,12 @@ int			family;
 /* Check if a host is not in the access control list.
  * Returns 1 if host is invalid, 0 if we've found it. */
 
-InvalidHost (saddr, len)
-#ifdef ISOCONN
-register struct TSAPaddr	*saddr;
-#else /* ISOCONN */
-register struct sockaddr	*saddr;
-#endif /* ISOCONN */
-int				len;
+int 
+InvalidHost (struct sockaddr *saddr, int len)
 {
 	int 			family;
 	pointer			addr;
-	register HOST 		*host;
+	HOST 		*host;
 #ifdef ISOCONN
 	len = NASIZE;
 #endif /* ISOCONN */
@@ -726,9 +720,9 @@ int				len;
 
 ConvertAddr (saddr, len, addr)
 #ifdef ISOCONN
-register struct TSAPaddr *saddr;
+struct TSAPaddr *saddr;
 #else /* ISOCONN */
-register struct sockaddr	*saddr;
+struct sockaddr	*saddr;
 #endif /* ISOCONN */
 int				*len;
 pointer			*addr;
@@ -787,8 +781,8 @@ int fEnabled;
 	return Success;
 }
 
-static int XFamily(af)
-int af;
+static int 
+XFamily (int af)
 {
 	int i;
 	for (i = 0; i < FAMILIES; i++)
@@ -797,8 +791,8 @@ int af;
 	return -1;
 }
 
-static int UnixFamily(xf)
-int xf;
+static int 
+UnixFamily (int xf)
 {
 	int i;
 	for (i = 0; i < FAMILIES; i++)

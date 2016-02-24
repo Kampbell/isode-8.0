@@ -36,22 +36,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas2.c,v 9.0 
 
 /*    A-RELEASE.RESPONSE */
 
-int	AcRelResponse (sd, status, reason, data, ndata, aci)
-int	sd;
-int	status,
-	reason;
-PE     *data;
-int	ndata;
-struct AcSAPindication *aci;
+int 
+AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAPindication *aci)
 {
 	SBV	    smask;
 	int     code,
 			result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	PE	    pe;
 	struct PSAPindication pis;
-	register struct PSAPabort  *pa = &pis.pi_abort;
-	register struct type_ACS_RLRE__apdu *pdu;
+	struct PSAPabort  *pa = &pis.pi_abort;
+	struct type_ACS_RLRE__apdu *pdu;
 
 	switch (status) {
 	case ACS_ACCEPT:
@@ -78,8 +73,8 @@ struct AcSAPindication *aci;
 	}
 	toomuchP (data, ndata, NACDATA, "release");
 	if (data) {	    /* XXX: probably should have a more intensive check... */
-		register int    i;
-		register PE    *pep;
+		int    i;
+		PE    *pep;
 
 		for (pep = data, i = ndata; i > 0; pep++, i--)
 			if ((*pep) -> pe_context == PE_DFLT_CTX)
@@ -96,7 +91,7 @@ struct AcSAPindication *aci;
 	pe = NULLPE;
 	if ((pdu = (struct type_ACS_RLRE__apdu *) calloc (1, sizeof *pdu))
 			== NULL) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	pdu -> optionals |= opt_ACS_RLRE__apdu_reason;
@@ -113,7 +108,7 @@ struct AcSAPindication *aci;
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 						  PY_pepy);
 		goto out2;
 	}
@@ -122,7 +117,7 @@ struct AcSAPindication *aci;
 	PLOGP (acsap_log,ACS_ACSE__apdu, pe, "RLRE-apdu", 0);
 
 	if ((result = PRelResponse (acb -> acb_fd, code, &pe, 1, &pis)) == NOTOK) {
-		(void) ps2acslose (acb, aci, "PRelResponse", pa);
+		 ps2acslose (acb, aci, "PRelResponse", pa);
 		if (PC_FATAL (pa -> pa_reason))
 			goto out2;
 		else
@@ -147,7 +142,7 @@ out1:
 	if (pdu)
 		free_ACS_RLRE__apdu (pdu);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

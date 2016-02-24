@@ -119,7 +119,7 @@ char   *pgetstr ();
 /*  */
 
 static int  pq_compar (a, b)
-register struct pq *a,
+struct pq *a,
 		*b;
 {
 	return elem_cmp (a -> pq_instance, a -> pq_insize,
@@ -132,11 +132,11 @@ register struct pq *a,
 static int  get_pq (offset)
 int	offset;
 {
-	register int    i;
+	int    i;
 	char   *bp,
 		   buffer[BUFSIZ],
 		   pbuf[BUFSIZ];
-	register struct pq *pq;
+	struct pq *pq;
 	struct stat st;
 	static int lastq = -1;
 
@@ -172,10 +172,10 @@ int	offset;
 	lastq = quantum;
 
 	for (pq = pq_head; i > 1; i--) {
-		register int	j;
-		register unsigned int *ip;
-		register char  *cp;
-		register struct pq *qp;
+		int	j;
+		unsigned int *ip;
+		char  *cp;
+		struct pq *qp;
 
 		if (getprent (pq -> pq_buffer) <= 0)
 			break;
@@ -238,11 +238,11 @@ static	free_pq () {
 /*  */
 
 static struct pq *get_pqent (ip, len, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnext;
 {
-	register struct pq *pq;
+	struct pq *pq;
 
 	for (pq = pq_head; pq -> pq_name; pq++)
 		switch (elem_cmp (pq -> pq_instance, pq -> pq_insize, ip, len)) {
@@ -263,7 +263,7 @@ int	isnext;
 /*  */
 
 static int  pj_compar (a, b)
-register struct pj *a,
+struct pj *a,
 		*b;
 {
 	int	    i;
@@ -278,9 +278,9 @@ register struct pj *a,
 static int  get_pj (offset)
 int	offset;
 {
-	register int    i;
-	register struct pj *pj;
-	register struct pq *pq;
+	int    i;
+	struct pj *pj;
+	struct pq *pq;
 	struct stat st;
 	static int lastq = -1;
 
@@ -310,7 +310,7 @@ int	offset;
 		while (dd = readdir (dp))
 			if (dd -> d_name[0] == 'c' && dd -> d_name[1] == 'f')
 				i++;
-		(void) closedir (dp);
+		 closedir (dp);
 	}
 
 	if ((pj_head = (struct pj *) calloc ((unsigned) i, sizeof *pj_head))
@@ -328,11 +328,11 @@ int	offset;
 
 		if (chdir (pq -> pq_SD) == NOTOK || !(dp = opendir (".")))
 			continue;
-		(void) fstat (dp -> dd_fd, &pq -> pq_st);
+		 fstat (dp -> dd_fd, &pq -> pq_st);
 		while (dd = readdir (dp)) {
-			register int    j;
-			register unsigned int *ip;
-			register char  *cp;
+			int    j;
+			unsigned int *ip;
+			char  *cp;
 
 			if (dd -> d_name[0] != 'c' || dd -> d_name[1] != 'f')
 				continue;
@@ -341,7 +341,7 @@ int	offset;
 				continue;
 			if (i <= 1)
 				break;
-			(void) strcpy (pj -> pj_file, dd -> d_name);
+			 strcpy (pj -> pj_file, dd -> d_name);
 			pj -> pj_pq = pq;
 
 			for (cp = pq -> pq_name, ip = pj -> pj_instance, j = 0; *cp; j++)
@@ -352,7 +352,7 @@ int	offset;
 
 			pj++, i--;
 		}
-		(void) closedir (dp);
+		 closedir (dp);
 		if (i <= 1)
 			break;
 	}
@@ -388,11 +388,11 @@ static	free_pj () {
 /*  */
 
 static struct pj *get_pjent (ip, len, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnext;
 {
-	register struct pj *pj;
+	struct pj *pj;
 
 	for (pj = pj_head; pj -> pj_pq; pj++)
 		switch (elem_cmp (pj -> pj_instance, pj -> pj_insize, ip, len)) {
@@ -421,17 +421,17 @@ int	isnext;
 
 static int  o_pq (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct pq *pq;
-	register OID    oid = oi -> oi_name;
+	struct pq *pq;
+	OID    oid = oi -> oi_name;
 	OID	    new;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	if (get_pq (offset) == NOTOK)
 		return generr (offset);
@@ -546,25 +546,25 @@ try_again:
 											';'))
 							&& *++cp == ' '
 							&& *++cp != NULL)
-						(void) strcpy (pq -> pq_display,
+						 strcpy (pq -> pq_display,
 									   (pq -> pq_status & PQ_STDAEMON)
 									   ? cp : "");
 					else
-						(void) strcpy (pq -> pq_display, buffer);
+						 strcpy (pq -> pq_display, buffer);
 
-					(void) fclose (fp);
+					 fclose (fp);
 				}
 			} else
 				pq -> pq_status |= PQ_STQUEUEING | PQ_STPRINTING;
 
 			pq -> pq_entries = 0;
 			if (dp = opendir (".")) {
-				register struct dirent *dd;
+				struct dirent *dd;
 
 				while (dd = readdir (dp))
 					if (dd -> d_name[0] == 'c' && dd -> d_name[1] == 'f')
 						pq -> pq_entries++;
-				(void) closedir (dp);
+				 closedir (dp);
 			}
 		}
 		break;
@@ -600,15 +600,15 @@ try_again:
 
 static int  s_pq (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register struct pq *pq;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	int    i;
+	struct pq *pq;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
 	if (get_pq (offset) == NOTOK)
@@ -668,18 +668,18 @@ int	offset;
 
 static int  o_pj (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct pj *pj;
-	register struct pq *pq;
-	register OID    oid = oi -> oi_name;
+	struct pj *pj;
+	struct pq *pq;
+	OID    oid = oi -> oi_name;
 	OID	    new;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	if (get_pj (offset) == NOTOK)
 		return generr (offset);
@@ -786,17 +786,17 @@ try_again:
 				switch (buffer[0]) {
 				case 'P':
 					if (!pj -> pj_owner[0])
-						(void) strcpy (pj -> pj_owner, buffer + 1);
+						 strcpy (pj -> pj_owner, buffer + 1);
 					break;
 
 				case 'H':
 					if (!host[0])
-						(void) strcpy (host, buffer + 1);
+						 strcpy (host, buffer + 1);
 					break;
 
 				case 'J':
 					if (!pj -> pj_description[0])
-						(void) strcpy (pj -> pj_description,
+						 strcpy (pj -> pj_description,
 									   buffer + 1);
 					break;
 
@@ -809,10 +809,10 @@ try_again:
 				}
 			}
 			if (host[0])
-				(void) sprintf (pj -> pj_owner + strlen (pj -> pj_owner),
+				 sprintf (pj -> pj_owner + strlen (pj -> pj_owner),
 								"@%s", host);
 
-			(void) fclose (fp);
+			 fclose (fp);
 		}
 		break;
 	}
@@ -856,15 +856,15 @@ try_again:
 
 static int  s_pj (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register struct pj *pj;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	int    i;
+	struct pj *pj;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
 	if (get_pj (offset) == NOTOK)
@@ -910,7 +910,7 @@ int	offset;
 /*  */
 
 int	init_print () {
-	register OT	    ot;
+	OT	    ot;
 
 	if (ot = text2obj ("printQName"))
 		ot -> ot_getfnx = o_pq,
@@ -949,7 +949,7 @@ int	init_print () {
 			  ot -> ot_setfnx = s_pj,
 					ot -> ot_info = (caddr_t) printJAction;
 
-	(void) umask (0);
+	 umask (0);
 }
 
 /*  */
@@ -1033,15 +1033,15 @@ integer	cor;
 	int	    invalid,
 			pid;
 	char    buffer[BUFSIZ];
-	register struct pq *pq;
+	struct pq *pq;
 	struct pq *qp;
-	register struct pj *pj;
+	struct pj *pj;
 	FILE   *fp;
 
 	switch (cor) {
 	case int_SNMP_SOutPDU_commit:
 		for (pq = pq_head; pq -> pq_name; pq++) {
-			register int    i;
+			int    i;
 			int	status;
 			char   *cp;
 			struct dirent **queue;
@@ -1076,7 +1076,7 @@ integer	cor;
 						advise (LLOG_EXCEPTIONS, pq -> pq_LO,
 								"unable to create");
 					else {
-						(void) close (fd);
+						 close (fd);
 						upstat (pq, "printing disabled\n");
 					}
 
@@ -1105,7 +1105,7 @@ integer	cor;
 						if (kill (pid, 0) == NOTOK)
 							break;
 					if (i <= 0)
-						(void) kill (pid, SIGKILL);
+						 kill (pid, SIGKILL);
 				}
 				if (pq -> pq_touched == PQ_RESTART)
 					startdaemon (pq);
@@ -1170,7 +1170,7 @@ integer	cor;
 						advise (LLOG_EXCEPTIONS, pq -> pq_LO,
 								"unable to create");
 					else
-						(void) close (fd);
+						 close (fd);
 				} else
 					advise (LLOG_EXCEPTIONS, pq -> pq_LO,
 							"unable to stat");
@@ -1212,7 +1212,7 @@ integer	cor;
 				break;
 
 			case PJ_TOPQ: {
-				register struct pj *qj;
+				struct pj *qj;
 				struct timeval tv[2];
 
 				for (qj = pj_head; qj < pj; qj++)
@@ -1234,7 +1234,7 @@ integer	cor;
 				if (fp = fopen (pj -> pj_file, "r")) {
 					if ((pid = findaemon (pq, buffer)) > OK
 							&& strcmp (pj -> pj_file, buffer) == 0) {
-						register int	i;
+						int	i;
 
 						if (kill (pid, SIGINT) == NOTOK) {
 							advise (LLOG_EXCEPTIONS, "",
@@ -1245,7 +1245,7 @@ integer	cor;
 								if (kill (pid, 0) == NOTOK)
 									break;
 							if (i <= 0)
-								(void) kill (pid, SIGKILL);
+								 kill (pid, SIGKILL);
 						}
 					} else
 						pid = NOTOK;
@@ -1263,7 +1263,7 @@ integer	cor;
 							invalid = 1;
 						}
 					}
-					(void) fclose (fp);
+					 fclose (fp);
 
 					if (unlink (pj -> pj_file) == NOTOK) {
 						advise (LLOG_EXCEPTIONS, pj -> pj_file,
@@ -1309,7 +1309,7 @@ integer	cor;
 /*  */
 
 static	upstat (pq, msg)
-register struct pq *pq;
+struct pq *pq;
 char   *msg;
 {
 	int	    fd;
@@ -1321,14 +1321,14 @@ char   *msg;
 
 	if (flock (fd, LOCK_EX) < 0) {
 		advise (LLOG_EXCEPTIONS, pq -> pq_ST, "unable to flock");
-		(void) close (fd);
+		 close (fd);
 		return;
 	}
 
-	(void) ftruncate (fd, (off_t) 0);
-	(void) write (fd, msg, strlen (msg));
+	 ftruncate (fd, (off_t) 0);
+	 write (fd, msg, strlen (msg));
 
-	(void) close (fd);
+	 close (fd);
 }
 
 /*  */
@@ -1338,9 +1338,9 @@ char   *msg;
 
 
 static	startdaemon (pq)
-register struct pq *pq;
+struct pq *pq;
 {
-	register int    n,
+	int    n,
 			 sd;
 	char buffer[BUFSIZ];
 	struct sockaddr_un sunix;
@@ -1352,31 +1352,31 @@ register struct pq *pq;
 
 	bzero ((char *) &sunix, sizeof sunix);
 	sunix.sun_family = AF_UNIX;
-	(void) strcpy (sunix.sun_path, _PATH_SOCKETNAME);
+	 strcpy (sunix.sun_path, _PATH_SOCKETNAME);
 	if (connect(sd, (struct sockaddr *) &sunix, strlen (sunix.sun_path) + 2)
 			== NOTOK) {
 		advise (LLOG_EXCEPTIONS, "unix socket", "unable to connect");
-		(void) close (sd);
+		 close (sd);
 		return;
 	}
 
-	(void) sprintf (buffer, "\1%s\n", pq -> pq_name);
+	 sprintf (buffer, "\1%s\n", pq -> pq_name);
 	n = strlen (buffer);
 	if (write (sd, buffer, n) != n) {
 		advise (LLOG_EXCEPTIONS, "unix socket", "error writing to");
-		(void) close (sd);
+		 close (sd);
 		return;
 	}
 	if (read (sd, buffer, 1) == 1)
 		if (buffer[0] == NULL) {
-			(void) close (sd);
+			 close (sd);
 			return;
 		}
 	advise (LLOG_EXCEPTIONS, NULLCP, "lpd refuses to start print queue %s",
 			pq -> pq_name);
 	while ((n = read (sd, buffer, sizeof (buffer))) > 0)
 		continue;
-	(void) close (sd);
+	 close (sd);
 
 	return;
 }
@@ -1384,7 +1384,7 @@ register struct pq *pq;
 /*  */
 
 static int  findaemon (pq, current)
-register struct pq *pq;
+struct pq *pq;
 char   *current;
 {
 	int	    pid;
@@ -1408,13 +1408,13 @@ char   *current;
 					&& fgets (buffer, sizeof buffer - 1, fp)) {
 				if (cp = index (buffer, '\n'))
 					*cp = NULL;
-				(void) strcpy (current, buffer);
+				 strcpy (current, buffer);
 			} else
 				current[0] = NULL;
 		}
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 
 	return pid;
 }

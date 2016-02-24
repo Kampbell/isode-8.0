@@ -53,19 +53,16 @@ static int  doSSfinish ();
 
 /*    local stub routine for psap/qbuf2pe */
 
-static        PE      qbuf2pe_local (qb, len, result)
-register struct qbuf *qb;
-int     len;
-int    *result;
+static PE 
+qbuf2pe_local (struct qbuf *qb, int len, int *result)
 {
 	return(qbuf2pe(qb, len, result));
 }
 
 /*    bind underlying service */
 
-int	RoSService (acb, roi)
-register struct assocblk   *acb;
-struct RoSAPindication *roi;
+int 
+RoSService (struct assocblk *acb, struct RoSAPindication *roi)
 {
 	if (acb -> acb_flags & (ACB_ACS | ACB_RTS))
 		return rosaplose (roi, ROS_OPERATION, NULLCP,
@@ -89,13 +86,11 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2ssasync (acb, indication, roi)
-register struct assocblk   *acb;
-IFP	indication;
-struct RoSAPindication *roi;
+int 
+ro2ssasync (struct assocblk *acb, IFP indication, struct RoSAPindication *roi)
 {
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	if (acb -> acb_rosindication = indication)
 		acb -> acb_flags |= ACB_ASYN;
@@ -111,7 +106,7 @@ struct RoSAPindication *roi;
 			return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) ss2roslose (acb, roi, "SSetIndications", sa);
+			 ss2roslose (acb, roi, "SSetIndications", sa);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -127,14 +122,11 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2ssmask (acb, mask, nfds, roi)
-register struct assocblk   *acb;
-fd_set *mask;
-int    *nfds;
-struct RoSAPindication *roi;
+int 
+ro2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 {
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	if (SSelectMask (acb -> acb_fd, mask, nfds, &sis) == NOTOK)
 		switch (sa -> sa_reason) {
@@ -142,7 +134,7 @@ struct RoSAPindication *roi;
 			return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) ss2roslose (acb, roi, "SSelectMask", sa);
+			 ss2roslose (acb, roi, "SSelectMask", sa);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -152,9 +144,8 @@ struct RoSAPindication *roi;
 
 /*    protocol-level abort */
 
-int	ro2sslose (acb, result)
-register struct assocblk   *acb;
-int	result;
+int 
+ro2sslose (struct assocblk *acb, int result)
 {
 	int     len;
 	char   *base;
@@ -166,7 +157,7 @@ int	result;
 	if (pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET)) {
 		if (set_add (pe, num2prim ((integer) result, PE_CLASS_CONT, 0))
 				!= NOTOK)
-			(void) pe2ssdu (pe, &base, &len);
+			 pe2ssdu (pe, &base, &len);
 
 		PLOGP (rosap_log,OACS_AbortInformation, pe, "AbortInformation",
 			   0);
@@ -175,7 +166,7 @@ int	result;
 	}
 	/* end AbortInformation PSDU */
 
-	(void) SUAbortRequest (acb -> acb_fd, base, len, &sis);
+	 SUAbortRequest (acb -> acb_fd, base, len, &sis);
 	acb -> acb_fd = NOTOK;
 
 	if (base)
@@ -184,17 +175,14 @@ int	result;
 
 /*    SSAP interface */
 
-int	ro2sswait (acb, invokeID, secs, roi)
-register struct assocblk *acb;
-int    *invokeID,
-	   secs;
-register struct RoSAPindication *roi;
+int 
+ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi)
 {
 	int     result;
 	struct SSAPdata sxs;
-	register struct SSAPdata   *sx = &sxs;
+	struct SSAPdata   *sx = &sxs;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
+	struct SSAPindication *si = &sis;
 
 	if (acb -> acb_apdu) {
 		result = acb2osdu (acb, NULLIP, acb -> acb_apdu, roi);
@@ -241,7 +229,7 @@ register struct RoSAPindication *roi;
 				return DONE;
 
 			default:
-				(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+				 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 								  "unknown indication (0x%x) from session",
 								  si -> si_type);
 				break;
@@ -249,7 +237,7 @@ register struct RoSAPindication *roi;
 			break;
 
 		default:
-			(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+			 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 							  "unexpected return from SReadRequest=%d", result);
 			break;
 		}
@@ -265,15 +253,13 @@ register struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2ssready (acb, priority, roi)
-register struct assocblk *acb;
-int	priority;
-struct RoSAPindication *roi;
+int 
+ro2ssready (struct assocblk *acb, int priority, struct RoSAPindication *roi)
 {
 	int     result;
 	PE	    pe;
 	struct SSAPdata sxs;
-	register struct SSAPdata *sx = &sxs;
+	struct SSAPdata *sx = &sxs;
 	struct  SSAPindication sis;
 	struct  SSAPindication *si = &sis;
 	struct  SSAPabort *sa = &si -> si_abort;
@@ -288,7 +274,7 @@ struct RoSAPindication *roi;
 	if (!(acb -> acb_flags & ACB_PLEASE)) {
 		if (SPTokenRequest (acb -> acb_fd, ST_DAT_TOKEN, NULLCP, 0, si)
 				== NOTOK) {
-			(void) ss2roslose (acb, roi, "SPTokenRequest", sa);
+			 ss2roslose (acb, roi, "SPTokenRequest", sa);
 			goto out;
 		}
 
@@ -302,7 +288,7 @@ struct RoSAPindication *roi;
 
 		case OK:
 			if (sx -> sx_type != SX_NORMAL) {
-				(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+				 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 								  "unexpected data indication (0x%x)",
 								  sx -> sx_type);
 				goto bad_sx;
@@ -312,12 +298,12 @@ struct RoSAPindication *roi;
 				return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 			}
 			if (result != PS_ERR_NMEM) {
-				(void) rosapreject (acb, roi, ROS_GP_STRUCT, NULLCP, "%s",
+				 rosapreject (acb, roi, ROS_GP_STRUCT, NULLCP, "%s",
 									ps_error (result));
 				continue;
 			}
 
-			(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP, "%s",
+			 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP, "%s",
 							  ps_error (result));
 bad_sx:
 			;
@@ -352,7 +338,7 @@ bad_sx:
 				return DONE;
 
 			default:
-				(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+				 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 								  "unknown indication (0x%x) from session",
 								  si -> si_type);
 				break;
@@ -360,7 +346,7 @@ bad_sx:
 			break;
 
 		default:
-			(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+			 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 							  "unexpected return from SReadRequest=%d", result);
 			break;
 		}
@@ -378,32 +364,28 @@ out:
 
 /* ARGSUSED */
 
-int	ro2sswrite (acb, pe, fe, priority, roi)
-register struct assocblk *acb;
-register PE pe;
-PE	fe;
-int	priority;
-struct RoSAPindication *roi;
+int 
+ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi)
 {
 	int	    result;
-	register struct udvec *vv;
+	struct udvec *vv;
 	struct udvec *uv;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
 	PLOGP (rosap_log,ROS_OPDU, pe, "OPDU", 0);
 
 	uv = NULL;
 	if ((result = pe2uvec (pe, &uv)) == NOTOK)
-		(void) rosaplose (roi, ROS_CONGEST, NULLCP, "out of memory");
+		 rosaplose (roi, ROS_CONGEST, NULLCP, "out of memory");
 	else if ((result = SWriteRequest (acb -> acb_fd, 0, uv, si)) == NOTOK)
-		(void) ss2roslose (acb, roi, "SWriteRequest", sa);
+		 ss2roslose (acb, roi, "SWriteRequest", sa);
 	else
 		result = OK;
 
 	if (fe)
-		(void) pe_extract (pe, fe);
+		 pe_extract (pe, fe);
 	pe_free (pe);
 
 	if (uv) {
@@ -421,17 +403,14 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doSSdata (acb, invokeID, sx, roi)
-register struct assocblk   *acb;
-int    *invokeID;
-register struct SSAPdata *sx;
-struct RoSAPindication *roi;
+static int 
+doSSdata (struct assocblk *acb, int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi)
 {
 	int     result;
-	register PE	    pe;
+	PE	    pe;
 
 	if (sx -> sx_type != SX_NORMAL) {
-		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+		 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 						  "unexpected data indication (0x%x)", sx -> sx_type);
 		goto out;
 	}
@@ -443,7 +422,7 @@ struct RoSAPindication *roi;
 		return rosapreject (acb, roi, ROS_GP_STRUCT, NULLCP, "%s",
 							ps_error (result));
 
-	(void) ropktlose (acb, roi, ROS_CONGEST, NULLCP, "%s",
+	 ropktlose (acb, roi, ROS_CONGEST, NULLCP, "%s",
 					  ps_error (result));
 
 out:
@@ -456,10 +435,8 @@ out:
 
 /*  */
 
-static int  doSStokens (acb, st, roi)
-register struct assocblk   *acb;
-register struct SSAPtoken *st;
-struct RoSAPindication *roi;
+static int 
+doSStokens (struct assocblk *acb, struct SSAPtoken *st, struct RoSAPindication *roi)
 {
 	int     result = DONE;
 	struct SSAPindication   sis;
@@ -479,7 +456,7 @@ struct RoSAPindication *roi;
 		result = SGTokenRequest (acb -> acb_fd, ST_DAT_TOKEN, si);
 
 		if (result == NOTOK) {
-			(void) ss2roslose (acb, roi, "SGTokenRequest", sa);
+			 ss2roslose (acb, roi, "SGTokenRequest", sa);
 			goto out;
 		}
 		acb -> acb_flags &= ~ACB_TURN;
@@ -502,7 +479,7 @@ struct RoSAPindication *roi;
 		break;
 	}
 
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected token indication (0x%x)", st -> st_type);
 
 out:
@@ -515,12 +492,10 @@ out:
 
 /*  */
 
-static int  doSSsync (acb, sn, roi)
-register struct assocblk   *acb;
-register struct SSAPsync *sn;
-struct RoSAPindication *roi;
+static int 
+doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected sync indication (0x%x)", sn -> sn_type);
 
 	SNFREE (sn);
@@ -531,12 +506,10 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doSSactivity (acb, sv, roi)
-register struct assocblk   *acb;
-register struct SSAPactivity *sv;
-struct RoSAPindication *roi;
+static int 
+doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected activity indication (0x%x)", sv -> sv_type);
 
 	SVFREE (sv);
@@ -547,12 +520,10 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doSSreport (acb, sp, roi)
-register struct assocblk   *acb;
-register struct SSAPreport *sp;
-struct RoSAPindication *roi;
+static int 
+doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication *roi)
 {
-	(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+	 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 					  "unexpected exception report indication (0x%x)", sp -> sp_peer);
 
 	SPFREE (sp);
@@ -563,15 +534,13 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doSSfinish (acb, sf, roi)
-register struct assocblk   *acb;
-struct SSAPfinish *sf;
-struct RoSAPindication *roi;
+static int 
+doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication *roi)
 {
 	SFFREE (sf);
 
 	if (acb -> acb_flags & ACB_INIT) {
-		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+		 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 						  "association management botched");
 		freeacblk (acb);
 		return NOTOK;
@@ -580,7 +549,7 @@ struct RoSAPindication *roi;
 	acb -> acb_flags |= ACB_FINN;
 	roi -> roi_type = ROI_END;
 	{
-		register struct RoSAPend   *roe = &roi -> roi_end;
+		struct RoSAPend   *roe = &roi -> roi_end;
 
 		bzero ((char *) roe, sizeof *roe);
 	}
@@ -590,13 +559,11 @@ struct RoSAPindication *roi;
 
 /*  */
 
-int	ss2rosabort (acb, sa, roi)
-register struct assocblk   *acb;
-register struct SSAPabort *sa;
-struct RoSAPindication *roi;
+int 
+ss2rosabort (struct assocblk *acb, struct SSAPabort *sa, struct RoSAPindication *roi)
 {
 	int	    result;
-	register PE	pe;
+	PE	pe;
 	struct type_OACS_AbortInformation *pabort
 		= (struct type_OACS_AbortInformation *) 0;
 	int acsap_abort = -1;
@@ -605,18 +572,18 @@ struct RoSAPindication *roi;
 		if (sa -> sa_reason == SC_TIMER)
 			return rosaplose (roi, ROS_TIMER, NULLCP, NULLCP);
 
-		(void) ss2roslose (acb, roi, NULLCP, sa);
+		 ss2roslose (acb, roi, NULLCP, sa);
 		goto out;
 	}
 
 	if (sa -> sa_cc == 0) {
-		(void) rosaplose (roi, ROS_ABORTED, NULLCP, NULLCP);
+		 rosaplose (roi, ROS_ABORTED, NULLCP, NULLCP);
 		goto out;
 	}
 
 	if ((pe = ssdu2pe (sa -> sa_info, sa -> sa_cc, NULLCP, &result))
 			== NULLPE) {
-		(void) rosaplose (roi, ROS_PROTOCOL, NULLCP, NULLCP);
+		 rosaplose (roi, ROS_PROTOCOL, NULLCP, NULLCP);
 		goto out;
 	}
 	result = parse_OACS_AbortInformation (pe, 1, NULLIP, NULLVP, NULLCP);
@@ -629,7 +596,7 @@ struct RoSAPindication *roi;
 
 	pe_free (pe);
 	if (result == NOTOK) {
-		(void) rosaplose (roi, ROS_PROTOCOL, "%s", PY_pepy);
+		 rosaplose (roi, ROS_PROTOCOL, "%s", PY_pepy);
 		goto out;
 	}
 	acsap_abort = pabort->member_OACS_6->parm;
@@ -643,7 +610,7 @@ struct RoSAPindication *roi;
 		result = ROS_PROTOCOL;
 		break;
 	}
-	(void) rosaplose (roi, result, NULLCP, NULLCP);
+	 rosaplose (roi, result, NULLCP, NULLCP);
 
 out:
 	;
@@ -658,14 +625,13 @@ out:
 
 /*  */
 
-static int  ssDATAser (sd, sx)
-int	sd;
-register struct SSAPdata *sx;
+static int 
+ssDATAser (int sd, struct SSAPdata *sx)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -677,14 +643,13 @@ register struct SSAPdata *sx;
 
 /*  */
 
-static int  ssTOKENser (sd, st)
-int	sd;
-register struct SSAPtoken *st;
+static int 
+ssTOKENser (int sd, struct SSAPtoken *st)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -696,14 +661,13 @@ register struct SSAPtoken *st;
 
 /*  */
 
-static int  ssSYNCser (sd, sn)
-int	sd;
-register struct SSAPsync *sn;
+static int 
+ssSYNCser (int sd, struct SSAPsync *sn)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -715,14 +679,13 @@ register struct SSAPsync *sn;
 
 /*  */
 
-static int  ssACTIVITYser (sd, sv)
-int	sd;
-register struct SSAPactivity *sv;
+static int 
+ssACTIVITYser (int sd, struct SSAPactivity *sv)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -734,14 +697,13 @@ register struct SSAPactivity *sv;
 
 /*  */
 
-static int  ssREPORTser (sd, sp)
-int	sd;
-register struct SSAPreport *sp;
+static int 
+ssREPORTser (int sd, struct SSAPreport *sp)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -753,51 +715,46 @@ register struct SSAPreport *sp;
 
 /*  */
 
-static int  ssFINISHser (sd, sf)
-int	sd;
-struct SSAPfinish *sf;
+static int 
+ssFINISHser (int sd, struct SSAPfinish *sf)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
 
-	(void) doSSfinish (acb, sf, roi);
+	 doSSfinish (acb, sf, roi);
 
 	(*handler) (sd, roi);
 }
 
 /*  */
 
-static int  ssABORTser (sd, sa)
-int	sd;
-register struct SSAPabort *sa;
+static int 
+ssABORTser (int sd, struct SSAPabort *sa)
 {
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
 
-	(void) doSSabort (acb, sa, roi);
+	 doSSabort (acb, sa, roi);
 
 	(*handler) (sd, roi);
 }
 
 /*  */
 
-int	ss2roslose (acb, roi, event, sa)
-register struct assocblk *acb;
-register struct RoSAPindication *roi;
-char   *event;
-register struct SSAPabort *sa;
+int 
+ss2roslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct SSAPabort *sa)
 {
 	int     reason;
 	char   *cp,
@@ -826,7 +783,7 @@ register struct SSAPabort *sa;
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at session)",
+		 sprintf (cp = buffer, " (%s at session)",
 						SErrString (sa -> sa_reason));
 	case SC_TRANSPORT:
 	case SC_ABORT:

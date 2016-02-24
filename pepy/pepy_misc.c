@@ -81,8 +81,8 @@ defineoid (name, oid)
 char	*name;
 OID	oid;
 {
-	register char	*p;
-	register OP		op;
+	char	*p;
+	OP		op;
 
 	if (oid == NULLOID) {
 		myyerror ("Warning Null oid in defineoid");
@@ -151,9 +151,8 @@ int	n;
 
 /*  */
 
-addtable (name, lt)
-char	*name;
-int	lt;
+int 
+addtable (char *name, int lt)
 {
 	SYM		sp;
 
@@ -182,21 +181,22 @@ int	lt;
 		}
 }
 
-print_expimp () {
+int 
+print_expimp()  {
 	SYM		sp;
 	int		ind;
 	OID		oid;
 	char	*p;
 
 	if (sp = symtab[TBL_EXPORT])
-		(void) printf ("\nEXPORTS\n");
+		 printf ("\nEXPORTS\n");
 
 	for (ind = 0; sp; sp = sp->sym_next) {
 		if (ind == 0) {
 			putchar('\t');
 			ind = 8;
 		}
-		(void) printf("%s", sp -> sym_name);
+		 printf("%s", sp -> sym_name);
 		ind += strlen (sp -> sym_name);
 		if (sp -> sym_next) {
 			putchar (',');
@@ -214,7 +214,7 @@ print_expimp () {
 	putchar ('\n');
 
 	if (sp = symtab[TBL_IMPORT]) {
-		(void) printf ("\nIMPORTS\n");
+		 printf ("\nIMPORTS\n");
 		p = sp -> sym_module;
 		oid = sp -> sym_oid;
 	}
@@ -223,7 +223,7 @@ print_expimp () {
 			putchar ('\t');
 			ind = 8;
 		}
-		(void) printf ("%s", sp -> sym_name);
+		 printf ("%s", sp -> sym_name);
 		ind += strlen (sp -> sym_name);
 		if (sp -> sym_next) {
 			if (strcmp (p, sp -> sym_next -> sym_module) == 0) {
@@ -238,25 +238,25 @@ print_expimp () {
 				}
 			} else {
 				if (ind != 8)
-					(void) printf ("\n\t\t");
+					 printf ("\n\t\t");
 				else	putchar ('\t');
-				(void) printf ("FROM %s", p);
+				 printf ("FROM %s", p);
 				if (oid)
-					(void) printf (" %s", oidprint (oid));
-				(void) printf ("\n\t");
+					 printf (" %s", oidprint (oid));
+				 printf ("\n\t");
 				ind = 8;
 				p = sp -> sym_next -> sym_module;
 				oid = sp -> sym_next -> sym_oid;
 			}
 		} else {
 			if (ind != 8)
-				(void) printf ("\n\t\t");
+				 printf ("\n\t\t");
 			else
 				putchar ('\t');
-			(void) printf ("FROM %s", p);
+			 printf ("FROM %s", p);
 			if (oid)
-				(void) printf (" %s", oidprint (oid));
-			(void) printf (";\n");
+				 printf (" %s", oidprint (oid));
+			 printf (";\n");
 		}
 	}
 }
@@ -282,8 +282,8 @@ YP	yp;
 		}
 }
 
-importedP (name)
-char   *name;
+int 
+importedP (char *name)
 {
 	SYM		sp;
 
@@ -307,7 +307,8 @@ static struct oidtbl {
 	NULL,
 };
 
-initoidtbl () {
+int 
+initoidtbl()  {
 	struct oidtbl *op;
 	OID		oid;
 
@@ -330,7 +331,7 @@ OID	oid;
 	if (oid == NULLOID)
 		return "";
 
-	(void) strcpy (buf, "{ ");
+	 strcpy (buf, "{ ");
 	cp = buf + strlen(buf);
 
 	i = oid->oid_nelem;
@@ -341,16 +342,16 @@ OID	oid;
 	if (p) {
 		i --;
 		ip ++;
-		(void) sprintf (cp, "%s ", p);
+		 sprintf (cp, "%s ", p);
 		cp += strlen(cp);
 	}
 
 	for (; i > 0; i--) {
-		(void) sprintf (cp, "%d ", *ip++);
+		 sprintf (cp, "%d ", *ip++);
 		cp += strlen (cp);
 	}
 
-	(void) strcat (cp, " }");
+	 strcat (cp, " }");
 	return buf;
 }
 

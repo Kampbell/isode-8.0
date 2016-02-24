@@ -114,7 +114,7 @@ out:
 			if (arg->dba_dn == NULLDN)
 				LLOG(log_stat, LLOG_TRACE, ("Bind (%d) (rejected)", cn->cn_ad));
 			else {
-				(void) sprintf (buff,"Bind (%d) (rejected)",cn->cn_ad);
+				 sprintf (buff,"Bind (%d) (rejected)",cn->cn_ad);
 				pslog (log_stat,LLOG_TRACE,buff,(IFP)dn_print,
 					   (caddr_t)arg->dba_dn);
 			}
@@ -150,7 +150,7 @@ out:
 
 	if ( ! check_prefix_list (arg->dba_dn)) {
 #ifndef NO_STATS
-		(void) sprintf (buff,"Bind (%d) (reject - prefix)",cn->cn_ad);
+		 sprintf (buff,"Bind (%d) (reject - prefix)",cn->cn_ad);
 		pslog (log_stat,LLOG_TRACE,buff,(IFP)dn_print,
 			   (caddr_t)arg->dba_dn);
 #endif
@@ -162,7 +162,7 @@ out:
 
 	if ((cn->cn_ctx == DS_CTX_X500_DAP) && !(check_dn_length(arg->dba_dn))) {
 #ifndef NO_STATS
-		(void) sprintf (buff,"Bind (%d) (reject - DAP length)",cn->cn_ad);
+		 sprintf (buff,"Bind (%d) (reject - DAP length)",cn->cn_ad);
 		pslog (log_stat,LLOG_TRACE,buff,(IFP)dn_print,
 			   (caddr_t)arg->dba_dn);
 #endif
@@ -185,7 +185,7 @@ out:
 					(err.ERR_NAME.DSE_na_problem == DSE_NA_NOSUCHOBJECT)) {
 				ds_error_free(&(err));
 #ifndef NO_STATS
-				(void) sprintf (buff,"Bind (%d) (no auth - rejected)",cn->cn_ad);
+				 sprintf (buff,"Bind (%d) (no auth - rejected)",cn->cn_ad);
 				pslog (log_stat,LLOG_TRACE,buff,(IFP)dn_print,(caddr_t)arg->dba_dn);
 #endif
 				error->dbe_version = DBA_VERSION_V1988;
@@ -196,7 +196,7 @@ out:
 		/* fall */
 		default:
 #ifndef NO_STATS
-			(void) sprintf (buff,"Bind (%d) (no auth)",cn->cn_ad);
+			 sprintf (buff,"Bind (%d) (no auth)",cn->cn_ad);
 			pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)arg->dba_dn);
 #endif
 			if (dsas != NULL_DI_BLOCK)
@@ -208,7 +208,7 @@ out:
 
 	case DBA_AUTH_SIMPLE:
 #ifndef NO_STATS
-		(void) sprintf (buff,"Bind (%d) (simple)",cn->cn_ad);
+		 sprintf (buff,"Bind (%d) (simple)",cn->cn_ad);
 		pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)arg->dba_dn);
 #endif
 		/* Can't check simple credentials from DSP (livelock risk).
@@ -222,7 +222,7 @@ out:
 		break;
 	case DBA_AUTH_PROTECTED:
 #ifndef NO_STATS
-		(void) sprintf (buff,"Bind (%d) (protected)",cn->cn_ad);
+		 sprintf (buff,"Bind (%d) (protected)",cn->cn_ad);
 		pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)arg->dba_dn);
 #endif
 		if (cn->cn_ctx != DS_CTX_X500_DAP) {
@@ -233,7 +233,7 @@ out:
 			UTC ut;
 			long c_time, s_time, delta;
 
-			(void) time(&s_time);
+			 time(&s_time);
 			ut = str2utct(arg->dba_time1, strlen(arg->dba_time1));
 			if (ut == NULLUTC)
 				c_time = 0L; /* 1970 is a convenient out-of-date timestamp */
@@ -260,7 +260,7 @@ out:
 		break;
 	case DBA_AUTH_STRONG:
 #ifndef NO_STATS
-		(void) sprintf (buff,"Bind (%d) (strong)",cn->cn_ad);
+		 sprintf (buff,"Bind (%d) (strong)",cn->cn_ad);
 		pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)arg->dba_dn);
 #endif
 		/* Strong authentication is not yet supported.
@@ -301,7 +301,7 @@ out:
 					make_dsa_bind_arg(result);
 					return (DS_OK);
 				} else {
-					(void) sprintf (buff,"User != Authenticated User, ie %s != ", dn2str(arg->dba_dn));
+					 sprintf (buff,"User != Authenticated User, ie %s != ", dn2str(arg->dba_dn));
 					pslog (log_dsap,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)real_name);
 					error->dbe_version = DBA_VERSION_V1988;
 					error->dbe_type = DBE_TYPE_SECURITY;
@@ -576,16 +576,16 @@ struct oper_act	* on;
 }
 
 do_ds_unbind (conn)
-register        struct connection       * conn;
+       struct connection       * conn;
 {
 	struct stat st;
 #ifndef NO_STATS
 	char buff[LINESIZE];
 
 	if(conn->cn_initiator) {
-		(void) sprintf (buff,"Unbind (%d) (initiator)",conn->cn_ad);
+		 sprintf (buff,"Unbind (%d) (initiator)",conn->cn_ad);
 	} else {
-		(void) sprintf (buff,"Unbind (%d) (responder)",conn->cn_ad);
+		 sprintf (buff,"Unbind (%d) (responder)",conn->cn_ad);
 	}
 	pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)conn->cn_dn);
 #endif
@@ -676,8 +676,8 @@ DN dn;
 static check_dn_length (dn)
 DN dn;
 {
-	register int i = 0;
-	register DN tmp;
+	int i = 0;
+	DN tmp;
 
 	for (tmp = dn; tmp != NULLDN ; tmp=tmp->dn_parent)
 		i++;

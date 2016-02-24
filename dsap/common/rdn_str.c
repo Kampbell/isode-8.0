@@ -92,8 +92,8 @@ char * str;
 RDN str2rdn (str)
 char * str;
 {
-	register char *ptr;
-	register char *save,val;
+	char *ptr;
+	char *save,val;
 	RDN rdn = NULLRDN, newrdn;
 
 	/* look for "rdn % rdn % rdn" */

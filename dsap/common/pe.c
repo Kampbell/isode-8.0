@@ -38,14 +38,14 @@ PS     ps;
 PE     pe;
 int     format;
 {
-	register char * ptr, *s;
-	register int i, j;
+	char * ptr, *s;
+	int i, j;
 	PS sps;
 	static char hex[] = "0123456789abcdef";
 	char buffer [LINESIZE];
 
 	if ( format == FILEOUT) {
-		(void) pe2ps (ps,pe);
+		 pe2ps (ps,pe);
 		return;
 	}
 
@@ -60,9 +60,9 @@ int     format;
 		return;
 
 	if (format != READOUT)
-		(void) ps_write (ps, (PElementData)"{ASN}", 5);
+		 ps_write (ps, (PElementData)"{ASN}", 5);
 
-	(void) pe2ps (sps,pe);
+	 pe2ps (sps,pe);
 
 	s = buffer;
 
@@ -77,13 +77,13 @@ int     format;
 		if ( j >= EDB_LINEWRAP ) {
 			*s++ = '\\';
 			*s++ = '\n';
-			(void) ps_write (ps, (PElementData)buffer, j);
+			 ps_write (ps, (PElementData)buffer, j);
 			s = buffer;
 			j = 0;
 		}
 	}
-	(void) ps_write (ps, (PElementData)buffer, j);
-	(void) ps_write (ps, (PElementData)"00", 2);
+	 ps_write (ps, (PElementData)buffer, j);
+	 ps_write (ps, (PElementData)"00", 2);
 	ps_free (sps);
 
 }
@@ -93,7 +93,7 @@ char * str;
 {
 	char * ptr;
 	char * pe_ptr;
-	register int i,j;
+	int i,j;
 	PS sps;
 	void StripSpace ();
 	PE pe;
@@ -123,7 +123,7 @@ char * str;
 		*ptr++ &= 0xff;
 		i += 2;
 #ifdef oldcode
-		(void) sscanf (str,"%2x",&val);
+		 sscanf (str,"%2x",&val);
 
 		*ptr++ = val & 0xff;
 		str++;

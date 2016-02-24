@@ -31,7 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_free.c,v 
 #endif
 
 AttrT_free (x)
-register AttributeType x;
+AttributeType x;
 {
 	;
 }

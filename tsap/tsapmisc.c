@@ -41,12 +41,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapmisc.c,v 9.0 1992/
 int	TSelectOctets (sd, nbytes, td)
 int	sd;
 long   *nbytes;
-register struct TSAPdisconnect *td;
+struct TSAPdisconnect *td;
 {
 	int	    result;
 	long    value;
 	SBV	    smask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	missingP (nbytes);
 	missingP (td);
@@ -81,21 +81,18 @@ register struct TSAPdisconnect *td;
 		value += (long) tb -> tb_len;
 	*nbytes = value;
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*    get TSAPs */
 
-int	TGetAddresses (sd, initiating, responding, td)
-int	sd;
-struct TSAPaddr *initiating,
-		*responding;
-register struct TSAPdisconnect *td;
+int 
+TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td)
 {
 	SBV	    smask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	missingP (td);
 
@@ -108,7 +105,7 @@ register struct TSAPdisconnect *td;
 	if (responding)
 		copyTSAPaddrX (&tb -> tb_responding, responding);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }
@@ -116,13 +113,11 @@ register struct TSAPdisconnect *td;
 /*    define transport manager */
 
 #ifdef	MGMT
-int	TSetManager (sd, fnx, td)
-int	sd;
-IFP	fnx;
-register struct TSAPdisconnect *td;
+int 
+TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td)
 {
 	SBV	    smask;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 
 	missingP (td);
 
@@ -132,7 +127,7 @@ register struct TSAPdisconnect *td;
 
 	tb -> tb_manfnx = fnx;
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }

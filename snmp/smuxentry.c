@@ -62,7 +62,7 @@ int	f;
 
 int	endsmuxEntry () {
 	if (servf && !stayopen) {
-		(void) fclose (servf);
+		 fclose (servf);
 		servf = NULL;
 	}
 
@@ -73,9 +73,9 @@ int	endsmuxEntry () {
 
 struct smuxEntry  *getsmuxEntry () {
 	int	    vecp;
-	register int i;
-	register struct smuxEntry *se = &ses;
-	register char  *cp;
+	int i;
+	struct smuxEntry *se = &ses;
+	char  *cp;
 	static char buffer[BUFSIZ + 1];
 	static char *vec[NVEC + NSLACK + 1];
 	static unsigned int elements[NELEM + 1];
@@ -114,13 +114,13 @@ struct smuxEntry  *getsmuxEntry () {
 struct smuxEntry *getsmuxEntrybyname (name)
 char   *name;
 {
-	register struct smuxEntry *se;
+	struct smuxEntry *se;
 
-	(void) setsmuxEntry (0);
+	 setsmuxEntry (0);
 	while (se = getsmuxEntry ())
 		if (strcmp (name, se -> se_name) == 0)
 			break;
-	(void) endsmuxEntry ();
+	 endsmuxEntry ();
 
 	return se;
 }
@@ -130,9 +130,9 @@ char   *name;
 struct smuxEntry *getsmuxEntrybyidentity (identity)
 OID	identity;
 {
-	register struct smuxEntry *se;
+	struct smuxEntry *se;
 
-	(void) setsmuxEntry (0);
+	 setsmuxEntry (0);
 
 	/* Compare only the portion of the object identifier that is given in
 	   the entry read from the smux.peers file, allowing a SMUX sub-agent
@@ -146,7 +146,7 @@ OID	identity;
 							 se -> se_identity.oid_nelem) == 0)
 			break;
 
-	(void) endsmuxEntry ();
+	 endsmuxEntry ();
 
 	return se;
 }

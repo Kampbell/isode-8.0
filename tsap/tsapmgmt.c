@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapmgmt.c,v 9.0 1992/
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "tpkt.h"
 #include "mpkt.h"
 
@@ -55,7 +55,7 @@ va_dcl {
 	result;
 	struct TSAPaddr *b;
 	unsigned int type;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	va_list ap;
 
 	va_start (ap);
@@ -90,11 +90,8 @@ va_dcl {
 #define SendMReport()		write_udp_socket (ManSoc, &data)
 
 
-static int  TManGenAux (type, tb, a, b)
-unsigned int type;
-struct tsapblk * tb;
-int	a;
-struct TSAPaddr *b;
+static int 
+TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b)
 {
 	if (pid == NOTOK)
 		return NOTOK;
@@ -176,11 +173,12 @@ struct TSAPaddr *b;
 
 /*  */
 
-static int  ManInit () {
+static int 
+ManInit  {
 	struct sockaddr_in sin;
-	register struct sockaddr_in *sock = &sin;
-	register struct servent *sp;
-	register struct hostent *hp;
+	struct sockaddr_in *sock = &sin;
+	struct servent *sp;
+	struct hostent *hp;
 
 	if ((sp = getservbyname ("manager", "udp")) == NULL
 			|| (hp = gethostbyname ("localhost")) == NULL)
@@ -203,5 +201,6 @@ static int  ManInit () {
 	return OK;
 }
 #else
-int	_tsapmgmt_stub () {}
+int 
+_tsapmgmt_stub()  {}
 #endif

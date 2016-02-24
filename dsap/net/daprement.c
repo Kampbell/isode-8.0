@@ -42,7 +42,7 @@ struct DSError              *error;
 
 	++(*id);
 
-	(void) DapRemoveEntry (ad, (*id), arg, di, ROS_INTR);
+	 DapRemoveEntry (ad, (*id), arg, di, ROS_INTR);
 
 	error->dse_type = DSE_NOERROR;
 

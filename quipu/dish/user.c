@@ -206,7 +206,7 @@ struct DSError * error;
 			ufn_dn_print (ps,
 						  error->ERR_REFERRAL.DSE_ref_candidates->cr_name,0);
 			ps_print (ps,"'...\n");
-			(void) ps_flush (ps);
+			 ps_flush (ps);
 		}
 
 		if (referral_bind (ap->ap_address) != 0)

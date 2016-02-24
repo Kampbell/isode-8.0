@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sstr2arg.c,v 9.0 199
 #include "manifest.h"
 #include "general.h"
 #include <errno.h>
-extern int errno;
 
 /*  */
 
@@ -51,15 +50,17 @@ extern int errno;
 
 
 
-sstr2arg (srcptr, maxpf, argv, dlmstr)
-register char *srcptr;  /* source data */
-int maxpf;              /* maximum number of permitted fields */
-char *argv[];           /* where to put the pointers */
-char *dlmstr;           /* Delimiting character */
+int 
+sstr2arg (
+    char *srcptr,  /* source data */
+    int maxpf,              /* maximum number of permitted fields */
+    char *argv[],           /* where to put the pointers */
+    char *dlmstr           /* Delimiting character */
+)
 {
 	char gotquote;		/* currently parsing quoted string */
-	register int ind;
-	register char *destptr;
+	int ind;
+	char *destptr;
 	char idex[256];
 
 	if (srcptr == 0)

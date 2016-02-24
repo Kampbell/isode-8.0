@@ -38,14 +38,12 @@ static int  RoEndRequestAux ();
 
 /*    RO-END.REQUEST */
 
-int	RoEndRequest (sd, priority, roi)
-int	sd;
-int	priority;
-struct RoSAPindication *roi;
+int 
+RoEndRequest (int sd, int priority, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (roi);
 
@@ -55,7 +53,7 @@ struct RoSAPindication *roi;
 
 	result = RoEndRequestAux (acb, priority, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 
@@ -63,17 +61,15 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  RoEndRequestAux (acb, priority, roi)
-register struct assocblk   *acb;
-int	priority;
-struct RoSAPindication *roi;
+static int 
+RoEndRequestAux (struct assocblk *acb, int priority, struct RoSAPindication *roi)
 {
 	int     result;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	struct SSAPrelease  srs;
-	register struct SSAPrelease *sr = &srs;
+	struct SSAPrelease *sr = &srs;
 
 	if (acb -> acb_apdu)	/* ACB_CLOSING tested earlier in rosapPsig */
 		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);

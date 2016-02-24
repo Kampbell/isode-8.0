@@ -37,21 +37,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ssexec.c,v 9.0 199
 
 /*    SERVER only */
 
-int	RtExec (ss, rti, arg1, arg2, hook, setperms)
-struct SSAPstart *ss;
-struct RtSAPindication *rti;
-char   *arg1,
-	   *arg2;
-IFP	hook,
-	setperms;
+int 
+RtExec (struct SSAPstart *ss, struct RtSAPindication *rti, char *arg1, char *arg2, IFP hook, IFP setperms)
 {
 	int     result,
 			result2;
-	register struct isoservent *is;
-	register PE	    pe;
+	struct isoservent *is;
+	PE	    pe;
 	struct SSAPref ref;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
+	struct SSAPindication *si = &sis;
 	struct type_OACS_PConnect	*pcon = NULL;
 
 	missingP (ss);
@@ -105,8 +100,8 @@ congest:
 
 	case OK:
 		if (setperms)
-			(void) (*setperms) (is);
-		(void) execv (*is -> is_vec, is -> is_vec);/* fall */
+			 (*setperms) (is);
+		 execv (*is -> is_vec, is -> is_vec);/* fall */
 		SLOG (rtsap_log, LLOG_FATAL, *is -> is_vec, ("unable to exec"));
 	default:
 		goto congest;
@@ -119,7 +114,7 @@ out:
 	SSFREE (ss);
 
 	bzero ((char *) &ref, sizeof ref);
-	(void) SConnResponse (ss -> ss_sd, &ref, NULLSA, result, 0, 0,
+	 SConnResponse (ss -> ss_sd, &ref, NULLSA, result, 0, 0,
 						  SERIAL_NONE, NULLCP, 0, si);
 	return rtsaplose (rti, result2, NULLCP, NULLCP);
 }

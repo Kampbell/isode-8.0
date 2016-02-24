@@ -1,3 +1,4 @@
+#ifdef	FIXME
 /* used by permission */
 
 /*
@@ -50,8 +51,8 @@ char *dirname;
 struct dirent ***namelist;
 int (*select)(), (*dcomp)();
 {
-	register struct dirent *d, *p, **names;
-	register int nitems;
+	struct dirent *d, *p, **names;
+	int nitems;
 	struct stat stb;
 	long arraysz;
 	DIR *dirp;
@@ -105,7 +106,7 @@ int (*select)(), (*dcomp)();
 		}
 		names[nitems-1] = p;
 	}
-	(void) closedir(dirp);
+	 closedir(dirp);
 	if (nitems && dcomp != NULL)
 		qsort((char *) names, nitems, sizeof(struct dirent *), dcomp);
 	*namelist = names;
@@ -121,3 +122,4 @@ caddr_t d1, d2;
 	return(strcmp((*(struct dirent **)d1)->d_name,
 				  (*(struct dirent **)d2)->d_name));
 }
+#endif

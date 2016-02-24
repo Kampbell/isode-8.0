@@ -48,7 +48,7 @@ static struct dispatch dispatches[] = {
 };
 
 /* TYPES */
-extern int  errno;
+
 char	*getlocalhost();
 
 
@@ -56,10 +56,8 @@ char	*getlocalhost();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	ryresponder (argc, argv, getlocalhost(), myservice, mycontext, mypci,
 				 dispatches, table_ADD_Operations, NULLIFP, NULLIFP);
@@ -80,8 +78,8 @@ struct RoSAPinvoke *rox;
 caddr_t	in;
 struct RoSAPindication *roi;
 {
-	register struct type_ADD_Sum *psum;
-	register struct type_ADD_Addends *paddends;
+	struct type_ADD_Sum *psum;
+	struct type_ADD_Addends *paddends;
 
 	if (rox -> rox_nolinked == 0) {
 		advise (NULLCP, LOG_INFO,
@@ -127,11 +125,8 @@ struct RoSAPindication *roi;
 
 /*    U-REJECT */
 
-static int  ureject (sd, reason, rox, roi)
-int	sd,
-	reason;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+static int 
+ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");

@@ -43,7 +43,7 @@ struct DSError              *error;
 
 	++(*id);
 
-	(void) DapSearch (ad, (*id), arg, di, ROS_INTR);
+	 DapSearch (ad, (*id), arg, di, ROS_INTR);
 
 	error->dse_type = DSE_NOERROR;
 

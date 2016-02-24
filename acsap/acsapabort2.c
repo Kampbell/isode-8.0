@@ -38,14 +38,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapabort2.c,v 9.0 1
 
 /*    handle P-{U,P}-ABORT.INDICATION */
 
-int	AcABORTser (sd, pa, aci)
-int	sd;
-register struct PSAPabort *pa;
-register struct AcSAPindication *aci;
+int 
+AcABORTser (int sd, struct PSAPabort *pa, struct AcSAPindication *aci)
 {
 	SBV	    smask;
 	int	    result;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	missingP (pa);
 	missingP (aci);
@@ -53,30 +51,28 @@ register struct AcSAPindication *aci;
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
 
 	result = ps2acsabort (acb, pa, aci);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-int	ps2acsabort (acb, pa, aci)
-register struct assocblk *acb;
-register struct PSAPabort *pa;
-register struct AcSAPindication *aci;
+int 
+ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindication *aci)
 {
 	int	    result;
 	PE	    pe;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	struct type_ACS_ACSE__apdu *pdu;
-	register struct type_ACS_ABRT__apdu *abrt;
+	struct type_ACS_ABRT__apdu *abrt;
 
 	result = OK;
 	pdu = NULL;
@@ -85,12 +81,12 @@ register struct AcSAPindication *aci;
 		if (PC_FATAL (pa -> pa_reason))
 			acb -> acb_fd = NOTOK;
 
-		(void) ps2acslose (acb, aci, NULLCP, pa);
+		 ps2acslose (acb, aci, NULLCP, pa);
 		goto out;
 	}
 
 	if (pa -> pa_ninfo == 0) {
-		(void) acsaplose (aci, ACS_ABORTED, NULLCP, NULLCP);
+		 acsaplose (aci, ACS_ABORTED, NULLCP, NULLCP);
 		if (acb -> acb_sversion == 1)
 			aca -> aca_source = ACA_PROVIDER;
 		goto out;
@@ -100,7 +96,7 @@ register struct AcSAPindication *aci;
 	aci -> aci_type = ACI_ABORT;
 
 	if (acb -> acb_sversion == 1) {
-		register int	i;
+		int	i;
 
 		aca -> aca_reason = ACS_ABORTED;
 		aca -> aca_source = ACA_USER;
@@ -126,7 +122,7 @@ register struct AcSAPindication *aci;
 	pe = pa -> pa_info[0] = NULLPE;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
+		 acsaplose (aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto out;
 	}
 
@@ -139,7 +135,7 @@ register struct AcSAPindication *aci;
 	abrt = pdu -> un.abrt;
 	aca -> aca_reason = ACS_ABORTED;
 	aca -> aca_source = abrt -> abort__source;
-	(void) apdu2info (acb, aci, abrt -> user__information, aca -> aca_info,
+	 apdu2info (acb, aci, abrt -> user__information, aca -> aca_info,
 					  &aca -> aca_ninfo);
 
 out:

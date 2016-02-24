@@ -52,15 +52,15 @@ static int ps_maxerror = sizeof ps_errorlist / sizeof ps_errorlist[0];
 
 /*  */
 
-char   *ps_error (c)
-int	c;
+char *
+ps_error (int c)
 {
-	register char  *bp;
+	char  *bp;
 	static char buffer[30];
 
 	if (c < ps_maxerror && (bp = ps_errorlist[c]))
 		return bp;
 
-	(void) sprintf (buffer, "Error %d", c);
+	 sprintf (buffer, "Error %d", c);
 	return buffer;
 }

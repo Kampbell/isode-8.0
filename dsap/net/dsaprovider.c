@@ -51,7 +51,7 @@ struct RoNOTindication	* rni;
 			   rni->rni_cc, rni->rni_data));
 #endif
 
-	(void) sprintf (cp = buffer, " (Error in RO-BIND)");
+	 sprintf (cp = buffer, " (Error in RO-BIND)");
 
 	if (rni->rni_cc > 0)
 		return (dsaplose (di, DA_RO_BIND, NULLCP, "%*.*s%s",
@@ -77,7 +77,7 @@ struct RoSAPpreject	* rop;
 				event, AcErrString (rop->rop_reason), rop->rop_cc,
 				rop->rop_cc, rop->rop_data));
 	*/
-	(void) sprintf (cp = buffer, " (Error in ROS)");
+	 sprintf (cp = buffer, " (Error in ROS)");
 
 	if (rop->rop_cc > 0)
 		return (dsaplose (di, DA_ROS, NULLCP, "%*.*s%s",
@@ -94,7 +94,7 @@ struct RoSAPureject	* rou;
 	char	* cp;
 	char	  buffer[BUFSIZ];
 
-	(void) sprintf (cp = buffer, " (Reject at ROS)");
+	 sprintf (cp = buffer, " (Reject at ROS)");
 
 	if (rou->rou_noid)
 		return (dsapreject (di, DA_ROS, -1, NULLCP, " no op id, reason: %d%s", rou->rou_reason, cp));

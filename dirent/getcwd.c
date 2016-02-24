@@ -25,6 +25,7 @@
 #include	<errno.h>
 #include	"general.h"
 
+#ifndef		GETCWD
 extern int	fstat(), stat();
 
 extern int	errno;			/* normally done by <errno.h> */
@@ -50,10 +51,10 @@ int		size;		/* size of buf[] or malloc()ed memory */
 	struct stat	stat1, stat2;	/* info from stat() */
 	struct stat	*d = &stat1;	/* -> info about "." */
 	struct stat	*dd = &stat2;	/* -> info about ".." */
-	register char	*buffer;	/* local copy of buf, or malloc()ed */
+	char	*buffer;	/* local copy of buf, or malloc()ed */
 	char		*bufend;	/* -> buffer[size] */
-	register char	*endp;		/* -> end of reversed string */
-	register char	*dname;		/* entry name ("" for root) */
+	char	*endp;		/* -> end of reversed string */
+	char	*dname;		/* entry name ("" for root) */
 	int		serrno = errno;	/* save entry errno */
 
 	if ( size == 0 ) {
@@ -80,7 +81,7 @@ int		size;		/* size of buf[] or malloc()ed memory */
 
 		/* swap stat() info buffers */
 		{
-			register struct stat	*temp = d;
+			struct stat	*temp = d;
 
 			d = dd;			/* new current dir is old parent dir */
 			dd = temp;
@@ -91,7 +92,7 @@ int		size;		/* size of buf[] or malloc()ed memory */
 
 		if ( fstat( dirp->dd_fd, dd ) != 0 ) {
 			serrno = errno;	/* set by fstat() */
-			(void)closedir( dirp );
+			closedir( dirp );
 			errno = serrno;	/* in case closedir() clobbered it */
 			goto error;
 		}
@@ -106,7 +107,7 @@ int		size;		/* size of buf[] or malloc()ed memory */
 
 			do
 				if ( (dir = readdir( dirp )) == NULL ) {
-					(void)closedir( dirp );
+					closedir( dirp );
 					errno = ENOENT;	/* missing entry */
 					goto error;
 				}
@@ -115,18 +116,18 @@ int		size;		/* size of buf[] or malloc()ed memory */
 			struct stat	t;	/* info re. test entry */
 			char		name[sizeof(dotdots) + 1 + NAME_MAX];
 
-			(void)strcpy( name, dotdot );
+			strcpy( name, dotdot );
 			dname = &name[strlen( name )];
 			*dname++ = '/';
 
 			do	{
 				if ( (dir = readdir( dirp )) == NULL ) {
-					(void)closedir( dirp );
+					closedir( dirp );
 					errno = ENOENT;	/* missing entry */
 					goto error;
 				}
 
-				(void)strcpy( dname, dir->d_name );
+				strcpy( dname, dir->d_name );
 				/* must fit if NAME_MAX is not a lie */
 			} while ( stat( name, &t ) != 0
 					  || t.st_ino != d->st_ino
@@ -144,13 +145,13 @@ append:
 			*endp++ = '/';
 
 		{
-			register char	*app;	/* traverses dname string */
+			char	*app;	/* traverses dname string */
 
 			for ( app = dname; *app != '\0'; ++app )
 				;
 
 			if ( app - dname >= bufend - endp ) {
-				(void)closedir( dirp );
+				closedir( dirp );
 				errno = ERANGE;	/* won't fit allotted space */
 				goto error;
 			}
@@ -159,10 +160,10 @@ append:
 				*endp++ = *--app;
 		}
 
-		(void)closedir( dirp );
+		closedir( dirp );
 
 		if ( dname[0] == '\0' ) {	/* reached root; wrap it up */
-			register char	*startp;	/* -> buffer[.] */
+			char	*startp;	/* -> buffer[.] */
 
 			*endp = '\0';	/* plant null terminator */
 
@@ -187,3 +188,4 @@ error:
 
 	return NULL;
 }
+#endif

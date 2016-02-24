@@ -86,13 +86,13 @@ static int tcpConnections;
 
 static int  o_tcp (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register struct tcpstat *tcps = &tcpstat;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct tcpstat *tcps = &tcpstat;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
 	ifvar = (int) ot -> ot_info;
@@ -241,18 +241,18 @@ struct tcptab *get_tcpent ();
 
 static int  o_tcp_conn (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct tcptab *tt;
+	struct tcptab *tt;
 	struct sockaddr_in netaddr;
-	register OID    oid = oi -> oi_name;
+	OID    oid = oi -> oi_name;
 	OID	    new;
-	register OT	    ot = oi -> oi_type;
+	OT	    ot = oi -> oi_type;
 
 	if (get_connections (offset) == NOTOK)
 		return generr (offset);
@@ -371,16 +371,16 @@ struct tcptab **a,
 static int  get_connections (offset)
 int	offset;
 {
-	register int    i;
-	register unsigned int  *cp;
-	register struct tcptab *ts,
+	int    i;
+	unsigned int  *cp;
+	struct tcptab *ts,
 			*tp,
 			**tsp;
-	register struct inpcb  *ip;
+	struct inpcb  *ip;
 	struct inpcb *head,
 			tcb;
 	struct nlist nzs;
-	register struct nlist *nz = &nzs;
+	struct nlist *nz = &nzs;
 	static   int first_time = 1;
 	static   int lastq = -1;
 
@@ -450,7 +450,7 @@ int	offset;
 	first_time = 0;
 
 	if ((tcpConnections = i) > 1) {
-		register struct tcptab **base,
+		struct tcptab **base,
 				**tse;
 
 		if ((base = (struct tcptab **) malloc ((unsigned) (i * sizeof *base)))
@@ -481,10 +481,10 @@ int	offset;
 /*  */
 
 static struct tcptab *get_tcpent (ip, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	isnext;
 {
-	register struct tcptab *tt;
+	struct tcptab *tt;
 
 	for (tt = tts; tt; tt = tt -> tt_next)
 		switch (elem_cmp (tt -> tt_instance, TT_SIZE, ip, TT_SIZE)) {
@@ -535,13 +535,13 @@ static	struct mbstat mbstat;
 
 static int  o_mbuf (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register struct mbstat *m = &mbstat;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct mbstat *m = &mbstat;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
 	ifvar = (int) ot -> ot_info;
@@ -624,14 +624,14 @@ int	offset;
 
 static int  o_mbufType (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifnum,
 			ifvar;
-	register struct mbstat *m = &mbstat;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct mbstat *m = &mbstat;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
 	ifvar = (int) ot -> ot_info;
@@ -704,7 +704,7 @@ again:
 /*  */
 
 init_tcp () {
-	register OT	    ot;
+	OT	    ot;
 
 	if (ot = text2obj ("tcpRtoAlgorithm"))
 		ot -> ot_getfnx = o_tcp,

@@ -111,8 +111,8 @@ int serverpid = -1;
 int clientpid = -1;
 extern int	errno;
 
-sigCatch(sig)
-int	sig;
+int 
+sigCatch (int sig)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
@@ -122,15 +122,17 @@ int	sig;
 }
 
 #ifdef SYSV
-sigAlarm(sig)
-int sig;
+int 
+sigAlarm (int sig)
 {
 	signal (sig, sigAlarm);
 }
 #endif /* SYSV */
 
-static Execute (vec)
-char **vec;				/* has room from up above */
+static 
+Execute (
+    char **vec				/* has room from up above */
+)
 {
 	execvp (vec[0], vec);
 	if (access (vec[0], R_OK) == 0) {
@@ -141,13 +143,12 @@ char **vec;				/* has room from up above */
 	return;
 }
 
-main(argc, argv)
-int argc;
-register char **argv;
+int 
+main (int argc, char **argv)
 {
-	register char **sptr = server;
-	register char **cptr = client;
-	register char **ptr;
+	char **sptr = server;
+	char **cptr = client;
+	char **ptr;
 	int pid, i;
 	int client_given = 0, server_given = 0;
 	int client_args_given = 0, server_args_given = 0;
@@ -254,7 +255,7 @@ register char **argv;
 			strcpy (xinitrcbuf, cp);
 			required = True;
 		} else if ((cp = getenv ("HOME")) != NULL) {
-			(void) sprintf (xinitrcbuf, "%s/%s", cp, XINITRC);
+			 sprintf (xinitrcbuf, "%s/%s", cp, XINITRC);
 		}
 		if (xinitrcbuf[0]) {
 			if (access (xinitrcbuf, F_OK) == 0) {
@@ -281,7 +282,7 @@ register char **argv;
 			strcpy (xserverrcbuf, cp);
 			required = True;
 		} else if ((cp = getenv ("HOME")) != NULL) {
-			(void) sprintf (xserverrcbuf, "%s/%s", cp, XSERVERRC);
+			 sprintf (xserverrcbuf, "%s/%s", cp, XSERVERRC);
 		}
 		if (xserverrcbuf[0]) {
 			if (access (xserverrcbuf, F_OK) == 0) {
@@ -330,8 +331,8 @@ register char **argv;
  *	waitforserver - wait for X server to start up
  */
 
-waitforserver(serverpid)
-int	serverpid;
+int 
+waitforserver (int serverpid)
 {
 	int	ncycles	 = 120;		/* # of cycles to wait */
 	int	cycles;			/* Wait cycle count */
@@ -357,9 +358,8 @@ int	serverpid;
 /*
  * return TRUE if we timeout waiting for pid to exit, FALSE otherwise.
  */
-processTimeout(pid, timeout, string)
-int	pid, timeout;
-char	*string;
+int 
+processTimeout (int pid, int timeout, char *string)
 {
 	int	i = 0, pidfound = -1;
 	static char	*laststring;
@@ -390,8 +390,8 @@ char	*string;
 	return( pid != pidfound );
 }
 
-Error(fmt, x0,x1,x2,x3,x4,x5,x6,x7,x8,x9)
-char	*fmt;
+int 
+Error (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9)
 {
 	extern char	*sys_errlist[];
 
@@ -401,15 +401,15 @@ char	*fmt;
 	fprintf(stderr, fmt, x0,x1,x2,x3,x4,x5,x6,x7,x8,x9);
 }
 
-Fatal(fmt, x0,x1,x2,x3,x4,x5,x6,x7,x8,x9)
-char	*fmt;
+int 
+Fatal (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9)
 {
 	Error(fmt, x0,x1,x2,x3,x4,x5,x6,x7,x8,x9);
 	exit(ERR_EXIT);
 }
 
-startServer(server)
-char *server[];
+int 
+startServer (char *server[])
 {
 	int	serverpid;
 
@@ -423,10 +423,10 @@ char *server[];
 		 * don't hang on read/write to control tty
 		 */
 #ifdef SIGTTIN
-		(void) signal(SIGTTIN, SIG_IGN);
+		 signal(SIGTTIN, SIG_IGN);
 #endif
 #ifdef SIGTTOU
-		(void) signal(SIGTTOU, SIG_IGN);
+		 signal(SIGTTOU, SIG_IGN);
 #endif
 
 		/*
@@ -488,8 +488,8 @@ char *server[];
 	return(serverpid);
 }
 
-startClient(client)
-char *client[];
+int 
+startClient (char *client[])
 {
 	int	clientpid;
 
@@ -523,9 +523,8 @@ Display *dpy;
 	return;
 }
 
-static
-shutdown(serverpid, clientpid)
-int	serverpid, clientpid;
+static 
+shutdown (int serverpid, int clientpid)
 {
 	/* have kept display opened, so close it now */
 	if (clientpid > 0) {
@@ -578,7 +577,8 @@ int	serverpid, clientpid;
  * make a new copy of environment that has room for DISPLAY
  */
 
-set_environment () {
+int 
+set_environment  {
 	int nenvvars;
 	char **newPtr, **oldPtr;
 	static char displaybuf[256];

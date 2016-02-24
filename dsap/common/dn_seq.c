@@ -47,7 +47,7 @@ struct dn_seq * dnseq;
 struct dn_seq * dn_seq_cpy (dnseq)
 struct dn_seq * dnseq;
 {
-	register struct dn_seq * ptr;
+	struct dn_seq * ptr;
 	struct dn_seq * ptr2;
 	struct dn_seq * result = NULLDNSEQ;
 
@@ -66,7 +66,7 @@ check_dnseq (dnseq,who)
 struct dn_seq * dnseq;
 DN who;
 {
-	register struct dn_seq * ptr;
+	struct dn_seq * ptr;
 
 	for (ptr=dnseq; ptr!=NULLDNSEQ; ptr=ptr->dns_next) {
 		if (dn_cmp (who,ptr->dns_dn) == OK)
@@ -145,10 +145,10 @@ int format;
 }
 
 struct dn_seq * str2dnseq (str)
-register char * str;
+char * str;
 {
-	register char *ptr;
-	register char *save,val;
+	char *ptr;
+	char *save,val;
 	struct dn_seq * dns = NULLDNSEQ;
 	struct dn_seq * newdns;
 
@@ -198,7 +198,7 @@ DN		  dn;
 struct dn_seq	* dnseq;
 {
 	struct dn_seq	* ptr;
-	register int 	i = 1;
+	int 	i = 1;
 
 	for(ptr=dnseq; ptr!=NULLDNSEQ; ptr=ptr->dns_next, i++) {
 		if(dn_cmp(dn, ptr->dns_dn) == 0)

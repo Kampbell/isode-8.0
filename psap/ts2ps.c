@@ -35,15 +35,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ts2ps.c,v 9.0 1992/06/
 
 /*  */
 
-int	ts_read (fd, q)
-int	fd;
-struct qbuf **q;
+int 
+ts_read (int fd, struct qbuf **q)
 {
-	register struct qbuf *qb;
+	struct qbuf *qb;
 	struct TSAPdata  txs;
-	register struct TSAPdata *tx = &txs;
+	struct TSAPdata *tx = &txs;
 	struct TSAPdisconnect  tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if (TReadRequest (fd, tx, NOTOK, td) == NOTOK) {
 		if (td -> td_reason == DR_NORMAL) {
@@ -79,12 +78,11 @@ struct qbuf **q;
 }
 
 
-int	ts_write (fd, qb)
-int	fd;
-register struct qbuf *qb;
+int 
+ts_write (int fd, struct qbuf *qb)
 {
 	struct TSAPdisconnect  tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if (TDataRequest (fd, qb -> qb_data, qb -> qb_len, td) == NOTOK) {
 		SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP,

@@ -40,27 +40,8 @@ static int  AcAsynRetryAux ();
 
 /*    A-(ASYN-)ASSOCIATE.REQUEST */
 
-int	AcAsynAssocRequest (context, callingtitle, calledtitle, callingaddr,
-						calledaddr, ctxlist, defctxname, prequirements, srequirements, isn,
-						settings, ref, data, ndata, qos, acc, aci, async)
-OID	context;
-AEI	callingtitle,
-	calledtitle;
-struct PSAPaddr *callingaddr,
-		*calledaddr;
-int	prequirements,
-	srequirements,
-	settings,
-	ndata,
-	async;
-long	isn;
-struct PSAPctxlist *ctxlist;
-OID	defctxname;
-struct SSAPref *ref;
-PE    *data;
-struct QOStype *qos;
-struct AcSAPconnect *acc;
-struct AcSAPindication *aci;
+int 
+AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async)
 {
 	SBV     smask;
 	int     result;
@@ -79,8 +60,8 @@ struct AcSAPindication *aci;
 
 	toomuchP (data, ndata, NACDATA, "initial");
 	if (data) {	    /* XXX: probably should have a more intensive check... */
-		register int    i;
-		register PE    *pep;
+		int    i;
+		PE    *pep;
 
 		for (pep = data, i = ndata; i > 0; pep++, i--)
 			if ((*pep) -> pe_context == PE_DFLT_CTX)
@@ -98,45 +79,26 @@ struct AcSAPindication *aci;
 								srequirements, isn, settings, ref, data, ndata, qos, acc, aci,
 								async);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int AcAssocRequestAux (context, callingtitle, calledtitle, callingaddr,
-							  calledaddr, ctxlist, defctxname, prequirements, srequirements, isn,
-							  settings, ref, data, ndata, qos, acc, aci, async)
-OID	context;
-AEI	callingtitle,
-	calledtitle;
-struct PSAPaddr *callingaddr,
-		*calledaddr;
-int	prequirements,
-	srequirements,
-	settings,
-	ndata,
-	async;
-long	isn;
-struct PSAPctxlist *ctxlist;
-OID	defctxname;
-struct SSAPref *ref;
-PE    *data;
-struct QOStype *qos;
-struct AcSAPconnect *acc;
-struct AcSAPindication *aci;
+static int 
+AcAssocRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async)
 {
-	register int    i;
+	int    i;
 	int	    result;
 	PE	    pe;
-	register struct assocblk *acb;
-	register struct PSAPcontext *pp;
-	register struct PSAPconnect *pc = &acc -> acc_connect;
+	struct assocblk *acb;
+	struct PSAPcontext *pp;
+	struct PSAPconnect *pc = &acc -> acc_connect;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
-	register struct type_ACS_AARQ__apdu *pdu;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
+	struct type_ACS_AARQ__apdu *pdu;
 
 	if ((acb = newacblk ()) == NULL)
 		return acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
@@ -188,7 +150,7 @@ no_mem:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 						  PY_pepy);
 		goto out;
 	}
@@ -200,8 +162,8 @@ no_mem:
 	}
 
 	{
-		register int ctx;
-		register OID oid;
+		int ctx;
+		OID oid;
 
 		if ((oid = AC_ASN_OID) == NULLOID) {
 			result = acsaplose (aci, ACS_PARAMETER, NULLCP,
@@ -269,7 +231,7 @@ ready:
 	pe = NULLPE;
 
 	if (result == NOTOK) {
-		(void) ps2acslose (NULLACB, aci, "PAsynConnRequest", pa);
+		 ps2acslose (NULLACB, aci, "PAsynConnRequest", pa);
 		goto out;
 	}
 
@@ -306,18 +268,16 @@ out:
 
 /*    A-ASYN-RETRY.REQUEST (pseudo) */
 
-int	AcAsynRetryRequest (sd, acc, aci)
-int	sd;
-struct AcSAPconnect *acc;
-struct AcSAPindication *aci;
+int 
+AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci)
 {
 	SBV     smask;
 	int     result;
-	register struct assocblk *acb;
-	register struct PSAPconnect *pc;
+	struct assocblk *acb;
+	struct PSAPconnect *pc;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
 
 	missingP (acc);
 	missingP (aci);
@@ -325,12 +285,12 @@ struct AcSAPindication *aci;
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
 	if (acb -> acb_flags & ACB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_OPERATION, NULLCP,
 						  "association descriptor connected");
 	}
@@ -342,7 +302,7 @@ struct AcSAPindication *aci;
 	switch (result = PAsynRetryRequest (acb -> acb_fd, pc, pi)) {
 	case NOTOK:
 		acb -> acb_fd = NOTOK;
-		(void) ps2acslose (acb, aci, "PAsynRetryRequest", pa);
+		 ps2acslose (acb, aci, "PAsynRetryRequest", pa);
 		freeacblk (acb);
 		break;
 
@@ -355,30 +315,26 @@ struct AcSAPindication *aci;
 		break;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  AcAsynRetryAux (acb, pc, pi, acc, aci)
-register struct assocblk *acb;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
-struct AcSAPconnect *acc;
-struct AcSAPindication *aci;
+static int 
+AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindication *pi, struct AcSAPconnect *acc, struct AcSAPindication *aci)
 {
-	register int    i;
+	int    i;
 	int	    result;
 	PE	    pe;
-	register struct PSAPcontext *pp;
-	register struct PSAPabort *pa = &pi -> pi_abort;
+	struct PSAPcontext *pp;
+	struct PSAPabort *pa = &pi -> pi_abort;
 	struct type_ACS_ACSE__apdu *pdu;
-	register struct type_ACS_AARE__apdu *aare;
+	struct type_ACS_AARE__apdu *aare;
 
 	if (pc -> pc_result == PC_ABORTED) {
-		(void) ps2acsabort (acb, pa, aci);
+		 ps2acsabort (acb, pa, aci);
 
 		acc -> acc_sd = NOTOK;
 		acc -> acc_result = ACS_ABORTED;
@@ -393,7 +349,7 @@ struct AcSAPindication *aci;
 		if (pc -> pc_result != PC_ACCEPT) {
 			pa -> pa_reason = pc -> pc_result;
 			acb -> acb_fd = NOTOK;
-			(void) ps2acslose (acb, aci, "PAsynConnRequest(pseudo)", pa);
+			 ps2acslose (acb, aci, "PAsynConnRequest(pseudo)", pa);
 
 			acc -> acc_sd = NOTOK;
 			acc -> acc_result = aci -> aci_abort.aca_reason;
@@ -419,7 +375,7 @@ struct AcSAPindication *aci;
 	pe = pc -> pc_info[0] = NULLPE;
 
 	if (result == NOTOK) {
-		(void) acpktlose (acb, aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
+		 acpktlose (acb, aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto out;
 	}
 
@@ -554,18 +510,16 @@ out:
 
 /*    A-ASYN-NEXT.REQUEST (pseudo) */
 
-int	AcAsynNextRequest (sd, acc, aci)
-int	sd;
-struct AcSAPconnect *acc;
-struct AcSAPindication *aci;
+int 
+AcAsynNextRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci)
 {
 	SBV     smask;
 	int     result;
-	register struct assocblk *acb;
-	register struct PSAPconnect *pc;
+	struct assocblk *acb;
+	struct PSAPconnect *pc;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
 
 	missingP (acc);
 	missingP (aci);
@@ -573,12 +527,12 @@ struct AcSAPindication *aci;
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
 	if (acb -> acb_flags & ACB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_OPERATION, NULLCP,
 						  "association descriptor connected");
 	}
@@ -590,7 +544,7 @@ struct AcSAPindication *aci;
 	switch (result = PAsynNextRequest (acb -> acb_fd, pc, pi)) {
 	case NOTOK:
 		acb -> acb_fd = NOTOK;
-		(void) ps2acslose (acb, aci, "PAsynRetryRequest", pa);
+		 ps2acslose (acb, aci, "PAsynRetryRequest", pa);
 		freeacblk (acb);
 		break;
 
@@ -603,7 +557,7 @@ struct AcSAPindication *aci;
 		break;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

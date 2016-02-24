@@ -156,13 +156,13 @@ char          **argv;
 
 	dish_cmd_init ();
 
-	(void) signal (SIGHUP,	dish_quit);
-	(void) signal (SIGQUIT,	dish_quit);
-	(void) signal (SIGILL, 	dish_quit);
-	(void) signal (SIGBUS,	dish_quit);
-	(void) signal (SIGSEGV,	dish_quit);
-	(void) signal (SIGSYS,	dish_quit);
-	(void) signal (SIGTERM,	dish_quit);
+	 signal (SIGHUP,	dish_quit);
+	 signal (SIGQUIT,	dish_quit);
+	 signal (SIGILL, 	dish_quit);
+	 signal (SIGBUS,	dish_quit);
+	 signal (SIGSEGV,	dish_quit);
+	 signal (SIGSYS,	dish_quit);
+	 signal (SIGTERM,	dish_quit);
 
 #ifdef TURBO_DISK
 	fromfile = 1;
@@ -225,8 +225,8 @@ char          **argv;
 		if (std_setup (rps, stdout) == NOTOK)
 			fatal (-65, "std_setup 2 failed");
 
-		(void) printf ("Welcome to Dish (DIrectory SHell)\n");
-		(void) fflush (stdout);
+		 printf ("Welcome to Dish (DIrectory SHell)\n");
+		 fflush (stdout);
 	}
 
 	i = 1;
@@ -254,7 +254,7 @@ char          **argv;
 
 	if (user_tailor () != OK) {
 
-		(void) fprintf (stderr, "Tailoring failed\n");
+		 fprintf (stderr, "Tailoring failed\n");
 
 		if (frompipe)
 			exit_pipe ();
@@ -273,10 +273,10 @@ char          **argv;
 		*buf = 0;
 
 		for (i=0; i<argc; i++) {
-			(void) strcat (buf,argv[i]);
-			(void) strcat (buf," ");
+			 strcat (buf,argv[i]);
+			 strcat (buf," ");
 			if (test_arg (argv[i], "-password",2) && ++i < argc)
-				(void) strcat (buf, "????");
+				 strcat (buf, "????");
 		}
 		LLOG (log_stat,LLOG_NOTICE,("%s",buf));
 #endif
@@ -349,14 +349,14 @@ do_dish () {
 	gnu_gets_setup ();
 #endif
 
-	(void) signal (SIGINT, dish_intr);
+	 signal (SIGINT, dish_intr);
 	if (setjmp (dish_env) == 1)
 		goto tidy_up;
 
 	while (1) {
 		dish_state = IDLE;
 		if (dsa_dead) {
-			(void) ds_unbind ();
+			 ds_unbind ();
 			bound = FALSE;
 			dsa_dead = FALSE;
 		}
@@ -374,7 +374,7 @@ do_dish () {
 				continue;
 
 
-			(void) signal (SIGALRM, SIG_IGN);
+			 signal (SIGALRM, SIG_IGN);
 			/* unset alarm */
 			if (dad_flag)
 				cache_time = 15 * 60;
@@ -394,7 +394,7 @@ do_dish () {
 				exit_pipe ();
 				fatal (-69, "fdx_setup failed");
 			}
-			(void) (*opt -> ps_writeP) (opt, "2", 1, 0);
+			 (*opt -> ps_writeP) (opt, "2", 1, 0);
 
 			if ((rps = ps_alloc (fdx_open)) == NULLPS) {
 				exit_pipe ();
@@ -404,7 +404,7 @@ do_dish () {
 				exit_pipe ();
 				fatal (-71, "fdx_setup 2 failed");
 			}
-			(void) (*rps -> ps_writeP) (rps, "1", 1, 0);
+			 (*rps -> ps_writeP) (rps, "1", 1, 0);
 #else
 			if ((opt = ps_alloc (str_open)) == NULLPS) {
 				exit_pipe ();
@@ -435,8 +435,8 @@ do_dish () {
 				if (gnu_gets ( inbuf, sizeof inbuf ) == 0)
 					call_quit(0, NULLVP);
 #else
-				(void) printf ("Dish -> ");
-				(void) fflush (stdout);
+				 printf ("Dish -> ");
+				 fflush (stdout);
 				while (fgets (inbuf, sizeof inbuf, stdin) == 0)
 					if (errno != EINTR)
 						call_quit(0, NULLVP);
@@ -444,7 +444,7 @@ do_dish () {
 				for (ptr = inbuf; isspace (*ptr); ptr++)
 					continue;
 			} while (*ptr == 0);
-			(void) signal (SIGALRM, SIG_IGN); /* unset alarm */
+			 signal (SIGALRM, SIG_IGN); /* unset alarm */
 			command = TidyString(inbuf);
 		}
 		if (savename)
@@ -475,9 +475,9 @@ do_dish () {
 
 		if (* Commands[x].defaults != 0) {
 			if (noarg) {
-				(void) sprintf (cmd_buf,"%s %s",Commands[x].command,Commands[x].defaults);
+				 sprintf (cmd_buf,"%s %s",Commands[x].command,Commands[x].defaults);
 			} else {
-				(void) sprintf (cmd_buf,"%s %s %s",Commands[x].command,Commands[x].defaults,ptr);
+				 sprintf (cmd_buf,"%s %s %s",Commands[x].command,Commands[x].defaults,ptr);
 			}
 			command = cmd_buf;
 		}
@@ -503,18 +503,18 @@ do_dish () {
 
 #ifndef NO_STATS
 			if (vector[0] != NULLCP) {
-				(void) strcpy (buf,vector[0]);
-				(void) strcat (buf," ");
+				 strcpy (buf,vector[0]);
+				 strcat (buf," ");
 			}
 #endif
 			for (y=1; y<no_of_args; y++) {
 
 #ifndef NO_STATS
-				(void) strcat (buf,vector[y]);
-				(void) strcat (buf," ");
+				 strcat (buf,vector[y]);
+				 strcat (buf," ");
 
 				if (test_arg (vector[y], "-password",2) && y+1 < no_of_args) {
-					(void) strcat (buf, "????");
+					 strcat (buf, "????");
 					y++;
 					continue;
 				}
@@ -533,7 +533,7 @@ do_dish () {
 					&& buf[0]
 					&& strncmp (buf, "moveto ",
 								sizeof "moveto " -1))
-				(void) ll_log (dad_log, LLOG_NOTICE, NULLCP,
+				 ll_log (dad_log, LLOG_NOTICE, NULLCP,
 							   "%s", buf);
 #endif
 			if ( ! help_flag)
@@ -547,9 +547,9 @@ tidy_up:
 		if (frompipe && !remote_prob) {
 #ifdef	SOCKETS
 			if (rps -> ps_byteno > 0) {
-				(void) ps_flush (rps);
+				 ps_flush (rps);
 			} else if (opt -> ps_byteno > 0)
-				(void) ps_flush (opt);
+				 ps_flush (opt);
 #else
 			if (opt->ps_byteno == 0) {
 				*rps->ps_ptr = 0;
@@ -566,13 +566,13 @@ tidy_up:
 			ps_free (opt);
 			ps_free (rps);
 #ifdef	SOCKETS
-			(void) close_tcp_socket (sd_current);
+			 close_tcp_socket (sd_current);
 			sd_current = NOTOK;
 #endif
 		} else {
-			(void) fflush (stdout);
-			(void) ps_flush (opt);
-			(void) ps_flush (rps);
+			 fflush (stdout);
+			 ps_flush (opt);
+			 ps_flush (rps);
 		}
 	}
 }
@@ -583,11 +583,11 @@ int argc;
 char **argv;
 {
 	/* can only get called if run interactively - dont worry about pipe */
-	(void) signal (SIGINT, SIG_DFL);
+	 signal (SIGINT, SIG_DFL);
 
 	DLOG (log_dsap, LLOG_DEBUG, ("Dish:- Exiting Dish successfully..."));
 	if (bound)
-		(void) ds_unbind ();
+		 ds_unbind ();
 	bound = FALSE;
 	ps_free (opt);
 	ps_free (rps);
@@ -606,8 +606,8 @@ char * dflt;
 	for (x = 0; Commands[x].command != 0; x++)
 		if (strcmp (cmd, Commands[x].command) == 0) {
 			if (* Commands[x].defaults != 0)
-				(void) strcat (Commands[x].defaults, " ");
-			(void) strcat (Commands[x].defaults, dflt);
+				 strcat (Commands[x].defaults, " ");
+			 strcat (Commands[x].defaults, dflt);
 			return (OK);
 		}
 
@@ -620,7 +620,7 @@ SFD dish_intr (sd)
 int sd;
 {
 #ifndef BSDSIGS
-	(void) signal (SIGINT, dish_intr);
+	 signal (SIGINT, dish_intr);
 #endif
 
 	if (dish_state == IDLE)
@@ -643,7 +643,7 @@ va_dcl {
 
 	code = va_arg (ap, int);
 
-	(void) _ll_log (log_dsap, code, ap);
+	 _ll_log (log_dsap, code, ap);
 
 	va_end (ap);
 }

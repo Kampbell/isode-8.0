@@ -32,11 +32,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2set.c,v 9.0 1992/
 
 /*  */
 
-PE	prim2set (pe)
-register PE	pe;
+PE 
+prim2set (PE pe)
 {
-	register int    i;
-	register PE	    p;
+	int    i;
+	PE	    p;
 
 	if (pe -> pe_form != PE_FORM_CONS)
 		return pe_seterr (pe, PE_ERR_CONS, NULLPE);

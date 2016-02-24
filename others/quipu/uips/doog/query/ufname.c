@@ -52,7 +52,7 @@ searchPath ufnpaths = NULLSearchPath;
 ufnStatus get_ufn_status(request_id)
 QCardinal request_id;
 {
-	(void) _get_request_of_id(request_id);
+	 _get_request_of_id(request_id);
 
 	return NULLUfnStatus;
 
@@ -101,7 +101,7 @@ QCardinal *id_ptr;
 	int name_part_count;
 
 	/* Record request invocation */
-	(void) _request_invoked(UFNAME, id_ptr);
+	 _request_invoked(UFNAME, id_ptr);
 
 	request = _get_request_of_id(*id_ptr);
 	new_request = request->UFNAME_REC;
@@ -154,7 +154,7 @@ QCardinal *id_ptr;
 		root_part->is_resolved = TRUE;
 		root_part->is_bottom_level = no;
 
-		(void) dn_list_add(path == NULLEntryList? "" : path->string_dn,
+		 dn_list_add(path == NULLEntryList? "" : path->string_dn,
 						   &root_part->exact_matches,
 						   NULLAttrT);
 		new_request->path = new_request->path->next;
@@ -380,7 +380,7 @@ ufnameRec ufnrec;
 		}
 
 	/* Implace search parameters. */
-	(void) get_default_service(&search_arg.sra_common);
+	 get_default_service(&search_arg.sra_common);
 
 	search_arg.sra_common.ca_servicecontrol.svc_options =
 		search_arg.sra_common.ca_servicecontrol.svc_options | SVC_OPT_PREFERCHAIN;
@@ -857,7 +857,7 @@ ufnResults *ufn_result;
 void name_part_free(name)
 namePart *name;
 {
-	register namePart part = *name;
+	namePart part = *name;
 	namePart next_part;
 
 	while (part) {
@@ -890,7 +890,7 @@ namePart str2ufname(str_ufn)
 char *str_ufn;
 {
 	namePart name_comp = NULLNamePart, new_comp;
-	register char *start, *end;
+	char *start, *end;
 	char save;
 
 	start = str_ufn;
@@ -1019,7 +1019,7 @@ struct DSResult *ds_result;
 	hit_count = 0;
 	if (search_result->CSR_entries != NULLENTRYINFO) {
 		EntryInfo *entry_ptr;
-		register stringCell curr_attr;
+		stringCell curr_attr;
 		attrValList got_attrs, curr_av;
 		char *curr_name, *match_str;
 		QBool good_match;
@@ -1163,7 +1163,7 @@ struct DSResult *ds_result;
 
 				if (ufnrec->path != NULLEntryList && part->is_resolved != TRUE)
 					if (follow_path(ufnrec) == TRUE) {
-						(void) free((char *) results);
+						 free((char *) results);
 						return RQ_processing;
 					}
 
@@ -1177,7 +1177,7 @@ struct DSResult *ds_result;
 
 				return RQ_results_returned;
 			} else {
-				(void) free((char *) results);
+				 free((char *) results);
 				return RQ_processing;
 			}
 		}
@@ -1228,12 +1228,12 @@ struct DSResult *ds_result;
 						curr_part = curr_part->next) {
 					if (curr_part->part_name != NULLCP) {
 						if (resolved_part[0] != '\0') {
-							(void) strcpy(buf, resolved_part);
-							(void) strcpy(resolved_part, curr_part->part_name);
-							(void) strcat(resolved_part, ", ");
-							(void) strcat(resolved_part, buf);
+							 strcpy(buf, resolved_part);
+							 strcpy(resolved_part, curr_part->part_name);
+							 strcat(resolved_part, ", ");
+							 strcat(resolved_part, buf);
 						} else
-							(void) strcpy(resolved_part, curr_part->part_name);
+							 strcpy(resolved_part, curr_part->part_name);
 					}
 				}
 
@@ -1290,12 +1290,12 @@ struct DSResult *ds_result;
 							curr_part = curr_part->next)
 						if (curr_part->part_name != NULLCP) {
 							if (resolved_part[0] != '\0') {
-								(void) strcpy(buf, resolved_part);
-								(void) strcpy(resolved_part, curr_part->part_name);
-								(void) strcat(resolved_part, ", ");
-								(void) strcat(resolved_part, buf);
+								 strcpy(buf, resolved_part);
+								 strcpy(resolved_part, curr_part->part_name);
+								 strcat(resolved_part, ", ");
+								 strcat(resolved_part, buf);
 							} else
-								(void) strcpy(resolved_part, curr_part->part_name);
+								 strcpy(resolved_part, curr_part->part_name);
 						}
 
 					unresolved_part[0] = '\0';
@@ -1305,13 +1305,13 @@ struct DSResult *ds_result;
 							curr_part = curr_part->next)
 						if (curr_part->part_name != NULLCP) {
 							if (unresolved_part[0] != '\0') {
-								(void) strcpy(buf, unresolved_part);
-								(void) strcpy(unresolved_part,
+								 strcpy(buf, unresolved_part);
+								 strcpy(unresolved_part,
 											  curr_part->part_name);
-								(void) strcat(unresolved_part, ", ");
-								(void) strcat(unresolved_part, buf);
+								 strcat(unresolved_part, ", ");
+								 strcat(unresolved_part, buf);
 							} else
-								(void) strcpy(unresolved_part, curr_part->part_name);
+								 strcpy(unresolved_part, curr_part->part_name);
 						}
 
 					ufnrec->results = results;
@@ -1375,7 +1375,7 @@ struct DSResult *ds_result;
 
 				return RQ_results_returned;
 			} else {
-				(void) free((char *) results);
+				 free((char *) results);
 				return RQ_processing;
 			}
 		}
@@ -1596,7 +1596,7 @@ struct DSError *error;
 
 				return RQ_results_returned;
 			} else {
-				(void) free((char *) results);
+				 free((char *) results);
 				return RQ_processing;
 			}
 		}
@@ -1643,7 +1643,7 @@ ufnameRec ufnrec;
 	ufnrec->name_parts->exact_match_num = 1;
 	ufnrec->name_parts->is_resolved = TRUE;
 
-	(void) dn_list_add(ufnrec->path->string_dn,
+	 dn_list_add(ufnrec->path->string_dn,
 					   &(ufnrec->name_parts->exact_matches),
 					   NULLAttrT);
 

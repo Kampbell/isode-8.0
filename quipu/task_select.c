@@ -64,7 +64,7 @@ int		* secs_p;
 	extern char	  startup_update;
 	struct oper_act	* newop = NULLOPER;
 
-	(void) time (&timenow);
+	 time (&timenow);
 	(*secs_p) = NOTOK;
 	conns_used = 0;
 
@@ -400,7 +400,7 @@ int		* secs_p;
 
 #ifndef NO_STATS
 	if ( (timenow - last_log_close) >= LOGOPENTIME ) {
-		(void) ll_close (log_stat);
+		 ll_close (log_stat);
 		last_log_close = timenow;
 	} else {
 		if ( (ret_tk == NULLTASK) && (*secs_p >= LOGOPENTIME))
@@ -479,10 +479,10 @@ struct task_act	* tk;
 
 
 schedule_operation (x)
-register struct oper_act *x;
+struct oper_act *x;
 {
 	struct oper_act *y;
-	register struct oper_act * on;
+	struct oper_act * on;
 	DN xdn;
 
 	if (x->on_dsas)

@@ -33,12 +33,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2ssdu.c,v 9.0 1992/0
 
 /*  */
 
-int	pe2ssdu (pe, base, len)
-register PE pe;
-char  **base;
-int    *len;
+int 
+pe2ssdu (PE pe, char **base, int *len)
 {
-	register int plen, ret;
+	int plen, ret;
 
 	*len = 0;
 	plen  = ps_get_abs (pe);
@@ -51,7 +49,7 @@ int    *len;
 	Len = 0;
 	Ecp = Qcp + plen;
 	if ((ret = pe2qb_f(pe)) != plen) {
-		(void) printf("pe2ssdu: bad length returned %d should be %d\n",
+		 printf("pe2ssdu: bad length returned %d should be %d\n",
 					  ret, plen);
 		return NOTOK;
 	}

@@ -33,7 +33,7 @@ AttributeType parent_type, child_type;
 QBool need_subtree;
 {
 	ditRelation new_node, curr_node;
-	register objectType curr_child;
+	objectType curr_child;
 
 	for (curr_node = ditmodel;
 			curr_node != NULLDitRelation;
@@ -153,7 +153,8 @@ AttributeType search_type;
 	curr_type->object_type = search_type;
 } /* set_search_attr */
 
-test_init_ditmodel() {
+int 
+test_init_ditmodel  {
 	entryList search_path;
 	AttributeType country, org, ou, loc, person;
 
@@ -190,8 +191,8 @@ test_init_ditmodel() {
 	/* Search attrs */
 	search_path = NULLEntryList;
 
-	(void) dn_list_insert("c=us", &search_path, country);
-	(void) dn_list_insert("c=gb", &search_path, country);
+	 dn_list_insert("c=us", &search_path, country);
+	 dn_list_insert("c=gb", &search_path, country);
 
 	set_default_path(country, search_path);
 
@@ -201,11 +202,11 @@ test_init_ditmodel() {
 
 	search_path = NULLEntryList;
 
-	(void) dn_list_insert("c=gb@o=nottingham university", &search_path, org);
-	(void) dn_list_insert("c=gb@o=university college london", &search_path, org);
-	(void) dn_list_insert("c=gb@o=edinburgh university", &search_path, org);
-	(void) dn_list_insert("c=gb@o=joint network team", &search_path, org);
-	(void) dn_list_insert("c=gb@o=brunel university", &search_path, org);
+	 dn_list_insert("c=gb@o=nottingham university", &search_path, org);
+	 dn_list_insert("c=gb@o=university college london", &search_path, org);
+	 dn_list_insert("c=gb@o=edinburgh university", &search_path, org);
+	 dn_list_insert("c=gb@o=joint network team", &search_path, org);
+	 dn_list_insert("c=gb@o=brunel university", &search_path, org);
 
 	set_default_path(loc, search_path);
 
@@ -237,11 +238,11 @@ test_init_ditmodel() {
 
 	search_path = NULLEntryList;
 
-	(void) dn_list_insert("c=gb@o=nottingham university", &search_path, org);
-	(void) dn_list_insert("c=gb@o=university college london", &search_path, org);
-	(void) dn_list_insert("c=gb@o=edinburgh university", &search_path, org);
-	(void) dn_list_insert("c=gb@o=brunel university", &search_path, org);
-	(void) dn_list_insert("c=gb@o=joint network team", &search_path, org);
+	 dn_list_insert("c=gb@o=nottingham university", &search_path, org);
+	 dn_list_insert("c=gb@o=university college london", &search_path, org);
+	 dn_list_insert("c=gb@o=edinburgh university", &search_path, org);
+	 dn_list_insert("c=gb@o=brunel university", &search_path, org);
+	 dn_list_insert("c=gb@o=joint network team", &search_path, org);
 
 	set_default_path(person, search_path);
 
@@ -270,7 +271,7 @@ QBool is_oc_must(ocp, at)
 objectclass *ocp;
 AttributeType at;
 {
-	register table_seq optr;
+	table_seq optr;
 
 	for (optr = ocp->oc_must; optr != NULLTABLE_SEQ; optr = optr->ts_next)
 		if (optr->ts_oa == at)
@@ -288,7 +289,7 @@ QBool is_oc_may(ocp, at)
 objectclass *ocp;
 AttributeType at;
 {
-	register table_seq optr;
+	table_seq optr;
 
 	for (optr = ocp->oc_may; optr != NULLTABLE_SEQ; optr = optr->ts_next)
 		if (optr->ts_oa == at)

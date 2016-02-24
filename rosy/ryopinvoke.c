@@ -51,7 +51,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryopinvoke.c,v 9.0 199
 int	RyOpInvoke (sd, ryo, op, in, out, rfx, efx, class, invokeID, linkedID,
 				priority, roi)
 int	sd;
-register struct RyOperation *ryo;
+struct RyOperation *ryo;
 int	op,
 	class,
 	invokeID,
@@ -65,7 +65,7 @@ struct RoSAPindication *roi;
 {
 	int	    result;
 	PE	    pe;
-	register struct opsblk *opb;
+	struct opsblk *opb;
 
 	missingP (ryo);
 	missingP (roi);

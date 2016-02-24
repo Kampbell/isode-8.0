@@ -34,7 +34,7 @@ char *str;
 	}
 
 	curr->dname = (char *) malloc ((unsigned int) (strlen(str) + 1));
-	(void) strcpy(curr->dname, str);
+	 strcpy(curr->dname, str);
 
 	curr->next = 0;
 }

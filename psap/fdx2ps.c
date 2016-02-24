@@ -53,12 +53,11 @@ extern	IFP	set_check_fd ();
 
 /* */
 
-static int  fdx_prime (ps, waiting)
-register PS	ps;
-int	waiting;
+static int 
+fdx_prime (PS ps, int waiting)
 {
-	register struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
-	register struct ps_inout *pi = &pt -> ps_input;
+	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
+	struct ps_inout *pi = &pt -> ps_input;
 
 	return (waiting > 0 && pi -> pio_cnt > 0 ? DONE : OK);
 }
@@ -67,15 +66,12 @@ int	waiting;
 
 /* ARGSUSED */
 
-static int  fdx_read (ps, data, n, in_line)
-register PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+fdx_read (PS ps, PElementData data, PElementLen n, int in_line)
 {
 	int	    cc;
-	register struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
-	register struct ps_inout *pi = &pt -> ps_input;
+	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
+	struct ps_inout *pi = &pt -> ps_input;
 
 	if ((cc = pi -> pio_cnt) <= 0) {
 		if (n > pi -> pio_bufsiz) {
@@ -103,15 +99,12 @@ int	in_line;
 
 /* ARGSUSED */
 
-static int  fdx_write (ps, data, n, in_line)
-register PS	ps;
-PElementData data;
-PElementLen n;
-int	in_line;
+static int 
+fdx_write (PS ps, PElementData data, PElementLen n, int in_line)
 {
 	int	    cc;
-	register struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
-	register struct ps_inout *po = &pt -> ps_output;
+	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
+	struct ps_inout *po = &pt -> ps_output;
 
 #ifdef	oldef
 	if (n > po -> pio_bufsiz) {
@@ -140,11 +133,11 @@ int	in_line;
 
 
 static int  fdx_flush (ps)
-register PS	ps;
+PS	ps;
 {
 	int	    cc;
-	register struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
-	register struct ps_inout *po = &pt -> ps_output;
+	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
+	struct ps_inout *po = &pt -> ps_output;
 
 	if ((cc = po -> pio_ptr - po -> pio_base) <= 0)
 		return OK;
@@ -159,9 +152,9 @@ register PS	ps;
 
 
 static int  fdx_close (ps)
-register PS	ps;
+PS	ps;
 {
-	register struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
+	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
 
 	if (pt == NULL)
 		return OK;
@@ -171,7 +164,7 @@ register PS	ps;
 	if (pt -> ps_output.pio_base)
 		free (pt -> ps_output.pio_base);
 
-	(void) set_check_fd (pt -> ps_fd, NULLIFP, NULLCP);
+	 set_check_fd (pt -> ps_fd, NULLIFP, NULLCP);
 
 	free ((char *) pt);
 
@@ -190,7 +183,7 @@ caddr_t	data;
 /*  */
 
 int	fdx_open (ps)
-register PS	ps;
+PS	ps;
 {
 	ps -> ps_primeP = fdx_prime;
 	ps -> ps_readP = fdx_read;
@@ -203,11 +196,11 @@ register PS	ps;
 
 
 int	fdx_setup (ps, fd)
-register PS	ps;
+PS	ps;
 int	fd;
 {
 	int	    pz;
-	register struct ps_fdx *pt;
+	struct ps_fdx *pt;
 
 	if ((pt = (struct ps_fdx *) calloc (1, sizeof *pt)) == NULL)
 		return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
@@ -229,17 +222,17 @@ int	fd;
 	pt -> ps_output.pio_bufsiz = pt -> ps_output.pio_cnt = pz;
 	pt -> ps_output.pio_ptr = pt -> ps_output.pio_base;
 
-	(void) set_check_fd (fd, fdx_check, (caddr_t) ps);
+	 set_check_fd (fd, fdx_check, (caddr_t) ps);
 
 	return OK;
 }
 
 
 int	fdx_reset (ps)
-register PS	ps;
+PS	ps;
 {
-	register struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
-	register struct ps_inout *po = &pt -> ps_output;
+	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
+	struct ps_inout *po = &pt -> ps_output;
 
 	if (pt -> ps_nflush == 0)
 		po -> pio_ptr = po -> pio_base, po -> pio_cnt = po -> pio_bufsiz;

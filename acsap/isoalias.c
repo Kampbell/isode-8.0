@@ -58,10 +58,10 @@ static int  read_file ();
 
 /*  */
 
-char   *alias2name (name)
-char   *name;
+char *
+alias2name (char *name)
 {
-	register struct pair *p;
+	struct pair *p;
 
 	if (!inited)
 		read_aliases ();
@@ -76,8 +76,9 @@ char   *name;
 
 /*  */
 
-static int  read_aliases () {
-	register char   *hp;
+static int 
+read_aliases()  {
+	char   *hp;
 	char   buffer[BUFSIZ];
 
 	if (inited)
@@ -90,19 +91,19 @@ static int  read_aliases () {
 
 	if ((hp = getenv ("HOME")) == NULL)
 		hp = ".";
-	(void) sprintf (buffer, "%s/.isode_aliases", hp);
+	 sprintf (buffer, "%s/.isode_aliases", hp);
 	read_file (buffer);
 }
 
 /*  */
 
-static int  read_file (file)
-char   *file;
+static int 
+read_file (char *file)
 {
-	register char *cp;
+	char *cp;
 	char   buffer[BUFSIZ + 1],
 		   *vec[NVEC + NSLACK + 1];
-	register FILE *fp;
+	FILE *fp;
 
 	if ((fp = fopen (file, "r")) == NULL)
 		return;
@@ -119,17 +120,16 @@ char   *file;
 			break;
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 }
 
 /*  */
 
-int	add_alias (name, value)
-char   *name,
-	   *value;
+int 
+add_alias (char *name, char *value)
 {
 	int	    i;
-	register struct pair *p;
+	struct pair *p;
 
 	if (!inited)
 		read_aliases ();
@@ -150,8 +150,8 @@ char   *name,
 		free ((char *) p);
 		return NOTOK;
 	}
-	(void) strcpy (p -> p_name, name);
-	(void) strcpy (p -> p_value, value);
+	 strcpy (p -> p_name, name);
+	 strcpy (p -> p_value, value);
 
 	p -> p_chain = Pbuckets[i = PHASH (p -> p_name)];
 	Pbuckets[i] = p;
@@ -160,7 +160,8 @@ char   *name,
 }
 
 #ifdef DEBUG
-free_isode_alias() {
+int 
+free_isode_alias()  {
 	int i;
 	struct pair *p, *np;
 

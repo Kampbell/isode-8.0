@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ACS-types.h"
 #define	ACSE
 #include "acpkt.h"
@@ -37,25 +37,25 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 199
 /*  */
 
 #ifndef	lint
-static int  _acsaplose ();
+static int _acsaplose (struct AcSAPindication *aci, int reason, va_list ap); /* what, fmt, args ... */
 #endif
 
+int	acsaplose (struct AcSAPindication*aci, ...);
+
 #ifndef	lint
-int	acpktlose (va_alist)
-va_dcl {
+int	acpktlose (struct assocblk*acb, ...)
+{
 	int	    reason,
 	result;
 	PE	    pe;
-	register struct assocblk *acb;
-	register struct AcSAPindication *aci;
+	struct AcSAPindication *aci;
 	struct PSAPindication   pis;
 	struct type_ACS_ABRT__apdu pdus;
-	register struct type_ACS_ABRT__apdu *pdu = &pdus;
+	struct type_ACS_ABRT__apdu *pdu = &pdus;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, acb);
 
-	acb = va_arg (ap, struct assocblk *);
 	aci = va_arg (ap, struct AcSAPindication *);
 	reason = va_arg (ap, int);
 
@@ -93,12 +93,8 @@ va_dcl {
 #else
 /* VARARGS5 */
 
-int	acpktlose (acb, aci, reason, what, fmt)
-struct assocblk *acb;
-struct AcSAPindication *aci;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+acpktlose (struct assocblk *acb, struct AcSAPindication *aci, int reason, char *what, char *fmt)
 {
 	return acpktlose (acb, aci, reason, what, fmt);
 }
@@ -107,16 +103,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	acsaplose (va_alist)
-va_dcl {
+int	acsaplose (struct AcSAPindication*aci, ...)
+{
 	int	    reason,
 	result;
-	struct AcSAPindication *aci;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, aci);
 
-	aci = va_arg (ap, struct AcSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _acsaplose (aci, reason, ap);
@@ -128,11 +122,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	acsaplose (aci, reason, what, fmt)
-struct AcSAPindication *aci;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+acsaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
 {
 	return acsaplose (aci, reason, what, fmt);
 }
@@ -141,21 +132,22 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _acsaplose (aci, reason, ap)  /* what, fmt, args ... */
-register struct AcSAPindication *aci;
-int     reason;
-va_list	ap;
+static int _acsaplose (  struct AcSAPindication *aci, int reason, va_list ap) /* what, fmt, args ... */
 {
-	register char  *bp;
+	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
-	register struct AcSAPabort *aca;
+	struct AcSAPabort *aca;
 
 	if (aci) {
 		bzero ((char *) aci, sizeof *aci);
 		aci -> aci_type = ACI_ABORT;
 		aca = &aci -> aci_abort;
 
-		asprintf (bp = buffer, ap);
+		what = va_arg(ap, char*);
+		fmt = va_arg(ap, char*);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		aca -> aca_source = ACA_LOCAL;

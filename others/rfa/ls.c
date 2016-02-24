@@ -54,9 +54,8 @@ static struct pair facc[] = { { 01, "--x" }, { 02, "-w-" }, { 03, "-wx" },
 	{ 07, "rwx" }, { 00, "---" }
 };
 
-static void mode2str(m, mstr)
-u_short m;
-char *mstr;
+static void 
+mode2str (int m, char *mstr)
 {
 	u_short v;
 	struct pair *pp;
@@ -91,8 +90,8 @@ char *mstr;
 		}
 }
 
-char *shortTime(t)
-long *t;
+char *
+shortTime (long *t)
 {
 	char *s;
 
@@ -105,8 +104,8 @@ long *t;
 }
 
 
-char *rfa2ls(rfa)
-struct RfaInfo *rfa;
+char *
+rfa2ls (struct RfaInfo *rfa)
 {
 	static char buf[512], *bp;
 

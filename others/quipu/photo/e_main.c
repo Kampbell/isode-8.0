@@ -49,9 +49,8 @@ extern int optlen;
 */
 char * encode_t4 ();
 
-main (argc,argv)
-int     argc;
-char ** argv;
+int 
+main (int argc, char **argv)
 
 {
 	int     k_param = 1;
@@ -89,7 +88,7 @@ char ** argv;
 			k_param = 32767;
 			break;
 		default :
-			(void) fprintf (stderr,"Usage: %s -[124nlhv] \n",argv[0]);
+			 fprintf (stderr,"Usage: %s -[124nlhv] \n",argv[0]);
 			exit (-1);
 		}
 		argv++;
@@ -98,7 +97,7 @@ char ** argv;
 
 
 	if ((pix = pr_load (stdin, NULL)) == (struct pixrect *)NULL)
-		(void) fprintf (stderr,"Not a pixrect.\n");
+		 fprintf (stderr,"Not a pixrect.\n");
 
 
 	PIC_LINESIZE = pix->pr_size.x;

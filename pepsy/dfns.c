@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/dfns.c,v 9.0 1992/06/
 
 id_entry *id_table[TABLESIZE];
 
-#define my_error(mesg)	((void)fprintf(stderr, "%s\n",mesg),exit(1))
+#define my_error(mesg)	(fprintf(stderr, "%s\n",mesg),exit(1))
 
 extern char *notidtoid(), *my_new_str(), *my_strcat();
 extern char *
@@ -45,10 +45,8 @@ proc_name(), *mymodule;
  * The argument flag indicates whether t is being defined (1) or used
  * (0).
  */
-char   *
-proc_name(t, flag)
-char   *t;
-int     flag;
+char *
+proc_name (char *t, int flag)
 {
 	int     i;
 	static int curr = 0;
@@ -88,20 +86,19 @@ FILE   *fp;
 	for (j = 0; j < TABLESIZE; j++)
 		for (ptr = id_table[j]; ptr != NULL; ptr = ptr->next) {
 			if (ptr->def_bit)
-				(void) fprintf(fp, "#define %s%s\t%d\n", PREFIX, ptr->r_value, ptr->def_value);
+				 fprintf(fp, "#define %s%s\t%d\n", PREFIX, ptr->r_value, ptr->def_value);
 			else
 				ferrs(0, "the identifier %s is used but not defined\n", ptr->h_value);
 			if (ptr->count > 1)	/* not used */
-				(void) printf("The id %s has a count of %d\n", ptr->r_value, ptr->count);
+				 printf("The id %s has a count of %d\n", ptr->r_value, ptr->count);
 		}
 }
 
 /*
  * return a copy of the string s with '-' replaced by '_'
  */
-char   *
-notidtoid(s)
-char   *s;
+char *
+notidtoid (char *s)
 {
 
 	char   *t, *r;
@@ -116,9 +113,8 @@ char   *s;
 /*
  * return a copy of the string s
  */
-char   *
-my_new_str(s)
-char   *s;
+char *
+my_new_str (char *s)
 {
 
 	char   *t;
@@ -126,16 +122,15 @@ char   *s;
 	if ((t = (char *) malloc((unsigned)strlen(s) + 1)) == NULL)
 		my_error("my_new_str: Out of memory");
 
-	(void) strcpy(t, s);
+	 strcpy(t, s);
 	return t;
 }
 
 /*
  * return the concatenation of the strings s1 and s2
  */
-char   *
-my_strcat(s1, s2)
-char   *s1, *s2;
+char *
+my_strcat (char *s1, char *s2)
 {
 	char   *s3, *s, *t;
 
@@ -147,15 +142,15 @@ char   *s1, *s2;
 
 	for (s = s1, t = s3; *s != '\0'; s++, t++)
 		*t = *s;
-	(void) strcpy(t, s2);
+	 strcpy(t, s2);
 	return s3;
 }
 
 /*
  * a simple hash function
  */
-hash_val(s)
-char   *s;
+int 
+hash_val (char *s)
 {
 	int     i, sum;
 	char   *t;
@@ -169,7 +164,8 @@ char   *s;
 /*
  * initialize the table id_table
  */
-init() {
+int 
+init()  {
 	int     i;
 
 	for (i = 0; i <= TABLESIZE; i++)
@@ -184,9 +180,8 @@ static unsigned int len = 0;
 /*
  * Return in a static buffer the two strings concatenated
  */
-char   *
-concat(s1, s2)
-char   *s1, *s2;
+char *
+concat (char *s1, char *s2)
 {
 	int     tot;
 
@@ -200,8 +195,8 @@ char   *s1, *s2;
 		} else if ((buf = realloc(buf, len)) == NULL)
 			ferr(1, "concat:realloc failed\n");
 	}
-	(void) strcpy(buf, s1);
-	(void) strcat(buf, s2);
+	 strcpy(buf, s1);
+	 strcat(buf, s2);
 
 	return (buf);
 }
@@ -210,12 +205,13 @@ char   *s1, *s2;
  * Generate a free call given the name of the parameter, the module
  * name, and the name of the type
  */
-char   *
-gfree(module, id, parm)
-char   *module;			/* name of module we are in (usually
+char *
+gfree (
+    char *module,			/* name of module we are in (usually
 				 * mymodule) */
-char   *id;			/* name of type we want to free */
-char   *parm;			/* name of the pointer to the data */
+    char *id,			/* name of type we want to free */
+    char *parm			/* name of the pointer to the data */
+)
 {
 	char   *p1 = notidtoid(module);
 	char   *p2 = notidtoid(id);
@@ -231,7 +227,7 @@ char   *parm;			/* name of the pointer to the data */
 		} else if ((buf = realloc(buf, len)) == NULL)
 			ferr(1, "concat:realloc failed\n");
 	}
-	(void) sprintf(buf, "(void) fre_obj((char *) %s, %s%s%s.md_dtab[%s%s%s], &%s%s%s, 1)",
+	 sprintf(buf, " fre_obj((char *) %s, %s%s%s.md_dtab[%s%s%s], &%s%s%s, 1)",
 				   parm,
 				   PREFIX, p1, MODTYP_SUFFIX,
 				   PREFIX, p2, p1,

@@ -315,7 +315,7 @@ get_node ()
 */
 
 build_trees () {
-	register i;
+	i;
 	char **  string;
 
 	if (built)
@@ -392,7 +392,7 @@ node *  root;           /* top of the tree string should be added to    */
 
 	char *   ptr;
 	node *   treeptr;
-	register i;
+	i;
 
 	ptr = string;
 	treeptr = root;

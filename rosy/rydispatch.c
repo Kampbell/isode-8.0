@@ -50,12 +50,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydispatch.c,v 9.0 199
 
 int	RyDispatch (sd, ryo, op, fnx, roi)
 int	sd;
-register struct RyOperation *ryo;
+struct RyOperation *ryo;
 int	op;
 IFP	fnx;
 struct RoSAPindication *roi;
 {
-	register struct dspblk *dsb;
+	struct dspblk *dsb;
 
 	missingP (roi);
 

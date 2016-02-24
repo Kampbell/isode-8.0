@@ -40,7 +40,7 @@ extern LLog * log_dsap;
 extern DN mydsadn;
 
 do_ds_modifyrdn (arg, error, binddn, target, di_p, dsp, authtype)
-register struct ds_modifyrdn_arg     *arg;
+struct ds_modifyrdn_arg     *arg;
 struct DSError              *error;
 DN                          binddn;
 DN                          target;
@@ -49,7 +49,7 @@ char 			dsp;
 char			authtype;
 {
 	Entry  entryptr;
-	register RDN rdn;
+	RDN rdn;
 	Attr_Sequence as;
 	AV_Sequence avs;
 	RDN modrdn;
@@ -247,7 +247,7 @@ Attr_Sequence newas;
 struct DSError *error;
 DN requestor,dn;
 {
-	register Attr_Sequence as;
+	Attr_Sequence as;
 	struct acl_info * acl;
 
 	DLOG (log_dsap,LLOG_DEBUG,("add attribute"));

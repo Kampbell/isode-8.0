@@ -40,10 +40,8 @@ int  ps_write_len ();
 
 /*  */
 
-int	pe2ps_aux (ps, pe, eval)
-register PS	ps;
-register PE	pe;
-int	eval;
+int 
+pe2ps_aux (PS ps, PE pe, int eval)
 {
 	int     result;
 
@@ -54,7 +52,7 @@ int	eval;
 			break;
 
 		case PE_FORM_CONS:
-			(void) ps_get_abs (pe);
+			 ps_get_abs (pe);
 			break;
 		}
 
@@ -65,12 +63,10 @@ int	eval;
 }
 
 
-static int  pe2ps_aux2 (ps, pe, eval)
-register PS	ps;
-register PE	pe;
-int	eval;
+static int 
+pe2ps_aux2 (PS ps, PE pe, int eval)
 {
-	register PE	    p;
+	PE	    p;
 
 	if (pe -> pe_form == PE_FORM_ICONS) {
 		if (ps_write_aux (ps, pe -> pe_prim, pe -> pe_len, 1) == NOTOK)
@@ -108,14 +104,13 @@ int	eval;
 
 /*  */
 
-int  ps_write_id (ps, pe)
-register PS	ps;
-register PE	pe;
+int 
+ps_write_id (PS ps, PE pe)
 {
 	byte    buffer[1 + sizeof (PElementID)];
-	register byte  *bp = buffer;
+	byte  *bp = buffer;
 	PElementForm    form;
-	register PElementID id;
+	PElementID id;
 
 	if ((form = pe -> pe_form) == PE_FORM_ICONS)
 		form = PE_FORM_CONS;
@@ -125,8 +120,8 @@ register PE	pe;
 	if ((id = pe -> pe_id) < PE_ID_XTND)
 		*bp++ |= id;
 	else {
-		register byte *ep;
-		register PElementID jd;
+		byte *ep;
+		PElementID jd;
 
 		*bp |= PE_ID_XTND;
 
@@ -153,14 +148,13 @@ register PE	pe;
 /* probably should integrate the non-PE_LEN_SMAX case with the algorithm in
    num2prim() for a single, unified routine */
 
-int  ps_write_len (ps, pe)
-register PS	ps;
-register PE	pe;
+int 
+ps_write_len (PS ps, PE pe)
 {
 	byte    buffer[1 + sizeof (PElementLen)];
-	register byte  *bp = buffer,
+	byte  *bp = buffer,
 					*ep;
-	register PElementLen len;
+	PElementLen len;
 
 	if ((len = pe -> pe_len) == PE_LEN_INDF)
 		*bp++ = PE_LEN_XTND;

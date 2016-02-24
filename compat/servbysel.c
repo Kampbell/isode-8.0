@@ -35,25 +35,23 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbysel.c,v 9.0 19
 
 /*  */
 
-struct isoservent *getisoserventbyselector (provider, selector, selectlen)
-char   *provider,
-	   *selector;
-int	selectlen;
+struct isoservent *
+getisoserventbyselector (char *provider, char *selector, int selectlen)
 {
-	register struct isoservent *is;
+	struct isoservent *is;
 
 	isodetailor (NULLCP, 0);
 	DLOG (addr_log, LLOG_TRACE,
 		  ("getisoserventbyselector \"%s\" %s",
 		   provider, sel2str (selector, selectlen, 1)));
 
-	(void) setisoservent (0);
+	 setisoservent (0);
 	while (is = getisoservent ())
 		if (selectlen == is -> is_selectlen
 				&& bcmp (selector, is -> is_selector, is -> is_selectlen) == 0
 				&& strcmp (provider, is -> is_provider) == 0)
 			break;
-	(void) endisoservent ();
+	 endisoservent ();
 
 	if (is) {
 #ifdef	DEBUG

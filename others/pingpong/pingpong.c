@@ -38,31 +38,29 @@ int	nfds = 0;
 int	doneit = 0;
 int	retry = 1;
 
-main (argc,argv)
-int argc;
-char ** argv;
+int 
+main (int argc, char **argv)
 {
 
 	do_args (argc,argv);
 
 	start_listener ();
 
-	(void) printf ("Started to listen\n");
+	 printf ("Started to listen\n");
 
 	ping_address ();
 
 	wait_for_result ();
 
-	(void) printf ("Got Result\n");
+	 printf ("Got Result\n");
 
 	stop_nicely ();
 
 	return 0;
 }
 
-do_args (argc,argv)
-int argc;
-char ** argv;
+int 
+do_args (int argc, char **argv)
 {
 	char * myname;
 
@@ -72,25 +70,26 @@ char ** argv;
 		myname = argv[0];
 
 	if (argc != 3) {
-		(void) fprintf (stderr,"Usage pingpong listen_address call_address\n");
+		 fprintf (stderr,"Usage pingpong listen_address call_address\n");
 		exit (-1);
 	}
 
 	isodetailor (myname, 0);
 
 	if ((pongaddr = str2paddr (argv[1])) == NULLPA) {
-		(void) fprintf (stderr,"Invalid listen address %s\n", argv[1]);
+		 fprintf (stderr,"Invalid listen address %s\n", argv[1]);
 		exit (-1);
 	}
 
 	if ((pingaddr = str2paddr (argv[2])) == NULLPA) {
-		(void) fprintf (stderr,"Invalid call address %s\n", argv[2]);
+		 fprintf (stderr,"Invalid call address %s\n", argv[2]);
 		exit (-1);
 	}
 }
 
 
-start_listener () {
+int 
+start_listener  {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
@@ -100,11 +99,12 @@ start_listener () {
 	}
 }
 
-ping_address () {
+int 
+ping_address  {
 	struct TSAPstart tss;
-	register struct TSAPstart *ts = &tss;
+	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td = &tds;
+	struct TSAPdisconnect  *td = &tds;
 	struct TSAPconnect tcs;
 	struct TSAPconnect *tc = &tcs;
 
@@ -113,7 +113,7 @@ ping_address () {
 								 tc, td, 1);
 
 	cn_sd = tc -> tc_sd;
-	(void) printf ("Starting ping on %d state ", cn_sd);
+	 printf ("Starting ping on %d state ", cn_sd);
 	updatemask ();
 	if (cn_state == NOTOK)
 		ts_advise ("TAsynConnRequest", td);
@@ -122,7 +122,8 @@ ping_address () {
 }
 
 
-wait_for_result () {
+int 
+wait_for_result  {
 	int	vecp = 0;
 	char    *vec[4];
 	int	i;
@@ -138,7 +139,7 @@ wait_for_result () {
 
 		ifds = rfds;
 		ofds = wfds;
-		(void) printf ("TNetAccept nfds=%d rfds=0x%x wfds=0x%x\n", nfds,
+		 printf ("TNetAccept nfds=%d rfds=0x%x wfds=0x%x\n", nfds,
 					   rfds.fds_bits[0], wfds.fds_bits[0]);
 		if(TNetAccept(&vecp, vec, nfds, &ifds, &ofds, NULLFD,
 					  NOTOK, td) == NOTOK) {
@@ -158,7 +159,7 @@ wait_for_result () {
 				ts_advise ("TConnResponse", td);
 				exit (-1);
 			}
-			(void) printf ("Connection accepted on %d\n", ts -> ts_sd);
+			 printf ("Connection accepted on %d\n", ts -> ts_sd);
 			FD_SET (ts -> ts_sd, &rfds);
 			if (ts -> ts_sd >= nfds)
 				nfds = ts -> ts_sd + 1;
@@ -186,8 +187,8 @@ wait_for_result () {
 	}
 }
 
-sink_data (sd)
-int	sd;
+int 
+sink_data (int sd)
 {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -203,7 +204,8 @@ int	sd;
 	return OK;
 }
 
-progress_connection () {
+int 
+progress_connection  {
 	struct TSAPdisconnect	td_s;
 	struct TSAPdisconnect	*td = &td_s;
 	struct TSAPconnect tcs;
@@ -211,42 +213,44 @@ progress_connection () {
 
 	switch(cn_state) {
 	case CONNECTING_1:
-		(void) printf ("CONNECTING_1 -> ");
+		 printf ("CONNECTING_1 -> ");
 		cn_state = TAsynRetryRequest(cn_sd,tc,td);
 		if (cn_state == NOTOK)
 			ts_advise ("\nTAsynRetryRequest", td);
 		updatemask ();
 		break;
 	case CONNECTING_2:
-		(void) printf ("CONNECTING_2 -> ");
+		 printf ("CONNECTING_2 -> ");
 		cn_state = TAsynRetryRequest(cn_sd,tc,td);
 		if (cn_state == NOTOK)
 			ts_advise ("\nTAsynRetryRequest", td);
 		updatemask();
 		break;
 	case NOTOK:
-		(void) printf ("NOTOK\n");
+		 printf ("NOTOK\n");
 		updatemask ();
 		break;
 	case DONE:
-		(void) printf ("DONE->");
+		 printf ("DONE->");
 		updatemask ();
 		break;
 	default:
-		(void) printf ("cn_state weird\n");
+		 printf ("cn_state weird\n");
 		exit (-4);
 	}
 }
 
-stop_nicely () {
+int 
+stop_nicely  {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
-	(void) TNetClose (&pongaddr->pa_addr.sa_addr, td);
+	 TNetClose (&pongaddr->pa_addr.sa_addr, td);
 }
 
 
-updatemask () {
+int 
+updatemask  {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
@@ -258,38 +262,37 @@ updatemask () {
 	}
 	switch (cn_state) {
 	case NOTOK:
-		(void) printf ("NOTOK\n");
+		 printf ("NOTOK\n");
 		break;
 
 	default:
-		(void) printf ("weird!\n");
+		 printf ("weird!\n");
 		break;
 
 	case CONNECTING_1:
-		(void) printf ("CONNECTING_1\n");
+		 printf ("CONNECTING_1\n");
 		FD_SET (cn_sd, &wfds);
 		break;
 
 	case CONNECTING_2:
-		(void) printf ("CONNECTING_2\n");
+		 printf ("CONNECTING_2\n");
 		FD_SET (cn_sd, &rfds);
 		break;
 	case DONE:
-		(void) printf ("DONE\n");
-		(void) TDiscRequest (cn_sd, NULLCP, 0, td);
+		 printf ("DONE\n");
+		 TDiscRequest (cn_sd, NULLCP, 0, td);
 		cn_sd = NOTOK;
-		(void) printf ("Disconnect sent\n");
+		 printf ("Disconnect sent\n");
 		break;
 	}
 }
 
-ts_advise (str, td)
-char	*str;
-struct TSAPdisconnect *td;
+int 
+ts_advise (char *str, struct TSAPdisconnect *td)
 {
 	if (td -> td_cc > 0)
-		(void) printf ("%s : %s [%*.*s]\n", str, TErrString (td -> td_reason),
+		 printf ("%s : %s [%*.*s]\n", str, TErrString (td -> td_reason),
 					   td -> td_cc, td -> td_cc, td -> td_data);
-	else	(void) printf ("%s : %s\n", str, TErrString (td -> td_reason));
+	else	 printf ("%s : %s\n", str, TErrString (td -> td_reason));
 }
 

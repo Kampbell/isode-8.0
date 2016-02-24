@@ -89,7 +89,7 @@ modifyAttr mod_attr_list;
 	modifyRec modify_request;
 	requestRec this_request;
 
-	(void) _request_invoked(MODIFY_ENTRY, id_ptr);
+	 _request_invoked(MODIFY_ENTRY, id_ptr);
 	this_request = _get_request_of_id(*id_ptr);
 
 	modify_request = this_request->MODIFY_REC;
@@ -229,7 +229,7 @@ int *task_id_ptr;
 						if (entrymods) ems_free(entrymods);
 						if (attrVal_seq != NULLAV) avs_free(attrVal_seq);
 
-						(void) sprintf
+						 sprintf
 						(err_msg,
 						 "*** Bad Value `%s' in Attribute `%s' ***",
 						 curr_val->new_value,
@@ -280,7 +280,7 @@ int *task_id_ptr;
 
 							if (attrVal_seq != NULLAV) avs_free(attrVal_seq);
 
-							(void) sprintf
+							 sprintf
 							(err_msg,
 							 "*** Bad Value `%s' in Attribute `%s' ***",
 							 curr_val->new_value,
@@ -336,7 +336,7 @@ int *task_id_ptr;
 
 								if (attrVal_seq != NULLAV) avs_free(attrVal_seq);
 
-								(void) sprintf
+								 sprintf
 								(err_msg,
 								 "*** Bad Value `%s' in Attribute `%s' ***",
 								 curr_val->new_value,
@@ -393,7 +393,7 @@ int *task_id_ptr;
 
 							if (attrVal_seq != NULLAV) avs_free(attrVal_seq);
 
-							(void) sprintf
+							 sprintf
 							(err_msg,
 							 "*** Bad Value `%s' in Attribute `%s' ***",
 							 curr_val->new_value,
@@ -453,7 +453,7 @@ int *task_id_ptr;
 	}
 
 
-	(void) get_default_service(&mod_arg.mea_common);
+	 get_default_service(&mod_arg.mea_common);
 
 	mod_arg.mea_common.ca_servicecontrol.svc_options =
 		mod_arg.mea_common.ca_servicecontrol.svc_options | SVC_OPT_PREFERCHAIN;
@@ -608,7 +608,7 @@ modifyAttr *attr_list;
 	modifyAttr curr_attr;
 	QE_error_code error_code;
 
-	(void) _request_invoked(ENTRY_TEMPLATE, id_ptr);
+	 _request_invoked(ENTRY_TEMPLATE, id_ptr);
 	this_request = _get_request_of_id(*id_ptr);
 
 	template_rec = this_request->TEMPLATE_REC;
@@ -673,7 +673,7 @@ struct DSResult *ds_result;
 			   tmp;
 	modifyValue curr_oclass;
 	objectclass *ocp;
-	register table_seq optr;
+	table_seq optr;
 
 	/* This shouldn't happen */
 	if ((task_rec = _get_task_of_id(task_id)) == NULLDsTask)
@@ -1026,12 +1026,12 @@ modifyAttr *mod_attr_list_ptr;
 		free_mod_val_list(&curr_attr->values);
 
 		if (curr_attr->attr_name != NULLCP)
-			(void) free(curr_attr->attr_name);
+			 free(curr_attr->attr_name);
 
 		last_attr = curr_attr;
 		curr_attr = curr_attr->next;
 
-		(void) free((char *) last_attr);
+		 free((char *) last_attr);
 	}
 
 	*mod_attr_list_ptr = NULLModifyAttr;
@@ -1045,15 +1045,15 @@ modifyValue *mod_val_list_ptr;
 
 	while (curr_val != NULLModifyValue) {
 		if (curr_val->value != NULLCP)
-			(void) free(curr_val->value);
+			 free(curr_val->value);
 
 		if (curr_val->new_value != NULLCP)
-			(void) free(curr_val->new_value);
+			 free(curr_val->new_value);
 
 		last_val = curr_val;
 		curr_val = curr_val->next;
 
-		(void) free((char *) last_val);
+		 free((char *) last_val);
 	}
 
 	*mod_val_list_ptr = NULLModifyValue;
@@ -1070,7 +1070,7 @@ modifyResult *result_ptr;
 	if (result->errors != NULLError)
 		error_list_free(&result->errors);
 
-	(void) free((char *) result);
+	 free((char *) result);
 
 	*result_ptr = NULLModifyResult;
 } /* free_modify_result */
@@ -1083,7 +1083,7 @@ modifyRec record;
 		return;
 
 	if (record->base_object != NULLCP)
-		(void) free(record->base_object);
+		 free(record->base_object);
 
 	if (record->result != NULLModifyResult)
 		free_modify_result(&record->result);
@@ -1096,7 +1096,7 @@ makeTemplateResult *result_ptr;
 	makeTemplateResult result = *result_ptr;
 
 	if (result->base_object != NULLCP)
-		(void) free(result->base_object);
+		 free(result->base_object);
 
 	if (result->must_request != NULLModifyAttr)
 		free_mod_attr_list(&result->must_request);
@@ -1113,7 +1113,7 @@ makeTemplateResult *result_ptr;
 	if (result->errors != NULLError)
 		error_list_free(&result->errors);
 
-	(void) free((char *) result);
+	 free((char *) result);
 
 	*result_ptr = NULLTemplateResult;
 } /* free_make_template_result */
@@ -1124,7 +1124,7 @@ makeTemplateRec record;
 	if (record == NULLTemplateRec) return;
 
 	if (record->base_object != NULLCP)
-		(void) free(record->base_object);
+		 free(record->base_object);
 
 	if (record->include_attrs != NULLModifyAttr)
 		free_mod_attr_list(&record->include_attrs);
@@ -1132,7 +1132,7 @@ makeTemplateRec record;
 	if (record->errors != NULLError)
 		error_list_free(&record->errors);
 
-	(void) free((char *) record);
+	 free((char *) record);
 } /* free_make_template_rec */
 
 
@@ -1142,9 +1142,8 @@ makeTemplateRec record;
  *
  */
 
-static struct entrymod * ems_append (a,b)
-struct entrymod *a;
-struct entrymod *b;
+static struct entrymod *
+ems_append (struct entrymod *a, struct entrymod *b)
 {
 	struct entrymod *ptr;
 
@@ -1216,7 +1215,7 @@ attrValList attr_list;
 static modifyAttr remove_common_attrs(primary, secondary)
 modifyAttr primary, secondary;
 {
-	register modifyAttr curr_sec, last_sec;
+	modifyAttr curr_sec, last_sec;
 	modifyAttr tmp;
 
 	if (primary == NULLModifyAttr || secondary == NULLModifyAttr)
@@ -1258,7 +1257,7 @@ modifyAttr primary, secondary;
 static modifyAttr remove_double_attrs(primary)
 modifyAttr primary;
 {
-	register modifyAttr curr_attr, last_attr;
+	modifyAttr curr_attr, last_attr;
 	modifyAttr curr_primary, tmp;
 
 	if (primary == NULLModifyAttr)

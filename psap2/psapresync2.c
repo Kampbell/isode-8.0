@@ -33,22 +33,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapresync2.c,v 9.0 1
 
 /*    P-RESYNCHRONIZE.RESPONSE */
 
-int	PReSyncResponse (sd, ssn, settings, data, ndata, pi)
-int	sd;
-int	settings,
-	ndata;
-long	ssn;
-PE     *data;
-struct PSAPindication *pi;
+int 
+PReSyncResponse (int sd, long ssn, int settings, PE *data, int ndata, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int     len,
 			result;
 	char   *base,
 		   *realbase;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	toomuchP (data, ndata, NPDATA, "resync");
 	missingP (pi);
@@ -64,9 +59,9 @@ struct PSAPindication *pi;
 	if ((result = SReSyncResponse (sd, ssn, settings, base, len, &sis))
 			== NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SReSyncResponse", sa);
+			 ss2pslose (pb, pi, "SReSyncResponse", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SReSyncResponse", sa);
+			 ss2pslose (NULLPB, pi, "SReSyncResponse", sa);
 			goto out1;
 		}
 
@@ -83,7 +78,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

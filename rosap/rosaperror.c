@@ -80,14 +80,14 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
 /*  */
 
-char   *RoErrString (code)
-register int code;
+char *
+RoErrString (int code)
 {
 	static char buffer[50];
 
 	if (code < reject_err0_cnt)
 		return reject_err0[code];
 
-	(void) sprintf (buffer, "unknown error code 0x%x", code);
+	 sprintf (buffer, "unknown error code 0x%x", code);
 	return buffer;
 }

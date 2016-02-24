@@ -47,14 +47,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smux-g.c,v 9.0 1992/06
 
 static int  o_smuxPeer (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifnum,
 			ifvar;
-	register struct smuxPeer *pb;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct smuxPeer *pb;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 
 	ifvar = (int) ot -> ot_info;
 	switch (offset) {
@@ -137,15 +137,15 @@ again:
 
 static int  s_smuxPeer (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifnum,
 			ifvar;
-	register struct smuxPeer *pb;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	struct smuxPeer *pb;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 	caddr_t value;
 
 	ifvar = (int) ot -> ot_info;
@@ -223,16 +223,16 @@ struct smuxTree *get_tbent ();
 
 static int  o_smuxTree (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct smuxTree *tb;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct smuxTree *tb;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 
 	ifvar = (int) ot -> ot_info;
 	switch (offset) {
@@ -319,16 +319,16 @@ int	offset;
 
 static int  s_smuxTree (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 #ifndef	lint
 	int	    ifvar;
 #endif
-	register struct smuxTree *tb;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
-	register OS	    os = ot -> ot_syntax;
+	struct smuxTree *tb;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
+	OS	    os = ot -> ot_syntax;
 	caddr_t value;
 
 #ifndef	lint
@@ -389,11 +389,11 @@ int	offset;
 /*  */
 
 static struct smuxTree *get_tbent (ip, len, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnext;
 {
-	register struct smuxTree *tb;
+	struct smuxTree *tb;
 
 	for (tb = THead -> tb_forw; tb != THead; tb = tb -> tb_forw)
 		switch (elem_cmp (tb -> tb_instance, tb -> tb_insize, ip, len)) {
@@ -414,7 +414,7 @@ int	isnext;
 /*  */
 
 init_smux () {
-	register OT	    ot;
+	OT	    ot;
 
 	if (ot = text2obj ("smuxPindex"))
 		ot -> ot_getfnx = o_smuxPeer,

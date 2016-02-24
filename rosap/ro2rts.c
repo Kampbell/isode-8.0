@@ -47,9 +47,8 @@ static int  doRTSabort ();
 
 /*    bind underlying service */
 
-int	RoRtService (acb, roi)
-register struct assocblk   *acb;
-struct RoSAPindication *roi;
+int 
+RoRtService (struct assocblk *acb, struct RoSAPindication *roi)
 {
 	if (!(acb -> acb_flags & ACB_RTS))
 		return rosaplose (roi, ROS_OPERATION, NULLCP,
@@ -74,13 +73,11 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2rtsasync (acb, indication, roi)
-register struct assocblk   *acb;
-IFP	indication;
-struct RoSAPindication *roi;
+int 
+ro2rtsasync (struct assocblk *acb, IFP indication, struct RoSAPindication *roi)
 {
 	struct RtSAPindication  rtis;
-	register struct RtSAPabort *rta = &rtis.rti_abort;
+	struct RtSAPabort *rta = &rtis.rti_abort;
 
 	if (acb -> acb_rosindication = indication)
 		acb -> acb_flags |= ACB_ASYN;
@@ -95,7 +92,7 @@ struct RoSAPindication *roi;
 			return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) rtslose (acb, roi, "RtSetIndications", rta);
+			 rtslose (acb, roi, "RtSetIndications", rta);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -110,14 +107,11 @@ struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2rtsmask (acb, mask, nfds, roi)
-register struct assocblk   *acb;
-fd_set *mask;
-int    *nfds;
-struct RoSAPindication *roi;
+int 
+ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 {
 	struct RtSAPindication  rtis;
-	register struct RtSAPabort *rta = &rtis.rti_abort;
+	struct RtSAPabort *rta = &rtis.rti_abort;
 
 	if (RtSelectMask (acb -> acb_fd, mask, nfds, &rtis) == NOTOK)
 		switch (rta -> rta_reason) {
@@ -125,7 +119,7 @@ struct RoSAPindication *roi;
 			return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 		default:
-			(void) rtslose (acb, roi, "RtSelectMask", rta);
+			 rtslose (acb, roi, "RtSelectMask", rta);
 			freeacblk (acb);
 			return NOTOK;
 		}
@@ -138,15 +132,12 @@ struct RoSAPindication *roi;
 #define	doRTSdata(a,i,t,r)	acb2osdu ((a), (i), (t) -> rtt_data, (r))
 
 
-int	ro2rtswait (acb, invokeID, secs, roi)
-register struct assocblk *acb;
-int    *invokeID,
-	   secs;
-register struct RoSAPindication *roi;
+int 
+ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi)
 {
 	int     result;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
+	struct RtSAPindication *rti = &rtis;
 
 	if (acb -> acb_apdu) {
 		result = acb2osdu (acb, NULLIP, acb -> acb_apdu, roi);
@@ -162,14 +153,14 @@ register struct RoSAPindication *roi;
 
 			roi -> roi_type = ROI_FINISH;
 			{
-				register struct AcSAPfinish  *acf = &roi -> roi_finish;
+				struct AcSAPfinish  *acf = &roi -> roi_finish;
 
 				*acf = acb -> acb_finish;	/* struct copy */
 			}
 		} else {
 			roi -> roi_type = ROI_END;
 			{
-				register struct RoSAPend   *roe = &roi -> roi_end;
+				struct RoSAPend   *roe = &roi -> roi_end;
 
 				bzero ((char *) roe, sizeof *roe);
 			}
@@ -207,7 +198,7 @@ register struct RoSAPindication *roi;
 				continue;
 
 			default:
-				(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+				 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 								  "unknown indication (0x%x) from rts",
 								  rti -> rti_type);
 				break;
@@ -215,7 +206,7 @@ register struct RoSAPindication *roi;
 			break;
 
 		default:
-			(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+			 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 							  "unexpected return from RtWaitRequest=%d", result);
 			break;
 		}
@@ -230,16 +221,12 @@ register struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-int	ro2rtswrite (acb, pe, fe, priority, roi)
-register struct assocblk *acb;
-register PE pe;
-PE	fe;
-int	priority;
-struct RoSAPindication *roi;
+int 
+ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi)
 {
 	int	    result;
 	struct RtSAPindication  rtis;
-	register struct RtSAPabort *rta = &rtis.rti_abort;
+	struct RtSAPabort *rta = &rtis.rti_abort;
 
 #ifdef	DEBUG
 	if (rosap_log -> ll_events & LLOG_PDUS)
@@ -252,7 +239,7 @@ struct RoSAPindication *roi;
 	result = RtTransferRequest (acb -> acb_fd, pe, NOTOK, &rtis);
 
 	if (fe)
-		(void) pe_extract (pe, fe);
+		 pe_extract (pe, fe);
 	pe_free (pe);
 
 	if (result == OK)
@@ -261,7 +248,7 @@ struct RoSAPindication *roi;
 	if (rta -> rta_reason == RTS_TRANSFER)
 		return rosaplose (roi, ROS_APDU, NULLCP, NULLCP);
 
-	(void) rtslose (acb, roi, "RtTransferRequest", rta);
+	 rtslose (acb, roi, "RtTransferRequest", rta);
 
 	freeacblk (acb);
 	return NOTOK;
@@ -269,14 +256,12 @@ struct RoSAPindication *roi;
 
 /*  */
 
-static int  doRTSturn (acb, rtu, roi)
-register struct assocblk *acb;
-register struct RtSAPturn *rtu;
-register struct RoSAPindication *roi;
+static int 
+doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *roi)
 {
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort *rta = &rti -> rti_abort;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort *rta = &rti -> rti_abort;
 
 	if (rtu -> rtu_please) {
 		if (RtGTurnRequest (acb -> acb_fd, rti) == NOTOK)
@@ -290,13 +275,11 @@ register struct RoSAPindication *roi;
 
 /* ARGSUSED */
 
-static int  doRTSclose (acb, rtc, roi)
-register struct assocblk *acb;
-struct RtSAPclose *rtc;
-register struct RoSAPindication *roi;
+static int 
+doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication *roi)
 {
 	if (acb -> acb_flags & ACB_INIT) {
-		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+		 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 						  "association management botched");
 		freeacblk (acb);
 		return NOTOK;
@@ -304,7 +287,7 @@ register struct RoSAPindication *roi;
 
 	roi -> roi_type = ROI_END;
 	{
-		register struct RoSAPend   *roe = &roi -> roi_end;
+		struct RoSAPend   *roe = &roi -> roi_end;
 
 		bzero ((char *) roe, sizeof *roe);
 	}
@@ -314,13 +297,11 @@ register struct RoSAPindication *roi;
 
 /*  */
 
-static int  doRTSfinish (acb, acf, roi)
-register struct assocblk *acb;
-struct AcSAPfinish *acf;
-register struct RoSAPindication *roi;
+static int 
+doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi)
 {
 	if (acb -> acb_flags & ACB_INIT) {
-		(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+		 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 						  "association management botched");
 		ACFFREE (acf);
 		freeacblk (acb);
@@ -335,18 +316,16 @@ register struct RoSAPindication *roi;
 
 /*  */
 
-static int  doRTSabort (acb, rta, roi)
-register struct assocblk *acb;
-register struct RtSAPabort *rta;
-register struct RoSAPindication *roi;
+static int 
+doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication *roi)
 {
 	if (!rta -> rta_peer) {
 		if (rta -> rta_reason == RTS_TIMER)
 			return rosaplose (roi, ROS_TIMER, NULLCP, NULLCP);
 
-		(void) rtslose (acb, roi, NULLCP, rta);
+		 rtslose (acb, roi, NULLCP, rta);
 	} else
-		(void) rosaplose (roi, ROS_ABORTED, NULLCP, NULLCP);
+		 rosaplose (roi, ROS_ABORTED, NULLCP, NULLCP);
 
 	RTAFREE (rta);
 	acb -> acb_fd = NOTOK;
@@ -357,15 +336,14 @@ register struct RoSAPindication *roi;
 
 /*  */
 
-static int  rtsINDICATIONser (sd, rti)
-int	sd;
-register struct RtSAPindication *rti;
+static int 
+rtsINDICATIONser (int sd, struct RtSAPindication *rti)
 {
 	int     result;
 	IFP	    handler;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
+	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
 		return;
@@ -407,21 +385,19 @@ register struct RtSAPindication *rti;
 
 /*  */
 
-int	ro2rtsready (acb, priority, roi)
-register struct assocblk *acb;
-int	priority;
-struct RoSAPindication *roi;
+int 
+ro2rtsready (struct assocblk *acb, int priority, struct RoSAPindication *roi)
 {
 	int	    result;
 	struct RtSAPindication  rtis;
-	register struct RtSAPindication *rti = &rtis;
-	register struct RtSAPabort *rta = &rti -> rti_abort;
+	struct RtSAPindication *rti = &rtis;
+	struct RtSAPabort *rta = &rti -> rti_abort;
 
 	if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING))
 		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 	if (RtPTurnRequest (acb -> acb_fd, priority, rti) == NOTOK) {
-		(void) rtslose (acb, roi, "RtPTurnRequest", rta);
+		 rtslose (acb, roi, "RtPTurnRequest", rta);
 		goto out;
 	}
 
@@ -476,7 +452,7 @@ struct RoSAPindication *roi;
 				continue;
 
 			default:
-				(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+				 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 								  "unknown indication (0x%x) from rts",
 								  rti -> rti_type);
 				break;
@@ -484,7 +460,7 @@ struct RoSAPindication *roi;
 			goto out;
 
 		default:
-			(void) ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
+			 ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 							  "unexpected return from RtWaitRequest=%d", result);
 			goto out;
 		}
@@ -500,11 +476,8 @@ out:
 
 /*  */
 
-static int rtslose (acb, roi, event, rta)
-register struct assocblk *acb;
-register struct RoSAPindication *roi;
-char   *event;
-register struct RtSAPabort *rta;
+static int 
+rtslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct RtSAPabort *rta)
 {
 	int     reason;
 	char   *cp,
@@ -531,7 +504,7 @@ register struct RtSAPabort *rta;
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at rts)",
+		 sprintf (cp = buffer, " (%s at rts)",
 						RtErrString (rta -> rta_reason));
 	case RTS_SESSION:
 		reason = ROS_RTS;

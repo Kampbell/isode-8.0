@@ -42,25 +42,23 @@ static ps_die ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	char   *cp;
-	register PE pe;
-	register PS ps;
+	PE pe;
+	PS ps;
 
 	argc--, argv++;
 	if (argc != 1) {
 usage:
 		;
-		(void) fprintf (stderr, "usage: psaptest [ps2pl | ps2ps | pl2pl | pl2ps]\n");
+		 fprintf (stderr, "usage: psaptest [ps2pl | ps2ps | pl2pl | pl2ps]\n");
 		exit (1);
 	}
 
 	if (strcmp (*argv, "version") == 0) {
-		(void) printf ("%s\n", psapversion);
+		 printf ("%s\n", psapversion);
 		exit (0);
 	}
 
@@ -71,19 +69,19 @@ usage:
 
 	if (strcmp (*argv, "string") == 0) {
 		int	onceonly = 1;
-		register PE *pep;
+		PE *pep;
 
 		if ((pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_PRIM_OCTS))
 				== NULLPE) {
 no_pe:
 			;
-			(void) fprintf (stderr, "pe_alloc: you lose\n");
+			 fprintf (stderr, "pe_alloc: you lose\n");
 			exit (1);
 		}
 		pep = &pe -> pe_cons;
 		for (;;) {
 			int	    i;
-			register PE p;
+			PE p;
 
 			if (onceonly) {
 				struct stat st;
@@ -128,10 +126,10 @@ no_pe:
 
 		while (fgets (buffer, sizeof buffer, stdin)) {
 			if (*buffer == ' ')
-				(void) strncpy (packet, buffer + 1, i = strlen (buffer) - 2);
+				 strncpy (packet, buffer + 1, i = strlen (buffer) - 2);
 			else
 				i = implode ((u_char *) packet, buffer, strlen (buffer) - 1);
-			(void) fwrite (packet, sizeof *packet, i, stdout);
+			 fwrite (packet, sizeof *packet, i, stdout);
 		}
 
 		exit (0);
@@ -150,7 +148,7 @@ no_pe:
 
 	for (;;) {
 		if ((ps = ps_alloc (std_open)) == NULLPS) {
-			(void) fprintf (stderr, "ps_alloc(stdin): you lose\n");
+			 fprintf (stderr, "ps_alloc(stdin): you lose\n");
 			exit (1);
 		}
 		if (std_setup (ps, stdin) == NOTOK)
@@ -181,7 +179,7 @@ no_pe:
 doit:
 		;
 		if ((ps = ps_alloc (std_open)) == NULLPS) {
-			(void) fprintf (stderr, "ps_alloc(stdout): you lose\n");
+			 fprintf (stderr, "ps_alloc(stdout): you lose\n");
 			exit (1);
 		}
 		if (std_setup (ps, stdout) == NOTOK)
@@ -208,10 +206,9 @@ doit:
 
 /*    ERRORS */
 
-static ps_die (ps, s)
-register PS	 ps;
-register char   *s;
+static 
+ps_die (PS ps, char *s)
 {
-	(void) fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
+	 fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
 }

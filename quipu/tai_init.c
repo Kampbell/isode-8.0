@@ -55,7 +55,7 @@ char    *name;
 			if (dsa_tai_string (buf) == NOTOK)
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("tai_string failed %s",buf));
 
-	(void) fclose(fp);
+	 fclose(fp);
 	isodexport(NULLCP);
 	return OK;
 }

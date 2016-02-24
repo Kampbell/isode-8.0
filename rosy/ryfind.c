@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryfind.c,v 9.0 1992/06
 /*  */
 
 struct RyOperation *findopbyop (ryo, op)
-register struct RyOperation *ryo;
+struct RyOperation *ryo;
 int	op;
 {
 	if (!ryo)
@@ -48,7 +48,7 @@ int	op;
 
 
 struct RyOperation *findopbyname (ryo, name)
-register struct RyOperation *ryo;
+struct RyOperation *ryo;
 char   *name;
 {
 	if (!ryo)
@@ -63,7 +63,7 @@ char   *name;
 
 
 struct RyError *finderrbyerr (rye, err)
-register struct RyError *rye;
+struct RyError *rye;
 int	err;
 {
 	if (!rye)
@@ -78,7 +78,7 @@ int	err;
 
 
 struct RyError *finderrbyname (rye, name)
-register struct RyError *rye;
+struct RyError *rye;
 char   *name;
 {
 	if (!rye)

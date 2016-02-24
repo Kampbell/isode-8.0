@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaplose.c,v 9.0 1992/
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "tpkt.h"
 #include "mpkt.h"
 #include "tailor.h"
@@ -46,16 +46,15 @@ static int  _tsaplose ();
 #endif
 
 #ifndef	lint
-int	tpktlose (va_alist)
-va_dcl {
+int	tpktlose (struct tsapblk* tb, ...)
+{
 	int	    reason,
 	result;
-	register struct tsapblk *tb;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect  *td;
+	struct TSAPdisconnect  *td;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, tb);
 
 	tb = va_arg (ap, struct tsapblk *);
 
@@ -111,12 +110,8 @@ va_dcl {
 #else
 /* VARARGS5 */
 
-int	tpktlose (tb, td, reason, what, fmt)
-struct tsapblk *tb;
-struct TSAPdisconnect *td;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+tpktlose (struct tsapblk *tb, struct TSAPdisconnect *td, int reason, char *what, char *fmt)
 {
 	return tpktlose (tb, td, reason, what, fmt);
 }
@@ -125,16 +120,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	tsaplose (va_alist)
-va_dcl {
+int	tsaplose (struct TSAPdisconnect*td, ...)
+{
 	int	    reason,
 	result;
-	struct TSAPdisconnect *td;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, td);
 
-	td = va_arg (ap, struct TSAPdisconnect *);
 	reason = va_arg (ap, int);
 
 	result = _tsaplose (td, reason, ap);
@@ -147,11 +140,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	tsaplose (td, reason, what, fmt)
-struct TSAPdisconnect *td;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt)
 {
 	return tsaplose (td, reason, what, fmt);
 }
@@ -160,18 +150,25 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _tsaplose (td, reason, ap)	/* what, fmt, args ... */
-register struct TSAPdisconnect *td;
-int     reason;
-va_list	ap;
+static int 
+_tsaplose (	/* what, fmt, args ... */
+    struct TSAPdisconnect *td,
+    int reason,
+    va_list ap
+)
 {
-	register char  *bp;
+	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
+
+	what = va_arg(ap, char*);
+	fmt = va_arg(ap, char*);
 
 	if (td) {
 		bzero ((char *) td, sizeof *td);
 
-		asprintf (bp = buffer, ap);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		td -> td_reason = reason;

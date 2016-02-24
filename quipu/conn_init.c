@@ -79,7 +79,7 @@ struct connection	* cn;
 	}
 
 	if (quipu_shutdown) {
-		(void) DBindReject (ds, ACS_PERMANENT, ACS_USER_NOREASON, di);
+		 DBindReject (ds, ACS_PERMANENT, ACS_USER_NOREASON, di);
 		conn_extract (cn);
 		return;
 	}
@@ -108,7 +108,7 @@ out:
 		LLOG (log_dsap,LLOG_EXCEPTIONS, ("Bad Selector (%d): %s",
 										 ds->ds_sd, paddr2str(&(ds->ds_start.acs_start.ps_calling),NULLNA)));
 
-		(void) DBindReject (ds, ACS_PERMANENT, ACS_USER_NOREASON, di);
+		 DBindReject (ds, ACS_PERMANENT, ACS_USER_NOREASON, di);
 		conn_extract (cn);
 		return;
 	}
@@ -185,7 +185,7 @@ out:
 		break;
 	default:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Unexpected return by ds_bind_init"));
-		(void) DBindReject (ds, ACS_TRANSIENT, ACS_USER_NOREASON, di);
+		 DBindReject (ds, ACS_TRANSIENT, ACS_USER_NOREASON, di);
 		break;
 	}
 }

@@ -37,10 +37,8 @@ static SFD	EMTser ();
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int     argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    fd,
 			mask,
@@ -60,23 +58,24 @@ char  **argv,
 	for (fd = 0; fd < nfds; fd++)
 		if (mask & (1 << fd))
 			FD_SET (fd, &rfds);
-
-	(void) signal (SIGEMT, EMTser);
+#ifndef BSDSIGS
+	 signal (SIGEMT, EMTser);
+#endif
 
 	for (;;) {
 		ifds = rfds;
 		switch (xselect (nfds, &ifds, NULLFD, NULLFD, NOTOK)) {
 		case NOTOK:
-			(void) fprintf (stderr, "NOTOK\n");
+			 fprintf (stderr, "NOTOK\n");
 			break;
 
 		case OK:
-			(void) fprintf (stderr, "OK\n");
+			 fprintf (stderr, "OK\n");
 			break;
 
 		default:
-			(void) kill (ppid, SIGEMT);
-			(void) sigpause (0);
+			 kill (ppid, SIGUNUSED); //FIXME SIGEMT);
+			 sigpause (0);
 			break;
 		}
 	}
@@ -96,6 +95,6 @@ struct sigcontext *sc;
 #endif
 {
 #ifndef	BSDSIGS
-	(void) signal (SIGEMT, EMTser);
+	 signal (SIGEMT, EMTser);
 #endif
 }

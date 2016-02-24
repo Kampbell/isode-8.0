@@ -35,22 +35,21 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbyname.c,v 9.0 1
 
 /*  */
 
-struct isoservent *getisoserventbyname (entity, provider)
-char *entity,
-	 *provider;
+struct isoservent *
+getisoserventbyname (char *entity, char *provider)
 {
-	register struct isoservent *is;
+	struct isoservent *is;
 
 	isodetailor (NULLCP, 0);
 	DLOG (addr_log, LLOG_TRACE,
 		  ("getisoserventbyname \"%s\" \"%s\"", entity, provider));
 
-	(void) setisoservent (0);
+	 setisoservent (0);
 	while (is = getisoservent ())
 		if (strcmp (entity, is -> is_entity) == 0
 				&& strcmp (provider, is -> is_provider) == 0)
 			break;
-	(void) endisoservent ();
+	 endisoservent ();
 
 	if (is) {
 #ifdef	DEBUG

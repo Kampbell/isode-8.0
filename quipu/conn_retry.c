@@ -197,7 +197,7 @@ static test_deadlock (on)
 struct oper_act	* on;
 {
 	struct di_block	* di;
-	register int ndi = 0;
+	int ndi = 0;
 
 	for (di= on -> on_dsas; di!= NULL_DI_BLOCK; di= di -> di_next)
 		ndi++;

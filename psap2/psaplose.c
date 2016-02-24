@@ -28,36 +28,34 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaplose.c,v 9.0 1992
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
 
 /*  */
 #ifndef	lint
-static int  _psaplose ();
+static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap);
 #endif
 
 #ifndef	lint
-int	ppktlose (va_alist)
-va_dcl {
+int	ppktlose (struct psapblk*pb, ...)
+{
 	int	    len,
 	ppdu,
 	reason,
 	result;
 	char   *base;
-	register struct psapblk *pb;
 	PE	    pe;
-	register struct PSAPindication *pi;
-	register struct PSAPabort *pa;
+	struct PSAPindication *pi;
+	struct PSAPabort *pa;
 	struct SSAPindication   sis;
 	struct type_PS_ARP__PPDU pdus;
-	register struct type_PS_ARP__PPDU *pdu = &pdus;
+	struct type_PS_ARP__PPDU *pdu = &pdus;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, pb);
 
-	pb = va_arg (ap, struct psapblk *);
 	pi = va_arg (ap, struct PSAPindication *);
 	reason = va_arg (ap, int);
 	ppdu = va_arg (ap, int);
@@ -103,7 +101,7 @@ va_dcl {
 	if (encode_PS_ARP__PPDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		PLOGP (psap2_log,PS_ARP__PPDU, pe, "ARP-PPDU", 0);
 
-		(void) pe2ssdu (pe, &base, &len);
+		 pe2ssdu (pe, &base, &len);
 	}
 	if (pe)
 		pe_free (pe);
@@ -119,13 +117,8 @@ va_dcl {
 #else
 /* VARARGS6 */
 
-int	ppktlose (pb, pi, reason, ppdu, what, fmt)
-register struct psapblk *pb;
-register struct PSAPindication *pi;
-int	reason,
-	ppdu;
-char   *what,
-	   *fmt;
+int 
+ppktlose (struct psapblk *pb, struct PSAPindication *pi, int reason, int ppdu, char *what, char *fmt)
 {
 	return ppktlose (pb, pi, reason, ppdu, what, fmt);
 }
@@ -134,16 +127,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	psaplose (va_alist)
-va_dcl {
+int	psaplose (struct PSAPindication*pi, ...)
+{
 	int     reason,
 	result;
-	struct PSAPindication *pi;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, pi);
 
-	pi = va_arg (ap, struct PSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _psaplose (pi, reason, ap);
@@ -155,11 +146,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	psaplose (pi, reason, what, fmt)
-struct PSAPindication *pi;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt)
 {
 	return psaplose (pi, reason, what, fmt);
 }
@@ -168,21 +156,24 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _psaplose (pi, reason, ap)	/* what, fmt, args ... */
-register struct PSAPindication *pi;
-int     reason;
-va_list	ap;
+static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap) /*  what, fmt, args ... */
 {
-	register char  *bp;
-	char    buffer[BUFSIZ];
-	register struct PSAPabort *pa;
 
+	char  *bp;
+	char  *what;
+	char  *fmt;
+	char    buffer[BUFSIZ];
+
+	struct PSAPabort *pa;
+
+	what = va_arg(ap, char*);
+	fmt = va_arg(ap, char*);
 	if (pi) {
 		bzero ((char *) pi, sizeof *pi);
 		pi -> pi_type = PI_ABORT;
 		pa = &pi -> pi_abort;
 
-		asprintf (bp = buffer, ap);
+		asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		pa -> pa_peer = 0;
@@ -190,6 +181,8 @@ va_list	ap;
 		pa -> pa_ninfo = 0;
 		copyPSAPdata (buffer, bp - buffer, pa);
 	}
+
+	va_end(ap);
 
 	return NOTOK;
 }

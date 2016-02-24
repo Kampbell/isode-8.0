@@ -46,7 +46,7 @@ int	pid,
 	static char parent [BUFSIZ];
 	int     portno;
 	char   *dp;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	if ((myppid = pid) == 0)
 		myppid = getppid ();
@@ -58,38 +58,38 @@ int	pid,
 		if (!islocal) {
 			if ((hp = gethostbystring (cp = getlocalhost ()))
 					== NULL) {
-				(void) fprintf (stderr,"%s: unknown host", cp);
+				 fprintf (stderr,"%s: unknown host", cp);
 				return (-1);
 			}
-			(void) sprintf (buffer, "%s %d",
+			 sprintf (buffer, "%s %d",
 							inet_ntoa (*(struct in_addr *)
 									   hp -> h_addr),
 							portno);
 		} else
-			(void) sprintf (buffer, "127.0.0.1 %d", portno);
+			 sprintf (buffer, "127.0.0.1 %d", portno);
 
-		(void) setenv ("DISHPROC", ptr = buffer);
+		 setenv ("DISHPROC", ptr = buffer);
 	}
 
 	if (pid !=0 || (prnt = getenv ("DISHPARENT")) == NULLCP) {
-		(void) sprintf (parent, "%d", myppid);
-		(void) setenv ("DISHPARENT", prnt = parent);
+		 sprintf (parent, "%d", myppid);
+		 setenv ("DISHPARENT", prnt = parent);
 	}
 
 
 	if (sscanf (prnt, "%d", &pid) != 1) {
-		(void) fprintf (stderr,"DISHPARENT malformed");
+		 fprintf (stderr,"DISHPARENT malformed");
 		return (-1);
 	}
 
 	if ((dp = index (ptr, ' ')) == NULLCP || sscanf (dp + 1, "%d", &portno) != 1) {
-		(void) fprintf (stderr,"DISHPROC malformed");
+		 fprintf (stderr,"DISHPROC malformed");
 		return (-1);
 	}
 	*dp = NULL;
 
 	if ((hp = gethostbystring (ptr)) == NULL) {
-		(void) fprintf (stderr,"%s: unknown host in DISHPROC", ptr);
+		 fprintf (stderr,"%s: unknown host in DISHPROC", ptr);
 		return (-1);
 	}
 	*dp = ' ';
@@ -106,7 +106,8 @@ int	pid,
 #else	/* USE UNIX NAMED PIPES */
 
 
-void dummy () {
+void 
+dummy  {
 	;
 }
 

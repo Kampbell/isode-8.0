@@ -33,19 +33,19 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambits.c,v 9.0 1992/
 /*  */
 
 PE	bits2fpm (fsb, pairs, actions, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 struct pair pairs[];
 int	actions;
 struct FTAMindication *fti;
 {
-	register struct pair *pp;
-	register PE	    fpm;
+	struct pair *pp;
+	PE	    fpm;
 
 	if ((fpm = prim2bit (pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_BITS)))
 			== NULLPE) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		if (fpm)
 			pe_free (fpm);
 		return NULLPE;
@@ -65,13 +65,13 @@ no_mem:
 int	fpm2bits (fsb, pairs, fpm, actions, fti)
 struct ftamblk *fsb;
 struct pair pairs[];
-register PE  fpm;
+PE  fpm;
 int    *actions;
 struct FTAMindication *fti;
 {
-	register int    i;
-	register int	bits_set=0;
-	register struct pair *pp;
+	int    i;
+	int	bits_set=0;
+	struct pair *pp;
 
 	i = 0;
 	for (pp = pairs; pp -> p_mask; pp++)

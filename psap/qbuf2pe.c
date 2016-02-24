@@ -39,15 +39,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qbuf2pe.c,v 9.0 1992/0
 #endif
 
 PE	qbuf2pe (qb, len, result)
-register struct qbuf *qb;
+struct qbuf *qb;
 int	len;
 int    *result;
 {
 #ifdef	notdef
-	register struct qbuf *qp;
+	struct qbuf *qp;
 #endif
-	register PE	    pe;
-	register PS	    ps;
+	PE	    pe;
+	PS	    ps;
 
 #ifdef	notdef		/* "inline" nonsense too difficult to handle */
 	if ((qp = qb -> qb_forw) != qb && qp -> qb_forw == qb) {

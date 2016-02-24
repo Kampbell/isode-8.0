@@ -33,9 +33,9 @@ extern IFP acl_fn;
 extern char dsa_mode;
 
 Attr_Sequence str2as (str)
-register char * str;
+char * str;
 {
-	register char * ptr;
+	char * ptr;
 	char * save, val;
 	AttributeType at;
 	Attr_Sequence as;
@@ -88,10 +88,10 @@ register char * str;
 
 Attr_Sequence as_combine (as,str,allownull)
 Attr_Sequence as;
-register char * str;
+char * str;
 char allownull;
 {
-	register char * ptr = str;
+	char * ptr = str;
 	char * save, val;
 	AV_Sequence avs;
 	Attr_Sequence as2,nas;

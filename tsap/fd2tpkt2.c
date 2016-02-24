@@ -35,12 +35,10 @@ static char *rcsid = "$Header: /xtel/isode/RCS/fd2tpkt.c,v 8.2 1992/02/26 13:48:
 static int  fd2tpktaux ();
 static int  readx ();
 
-struct tsapkt *fd2tpkt (fd, initfnx, readfnx)
-int	fd;
-IFP	initfnx,
-	readfnx;
+struct tsapkt *
+fd2tpkt (int fd, IFP initfnx, IFP readfnx)
 {
-	register struct tsapkt *t;
+	struct tsapkt *t;
 
 	if ((t = newtpkt (0)) == NULL)
 		return NULL;
@@ -63,16 +61,13 @@ IFP	initfnx,
 
 /*  */
 
-static int  fd2tpktaux (fd, t, initfnx, readfnx)
-int	fd;
-register struct tsapkt *t;
-IFP	initfnx,
-	readfnx;
+static int 
+fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx)
 {
-	register int    code,
+	int    code,
 			 len,
 			 vlen;
-	register char  *vptr;
+	char  *vptr;
 
 	if ((code = (*initfnx) (fd, t)) != OK)
 		return code;
@@ -132,8 +127,8 @@ IFP	initfnx,
 					break;
 
 				case VDAT_ALTERNATE: {
-					register int i;
-					register char *ap;
+					int i;
+					char *ap;
 
 					for (ap = vptr, i = len; i > 0; ap++, i--)
 						t -> t_cr.cr_alternate |=
@@ -319,15 +314,12 @@ IFP	initfnx,
 
 /*  */
 
-static int  readx (fd, buffer, n, readfnx)
-int	fd;
-char    *buffer;
-int	n;
-IFP	readfnx;
+static int 
+readx (int fd, char *buffer, int n, IFP readfnx)
 {
-	register int    i,
+	int    i,
 			 cc;
-	register char   *bp;
+	char   *bp;
 
 	for (bp = buffer, i = n; i > 0; bp += cc, i -= cc) {
 		switch (cc = (*readfnx) (fd, bp, i)) {
@@ -348,10 +340,8 @@ IFP	readfnx;
 
 /*  */
 
-int	tpkt2fd (tb, t, writefnx)
-register struct tsapblk *tb;
-register struct tsapkt *t;
-IFP	writefnx;
+int 
+tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx)
 {
 	int     i,
 			ilen,
@@ -359,7 +349,7 @@ IFP	writefnx;
 	char   *cp,
 		   *vptr,
 		   *outptr;
-	register struct udvec  *uv;
+	struct udvec  *uv;
 	SFP	    pstat;
 	SBV	    smask;
 
@@ -484,8 +474,8 @@ IFP	writefnx;
 
 	i = (*writefnx) (tb, t, outptr, ilen);
 
-	(void) sigiomask (smask);
-	(void) signal (SIGPIPE, pstat);
+	 sigiomask (smask);
+	 signal (SIGPIPE, pstat);
 
 	if (i != NOTOK)
 		i = OK;
@@ -497,10 +487,10 @@ IFP	writefnx;
 
 /*  */
 
-struct tsapkt *newtpkt (code)
-int	code;
+struct tsapkt *
+newtpkt (int code)
 {
-	register struct tsapkt *t;
+	struct tsapkt *t;
 
 	t = (struct tsapkt *) calloc (1, sizeof *t);
 	if (t == NULL)
@@ -513,8 +503,8 @@ int	code;
 }
 
 
-int	freetpkt (t)
-register struct tsapkt *t;
+int 
+freetpkt (struct tsapkt *t)
 {
 	if (t == NULL)
 		return;

@@ -33,20 +33,20 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamfaduid.c,v 9.0 199
 /*  */
 
 struct type_FTAM_FADU__Identity *faduid2fpm (fsb, fa, fti)
-register struct ftamblk *fsb;
-register struct FADUidentity *fa;
+struct ftamblk *fsb;
+struct FADUidentity *fa;
 struct FTAMindication *fti;
 {
-	register int    n;
-	register char **ap;
-	register struct type_FTAM_FADU__Identity *fpm;
-	register struct name_element **f4;
+	int    n;
+	char **ap;
+	struct type_FTAM_FADU__Identity *fpm;
+	struct name_element **f4;
 
 	if ((fpm = (struct type_FTAM_FADU__Identity *) calloc (1, sizeof *fpm))
 			== NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (fpm)
@@ -65,7 +65,7 @@ out:
 		default:
 bad_value:
 			;
-			(void) ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "bad value in FADU identity");
 			goto out;
 		}
@@ -132,7 +132,7 @@ bad_value:
 		break;
 
 	default:
-		(void) ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 						 "bad type for FADU identity");
 		goto out;
 	}
@@ -143,14 +143,14 @@ bad_value:
 /*  */
 
 int	fpm2faduid (fsb, fpm, fa, fti)
-register struct ftamblk *fsb;
-register struct type_FTAM_FADU__Identity *fpm;
-register struct FADUidentity *fa;
+struct ftamblk *fsb;
+struct type_FTAM_FADU__Identity *fpm;
+struct FADUidentity *fa;
 struct FTAMindication *fti;
 {
-	register int    n;
-	register char **ap;
-	register struct name_element *f4;
+	int    n;
+	char **ap;
+	struct name_element *f4;
 
 	bzero ((char *) fa, sizeof *fa);
 

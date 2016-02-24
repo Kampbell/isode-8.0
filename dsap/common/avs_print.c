@@ -63,7 +63,7 @@ PS   ps;
 int  format;
 char *sep;
 {
-	register AV_Sequence eptr;
+	AV_Sequence eptr;
 
 	if (avs == NULLAV)
 		return;

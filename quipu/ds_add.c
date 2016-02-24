@@ -58,7 +58,7 @@ char 			dsp;
 char			authtype;
 {
 	Entry  entryptr,ptr;
-	register DN  dntop, dn = NULLDN;
+	DN  dntop, dn = NULLDN;
 	DN  trail = NULLDN;
 	extern Entry database_root;
 	ContinuationRef cont_ref_parent ();
@@ -249,7 +249,7 @@ char			authtype;
 
 	/* add the entry */
 	DATABASE_HEAP;
-	(void) avl_insert(&entryptr->e_children, (caddr_t) ptr, entry_cmp, avl_dup_error);
+	 avl_insert(&entryptr->e_children, (caddr_t) ptr, entry_cmp, avl_dup_error);
 	GENERAL_HEAP;
 
 	if (entryptr->e_leaf) {

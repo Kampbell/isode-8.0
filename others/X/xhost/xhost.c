@@ -78,8 +78,8 @@ int nameserver_timedout;
 
 char *ProgramName;
 
-static int XFamily(af)
-int af;
+static int 
+XFamily (int af)
 {
 	int i;
 	for (i = 0; i < FAMILIES; i++)
@@ -95,7 +95,7 @@ char **argv;
 {
 	Display *dpy;
 	char host[256];
-	register char *arg;
+	char *arg;
 	int display, i, w, nhosts;
 	char *hostname, *get_hostname();
 	XHostAddress *list;

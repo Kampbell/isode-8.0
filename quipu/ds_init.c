@@ -177,7 +177,7 @@ dsa_init () {
 		if ((newentry = make_path (dsainfo->edb_name)) == NULLENTRY)
 			continue;
 
-		(void) subtree_load (newentry,dsainfo->edb_name);
+		 subtree_load (newentry,dsainfo->edb_name);
 		if (parse_status != 0)
 			loadstate = FALSE;
 	}
@@ -191,7 +191,7 @@ dsa_init () {
 
 	/* Load cached EDB files - if any */
 	if ((as = get_cacheEDB()) != NULLATTR) {
-		(void) time (&timenow);
+		 time (&timenow);
 
 		for (avs = as -> attr_value; avs != NULLAV; avs = avs -> avseq_next) {
 			if ((newentry = make_path ((DN)avs->avseq_av.av_struct)) == NULLENTRY)
@@ -243,7 +243,7 @@ DN dn;
 		if ((newentry = make_path (tmp)) == NULLENTRY)
 			parse_error ("Make_path failed",NULLCP);
 		else
-			(void) subtree_load (newentry,tmp);
+			 subtree_load (newentry,tmp);
 
 		trail->dn_parent = tmp2;
 

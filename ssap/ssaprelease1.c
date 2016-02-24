@@ -36,17 +36,12 @@ static int  SRelRetryRequestAux ();
 
 /*    S-RELEASE.REQUEST */
 
-int	SRelRequest (sd, data, cc, secs, sr, si)
-int	sd;
-char   *data;
-int	cc;
-int	secs;
-struct SSAPrelease *sr;
-struct SSAPindication *si;
+int 
+SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (sr);
 	missingP (si);
@@ -58,7 +53,7 @@ struct SSAPindication *si;
 
 	result = SRelRequestAux (sb, data, cc, secs, sr, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -73,15 +68,10 @@ struct SSAPindication *si;
 }
 
 
-static int  SRelRequestAux (sb, data, cc, secs, sr, si)
-register struct ssapblk *sb;
-char   *data;
-int	cc;
-int	secs;
-struct SSAPrelease *sr;
-struct SSAPindication *si;
+static int 
+SRelRequestAux (struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
 {
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	dotokens ();
 
@@ -119,15 +109,12 @@ struct SSAPindication *si;
 
 /*    S-RELEASE-RETRY.REQUEST (pseudo) */
 
-int	SRelRetryRequest (sd, secs, sr, si)
-int	sd;
-int	secs;
-struct SSAPrelease *sr;
-struct SSAPindication *si;
+int 
+SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int	    result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (sr);
 	missingP (si);
@@ -142,22 +129,19 @@ struct SSAPindication *si;
 	else
 		result = SRelRetryRequestAux (sb, secs, sr, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  SRelRetryRequestAux (sb, secs, sr, si)
-register struct ssapblk *sb;
-int	secs;
-struct SSAPrelease *sr;
-struct SSAPindication *si;
+static int 
+SRelRetryRequestAux (struct ssapblk *sb, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
 {
 	int	    code,
 			result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	if (sb -> sb_flags & SB_RELEASE)
 		goto waiting;
@@ -185,7 +169,7 @@ again:
 waiting:
 	;
 	if ((s = sb2spkt (sb, si, secs, NULLTX)) == NULL) {
-		register struct SSAPabort  *sa = &si -> si_abort;
+		struct SSAPabort  *sa = &si -> si_abort;
 
 		if (sa -> sa_reason == SC_TIMER) {
 			sb -> sb_flags |= SB_RELEASE;
@@ -228,7 +212,7 @@ waiting:
 	case SPDU_AB:
 		si -> si_type = SI_ABORT;
 		{
-			register struct SSAPabort  *sa = &si -> si_abort;
+			struct SSAPabort  *sa = &si -> si_abort;
 
 			if (!(sa -> sa_peer = (s -> s_ab_disconnect & AB_DISC_USER)
 								  ? 1 : 0))
@@ -241,7 +225,7 @@ waiting:
 	default:
 bad_nf:
 		;
-		(void) spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+		 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
 						 "session protocol mangled: not expecting 0x%x",
 						 s -> s_code);
 		break;

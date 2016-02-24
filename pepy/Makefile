@@ -81,6 +81,7 @@ $(BINDIR)pepy:	xpepy
 		-@echo ""
 
 pepy:		xpepy
+		cp xpepy pepy
 
 xpepy:		pepyvrsn.o $(PEPYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ pepy.o pepy_do.o pepy_undo.o \
@@ -142,6 +143,7 @@ $(BINDIR)posy:	xposy
 		-@echo ""
 
 posy:		xposy
+		cp xposy posy
 
 xposy:		posy.o pepy_misc.o yacc.o pepyvrsn.o $(PEPYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ posy.o pepy_misc.o yacc.o \
@@ -347,11 +349,12 @@ manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 # clean
 ################################################################
 
-clean:;		rm -f *.o *.a x* z* _* core pepy.h *yacc.y *yacc.c lex.l \
+clean:;		rm -f *.o *.a x* z* _* core* pepy.h *yacc.y *yacc.c lex.l \
 			lex.c *.ph testdebug.c UNIV-* UPEPY-* VPEPY-* \
 			pepytest.c pepytest pp.c pp mpp mpp.c P1.c P2.c \
 			P3.c SFD.c T73.c EAN.c pepyvrsn.c salary.c salary \
-			hello_world.c hello_world bigpepytest.c bigpepytest
+			hello_world.c hello_world bigpepytest.c bigpepytest \
+			pepy posy
 
 grind:;		iprint Makefile
 		tgrind -lc pepy.h pepy.c posy.c pepyvrsn.c

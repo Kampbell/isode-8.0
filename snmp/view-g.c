@@ -51,16 +51,16 @@ struct view *get_prent ();
 
 static int  o_viewPrim (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct view *vu;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct view *vu;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 
 	ifvar = (int) ot -> ot_info;
 	switch (offset) {
@@ -162,11 +162,11 @@ int	offset;
 /*  */
 
 static struct view *get_prent (ip, len, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnext;
 {
-	register struct view *v;
+	struct view *v;
 
 	for (v = VHead -> v_forw; v != VHead; v = v -> v_forw)
 		switch (elem_cmp (v -> v_instance, v -> v_insize, ip, len)) {
@@ -202,16 +202,16 @@ struct community *get_acent ();
 
 static int  o_viewAcl (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct community *c;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct community *c;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 
 	ifvar = (int) ot -> ot_info;
 	switch (offset) {
@@ -301,11 +301,11 @@ int	offset;
 /*  */
 
 static struct community *get_acent (ip, len, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnext;
 {
-	register struct community *c;
+	struct community *c;
 
 	for (c = CLex; c; c = c -> c_next)
 		switch (elem_cmp (c -> c_instance, c -> c_insize, ip, len)) {
@@ -336,16 +336,16 @@ struct trap *get_trent ();
 
 static int  o_viewTrap (oi, v, offset)
 OI	oi;
-register struct type_SNMP_VarBind *v;
+struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int	    ifvar;
-	register int    i;
-	register unsigned int *ip,
+	int    i;
+	unsigned int *ip,
 			 *jp;
-	register struct trap *t;
-	register OID    oid = oi -> oi_name;
-	register OT	    ot = oi -> oi_type;
+	struct trap *t;
+	OID    oid = oi -> oi_name;
+	OT	    ot = oi -> oi_type;
 
 	ifvar = (int) ot -> ot_info;
 	switch (offset) {
@@ -434,11 +434,11 @@ int	offset;
 /*  */
 
 static struct trap *get_trent (ip, len, isnext)
-register unsigned int *ip;
+unsigned int *ip;
 int	len;
 int	isnext;
 {
-	register struct trap *t;
+	struct trap *t;
 
 	for (t = UHead -> t_forw; t != UHead; t = t -> t_forw)
 		switch (elem_cmp (t -> t_instance, t -> t_insize, ip, len)) {
@@ -501,8 +501,8 @@ static struct wired {
 init_view () {
 	char	buffer[BUFSIZ],
 			*vec[4];
-	register OT	    ot;
-	register struct wired *w;
+	OT	    ot;
+	struct wired *w;
 
 	CHead -> c_forw = CHead -> c_back = CHead;
 	UHead -> t_forw = UHead -> t_back = UHead;
@@ -518,7 +518,7 @@ init_view () {
 			adios (NULLCP, "you lose");
 	}
 
-	(void) strcpy (buffer, "defViewTrapDest.0");
+	 strcpy (buffer, "defViewTrapDest.0");
 	if ((trapview = text2oid (buffer)) == NULLOID)
 		adios (NULLCP, "unknown OID \"defViewTrapDest.0\" for traps");
 	trapview -> oid_nelem--;
@@ -580,18 +580,18 @@ init_view () {
 /*  */
 
 fin_view () {
-	register int    i;
+	int    i;
 	char   *vec[3];
-	register struct community *c;
-	register struct view *v;
-	register struct trap *t;
+	struct community *c;
+	struct view *v;
+	struct trap *t;
 
 	if (CHead -> c_forw == CHead) {
 		vec[0] = "community";
 		vec[1] = "public";
 		vec[2] = NULL;
 
-		(void) f_community (vec);
+		 f_community (vec);
 	}
 
 	for (c = CHead -> c_forw; c != CHead; c = c -> c_forw) {
@@ -610,7 +610,7 @@ fin_view () {
 	for (v = VHead -> v_forw; v != VHead; v = v -> v_forw)
 		i++;
 	if (i > 0) {
-		register struct view **base,
+		struct view **base,
 				**bp,
 				**ep;
 
@@ -619,8 +619,8 @@ fin_view () {
 			adios (NULLCP, "out of memory");
 		ep = base;
 		for (v = VHead -> v_forw; v != VHead; v = v -> v_forw) {
-			register int    j;
-			register unsigned int *ip,
+			int    j;
+			unsigned int *ip,
 					 *jp;
 			OID	    oid = v -> v_name;
 
@@ -654,7 +654,7 @@ fin_view () {
 		i++;
 	if (i > 0) {
 		int	j;
-		register struct community **base,
+		struct community **base,
 				**bp,
 				**ep;
 
@@ -663,9 +663,9 @@ fin_view () {
 			adios (NULLCP, "out of memory");
 		ep = base;
 		for (c = CHead -> c_forw; c != CHead; c = c -> c_forw) {
-			register char *cp,
+			char *cp,
 					 *dp;
-			register unsigned int *ip;
+			unsigned int *ip;
 
 			switch (c -> c_addr.na_stack) {
 			case NA_TCP:
@@ -699,7 +699,7 @@ fin_view () {
 			*ip++ = j;
 			switch (c -> c_addr.na_stack) {
 			case NA_TCP:
-				(void) sscanf (c -> c_addr.na_domain, "%u.%u.%u.%u",
+				 sscanf (c -> c_addr.na_domain, "%u.%u.%u.%u",
 							   ip, ip + 1, ip + 2, ip + 3);
 				break;
 
@@ -741,7 +741,7 @@ stuff_it:
 	for (t = UHead -> t_forw; t != UHead; t = t -> t_forw)
 		i++;
 	if (i > 0) {
-		register struct trap **base,
+		struct trap **base,
 				**bp,
 				**ep;
 
@@ -750,8 +750,8 @@ stuff_it:
 			adios (NULLCP, "out of memory");
 		ep = base;
 		for (t = UHead -> t_forw; t != UHead; t = t -> t_forw) {
-			register int    j;
-			register unsigned int *ip,
+			int    j;
+			unsigned int *ip,
 					 *jp;
 			OID	    oid = t -> t_view -> v_name;
 
@@ -786,8 +786,8 @@ stuff_it:
 int	f_community (vec)
 char  **vec;
 {
-	register struct community *c;
-	register struct NSAPaddr *na;
+	struct community *c;
+	struct NSAPaddr *na;
 
 	vec++;
 
@@ -806,7 +806,7 @@ char  **vec;
 	} else {
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
-		(void) strcpy (na -> na_domain, "0.0.0.0");
+		 strcpy (na -> na_domain, "0.0.0.0");
 	}
 
 	if (*vec) {
@@ -829,7 +829,7 @@ char  **vec;
 	if (*vec) {
 		char    buffer[BUFSIZ];
 
-		(void) strcpy (buffer, *vec);
+		 strcpy (buffer, *vec);
 		if ((c -> c_vu = text2oid (buffer)) == NULLOID) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 			goto you_lose;
@@ -860,10 +860,10 @@ int	f_proxy (vec)
 char  **vec;
 {
 	char    buffer[BUFSIZ];
-	register struct community *c;
-	register struct view *v,
+	struct community *c;
+	struct view *v,
 			*u;
-	register struct NSAPaddr *na;
+	struct NSAPaddr *na;
 
 	if ((v = (struct view *) calloc (1, sizeof *v)) == NULL)
 		adios (NULLCP, "out of memory");
@@ -873,7 +873,7 @@ char  **vec;
 	c -> c_permission = OT_YYY;
 	vec++;
 
-	(void) strcpy (buffer, *vec);
+	 strcpy (buffer, *vec);
 	if ((v -> v_name = text2oid (buffer)) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 		goto you_lose;
@@ -942,10 +942,10 @@ you_lose:
 int	f_trap (vec)
 char  **vec;
 {
-	register struct trap *t;
-	register struct view *v;
+	struct trap *t;
+	struct view *v;
 	struct NSAPaddr nas;
-	register struct NSAPaddr *na = &nas;
+	struct NSAPaddr *na = &nas;
 	static int trapno = 1;
 
 	vec++;
@@ -981,9 +981,9 @@ char  **vec;
 	if (*vec) {
 		char    buffer[BUFSIZ];
 		OID	name;
-		register struct view *u;
+		struct view *u;
 
-		(void) strcpy (buffer, *vec);
+		 strcpy (buffer, *vec);
 		if ((name = text2oid (buffer)) == NULL) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 			goto you_lose;
@@ -1032,10 +1032,10 @@ int  f_view (vec)
 char  **vec;
 {
 	char    buffer[BUFSIZ];
-	register struct subtree *s,
+	struct subtree *s,
 			*x,
 			*y;
-	register struct view *v,
+	struct view *v,
 			*u;
 
 	if (viewmask == 0) {
@@ -1050,7 +1050,7 @@ char  **vec;
 	v -> v_subtree.s_forw = v -> v_subtree.s_back = s;
 	vec++;
 
-	(void) strcpy (buffer, *vec);
+	 strcpy (buffer, *vec);
 	if ((v -> v_name = text2oid (buffer)) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 		goto you_lose;
@@ -1066,17 +1066,17 @@ char  **vec;
 		}
 
 	for (vec++; *vec; vec++) {
-		register struct subtree *z;
+		struct subtree *z;
 		OID	name;
 
-		(void) strcpy (buffer, *vec);
+		 strcpy (buffer, *vec);
 		if ((name = text2oid (buffer)) == NULLOID) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 			goto you_lose;
 		}
 
 		for (x = s -> s_forw; x != s; x = y) {
-			register int    i,
+			int    i,
 					 j;
 			y = x -> s_forw;
 
@@ -1144,7 +1144,7 @@ struct sockaddr *sock;
 int	proxy;
 {
 #ifdef	TCP
-	register struct hostent *hp;
+	struct hostent *hp;
 #endif
 	struct TSAPaddr *ta;
 
@@ -1155,7 +1155,7 @@ int	proxy;
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
 		inaddr_copy (hp, &sin);
-		(void) strncpy (na -> na_domain, inet_ntoa (sin.sin_addr),
+		 strncpy (na -> na_domain, inet_ntoa (sin.sin_addr),
 						sizeof na -> na_domain - 1);
 	} else
 #endif

@@ -33,17 +33,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sprintb.c,v 9.0 1992
 
 /*  */
 
-char  *sprintb (v, bits)
-register int	v;
-register char  *bits;
+char *
+sprintb (int v, char *bits)
 {
-	register int    i,
+	int    i,
 			 j;
-	register char   c,
+	char   c,
 			 *bp;
 	static char buffer[BUFSIZ];
 
-	(void) sprintf (buffer, bits && *bits == 010 ? "0%o" : "0x%x", v);
+	 sprintf (buffer, bits && *bits == 010 ? "0%o" : "0x%x", v);
 	bp = buffer + strlen (buffer);
 
 	if (bits && *++bits) {

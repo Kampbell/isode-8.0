@@ -32,11 +32,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/int2strb.c,v 9.0 1992/
 
 /*  */
 
-char   *int2strb (n, len)
-register int    n;
-int     len;
+char *
+int2strb (int n, int len)
 {
-	register int    i;
+	int    i;
 	static char buffer[sizeof (int) + 1];
 
 	bzero (buffer, sizeof (buffer));

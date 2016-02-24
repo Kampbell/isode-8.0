@@ -32,14 +32,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2qb.c,v 9.0 1992/0
 
 /*  */
 
-struct qbuf *prim2qb (pe)
-register PE    pe;
+struct qbuf *
+prim2qb (PE pe)
 {
-	register struct qbuf *qb,
+	struct qbuf *qb,
 			*qp;
-	register PE	    p;
-	register PElementClass class;
-	register PElementID id;
+	PE	    p;
+	PElementClass class;
+	PElementID id;
 
 	if ((qb = (struct qbuf *) malloc (sizeof *qb)) == NULL)
 		return pe_seterr (pe, PE_ERR_NMEM, (struct qbuf *) NULL);
@@ -62,7 +62,7 @@ register PE    pe;
 			break;
 		class = p -> pe_class, id = p -> pe_id;
 		for (p = pe -> pe_cons; p; p = p -> pe_next) {
-			register struct qbuf *qpp,
+			struct qbuf *qpp,
 					*qbp;
 
 			if ((p -> pe_class != class || p -> pe_id != id)

@@ -100,32 +100,32 @@ IFP	quit;
 {
 	int	    iloop,
 			sd;
-	register char  *cp,
+	char  *cp,
 			 **ap;
 	char    buffer[BUFSIZ],
 			*vec[NVEC + 1];
-	register struct dispatch   *ds;
+	struct dispatch   *ds;
 	struct QOStype qos;
 	/*
 	    struct SSAPref sfs;
-	    register struct SSAPref *sf;
+	    struct SSAPref *sf;
 	*/
-	register struct PSAPaddr *pa;
+	struct PSAPaddr *pa;
 	/*
 	    struct AcSAPconnect accs;
-	    register struct AcSAPconnect   *acc = &accs;
+	    struct AcSAPconnect   *acc = &accs;
 	*/
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	AEI	    aei;
 	OID	    ctx,
 			pci;
 	struct PSAPctxlist pcs;
-	register struct PSAPctxlist *pc = &pcs;
+	struct PSAPctxlist *pc = &pcs;
 	struct RoSAPindication rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject *rop = &roi -> roi_preject;
 
 	if (myname = rindex (argv[0], '/'))
 		myname++;
@@ -191,7 +191,7 @@ IFP	quit;
 	/*
 	    if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	    }
 	*/
 
@@ -208,7 +208,7 @@ IFP	quit;
 		printf ("using %s\n", isodeversion);
 
 		printf ("%s... ", cp);
-		(void) fflush (stdout);
+		 fflush (stdout);
 
 		iloop = 1;
 	} else {
@@ -242,7 +242,7 @@ IFP	quit;
 	    }
 	    if (iloop) {
 		printf ("connected\n");
-		(void) fflush (stdout);
+		 fflush (stdout);
 	    }
 	    sd = acc -> acc_sd;
 	    ACCFREE (acc);
@@ -253,7 +253,7 @@ IFP	quit;
 
 	if (iloop) {
 		printf ("connected\n");
-		(void) fflush (stdout);
+		 fflush (stdout);
 	}
 
 	if (RoSetService (sd, RoAcuService, roi) == NOTOK)
@@ -285,19 +285,16 @@ IFP	quit;
 
 /*    INVOKE */
 
-static	invoke (sd, ops, ds, args)
-int	sd;
-struct RyOperation ops[];
-register struct dispatch *ds;
-char  **args;
+static 
+invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args)
 {
-	register int    i;
+	int    i;
 	int	    cc,
 			result;
 	caddr_t in;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	in = NULL;
 	if (ds -> ds_argument && (*ds -> ds_argument) (sd, ds, args, &in) == NOTOK)
@@ -305,7 +302,7 @@ char  **args;
 
 #ifdef	TIMER
 	if (timing) {
-		register struct RyOperation *ryo = ops;
+		struct RyOperation *ryo = ops;
 		PE	pe;
 
 		cc = 0;
@@ -358,16 +355,16 @@ nope:
 out:
 	;
 	if (ds -> ds_free && in)
-		(void) (*ds -> ds_free) (in);
+		 (*ds -> ds_free) (in);
 }
 
 /*    INTERACTIVE */
 
-static int  getline (buffer)
-char   *buffer;
+static int 
+getline (char *buffer)
 {
-	register int    i;
-	register char  *cp,
+	int    i;
+	char  *cp,
 			 *ep;
 	static int  sticky = 0;
 
@@ -377,7 +374,7 @@ char   *buffer;
 	}
 
 	printf ("%s> ", myname);
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
@@ -409,9 +406,8 @@ char   *buffer;
 
 
 #ifndef	TMS
-static  timer (bytes, pkts)
-int     bytes,
-		pkts;
+static 
+timer (int bytes, int pkts)
 {
 	long    ms;
 	float   bs,
@@ -421,10 +417,10 @@ int     bytes,
 	static struct timeval   start;
 
 	if (pkts == 0) {
-		(void) gettimeofday (&start, (struct timezone *) 0);
+		 gettimeofday (&start, (struct timezone *) 0);
 		return;
 	} else
-		(void) gettimeofday (&stop, (struct timezone  *) 0);
+		 gettimeofday (&stop, (struct timezone  *) 0);
 
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
@@ -439,10 +435,8 @@ int     bytes,
 }
 
 
-static  tvsub (tdiff, t1, t0)
-register struct timeval *tdiff,
-		*t1,
-		*t0;
+static 
+tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
 {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
@@ -454,9 +448,8 @@ register struct timeval *tdiff,
 long	times ();
 
 
-static	timer (bytes, pkts)
-int	bytes,
-	pkts;
+static 
+timer (int bytes, int pkts)
 {
 	long    ms;
 	float   bs,
@@ -505,9 +498,8 @@ struct RoSAPindication *roi;
 
 /*    ERRORS */
 
-void	ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_adios (struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
@@ -515,26 +507,24 @@ char   *event;
 }
 
 
-void	ros_advise (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_advise (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
 /*  */
 
-void	acs_adios (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_adios (struct AcSAPabort *aca, char *event)
 {
 	acs_advise (aca, event);
 
@@ -542,20 +532,19 @@ char   *event;
 }
 
 
-void	acs_advise (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_advise (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcuErrString (aca -> aca_reason),
 						/*		AcErrString (aca -> aca_reason), */
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
-	/*	(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason)); */
+		 sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
+	/*	 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason)); */
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -582,9 +571,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -604,27 +592,26 @@ va_dcl {
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void 
+_advise (va_list ap)
 {
 	char    buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-	(void) fflush (stderr);
+	 fflush (stderr);
 }
 #else
 /* VARARGS */
 
-void	advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }
@@ -646,9 +633,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	ryr_advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
 	ryr_advise (what, fmt);
 }

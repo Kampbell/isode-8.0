@@ -96,7 +96,7 @@ ftp_quit() {
 
 	if (!connected) return OK;
 	n = command("QUIT");
-	(void) fclose(cout);
+	 fclose(cout);
 	connected = 0;
 	data = -1;
 
@@ -148,15 +148,15 @@ char *filename;
 	/* begin list transfer */
 	if ((fd = recvrequest("NLST",filename)) == NOTOK) return NOTOK;
 	if ((fp = fdopen(fd,"r")) == NULL) {
-		(void)close(fd);
-		(void) getreply(0);
-		(void)sprintf(ftp_error,"Out of memory");
+		close(fd);
+		 getreply(0);
+		sprintf(ftp_error,"Out of memory");
 		return NOTOK;
 	}
 
 	/* count number of records (lines) in data transfer */
 	for(count=0; fgets(lineX,BUFSIZ,fp)!=NULL; count++);
-	(void)fclose(fp);
+	fclose(fp);
 
 	/* transfer complete reply */
 	n = getreply(0);
@@ -289,7 +289,7 @@ int modeX;
 	/* unstructured binary file */
 	case VFS_UBF:
 		if (type == TYPE_L) break;
-		(void)sprintf(cmd, "TYPE L %s", bytename);
+		sprintf(cmd, "TYPE L %s", bytename);
 		type = TYPE_L;
 		n = command(cmd,0);
 		break;
@@ -299,7 +299,7 @@ int modeX;
 	case VFS_FDF:
 	default:
 		if (type == TYPE_A) break;
-		(void)sprintf(cmd, "TYPE A");
+		sprintf(cmd, "TYPE A");
 		type = TYPE_A;
 		n = command(cmd,0);
 	}
@@ -333,7 +333,7 @@ char *filename;
 	if (fd == NOTOK) return NOTOK;
 
 	/* close file (create empty file) */
-	(void)close(fd);
+	close(fd);
 	n = getreply(0);
 	if (n == COMPLETE) return OK;
 	return NOTOK;

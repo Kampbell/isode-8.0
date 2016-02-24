@@ -36,20 +36,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapabort1.c,v 9.0 1
 
 /*    A-ABORT.REQUEST */
 
-int	AcUAbortRequest (sd, data, ndata, aci)
-int	sd;
-PE     *data;
-int	ndata;
-struct AcSAPindication *aci;
+int 
+AcUAbortRequest (int sd, PE *data, int ndata, struct AcSAPindication *aci)
 {
 	SBV     smask;
 	int     result;
-	register struct assocblk  *acb;
+	struct assocblk  *acb;
 	PE	    pe;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
-	register struct type_ACS_ABRT__apdu *pdu;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
+	struct type_ACS_ABRT__apdu *pdu;
 
 	toomuchP (data, ndata, NACDATA, "release");
 	missingP (aci);
@@ -57,7 +54,7 @@ struct AcSAPindication *aci;
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
@@ -67,7 +64,7 @@ struct AcSAPindication *aci;
 	if (acb -> acb_sversion == 1) {
 		if ((result = PUAbortRequest (acb -> acb_fd, data, ndata, pi))
 				== NOTOK) {
-			(void) ps2acslose (acb, aci, "PUAbortRequest", pa);
+			 ps2acslose (acb, aci, "PUAbortRequest", pa);
 			if (PC_FATAL (pa -> pa_reason))
 				goto out2;
 			else
@@ -97,7 +94,7 @@ struct AcSAPindication *aci;
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 						  PY_pepy);
 		goto out2;
 	}
@@ -106,7 +103,7 @@ struct AcSAPindication *aci;
 	PLOGP (acsap_log,ACS_ACSE__apdu, pe, "ABRT-apdu", 0);
 
 	if ((result = PUAbortRequest (acb -> acb_fd, &pe, 1, pi)) == NOTOK) {
-		(void) ps2acslose (acb, aci, "PUAbortRequest", pa);
+		 ps2acslose (acb, aci, "PUAbortRequest", pa);
 		if (PC_FATAL (pa -> pa_reason))
 			goto out2;
 		else
@@ -127,7 +124,7 @@ out1:
 	if (pdu)
 		free_ACS_ABRT__apdu (pdu);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

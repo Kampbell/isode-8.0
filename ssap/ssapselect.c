@@ -33,17 +33,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapselect.c,v 9.0 199
 
 /*    map session descriptors for select() */
 
-int	SSelectMask (sd, mask, nfds, si)
-int	sd;
-fd_set *mask;
-int    *nfds;
-register struct SSAPindication *si;
+int 
+SSelectMask (int sd, fd_set *mask, int *nfds, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	missingP (mask);
 	missingP (nfds);
@@ -51,18 +48,18 @@ register struct SSAPindication *si;
 	smask = sigioblock ();
 
 	if ((sb = findsblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP,
 						 "invalid session descriptor");
 	}
 
 	if ((result = TSelectMask (sb -> sb_fd, mask, nfds, td)) == NOTOK)
 		if (td -> td_reason == DR_WAITING)
-			(void) ssaplose (si, SC_WAITING, NULLCP, NULLCP);
+			 ssaplose (si, SC_WAITING, NULLCP, NULLCP);
 		else
-			(void) ts2sslose (si, "TSelectMask", td);
+			 ts2sslose (si, "TSelectMask", td);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

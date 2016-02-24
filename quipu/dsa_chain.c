@@ -89,7 +89,7 @@ char			  conn_ctx;
 			x >= 0;
 			na++, x-- ) {
 
-		register int *ip;
+		int *ip;
 
 		for (ip = ts_communities; *ip; ip++) {
 			if (na->na_community == *ip) {
@@ -415,7 +415,7 @@ struct oper_act		* on;
 }
 
 int	  task_chain(tk, di)
-register       struct task_act     * tk;
+      struct task_act     * tk;
 struct di_block	* di;
 {
 	struct oper_act	* on;
@@ -546,7 +546,7 @@ struct oper_act * on;
 {
 	struct DSE_referral         * ref = &(on->on_resp.di_error.de_err.ERR_REFERRAL);
 	struct continuation_ref     * cref;
-	register struct chain_arg	* cha = &(on->on_req.dca_charg);
+	struct chain_arg	* cha = &(on->on_req.dca_charg);
 	struct trace_info		* ti;
 	struct di_block * ap2di();
 
@@ -631,7 +631,7 @@ struct oper_act * on;
 struct oper_act	* task2oper(tk)
 struct task_act * tk;
 {
-	register struct chain_arg	* cha = &(tk->tk_dx.dx_arg.dca_charg);
+	struct chain_arg	* cha = &(tk->tk_dx.dx_arg.dca_charg);
 	struct continuation_ref	* cref = tk->tk_resp.di_error.de_err.ERR_REFERRAL.DSE_ref_candidates;
 	struct trace_info		* ti;
 	struct oper_act		* on;
@@ -1087,7 +1087,7 @@ struct oper_act	* on;
 		get_edb_fail_wakeup(on);
 		break;
 	case ON_TYPE_SHADOW:
-		(void) shadow_fail_wakeup(on);
+		 shadow_fail_wakeup(on);
 		break;
 	default:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("oper_fail_wakeup - op has invalid type"));
@@ -1106,8 +1106,8 @@ struct task_act * tk;
 	struct oper_act		* on;
 	struct di_block     	* di;
 	struct di_block     	* di_tmp;
-	register struct chain_arg	* tkcha = &(tk->tk_dx.dx_arg.dca_charg);
-	register struct chain_arg	* oncha;
+	struct chain_arg	* tkcha = &(tk->tk_dx.dx_arg.dca_charg);
+	struct chain_arg	* oncha;
 	struct trace_info		* ti;
 	struct DSError		err;
 	struct common_args		* ca;
@@ -1144,7 +1144,7 @@ struct task_act * tk;
 					break;
 			}
 		} else
-			(void) di2cref(di_tmp, &err, tk->tk_conn->cn_ctx);
+			 di2cref(di_tmp, &err, tk->tk_conn->cn_ctx);
 
 		on = oper_alloc();
 		on->on_type = ON_TYPE_SUBTASK;

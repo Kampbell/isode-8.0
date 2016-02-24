@@ -38,15 +38,15 @@ DIR *
 opendir( dirname )
 char		*dirname;	/* name of directory */
 {
-	register DIR	*dirp;		/* -> malloc'ed storage */
-	register int	fd;		/* file descriptor for read */
+	DIR	*dirp;		/* -> malloc'ed storage */
+	int	fd;		/* file descriptor for read */
 	struct stat	sbuf;		/* result of fstat() */
 
 	if ( (fd = open( dirname, O_RDONLY )) < 0 )
 		return NULL;		/* errno set by open() */
 
 	if ( fstat( fd, &sbuf ) != 0 || !S_ISDIR( sbuf.st_mode ) ) {
-		(void)close( fd );
+		close( fd );
 		errno = ENOTDIR;
 		return NULL;		/* not a directory */
 	}
@@ -54,13 +54,13 @@ char		*dirname;	/* name of directory */
 	if ( (dirp = (DIR *)malloc( sizeof(DIR) )) == NULL
 			|| (dirp->dd_buf = (char *)malloc( (unsigned)DIRBUF )) == NULL
 	   )	{
-		register int	serrno = errno;
+		int	serrno = errno;
 		/* errno set to ENOMEM by sbrk() */
 
 		if ( dirp != NULL )
 			free( (pointer)dirp );
 
-		(void)close( fd );
+		close( fd );
 		errno = serrno;
 		return NULL;		/* not enough memory */
 	}
@@ -71,7 +71,8 @@ char		*dirname;	/* name of directory */
 	return dirp;
 }
 #else
-int	_opendir_stub () {
+int 
+_opendir_stub()  {
 	;
 }
 #endif

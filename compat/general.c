@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/general.c,v 9.0 1992
 
 /* LINTLIBRARY */
 
+#include <errno.h>
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"
@@ -85,11 +86,8 @@ struct qelem   *elem;
 #endif
 
 
-extern int errno;
-
-
 int     dup2 (d1, d2)
-register int    d1,
+int    d1,
 		 d2;
 {
 	int     d;
@@ -97,7 +95,7 @@ register int    d1,
 	if (d1 == d2)
 		return OK;
 
-	(void) close (d2);
+	 close (d2);
 #ifdef	F_DUPFD
 	if ((d = fcntl (d1, F_DUPFD, d2)) == NOTOK)
 		return NOTOK;
@@ -126,7 +124,7 @@ int	d1,
 
 	result = dup2_aux (d1, d2);
 
-	(void) close (fd);
+	 close (fd);
 
 	return result;
 }

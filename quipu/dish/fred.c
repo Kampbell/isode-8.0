@@ -47,7 +47,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/fred.c,v 9.0 199
 #define	RPS	(!frompipe || opt -> ps_byteno == 0 ? rps : opt)
 extern	char	frompipe;
 extern	PS	opt, rps;
-extern int errno;
+
 
 extern	char	dad_flag;
 #ifndef	NO_STATS
@@ -137,7 +137,7 @@ char  **argv;
 		if (argc != 3)
 			goto usage;
 
-		(void) setenv ("DISPLAY", argv[2]);
+		 setenv ("DISPLAY", argv[2]);
 		if (s_photo)
 			set_av_pe_print (s_photo,
 							 strdup (isodefile ("g3fax/Xphoto", 1)));
@@ -199,7 +199,7 @@ char  **vec;
 	int	    seqno;
 	char   *cp,
 		   mbox[BUFSIZ];
-	register struct dn_seq *dlist,
+	struct dn_seq *dlist,
 			*dp;
 
 	if (n > 0 && strcmp (*vec, "-list") == 0) {
@@ -224,7 +224,7 @@ char  **vec;
 	}
 
 	if ((cp = index (vec[0], '@')) && cp != vec[0]) {
-		(void) strcpy (mbox, vec[0]);
+		 strcpy (mbox, vec[0]);
 		*cp++ = NULL;
 		if (*cp == NULL) {
 			ps_printf (OPT, "Must specify domain in mailbox specification.\n");
@@ -266,14 +266,14 @@ char  **vec;
 	{
 		char	buffer[BUFSIZ];
 		struct ds_search_arg search_arg;
-		register struct ds_search_arg *sa = &search_arg;
+		struct ds_search_arg *sa = &search_arg;
 		struct ds_search_result search_result;
-		register struct ds_search_result *sr = &search_result;
+		struct ds_search_result *sr = &search_result;
 		struct DSError error;
-		register struct DSError *se = &error;
+		struct DSError *se = &error;
 		Filter	fi;
 		EntryInfo *ptr;
-		register struct dn_seq *result = NULL;
+		struct dn_seq *result = NULL;
 		PS	nps;
 
 		bzero ((char *) sa, sizeof *sa);
@@ -294,7 +294,7 @@ char  **vec;
 
 		fi = make_filter (mbox, t_mbox);
 		if (!index (mbox, '*')) {
-			(void) sprintf (buffer, "internet$%s", mbox);
+			 sprintf (buffer, "internet$%s", mbox);
 			fi -> flt_next = make_filter (buffer, t_othermbox);
 			sa -> sra_filter = filter_alloc ();
 			bzero ((char *) sa -> sra_filter, sizeof *sa -> sra_filter);
@@ -370,7 +370,7 @@ free_filter:
 static struct dn_seq *dm2dn_seq (dm)
 char   *dm;
 {
-	register char *dp;
+	char *dp;
 
 	for (dp = dm; *dp; dp++)
 		if (isupper (*dp))
@@ -389,13 +389,13 @@ char   *dm;
 DN	dn;
 struct dn_seq *dlist;
 {
-	register char   *dp;
+	char   *dp;
 	struct ds_search_arg search_arg;
-	register struct ds_search_arg *sa = &search_arg;
+	struct ds_search_arg *sa = &search_arg;
 	struct ds_search_result search_result;
-	register struct ds_search_result *sr = &search_result;
+	struct ds_search_result *sr = &search_result;
 	struct DSError error;
-	register struct DSError *se = &error;
+	struct DSError *se = &error;
 
 	bzero ((char *) sa, sizeof *sa);
 
@@ -415,7 +415,7 @@ struct dn_seq *dlist;
 	for (;;) {
 		int	    i;
 		EntryInfo  *ptr;
-		register s_filter *fi;
+		s_filter *fi;
 
 		if ((dsa_status = rebind ()) != OK)
 			return dlist;
@@ -539,13 +539,13 @@ DN	dn;
 int    *complete;
 {
 	struct ds_list_arg list_arg;
-	register struct ds_list_arg *la = &list_arg;
+	struct ds_list_arg *la = &list_arg;
 	struct ds_list_result list_result;
-	register struct ds_list_result *lr = &list_result;
+	struct ds_list_result *lr = &list_result;
 	struct DSError list_error;
-	register struct DSError *le = &list_error;
-	register struct subordinate *sub;
-	register struct list_cache *ptr;
+	struct DSError *le = &list_error;
+	struct subordinate *sub;
+	struct list_cache *ptr;
 	DN	    adn,
 	 newdn;
 	struct dn_seq *result = NULLDNSEQ;
@@ -610,15 +610,15 @@ DN	dn;
 int    *complete;
 {
 	struct ds_search_arg search_arg;
-	register struct ds_search_arg *sa = &search_arg;
+	struct ds_search_arg *sa = &search_arg;
 	struct ds_search_result search_result;
-	register struct ds_search_result *sr = &search_result;
+	struct ds_search_result *sr = &search_result;
 	struct DSError error;
-	register struct DSError *se = &error;
+	struct DSError *se = &error;
 	Filter	fi1,
 			fi2;
 	EntryInfo *ptr;
-	register struct dn_seq *result = NULLDNSEQ;
+	struct dn_seq *result = NULLDNSEQ;
 
 	bzero ((char *) sa, sizeof *sa);
 
@@ -691,14 +691,14 @@ int	argc;
 char  **argv;
 {
 	envlist	el;
-	register envlist  en,
+	envlist  en,
 			 *ep;
 
 	el = NULL, ep = &el;
 	while (argc >= 3) {
-		register char *cp;
+		char *cp;
 		char   *xp;
-		register struct dn_seq **dp;
+		struct dn_seq **dp;
 
 		if ((en = (envlist) calloc (1, sizeof *en)) == NULL) {
 no_mem:
@@ -714,7 +714,7 @@ no_mem:
 
 		dp = &en -> Dns;
 		for (cp = argv[2]; *cp; cp = xp) {
-			register struct dn_seq *ds;
+			struct dn_seq *ds;
 
 			if (xp = index (cp, '$'))
 				*xp++ = NULL;
@@ -826,7 +826,7 @@ char  **vec;
 			if (e = fredentry (ufn_bad_dsa, TRUE)) {
 				ps_printf (OPT,
 						   "Unable to resolve name due to Directory failure, problem with:\n");
-				(void) showfred (ufn_bad_dsa, TRUE, FALSE);
+				 showfred (ufn_bad_dsa, TRUE, FALSE);
 			}
 
 			dn_free (ufn_bad_dsa), ufn_bad_dsa = NULL;
@@ -948,7 +948,7 @@ char   *s;
 
 	if (fred_list && frompipe && i > 1) {
 #define	NCHOICES	25
-		register int *ip;
+		int *ip;
 		int	chosen[NCHOICES];
 		char   *bp;
 
@@ -968,28 +968,28 @@ losing:
 			ps_print (nps, " ");
 			*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
 
-			(void) sprintf (buffer, "l%s\n", nps -> ps_base);
+			 sprintf (buffer, "l%s\n", nps -> ps_base);
 
 			nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
 
 			send_pipe_aux (buffer);
 
 			if (read_pipe_aux (buffer, sizeof buffer) < 1) {
-				(void) fprintf (stderr, "read failure\n");
+				 fprintf (stderr, "read failure\n");
 				remote_prob = TRUE;
 				goto losing;
 			}
 		}
 
 		if (s)
-			(void) sprintf (buffer,
+			 sprintf (buffer,
 							"LPlease select from the following matches for '%s':\n",
 							s);
 		else
-			(void) sprintf (buffer, "LPlease select one of the following:\n");
+			 sprintf (buffer, "LPlease select one of the following:\n");
 		send_pipe_aux (buffer);
 		if (read_pipe_aux (buffer, sizeof buffer) < 1) {
-			(void) fprintf (stderr, "read failure\n");
+			 fprintf (stderr, "read failure\n");
 			remote_prob = TRUE;
 			goto losing;
 		}
@@ -1032,11 +1032,11 @@ losing:
 
 	if (i > 10) {
 		if (s)
-			(void) sprintf (buffer,
+			 sprintf (buffer,
 							"%d imprecise matches for '%s', select from them [y/n] ? ",
 							i, s);
 		else
-			(void) sprintf (buffer,
+			 sprintf (buffer,
 							"%d imprecise matches, select one of them [y/n] ? ");
 		if (yesno (buffer)) {
 			dn_seq_free (dns);
@@ -1044,18 +1044,18 @@ losing:
 		}
 	} else {
 		if (s)
-			(void) sprintf (buffer,
+			 sprintf (buffer,
 							"mPlease select from the following %d match%s for '%s':\n",
 							i, i != 1 ? "es" : "", s);
 		else
-			(void) sprintf (buffer, "mPlease %s of the following:\n",
+			 sprintf (buffer, "mPlease %s of the following:\n",
 							i > 1 ? "select one" : "confirm use");
 
 		if (frompipe) {
 			send_pipe_aux (buffer);
 
 			if (read_pipe_aux (buffer, sizeof buffer) < 1) {
-				(void) fprintf (stderr, "read failure\n");
+				 fprintf (stderr, "read failure\n");
 				remote_prob = TRUE;
 				goto losing;
 			}
@@ -1073,7 +1073,7 @@ losing:
 		ps_print (nps, " ");
 		*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
 
-		(void) strcpy (buffer, nps -> ps_base);
+		 strcpy (buffer, nps -> ps_base);
 
 		nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
 
@@ -1099,7 +1099,7 @@ losing:
 		}
 
 		if ((j++ % 10) == 0 && dns) {
-			(void) sprintf (buffer, "Continue (%d more) [y/n] ? ", i - j + 1);
+			 sprintf (buffer, "Continue (%d more) [y/n] ? ", i - j + 1);
 			if (yesno (buffer)) {
 				dn_seq_free (dns);
 				break;
@@ -1136,7 +1136,7 @@ static int	dns_sort (dns, i)
 struct dn_seq **dns;
 int	i;
 {
-	register struct dn_seq *ptr;
+	struct dn_seq *ptr;
 
 	if (i == 0)
 		for (ptr = *dns; ptr; ptr = ptr -> dns_next)
@@ -1174,7 +1174,7 @@ struct dn_seq *dns;
 char   *fancy;
 {
 	int	    i;
-	register struct dn_seq *ptr;
+	struct dn_seq *ptr;
 
 	if (dns == NULL) {
 		if (ufn_partials) {
@@ -1183,7 +1183,7 @@ char   *fancy;
 
 				send_pipe_aux ("mUnable to resolve name, partial matches follow...\n");
 				if (read_pipe_aux (buffer, sizeof buffer) < 1) {
-					(void) fprintf (stderr, "read failure\n");
+					 fprintf (stderr, "read failure\n");
 					remote_prob = TRUE;
 					goto losing;
 				}
@@ -1195,7 +1195,7 @@ char   *fancy;
 					   "Unable to resolve name, partial match%s available:\n",
 					   ufn_partials -> dns_next ? "es" : "");
 			for (ptr = ufn_partials; ptr; ptr = ptr -> dns_next)
-				(void) showfred (ptr -> dns_dn,
+				 showfred (ptr -> dns_dn,
 								 ufn_partials -> dns_next ? FALSE : TRUE, FALSE);
 losing:
 			;
@@ -1232,20 +1232,20 @@ fresh_start:
 				&& fdx_reset (opt) == OK) {		/* MAJOR HACK */
 			char   *cp = fancy ? fancy : "3";
 
-			(void) (*opt -> ps_writeP) (opt, cp, strlen (cp), 0);
+			 (*opt -> ps_writeP) (opt, cp, strlen (cp), 0);
 			aps = opt;
 		} else
 			aps = RPS;
 #endif
 
 		ps_printf (aps, "%d matches found.\n", i);
-		(void) ps_flush (aps);
+		 ps_flush (aps);
 
 		dns_sort (&dns, i);
 	}
 
 	for (ptr = dns; ptr; ptr = ptr -> dns_next)
-		(void) add_sequence (ptr -> dns_dn);
+		 add_sequence (ptr -> dns_dn);
 
 	if (i == 1
 			&& !fancy
@@ -1256,12 +1256,12 @@ fresh_start:
 			&& fdx_reset (rps) == OK) {		/* MAJOR HACK */
 		showfredDNs (dns -> dns_dn, fred_long);
 
-		(void) (*rps -> ps_writeP) (rps, "4", 1, 0);
+		 (*rps -> ps_writeP) (rps, "4", 1, 0);
 		ufn_dn_print_aux (rps, dns -> dns_dn, NULLDN, 0);
 		ps_print (RPS, "$");
 		dn_print (RPS, dns -> dns_dn, EDBOUT);
 		ps_print (rps, "\n");
-		(void) ps_flush (rps);
+		 ps_flush (rps);
 
 		fred_list = FALSE;
 	}
@@ -1277,9 +1277,9 @@ fresh_start:
 		}
 
 		if (i > 0)
-			(void) ps_flush (RPS);
+			 ps_flush (RPS);
 
-		(void) showfred (ptr -> dns_dn, fred_long, fred_subdisplay);
+		 showfred (ptr -> dns_dn, fred_long, fred_subdisplay);
 	}
 
 	dn_seq_free (dns);
@@ -1461,9 +1461,9 @@ subdisplay;
 	nchild,
 	pos,
 	seqno;
-	register struct template *t;
-	register Attr_Sequence eptr;
-	register AV_Sequence avs,
+	struct template *t;
+	Attr_Sequence eptr;
+	AV_Sequence avs,
 	avp;
 	AttributeType rdn_at,
 	inf_at;
@@ -1487,8 +1487,8 @@ subdisplay;
 	}
 
 	if (mydn) {
-		register DN	adn;
-		register RDN	rdn;
+		DN	adn;
+		RDN	rdn;
 
 		/*
 			if (islong == FALSE) {
@@ -1500,7 +1500,7 @@ subdisplay;
 			continue;
 		myrdn = adn -> dn_rdn;
 		if (myrdn -> rdn_next) {
-			register int    i;
+			int    i;
 			RDN	    *base;
 
 			i = 1;
@@ -1582,7 +1582,7 @@ subdisplay;
 					if (rdn_av
 							&& (ps = ps_alloc (str_open)) != NULLPS
 							&& str_setup (ps, NULLCP, 0, 0) != NOTOK) {
-						register RDN rdn;
+						RDN rdn;
 
 						AttrV_print (ps, rdn_av, EDBOUT);
 						for (rdn = myrdn -> rdn_next;
@@ -1593,9 +1593,9 @@ subdisplay;
 						}
 						ps_print (ps, " ");
 						*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
-						(void) setenv ("RDN", ps -> ps_base);
+						 setenv ("RDN", ps -> ps_base);
 					} else
-						(void) setenv ("RDN", "Photo");
+						 setenv ("RDN", "Photo");
 				}
 				break;
 			}
@@ -1746,9 +1746,9 @@ children:
 		struct DSError list_error;
 		struct list_cache *ptr;
 
-		(void) ps_flush (RPS);
+		 ps_flush (RPS);
 
-		(void) service_control (OPT, 0, NULLVP, &list_arg.lsa_common);
+		 service_control (OPT, 0, NULLVP, &list_arg.lsa_common);
 		list_arg.lsa_common.ca_servicecontrol.svc_options |=
 		SVC_OPT_DONTDEREFERENCEALIAS;
 
@@ -1800,13 +1800,13 @@ out:
 
 static	fred_children (parentdn, ptr, prob)
 DN	parentdn;
-register struct subordinate *ptr;
+struct subordinate *ptr;
 int	prob;
 {
 	int	    i,
 	nchild;
-	register struct subordinate *qtr;
-	register DN	adn,
+	struct subordinate *qtr;
+	DN	adn,
 	newdn;
 
 	newdn = dn_comp_new (rdn_comp_new (NULLAttrT, NULLAttrV));
@@ -1826,9 +1826,9 @@ int	prob;
 	for (i = 0; ptr; ptr = ptr -> sub_next, i++) {
 		rdn_free (newdn -> dn_rdn);
 		dn_comp_fill (newdn, rdn_cpy (ptr -> sub_rdn));
-		(void) add_sequence (adn);
+		 add_sequence (adn);
 
-		(void) showfred (adn, 0, FALSE);
+		 showfred (adn, 0, FALSE);
 	}
 
 	dn_free (adn);
@@ -1842,7 +1842,7 @@ int	prob;
 /*  */
 
 static showfredattr (av)
-register AttributeValue av;
+AttributeValue av;
 {
 	int	    seqno;
 
@@ -1886,8 +1886,8 @@ static struct pair {
 /*  */
 
 static	fred_init () {
-	register struct pair *p;
-	register struct template *t;
+	struct pair *p;
+	struct template *t;
 	static int once_only = 1;
 
 	if (!once_only)
@@ -1910,7 +1910,7 @@ static  Entry fredentry (adn, islong)
 DN	adn;
 char	islong;
 {
-	register Entry newentry;
+	Entry newentry;
 
 	struct ds_read_arg read_arg;
 	struct ds_read_result read_result;
@@ -1926,7 +1926,7 @@ char	islong;
 		if (rebind () != OK)
 			return newentry;
 
-		(void) service_control (OPT, 0, NULLVP, &read_arg.rda_common);
+		 service_control (OPT, 0, NULLVP, &read_arg.rda_common);
 		read_arg.rda_common.ca_servicecontrol.svc_options |=
 		SVC_OPT_DONTDEREFERENCEALIAS;
 
@@ -1958,8 +1958,8 @@ showfredDNs (dn, islong)
 DN	dn;
 int	islong;
 {
-	register Attr_Sequence eptr;
-	register AV_Sequence avs;
+	Attr_Sequence eptr;
+	AV_Sequence avs;
 	Entry    theEntry;
 	PS	     nps;
 
@@ -1992,14 +1992,14 @@ int	islong;
 				ps_print (nps, " ");
 				*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
 
-				(void) sprintf (buffer, "d%s\n", nps -> ps_base);
+				 sprintf (buffer, "d%s\n", nps -> ps_base);
 
 				nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
 
 				send_pipe_aux (buffer);
 
 				if (read_pipe_aux (buffer, sizeof buffer) < 1) {
-					(void) fprintf (stderr, "read failure\n");
+					 fprintf (stderr, "read failure\n");
 					remote_prob = TRUE;
 					goto losing;
 				}
@@ -2016,7 +2016,7 @@ int	islong;
 				int	    cc,
 				i,
 				j;
-				register char *cp,
+				char *cp,
 				*dp;
 				char    buffer[BUFSIZ],
 				faxtopbm[BUFSIZ],
@@ -2032,19 +2032,19 @@ int	islong;
 					av = ((struct file_syntax *) av -> av_struct)
 					-> fs_attr;
 
-				(void) strcpy (faxtopbm, isodefile ("g3fax/faxtopbm", 1));
+				 strcpy (faxtopbm, isodefile ("g3fax/faxtopbm", 1));
 				if (access (faxtopbm, X_OK) == NOTOK) {
 #ifndef	NO_STATS
-					(void) ll_log (dad_log, LLOG_EXCEPTIONS, "failed",
+					 ll_log (dad_log, LLOG_EXCEPTIONS, "failed",
 								   "check for X_OK access on %s", faxtopbm);
 #endif
 					break;
 				}
 
-				(void) strcpy (tmp1, "/tmp/faxXXXXXX");
-				(void) unlink (mktemp (tmp1));
-				(void) strcpy (tmp2, "/tmp/pbmXXXXXX");
-				(void) unlink (mktemp (tmp2));
+				 strcpy (tmp1, "/tmp/faxXXXXXX");
+				 unlink (mktemp (tmp1));
+				 strcpy (tmp2, "/tmp/pbmXXXXXX");
+				 unlink (mktemp (tmp2));
 
 				if ((fp = fopen (tmp1, "w")) == NULL)
 					break;
@@ -2053,48 +2053,48 @@ int	islong;
 						|| std_setup (ps, fp) == NOTOK) {
 					if (ps)
 						ps_free (ps);
-					(void) unlink (tmp1);
-					(void) fclose (fp);
+					 unlink (tmp1);
+					 fclose (fp);
 					break;
 				}
-				(void) pe2ps (ps, pe = grab_pe (av));
+				 pe2ps (ps, pe = grab_pe (av));
 
 				pe_free (pe);
 				ps_free (ps);
 
-				(void) fclose (fp);
+				 fclose (fp);
 
-				(void) sprintf (buffer, "%s < %s > %s",
+				 sprintf (buffer, "%s < %s > %s",
 								faxtopbm, tmp1, tmp2);
 
 				i = system (buffer);
 
-				(void) unlink (tmp1);
+				 unlink (tmp1);
 
 				if (i
 						|| (fp = fopen (tmp2, "r")) == NULL
 						|| fstat (fileno (fp), &st) == NOTOK
 						|| (cc = st.st_size) == 0) {
 					if (!i && fp)
-						(void) fclose (fp);
-					(void) unlink (tmp2);
+						 fclose (fp);
+					 unlink (tmp2);
 
 					continue;
 				}
 
 				if ((cp = malloc ((unsigned) (cc))) == NULL) {
-					(void) fprintf (stderr, "out of memory\n");
+					 fprintf (stderr, "out of memory\n");
 					goto out;
 				}
 				for (dp = cp, j = cc; j > 0; dp += i, j -= i)
 					switch (i = fread (dp, sizeof *dp, j, fp)) {
 					case NOTOK:
-						(void) fprintf (stderr, "error reading %s: %s\n",
+						 fprintf (stderr, "error reading %s: %s\n",
 										tmp2, sys_errname (errno));
 						goto out2;
 
 					case OK:
-						(void) fprintf (stderr, "premature eof reading %s\n",
+						 fprintf (stderr, "premature eof reading %s\n",
 										tmp2);
 out2:
 						;
@@ -2105,10 +2105,10 @@ out2:
 						break;
 					}
 
-				(void) sprintf (buffer, "P%d %s", cc,
+				 sprintf (buffer, "P%d %s", cc,
 								attr2name (eptr -> attr_type, OIDPART));
 				if (avs != eptr -> attr_value || avs -> avseq_next)
-					(void) sprintf (buffer + strlen (buffer), "#%d",
+					 sprintf (buffer + strlen (buffer), "#%d",
 									avsno);
 
 				ufn_dn_print_aux (nps, dn, NULLDN, 0);
@@ -2117,7 +2117,7 @@ out2:
 				ps_print (nps, " ");
 				*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
 
-				(void) sprintf (buffer + strlen (buffer), "$%s\n",
+				 sprintf (buffer + strlen (buffer), "$%s\n",
 								nps -> ps_base);
 
 				nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
@@ -2125,17 +2125,17 @@ out2:
 				send_pipe_aux (buffer);
 
 				if ((i = read_pipe_aux (buffer, sizeof buffer)) < 1) {
-					(void) fprintf (stderr, "read failure\n");
+					 fprintf (stderr, "read failure\n");
 					remote_prob = TRUE;
 out:
 					;
-					(void) fclose (fp);
-					(void) unlink (tmp2);
+					 fclose (fp);
+					 unlink (tmp2);
 					goto losing;
 				} else if ((i == 1) && (*buffer == 'P')) {
 					remote_prob = FALSE;
-					(void) fclose (fp);
-					(void) unlink (tmp2);
+					 fclose (fp);
+					 unlink (tmp2);
 					break;
 				}
 
@@ -2143,13 +2143,13 @@ out:
 				free (cp);
 
 				if ((i = read_pipe_aux (buffer, sizeof buffer)) < 1) {
-					(void) ps_printf (OPT, "read failure\n");
+					 ps_printf (OPT, "read failure\n");
 					remote_prob = TRUE;
 					goto out;
 				}
 
-				(void) fclose (fp);
-				(void) unlink (tmp2);
+				 fclose (fp);
+				 unlink (tmp2);
 			}
 		}
 
@@ -2192,8 +2192,8 @@ Attr_Sequence fred_full () {
 	static Attr_Sequence as = NULL;
 
 	if (!as) {
-		register struct pair *p;
-		register struct template *t;
+		struct pair *p;
+		struct template *t;
 		AttributeType at;
 
 		fred_init ();
@@ -2220,7 +2220,7 @@ Attr_Sequence fred_full () {
 											NULLACL_INFO));
 		else {
 			int	    i;
-			register Attr_Sequence  ptr,
+			Attr_Sequence  ptr,
 			*pptr;
 
 			for (pptr = &as, ptr = *pptr;

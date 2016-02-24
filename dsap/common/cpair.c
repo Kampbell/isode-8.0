@@ -174,7 +174,7 @@ struct certificate_list *parm;
 }
 
 certificate_pair_syntax() {
-	(void) add_attribute_syntax(
+	 add_attribute_syntax(
 		"CertificatePair",
 		(IFP) cpair_enc,	(IFP) cpair_dec,
 		(IFP) str2cpair,	printcpair,

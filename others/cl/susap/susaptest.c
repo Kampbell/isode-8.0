@@ -42,10 +42,8 @@ printtaddr();
 
 /* ARGSUSED */
 
-int main(argc, argv, envp)
-int argc;
-char **argv,
-	 **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	struct spkt *t;	                        /* Working packet pointer */
 	char sendbuf[1024];			        /* send buffer */
@@ -53,10 +51,10 @@ char **argv,
 	char buffer[80],                            /* Working input buffer */
 		 *bptr;                                 /* Pointer to our buffer */
 	struct udvec uvs[2];
-	register struct udvec *uv;
+	struct udvec *uv;
 	int  cc, result, data, mode;
 	u_short  pattern;
-	register struct tsapblk *tb;
+	struct tsapblk *tb;
 	struct SuSAPstart sunitdata;
 	struct SuSAPstart *sud = &sunitdata;
 	int	sd;
@@ -70,8 +68,8 @@ char **argv,
 #define	NTADDRS		FD_SETSIZE
 
 	struct TSAPaddr   *ta;
-	register int    n = ta -> ta_naddr - 1;
-	register struct NSAPaddr   *na = ta -> ta_addrs;
+	int    n = ta -> ta_naddr - 1;
+	struct NSAPaddr   *na = ta -> ta_addrs;
 	static struct TSAPaddr *tz;
 	static struct TSAPaddr  tas[NTADDRS];
 	int	    port;
@@ -265,7 +263,7 @@ char **argv,
 			break;
 		}
 		printf("\nCommand: ");
-		(void)fflush(stdout);
+		fflush(stdout);
 		bptr = gets(buffer);
 		if (feof (stdin))
 			exit (1);
@@ -275,11 +273,11 @@ char **argv,
 
 
 
-static	printsrv (is)
-register struct isoservent *is;
+static 
+printsrv (struct isoservent *is)
 {
-	register int    n = is -> is_tail - is -> is_vec - 1;
-	register char **ap = is -> is_vec;
+	int    n = is -> is_tail - is -> is_vec - 1;
+	char **ap = is -> is_vec;
 
 	printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 			is -> is_entity, is -> is_provider,
@@ -293,9 +291,8 @@ register struct isoservent *is;
 
 /*  */
 
-static	printsaddr (sa)
-
-register struct SSAPaddr *sa;
+static 
+printsaddr (struct SSAPaddr *sa)
 
 {
 
@@ -345,14 +342,13 @@ register struct SSAPaddr *sa;
 }
 
 
-static	printtaddr (ta)
-
-register struct TSAPaddr *ta;
+static 
+printtaddr (struct TSAPaddr *ta)
 
 {
 
-	register int    n;
-	register struct NSAPaddr   *na;
+	int    n;
+	struct NSAPaddr   *na;
 
 
 

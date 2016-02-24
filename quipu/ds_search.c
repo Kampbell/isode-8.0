@@ -81,7 +81,7 @@ extern Attr_Sequence entry_find_type();
 
 do_ds_search(arg, error, result, dnbind, target, local, refer, di_p,
 			 dsp, quipu_ctx, tktime, entryonly, authtype)
-register struct ds_search_arg *arg;
+struct ds_search_arg *arg;
 struct ds_search_result *result;
 struct DSError *error;
 DN              dnbind;
@@ -101,7 +101,7 @@ char            authtype;
 	qctx = quipu_ctx;
 
 	if ((timelimit = tktime) == (time_t) 0) {
-		register int    i;
+		int    i;
 
 		for (i = NBBY * sizeof timelimit - 1; i > 0; i--)
 			timelimit <<= 1, timelimit |= 1;
@@ -110,7 +110,7 @@ char            authtype;
 		ismanager = manager(dnbind);
 
 	if (ismanager && big_size == 0) {
-		register int    i;
+		int    i;
 
 		for (i = NBBY * sizeof big_size - 1; i > 0; i--)
 			big_size <<= 1, big_size |= 1;
@@ -434,7 +434,7 @@ char            authtype;
 			st_free(local);
 			if (saclerror == 0)
 				result->CSR_limitproblem = LSR_NOLIMITPROBLEM;
-			(void) dsa_search_control(arg, result);
+			 dsa_search_control(arg, result);
 			return (DS_OK);
 		}
 		(*local) = st_done(local);
@@ -459,7 +459,7 @@ struct ds_search_task *st;
 	if (st->st_save != NULL_ST)
 		st_free(&st->st_save);
 	if (--st->st_saclrefcount <= 0) {
-		(void) avl_free((Avlnode *) st->st_sacls, rc_free);
+		 avl_free((Avlnode *) st->st_sacls, rc_free);
 		free((char *) st->st_saclheader);
 	}
 	if (--st->st_ftyperefcount <= 0) {
@@ -518,7 +518,7 @@ struct ds_search_task **st;
 
 
 static          check_filter_presrch(fltr, error, dn)
-register Filter fltr;
+Filter fltr;
 struct DSError *error;
 DN              dn;
 {
@@ -552,11 +552,11 @@ DN              dn;
 }
 
 static          check_filterop_presrch(fltr, error, dn)
-register Filter fltr;
+Filter fltr;
 struct DSError *error;
 DN              dn;
 {
-	register Filter ptr;
+	Filter ptr;
 	int             i;
 
 #ifndef NO_STATS
@@ -578,14 +578,14 @@ DN              dn;
 static          prepare_string(c)
 caddr_t         c;
 {
-	register char  *p;
+	char  *p;
 
 	for (p = (char *) c; *p; p++)
 		*p = chrcnv[*p];
 }
 
 static          check_filteritem_presrch(fitem, error, dn)
-register struct filter_item *fitem;
+struct filter_item *fitem;
 struct DSError *error;
 DN              dn;
 {
@@ -1062,11 +1062,11 @@ struct search_kid_arg *ska;
 				 * SEARCH_DELTA_SIZE entries searched.
 				 */
 				if (!ska->ska_domore)
-					(void) dsa_wait(0);
+					 dsa_wait(0);
 
 				ska->ska_tmp = 0;
 				ska->ska_domore = TRUE;
-				(void) avl_apply(e->e_children, search_kid2,
+				 avl_apply(e->e_children, search_kid2,
 								 (caddr_t) ska, NOTOK, AVL_INORDER);
 
 				if (timelimit <= (timenow = time((time_t *) 0)))
@@ -1076,7 +1076,7 @@ struct search_kid_arg *ska;
 					ska->ska_domore = (ska->ska_tmp <
 									   (SEARCH_DELTA_SIZE / 5));
 				if (!ska->ska_domore)
-					(void) dsa_wait(0);
+					 dsa_wait(0);
 			}
 			/*
 			It doesn't seem to make much sense to do this here with the avl's...
@@ -1123,7 +1123,7 @@ char		authtype;
 int		*saclerror;
 {
 	EntryInfo      *einfo = NULLENTRYINFO;
-	register int    tmp = 0;
+	int    tmp = 0;
 	char            domore = TRUE;
 	Avlnode        *ptr;
 	struct search_kid_arg ska;
@@ -1145,7 +1145,7 @@ int		*saclerror;
 		return (NULLENTRYINFO);
 	}
 	if (entryptr->e_alias != NULLDN) {
-		(void) do_alias(arg, entryptr, local);
+		 do_alias(arg, entryptr, local);
 		return (NULLENTRYINFO);
 	}
 	if ((ptr = entryptr->e_children) == NULLAVL
@@ -1167,24 +1167,24 @@ int		*saclerror;
 #ifdef TURBO_INDEX
 	/* non optimized filter */
 	if ((*local)->st_optimized == 0) {
-		(void) avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+		 avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 
 		/* optimized filter & subtree search & subtree indexed */
 	} else if (arg->sra_subset == SRA_WHOLESUBTREE
 			   && get_subtree_index((*local)->st_baseobject)) {
-		(void) turbo_subtree_search(entryptr, &ska);
+		 turbo_subtree_search(entryptr, &ska);
 
 		/* optimized filter & sibling search & siblings indexed */
 	} else if (arg->sra_subset == SRA_ONELEVEL
 			   && get_sibling_index((*local)->st_baseobject)) {
-		(void) turbo_sibling_search(entryptr, &ska);
+		 turbo_sibling_search(entryptr, &ska);
 
 		/* optimized filter, but no index to search */
 	} else {
-		(void) avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+		 avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 	}
 #else
-	(void) avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+	 avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 #endif
 
 	tmp = ska.ska_tmp;
@@ -1372,14 +1372,14 @@ int             ismanager;
 EntryInfo      *filterentry(arg, entryptr, binddn,
 							authtype, saclerror, local, dosacl)
 struct ds_search_arg 	*arg;
-register Entry  	entryptr;
+Entry  	entryptr;
 DN              	binddn;
 char			authtype;
 int            		*saclerror;
 struct ds_search_task 	*local;
 char			dosacl;
 {
-	register EntryInfo	*einfo;
+	EntryInfo	*einfo;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("search: filter entry"));
 
@@ -1423,11 +1423,11 @@ char			dosacl;
  */
 
 static          check_filter(fltr, entryptr, binddn)
-register Filter fltr;
-register Entry  entryptr;
+Filter fltr;
+Entry  entryptr;
 DN              binddn;
 {
-	register int    i;
+	int    i;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("in check filter"));
 	switch (fltr->flt_type) {
@@ -1448,12 +1448,12 @@ DN              binddn;
 }
 
 static          check_filterop(fltr, entryptr, op, binddn)
-register Filter fltr;
-register Entry  entryptr;
+Filter fltr;
+Entry  entryptr;
 int             op;
 DN              binddn;
 {
-	register Filter ptr;
+	Filter ptr;
 	int             result;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("in filter op"));
@@ -1499,11 +1499,11 @@ DN              binddn;
  */
 
 static          check_filteritem(fitem, entryptr, binddn)
-register struct filter_item *fitem;
-register Entry  entryptr;
+struct filter_item *fitem;
+Entry  entryptr;
 DN              binddn;
 {
-	register Attr_Sequence as;
+	Attr_Sequence as;
 	Attr_Sequence   ias = NULLATTR;
 	AttributeType   at;
 	Attr_Sequence   ptr;
@@ -1599,9 +1599,9 @@ DN              binddn;
 }
 
 static          test_avs(fitem, avs, mode)
-register struct filter_item *fitem;
-register AV_Sequence avs;
-register int    mode;
+struct filter_item *fitem;
+AV_Sequence avs;
+int    mode;
 {
 
 	for (; avs != NULLAV; avs = avs->avseq_next) {
@@ -1631,8 +1631,8 @@ register int    mode;
  */
 
 static          substr_search(fitem, avs)
-register struct filter_item *fitem;
-register AV_Sequence avs;
+struct filter_item *fitem;
+AV_Sequence avs;
 {
 
 	phoneflag = telephone_match(fitem->UNAVA.ava_type->oa_syntax);
@@ -1649,10 +1649,10 @@ struct filter_item *fitem;
 AV_Sequence     avs;
 char            chrmatch[];
 {
-	register AV_Sequence loopavs;
-	register char  *compstr;
+	AV_Sequence loopavs;
+	char  *compstr;
 	char           *top;
-	register char  *temp;
+	char  *temp;
 	char           *temp2;
 	int             offset;
 
@@ -1721,12 +1721,12 @@ char            chrmatch[];
 }
 
 attr_substr(str1, av, chrmatch)
-register char  *str1;
+char  *str1;
 AttributeValue  av;
 char            chrmatch[];
 {
-	register char  *str2;
-	register int    count;
+	char  *str2;
+	int    count;
 	char           *top, *top2;
 	char            found = 0;
 
@@ -1856,7 +1856,7 @@ struct ds_search_result *result;
 	if (result->CSR_entries)
 		entryinfo_free(result->CSR_entries, 0);
 
-	(void) sprintf(buffer, "%d", big_size - size);
+	 sprintf(buffer, "%d", big_size - size);
 
 	as = as_comp_alloc();
 	as->attr_acl = NULLACL_INFO;

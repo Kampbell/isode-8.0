@@ -67,13 +67,13 @@ char *a, *b;
 	} else {
 #ifdef TURBO_DISK
 		if ( parse_entry != NULL ) {
-			(void) sprintf (buffer,"key (%s): ", parse_entry);
-			(void) strcat (buffer,a);
+			 sprintf (buffer,"key (%s): ", parse_entry);
+			 strcat (buffer,a);
 			LLOG (log_dsap,LLOG_EXCEPTIONS,(buffer,b));
 #else
 		if (parse_line != 0) {
-			(void) sprintf (buffer,"line %d: ",parse_line);
-			(void) strcat (buffer,a);
+			 sprintf (buffer,"line %d: ",parse_line);
+			 strcat (buffer,a);
 			LLOG (log_dsap,LLOG_EXCEPTIONS,(buffer,b));
 #endif
 		} else

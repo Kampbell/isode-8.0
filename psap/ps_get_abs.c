@@ -38,11 +38,11 @@ static int  ps_get_len ();
 
 /*  */
 
-int	ps_get_abs (pe)
-register PE	pe;
+int 
+ps_get_abs (PE pe)
 {
-	register    PElementLen len;
-	register    PE p;
+	   PElementLen len;
+	   PE p;
 
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
@@ -82,11 +82,11 @@ register PE	pe;
 
 /*  */
 
-static int  ps_get_id (pe)
-register PE	pe;
+static int 
+ps_get_id (PE pe)
 {
-	register int    i;
-	register PElementID id;
+	int    i;
+	PElementID id;
 
 	if ((id = pe -> pe_id) < PE_ID_XTND)
 		return 1;
@@ -98,11 +98,11 @@ register PE	pe;
 
 /*  */
 
-static int  ps_get_len (pe)
-register PE	pe;
+static int 
+ps_get_len (PE pe)
 {
-	register int    i;
-	register PElementLen len;
+	int    i;
+	PElementLen len;
 
 	if ((len = pe -> pe_len) == PE_LEN_INDF || len <= PE_LEN_SMAX)
 		return 1;

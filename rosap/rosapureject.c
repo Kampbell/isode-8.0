@@ -36,17 +36,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapureject.c,v 9.0 
 
 /*    RO-U-REJECT.REQUEST */
 
-int	RoURejectRequest (sd, invokeID, reason, priority, roi)
-int	sd;
-int    *invokeID,
-	   reason,
-	   priority;
-struct RoSAPindication *roi;
+int 
+RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;
 	PElementID id;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	switch (reason) {
 	case ROS_IP_DUP: 	/* Invoke Problem */
@@ -93,22 +89,17 @@ struct RoSAPindication *roi;
 
 	result = RoURejectRequestAux (acb, invokeID, reason, id, priority, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-int	RoURejectRequestAux (acb, invokeID, reason, id, priority, roi)
-register struct assocblk   *acb;
-int    *invokeID,
-	   reason,
-	   priority;
-PElementID id;
-struct RoSAPindication *roi;
+int 
+RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, int id, int priority, struct RoSAPindication *roi)
 {
-	register PE pe,
+	PE pe,
 			 p;
 
 	if (id == REJECT_COMPLETE)

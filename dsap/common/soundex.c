@@ -56,7 +56,7 @@ char	*ptr;
 }
 
 char * next_word (ptr)
-register char *ptr;
+char *ptr;
 {
 	if ( ptr == NULLCP )
 		return NULLCP;
@@ -188,11 +188,11 @@ char	*a;
 }
 
 soundex_cmp (a,b)
-register char *a;
-register char *b;
+char *a;
+char *b;
 {
 	char result = FALSE;
-	register char * ptr;
+	char * ptr;
 
 	for( ; a && b ; b = next_word (b) ) {
 		soundex(b, &g_bcode);
@@ -215,8 +215,8 @@ register char *b;
 }
 
 soundex_match (fitem,avs)
-register struct filter_item *fitem;
-register AV_Sequence avs;
+struct filter_item *fitem;
+AV_Sequence avs;
 {
 	for (; avs != NULLAV; avs=avs->avseq_next)
 		if (soundex_cmp ((char *)avs->avseq_av.av_struct, (char *)fitem->UNAVA.ava_value->av_struct))

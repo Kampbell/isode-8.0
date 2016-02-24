@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaplose.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "rtpkt.h"
 #include "tailor.h"
 
@@ -39,19 +39,17 @@ static int  _rtsaplose ();
 /*  */
 
 #ifndef	lint
-int	rtpktlose (va_alist)
-va_dcl {
+int	rtpktlose (struct assocblk*acb, ...)
+{
 	int	    reason,
 	result,
 	value;
-	register struct assocblk *acb;
-	register struct RtSAPindication *rti;
-	register struct RtSAPabort *rta;
+	struct RtSAPindication *rti;
+	struct RtSAPabort *rta;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, acb);
 
-	acb = va_arg (ap, struct assocblk *);
 	rti = va_arg (ap, struct RtSAPindication *);
 	reason = va_arg (ap, int);
 
@@ -93,12 +91,8 @@ va_dcl {
 #else
 /* VARARGS5 */
 
-int	rtpktlose (acb, rti, reason, what, fmt)
-struct assocblk *acb;
-struct RtSAPindication *rti;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, char *what, char *fmt)
 {
 	return rtpktlose (acb, rti, reason, what, fmt);
 }
@@ -107,16 +101,14 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	rtsaplose (va_alist)
-va_dcl {
+int	rtsaplose (struct RtSAPindication*rti, ...)
+{
 	int	    reason,
 	result;
-	struct RtSAPindication *rti;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, rti);
 
-	rti = va_arg (ap, struct RtSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _rtsaplose (rti, reason, ap);
@@ -128,11 +120,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	rtsaplose (rti, reason, what, fmt)
-struct RtSAPindication *rti;
-int     reason;
-char   *what,
-	   *fmt;
+int 
+rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt)
 {
 	return rtsaplose (rti, reason, what, fmt);
 }
@@ -141,21 +130,25 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _rtsaplose (rti, reason, ap)  /* what, fmt, args ... */
-register struct RtSAPindication *rti;
-int     reason;
-va_list	ap;
+static int 
+_rtsaplose (  /* what, fmt, args ... */
+    struct RtSAPindication *rti,
+    int reason,
+    va_list ap
+)
 {
-	register char  *bp;
+	char  *bp;
+	char  *what;
+	char  *fmt;
 	char    buffer[BUFSIZ];
-	register struct RtSAPabort *rta;
+	struct RtSAPabort *rta;
 
 	if (rti) {
 		bzero ((char *) rti, sizeof *rti);
 		rti -> rti_type = RTI_ABORT;
 		rta = &rti -> rti_abort;
 
-		asprintf (bp = buffer, ap);
+		asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		rta -> rta_peer = 0;

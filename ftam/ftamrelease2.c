@@ -41,7 +41,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	if (charging && charging -> fc_ncharge > NFCHRG)
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
@@ -54,7 +54,7 @@ struct FTAMindication *fti;
 
 	result = FTerminateResponseAux (fsb, sharedASE, charging, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -62,7 +62,7 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FTerminateResponseAux (fsb, sharedASE, charging, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 PE	sharedASE;
 struct FTAMcharging *charging;
 struct FTAMindication *fti;
@@ -70,16 +70,16 @@ struct FTAMindication *fti;
 	int     result;
 	PE	    pe;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__TERMINATE__response *rsp;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__TERMINATE__response *rsp;
 
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -105,7 +105,7 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -124,7 +124,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) acs2ftamlose (fsb, fti, "AcRelResponse", aca);
+		 acs2ftamlose (fsb, fti, "AcRelResponse", aca);
 		goto out;
 	}
 

@@ -294,7 +294,7 @@ shadow_update () {
 			eptr -> e_refcount++;
 			op -> on_dsas -> di_state = DI_COMPLETE;
 		} else
-			(void) constructor_dsa_info (dnseq -> dns_dn, NULLDNSEQ,
+			 constructor_dsa_info (dnseq -> dns_dn, NULLDNSEQ,
 										 TRUE, eptr, &err, &(op -> on_dsas) );
 
 		if ( op -> on_dsas )
@@ -327,7 +327,7 @@ struct oper_act * on;
 		log_ds_error (& on -> on_resp.di_error.de_err);
 
 		if (on->on_conn) {
-			(void) time (&timenow);
+			 time (&timenow);
 			on->on_conn->cn_last_used =
 				timenow - conn_timeout + nsap_timeout;
 		}
@@ -499,7 +499,7 @@ struct oper_act * on;
 		ds_error_free (&err);
 		goto out;
 	}
-	(void) avl_apply(eptr->e_children, inherit_link,
+	 avl_apply(eptr->e_children, inherit_link,
 					 (caddr_t) eptr, NOTOK, AVL_PREORDER);
 
 	if (eptr->e_parent->e_edbversion)
@@ -526,7 +526,7 @@ struct oper_act * on;
 out:
 	;
 
-	(void) time (&timenow);
+	 time (&timenow);
 	if (ne)
 		ne->e_age = timenow;
 

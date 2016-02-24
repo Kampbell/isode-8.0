@@ -34,12 +34,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/real2prim.c,v 9.0 1992
 
 /*  */
 
-PE	real2prim (d, class, id)
-register double d;
-PElementClass	class;
-PElementID	id;
+PE 
+real2prim (double d, int class, int id)
 {
-	register PE pe;
+	PE pe;
 	double	mant, nm;
 	int	exponent;
 	int	expsign;

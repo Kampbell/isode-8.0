@@ -52,9 +52,8 @@ extern char *myname;
 static int ryconnect ();
 
 
-makeconn (thehost, password, user)
-char	*thehost;
-char 	*password, *user;
+int 
+makeconn (char *thehost, char *password, char *user)
 {
 	int	result;
 	PE	data;
@@ -90,21 +89,21 @@ char   *thehost,
 PE	data;
 {
 	struct SSAPref sfs;
-	register struct SSAPref *sf;
-	register struct PSAPaddr *pa;
+	struct SSAPref *sf;
+	struct PSAPaddr *pa;
 	struct AcSAPconnect accs;
-	register struct AcSAPconnect   *acc = &accs;
+	struct AcSAPconnect   *acc = &accs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 	AEI	    aei;
 	OID	    ctx,
 			pci;
 	struct PSAPctxlist pcs;
-	register struct PSAPctxlist *pc = &pcs;
+	struct PSAPctxlist *pc = &pcs;
 	struct RoSAPindication rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject *rop = &roi -> roi_preject;
 
 	if ((aei = _str2aei (thehost, theservice, thecontext, 0, NULLCP, NULLCP))
 			== NULLAEI)
@@ -127,7 +126,7 @@ PE	data;
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
 	if (AcAssocRequest (ctx, NULLAEI, aei, NULLPA, pa, pc, NULLOID,
@@ -156,12 +155,13 @@ PE	data;
 	return OK;
 }
 
-closeconn () {
+int 
+closeconn  {
 	struct AcSAPrelease acrs;
-	register struct AcSAPrelease   *acr = &acrs;
+	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 
 	if (ry_sd == NOTOK)
 		return;
@@ -170,7 +170,7 @@ closeconn () {
 		acs_errexit (aca, "A-RELEASE.REQUEST");
 
 	if (!acr -> acr_affirmative) {
-		(void) AcUAbortRequest (ry_sd, NULLPEP, 0, aci);
+		 AcUAbortRequest (ry_sd, NULLPEP, 0, aci);
 		errexit (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
 	}
 
@@ -186,8 +186,8 @@ int *err;
 {
 	int	    result;
 	struct RoSAPindication  rois;
-	register struct RoSAPindication *roi = &rois;
-	register struct RoSAPpreject   *rop = &roi -> roi_preject;
+	struct RoSAPindication *roi = &rois;
+	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	switch (result = RyOperation (ry_sd, table_RFA_Operations, op,
 								  arg, res, err, roi)) {
@@ -217,9 +217,8 @@ int *err;
 }
 
 
-void	ros_adios (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_adios (struct RoSAPpreject *rop, char *event)
 {
 	ros_errmsg (rop, event);
 
@@ -229,25 +228,23 @@ char   *event;
 }
 
 
-void	ros_errmsg (rop, event)
-register struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_errmsg (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		(void) sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	errmsg (NULLCP, "%s: %s", event, buffer);
 }
 
 
-void	acs_errexit (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_errexit (struct AcSAPabort *aca, char *event)
 {
 	acs_errmsg (aca, event);
 
@@ -256,18 +253,17 @@ char   *event;
 }
 
 
-void	acs_errmsg (aca, event)
-register struct AcSAPabort *aca;
-char   *event;
+void 
+acs_errmsg (struct AcSAPabort *aca, char *event)
 {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		(void) sprintf (buffer, "[%s] %*.*s",
+		 sprintf (buffer, "[%s] %*.*s",
 						AcErrString (aca -> aca_reason),
 						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		(void) sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	errmsg (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -295,9 +291,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	errexit (what, fmt)
-char   *what,
-	   *fmt;
+void 
+errexit (char *what, char *fmt)
 {
 	errexit (what, fmt);
 }
@@ -317,27 +312,26 @@ va_dcl {
 }
 
 
-static void  _errmsg (ap)
-va_list	ap;
+static void 
+_errmsg (va_list ap)
 {
 	char    buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-	(void) fflush (stderr);
+	 fflush (stderr);
 }
 #else
 /* VARARGS */
 
-void	errmsg (what, fmt)
-char   *what,
-	   *fmt;
+void 
+errmsg (char *what, char *fmt)
 {
 	errmsg (what, fmt);
 }
@@ -358,9 +352,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	ryr_errmsg (what, fmt)
-char   *what,
-	   *fmt;
+void 
+ryr_errmsg (char *what, char *fmt)
 {
 	ryr_errmsg (what, fmt);
 }

@@ -36,10 +36,8 @@ static char *mycontext = "isode callback demo";
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int	    vecp;
 	char   *taddr,
@@ -47,18 +45,18 @@ char  **argv,
 	struct TSAPaddr *ta;
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
-	register struct SSAPaddr *sz;
+	struct SSAPaddr *sz;
 	struct SSAPconnect scs;
-	register struct SSAPconnect *sc = &scs;
+	struct SSAPconnect *sc = &scs;
 	struct SSAPstart sss;
-	register struct SSAPstart *ss = &sss;
+	struct SSAPstart *ss = &sss;
 	struct SSAPdata sxs;
-	register struct SSAPdata   *sx = &sxs;
+	struct SSAPdata   *sx = &sxs;
 	struct SSAPrelease  srs;
-	register struct SSAPrelease *sr = &srs;
+	struct SSAPrelease *sr = &srs;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 	AEI	    aei;
 	struct PSAPaddr *pa;
 	struct sblk incoming,
@@ -165,7 +163,7 @@ char  **argv,
 			ss -> ss_ssdusize);
 
 	/* stop listening, we have what we want */
-	(void) TNetClose (NULLTA, td);
+	 TNetClose (NULLTA, td);
 
 	bzero ((char *) sbi, sizeof *sbi);
 	sbi -> sb_sd = ss -> ss_sd;

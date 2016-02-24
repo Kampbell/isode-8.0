@@ -33,21 +33,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapreport.c,v 9.0 19
 
 /*    P-U-EXCEPTION-REPORT.REQUEST */
 
-int	PUReportRequest (sd, reason, data, ndata, pi)
-int	sd;
-int	reason,
-	ndata;
-PE     *data;
-struct PSAPindication *pi;
+int 
+PUReportRequest (int sd, int reason, PE *data, int ndata, struct PSAPindication *pi)
 {
 	SBV	    smask;
 	int     len,
 			result;
 	char   *base,
 		   *realbase;
-	register struct psapblk *pb;
+	struct psapblk *pb;
 	struct SSAPindication   sis;
-	register struct SSAPabort  *sa = &sis.si_abort;
+	struct SSAPabort  *sa = &sis.si_abort;
 
 	toomuchP (data, ndata, NPDATA, "report");
 	missingP (pi);
@@ -63,9 +59,9 @@ struct PSAPindication *pi;
 
 	if ((result = SUReportRequest (sd, reason, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			(void) ss2pslose (pb, pi, "SUReportRequest", sa);
+			 ss2pslose (pb, pi, "SUReportRequest", sa);
 		else {
-			(void) ss2pslose (NULLPB, pi, "SUReportRequest", sa);
+			 ss2pslose (NULLPB, pi, "SUReportRequest", sa);
 			goto out1;
 		}
 
@@ -82,7 +78,7 @@ out1:
 	else if (base)
 		free (base);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }

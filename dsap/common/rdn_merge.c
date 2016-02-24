@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/rdn_merge.c,v 9
 RDN rdn_merge (a,b)
 RDN a,b;
 {
-	register RDN aptr, bptr, result, trail;
+	RDN aptr, bptr, result, trail;
 
 	if ( a == NULLRDN )
 		return (b);

@@ -33,16 +33,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapmajor1.c,v 9.0 199
 
 /*    S-MAJOR-SYNC.REQUEST */
 
-int	SMajSyncRequest (sd, ssn, data, cc, si)
-int	sd;
-long   *ssn;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	missingP (ssn);
 	missingP (si);
@@ -54,20 +50,15 @@ struct SSAPindication *si;
 
 	result = SMajSyncRequestAux (sb, ssn, data, cc, MAP_SYNC_NOEND, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-int	SMajSyncRequestAux (sb, ssn, data, cc, opts, si)
-register struct ssapblk *sb;
-long   *ssn;
-char   *data;
-int	cc,
-	opts;
-register struct SSAPindication *si;
+int 
+SMajSyncRequestAux (struct ssapblk *sb, long *ssn, char *data, int cc, int opts, struct SSAPindication *si)
 {
 	int     result;
 

@@ -271,7 +271,7 @@ char          **argv;
 					&& rps -> ps_byteno == 0
 					&& opt -> ps_byteno == 0
 					&& fdx_reset (opt) == OK)   /* MAJOR HACK */
-				(void) (*opt -> ps_writeP) (opt, "3", 1, 0);
+				 (*opt -> ps_writeP) (opt, "3", 1, 0);
 #endif
 			ps_printf (OPT,"Multiple hits...\n");
 		}
@@ -309,7 +309,7 @@ char          **argv;
 						  **ep;
 
 				ps_printf (RPS, "%d matches found.\n", i);
-				(void) ps_flush (RPS);
+				 ps_flush (RPS);
 
 				if (base = (EntryInfo **) malloc ((unsigned)
 												  (i * sizeof *base))) {
@@ -338,7 +338,7 @@ char          **argv;
 			for (ptr = result.CSR_entries;
 					ptr;
 					ptr = ptr -> ent_next)
-				(void) add_sequence (ptr -> ent_dn);
+				 add_sequence (ptr -> ent_dn);
 			set_sequence ("default");
 			for (i = 0, ptr = result.CSR_entries;
 					ptr;
@@ -348,7 +348,7 @@ char          **argv;
 						ps_print (RPS, "-------\n");
 					else if (nchild)
 						ps_print (RPS, "\n");
-					(void) ps_flush (RPS);
+					 ps_flush (RPS);
 				}
 
 				nchild = showfred (ptr -> ent_dn, fred_long,

@@ -37,7 +37,7 @@ extern LLog * log_dsap;
 extern char dsa_mode;
 
 char * SkipSpace (ptr)
-register char * ptr;
+char * ptr;
 {
 	if (ptr == NULLCP)
 		return (NULLCP);
@@ -48,10 +48,10 @@ register char * ptr;
 }
 
 void StripSpace (b)
-register char *b;
+char *b;
 /* copy b to a less spaces and comments */
 {
-	register char *a;
+	char *a;
 
 	if (*b == COMMENT ) {
 		*b = 0;
@@ -79,10 +79,10 @@ register char *b;
 }
 
 void StripSpace2 (b)
-register char *b;
+char *b;
 /* copy b to a less spaces and comments */
 {
-	register char *a;
+	char *a;
 
 	while (isascii(*b) && (! isspace(*b)) && (*b))
 		b++;
@@ -105,11 +105,11 @@ register char *b;
 }
 
 char * TidyString2 (a)
-register char * a;
+char * a;
 {
-	register char * b;
+	char * b;
 	char * c;
-	register int i = 0;
+	int i = 0;
 
 	/* removing multiple and trailing spaces */
 	c = a, b = a;
@@ -145,11 +145,11 @@ register char * a;
 }
 
 char * TidyString (a)
-register char * a;
+char * a;
 {
-	register char * b;
+	char * b;
 	char * c;
-	register int i = 0;
+	int i = 0;
 
 	if (!*a)
 		return (a);
@@ -255,7 +255,7 @@ ps_printf (ps,fmt)
 PS ps;
 char * fmt;
 {
-	(void) ps_printf (ps,fmt) ;
+	 ps_printf (ps,fmt) ;
 }
 
 #endif
@@ -269,8 +269,8 @@ char *fmt;
 		log_dsap -> ll_syslog = LLOG_FATAL;
 	LLOG (log_dsap,LLOG_FATAL,("Quipu failure (%d): %s",code,fmt));
 	stop_listeners ();
-	(void) fflush (stdout);
-	(void) fprintf (stderr,"Quipu failure (%d): %s\n",code,fmt);
+	 fflush (stdout);
+	 fprintf (stderr,"Quipu failure (%d): %s\n",code,fmt);
 	exit (code);
 }
 
@@ -312,14 +312,14 @@ stop_listeners () {
 	struct TSAPdisconnect	* td = &(td_s);
 
 	/* close all listeners */
-	(void) TNetClose (NULLTA,td);
+	 TNetClose (NULLTA,td);
 }
 
 quipu_pe_cmp (a,b)
-register PE a,b;
+PE a,b;
 {
 	char *p,*q;
-	register int j,i;
+	int j,i;
 
 	/* based on ISODE pe_cmp */
 

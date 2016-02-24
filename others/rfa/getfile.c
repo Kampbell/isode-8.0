@@ -49,10 +49,8 @@ extern FILE *out, *err;
 /*--------------------------------------------------------------*/
 /*  getfile_aux                                                 */
 /*--------------------------------------------------------------*/
-int getfile_aux(fn, rfa, rmode)
-char *fn;
-struct RfaInfo *rfa;
-int *rmode;
+int 
+getfile_aux (char *fn, struct RfaInfo *rfa, int *rmode)
 {
 	struct type_RFA_GetFileDataRes *gfr;
 	struct type_RFA_GetFileDataArg *gfa;
@@ -107,7 +105,7 @@ int *rmode;
 		return rc;
 	}
 
-	(void)time(&te);
+	time(&te);
 	te = (te - ts) ? te - ts : 1L;
 	switch (gfr->mode) {
 	case int_RFA_mode_compressed:
@@ -145,10 +143,8 @@ int *rmode;
 /*--------------------------------------------------------------*
  *  instfile - install file
  *--------------------------------------------------------------*/
-int instfile(fn, gfr, nump)
-char *fn;
-struct type_RFA_GetFileDataRes *gfr;
-int *nump;
+int 
+instfile (char *fn, struct type_RFA_GetFileDataRes *gfr, int *nump)
 {
 	time_t	tt[2];
 	char	fnbak[512];

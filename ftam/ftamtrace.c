@@ -75,7 +75,7 @@ IFP	tracing;
 struct FTAMindication *fti;
 {
 	SBV	    smask;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	missingP (fti);
 
@@ -86,7 +86,7 @@ struct FTAMindication *fti;
 	if (fsb -> fsb_trace = tracing)
 		pe_applist = ftam_appls, pe_maxappl = ftam_nappl;
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return OK;
 }
@@ -109,5 +109,5 @@ int	rw;
 	if (pe)
 		pvpdu (ftam_log, print_FTAM_PDU_P, pe, fpdu ? fpdu : "FPDU", rw);
 
-	(void) ll_sync (ftam_log);
+	 ll_sync (ftam_log);
 }

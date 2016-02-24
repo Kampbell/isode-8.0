@@ -35,23 +35,20 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaprespond.c,v 9.0 
 
 /*    A-ASSOCIATE.INDICATION */
 
-int	AcInit (vecp, vec, acs, aci)
-int	vecp;
-char  **vec;
-struct AcSAPstart *acs;
-struct AcSAPindication *aci;
+int 
+AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication *aci)
 {
-	register int    i;
+	int    i;
 	int	    ctx,
 			result;
-	register struct assocblk *acb;
-	register struct PSAPstart *ps;
+	struct assocblk *acb;
+	struct PSAPstart *ps;
 	struct PSAPindication   pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort  *pa = &pi -> pi_abort;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort  *pa = &pi -> pi_abort;
 	PE	    pe = NULLPE;
 	struct type_ACS_ACSE__apdu *pdu;
-	register struct type_ACS_AARQ__apdu *aarq;
+	struct type_ACS_AARQ__apdu *aarq;
 
 	isodetailor (NULLCP, 0);
 
@@ -66,7 +63,7 @@ struct AcSAPindication *aci;
 	bzero ((char *) acs, sizeof *acs);
 
 	if (PInit (vecp, vec, ps, pi) == NOTOK) {
-		(void) ps2acslose (acb, aci, "PInit", pa);
+		 ps2acslose (acb, aci, "PInit", pa);
 		goto out1;
 	}
 
@@ -77,7 +74,7 @@ struct AcSAPindication *aci;
 
 	pdu = NULL;
 	if (ps -> ps_ninfo < 1) {
-		(void) acsaplose (aci, ACS_PROTOCOL, NULLCP,
+		 acsaplose (aci, ACS_PROTOCOL, NULLCP,
 						  "no user-data on P-CONNECT");
 		goto out2;
 	}
@@ -96,12 +93,12 @@ struct AcSAPindication *aci;
 	pe = ps -> ps_info[0] = NULLPE;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
+		 acsaplose (aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto out2;
 	}
 
 	if (pdu -> offset != type_ACS_ACSE__apdu_aarq) {
-		(void) acsaplose (aci, ACS_PROTOCOL, NULLCP,
+		 acsaplose (aci, ACS_PROTOCOL, NULLCP,
 						  "unexpected PDU %d on P-CONNECT", pdu -> offset);
 		goto out2;
 	}
@@ -110,16 +107,16 @@ struct AcSAPindication *aci;
 
 	if ((acb -> acb_context = oid_cpy (aarq -> application__context__name))
 			== NULLOID) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, NULLCP);
+		 acsaplose (aci, ACS_CONGEST, NULLCP, NULLCP);
 		goto out2;
 	}
 
 	{
-		register OID	oid;
-		register struct PSAPcontext *pp;
+		OID	oid;
+		struct PSAPcontext *pp;
 
 		if ((oid = AC_ASN_OID) == NULLOID) {
-			(void) acsaplose (aci, ACS_PARAMETER, NULLCP,
+			 acsaplose (aci, ACS_PARAMETER, NULLCP,
 							  "%s: unknown", AC_ASN);
 			goto out2;
 		}
@@ -129,12 +126,12 @@ struct AcSAPindication *aci;
 				pp++, i--)
 			if (pp -> pc_id == ctx) {
 				if (oid_cmp (pp -> pc_asn, oid)) {
-					(void) acsaplose (aci, ACS_PROTOCOL, NULLCP,
+					 acsaplose (aci, ACS_PROTOCOL, NULLCP,
 									  "wrong ASN for ACSE");
 					goto out2;
 				}
 				if (pp -> pc_result != PC_ACCEPT) {
-					(void) acsaplose (aci, ACS_PROTOCOL, NULLCP,
+					 acsaplose (aci, ACS_PROTOCOL, NULLCP,
 									  "PCI for ACSE not accepted");
 					goto out2;
 				}
@@ -144,7 +141,7 @@ struct AcSAPindication *aci;
 				acb -> acb_rosid = pp -> pc_id;
 
 		if (acb -> acb_id == PE_DFLT_CTX) {
-			(void) acsaplose (aci, ACS_PROTOCOL, NULLCP,
+			 acsaplose (aci, ACS_PROTOCOL, NULLCP,
 							  "unable to find PCI for ACSE");
 			goto out2;
 		}
@@ -206,7 +203,7 @@ out2:
 		free_ACS_ACSE__apdu (pdu);
 
 	/* XXX: should do AARE APDU, but can't given any useful info... */
-	(void) PConnResponse (ps -> ps_sd, PC_REJECTED, NULLPA, &ps -> ps_ctxlist,
+	 PConnResponse (ps -> ps_sd, PC_REJECTED, NULLPA, &ps -> ps_ctxlist,
 						  ps -> ps_defctxresult, 0, 0, SERIAL_NONE, 0,
 						  &ps -> ps_connect, NULLPEP, 0, &pis);
 
@@ -221,34 +218,17 @@ out1:
 
 /*    A-ASSOCIATE.RESPONSE */
 
-int	AcAssocResponse (sd, status, reason, context, respondtitle,
-					 respondaddr, ctxlist, defctxresult, prequirements, srequirements, isn,
-					 settings, ref, data, ndata, aci)
-int	sd;
-int	status,
-	reason;
-OID	context;
-AEI	respondtitle;
-struct PSAPaddr *respondaddr;
-int	prequirements,
-	srequirements,
-	settings,
-	ndata;
-long	isn;
-struct PSAPctxlist *ctxlist;
-int	defctxresult;
-struct SSAPref *ref;
-PE     *data;
-struct AcSAPindication *aci;
+int 
+AcAssocResponse (int sd, int status, int reason, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, struct PSAPctxlist *ctxlist, int defctxresult, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct AcSAPindication *aci)
 {
 	int	    pstatus,
 			result;
 	PE	    pe;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct PSAPindication pis;
-	register struct PSAPindication *pi = &pis;
-	register struct PSAPabort *pa = &pi -> pi_abort;
-	register struct type_ACS_AARE__apdu *pdu;
+	struct PSAPindication *pi = &pis;
+	struct PSAPabort *pa = &pi -> pi_abort;
+	struct type_ACS_AARE__apdu *pdu;
 
 	if ((acb = findacblk (sd)) == NULL || (acb -> acb_flags & ACB_CONN))
 		return acsaplose (aci, ACS_PARAMETER, NULLCP,
@@ -298,8 +278,8 @@ bad_reason:
 
 	toomuchP (data, ndata, NACDATA, "initial");
 	if (data) {	    /* XXX: probably should have a more intensive check... */
-		register int    i;
-		register PE    *pep;
+		int    i;
+		PE    *pep;
 
 		for (pep = data, i = ndata; i > 0; pep++, i--)
 			if ((*pep) -> pe_context == PE_DFLT_CTX)
@@ -314,7 +294,7 @@ bad_reason:
 			== NULL) {
 no_mem:
 		;
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	pdu -> application__context__name = context ? context : acb -> acb_context;
@@ -354,17 +334,17 @@ no_mem:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+		 acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 						  PY_pepy);
 		goto out2;
 	}
 
 	if (ctxlist) {
-		register int	i;
-		register struct PSAPcontext *pp;
+		int	i;
+		struct PSAPcontext *pp;
 
 		if (ctxlist -> pc_nctx > NPCTX) {
-			(void) acsaplose (aci, ACS_PARAMETER, NULLCP, "too many contexts");
+			 acsaplose (aci, ACS_PARAMETER, NULLCP, "too many contexts");
 			goto out1;
 		}
 
@@ -373,7 +353,7 @@ no_mem:
 				i--, pp++)
 			if (acb -> acb_id == pp -> pc_id) {
 				if (pp -> pc_result != PC_ACCEPT) {
-					(void) acsaplose (aci, ACS_PARAMETER, NULLCP,
+					 acsaplose (aci, ACS_PARAMETER, NULLCP,
 									  "PCI for ACSE not accepted");
 					goto out1;
 				}
@@ -392,7 +372,7 @@ no_mem:
 	pe = NULLPE;
 
 	if (result == NOTOK) {
-		(void) ps2acslose (acb, aci, "PConnResponse", pa);
+		 ps2acslose (acb, aci, "PConnResponse", pa);
 		if (PC_FATAL (pa -> pa_reason))
 			goto out2;
 		else

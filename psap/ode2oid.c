@@ -24,7 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ode2oid.c,v 9.0 1992/0
  *
  */
 
-
+#ifdef FIXME
+#include <psap.h>
+OID	ode2oid (char* descriptor) {
+	return NULLOID;
+}
+#else
 /* LINTLIBRARY */
 
 #include <stdio.h>
@@ -40,11 +45,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ode2oid.c,v 9.0 1992/0
 #undef missingP
 #undef pylose
 #undef toomuchP
+
 #define ACSE
-#define assocblk assocblkxxx
-#define newacblk newacblkxxx
-#define findacblk findacblkxxx
-#include "acpkt.h"
+// AC_ASN below copied from acpkt.h"
+#ifdef	ACSE
+#define	AC_ASN		"acse pci version 1"
+#if	USE_BUILTIN_OIDS
+#define AC_ASN_OID	str2oid ("2.2.1.0.1")
+#else
+#define AC_ASN_OID	ode2oid (AC_ASN)
+#endif
+#endif
 
 /*  */
 #define ODECACHESIZE 10
@@ -54,13 +65,13 @@ static struct la_cache {
 	OID	oid;
 } Cache[ODECACHESIZE];
 
-static void preloadcache (str)
-char	*str;
+static void 
+preloadcache (char *str)
 {
 	struct la_cache *cp = &Cache[0];
-	register struct isobject *io;
+	struct isobject *io;
 
-	(void) setisobject (0);
+	 setisobject (0);
 	while (io = getisobject ()) {
 		if (strcmp (str, io -> io_descriptor) == 0 ||
 				strcmp (DFLT_ASN, io -> io_descriptor) == 0 ||
@@ -75,19 +86,19 @@ char	*str;
 					cp -> oid = NULLOID;
 				}
 			} else {
-				(void) strcpy (cp -> descriptor, io -> io_descriptor);
+				 strcpy (cp -> descriptor, io -> io_descriptor);
 				cp -> ref = 1;
 				cp ++;
 			}
 		}
 	}
-	(void) endisobject ();
+	 endisobject ();
 }
 
-OID	ode2oid (descriptor)
-char   *descriptor;
+OID 
+ode2oid (char *descriptor)
 {
-	register struct isobject *io;
+	struct isobject *io;
 	int i, least;
 	struct la_cache *cp, *cpn;
 	static char firsttime = 0;
@@ -128,13 +139,14 @@ char   *descriptor;
 		}
 		cpn -> ref = 0;
 	} else
-		(void) strcpy (cpn -> descriptor, descriptor);
+		 strcpy (cpn -> descriptor, descriptor);
 
 	return (&io -> io_identity);
 }
 
 #ifdef DEBUG
-free_oid_cache() {
+int 
+free_oid_cache()  {
 	struct la_cache *cp;
 	int i;
 
@@ -146,4 +158,5 @@ free_oid_cache() {
 			oid_free(cp->oid);
 	}
 }
+#endif
 #endif

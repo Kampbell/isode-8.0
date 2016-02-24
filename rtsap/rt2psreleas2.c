@@ -35,15 +35,12 @@ static int  RtCloseResponseAux ();
 
 /*    RT-CLOSE.RESPONSE */
 
-int	RtCloseResponse (sd, reason, data, rti)
-int	sd,
-	reason;
-PE	data;
-struct RtSAPindication *rti;
+int 
+RtCloseResponse (int sd, int reason, PE data, struct RtSAPindication *rti)
 {
 	SBV	    smask;
 	int	    result;
-	register struct assocblk *acb;
+	struct assocblk *acb;
 
 	missingP (rti);
 
@@ -53,23 +50,20 @@ struct RtSAPindication *rti;
 
 	result = RtCloseResponseAux (acb, reason, data, rti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  RtCloseResponseAux (acb, reason, data, rti)
-register struct assocblk *acb;
-int	reason;
-PE	data;
-register struct RtSAPindication *rti;
+static int 
+RtCloseResponseAux (struct assocblk *acb, int reason, PE data, struct RtSAPindication *rti)
 {
 	int	    result;
 	struct AcSAPindication acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &aci -> aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &aci -> aci_abort;
 
 	if (!(acb -> acb_flags & ACB_ACS))
 		return rtsaplose (rti, RTS_OPERATION, NULLCP,

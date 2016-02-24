@@ -40,23 +40,20 @@ extern int acsap_conntype;
 
 /*    RT-BEGIN.INDICATION (X.410 OPEN.INDICATION) */
 
-int	RtBInit (vecp, vec, rts, rti)
-int	vecp;
-char  **vec;
-struct RtSAPstart *rts;
-struct RtSAPindication *rti;
+int 
+RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti)
 {
 	int     len,
 			result;
 	char   *base;
-	register struct assocblk   *acb;
-	register PE	pe;
+	struct assocblk   *acb;
+	PE	pe;
 	struct SSAPref ref;
 	struct SSAPstart    sss;
-	register struct SSAPstart  *ss = &sss;
+	struct SSAPstart  *ss = &sss;
 	struct SSAPindication   sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort  *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 	struct type_OACS_PConnect *pcon;
 	int sc_reason = SC_CONGESTION;
 
@@ -72,7 +69,7 @@ struct RtSAPindication *rti;
 	SetSS2RtService (acb);
 
 	if (SInit (vecp, vec, ss, si) == NOTOK) {
-		(void) ss2rtslose (acb, rti, "SInit", sa);
+		 ss2rtslose (acb, rti, "SInit", sa);
 		goto out1;
 	}
 
@@ -82,7 +79,7 @@ struct RtSAPindication *rti;
 	base = NULLCP, len = 0;
 	acb -> acb_connect = ss -> ss_connect;	/* struct copy */
 	if ((ss -> ss_requirements &= RTS_MYREQUIRE) != RTS_MYREQUIRE) {
-		(void) rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+		 rtsaplose (rti, RTS_PROTOCOL, NULLCP,
 						  "desired session requirements unavailable");
 		goto out2;
 	}
@@ -102,7 +99,7 @@ struct RtSAPindication *rti;
 		break; \
  \
 	    default: \
-		(void) rtsaplose (rti, RTS_PROTOCOL, NULLCP, \
+		 rtsaplose (rti, RTS_PROTOCOL, NULLCP, \
 			"%s token management botched", type); \
 		goto out2; \
 	} \
@@ -110,7 +107,7 @@ struct RtSAPindication *rti;
 	dotokens ();
 #undef	dotoken
 	if (acb -> acb_owned != 0 && acb -> acb_owned != acb -> acb_avail) {
-		(void) rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+		 rtsaplose (rti, RTS_PROTOCOL, NULLCP,
 						  "token management botched");
 		goto out2;
 	}
@@ -121,7 +118,7 @@ struct RtSAPindication *rti;
 
 	if ((pe = ssdu2pe (ss -> ss_data, ss -> ss_cc, NULLCP, &result))
 			== NULLPE) {
-		(void) rtsaplose (rti, result != PS_ERR_NMEM ? RTS_PROTOCOL
+		 rtsaplose (rti, result != PS_ERR_NMEM ? RTS_PROTOCOL
 						  : RTS_CONGEST, NULLCP, "%s", ps_error (result));
 		goto out2;
 	}
@@ -129,7 +126,7 @@ struct RtSAPindication *rti;
 	SSFREE (ss);
 
 	if (parse_OACS_PConnect (pe, 1, NULLIP, NULLVP, &pcon) == NOTOK) {
-		(void) pylose ();
+		 pylose ();
 		pe_free (pe);
 		goto out2;
 	}
@@ -138,7 +135,7 @@ struct RtSAPindication *rti;
 
 	if (pcon -> pUserData -> member_OACS_2->offset
 			== type_OACS_ConnectionData_recover) {
-		(void) rtsaplose (rti, RTS_CONGEST, NULLCP,
+		 rtsaplose (rti, RTS_CONGEST, NULLCP,
 						  "rejecting attempted recovery");
 		pe_free (pe);
 		if ((pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET))
@@ -188,7 +185,7 @@ struct RtSAPindication *rti;
 out2:
 	;
 	bzero ((char *) &ref, sizeof ref);
-	(void) SConnResponse (acb -> acb_fd, &ref, NULLSA, sc_reason, 0, 0,
+	 SConnResponse (acb -> acb_fd, &ref, NULLSA, sc_reason, 0, 0,
 						  SERIAL_NONE, base, len, si);
 	acb -> acb_fd = NOTOK;
 	if (base)
@@ -204,24 +201,21 @@ out1:
 
 /*    RT-BEGIN.RESPONSE (X.410 OPEN.RESPONSE) */
 
-int	RtBeginResponse (sd, status, data, rti)
-int	sd;
-int	status;
-PE	data;
-struct RtSAPindication *rti;
+int 
+RtBeginResponse (int sd, int status, PE data, struct RtSAPindication *rti)
 {
 	int	    len,
 			result;
 	char   *base;
-	register PE	pe,
+	PE	pe,
 			 p,
 			 q,
 			 r;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 	struct SSAPref ref;
 	struct SSAPindication sis;
-	register struct SSAPindication *si = &sis;
-	register struct SSAPabort *sa = &si -> si_abort;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort *sa = &si -> si_abort;
 
 	if ((acb = findacblk (sd)) == NULL || (acb -> acb_flags & ACB_CONN))
 		return rtsaplose (rti, RTS_PARAMETER, NULLCP,
@@ -255,7 +249,7 @@ struct RtSAPindication *rti;
 				== NULLPE) {
 no_mem:
 			;
-			(void) rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
+			 rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
 			goto out1;
 		}
 		if (set_add (pe, p = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS,
@@ -307,7 +301,7 @@ no_mem:
 					   acb -> acb_requirements, acb -> acb_settings, SERIAL_NONE,
 					   base, len, si) == NOTOK) {
 		acb -> acb_fd = NOTOK;
-		(void) ss2rtslose (acb, rti, "SConnResponse", sa);
+		 ss2rtslose (acb, rti, "SConnResponse", sa);
 		goto out3;
 	}
 
@@ -323,7 +317,7 @@ out2:
 	;
 	if (pe) {
 		if (data)
-			(void) pe_extract (pe, data);
+			 pe_extract (pe, data);
 		pe_free (pe);
 	}
 	if (base)
@@ -334,7 +328,7 @@ out2:
 out1:
 	;
 	bzero ((char *) &ref, sizeof ref);
-	(void) SConnResponse (acb -> acb_fd, &ref, NULLSA, SC_CONGEST, 0, 0,
+	 SConnResponse (acb -> acb_fd, &ref, NULLSA, SC_CONGEST, 0, 0,
 						  SERIAL_NONE, NULLCP, 0, si);
 	acb -> acb_fd = NOTOK;
 out3:

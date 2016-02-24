@@ -138,12 +138,13 @@ extern int	errno;
 	Thanks to Richard Todd for pointing this out.
 */
 
-static int
-NameLen( name )				/* return # chars in embedded name */
-char		name[];		/* -> name embedded in struct direct */
+static int 
+NameLen (				/* return # chars in embedded name */
+    char name[]		/* -> name embedded in struct direct */
+)
 {
-	register char	*s;		/* -> name[.] */
-	register char	*stop = &name[DIRSIZ];	/* -> past end of name field */
+	char	*s;		/* -> name[.] */
+	char	*stop = &name[DIRSIZ];	/* -> past end of name field */
 
 	for ( s = &name[1];		/* (empty names are impossible) */
 			*s != '\0'		/* not NUL terminator */
@@ -167,20 +168,22 @@ static enum	{ maybe, no, yes }	state = maybe;
 /* does _getdents() work? */
 
 /*ARGSUSED*/
-static void
-sig_catch( sig )
-int	sig;			/* must be SIGSYS */
+static void 
+sig_catch (
+    int sig			/* must be SIGSYS */
+)
 {
 	state = no;			/* attempted _getdents() faulted */
 }
 #endif
 
-int
-getdents( fildes, buf, nbyte )		/* returns # bytes read;
+int 
+getdents (		/* returns # bytes read;
 					   0 on EOF, -1 on error */
-int			fildes;	/* directory file descriptor */
-char			*buf;	/* where to put the (struct dirent)s */
-unsigned		nbyte;	/* size of buf[] */
+    int fildes,	/* directory file descriptor */
+    char *buf,	/* where to put the (struct dirent)s */
+    unsigned nbyte	/* size of buf[] */
+)
 {
 	int			serrno;	/* entry errno */
 	off_t			offset;	/* initial directory file offset */
@@ -190,13 +193,13 @@ unsigned		nbyte;	/* size of buf[] */
 		/* directory file block buffer */
 		struct direct	dummy;	/* just for alignment */
 	}	u;		/* (avoids having to malloc()) */
-	register struct direct	*dp;	/* -> u.dblk[.] */
-	register struct dirent	*bp;	/* -> buf[.] */
+	struct direct	*dp;	/* -> u.dblk[.] */
+	struct dirent	*bp;	/* -> buf[.] */
 
 #ifdef UNK
 	switch ( state ) {
 		void		(*shdlr)();	/* entry SIGSYS handler */
-		register int	retval;	/* return from _getdents() if any */
+		int	retval;	/* return from _getdents() if any */
 
 	case yes:			/* _getdents() is known to work */
 		return _getdents( fildes, buf, nbyte );
@@ -204,7 +207,7 @@ unsigned		nbyte;	/* size of buf[] */
 	case maybe:			/* first time only */
 		shdlr = signal( SIGSYS, sig_catch );
 		retval = _getdents( fildes, buf, nbyte );	/* try it */
-		(void)signal( SIGSYS, shdlr );
+		signal( SIGSYS, shdlr );
 
 		if ( state == maybe ) {	/* SIGSYS did not occur */
 			state = yes;	/* so _getdents() must have worked */
@@ -268,7 +271,7 @@ unsigned		nbyte;	/* size of buf[] */
 
 			if ( dp->d_fileno != 0 ) {
 				/* non-empty; copy to user buffer */
-				register int	reclen =
+				int	reclen =
 					DIRENTSIZ( NameLen( dp->d_name ) );
 
 				if ( (char *)bp + reclen > &buf[nbyte] ) {
@@ -279,7 +282,7 @@ unsigned		nbyte;	/* size of buf[] */
 				bp->d_ino = dp->d_fileno;
 				bp->d_off = offset + ((char *)dp - u.dblk);
 				bp->d_reclen = reclen;
-				(void)strncpy( bp->d_name, dp->d_name,
+				strncpy( bp->d_name, dp->d_name,
 #ifdef UFS
 							   DIRSIZ );
 				/* be sure d_name is NULL-terminated */
@@ -305,5 +308,6 @@ unsigned		nbyte;	/* size of buf[] */
 	return (char *)bp - buf;	/* return # bytes read */
 }
 #else
-int	_getdents_stub () {}
+int 
+_getdents_stub()  {}
 #endif

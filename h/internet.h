@@ -31,6 +31,9 @@
 /*    SOCKETS */
 
 #include "sys/socket.h"
+#include "asm/socket.h"
+#include "netinet/in.h"
+#include "arpa/inet.h"
 
 #ifndef	SOMAXCONN
 #define	SOMAXCONN	5
@@ -178,11 +181,10 @@ struct hostent *gethostbystring ();
 
 char   *inet_ntoa ();
 #ifndef	DG
-u_long	inet_addr ();
 #ifndef	HPUX
-u_long	inet_network ();
+in_addr_t inet_network ();
 #else
-int	inet_network ();
+in_addr_t inet_network ();
 #endif
 #else
 struct in_addr inet_addr (), inet_network ();

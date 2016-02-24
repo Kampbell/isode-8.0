@@ -42,7 +42,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/yacc.y.gnrc,v 9.0 1992
 #include "mosy-defs.h"
 %END(MOSY)%
 
-#define	YYSTYPE	YYSTKTYPE
+//#define	YYSTYPE	YYSTKTYPE
 
 
 #define	YYDEBUG	1

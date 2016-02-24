@@ -50,8 +50,8 @@ static CMD_TABLE tbl_communities[] = {
 
 /*  */
 
-int	setisonsapsnpa (f)
-int	f;
+int 
+setisonsapsnpa (int f)
 {
 	if (servf == NULL)
 		servf = fopen (isodefile (isonsapsnpa, 0), "r");
@@ -63,9 +63,10 @@ int	f;
 }
 
 
-int	endisonsapsnpa () {
+int 
+endisonsapsnpa()  {
 	if (servf && !stayopen) {
-		(void) fclose (servf);
+		 fclose (servf);
 		servf = NULL;
 	}
 
@@ -74,12 +75,13 @@ int	endisonsapsnpa () {
 
 /*  */
 
-struct NSAPinfo  *getisonsapsnpa () {
+struct NSAPinfo *
+getisonsapsnpa()  {
 	int	    mask,
 			vecp;
-	register char  *cp;
+	char  *cp;
 	static struct NSAPinfo iss;
-	register struct NSAPinfo *is = &iss;
+	struct NSAPinfo *is = &iss;
 	static char buffer[BUFSIZ + 1];
 	static char *vec[NVEC + NSLACK + 1];
 	struct TSAPaddr *ta;
@@ -128,7 +130,7 @@ struct NSAPinfo  *getisonsapsnpa () {
 			is -> is_stack = nsap_default_stack;
 
 		if (vecp > 2 && strcmp(vec[2],"-") != 0)
-			(void) strncpy (is -> is_class, vec[2], sizeof (is -> is_class));
+			 strncpy (is -> is_class, vec[2], sizeof (is -> is_class));
 		else is -> is_class[0] = '\0';
 
 		return is;
@@ -137,8 +139,8 @@ struct NSAPinfo  *getisonsapsnpa () {
 	return NULL;
 }
 
-struct NSAPaddr *getisosnpa (nsap)
-struct NSAPaddr *nsap;
+struct NSAPaddr *
+getisosnpa (struct NSAPaddr *nsap)
 {
 	struct NSAPinfo *is;
 	int best = -1;
@@ -148,7 +150,7 @@ struct NSAPaddr *nsap;
 	if (nsap -> na_stack != NA_NSAP)
 		return NULLNA;
 
-	(void) setisonsapsnpa (0);
+	 setisonsapsnpa (0);
 
 	while (is = getisonsapsnpa ()) {
 		if (is -> is_nsap.na_stack == NOTOK || is -> is_plen < best)
@@ -159,15 +161,15 @@ struct NSAPaddr *nsap;
 			*ns = *is; /* struct copy */
 		}
 	}
-	(void) endisonsapsnpa ();
+	 endisonsapsnpa ();
 
 	if (best >= 0)
 		return &ns -> is_nsap;
 	return NULLNA;
 }
 
-struct NSAPinfo *getnsapinfo (nsap)
-struct NSAPaddr *nsap;
+struct NSAPinfo *
+getnsapinfo (struct NSAPaddr *nsap)
 {
 	struct NSAPinfo *is;
 	int best = -1;
@@ -177,7 +179,7 @@ struct NSAPaddr *nsap;
 	if (nsap -> na_stack != NA_NSAP)
 		return NULLNI;
 
-	(void) setisonsapsnpa (0);
+	 setisonsapsnpa (0);
 
 	while (is = getisonsapsnpa ()) {
 		if (is -> is_plen < best)
@@ -189,7 +191,7 @@ struct NSAPaddr *nsap;
 			*ns = *is; /* struct copy */
 		}
 	}
-	(void) endisonsapsnpa ();
+	 endisonsapsnpa ();
 
 	if (best >= 0)
 		return ns;

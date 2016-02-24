@@ -71,10 +71,8 @@ int oldformat = 0;
 */
 
 
-char * encode_t4 (k_param, inbuf, eolnskip)
-int     k_param;
-char *  inbuf;
-int eolnskip;
+char *
+encode_t4 (int k_param, char *inbuf, int eolnskip)
 
 {
 	bit_string ref_line;            /* Reference line */
@@ -141,7 +139,7 @@ int eolnskip;
 		/* skip any extra eoln bit in orig data */
 
 		for (j = 0; j < eolnskip; j++)
-			(void) get_bit (&code_line);
+			 get_bit (&code_line);
 
 	}
 
@@ -471,7 +469,7 @@ get_runs (lineptr)
 bit_string * lineptr;
 
 {
-	register i;
+	i;
 	char     colour = WHITE;
 
 	*lineptr->run_pos++ = 0;

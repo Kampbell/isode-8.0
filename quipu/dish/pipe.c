@@ -62,13 +62,13 @@ init_pipe () {
 #endif
 
 	if ((cp = getenv ("DISHPARENT")) == NULLCP) {
-		(void) sprintf (parent, "%d", getppid ());
-		(void) setenv ("DISHPARENT", cp = parent);
+		 sprintf (parent, "%d", getppid ());
+		 setenv ("DISHPARENT", cp = parent);
 	}
 
 
 	if (sscanf (cp, "%d", &parent_pid) != 1) {
-		(void) fprintf (stderr,"DISHPARENT malformed");
+		 fprintf (stderr,"DISHPARENT malformed");
 		return (NOTOK);
 	}
 
@@ -81,52 +81,52 @@ init_pipe () {
 		return NOTOK;
 	}
 #ifdef	FIOCLEX
-	(void) ioctl (sd, FIOCLEX, NULLCP);
+	 ioctl (sd, FIOCLEX, NULLCP);
 #endif
 #else
 
 	if ((cp = getenv ("DISHPROC")) == NULL) {
-		(void) fprintf (stderr, "no DISHPROC in environment\n");
+		 fprintf (stderr, "no DISHPROC in environment\n");
 		return (NOTOK);
 	}
 
-	(void) strcpy (retpipe, cp);
-	(void) umask (0);
+	 strcpy (retpipe, cp);
+	 umask (0);
 
 	if ((fd = open (retpipe, O_RDONLY)) < 0) {
-		(void) mknod (retpipe, S_IFIFO | 0600, 0);
+		 mknod (retpipe, S_IFIFO | 0600, 0);
 		if ((fd = open (retpipe, O_RDONLY)) < 0) {
-			(void) fprintf (stderr, "ropen failed\n");
-			(void) unlink (retpipe);
+			 fprintf (stderr, "ropen failed\n");
+			 unlink (retpipe);
 			return (NOTOK);
 		}
 	}
 
 	if ((wfd = open (retpipe, O_WRONLY)) < 0) {
-		(void) fprintf (stderr, "wr open failed\n");
-		(void) unlink (retpipe);
-		(void) close (fd);
+		 fprintf (stderr, "wr open failed\n");
+		 unlink (retpipe);
+		 close (fd);
 		return (NOTOK);
 	}
 #endif
 
 #ifdef	SETSID
-	(void) setsid ();
+	 setsid ();
 #endif
 #ifdef	TIOCNOTTY
 	{
 		int	    xsd;
 
 		if ((xsd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			(void) ioctl (xsd, TIOCNOTTY, NULLCP);
-			(void) close (xsd);
+			 ioctl (xsd, TIOCNOTTY, NULLCP);
+			 close (xsd);
 		}
 	}
 #else
 #ifdef	SYS5
-	(void) setpgrp ();
-	(void) signal (SIGINT, SIG_IGN);
-	(void) signal (SIGQUIT, SIG_IGN);
+	 setpgrp ();
+	 signal (SIGINT, SIG_IGN);
+	 signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	return (OK);
@@ -134,11 +134,11 @@ init_pipe () {
 
 exit_pipe () {
 #ifdef SOCKETS
-	(void) close_tcp_socket (sd);
+	 close_tcp_socket (sd);
 #else
-	(void) close (fd);
-	(void) close (wfd);
-	(void) unlink (retpipe);
+	 close (fd);
+	 close (wfd);
+	 unlink (retpipe);
 #endif
 }
 
@@ -156,7 +156,7 @@ int len;
 		}
 	}
 #ifdef	FIOCLEX
-	(void) ioctl (sd_current, FIOCLEX, NULLCP);
+	 ioctl (sd_current, FIOCLEX, NULLCP);
 #endif
 #endif
 	return (read_pipe_aux(buf,len));
@@ -169,7 +169,7 @@ int len;
 {
 	int res;
 #ifdef	SOCKETS
-	register char *cp,
+	char *cp,
 			 *ep;
 #endif
 
@@ -180,7 +180,7 @@ int len;
 		switch (res = recv (sd_current, cp, ep - cp, 0)) {
 		case NOTOK:
 			perror ("recv");
-			(void) close (sd_current);
+			 close (sd_current);
 			return NOTOK;
 
 		case OK:
@@ -221,7 +221,7 @@ int    *len;
 			i,
 			j,
 			res;
-	register char   *cp,
+	char   *cp,
 			 *dp,
 			 *ep;
 	char    buffer[BUFSIZ];
@@ -239,7 +239,7 @@ int    *len;
 
 	default:
 		if (sscanf (buffer + 1, "%d", &cc) != 1 || cc < 0) {
-			(void) fprintf (stderr, "protocol botch\n");
+			 fprintf (stderr, "protocol botch\n");
 			return NOTOK;
 		}
 		if ((cp = malloc ((unsigned) cc + 1)) == NULL) {
@@ -250,7 +250,7 @@ int    *len;
 
 		dp = cp, j = cc;
 		if (ep = index (buffer + 1, '\n')) {
-			(void) strcpy (dp, ++ep);
+			 strcpy (dp, ++ep);
 			i = strlen (ep);
 			dp += i, j -= i;
 		}
@@ -265,11 +265,11 @@ out:
 			;
 			free (cp);
 			*buf = NULL, *len = 0;
-			(void) close (sd_current);
+			 close (sd_current);
 			return NOTOK;
 
 		case OK:
-			(void) fprintf (stderr, "premature eof from peer\n");
+			 fprintf (stderr, "premature eof from peer\n");
 			goto out;
 
 		default:
@@ -288,7 +288,7 @@ char * buf;
 {
 	send_pipe_aux (buf);
 
-	(void) close (file);
+	 close (file);
 	reopen_ret ();
 }
 #endif
@@ -307,7 +307,7 @@ int	i;
 
 #ifndef	SOCKETS
 	if ((file = open (inbuf, O_WRONLY)) <= 0) {
-		(void) fprintf (stderr, "error %s on %s\n",sys_errname (errno), inbuf);
+		 fprintf (stderr, "error %s on %s\n",sys_errname (errno), inbuf);
 		reopen_ret ();
 		return;
 	}
@@ -317,12 +317,12 @@ int	i;
 #ifdef	SOCKETS
 		if ( (res= send(sd_current, buf, i, 0)) == -1) {
 			perror("send");
-			(void) close (sd_current);
+			 close (sd_current);
 			return;
 		}
 #else
 		if ((res = write (file, buf, MIN (BUFSIZ,i))) == -1 ) {
-			(void) fprintf (stderr,"result write error (2)\n");
+			 fprintf (stderr,"result write error (2)\n");
 			reopen_ret ();
 			return;
 		}
@@ -341,7 +341,7 @@ struct sockaddr_in *isock;
 	char buffer [BUFSIZ];
 	int     portno;
 	char   *dp;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	if ((ptr = getenv ("DISHPROC")) == NULLCP) {
 #ifdef	notanymore
@@ -350,26 +350,26 @@ struct sockaddr_in *isock;
 			   portno = (getppid () & 0xffff) | 0x8000;
 #ifdef	notanymore
 		if ((hp = gethostbystring (cp = getlocalhost ())) == NULL) {
-			(void) fprintf (stderr,"%s: unknown host", cp);
+			 fprintf (stderr,"%s: unknown host", cp);
 			return (-1);
 		}
-		(void) sprintf (buffer, "%s %d",
+		 sprintf (buffer, "%s %d",
 						inet_ntoa (*(struct in_addr *) hp -> h_addr),
 						portno);
 #else
-		(void) sprintf (buffer, "127.0.0.1 %d", portno);
+		 sprintf (buffer, "127.0.0.1 %d", portno);
 #endif
-		(void) setenv ("DISHPROC", ptr = buffer);
+		 setenv ("DISHPROC", ptr = buffer);
 	}
 
 	if ((dp = index (ptr, ' ')) == NULLCP || sscanf (dp + 1, "%d", &portno) != 1) {
-		(void) fprintf (stderr,"DISHPROC malformed");
+		 fprintf (stderr,"DISHPROC malformed");
 		return (-1);
 	}
 	*dp = NULL;
 
 	if ((hp = gethostbystring (ptr)) == NULL) {
-		(void) fprintf (stderr,"%s: unknown host in DISHPROC", ptr);
+		 fprintf (stderr,"%s: unknown host in DISHPROC", ptr);
 		return (-1);
 	}
 	*dp = ' ';
@@ -386,22 +386,22 @@ struct sockaddr_in *isock;
 #else
 
 reopen_ret () {
-	(void) close (fd);
-	(void) close (wfd);
+	 close (fd);
+	 close (wfd);
 
 	if ((fd = open (retpipe, O_RDONLY)) < 0) {
 		if ( errno == EINTR ) {
 			reopen_ret ();
 			return;
 		}
-		(void) fprintf (stderr, "re-ropen failed\n");
-		(void) unlink (retpipe);
+		 fprintf (stderr, "re-ropen failed\n");
+		 unlink (retpipe);
 		exit (-72);
 	}
 	if ((wfd = open (retpipe, O_WRONLY)) < 0) {
-		(void) fprintf (stderr, "re-wr open failed\n");
-		(void) unlink (retpipe);
-		(void) close (fd);
+		 fprintf (stderr, "re-wr open failed\n");
+		 unlink (retpipe);
+		 close (fd);
 		exit (-73);
 	}
 }

@@ -32,9 +32,8 @@ extern mailtype mailformat;
 extern LLog    *log_stat;
 #endif
 
-struct entrymod * ems_append (a,b)
-struct entrymod *a;
-struct entrymod *b;
+struct entrymod *
+ems_append (struct entrymod *a, struct entrymod *b)
 {
 	struct entrymod *ptr;
 
@@ -59,7 +58,7 @@ dirEntry mods;
 	AttributeType attr_type = 0;
 	AttributeValue attr_val = 0;
 	AV_Sequence attrVal_seq = 0;
-	register modVals curr_val;
+	modVals curr_val;
 	dirAttrs attrs;
 	char err_buf[STRINGLEN], attr_val_buf[STRINGLEN];
 	short attr_removed;
@@ -118,7 +117,7 @@ dirEntry mods;
 							if (entrymods) ems_free(entrymods);
 							AttrT_free(attr_type);
 							mod_error.error = attributerror;
-							(void) sprintf(err_buf,
+							 sprintf(err_buf,
 										   "Attribute Error!\nInvalid syntax for value '%s' type '%s'.",
 										   curr_val->new_value, attrs->attr_name);
 							mod_error.err_mess = strdup(err_buf);
@@ -180,7 +179,7 @@ dirEntry mods;
 								if (entrymods) ems_free(entrymods);
 								AttrT_free(attr_type);
 								mod_error.error = attributerror;
-								(void) sprintf(err_buf,
+								 sprintf(err_buf,
 											   "Attribute Error!\nInvalid syntax for value %s type %s.",
 											   curr_val->new_value, attrs->attr_name);
 								mod_error.err_mess = strdup(err_buf);
@@ -228,7 +227,7 @@ dirEntry mods;
 								if (entrymods) ems_free(entrymods);
 								AttrT_free(attr_type);
 								mod_error.error = attributerror;
-								(void) sprintf(err_buf,
+								 sprintf(err_buf,
 											   "Attribute Error!\nInvalid syntax for value %s type %s.",
 											   curr_val->new_value, attrs->attr_name);
 								mod_error.err_mess = strdup(err_buf);
@@ -478,7 +477,7 @@ make_attr_sequence(entry_string, attrs)
 char *entry_string;
 dirAttrs *attrs;
 {
-	register char *str, *sptr;
+	char *str, *sptr;
 	char save, buffer[RESBUF];
 	modVals curr_val = 0;
 	dirAttrs curr_attr = 0;
@@ -529,7 +528,7 @@ dirAttrs *attrs;
 
 				if (!lexequ(curr_attr->attr_name, "rfc822Mailbox")
 						&& mailformat == greybook) {
-					(void) strcpy(curr_attr->attr_name, "mailbox");
+					 strcpy(curr_attr->attr_name, "mailbox");
 				}
 			}
 		} else {
@@ -553,7 +552,7 @@ dirAttrs *attrs;
 
 			if (!lexequ(curr_attr->attr_name, "rfc822Mailbox")
 					&& mailformat == greybook) {
-				(void) strcpy(curr_attr->attr_name, "mailbox");
+				 strcpy(curr_attr->attr_name, "mailbox");
 			}
 		}
 
@@ -627,7 +626,7 @@ AttributeType at;
 	ia5_char_desc[2] = '\0';
 
 	if (!at || !is_map_required(at)) {
-		(void) strcpy(buffer, value);
+		 strcpy(buffer, value);
 		return;
 	}
 
@@ -680,12 +679,12 @@ AttributeType at;
 	}
 
 	if (str2syntax("dn") == at->oa_syntax) {
-		if (*value == '@') (void) strcpy(buffer, (char *) (value + 1));
+		if (*value == '@')  strcpy(buffer, (char *) (value + 1));
 		return;
 	}
 
 	if (!is_map_required(at)) {
-		(void) strcpy(buffer, value);
+		 strcpy(buffer, value);
 		return;
 	}
 
@@ -739,8 +738,8 @@ AV_Sequence oc;
 }
 
 /*Big Bodge!*/
-char *modify_error(error)
-struct DSError *error;
+char *
+modify_error (struct DSError *error)
 {
 	PS ps;
 	char buffer[RESBUF];
@@ -779,9 +778,9 @@ int  format;
 
 	if (as != NULLATTR) {
 		if (format == READOUT)
-			(void) sprintf(buffer,"%s", attr2name(as->attr_type, 1));
+			 sprintf(buffer,"%s", attr2name(as->attr_type, 1));
 		else
-			(void) sprintf(buffer,"%s", attr2name_aux(as->attr_type));
+			 sprintf(buffer,"%s", attr2name_aux(as->attr_type));
 
 		if (split_attr (as)) {
 			if (as->attr_value == NULLAV && format != READOUT)

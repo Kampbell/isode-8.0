@@ -35,16 +35,12 @@ static int  SMinSyncResponseAux ();
 
 /*    S-MINOR-SYNC.RESPONSE */
 
-int	SMinSyncResponse (sd, ssn, data, cc, si)
-int	sd;
-long	ssn;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SMinSyncResponse (int sd, long ssn, char *data, int cc, struct SSAPindication *si)
 {
 	SBV	    smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 
 	if (SERIAL_MIN > ssn || ssn > SERIAL_MAX)
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid serial number");
@@ -57,19 +53,15 @@ struct SSAPindication *si;
 
 	result = SMinSyncResponseAux (sb, ssn, data, cc, si);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  SMinSyncResponseAux (sb, ssn, data, cc, si)
-register struct ssapblk *sb;
-long	ssn;
-char   *data;
-int	cc;
-register struct SSAPindication *si;
+static int 
+SMinSyncResponseAux (struct ssapblk *sb, long ssn, char *data, int cc, struct SSAPindication *si)
 {
 	int     result;
 

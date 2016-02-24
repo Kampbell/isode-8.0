@@ -46,7 +46,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet.c,v 9.0 199
 #include "internet.h"
 
 
-extern int  errno;
+
 
 /*    Berkeley UNIX: 4.2 */
 
@@ -55,11 +55,10 @@ extern int  errno;
 /* For real networking, nothing is better than 4BSD! */
 
 
-int	start_tcp_client (sock, priv)
-struct sockaddr_in *sock;
-int	priv;
+int 
+start_tcp_client (struct sockaddr_in *sock, int priv)
 {
-	register int    port;
+	int    port;
 	int     eindex,
 			sd;
 #if	defined(BSD43) || defined(SVR4)
@@ -89,7 +88,7 @@ int	priv;
 		default:
 			eindex = errno;
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-			(void) close_tcp_socket (sd);
+			 close_tcp_socket (sd);
 			errno = eindex;
 			return NOTOK;
 		}
@@ -112,13 +111,10 @@ got_socket:
 
 /*  */
 
-int	start_tcp_server (sock, backlog, opt1, opt2)
-struct sockaddr_in *sock;
-int	backlog,
-	opt1,
-	opt2;
+int 
+start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 {
-	register int    port;
+	int    port;
 	int     eindex,
 			sd;
 #ifdef ULTRIX_X25_DEMSA
@@ -153,7 +149,7 @@ int	backlog,
 
 		eindex = errno;
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-		(void) close_tcp_socket (sd);
+		 close_tcp_socket (sd);
 		errno = eindex;
 		return NOTOK;
 	}
@@ -172,7 +168,7 @@ int	backlog,
 		default:
 			eindex = errno;
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-			(void) close_tcp_socket (sd);
+			 close_tcp_socket (sd);
 			errno = eindex;
 			return NOTOK;
 		}
@@ -206,7 +202,7 @@ got_socket:
 			  ("set socket option 0x%x", opt2));
 #endif
 
-	(void) listen (sd, backlog);
+	 listen (sd, backlog);
 
 	return sd;
 }
@@ -234,7 +230,7 @@ struct sockaddr_in *sock;
 #ifdef ULTRIX_X25_DEMSA
 	else {
 		/* this descriptor will be used for the accepted connection */
-		/* so we register the descriptor result                     */
+		/* so we the descriptor result                     */
 		if ( X25RegisterFD(result,rhandler,whandler,xhandler,result) < NULL) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("X25RegisterFD"));
 			return NOTOK;
@@ -277,7 +273,7 @@ struct sockaddr_in *sock;
 	}
 #ifdef ULTRIX_X25_DEMSA
 	else {
-		/* connect returned success, now we register the descriptor */
+		/* connect returned success, now we the descriptor */
 		/* fd for the connection, which is going to be established  */
 		if ( X25RegisterFD(fd,rhandler,whandler,xhandler,fd) < NULL) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("X25RegisterFD"));
@@ -323,7 +319,7 @@ int	fd;
 #endif
 
 #ifdef	never_do_this_if_from_join_tcp_client
-	(void) shutdown (fd, 2);
+	 shutdown (fd, 2);
 #endif
 
 	return (close (fd));
@@ -343,13 +339,12 @@ int	fd;
    and we must prematurely bind the sockets to IP addresses. */
 
 
-start_tcp_client (sock, priv)
-struct sockaddr_in *sock;
-int	priv;
+int 
+start_tcp_client (struct sockaddr_in *sock, int priv)
 {
-	register int    port;
+	int    port;
 	int     sd;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	if (sock == NULL)
 		return socket (SOCK_STREAM, 0, (struct sockaddr *) 0, SO_KEEPALIVE);
@@ -384,15 +379,12 @@ int	priv;
 
 /*  */
 
-int	start_tcp_server (sock, backlog, opt1, opt2)
-struct sockaddr_in *sock;
-int	backlog,
-	opt1,
-	opt2;
+int 
+start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 {
-	register int    port;
+	int    port;
 	int     sd;
-	register struct hostent *hp;
+	struct hostent *hp;
 
 	if (backlog != 1)
 		return socket (SOCK_STREAM, 0, (struct sockaddr *) sock,
@@ -434,24 +426,23 @@ static char *empty = NULL;
 static char *addrs[2] = { NULL };
 #endif
 
-struct hostent *gethostbystring (s)
-char   *s;
+struct hostent *
+gethostbystring (char *s)
 {
-	register struct hostent *h;
+	struct hostent *h;
 #ifndef	DG
-	static u_long iaddr;
+	int result;
+	static struct in_addr iaddr;
+	result =  inet_aton(s, &iaddr);
+	if (result == 0)
+		return gethostbyname (s);
 #else
 	static struct in_addr iaddr;
+	iaddr = inet_addr (s);
+	if (iaddr.s_addr == NOTOK && strcmp (s, "255.255.255.255"))
+		return gethostbyname (s);
 #endif
 	static struct hostent   hs;
-
-	iaddr = inet_addr (s);
-#ifndef	DG
-	if (iaddr == NOTOK && strcmp (s, "255.255.255.255"))
-#else
-	if (iaddr.s_addr == NOTOK && strcmp (s, "255.255.255.255"))
-#endif
-		return gethostbyname (s);
 
 	h = &hs;
 	h -> h_name = s;
@@ -475,16 +466,14 @@ long	rhost ();
 char   *raddr ();
 
 
-struct hostent *gethostbyaddr (addr, len, type)
-char   *addr;
-int	len,
-	type;
+struct hostent *
+gethostbyaddr (char *addr, int len, int type)
 {
 	long    iaddr;
 	char   *name;
 	static char buffer[BUFSIZ];
 	static struct hostent   hs;
-	register struct hostent *h = &hs;
+	struct hostent *h = &hs;
 
 	if (len != sizeof (long) || type != AF_INET)
 		return NULL;
@@ -492,7 +481,7 @@ int	len,
 	if ((name = raddr (iaddr)) == NULL)
 		return NULL;
 
-	(void) strcpy (buffer, name);
+	 strcpy (buffer, name);
 	free (name);
 
 	h -> h_name = buffer;
@@ -505,18 +494,18 @@ int	len,
 }
 
 
-struct hostent *gethostbyname (name)
-char   *name;
+struct hostent *
+gethostbyname (char *name)
 {
 	static long iaddr;
 	static char buffer[BUFSIZ];
 	static struct hostent   hs;
-	register struct hostent *h = &hs;
+	struct hostent *h = &hs;
 
 	if ((iaddr = rhost (&name)) == NOTOK)
 		return NULL;
 
-	(void) strcpy (buffer, name);
+	 strcpy (buffer, name);
 	free (name);
 
 	h -> h_name = buffer;
@@ -599,11 +588,10 @@ static struct servent   services[] = {
 
 
 
-struct servent *getservbyname (name, proto)
-register char   *name,
-		 *proto;
+struct servent *
+getservbyname (char *name, char *proto)
 {
-	register struct servent *s;
+	struct servent *s;
 
 	for (s = services; s -> s_name; s++)
 		if (strcmp (name, s -> s_name) == 0
@@ -623,27 +611,27 @@ register char   *name,
 
 #define	s2a(b)	(((int) (b)) & 0xff)
 
-char   *inet_ntoa (in)
-struct in_addr in;
+char *
+inet_ntoa (struct in_addr in)
 {
-	register char  *s = (char *) &in;
+	char  *s = (char *) &in;
 	static char addr[4 * 3 + 3 + 1];
 
-	(void) sprintf (addr, "%d.%d.%d.%d",
+	 sprintf (addr, "%d.%d.%d.%d",
 					s2a (s[0]), s2a (s[1]), s2a (s[2]), s2a (s[3]));
 
 	return addr;
 }
 
 
-u_long	inet_addr (cp)
-char   *cp;
+u_long 
+inet_addr (char *cp)
 {
-	register int    base;
-	register char   c;
-	register u_long val;
+	int    base;
+	char   c;
+	u_long val;
 	u_long	parts[4];
-	register u_long *pp = parts;
+	u_long *pp = parts;
 
 	for (;;) {
 		val = 0, base = 10;
@@ -707,14 +695,14 @@ char   *cp;
 	return htonl (val);
 }
 
-u_long	inet_network (cp)
-char   *cp;
+u_long 
+inet_network (char *cp)
 {
-	register int    base;
-	register char   c;
-	register u_long val;
+	int    base;
+	char   c;
+	u_long val;
 	u_long	parts[4];
-	register u_long *pp = parts;
+	u_long *pp = parts;
 
 	for (;;) {
 		val = 0, base = 10;

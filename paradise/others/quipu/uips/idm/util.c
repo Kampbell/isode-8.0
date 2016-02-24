@@ -41,17 +41,17 @@ void initAlarm() {
 	void onalarm();
 
 	alarmCount = 0;
-	(void) signal(SIGALRM, (VFP) onalarm);
-	(void) alarm(alarmLen());
+	 signal(SIGALRM, (VFP) onalarm);
+	 alarm(alarmLen());
 }
 
 void
 alarmCleanUp() {
-	(void) signal(SIGALRM, SIG_IGN);
-	(void) alarm(0);
+	 signal(SIGALRM, SIG_IGN);
+	 alarm(0);
 	if (alarmCount > 1) {
 		alarmCount = 0;
-		(void) printf("\n\n");
+		 printf("\n\n");
 	}
 }
 
@@ -64,7 +64,7 @@ char *string;
 	if (string == NULLCP) return NULLCP;
 
 	new_string = (char *) smalloc((strlen(string) + 1));
-	(void) strcpy(new_string, string);
+	 strcpy(new_string, string);
 
 	return new_string;
 }
@@ -147,7 +147,7 @@ int printNumber;
 		cp2 = savestring;
 	} else {
 		if (objectType == COUNTRY) {
-			(void) sprintf(cp2, "%s -- %s", cp1, mapCoName(cp1));
+			 sprintf(cp2, "%s -- %s", cp1, mapCoName(cp1));
 			/*    cp2 = mapCoName(cp1); */
 		} else {
 			cp2 = cp1;
@@ -167,7 +167,7 @@ int printNumber;
 			pageprint("      ");
 			break;
 		default:
-			(void) fprintf(stderr, "%s  ", unk_obj_type);
+			 fprintf(stderr, "%s  ", unk_obj_type);
 			break;
 		}
 	}
@@ -325,11 +325,11 @@ int noMatches;
 
 	if (deLogLevel > 1) {
 		if (searchNumber == 0)
-			(void) strcpy(filterNumberString, "explicit");
+			 strcpy(filterNumberString, "explicit");
 		else
-			(void) sprintf(filterNumberString, "%d", searchNumber);
+			 sprintf(filterNumberString, "%d", searchNumber);
 
-		(void) ll_log (de_log, LLOG_NOTICE, NULLCP,
+		 ll_log (de_log, LLOG_NOTICE, NULLCP,
 					   "searchOutcome:%s:%s:%s:%s:%d", objecttype,
 					   outcome, string, filterNumberString, noMatches);
 	}
@@ -341,7 +341,7 @@ char * objecttype;
 int noMatches;
 {
 	if (deLogLevel > 1) {
-		(void) ll_log (de_log, LLOG_NOTICE, NULLCP,
+		 ll_log (de_log, LLOG_NOTICE, NULLCP,
 					   "listOutcome:%s:%s:%d", objecttype, outcome, noMatches);
 	}
 }

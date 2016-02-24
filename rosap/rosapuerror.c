@@ -38,17 +38,12 @@ static int RoErrorRequestAux ();
 
 /*    RO-ERROR.REQUEST */
 
-int	RoErrorRequest (sd, invokeID, error, params, priority, roi)
-int	sd;
-int	invokeID,
-	error,
-	priority;
-PE	params;
-struct RoSAPindication *roi;
+int 
+RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     result;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (roi);
 
@@ -58,22 +53,17 @@ struct RoSAPindication *roi;
 
 	result = RoErrorRequestAux (acb, invokeID, error, params, priority, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int  RoErrorRequestAux (acb, invokeID, error, params, priority, roi)
-register struct assocblk   *acb;
-int	invokeID,
-	error,
-	priority;
-PE	params;
-struct RoSAPindication *roi;
+static int 
+RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi)
 {
-	register PE	pe,
+	PE	pe,
 			 p;
 
 	if ((acb -> acb_flags & ACB_INIT) && (acb -> acb_flags & ACB_ROS))
@@ -98,7 +88,7 @@ struct RoSAPindication *roi;
 			|| (params && seq_add (p, params, -1) == NOTOK)) {
 		if (pe) {
 			if (params)
-				(void) pe_extract (pe, params);
+				 pe_extract (pe, params);
 			pe_free (pe);
 		}
 		freeacblk (acb);

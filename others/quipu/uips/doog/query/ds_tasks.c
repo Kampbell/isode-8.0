@@ -76,10 +76,10 @@ int *task_id_ptr;
  *  A task has been completed. Remove it from the outstanding list.
  *
  */
-void _task_complete(task_id)
-int task_id;
+void 
+_task_complete (int task_id)
 {
-	register DsTask prev_rec = NULLDsTask, task_rec = live_task_list;
+	DsTask prev_rec = NULLDsTask, task_rec = live_task_list;
 
 	while (task_rec != NULLDsTask && task_rec->task_id != task_id) {
 		prev_rec = task_rec;
@@ -105,7 +105,7 @@ int task_id;
 DsTask _get_task_of_id(task_id)
 int task_id;
 {
-	register DsTask task_rec = live_task_list;
+	DsTask task_rec = live_task_list;
 
 	while (task_rec != NULLDsTask && task_rec->task_id != task_id)
 		task_rec = task_rec->next;
@@ -118,8 +118,8 @@ int task_id;
  * Abort an X.500 request
  *
  */
-void abort_task(task_id)
-int task_id;
+void 
+abort_task (int task_id)
 {
 	struct ds_abandon_arg arg;
 	struct DAPindication di;
@@ -130,7 +130,7 @@ int task_id;
 
 	arg.aba_invokeid = task_id;
 
-	(void) DapAbandon(dsap_ad, next_task_id++, &arg, &di, ROS_ASYNC);
+	 DapAbandon(dsap_ad, next_task_id++, &arg, &di, ROS_ASYNC);
 
 #ifndef NO_STATS
 	LLOG (log_stat, LLOG_NOTICE,
@@ -150,9 +150,9 @@ DsTask task;
 		return;
 
 	if (task->baseobject != NULLCP)
-		(void) free(task->baseobject);
+		 free(task->baseobject);
 
-	(void) free((char *) task);
+	 free((char *) task);
 } /* ds_task_free */
 
 

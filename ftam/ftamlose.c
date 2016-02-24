@@ -41,8 +41,8 @@ va_dcl {
 	result,
 	source;
 	struct FTAMindication   ftis;
-	register struct ftamblk *fsb;
-	register struct FTAMindication *fti;
+	struct ftamblk *fsb;
+	struct FTAMindication *fti;
 	va_list	ap;
 
 	va_start (ap);
@@ -63,7 +63,7 @@ va_dcl {
 	if (fsb -> fsb_fd == NOTOK)
 		return result;
 
-	(void) FAbortRequestAux (fsb, type_FTAM_PDU_f__p__abort__request,
+	 FAbortRequestAux (fsb, type_FTAM_PDU_f__p__abort__request,
 	FACTION_PERM, fti -> fti_abort.fta_diags, 1,
 	&ftis);
 
@@ -110,7 +110,7 @@ va_dcl {
 /* VARARGS4 */
 
 int	ftamlose (fti, reason, fatal, what, fmt)
-register struct FTAMindication *fti;
+struct FTAMindication *fti;
 int	reason,
 	fatal;
 char   *what,
@@ -150,17 +150,17 @@ va_dcl {
 
 
 static int  _ftamoops (fti, reason, fatal, observer, source, ap)
-register struct FTAMindication *fti;
+struct FTAMindication *fti;
 int	reason,
 	fatal,
 	observer,
 	source;
 va_list	ap;
 {
-	register char  *bp;
+	char  *bp;
 	char    buffer[BUFSIZ];
-	register struct FTAMabort  *fta;
-	register struct FTAMdiagnostic *ftd;
+	struct FTAMabort  *fta;
+	struct FTAMdiagnostic *ftd;
 
 	if (fti) {
 		bzero ((char *) fti, sizeof *fti);

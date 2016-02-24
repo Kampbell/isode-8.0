@@ -77,7 +77,7 @@ char   *getuser (), *getgroup ();
 /*    SELECTION REGIME */
 
 int	ftam_selection (ftg, ftm)
-register struct FTAMgroup *ftg,
+struct FTAMgroup *ftg,
 		*ftm;
 {
 	int     action,
@@ -90,8 +90,8 @@ register struct FTAMgroup *ftg,
 
 	state = FSTATE_SUCCESS;
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftg -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftg -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 		struct FTAMdiagnostic *dp = ftm -> ftg_select.ftse_diags;
 
 		errno = 0;
@@ -108,7 +108,7 @@ register struct FTAMgroup *ftg,
 			dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
 			if (errno) {
-				(void) strcpy (dp -> ftd_data, sys_errname (errno));
+				 strcpy (dp -> ftd_data, sys_errname (errno));
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 			} else
 				dp -> ftd_cc = 0;
@@ -181,10 +181,10 @@ done_select:
 	}
 
 	if (ftg -> ftg_flags & FTG_CREATE) {
-		register struct FTAMcreate *ftce = &ftg -> ftg_create;
-		register struct FTAMattributes *fa = &ftce -> ftce_attrs;
+		struct FTAMcreate *ftce = &ftg -> ftg_create;
+		struct FTAMattributes *fa = &ftce -> ftce_attrs;
 		struct FTAMdiagnostic *dp = ftm -> ftg_create.ftce_diags;
-		register struct vfsmap *vf;
+		struct vfsmap *vf;
 
 		if (!(fa -> fa_present & FA_FILENAME)
 				|| fa -> fa_nfile != 1
@@ -281,7 +281,7 @@ done_select:
 					&& oid_cmp (vf -> vf_oid, fa -> fa_contents) == 0)
 				break;
 		if (!vf -> vf_entry) {
-			(void) sprintf (dp -> ftd_data,
+			 sprintf (dp -> ftd_data,
 							"invalid contents-type %s",
 							sprintoid (fa -> fa_contents));
 			dp -> ftd_cc = strlen (dp -> ftd_data);
@@ -328,8 +328,8 @@ done_create:
 		ftm -> ftg_readattr.ftra_action = FACTION_SUCCESS;
 
 	if (ftg -> ftg_flags & FTG_CHATTR) {
-		register struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
-		register struct FTAMattributes *fa = &ftca -> ftca_attrs;
+		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
+		struct FTAMattributes *fa = &ftca -> ftca_attrs;
 		struct FTAMdiagnostic *dp = ftm -> ftg_chngattr.ftca_diags;
 
 		if (chkattrs (fa, fa -> fa_present, 0, &dp) == NOTOK)
@@ -342,7 +342,7 @@ done_create:
 	}
 
 	if (ftg -> ftg_flags & FTG_OPEN) {
-		register struct FTAMopen *ftop = &ftm -> ftg_open;
+		struct FTAMopen *ftop = &ftm -> ftg_open;
 
 		ftop -> ftop_state = FSTATE_FAILURE;
 		ftop -> ftop_action = FACTION_SUCCESS;
@@ -362,8 +362,8 @@ done_create:
 		ftm -> ftg_delete.ftxe_action = FACTION_SUCCESS;
 
 	if (ftg -> ftg_flags & FTG_SELECT) {
-		register struct FTAMselect *ftse = &ftm -> ftg_select;
-		register struct FTAMattributes *fa = &ftse -> ftse_attrs;
+		struct FTAMselect *ftse = &ftm -> ftg_select;
+		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		if (state != FSTATE_SUCCESS) {
 			ftse -> ftse_action = FACTION_PERM;
@@ -378,8 +378,8 @@ done_create:
 	}
 
 	if (ftg -> ftg_flags & FTG_CREATE) {
-		register struct FTAMattributes *fa = &ftg -> ftg_create.ftce_attrs;
-		register struct FTAMcreate *ftce = &ftm -> ftg_create;
+		struct FTAMattributes *fa = &ftg -> ftg_create.ftce_attrs;
+		struct FTAMcreate *ftce = &ftm -> ftg_create;
 		struct FTAMdiagnostic  *dp = ftce -> ftce_diags + ftce -> ftce_ndiag;
 
 		if (state != FSTATE_SUCCESS) {
@@ -411,9 +411,9 @@ bad_override:
 				dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
 #ifdef	BRIDGE
-				(void) strcpy (dp -> ftd_data, ftp_error);
+				 strcpy (dp -> ftd_data, ftp_error);
 #else
-				(void) strcpy (dp -> ftd_data, sys_errname (errno));
+				 strcpy (dp -> ftd_data, sys_errname (errno));
 #endif
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				dp++;
@@ -448,7 +448,7 @@ bad_open:
 					dp -> ftd_identifier = FS_SEL_CREATE;
 					dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 					dp -> ftd_delay = DIAG_NODELAY;
-					(void) strcpy (dp -> ftd_data, sys_errname (errno));
+					 strcpy (dp -> ftd_data, sys_errname (errno));
 					dp -> ftd_cc = strlen (dp -> ftd_data);
 					dp++;
 
@@ -482,7 +482,7 @@ bad_open:
 		}
 
 		ftce -> ftce_action = FACTION_SUCCESS;
-		(void) readattrs (FA_FILENAME | FA_ACTIONS | FA_CONTENTS,
+		 readattrs (FA_FILENAME | FA_ACTIONS | FA_CONTENTS,
 						  &ftce -> ftce_attrs, fa -> fa_contents,
 						  fa -> fa_parameter, myfile, &myst, &dp);
 		if (fa -> fa_present & FA_ACTIONS)
@@ -492,7 +492,7 @@ bad_open:
 
 	if (ftg -> ftg_flags & FTG_RDATTR
 			&& (ftm -> ftg_readattr.ftra_action == FACTION_SUCCESS)) {
-		register struct FTAMreadattr   *ftra = &ftm -> ftg_readattr;
+		struct FTAMreadattr   *ftra = &ftm -> ftg_readattr;
 		struct FTAMdiagnostic  *dp = ftra -> ftra_diags + ftra -> ftra_ndiag;
 
 		if (!statok) {
@@ -527,8 +527,8 @@ bad_readattr:
 
 	if (ftg -> ftg_flags & FTG_CHATTR
 			&& (ftm -> ftg_chngattr.ftca_action == FACTION_SUCCESS)) {
-		register struct FTAMchngattr   *ftca = &ftm -> ftg_chngattr;
-		register struct FTAMattributes *fa = &ftg -> ftg_chngattr.ftca_attrs;
+		struct FTAMchngattr   *ftca = &ftm -> ftg_chngattr;
+		struct FTAMattributes *fa = &ftg -> ftg_chngattr.ftca_attrs;
 		struct FTAMdiagnostic  *dp = ftca -> ftca_diags + ftca -> ftca_ndiag;
 
 		if (chngattrs (fa -> fa_present, fa, &dp) == NOTOK) {
@@ -544,7 +544,7 @@ bad_readattr:
 #ifndef	BRIDGE
 		int	mode;
 #endif
-		register struct FTAMopen *ftop = &ftm -> ftg_open;
+		struct FTAMopen *ftop = &ftm -> ftg_open;
 		struct FTAMdiagnostic  *dp = ftop -> ftop_diags + ftop -> ftop_ndiag;
 
 		ftop -> ftop_state = FSTATE_SUCCESS;
@@ -559,7 +559,7 @@ unavailable:
 				dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
 				if (errno) {
-					(void) strcpy (dp -> ftd_data, sys_errname (errno));
+					 strcpy (dp -> ftd_data, sys_errname (errno));
 					dp -> ftd_cc = strlen (dp -> ftd_data);
 				} else
 					dp -> ftd_cc = 0;
@@ -572,7 +572,7 @@ unavailable:
 		}
 
 		if (ftop -> ftop_contents == NULL) {
-			register struct FTAMattributes *fa;
+			struct FTAMattributes *fa;
 
 			if (ftg -> ftg_flags & FTG_CREATE) {
 				fa = &ftg -> ftg_create.ftce_attrs;
@@ -614,7 +614,7 @@ find_myvfs:
 					== NULL) {
 no_ascertain:
 				;
-				(void) strcpy (dp -> ftd_data,
+				 strcpy (dp -> ftd_data,
 							   "unable to ascertain contents-type");
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				dp -> ftd_type = DIAG_PERM;
@@ -701,7 +701,7 @@ bad_param:
 
 		if (ftop -> ftop_parameter) {
 			if (myvf -> vf_number < 0) {
-				(void) sprintf (dp -> ftd_data,
+				 sprintf (dp -> ftd_data,
 								"unexpected document type parameter");
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				goto bad_param;
@@ -709,7 +709,7 @@ bad_param:
 			myparam = NULL;
 			if (dec_f (myvf -> vf_number, &_ZDOCS_mod, ftop -> ftop_parameter,
 					   1, NULLIP, NULLVP, &myparam) == NOTOK) {
-				(void) sprintf (dp -> ftd_data,
+				 sprintf (dp -> ftd_data,
 								"unable to parse document type parameter: %s",
 								PY_pepy);
 				dp -> ftd_cc = strlen (dp -> ftd_data);
@@ -720,7 +720,7 @@ bad_param:
 					== NOTOK)
 				goto bad_param;
 		} else if (myvf -> vf_mandatory > 0) {
-			(void) strcpy (dp -> ftd_data,
+			 strcpy (dp -> ftd_data,
 						   "mandatory document type parameter missing");
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			goto bad_param;
@@ -775,23 +775,23 @@ done_open:
 			&& (ftm -> ftg_close.ftcl_action == FACTION_SUCCESS)) {
 		if (myfd != NOTOK) {
 #ifdef	BRIDGE
-			(void) close (myfd);
-			(void) ftp_reply ();
+			 close (myfd);
+			 ftp_reply ();
 #else
 			unlock ();
-			(void) close (myfd);
+			 close (myfd);
 #endif
 			myfd = NOTOK;
 		}
 		if (myvf && myparam) {
-			(void) fre_obj (myparam, _ZDOCS_mod.md_dtab[myvf -> vf_number],
+			 fre_obj (myparam, _ZDOCS_mod.md_dtab[myvf -> vf_number],
 							&_ZDOCS_mod, 1);
 			myparam = NULL;
 		}
 	}
 
 	if (ftg -> ftg_flags & FTG_DESELECT) {
-		register struct FTAMdeselect   *ftde = &ftm -> ftg_deselect;
+		struct FTAMdeselect   *ftde = &ftm -> ftg_deselect;
 
 		if (ftde -> ftde_action == FACTION_SUCCESS) {
 			/* anything to charge if (mygid != NOTOK)?  ha! */
@@ -799,7 +799,7 @@ done_open:
 	}
 
 	if (ftg -> ftg_flags & FTG_DELETE) {
-		register struct FTAMdelete *ftxe = &ftm -> ftg_delete;
+		struct FTAMdelete *ftxe = &ftm -> ftg_delete;
 		struct FTAMdiagnostic  *dp = ftxe -> ftxe_diags + ftxe -> ftxe_ndiag;
 
 		if (ftxe -> ftxe_action == FACTION_SUCCESS) {
@@ -817,9 +817,9 @@ done_open:
 				dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
 #ifdef	BRIDGE
-				(void) strcpy (dp -> ftd_data, ftp_error);
+				 strcpy (dp -> ftd_data, ftp_error);
 #else
-				(void) strcpy (dp -> ftd_data, sys_errname (errno));
+				 strcpy (dp -> ftd_data, sys_errname (errno));
 #endif
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				dp++;
@@ -846,13 +846,13 @@ int	fd,
 register
 #endif
 struct FTAMconcurrency *fc;
-register struct FTAMdiagnostic **diags;
+struct FTAMdiagnostic **diags;
 {
 	int     result;
 #ifndef	BRIDGE
-	register char  *cp;
+	char  *cp;
 #endif
-	register struct FTAMdiagnostic *dp = *diags;
+	struct FTAMdiagnostic *dp = *diags;
 
 	result = OK;
 
@@ -949,7 +949,7 @@ bad_concur:
 					dp -> ftd_identifier = FS_ACC_CONAVAIL;
 					dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 					dp -> ftd_delay = DIAG_NODELAY;
-					(void) strcpy (dp -> ftd_data, sys_errname (errno));
+					 strcpy (dp -> ftd_data, sys_errname (errno));
 					dp -> ftd_cc = strlen (dp -> ftd_data);
 					dp++;
 
@@ -968,15 +968,15 @@ bad_concur:
 /*  */
 
 static int  chkattrs (fa, present, select, diags)
-register struct FTAMattributes *fa;
+struct FTAMattributes *fa;
 long	present;
 int	select;
-register struct FTAMdiagnostic **diags;
+struct FTAMdiagnostic **diags;
 {
 	int     id,
 			result;
 	char   *file;
-	register struct FTAMdiagnostic *dp = *diags;
+	struct FTAMdiagnostic *dp = *diags;
 
 	result = OK;
 
@@ -1002,13 +1002,13 @@ register struct FTAMdiagnostic **diags;
 			dp -> ftd_identifier = id;
 			dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
-			(void) strcpy (dp -> ftd_data, "00 bad filename");
+			 strcpy (dp -> ftd_data, "00 bad filename");
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
 
 			result = NOTOK;
 		} else
-			(void) strcpy (mvfile, file);
+			 strcpy (mvfile, file);
 	}
 
 #ifndef	BRIDGE
@@ -1018,7 +1018,7 @@ register struct FTAMdiagnostic **diags;
 			dp -> ftd_identifier = id;
 			dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
-			(void) strcpy (dp -> ftd_data, "02 bad storage account");
+			 strcpy (dp -> ftd_data, "02 bad storage account");
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
 
@@ -1031,7 +1031,7 @@ register struct FTAMdiagnostic **diags;
 		dp -> ftd_identifier = id;
 		dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		(void) strcpy (dp -> ftd_data, "13bad filesize");
+		 strcpy (dp -> ftd_data, "13bad filesize");
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
@@ -1047,19 +1047,19 @@ register struct FTAMdiagnostic **diags;
 
 int	readattrs (attrnames, fa, proposed, parameter, file, st, diags)
 int	attrnames;
-register struct FTAMattributes *fa;
+struct FTAMattributes *fa;
 OID	proposed;
 PE	parameter;
 char   *file;
 struct stat *st;
-register struct FTAMdiagnostic **diags;
+struct FTAMdiagnostic **diags;
 {
 #ifndef	BRIDGE
 	int     result;
 	char   *cp;
-	register struct tm *tm;
+	struct tm *tm;
 #endif
-	register struct FTAMdiagnostic *dp = *diags;
+	struct FTAMdiagnostic *dp = *diags;
 
 	fa -> fa_present = attrnames;
 	fa -> fa_novalue = attrnames & (FA_SECURITY | FA_PRIVATE);
@@ -1104,7 +1104,7 @@ register struct FTAMdiagnostic **diags;
 	}
 
 	if (attrnames & FA_CONTENTS) {
-		register struct vfsmap *vf;
+		struct vfsmap *vf;
 
 		if (vf = st2vfs (myfd, file, st, proposed, ftamfd)) {
 			fa -> fa_contents = vf -> vf_oid;
@@ -1128,7 +1128,7 @@ register struct FTAMdiagnostic **diags;
 							dp -> ftd_data);
 					goto bad_param;
 				}
-				(void) fre_obj (p, _ZDOCS_mod.md_dtab[vf -> vf_number],
+				 fre_obj (p, _ZDOCS_mod.md_dtab[vf -> vf_number],
 								&_ZDOCS_mod, 1);
 				fa -> fa_parameter = parameter;
 			}
@@ -1251,14 +1251,14 @@ bad_param:
 
 static int  chngattrs (present, fa, diags)
 long	present;
-register struct FTAMattributes *fa;
-register struct FTAMdiagnostic **diags;
+struct FTAMattributes *fa;
+struct FTAMdiagnostic **diags;
 {
 #ifndef	BRIDGE
 	int     gid,
 			result;
 #endif
-	register struct FTAMdiagnostic *dp = *diags;
+	struct FTAMdiagnostic *dp = *diags;
 #ifndef	BRIDGE
 	struct  stat    n1;
 #endif
@@ -1270,7 +1270,7 @@ register struct FTAMdiagnostic **diags;
 			== NOTOK) {
 bad_system:
 		;
-		(void) strcpy (dp -> ftd_data, sys_errname (errno));
+		 strcpy (dp -> ftd_data, sys_errname (errno));
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		goto no_change;
 	}
@@ -1285,16 +1285,16 @@ bad_system:
 	if ((present & FA_ACCOUNT) && (int)strlen (fa -> fa_account) > 1)
 		if ((gid = findgid (fa -> fa_account)) != NOTOK) {
 #ifndef	SYS5
-			(void) seteuid (0);
+			 seteuid (0);
 			result = myfd != NOTOK ? fchown (myfd, -1, gid)
 					 : chown (myfile, -1, gid);
-			(void) seteuid (myuid);
+			 seteuid (myuid);
 #else
 			result = chgrp (myfile, gid);
 #endif
 
 			if (result == NOTOK) {
-				(void) sprintf (dp -> ftd_data, "%s: %s", fa -> fa_account,
+				 sprintf (dp -> ftd_data, "%s: %s", fa -> fa_account,
 								sys_errname (errno));
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 
@@ -1317,12 +1317,12 @@ no_change:
 	if (present & FA_FILENAME) {
 #ifdef	BRIDGE
 		if (ftp_rename (myfile, mvfile) == NOTOK) {
-			(void) sprintf (dp -> ftd_data, "%s: %s", fa -> fa_files[0],
+			 sprintf (dp -> ftd_data, "%s: %s", fa -> fa_files[0],
 							ftp_error);
 #else
 		if (stat (mvfile, &n1) == 0) {  /*file exists*/
 			advise (LLOG_NOTICE, NULLCP, "file %s already exists",mvfile);
-			(void) sprintf (dp->ftd_data, "File \"%s\" already exists",
+			 sprintf (dp->ftd_data, "File \"%s\" already exists",
 							fa -> fa_files[0]);
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp -> ftd_type = DIAG_PERM;
@@ -1336,7 +1336,7 @@ no_change:
 		} else if (rename (myfile, mvfile) == NOTOK) {
 			/* on EXDEV could do gonzo
 								   copy, but why bother? */
-			(void) sprintf (dp -> ftd_data, "%s: %s", fa -> fa_files[0],
+			 sprintf (dp -> ftd_data, "%s: %s", fa -> fa_files[0],
 							sys_errname (errno));
 #endif
 			dp -> ftd_cc = strlen (dp -> ftd_data);
@@ -1367,11 +1367,11 @@ no_change:
 static char *getfile (file)
 char   *file;
 {
-	register char  *bp;
+	char  *bp;
 #ifndef	BRIDGE
-	register char  *cp,
+	char  *cp,
 			 *pp;
-	register struct passwd *pw;
+	struct passwd *pw;
 #endif
 	static int  i = 0;
 	static char buffer1[MAXPATHLEN],
@@ -1385,7 +1385,7 @@ char   *file;
 		if ((int)strlen (file) >= MAXPATHLEN)
 			goto trunc;
 
-		(void) strcpy (bp, file);
+		 strcpy (bp, file);
 		break;
 
 	case '~':
@@ -1404,7 +1404,7 @@ char   *file;
 		if ((int)strlen (pp) + 1 + (cp ? (int)strlen (cp) : 0) >= MAXPATHLEN)
 			goto trunc;
 
-		(void) sprintf (bp, "%s/%s", pp, cp ? cp + 1 : "");
+		 sprintf (bp, "%s/%s", pp, cp ? cp + 1 : "");
 		if (cp)
 			*cp = '/';
 		break;
@@ -1413,7 +1413,7 @@ char   *file;
 		if ((int)strlen (file) + myhomelen + 1 >= MAXPATHLEN)
 			goto trunc;
 
-		(void) sprintf (bp, "%s/%s", myhome, file);
+		 sprintf (bp, "%s/%s", myhome, file);
 		break;
 	}
 
@@ -1423,7 +1423,7 @@ char   *file;
 	if (strncmp (bp, myhome, myhomelen - 1) == 0)
 		switch (bp[myhomelen - 1]) {
 		case 0:
-			(void) strcpy (bp, ".");
+			 strcpy (bp, ".");
 			break;
 
 		case '/':
@@ -1442,7 +1442,7 @@ trunc:
 	errno = 0;
 	return NULLCP;
 #else
-	(void) strcpy (bp, file);
+	 strcpy (bp, file);
 	return bp;
 #endif
 }
@@ -1469,7 +1469,7 @@ int	uid;
 static char *getgroup (gid)
 int	gid;
 {
-	register struct group *gr;
+	struct group *gr;
 	static int	my_gid = -1;
 	static char my_name[NMAX + 1];
 
@@ -1478,7 +1478,7 @@ int	gid;
 			return NULL;
 
 		my_gid = gr -> gr_gid;
-		(void) strcpy (my_name, gr -> gr_name);
+		 strcpy (my_name, gr -> gr_name);
 	}
 
 	return my_name;
@@ -1493,7 +1493,7 @@ char   *group;
 #ifdef	BSD42
 	int	    gidset[NGROUPS];
 #endif
-	register struct group *gr;
+	struct group *gr;
 	static int my_gid = -1;
 	static char my_name[NMAX + 1] = "";
 
@@ -1512,7 +1512,7 @@ char   *group;
 			return NOTOK;
 #endif
 
-		(void) strcpy (my_name, gr -> gr_name);
+		 strcpy (my_name, gr -> gr_name);
 		my_gid = gr -> gr_gid;
 	}
 
@@ -1530,13 +1530,13 @@ int	mode;
 {
 	int	    result;
 
-	(void) seteuid (0);
-	(void) setruid (myuid);
+	 seteuid (0);
+	 setruid (myuid);
 
 	result = access (file, mode);
 
-	(void) setruid (0);
-	(void) seteuid (myuid);
+	 setruid (0);
+	 seteuid (myuid);
 
 	return result;
 }
@@ -1555,7 +1555,7 @@ int	gid;
 	char    group[10];
 	struct stat st;
 
-	(void) sprintf (group, "%d", gid);
+	 sprintf (group, "%d", gid);
 
 	switch (pid = fork ()) {
 	case NOTOK:
@@ -1597,7 +1597,7 @@ int	mode;
 		return NOTOK;
 
 	case OK:
-		(void) umask (~mode);
+		 umask (~mode);
 		execl ("/bin/mkdir", "mkdir", dir, NULLCP);
 		execl ("/usr/bin/mkdir", "mkdir", dir, NULLCP);
 		execl ("/etc/mkdir", "mkdir", dir, NULLCP);
@@ -1667,7 +1667,7 @@ int	length;
 	if ((fd = open (file, O_WRONLY | O_TRUNC)) == NOTOK)
 		return NOTOK;
 
-	(void) close (fd);
+	 close (fd);
 	return OK;
 }
 
@@ -1697,7 +1697,7 @@ char   *file;
 
 again:
 		;
-		(void) fprintf (stderr, "unlink(\"%s\")? y, w, l: ", file);
+		 fprintf (stderr, "unlink(\"%s\")? y, w, l: ", file);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1731,7 +1731,7 @@ char   *dir;
 
 again:
 		;
-		(void) fprintf (stderr, "rmdir(\"%s\")? y, w, l: ", dir);
+		 fprintf (stderr, "rmdir(\"%s\")? y, w, l: ", dir);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1769,7 +1769,7 @@ int     flags,
 
 again:
 		;
-		(void) fprintf (stderr, "open(\"%s\",0x%x,0%o)? y, l: ", file, flags,
+		 fprintf (stderr, "open(\"%s\",0x%x,0%o)? y, l: ", file, flags,
 						(flags & O_CREAT) ? mode : 0);
 
 		i = b = getchar ();
@@ -1802,7 +1802,7 @@ int     mode;
 
 again:
 		;
-		(void) fprintf (stderr, "mkdir(\"%s\",0%o)? y, w, l: ", dir, mode);
+		 fprintf (stderr, "mkdir(\"%s\",0%o)? y, w, l: ", dir, mode);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1838,7 +1838,7 @@ int     uid,
 
 again:
 		;
-		(void) fprintf (stderr, "chown(\"%s\",%d,%d)? y, w, l: ", file, uid, gid);
+		 fprintf (stderr, "chown(\"%s\",%d,%d)? y, w, l: ", file, uid, gid);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1874,7 +1874,7 @@ int     uid,
 
 again:
 		;
-		(void) fprintf (stderr, "fchown(%d,%d,%d)? y, w, l: ", fd, uid, gid);
+		 fprintf (stderr, "fchown(%d,%d,%d)? y, w, l: ", fd, uid, gid);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1909,7 +1909,7 @@ int     length;
 
 again:
 		;
-		(void) fprintf (stderr, "truncate(\"%s\",%d)? y, w, l: ", file, length);
+		 fprintf (stderr, "truncate(\"%s\",%d)? y, w, l: ", file, length);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1944,7 +1944,7 @@ char   *new;
 
 again:
 		;
-		(void) fprintf (stderr, "rename(\"%s\",\"%s\")? y, w, l: ", old, new);
+		 fprintf (stderr, "rename(\"%s\",\"%s\")? y, w, l: ", old, new);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1979,7 +1979,7 @@ int	fd,
 
 again:
 		;
-		(void) fprintf (stderr, "flock(%d,0x%x)? y, w, l: ", fd, operation);
+		 fprintf (stderr, "flock(%d,0x%x)? y, w, l: ", fd, operation);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)

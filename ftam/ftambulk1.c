@@ -45,7 +45,7 @@ struct FTAMindication *fti;
 	SBV      smask;
 	int     result,
 			state;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	switch (operation) {
 	case FA_OPS_READ:
@@ -87,7 +87,7 @@ struct FTAMindication *fti;
 	result = FReadWriteRequestAux (fsb, state, operation, identity, context,
 								   level, lock, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -96,7 +96,7 @@ struct FTAMindication *fti;
 
 static int  FReadWriteRequestAux (fsb, state, operation, identity, context,
 								  level, lock, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 int	state,
 	operation;
 struct FADUidentity *identity;
@@ -111,9 +111,9 @@ struct FTAMindication *fti;
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
-	register struct type_FTAM_PDU *pdu;
-	register struct type_FTAM_F__READ__request *rd;
-	register struct type_FTAM_F__WRITE__request *wr;
+	struct type_FTAM_PDU *pdu;
+	struct type_FTAM_F__READ__request *rd;
+	struct type_FTAM_F__WRITE__request *wr;
 
 	if (!(fsb -> fsb_flags & FSB_INIT))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not initiator");
@@ -138,7 +138,7 @@ struct FTAMindication *fti;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -203,7 +203,7 @@ out:
 	}
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -220,7 +220,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		(void) ps2ftamlose (fsb, fti, "PDataRequest", pa);
+		 ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
 
@@ -238,7 +238,7 @@ struct FTAMindication *fti;
 {
 	SBV	    smask;
 	int     result;
-	register struct ftamblk *fsb;
+	struct ftamblk *fsb;
 
 	missingP (fti);
 
@@ -248,7 +248,7 @@ struct FTAMindication *fti;
 
 	result = FTransEndRequestAux (fsb, sharedASE, fti);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -257,7 +257,7 @@ struct FTAMindication *fti;
 /*  */
 
 static int  FTransEndRequestAux (fsb, sharedASE, fti)
-register struct ftamblk *fsb;
+struct ftamblk *fsb;
 PE	sharedASE;
 struct FTAMindication *fti;
 {
@@ -266,7 +266,7 @@ struct FTAMindication *fti;
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
-	register struct type_FTAM_PDU *pdu;
+	struct type_FTAM_PDU *pdu;
 
 	if (!(fsb -> fsb_flags & FSB_INIT))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not initiator");
@@ -275,7 +275,7 @@ struct FTAMindication *fti;
 
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -293,7 +293,7 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		(void) ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
@@ -312,7 +312,7 @@ out:
 
 
 	if (result == NOTOK) {
-		(void) ps2ftamlose (fsb, fti, "PDataRequest", pa);
+		 ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
 

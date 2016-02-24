@@ -60,7 +60,7 @@ void	adios (), advise ();
 char   *version ();
 
 
-extern int errno;
+
 
 extern char  *quipuversion;
 
@@ -68,10 +68,8 @@ extern char  *quipuversion;
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	char    buffer[BUFSIZ];
 
@@ -95,22 +93,22 @@ char  **argv,
 	build_fred ();
 
 #ifndef	SYS5
-	(void) sprintf (buffer, "find %s -exec /etc/chown %d {} \\;",
+	 sprintf (buffer, "find %s -exec /etc/chown %d {} \\;",
 					wildlife, uid);
 #else
-	(void) sprintf (buffer, "find %s -exec chown %d {} \\;", wildlife, uid);
+	 sprintf (buffer, "find %s -exec chown %d {} \\;", wildlife, uid);
 #endif
 	if (debug)
 		fprintf (stderr, "%s\n", buffer);
-	(void) system (buffer);
+	 system (buffer);
 
-	(void) sprintf (buffer, "find %s -exec chgrp %d {} \\;",
+	 sprintf (buffer, "find %s -exec chgrp %d {} \\;",
 					wildlife, gid);
 	if (debug)
 		fprintf (stderr, "%s\n", buffer);
-	(void) system (buffer);
+	 system (buffer);
 
-	(void) unlink (sedfil);
+	 unlink (sedfil);
 
 	exit (0);
 }
@@ -240,23 +238,24 @@ struct pair *n2p ();
 
 /*  */
 
-static read_config () {
+static 
+read_config  {
 	int	    lineno;
-	register char *cp,
+	char *cp,
 			 *dp;
 	char    buffer[BUFSIZ],
 			file[BUFSIZ],
 			line[BUFSIZ],
 			*vec[NVEC + 1];
 	FILE   *fp;
-	register struct country *c;
-	register struct pair *p,
+	struct country *c;
+	struct pair *p,
 			*q;
-	register struct hostent *hp;
+	struct hostent *hp;
 	struct sockaddr_in in_socket;
-	register struct sockaddr_in *isock = &in_socket;
+	struct sockaddr_in *isock = &in_socket;
 
-	(void) sprintf (file, "%s.dsa", wildlife);
+	 sprintf (file, "%s.dsa", wildlife);
 	if ((fp = fopen (file, "r")) == NULL)
 		adios (file, "unable to read");
 
@@ -265,7 +264,7 @@ static read_config () {
 			continue;
 		if (cp = index (buffer, '\n'))
 			*cp = NULL;
-		(void) strcpy (line, buffer);
+		 strcpy (line, buffer);
 
 		bzero ((char *) vec, sizeof vec);
 		switch (str2vec (buffer, vec)) {
@@ -336,7 +335,7 @@ illegal:
 
 	if (ferror (fp) && !feof (fp))
 		adios (file, "error reading");
-	(void) fclose (fp);
+	 fclose (fp);
 
 	for (p = pairs; p -> p_name; p++)
 		if (!p -> p_value && !(p -> p_flags & (P_OPT | P_XXX)))
@@ -364,7 +363,7 @@ illegal:
 		adios (NULLCP, "must specify either \"street\" or \"pob\"");
 
 	if ((p = n2p ("locality", 1)) -> p_value == NULL) {
-		(void) sprintf (buffer, "%s, %s", n2p ("town", 1) -> p_value,
+		 sprintf (buffer, "%s, %s", n2p ("town", 1) -> p_value,
 						n2p ("state", 1) -> p_value);
 
 		p -> p_value = strdup (buffer);
@@ -374,7 +373,7 @@ illegal:
 	}
 
 	if (*(p = n2p ("telephone", 1)) -> p_value != '+') {
-		(void) sprintf (buffer, "+%s %s", c -> c_phone, p -> p_value);
+		 sprintf (buffer, "+%s %s", c -> c_phone, p -> p_value);
 		free (p -> p_value);
 		p -> p_value = strdup (buffer);
 
@@ -383,7 +382,7 @@ illegal:
 	}
 
 	if ((p = n2p ("fax", 0)) && *p -> p_value != '+') {
-		(void) sprintf (buffer, "+%s %s", c -> c_phone, p -> p_value);
+		 sprintf (buffer, "+%s %s", c -> c_phone, p -> p_value);
 		free (p -> p_value);
 		p -> p_value = strdup (buffer);
 
@@ -414,7 +413,7 @@ illegal:
 
 	if ((p = n2p ("middlename", 1)) -> p_value
 			&& (q = n2p ("middleinitial", 1)) -> p_value == NULL) {
-		(void) sprintf (buffer, "%c", *p -> p_value);
+		 sprintf (buffer, "%c", *p -> p_value);
 		p -> p_value = strdup (buffer);
 
 		if (debug)
@@ -423,13 +422,13 @@ illegal:
 
 	uid = getuid (), gid = getgid ();
 	if ((p = n2p ("userid", 1)) -> p_value) {
-		register struct passwd *pw = getpwnam (p -> p_value);
+		struct passwd *pw = getpwnam (p -> p_value);
 
 		if (pw == NULL)
 			adios (NULLCP, "unknown user name \"%s\"", p -> p_value);
 		uid = pw -> pw_uid, gid = pw -> pw_gid;
 	} else {
-		register struct passwd *pw = getpwuid (uid);
+		struct passwd *pw = getpwuid (uid);
 
 		if (pw == NULL)
 			adios (NULLCP, "unknown user name \"%s\"", p -> p_value);
@@ -440,7 +439,7 @@ illegal:
 	}
 
 	if (p = n2p ("groupid", 0)) {
-		register struct group *gr = getgrnam (p -> p_value);
+		struct group *gr = getgrnam (p -> p_value);
 
 		if (gr == NULL)
 			adios (NULLCP, "unknown group name \"%s\"", p -> p_value);
@@ -450,7 +449,7 @@ illegal:
 	p = n2p ("extension", 1), q = n2p ("telephone", 1);
 	if (cp = p -> p_value) {
 		if (*cp == 'X' || *cp == 'x') {
-			(void) sprintf (buffer, "%s x%s", q -> p_value, p -> p_value);
+			 sprintf (buffer, "%s x%s", q -> p_value, p -> p_value);
 			free (p -> p_value);
 			p -> p_value = strdup (buffer);
 
@@ -495,7 +494,7 @@ too_long:
 
 		cp = buffer;
 
-		(void) sprintf (cp, "%s $ ", n2p ("organization", 1) -> p_value);
+		 sprintf (cp, "%s $ ", n2p ("organization", 1) -> p_value);
 		if ((i = strlen (cp)) > 30 + 3) {
 			advise (NULLCP,
 					"your organization name is longer than 30 characters!");
@@ -517,14 +516,14 @@ postal_problem:
 		cp += i;
 
 		if (q = n2p ("pob", 0)) {
-			(void) sprintf (cp, "POB %s $ ", q -> p_value);
+			 sprintf (cp, "POB %s $ ", q -> p_value);
 			if ((i = strlen (cp)) > 30 + 3) {
 				advise (NULLCP, "your POB is longer than 26 characters!");
 				goto postal_problem;
 			}
 			cp += i;
 		} else if (q = n2p ("street", 0)) {
-			(void) sprintf (cp, "%s $ ", q -> p_value);
+			 sprintf (cp, "%s $ ", q -> p_value);
 			if ((i = strlen (cp)) > 30 + 3) {
 				advise (NULLCP,
 						"your street address is longer than 30 characters!");
@@ -535,7 +534,7 @@ postal_problem:
 			q -> p_flags |= P_ZAP;
 		}
 
-		(void) sprintf (cp, "%s, %s %s $ ",
+		 sprintf (cp, "%s, %s %s $ ",
 						n2p ("town", 1) -> p_value,
 						n2p ("state", 1) -> p_value,
 						n2p ("zipcode", 1) -> p_value);
@@ -548,7 +547,7 @@ postal_problem:
 
 		if ((c -> c_flags & C_SHORT) || (i = strlen (dp = c -> c_name)) > 30)
 			i = strlen (dp = c -> c_code);
-		(void) strcpy (cp, dp);
+		 strcpy (cp, dp);
 		cp += i;
 
 		p -> p_value = strdup (buffer);
@@ -557,11 +556,11 @@ postal_problem:
 
 /*  */
 
-static struct country *read_country (code)
-char   *code;
+static struct country *
+read_country (char *code)
 {
 	int	    vecp;
-	register char *cp,
+	char *cp,
 			 *dp;
 	char    d,
 			*ep,
@@ -570,9 +569,9 @@ char   *code;
 			*vec[NVEC + NSLACK + 1];
 	FILE   *fp;
 	static struct country cs;
-	register struct country *c = NULL;
+	struct country *c = NULL;
 
-	(void) strcpy (file, "iso3166");
+	 strcpy (file, "iso3166");
 	if ((fp = fopen (file, "r")) == NULL)
 		adios (file, "unable to open");
 
@@ -583,7 +582,7 @@ char   *code;
 		if (cp = index (buffer, '\n')) {
 			*cp = NULL;
 			if ((d = getc (fp)) != EOF)
-				(void) ungetc (d, fp);
+				 ungetc (d, fp);
 			switch (d) {
 			case '#':
 			case '\n':
@@ -649,19 +648,18 @@ char   *code;
 		break;
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 
 	return c;
 }
 
 /*  */
 
-static	read_psap (dsa, addr)
-char   *dsa,
-	   **addr;
+static 
+read_psap (char *dsa, char **addr)
 {
 	int	    i;
-	register char *cp,
+	char *cp,
 			 *dp;
 	char    buffer[BUFSIZ],
 			stuff[BUFSIZ];
@@ -710,17 +708,18 @@ malformed:
 
 hit:
 	;
-	(void) fclose (fp);
+	 fclose (fp);
 }
 
 /*  */
 
-generate_sed () {
+int 
+generate_sed  {
 	FILE   *fp;
-	register struct pair *p;
+	struct pair *p;
 
-	(void) sprintf (sedfil, "/tmp/%sXXXXXX", myname);
-	(void) unlink (mktemp (sedfil));
+	 sprintf (sedfil, "/tmp/%sXXXXXX", myname);
+	 unlink (mktemp (sedfil));
 
 	if ((fp = fopen (sedfil, "w")) == NULL)
 		adios (sedfil, "unable to create");
@@ -731,16 +730,15 @@ generate_sed () {
 
 	if (ferror (fp))
 		adios (sedfil, "error writing");
-	(void) fclose (fp);
+	 fclose (fp);
 }
 
 /*  */
 
-static struct pair *n2p (name, any)
-char   *name;
-int	any;
+static struct pair *
+n2p (char *name, int any)
 {
-	register struct pair *p;
+	struct pair *p;
 
 	for (p = pairs; p -> p_name; p++)
 		if (strcmp (p -> p_name, name) == 0)
@@ -757,13 +755,13 @@ static	munge (fp, entries)
 FILE   *fp;
 char   *entries[];
 {
-	register char   c,
+	char   c,
 			 *bp,
 			 *cp,
 			 *dp,
 			 **pp;
 	char    buffer[BUFSIZ];
-	register struct pair *p;
+	struct pair *p;
 
 
 	for (pp = entries; cp = *pp; pp++) {
@@ -782,7 +780,7 @@ char   *entries[];
 				bp = buffer;
 				goto no_match;
 			}
-			(void) strcpy (bp, p -> p_value);
+			 strcpy (bp, p -> p_value);
 			bp += strlen (bp);
 
 			cp = ++dp;
@@ -797,7 +795,8 @@ no_match:
 
 /*    EDB */
 
-static	build_root () {
+static 
+build_root  {
 	if (debug)
 		fprintf (stderr, "mkdir %s\n", wildlife);
 	if (mkdir (wildlife, 0700) == NOTOK)
@@ -863,10 +862,11 @@ static char *c_TLC[] = {
 };
 
 
-static	build_TLC () {
+static 
+build_TLC  {
 	char    buffer[BUFSIZ];
 
-	(void) sprintf (buffer, "%s/c=%s", wildlife,
+	 sprintf (buffer, "%s/c=%s", wildlife,
 					n2p ("country", 1) -> p_value);
 	make_edb (buffer, "SLAVE", "0000000000Z", c_TLC);
 }
@@ -904,10 +904,11 @@ static char *o_I[] = {
 };
 
 
-static	build_organization () {
+static 
+build_organization  {
 	char    buffer[BUFSIZ];
 
-	(void) sprintf (buffer, "%s/c=%s/o=%s", wildlife,
+	 sprintf (buffer, "%s/c=%s/o=%s", wildlife,
 					n2p ("country", 1) -> p_value,
 					n2p ("organization", 1) -> p_value);
 	make_edb (buffer, "MASTER", version (), o_I);
@@ -941,10 +942,11 @@ static char *u_J[] = {
 };
 
 
-static	build_unit () {
+static 
+build_unit  {
 	char    buffer[BUFSIZ];
 
-	(void) sprintf (buffer, "%s/c=%s/o=%s/ou=%s", wildlife,
+	 sprintf (buffer, "%s/c=%s/o=%s/ou=%s", wildlife,
 					n2p ("country", 1) -> p_value,
 					n2p ("organization", 1) -> p_value,
 					n2p ("unit", 1) -> p_value);
@@ -953,11 +955,8 @@ static	build_unit () {
 
 /*  */
 
-static	make_edb (dir, type, date, entries)
-char   *dir,
-	   *type,
-	   *date;
-char   *entries[];
+static 
+make_edb (char *dir, char *type, char *date, char *entries[])
 {
 	char    edb[BUFSIZ];
 	FILE   *fp;
@@ -967,7 +966,7 @@ char   *entries[];
 	if (mkdir (dir, 0700) == NOTOK)
 		adios (dir, "unable to create directory");
 
-	(void) sprintf (edb, "%s/EDB", dir);
+	 sprintf (edb, "%s/EDB", dir);
 	if (debug)
 		fprintf (stderr, "create %s\n", edb);
 	if ((fp = fopen (edb, "w")) == NULL)
@@ -978,58 +977,59 @@ char   *entries[];
 
 	if (ferror (fp))
 		adios (edb, "error writing");
-	(void) fclose (fp);
+	 fclose (fp);
 
-	(void) chmod (edb, 0600);
+	 chmod (edb, 0600);
 }
 
 /*  */
 
-static char *version () {
+static char *
+version  {
 	long    clock;
 	struct UTCtime ut;
 	static char buffer[BUFSIZ];
 
-	(void) time (&clock);
+	 time (&clock);
 	tm2ut (gmtime (&clock), &ut);
-	(void) strcpy (buffer, gent2str (&ut));
+	 strcpy (buffer, gent2str (&ut));
 
 	return buffer;
 }
 
 /*    FILES */
 
-static	build_tailor () {
+static 
+build_tailor  {
 	make_file ("quiputailor", "quiputailor", 0644, 1);
 }
 
-static	build_startup () {
+static 
+build_startup  {
 	make_file ("startup.sh", "startup.sh", 0755, 1);
 }
 
-static	build_nightly () {
+static 
+build_nightly  {
 	make_file ("nightly.sh", "nightly.sh", 0755, 1);
 }
 
 /*  */
 
-static	make_file (infile, outfile, mode, dosed)
-char   *infile,
-	   *outfile;
-int	mode,
-	dosed;
+static 
+make_file (char *infile, char *outfile, int mode, int dosed)
 {
 	char    buffer[BUFSIZ];
 
 	if (dosed)
 		/*
-			(void) sprintf (buffer, "sed -f %s < templates/%s > %s/%s",
+			 sprintf (buffer, "sed -f %s < templates/%s > %s/%s",
 					sedfil, infile, wildlife, outfile);
 		*/
-		(void) sprintf (buffer, "sed -f %s < templates/%s > /tmp/%s",
+		 sprintf (buffer, "sed -f %s < templates/%s > /tmp/%s",
 						sedfil, infile, outfile);
 	else
-		(void) sprintf (buffer, "cp templates/%s %s/%s", infile, wildlife,
+		 sprintf (buffer, "cp templates/%s %s/%s", infile, wildlife,
 						outfile);
 
 	if (debug)
@@ -1037,58 +1037,60 @@ int	mode,
 	if (system (buffer) != 0)
 		adios (NULLCP, "%s of %s failed", dosed ? "sed" : "cp", infile);
 
-	(void) sprintf (buffer, "%s/%s", wildlife, outfile);
-	(void) chmod (buffer, mode);
+	 sprintf (buffer, "%s/%s", wildlife, outfile);
+	 chmod (buffer, mode);
 }
 
 /*    SED */
 
-static	build_dsap () {
+static 
+build_dsap  {
 	fudge_file ("dsaptailor");
 }
 
-static	build_fred () {
+static 
+build_fred  {
 	fudge_file ("fredrc");
 	fudge_file ("ufnrc");
 }
 
 /*  */
 
-static	fudge_file (name)
-char   *name;
+static 
+fudge_file (char *name)
 {
 	char   buffer[BUFSIZ],
 		   file[BUFSIZ],
 		   oldfil[BUFSIZ],
 		   tmpfil[BUFSIZ];
 
-	(void) strcpy (file, isodefile (name, 0));
+	 strcpy (file, isodefile (name, 0));
 
-	(void) sprintf (buffer, "%sXXXXXX", myname);
-	(void) strcpy (tmpfil, isodefile (buffer, 0));
-	(void) unlink (mktemp (tmpfil));
+	 sprintf (buffer, "%sXXXXXX", myname);
+	 strcpy (tmpfil, isodefile (buffer, 0));
+	 unlink (mktemp (tmpfil));
 
-	(void) sprintf (buffer, "sed -f %s < %s > %s", sedfil, file, tmpfil);
+	 sprintf (buffer, "sed -f %s < %s > %s", sedfil, file, tmpfil);
 	if (debug)
 		fprintf (stderr, "%s\n", buffer);
 	if (system (buffer) != 0) {
-		(void) unlink (tmpfil);
+		 unlink (tmpfil);
 		adios (NULLCP, "sed failed");
 	}
 
-	(void) sprintf (oldfil, "%s.old", file);
+	 sprintf (oldfil, "%s.old", file);
 	if (access (oldfil, 0x00) == NOTOK)
-		(void) rename (file, oldfil);
+		 rename (file, oldfil);
 	if (rename (tmpfil, file) == NOTOK)
 		adios (file, "unable to rename %s to", tmpfil);
 }
 
 /*    ARGINIT */
 
-static	arginit (vec)
-char  **vec;
+static 
+arginit (char **vec)
 {
-	register char  *ap;
+	char  *ap;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -1133,10 +1135,11 @@ usage:
 
 /*  */
 
-static	parse_3166 () {
+static 
+parse_3166  {
 	int	    bitno;
 	unsigned int bits_size;
-	register char *cp,
+	char *cp,
 			 *dp;
 	char    d,
 			*ep,
@@ -1146,7 +1149,7 @@ static	parse_3166 () {
 	unsigned char *bits_3166;
 	FILE   *fp;
 
-	(void) strcpy (file, isodefile ("quipu/iso3166", 0));
+	 strcpy (file, isodefile ("quipu/iso3166", 0));
 	if ((fp = fopen (file, "r")) == NULL)
 		adios (file, "unable to open");
 
@@ -1162,7 +1165,7 @@ static	parse_3166 () {
 		if (cp = index (buffer, '\n')) {
 			*cp = NULL;
 			if ((d = getc (fp)) != EOF)
-				(void) ungetc (d, fp);
+				 ungetc (d, fp);
 			switch (d) {
 			case '#':
 			case '\n':
@@ -1198,7 +1201,7 @@ static	parse_3166 () {
 	}
 
 	{
-		register unsigned char *bp;
+		unsigned char *bp;
 		unsigned char *xp;
 
 		printf ("static unsigned char bits_3166[%u] = {\n", bits_size);
@@ -1207,13 +1210,14 @@ static	parse_3166 () {
 		printf ("};\n");
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 }
 
 /*  */
 
-static	table_3166 () {
-	register char *cp,
+static 
+table_3166  {
+	char *cp,
 			 *dp;
 	char    d,
 			*ep,
@@ -1222,7 +1226,7 @@ static	table_3166 () {
 			*vec[NVEC + NSLACK + 1];
 	FILE   *fp;
 
-	(void) strcpy (file, isodefile ("quipu/iso3166", 0));
+	 strcpy (file, isodefile ("quipu/iso3166", 0));
 	if ((fp = fopen (file, "r")) == NULL)
 		adios (file, "unable to open");
 
@@ -1233,7 +1237,7 @@ static	table_3166 () {
 		if (cp = index (buffer, '\n')) {
 			*cp = NULL;
 			if ((d = getc (fp)) != EOF)
-				(void) ungetc (d, fp);
+				 ungetc (d, fp);
 			switch (d) {
 			case '#':
 			case '\n':
@@ -1266,7 +1270,7 @@ static	table_3166 () {
 		continue;
 	}
 
-	(void) fclose (fp);
+	 fclose (fp);
 }
 
 /*    ERRORS */
@@ -1290,9 +1294,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void  adios (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -1312,27 +1315,26 @@ va_dcl {
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void 
+_advise (va_list ap)
 {
 	char    buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
 
-	(void) fflush (stdout);
+	 fflush (stdout);
 
 	fprintf (stderr, "%s: ", myname);
-	(void) fputs (buffer, stderr);
-	(void) fputc ('\n', stderr);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-	(void) fflush (stderr);
+	 fflush (stderr);
 }
 #else
 /* VARARGS */
 
-static void  advise (what, fmt)
-char   *what,
-	   *fmt;
+static void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }
@@ -1341,15 +1343,15 @@ char   *what,
 /*    MISCELLANY */
 
 #ifndef	lint
-static char *strdup (s)
-char   *s;
+static char *
+strdup (char *s)
 {
 	char    *p;
 
 	if ((p = malloc((unsigned) (strlen (s) + 1))) == NULL)
 		adios (NULLCP, "out of memory");
 
-	(void) strcpy (p, s);
+	 strcpy (p, s);
 
 	return p;
 }

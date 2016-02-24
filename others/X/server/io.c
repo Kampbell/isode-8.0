@@ -58,7 +58,7 @@ extern Bool AnyClientsWriteBlocked;
 static Bool CriticalOutputPending;
 static int timesThisConnection = 0;
 
-extern int errno;
+
 
 #define request_length(req, cli) ((cli->swapped ? \
 	lswaps((req)->length) : (req)->length) << 2)
@@ -68,9 +68,8 @@ extern int errno;
 /*
  * Convenience Routines
  */
-TWriteToClient(sd, buf, len)
-int sd, len;
-char *buf;
+int 
+TWriteToClient (int sd, char *buf, int len)
 {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -84,9 +83,8 @@ char *buf;
  * sd = transport descriptor
  * iov is iovec of iovcnt buffers
  */
-TWritevToClient(sd, iov, iovcnt)
-int sd, iovcnt;
-struct iovec *iov;
+int 
+TWritevToClient (int sd, struct iovec *iov, int iovcnt)
 {
 	int i, ret, tot = 0;
 	struct udvec uv[64], *uvp = uv;
@@ -125,10 +123,8 @@ struct iovec *iov;
 	}
 }
 
-TAcceptFromClient(fd, vecp, vec)
-int fd;
-int vecp;
-char **vec;
+int 
+TAcceptFromClient (int fd, int vecp, char **vec)
 {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -150,8 +146,8 @@ char **vec;
 	return tst->ts_sd;
 }
 
-TDiscFromClient(fd)
-int fd;
+int 
+TDiscFromClient (int fd)
 {
 	struct TSAPdisconnect tds;
 
@@ -219,8 +215,8 @@ char *oldbuf;
 	OsCommPtr oc = (OsCommPtr)who->osPrivate;
 	int client = oc->fd;
 	int result, gotnow, needed;
-	register ConnectionInput *pBuff;
-	register xReq *request;
+	ConnectionInput *pBuff;
+	xReq *request;
 
 	/* ignore oldbuf, just assume we're done with prev. buffer */
 
@@ -558,11 +554,11 @@ outOfMem:
 *
 **********************/
 
-void
-FlushAllOutput() {
-	register int index, base, mask;
+void 
+FlushAllOutput  {
+	int index, base, mask;
 	OsCommPtr oc;
-	register ClientPtr client;
+	ClientPtr client;
 
 	if (! NewOutputPending)
 		return;
@@ -596,14 +592,14 @@ FlushAllOutput() {
 
 }
 
-void
-FlushIfCriticalOutputPending() {
+void 
+FlushIfCriticalOutputPending  {
 	if (CriticalOutputPending)
 		FlushAllOutput();
 }
 
-void
-SetCriticalOutputPending() {
+void 
+SetCriticalOutputPending  {
 	CriticalOutputPending = TRUE;
 }
 

@@ -35,8 +35,8 @@ extern int oidformat;
 oid_seq_free (ptr)
 struct oid_seq * ptr;
 {
-	register struct oid_seq * loop;
-	register struct oid_seq * next;
+	struct oid_seq * loop;
+	struct oid_seq * next;
 
 	for (loop=ptr; loop!=NULLOIDSEQ; loop=next) {
 		next = loop->oid_next;
@@ -48,8 +48,8 @@ struct oid_seq * ptr;
 oid_seq_free_aux (ptr)
 struct oid_seq * ptr;
 {
-	register struct oid_seq * loop;
-	register struct oid_seq * next;
+	struct oid_seq * loop;
+	struct oid_seq * next;
 
 	for (loop=ptr; loop!=NULLOIDSEQ; loop=next) {
 		next = loop->oid_next;
@@ -61,7 +61,7 @@ struct oid_seq *oid_seq_merge (a,b)
 struct oid_seq *a;
 struct oid_seq *b;
 {
-	register struct oid_seq  *aptr, *bptr, *result, *trail;
+	struct oid_seq  *aptr, *bptr, *result, *trail;
 
 	if ( a == NULLOIDSEQ )
 		return (b);
@@ -160,9 +160,9 @@ struct oid_seq  *a, *b;
 struct oid_seq * oid_seq_cpy (a)
 struct oid_seq * a;
 {
-	register struct oid_seq * b;
-	register struct oid_seq * c;
-	register struct oid_seq * d;
+	struct oid_seq * b;
+	struct oid_seq * c;
+	struct oid_seq * d;
 	struct oid_seq * result;
 
 	result = oid_seq_alloc ();
@@ -182,10 +182,10 @@ struct oid_seq * a;
 
 oid_seq_print (ps,ptr,format)
 PS ps;
-register struct oid_seq * ptr;
+struct oid_seq * ptr;
 int format;
 {
-	register int i = 4;
+	int i = 4;
 
 	ps_printf (ps,"%s",oid2name (ptr->oid_oid,oidformat));
 	for ( ptr=ptr->oid_next; ptr!= NULLOIDSEQ; ptr=ptr->oid_next,i++)
@@ -203,8 +203,8 @@ int format;
 struct oid_seq * str2oidseq (str)
 char * str;
 {
-	register char *ptr;
-	register char *save,val;
+	char *ptr;
+	char *save,val;
 	struct oid_seq * ois = NULLOIDSEQ;
 	struct oid_seq * newois;
 	OID oid;

@@ -53,22 +53,22 @@ FILE   *fpa;
 
 	s = proc_name(name, 0);
 	if (yp->yp_action1) {
-		(void) fprintf(fp, "\t\tcase %s%s:\n", s, ACT1);
+		 fprintf(fp, "\t\tcase %s%s:\n", s, ACT1);
 		arg = calc_arg(yp, 1);
 		my_do_action(fp, yp->yp_action1, 0, arg, yp->yp_act1_lineno, yp->yp_param_type);
-		(void) fprintf(fp, "\t\t\tbreak;\n");
+		 fprintf(fp, "\t\t\tbreak;\n");
 	}
 	if (yp->yp_action2) {
-		(void) fprintf(fp, "\t\tcase %s%s:\n", s, ACT2);
+		 fprintf(fp, "\t\tcase %s%s:\n", s, ACT2);
 		arg = calc_arg(yp, 2);
 		my_do_action(fp, yp->yp_action2, 0, arg, yp->yp_act2_lineno, yp->yp_param_type);
-		(void) fprintf(fp, "\t\t\tbreak;\n");
+		 fprintf(fp, "\t\t\tbreak;\n");
 	}
 	if (yp->yp_action05) {
-		(void) fprintf(fp, "\t\tcase %s%s:\n", s, ACT05);
+		 fprintf(fp, "\t\tcase %s%s:\n", s, ACT05);
 		arg = calc_arg(yp, 5);
 		my_do_action(fp, yp->yp_action05, 0, arg, yp->yp_act05_lineno, yp->yp_param_type);
-		(void) fprintf(fp, "\t\t\tbreak;\n");
+		 fprintf(fp, "\t\t\tbreak;\n");
 	}
 }
 #endif
@@ -85,11 +85,11 @@ char   *new;
 	char    t[MAXLENGTH];
 	char    c, d;
 
-	(void) fprintf(fp, "%*s{\n", level * 4, "");
+	 fprintf(fp, "%*s{\n", level * 4, "");
 	Printf(4, ("\n"));
 
 	if (*sysin)
-		(void) fprintf(fp, "# line %d \"%s\"\n", lineno, sysin);
+		 fprintf(fp, "# line %d \"%s\"\n", lineno, sysin);
 
 	for (d = NULL; c = *action; d = c, action++) {
 		Printf(4, ("open char is %c\n", *action));
@@ -99,9 +99,9 @@ char   *new;
 		Printf(4, ("WORD IS %s, %c, %d\n", t, *action, i));
 		if (strcmp(t, "")) {
 			if (!strcmp(t, "parm"))
-				(void) fprintf(fp, "(%s)%s", new, "parm");
+				 fprintf(fp, "(%s)%s", new, "parm");
 			else
-				(void) fprintf(fp, "%s", t);
+				 fprintf(fp, "%s", t);
 			c = *(action - 1);
 			action--;
 			continue;
@@ -112,15 +112,15 @@ char   *new;
 		switch (d) {
 		case '$':
 			if (c == '$') {
-				(void) fprintf(fp, "%s", arg);
+				 fprintf(fp, "%s", arg);
 				c = NULL;
 				break;
 			}
-			(void) fputc('$', fp);	/* fall */
+			 fputc('$', fp);	/* fall */
 
 		default:
 			if (c != '$')
-				(void) fputc(c, fp);
+				 fputc(c, fp);
 			break;
 		}
 	}
@@ -130,13 +130,13 @@ char   *new;
 		break;
 
 	case '$':
-		(void) fputc('$', fp);		/* fall */
+		 fputc('$', fp);		/* fall */
 	default:
-		(void) fputc('\n', fp);
+		 fputc('\n', fp);
 		break;
 	}
 
-	(void) fprintf(fp, "%*s}\n", level * 4, "");
+	 fprintf(fp, "%*s}\n", level * 4, "");
 }
 
 char   *

@@ -39,17 +39,12 @@ static int  RoResultRequestAux ();
 
 /*    RO-RESULT.REQUEST */
 
-int	RoResultRequest (sd, invokeID, op, result, priority, roi)
-int	sd;
-int	invokeID,
-	op,
-	priority;
-PE	result;
-struct RoSAPindication *roi;
+int 
+RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi)
 {
 	SBV	    smask;
 	int     status;
-	register struct assocblk   *acb;
+	struct assocblk   *acb;
 
 	missingP (roi);
 
@@ -59,22 +54,17 @@ struct RoSAPindication *roi;
 
 	status = RoResultRequestAux (acb, invokeID, op, result, priority, roi);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return status;
 }
 
 /*  */
 
-static int  RoResultRequestAux (acb, invokeID, op, result, priority, roi)
-register struct assocblk   *acb;
-int	invokeID,
-	op,
-	priority;
-PE	result;
-struct RoSAPindication *roi;
+static int 
+RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi)
 {
-	register PE pe,
+	PE pe,
 			 p,
 			 q;
 
@@ -127,7 +117,7 @@ struct RoSAPindication *roi;
 		if (encode_ROS_ROSEapdus(&pe, 1, 0, NULL, &apdu) == NOTOK) {
 fail:
 			if (pe) {
-				(void) pe_extract (pe, result);
+				 pe_extract (pe, result);
 				pe_free (pe);
 			}
 			freeacblk (acb);
@@ -154,7 +144,7 @@ fail:
 					   || seq_add (q, result, -1) == NOTOK))
 				: seq_add (p, result, -1) == NOTOK)) {
 		if (pe) {
-			(void) pe_extract (pe, result);
+			 pe_extract (pe, result);
 			pe_free (pe);
 		}
 		freeacblk (acb);

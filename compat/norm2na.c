@@ -42,23 +42,21 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/norm2na.c,v 9.0 1992
 
 /*  */
 
-int	norm2na (p, len, na)
-char	*p;
-int	len;
-struct NSAPaddr *na;
+int 
+norm2na (char *p, int len, struct NSAPaddr *na)
 {
 	na -> na_stack = NA_NSAP;
 
 	if ((len == 8) && ((p[0] == 0x36) || (p[0] == 0x37))) {
 		int	xlen;			/* SEK - X121 form */
-		register char   *cp,
+		char   *cp,
 				 *cp2,
 				 *dp;
 		char	nsap[14];
 
 		dp = nsap;
 		for (cp2 = (cp = p + 1) + 7; cp < cp2; cp++) {
-			register int     j;
+			int     j;
 
 			if ((j = ((*cp & 0xf0) >> 4)) > 9)
 				goto concrete;
@@ -80,7 +78,7 @@ struct NSAPaddr *na;
 		na -> na_stack = NA_X25;
 		na -> na_community = SUBNET_INT_X25;
 	} else {
-		register struct ts_interim *ts,
+		struct ts_interim *ts,
 				*tp;
 
 		tp = NULL;
@@ -93,7 +91,7 @@ struct NSAPaddr *na;
 			int	    i,
 					ilen,
 					rlen;
-			register char   *cp,
+			char   *cp,
 					 *dp,
 					 *ep;
 			char    nsap[NASIZE * 2 + 1];
@@ -104,7 +102,7 @@ struct NSAPaddr *na;
 			for (cp = p + tp -> ts_length, ep = p + len;
 					cp < ep;
 					cp++) {
-				register int     j;
+				int     j;
 
 				if ((j = ((*cp & 0xf0) >> 4)) > 9) {
 concrete:
@@ -137,7 +135,7 @@ lock_and_load:
 						  ("missing DTE+CUDF indicator: %s", nsap));
 					goto realNS;
 				}
-				(void) sscanf (cp, "%1d", &i);
+				 sscanf (cp, "%1d", &i);
 				cp += 1;
 				switch (i) {
 				case 0:	/* DTE only */
@@ -151,7 +149,7 @@ lock_and_load:
 							   nsap));
 						goto realNS;
 					}
-					(void) sscanf (cp, "%1d", &ilen);
+					 sscanf (cp, "%1d", &ilen);
 					cp += 1;
 					rlen = ilen * 3;
 					if ((int)strlen (cp) < rlen) {
@@ -177,7 +175,7 @@ lock_and_load:
 						na -> na_cudflen = ilen;
 					}
 					for (; rlen > 0; rlen -= 3) {
-						(void) sscanf (cp, "%3d", &i);
+						 sscanf (cp, "%3d", &i);
 						cp += 3;
 
 						if (i > 255) {
@@ -194,7 +192,7 @@ lock_and_load:
 						  ("invalid DTE+CUDF indicator: %s", nsap));
 					goto realNS;
 				}
-				(void) strcpy (na -> na_dte, cp);
+				 strcpy (na -> na_dte, cp);
 				na -> na_dtelen = strlen (na -> na_dte);
 				break;
 
@@ -207,9 +205,9 @@ lock_and_load:
 				{
 					int	    q[4];
 
-					(void) sscanf (cp, "%3d%3d%3d%3d", q, q + 1, q + 2,
+					 sscanf (cp, "%3d%3d%3d%3d", q, q + 1, q + 2,
 								   q + 3);
-					(void) sprintf (na -> na_domain,
+					 sprintf (na -> na_domain,
 									"%d.%d.%d.%d", q[0], q[1], q[2], q[3]);
 				}
 				cp += 12;
@@ -220,7 +218,7 @@ lock_and_load:
 							  ("missing port: %s", nsap));
 						goto realNS;
 					}
-					(void) sscanf (cp, "%5d", &i);
+					 sscanf (cp, "%5d", &i);
 					cp += 5;
 					na -> na_port = htons ((u_short) i);
 
@@ -230,7 +228,7 @@ lock_and_load:
 								  ("missing tset: %s", nsap));
 							goto realNS;
 						}
-						(void) sscanf (cp, "%5d", &i);
+						 sscanf (cp, "%5d", &i);
 						cp += 5;
 						na -> na_tset = (u_short) i;
 

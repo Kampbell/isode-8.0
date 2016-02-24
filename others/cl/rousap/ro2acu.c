@@ -53,10 +53,12 @@ int	aculose ();
 /*---------------------------------------------------------------------------*/
 /*    bind underlying service */
 /*---------------------------------------------------------------------------*/
-int	RoAcuService (acb, roi)
+int 
+RoAcuService (
 /*---------------------------------------------------------------------------*/
-register struct assocblk   *acb;
-struct RoSAPindication *roi;
+    struct assocblk *acb,
+    struct RoSAPindication *roi
+)
 {
 
 	if (!(acb -> acb_flags & ACB_AUDT))
@@ -81,7 +83,7 @@ struct RoSAPindication *roi;
 #define	e(i)	(indication ? (i) : NULLIFP)
 * ARGSUSED *
 int	ro2acuasync (acb, indication, roi)
-register struct assocblk   *acb;
+struct assocblk   *acb;
 IFP	indication;
 struct RoSAPindication *roi;
 {
@@ -94,14 +96,14 @@ struct RoSAPindication *roi;
 *    map association descriptors for select() *
 * ARGSUSED *
 int	ro2acumask (acb, mask, nfds, roi)
-register struct assocblk   *acb;
+struct assocblk   *acb;
 fd_set *mask;
 int    *nfds;
 struct RoSAPindication *roi;
 {
     struct AcSAPindication   acis;
-    register struct AcSAPindication *aci = &acis;
-    register struct AcSAPabort *aca = &acis.aci_abort;
+    struct AcSAPindication *aci = &acis;
+    struct AcSAPabort *aca = &acis.aci_abort;
 
     if (AcuSelectMask (acb -> acb_fd, mask, nfds, aci) == NOTOK)
 	switch (aca -> aca_reason) {
@@ -109,7 +111,7 @@ struct RoSAPindication *roi;
 		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 
 	    default:
-		(void) aculose (acb, roi, "PSelectMask", aca);
+		 aculose (acb, roi, "PSelectMask", aca);
 		freeacblk (acb);
 		return NOTOK;
 	}
@@ -120,19 +122,22 @@ struct RoSAPindication *roi;
 
 
 /*---------------------------------------------------------------------------*/
-int	ro2acuwait (acb, invokeID, secs, roi)
+int 
+ro2acuwait (
 /*---------------------------------------------------------------------------*/
-register struct assocblk *acb;
-int    	*invokeID, secs;
-register struct RoSAPindication *roi;
+    struct assocblk *acb,
+    int *invokeID,
+    int secs,
+    struct RoSAPindication *roi
+)
 {
 	int     fd, result;
-	register PE  pe;
+	PE  pe;
 	struct  AcuSAPstart acss;
 	struct AcuSAPstart *acs = &acss;
 	struct AcSAPindication   acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &acis.aci_abort;
 
 	fd = acb -> acb_fd;
 
@@ -184,7 +189,7 @@ register struct RoSAPindication *roi;
 /*---------------------------------------------------------------------------*/
 int	ro2acuwrite (acb, pe, fe, priority, roi)
 /*---------------------------------------------------------------------------*/
-register struct assocblk *acb;
+struct assocblk *acb;
 PE	pe,
  fe;
 int	priority;
@@ -192,8 +197,8 @@ struct RoSAPindication *roi;
 {
 	int	    result;
 	struct AcSAPindication   acis;
-	register struct AcSAPindication *aci = &acis;
-	register struct AcSAPabort *aca = &acis.aci_abort;
+	struct AcSAPindication *aci = &acis;
+	struct AcSAPabort *aca = &acis.aci_abort;
 
 	pe -> pe_context = acb -> acb_rosid;
 
@@ -205,30 +210,30 @@ struct RoSAPindication *roi;
 		if (strcmp (rosapfile, "-")) {
 			char    file[BUFSIZ];
 
-			(void) sprintf (file, rosapfile, getpid ());
+			 sprintf (file, rosapfile, getpid ());
 			fp = fopen (file, "a"), isopen = 1;
 		} else
-			fp = stderr, isopen = 0, (void) fflush (stdout);
+			fp = stderr, isopen = 0,  fflush (stdout);
 
 		if (fp) {
 			vpushfp (fp, pe, "ROSEapdus", 0);
-			(void) print_ROS_ROSEapdus (pe, 1, NULLIP, NULLVP, NULLCP);
+			 print_ROS_ROSEapdus (pe, 1, NULLIP, NULLVP, NULLCP);
 			vpopfp ();
 
 			if (isopen)
-				(void) fclose (fp);
+				 fclose (fp);
 			else
-				(void) fflush (fp);
+				 fflush (fp);
 		}
 	}
 #endif
 
 	if ((result = AcUnitDataWrite (acb -> acb_fd, &pe, 1, aci)) == NOTOK) {
-		(void) aculose (acb, roi, "AcUnitDataWrite", aca);
+		 aculose (acb, roi, "AcUnitDataWrite", aca);
 	}
 
 	if (fe)
-		(void) pe_extract (pe, fe);
+		 pe_extract (pe, fe);
 	pe_free (pe);
 
 	return result;
@@ -236,10 +241,12 @@ struct RoSAPindication *roi;
 
 
 /*---------------------------------------------------------------------------*/
-int ValidBinding ( acb, acs )
+int 
+ValidBinding (
 /*---------------------------------------------------------------------------*/
-struct assocblk *acb;
-struct AcuSAPstart *acs;
+    struct assocblk *acb,
+    struct AcuSAPstart *acs
+)
 {
 
 #define	AEICMP(aei1,aei2) \
@@ -265,12 +272,14 @@ struct AcuSAPstart *acs;
 /*---------------------------------------------------------------------------*/
 /*    AcSAP interface */
 /*---------------------------------------------------------------------------*/
-static int aculose (acb, roi, event, aca)
+static int 
+aculose (
 /*---------------------------------------------------------------------------*/
-register struct assocblk *acb;
-register struct RoSAPindication *roi;
-char   *event;
-register struct AcSAPabort *aca;
+    struct assocblk *acb,
+    struct RoSAPindication *roi,
+    char *event,
+    struct AcSAPabort *aca
+)
 {
 	int     reason;
 	char   *cp,
@@ -297,7 +306,7 @@ register struct AcSAPabort *aca;
 		break;
 
 	default:
-		(void) sprintf (cp = buffer, " (%s at association control)",
+		 sprintf (cp = buffer, " (%s at association control)",
 						AcErrString (aca -> aca_reason));
 	case ACS_PRESENTATION:
 		reason = ROS_ACS;

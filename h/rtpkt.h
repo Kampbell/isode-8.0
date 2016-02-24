@@ -143,7 +143,7 @@
 #define RT_ASN_OID	ode2oid (RT_ASN)
 #endif
 
-int	rtpktlose (), rtsaplose ();
+int	rtpktlose (struct assocblk*, ...), rtsaplose (struct RtSAPindication*, ...);
 
 /*  */
 

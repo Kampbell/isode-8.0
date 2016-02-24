@@ -61,10 +61,10 @@ int backup = 0;
 			  errp += strlen(errp); \
 			  err++; }
 
-char *cut(s)
-char *s;
+char *
+cut (char *s)
 {
-	register char *s1;
+	char *s1;
 
 	for (; *s && isspace(*s); s++)
 		;
@@ -81,8 +81,8 @@ char *s;
 
 
 
-int tailor(fn)
-char *fn;
+int 
+tailor (char *fn)
 {
 	FILE *f;
 	char buf[BUFSIZ];

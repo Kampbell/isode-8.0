@@ -50,10 +50,8 @@ char   *crypt ();
 /* ARGSUSED */
 #endif
 
-int	chkpassword ( usrname, pwpass, usrpass )
-char   *usrname;
-char   *pwpass;
-char   *usrpass;
+int 
+chkpassword (char *usrname, char *pwpass, char *usrpass)
 {
 #ifdef	KRB_PASSWD
 	char realm[REALM_SZ];
@@ -69,7 +67,7 @@ char   *usrpass;
 		 * use kerberos, first of all find the realm
 		 */
 		if (krb_get_lrealm(realm, 1) != KSUCCESS) {
-			(void) strncpy(realm, KRB_REALM, sizeof(realm));
+			 strncpy(realm, KRB_REALM, sizeof(realm));
 		}
 
 		/*

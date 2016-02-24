@@ -272,7 +272,7 @@ int     run;
 	full_code result;
 	result.make.length = 0;
 	if (run > (forcesize ? forcesize : PIC_LINESIZE))
-		(void) fprintf (stderr,"Run too long\n");
+		 fprintf (stderr,"Run too long\n");
 
 	if (colour  ==  WHITE) {
 		if  (run > 63)

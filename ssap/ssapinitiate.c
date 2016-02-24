@@ -55,20 +55,8 @@ static int  SAsynRetryAux2 ();
 
 /*  */
 
-int	SAsynConnRequest (ref, calling, called, requirements, settings, isn,
-					  data, cc, qos, sc, si, async)
-struct SSAPref *ref;
-struct SSAPaddr *calling,
-		*called;
-int	requirements,
-	settings,
-	cc,
-	async;
-long	isn;
-char   *data;
-struct QOStype *qos;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+int 
+SAsynConnRequest (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr *called, int requirements, int settings, long isn, char *data, int cc, struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si, int async)
 {
 	SBV     smask;
 	int     result;
@@ -120,7 +108,7 @@ struct SSAPindication *si;
 	result = SConnRequestAux (ref, calling, called, requirements, settings,
 							  isn, data, cc, qos, sc, si, async);
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -129,28 +117,16 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SConnRequestAux (ref, calling, called, requirements, settings, isn,
-							 data, cc, qos, sc, si, async)
-struct SSAPref *ref;
-struct SSAPaddr *calling,
-		*called;
-int	requirements,
-	settings,
-	cc,
-	async;
-long	isn;
-char   *data;
-struct QOStype *qos;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+static int 
+SConnRequestAux (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr *called, int requirements, int settings, long isn, char *data, int cc, struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si, int async)
 {
 	int     result;
-	register struct ssapkt *s;
-	register struct ssapblk *sb;
+	struct ssapkt *s;
+	struct ssapblk *sb;
 	struct TSAPconnect  tcs;
-	register struct TSAPconnect *tc = &tcs;
+	struct TSAPconnect *tc = &tcs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	if ((sb = newsblk ()) == NULL)
 		return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
@@ -161,7 +137,7 @@ struct SSAPindication *si;
 		sb -> sb_maxtime = qos -> qos_maxtime;
 
 	if ((s = newspkt (SPDU_CN)) == NULL) {
-		(void) ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+		 ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 		goto out1;
 	}
 
@@ -191,7 +167,7 @@ struct SSAPindication *si;
 									(qos ? qos -> qos_extended : 0)
 									|| ((requirements & SR_EXPEDITED) ? 1 : 0),
 									NULLCP, 0, qos, tc, td, async)) == NOTOK) {
-		(void) ts2sslose (si, "TAsynConnRequest", td);
+		 ts2sslose (si, "TAsynConnRequest", td);
 
 		bzero ((char *) sc, sizeof *sc);
 		sc -> sc_sd = NOTOK;
@@ -252,18 +228,16 @@ out1:
 
 /*    S-ASYN-RETRY.REQUEST (pseudo) */
 
-int	SAsynRetryRequest (sd, sc, si)
-int	sd;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+int 
+SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	SBV     smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct TSAPconnect  tcs;
-	register struct TSAPconnect *tc = &tcs;
+	struct TSAPconnect *tc = &tcs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	missingP (sc);
 	missingP (si);
@@ -271,12 +245,12 @@ struct SSAPindication *si;
 	smask = sigioblock ();
 
 	if ((sb = findsblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP,
 						 "invalid session descriptor");
 	}
 	if (sb -> sb_flags & SB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "session descriptor connected");
 	}
@@ -286,7 +260,7 @@ struct SSAPindication *si;
 	else
 		switch (result = TAsynRetryRequest (sb -> sb_fd, tc, td)) {
 		case NOTOK:
-			(void) ts2sslose (si, "TAsynRetryRequest", td);
+			 ts2sslose (si, "TAsynRetryRequest", td);
 			sb -> sb_fd = NOTOK;
 
 			bzero ((char *) sc, sizeof *sc);
@@ -306,25 +280,23 @@ struct SSAPindication *si;
 			break;
 		}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
 
 /*    S-ASYN-NEXT.REQUEST (pseudo) */
 
-int	SAsynNextRequest (sd, sc, si)
-int	sd;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+int 
+SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	SBV     smask;
 	int     result;
-	register struct ssapblk *sb;
+	struct ssapblk *sb;
 	struct TSAPconnect  tcs;
-	register struct TSAPconnect *tc = &tcs;
+	struct TSAPconnect *tc = &tcs;
 	struct TSAPdisconnect   tds;
-	register struct TSAPdisconnect *td = &tds;
+	struct TSAPdisconnect *td = &tds;
 
 	missingP (sc);
 	missingP (si);
@@ -332,12 +304,12 @@ struct SSAPindication *si;
 	smask = sigioblock ();
 
 	if ((sb = findsblk (sd)) == NULL) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP,
 						 "invalid session descriptor");
 	}
 	if (sb -> sb_flags & SB_CONN) {
-		(void) sigiomask (smask);
+		 sigiomask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "session descriptor connected");
 	}
@@ -345,7 +317,7 @@ struct SSAPindication *si;
 
 	switch (result = TAsynNextRequest (sb -> sb_fd, tc, td)) {
 	case NOTOK:
-		(void) ts2sslose (si, "TAsynNextRequest", td);
+		 ts2sslose (si, "TAsynNextRequest", td);
 		sb -> sb_fd = NOTOK;
 
 		bzero ((char *) sc, sizeof *sc);
@@ -365,7 +337,7 @@ struct SSAPindication *si;
 		break;
 	}
 
-	(void) sigiomask (smask);
+	 sigiomask (smask);
 
 	return result;
 }
@@ -409,14 +381,11 @@ struct SSAPindication *si;
 
 /*  */
 
-static int  SAsynRetryAux1 (sb, tc, sc, si)
-register struct ssapblk *sb;
-struct TSAPconnect *tc;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+static int 
+SAsynRetryAux1 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	int	    result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	s = sb -> sb_retry;
 	/*
@@ -469,15 +438,12 @@ struct SSAPindication *si;
 	return SAsynRetryAux2 (sb, tc, sc, si);
 }
 
-static int  SAsynRetryAux2 (sb, tc, sc, si)
-register struct ssapblk *sb;
-struct TSAPconnect *tc;
-struct SSAPconnect *sc;
-struct SSAPindication *si;
+static int 
+SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si)
 {
 	int	    len,
 			result;
-	register struct ssapkt *s;
+	struct ssapkt *s;
 
 	if (s = sb -> sb_retry) { /* ASSIGN */
 		s -> s_mask &= ~SMASK_UDATA_PGI;
@@ -488,7 +454,7 @@ struct SSAPindication *si;
 
 	if ((s = sb2spkt (sb, si, sb -> sb_maxtime, NULLTX)) == NULL) {
 		if (si -> si_abort.sa_reason == SC_TIMER)
-			(void) ssaplose (si, SC_CONGEST, NULLCP, "remote SPM timed-out");
+			 ssaplose (si, SC_CONGEST, NULLCP, "remote SPM timed-out");
 		result = NOTOK;
 		goto out;
 	}
@@ -633,7 +599,7 @@ struct SSAPindication *si;
 		sc -> sc_realdata = s -> s_rdata, s -> s_rdata = NULL;
 		si -> si_type = SI_ABORT;
 		{
-			register struct SSAPabort  *sa = &si -> si_abort;
+			struct SSAPabort  *sa = &si -> si_abort;
 
 			sa -> sa_peer = 0;
 			sa -> sa_reason = sc -> sc_result;
@@ -648,7 +614,7 @@ struct SSAPindication *si;
 		sc -> sc_result = SC_ABORT;
 		si -> si_type = SI_ABORT;
 		{
-			register struct SSAPabort  *sa = &si -> si_abort;
+			struct SSAPabort  *sa = &si -> si_abort;
 
 			if (!(sa -> sa_peer = (s -> s_ab_disconnect & AB_DISC_USER)
 								  ? 1 : 0))

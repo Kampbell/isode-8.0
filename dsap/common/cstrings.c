@@ -71,9 +71,9 @@ int   		c;
 			if (count >= c)
 				return (1);
 			else {
-				(void) strcat (arg_error, top);
-				(void) strcat (arg_error, "\n");
-				(void) strcpy (arg_flag,topx);
+				 strcat (arg_error, top);
+				 strcat (arg_error, "\n");
+				 strcpy (arg_flag,topx);
 				return (0);
 			}
 		if (chrcnv[*x] != chrcnv[*y])
@@ -86,9 +86,9 @@ int   		c;
 	if (count >= c)
 		return (1);
 	else {
-		(void) strcat (arg_error, top);
-		(void) strcat (arg_error, "\n");
-		(void) strcpy (arg_flag, topx);
+		 strcat (arg_error, top);
+		 strcat (arg_error, "\n");
+		 strcpy (arg_flag, topx);
 		return (0);
 	}
 }

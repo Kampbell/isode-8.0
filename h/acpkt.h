@@ -139,7 +139,6 @@
 #define	ACS_PROV_BASE	ACS_PROV_NULL
 
 
-int	acpktlose (), acsaplose ();
 
 /*  */
 
@@ -253,6 +252,9 @@ struct assocblk {
 
 int	freeacblk ();
 struct assocblk *newacblk (), *findacblk ();
+
+int	acpktlose (struct assocblk*acb, ...);
+int	acsaplose (struct AcSAPindication*aci, ...);
 
 /*  */
 

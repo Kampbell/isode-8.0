@@ -44,18 +44,14 @@ PE	(*acsap_lookup) () = name2value_dase;
 
 /*  */
 
-AEI	str2aei_dse (string, context, ontty, userdn, passwd)
-char   *string,
-	   *context,
-	   *userdn,
-	   *passwd;
-int	ontty;
+AEI 
+str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd)
 {
 	char   *alias,
 		   name[BUFSIZ];
 	PE	    pe;
-	register AEI aei = &aeis;
-	register struct PSAPaddr *pa = &pas;
+	AEI aei = &aeis;
+	struct PSAPaddr *pa = &pas;
 	static int first_time = 1;
 
 	if (first_time)
@@ -67,7 +63,7 @@ int	ontty;
 
 	if ((alias = alias2name (string)) == NULL)
 		alias = string;
-	(void) strcpy (name, alias);
+	 strcpy (name, alias);
 
 	if (acsap_lookup == NULL) {
 		PY_advise (NULLCP, "str2aei_dse: acsap_lookup function not set");
@@ -94,10 +90,10 @@ int	ontty;
 
 /*  */
 
-struct PSAPaddr *aei2addr_dse (aei)
-AEI	aei;
+struct PSAPaddr *
+aei2addr_dse (AEI aei)
 {
-	register struct PSAPaddr *pa;
+	struct PSAPaddr *pa;
 
 	if (aei != &aeis) {
 		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,

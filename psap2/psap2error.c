@@ -65,14 +65,14 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
 /*  */
 
-char   *PErrString (code)
-register int code;
+char *
+PErrString (int code)
 {
 	static char buffer[50];
 
 	if (code < reject_err0_cnt)
 		return reject_err0[code];
 
-	(void) sprintf (buffer, "unknown error code %d", code);
+	 sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }

@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/gtime.c,v 9.0 1992/06/
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <time.h>
 #include "psap.h"
 #ifdef	OSX
 #include <sys/time.h>

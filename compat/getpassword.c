@@ -50,7 +50,7 @@ getpassword (char *prompt)
 			isopen;
 	char  *bp,
 			 *ep;
-#if	!defined(FEDORA) && !defined(SYS5) && !defined(XOS_2)
+#if	!defined(LINUX) && !defined(SYS5) && !defined(XOS_2)
 	struct sgttyb   sg;
 #else
 	struct termio   sg;
@@ -74,7 +74,7 @@ getpassword (char *prompt)
 
 	istat = signal (SIGINT, SIG_IGN);
 
-#if	!defined(FEDORA) && !defined(SYS5) && !defined(XOS_2)
+#if	!defined(LINUX) && !defined(SYS5) && !defined(XOS_2)
 	 gtty (fileno (fp), &sg);
 	flags = sg.sg_flags;
 	sg.sg_flags &= ~ECHO;
@@ -113,7 +113,7 @@ getpassword (char *prompt)
 	 fflush (stderr);
 #endif
 
-#if	!defined(FEDORA) && !defined(SYS5) && !defined(XOS_2)
+#if	!defined(LINUX) && !defined(SYS5) && !defined(XOS_2)
 	sg.sg_flags = flags;
 	 stty (fileno (fp), &sg);
 #else

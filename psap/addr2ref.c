@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/addr2ref.c,v 9.0 1992/
 
 /* LINTLIBRARY */
 
+#include <time.h>
 #include <stdio.h>
 #include "psap.h"
 #include "ssap.h"
@@ -40,7 +41,7 @@ addr2ref (char *addr)
 	int     result;
 	long    clock;
 	   PE pe;
-	struct tm *tm;
+	struct tm *tm = NULL;
 	struct UTCtime  uts;
 	struct UTCtime *ut = &uts;
 	static struct SSAPref   srs;

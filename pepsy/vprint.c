@@ -38,12 +38,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/vprint.c,v 9.0 1992/0
 
 #ifndef __STDC__
 int	fprintf ();
-#else
-#ifdef  __GNUC__
-#ifdef  SUNOS4		/* And probaby a few more - what a mess! */
-int	fprintf ();
-#endif
-#endif
 #endif
 
 static	vprint1 ();

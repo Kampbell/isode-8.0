@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/logger.c,v 9.0 1992/
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <time.h>
 #include "general.h"
 #include "manifest.h"
 #include "logger.h"

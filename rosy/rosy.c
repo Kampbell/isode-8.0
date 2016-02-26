@@ -751,14 +751,12 @@ pass2()  {
 	 fclose (ftbl);
 	 fclose (fstb);
 
-	if (ferror (stdout) || ferror (fdef) || ferror (ftbl) || ferror (fstb))
-		myyerror ("write error - %s", sys_errname (errno));
+	if (ferror (stdout) || ferror (fdef))
+		;// FIXME myyerror ("write error - %s", sys_errname (errno));
 
 	 fclose (fdef);
 
-	 fclose (ftbl);
-
-	 fclose (fstb);
+	 fclose (stdout);
 }
 
 /*  */

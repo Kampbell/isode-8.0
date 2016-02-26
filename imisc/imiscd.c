@@ -25,6 +25,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/imiscd.c,v 9.0 1992/0
  */
 
 
+#include <errno.h>
+#include <time.h>
 #include <ctype.h>
 #include <stdio.h>
 #include "IMISC-types.h"	/* IMISC type definitions */

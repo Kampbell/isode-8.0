@@ -18,7 +18,9 @@
 # Options
 ###############################################################################
 
-OPTIONS	=	-w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
+#TARGET  =	-m32
+OPTIONS +=      -w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
+#OPTIONS	+=	$(TARGET) -fno-inline -fno-omit-frame-pointer
 
 HDIR	=	$(TOPDIR)h/
 UTILDIR	=	$(TOPDIR)util/
@@ -93,8 +95,8 @@ LIBCFLAGS=      $(CFLAGS)
 LINT    =	lint
 LFLAGS  =	$(OPTIONS)
 LDCC	=	$(CC)
-LDFLAGS =	
-ARFLAGS	=
+LDFLAGS =	$(TARGET)	
+ARFLAGS	=	
 
 LN	=	ln
 

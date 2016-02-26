@@ -189,6 +189,8 @@ _rosaplose (  /* what, fmt, args ... */
 		roi -> roi_type = ROI_PREJECT;
 		rop = &roi -> roi_preject;
 
+		what = va_arg(ap, char*);
+		fmt = va_arg(ap, char*);
 		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 

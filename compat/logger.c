@@ -386,17 +386,15 @@ int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 	va_copy(fp, ap);
 
 	fmt = va_arg (ap, char *);
-	if (strcmp (fmt, "%s") != 0) {
+	if (strcmp (fmt, "%*s") != 0) {
 		bp = buffer;
-		_asprintf (bp, NULLCP, fmt, ap); // FIXME was ap
+		_asprintf (bp, NULLCP, fmt, ap);
 	} else {
 		bp = NULL;
 		fmt = va_arg (fp, char *);
 	}
 
-	if (!(lp -> ll_stat & LLOGTTY)
-			&& lp -> ll_fd == NOTOK
-			&& strcmp (lp -> ll_file, "-") == 0)
+	if (!(lp -> ll_stat & LLOGTTY) && lp -> ll_fd == NOTOK && strcmp (lp -> ll_file, "-") == 0)
 		lp -> ll_stat |= LLOGTTY;
 
 	if (lp -> ll_stat & LLOGTTY) {
@@ -416,8 +414,8 @@ int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 			return OK;
 		if (ll_open (lp) == NOTOK)
 			return NOTOK;
-	} else if ((!llp || llp[lp -> ll_fd].ll_checks-- < 0)
-			   && ll_check (lp) == NOTOK)
+	} else 
+	if ((!llp || llp[lp -> ll_fd].ll_checks-- < 0) && ll_check (lp) == NOTOK)
 		return NOTOK;
 
 	if (bp)

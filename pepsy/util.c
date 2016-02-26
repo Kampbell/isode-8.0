@@ -68,13 +68,13 @@ int	pepsylose (modtyp*module, ...)
 	pe = va_arg (ap, PE);
 
 	_asprintf (buffer, NULLCP, NULLCP, ap);
-	 sprintf (PY_pepy, "%s: module %s",
+	 sprintf (PY_pepy, "%s: module %s ",
 	buffer, module ? module -> md_name : "<none>");
 	if (p) {
 		for (p1 = p; p1 -> pe_type != PE_END; p1++)
 			continue;
 		cp = PY_pepy + strlen (PY_pepy);
-		 sprintf (cp, "encoding %s expecting %s,class=%s/id=%d",
+		sprintf (cp, "encoding %s expecting %s,class=%s/%d",
 		pname(p1),
 		pr_petype (p -> pe_type),
 		pe_classlist[p -> pe_flags & FL_CLASS],

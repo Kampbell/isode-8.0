@@ -160,7 +160,7 @@ manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 # clean
 ################################################################
 
-clean:;		rm -f *.ph *.o *.a IMISC* x* z* _* core
+clean:;		rm -f *.ph *.o *.a IMISC* x* z* _* core$ imisc imiscd
 
 grind:;		iprint Makefile
 		tgrind -lc ryinitiator.h ryresponder.h $(CFILES)

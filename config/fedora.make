@@ -1,17 +1,7 @@
 ###############################################################################
-#   Instructions to Make, for compilation of ISODE processes for generic SVR4
+#   Instructions to Make, for compilation of ISODE processes for Fedora
 ###############################################################################
 
-###############################################################################
-#
-# $Header: /xtel/isode/isode/config/RCS/sys54.make,v 9.0 1992/06/16 12:08:13 isode Rel $
-#
-#
-# $Log: sys54.make,v $
-# Revision 9.0  1992/06/16  12:08:13  isode
-# Release 8.0
-#
-#
 ###############################################################################
 
 ###############################################################################
@@ -26,14 +16,6 @@
 ###############################################################################
 
 ###############################################################################
-#
-# Donated to ISODE by X-Tel Services Ltd
-#
-# Based on ICL DRS/NX 6000 Version 4.0  Level 4  Increment 4
-#
-###############################################################################
-
-###############################################################################
 # Options
 ###############################################################################
 
@@ -42,24 +24,24 @@ OPTIONS	+=	-w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
 HDIR	=	$(TOPDIR)h/
 UTILDIR	=	$(TOPDIR)util/
 BINDIR	=	/usr/local/bin/
-SBINDIR	=	/usr/etc/
-ETCDIR	=	/usr/etc/
-LOGDIR	=	/usr/tmp/
-INCDIRM	=	/usr/include/isode
+SBINDIR	=	/usr/local/sbin/
+ETCDIR	=	/usr/local/etc/isode/
+LOGDIR	=	/usr/tmp/isode
+INCDIRM	=	/usr/local/include/isode
 INCDIR	=	$(INCDIRM)/
 PEPYDIRM=	$(INCDIR)pepy
 PEPYDIR	=	$(PEPYDIRM)/
 PEPSYDIRM=	$(INCDIR)pepsy
 PEPSYDIR=	$(PEPSYDIRM)/
-LIBDIR	=	/usr/lib/
-LINTDIR	=	/usr/lib/
+LIBDIR	=	/usr/local/lib/
+LINTDIR	=	/usr/local/lib/
 
 LIBISODE=	$(TOPDIR)libisode.a
 LIBDSAP	=	$(TOPDIR)libdsap.a
 
-SYSTEM	=	-sys5r4
-MANDIR	=	/usr/man/
-MANOPTS	=	-sys5
+SYSTEM	=	-bsd42
+MANDIR	=	/usr/local/share/man/
+MANOPTS	=	-bsd42
 
 
 ###############################################################################

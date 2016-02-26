@@ -35,9 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/num2prim.c,v 9.0 1992/
 PE 
 num2prim (integer i, int class, int id)
 {
-	integer mask,
-			 sign,
-			 n;
+	static const integer MASK = 0x1ff;
+	integer mask, sign, n;
 	PElementData dp;
 	PE	    pe;
 
@@ -45,7 +44,7 @@ num2prim (integer i, int class, int id)
 		return NULLPE;
 
 	sign = i >= 0 ? i : i ^ (-1);
-	mask = 0x1ff << (((n = sizeof i) - 1) * 8 - 1);
+	mask = MASK << (((n = sizeof i) - 1) * 8 - 1);
 	while (n > 1 && (sign & mask) == 0)
 		mask >>= 8, n--;
 

@@ -30,12 +30,12 @@ READ THIS
      note to "ISODE-Request@NIC.SRI.COM".
 
 SYNOPSIS
-          % cd isode-8.0
-          % cp config/linux h/config.h
-          % cp config/linux.make config/CONFIG.make
-          % cp config/*.local support/
-          % ./make everything
-          # ./make inst-everything
+     `% cd isode-8.0`  
+     `% cp config/linux h/config.h`  
+     `% cp config/linux.make config/CONFIG.make`  
+     `% cp config/*.local support/`  
+     `% ./make everything`  
+     `# ./make inst-everything`  
 
 
 DESCRIPTION
@@ -113,7 +113,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
   MAKEFILE
      Copy the makefile skeleton of your  choice  to  pickle.make,
      where  "pickle"  is  the name of your system.  Now edit this
-     file to set the following _m_a_k_e variables:
+     file to set the following make variables:
 
           variable default              specifies
           OPTIONS                       options to cc and lint (e.g., -I../h)
@@ -674,7 +674,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
           A="Internet=`hostname`|NS+aabbcc"
 
-     Next, start _d_i_s_h in the background,  bind  as  the  manager,
+     Next, start dish in the background,  bind  as  the  manager,
      move to the location in the DIT where the services are to be
      registered and run the script, e.g.,
 
@@ -1329,7 +1329,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-     There should be a separate compressed _t_a_r  file,  containing
+     There should be a separate compressed tar  file,  containing
      only  PostScript  files,  available on the machine where you
      retrieved this distribution.
 

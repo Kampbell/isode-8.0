@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rylose.c,v 9.0 1992/06/16 12:37:29 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosy/RCS/rylose.c,v 9.0 1992/06/16 12:37:29 isode Rel $
  *
  *
@@ -53,10 +53,10 @@ int	RyLose (sd, roi)
 int	sd;
 struct RoSAPindication *roi;
 {
-    missingP (roi);
+	missingP (roi);
 
-    loseopblk (sd, ROS_DONE);
-    losedsblk (sd);
+	loseopblk (sd, ROS_DONE);
+	losedsblk (sd);
 
-    return OK;
+	return OK;
 }

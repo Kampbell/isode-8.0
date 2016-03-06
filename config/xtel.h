@@ -1,6 +1,6 @@
 /* sunos4.h - site configuration file for SunOS release 4 */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/xtel.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

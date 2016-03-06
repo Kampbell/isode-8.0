@@ -71,7 +71,7 @@ initVideo() {
 	if (cp == (char *)NULL)
 		cp = "network";
 	cp = checkSetTerm(cp, "network");
-	(void) strcpy(term, cp);
+	 strcpy(term, cp);
 }
 
 char *
@@ -89,16 +89,16 @@ char * termtype, * defterm;
 				cols = 80;
 			}
 			displayHelp("termtypes");
-			(void) strcpy(termtype, defterm);
+			 strcpy(termtype, defterm);
 		} else {
 			ret = tgetent(bp, termtype);
 			if (ret == 1)
 				break; /* got a valid terminal type */
-			(void) fprintf(stdout, "\nDon't know anything about your terminal type (%s).\n", termtype);
-			(void) fprintf(stdout, "If your terminal type is unknown to the system, pressing <CR> for\n");
-			(void) fprintf(stdout, "terminal type will accept a default terminal type (assumes 24 line screen).\n");
+			 fprintf(stdout, "\nDon't know anything about your terminal type (%s).\n", termtype);
+			 fprintf(stdout, "If your terminal type is unknown to the system, pressing <CR> for\n");
+			 fprintf(stdout, "terminal type will accept a default terminal type (assumes 24 line screen).\n");
 		}
-		(void) fprintf(stdout, "\nEnter your terminal type (or l or L to list possible terminal types): ");
+		 fprintf(stdout, "\nEnter your terminal type (or l or L to list possible terminal types): ");
 		if (gets(buf) == NULLCP) {
 			clearerr(stdin);
 			return defterm;
@@ -120,10 +120,10 @@ char * termtype, * defterm;
 		lines = LINES;
 	if (wanAccess == TRUE)
 		if (lines > 24) {
-			(void) fprintf(stdout, "\nYour terminal size is set to %d lines.\n", lines);
-			(void) fprintf(stdout, "If that seems OK, press <CR>, otherwise enter the correct number (24 is normal).\n");
+			 fprintf(stdout, "\nYour terminal size is set to %d lines.\n", lines);
+			 fprintf(stdout, "If that seems OK, press <CR>, otherwise enter the correct number (24 is normal).\n");
 			for (;;) {
-				(void) fprintf(stdout, "Length of screen in lines: ");
+				 fprintf(stdout, "Length of screen in lines: ");
 				if (gets(buf) == NULLCP)
 					clearerr(stdin);
 				else if (strlen(buf) != 0) {
@@ -154,13 +154,13 @@ soundBell() {
 	if (bellCode != NULLCP)
 		tputs(bellCode, 1, output);
 	else
-		(void) putchar(7);
+		 putchar(7);
 }
 
 output(c)
 char c;
 {
-	(void) putchar(c);
+	 putchar(c);
 }
 
 void
@@ -181,7 +181,7 @@ char * str;
 {
 	if (inverseVideo == TRUE)
 		tputs(revVideoOn, 1, output);
-	(void) fputs(str, stdout);
+	 fputs(str, stdout);
 	if (inverseVideo == TRUE)
 		tputs(resetVideo, 1, output);
 }
@@ -195,8 +195,8 @@ clearLine() {
 			tputs(clLine, 1, output);
 		else
 			for (i = 1; i < 80; i++)
-				(void) putchar(' ');
+				 putchar(' ');
 		tputs(startLine, 1, output);
 	} else
-		(void) putchar('\n');
+		 putchar('\n');
 }

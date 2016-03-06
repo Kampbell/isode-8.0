@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryfind.c,v 9.0 1992/06/16 12:37:29 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosy/RCS/ryfind.c,v 9.0 1992/06/16 12:37:29 isode Rel $
  *
  *
@@ -33,60 +33,60 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryfind.c,v 9.0 1992/06
 /*  */
 
 struct RyOperation *findopbyop (ryo, op)
-register struct RyOperation *ryo;
+struct RyOperation *ryo;
 int	op;
 {
-    if (!ryo)
+	if (!ryo)
+		return NULL;
+
+	for (; ryo -> ryo_name; ryo++)
+		if (ryo -> ryo_op == op)
+			return ryo;
+
 	return NULL;
-
-    for (; ryo -> ryo_name; ryo++)
-	if (ryo -> ryo_op == op)
-	    return ryo;
-
-    return NULL;
 }
 
 
 struct RyOperation *findopbyname (ryo, name)
-register struct RyOperation *ryo;
+struct RyOperation *ryo;
 char   *name;
 {
-    if (!ryo)
+	if (!ryo)
+		return NULL;
+
+	for (; ryo -> ryo_name; ryo++)
+		if (strcmp (ryo -> ryo_name, name) == 0)
+			return ryo;
+
 	return NULL;
-
-    for (; ryo -> ryo_name; ryo++)
-	if (strcmp (ryo -> ryo_name, name) == 0)
-	    return ryo;
-
-    return NULL;
 }
 
 
 struct RyError *finderrbyerr (rye, err)
-register struct RyError *rye;
+struct RyError *rye;
 int	err;
 {
-    if (!rye)
+	if (!rye)
+		return NULL;
+
+	for (; rye -> rye_name; rye++)
+		if (rye -> rye_err == err)
+			return rye;
+
 	return NULL;
-
-    for (; rye -> rye_name; rye++)
-	if (rye -> rye_err == err)
-	    return rye;
-
-    return NULL;
 }
 
 
 struct RyError *finderrbyname (rye, name)
-register struct RyError *rye;
+struct RyError *rye;
 char   *name;
 {
-    if (!rye)
+	if (!rye)
+		return NULL;
+
+	for (; rye -> rye_name; rye++)
+		if (strcmp (rye -> rye_name, name) == 0)
+			return rye;
+
 	return NULL;
-
-    for (; rye -> rye_name; rye++)
-	if (strcmp (rye -> rye_name, name) == 0)
-	    return rye;
-
-    return NULL;
 }

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/t4014.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/t4014.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -44,15 +44,14 @@ extern unsigned position;
 
 int y = Y_OFFSET;
 
-SFD photo_quit ()
-{
+SFD photo_quit () {
 	putch (030);	/* Return to non-graphic mode */
 	exit (0);
 }
 
 /* ARGSUSED */
-photo_start (name)
-char * name;
+int 
+photo_start (char *name)
 {
 	putch (035);	/* Enter graphic mode */
 
@@ -60,7 +59,7 @@ char * name;
 	erase ();
 	linemod ("solid");
 
-	(void) signal (SIGTERM,photo_quit);
+	 signal (SIGTERM,photo_quit);
 	/* return 0 if sucessful -1 if not */
 
 	return (0);
@@ -68,30 +67,30 @@ char * name;
 
 
 /* ARGSUSED */
-photo_end (name)
-char * name;
+int 
+photo_end (char *name)
 {
 	/* Decoding has finished - display the photo */
 	move (0,Y_OFFSET - 100);
 	closepl();
 
-	(void) printf ("\n");
-	(void) fflush (stdout);
-	(void) close (1);	/* this is needed for QUIPU */
+	 printf ("\n");
+	 fflush (stdout);
+	 close (1);	/* this is needed for QUIPU */
 	/* wait until signalled to Terminate */
 	for (;;)
 		;
 }
 
 /* ARGSUSED */
-photo_black (length)
-int length;
+int 
+photo_black (int length)
 {
-;
+	;
 }
 
-photo_white (length)
-int length;
+int 
+photo_white (int length)
 {
 	line ((position*SCALE)+X_OFFSET,y,((length+position-1)*SCALE)+X_OFFSET,y);
 }

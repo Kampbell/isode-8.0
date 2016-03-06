@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2ps.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/pe2ps.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -40,112 +40,107 @@ int  ps_write_len ();
 
 /*  */
 
-int	pe2ps_aux (ps, pe, eval)
-register PS	ps;
-register PE	pe;
-int	eval;
+int 
+pe2ps_aux (PS ps, PE pe, int eval)
 {
-    int     result;
+	int     result;
 
-    if (eval > 0)
-	switch (pe -> pe_form) {
-	    case PE_FORM_PRIM: 
-	    case PE_FORM_ICONS: 
-		break;
+	if (eval > 0)
+		switch (pe -> pe_form) {
+		case PE_FORM_PRIM:
+		case PE_FORM_ICONS:
+			break;
 
-	    case PE_FORM_CONS: 
-		(void) ps_get_abs (pe);
-		break;
-	}
+		case PE_FORM_CONS:
+			 ps_get_abs (pe);
+			break;
+		}
 
-    if ((result = pe2ps_aux2 (ps, pe, eval)) != NOTOK)
-	result = ps_flush (ps);
+	if ((result = pe2ps_aux2 (ps, pe, eval)) != NOTOK)
+		result = ps_flush (ps);
 
-    return result;
+	return result;
 }
 
 
-static int  pe2ps_aux2 (ps, pe, eval)
-register PS	ps;
-register PE	pe;
-int	eval;
+static int 
+pe2ps_aux2 (PS ps, PE pe, int eval)
 {
-    register PE	    p;
+	PE	    p;
 
-    if (pe -> pe_form == PE_FORM_ICONS) {
-	if (ps_write_aux (ps, pe -> pe_prim, pe -> pe_len, 1) == NOTOK)
-	    return NOTOK;
-
-	return OK;
-    }
-    
-    if (ps_write_id (ps, pe) == NOTOK || ps_write_len (ps, pe) == NOTOK)
-	return NOTOK;
-
-    switch (pe -> pe_form) {
-	case PE_FORM_PRIM: 
-	    if (ps_write_aux (ps, pe -> pe_prim, pe -> pe_len, 1) == NOTOK)
-		return NOTOK;
-	    break;
-
-	case PE_FORM_CONS: 
-	    if (eval < 0)
-		    return OK;
-	    if (pe -> pe_len) {
-		for (p = pe -> pe_cons; p; p = p -> pe_next)
-		    if (pe2ps_aux2 (ps, p, 0) == NOTOK)
+	if (pe -> pe_form == PE_FORM_ICONS) {
+		if (ps_write_aux (ps, pe -> pe_prim, pe -> pe_len, 1) == NOTOK)
 			return NOTOK;
 
-		if (pe -> pe_len == PE_LEN_INDF
-			&& pe2ps_aux2 (ps, &pe_eoc, 0) == NOTOK)
-		    return NOTOK;
-	    }
-	    break;
-    }
+		return OK;
+	}
 
-    return OK;
+	if (ps_write_id (ps, pe) == NOTOK || ps_write_len (ps, pe) == NOTOK)
+		return NOTOK;
+
+	switch (pe -> pe_form) {
+	case PE_FORM_PRIM:
+		if (ps_write_aux (ps, pe -> pe_prim, pe -> pe_len, 1) == NOTOK)
+			return NOTOK;
+		break;
+
+	case PE_FORM_CONS:
+		if (eval < 0)
+			return OK;
+		if (pe -> pe_len) {
+			for (p = pe -> pe_cons; p; p = p -> pe_next)
+				if (pe2ps_aux2 (ps, p, 0) == NOTOK)
+					return NOTOK;
+
+			if (pe -> pe_len == PE_LEN_INDF
+					&& pe2ps_aux2 (ps, &pe_eoc, 0) == NOTOK)
+				return NOTOK;
+		}
+		break;
+	}
+
+	return OK;
 }
 
 /*  */
 
-int  ps_write_id (ps, pe)
-register PS	ps;
-register PE	pe;
+int 
+ps_write_id (PS ps, PE pe)
 {
-    byte    buffer[1 + sizeof (PElementID)];
-    register byte  *bp = buffer;
-    PElementForm    form;
-    register PElementID id;
+	byte    buffer[1 + sizeof (PElementID)];
+	byte  *bp = buffer;
+	PElementForm    form;
+	PElementID id;
 
-    if ((form = pe -> pe_form) == PE_FORM_ICONS)
-	form = PE_FORM_CONS;
-    *bp = ((pe -> pe_class << PE_CLASS_SHIFT) & PE_CLASS_MASK)
-		| ((form << PE_FORM_SHIFT) & PE_FORM_MASK);
+	if ((form = pe -> pe_form) == PE_FORM_ICONS)
+		form = PE_FORM_CONS;
+	*bp = ((pe -> pe_class << PE_CLASS_SHIFT) & PE_CLASS_MASK)
+		  | ((form << PE_FORM_SHIFT) & PE_FORM_MASK);
 
-    if ((id = pe -> pe_id) < PE_ID_XTND)
-	*bp++ |= id;
-    else {
-	register byte *ep;
-	register PElementID jd;
+	if ((id = pe -> pe_id) < PE_ID_XTND)
+		*bp++ |= id;
+	else {
+		byte *ep;
+		PElementID jd;
 
-	*bp |= PE_ID_XTND;
+		*bp |= PE_ID_XTND;
 
-	ep = buffer;
-	for (jd = id; jd != 0; jd >>= PE_ID_SHIFT)
-	    ep++;
+		ep = buffer;
+		for (jd = id; jd != 0; jd >>= PE_ID_SHIFT)
+			ep++;
 
-	for (bp = ep; id != 0; id >>= PE_ID_SHIFT)
-	    *bp-- = id & PE_ID_MASK;
-	for (bp = buffer + 1; bp < ep; bp++)
-	    *bp |= PE_ID_MORE;
+		for (bp = ep; id != 0; id >>= PE_ID_SHIFT)
+			*bp-- = id & PE_ID_MASK;
+		for (bp = buffer + 1; bp < ep; bp++)
+			*bp |= PE_ID_MORE;
 
-	bp = ++ep;
-    }
+		bp = ++ep;
+	}
 
-    if (ps_write (ps, buffer, bp - buffer) == NOTOK)
-	return NOTOK;
+	if (ps_write (ps, buffer, bp - buffer) == NOTOK)
+		return NOTOK;
 
-    return OK;
+	return OK;
 }
 
 /*  */
@@ -153,33 +148,31 @@ register PE	pe;
 /* probably should integrate the non-PE_LEN_SMAX case with the algorithm in
    num2prim() for a single, unified routine */
 
-int  ps_write_len (ps, pe)
-register PS	ps;
-register PE	pe;
+int 
+ps_write_len (PS ps, PE pe)
 {
-    byte    buffer[1 + sizeof (PElementLen)];
-    register byte  *bp = buffer,
-		   *ep;
-    register PElementLen len;
+	byte    buffer[1 + sizeof (PElementLen)];
+	byte  *bp = buffer,
+					*ep;
+	PElementLen len;
 
-    if ((len = pe -> pe_len) == PE_LEN_INDF)
-	*bp++ = PE_LEN_XTND;
-    else
-	if (len <= PE_LEN_SMAX)
-	    *bp++ = len & 0xff;
+	if ((len = pe -> pe_len) == PE_LEN_INDF)
+		*bp++ = PE_LEN_XTND;
+	else if (len <= PE_LEN_SMAX)
+		*bp++ = len & 0xff;
 	else {
-	    ep = buffer + sizeof buffer - 1;
-	    for (bp = ep; len != 0 && buffer < bp; len >>= 8)
-		*bp-- = len & 0xff;
-	    *bp = PE_LEN_XTND | ((ep - bp) & 0xff);
-	    if (ps_write (ps, bp, ep - bp + 1) == NOTOK)
-		return NOTOK;
+		ep = buffer + sizeof buffer - 1;
+		for (bp = ep; len != 0 && buffer < bp; len >>= 8)
+			*bp-- = len & 0xff;
+		*bp = PE_LEN_XTND | ((ep - bp) & 0xff);
+		if (ps_write (ps, bp, ep - bp + 1) == NOTOK)
+			return NOTOK;
 
-	    return OK;
+		return OK;
 	}
 
-    if (ps_write (ps, buffer, bp - buffer) == NOTOK)
-	return NOTOK;
+	if (ps_write (ps, buffer, bp - buffer) == NOTOK)
+		return NOTOK;
 
-    return OK;
+	return OK;
 }

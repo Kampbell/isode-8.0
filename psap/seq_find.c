@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/seq_find.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/seq_find.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -32,18 +32,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/seq_find.c,v 9.0 1992/
 
 /*  */
 
-PE	seq_find (pe, i)
-register PE	pe;
-register int	i;
+PE 
+seq_find (PE pe, int i)
 {
-    register PE	    p;
+	PE	    p;
 
-    if (i >= pe -> pe_cardinal)
-	return pe_seterr (pe, PE_ERR_MBER, NULLPE);
+	if (i >= pe -> pe_cardinal)
+		return pe_seterr (pe, PE_ERR_MBER, NULLPE);
 
-    for (p = pe -> pe_cons; p; p = p -> pe_next)
-	if (p -> pe_offset == i)
-	    break;
+	for (p = pe -> pe_cons; p; p = p -> pe_next)
+		if (p -> pe_offset == i)
+			break;
 
-    return p;
+	return p;
 }

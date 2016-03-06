@@ -1,6 +1,6 @@
 /* bsd43.h - site configuration file for 4.3BSD UNIX */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/bsd43.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/support.c,v 9.0 1992/06/16 14:38:53 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/idist/RCS/support.c,v 9.0 1992/06/16 14:38:53 isode Rel $
  *
  * Support routines required by both client and server.
@@ -12,12 +12,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/support.c,v 9.
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science.
  *
- * 
+ *
  * $Log: support.c,v $
  * Revision 9.0  1992/06/16  14:38:53  isode
  * Release 8.0
  *
- * 
+ *
  */
 
 #include <stdio.h>
@@ -26,7 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/support.c,v 9.
 #include "defs.h"
 
 struct type_Idist_FileSpec *
-	makefs (type, opts, mode, size, mtime, uname, group, name, lname)
+makefs (type, opts, mode, size, mtime, uname, group, name, lname)
 unsigned short type, mode;
 off_t	size;
 time_t	mtime;
@@ -52,15 +52,15 @@ char	*uname, *group, *name, *lname;
 	return fs;
 }
 
-struct type_Idist_Options *makeopts (opts)
-int	opts;
+struct type_Idist_Options *
+makeopts (int opts)
 {
 	struct type_Idist_Options *rdo;
 
 	rdo = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_BITS);
 	if (rdo == NULL)
 		adios ("memory", "out of");
-#define dobit(X,Y) if (opts & (X)) (void) bit_on (rdo, (Y))
+#define dobit(X,Y) if (opts & (X))  bit_on (rdo, (Y))
 	dobit (VERIFY, bit_Idist_Options_verify);
 	dobit (WHOLE, bit_Idist_Options_whole);
 	dobit (YOUNGER, bit_Idist_Options_younger);
@@ -73,48 +73,48 @@ int	opts;
 #undef dobit
 	return rdo;
 }
-	
-struct type_Idist_FileType *makeftype (type)
-unsigned short type;
+
+struct type_Idist_FileType *
+makeftype (int type)
 {
 	struct type_Idist_FileType *ft;
 
 	if ((ft = (struct type_Idist_FileType *) malloc (sizeof *ft)) == NULL)
 		adios ("memory", "out of");
 	switch (type) {
-	    case S_IFDIR:
+	case S_IFDIR:
 		ft -> parm = int_Idist_FileType_directory;
 		break;
-	    case S_IFLNK:
+	case S_IFLNK:
 		ft -> parm = int_Idist_FileType_symlink;
 		break;
-	    case S_IFREG:
+	case S_IFREG:
 		ft -> parm = int_Idist_FileType_regular;
 		break;
-	    case 0:
+	case 0:
 		ft -> parm = int_Idist_FileType_hardlink;
 		break;
-	    default:
+	default:
 		adios (NULLCP, "Illegal file type (%d)", type);
 		break;
 	}
 	return ft;
 }
 
-struct type_Idist_FileTime *makefmtime (mtime)
-long	mtime;
+struct type_Idist_FileTime *
+makefmtime (long mtime)
 {
 	struct type_Idist_FileTime *fm;
 
 	if ((fm = (struct type_Idist_FileTime *) malloc (sizeof *fm)) == NULL)
 		adios ("memory", "out of");
-				/* Convert to time since Jan 1 1900 */
-	fm -> parm = mtime + 2208988800L; 
+	/* Convert to time since Jan 1 1900 */
+	fm -> parm = mtime + 2208988800L;
 	return fm;
 }
 
-long	convtime (fm)
-struct type_Idist_FileTime *fm;
+long 
+convtime (struct type_Idist_FileTime *fm)
 {
 	return fm -> parm - 2208988800L;
 }
@@ -125,15 +125,13 @@ struct type_Idist_FileTime *fm;
  * part corresponding to `file'.
  */
 char *
-exptilde(buf, file)
-	char buf[];
-	register char *file;
+exptilde (char buf[], char *file)
 {
-	register char *s1, *s2, *s3;
+	char *s1, *s2, *s3;
 	extern char homedir[];
 
 	if (*file != '~') {
-		(void) strcpy(buf, file);
+		 strcpy(buf, file);
 		return(buf);
 	}
 	if (*++file == '\0') {

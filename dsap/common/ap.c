@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/ap.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/ap.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -37,43 +37,43 @@ extern LLog * log_dsap;
 extern struct PSAPaddr * psap_cpy ();
 extern aps_free();
 
-struct access_point * qap_cpy (a)
-struct access_point * a;
+struct access_point *
+qap_cpy (struct access_point *a)
 {
-struct access_point * r;
+	struct access_point * r;
 
 	r = (struct access_point *) smalloc (sizeof (struct access_point));
 	bzero ((char *) r,sizeof (struct access_point));
 
 	r -> ap_name = dn_cpy (a -> ap_name);
-	if (a -> ap_address) 
+	if (a -> ap_address)
 		r -> ap_address = psap_cpy ( a -> ap_address );
 
 	return (r);
 }
 
-static qap_cmp (r,a)
-struct access_point *r, *a;
+static 
+qap_cmp (struct access_point *r, struct access_point *a)
 {
-int res;
+	int res;
 
-	if (( res = dn_cmp (r -> ap_name, a -> ap_name)) == 0) 
+	if (( res = dn_cmp (r -> ap_name, a -> ap_name)) == 0)
 		if ( r -> ap_address && a -> ap_address )
-		       return (bcmp ((char *) r -> ap_address,
-				     (char *) a -> ap_address, 
-				     sizeof *a -> ap_address) ? (-1) : 0);
-		else 
+			return (bcmp ((char *) r -> ap_address,
+						  (char *) a -> ap_address,
+						  sizeof *a -> ap_address) ? (-1) : 0);
+		else
 			return ( r -> ap_address == a -> ap_address ? 0 :
-				 r -> ap_address > a -> ap_address ? 1 : (-1));
+					 r -> ap_address > a -> ap_address ? 1 : (-1));
 
 	return res;
 }
-		
 
-static PE qap_enc (p)
-struct access_point *p;
+
+static PE 
+qap_enc (struct access_point *p)
 {
-PE ret_pe;
+	PE ret_pe;
 
 	if (encode_DO_QAccessPoint (&ret_pe,0,0,NULLCP,p) == NOTOK )
 		return NULLPE;
@@ -81,24 +81,24 @@ PE ret_pe;
 	return (ret_pe);
 }
 
-static struct access_point * qap_dec (pe)
-PE pe;
+static struct access_point *
+qap_dec (PE pe)
 {
-struct access_point *qap;
+	struct access_point *qap;
 
 	if (decode_DO_QAccessPoint (pe,1,NULLIP,NULLVP,&qap) == NOTOK) {
 		return (NULLACCESSPOINT);
 	}
-		
+
 	return (qap);
 }
 
-static struct access_point * qap_parse (s)
-char * s;
+static struct access_point *
+qap_parse (char *s)
 {
-struct PSAPaddr *pa;
-struct access_point *qap;
-char * p;
+	struct PSAPaddr *pa;
+	struct access_point *qap;
+	char * p;
 
 	qap = (struct access_point *) calloc (1,sizeof (struct access_point));
 
@@ -113,7 +113,7 @@ char * p;
 			*(--p) = '#';
 			return (NULLACCESSPOINT);
 		}
-		
+
 	}
 
 	if ((qap -> ap_name = str2dn (s)) == NULLDN) {
@@ -129,10 +129,8 @@ char * p;
 	return qap;
 }
 
-static qap_print (ps,p,format)
-PS ps;
-struct access_point *p;
-int format;
+static 
+qap_print (PS ps, struct access_point *p, int format)
 {
 
 	dn_print (ps, p -> ap_name, format);
@@ -145,12 +143,12 @@ int format;
 
 }
 
-ap_syntax ()
-{
-	(void) add_attribute_syntax ("AccessPoint",
-		(IFP) qap_enc,		(IFP) qap_dec,
-		(IFP) qap_parse,	qap_print,
-		(IFP) qap_cpy,		qap_cmp,
-		aps_free,		NULLCP,
-		NULLIFP,		TRUE );
+int 
+ap_syntax (void) {
+	 add_attribute_syntax ("AccessPoint",
+								 (IFP) qap_enc,		(IFP) qap_dec,
+								 (IFP) qap_parse,	qap_print,
+								 (IFP) qap_cpy,		qap_cmp,
+								 aps_free,		NULLCP,
+								 NULLIFP,		TRUE );
 }

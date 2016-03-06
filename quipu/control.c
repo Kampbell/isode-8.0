@@ -43,16 +43,14 @@ extern LLog * log_stat;
 #endif
 extern void dsa_abort();
 
-dsa_control (as,error,dn)
-Attr_Sequence as;
-struct DSError *error;
-DN dn;
+int 
+dsa_control (Attr_Sequence as, struct DSError *error, DN dn)
 {
-char * str;
-DN dn2;
-Entry theentry;
-extern Entry database_root;
-SFD attempt_restart();
+	char * str;
+	DN dn2;
+	Entry theentry;
+	extern Entry database_root;
+	SFD attempt_restart();
 
 	if ( ! manager(dn) ) {
 		error->dse_type = DSE_SECURITYERROR;
@@ -69,9 +67,9 @@ SFD attempt_restart();
 	switch (*str) {
 	case 'd':	/* -dump <directory> */
 		str = SkipSpace (++str);
-/* 
-		directory_dump (str, database_root);
-*/
+		/*
+				directory_dump (str, database_root);
+		*/
 		return (DS_OK);
 	case 't':	/* -tailor <string> */
 		str = SkipSpace (++str);
@@ -91,9 +89,8 @@ SFD attempt_restart();
 	case 'r':	/* -refresh <entry> */
 		str = SkipSpace (++str);
 		if (lexequ (str,"root") == 0)
-		    dn2= NULLDN;
-		else
-		    if ((dn2 = str2dn (str)) == NULLDN)
+			dn2= NULLDN;
+		else if ((dn2 = str2dn (str)) == NULLDN)
 			break;
 
 		if (refresh_from_disk (dn2) == OK)
@@ -102,24 +99,23 @@ SFD attempt_restart();
 	case 'f':	/* -resync <entry> */
 		str = SkipSpace (++str);
 		if (lexequ (str,"root") == 0)
-		    dn2= NULLDN;
-		else
-		    if ((dn2 = str2dn (str)) == NULLDN)
+			dn2= NULLDN;
+		else if ((dn2 = str2dn (str)) == NULLDN)
 			break;
 
-		if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY) 
+		if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY)
 #ifdef TURBO_DISK
-	{
-	Entry akid = (Entry) avl_getone(theentry->e_children);
+		{
+			Entry akid = (Entry) avl_getone(theentry->e_children);
 			if (turbo_writeall (akid) == OK)
 				return (DS_OK);
-	}
+		}
 #else
-	{
-	Entry akid = (Entry) avl_getone(theentry->e_children);
+		{
+			Entry akid = (Entry) avl_getone(theentry->e_children);
 			if (journal (akid) == OK)
 				return (DS_OK);
-	}
+		}
 #endif
 		break;
 	case 'l':	/* -lock <entry> */
@@ -153,12 +149,12 @@ SFD attempt_restart();
 		 */
 		str = SkipSpace (++str);
 		if (*str == NULL) {
-		    slave_update();
-		    return DS_OK;
+			slave_update();
+			return DS_OK;
 		}
 
 		if (lexequ (str, "shadow") == 0) {
-			shadow_update();	
+			shadow_update();
 			return DS_OK;
 		}
 
@@ -182,151 +178,131 @@ SFD attempt_restart();
 
 #ifdef QUIPU_CONSOLE
 
-new_dsa_control (as,error,dn)
-Attr_Sequence as;
-struct DSError *error;
-DN dn;
+int 
+new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn)
 {
-  struct dsa_control * item ;
-  char * tmp_ptr ;
-  DN dn2;
-  Entry theentry;
-  extern Entry database_root;
-  SFD attempt_restart();
+	struct dsa_control * item ;
+	char * tmp_ptr ;
+	DN dn2;
+	Entry theentry;
+	extern Entry database_root;
+	SFD attempt_restart();
 
-  /* Return some silly error to distinguish it from the other dsa_control */
-  if ( ! manager(dn) ) 
-  {
-    error->dse_type = DSE_SECURITYERROR ;
-    error->ERR_SECURITY.DSE_sc_problem = DSE_SC_PROTECTIONREQUIRED ;
-    return (DS_ERROR_REMOTE) ;
-  }
+	/* Return some silly error to distinguish it from the other dsa_control */
+	if ( ! manager(dn) ) {
+		error->dse_type = DSE_SECURITYERROR ;
+		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_PROTECTIONREQUIRED ;
+		return (DS_ERROR_REMOTE) ;
+	}
 
-  item = (struct dsa_control *) as->attr_value->avseq_av.av_struct ;
+	item = (struct dsa_control *) as->attr_value->avseq_av.av_struct ;
 
-  switch (item->dsa_control_option) 
-  {
-    case (CONTROL_CHANGETAILOR) :	/* -tailor <string> */
-    {
-      tmp_ptr = qb2str(item->un.changeTailor) ;
-      if (dsa_tai_string (tmp_ptr) == OK)
-      {
-	isodexport (NULLCP);
-	return (DS_OK);
-      }
-      break;
-    }
-    case(CONTROL_STOPDSA):	/* -abort */
-    {
-      LLOG(log_dsap,LLOG_FATAL,("*** abort signal ***")) ;
-      stop_listeners() ;
-      exit(0) ;
-    }
-    case (CONTROL_REFRESH):	/* -refresh <entry> */
-    {
-      if (item->un.refresh->offset == DN_PRESENT)
-	if (refresh_from_disk (item->un.refresh->un.selectedDN) == OK)
-	  return (DS_OK);
-      break;
-    }
-    case(CONTROL_RESYNCH):	/* -resync <entry> */
-    {
-      if (item->un.resynch->offset == DN_PRESENT)
-	dn2 = item->un.resynch->un.selectedDN ;
-      else
-	break ;
+	switch (item->dsa_control_option) {
+	case (CONTROL_CHANGETAILOR) : {	/* -tailor <string> */
+		tmp_ptr = qb2str(item->un.changeTailor) ;
+		if (dsa_tai_string (tmp_ptr) == OK) {
+			isodexport (NULLCP);
+			return (DS_OK);
+		}
+		break;
+	}
+	case(CONTROL_STOPDSA): {	/* -abort */
+		LLOG(log_dsap,LLOG_FATAL,("*** abort signal ***")) ;
+		stop_listeners() ;
+		exit(0) ;
+	}
+	case (CONTROL_REFRESH): {	/* -refresh <entry> */
+		if (item->un.refresh->offset == DN_PRESENT)
+			if (refresh_from_disk (item->un.refresh->un.selectedDN) == OK)
+				return (DS_OK);
+		break;
+	}
+	case(CONTROL_RESYNCH): {	/* -resync <entry> */
+		if (item->un.resynch->offset == DN_PRESENT)
+			dn2 = item->un.resynch->un.selectedDN ;
+		else
+			break ;
 
-      if ((theentry = local_find_entry (dn2, FALSE)) != NULLENTRY) 
+		if ((theentry = local_find_entry (dn2, FALSE)) != NULLENTRY)
 #ifdef TURBO_DISK
-      {
-	Entry akid = (Entry) avl_getone(theentry->e_children);
+		{
+			Entry akid = (Entry) avl_getone(theentry->e_children);
 			if (turbo_writeall (akid) == OK)
 				return (DS_OK);
-      }
+		}
 #else
-      {
-	Entry akid = (Entry) avl_getone(theentry->e_children);
+		{
+			Entry akid = (Entry) avl_getone(theentry->e_children);
 			if (journal (akid) == OK)
 				return (DS_OK);
-      }
+		}
 #endif
-      break;
-    }
-    case (CONTROL_LOCKDSA):	/* -lock <entry> */
-    {
-      if (item->un.resynch->offset == DN_PRESENT)
-	dn2 = item->un.resynch->un.selectedDN ;
-      else
-	break ;
+		break;
+	}
+	case (CONTROL_LOCKDSA): {	/* -lock <entry> */
+		if (item->un.resynch->offset == DN_PRESENT)
+			dn2 = item->un.resynch->un.selectedDN ;
+		else
+			break ;
 
-      if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY) 
-      {
-	theentry->e_lock = TRUE;
-	return (DS_OK);
-      }
-      break;
-    }
-    case (CONTROL_UNLOCK):	/* -unlock <entry> */
-    {
-      if (item->un.resynch->offset == DN_PRESENT)
-	dn2 = item->un.resynch->un.selectedDN ;
-      else
-	break ;
+		if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY) {
+			theentry->e_lock = TRUE;
+			return (DS_OK);
+		}
+		break;
+	}
+	case (CONTROL_UNLOCK): {	/* -unlock <entry> */
+		if (item->un.resynch->offset == DN_PRESENT)
+			dn2 = item->un.resynch->un.selectedDN ;
+		else
+			break ;
 
-      if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY) 
-      {
-	theentry->e_lock = FALSE;
-	return (DS_OK);
-      }
-      break;
-    }
-    case (CONTROL_SETLOGLEVEL):	/* Set the Logging Level */
-    {
-      tmp_ptr = qb2str(item->un.setLogLevel) ;
-      /* What kind of stuff is needed here?!! */
-      return (DS_OK);
-      break;
-    }
-    case (CONTROL_UPDATESLAVEEDBS):	/* -slave */
-    {
-      /*
-       * When we go async return of OK will mean that a getedb
-       * operation has been scheduled, NOT that it has succeeded.
-       */
-      tmp_ptr = qb2str(item->un.updateSlaveEDBs) ;
+		if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY) {
+			theentry->e_lock = FALSE;
+			return (DS_OK);
+		}
+		break;
+	}
+	case (CONTROL_SETLOGLEVEL): {	/* Set the Logging Level */
+		tmp_ptr = qb2str(item->un.setLogLevel) ;
+		/* What kind of stuff is needed here?!! */
+		return (DS_OK);
+		break;
+	}
+	case (CONTROL_UPDATESLAVEEDBS): {	/* -slave */
+		/*
+		 * When we go async return of OK will mean that a getedb
+		 * operation has been scheduled, NOT that it has succeeded.
+		 */
+		tmp_ptr = qb2str(item->un.updateSlaveEDBs) ;
 
-      if (lexequ (tmp_ptr, "all") == 0)
-      {
-	slave_update();
-	return DS_OK;
-      }
+		if (lexequ (tmp_ptr, "all") == 0) {
+			slave_update();
+			return DS_OK;
+		}
 
-      if (lexequ (tmp_ptr, "shadow") == 0) 
-      {
-	shadow_update();	
-	return DS_OK;
-      }
-      
-      if (lexequ (tmp_ptr, "root") == 0)
-      {
-	dn2 = NULLDN;
-      }
-      else 
-      {
-	if ((dn2 = str2dn (tmp_ptr)) == NULLDN)
-	  break;
-      }
+		if (lexequ (tmp_ptr, "shadow") == 0) {
+			shadow_update();
+			return DS_OK;
+		}
 
-      if (update_aux (dn2, dn2 == NULLDN) == OK)
-	return DS_OK;
-      break;
-    }
-  default:
-    break;
-  }
+		if (lexequ (tmp_ptr, "root") == 0) {
+			dn2 = NULLDN;
+		} else {
+			if ((dn2 = str2dn (tmp_ptr)) == NULLDN)
+				break;
+		}
 
-  error->dse_type = DSE_SERVICEERROR;
-  error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNWILLINGTOPERFORM;
-  return (DS_ERROR_REMOTE);
+		if (update_aux (dn2, dn2 == NULLDN) == OK)
+			return DS_OK;
+		break;
+	}
+	default:
+		break;
+	}
+
+	error->dse_type = DSE_SERVICEERROR;
+	error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNWILLINGTOPERFORM;
+	return (DS_ERROR_REMOTE);
 }
 #endif /* QUIPU_CONSOLE */

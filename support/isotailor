@@ -43,7 +43,7 @@
 #
 #		fatal		- fatal errors
 #
-#		exceptions	- exceptional events
+#		all	- exceptional events
 #
 #		notice		- informational notices
 #
@@ -59,21 +59,21 @@
 #
 ###############################################################################
 
-compatlevel:	exceptions
+compatlevel:	all
 compatfile:	-
-addrlevel:	exceptions
+addrlevel:	all
 addrfile:	-
-tsaplevel:	exceptions
+tsaplevel:	all
 tsapfile:	-
-ssaplevel:	exceptions
+ssaplevel:	all
 ssapfile:	-
-psaplevel:	exceptions
+psaplevel:	all
 psapfile:	-
-psap2level:	exceptions
+psap2level:	all
 psap2file:	-
-acsaplevel:	exceptions
+acsaplevel:	all
 acsapfile:	-
-rtsaplevel:	exceptions
+rtsaplevel:	all
 rtsapfile:	-
-rosaplevel:	exceptions
+rosaplevel:	all
 rosapfile:	-

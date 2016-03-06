@@ -1,7 +1,7 @@
 /* template.c - your comments here */
 
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mapatts.h,v 9.1 1992/08/25 15:50:26 isode Exp $
  *
  *
@@ -14,8 +14,8 @@
  *
  * Revision 8.0  91/07/17  13:18:44  isode
  * Release 7.0
- * 
- * 
+ *
+ *
  */
 
 /*
@@ -30,9 +30,9 @@
 
 
 struct mapnamelist {
-  char *tablename;
-  char *nicename;
-  struct mapnamelist *next;
+	char *tablename;
+	char *nicename;
+	struct mapnamelist *next;
 };
 
 #define NULLMNLIST (struct mapnamelist *)NULL

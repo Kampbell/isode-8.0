@@ -11,51 +11,46 @@
 extern void	exit();
 extern int	strcmp();
 
-main( argc, argv )
-	int			argc;
-	register char		**argv;
-	{
-	register DIR		*dirp;
-	register struct dirent	*dp;
+int 
+main (int argc, char **argv)
+{
+	DIR		*dirp;
+	struct dirent	*dp;
 	int			nerrs = 0;	/* total not found */
 
-	if ( (dirp = opendir( "." )) == NULL )
-		{
-		(void)fprintf( stderr, "Cannot open \".\" directory\n" );
+	if ( (dirp = opendir( "." )) == NULL ) {
+		fprintf( stderr, "Cannot open \".\" directory\n" );
 		exit( 1 );
-		}
+	}
 
 	if (argc == 1) {
-	    while (dp = readdir (dirp))
-		(void)printf ("ino=%d len=%d name=\"%s\"\n",
-			dp -> d_ino, strlen (dp -> d_name), dp -> d_name);
-	    (void) closedir (dirp);
-	    exit (0);
+		while (dp = readdir (dirp))
+			printf ("ino=%d len=%d name=\"%s\"\n",
+						  dp -> d_ino, strlen (dp -> d_name), dp -> d_name);
+		 closedir (dirp);
+		exit (0);
 	}
-	
-	while ( --argc > 0 )
-		{
+
+	while ( --argc > 0 ) {
 		++argv;
 
 		while ( (dp = readdir( dirp )) != NULL )
-			if ( strcmp( dp->d_name, *argv ) == 0 )
-				{
-				(void)printf( "\"%s\" found.\n", *argv );
+			if ( strcmp( dp->d_name, *argv ) == 0 ) {
+				printf( "\"%s\" found.\n", *argv );
 				break;
-				}
-
-		if ( dp == NULL )
-			{
-			(void)printf( "\"%s\" not found.\n", *argv );
-			++nerrs;
 			}
 
-		rewinddir( dirp );
+		if ( dp == NULL ) {
+			printf( "\"%s\" not found.\n", *argv );
+			++nerrs;
 		}
 
-	(void)closedir( dirp );
+		rewinddir( dirp );
+	}
+
+	closedir( dirp );
 	exit( nerrs );
 
 	return 0;
-	}
+}
 

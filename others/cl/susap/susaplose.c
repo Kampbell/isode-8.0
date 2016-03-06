@@ -22,108 +22,104 @@
 
 #ifndef	lint
 int	susaplose (va_alist)
-va_dcl
-{
-    int	    reason,
-    	    result;
-    struct SSAPindication *si;
-    va_list ap;
+va_dcl {
+	int	    reason,
+	result;
+	struct SSAPindication *si;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    si = va_arg (ap, struct SSAPindication *);
-    reason = va_arg (ap, int);
+	si = va_arg (ap, struct SSAPindication *);
+	reason = va_arg (ap, int);
 
-    result = _susaplose (si, reason, ap);
+	result = _susaplose (si, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return result;
+	return result;
 }
 #else
 /* VARARGS */
 
-int	susaplose (si, reason, what, fmt)
-struct SSAPindication *si;
-int	reason;
-char   *what,
-       *fmt;
+int 
+susaplose (struct SSAPindication *si, int reason, char *what, char *fmt)
 {
-    return susaplose (si, reason, what, fmt);
+	return susaplose (si, reason, what, fmt);
 }
 #endif
 
 /*  */
 
 #ifndef	lint
-static int  _susaplose (si, reason, ap)	/* what, fmt, args ... */
-register struct SSAPindication *si;
-int	reason;
-va_list	ap;
+static int 
+_susaplose (	/* what, fmt, args ... */
+    struct SSAPindication *si,
+    int reason,
+    va_list ap
+)
 {
-    register char  *bp;
-    char    buffer[BUFSIZ];
-    register struct SSAPabort *sa;
+	char  *bp;
+	char    buffer[BUFSIZ];
+	struct SSAPabort *sa;
 
-    if (si) {
-	bzero ((char *) si, sizeof *si);
-	si -> si_type = SI_ABORT;
-	sa = &si -> si_abort;
+	if (si) {
+		bzero ((char *) si, sizeof *si);
+		si -> si_type = SI_ABORT;
+		sa = &si -> si_abort;
 
-	asprintf (bp = buffer, ap);
-	bp += strlen (bp);
+		asprintf (bp = buffer, ap);
+		bp += strlen (bp);
 
-	sa -> sa_peer = 0;
-	sa -> sa_reason = reason;
-	copySSAPdata (buffer, bp - buffer, sa);
-    }
+		sa -> sa_peer = 0;
+		sa -> sa_reason = reason;
+		copySSAPdata (buffer, bp - buffer, sa);
+	}
 
-    return NOTOK;
+	return NOTOK;
 }
 #endif
 
 
 /*  */
 
-int	ts2suslose (si, event, td)
-register struct SSAPindication *si;
-char   *event;
-register struct TSAPdisconnect *td;
+int 
+ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td)
 {
-    int     reason;
-    char   *cp,
-            buffer[BUFSIZ];
+	int     reason;
+	char   *cp,
+		   buffer[BUFSIZ];
 
-    if ((ssaplevel & ISODELOG_EXCEPTIONS) && event)
-	xsprintf (NULLCP, NULLCP,
-		td -> td_cc > 0 ? "%s: %s\n\t%*.*s": "%s: %s", event,
-		TuErrString (td -> td_reason), td -> td_cc, td -> td_cc,
-		td -> td_data);
+	if ((ssaplevel & ISODELOG_EXCEPTIONS) && event)
+		xsprintf (NULLCP, NULLCP,
+				  td -> td_cc > 0 ? "%s: %s\n\t%*.*s": "%s: %s", event,
+				  TuErrString (td -> td_reason), td -> td_cc, td -> td_cc,
+				  td -> td_data);
 
-    cp = "";
-    switch (td -> td_reason) {
-	case DR_REMOTE: 
-	case DR_CONGEST: 
-	    reason = SC_CONGEST;
-	    break;
+	cp = "";
+	switch (td -> td_reason) {
+	case DR_REMOTE:
+	case DR_CONGEST:
+		reason = SC_CONGEST;
+		break;
 
-	case DR_SESSION: 
-	case DR_ADDRESS: 
-	    reason = SC_ADDRESS;
-	    break;
+	case DR_SESSION:
+	case DR_ADDRESS:
+		reason = SC_ADDRESS;
+		break;
 
 	case DR_REFUSED:
-	    reason = SC_REFUSED;
-	    break;
+		reason = SC_REFUSED;
+		break;
 
-	default: 
-	    (void) sprintf (cp = buffer, " (%s at transport)",
-		    TuErrString (td -> td_reason));
+	default:
+		 sprintf (cp = buffer, " (%s at transport)",
+						TuErrString (td -> td_reason));
 	case DR_NETWORK:
-	    reason = SC_TRANSPORT;
-	    break;
-    }
+		reason = SC_TRANSPORT;
+		break;
+	}
 
-    return susaplose (si, reason, NULLCP, "%s", *cp ? cp + 1 : cp);
+	return susaplose (si, reason, NULLCP, "%s", *cp ? cp + 1 : cp);
 }
 

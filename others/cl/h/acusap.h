@@ -2,7 +2,7 @@
 /* acusap.h - include file for A-UNIT-DATA association control users */
 /* header from acsap.h left intact */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/acsap.h,v 5.0 88/07/21 14:38:46 mrose Rel $
  *
  *
@@ -38,17 +38,17 @@
 
 
 struct AcuSAPstart {		/* A-UNIT-DATA.INDICATION */
-    int	    acs_sd;		/* association descriptor */
-    int	    acs_result;		/* result */
+	int	    acs_sd;		/* association descriptor */
+	int	    acs_result;		/* result */
 #define	ACS_ACCEPT	0	/*   Accepted */
 #define	ACS_REJECT	(-1)	/*   Release rejected */
-				/*   Rejected by responder: */
+	/*   Rejected by responder: */
 #define	ACS_PERMANENT	1	/*     Permanent */
 #define	ACS_TRANSIENT	2	/*     Transient */
 
-    int	    acs_diagnostic;	/* source-diagnostic */
-/*  needs updating for strictly connectionsless */
-				/* service-user */
+	int	    acs_diagnostic;	/* source-diagnostic */
+	/*  needs updating for strictly connectionsless */
+	/* service-user */
 #define	ACS_USER_NULL	3	/*   null */
 #define	ACS_USER_NOREASON 4	/*   no reason given */
 #define	ACS_CONTEXT	5	/*   application context name not supported*/
@@ -60,12 +60,12 @@ struct AcuSAPstart {		/* A-UNIT-DATA.INDICATION */
 #define	ACS_CALLED_AP_ID 11	/*   called AP invocation-ID not recognized */
 #define	ACS_CALLED_AE_QUAL 12	/*   called AE qualifier not recognized */
 #define	ACS_CALLED_AE_ID 13	/*   called AE invocation-ID not recognized */
-				/* service-provider */
+	/* service-provider */
 #define	ACS_PROV_NULL	14	/*   null */
 #define	ACS_PROV_NOREASON 15	/*   no reason given */
 #define	ACS_VERSION	16	/*   no common acse version */
 
-				/* begin UNOFFICIAL */
+	/* begin UNOFFICIAL */
 #define	ACS_ADDRESS	17	/* Address unknown */
 #define	ACS_REFUSED	18	/* Connect request refused on this network
 				   connection */
@@ -75,21 +75,21 @@ struct AcuSAPstart {		/* A-UNIT-DATA.INDICATION */
 #define	ACS_ABORTED	22	/* Peer aborted association */
 #define	ACS_PARAMETER	23	/* Invalid parameter */
 #define	ACS_OPERATION	24	/* Invalid operation */
-				/* end UNOFFICIAL */
+	/* end UNOFFICIAL */
 
 #define	ACS_FATAL(r)	((r) < ACS_PARAMETER)
 #define	ACS_OFFICIAL(r)	((r) < ACS_ADDRESS)
 
-    OID	    acs_context;	/* application context name */
+	OID	    acs_context;	/* application context name */
 
-    AEInfo acs_callingtitle;	/* info on calling application-entity */
-    AEInfo acs_calledtitle;	/* info on called application-entity */
+	AEInfo acs_callingtitle;	/* info on calling application-entity */
+	AEInfo acs_calledtitle;	/* info on called application-entity */
 
-    struct PuSAPstart acs_start;	/* info from P-CONNECT.INDICATION */
+	struct PuSAPstart acs_start;	/* info from P-CONNECT.INDICATION */
 
-				/* initial information from peer */
-    int	    acs_ninfo;		/*   number of elements */
-    PE	    acs_info[NACDATA];	/*   data */
+	/* initial information from peer */
+	int	    acs_ninfo;		/*   number of elements */
+	PE	    acs_info[NACDATA];	/*   data */
 };
 
 #define	ACSFREE(acs) { \
@@ -110,21 +110,21 @@ struct AcuSAPstart {		/* A-UNIT-DATA.INDICATION */
 
 
 struct AcSAPabort {		/* A-{U,P}-ABORT.INDICATION */
-    int	    aca_source;		/* abort source */
+	int	    aca_source;		/* abort source */
 #define	ACA_USER	0	/*   service-user */
 #define	ACA_PROVIDER	1	/*   service-provider */
 #define	ACA_LOCAL	2	/*   local ACPM (UNOFFICIAL) */
 
-    int	    aca_reason;		/* same codes as acc_result */
-    
-				/* abort information from peer */
-    int	    aca_ninfo;		/*   number of elements */
-    PE	    aca_info[NACDATA];	/*   data */
+	int	    aca_reason;		/* same codes as acc_result */
 
-				/* diagnostics from provider */
+	/* abort information from peer */
+	int	    aca_ninfo;		/*   number of elements */
+	PE	    aca_info[NACDATA];	/*   data */
+
+	/* diagnostics from provider */
 #define	ACA_SIZE	512
-    int	    aca_cc;		/*   length */
-    char    aca_data[ACA_SIZE];	/*   data */
+	int	    aca_cc;		/*   length */
+	char    aca_data[ACA_SIZE];	/*   data */
 };
 #define	ACAFREE(aca) \
 { \
@@ -139,11 +139,11 @@ struct AcSAPabort {		/* A-{U,P}-ABORT.INDICATION */
 
 
 struct AcSAPindication {
-    int	    aci_type;		/* union for compatability with ACSE */
+	int	    aci_type;		/* union for compatability with ACSE */
 #define	ACI_ABORT	0x01
-    union {
-	struct AcSAPabort aci_un_abort;
-    }	aci_un;
+	union {
+		struct AcSAPabort aci_un_abort;
+	}	aci_un;
 #define	aci_abort	aci_un.aci_un_abort
 };
 
@@ -152,7 +152,7 @@ struct AcSAPindication {
 
 extern char  *acsapversion;
 char   *AcuErrString ();        /* return AcuSAP error in string form*/
-int     AcFindPCI ();  		/* return PCI used by ACSE */ 
+int     AcFindPCI ();  		/* return PCI used by ACSE */
 
 int	AcUnitDataRequest ();	/* A-UNIT-DATA.REQUEST */
 int	AcUnitDataBind ();	/* set A-UNIT-DATA binding */

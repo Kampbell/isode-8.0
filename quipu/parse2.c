@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/parse2.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/RCS/parse2.c,v 9.0 1992/06/16 12:34:01 isode Rel $
  *
  *
@@ -46,26 +46,25 @@ int slave_edbs = 0;
 extern datum	turbo_header_key;
 #endif
 
-Avlnode *getentry_block (p_parent,fname)
-Entry p_parent;
-char * fname;
+Avlnode *
+getentry_block (Entry p_parent, char *fname)
 {
-extern char * parse_file;
-extern int parse_status;
-extern int parse_line;
-int   dtype;
-char *version;
-Avlnode	*tree;
-Avlnode	*get_entries_aux();
-extern int errno;
-time_t cache_age;
+	extern char * parse_file;
+	extern int parse_status;
+	extern int parse_line;
+	int   dtype;
+	char *version;
+	Avlnode	*tree;
+	Avlnode	*get_entries_aux();
+	
+	time_t cache_age;
 
 #ifdef TURBO_DISK
-GDBM_FILE	file;
-char		gfname[1024];
-int		save_heap;
+	GDBM_FILE	file;
+	char		gfname[1024];
+	int		save_heap;
 #else
-FILE 		*file;
+	FILE 		*file;
 #endif
 
 #ifdef TURBO_DISK
@@ -102,11 +101,11 @@ FILE 		*file;
 #ifdef TURBO_DISK
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		(void) gdbm_close (file);
+		 gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
-		(void) fclose (file);
+		 fclose (file);
 		return (NULLAVL);
 #endif
 	}
@@ -126,17 +125,17 @@ FILE 		*file;
 		LLOG(log_dsap, LLOG_NOTICE,("Header OK, but null EDB File %s.",fname));
 		p_parent->e_leaf = FALSE ;
 		p_parent->e_allchildrenpresent = 2 ;
-                master_edbs++;
+		master_edbs++;
 #ifdef TURBO_DISK
 		p_parent->e_children = NULLAVL ;
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		(void) gdbm_close (file);
+		 gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
 		p_parent->e_children = NULLAVL;
-		(void) fclose (file);
+		 fclose (file);
 		return(NULLAVL) ;
 #endif
 	}
@@ -149,20 +148,20 @@ FILE 		*file;
 #ifdef TURBO_DISK
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		(void) gdbm_close (file);
+		 gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
-		(void) fclose (file);
+		 fclose (file);
 		return(NULLAVL);
 #endif
 	}
 
-        if ( p_parent != NULLENTRY ) {
-       	        p_parent->e_edbversion = version;
-               	if ((dtype == E_DATA_MASTER) || (dtype == E_TYPE_SLAVE)) 
-                       	p_parent->e_allchildrenpresent = 1; 	/* at least */
-       	}
+	if ( p_parent != NULLENTRY ) {
+		p_parent->e_edbversion = version;
+		if ((dtype == E_DATA_MASTER) || (dtype == E_TYPE_SLAVE))
+			p_parent->e_allchildrenpresent = 1; 	/* at least */
+	}
 
 	parse_file = NULLCP;
 
@@ -174,11 +173,11 @@ FILE 		*file;
 #ifdef TURBO_DISK
 	save_heap = mem_heap;
 	GENERAL_HEAP;
-	(void) gdbm_close (file);
+	 gdbm_close (file);
 	mem_heap = save_heap;
 	return(tree);
 #else
-	(void) fclose (file);
+	 fclose (file);
 	return (tree);
 #endif
 }
@@ -253,12 +252,12 @@ FILE * file;
 int * typeptr;
 char ** versionptr;
 {
-char * ptr;
-static CMD_TABLE cmd_header [] = {
-	"MASTER",	E_DATA_MASTER,
-	"SLAVE",	E_TYPE_SLAVE,
-	"CACHE",	E_TYPE_CACHE_FROM_MASTER,
-	0,		-1,
+	char * ptr;
+	static CMD_TABLE cmd_header [] = {
+		"MASTER",	E_DATA_MASTER,
+		"SLAVE",	E_TYPE_SLAVE,
+		"CACHE",	E_TYPE_CACHE_FROM_MASTER,
+		0,		-1,
 	};
 
 	if ((ptr = getline (file)) == NULLCP) {
@@ -276,7 +275,7 @@ static CMD_TABLE cmd_header [] = {
 		return (NOTOK);
 	}
 	*versionptr = strdup (ptr);
-	
+
 	return (OK);
 }
 
@@ -294,15 +293,15 @@ char * version;
 int dtype;
 time_t cache_age;
 {
-register Entry eptr = NULLENTRY;
-Avlnode	*tree = NULLAVL;
-int	entry_cmp();
+	Entry eptr = NULLENTRY;
+	Avlnode	*tree = NULLAVL;
+	int	entry_cmp();
 #ifndef TURBO_INDEX
-register Entry trail;
+	Entry trail;
 #endif
-Entry find_sibling();
+	Entry find_sibling();
 #ifdef TURBO_DISK
-extern int dbmeof;
+	extern int dbmeof;
 #endif
 
 #ifdef TURBO_DISK
@@ -313,17 +312,17 @@ extern int dbmeof;
 #endif
 		if ((eptr = get_entry_aux (file,parent,dtype)) == NULLENTRY)
 			continue;
-		
+
 		if (dtype == E_TYPE_CACHE_FROM_MASTER)
 			eptr->e_age = cache_age;
-			
+
 		DATABASE_HEAP;
 
 		if (avl_insert(&tree, (caddr_t) eptr, entry_cmp, avl_dup_error)
-		    == NOTOK) {
-                        pslog (log_dsap,LLOG_EXCEPTIONS,"Duplicate entry for",
-                            rdn_print,(caddr_t)eptr->e_name);
-                        parse_error ("Non Unique RDN",NULLCP);
+				== NOTOK) {
+			pslog (log_dsap,LLOG_EXCEPTIONS,"Duplicate entry for",
+				   rdn_print,(caddr_t)eptr->e_name);
+			parse_error ("Non Unique RDN",NULLCP);
 		}
 
 #ifdef TURBO_INDEX
@@ -345,8 +344,8 @@ Entry parent;
 char * version;
 int dtype;
 {
-extern int parse_status;
-extern int parse_line;
+	extern int parse_status;
+	extern int parse_line;
 
 	parse_status = 0;
 	parse_line   = 0;

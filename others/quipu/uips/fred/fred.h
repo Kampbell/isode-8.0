@@ -1,6 +1,6 @@
 /* fred.h - definitions for fred */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/fred.h,v 9.0 1992/06/16 12:44:30 isode Rel $
  *
  *
@@ -85,35 +85,35 @@ extern FILE    *errfp;
 /*    DISPATCH */
 
 struct dispatch {
-    char   *ds_name;
-    IFP	    ds_fnx;
+	char   *ds_name;
+	IFP	    ds_fnx;
 
-    int	    ds_flags;
+	int	    ds_flags;
 #define	DS_NULL	0x00
 #define	DS_USER	0x01
 #define	DS_SYOK	0x02
 
-    char   *ds_help;
+	char   *ds_help;
 };
 
 /*    MISCELLANY */
 
 struct area_guide {
-    int	    ag_record;
+	int	    ag_record;
 #define	W_ORGANIZATION	0x01
 #define	W_UNIT		0x02
 #define	W_LOCALITY	0x03
 #define	W_PERSON	0x04
 #define	W_DSA		0x05
 #define	W_ROLE		0x06
-    char   *ag_key;
+	char   *ag_key;
 
-    char   *ag_search;
+	char   *ag_search;
 
-    char   *ag_class;
-    char   *ag_rdn;
+	char   *ag_class;
+	char   *ag_rdn;
 
-    char   *ag_area;
+	char   *ag_area;
 };
 
 extern int  area_quantum;

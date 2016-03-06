@@ -1,6 +1,6 @@
 /* sym.h */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/pepsy/RCS/sym.h,v 9.0 1992/06/16 12:24:03 isode Rel $
  *
  *
@@ -22,15 +22,15 @@
 
 
 typedef struct symlist {
-    char   *sy_encpref;
-    char   *sy_decpref;
-    char   *sy_prfpref;
-    char   *sy_module;
-    char   *sy_name;
+	char   *sy_encpref;
+	char   *sy_decpref;
+	char   *sy_prfpref;
+	char   *sy_module;
+	char   *sy_name;
 
-    YP	    sy_type;
+	YP	    sy_type;
 
-    struct symlist *sy_next;
+	struct symlist *sy_next;
 }		symlist, *SY;
 #define	NULLSY	((SY) 0)
 

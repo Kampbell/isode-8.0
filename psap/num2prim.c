@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/num2prim.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/num2prim.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -32,32 +32,29 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/num2prim.c,v 9.0 1992/
 
 /*  */
 
-PE	num2prim (i, class, id)
-register integer i;
-PElementClass	class;
-PElementID	id;
+PE 
+num2prim (integer i, int class, int id)
 {
-    register integer mask,
-                    sign,
-                    n;
-    register PElementData dp;
-    register PE	    pe;
+	static const integer MASK = 0x1ff;
+	integer mask, sign, n;
+	PElementData dp;
+	PE	    pe;
 
-    if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
-	return NULLPE;
+	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
+		return NULLPE;
 
-    sign = i >= 0 ? i : i ^ (-1);
-    mask = 0x1ff << (((n = sizeof i) - 1) * 8 - 1);
-    while (n > 1 && (sign & mask) == 0)
-	mask >>= 8, n--;
+	sign = i >= 0 ? i : i ^ (-1);
+	mask = MASK << (((n = sizeof i) - 1) * 8 - 1);
+	while (n > 1 && (sign & mask) == 0)
+		mask >>= 8, n--;
 
-    if ((pe -> pe_prim = PEDalloc (n)) == NULLPED) {
-	pe_free (pe);
-	return NULLPE;
-    }
+	if ((pe -> pe_prim = PEDalloc (n)) == NULLPED) {
+		pe_free (pe);
+		return NULLPE;
+	}
 
-    for (dp = pe -> pe_prim + (pe -> pe_len = n); n-- > 0; i >>= 8)
-	*--dp = i & 0xff;
+	for (dp = pe -> pe_prim + (pe -> pe_len = n); n-- > 0; i >>= 8)
+		*--dp = i & 0xff;
 
-    return pe;
+	return pe;
 }

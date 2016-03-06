@@ -5,12 +5,11 @@
 
 #include "types.h"
 
-typedef enum
-{
-  EXTERNAL_AUTH,
-  STRONG_AUTH,
-  PROTECTED_AUTH,
-  SIMPLE_AUTH
+typedef enum {
+	EXTERNAL_AUTH,
+	STRONG_AUTH,
+	PROTECTED_AUTH,
+	SIMPLE_AUTH
 } auth_bind_type;
 
 QBool bind_to_ds();

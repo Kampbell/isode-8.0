@@ -35,8 +35,8 @@ extern  char    *dsatailfile;
 extern  LLog    *log_dsap;
 
 
-dsa_tai_init(name)
-char    *name;
+int 
+dsa_tai_init (char *name)
 {
 	FILE    *fp;
 	char    buf[BUFSIZ];
@@ -44,7 +44,7 @@ char    *name;
 
 	isodetailor (name,0);
 
-	if( (fp = fopen(cp = isodefile(dsatailfile, 0), "r")) == (FILE *)NULL){
+	if( (fp = fopen(cp = isodefile(dsatailfile, 0), "r")) == (FILE *)NULL) {
 		LLOG (log_dsap,LLOG_FATAL, ("Cannot open tailor file '%s'", cp));
 		fatal (-46, "Cannot open quiputailor");
 	}
@@ -55,14 +55,14 @@ char    *name;
 			if (dsa_tai_string (buf) == NOTOK)
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("tai_string failed %s",buf));
 
-	(void) fclose(fp);
+	 fclose(fp);
 	isodexport(NULLCP);
 	return OK;
 }
 
 
-dsa_tai_string (str)
-char * str;
+int 
+dsa_tai_string (char *str)
 {
 	char    *args[MAXTAIARGS];
 	char    *p;

@@ -69,6 +69,7 @@ $(BINDIR)rosy:	xrosy
 		-@echo ""
 
 rosy:		xrosy
+		cp xrosy rosy
 
 xrosy:		rosyvrsn.o $(PEPYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ rosy.o yacc.o pepy_misc.o \
@@ -283,8 +284,8 @@ manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 # clean
 ################################################################
 
-clean:;		rm -f *.o *.a x* z* _* core rosy-defs.h yacc.y yacc.c lex.l \
-			lex.c p-ry*.c rosyvrsn.c
+clean:;		rm -f *.o *.a x* z* _* core* rosy-defs.h yacc.y yacc.c lex.l \
+			lex.c p-ry*.c rosyvrsn.c rosy
 
 grind:;		iprint Makefile
 		tgrind -lc rosy-defs.h rosy.c rosyvrsn.c

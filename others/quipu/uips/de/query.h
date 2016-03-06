@@ -1,6 +1,6 @@
 /* query.h - main information structure */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/query.h,v 9.0 1992/06/16 12:45:59 isode Rel $
  *
  *
@@ -27,11 +27,11 @@
 #include "quipu/util.h"
 
 struct query {
-        char defvalue [LINESIZE];
-        char entered [LINESIZE];
-        char displayed [LINESIZE];
-        struct namelist * lp;
-        int listlen;
+	char defvalue [LINESIZE];
+	char entered [LINESIZE];
+	char displayed [LINESIZE];
+	struct namelist * lp;
+	int listlen;
 };
 
 #endif _query_h

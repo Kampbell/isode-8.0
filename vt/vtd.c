@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtd.c,v 9.0 1992/06/16 12:41:08 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/vtd.c,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *
@@ -122,7 +122,6 @@ struct passwd *pwd;
 int	pty, net;
 int	inter;
 extern	char **environ;
-extern	int errno;
 char	line[] = "/dev/ptyp0";
 char	*envinit[] = { "TERM=network", 0 };
 SFD	cleanup();
@@ -130,16 +129,15 @@ static int do_cleaning = 0;
 
 char   *myname;
 LLog    _vt_log = {
-    "vt.log", NULLCP, NULLCP,
-    LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE, LLOG_FATAL, -1,
-    LLOGCLS | LLOGCRT | LLOGZER, NOTOK
- 
+	"vt.log", NULLCP, NULLCP,
+	LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE, LLOG_FATAL, -1,
+	LLOGCLS | LLOGCRT | LLOGZER, NOTOK
+
 };
 LLog   *vt_log = &_vt_log;
 
-main(argc, argv)
-	int	argc;
-	char *argv[];
+int 
+main (int argc, char *argv[])
 {
 	int f = 0;
 	char *cp = line;
@@ -150,42 +148,37 @@ main(argc, argv)
 	struct sgttyb b;
 #endif
 
-    if (myname = rindex (*argv, '/'))
-	myname++;
-    if (myname == NULL || *myname == NULL)
-	myname = *argv;
+	if (myname = rindex (*argv, '/'))
+		myname++;
+	if (myname == NULL || *myname == NULL)
+		myname = *argv;
 
-    isodetailor (myname, 0);
-    if (debug = isatty (fileno (stderr)))
-	ll_dbinit (vt_log, myname);
-    else
-	ll_hdinit (vt_log, myname);
+	isodetailor (myname, 0);
+	if (debug = isatty (fileno (stderr)))
+		ll_dbinit (vt_log, myname);
+	else
+		ll_hdinit (vt_log, myname);
 
-	for(i=1; i<(argc - 2); i++)
-	{
-		if (!strcmp(argv[i], "-d"))
-		{
+	for(i=1; i<(argc - 2); i++) {
+		if (!strcmp(argv[i], "-d")) {
 			if (!isdigit(argv[++i][0])
-			        || sscanf(argv[i], "%d", &debug) != 1)
-			    adios (NULLCP, "usage: %s -d 0-7", myname);
-						advise(LLOG_DEBUG,NULLCP, "setting debug level to %d", debug);
+					|| sscanf(argv[i], "%d", &debug) != 1)
+				adios (NULLCP, "usage: %s -d 0-7", myname);
+			advise(LLOG_DEBUG,NULLCP, "setting debug level to %d", debug);
 			if (debug)
-			    ll_dbinit (vt_log, myname);
-		}
-		else if(!strcmp(argv[i], "-F"))
-		{
+				ll_dbinit (vt_log, myname);
+		} else if(!strcmp(argv[i], "-F")) {
 			if ((logname = argv[++i]) == NULL || *logname == '-')
-			    adios (NULLCP, "usage: %s -F logfile", myname);
+				adios (NULLCP, "usage: %s -F logfile", myname);
 			vt_log -> ll_file = logname;
-			(void) ll_close (vt_log);
+			 ll_close (vt_log);
 			advise(LLOG_DEBUG,NULLCP, "logging to %s",logname);
-		}
-		else
-		    adios(NULLCP, "usage: %s [-F logfile] [-d N]",
-			  myname);
+		} else
+			adios(NULLCP, "usage: %s [-F logfile] [-d N]",
+				  myname);
 	}
 
-    advise (LLOG_NOTICE,NULLCP,  "starting");
+	advise (LLOG_NOTICE,NULLCP,  "starting");
 
 	acc = &accs;
 	acr = &acrs;
@@ -196,8 +189,7 @@ main(argc, argv)
 		connected = TRUE;
 		if( !strcmp(vtp_profile.profile_name,"default") )
 			telnet_profile = 0;
-	}
-	else
+	} else
 		exit(1);
 #ifdef TERMIOS
 	na_image = 0;
@@ -209,21 +201,21 @@ main(argc, argv)
 		/*NOTREACHED*/
 	}
 	if (i) {
-		 vtd(sd, p);
-		 /*NOTREACHED*/
+		vtd(sd, p);
+		/*NOTREACHED*/
 	}
 #else
-/*
- * Get a pty, scan input lines.
- */
-        for (j = 'p' ; j <= 't'; j++) {
-	    cp[strlen ("/dev/pty")] = j;
-	    for (i = 0; i < 16; i++) {
-		cp[strlen("/dev/ptyp")] = "0123456789abcdef"[i];
-		p = open(cp, 2);
-		if (p >= 0)
-		    goto gotpty;
-	    }
+	/*
+	 * Get a pty, scan input lines.
+	 */
+	for (j = 'p' ; j <= 't'; j++) {
+		cp[strlen ("/dev/pty")] = j;
+		for (i = 0; i < 16; i++) {
+			cp[strlen("/dev/ptyp")] = "0123456789abcdef"[i];
+			p = open(cp, 2);
+			if (p >= 0)
+				goto gotpty;
+		}
 	}
 	perror("All network ports in use");
 	vrelreq();
@@ -236,7 +228,7 @@ gotpty:
 		if (ioctl(t, TIOCNOTTY, 0) == -1) {
 			perror("ioctl (TIOCNOTTY)");
 		}
-		(void)close(t);
+		close(t);
 	}
 	t = open(cp, 2);
 	if (t < 0)
@@ -268,9 +260,9 @@ gotpty:
 	if ((i = fork()) < 0)
 		fatalperror(f, "fork", errno);
 	if (i)
-		 vtd(sd, p);
-	(void)close(sd);
-	(void)close(p);
+		vtd(sd, p);
+	close(sd);
+	close(p);
 	if (dup2(t, 0) == -1) {
 		perror("dup2");
 		adios(NULLCP, "dup2 failed");
@@ -283,7 +275,7 @@ gotpty:
 		perror("dup2");
 		adios(NULLCP, "dup2 failed");
 	}
-	(void)close(t);
+	close(t);
 #endif
 	environ = envinit;
 
@@ -292,26 +284,23 @@ gotpty:
 	/*NOTREACHED*/
 }
 
-fatal(f, msg)
-	int f;
-	char *msg;
+int 
+fatal (int f, char *msg)
 {
 	char buf[BUFSIZ];
 
-	(void) sprintf(buf, "%s: %s.\n", myname, msg);
-	(void) write(f, buf, strlen(buf));
+	 sprintf(buf, "%s: %s.\n", myname, msg);
+	 write(f, buf, strlen(buf));
 	adios (NULLCP, msg);
 }
 
-fatalperror(f, msg, errnum)
-	int f;
-	char *msg;
-	int errnum;
+int 
+fatalperror (int f, char *msg, int errnum)
 {
 	char buf[BUFSIZ];
 	extern char *sys_errlist[];
 
-	(void) sprintf(buf, "%s: %s", msg, sys_errlist[errnum]);
+	 sprintf(buf, "%s: %s", msg, sys_errlist[errnum]);
 	fatal(f, buf);
 }
 
@@ -319,8 +308,8 @@ fatalperror(f, msg, errnum)
  * Main loop.  Select from pty and network.
  */
 
-vtd(f, p)
-{
+int 
+vtd (int f, int p) {
 	int on = 1;
 	int	nfds, result;
 
@@ -330,7 +319,7 @@ vtd(f, p)
 
 #ifdef SVR4
 	if ((on = fcntl (p, F_GETFL, 0)) == -1) {
-		perror ("fcntl");	
+		perror ("fcntl");
 		adios (NULLCP, "fcntl failed");
 	}
 #ifndef O_NONBLOCK
@@ -347,16 +336,16 @@ vtd(f, p)
 	}
 #endif
 #ifdef	SIGTSTP
-	(void) signal(SIGTSTP, SIG_IGN);
+	 signal(SIGTSTP, SIG_IGN);
 #endif
 #ifdef	SIGCHLD
-	(void) signal(SIGCHLD, cleanup);
+	 signal(SIGCHLD, cleanup);
 #endif
 	/*
 	 * Show banner that getty never gave.
 	 */
 	myhostname = PLocalHostName ();
-	(void) sprintf(nfrontp, BANNER, myhostname, "");
+	 sprintf(nfrontp, BANNER, myhostname, "");
 	nfrontp += strlen(nfrontp);
 
 #ifdef TERMIOS
@@ -394,8 +383,8 @@ vtd(f, p)
 
 
 	for (;;) {
-	    	fd_set    ibits, obits;
-		register int c;
+		fd_set    ibits, obits;
+		int c;
 
 		FD_ZERO (&ibits);
 		FD_ZERO (&obits);
@@ -404,36 +393,33 @@ vtd(f, p)
 		 * stuff in the corresponding output buffer
 		 */
 		if (nfrontp - nbackp) {
-		    FD_SET (f, &obits);
-		}
-		else {
-		    FD_SET (p, &ibits);
+			FD_SET (f, &obits);
+		} else {
+			FD_SET (p, &ibits);
 		}
 		if (pfrontp - pbackp) {
-		    FD_SET (p, &obits);
-		}
-		else {
-		    FD_SET (f, &ibits);
+			FD_SET (p, &obits);
+		} else {
+			FD_SET (f, &ibits);
 		}
 		if (FD_ISSET (f, &ibits) && data_pending()) {
-		        FD_CLR (f, &ibits);
+			FD_CLR (f, &ibits);
 
 			result = xselect(nfds, &ibits, &obits,
-					 (fd_set *)NULL, OK);
+							 (fd_set *)NULL, OK);
 
 			if (result < 0)
 				adios("failed", "xselect");
 			FD_SET (f, &ibits);
-		}
-		else {
+		} else {
 			if (xselect(nfds, &ibits, &obits, (fd_set *)NULL,
-				    NOTOK) == -1)
-			    adios("failed", "xselect");
+						NOTOK) == -1)
+				adios("failed", "xselect");
 		}
 		if (!FD_ISSET (f, &ibits)
-		        && !FD_ISSET (p, &ibits)
-		        && !FD_ISSET (f, &obits)
-		        && !FD_ISSET (p, &obits)) {
+				&& !FD_ISSET (p, &ibits)
+				&& !FD_ISSET (f, &obits)
+				&& !FD_ISSET (p, &obits)) {
 			sleep(5);
 			continue;
 		}
@@ -442,7 +428,7 @@ vtd(f, p)
 		 * Something to read from the network...
 		 */
 		if (FD_ISSET (f, &ibits)) {
-			while ((c = getch()) > 0) 
+			while ((c = getch()) > 0)
 				*pfrontp++ = c;
 		}
 		if (c == E_EOF) {
@@ -460,8 +446,8 @@ vtd(f, p)
 			else {
 				if (pcc <= 0) {
 					if (debug)
-					    advise(LLOG_EXCEPTIONS,NULLCP,
-						   "problem reading from pty");
+						advise(LLOG_EXCEPTIONS,NULLCP,
+							   "problem reading from pty");
 					break;
 				}
 			}
@@ -484,8 +470,7 @@ vtd(f, p)
  * If it is in raw mode, just write NULL;
  * otherwise, write intr char.
  */
-interrupt()
-{
+interrupt() {
 #ifdef TERMIOS
 	struct termios term;
 
@@ -512,13 +497,13 @@ interrupt()
 		return;
 	}
 	*pfrontp++ = ioctl(pty, TIOCGETC, (char*)&tchars) < 0 ?
-		'\177' : tchars.t_intrc;
+				 '\177' : tchars.t_intrc;
 #endif
 }
 
-netflush()
-{
-	register char *cp;
+int 
+netflush (void) {
+	char *cp;
 	int n;
 	int i, j;
 	int nl_flag;	/*Records if Newline is included in current PDU to
@@ -530,127 +515,105 @@ netflush()
 	if ((n = nfrontp - nbackp) > 0) {
 
 		if (debug) {
-			(void) ll_log (vt_log, LLOG_DEBUG, NULLCP,
-				("writing to the net"));
-			(void) ll_printf (vt_log, "<<");
+			 ll_log (vt_log, LLOG_DEBUG, NULLCP,
+						   ("writing to the net"));
+			 ll_printf (vt_log, "<<");
 			for(i=0; i<(nfrontp-nbackp); i++)
-			    (void)ll_printf (vt_log, "%02x ",*(nbackp+i));
-			(void)ll_printf (vt_log,  ">>\n");
-			(void)ll_sync (vt_log);
+				ll_printf (vt_log, "%02x ",*(nbackp+i));
+			ll_printf (vt_log,  ">>\n");
+			ll_sync (vt_log);
 		}
-		if(transparent)
-		{
-			(void)vt_text(nbackp,n);
+		if(transparent) {
+			vt_text(nbackp,n);
 			vtsend();
 			cp = nbackp;
-			for(i=0; i<n; i++)
-			{
+			for(i=0; i<n; i++) {
 				if((*cp == '\r') ||
-				   (*cp == '\n'))
-				{
+						(*cp == '\n')) {
 					vdelreq(FALSE);
 					break;
 				}
 				++cp;
 			}
 			nbackp += n;
-		}
-		else
-		{
-		    cp = nbackp;
-		    for(i=0,j=0; i<n; i++)
-		    {
-			if(*cp == '\r')
-			{
-			    if(rflag) (void)vt_text(crp,1);
-				/*Previous char was CR so put one in NDQ*/
-			    if(j) 
-					(void)vt_text(nbackp,j);
-			    nbackp += (j+1); /*Skip over current CR*/
-			    cp = nbackp;
-			    j = 0;
-			    if(i == (n-1) ) (void)vt_text(crp,1);
-				/*If CR is last char in buffer, send it*/
-			    else rflag = 1;
-				/*If not last char in buffer, read next one*/
-			    continue;
-			}
-			else if(rflag) /*If previous character was CR*/
-			{
-			    if(*cp == '\n') /*Got CR-LF -- map to Next X-Array*/
-			    {
-				nbackp += (j+1);
-				cp = nbackp;
-				rflag = 0;
-				vt_newline();
-				++nl_flag;
-				continue;
-			    }
-			    else /*Preceeding char was CR but not followed by
+		} else {
+			cp = nbackp;
+			for(i=0,j=0; i<n; i++) {
+				if(*cp == '\r') {
+					if(rflag) vt_text(crp,1);
+					/*Previous char was CR so put one in NDQ*/
+					if(j)
+						vt_text(nbackp,j);
+					nbackp += (j+1); /*Skip over current CR*/
+					cp = nbackp;
+					j = 0;
+					if(i == (n-1) ) vt_text(crp,1);
+					/*If CR is last char in buffer, send it*/
+					else rflag = 1;
+					/*If not last char in buffer, read next one*/
+					continue;
+				} else if(rflag) { /*If previous character was CR*/
+					if(*cp == '\n') { /*Got CR-LF -- map to Next X-Array*/
+						nbackp += (j+1);
+						cp = nbackp;
+						rflag = 0;
+						vt_newline();
+						++nl_flag;
+						continue;
+					} else /*Preceeding char was CR but not followed by
 				   LF.  Put CR in buffer*/
-			        (void) vt_text(crp,1);
-			    rflag = 0;
-			} 
-			if(telnet_profile)
-			{
-			    rflag = 0;
+						 vt_text(crp,1);
+					rflag = 0;
+				}
+				if(telnet_profile) {
+					rflag = 0;
 #ifdef MAP_BACKSPACE
-			    if(*cp == 0x08) /*If believed to be erase*/
-			    {
-				    if(j) 
-						(void)vt_text(nbackp,j);
-				    nbackp += (j+1);
-				    cp = nbackp;
-				    j = 0;
-			 	    vt_char_erase();
-				    continue;
-			    }
+					if(*cp == 0x08) { /*If believed to be erase*/
+						if(j)
+							vt_text(nbackp,j);
+						nbackp += (j+1);
+						cp = nbackp;
+						j = 0;
+						vt_char_erase();
+						continue;
+					}
 #endif
-			    if(!vtp_profile.arg_val.tel_arg_list.full_ascii)
-					/*If ASCII GO, dump ctrl chars*/
-			    {
-				if((*cp < 0x20) || (*cp > 0x7e))
-				{
-				    if(j) 
-						(void)vt_text(nbackp,j);
-				    nbackp += (j+1);
-				    cp = nbackp;
-				    j = 0;
+					if(!vtp_profile.arg_val.tel_arg_list.full_ascii)
+						/*If ASCII GO, dump ctrl chars*/
+					{
+						if((*cp < 0x20) || (*cp > 0x7e)) {
+							if(j)
+								vt_text(nbackp,j);
+							nbackp += (j+1);
+							cp = nbackp;
+							j = 0;
+						} else {
+							++j;
+							++cp;
+						}
+					} else {
+						++j;
+						++cp;
+					}
+				} else {	/*Else Default Profile*/
+					if((*cp < 0x20) || (*cp > 0x7e)) {
+						if(j)
+							vt_text(nbackp,j);
+						nbackp += (j+1);
+						cp = nbackp;
+						j = 0;
+					} else {
+						++j;
+						++cp;
+					}
 				}
-				else
-				{
-				    ++j; ++cp;
-				}
-			    }
-			    else 
-			    {
-				++j;
-				++cp;
-			    }
-			}
-			else		/*Else Default Profile*/
-			{
-			    if((*cp < 0x20) || (*cp > 0x7e))
-			    {
-				if(j) 
-					(void)vt_text(nbackp,j);
-				nbackp += (j+1);
-				cp = nbackp;
-				j = 0;
-			    }
-			    else 
-			    {
-				++j;
-				++cp;
-			    }
-			}
-		    }		/*End for loop*/
-		    if(j) 
-				(void)vt_text(nbackp,j); /*Load anything left if CR or LF
+			}		/*End for loop*/
+			if(j)
+				vt_text(nbackp,j); /*Load anything left if CR or LF
 						wasn't last char in buffer*/
-		    nbackp += j;
-		    vtsend();	/*Send the whole NDQ*/
-		    if(nl_flag && telnet_profile) vdelreq(FALSE);
+			nbackp += j;
+			vtsend();	/*Send the whole NDQ*/
+			if(nl_flag && telnet_profile) vdelreq(FALSE);
 		}
 	}
 	if (n < 0) {
@@ -664,8 +627,8 @@ netflush()
 		nbackp = nfrontp = netobuf;
 }
 
-SFD	cleanup()
-{
+SFD 
+cleanup (void) {
 	sleep(1);
 	while(getch() > 0);	/*Clean out unread VT-DATA PDU's still held
 				  in network.  Kludge to overcome deficiency
@@ -677,7 +640,7 @@ SFD	cleanup()
 #endif
 
 	vrelreq();
-	(void)kill(0, SIGKILL);
+	kill(0, SIGKILL);
 	exit(1);
 }
 
@@ -692,9 +655,8 @@ char	utmp[] = "/etc/utmp";
 
 long	lseek ();
 
-rmut()
-{
-	register f;
+rmut() {
+	f;
 	int found = 0;
 
 	f = open(utmp, 2);
@@ -702,141 +664,135 @@ rmut()
 		while(read(f, (char *)&wtmp, sizeof (wtmp)) == sizeof (wtmp)) {
 			if (SCMPN(wtmp.ut_line, line+5) || wtmp.ut_name[0]==0)
 				continue;
-			(void)lseek(f, -(long)sizeof (wtmp), 1);
-			(void)SCPYN(wtmp.ut_name, "");
+			lseek(f, -(long)sizeof (wtmp), 1);
+			SCPYN(wtmp.ut_name, "");
 #if	!defined(SYS5) && !defined(bsd43_ut_host)
-			(void)SCPYN(wtmp.ut_host, "");
+			SCPYN(wtmp.ut_host, "");
 #endif
-			(void)time(&wtmp.ut_time);
-			(void) write(f, (char *)&wtmp, sizeof (wtmp));
+			time(&wtmp.ut_time);
+			 write(f, (char *)&wtmp, sizeof (wtmp));
 			found++;
 		}
-		(void)close(f);
+		close(f);
 	}
 	if (found) {
 		f = open(wtmpf, 1);
 		if (f >= 0) {
-			(void)SCPYN(wtmp.ut_line, line+5);
-			(void)SCPYN(wtmp.ut_name, "");
+			SCPYN(wtmp.ut_line, line+5);
+			SCPYN(wtmp.ut_name, "");
 #if	!defined(SYS5) && !defined(bsd43_ut_host)
-			(void)SCPYN(wtmp.ut_host, "");
+			SCPYN(wtmp.ut_host, "");
 #endif
-			(void)time(&wtmp.ut_time);
-			(void)lseek(f, (long)0, 2);
-			(void) write(f, (char *)&wtmp, sizeof (wtmp));
-			(void)close(f);
+			time(&wtmp.ut_time);
+			lseek(f, (long)0, 2);
+			 write(f, (char *)&wtmp, sizeof (wtmp));
+			close(f);
 		}
 	}
-	(void)chmod(line, 0666);
-	(void)chown(line, 0, 0);
+	chmod(line, 0666);
+	chown(line, 0, 0);
 	line[strlen("/dev/")] = 'p';
-	(void)chmod(line, 0666);
-	(void)chown(line, 0, 0);
+	chmod(line, 0666);
+	chown(line, 0, 0);
 }
 
 #else
-rmut()
-{
+int 
+rmut (void) {
 	char *p;
 
 	p = line + sizeof(_PATH_DEV) - 1;
 	if (logout(p))
 		logwtmp(p, "", "");
-	(void)chmod(line, DEFFILEMODE);
-	(void)chown(line, 0, 0);
+	chmod(line, DEFFILEMODE);
+	chown(line, 0, 0);
 	*p = 'p';
-	(void)chmod(line, DEFFILEMODE);
-	(void)chown(line, 0, 0);
+	chmod(line, DEFFILEMODE);
+	chown(line, 0, 0);
 }
 #endif
 
-bye()
-{
-    if(do_cleaning) {
-	rmut();
-	(void)kill(0, SIGKILL);
-    }
-    exit(0);
+int 
+bye (void) {
+	if(do_cleaning) {
+		rmut();
+		kill(0, SIGKILL);
+	}
+	exit(0);
 }
-	
-flushbufs()
-{
+
+int 
+flushbufs (void) {
 	pcc = 0;
 	pfrontp = pbackp = ptyobuf;
 	nfrontp = nbackp = netobuf;
 	while (getch() > 0)
-	    continue;
+		continue;
 }
 
 /*    ERRORS */
 
-void	finalbye ()
-{
-    bye ();
+void 
+finalbye (void) {
+	bye ();
 }
 
 
 #ifndef	lint
 void	adios (va_alist)
-va_dcl
-{
-    va_list ap;
+va_dcl {
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    (void) _ll_log (vt_log, LLOG_FATAL, ap);
+	 _ll_log (vt_log, LLOG_FATAL, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    bye ();
+	bye ();
 
-    _exit (1);
+	_exit (1);
 }
 #else
 /* VARARGS2 */
 
-void	adios (what, fmt)
-char   *what,
-       *fmt;
+void 
+adios (char *what, char *fmt)
 {
-    adios (what, fmt);
+	adios (what, fmt);
 }
 #endif
 
 
 #ifndef	lint
 void	advise (va_alist)
-va_dcl
-{
-    int	    code;
-    va_list ap;
+va_dcl {
+	int	    code;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    code = va_arg (ap, int);
+	code = va_arg (ap, int);
 
-    (void) _ll_log (vt_log, code, ap);
+	 _ll_log (vt_log, code, ap);
 
-    va_end (ap);
+	va_end (ap);
 }
 #else
 /* VARARGS3 */
 
-void	advise (code, what, fmt)
-int	code;
-char   *what,
-       *fmt;
+void 
+advise (int code, char *what, char *fmt)
 {
-    advise (code, what, fmt);
+	advise (code, what, fmt);
 }
 #endif
 
-ptyflush()
-{
+int 
+ptyflush (void) {
 	int n;
 
-	if ((n = pfrontp - pbackp) > 0)
-	{
+	if ((n = pfrontp - pbackp) > 0) {
 		n = write(pty, pbackp, n);
 	}
 	if (n < 0)
@@ -847,8 +803,8 @@ ptyflush()
 }
 
 #ifdef TERMIOS
-ptyecho(on)
-{
+int 
+ptyecho (int on) {
 	struct termios term;
 
 	ptyflush();
@@ -866,8 +822,8 @@ ptyecho(on)
 	}
 }
 #else
-setmode(on, off)
-	int on, off;
+int 
+setmode (int on, int off)
 {
 	struct sgttyb b;
 

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapintr.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/rosapintr.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  *
@@ -38,60 +38,54 @@ static SFD	intrser ();
 
 /*    RO-INVOKE.REQUEST (interruptable) */
 
-int	RoIntrRequest (sd, op, args, invokeID, linkedID, priority, roi)
-int	sd;
-int	op,
-    	invokeID,
-       *linkedID,
-	priority;
-PE	args;
-struct RoSAPindication *roi;
+int 
+RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
 {
-    int	    nfds,
-	    result;
-    fd_set  rfds;
-    SFP    istat;
+	int	    nfds,
+			result;
+	fd_set  rfds;
+	SFP    istat;
 
-    if (RoInvokeRequest (sd, op, ROS_ASYNC, args, invokeID, linkedID, priority,
-			 roi) == NOTOK)
-	return NOTOK;
+	if (RoInvokeRequest (sd, op, ROS_ASYNC, args, invokeID, linkedID, priority,
+						 roi) == NOTOK)
+		return NOTOK;
 
-    interrupted = 0;
-    istat = signal (SIGINT, intrser);
+	interrupted = 0;
+	istat = signal (SIGINT, intrser);
 
-    for (;;) {
-	nfds = 0;
-	FD_ZERO (&rfds);
+	for (;;) {
+		nfds = 0;
+		FD_ZERO (&rfds);
 
-						/* interrupt causes EINTR */
-	if (RoSelectMask (sd, &rfds, &nfds, roi) == OK)
-	    (void) xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
+		/* interrupt causes EINTR */
+		if (RoSelectMask (sd, &rfds, &nfds, roi) == OK)
+			 xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
 
-	if (interrupted) {
-	    result = rosaplose (roi, ROS_INTERRUPTED, NULLCP, NULLCP);
-	    break;
+		if (interrupted) {
+			result = rosaplose (roi, ROS_INTERRUPTED, NULLCP, NULLCP);
+			break;
+		}
+
+		if ((result = RoWaitRequest (sd, OK, roi)) != NOTOK
+				|| roi -> roi_preject.rop_reason != ROS_TIMER)
+			break;
 	}
 
-	if ((result = RoWaitRequest (sd, OK, roi)) != NOTOK
-	        || roi -> roi_preject.rop_reason != ROS_TIMER)
-	    break;
-    }
+	 signal (SIGINT, istat);
 
-    (void) signal (SIGINT, istat);
-
-    return result;
+	return result;
 }
 
 /*  */
 
 /* ARGSUSED */
 
-static  SFD intrser (sig)
-int	sig;
+static SFD 
+intrser (int sig)
 {
 #ifndef	BSDSIGS
-    (void) signal (SIGINT, intrser);
+	 signal (SIGINT, intrser);
 #endif
 
-    interrupted++;
+	interrupted++;
 }

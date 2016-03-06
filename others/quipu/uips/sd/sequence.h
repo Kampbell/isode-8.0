@@ -7,7 +7,7 @@
  */
 
 /*    This file was written by Damanjit Mahl @ Brunel University
- *    as part of the modifications made to 
+ *    as part of the modifications made to
  *    the Quipu X.500 widget interface written by Paul Sharpe
  *    at GEC Research, Hirst Research Centre.
  */
@@ -28,10 +28,10 @@
 #include "general.h"
 
 typedef struct string_seq {
-  char *dname;
-  unsigned s_strlen;
-  int seq_num;
-  struct string_seq *next;
+	char *dname;
+	unsigned s_strlen;
+	int seq_num;
+	struct string_seq *next;
 } string_seq, *str_seq;
 
 #define NULLDS ((str_seq) 0)

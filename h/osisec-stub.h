@@ -1,6 +1,6 @@
 /* osisec-stub.h - minimal OSI Security Package Interface Definitions */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/osisec-stub.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -45,11 +45,11 @@ struct encrypted {
 
 /* NEW for OSISEC bind token service */
 struct Nonce {
-        char *non_time1;
-        char *non_time2;
-        struct random_number non_r1;
-        struct random_number non_r2;
-        struct alg_id non_alg;
+	char *non_time1;
+	char *non_time2;
+	struct random_number non_r1;
+	struct random_number non_r2;
+	struct alg_id non_alg;
 };
 
 
@@ -85,7 +85,7 @@ extern struct signature        *nullsigned();
 extern int      		nullverify();
 extern struct certificate_list *null_mkpath();
 extern int			null_ckpath();
-extern struct encrypted	       *nullencrypted(); 
+extern struct encrypted	       *nullencrypted();
 extern int      		nulldecrypted();
 extern struct Nonce *		nullmknonce();
 extern int			nullcknonce();

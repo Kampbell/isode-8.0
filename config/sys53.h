@@ -1,6 +1,6 @@
 /* sys53.h - site configuration file for generic SVR3 */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/sys53.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

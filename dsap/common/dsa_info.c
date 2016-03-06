@@ -32,8 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dsa_info.c,v 9.
 #include "quipu/syntaxes.h"
 extern LLog * log_dsap;
 
-static edb_info_free (edb)
-struct edb_info * edb;
+static 
+edb_info_free (struct edb_info *edb)
 {
 	if (edb == NULLEDB)
 		return;
@@ -45,10 +45,10 @@ struct edb_info * edb;
 	free ((char *) edb);
 }
 
-static struct edb_info * edb_info_cpy (a)
-struct edb_info * a;
+static struct edb_info *
+edb_info_cpy (struct edb_info *a)
 {
-struct edb_info * result;
+	struct edb_info * result;
 
 	result = edb_info_alloc ();
 	result->edb_name     = dn_cpy (a->edb_name);
@@ -58,11 +58,10 @@ struct edb_info * result;
 	return (result);
 }
 
-static edb_info_cmp (a,b)
-struct edb_info * a;
-struct edb_info * b;
+static 
+edb_info_cmp (struct edb_info *a, struct edb_info *b)
 {
-int i;
+	int i;
 
 	if (a == NULLEDB)
 		return ( b == NULLEDB ? 0 : -1 );
@@ -89,7 +88,7 @@ int i;
 static struct edb_info * edb_info_decode (pe)
 PE pe;
 {
-struct edb_info * a;
+	struct edb_info * a;
 	if (decode_Quipu_EDBInfoSyntax(pe,1,NULLIP,NULLVP,&a) == NOTOK) {
 		return (NULLEDB);
 	}
@@ -121,14 +120,14 @@ int format;
 					dn_print (ps,edb->edb_name,EDBOUT);
 				else
 					ps_print (ps,"ROOT");
-			} 
+			}
 		}
 		if (edb->edb_allowed != NULLDNSEQ) {
 			ps_print (ps," ( TO ");
 			dn_seq_print (ps,edb->edb_allowed,READOUT);
 			ps_print (ps, " )");
-		} 
-	} else {	
+		}
+	} else {
 		if (edb->edb_name != NULLDN)
 			dn_print (ps,edb->edb_name,EDBOUT);
 		ps_print (ps,"#");
@@ -143,12 +142,12 @@ int format;
 }
 
 
-static struct edb_info * str2update (str)
-char * str;
+static struct edb_info *
+str2update (char *str)
 {
-register char * ptr;
-char * save,val;
-struct edb_info * ei;
+	char * ptr;
+	char * save,val;
+	struct edb_info * ei;
 
 	/* dn # num # dn # dnseq # */
 	if ((ptr = index (str,'#')) == 0) {
@@ -160,7 +159,7 @@ struct edb_info * ei;
 
 	/* go for name */
 	save = ptr++;
-	if (*str == '#') 
+	if (*str == '#')
 		ei->edb_name = NULLDN;
 	else {
 		if (! isspace (*--save))
@@ -225,24 +224,24 @@ struct edb_info * ei;
 	if (ptr != 0)
 		*save = val;
 
-	return (ei);	
+	return (ei);
 }
 
 static PE edb_info_enc (ei)
 struct edb_info * ei;
 {
-PE ret_pe;
+	PE ret_pe;
 
-	(void) encode_Quipu_EDBInfoSyntax (&ret_pe,0,0,NULLCP,ei);
+	 encode_Quipu_EDBInfoSyntax (&ret_pe,0,0,NULLCP,ei);
 	return (ret_pe);
 }
 
-edbinfo_syntax ()
-{
-	(void) add_attribute_syntax ("edbinfo",
-		(IFP) edb_info_enc,	(IFP) edb_info_decode,
-		(IFP) str2update,	edb_info_print,
-		(IFP) edb_info_cpy,	edb_info_cmp,
-		edb_info_free,		NULLCP,
-		NULLIFP,		TRUE );
+int 
+edbinfo_syntax (void) {
+	 add_attribute_syntax ("edbinfo",
+								 (IFP) edb_info_enc,	(IFP) edb_info_decode,
+								 (IFP) str2update,	edb_info_print,
+								 (IFP) edb_info_cpy,	edb_info_cmp,
+								 edb_info_free,		NULLCP,
+								 NULLIFP,		TRUE );
 }

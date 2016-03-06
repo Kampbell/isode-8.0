@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaptoken.c,v 9.0 1992/06/16 12:29:42 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap2/RCS/psaptoken.c,v 9.0 1992/06/16 12:29:42 isode Rel $
  *
  *
@@ -33,92 +33,87 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaptoken.c,v 9.0 199
 
 /*    P-TOKEN-GIVE.REQUEST */
 
-int	PGTokenRequest (sd, tokens, pi)
-int	sd;
-int	tokens;
-struct PSAPindication *pi;
+int 
+PGTokenRequest (int sd, int tokens, struct PSAPindication *pi)
 {
-    SBV	    smask;
-    int     result;
-    register struct psapblk *pb;
-    struct SSAPindication   sis;
-    register struct SSAPabort  *sa = &sis.si_abort;
+	SBV	    smask;
+	int     result;
+	struct psapblk *pb;
+	struct SSAPindication   sis;
+	struct SSAPabort  *sa = &sis.si_abort;
 
-    missingP (pi);
+	missingP (pi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    psapPsig (pb, sd);
+	psapPsig (pb, sd);
 
-    if ((result = SGTokenRequest (sd, tokens, &sis)) == NOTOK)
-	if (SC_FATAL (sa -> sa_reason))
-	    (void) ss2pslose (pb, pi, "SGTokenRequest", sa);
-	else {
-	    (void) ss2pslose (NULLPB, pi, "SGTokenRequest", sa);
-	    goto out1;
-	}
-    else
-	pb -> pb_owned &= ~tokens;
+	if ((result = SGTokenRequest (sd, tokens, &sis)) == NOTOK)
+		if (SC_FATAL (sa -> sa_reason))
+			 ss2pslose (pb, pi, "SGTokenRequest", sa);
+		else {
+			 ss2pslose (NULLPB, pi, "SGTokenRequest", sa);
+			goto out1;
+		}
+	else
+		pb -> pb_owned &= ~tokens;
 
-    if (result == NOTOK)
-	freepblk (pb);
-out1: ;
-    (void) sigiomask (smask);
+	if (result == NOTOK)
+		freepblk (pb);
+out1:
+	;
+	 sigiomask (smask);
 
-    return result;
+	return result;
 }
-    
+
 /*    P-TOKEN-PLEASE.REQUEST */
 
-int	PPTokenRequest (sd, tokens, data, ndata, pi)
-int	sd;
-int	tokens,
-	ndata;
-PE     *data;
-struct PSAPindication *pi;
+int 
+PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindication *pi)
 {
-    SBV	    smask;
-    int     len,
-	    result;
-    char   *base,
-	   *realbase;
-    register struct psapblk *pb;
-    struct SSAPindication   sis;
-    register struct SSAPabort  *sa = &sis.si_abort;
+	SBV	    smask;
+	int     len,
+			result;
+	char   *base,
+		   *realbase;
+	struct psapblk *pb;
+	struct SSAPindication   sis;
+	struct SSAPabort  *sa = &sis.si_abort;
 
-    toomuchP (data, ndata, NPDATA, "token");
-    missingP (pi);
+	toomuchP (data, ndata, NPDATA, "token");
+	missingP (pi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    psapPsig (pb, sd);
+	psapPsig (pb, sd);
 
-    if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
-			     "P-TOKEN-PLEASE user-data", PPDU_NONE)) != OK)
-	goto out2;
+	if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
+							 "P-TOKEN-PLEASE user-data", PPDU_NONE)) != OK)
+		goto out2;
 
-    if ((result = SPTokenRequest (sd, tokens, base, len, &sis)) == NOTOK)
-	if (SC_FATAL (sa -> sa_reason))
-	    (void) ss2pslose (pb, pi, "SPTokenRequest", sa);
-	else {
-	    (void) ss2pslose (NULLPB, pi, "SPTokenRequest", sa);
-	    goto out1;
-	}
+	if ((result = SPTokenRequest (sd, tokens, base, len, &sis)) == NOTOK)
+		if (SC_FATAL (sa -> sa_reason))
+			 ss2pslose (pb, pi, "SPTokenRequest", sa);
+		else {
+			 ss2pslose (NULLPB, pi, "SPTokenRequest", sa);
+			goto out1;
+		}
 
-out2: ;
-    if (result == NOTOK)
-	freepblk (pb);
-    else
-	if (result == DONE)
-	    result = NOTOK;
-out1: ;
-    if (realbase)
-	free (realbase);
-    else
-	if (base)
-	    free (base);
+out2:
+	;
+	if (result == NOTOK)
+		freepblk (pb);
+	else if (result == DONE)
+		result = NOTOK;
+out1:
+	;
+	if (realbase)
+		free (realbase);
+	else if (base)
+		free (base);
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return result;
+	return result;
 }

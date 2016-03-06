@@ -381,10 +381,10 @@ extern char *yyprfdflt;
 extern int yydebug;
 extern int yylineno;
 
-#ifndef	HPUX
-extern char yytext[];
+#if !defined(HPUX)
+extern char* yytext;
 #else
-extern unsigned char yytext[];
+extern unsigned char* yytext;
 #endif
 
 extern char *mymodule;
@@ -406,3 +406,4 @@ char	*oidname ();
 char	*oidprint ();
 
 extern int errno;
+

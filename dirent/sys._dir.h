@@ -50,14 +50,13 @@
 #define	MAXNAMELEN	255		/* maximum filename length */
 /* NOTE:  not MAXNAMLEN, which has been preempted by SVR3 <dirent.h> */
 
-struct direct				/* data from read()/_getdirentries() */
-	{
+struct direct {			/* data from read()/_getdirentries() */
 	unsigned long	d_fileno;	/* unique ident of entry */
 	unsigned short	d_reclen;	/* length of this record */
 	unsigned short	d_namlen;	/* length of string in d_name */
 	char		d_name[MAXNAMELEN+1];	/* NUL-terminated filename */
 	/* typically shorter */
-	};
+};
 
 /*
 	The DIRSIZ macro gives the minimum record length which will hold the

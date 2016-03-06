@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftp-ftam/RCS/ftpd.c,v 9.0 1992/06/16 12:17:24 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftp-ftam/RCS/ftpd.c,v 9.0 1992/06/16 12:17:24 isode Rel $
  *
  * Author:	John A. Scott		<Scott@GATEWAY.MITRE.ORG>
@@ -23,9 +23,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftp-ftam/RCS/ftpd.c,v 9.0 1992/
 /*
  *				  NOTICE
  *
- *	The MITRE Corporation (hereafter MITRE) makes this software available 
- *	on an "as is" basis.  No guarantees, either explicit or implied, are 
- *	given as to performance or suitability.  
+ *	The MITRE Corporation (hereafter MITRE) makes this software available
+ *	on an "as is" basis.  No guarantees, either explicit or implied, are
+ *	given as to performance or suitability.
  *
  */
 
@@ -78,7 +78,6 @@ void adios (), advise ();
  */
 #define	FTPUSERS	"/usr/etc/ftpusers"
 
-extern	int errno;
 extern	char *sys_errlist[];
 extern  char ftam_error[];
 extern	char version[];
@@ -124,8 +123,8 @@ int	swaitint = SWAITINT;
 SFD	lostconn();
 
 main(argc, argv)
-	int argc;
-	char *argv[];
+int argc;
+char *argv[];
 {
 	int	addrlen;
 	char *ptr;
@@ -134,28 +133,28 @@ main(argc, argv)
 	isodetailor (ptr = argv[0], 0);
 	argc--, argv++;
 	if (verbose = isatty (fileno (stderr)))
-	    ll_dbinit (ftam_log, ptr);
+		ll_dbinit (ftam_log, ptr);
 	else {
-	    ftam_log -> ll_stat &= ~LLOGCLS;
-	    ll_hdinit (ftam_log, ptr);
+		ftam_log -> ll_stat &= ~LLOGCLS;
+		ll_hdinit (ftam_log, ptr);
 	}
 
 	advise (NULLCP, "starting");
 
 	addrlen = sizeof his_addr;
 	if (getpeername (0, (struct sockaddr *) &his_addr, &addrlen) == NOTOK)
-	    adios ("failed", "getpeername");
+		adios ("failed", "getpeername");
 	sp = getservbyname("ftp", "tcp");
 	if (sp == 0) {
 		advise(NULLCP, "ftp/tcp: unknown service");
-abort();
+		abort();
 		exit(1);
 	}
 	ctrl_addr.sin_port = sp->s_port;
 	data_source.sin_port = htons(ntohs((u_short) sp->s_port) - 1);
-	(void)signal(SIGPIPE, lostconn);
-	(void)signal(SIGCHLD, SIG_IGN);
-	(void)dup2(0, 1);
+	signal(SIGPIPE, lostconn);
+	signal(SIGCHLD, SIG_IGN);
+	dup2(0, 1);
 	/* do telnet option negotiation here */
 	/*
 	 * Set up default state
@@ -169,21 +168,20 @@ abort();
 	mode = MODE_S;
 	addrlen = sizeof ctrl_addr;
 	if (getsockname(0, (struct sockaddr *) &ctrl_addr, &addrlen) == NOTOK)
-	    adios ("failed", "getsockname");
-	(void)gethostname(hostname, sizeof (hostname));
+		adios ("failed", "getsockname");
+	gethostname(hostname, sizeof (hostname));
 	ptr = index(hostname,'.'); /* strip off domain name */
 	if (ptr) *ptr = '\0';
 	reply(220, "%s FTP/FTAM gateway (%s) ready.",
-		hostname, version);
+		  hostname, version);
 	for (;;) {
-		(void)setjmp(errcatch);
-		(void)yyparse();
+		setjmp(errcatch);
+		yyparse();
 	}
 }
 
 SFD
-lostconn()
-{
+lostconn() {
 
 	advise (NULLCP,"lost connection");
 	dologout(-1);
@@ -191,31 +189,31 @@ lostconn()
 
 char *
 savestr(s)
-	char *s;
+char *s;
 {
 	char *new = malloc((unsigned) (strlen(s) + 1));
-	
+
 	if (new != NULL)
-		(void)strcpy(new, s);
+		strcpy(new, s);
 	return (new);
 }
 
 retrieve(name)
-	char *name;
+char *name;
 {
 	int result;
 
- /* FTAM file retrieval block function.  Return values:
-  * OK    -- file transfered without error
-  * NOTOK -- file transfer error
-  * DONE  -- Problem opening TCP connection for transfer
-  *          Error response made by dataconn routine.
-  */
+	/* FTAM file retrieval block function.  Return values:
+	 * OK    -- file transfered without error
+	 * NOTOK -- file transfer error
+	 * DONE  -- Problem opening TCP connection for transfer
+	 *          Error response made by dataconn routine.
+	 */
 	vec[0] = "f_get";
 	vec[1] = name;
 	vec[2] = NULL;
 
-	if ((result = f_get(vec)) == NOTOK){
+	if ((result = f_get(vec)) == NOTOK) {
 		reply(550, "%s: %s.", name, ftam_error);
 	} else if (result == OK)
 		reply(226, "Transfer complete.");
@@ -225,17 +223,17 @@ retrieve(name)
 }
 
 ftp_store(name, modeX)
-	char *name, *modeX;
+char *name, *modeX;
 {
 	int result;
-/*
- * f_put is FTAM file storage block function.  First arguement
- * controls file overwrite or append selection.
- * OK    -- file transfered without error
- * NOTOK -- file transfer error
- * DONE  -- Problem opening TCP connection for transfer
- *          Error response made by dataconn routine.
- */
+	/*
+	 * f_put is FTAM file storage block function.  First arguement
+	 * controls file overwrite or append selection.
+	 * OK    -- file transfered without error
+	 * NOTOK -- file transfer error
+	 * DONE  -- Problem opening TCP connection for transfer
+	 *          Error response made by dataconn routine.
+	 */
 
 	vec[0] = strcmp(modeX,"a") ? "put" : "append";
 	vec[1] = name;
@@ -248,9 +246,8 @@ ftp_store(name, modeX)
 }
 
 int
-getdatasock()
-{
-/* UCB data socket creation routine */
+getdatasock() {
+	/* UCB data socket creation routine */
 	int s;
 #ifdef	BSD43
 	int on = 1;
@@ -274,20 +271,20 @@ getdatasock()
 		goto bad;
 	return (s);
 bad:
-	(void)close(s);
+	close(s);
 	return (NOTOK);
 }
 
 int
 dataconn(name)
-	char *name;
+char *name;
 {
-/* UCB data connection routine */
+	/* UCB data connection routine */
 	int retry = 0;
 
 	if (data >= 0) {
 		reply(125, "Using existing data connection for %s.",
-		    name);
+			  name);
 		usedefault = 1;
 		return (data);
 	}
@@ -295,16 +292,16 @@ dataconn(name)
 		data_dest = his_addr;
 	usedefault = 1;
 	data = getdatasock();
-	if (data == NOTOK){
+	if (data == NOTOK) {
 		reply(425, "Can't create data socket (%s,%d): %s.",
-		    inet_ntoa(data_source.sin_addr),
-		    ntohs(data_source.sin_port),
-		    sys_errlist[errno]);
+			  inet_ntoa(data_source.sin_addr),
+			  ntohs(data_source.sin_port),
+			  sys_errlist[errno]);
 		return (NOTOK);
 	}
 	reply(150, "Opening data connection for %s (%s,%d).",
-	    name, inet_ntoa(data_dest.sin_addr),
-	    ntohs(data_dest.sin_port));
+		  name, inet_ntoa(data_dest.sin_addr),
+		  ntohs(data_dest.sin_port));
 	while (connect(data, (struct sockaddr *)&data_dest, sizeof (data_dest)) < 0) {
 		if (errno == EADDRINUSE && retry < swaitmax) {
 			sleep((unsigned) swaitint);
@@ -312,8 +309,8 @@ dataconn(name)
 			continue;
 		}
 		reply(425, "Can't build data connection: %s.",
-		    sys_errlist[errno]);
-		(void) close(data);
+			  sys_errlist[errno]);
+		 close(data);
 		data = -1;
 		return (NOTOK);
 	}
@@ -321,7 +318,7 @@ dataconn(name)
 }
 
 fatal(s)
-	char *s;
+char *s;
 {
 	reply(451, "Error in server: %s\n", s);
 	/* reply(221, "Closing connection due to server error.");*/
@@ -330,33 +327,31 @@ fatal(s)
 
 #ifndef	lint
 reply(va_alist)
-va_dcl
-{
-    int	n;
-    va_list ap;
+va_dcl {
+	int	n;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    n = va_arg (ap, int);
+	n = va_arg (ap, int);
 
-    _reply (n, ' ', ap);
+	_reply (n, ' ', ap);
 
-    va_end (ap);
+	va_end (ap);
 }
 
 lreply(va_alist)
-va_dcl
-{
-    int	n;
-    va_list ap;
+va_dcl {
+	int	n;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    n = va_arg (ap, int);
+	n = va_arg (ap, int);
 
-    _reply (n, '-', ap);
+	_reply (n, '-', ap);
 
-    va_end (ap);
+	va_end (ap);
 }
 
 static _reply (n, c, ap)
@@ -364,15 +359,15 @@ int	n;
 char    c;
 va_list ap;
 {
-    char    buffer[BUFSIZ];
+	char    buffer[BUFSIZ];
 
-    _asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, ap);
 
-    (void)printf ("%d%c%s\r\n", n, c, buffer);
-    (void)fflush (stdout);
+	printf ("%d%c%s\r\n", n, c, buffer);
+	fflush (stdout);
 
-    if (verbose)
-	advise (NULLCP,"<--- %d%c%s", n, c, buffer);
+	if (verbose)
+		advise (NULLCP,"<--- %d%c%s", n, c, buffer);
 }
 #else
 /* VARARGS2 */
@@ -381,7 +376,7 @@ reply(n,fmt)
 int	n;
 char   *fmt;
 {
-    reply(n,fmt);
+	reply(n,fmt);
 }
 /* VARARGS2 */
 
@@ -389,27 +384,27 @@ lreply(n,fmt)
 int	n;
 char   *fmt;
 {
-    lreply(n,fmt);
+	lreply(n,fmt);
 }
 #endif
 
 replystr(s)
-	char *s;
+char *s;
 {
-	(void)printf("%s\r\n", s);
-	(void)fflush(stdout);
+	printf("%s\r\n", s);
+	fflush(stdout);
 	if (verbose)
-	    advise(NULLCP,"<--- %s", s);
+		advise(NULLCP,"<--- %s", s);
 }
 
 ack(s)
-	char *s;
+char *s;
 {
 	reply(200, "%s command okay.", s);
 }
 
 nack(s)
-	char *s;
+char *s;
 {
 	reply(502, "%s command not implemented.", s);
 }
@@ -422,16 +417,16 @@ char *s;
 }
 
 ftp_delete(name)
-	char *name;
+char *name;
 {
-/* f_rm is the general purpose FTAM file/directory deletion routine.
- * Change information is formatted in ftam_error.
- */
+	/* f_rm is the general purpose FTAM file/directory deletion routine.
+	 * Change information is formatted in ftam_error.
+	 */
 	vec[0] = "f_rm";
 	vec[1] = name;
 	vec[2] = NULL;
 
-	if (f_rm(vec) == NOTOK){
+	if (f_rm(vec) == NOTOK) {
 		reply(550, "%s: %s.", name, ftam_error);
 		return;
 	}
@@ -439,16 +434,16 @@ ftp_delete(name)
 }
 
 makedir(name)
-	char *name;
+char *name;
 {
-	
-/* f_mkdir is the FTAM directory creation routine */
+
+	/* f_mkdir is the FTAM directory creation routine */
 
 	vec[0] = "f_mkdir";
 	vec[1] = name;
 	vec[2] = NULL;
-	
-	if (f_mkdir(vec) == NOTOK){
+
+	if (f_mkdir(vec) == NOTOK) {
 		reply(550, "%s: %s.", name, ftam_error);
 		return;
 	}
@@ -456,16 +451,16 @@ makedir(name)
 }
 
 removedir(name)
-	char *name;
+char *name;
 {
 
-/* f_rm is the general purpose FTAM file/directory deletion routine.
- */
+	/* f_rm is the general purpose FTAM file/directory deletion routine.
+	 */
 	vec[0] = "f_rm";
 	vec[1] = name;
 	vec[2] = NULL;
 
-	if (f_rm(vec) == NOTOK){
+	if (f_rm(vec) == NOTOK) {
 		reply(550, "%s: %s.", name, ftam_error);
 		return;
 	}
@@ -474,25 +469,25 @@ removedir(name)
 
 char *
 renamefrom(name)
-	char *name;
+char *name;
 {
 	reply(350, "Ready for destination name");
 	return (name);
 }
 
 renamecmd(from, to)
-	char *from, *to;
+char *from, *to;
 {
 
-/* f_mv is FTAM block function to select and change attributes 
- * (i.e. file name)
- */
+	/* f_mv is FTAM block function to select and change attributes
+	 * (i.e. file name)
+	 */
 	vec[0] ="f_mv";
 	vec[1] = from;
 	vec[2] = to;
 	vec[3] = NULL;
 
-	if (f_mv(vec) == NOTOK){
+	if (f_mv(vec) == NOTOK) {
 		reply(550, "rename: %s.", ftam_error);
 		return;
 	}
@@ -500,22 +495,22 @@ renamecmd(from, to)
 }
 
 dolog(sin)
-	struct sockaddr_in *sin;
+struct sockaddr_in *sin;
 {
 #ifdef	notanymore
 	struct hostent *hp = gethostbyaddr((char*)&sin->sin_addr,
-		sizeof (struct in_addr), AF_INET);
+									   sizeof (struct in_addr), AF_INET);
 #endif
 	time_t t;
 
 #ifdef	notanymore
 	if (hp) {
-		(void)strncpy(remotehost, hp->h_name, sizeof (remotehost));
+		strncpy(remotehost, hp->h_name, sizeof (remotehost));
 		endhostent();
 	} else
 #endif
-		(void)strncpy(remotehost, inet_ntoa(sin->sin_addr),
-		    sizeof (remotehost));
+		strncpy(remotehost, inet_ntoa(sin->sin_addr),
+					  sizeof (remotehost));
 	t = time((time_t*)0);
 	if (!logging)
 		return;
@@ -526,14 +521,14 @@ char *how, *name;
 {
 
 	int result;
-/* f_ls does a directory contents transfer.  The first arguement
- * determines whether a name list (NLST) or long list (LIST) is returned.
- * Results:
- * OK    -- list transfered without error
- * NOTOK -- list transfer error
- * DONE  -- Problem opening TCP connection for transfer
- *          Error response made by dataconn routine.
- */
+	/* f_ls does a directory contents transfer.  The first arguement
+	 * determines whether a name list (NLST) or long list (LIST) is returned.
+	 * Results:
+	 * OK    -- list transfered without error
+	 * NOTOK -- list transfer error
+	 * DONE  -- Problem opening TCP connection for transfer
+	 *          Error response made by dataconn routine.
+	 */
 
 	vec[0] = strcmp(how,"NLST") ? "dir" : "ls";
 	vec[1] = name;
@@ -549,8 +544,7 @@ char *how, *name;
 /*
  * Execute FTAM login if all necessary arguements present
  */
-dologin()
-{
+dologin() {
 
 	if (!ftp_user) {
 		reply(500,"Send USER command first");
@@ -560,15 +554,15 @@ dologin()
 		reply(330,"Send PASS command");
 		return(0);
 	}
-	if (!osi_host){
-	/* Success is returned since most user FTP response scanners
-         * are not prepared for a continue at this point.  The osi
-         * host may be specified by encoding it with the user name
-         * (i.e. user@osihost) or using the SITE command (SITE osihost).
-	 * Gateway users are expected to know if the remote site
-	 * requires account charging information.  The bridge makes
-         * ACCT optional.
-         */
+	if (!osi_host) {
+		/* Success is returned since most user FTP response scanners
+		     * are not prepared for a continue at this point.  The osi
+		     * host may be specified by encoding it with the user name
+		     * (i.e. user@osihost) or using the SITE command (SITE osihost).
+		 * Gateway users are expected to know if the remote site
+		 * requires account charging information.  The bridge makes
+		     * ACCT optional.
+		     */
 		reply(200,"Specify OSI filestore with SITE command");
 		return(0);
 	}
@@ -579,11 +573,11 @@ dologin()
 	vec[4] = ftp_passwd;
 
 	advise (NULLCP,
-		"attempting association with OSI filestore \"%s\" as initiator \"%s\"",
-	       osi_host, ftp_user);
+			"attempting association with OSI filestore \"%s\" as initiator \"%s\"",
+			osi_host, ftp_user);
 
 	/* f_open performs the FTAM initialization (including login) */
-	if (f_open(vec) == NOTOK){
+	if (f_open(vec) == NOTOK) {
 		reply(500,"Login failed");
 		return(0);
 	}
@@ -597,15 +591,15 @@ dologin()
  * exit with supplied status.
  */
 dologout(status)
-	int status;
+int status;
 {
 
 	vec[0] = "f_close";
 	vec[1] = NULL;
 	/* f_close performs the logout sequence and receives charging
-         * information 
-         */
-	(void) f_close(vec);
+	     * information
+	     */
+	 f_close(vec);
 	if (status>=0)
 		reply(221,"Logged off. %s",ftam_error);
 	/* beware of flushing buffers after a SIGPIPE */
@@ -619,7 +613,7 @@ dologout(status)
  * to allow people such as uucp to be avoided.
  */
 checkuser(name)
-	register char *name;
+char *name;
 {
 	char line[BUFSIZ];
 	FILE *fd, *fopen();
@@ -629,7 +623,7 @@ checkuser(name)
 	if (fd == NULL)
 		return (1);
 	while (fgets(line, sizeof (line), fd) != NULL) {
-		register char *cp = index(line, '\n');
+		char *cp = index(line, '\n');
 
 		if (cp)
 			*cp = '\0';
@@ -638,7 +632,7 @@ checkuser(name)
 			break;
 		}
 	}
-	(void)fclose(fd);
+	fclose(fd);
 	return (!found);
 }
 

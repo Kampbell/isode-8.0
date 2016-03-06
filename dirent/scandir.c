@@ -1,3 +1,4 @@
+#ifdef	FIXME
 /* used by permission */
 
 /*
@@ -46,12 +47,12 @@ static char sccsid[] = "@(#)scandir.c	5.9 (Berkeley) 6/24/90";
     ((sizeof (struct dirent) - (MAXNAMLEN+1)) + (((dp)->d_namlen+1 + 3) &~ 3))
 
 scandir(dirname, namelist, select, dcomp)
-	char *dirname;
-	struct dirent ***namelist;
-	int (*select)(), (*dcomp)();
+char *dirname;
+struct dirent ***namelist;
+int (*select)(), (*dcomp)();
 {
-	register struct dirent *d, *p, **names;
-	register int nitems;
+	struct dirent *d, *p, **names;
+	int nitems;
 	struct stat stb;
 	long arraysz;
 	DIR *dirp;
@@ -63,7 +64,7 @@ scandir(dirname, namelist, select, dcomp)
 
 	/*
 	 * estimate the array size by taking the size of the directory file
-	 * and dividing it by a multiple of the minimum size entry. 
+	 * and dividing it by a multiple of the minimum size entry.
 	 */
 	arraysz = (stb.st_size / 24);
 	names = (struct dirent **)malloc((unsigned int) (arraysz * sizeof(struct dirent *)));
@@ -77,18 +78,18 @@ scandir(dirname, namelist, select, dcomp)
 		/*
 		 * Make a minimum size copy of the data
 		 */
-/*
-		p = (struct dirent *)malloc(DIRSIZ(d));
- */
+		/*
+				p = (struct dirent *)malloc(DIRSIZ(d));
+		 */
 		p = (struct dirent *)malloc((unsigned int) d->d_reclen);
 		if (p == NULL)
 			return(-1);
-/*
-		p->d_ino = d->d_ino;
-		p->d_reclen = d->d_reclen;
-		p->d_namlen = d->d_namlen;
-		bcopy(d->d_name, p->d_name, p->d_namlen + 1);
- */
+		/*
+				p->d_ino = d->d_ino;
+				p->d_reclen = d->d_reclen;
+				p->d_namlen = d->d_namlen;
+				bcopy(d->d_name, p->d_name, p->d_namlen + 1);
+		 */
 		bcopy((char *)d, (char *)p, (int)d->d_reclen);
 		/*
 		 * Check to make sure the array has space left and
@@ -99,13 +100,13 @@ scandir(dirname, namelist, select, dcomp)
 				return(-1);	/* just might have grown */
 			arraysz = stb.st_size / 12;
 			names = (struct dirent **)realloc((char *)names,
-				(unsigned int) arraysz * sizeof(struct dirent *));
+											  (unsigned int) arraysz * sizeof(struct dirent *));
 			if (names == NULL)
 				return(-1);
 		}
 		names[nitems-1] = p;
 	}
-	(void) closedir(dirp);
+	 closedir(dirp);
 	if (nitems && dcomp != NULL)
 		qsort((char *) names, nitems, sizeof(struct dirent *), dcomp);
 	*namelist = names;
@@ -116,8 +117,9 @@ scandir(dirname, namelist, select, dcomp)
  * Alphabetic order comparison routine for those who want it.
  */
 alphasort(d1, d2)
-	caddr_t d1, d2;
+caddr_t d1, d2;
 {
 	return(strcmp((*(struct dirent **)d1)->d_name,
-	    (*(struct dirent **)d2)->d_name));
+				  (*(struct dirent **)d2)->d_name));
 }
+#endif

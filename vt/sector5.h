@@ -1,6 +1,6 @@
 /* sector5.h - VTPM: FSM sector 5 definitions */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/sector5.h,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *

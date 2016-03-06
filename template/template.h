@@ -1,6 +1,6 @@
 /* template.h - your comments here */
 
-/* 
+/*
  * $Header$
  *
  *

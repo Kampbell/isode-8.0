@@ -1,6 +1,6 @@
 /* logger.h - logging routines */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/logger.h,v 5.0 88/07/21 14:39:04 mrose Rel $
  *
  *

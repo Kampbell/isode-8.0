@@ -1,6 +1,6 @@
 /* routes.h - support for MIB support of the routing tables */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/snmp/RCS/routes.h,v 9.0 1992/06/16 12:38:11 isode Rel $
  *
  * Contributed by NYSERNet Inc.  This work was partially supported by the
@@ -44,27 +44,27 @@
 
 struct rtetab {
 #define	RT_SIZE		20			/* object instance */
-    unsigned int   rt_instance[RT_SIZE + 1];
-    int	    rt_insize;
+	unsigned int   rt_instance[RT_SIZE + 1];
+	int	    rt_insize;
 
-    int	    rt_magic;				/* for multiple routes to the
+	int	    rt_magic;				/* for multiple routes to the
 						   same destination */
 
-    struct rtentry rt_rt;			/* from kernel */
+	struct rtentry rt_rt;			/* from kernel */
 
-    union sockaddr_un rt_dst;			/* key */
-    union sockaddr_un rt_gateway;		/* value */
+	union sockaddr_un rt_dst;			/* key */
+	union sockaddr_un rt_gateway;		/* value */
 
-    int	    rt_type;				/* ipRouteType */
+	int	    rt_type;				/* ipRouteType */
 #define	TYPE_OTHER	1
 #define	TYPE_INVALID	2
 #define	TYPE_DIRECT	3
 #define	TYPE_REMOTE	4
 
-    int	    rt_touched;				/* set request'd */
-    union sockaddr_un rt_oldgwy;		/*   .. ipRouteNextHop */
+	int	    rt_touched;				/* set request'd */
+	union sockaddr_un rt_oldgwy;		/*   .. ipRouteNextHop */
 
-    struct rtetab *rt_next;
+	struct rtetab *rt_next;
 };
 
 extern int	routeNumber;

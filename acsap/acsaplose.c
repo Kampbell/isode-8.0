@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 1992/06/16 12:05:59 isode Rel $
  *
  *
@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ACS-types.h"
 #define	ACSE
 #include "acpkt.h"
@@ -37,134 +37,124 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 199
 /*  */
 
 #ifndef	lint
-static int  _acsaplose ();
-#endif 
+static int _acsaplose (struct AcSAPindication *aci, int reason, va_list ap); /* what, fmt, args ... */
+#endif
+
+int	acsaplose (struct AcSAPindication*aci, ...);
 
 #ifndef	lint
-int	acpktlose (va_alist)
-va_dcl
+int	acpktlose (struct assocblk*acb, ...)
 {
-    int	    reason,
-    	    result;
-    PE	    pe;
-    register struct assocblk *acb;
-    register struct AcSAPindication *aci;
-    struct PSAPindication   pis;
-    struct type_ACS_ABRT__apdu pdus;
-    register struct type_ACS_ABRT__apdu *pdu = &pdus;
-    va_list ap;
+	int	    reason,
+	result;
+	PE	    pe;
+	struct AcSAPindication *aci;
+	struct PSAPindication   pis;
+	struct type_ACS_ABRT__apdu pdus;
+	struct type_ACS_ABRT__apdu *pdu = &pdus;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap, acb);
 
-    acb = va_arg (ap, struct assocblk *);
-    aci = va_arg (ap, struct AcSAPindication *);
-    reason = va_arg (ap, int);
+	aci = va_arg (ap, struct AcSAPindication *);
+	reason = va_arg (ap, int);
 
-    result = _acsaplose (aci, reason, ap);
+	result = _acsaplose (aci, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    if (acb == NULLACB || acb -> acb_fd == NOTOK)
+	if (acb == NULLACB || acb -> acb_fd == NOTOK)
+		return result;
+
+	if (acb -> acb_sversion == 1) {
+		if (PUAbortRequest (acb -> acb_fd, NULLPEP, 0, &pis) != NOTOK)
+			acb -> acb_fd = NOTOK;
+
+		return result;
+	}
+
+	pdu -> abort__source = int_ACS_abort__source_acse__service__provider;
+	pdu -> user__information = NULL;
+
+	pe = NULLPE;
+	if (encode_ACS_ABRT__apdu (&pe, 1, 0, NULLCP, pdu) != NOTOK) {
+		pe -> pe_context = acb -> acb_id;
+
+		PLOGP (acsap_log,ACS_ACSE__apdu, pe, "ABRT-apdu", 0);
+
+		if (PUAbortRequest (acb -> acb_fd, &pe, 1, &pis) != NOTOK)
+			acb -> acb_fd = NOTOK;
+	}
+	if (pe)
+		pe_free (pe);
+
 	return result;
-
-    if (acb -> acb_sversion == 1) {
-	if (PUAbortRequest (acb -> acb_fd, NULLPEP, 0, &pis) != NOTOK)
-	    acb -> acb_fd = NOTOK;
-
-	return result;
-    }
-    
-    pdu -> abort__source = int_ACS_abort__source_acse__service__provider;
-    pdu -> user__information = NULL;
-
-    pe = NULLPE;
-    if (encode_ACS_ABRT__apdu (&pe, 1, 0, NULLCP, pdu) != NOTOK) {
-	pe -> pe_context = acb -> acb_id;
-
-	PLOGP (acsap_log,ACS_ACSE__apdu, pe, "ABRT-apdu", 0);
-
-	if (PUAbortRequest (acb -> acb_fd, &pe, 1, &pis) != NOTOK)
-	    acb -> acb_fd = NOTOK;
-    }
-    if (pe)
-	pe_free (pe);
-
-    return result;
 }
 #else
 /* VARARGS5 */
 
-int	acpktlose (acb, aci, reason, what, fmt)
-struct assocblk *acb;
-struct AcSAPindication *aci;
-int	reason;
-char   *what,
-       *fmt;
+int 
+acpktlose (struct assocblk *acb, struct AcSAPindication *aci, int reason, char *what, char *fmt)
 {
-    return acpktlose (acb, aci, reason, what, fmt);
+	return acpktlose (acb, aci, reason, what, fmt);
 }
 #endif
 
 /*  */
 
 #ifndef	lint
-int	acsaplose (va_alist)
-va_dcl
+int	acsaplose (struct AcSAPindication*aci, ...)
 {
-    int	    reason,
-	    result;
-    struct AcSAPindication *aci;
-    va_list ap;
+	int	    reason,
+	result;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap, aci);
 
-    aci = va_arg (ap, struct AcSAPindication *);
-    reason = va_arg (ap, int);
+	reason = va_arg (ap, int);
 
-    result = _acsaplose (aci, reason, ap);
+	result = _acsaplose (aci, reason, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    return result;
+	return result;
 }
 #else
 /* VARARGS4 */
 
-int	acsaplose (aci, reason, what, fmt)
-struct AcSAPindication *aci;
-int	reason;
-char   *what,
-       *fmt;
+int 
+acsaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
 {
-    return acsaplose (aci, reason, what, fmt);
+	return acsaplose (aci, reason, what, fmt);
 }
 #endif
 
 /*  */
 
 #ifndef	lint
-static int  _acsaplose (aci, reason, ap)  /* what, fmt, args ... */
-register struct AcSAPindication *aci;
-int     reason;
-va_list	ap;
+static int _acsaplose (  struct AcSAPindication *aci, int reason, va_list ap) /* what, fmt, args ... */
 {
-    register char  *bp;
-    char    buffer[BUFSIZ];
-    register struct AcSAPabort *aca;
+	char  *bp;
+	char  *what;
+	char  *fmt;
+	char    buffer[BUFSIZ];
+	struct AcSAPabort *aca;
 
-    if (aci) {
-	bzero ((char *) aci, sizeof *aci);
-	aci -> aci_type = ACI_ABORT;
-	aca = &aci -> aci_abort;
+	if (aci) {
+		bzero ((char *) aci, sizeof *aci);
+		aci -> aci_type = ACI_ABORT;
+		aca = &aci -> aci_abort;
 
-	asprintf (bp = buffer, ap);
-	bp += strlen (bp);
+		what = va_arg(ap, char*);
+		fmt = va_arg(ap, char*);
+		_asprintf (bp = buffer, what, fmt, ap);
+		bp += strlen (bp);
 
-	aca -> aca_source = ACA_LOCAL;
-	aca -> aca_reason = reason;
-	copyAcSAPdata (buffer, bp - buffer, aca);
-    }
+		aca -> aca_source = ACA_LOCAL;
+		aca -> aca_reason = reason;
+		copyAcSAPdata (buffer, bp - buffer, aca);
+	}
 
-    return NOTOK;
+	return NOTOK;
 }
 #endif

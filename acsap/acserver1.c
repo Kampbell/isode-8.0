@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acserver1.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/acsap/RCS/acserver1.c,v 9.0 1992/06/16 12:05:59 isode Rel $
  *
  *
@@ -35,23 +35,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acserver1.c,v 9.0 199
 
 /*  */
 
-int	isodeserver (argc, argv, aei, initfnx, workfnx, losefnx, td)
-int	argc;
-char  **argv;
-AEI	aei;
-IFP	initfnx,
-	workfnx,
-	losefnx;
-struct TSAPdisconnect *td;
+int 
+isodeserver (int argc, char **argv, AEI aei, IFP initfnx, IFP workfnx, IFP losefnx, struct TSAPdisconnect *td)
 {
-    if (iserver_init (argc, argv, aei, initfnx, td) == NOTOK)
-	return NOTOK;
+	if (iserver_init (argc, argv, aei, initfnx, td) == NOTOK)
+		return NOTOK;
 
-    for (;;) {
-	int     result;
+	for (;;) {
+		int     result;
 
-	if ((result = iserver_wait (initfnx, workfnx, losefnx, 0, NULLFD,
-				    NULLFD, NULLFD, NOTOK, td)) != OK)
-	    return (result == DONE ? OK : result);
-    }
+		if ((result = iserver_wait (initfnx, workfnx, losefnx, 0, NULLFD,
+									NULLFD, NULLFD, NOTOK, td)) != OK)
+			return (result == DONE ? OK : result);
+	}
 }

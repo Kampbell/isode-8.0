@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/time2str.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/time2str.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -36,55 +36,54 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/time2str.c,v 9.0 1992/
 
 /*  */
 
-char   *time2str (u, generalized)
-register UTC	u;
-int	generalized;
+char *
+time2str (UTC u, int generalized)
 {
-    register int    hours,
-                    mins,
-                    zone;
-    register char  *bp;
-    static char buffer[BUFSIZ];
+	int    hours,
+			 mins,
+			 zone;
+	char  *bp;
+	static char buffer[BUFSIZ];
 
-    if (u == NULLUTC)
-	return NULLCP;
+	if (u == NULLUTC)
+		return NULLCP;
 
-    bp = buffer;
+	bp = buffer;
 
-    if (generalized)
-	(void) sprintf (bp, "%04d", YEAR (u -> ut_year));
-    else
-	(void) sprintf (bp, "%02d", UNYEAR (u -> ut_year));
-    bp += strlen (bp);
-
-    (void) sprintf (bp, "%02d%02d%02d%02d", u -> ut_mon, u -> ut_mday,
-		u -> ut_hour, u -> ut_min);
-    bp += strlen (bp);
-
-    if (u -> ut_flags & UT_SEC
-	    || (generalized && (u -> ut_flags & UT_USEC))) {
-	(void) sprintf (bp, "%02d", u -> ut_sec);
+	if (generalized)
+		 sprintf (bp, "%04d", YEAR (u -> ut_year));
+	else
+		 sprintf (bp, "%02d", UNYEAR (u -> ut_year));
 	bp += strlen (bp);
-    }
-    if (generalized && (u -> ut_flags & UT_USEC)) {
-	(void) sprintf (bp, ".%06d", u -> ut_usec);
-	bp += strlen (bp);
-    }
 
-    if (u -> ut_flags & UT_ZONE)
-	if ((zone = u -> ut_zone) == 0)
-	    *bp++ = 'Z';
-	else {
-	    if (zone < 0)
-		mins = (-zone) % 60, hours = (-zone) / 60;
-	    else
-		mins = zone % 60, hours = zone / 60;
-	    (void) sprintf (bp, "%c%02d%02d", zone < 0 ? '-' : '+',
-		    hours, mins);
-	    bp += strlen (bp);
+	 sprintf (bp, "%02d%02d%02d%02d", u -> ut_mon, u -> ut_mday,
+					u -> ut_hour, u -> ut_min);
+	bp += strlen (bp);
+
+	if (u -> ut_flags & UT_SEC
+			|| (generalized && (u -> ut_flags & UT_USEC))) {
+		 sprintf (bp, "%02d", u -> ut_sec);
+		bp += strlen (bp);
+	}
+	if (generalized && (u -> ut_flags & UT_USEC)) {
+		 sprintf (bp, ".%06d", u -> ut_usec);
+		bp += strlen (bp);
 	}
 
-    *bp = NULL;
+	if (u -> ut_flags & UT_ZONE)
+		if ((zone = u -> ut_zone) == 0)
+			*bp++ = 'Z';
+		else {
+			if (zone < 0)
+				mins = (-zone) % 60, hours = (-zone) / 60;
+			else
+				mins = zone % 60, hours = zone / 60;
+			 sprintf (bp, "%c%02d%02d", zone < 0 ? '-' : '+',
+							hours, mins);
+			bp += strlen (bp);
+		}
 
-    return buffer;
+	*bp = NULL;
+
+	return buffer;
 }

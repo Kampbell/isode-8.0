@@ -1,6 +1,6 @@
 /* manifest.h - manifest constants */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/manifest.h,v 5.0 88/07/21 14:39:08 mrose Rel $
  *
  *
@@ -37,7 +37,7 @@
 #ifdef	BSD42
 #undef	SYS5NLY
 #define	BSDSIGS
-#endif 
+#endif
 
 
 #ifdef	ROS
@@ -105,7 +105,7 @@ int   (*_signal ()) ();
 
 /* HULA removed #if  defined(BSDSIGS) || !defined(SIGPOLL) */
 /* HULA inserted following line instead */
-#if	defined(BSDSIGS) 
+#if	defined(BSDSIGS)
 typedef	int	SBV;
 #define	sigioblock()	sigblock (sigmask (_SIGIO))
 #define	sigiomask(s)	sigsetmask (s)
@@ -137,11 +137,15 @@ typedef char *CP;
 
 #ifndef	makedev
 #include <sys/types.h>
-typedef struct fd_set { int fds_bits[1]; } fd_set;     /* billy, for HULA */ 
+typedef struct fd_set {
+	int fds_bits[1];
+} fd_set;     /* billy, for HULA */
 #if	defined(S5R3) && defined(WIN)
 #include "sys/inet.h"
 #ifndef	NFDBITS
-typedef struct fd_set { int fds_bits[1]; } fd_set;
+typedef struct fd_set {
+	int fds_bits[1];
+} fd_set;
 #endif
 #endif
 
@@ -186,20 +190,20 @@ typedef void   (*VFP) ();
 
 
 struct udvec {			/* looks like a BSD iovec... */
-    caddr_t uv_base;
-    int	    uv_len;
+	caddr_t uv_base;
+	int	    uv_len;
 
-    int	    uv_inline;
+	int	    uv_inline;
 };
 
 
 struct qbuf {
-    struct qbuf *qb_forw;	/* doubly-linked list */
-    struct qbuf *qb_back;	/*   .. */
+	struct qbuf *qb_forw;	/* doubly-linked list */
+	struct qbuf *qb_back;	/*   .. */
 
-    int	    qb_len;		/* length of data */
-    char   *qb_data;		/* current pointer into data */
-    char    qb_base[1];		/* extensible... */
+	int	    qb_len;		/* length of data */
+	char   *qb_data;		/* current pointer into data */
+	char    qb_base[1];		/* extensible... */
 };
 
 #define	QBFREE(qb) \

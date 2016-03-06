@@ -38,108 +38,92 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/error.c,v 9.0 19
 #include "RFA-ops.h"        /* operation definitions */
 #include "RFA-types.h"  /* type definitions */
 #include "ryresponder.h"    /* for generic idempotent responders */
-#include "psap.h" 
+#include "psap.h"
 #include "rfa.h"
 
 /*--------------------------------------------------------------*/
 /*  aux_error							*/
 /*--------------------------------------------------------------*/
-int  aux_error (sd, err, param, rox, roi)
-int sd,
-    err;
-caddr_t param;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+int 
+aux_error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
-    if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
-	ros_adios (&roi -> roi_preject, "ERROR");
-    return OK;
+	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
+		ros_adios (&roi -> roi_preject, "ERROR");
+	return OK;
 }
 
 
 /*--------------------------------------------------------------*/
 /*  str_error							*/
 /*--------------------------------------------------------------*/
-int str_error (sd, err, str, rox, roi)
-int sd, err;
-char	*str;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+int 
+str_error (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
-    struct type_RFA_Reason *qb;
-    int r;
-    
-    qb= str2qb(str, strlen(str), 1);
+	struct type_RFA_Reason *qb;
+	int r;
 
-    r = aux_error (sd, err, (caddr_t)qb, rox, roi);
+	qb= str2qb(str, strlen(str), 1);
 
-    qb_free(qb);
-    return r;
+	r = aux_error (sd, err, (caddr_t)qb, rox, roi);
+
+	qb_free(qb);
+	return r;
 }
 
 
 /*--------------------------------------------------------------*/
 /*  syserror							*/
 /*--------------------------------------------------------------*/
-int syserror (sd, err, rox, roi)
-int sd, err;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+int 
+syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
-    return str_error (sd, err, sys_errname (errno), rox, roi); 
-} 
+	return str_error (sd, err, sys_errname (errno), rox, roi);
+}
 
 
 /*--------------------------------------------------------------*/
 /*  error							*/
 /*--------------------------------------------------------------*/
-int error(sd, err, type, rox, roi) 
-    int sd, err, type; 
-    struct RoSAPinvoke *rox; 
-    struct RoSAPindication *roi; 
-{ 
-    if(type == NOTOK) 
-	return str_error(sd, err, rfaErrStr, rox, roi);
-    else
-	return syserror(sd, err, rox, roi);
+int 
+error (int sd, int err, int type, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
+{
+	if(type == NOTOK)
+		return str_error(sd, err, rfaErrStr, rox, roi);
+	else
+		return syserror(sd, err, rox, roi);
 }
 
 
 /*--------------------------------------------------------------*/
 /*  errMsg							*/
 /*--------------------------------------------------------------*/
-char *errMsg(type)
-    int type;
+char *
+errMsg (int type)
 {
-    if(type == NOTOK) 
-	return rfaErrStr;
-    else
-	return sys_errname(errno);
+	if(type == NOTOK)
+		return rfaErrStr;
+	else
+		return sys_errname(errno);
 }
 
-    
+
 
 /*--------------------------------------------------------------*/
 /*  statusError							*/
 /*--------------------------------------------------------------*/
-int statusError (sd, reason, user, since, rox, roi)
-int sd;
-int reason;
-char *user;
-long since;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
+int 
+statusError (int sd, int reason, char *user, long since, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 {
-    struct type_RFA_StatusErrorParm se, *sep = & se;
+	struct type_RFA_StatusErrorParm se, *sep = & se;
 
-    if((sep->reason = reason) == int_RFA_reason_locked) {
-	sep->user = str2qb(user, strlen(user), 1);
-	sep->since = (int)since;
-    } else {
-	sep->user = NULL;
-	sep->since = 0;
-    }
+	if((sep->reason = reason) == int_RFA_reason_locked) {
+		sep->user = str2qb(user, strlen(user), 1);
+		sep->since = (int)since;
+	} else {
+		sep->user = NULL;
+		sep->since = 0;
+	}
 
-    return aux_error (sd, error_RFA_statusError, (caddr_t)sep, rox, roi);
+	return aux_error (sd, error_RFA_statusError, (caddr_t)sep, rox, roi);
 }
 

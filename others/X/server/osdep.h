@@ -4,13 +4,13 @@ and the Massachusetts Institute of Technology, Cambridge, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the names of Digital or MIT not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -136,19 +136,19 @@ SOFTWARE.
 #endif
 
 typedef struct _connectionInput {
-    int used;                  /* is this client connected */
-    char *buffer;               /* contains current client input */
-    char *bufptr;               /* pointer to current start of data */
-    int  bufcnt;                /* count of bytes in buffer */
-    int lenLastReq;
-    int size;
+	int used;                  /* is this client connected */
+	char *buffer;               /* contains current client input */
+	char *bufptr;               /* pointer to current start of data */
+	int  bufcnt;                /* count of bytes in buffer */
+	int lenLastReq;
+	int size;
 } ConnectionInput;
 
 typedef struct _osComm {
-    int fd;
-    unsigned char *buf;
-    int bufsize;
-    int count;
+	int fd;
+	unsigned char *buf;
+	int bufsize;
+	int count;
 } OsCommRec, *OsCommPtr;
 
 void Notice();
@@ -159,7 +159,7 @@ extern int isodexbug;
 #endif /* ISODEBUG */
 /*
  * For want of a better place to put these for the moment...
- * 
+ *
  * Should really appear in system headers eventuallement
  */
 
@@ -170,21 +170,21 @@ extern int isodexbug;
 #define ISODE_IO 1
 
 /*
- * The following could all be optimised by putting it in the 
+ * The following could all be optimised by putting it in the
  * OsCommRec
  * so we would not have to double array index for every IO...
- * 
+ *
  * but i'm not sure that that rec is available in all IO call places
  */
 extern int fd2family[];
 
-extern int (*acceptfn[])(); 
-extern int (*getpeerfn[])(); 
-extern int (*readfn[])(); 
-extern int (*writefn[])(); 
-extern int (*readvfn[])(); 
-extern int (*writevfn[])(); 
-extern int (*closefn[])(); 
+extern int (*acceptfn[])();
+extern int (*getpeerfn[])();
+extern int (*readfn[])();
+extern int (*writefn[])();
+extern int (*readvfn[])();
+extern int (*writevfn[])();
+extern int (*closefn[])();
 
 
 #define SAccept(fd, a, b) \

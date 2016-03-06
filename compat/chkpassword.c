@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/chkpassword.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/compat/RCS/chkpassword.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
  *
@@ -27,12 +27,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/chkpassword.c,v 9.0 
 
 /* LINTLIBRARY */
 
+//#define _XOPEN_SOURCE
+//#include <unistd.h>
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"
 
-
-char   *crypt ();
+char* crypt(const char* key, const char* salt);
 
 
 #ifdef	KRB_PASSWD
@@ -50,16 +51,14 @@ char   *crypt ();
 /* ARGSUSED */
 #endif
 
-int	chkpassword ( usrname, pwpass, usrpass )
-char   *usrname;
-char   *pwpass;
-char   *usrpass;
+int 
+chkpassword (char *usrname, char *pwpass, char *usrpass)
 {
 #ifdef	KRB_PASSWD
 	char realm[REALM_SZ];
 	int krbval;
 
-	/* 
+	/*
 	 * check to see if the passwd is `*krb*'
 	 * if it is, use kerberos
 	 */
@@ -69,16 +68,16 @@ char   *usrpass;
 		 * use kerberos, first of all find the realm
 		 */
 		if (krb_get_lrealm(realm, 1) != KSUCCESS) {
-			(void) strncpy(realm, KRB_REALM, sizeof(realm));
+			 strncpy(realm, KRB_REALM, sizeof(realm));
 		}
 
 		/*
 		 * now check the passwd
 		 */
 		krbval = krb_get_pw_in_tkt(usrname, "",
-					   realm, "krbtgt",
-					   realm,
-					   DEFAULT_TKT_LIFE, usrpass);
+								   realm, "krbtgt",
+								   realm,
+								   DEFAULT_TKT_LIFE, usrpass);
 
 		return (krbval == INTK_OK);;
 	}

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapselect.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rtsap/RCS/rtsapselect.c,v 9.0 1992/06/16 12:37:45 isode Rel $
  *
  *
@@ -33,33 +33,30 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapselect.c,v 9.0 1
 
 /*    map association descriptors for select() */
 
-int	RtSelectMask (sd, mask, nfds, rti)
-int	sd;
-fd_set *mask;
-int    *nfds;
-struct RtSAPindication *rti;
+int 
+RtSelectMask (int sd, fd_set *mask, int *nfds, struct RtSAPindication *rti)
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	struct assocblk   *acb;
 
-    missingP (mask);
-    missingP (nfds);
-    missingP (rti);
+	missingP (mask);
+	missingP (nfds);
+	missingP (rti);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rtsapPsig (acb, sd);
+	rtsapPsig (acb, sd);
 
-    if (acb -> acb_flags & ACB_PLEASE) {
-	(void) sigiomask (smask);
+	if (acb -> acb_flags & ACB_PLEASE) {
+		 sigiomask (smask);
 
-	return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
-    }
+		return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
+	}
 
-    result = (*acb -> acb_rtselectmask) (acb, mask, nfds, rti);
+	result = (*acb -> acb_rtselectmask) (acb, mask, nfds, rti);
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return result;
+	return result;
 }

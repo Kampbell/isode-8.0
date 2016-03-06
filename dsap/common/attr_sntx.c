@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attr_sntx.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/attr_sntx.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -28,9 +28,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attr_sntx.c,v 9
 /*
  *	SYNTAX:
  *
- *		attributeSyntax ::= '(' attributeSequence ')'	
+ *		attributeSyntax ::= '(' attributeSequence ')'
  *
- *		Written by :-	Kuan Siew Weng	
+ *		Written by :-	Kuan Siew Weng
  */
 
 #include "quipu/util.h"
@@ -58,8 +58,8 @@ extern IFP oc_hier;
 #ifdef TURBO_DISK
 char fromfile;
 #endif
-char *find_nest(str)
-char *str;
+char *
+find_nest (char *str)
 {
 	char *cp, *ptr1, *ptr2;
 
@@ -71,10 +71,10 @@ char *str;
 		return(NULL);
 	*ptr2 = NULL;
 
-	while((ptr1 = index(ptr1,AS_START_DELIMITER)))
-	{
+	while((ptr1 = index(ptr1,AS_START_DELIMITER))) {
 		*ptr2 = AS_END_DELIMITER;
-		ptr2++; ptr1++;
+		ptr2++;
+		ptr1++;
 		if(!(ptr2 = index(ptr2,AS_END_DELIMITER)))
 			return(NULL);
 		*ptr2 = NULL;
@@ -92,24 +92,23 @@ int	format;
 	Attr_Sequence  atl;
 	AV_Sequence avs;
 	extern int oidformat;
-	register i;
+	i;
 
 	if (a) {
 		if (format == READOUT) {
 			indent++;
 			for ( atl = a ; atl != NULL; atl = atl->attr_link) {
-				(void) sprintf(buf,"%s",attr2name(atl->attr_type,oidformat));
+				 sprintf(buf,"%s",attr2name(atl->attr_type,oidformat));
 				for (avs= atl->attr_value; avs != NULLAV; avs = avs->avseq_next) {
 					ps_printf(ps,"\n");
-					for ( i = 0; i< indent;i++)
+					for ( i = 0; i< indent; i++)
 						ps_printf(ps,"  ");
 					ps_printf(ps,"%-21s - ",buf);
 					avs_comp_print(ps,avs,format);
 				}
 			}
 			indent--;
-		}
-		else {
+		} else {
 			ps_printf(ps,"%c\n",AS_START_DELIMITER);
 			as_print(ps,a,format);
 			ps_printf(ps,"%c",AS_END_DELIMITER);
@@ -132,7 +131,7 @@ char   *str;
 
 
 	for (;;) { /* break out */
-		
+
 #ifdef TURBO_DISK
 		if (fromfile) {
 			if ((ptr = fgetnextline ()) == NULLCP) {
@@ -150,9 +149,9 @@ char   *str;
 			break;
 
 		if ((tas = str2as(ptr)) == NULLATTR) {
-				parse_error ("attr sntx attr parse failed",NULLCP);
-				return (NULLATTR);
-			}
+			parse_error ("attr sntx attr parse failed",NULLCP);
+			return (NULLATTR);
+		}
 		as = as_merge (as, tas);
 	}
 
@@ -165,14 +164,14 @@ char * buf;
 	char *cp, cp1[3];
 
 	cp = smalloc(strlen(buf)+4);
-	(void) sprintf(cp,"%c\n", AS_START_DELIMITER);
-	(void) strcat(cp,buf);
-	(void) sprintf(cp1,"%c\n",AS_END_DELIMITER);
-	(void) strcat(cp,cp1);
+	 sprintf(cp,"%c\n", AS_START_DELIMITER);
+	 strcat(cp,buf);
+	 sprintf(cp1,"%c\n",AS_END_DELIMITER);
+	 strcat(cp,cp1);
 	return(str2attrSntx(cp));
 }
 #define str2AttrList(buf)	str2attrSeq(buf)
-		
+
 
 static PE avs_enc(avs)
 AV_Sequence avs;
@@ -185,9 +184,9 @@ AV_Sequence avs;
 
 	for (avl = avs; avl; avl=avl->avseq_next) {
 		AttrV_cpy_enc(&(avl->avseq_av),&av);
-		(void) seq_add(pe,(PE) av.av_struct,-1);
+		 seq_add(pe,(PE) av.av_struct,-1);
 	}
-	
+
 	return pe;
 }
 
@@ -204,7 +203,7 @@ AttributeType at;
 		av->avseq_next = NULLAV;
 		av->avseq_av.av_syntax = 0;
 		av->avseq_av.av_struct = (caddr_t) pe_cpy(r);
-		(void) AttrV_decode(at,&(av->avseq_av));
+		 AttrV_decode(at,&(av->avseq_av));
 		avl = avs_merge(avl,av);
 	}
 	return avl;
@@ -220,16 +219,14 @@ Attr_Sequence a;
 	if ((r = oid2prim(a->attr_type->oa_ot.ot_oid)) == NULLPE) {
 		pe_free(pe);
 		return(NULLPE);
-	}
-	else
-		(void) seq_add(pe,r,0);
+	} else
+		 seq_add(pe,r,0);
 
 	if ((r = avs_enc(a->attr_value)) == NULLPE) {
 		pe_free(pe);
 		return(NULLPE);
-	}
-	else
-		(void) seq_add(pe,r,1);
+	} else
+		 seq_add(pe,r,1);
 
 	return(pe);
 }
@@ -244,22 +241,21 @@ PE pe;
 	a = NULLATTR;
 	for (r = first_member(pe); r; r=next_member(pe,r)) {
 		switch(r->pe_offset) {
-		    case 0:		
+		case 0:
 			if (r->pe_form == PE_FORM_PRIM) {
 				if (at = oid2attr(prim2oid(r))) {
 					a = as_comp_new(at,NULLAV,NULLACL_INFO);
 					if (((r=next_member(pe,r)) == NULLPE) ||
-					    ((a->attr_value = avs_dec(r,at)) == NULLAV)) {
+							((a->attr_value = avs_dec(r,at)) == NULLAV)) {
 						as_free(a);
 						return NULLATTR;
 					}
-	
-				}
-				else 
+
+				} else
 					return NULLATTR;
 				break;
 			}
-		    default:
+		default:
 			if ((a = attr_dec(r)) == NULLATTR)
 				return NULLATTR;
 		}
@@ -283,9 +279,8 @@ Attr_Sequence a;
 		if ((r = attr_enc(atl)) == NULLPE) {
 			pe_free(pe);
 			return(NULLPE);
-		}
-		else
-			(void) seq_add(pe,r,-1);
+		} else
+			 seq_add(pe,r,-1);
 	}
 	return pe;
 }
@@ -299,7 +294,7 @@ PE	pe;
 	atl = NULLATTR;
 	for (r = first_member(pe); r; r=next_member(pe,r)) {
 		if (((a = attr_dec(r)) == NULLATTR) ||
-		    ((atl = as_merge(atl,a)) == NULLATTR)) {
+				((atl = as_merge(atl,a)) == NULLATTR)) {
 			as_free(atl);
 			return(NULLATTR);
 		}
@@ -307,16 +302,16 @@ PE	pe;
 	return atl;
 }
 
-attribute_syntax ()
-{
+int 
+attribute_syntax (void) {
 	as_sntx = add_attribute_syntax ("AttributeSyntax",
-					(IFP) attrSntx_enc,
-					(IFP) attrSntx_dec,
-					(IFP) str2attrSntx,
-					attrSntx_print,
-					(IFP) as_cpy,
-					as_cmp,
-					as_free,
-					NULLCP, NULLIFP, TRUE);
+									(IFP) attrSntx_enc,
+									(IFP) attrSntx_dec,
+									(IFP) str2attrSntx,
+									attrSntx_print,
+									(IFP) as_cpy,
+									as_cmp,
+									as_free,
+									NULLCP, NULLIFP, TRUE);
 
 }

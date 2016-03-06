@@ -34,15 +34,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/cmd_srch.c,v 9.0 199
 
 /* map a string onto a value */
 
-cmd_srch(str, cmd)
-register char   *str;
-register CMD_TABLE *cmd;
+int 
+cmd_srch (char *str, CMD_TABLE *cmd)
 {
 	extern char chrcnv[];
 
-	for(;cmd->cmd_key != NULLCP; cmd++)
+	for(; cmd->cmd_key != NULLCP; cmd++)
 		if(chrcnv[*str] == chrcnv[*cmd->cmd_key] &&
-		   lexequ(str, cmd->cmd_key) == 0)
+				lexequ(str, cmd->cmd_key) == 0)
 			return(cmd->cmd_value);
 	return(cmd->cmd_value);
 }

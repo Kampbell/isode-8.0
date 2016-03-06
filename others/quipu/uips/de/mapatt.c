@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mapatt.c,v 9.0 1992/06/16 12:45:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mapatt.c,v 9.0 1992/06/16 12:45:59 isode Rel $
  *
  *
@@ -33,50 +33,44 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mapatt
 extern struct mapnamelist * mapnamelp;
 static struct mapnamelist * taillp;
 
-void
-addToAttList(str)
-char *str;
+void 
+addToAttList (char *str)
 {
-char * cp;
+	char * cp;
 
-  cp = index(str, ' ');
-  if (cp == NULLCP)
-  {
-    (void) fprintf(stderr, "log an error message about parsing of attribute name mappings...\n");
-    return;
-  }
-  *cp = '\0';
-  cp++;
-  addAttNode(str, cp);
+	cp = index(str, ' ');
+	if (cp == NULLCP) {
+		 fprintf(stderr, "log an error message about parsing of attribute name mappings...\n");
+		return;
+	}
+	*cp = '\0';
+	cp++;
+	addAttNode(str, cp);
 }
 
-void
-addAttNode(tablename, nicename)
-char * tablename, * nicename;
+void 
+addAttNode (char *tablename, char *nicename)
 {
-struct mapnamelist * mnlp;
+	struct mapnamelist * mnlp;
 
-  mnlp = mapname_alloc();
-  if (mapnamelp != NULLMNLIST)
-  {
-    taillp->next = mnlp;
-    taillp = mnlp;
-  }
-  else
-    mapnamelp = taillp = mnlp;
-  mnlp->tablename = copy_string(tablename);
-  mnlp->nicename = copy_string(nicename);
-  mnlp->next = NULLMNLIST;
+	mnlp = mapname_alloc();
+	if (mapnamelp != NULLMNLIST) {
+		taillp->next = mnlp;
+		taillp = mnlp;
+	} else
+		mapnamelp = taillp = mnlp;
+	mnlp->tablename = copy_string(tablename);
+	mnlp->nicename = copy_string(nicename);
+	mnlp->next = NULLMNLIST;
 }
 
 char *
-mapAttName(tablename)
-char * tablename;
+mapAttName (char *tablename)
 {
-struct mapnamelist * mnlp;
+	struct mapnamelist * mnlp;
 
-  for (mnlp = mapnamelp; mnlp != NULLMNLIST; mnlp = mnlp->next)
-    if (strcmp(tablename, mnlp->tablename) == 0)
-      return mnlp->nicename;
-  return tablename;
+	for (mnlp = mapnamelp; mnlp != NULLMNLIST; mnlp = mnlp->next)
+		if (strcmp(tablename, mnlp->tablename) == 0)
+			return mnlp->nicename;
+	return tablename;
 }

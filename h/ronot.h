@@ -1,6 +1,6 @@
 /* ronote.h - Additions to properly support ABSTRACT-BIND */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/ronot.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -42,7 +42,7 @@
 #define BIND_ERROR	2	/* indicates a bind error occured */
 
 struct RoNOTindication {
-    int	    rni_reason;		/* reason for failure */
+	int	    rni_reason;		/* reason for failure */
 #define RBI_ACSE		1	/* ACSE provider failed */
 #define RBI_SET_ROSE_PRES	2	/* Failed to set ROS-USER */
 #define RBI_ENC_BIND_ARG	3	/* Failed encoding bind argument */
@@ -59,10 +59,10 @@ struct RoNOTindication {
 #define RBI_DEC_UNBIND_ERR	14	/* Failed decoding unbind error */
 #define RBI_DEC_NINFO		15	/* Erroneous number of user infos */
 
-				/* diagnostics from provider */
+	/* diagnostics from provider */
 #define	RB_SIZE	512
-    int	    rni_cc;		/*   length */
-    char    rni_data[RB_SIZE];	/*   data */
+	int	    rni_cc;		/*   length */
+	char    rni_data[RB_SIZE];	/*   data */
 };
 
 #ifndef	lint

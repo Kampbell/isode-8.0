@@ -15,7 +15,7 @@
  * Revision 9.0  1992/06/16  14:38:53  isode
  * Release 8.0
  *
- * 
+ *
  */
 
 
@@ -80,22 +80,20 @@ int	argcmp();
  * Major portions of this were snarfed from csh/sh.glob.c.
  */
 struct namelist *
-expand(list, wh)
-	struct namelist *list;
-	int wh;
+expand (struct namelist *list, int wh)
 {
-	register struct namelist *nl, *prev;
-	register int n;
+	struct namelist *nl, *prev;
+	int n;
 	char pathbuf[BUFSIZ];
 	char *argvbuf[GAVSIZ];
 
 	if (debug) {
-		(void) printf("expand(%x, %d)\nlist = ", list, wh);
+		 printf("expand(%x, %d)\nlist = ", list, wh);
 		prnames(list);
 	}
 
 	if (wh == 0) {
-		register char *cp;
+		char *cp;
 
 		for (nl = list; nl != NULL; nl = nl->n_next)
 			for (cp = nl->n_name; *cp; cp++)
@@ -132,17 +130,17 @@ expand(list, wh)
 		}
 	}
 	if (debug) {
-		(void) printf("expanded list = ");
+		 printf("expanded list = ");
 		prnames(list);
 	}
 	return(list);
 }
 
-expstr(s)
-	char *s;
+int 
+expstr (char *s)
 {
-	register char *cp, *cp1;
-	register struct namelist *tp;
+	char *cp, *cp1;
+	struct namelist *tp;
 	char *tail;
 	char buf[BUFSIZ];
 	int savec, oeargc;
@@ -178,13 +176,13 @@ expstr(s)
 			*tail = savec;
 		if (tp != NULL) {
 			for (; tp != NULL; tp = tp->n_next) {
-				(void) sprintf(buf, "%s%s%s",
-					       s, tp->n_name, tail);
+				 sprintf(buf, "%s%s%s",
+							   s, tp->n_name, tail);
 				expstr(buf);
 			}
 			return;
 		}
-		(void) sprintf(buf, "%s%s", s, tail);
+		 sprintf(buf, "%s%s", s, tail);
 		expstr(buf);
 		return;
 	}
@@ -207,7 +205,7 @@ expstr(s)
 			*cp1 = '\0';
 			if (pw == NULL || strcmp(pw->pw_name, buf+1) != 0) {
 				if ((pw = getpwnam(buf+1)) == NULL) {
-					(void) strcat(buf, ": unknown user name");
+					 strcat(buf, ": unknown user name");
 					yyerror(buf+1);
 					return;
 				}
@@ -239,9 +237,8 @@ expstr(s)
 	sort();
 }
 
-static
-argcmp(a1, a2)
-	char **a1, **a2;
+static 
+argcmp (char **a1, char **a2)
 {
 
 	return (strcmp(*a1, *a2));
@@ -251,11 +248,11 @@ argcmp(a1, a2)
  * If there are any Shell meta characters in the name,
  * expand into a list, after searching directory
  */
-expsh(s)
-	char *s;
+int 
+expsh (char *s)
 {
-	register char *cp;
-	register char *spathp, *oldcp;
+	char *cp;
+	char *spathp, *oldcp;
 	struct stat stb;
 
 	spathp = pathp;
@@ -279,7 +276,7 @@ expsh(s)
 		cp++, pathp++;
 	*pathp = '\0';
 	if (*oldcp == '{') {
-		(void) execbrc(cp, (char *)NULL);
+		 execbrc(cp, (char *)NULL);
 		return;
 	}
 	matchdir(cp);
@@ -288,11 +285,11 @@ endit:
 	*pathp = '\0';
 }
 
-matchdir(pattern)
-	char *pattern;
+int 
+matchdir (char *pattern)
 {
 	struct stat stb;
-	register struct dirent *dp;
+	struct dirent *dp;
 	DIR *dirp;
 
 	dirp = opendir(path);
@@ -312,27 +309,27 @@ matchdir(pattern)
 			if (which & E_TILDE)
 				Cat(path, dp->d_name);
 			else {
-				(void) strcpy(pathp, dp->d_name);
+				 strcpy(pathp, dp->d_name);
 				Cat(tilde, tpathp);
 				*pathp = '\0';
 			}
 		}
-	(void) closedir(dirp);
+	 closedir(dirp);
 	return;
 
 patherr1:
-	(void) closedir(dirp);
+	 closedir(dirp);
 patherr2:
-	(void) strcat(path, ": ");
-	(void) strcat(path, sys_errlist[errno]);
+	 strcat(path, ": ");
+	 strcat(path, sys_errlist[errno]);
 	yyerror(path);
 }
 
-execbrc(p, s)
-	char *p, *s;
+int 
+execbrc (char *p, char *s)
 {
 	char restbuf[BUFSIZ + 2];
-	register char *pe, *pm, *pl;
+	char *pe, *pm, *pl;
 	int brclev = 0;
 	char *lm, savec, *spathp;
 
@@ -383,8 +380,8 @@ pend:
 doit:
 			savec = *pm;
 			*pm = 0;
-			(void) strcpy(lm, pl);
-			(void) strcat(restbuf, pe + 1);
+			 strcpy(lm, pl);
+			 strcat(restbuf, pe + 1);
 			*pm = savec;
 			if (s == 0) {
 				spathp = pathp;
@@ -407,11 +404,11 @@ doit:
 	return (0);
 }
 
-match(s, p)
-	char *s, *p;
+int 
+match (char *s, char *p)
 {
-	register int c;
-	register char *sentp;
+	int c;
+	char *sentp;
 	char sexpany = expany;
 
 	if (*s == '.' && *p != '.')
@@ -424,10 +421,10 @@ match(s, p)
 	return (c);
 }
 
-amatch(s, p)
-	register char *s, *p;
+int 
+amatch (char *s, char *p)
 {
-	register int scc;
+	int scc;
 	int ok, lc;
 	char *spathp;
 	struct stat stb;
@@ -453,9 +450,8 @@ amatch(s, p)
 				if (cc == '-') {
 					if (lc <= scc && scc <= *p++)
 						ok++;
-				} else
-					if (scc == (lc = cc))
-						ok++;
+				} else if (scc == (lc = cc))
+					ok++;
 			}
 			if (cc == 0) {
 				yyerror("Missing ']'");
@@ -512,10 +508,10 @@ slash:
 	}
 }
 
-smatch(s, p)
-	register char *s, *p;
+int 
+smatch (char *s, char *p)
 {
-	register int scc;
+	int scc;
 	int ok, lc;
 	int c, cc;
 
@@ -535,9 +531,8 @@ smatch(s, p)
 				if (cc == '-') {
 					if (lc <= scc && scc <= *p++)
 						ok++;
-				} else
-					if (scc == (lc = cc))
-						ok++;
+				} else if (scc == (lc = cc))
+					ok++;
 			}
 			if (cc == 0) {
 				yyerror("Missing ']'");
@@ -570,11 +565,11 @@ smatch(s, p)
 	}
 }
 
-Cat(s1, s2)
-	register char *s1, *s2;
+int 
+Cat (char *s1, char *s2)
 {
 	int len = strlen(s1) + strlen(s2) + 1;
-	register char *s;
+	char *s;
 
 	nleft -= len;
 	if (nleft <= 0 || ++eargc >= GAVSIZ)
@@ -590,8 +585,8 @@ Cat(s1, s2)
 		;
 }
 
-addpath(c)
-	char c;
+int 
+addpath (int c)
 {
 
 	if (pathp >= lastpathp)

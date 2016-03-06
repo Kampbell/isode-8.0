@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapselect.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/rosapselect.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -38,32 +38,29 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapselect.c,v 9.0 1
 
 /* ARGSUSED */
 
-int	RoSelectMask (sd, mask, nfds, roi)
-int	sd;
-fd_set *mask;
-int    *nfds;
-struct RoSAPindication *roi;
+int 
+RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	struct assocblk   *acb;
 
-    missingP (mask);
-    missingP (nfds);
-    missingP (roi);
+	missingP (mask);
+	missingP (nfds);
+	missingP (roi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rosapPsig (acb, sd);
+	rosapPsig (acb, sd);
 
-    if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING)) {
-	(void) sigiomask (smask);
-	return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
-    }
+	if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING)) {
+		 sigiomask (smask);
+		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
+	}
 
-    result = (*acb -> acb_roselectmask) (acb, mask, nfds, roi);
+	result = (*acb -> acb_roselectmask) (acb, mask, nfds, roi);
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return result;
+	return result;
 }

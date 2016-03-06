@@ -1,6 +1,6 @@
 /* clns.h - support for MIB realization of the experimental CLNS group */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/snmp/RCS/clns.h,v 9.0 1992/06/16 12:38:11 isode Rel $
  *
  * Contributed by NYSERNet Inc.  This work was partially supported by the
@@ -32,20 +32,20 @@
 
 
 struct iso_addr {
-    u_char	isoa_len;	    /* length in octets */
-    char	isoa_genaddr[20];   /* general opaque address */
+	u_char	isoa_len;	    /* length in octets */
+	char	isoa_genaddr[20];   /* general opaque address */
 };
 
 struct sockaddr_iso {
-    u_char	siso_len;	/* length */
-    u_char	siso_family;	/* address family */
-    u_char	siso_plen;	/* psel length */
-    u_char	siso_slen;	/* ssel length */
-    u_char	siso_tlen;	/* tsel length */
+	u_char	siso_len;	/* length */
+	u_char	siso_family;	/* address family */
+	u_char	siso_plen;	/* psel length */
+	u_char	siso_slen;	/* ssel length */
+	u_char	siso_tlen;	/* tsel length */
 
-    struct iso_addr siso_addr;	/* network address */
+	struct iso_addr siso_addr;	/* network address */
 
-    u_char	siso_pad[6];	/* space for gosip v2 sels */
+	u_char	siso_pad[6];	/* space for gosip v2 sels */
 };
 #define	siso_nlen	siso_addr.isoa_len
 #define	siso_data	siso_addr.isoa_genaddr

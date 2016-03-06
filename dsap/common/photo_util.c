@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/photo_util.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/photo_util.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -55,23 +55,23 @@ get_bit (lineptr)
 bit_string * lineptr;      /* the line to get the bit from */
 
 {
-unsigned char    result;
+	unsigned char    result;
 
-   /* Anding the mask and the data gives a 0 if the bit masked is 0, 1 otherwis
-e */
-   result = lineptr->mask & lineptr->pos;
+	/* Anding the mask and the data gives a 0 if the bit masked is 0, 1 otherwis
+	e */
+	result = lineptr->mask & lineptr->pos;
 
-   lineptr->mask  >>= 1;
+	lineptr->mask  >>= 1;
 
-   if (lineptr->mask == 0) {
-      lineptr->pos = *lineptr->dbuf++;
-      lineptr->mask = BIT_MASK;
-      }
+	if (lineptr->mask == 0) {
+		lineptr->pos = *lineptr->dbuf++;
+		lineptr->mask = BIT_MASK;
+	}
 
-   if( result != 0 )    /* may not be 1, may be 0001000 for example */
-	result = 1;
+	if( result != 0 )    /* may not be 1, may be 0001000 for example */
+		result = 1;
 
-   return ( (char) result );
+	return ( (char) result );
 }
 
 
@@ -86,15 +86,15 @@ set_bit (lineptr)
 bit_string *  lineptr;
 
 {
-   /* This sets the masked bit */
-   lineptr->pos |= lineptr->mask;
+	/* This sets the masked bit */
+	lineptr->pos |= lineptr->mask;
 
-   lineptr->mask  >>= 1;
+	lineptr->mask  >>= 1;
 
-   if (lineptr->mask == 0) {
-      *lineptr->dbuf++ = lineptr->pos;
-      lineptr->mask = BIT_MASK;
-      }
+	if (lineptr->mask == 0) {
+		*lineptr->dbuf++ = lineptr->pos;
+		lineptr->mask = BIT_MASK;
+	}
 
 }
 
@@ -111,15 +111,15 @@ clr_bit (lineptr)
 bit_string *  lineptr;
 
 {
-    /* clear the masked bit */
-   lineptr->pos &=   ~(lineptr->mask) ;
+	/* clear the masked bit */
+	lineptr->pos &=   ~(lineptr->mask) ;
 
-   lineptr->mask  >>= 1;         /* right shift the mask */
+	lineptr->mask  >>= 1;         /* right shift the mask */
 
-   if (lineptr->mask == 0) {     /* may need to move on to the next byte */
-      *lineptr->dbuf++ = lineptr->pos;
-      lineptr->mask = BIT_MASK;
-      }
+	if (lineptr->mask == 0) {     /* may need to move on to the next byte */
+		*lineptr->dbuf++ = lineptr->pos;
+		lineptr->mask = BIT_MASK;
+	}
 
 }
 

@@ -208,6 +208,9 @@ typedef unsigned long	u_long;
 #endif
 #endif
 
+#ifdef CYGWIN
+#include <sys/select.h>
+#endif
 
 #ifndef FD_SET
 #define	FD_SETSIZE	    (sizeof (fd_set) * 8)
@@ -280,18 +283,6 @@ struct qbuf {
 #define	max(a, b)	((a) > (b) ? (a) : (b))
 #endif
 
-
-#ifdef SYS5
-
-#if	!defined(WINTLI) && !defined(WIN)
-#ifndef	sun
-#define	getdtablesize()	_NFILE
-#endif
-#else
-#define	getdtablesize()	(_NFILE - 1)
-#endif
-
-#endif
 
 #if	defined(RT) || defined (HPUX)
 #define	ntohs(x)	(x)

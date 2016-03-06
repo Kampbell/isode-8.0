@@ -1,6 +1,6 @@
 /* rtsap.h - include file for reliable transfer users (RtS-USER) */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/rtsap.h,v 5.0 88/07/21 14:39:30 mrose Rel $
  *
  *
@@ -33,32 +33,32 @@
 /*  */
 
 struct RtSAPaddr {		/* RtSAP address (old-style) */
-    struct SSAPaddr rta_addr;
+	struct SSAPaddr rta_addr;
 
-    u_short	rta_port;
+	u_short	rta_port;
 };
 #define	NULLRtA			((struct RtSAPaddr *) 0)
 
 /*  */
 
 struct RtSAPstart {		/* RT-OPEN.INDICATION */
-    int	    rts_sd;		/* RTS descriptor */
+	int	    rts_sd;		/* RTS descriptor */
 
-    struct RtSAPaddr rts_initiator;/* address */
+	struct RtSAPaddr rts_initiator;/* address */
 
-    int	    rts_mode;		/* dialogue mode */
+	int	    rts_mode;		/* dialogue mode */
 #define	RTS_MONOLOGUE	0	/*   monologue */
 #define	RTS_TWA		1	/*   two-way alternate */
 
-    int	    rts_turn;		/* initial turn */
+	int	    rts_turn;		/* initial turn */
 #define	RTS_INITIATOR	0	/*   the initiator */
 #define	RTS_RESPONDER	1	/*   the responder */
 
-    u_short rts_port;		/* application number */
+	u_short rts_port;		/* application number */
 
-    PE	    rts_data;		/* initial DATA from peer */
+	PE	    rts_data;		/* initial DATA from peer */
 
-    struct AcSAPstart rts_start;/* info from A-ASSOCIATE.INDICATION */
+	struct AcSAPstart rts_start;/* info from A-ASSOCIATE.INDICATION */
 };
 #define	RTSFREE(rts) \
 { \
@@ -69,21 +69,21 @@ struct RtSAPstart {		/* RT-OPEN.INDICATION */
 
 
 struct RtSAPconnect {		/* RT-OPEN.CONFIRMATION */
-    int	    rtc_sd;		/* RTS descriptor */
+	int	    rtc_sd;		/* RTS descriptor */
 
-    int	    rtc_result;		/* disposition */
+	int	    rtc_result;		/* disposition */
 #define	RTS_ACCEPT	(-1)
 
-				/* RT-OPEN.REQUEST */
+	/* RT-OPEN.REQUEST */
 #define	RTS_BUSY	0	/* Busy */
 #define	RTS_RECOVER	1	/* Cannot recover */
 #define	RTS_VALIDATE	2	/* Validation failure */
 #define	RTS_MODE	3	/* Unacceptable dialogue mode */
 #define	RTS_REJECT	4	/* Rejected by responder */
 
-    PE	    rtc_data;		/* initial DATA from peer */
+	PE	    rtc_data;		/* initial DATA from peer */
 
-    struct AcSAPconnect rtc_connect;/* info from A-ASSOCIATE.CONFIRMATION */
+	struct AcSAPconnect rtc_connect;/* info from A-ASSOCIATE.CONFIRMATION */
 };
 #define	RTCFREE(rtc) \
 { \
@@ -94,15 +94,15 @@ struct RtSAPconnect {		/* RT-OPEN.CONFIRMATION */
 
 
 struct RtSAPturn {		/* RT-TURN-{GIVE,PLEASE}.INDICATION */
-    int	    rtu_please;		/* T   = RT-TURN-PLEASE.INDICATION
+	int	    rtu_please;		/* T   = RT-TURN-PLEASE.INDICATION
 				   NIL = RT-TURN-GIVE.INDICATION */
 
-    int	    rtu_priority;	/* priority, iff rtu_please == T */
+	int	    rtu_priority;	/* priority, iff rtu_please == T */
 };
 
 
 struct RtSAPtransfer {		/* RT-TRANSFER.INDICATION */
-    PE	    rtt_data;
+	PE	    rtt_data;
 };
 #define	RTTFREE(rtt) \
 { \
@@ -112,11 +112,11 @@ struct RtSAPtransfer {		/* RT-TRANSFER.INDICATION */
 
 
 struct RtSAPabort {		/* RT-{U,P}-ABORT.INDICATION */
-    int     rta_peer;		/* T   = RT-U-ABORT.INDICATION
+	int     rta_peer;		/* T   = RT-U-ABORT.INDICATION
 				   NIL = RT-P-ABORT.INDICATION */
 
-    int	    rta_reason;		/* reason */
-				/* begin UNOFFICIAL */
+	int	    rta_reason;		/* reason */
+	/* begin UNOFFICIAL */
 #define	RTS_ADDRESS	5	/* Address unknown */
 #define	RTS_REFUSED	6	/* Connect request refused on this network
 				   connection */
@@ -132,17 +132,17 @@ struct RtSAPabort {		/* RT-{U,P}-ABORT.INDICATION */
 #define	RTS_TIMER	16	/* Timer expired */
 #define	RTS_WAITING	17	/* Indications waiting */
 #define	RTS_TRANSFER	18	/* Transfer failure (not really unofficial) */
-				/* end UNOFFICIAL */
+	/* end UNOFFICIAL */
 
 #define	RTS_FATAL(r)	((r) < RTS_PARAMETER)
 #define	RTS_OFFICIAL(r)	((r) < RTS_ADDRESS)
 
-    PE	    rta_udata;		/* failure data from user */
+	PE	    rta_udata;		/* failure data from user */
 
-				/* additional failure data from provider */
+	/* additional failure data from provider */
 #define	RTA_SIZE	512
-    int	    rta_cc;		/*   length */
-    char    rta_data[RTA_SIZE];	/*   data */
+	int	    rta_cc;		/*   length */
+	char    rta_data[RTA_SIZE];	/*   data */
 };
 #define	RTAFREE(rta) \
 { \
@@ -152,37 +152,37 @@ struct RtSAPabort {		/* RT-{U,P}-ABORT.INDICATION */
 
 
 struct RtSAPclose {		/* RT-CLOSE.INDICATION */
-    int	    rtc_dummy;
+	int	    rtc_dummy;
 };
 
 
 struct RtSAPindication {
-    int	    rti_type;		/* the union element present */
+	int	    rti_type;		/* the union element present */
 #define	RTI_TURN	0x00
 #define	RTI_TRANSFER	0x01
 #define	RTI_ABORT	0x02
 #define	RTI_CLOSE	0x03
 #define	RTI_FINISH	0x04
 
-    union {
-	struct RtSAPturn rti_un_turn;
-	struct RtSAPtransfer rti_un_transfer;
-	struct RtSAPabort rti_un_abort;
-	struct RtSAPclose rti_un_close;
-	struct AcSAPfinish rti_un_finish;
-    }	rti_un;
+	union {
+		struct RtSAPturn rti_un_turn;
+		struct RtSAPtransfer rti_un_transfer;
+		struct RtSAPabort rti_un_abort;
+		struct RtSAPclose rti_un_close;
+		struct AcSAPfinish rti_un_finish;
+	}	rti_un;
 #define	rti_turn	rti_un.rti_un_turn
 #define	rti_transfer	rti_un.rti_un_transfer
 #define	rti_abort	rti_un.rti_un_abort
 #define	rti_close	rti_un.rti_un_close
 #define	rti_finish	rti_un.rti_un_finish
 };
-    
+
 /*  */
 
 extern char *rtsapversion;
 
-				/* RTSE primitives */
+/* RTSE primitives */
 int	RtInit ();		/* RT-OPEN.INDICATION */
 int	RtOpenResponse ();	/* RT-OPEN.RESPONSE */
 int	RtOpenRequest ();	/* RT-OPEN.REQUEST */
@@ -190,7 +190,7 @@ int	RtCloseRequest ();	/* RT-CLOSE.REQUEST */
 int	RtCloseResponse ();	/* RT-CLOSE.RESPONSE */
 int	RtUAbortRequest ();	/* RT-U-ABORT.REQUEST */
 
-				/* X.410 primitives */
+/* X.410 primitives */
 int	RtExec ();		/* SERVER only */
 int	RtBInit ();		/* RT-BEGIN.INDICATION (X.410 OPEN.INDICATION) */
 int	RtBeginResponse ();	/* RT-BEGIN.RESPONSE (X.410 OPEN.RESPONSE) */

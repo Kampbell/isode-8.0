@@ -1,6 +1,6 @@
 /* tailor.h - ISODE tailoring */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/tailor.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -64,14 +64,14 @@ extern int	ts_stacks;
 #define	TS_ALL	0xff
 
 struct ts_interim {
-    char   *ts_name;		/* community name, also MACRO name */
-    char   *ts_value;		/*   .. MACRO value */
+	char   *ts_name;		/* community name, also MACRO name */
+	char   *ts_value;		/*   .. MACRO value */
 
-    int	    ts_subnet;		/* internal key */
-    int	    ts_syntax;		/* same values as na_stack */
+	int	    ts_subnet;		/* internal key */
+	int	    ts_syntax;		/* same values as na_stack */
 
-    char    ts_prefix[20];	/* NSAP prefix */
-    int	    ts_length;		/*   .. and length */
+	char    ts_prefix[20];	/* NSAP prefix */
+	int	    ts_length;		/*   .. and length */
 };
 extern struct ts_interim ts_interim[];
 

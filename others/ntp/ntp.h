@@ -266,7 +266,7 @@ struct ntpdata {
 	struct l_fixedpt rec;
 	struct l_fixedpt xmt;
 #ifdef notdef
-/* Not Yet in this version... */
+	/* Not Yet in this version... */
 	u_long keyid;
 	struct l_fixedpt mac;
 #endif
@@ -320,7 +320,7 @@ struct ntpdata {
 /* =================  table 3.2 Peer Variables	================= */
 struct ntp_peer {
 	struct ntp_peer *next, *prev;
-	struct Naddr src;		/* both peer.srcadr and 
+	struct Naddr src;		/* both peer.srcadr and
 					   peer.srcport */
 	int	flags;			/* local flags */
 #define	PEER_FL_CONFIG		0x0001

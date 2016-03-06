@@ -32,8 +32,8 @@ extern LLog * log_dsap;
 RDN  rdn_comp_cpy (rdn)
 RDN  rdn;
 {
-register RDN ptr;
-unsigned last_heap;
+	RDN ptr;
+	unsigned last_heap;
 
 	if (rdn==NULLRDN) {
 		return (NULLRDN);
@@ -56,9 +56,9 @@ unsigned last_heap;
 RDN  rdn_cpy (rdn)
 RDN  rdn;
 {
-RDN start;
-register RDN eptr;
-register RDN ptr,ptr2;
+	RDN start;
+	RDN eptr;
+	RDN ptr,ptr2;
 
 	if (rdn == NULLRDN) {
 		return (NULLRDN);

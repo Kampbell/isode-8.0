@@ -36,85 +36,80 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/advise.c,v 9.0 1
 #include "logger.h"
 
 static LLog _pgm_log = {
-   "rfa.log", NULLCP, NULLCP,
-   LLOG_NOTICE| LLOG_FATAL | LLOG_EXCEPTIONS, LLOG_NOTICE, 100,
-   LLOGCLS | LLOGCRT | LLOGZER, NOTOK
+	"rfa.log", NULLCP, NULLCP,
+	LLOG_NOTICE| LLOG_FATAL | LLOG_EXCEPTIONS, LLOG_NOTICE, 100,
+	LLOGCLS | LLOGCRT | LLOGZER, NOTOK
 };
 LLog *pgm_log = &_pgm_log;
 
 
-void initLog(myname)
-    char *myname;
+void 
+initLog (char *myname)
 {
-/*    if (isatty (fileno (stderr)))
-        ll_dbinit (pgm_log, myname);
-    else */ {
+	/*    if (isatty (fileno (stderr)))
+	        ll_dbinit (pgm_log, myname);
+	    else */ {
 
-        static char  myfile[BUFSIZ];
+		static char  myfile[BUFSIZ];
 
-        (void) sprintf (myfile, "%s.log", (strncmp (myname, "ros.", 4)
-                                && strncmp (myname, "lpp.", 4))
-                                || myname[4] == NULL
-                            	? myname : myname + 4);
-        pgm_log -> ll_file = myfile;
-        ll_hdinit (pgm_log, myname);
-    }
+		 sprintf (myfile, "%s.log", (strncmp (myname, "ros.", 4)
+										   && strncmp (myname, "lpp.", 4))
+						|| myname[4] == NULL
+						? myname : myname + 4);
+		pgm_log -> ll_file = myfile;
+		ll_hdinit (pgm_log, myname);
+	}
 }
 
 
 #ifndef	lint
 void	adios (va_alist)
-va_dcl
-{
-    char   *what;
-    va_list ap;
+va_dcl {
+	char   *what;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    _ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    cleanup ();
+	cleanup ();
 
-    _exit (1);
+	_exit (1);
 }
 #else
 /* VARARGS2 */
 
-void	adios (what, fmt)
-char   *what,
-       *fmt;
+void 
+adios (char *what, char *fmt)
 {
-    adios (what, fmt);
+	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
 void	advise (va_alist)
-va_dcl
-{
-    int	    code;
-    va_list ap;
+va_dcl {
+	int	    code;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    code = va_arg (ap, int);
+	code = va_arg (ap, int);
 
-    _ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, ap);
 
-    va_end (ap);
+	va_end (ap);
 }
 
 #else
 /* VARARGS */
 
-void	advise (code, what, fmt)
-char   *what,
-       *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
-    advise (code, what, fmt);
+	advise (code, what, fmt);
 }
 #endif
 
@@ -122,23 +117,21 @@ int	code;
 
 #ifndef	lint
 void	ryr_advise (va_alist)
-va_dcl
-{
-    va_list ap;
+va_dcl {
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap);
 
-    _ll_log (pgm_log, LLOG_NOTICE, ap);
+	_ll_log (pgm_log, LLOG_NOTICE, ap);
 
-    va_end (ap);
+	va_end (ap);
 }
 #else
 /* VARARGS2 */
-void	ryr_advise (what, fmt)
-char   *what,
-       *fmt;
+void 
+ryr_advise (char *what, char *fmt)
 {
-    ryr_advise (what, fmt);
+	ryr_advise (what, fmt);
 }
 #endif
 

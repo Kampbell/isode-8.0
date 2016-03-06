@@ -1,6 +1,6 @@
 /* ftamsystem.h - include file for FTAM responder */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam2/RCS/ftamsystem.h,v 9.0 1992/06/16 12:15:43 isode Rel $
  *
  *
@@ -39,7 +39,8 @@ extern char *myname;
 
 void	ftam_adios (), ftam_advise (), ftam_diag ();
 
-void	adios (), advise ();
+void	adios (char*what, ...);
+void	advise (int code, ...);
 
 /*    UNIX DATA */
 

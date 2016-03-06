@@ -95,7 +95,10 @@
 #endif
 
 
-int	tpktlose (), tsaplose ();
+struct tsapblk;
+struct TSAPdisconnect;
+
+int	tpktlose(struct tsapblk*, ...), tsaplose (struct TSAPdisconnect*, ...);
 
 /*  */
 

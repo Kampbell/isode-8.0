@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_extract.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/pe_extract.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -34,32 +34,29 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_extract.c,v 9.0 199
 
 /* assumes that q appears at most once directly under p... */
 
-int	pe_extract (pe, r)
-PE	pe,
-	r;
+int 
+pe_extract (PE pe, PE r)
 {
-    register PE	   *p,
-		    q;
+	PE	   *p,
+			 q;
 
-    switch (pe -> pe_form) {
-	case PE_FORM_PRIM: 
-	case PE_FORM_ICONS: 
-	    break;
+	switch (pe -> pe_form) {
+	case PE_FORM_PRIM:
+	case PE_FORM_ICONS:
+		break;
 
-	case PE_FORM_CONS: 
-	    for (p = &pe -> pe_cons; q = *p; p = &q -> pe_next)
-		if (q == r) {
-		    (*p) = q -> pe_next;
-		    q -> pe_next = NULLPE;
-		    if (r->pe_refcnt > 0)
-			    r->pe_refcnt--;
-		    return 1;
-		}
-		else
-		    if (pe_extract (q, r))
-			return 1;
-	    break;
-    }
+	case PE_FORM_CONS:
+		for (p = &pe -> pe_cons; q = *p; p = &q -> pe_next)
+			if (q == r) {
+				(*p) = q -> pe_next;
+				q -> pe_next = NULLPE;
+				if (r->pe_refcnt > 0)
+					r->pe_refcnt--;
+				return 1;
+			} else if (pe_extract (q, r))
+				return 1;
+		break;
+	}
 
-    return 0;
+	return 0;
 }

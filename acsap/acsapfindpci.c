@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapfindpci.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/acsap/RCS/acsapfindpci.c,v 9.0 1992/06/16 12:05:59 isode Rel $
  *
  *
@@ -34,28 +34,26 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapfindpci.c,v 9.0 
 
 /*  */
 
-int	AcFindPCI (sd, pci, aci)
-int	sd;
-int    *pci;
-struct AcSAPindication *aci;
+int 
+AcFindPCI (int sd, int *pci, struct AcSAPindication *aci)
 {
-    SBV     smask;
-    register struct assocblk  *acb;
+	SBV     smask;
+	struct assocblk  *acb;
 
-    missingP (pci);
-    missingP (aci);
+	missingP (pci);
+	missingP (aci);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    if ((acb = findacblk (sd)) == NULL) {
-	(void) sigiomask (smask);
-	return acsaplose (aci, ACS_PARAMETER, NULLCP,
-		"invalid association descriptor");
-    }
+	if ((acb = findacblk (sd)) == NULL) {
+		 sigiomask (smask);
+		return acsaplose (aci, ACS_PARAMETER, NULLCP,
+						  "invalid association descriptor");
+	}
 
-    *pci = acb -> acb_id;
-    
-    (void) sigiomask (smask);
+	*pci = acb -> acb_id;
 
-    return OK;
+	 sigiomask (smask);
+
+	return OK;
 }

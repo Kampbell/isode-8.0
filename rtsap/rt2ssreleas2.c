@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ssreleas2.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rtsap/RCS/rt2ssreleas2.c,v 9.0 1992/06/16 12:37:45 isode Rel $
  *
  *
@@ -35,52 +35,50 @@ static int  RtEndResponseAux ();
 
 /*    RT-END.RESPONSE (X.410 CLOSE.RESPONSE) */
 
-int	RtEndResponse (sd, rti)
-int	sd;
-struct RtSAPindication *rti;
+int 
+RtEndResponse (int sd, struct RtSAPindication *rti)
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	struct assocblk   *acb;
 
-    missingP (rti);
+	missingP (rti);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rtsapFsig (acb, sd);
+	rtsapFsig (acb, sd);
 
-    result = RtEndResponseAux (acb, rti);
+	result = RtEndResponseAux (acb, rti);
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return result;
+	return result;
 
 }
 
 /*  */
 
-static int  RtEndResponseAux (acb, rti)
-register struct assocblk   *acb;
-struct RtSAPindication *rti;
+static int 
+RtEndResponseAux (struct assocblk *acb, struct RtSAPindication *rti)
 {
-    int     result;
-    struct SSAPindication   sis;
-    register struct SSAPindication *si = &sis;
-    register struct SSAPabort  *sa = &si -> si_abort;
+	int     result;
+	struct SSAPindication   sis;
+	struct SSAPindication *si = &sis;
+	struct SSAPabort  *sa = &si -> si_abort;
 
-    if (acb -> acb_flags & ACB_ACS)
-	return rtsaplose (rti, RTS_OPERATION, NULLCP,
-		    "not an association descriptor for RTS");
+	if (acb -> acb_flags & ACB_ACS)
+		return rtsaplose (rti, RTS_OPERATION, NULLCP,
+						  "not an association descriptor for RTS");
 
-    if (SRelResponse (acb -> acb_fd, SC_ACCEPT, NULLCP, 0, si) == NOTOK)
-	result = ss2rtslose (acb, rti, "SRelResponse", sa);
-    else {
-	acb -> acb_fd = NOTOK;
-	result = OK;
-    }
+	if (SRelResponse (acb -> acb_fd, SC_ACCEPT, NULLCP, 0, si) == NOTOK)
+		result = ss2rtslose (acb, rti, "SRelResponse", sa);
+	else {
+		acb -> acb_fd = NOTOK;
+		result = OK;
+	}
 
-    acb -> acb_flags &= ~ACB_STICKY;
-    freeacblk (acb);
+	acb -> acb_flags &= ~ACB_STICKY;
+	freeacblk (acb);
 
-    return result;
+	return result;
 }

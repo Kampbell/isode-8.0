@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/strb2int.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/strb2int.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -31,25 +31,24 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/strb2int.c,v 9.0 1992/
 #include "psap.h"
 
 
-int	strb2int (cp, len)
-register char   *cp;
-register int	len;
+int 
+strb2int (char *cp, int len)
 {
-    register int    i,
-		    j,
-		    bit,
-		    mask,
-		    n;
+	int    i,
+			 j,
+			 bit,
+			 mask,
+			 n;
 
-    n = 0;
-    for (bit = (*cp & 0xff), i = 0, mask = 1 << (j = 7); i < len; i++) {
-	if (bit & mask)
-	    n |= 1 << i;
-	if (j-- == 0)
-	    bit = *++cp & 0xff, mask = 1 << (j = 7);
-	else
-	    mask >>= 1;
-    }
+	n = 0;
+	for (bit = (*cp & 0xff), i = 0, mask = 1 << (j = 7); i < len; i++) {
+		if (bit & mask)
+			n |= 1 << i;
+		if (j-- == 0)
+			bit = *++cp & 0xff, mask = 1 << (j = 7);
+		else
+			mask >>= 1;
+	}
 
-    return n;
+	return n;
 }

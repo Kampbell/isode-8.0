@@ -30,8 +30,7 @@
 #endif
 #endif
 
-struct dirent				/* data from getdents()/readdir() */
-	{
+struct dirent {			/* data from getdents()/readdir() */
 #ifdef apollo
 	long	d_ino;			/* inode number of entry */
 	unsigned short	d_reclen;	/* length of this record */
@@ -44,8 +43,8 @@ struct dirent				/* data from getdents()/readdir() */
 	unsigned short	d_reclen;	/* length of this record */
 	char		d_name[1];	/* name of file */	/* non-POSIX */
 #endif
-	};
+};
 
-#ifdef XOS_2				
+#ifdef XOS_2
 #define	S_ISDIR( mode )		(((mode) & S_IFMT) == S_IFDIR)
 #endif

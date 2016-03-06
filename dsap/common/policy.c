@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/policy.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/policy.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -43,20 +43,19 @@ static CMD_TABLE permtab[] = {
 	NULLCP, 0
 };
 
-unsigned str2permission(str)
-char *str;
+unsigned 
+str2permission (char *str)
 {
-char *cp;
-unsigned result = 0;
+	char *cp;
+	unsigned result = 0;
 
-  while (str && (*str != '\0'))
-  {
-    cp = index(str, '$');
-    if (cp != NULLCP)
-      *cp++ = '\0';
-    result |= cmd_srch(str, permtab);
-    str = cp;
-  }
-  return (result);
+	while (str && (*str != '\0')) {
+		cp = index(str, '$');
+		if (cp != NULLCP)
+			*cp++ = '\0';
+		result |= cmd_srch(str, permtab);
+		str = cp;
+	}
+	return (result);
 }
 

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2ssdu.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/pe2ssdu.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -33,34 +33,32 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2ssdu.c,v 9.0 1992/0
 
 /*  */
 
-int	pe2ssdu (pe, base, len)
-register PE pe;
-char  **base;
-int    *len;
+int 
+pe2ssdu (PE pe, char **base, int *len)
 {
-    register int plen, ret;
+	int plen, ret;
 
-    *len = 0;
-    plen  = ps_get_abs (pe);
-    Qcp = (char *)malloc((unsigned)plen);
-    *base = Qcp;
+	*len = 0;
+	plen  = ps_get_abs (pe);
+	Qcp = (char *)malloc((unsigned)plen);
+	*base = Qcp;
 
-    if (Qcp == NULL)
-        return NOTOK;
+	if (Qcp == NULL)
+		return NOTOK;
 
-    Len = 0;
-    Ecp = Qcp + plen;
-    if ((ret = pe2qb_f(pe)) != plen) {
-        (void) printf("pe2ssdu: bad length returned %d should be %d\n",
-                ret, plen);
-	return NOTOK;
-    }
-    *len = plen;
+	Len = 0;
+	Ecp = Qcp + plen;
+	if ((ret = pe2qb_f(pe)) != plen) {
+		 printf("pe2ssdu: bad length returned %d should be %d\n",
+					  ret, plen);
+		return NOTOK;
+	}
+	*len = plen;
 
 #ifdef	DEBUG
-    if (psap_log -> ll_events & LLOG_PDUS)
-	pe2text (psap_log, pe, 0, *len);
+	if (psap_log -> ll_events & LLOG_PDUS)
+		pe2text (psap_log, pe, 0, *len);
 #endif
 
-    return OK;
+	return OK;
 }

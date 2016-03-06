@@ -9,8 +9,8 @@
 #include "defs.h"
 
 typedef struct str_seq {
-  char *dname;
-  struct str_seq *next;
+	char *dname;
+	struct str_seq *next;
 } strSeq, *str_seq;
 
 #define NULLDS ((str_seq) 0)

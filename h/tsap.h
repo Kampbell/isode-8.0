@@ -1,6 +1,6 @@
 /* tsap.h - include file for transport users (TS-USER) */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/tsap.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -22,7 +22,7 @@
 
 
 #ifndef	_TSAP_
-#define	_TSAP_			
+#define	_TSAP_
 
 #ifndef	_MANIFEST_
 #include "manifest.h"
@@ -37,55 +37,55 @@
 /*  */
 
 struct TSAPstart {		/* T-CONNECT.INDICATON */
-    int     ts_sd;		/* TRANSPORT descriptor */
+	int     ts_sd;		/* TRANSPORT descriptor */
 
-    struct TSAPaddr ts_calling;	/* address of peer calling */
-    struct TSAPaddr ts_called;	/* address of peer called */
+	struct TSAPaddr ts_calling;	/* address of peer calling */
+	struct TSAPaddr ts_called;	/* address of peer called */
 
-    int     ts_expedited;	/* EXPEDITED DATA ok */
+	int     ts_expedited;	/* EXPEDITED DATA ok */
 
-    int	    ts_tsdusize;	/* largest atomic TSDU */
+	int	    ts_tsdusize;	/* largest atomic TSDU */
 
-    struct QOStype ts_qos;	/* quality of service */
+	struct QOStype ts_qos;	/* quality of service */
 
-				/* initial DATA from peer */
+	/* initial DATA from peer */
 #define	TS_SIZE		32
-    int	    ts_cc;		/*   length */
-    char    ts_data[TS_SIZE];	/*   data */
+	int	    ts_cc;		/*   length */
+	char    ts_data[TS_SIZE];	/*   data */
 };
 
 
 struct TSAPconnect {		/* T-CONNECT.CONFIRMATION */
-    int     tc_sd;		/* TRANSPORT descriptor */
+	int     tc_sd;		/* TRANSPORT descriptor */
 
-    struct TSAPaddr tc_responding;/* address of peer responding */
+	struct TSAPaddr tc_responding;/* address of peer responding */
 
-    int     tc_expedited;	/* EXPEDITED DATA ok */
+	int     tc_expedited;	/* EXPEDITED DATA ok */
 
-    int	    tc_tsdusize;	/* largest atomic TSDU */
+	int	    tc_tsdusize;	/* largest atomic TSDU */
 
-    struct QOStype tc_qos;	/* quality of service */
+	struct QOStype tc_qos;	/* quality of service */
 
-				/* initial DATA from peer */
+	/* initial DATA from peer */
 #define	TC_SIZE		32
-    int	    tc_cc;		/*   length */
-    char    tc_data[TC_SIZE];	/*   data */
+	int	    tc_cc;		/*   length */
+	char    tc_data[TC_SIZE];	/*   data */
 };
 
 
 struct TSAPdata {		/* T-READ.INDICATION */
-    int     tx_expedited;
+	int     tx_expedited;
 
-				/* DATA from peer */
+	/* DATA from peer */
 #define	TX_SIZE		16	/* EXPEDITED DATA only */
-    int	    tx_cc;		/*   total length */
-    struct qbuf tx_qbuf;	/*   chained data */
+	int	    tx_cc;		/*   total length */
+	struct qbuf tx_qbuf;	/*   chained data */
 };
 #define	TXFREE(tx)	QBFREE (&((tx) -> tx_qbuf))
 
 
 struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
-    int     td_reason;		/* reason for DISCONNECT, from ISO8072: */
+	int     td_reason;		/* reason for DISCONNECT, from ISO8072: */
 #define	DR_BASE		0x80
 #define	DR_NORMAL	(DR_BASE + 0)	/* NORMAL disconnect by SESSION
 					   entity */
@@ -102,13 +102,13 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 #define	DR_LENGTH	(DR_BASE + 10)	/* Header or parameter length
 					   invalid */
 
-					/* begin UNOFFICIAL */
+	/* begin UNOFFICIAL */
 #define	DR_NETWORK	(DR_BASE + 11)	/* Network disconnect */
 #define	DR_PARAMETER	(DR_BASE + 12)	/* Invalid parameter */
 #define	DR_OPERATION	(DR_BASE + 13)	/* Invalid operation */
 #define	DR_TIMER	(DR_BASE + 14)	/* Timer expired */
 #define	DR_WAITING	(DR_BASE + 15)	/* Indications waiting */
-					/* end UNOFFICIAL */
+	/* end UNOFFICIAL */
 
 #define	DR_UNKNOWN	0		/* Reason not specifed */
 #define	DR_CONGEST	1		/* Congestion at TSAP */
@@ -126,7 +126,7 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 
 #define DR_CONS			256		/* Base for CONS reson codes */
 #define DR_CONS_UNDEFINED  	DR_CONS+0	/* Undefined */
-		/* originator: NS_PROVIDER */
+	/* originator: NS_PROVIDER */
 #define	DR_CONS_PROVIDER	DR_CONS+224	/* GENERIC */
 #define	DR_CP_DIS_TRANS		DR_CONS+225	/* Disconnect - transient */
 #define	DR_CP_DIS_PERM		DR_CONS+226	/* Disconnect - permanent */
@@ -139,7 +139,7 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 #define	DR_CP_RESET_UNSPEC	DR_CONS+233	/* Unspecified RESET */
 #define	DR_CP_RESET_CONGESTION 	DR_CONS+234	/* RESET due to congestion */
 #define	DR_CP_REJ_NSAP_UNKNOWN_PERM  	DR_CONS+235	/* Unknown NSAP */
-		/* originator: NS_USER */
+	/* originator: NS_USER */
 #define	DR_CONS_USER		DR_CONS+240	/* GENERIC */
 #define	DR_CU_DIS_NORMAL	DR_CONS+241	/* Normal disconnect */
 #define	DR_CU_DIS_ABNORMAL	DR_CONS+242	/* Abnormal disconnect */
@@ -150,10 +150,10 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 #define	DR_CU_REJ_INCOMPAT	DR_CONS+248	/* Incompatable NS user data */
 #define	DR_CU_RESET_USER_RESYNCH DR_CONS+250	/* User RESET */
 
-				/* disconnect DATA from peer */
+	/* disconnect DATA from peer */
 #define	TD_SIZE		64
-    int	    td_cc;		/*   length */
-    char    td_data[TD_SIZE];	/*   data */
+	int	    td_cc;		/*   length */
+	char    td_data[TD_SIZE];	/*   data */
 };
 
 /*  */
@@ -164,7 +164,7 @@ extern char *tsapversion;
 int	TInit ();		/* T-CONNECT.INDICATION */
 
 int	TConnResponse ();	/* T-CONNECT.RESPONSE */
-				/* T-CONNECT.REQUEST (backwards-compatible) */
+/* T-CONNECT.REQUEST (backwards-compatible) */
 #define	TConnRequest(a1,a2,a3,a4,a5,a6,a7,a8) \
 	TAsynConnRequest(a1,a2,a3,a4,a5,a6,a7,a8,0)
 int	TAsynConnRequest ();	/* T-(ASYN-)CONNECT.REQUEST */

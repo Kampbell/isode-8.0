@@ -1,7 +1,7 @@
 /* sunlink7.h - site configuration file for SunLink OSI and X.25 7.0 on
 	SunOS 4 */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/sunnet7.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

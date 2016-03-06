@@ -64,12 +64,12 @@ int	pusaplose ();
 
 
 struct psapblk {
-    struct psapblk *pb_forw;	/* doubly-linked list */
-    struct psapblk *pb_back;	/*   .. */
+	struct psapblk *pb_forw;	/* doubly-linked list */
+	struct psapblk *pb_back;	/*   .. */
 
-    int	    pb_fd;		/* session descriptor */
+	int	    pb_fd;		/* session descriptor */
 
-    short   pb_flags;		/* our state */
+	short   pb_flags;		/* our state */
 #define	PB_NULL		0x00
 #define	PB_CONN		0x01	/* connected */
 #define	PB_FINN		0x02	/* other side wants to finish */
@@ -78,29 +78,29 @@ struct psapblk {
 
 #define PB_PUDT         0x20    /* p unit data service */
 
-    struct PSAPaddr  *pb_calling; /* local user address */
-    struct PSAPaddr  *pb_called;  /* remote user address */
+	struct PSAPaddr  *pb_calling; /* local user address */
+	struct PSAPaddr  *pb_called;  /* remote user address */
 
-    char   *pb_retry;		/* initial ppkt */
+	char   *pb_retry;		/* initial ppkt */
 
-    int	    pb_ncontext;	/* presentation context set */
-    struct PSAPcontext pb_contexts[NPCTX];
+	int	    pb_ncontext;	/* presentation context set */
+	struct PSAPcontext pb_contexts[NPCTX];
 
-    OID	    pb_asn;		/* default: abstract syntax name */
-    OID	    pb_atn;		/*   ..     abstract transfer name */
-    int	    pb_result;		/* 	    response */
-    
-    int	    pb_ssdusize;	/* largest atomic SSDU */
+	OID	    pb_asn;		/* default: abstract syntax name */
+	OID	    pb_atn;		/*   ..     abstract transfer name */
+	int	    pb_result;		/* 	    response */
 
-    struct PSAPaddr pb_responding;	/* responder */
+	int	    pb_ssdusize;	/* largest atomic SSDU */
 
-    IFP	    pb_DataIndication;		/* INDICATION handlers */
-    IFP	    pb_TokenIndication;		/*   .. */
-    IFP	    pb_SyncIndication;		/*   .. */
-    IFP	    pb_ActivityIndication;	/*   .. */
-    IFP	    pb_ReportIndication;	/*   .. */
-    IFP	    pb_ReleaseIndication;	/*   .. */
-    IFP	    pb_AbortIndication;		/*   .. */
+	struct PSAPaddr pb_responding;	/* responder */
+
+	IFP	    pb_DataIndication;		/* INDICATION handlers */
+	IFP	    pb_TokenIndication;		/*   .. */
+	IFP	    pb_SyncIndication;		/*   .. */
+	IFP	    pb_ActivityIndication;	/*   .. */
+	IFP	    pb_ReportIndication;	/*   .. */
+	IFP	    pb_ReleaseIndication;	/*   .. */
+	IFP	    pb_AbortIndication;		/*   .. */
 
 };
 #define	NULLPB		((struct psapblk *) 0)

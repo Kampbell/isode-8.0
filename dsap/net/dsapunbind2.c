@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind2.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind2.c,v 9.0 1992/06/16 12:14:05 isode Rel $
  *
  *
@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind2.c,v 9.
 
 /* ARGSUSED */
 
-int	  DUnBindAccept (sd, di)
-int			  sd;
-struct DSAPindication	* di;
+int 
+DUnBindAccept (int sd, struct DSAPindication *di)
 {
 	int			  result;
 	struct RoNOTindication	  rni_s;
@@ -45,9 +44,8 @@ struct DSAPindication	* di;
 	result = RoUnBindResult (sd, NULLPE, rni);
 	watch_dog_reset();
 
-	if (result == NOTOK)
-	{
-		(void) ronot2dsaplose (di, "D-UNBIND.ACCEPT", rni);
+	if (result == NOTOK) {
+		 ronot2dsaplose (di, "D-UNBIND.ACCEPT", rni);
 		return (NOTOK);
 	}
 
@@ -58,11 +56,8 @@ struct DSAPindication	* di;
 
 /* ARGSUSED */
 
-int	  DUnBindReject (sd, status, reason, di)
-int			  sd;
-int			  status;
-int			  reason;
-struct DSAPindication	* di;
+int 
+DUnBindReject (int sd, int status, int reason, struct DSAPindication *di)
 {
 	int			  result;
 	struct RoNOTindication	  rni_s;
@@ -72,9 +67,8 @@ struct DSAPindication	* di;
 	result = RoUnBindReject (sd, status, reason, rni);
 	watch_dog_reset ();
 
-	if (result == NOTOK)
-	{
-		(void) ronot2dsaplose (di, "D-UNBIND.REJECT", rni);
+	if (result == NOTOK) {
+		 ronot2dsaplose (di, "D-UNBIND.REJECT", rni);
 		return (NOTOK);
 	}
 

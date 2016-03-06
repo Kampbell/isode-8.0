@@ -1,7 +1,7 @@
 /* template.c - your comments here */
 
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/namelist.h,v 9.0 1992/06/16 12:45:59 isode Rel $
  *
  *
@@ -27,9 +27,9 @@
 #include "util.h"
 
 struct namelist {
-  char *name;
-  struct namelist *next;
-  Attr_Sequence ats;
+	char *name;
+	struct namelist *next;
+	Attr_Sequence ats;
 };
 
 #define NULLLIST (struct namelist *)NULL

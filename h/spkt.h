@@ -373,7 +373,7 @@
 #define	SC_REFUSE	(SC_BASE << 1)	/* larger than any sc_reason */
 
 
-int	spktlose (), ssaplose ();
+int	spktlose (int sd, ...), ssaplose (struct SSAPindication*si, ...);
 
 /*  */
 

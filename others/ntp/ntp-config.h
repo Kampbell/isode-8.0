@@ -19,7 +19,7 @@
 				   1 for crystal controlled clock (default) */
 #undef	 NOSWAP			/* allow use of plock() to prevent swapping */
 
-	
+
 /* if you dont have random/srandom - use the below workaround */
 /*
 #define srandom(x) srand(x)

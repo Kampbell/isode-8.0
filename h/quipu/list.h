@@ -29,8 +29,8 @@
 #include "quipu/dap.h"
 
 struct ds_list_arg {
-    CommonArgs lsa_common;
-    DN lsa_object;
+	CommonArgs lsa_common;
+	DN lsa_object;
 };
 
 /*
@@ -38,10 +38,10 @@ struct ds_list_arg {
 .VS
 */
 struct subordinate {
-    RDN sub_rdn;
-    char sub_aliasentry;        /* set to TRUE or FALSE                 */
-    char sub_copy;              /* set to TRUE or FALSE                 */
-    struct subordinate *sub_next;
+	RDN sub_rdn;
+	char sub_aliasentry;        /* set to TRUE or FALSE                 */
+	char sub_copy;              /* set to TRUE or FALSE                 */
+	struct subordinate *sub_next;
 };
 #define NULLSUBORD (struct subordinate *) NULL
 struct subordinate	* subord_comp_new();
@@ -51,19 +51,19 @@ struct subordinate	* subord_comp_new();
 .VS
 */
 struct ds_list_result {
-    CommonResults lsr_common;
-    DN lsr_object;
-    time_t lsr_age;
-    struct subordinate *lsr_subordinates;
-    POQ	   lsr_poq;
+	CommonResults lsr_common;
+	DN lsr_object;
+	time_t lsr_age;
+	struct subordinate *lsr_subordinates;
+	POQ	   lsr_poq;
 #define lsr_limitproblem lsr_poq.poq_limitproblem
 #define lsr_cr lsr_poq.poq_cref
-    struct ds_list_result * lsr_next;
+	struct ds_list_result * lsr_next;
 };
-				/* Note uncorrelated will need to be    */
-				/* added in to do the secure stuff      */
-				/* in a distributed manner              */
-				/* this also applies to search          */
+/* Note uncorrelated will need to be    */
+/* added in to do the secure stuff      */
+/* in a distributed manner              */
+/* this also applies to search          */
 
 
 struct list_cache {

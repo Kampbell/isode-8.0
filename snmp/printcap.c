@@ -88,9 +88,9 @@ char	*getenv();
  * doing a lookup.
  */
 getprent(bp)
-	register char *bp;
+char *bp;
 {
-	register int c, skip = 0;
+	int c, skip = 0;
 
 	if (pfp == NULL && (pfp = fopen(_PATH_PRINTCAP, "r")) == NULL)
 		return(-1);
@@ -98,7 +98,7 @@ getprent(bp)
 	for (;;) {
 		switch (c = getc(pfp)) {
 		case EOF:
-			(void) fclose(pfp);
+			 fclose(pfp);
 			pfp = NULL;
 			return(0);
 		case '\n':
@@ -119,7 +119,7 @@ getprent(bp)
 			if (skip)
 				continue;
 			if (bp >= tbuf+BUFSIZ) {
-				(void) write(2, "Termcap entry too long\n", 23);
+				 write(2, "Termcap entry too long\n", 23);
 				*bp = '\0';
 				return(1);
 			}
@@ -128,10 +128,9 @@ getprent(bp)
 	}
 }
 
-endprent()
-{
+endprent() {
 	if (pfp != NULL)
-		(void) fclose(pfp);
+		 fclose(pfp);
 }
 
 /*
@@ -140,15 +139,15 @@ endprent()
  * we just notice escaped newlines.
  */
 tgetent(bp, name)
-	char *bp, *name;
+char *bp, *name;
 {
-	register char *cp;
-	register int c;
-	register int i = 0, cnt = 0;
+	char *cp;
+	int c;
+	int i = 0, cnt = 0;
 	char ibuf[BUFSIZ];
-/*
-	char *cp2;
- */
+	/*
+		char *cp2;
+	 */
 	int tf;
 
 	tbuf = bp;
@@ -166,7 +165,7 @@ tgetent(bp, name)
 		if (*cp!='/') {
 			cp2 = getenv("TERM");
 			if (cp2==(char *) 0 || strcmp(name,cp2)==0) {
-				(void) strcpy(bp,cp);
+				 strcpy(bp,cp);
 				return(tnchktc());
 			} else {
 				tf = open(_PATH_PRINTCAP, 0);
@@ -187,21 +186,21 @@ tgetent(bp, name)
 			if (i == cnt) {
 				cnt = read(tf, ibuf, BUFSIZ);
 				if (cnt <= 0) {
-					(void) close(tf);
+					 close(tf);
 					return (0);
 				}
 				i = 0;
 			}
 			c = ibuf[i++];
 			if (c == '\n') {
-				if (cp > bp && cp[-1] == '\\'){
+				if (cp > bp && cp[-1] == '\\') {
 					cp--;
 					continue;
 				}
 				break;
 			}
 			if (cp >= bp+BUFSIZ) {
-				(void) write(2,"Termcap entry too long\n", 23);
+				 write(2,"Termcap entry too long\n", 23);
 				break;
 			} else
 				*cp++ = c;
@@ -212,7 +211,7 @@ tgetent(bp, name)
 		 * The real work for the match.
 		 */
 		if (tnamatch(name)) {
-			(void) close(tf);
+			 close(tf);
 			return(tnchktc());
 		}
 	}
@@ -225,9 +224,8 @@ tgetent(bp, name)
  * entries to say "like an HP2621 but doesn't turn on the labels".
  * Note that this works because of the left to right scan.
  */
-tnchktc()
-{
-	register char *p, *q;
+tnchktc() {
+	char *p, *q;
 	char tcname[16];	/* name of similar terminal */
 	char tcbuf[BUFSIZ];
 	char *holdtbuf = tbuf;
@@ -236,20 +234,20 @@ tnchktc()
 	p = tbuf + strlen(tbuf) - 2;	/* before the last colon */
 	while (*--p != ':')
 		if (p<tbuf) {
-			(void) write(2, "Bad termcap entry\n", 18);
+			 write(2, "Bad termcap entry\n", 18);
 			return (0);
 		}
 	p++;
 	/* p now points to beginning of last field */
 	if (p[0] != 't' || p[1] != 'c')
 		return(1);
-	(void) strcpy(tcname,p+3);
+	 strcpy(tcname,p+3);
 	q = tcname;
 	while (q && *q != ':')
 		q++;
 	*q = 0;
 	if (++hopcount > MAXHOP) {
-		(void) write(2, "Infinite tc= loop\n", 18);
+		 write(2, "Infinite tc= loop\n", 18);
 		return (0);
 	}
 	if (tgetent(tcbuf, tcname) != 1)
@@ -258,10 +256,10 @@ tnchktc()
 		;
 	l = p - holdtbuf + strlen(q);
 	if (l > BUFSIZ) {
-		(void) write(2, "Termcap entry too long\n", 23);
+		 write(2, "Termcap entry too long\n", 23);
 		q[BUFSIZ - (p-tbuf)] = 0;
 	}
-	(void) strcpy(p, q+1);
+	 strcpy(p, q+1);
 	tbuf = holdtbuf;
 	return(1);
 }
@@ -273,9 +271,9 @@ tnchktc()
  * name (before the first field) stops us.
  */
 tnamatch(np)
-	char *np;
+char *np;
 {
-	register char *Np, *Bp;
+	char *Np, *Bp;
 
 	Bp = tbuf;
 	if (*Bp == '#')
@@ -300,7 +298,7 @@ tnamatch(np)
  */
 static char *
 tskip(bp)
-	register char *bp;
+char *bp;
 {
 
 	while (*bp && *bp != ':')
@@ -319,10 +317,10 @@ tskip(bp)
  * Note that we handle octal numbers beginning with 0.
  */
 tgetnum(id)
-	char *id;
+char *id;
 {
-	register int i, base;
-	register char *bp = tbuf;
+	int i, base;
+	char *bp = tbuf;
 
 	for (;;) {
 		bp = tskip(bp);
@@ -352,9 +350,9 @@ tgetnum(id)
  * not given.
  */
 tgetflag(id)
-	char *id;
+char *id;
 {
-	register char *bp = tbuf;
+	char *bp = tbuf;
 
 	for (;;) {
 		bp = tskip(bp);
@@ -379,9 +377,9 @@ tgetflag(id)
  */
 char *
 tgetstr(id, area)
-	char *id, **area;
+char *id, **area;
 {
-	register char *bp = tbuf;
+	char *bp = tbuf;
 
 	for (;;) {
 		bp = tskip(bp);
@@ -404,12 +402,12 @@ tgetstr(id, area)
  */
 static char *
 tdecode(str, area)
-	register char *str;
-	char **area;
+char *str;
+char **area;
 {
-	register char *cp;
-	register int c;
-	register char *dp;
+	char *cp;
+	int c;
+	char *dp;
 	int i;
 
 	cp = *area;

@@ -1,4 +1,4 @@
-/* 
+/*
  * $Header: /xtel/isode/isode/h/quipu/RCS/af-cdefs.h,v 9.0 1992/06/16 12:23:11 isode Rel $
  *
  *
@@ -24,7 +24,7 @@
 #include "quipu/util.h"
 #include "quipu/name.h"
 #include "quipu/bind.h"
- 
+
 #else
 
 #include <isode/quipu/util.h>

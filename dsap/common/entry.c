@@ -40,22 +40,25 @@ extern int local_cache_size;
 directory_free (directory)
 Entry directory;
 {
-extern Entry database_root;
+	extern Entry database_root;
 
 	if (directory !=  NULLENTRY) {
 		if (directory != database_root)
 			turbo_index_delete(directory);
 
 		if (directory->e_children != NULLAVL)
-			(void) avl_free(directory->e_children, directory_free);
+			 avl_free(directory->e_children, directory_free);
 
 		switch (directory->e_data) {
 		case E_TYPE_SLAVE:
-			local_slave_size--; break;
+			local_slave_size--;
+			break;
 		case E_DATA_MASTER:
-			local_master_size--; break;
+			local_master_size--;
+			break;
 		case E_TYPE_CACHE_FROM_MASTER:
-			local_cache_size--; break;
+			local_cache_size--;
+			break;
 		}
 
 		entry_free(directory);
@@ -92,22 +95,22 @@ entry_replace( old, new )
 Entry   old;
 Entry   new;
 {
-        as_free( old->e_attributes );
-        old->e_attributes = as_cpy( new->e_attributes );
-        old->e_leaf = new->e_leaf;
-        old->e_complete = new->e_complete;
-        old->e_data = new->e_data;
-        old->e_allchildrenpresent = new->e_allchildrenpresent;
-        /* parent, children, inherit, and index are the same */
-        old->e_age = new->e_age;
-        old->e_lock = new->e_lock;
-        /* the rest must be set by calling unravel */
+	as_free( old->e_attributes );
+	old->e_attributes = as_cpy( new->e_attributes );
+	old->e_leaf = new->e_leaf;
+	old->e_complete = new->e_complete;
+	old->e_data = new->e_data;
+	old->e_allchildrenpresent = new->e_allchildrenpresent;
+	/* parent, children, inherit, and index are the same */
+	old->e_age = new->e_age;
+	old->e_lock = new->e_lock;
+	/* the rest must be set by calling unravel */
 }
 
 Entry entry_cpy (entryptr)
-register Entry entryptr;
+Entry entryptr;
 {
-register Entry ptr;
+	Entry ptr;
 
 	if (entryptr == NULLENTRY)
 		return (NULLENTRY);
@@ -119,7 +122,7 @@ register Entry ptr;
 		ptr->e_edbversion = strdup (entryptr->e_edbversion);
 	else
 		ptr->e_edbversion = NULLCP;
-        ptr->e_children = entryptr->e_children;
+	ptr->e_children = entryptr->e_children;
 	ptr->e_inherit = avs_cpy(entryptr->e_inherit);
 	ptr->e_leaf  = entryptr->e_leaf;
 	ptr->e_complete = entryptr->e_complete;
@@ -135,7 +138,7 @@ register Entry ptr;
 Entry get_default_entry (parent)
 Entry parent;
 {
-register Entry eptr;
+	Entry eptr;
 
 	eptr = entry_alloc();
 	eptr->e_leaf = TRUE;
@@ -147,8 +150,8 @@ register Entry eptr;
 }
 
 
-check_known_oids ()
-{
+int 
+check_known_oids (void) {
 	at_objectclass = AttrT_new (OBJECTCLASS_OID);
 	at_alias = AttrT_new (ALIAS_OID);
 }
@@ -158,13 +161,13 @@ entryrdn_cmp( rdn, ent )
 RDN     rdn;
 Entry   ent;
 {
-        return( rdn_cmp_reverse( rdn, ent->e_name ) );
+	return( rdn_cmp_reverse( rdn, ent->e_name ) );
 }
 
 entry_cmp( e1, e2 )
 Entry   e1;
 Entry   e2;
 {
-        return( rdn_cmp_reverse( e1->e_name, e2->e_name ) );
+	return( rdn_cmp_reverse( e1->e_name, e2->e_name ) );
 }
 

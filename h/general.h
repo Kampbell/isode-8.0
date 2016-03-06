@@ -138,10 +138,10 @@
 
 #if	defined(BSDSTRS) && !defined(BSD44) && (!defined(BSD43) || defined(SUNOS4) || defined(vax) || defined(RT) || (defined(mips) && defined(ultrix))) && !defined(XOS_2)
 #if !(defined(__STDC__) && defined(__GNUC__) && defined(mips) && defined(ultrix))
-char   *sprintf ();
+//char   *sprintf ();
 #endif
 #else
-int     sprintf ();
+//int     sprintf ();
 #endif
 
 char   *getenv ();
@@ -240,8 +240,6 @@ char   *sys_errname ();
 #endif
 
 
-void	asprintf (), _asprintf ();
-
 void	isodetailor ();		/* also in tailor.h */
 
 
@@ -269,7 +267,7 @@ extern time_t time ();
 
 
 /*  ntohs etc */
-
+#ifndef SWABLIB
 #ifndef	ntohs
 unsigned short	ntohs ();
 #endif
@@ -281,6 +279,7 @@ unsigned long	ntohl ();
 #endif
 #ifndef	htonl
 unsigned long	htonl ();
+#endif
 #endif
 
 int	char2bcd ();

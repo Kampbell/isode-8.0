@@ -1,6 +1,6 @@
 /* sector1.h - VTPM: sector 1 definitions */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/sector1.h,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *
@@ -103,24 +103,20 @@
 #define ASCII_GO	"GO"
 #define TRANSPARENT	"TRANS"
 
-typedef struct trans_args	/*Arguments for transparent profile*/
-{
+typedef struct trans_args {	/*Arguments for transparent profile*/
 	int num_reps;
 	char *rep_ptr[MAXREPS];
 	char *cur_rep;		/*Currently active repertoire*/
 } TRANS_ARGS;
 
-typedef struct telnet_args	/*Arguments for telnet profile*/
-{
+typedef struct telnet_args {	/*Arguments for telnet profile*/
 	int x_window;
 	char full_ascii;	/*If 1, Full ASCII.  If 0, graphics only*/
 } TELNET_ARGS;
 
-typedef struct vt_profile 	/*Structure for profile parameters*/
-{
+typedef struct vt_profile {	/*Structure for profile parameters*/
 	char *profile_name;
-	union
-	{
+	union {
 		TRANS_ARGS	tr_arg_list;
 		TELNET_ARGS	tel_arg_list;
 	} arg_val;
@@ -128,8 +124,7 @@ typedef struct vt_profile 	/*Structure for profile parameters*/
 
 /* Data Structures for PDU's */
 
-typedef struct ex_pointer	/*Explicit Pointer*/
-{
+typedef struct ex_pointer {	/*Explicit Pointer*/
 	int x_true;
 	int x_value;
 	int y_true;
@@ -138,34 +133,29 @@ typedef struct ex_pointer	/*Explicit Pointer*/
 	int z_value;
 } EX_POINTER;
 
-typedef struct pointer	/*General Pointer*/
-{
+typedef struct pointer {	/*General Pointer*/
 	int ptr_type;	/*Values 0 - 6 */
 	EX_POINTER e_ptr;
 } POINTER;
 
-typedef struct rpt_text		/*Repeat text*/
-{
+typedef struct rpt_text {	/*Repeat text*/
 	POINTER fin_addr;
 	int text_count;
 	char *text;
 } RPT_TEXT;
 
-typedef struct erase_text	/*Erase*/
-{
+typedef struct erase_text {	/*Erase*/
 	POINTER start_erase;
 	POINTER end_erase;
 	int erase_attr;		/*Boolean*/
 } ERASE_TEXT;
 
-typedef struct text
-{
+typedef struct text {
 	int text_count;
 	char *text_ptr;
 } TEXT_CONTENT;
 
-typedef struct attrib
-{
+typedef struct attrib {
 	int attr_id;		/* 0 - 4*/
 	int attr_val;
 	int attr_ext;
@@ -173,26 +163,22 @@ typedef struct attrib
 	POINTER end_p;
 } ATTRIB;
 
-typedef struct bool_u
-{
+typedef struct bool_u {
 	int val_count;
 	char *value;
 	int mask_count;
 	char *mask;
 } BOOL_U;
 
-typedef struct bit_str
-{
+typedef struct bit_str {
 	int bitcount;
 	int bitstring;
 } BIT_STR;
 
-typedef struct do_update	/*Display Object Update*/
-{
+typedef struct do_update {	/*Display Object Update*/
 	char *do_name;
 	int do_type;		/* 0 - 9 */
-	union
-	{
+	union {
 		EX_POINTER ptr_rel;
 		POINTER ptr_abs;
 		TEXT_CONTENT text_ud;
@@ -202,12 +188,10 @@ typedef struct do_update	/*Display Object Update*/
 	} do_cmd;
 } DO_UPDATE;
 
-typedef struct co_update	/*Control Object Update*/
-{
+typedef struct co_update {	/*Control Object Update*/
 	char *co_name;
 	int co_type;		/* 0 - 4 */
-	union
-	{
+	union {
 		char *char_update;
 		BOOL_U bool_update;
 		int sym_update;
@@ -216,20 +200,17 @@ typedef struct co_update	/*Control Object Update*/
 	} co_cmd;
 } CO_UPDATE;
 
-typedef struct text_update
-{
+typedef struct text_update {
 	struct text_update *ndq_elem;	/*Pointer to next one in queue*/
 	int echo_sw;		/*0 = Echo Now; 1 = Not Echo Now*/
 	int type_sw;		/*0 = display; 1 = control*/
-	union
-	{
+	union {
 		DO_UPDATE do_list;
 		CO_UPDATE co_list;
 	} updates;
 } TEXT_UPDATE;
 
-typedef struct implem_id
-{
+typedef struct implem_id {
 	int oid_true;
 	OID imp_oid;		/*Optional*/
 	int name_true;
@@ -238,16 +219,14 @@ typedef struct implem_id
 	char *version;		/*Optional*/
 } IMPLEM_ID;
 
-typedef struct int_offer
-{
+typedef struct int_offer {
 	int type;		/*0 for single value, 1 for range*/
 	int value;
 	int min_val;
 	int max_val;
 } INT_OFFER;
 
-typedef struct rep_font		/*Repertoire Font Offer*/
-{
+typedef struct rep_font {	/*Repertoire Font Offer*/
 	int rep_type;		/*1 = NULL; 2 = SEQUENCE....*/
 	char *rep_assign;	/*0 value for pointer means not used*/
 	int valid_font_cap;
@@ -256,8 +235,7 @@ typedef struct rep_font		/*Repertoire Font Offer*/
 	char *font_names[MAXFONTS];
 } REP_FONT;
 
-typedef struct dimen_param
-{
+typedef struct dimen_param {
 	int bound_type;		/*0 for no bound, 1 for unbounded, 2 for
 				  INT_OFFER */
 	INT_OFFER bound;
@@ -268,8 +246,7 @@ typedef struct dimen_param
 	INT_OFFER window;
 } DIMEN_PARAM;
 
-typedef struct rep_list		/*Repertoire list*/
-{
+typedef struct rep_list {	/*Repertoire list*/
 	int valid_cap;
 	INT_OFFER capability;	/*Listed as optional but seems you should
 				  have it. */
@@ -278,24 +255,21 @@ typedef struct rep_list		/*Repertoire list*/
 	REP_FONT repertoire[MAXREPS];
 } REP_LIST;
 
-typedef struct emp_list
-{
+typedef struct emp_list {
 	int valid_cap;
 	INT_OFFER capability;	/*Technically Optional*/
 	int num_emps;
 	char *emp_string[MAXEMPS];
 } EMP_LIST;
 
-typedef struct color_list
-{
+typedef struct color_list {
 	int valid_cap;
 	INT_OFFER capability;
 	int num_colors;
 	char *color_string[MAXCOLORS];
 } COLOR_LIST;
 
-typedef struct cds_offer
-{
+typedef struct cds_offer {
 	char *obj_name;
 	BIT_STR dimensions;
 	int valid_x_dim;
@@ -316,30 +290,25 @@ typedef struct cds_offer
 	BIT_STR access_right;
 } CDS_OFFER;
 
-typedef struct css_offer	/*Unused in TELNET (and hopefully Forms)*/
-{
+typedef struct css_offer {	/*Unused in TELNET (and hopefully Forms)*/
 	int i;			/*For compiler*/
 } CSS_OFFER;
 
-typedef struct dev_offer	/*Also unused*/
-{
+typedef struct dev_offer {	/*Also unused*/
 	int i;			/*For compiler*/
 } DEV_OFFER;
 
-typedef struct special_offer
-{
+typedef struct special_offer {
 	int param_num;
 	int param_type;		/*0,1,or2*/
-	union
-	{
+	union {
 		char *bool_arg;	/*Turns into bitstring = 0 or 1*/
 		INT_OFFER int_arg;
 		char *string_arg;
 	} args;
 } SPECIAL_OFFER;
 
-typedef struct arg_offer_list
-{
+typedef struct arg_offer_list {
 	int oid_true;	/*Optional--Use Default Profile if not specified*/
 	OID prof_oid;
 	int num_sp_param;	/*Number of special profile arguments*/
@@ -353,8 +322,7 @@ typedef struct arg_offer_list
 	BIT_STR del_ctrl;	/*Delivery Control*/
 } ARG_OFFER_LIST;
 
-typedef struct asq_msg
-{
+typedef struct asq_msg {
 	int class;		/*Basic only (=1)*/
 	int valid_imp;
 	IMPLEM_ID imp_id;	/*Optional*/
@@ -366,16 +334,14 @@ typedef struct asq_msg
 	int coll_winner;	/*Optional*/
 } ASQ_MSG;
 
-typedef struct fail_reason
-{
+typedef struct fail_reason {
 	int type;		/*0 or 1*/
 	char *usr_reason;
 	int provider_reason;	/* 1,2,3,or 4*/
 } FAIL_REASON;
 
 
-typedef struct font_value		/*Repertoire Font Value*/
-{
+typedef struct font_value {	/*Repertoire Font Value*/
 	int rep_type;		/*1 = NULL; 2 = SEQUENCE....*/
 	char *rep_assign;	/*0 value for pointer means not used*/
 	int valid_font_cap;
@@ -384,8 +350,7 @@ typedef struct font_value		/*Repertoire Font Value*/
 	char *font_names[MAXFONTS];
 } FONT_VALUE;
 
-typedef struct dimen_value
-{
+typedef struct dimen_value {
 	int bound_type;		/*0 for no bound, 1 for unbounded, 2 for
 				  integer */
 	int bound;
@@ -398,32 +363,28 @@ typedef struct dimen_value
 	int window;
 } DIMEN_VALUE;
 
-typedef struct rep_val_list		/*Repertoire value list*/
-{
+typedef struct rep_val_list {	/*Repertoire value list*/
 	int valid_cap;
 	int capability;
 	int num_reps;		/*Number of repertoires */
 	FONT_VALUE repertoire[MAXREPS];
 } REP_VALUE;
 
-typedef struct emp_value
-{
+typedef struct emp_value {
 	int valid_cap;
 	int capability;
 	int num_emps;
 	char *emp_string[MAXEMPS];
 } EMP_VALUE;
 
-typedef struct color_value
-{
+typedef struct color_value {
 	int valid_cap;
 	int capability;
 	int num_colors;
 	char *color_string[MAXCOLORS];
 } COLOR_VALUE;
 
-typedef struct cds_value
-{
+typedef struct cds_value {
 	char *obj_name;
 	int dimensions;		/*0 if not valid*/
 	int valid_x_dim;
@@ -446,30 +407,25 @@ typedef struct cds_value
 	int access_right;
 } CDS_VALUE;
 
-typedef struct css_value	/*Unused in TELNET */
-{
+typedef struct css_value {	/*Unused in TELNET */
 	int i;			/*For compiler*/
 } CSS_VALUE;
 
-typedef struct dev_value	/*Also unused*/
-{
+typedef struct dev_value {	/*Also unused*/
 	int i;			/*For compiler*/
 } DEV_VALUE;
 
-typedef struct special_value
-{
+typedef struct special_value {
 	int param_num;
 	int param_type;		/*0,1,or2*/
-	union
-	{
+	union {
 		int bool_arg;	/*Turns into bitstring = 0 or 1*/
 		int int_arg;
 		char *string_arg;
 	} args;
 } SPECIAL_VALUE;
 
-typedef struct arg_val_list
-{
+typedef struct arg_val_list {
 	int num_sp_param;	/*Number of special profile arguments*/
 	int num_cds_objects;	/*Number of Conceptual Data Store objects*/
 	int num_css_objects;	/*Number of Control Signal Status objects*/
@@ -481,8 +437,7 @@ typedef struct arg_val_list
 	int del_ctrl;	/*Delivery Control*/
 } ARG_VAL_LIST;
 
-typedef struct asr_msg
-{
+typedef struct asr_msg {
 	int valid_reason;	/*1 if reason is supplied*/
 	FAIL_REASON reason;	/*Optional*/
 	int result;		/*0,1, or 2*/
@@ -494,6 +449,6 @@ typedef struct asr_msg
 	BIT_STR func_units;
 	int valid_coll;		/*Is collision_winner valid?*/
 	int coll_winner;	/*Optional (0,1,2)*/
-} ASR_MSG;	
-	
+} ASR_MSG;
+
 

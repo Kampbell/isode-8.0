@@ -1,4 +1,4 @@
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/x500as/RCS/if-cdefs.h,v 9.0 1992/06/16 12:14:33 isode Rel $
  *
  *
@@ -23,7 +23,7 @@
 
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
- 
+
 #else
 
 #include <isode/quipu/util.h>

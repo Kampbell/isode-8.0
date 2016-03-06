@@ -1,6 +1,6 @@
 /* tsap.h - include file for transport users (TS-USER) */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/tsap.h,v 5.0 88/07/21 14:39:41 mrose Rel $
  *
  *
@@ -18,7 +18,7 @@
 
 
 #ifndef	_TSAP_
-#define	_TSAP_			
+#define	_TSAP_
 
 #ifndef	_MANIFEST_
 #include "manifest.h"
@@ -33,55 +33,55 @@
 /*  */
 
 struct TSAPstart {		/* T-CONNECT.INDICATON */
-    int     ts_sd;		/* TRANSPORT descriptor */
+	int     ts_sd;		/* TRANSPORT descriptor */
 
-    struct TSAPaddr ts_calling;	/* address of peer calling */
-    struct TSAPaddr ts_called;	/* address of peer called */
+	struct TSAPaddr ts_calling;	/* address of peer calling */
+	struct TSAPaddr ts_called;	/* address of peer called */
 
-    int     ts_expedited;	/* EXPEDITED DATA ok */
+	int     ts_expedited;	/* EXPEDITED DATA ok */
 
-    int	    ts_tsdusize;	/* largest atomic TSDU */
+	int	    ts_tsdusize;	/* largest atomic TSDU */
 
-    struct QOStype ts_qos;	/* quality of service */
+	struct QOStype ts_qos;	/* quality of service */
 
-				/* initial DATA from peer */
+	/* initial DATA from peer */
 #define	TS_SIZE		32
-    int	    ts_cc;		/*   length */
-    char    ts_data[TS_SIZE];	/*   data */
+	int	    ts_cc;		/*   length */
+	char    ts_data[TS_SIZE];	/*   data */
 };
 
 
 struct TSAPconnect {		/* T-CONNECT.CONFIRMATION */
-    int     tc_sd;		/* TRANSPORT descriptor */
+	int     tc_sd;		/* TRANSPORT descriptor */
 
-    struct TSAPaddr tc_responding;/* address of peer responding */
+	struct TSAPaddr tc_responding;/* address of peer responding */
 
-    int     tc_expedited;	/* EXPEDITED DATA ok */
+	int     tc_expedited;	/* EXPEDITED DATA ok */
 
-    int	    tc_tsdusize;	/* largest atomic TSDU */
+	int	    tc_tsdusize;	/* largest atomic TSDU */
 
-    struct QOStype tc_qos;	/* quality of service */
+	struct QOStype tc_qos;	/* quality of service */
 
-				/* initial DATA from peer */
+	/* initial DATA from peer */
 #define	TC_SIZE		32
-    int	    tc_cc;		/*   length */
-    char    tc_data[TC_SIZE];	/*   data */
+	int	    tc_cc;		/*   length */
+	char    tc_data[TC_SIZE];	/*   data */
 };
 
 
 struct TSAPdata {		/* T-READ.INDICATION */
-    int     tx_expedited;
+	int     tx_expedited;
 
-				/* DATA from peer */
+	/* DATA from peer */
 #define	TX_SIZE		16	/* EXPEDITED DATA only */
-    int	    tx_cc;		/*   total length */
-    struct qbuf tx_qbuf;	/*   chained data */
+	int	    tx_cc;		/*   total length */
+	struct qbuf tx_qbuf;	/*   chained data */
 };
 #define	TXFREE(tx)	QBFREE (&((tx) -> tx_qbuf))
 
 
 struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
-    int     td_reason;		/* reason for DISCONNECT, from ISO8072: */
+	int     td_reason;		/* reason for DISCONNECT, from ISO8072: */
 #define	DR_BASE		0x80
 #define	DR_NORMAL	(DR_BASE + 0)	/* NORMAL disconnect by SESSION
 					   entity */
@@ -98,13 +98,13 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 #define	DR_LENGTH	(DR_BASE + 10)	/* Header or parameter length
 					   invalid */
 
-					/* begin UNOFFICIAL */
+	/* begin UNOFFICIAL */
 #define	DR_NETWORK	(DR_BASE + 11)	/* Network disconnect */
 #define	DR_PARAMETER	(DR_BASE + 12)	/* Invalid parameter */
 #define	DR_OPERATION	(DR_BASE + 13)	/* Invalid operation */
 #define	DR_TIMER	(DR_BASE + 14)	/* Timer expired */
 #define	DR_WAITING	(DR_BASE + 15)	/* Indications waiting */
-					/* end UNOFFICIAL */
+	/* end UNOFFICIAL */
 
 #define	DR_UNKNOWN	0		/* Reason not specifed */
 #define	DR_CONGEST	1		/* Congestion at TSAP */
@@ -120,10 +120,10 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 #define	DR_OFFICIAL(r)	((r) < DR_NETWORK)
 #endif
 
-				/* disconnect DATA from peer */
+	/* disconnect DATA from peer */
 #define	TD_SIZE		64
-    int	    td_cc;		/*   length */
-    char    td_data[TD_SIZE];	/*   data */
+	int	    td_cc;		/*   length */
+	char    td_data[TD_SIZE];	/*   data */
 };
 
 /*  */
@@ -146,7 +146,7 @@ int	T_TP4_Exec ();			/*   .. */
 int	TInit ();		/* T-CONNECT.INDICATION */
 
 int	TConnResponse ();	/* T-CONNECT.RESPONSE */
-				/* T-CONNECT.REQUEST (backwards-compatible) */
+/* T-CONNECT.REQUEST (backwards-compatible) */
 #define	TConnRequest(a1,a2,a3,a4,a5,a6,a7,a8) \
 	TAsynConnRequest(a1,a2,a3,a4,a5,a6,a7,a8,0)
 int	TAsynConnRequest ();	/* T-(ASYN-)CONNECT.REQUEST */

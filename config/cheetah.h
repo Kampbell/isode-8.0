@@ -1,6 +1,6 @@
 /* cheetah.h - site configuration file for cheetah (SunOS) */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/cheetah.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

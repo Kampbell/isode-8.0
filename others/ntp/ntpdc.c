@@ -18,7 +18,7 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntpdc.c,v 9.0 19
 #define	STIME	500000		/* usec to wait for another response */
 #define	MAXPACKETSIZE 1500
 
-extern int errno;
+
 int debug;
 int s;
 int timedout;
@@ -35,24 +35,22 @@ char	LocalHostName[MAXHOSTNAMELEN+1];	/* our hostname */
 char	*LocalDomain;		/* our local domain name */
 
 
-main(argc, argv)
-	int argc;
-	char *argv[];
+int 
+main (int argc, char *argv[])
 {
 	char *p;
 	int on = 48*1024;
 
-	(void) gethostname(LocalHostName, sizeof LocalHostName);
+	 gethostname(LocalHostName, sizeof LocalHostName);
 	if (p = index(LocalHostName, '.')) {
 		*p++ = '\0';
 		LocalDomain = p;
-	}
-	else
+	} else
 		LocalDomain = "";
 
 	if (argc < 2) {
 usage:
-		(void) printf("usage: %s [ -v ][ -n ] hosts...\n", argv[0]);
+		 printf("usage: %s [ -v ][ -n ] hosts...\n", argv[0]);
 		exit(1);
 	}
 
@@ -71,7 +69,7 @@ usage:
 		argc--, argv++;
 	}
 	if (argc > 1)
-		(void) printf("--- %s ---\n", *argv);
+		 printf("--- %s ---\n", *argv);
 
 	while (argc > 0) {
 		/*
@@ -85,24 +83,24 @@ usage:
 		}
 #ifdef	SO_RCVBUF
 		if (setsockopt(s, SOL_SOCKET, SO_RCVBUF, &on, sizeof (on)) < 0) {
-			(void) fprintf(stderr, "setsockopt SO_RCVBUF\n");
+			 fprintf(stderr, "setsockopt SO_RCVBUF\n");
 		}
 #endif
 		if (query(*argv))
 			answer(*argv);
-		(void) close(s);
+		 close(s);
 		argv++;
 		if (argc-- > 1)
-			(void) printf("--- %s ---\n", *argv);
+			 printf("--- %s ---\n", *argv);
 	}
 	return 0;
 }
 
-answer(host)
-	char *host;
+int 
+answer (char *host)
 {
-	register struct ntpinfo *msg = (struct ntpinfo *) packet;
-	register struct clockinfo *n;
+	struct ntpinfo *msg = (struct ntpinfo *) packet;
+	struct clockinfo *n;
 	struct sockaddr_in from;
 	int fromlen = sizeof(from);
 	int count, cc;
@@ -113,25 +111,25 @@ answer(host)
 
 	/*
 	 * Listen for returning packets; may be more than one packet per
-	 * host. 
+	 * host.
 	 */
 	FD_ZERO(&bits);
 	FD_SET(s, &bits);
 	shorttime.tv_sec = 0;
 	shorttime.tv_usec = STIME;
-	(void) signal(SIGALRM, timeout);
-	(void) alarm(WTIME);
+	 signal(SIGALRM, timeout);
+	 alarm(WTIME);
 	timedout = 0;
-	while ((first || replies) && 
-	       (!timedout || select(FD_SETSIZE, &bits, (fd_set *) 0,
-				    (fd_set *) 0, &shorttime) > 0)) {
+	while ((first || replies) &&
+			(!timedout || select(FD_SETSIZE, &bits, (fd_set *) 0,
+								 (fd_set *) 0, &shorttime) > 0)) {
 		if ((cc = recvfrom(s, packet, sizeof(packet), 0,
-			     (struct sockaddr *)&from, &fromlen)) <= 0) {
+						   (struct sockaddr *)&from, &fromlen)) <= 0) {
 			if (cc == 0 || errno == EINTR)
 				continue;
-			(void)fflush(stdout);
+			fflush(stdout);
 			perror(host);
-			(void) close(s);
+			 close(s);
 			return;
 		}
 		FD_SET(s, &bits);
@@ -140,9 +138,9 @@ answer(host)
 			return;
 
 		if (msg->version != NTPDC_VERSION) {
-			(void) printf("ntpd(%d) - ntpdc(%d) version mismatch\n",
-			       msg->version, NTPDC_VERSION);
-			(void) alarm(0);
+			 printf("ntpd(%d) - ntpdc(%d) version mismatch\n",
+						  msg->version, NTPDC_VERSION);
+			 alarm(0);
 			return;
 		}
 
@@ -150,8 +148,8 @@ answer(host)
 			first = 0;
 			replies = (1L << msg->npkts) - 1;
 			if (!vflag) {
-				(void) printf("   (rem)  Address   (lcl)      Strat Poll Reach    Delay   Offset    Disp\n");
-				(void) printf("==========================================================================\n");
+				 printf("   (rem)  Address   (lcl)      Strat Poll Reach    Delay   Offset    Disp\n");
+				 printf("==========================================================================\n");
 			}
 		}
 		replies &= ~(1L << msg->seq);
@@ -164,17 +162,16 @@ answer(host)
 			n++;
 		}
 	}
-	(void) alarm(0);
+	 alarm(0);
 	if (replies)
-		(void) printf("Timed out waiting for replies\n");
+		 printf("Timed out waiting for replies\n");
 }
 
-int
-query(host)
-	char *host;
+int 
+query (char *host)
 {
 	struct sockaddr_in watcher;
-	register struct ntpdata *msg = (struct ntpdata *) packet;
+	struct ntpdata *msg = (struct ntpdata *) packet;
 	struct hostent *hp;
 	static struct servent *sp = NULL;
 	long HostAddr;
@@ -186,15 +183,15 @@ query(host)
 	if (HostAddr == -1) {
 		hp = gethostbyname(host);
 		if (hp == 0) {
-			(void) fprintf(stderr,"%s: unknown\n", host);
+			 fprintf(stderr,"%s: unknown\n", host);
 			return 0;
 		}
 		bcopy(hp->h_addr, (char *) &watcher.sin_addr, hp->h_length);
 	}
 	sp = getservbyname("ntp", "udp");
 	if (sp == 0) {
-		(void) fprintf(stderr,"udp/ntp: service unknown, using default %d\n",
-			NTP_PORT);
+		 fprintf(stderr,"udp/ntp: service unknown, using default %d\n",
+					   NTP_PORT);
 		watcher.sin_port = htons(NTP_PORT);
 	} else
 		watcher.sin_port = sp->s_port;
@@ -211,13 +208,12 @@ query(host)
 	return 1;
 }
 
-SFD timeout()
-{
+SFD timeout() {
 	timedout = 1;
 }
 
-print_terse (n)
-	struct clockinfo *n;
+int 
+print_terse (struct clockinfo *n)
 {
 	int i;
 	double offset[PEER_SHIFT], delay[PEER_SHIFT], dsp,del,off;
@@ -244,16 +240,16 @@ print_terse (n)
 	if (flags & PEER_FL_SELECTED)
 		c = '*';		/* mark peer selection */
 	isock.sin_addr.s_addr = n->net_address;
-	(void) printf("%c%-15.15s ", c, cvthname(&isock));
+	 printf("%c%-15.15s ", c, cvthname(&isock));
 	isock.sin_addr.s_addr = n->my_address;
-	(void) printf("%-16.16s %2d %4d  %03o  %8.1f %8.1f %8.1f\n",
-	       isock.sin_addr.s_addr ? inet_ntoa(isock.sin_addr) : "wildcard", 
-	       n->stratum, (int)ntohl((u_long)n->timer), 
-	       ntohs(n->reach) & SHIFT_MASK, del, off, dsp);
-}	
+	 printf("%-16.16s %2d %4d  %03o  %8.1f %8.1f %8.1f\n",
+				  isock.sin_addr.s_addr ? inet_ntoa(isock.sin_addr) : "wildcard",
+				  n->stratum, (int)ntohl((u_long)n->timer),
+				  ntohs(n->reach) & SHIFT_MASK, del, off, dsp);
+}
 
-print_verbose(n)
-	struct clockinfo *n;
+int 
+print_verbose (struct clockinfo *n)
 {
 	int i;
 	struct in_addr clock_host;
@@ -268,60 +264,59 @@ print_verbose(n)
 	dsp = (double) ((long) ntohl(n->estdisp));	/* in milliseconds */
 	del = (double) ((long) ntohl(n->estdelay));	/* in milliseconds */
 	off = (double) ((long) ntohl(n->estoffset));	/* in milliseconds */
-	(void) printf("Neighbor address %s port:%d",
-	       inet_ntoa(isock.sin_addr), (int)ntohs(n->port));
+	 printf("Neighbor address %s port:%d",
+				  inet_ntoa(isock.sin_addr), (int)ntohs(n->port));
 	isock.sin_addr.s_addr = n->my_address;
-	(void) printf("  local address %s\n", inet_ntoa(isock.sin_addr));
-	(void) printf("Reach: 0%o stratum: %d, precision: %d\n",
-	       ntohs(n->reach) & SHIFT_MASK, n->stratum, n->precision);
-	(void) printf("dispersion: %f, flags: %x, leap: %x\n",
-	       dsp,
-	       ntohs(n->flags),
-	       n->leap);
+	 printf("  local address %s\n", inet_ntoa(isock.sin_addr));
+	 printf("Reach: 0%o stratum: %d, precision: %d\n",
+				  ntohs(n->reach) & SHIFT_MASK, n->stratum, n->precision);
+	 printf("dispersion: %f, flags: %x, leap: %x\n",
+				  dsp,
+				  ntohs(n->flags),
+				  n->leap);
 	if (n->stratum == 1 || n->stratum == 0) {
-		(void) printf("Reference clock ID: %.4s", (char *)&n->refid);
+		 printf("Reference clock ID: %.4s", (char *)&n->refid);
 	} else {
 		clock_host.s_addr = (u_long) n->refid;
-		(void) printf("Reference clock ID: [%s]", inet_ntoa(clock_host));
+		 printf("Reference clock ID: [%s]", inet_ntoa(clock_host));
 	}
-	(void) printf(" timestamp: %08lx.%08lx\n", ntohl(n->reftime.int_part),
-	       ntohl(n->reftime.fraction));
+	 printf(" timestamp: %08lx.%08lx\n", ntohl(n->reftime.int_part),
+				  ntohl(n->reftime.fraction));
 
-	(void) printf("hpoll: %d, ppoll: %d, timer: %d, sent: %d received: %d\n",
-	       n->hpoll, n->ppoll,
-	       (int)ntohl((u_long)n->timer),
-	       (int)ntohl(n->pkt_sent),
-	       (int)ntohl(n->pkt_rcvd));
-	(void) printf("Delay(ms)  ");
+	 printf("hpoll: %d, ppoll: %d, timer: %d, sent: %d received: %d\n",
+				  n->hpoll, n->ppoll,
+				  (int)ntohl((u_long)n->timer),
+				  (int)ntohl(n->pkt_sent),
+				  (int)ntohl(n->pkt_rcvd));
+	 printf("Delay(ms)  ");
 	for (i = 0; i < PEER_SHIFT; i++)
-		(void) printf("%7.2f ", delay[i]);
-	(void) printf("\n");
-	(void) printf("Offset(ms) ");
+		 printf("%7.2f ", delay[i]);
+	 printf("\n");
+	 printf("Offset(ms) ");
 	for (i = 0; i < PEER_SHIFT; i++)
-		(void) printf("%7.2f ", offset[i]);
-	(void) printf("\n");
-	(void) printf("\n\tdelay: %f offset: %f dsp %f\n", del, off, dsp);
-	(void) printf("\n");
+		 printf("%7.2f ", offset[i]);
+	 printf("\n");
+	 printf("\n\tdelay: %f offset: %f dsp %f\n", del, off, dsp);
+	 printf("\n");
 }
 /*
  * Return a printable representation of a host address.
  */
 char *
-cvthname(f)
-	struct sockaddr_in *f;
+cvthname (struct sockaddr_in *f)
 {
 	struct hostent *hp;
-	register char *p;
+	char *p;
 	extern char *inet_ntoa();
 
 	if (f->sin_family != AF_INET) {
-		(void) printf("Malformed from address\n");
+		 printf("Malformed from address\n");
 		return ("???");
 	}
 	if (!nflag)
-		hp = gethostbyaddr((char *)&f->sin_addr, 
-				   sizeof(struct in_addr),
-				   f->sin_family);
+		hp = gethostbyaddr((char *)&f->sin_addr,
+						   sizeof(struct in_addr),
+						   f->sin_family);
 	else
 		return (inet_ntoa(f->sin_addr));
 

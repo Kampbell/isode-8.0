@@ -36,7 +36,7 @@ extern LLog * log_dsap;
 AttributeType AttrT_decode_aux (oid)
 OID oid;
 {
-register AttributeType x;
+	AttributeType x;
 
 	if (oid == NULLOID) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Null oid to decode"));

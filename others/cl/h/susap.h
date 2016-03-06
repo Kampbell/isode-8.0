@@ -1,6 +1,6 @@
 /* susap.h - include file for session unitdata users (connectionless service) */
 
-/* 
+/*
  *
  * Kurt Dobbins		3/89
  *
@@ -36,26 +36,26 @@
 
 #ifdef HULA
 
-struct SuSAPstart 
-    {				/* S-CONNECT.INDICATION */
-    int	    ss_sd;		/* SESSION descriptor */
+struct SuSAPstart {
+	/* S-CONNECT.INDICATION */
+	int	    ss_sd;		/* SESSION descriptor */
 
-    struct SSAPaddr ss_calling;	/* address of peer calling */
-    struct SSAPaddr ss_called;	/* address of peer called */
+	struct SSAPaddr ss_calling;	/* address of peer calling */
+	struct SSAPaddr ss_called;	/* address of peer called */
 
-    int	    ss_ssdusize;	/* largest atomic SSDU */
-    int	    ss_version;	    	/* session service version number */
+	int	    ss_ssdusize;	/* largest atomic SSDU */
+	int	    ss_version;	    	/* session service version number */
 
-    struct QOStype ss_qos;	/* quality of service */
+	struct QOStype ss_qos;	/* quality of service */
 
-				/* UNITDATA from peer */
+	/* UNITDATA from peer */
 
-    int	    ss_cc;		/*   length */
-    char   *ss_data;		/*   data */
+	int	    ss_cc;		/*   length */
+	char   *ss_data;		/*   data */
 
-    char   *ss_base;		/*   base ptr for free */
+	char   *ss_base;		/*   base ptr for free */
 
-    };
+};
 
 #define	SUSFREE(ss) \
 { \
@@ -63,7 +63,7 @@ struct SuSAPstart
 	free ((ss) -> ss_base), (ss) -> ss_data = (ss) -> ss_base = NULL; \
 }
 
-#endif 
+#endif
 
 
 #ifdef HULA

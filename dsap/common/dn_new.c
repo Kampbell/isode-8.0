@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_new.c,v 9.0 
 DN  dn_comp_new (rdn)
 RDN rdn;
 {
-DN ptr;
+	DN ptr;
 	ptr = dn_comp_alloc ();
 	dn_comp_fill (ptr,rdn);
 	ptr->dn_parent = NULLDN;

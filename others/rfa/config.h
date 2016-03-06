@@ -39,9 +39,9 @@
 /*--- number of secs. for sending the time during the timeSync operation ---*/
 #define SENDTIME_DELAY	1
 
-/*--- default limit for filesize when compression of file shall occur. 
+/*--- default limit for filesize when compression of file shall occur.
       (can be changed at runtime) ---*/
-#define COMPRESSLIMIT	4500	
+#define COMPRESSLIMIT	4500
 /*--- Will be calculated as follows:
 
 	     C0 : time required to start compress process
@@ -52,7 +52,7 @@
 	     FC : factor by which the data size is reduced by compression
 	     L  : Limit when data should be transfered compressed
 
-	           FC * (C0 + U0) 
+	           FC * (C0 + U0)
 	     L = ---------------------------
 		  (FC - 1) * T - FC * (U + C)
 
@@ -65,5 +65,5 @@
 		  T  = 8/10 s (X.25)
 		  FC = 2.5
 
-		  then  L =  4.48 Kbytes 
+		  then  L =  4.48 Kbytes
 ---*/

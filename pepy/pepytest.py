@@ -41,7 +41,7 @@ static enum { ps2test, pl2test } mode = ps2test;
 
 static int  process ();
 
-static void	adios ();
+static void	adios (char*what, ...);
 
 /*    MAIN */
 
@@ -217,21 +217,20 @@ END
 
 /*    ERRORS */
 
-#include <varargs.h>
+#include <stdarg.h>
 
 
 #ifndef	lint
-void	_advise ();
+static void	_advise (char*what, ...);
 
 
-static void  adios (va_alist)
-va_dcl
+static void  adios (char*what, ...)
 {
     va_list ap;
 
-    va_start (ap);
+    va_start (ap, what);
 
-    _advise (ap);
+    _advise (what, ap);
 
     va_end (ap);
 
@@ -250,25 +249,27 @@ char   *what,
 
 
 #ifndef	lint
-static void  advise (va_alist)
-va_dcl
+static void  advise (char*what, ...)
 {
     va_list ap;
 
-    va_start (ap);
+    va_start (ap, what);
 
-    _advise (ap);
+    _advise (what, ap);
 
     va_end (ap);
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void  _advise (char*what, ...)
 {
     char    buffer[BUFSIZ];
 
-    asprintf (buffer, ap);
+    va_list ap;
+
+    va_start (ap, what);
+
+    asprintf (buffer, what, ap);
 
     (void) fflush (stdout);
 
@@ -277,6 +278,8 @@ va_list	ap;
     (void) fputc ('\n', stderr);
 
     (void) fflush (stderr);
+
+    va_end (ap);
 }
 #else
 /* VARARGS */

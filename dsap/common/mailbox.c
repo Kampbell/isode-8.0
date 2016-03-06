@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/mailbox.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/mailbox.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/mailbox.c,v 9.0
 /*
 	SYNTAX:
 		mailbox ::= <printablestring> '$' <IA5String>
-	
+
 	EXAMPLE:
 		internet $ quipu-support@cs.ucl.ac.uk
 */
@@ -39,8 +39,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/mailbox.c,v 9.0
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 
-static mailbox_free (ptr)
-struct mailbox * ptr;
+static 
+mailbox_free (struct mailbox *ptr)
 {
 	free (ptr->mbox);
 	free (ptr->mtype);
@@ -49,10 +49,10 @@ struct mailbox * ptr;
 }
 
 
-static struct mailbox * mailbox_cpy (a)
-struct mailbox * a;
+static struct mailbox *
+mailbox_cpy (struct mailbox *a)
 {
-struct mailbox * result;
+	struct mailbox * result;
 
 	result = (struct mailbox *) smalloc (sizeof (struct mailbox));
 	result->mbox = strdup (a->mbox);
@@ -60,19 +60,18 @@ struct mailbox * result;
 	return (result);
 }
 
-static mailbox_cmp (a,b)
-struct mailbox * a;
-struct mailbox * b;
+static 
+mailbox_cmp (struct mailbox *a, struct mailbox *b)
 {
-int res;
+	int res;
 
 	if (a == (struct mailbox *) NULL)
 		if (b == (struct mailbox *) NULL)
 			return (0);
-		else 
+		else
 			return (-1);
 
-	if ( (res = lexequ(a->mbox,b->mbox)) != 0) 
+	if ( (res = lexequ(a->mbox,b->mbox)) != 0)
 		return (res);
 	if ( (res = lexequ(a->mtype,b->mtype)) != 0)
 		return (res);
@@ -81,7 +80,7 @@ int res;
 
 
 static mailbox_print (ps,mail,format)
-register PS ps;
+PS ps;
 struct   mailbox* mail;
 int format;
 {
@@ -92,12 +91,12 @@ int format;
 }
 
 
-static struct mailbox* str2mailbox (str)
-char * str;
+static struct mailbox *
+str2mailbox (char *str)
 {
-struct mailbox * result;
-char * ptr;
-char * mark = NULLCP;
+	struct mailbox * result;
+	char * ptr;
+	char * mark = NULLCP;
 
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("seperator missing in mailbox '%s'",str);
@@ -113,7 +112,7 @@ char * mark = NULLCP;
 	ptr++;
 	result->mtype = strdup (str);
 	*ptr++ = '$';
-	result->mbox = strdup (SkipSpace(ptr));	
+	result->mbox = strdup (SkipSpace(ptr));
 
 	if (mark != NULLCP)
 		*mark = ' ';
@@ -124,9 +123,9 @@ char * mark = NULLCP;
 static PE mail_enc (m)
 struct mailbox * m;
 {
-PE ret_pe;
+	PE ret_pe;
 
-        (void) encode_Thorn_MailBox (&ret_pe,0,0,NULLCP,m);
+	 encode_Thorn_MailBox (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -134,7 +133,7 @@ PE ret_pe;
 static struct mailbox * mail_dec (pe)
 PE pe;
 {
-struct mailbox * m;
+	struct mailbox * m;
 
 	if (decode_Thorn_MailBox (pe,1,NULLIP,NULLVP,&m) == NOTOK) {
 		return ((struct mailbox *) NULL);
@@ -142,12 +141,12 @@ struct mailbox * m;
 	return (m);
 }
 
-mailbox_syntax ()
-{
-	(void) add_attribute_syntax ("Mailbox",
-		(IFP) mail_enc,		(IFP) mail_dec,
-		(IFP) str2mailbox,	mailbox_print,
-		(IFP) mailbox_cpy,	mailbox_cmp,
-		mailbox_free,		NULLCP,
-		NULLIFP,		TRUE);
+int 
+mailbox_syntax (void) {
+	 add_attribute_syntax ("Mailbox",
+								 (IFP) mail_enc,		(IFP) mail_dec,
+								 (IFP) str2mailbox,	mailbox_print,
+								 (IFP) mailbox_cpy,	mailbox_cmp,
+								 mailbox_free,		NULLCP,
+								 NULLIFP,		TRUE);
 }

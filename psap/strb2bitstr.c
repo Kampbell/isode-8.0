@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/strb2bitstr.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/strb2bitstr.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -32,36 +32,34 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/strb2bitstr.c,v 9.0 19
 
 /*  */
 
-PE	strb2bitstr (cp, len, class, id)
-register char  *cp;
-register int     len;
-PElementClass class;
-PElementID id;
+PE 
+strb2bitstr (char *cp, int len, int class, int id)
 {
-    register int    i,
-		    j,
-                    bit,
-		    mask;
-    register PE	    p;
+	int    i,
+			 j,
+			 bit,
+			 mask;
+	PE	    p;
 
-    if ((p = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
-	return NULLPE;
+	if ((p = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
+		return NULLPE;
 
-    p = prim2bit (p);
-    if (len > 0 && bit_off (p, len - 1) == NOTOK) {
-no_mem: ;
-        pe_free (p);
-        return NULLPE;
-    }
+	p = prim2bit (p);
+	if (len > 0 && bit_off (p, len - 1) == NOTOK) {
+no_mem:
+		;
+		pe_free (p);
+		return NULLPE;
+	}
 
-    for (bit = (*cp & 0xff), i = 0, mask = 1 << (j = 7); i < len; i++) {
-	if ((bit & mask) && bit_on (p, i) == NOTOK)
-	    goto no_mem;
-	if (j-- == 0)
-	    bit = *++cp & 0xff, mask = 1 << (j = 7);
-	else
-	    mask >>= 1;
-    }
+	for (bit = (*cp & 0xff), i = 0, mask = 1 << (j = 7); i < len; i++) {
+		if ((bit & mask) && bit_on (p, i) == NOTOK)
+			goto no_mem;
+		if (j-- == 0)
+			bit = *++cp & 0xff, mask = 1 << (j = 7);
+		else
+			mask >>= 1;
+	}
 
-    return p;
+	return p;
 }

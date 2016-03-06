@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/telex.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/telex.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/telex.c,v 9.0 1
 	SYNTAX:
 		telex ::= <printablestring> '$' <printablestring>
 				'$' <printablestring>
-	
+
 	REPRESENTING
 		number $ country $ answerback
 */
@@ -42,8 +42,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/telex.c,v 9.0 1
 
 extern LLog * log_dsap;
 
-static telex_free (ptr)
-struct telex * ptr;
+static 
+telex_free (struct telex *ptr)
 {
 	free (ptr->telexnumber);
 	free (ptr->countrycode);
@@ -53,10 +53,10 @@ struct telex * ptr;
 }
 
 
-static struct telex * telex_cpy (a)
-struct telex * a;
+static struct telex *
+telex_cpy (struct telex *a)
 {
-struct telex * result;
+	struct telex * result;
 
 	result = (struct telex *) smalloc (sizeof (struct telex));
 	result->telexnumber = strdup (a->telexnumber);
@@ -65,19 +65,18 @@ struct telex * result;
 	return (result);
 }
 
-static telex_cmp (a,b)
-struct telex * a;
-struct telex * b;
+static 
+telex_cmp (struct telex *a, struct telex *b)
 {
-int res;
+	int res;
 
 	if (a == (struct telex *) NULL)
 		if (b == (struct telex *) NULL)
 			return (0);
-		else 
+		else
 			return (-1);
 
-	if ( (res = lexequ(a->telexnumber,b->telexnumber)) != 0) 
+	if ( (res = lexequ(a->telexnumber,b->telexnumber)) != 0)
 		return (res);
 	if ( (res = lexequ(a->countrycode,b->countrycode)) != 0)
 		return (res);
@@ -88,7 +87,7 @@ int res;
 
 
 static telex_print (ps,telex,format)
-register PS ps;
+PS ps;
 struct   telex* telex;
 int format;
 {
@@ -99,13 +98,13 @@ int format;
 }
 
 
-static struct telex* str2telex (str)
-char * str;
+static struct telex *
+str2telex (char *str)
 {
-struct telex * result;
-char * ptr;
-char * mark = NULLCP;
-char * prtparse ();
+	struct telex * result;
+	char * ptr;
+	char * mark = NULLCP;
+	char * prtparse ();
 
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("seperator missing in telex '%s'",str);
@@ -120,18 +119,18 @@ char * prtparse ();
 	}
 	ptr++;
 	if ((result->telexnumber = prtparse(str)) == NULLCP)
-                return ((struct telex *) NULL);
+		return ((struct telex *) NULL);
 	if ((int)strlen (result->telexnumber) > UB_TELEX_NUMBER) {
 		parse_error ("telexnumber too big",NULLCP);
 		return ((struct telex *) NULL);
 	}
-		
+
 	*ptr++ = '$';
 
 	if (mark != NULLCP)
 		*mark = ' ';
 
-	str = SkipSpace(ptr);	
+	str = SkipSpace(ptr);
 
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("2nd seperator missing in telex '%s'",str);
@@ -148,7 +147,7 @@ char * prtparse ();
 	ptr++;
 
 	if ((result->countrycode = prtparse(str)) == NULLCP)
-                return ((struct telex *) NULL);
+		return ((struct telex *) NULL);
 	if ((int)strlen (result->countrycode) > UB_COUNTRY_CODE) {
 		parse_error ("countrycode too big",NULLCP);
 		return ((struct telex *) NULL);
@@ -160,7 +159,7 @@ char * prtparse ();
 		*mark = ' ';
 
 	if ((result->answerback = prtparse(SkipSpace(ptr))) == NULLCP)
-                return ((struct telex *) NULL);
+		return ((struct telex *) NULL);
 
 	return (result);
 }
@@ -168,9 +167,9 @@ char * prtparse ();
 static PE telex_enc (m)
 struct telex * m;
 {
-PE ret_pe;
+	PE ret_pe;
 
-        (void) encode_SA_TelexNumber (&ret_pe,0,0,NULLCP,m);
+	 encode_SA_TelexNumber (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -178,7 +177,7 @@ PE ret_pe;
 static struct telex * telex_dec (pe)
 PE pe;
 {
-struct telex * m;
+	struct telex * m;
 
 	if (decode_SA_TelexNumber (pe,1,NULLIP,NULLVP,&m) == NOTOK) {
 		return ((struct telex *) NULL);
@@ -198,12 +197,12 @@ struct telex * m;
 	return (m);
 }
 
-telex_syntax ()
-{
-	(void) add_attribute_syntax ("TelexNumber",
-		(IFP) telex_enc,	(IFP) telex_dec,
-		(IFP) str2telex,	telex_print,
-		(IFP) telex_cpy,	telex_cmp,
-		telex_free,		NULLCP,
-		NULLIFP,		TRUE);
+int 
+telex_syntax (void) {
+	 add_attribute_syntax ("TelexNumber",
+								 (IFP) telex_enc,	(IFP) telex_dec,
+								 (IFP) str2telex,	telex_print,
+								 (IFP) telex_cpy,	telex_cmp,
+								 telex_free,		NULLCP,
+								 NULLIFP,		TRUE);
 }

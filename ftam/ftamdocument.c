@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamdocument.c,v 9.0 1992/06/16 12:14:55 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam/RCS/ftamdocument.c,v 9.0 1992/06/16 12:14:55 isode Rel $
  *
  *
@@ -42,122 +42,127 @@ static struct isodocument ids;
 
 /*  */
 
-int	setisodocument (f)
-int	f;
+int 
+setisodocument (int f)
 {
-    if (servf == NULL)
-	servf = fopen (isodefile (isodocuments, 0), "r");
-    else
-	rewind (servf);
-    stayopen |= f;
+	if (servf == NULL)
+		servf = fopen (isodefile (isodocuments, 0), "r");
+	else
+		rewind (servf);
+	stayopen |= f;
 
-    return (servf != NULL);
+	return (servf != NULL);
 }
 
 
-int	endisodocument () {
-    if (servf && !stayopen) {
-	(void) fclose (servf);
-	servf = NULL;
-    }
-
-    return 1;
-}
-
-/*  */
-
-struct isodocument *getisodocument () {
-    register char  *cp;
-    register struct isodocument *id = &ids;
-    static char buffer[BUFSIZ + 1];
-    static char *vec[NVEC + NSLACK + 1];
-
-    if (servf == NULL
-	    && (servf = fopen (isodefile (isodocuments, 0), "r")) == NULL)
-	return NULL;
-
-    if (id -> id_type)
-	oid_free (id -> id_type);
-    if (id -> id_abstract)
-	oid_free (id -> id_abstract);
-    if (id -> id_transfer)
-	oid_free (id -> id_transfer);
-    if (id -> id_model)
-	oid_free (id -> id_model);
-    if (id -> id_constraint)
-	oid_free (id -> id_constraint);
-
-    bzero ((char *) id, sizeof *id);
-
-    while (fgets (buffer, sizeof buffer, servf) != NULL) {
-	if (*buffer == '#')
-	    continue;
-	if (cp = index (buffer, '\n'))
-	    *cp = NULL;
-	if (str2vec (buffer, vec) < 6)
-	    continue;
-
-	id -> id_entry = vec[0];
-
-	if ((id -> id_type = str2oid (vec[1])) == NULLOID
-		|| (id -> id_type = oid_cpy (id -> id_type)) == NULLOID)
-	    continue;
-
-	if ((id -> id_abstract = str2oid (vec[2])) == NULLOID
-		|| (id -> id_abstract = oid_cpy (id -> id_abstract))
-			== NULLOID)
-	    goto free1;
-
-	if ((id -> id_transfer = str2oid (vec[3])) == NULLOID
-		|| (id -> id_transfer = oid_cpy (id -> id_transfer))
-			== NULLOID)
-	    goto free2;
-
-	if ((id -> id_model = str2oid (vec[4])) == NULLOID
-		|| (id -> id_model = oid_cpy (id -> id_model)) == NULLOID)
-	    goto free3;
-
-	if ((id -> id_constraint = str2oid (vec[5])) == NULLOID
-		|| (id -> id_constraint = oid_cpy (id -> id_constraint))
-		== NULLOID) {
-	    oid_free (id -> id_model);
-	    id -> id_model = NULLOID;
-
-    free3: ;
-	    oid_free (id -> id_transfer);
-	    id -> id_transfer = NULLOID;
-
-    free2:  ;
-	    oid_free (id -> id_abstract);
-	    id -> id_abstract = NULLOID;
-
-    free1:  ;
-	    oid_free (id -> id_type);
-	    id -> id_type = NULLOID;
-
-	    continue;
+int 
+endisodocument (void) {
+	if (servf && !stayopen) {
+		 fclose (servf);
+		servf = NULL;
 	}
 
-	return id;
-    }
-
-    return NULL;
+	return 1;
 }
 
 /*  */
 
-struct isodocument *getisodocumentbyentry (entry)
-char    *entry;
+struct isodocument *
+getisodocument (void) {
+	char  *cp;
+	struct isodocument *id = &ids;
+	static char buffer[BUFSIZ + 1];
+	static char *vec[NVEC + NSLACK + 1];
+
+	if (servf == NULL
+			&& (servf = fopen (isodefile (isodocuments, 0), "r")) == NULL)
+		return NULL;
+
+	if (id -> id_type)
+		oid_free (id -> id_type);
+	if (id -> id_abstract)
+		oid_free (id -> id_abstract);
+	if (id -> id_transfer)
+		oid_free (id -> id_transfer);
+	if (id -> id_model)
+		oid_free (id -> id_model);
+	if (id -> id_constraint)
+		oid_free (id -> id_constraint);
+
+	bzero ((char *) id, sizeof *id);
+
+	while (fgets (buffer, sizeof buffer, servf) != NULL) {
+		if (*buffer == '#')
+			continue;
+		if (cp = index (buffer, '\n'))
+			*cp = NULL;
+		if (str2vec (buffer, vec) < 6)
+			continue;
+
+		id -> id_entry = vec[0];
+
+		if ((id -> id_type = str2oid (vec[1])) == NULLOID
+				|| (id -> id_type = oid_cpy (id -> id_type)) == NULLOID)
+			continue;
+
+		if ((id -> id_abstract = str2oid (vec[2])) == NULLOID
+				|| (id -> id_abstract = oid_cpy (id -> id_abstract))
+				== NULLOID)
+			goto free1;
+
+		if ((id -> id_transfer = str2oid (vec[3])) == NULLOID
+				|| (id -> id_transfer = oid_cpy (id -> id_transfer))
+				== NULLOID)
+			goto free2;
+
+		if ((id -> id_model = str2oid (vec[4])) == NULLOID
+				|| (id -> id_model = oid_cpy (id -> id_model)) == NULLOID)
+			goto free3;
+
+		if ((id -> id_constraint = str2oid (vec[5])) == NULLOID
+				|| (id -> id_constraint = oid_cpy (id -> id_constraint))
+				== NULLOID) {
+			oid_free (id -> id_model);
+			id -> id_model = NULLOID;
+
+free3:
+			;
+			oid_free (id -> id_transfer);
+			id -> id_transfer = NULLOID;
+
+free2:
+			;
+			oid_free (id -> id_abstract);
+			id -> id_abstract = NULLOID;
+
+free1:
+			;
+			oid_free (id -> id_type);
+			id -> id_type = NULLOID;
+
+			continue;
+		}
+
+		return id;
+	}
+
+	return NULL;
+}
+
+/*  */
+
+struct isodocument *
+getisodocumentbyentry (char *entry)
 {
-    register struct isodocument *id;
+	struct isodocument *id;
 
-    (void) setisodocument (0);
-    while (id = getisodocument ())
-	if (strcmp (id -> id_entry, entry) == 0)
-	    break;
-    (void) endisodocument ();
+	 setisodocument (0);
+	while (id = getisodocument ())
+		if (strcmp (id -> id_entry, entry) == 0)
+			break;
+	 endisodocument ();
 
-    return id;
+	return id;
 }
 
 /*  */
@@ -165,13 +170,13 @@ char    *entry;
 struct isodocument *getisodocumentbytype (type)
 OID	type;
 {
-    register struct isodocument *id;
+	struct isodocument *id;
 
-    (void) setisodocument (0);
-    while (id = getisodocument ())
-	if (oid_cmp (id -> id_type, type) == 0)
-	    break;
-    (void) endisodocument ();
+	 setisodocument (0);
+	while (id = getisodocument ())
+		if (oid_cmp (id -> id_type, type) == 0)
+			break;
+	 endisodocument ();
 
-    return id;
+	return id;
 }

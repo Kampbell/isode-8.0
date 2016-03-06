@@ -28,17 +28,17 @@
 #include "quipu/ds_error.h"
 #include "quipu/dap.h"
 
-	/* THIS SECTION GIVES OPERATION PARAMETERS */
+/* THIS SECTION GIVES OPERATION PARAMETERS */
 
 struct ds_read_arg {
-    CommonArgs rda_common;
-    DN rda_object;
-    EntryInfoSelection rda_eis;
+	CommonArgs rda_common;
+	DN rda_object;
+	EntryInfoSelection rda_eis;
 };
 
 struct ds_read_result {
-    CommonResults rdr_common;
-    EntryInfo rdr_entry;
+	CommonResults rdr_common;
+	EntryInfo rdr_entry;
 };
 
 #endif

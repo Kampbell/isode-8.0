@@ -1,6 +1,6 @@
 /* tailor.h - ISODE tailoring */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/tailor.h,v 5.0 88/07/21 14:39:37 mrose Rel $
  *
  *

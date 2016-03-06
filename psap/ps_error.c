@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_error.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/ps_error.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -33,34 +33,34 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_error.c,v 9.0 1992/
 /*  */
 
 static char *ps_errorlist[] = {
-    "Error 0",
-    "Overflow in ID",
-    "Overflow in length",
-    "Out of memory",
-    "End of file",
-    "End of file reading extended ID",
-    "End of file reading extended length",
-    "Length Mismatch",
-    "Truncated",
-    "Indefinite length in primitive form",
-    "I/O error",
-    "Extraneous octets",
-    "XXX"
+	"Error 0",
+	"Overflow in ID",
+	"Overflow in length",
+	"Out of memory",
+	"End of file",
+	"End of file reading extended ID",
+	"End of file reading extended length",
+	"Length Mismatch",
+	"Truncated",
+	"Indefinite length in primitive form",
+	"I/O error",
+	"Extraneous octets",
+	"XXX"
 };
 
 static int ps_maxerror = sizeof ps_errorlist / sizeof ps_errorlist[0];
 
 /*  */
 
-char   *ps_error (c)
-int	c;
+char *
+ps_error (int c)
 {
-    register char  *bp;
-    static char buffer[30];
+	char  *bp;
+	static char buffer[30];
 
-    if (c < ps_maxerror && (bp = ps_errorlist[c]))
-	return bp;
+	if (c < ps_maxerror && (bp = ps_errorlist[c]))
+		return bp;
 
-    (void) sprintf (buffer, "Error %d", c);
-    return buffer;
+	 sprintf (buffer, "Error %d", c);
+	return buffer;
 }

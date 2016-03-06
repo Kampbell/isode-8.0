@@ -34,26 +34,26 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/tree_struct.c,v
 extern int oidformat;
 
 /* ARGSUSED */
-tree_struct_free (ptr)
-struct tree_struct * ptr;
+int 
+tree_struct_free (struct tree_struct *ptr)
 {
 	/* don't free objectclass - in static table */
 	free ((char *)ptr);
 }
 
 
-static struct tree_struct * tree_struct_cpy (a)
-struct tree_struct * a;
+static struct tree_struct *
+tree_struct_cpy (struct tree_struct *a)
 {
-struct tree_struct * result;
+	struct tree_struct * result;
 
 	result = tree_struct_alloc ();
 	result->tree_object = a->tree_object;
 	return (result);
 }
 
-static tree_struct_cmp (a,b)
-struct tree_struct * a, *b;
+static 
+tree_struct_cmp (struct tree_struct *a, struct tree_struct *b)
 {
 	if (a == NULLTREE)
 		return (b==NULLTREE ? 0 : -1 );
@@ -67,7 +67,7 @@ struct tree_struct * a, *b;
 
 /* ARGSUSED */
 static tree_struct_print (ps,tree,format)
-register PS ps;
+PS ps;
 struct   tree_struct * tree;
 int format;
 {
@@ -75,11 +75,11 @@ int format;
 }
 
 
-static struct tree_struct * str2schema (str)
-char * str;
+static struct tree_struct *
+str2schema (char *str)
 {
-struct tree_struct * ts;
-objectclass * str2oc();
+	struct tree_struct * ts;
+	objectclass * str2oc();
 
 	ts = tree_struct_alloc ();
 	if ((ts->tree_object = str2oc(str)) == NULLOBJECTCLASS) {
@@ -93,9 +93,9 @@ objectclass * str2oc();
 static PE ts_enc (ts)
 struct tree_struct * ts;
 {
-PE ret_pe;
+	PE ret_pe;
 
-        (void) encode_Quipu_TreeStructureSyntax(&ret_pe,0,0,NULLCP,ts);
+	 encode_Quipu_TreeStructureSyntax(&ret_pe,0,0,NULLCP,ts);
 
 	return (ret_pe);
 }
@@ -103,20 +103,20 @@ PE ret_pe;
 static struct tree_struct * ts_dec (pe)
 PE pe;
 {
-struct tree_struct * ts;
+	struct tree_struct * ts;
 
-	if (decode_Quipu_TreeStructureSyntax(pe,1,NULLIP,NULLVP,&ts) == NOTOK) 
+	if (decode_Quipu_TreeStructureSyntax(pe,1,NULLIP,NULLVP,&ts) == NOTOK)
 		return (struct tree_struct *)NULL;
 
 	return (ts);
 }
 
-schema_syntax ()
-{
-	(void) add_attribute_syntax ("schema",
-		(IFP) ts_enc,		(IFP) ts_dec,
-		(IFP) str2schema,	tree_struct_print,
-		(IFP) tree_struct_cpy,	tree_struct_cmp,
-		tree_struct_free,	NULLCP,
-		NULLIFP,		FALSE );
+int 
+schema_syntax (void) {
+	 add_attribute_syntax ("schema",
+								 (IFP) ts_enc,		(IFP) ts_dec,
+								 (IFP) str2schema,	tree_struct_print,
+								 (IFP) tree_struct_cpy,	tree_struct_cmp,
+								 tree_struct_free,	NULLCP,
+								 NULLIFP,		FALSE );
 }

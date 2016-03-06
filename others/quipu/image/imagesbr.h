@@ -1,6 +1,6 @@
 /* imagesbr.h - include file for image subroutines */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/image/RCS/imagesbr.h,v 9.0 1992/06/16 12:43:24 isode Rel $
  *
  *
@@ -46,11 +46,11 @@ void	init_aka ();
 /* IMAGE */
 
 struct type_IMAGE_Image {
-    int     width;
+	int     width;
 
-    int     height;
+	int     height;
 
-    struct qbuf *data;
+	struct qbuf *data;
 };
 
 struct type_IMAGE_Image *fetch_image ();

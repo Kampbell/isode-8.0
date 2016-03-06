@@ -27,46 +27,46 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/sequen
 extern char * strdup ();
 
 void add_seq (seq, str)
-     str_seq *seq;
-     char *str;
+str_seq *seq;
+char *str;
 {
-  str_seq curr;
-  
-  if (*seq) {
-    for (curr = *seq; curr->next; curr = curr->next) {}
-    curr->next = (struct string_seq *) malloc (sizeof (struct string_seq));
-    curr = curr->next;
-  } else {
-    curr = (struct string_seq *) malloc (sizeof (struct string_seq));
-    *seq = curr;
-  }
+	str_seq curr;
 
-  curr->s_strlen = strlen(str);
-  curr->dname = strdup(str);
-  curr->next = 0;
+	if (*seq) {
+		for (curr = *seq; curr->next; curr = curr->next) {}
+		curr->next = (struct string_seq *) malloc (sizeof (struct string_seq));
+		curr = curr->next;
+	} else {
+		curr = (struct string_seq *) malloc (sizeof (struct string_seq));
+		*seq = curr;
+	}
+
+	curr->s_strlen = strlen(str);
+	curr->dname = strdup(str);
+	curr->next = 0;
 }
-	          
+
 char *get_from_seq (seq_num, seq_ptr)
-     int seq_num;
-     str_seq seq_ptr;
+int seq_num;
+str_seq seq_ptr;
 {
-  for (; seq_num > 1 && seq_ptr; seq_ptr = seq_ptr->next, seq_num--) {}
-  if (seq_ptr)
-    return seq_ptr->dname;
-  else
-    return 0;
+	for (; seq_num > 1 && seq_ptr; seq_ptr = seq_ptr->next, seq_num--) {}
+	if (seq_ptr)
+		return seq_ptr->dname;
+	else
+		return 0;
 }
 
 
 void free_seq (seq_ptr)
-     str_seq seq_ptr;
+str_seq seq_ptr;
 {
-  str_seq next_seq;
-  
-  while (seq_ptr) {
-    free(seq_ptr->dname);
-    next_seq = seq_ptr->next;
-    free((char *) seq_ptr);
-    seq_ptr = next_seq;
-  }
+	str_seq next_seq;
+
+	while (seq_ptr) {
+		free(seq_ptr->dname);
+		next_seq = seq_ptr->next;
+		free((char *) seq_ptr);
+		seq_ptr = next_seq;
+	}
 }

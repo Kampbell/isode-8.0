@@ -1,6 +1,6 @@
 /* eventmsg.h - VTPM: states */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/vt/RCS/eventmsg.h,v 9.0 1992/06/16 12:41:08 isode Rel $
  *
  *
@@ -107,4 +107,4 @@ char	*eventname[] = {
 	"NDQseq_tr",
 	"NDQ_x_tr",
 	"NDQ_x_ntr"
-	 };
+};

@@ -127,21 +127,21 @@ char *argv[];
 	int status;
 	int wait_result;
 
-	(void) signal(SIGINT, de_exit);
+	 signal(SIGINT, de_exit);
 
 	/*prratts = (struct namelist *) malloc(sizeof(struct namelist)); */
 
-	(void) printf("\n");
+	 printf("\n");
 
-	(void) sprintf(username, "%s", "interactive");
-	(void) sprintf(password, "%s", "interactive");
-	(void) sprintf(welcomeMessage, "%s", wlcm_msg);
+	 sprintf(username, "%s", "interactive");
+	 sprintf(password, "%s", "interactive");
+	 sprintf(welcomeMessage, "%s", wlcm_msg);
 
 	if (initialisations(argc, argv) != OK) {
 		de_exit(-1);
 	}
 
-	(void) displayFile("helloMessage", FALSE);
+	 displayFile("helloMessage", FALSE);
 
 	status = check_credentials();
 
@@ -151,69 +151,69 @@ char *argv[];
 
 	if (boundToDSA == FALSE) {
 		if (username_intrctv == TRUE) {
-			(void) printf("%s   %s", reconnect, please_wait);
+			 printf("%s   %s", reconnect, please_wait);
 		} else {
-			(void) printf("%s   %s", connect_idm, please_wait);
+			 printf("%s   %s", connect_idm, please_wait);
 		}
-		(void) fflush(stdout);
+		 fflush(stdout);
 
 		wait_result = wait_bind_to_ds(assoc, TRUE);  /* block */
 		if (wait_result == NOTOK) {
 			de_exit(-1);
 		} else if (wait_result == INV_PSWD) {
-			(void) printf(inv_pswd_exit);
+			 printf(inv_pswd_exit);
 			de_exit(-1);
 		} else {
-			(void) printf(done);
+			 printf(done);
 		}
 	}
 
-	(void) tailorHelp();
+	 tailorHelp();
 
 	ll_hdinit(de_log, myname);
 
 	if (strlen(posdit) > 0) {
 		if (!(strcmp(change_posdit, yes_string))) {
-			(void) printf(curpos_msg);
+			 printf(curpos_msg);
 			display_posdit(strlen(curpos_msg), posdit);
 		}
-		(void) determine_posdit(&objectType);
+		 determine_posdit(&objectType);
 		posdit_oc = objectType;
 	} else {
-		(void) position_dit();
+		 position_dit();
 	}
 
-	(void) setjmp(sjbuf);
-	(void) signal(SIGINT, onint1);
+	 setjmp(sjbuf);
+	 signal(SIGINT, onint1);
 
 	for(;;) {
-		(void) printf(menutopline);
-		(void) printf(menu5line1);
+		 printf(menutopline);
+		 printf(menu5line1);
 		if (posdit_oc == ORG) {
-			(void) printf(menu5line2);
+			 printf(menu5line2);
 		} else if (posdit_oc == ORGUNIT) {
-			(void) printf(menu5line2ou);
+			 printf(menu5line2ou);
 		} else {
-			(void) printf(menu5line2na);
+			 printf(menu5line2na);
 		}
-		(void) printf(menu5line3);
-		(void) printf(menu5line4);
+		 printf(menu5line3);
+		 printf(menu5line4);
 
 		enterString(OPTION5, default_option5, option5lp);
 
-		(void) signal(SIGINT, onint2);
+		 signal(SIGINT, onint2);
 
 		if (!(strcmp(option5, "1"))) {
-			(void) de_Action();
+			 de_Action();
 		} else if (!(strcmp(option5, "2"))) {
-			(void) dm_ModifyOrg();
+			 dm_ModifyOrg();
 		} else if (!(strcmp(option5, "3"))) {
 			/* modify password */
-			(void) prompt_new_password();
+			 prompt_new_password();
 		} else if (!(strcmp(option5, "4"))) {
 			/* modify password */
-			(void) displayFile("help", FALSE);
-			(void) printf(press_CR);
+			 displayFile("help", FALSE);
+			 printf(press_CR);
 			buf = malloc(LINESIZE);
 			if (gets(buf) == NULLCP) {
 				free(buf);
@@ -230,7 +230,7 @@ char *argv[];
 #ifdef SPEC_MALL
 		stop_malloc_trace();
 #endif
-		(void) de_unbind();
+		 de_unbind();
 	}
 	de_exit(0);
 	return 0;
@@ -243,20 +243,20 @@ int de_Action() {
 	int return_status;
 
 	for(;;) {
-		/*  (void) setjmp(sjbuf);
-		  (void) signal(SIGINT, onint1); */
-		(void) printf(menutopline);
-		(void) printf(menu2line1);
-		(void) printf(menu2line2);
-		(void) printf(menu2line3);
-		(void) printf(menu2line4);
-		(void) printf(menu2line5);
+		/*   setjmp(sjbuf);
+		   signal(SIGINT, onint1); */
+		 printf(menutopline);
+		 printf(menu2line1);
+		 printf(menu2line2);
+		 printf(menu2line3);
+		 printf(menu2line4);
+		 printf(menu2line5);
 		if (!(strcmp(change_posdit, yes_string))) {
-			(void) printf(menu2line6);
+			 printf(menu2line6);
 		}
 
 		if (tmp_org == TRUE) {
-			(void) sprintf(default_option2, "%s", "3");
+			 sprintf(default_option2, "%s", "3");
 		}
 
 		enterString(OPTION2, default_option2, option2lp);
@@ -303,17 +303,17 @@ char * object_to_work;
 	temp3 = malloc(LINESIZE);
 	temp4 = malloc(LINESIZE);
 
-	(void) sprintf(temp1, "%s", menutopline);
-	(void) sprintf(temp2, "             1  %s %s\n", string, menutypeperson);
-	(void) sprintf(temp3, "             2  %s %s\n", string, menutyperole);
-	(void) sprintf(temp4, "             3  %s %s\n", string, menutyperoom);
-	(void) printf(temp1);
-	(void) printf(temp2);
-	(void) printf(temp3);
-	(void) printf(temp4);
+	 sprintf(temp1, "%s", menutopline);
+	 sprintf(temp2, "             1  %s %s\n", string, menutypeperson);
+	 sprintf(temp3, "             2  %s %s\n", string, menutyperole);
+	 sprintf(temp4, "             3  %s %s\n", string, menutyperoom);
+	 printf(temp1);
+	 printf(temp2);
+	 printf(temp3);
+	 printf(temp4);
 
 	enterString(OPTION3, default_option3, option3lp);
-	(void) sprintf(object_to_work, "%s", option3);
+	 sprintf(object_to_work, "%s", option3);
 	free(temp1);
 	free(temp2);
 	free(temp3);
@@ -330,19 +330,19 @@ struct namelist * lp;
 
 	switch(objectType) {
 	case OPTION1:
-		/*      (void) sprintf(prompt, menubotpart); */
+		/*       sprintf(prompt, menubotpart); */
 		if (strlen(defaultValue) != 0)
-			(void) sprintf(prompt, "%s %s%s", menubotpart1, menu1defopt,
+			 sprintf(prompt, "%s %s%s", menubotpart1, menu1defopt,
 						   menubotpart2);
 		enterAndValidate(prompt, option1, objectType, defaultValue, lp);
 		break;
 	case OPTION2:
 		if (strlen(defaultValue) != 0) {
 			if (tmp_org == FALSE) {
-				(void) sprintf(prompt, "%s %s  %s: ", menubotpart1, menubotpart2,
+				 sprintf(prompt, "%s %s  %s: ", menubotpart1, menubotpart2,
 							   menu2defopt);
 			} else {
-				(void) sprintf(prompt, "%s %s  %s: ", menubotpart1, menubotpart2,
+				 sprintf(prompt, "%s %s  %s: ", menubotpart1, menubotpart2,
 							   menu2defoptneworg);
 			}
 		}
@@ -350,109 +350,109 @@ struct namelist * lp;
 		break;
 	case OPTION3:
 		if (strlen(defaultValue) != 0)
-			(void) sprintf(prompt, "%s %s%s%s  %s: ", menubotpart1,
+			 sprintf(prompt, "%s %s%s%s  %s: ", menubotpart1,
 						   "or ", quit_String, " to quit to previous menu", menu3defaddopt);
 		enterAndValidate(prompt, option3, objectType, defaultValue, lp);
 		break;
 	case OPTION4:
 		if (strlen(defaultValue) != 0)
-			(void) sprintf(prompt, "%s %s%s", menubotpart1, menu4defopt,
+			 sprintf(prompt, "%s %s%s", menubotpart1, menu4defopt,
 						   menubotpart2);
 		enterAndValidate(prompt, option4, objectType, defaultValue, lp);
 		break;
 	case OPTION5:
 		if (strlen(defaultValue) != 0)
-			(void) sprintf(prompt, "%s %s  %s: ", menubotpart1, menubotpart2,
+			 sprintf(prompt, "%s %s  %s: ", menubotpart1, menubotpart2,
 						   menu5defopt);
 		enterAndValidate(prompt, option5, objectType, defaultValue, lp);
 		break;
 	case PERSON:
-		(void) sprintf(prompt, "%s * %s %s %s %s : ", person_name,
+		 sprintf(prompt, "%s * %s %s %s %s : ", person_name,
 					   to_list, quit_String, to_quit, to_previous);
 		enterAndValidate(prompt, person, objectType, defaultValue, lp);
 		break;
 	case ENTRY:
-		(void) sprintf(prompt, "%s, * %s %s %s %s ", name_entry,
+		 sprintf(prompt, "%s, * %s %s %s %s ", name_entry,
 					   to_list, quit_String, to_quit, to_previous);
 		if (strlen(default_person) > 0) {
-			(void) sprintf(prompt, "%s [%s]", prompt, default_person);
+			 sprintf(prompt, "%s [%s]", prompt, default_person);
 		}
-		(void) sprintf(prompt, "%s :\n", prompt);
+		 sprintf(prompt, "%s :\n", prompt);
 		objectType = PERSON;   /* treat as person */
 		enterAndValidate(prompt, person, objectType, defaultValue, lp);
 		break;
 	case MODIFY:
-		(void) sprintf(prompt, "%s %s, %s %s %s ", name_entry,
+		 sprintf(prompt, "%s %s, %s %s %s ", name_entry,
 					   to_modify, quit_String, to_quit, to_previous);
 		if (strlen(default_person) > 0) {
-			(void) sprintf(prompt, "%s [%s]", prompt, default_person);
+			 sprintf(prompt, "%s [%s]", prompt, default_person);
 		}
-		(void) sprintf(prompt, "%s : ", prompt);
+		 sprintf(prompt, "%s : ", prompt);
 		objectType = PERSON;   /* treat as person */
 		enterAndValidate(prompt, person, objectType, defaultValue, lp);
 		break;
 	case DELETE:
-		(void) sprintf(prompt, "%s %s, %s %s %s ", name_entry,
+		 sprintf(prompt, "%s %s, %s %s %s ", name_entry,
 					   to_delete, quit_String, to_quit, to_previous);
 		if (strlen(default_person) > 0) {
-			(void) sprintf(prompt, "%s [%s]", prompt, default_person);
+			 sprintf(prompt, "%s [%s]", prompt, default_person);
 		}
-		(void) sprintf(prompt, "%s : ", prompt);
+		 sprintf(prompt, "%s : ", prompt);
 		objectType = PERSON;   /* treat as person */
 		enterAndValidate(prompt, person, objectType, defaultValue, lp);
 		break;
 	case USER:
-		(void) sprintf(prompt, "%s, * %s  : ", your_name, to_list);
+		 sprintf(prompt, "%s, * %s  : ", your_name, to_list);
 		objectType = PERSON; /* treat as a person */
 		enterAndValidate(prompt, person, objectType, defaultValue, lp);
 		break;
 	case USERDN:
 		if (strlen(default_userdn) > 0) {
-			(void) sprintf(prompt, "[%s] : ", default_userdn);
+			 sprintf(prompt, "[%s] : ", default_userdn);
 		} else {
-			(void) sprintf(prompt, "%s", ": ");
+			 sprintf(prompt, "%s", ": ");
 		}
 		objectType = PERSON;   /* treat as person */
 		enterAndValidate(prompt, person, objectType, defaultValue, lp);
 		break;
 	case ROLE:
-		(void) sprintf(prompt, "%s, * %s, %s %s %s", role_name,
+		 sprintf(prompt, "%s, * %s, %s %s %s", role_name,
 					   to_list, quit_String, to_quit, to_previous);
 		enterAndValidate(prompt, person, objectType, defaultValue, lp);
 		break;
 	case ROOM:
-		(void) sprintf(prompt, "%s, * %s, %s %s %s", room_name,
+		 sprintf(prompt, "%s, * %s, %s %s %s", room_name,
 					   to_list, quit_String, to_quit, to_previous);
 		enterAndValidate(prompt, person, objectType, defaultValue, lp);
 		break;
 	case ORGUNIT:
-		(void) sprintf(prompt, "%s, * %s ", opt_dept_name,
+		 sprintf(prompt, "%s, * %s ", opt_dept_name,
 					   list_depts);
 		if (strlen(default_department) > 0) {
-			(void) sprintf(prompt, "%s [%s] ", prompt, default_department);
+			 sprintf(prompt, "%s [%s] ", prompt, default_department);
 		}
-		(void) sprintf(prompt, "%s %s", prompt, prstr);
+		 sprintf(prompt, "%s %s", prompt, prstr);
 		enterAndValidate(prompt, ou, objectType, defaultValue, lp);
 		break;
 	case ORG:
-		(void) printf(org_manage);
-		(void) sprintf(prompt, "%s, * %s ", org_name, list_orgs);
+		 printf(org_manage);
+		 sprintf(prompt, "%s, * %s ", org_name, list_orgs);
 		if (strlen(default_organisation) > 0) {
-			(void) sprintf(prompt, "%s [%s] ", prompt, default_organisation);
+			 sprintf(prompt, "%s [%s] ", prompt, default_organisation);
 		}
-		(void) sprintf(prompt, "%s %s", prompt, prstr);
+		 sprintf(prompt, "%s %s", prompt, prstr);
 		enterAndValidate(prompt, org, objectType, defaultValue, lp);
 		break;
 	case COUNTRY:
-		(void) sprintf(prompt, "%s, * %s ", c_name, list_c);
+		 sprintf(prompt, "%s, * %s ", c_name, list_c);
 		if (strlen(default_country) > 0) {
-			(void) sprintf(prompt, "%s  [%s] ", prompt, default_country);
+			 sprintf(prompt, "%s  [%s] ", prompt, default_country);
 		}
-		(void) sprintf(prompt, "%s %s", prompt, prstr);
+		 sprintf(prompt, "%s %s", prompt, prstr);
 		enterAndValidate(prompt, co, objectType, defaultValue, lp);
 		break;
 	default:
-		(void) fprintf(stderr, "%s", unk_type_eS);
+		 fprintf(stderr, "%s", unk_type_eS);
 		break;
 	}
 }
@@ -472,19 +472,19 @@ struct namelist * lp;
 		if ((n > highNumber) || (n < 1)) { /* check number against valid range */
 			if (highNumber > 0) {
 				if (n <= 0) {
-					(void) printf("%d %s = %d)\n\n", n, inv_no_neg, highNumber);
+					 printf("%d %s = %d)\n\n", n, inv_no_neg, highNumber);
 				} else {
-					(void) fprintf(stderr, "%d %s = %d)\n\n", n, inv_no_max, highNumber);
+					 fprintf(stderr, "%d %s = %d)\n\n", n, inv_no_max, highNumber);
 				}
 			} else {
-				(void) fprintf(stderr, no_list_cur);
+				 fprintf(stderr, no_list_cur);
 			}
 		} else { /* valid number */
 			for (i = 1; i < n; i++, lp = lp->next) {};
 			cp = copy_string(lastComponent(lp->name, objectType));
 			exactMatch = objectType;
-			(void) strcpy(exactString, lp->name);
-			(void) strcpy(buf, cp);
+			 strcpy(exactString, lp->name);
+			 strcpy(buf, cp);
 			free(cp);
 			return;
 		}
@@ -493,13 +493,13 @@ struct namelist * lp;
 	for (;;) {
 		exactMatch = -1;
 		writeInverse(prompt);
-		(void) putchar(' ');
+		 putchar(' ');
 
 		if (gets(buf) == NULLCP) {
 			if (objectType == OPTION5) {
 				/* exit the program */
 				cleanup(0);
-				(void) de_exit(-1);
+				 de_exit(-1);
 			} else {
 				/* behave as for an interrupt */
 				clearerr(stdin);
@@ -597,14 +597,14 @@ struct namelist * lp;
 			if ((n > highNumber) || (n < 1)) { /* check number against valid range */
 				if (highNumber > 0) {
 					if (n <= 0) {
-						(void) printf("%d %s = %d)\n\n", n, inv_no_neg, highNumber);
+						 printf("%d %s = %d)\n\n", n, inv_no_neg, highNumber);
 					} else {
-						(void) fprintf(stderr, "%d %s = %d)\n\n", n, inv_no_max, highNumber);
+						 fprintf(stderr, "%d %s = %d)\n\n", n, inv_no_max, highNumber);
 					}
 				} else if (objectType != OPTION1 && objectType != OPTION2  &&
 						   objectType != OPTION3 && objectType != OPTION4  &&
 						   objectType != OPTION5) {
-					(void) fprintf(stderr, no_list_cur);
+					 fprintf(stderr, no_list_cur);
 				}
 				continue;
 			} else if (objectType != OPTION1 && objectType != OPTION2 &&
@@ -614,11 +614,11 @@ struct namelist * lp;
 				free(cp);
 				cp = copy_string(lastComponent(lp->name, objectType));
 				exactMatch = objectType;
-				(void) strcpy(exactString, lp->name);
+				 strcpy(exactString, lp->name);
 			}
 			if (objectType == OPTION1 || objectType == OPTION2 ||
 					objectType == OPTION5) {
-				(void) strcpy(buf, cp);
+				 strcpy(buf, cp);
 				free(cp);
 				return;
 			}
@@ -630,7 +630,7 @@ struct namelist * lp;
 					 || objectType == OPTION3
 					 || objectType == OPTION4
 					 || objectType == OPTION5) ) {
-				(void) printf("`%s' %s", cp, inv_no_pos);
+				 printf("`%s' %s", cp, inv_no_pos);
 			}
 			break;
 		}
@@ -662,23 +662,23 @@ struct namelist * lp;
 			continue;
 		}
 	}
-	(void) strcpy(buf, cp);
+	 strcpy(buf, cp);
 	free(cp);
 }
 
 displayValidWildCards() {
-	(void) printf(wildcard1);
-	(void) printf(wildcard2);
+	 printf(wildcard1);
+	 printf(wildcard2);
 }
 
 void
 onint1() {
-	(void) putchar('\n');
-	(void) de_exit(-1);
+	 putchar('\n');
+	 de_exit(-1);
 }
 void
 onint2() {
-	(void) putchar('\n');
+	 putchar('\n');
 	/* simulate search failure -
 	   this ensures that the "country question" is asked */
 	searchfail = TRUE;
@@ -694,7 +694,7 @@ cleanup(exitCode)
 int exitCode;
 {
 	if (boundToDSA == TRUE)
-		(void) de_unbind();
+		 de_unbind();
 #ifdef SPEC_MALL
 	stop_malloc_trace();
 #endif
@@ -704,19 +704,19 @@ int exitCode;
 void
 onalarm() {
 
-	(void) signal(SIGALRM, (VFP) onalarm);
-	(void) alarm(2);
+	 signal(SIGALRM, (VFP) onalarm);
+	 alarm(2);
 	switch (alarmCount) {
 	case 0:
-		(void) printf(some_time);
+		 printf(some_time);
 		break;
 	case 1:
-		(void) printf(still_try);
-		(void) fflush(stdout);
+		 printf(still_try);
+		 fflush(stdout);
 		break;
 	default:
-		(void) printf(".");
-		(void) fflush(stdout);
+		 printf(".");
+		 fflush(stdout);
 		break;
 	}
 	alarmCount++;
@@ -728,13 +728,13 @@ char * str;
 {
 	searchfail = TRUE;
 	if (abandoned)
-		(void) printf(srch_abandoned);
+		 printf(srch_abandoned);
 	else {
-		(void) printf(the_search);
+		 printf(the_search);
 		if (strcmp(str, "*") != 0)
-			(void) printf("%s '%s' ", for_str, str);
-		(void) printf(has_failed);
-		(void) printf(srvr_unava);
+			 printf("%s '%s' ", for_str, str);
+		 printf(has_failed);
+		 printf(srvr_unava);
 	}
 }
 

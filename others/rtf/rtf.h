@@ -1,6 +1,6 @@
 /* rtf.h - definitions for RT-file transfer utility */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/rtf/RCS/rtf.h,v 9.0 1992/06/16 12:48:07 isode Rel $
  *
  *

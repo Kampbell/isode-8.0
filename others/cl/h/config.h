@@ -1,6 +1,6 @@
 /* sys52-exos.h - site configuration file for SYS5 release 2 with EXOS 8044 */
 
-/* 
+/*
  * $Header: /f/iso/config/RCS/sys52-exos.h,v 5.0 88/07/21 14:31:21 mrose Rel $
  *
  *

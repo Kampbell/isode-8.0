@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapasync.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/rosapasync.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -36,29 +36,27 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapasync.c,v 9.0 19
 
 /*    define vectors for INDICATION events */
 
-int	RoSetIndications (sd, indication, roi)
-int	sd;
-IFP	indication;
-struct RoSAPindication *roi;
+int 
+RoSetIndications (int sd, IFP indication, struct RoSAPindication *roi)
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	struct assocblk   *acb;
 
-    _iosignals_set = 1;
+	_iosignals_set = 1;
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rosapPsig (acb, sd);
+	rosapPsig (acb, sd);
 
-    if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING)) {
-	(void) sigiomask (smask);
-	return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
-    }
+	if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING)) {
+		 sigiomask (smask);
+		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
+	}
 
-    result = (*acb -> acb_rosetindications) (acb, indication, roi);
+	result = (*acb -> acb_rosetindications) (acb, indication, roi);
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return result;
+	return result;
 }

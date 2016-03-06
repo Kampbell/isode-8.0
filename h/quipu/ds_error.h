@@ -27,51 +27,51 @@
 #include "quipu/dsp.h"
 
 struct DSE_abandon_fail {
-    int DSE_ab_problem;
+	int DSE_ab_problem;
 #define DSE_AB_NOSUCHOPERATION  1
 #define DSE_AB_TOOLATE          2
 #define DSE_AB_CANNOTABANDON    3
-    int DSE_ab_invokeid;
+	int DSE_ab_invokeid;
 };
 
 struct DSE_at_problem {
-    int         DSE_at_what;
+	int         DSE_at_what;
 #define DSE_AT_NOSUCHATTRIBUTE          1
 #define DSE_AT_INVALIDATTRIBUTESYNTAX   2
 #define DSE_AT_UNDEFINEDATTRIBUTETYPE   3
 #define DSE_AT_INAPPROPRIATEMATCHING    4
 #define DSE_AT_CONSTRAINTVIOLATION      5
 #define DSE_AT_TYPEORVALUEEXISTS        6
-    AttributeType DSE_at_type;
-    AttributeValue DSE_at_value;
-    struct DSE_at_problem *dse_at_next;
+	AttributeType DSE_at_type;
+	AttributeValue DSE_at_value;
+	struct DSE_at_problem *dse_at_next;
 };
 #define DSE_AT_NOPROBLEM ((struct DSE_at_problem*)0)
 
 struct DSE_attribute {
-    DN DSE_at_name;
-    struct DSE_at_problem DSE_at_plist;
+	DN DSE_at_name;
+	struct DSE_at_problem DSE_at_plist;
 } ;
 
 
 struct DSE_name {
-    int DSE_na_problem;
+	int DSE_na_problem;
 #define DSE_NA_NOSUCHOBJECT             1
 #define DSE_NA_ALIASPROBLEM             2
 #define DSE_NA_INVALIDATTRIBUTESYNTAX   3
 #define DSE_NA_ALIASDEREFERENCE         4
-    DN DSE_na_matched;
+	DN DSE_na_matched;
 };
 
 
 struct DSE_referral {
-    ContinuationRef DSE_ref_candidates;
-    DN                  DSE_ref_prefix;
-			/* Context prefix only in DSP           */
+	ContinuationRef DSE_ref_candidates;
+	DN                  DSE_ref_prefix;
+	/* Context prefix only in DSP           */
 };
 
 struct DSE_security {
-    int DSE_sc_problem;
+	int DSE_sc_problem;
 #define DSE_SC_AUTHENTICATION           1
 #define DSE_SC_INVALIDCREDENTIALS       2
 #define DSE_SC_ACCESSRIGHTS             3
@@ -81,7 +81,7 @@ struct DSE_security {
 };
 
 struct DSE_service {
-    int DSE_sv_problem;
+	int DSE_sv_problem;
 #define DSE_SV_BUSY                     1
 #define DSE_SV_UNAVAILABLE              2
 #define DSE_SV_UNWILLINGTOPERFORM       3
@@ -97,7 +97,7 @@ struct DSE_service {
 };
 
 struct DSE_update {
-    int DSE_up_problem;
+	int DSE_up_problem;
 #define DSE_UP_NAMINGVIOLATION          1
 #define DSE_UP_OBJECTCLASSVIOLATION     2
 #define DSE_UP_NOTONNONLEAF             3
@@ -108,7 +108,7 @@ struct DSE_update {
 };
 
 struct DSError {
-    int dse_type;
+	int dse_type;
 #define DSE_INTR_ABANDON_FAILED	-5	/* Call interrupted - abandon failed */
 #define DSE_INTR_ABANDONED	-4	/* Call interrupted - abandoned */
 #define DSE_INTRERROR		-3	/* Call interrupted */
@@ -120,27 +120,27 @@ struct DSError {
 #define DSE_SERVICEERROR        3
 #define DSE_REFERRAL            4
 #define DSE_ABANDONED           5
-			/* Abandoned does not have any parameter and    */
-			/* so there is no struct for this value         */
+	/* Abandoned does not have any parameter and    */
+	/* so there is no struct for this value         */
 #define DSE_SECURITYERROR       6
 #define DSE_ABANDON_FAILED      7
 #define DSE_UPDATEERROR         8
 #define DSE_DSAREFERRAL		9
 #define ds_recog_err(a) ((a >= DSE_ATTRIBUTEERROR) && (a <= DSE_DSAREFERRAL))
-    union {
-       struct DSE_attribute dse_un_attribute;
-       struct DSE_name dse_un_name;
-       struct DSE_service dse_un_service;
-       struct DSE_referral dse_un_referral;
-       struct DSE_security dse_un_security;
-       struct DSE_abandon_fail dse_un_abandon_fail;
-       struct DSE_update dse_un_update;
-    }   dse_un;
+	union {
+		struct DSE_attribute dse_un_attribute;
+		struct DSE_name dse_un_name;
+		struct DSE_service dse_un_service;
+		struct DSE_referral dse_un_referral;
+		struct DSE_security dse_un_security;
+		struct DSE_abandon_fail dse_un_abandon_fail;
+		struct DSE_update dse_un_update;
+	}   dse_un;
 };
 
 
 
-	/* THIS SECTION DEFINES THE PROCEDURE CALLS */
+/* THIS SECTION DEFINES THE PROCEDURE CALLS */
 
 /* All of the DUA calls are SYNCHRONOUS, with no access to referrals    */
 /* A DUA can access lower level hooks if if needs to be more clever     */
@@ -158,7 +158,7 @@ possible values
 #define DS_ERROR_PROVIDER -3    /* Other OSI provider error             */
 #define DS_X500_ERROR	-4	/* Synonym for remote error */
 #define DS_ERROR_REMOTE -4      /* Remote error.  Further details will  */
-				/* be in the error parameter            */
+/* be in the error parameter            */
 
 #define DS_CONTINUE -5		/* operation not finished... continuing */
 #define DS_SUSPEND -6		/* operation has deliberately suspended */

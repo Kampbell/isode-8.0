@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapminor1.c,v 9.0 1992/06/16 12:29:42 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap2/RCS/psapminor1.c,v 9.0 1992/06/16 12:29:42 isode Rel $
  *
  *
@@ -33,56 +33,51 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapminor1.c,v 9.0 19
 
 /*    P-MINOR-SYNC.REQUEST */
 
-int	PMinSyncRequest (sd, type, ssn, data, ndata, pi)
-int	sd;
-int	type,
-	ndata;
-long   *ssn;
-PE     *data;
-struct PSAPindication *pi;
+int 
+PMinSyncRequest (int sd, int type, long *ssn, PE *data, int ndata, struct PSAPindication *pi)
 {
-    SBV	    smask;
-    int     len,
-	    result;
-    char   *base,
-	   *realbase;
-    register struct psapblk *pb;
-    struct SSAPindication   sis;
-    register struct SSAPabort  *sa = &sis.si_abort;
+	SBV	    smask;
+	int     len,
+			result;
+	char   *base,
+		   *realbase;
+	struct psapblk *pb;
+	struct SSAPindication   sis;
+	struct SSAPabort  *sa = &sis.si_abort;
 
-    toomuchP (data, ndata, NPDATA, "minorsync");
-    missingP (pi);
+	toomuchP (data, ndata, NPDATA, "minorsync");
+	missingP (pi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    psapPsig (pb, sd);
+	psapPsig (pb, sd);
 
-    if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
-			     "P-MINOR-SYNC user-data", PPDU_NONE)) != OK)
-	goto out2;
+	if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
+							 "P-MINOR-SYNC user-data", PPDU_NONE)) != OK)
+		goto out2;
 
-    if ((result = SMinSyncRequest (sd, type, ssn, base, len, &sis)) == NOTOK)
-	if (SC_FATAL (sa -> sa_reason))
-	    (void) ss2pslose (pb, pi, "SMinSyncRequest", sa);
-	else {
-	    (void) ss2pslose (NULLPB, pi, "SMinSyncRequest", sa);
-	    goto out1;
-	}
+	if ((result = SMinSyncRequest (sd, type, ssn, base, len, &sis)) == NOTOK)
+		if (SC_FATAL (sa -> sa_reason))
+			 ss2pslose (pb, pi, "SMinSyncRequest", sa);
+		else {
+			 ss2pslose (NULLPB, pi, "SMinSyncRequest", sa);
+			goto out1;
+		}
 
-out2: ;
-    if (result == NOTOK)
-	freepblk (pb);
-    else
-	if (result == DONE)
-	    result = NOTOK;
-out1: ;
-    if (realbase)
-	free (realbase);
-    else
-	if (base)
-	    free (base);
+out2:
+	;
+	if (result == NOTOK)
+		freepblk (pb);
+	else if (result == DONE)
+		result = NOTOK;
+out1:
+	;
+	if (realbase)
+		free (realbase);
+	else if (base)
+		free (base);
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return result;
+	return result;
 }

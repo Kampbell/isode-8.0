@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaptrans.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rtsap/RCS/rtsaptrans.c,v 9.0 1992/06/16 12:37:45 isode Rel $
  *
  *
@@ -33,31 +33,28 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaptrans.c,v 9.0 19
 
 /*    RT-TRANSFER.REQUEST */
 
-int	RtTransferRequest (sd, data, secs, rti)
-int	sd;
-PE	data;
-int	secs;
-struct RtSAPindication *rti;
+int 
+RtTransferRequest (int sd, PE data, int secs, struct RtSAPindication *rti)
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	struct assocblk   *acb;
 
-    missingP (rti);
+	missingP (rti);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rtsapPsig (acb, sd);
+	rtsapPsig (acb, sd);
 
-    if (data == NULLPE && acb -> acb_downtrans == NULLIFP) {
-	(void) sigiomask (smask);
-	return rtsaplose (rti, RTS_PARAMETER, NULLCP,
-			  "mandatory parameter \"data\" missing");
-    }
+	if (data == NULLPE && acb -> acb_downtrans == NULLIFP) {
+		 sigiomask (smask);
+		return rtsaplose (rti, RTS_PARAMETER, NULLCP,
+						  "mandatory parameter \"data\" missing");
+	}
 
-    result = (*acb -> acb_transferequest)  (acb, data, secs, rti);
+	result = (*acb -> acb_transferequest)  (acb, data, secs, rti);
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return result;
+	return result;
 }

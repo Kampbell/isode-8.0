@@ -69,11 +69,11 @@ struct ds_bind_error        *error;
 		error->dbe_value = DSE_SV_INVALIDREFERENCE;
 		if (dsa_address) {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("invalid name %s",dsa_address));
-			(void) sprintf (error->dbe_data,"invalid name %s",dsa_address);
+			 sprintf (error->dbe_data,"invalid name %s",dsa_address);
 			error->dbe_cc = strlen (error->dbe_data);
 		} else {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("NULL address"));
-			(void) sprintf (error->dbe_data,"NULL address");
+			 sprintf (error->dbe_data,"NULL address");
 			error->dbe_cc = strlen (error->dbe_data);
 		}
 		return (DS_ERROR_LOCAL);
@@ -176,7 +176,7 @@ int			  async;
 		dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 		dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 		dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-		(void) sprintf (dc->dc_un.dc_bind_err.dbe_data,"acse pci version 1 OID not found");
+		 sprintf (dc->dc_un.dc_bind_err.dbe_data,"acse pci version 1 OID not found");
 		dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 
 		return (NOTOK);
@@ -204,7 +204,7 @@ int			  async;
 		dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 		dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 		dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-		(void) sprintf (dc->dc_un.dc_bind_err.dbe_data,"encoding bind args failed");
+		 sprintf (dc->dc_un.dc_bind_err.dbe_data,"encoding bind args failed");
 		dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 
 		oid_free(acse_pci);
@@ -273,10 +273,10 @@ int			  async;
 
 	if ((sf = addr2ref (qlocalhost)) == NULL) {
 		sf = &sf_s;
-		(void) bzero ((char *) sf, sizeof *sf);
+		 bzero ((char *) sf, sizeof *sf);
 	}
 
-	(void) bzero ((char *) &qos, sizeof qos);
+	 bzero ((char *) &qos, sizeof qos);
 	qos.qos_sversion = NOTOK;	/* Negotiate highest session */
 	qos.qos_maxtime = NOTOK;	/* No time out specified */
 
@@ -331,7 +331,7 @@ struct RoNOTindication	* rni;
 				dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 				dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 				dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-				(void) sprintf (dc->dc_un.dc_bind_err.dbe_data,"decoding bind result failed");
+				 sprintf (dc->dc_un.dc_bind_err.dbe_data,"decoding bind result failed");
 				dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 				dc->dc_result = DC_REJECT;
 				return (NOTOK);
@@ -344,7 +344,7 @@ struct RoNOTindication	* rni;
 			dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 			dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 			dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-			(void) sprintf (dc->dc_un.dc_bind_err.dbe_data,"bind result missing");
+			 sprintf (dc->dc_un.dc_bind_err.dbe_data,"bind result missing");
 			dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 			dc->dc_result = DC_REJECT;
 			return (NOTOK);
@@ -364,7 +364,7 @@ struct RoNOTindication	* rni;
 				dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 				dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 				dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-				(void) sprintf (dc->dc_un.dc_bind_err.dbe_data,"decoding bind error failed");
+				 sprintf (dc->dc_un.dc_bind_err.dbe_data,"decoding bind error failed");
 				dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 				LLOG(log_dsap, LLOG_EXCEPTIONS, ("Unable to decode DirectoryBindError"));
 				dc->dc_result = DC_REJECT;
@@ -377,7 +377,7 @@ struct RoNOTindication	* rni;
 			dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 			dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 			dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-			(void) sprintf (dc->dc_un.dc_bind_err.dbe_data,"no bind error");
+			 sprintf (dc->dc_un.dc_bind_err.dbe_data,"no bind error");
 			dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("No DirectoryBindError"));
 			dc->dc_result = DC_REJECT;

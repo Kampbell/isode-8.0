@@ -15,42 +15,39 @@
 /*
  *	Request type identifier
  */
-typedef enum
-{
-  DS_READ,
-  READ_DN_ATTR,
-  DS_SEARCH,
-  UFNAME,
-  UFSEARCH,
-  ENTRY_TEMPLATE,
-  MODIFY_ENTRY,
-  MODIFY_RDN,
-  REMOVE_ENTRY,
-  ADD_ENTRY
+typedef enum {
+	DS_READ,
+	READ_DN_ATTR,
+	DS_SEARCH,
+	UFNAME,
+	UFSEARCH,
+	ENTRY_TEMPLATE,
+	MODIFY_ENTRY,
+	MODIFY_RDN,
+	REMOVE_ENTRY,
+	ADD_ENTRY
 } request_type;
 
 /*
  *	Generic request record
  */
-typedef struct _request_rec
-{
-  request_state status;
-  errorList errors;
-  request_type type;
-  QCardinal request_id;
+typedef struct _request_rec {
+	request_state status;
+	errorList errors;
+	request_type type;
+	QCardinal request_id;
 
-  struct _request_rec *next;
-  struct _request_rec *prev;
-  
-  union
-    {
-      ufnameRec ufname_request;
-      ufsearchRec ufsearch_request;
-      readRec read_request;
-      readDnAttrRec read_dn_attr_request;
-      modifyRec modify_request;
-      makeTemplateRec template_request;
-    } req_type_rec;
+	struct _request_rec *next;
+	struct _request_rec *prev;
+
+	union {
+		ufnameRec ufname_request;
+		ufsearchRec ufsearch_request;
+		readRec read_request;
+		readDnAttrRec read_dn_attr_request;
+		modifyRec modify_request;
+		makeTemplateRec template_request;
+	} req_type_rec;
 
 #define UFNAME_REC req_type_rec.ufname_request
 #define UFSEARCH_REC req_type_rec.ufsearch_request

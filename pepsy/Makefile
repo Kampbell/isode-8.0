@@ -76,11 +76,13 @@ inst-pepsy:	$(BINDIR)pepsy
 $(BINDIR)pepsy:	xpepsy
 		-cp $@ zxpepsy
 		-rm -f $@
-		cp xpepsy $@
-		-@ls -gls $@
+		-cp xpepsy $@
+		@ls -gls $@
 		-@echo ""
 
 pepsy:		xpepsy
+		rm -rf pepsy
+		ln xpepsy pepsy
 
 xpepsy:		pepsyvrsn.o $(PEPSYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ $(PEPSY-O) \
@@ -98,7 +100,7 @@ pepsy-yacc.o:	pepsy-yacc.c lex.c
 
 pepsy-yacc.c:	pepsy-yacc.y
 		-@echo "expect 40 shift/reduce and 11 reduce/reduce conflicts"
-		yacc $(YACCFLAGS) pepsy-yacc.y
+		$(YACC) $(YACCFLAGS) pepsy-yacc.y
 		mv y.tab.c $@
 
 pepsy-yacc.y:	yacc.y.gnrc
@@ -314,10 +316,10 @@ manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 # clean
 ################################################################
 
-clean:;		rm -f *.o *.a x* z* _* core pepsydefs.h *yacc.y *yacc.c lex.l \
+clean:;		rm -f *.o *.a x* z* _* core* pepsydefs.h *yacc.y *yacc.c lex.l \
 			lex.c *.ph UNIV_* UNIV-* _* core $(TOPDIR)h/UNIV*.h \
 			pp.c pp pep libpepsy.a pepsy-yacc.y T1* T2* T3* t? \
-			peptest pep.results
+			peptest pep.results pepsy
 
 grind:;		iprint Makefile
 		tgrind -lc pepsydefs.h pepsy.c pepsy.c pepsyvrsn.c

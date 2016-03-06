@@ -1,6 +1,6 @@
 /* smux.h - SMUX include file */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/snmp/RCS/smux.h,v 9.0 1992/06/16 12:38:11 isode Rel $
  *
  * Contributed by NYSERNet Inc.  This work was partially supported by the
@@ -71,12 +71,12 @@ char   *smux_error ();				/* TEXTUAL ERROR */
 /*  */
 
 struct smuxEntry {
-    char   *se_name;
+	char   *se_name;
 
-    OIDentifier se_identity;
-    char   *se_password;
+	OIDentifier se_identity;
+	char   *se_password;
 
-    int	    se_priority;
+	int	    se_priority;
 };
 
 int	setsmuxEntry (), endsmuxEntry ();

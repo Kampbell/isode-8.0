@@ -150,16 +150,16 @@ else
 
 
 int	ll_open ();
-int	ll_log (), _ll_log ();
+int	ll_log (LLog*, ...), _ll_log ();
 int	ll_close ();
 
 void	ll_hdinit ();
 void	ll_dbinit ();
 
-int	ll_printf ();
+int	ll_printf (LLog*, ...);
 int	ll_sync ();
 
-char   *ll_preset ();
+char   *ll_preset (char* fmt, ...);
 
 int	ll_check ();
 

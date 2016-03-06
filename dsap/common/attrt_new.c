@@ -27,13 +27,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_new.c,v 9
 #include "quipu/name.h"
 
 AttributeType AttrT_new (name)
-register char * name;
+char * name;
 {
-oid_table * Current;
-extern oid_table_attr attrOIDTable [];
-oid_table_attr  *res;
-extern attrNumEntries;
-char * get_oid ();
+	oid_table * Current;
+	extern oid_table_attr attrOIDTable [];
+	oid_table_attr  *res;
+	extern attrNumEntries;
+	char * get_oid ();
 
 	while ( isascii(*name) && isspace (*name))
 		name++;
@@ -43,12 +43,12 @@ char * get_oid ();
 		char * ptr;
 		OID oid;
 
-		if ((ptr = get_oid (name)) == NULLCP) 
+		if ((ptr = get_oid (name)) == NULLCP)
 			return (NULLTABLE_ATTR);
 
 		Current = &attrOIDTable[attrNumEntries].oa_ot;
 		Current->ot_name = strdup(name);
-		(void) add_entry_aux (Current->ot_name,(caddr_t)&attrOIDTable[attrNumEntries],2,NULLCP);
+		 add_entry_aux (Current->ot_name,(caddr_t)&attrOIDTable[attrNumEntries],2,NULLCP);
 		Current->ot_stroid = strdup(ptr);
 
 		oid = str2oid (Current->ot_stroid);

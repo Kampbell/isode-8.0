@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapmajor2.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapmajor2.c,v 9.0 1992/06/16 12:39:41 isode Rel $
  *
  *
@@ -33,62 +33,56 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapmajor2.c,v 9.0 199
 
 /*    S-MAJOR-SYNC.RESPONSE */
 
-int	SMajSyncResponse (sd, data, cc, si)
-int	sd;
-char   *data;
-int	cc;
-struct SSAPindication *si;
+int 
+SMajSyncResponse (int sd, char *data, int cc, struct SSAPindication *si)
 {
-    SBV	    smask;
-    int     result;
-    register struct ssapblk *sb;
+	SBV	    smask;
+	int     result;
+	struct ssapblk *sb;
 
-    missingP (si);
+	missingP (si);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    ssapPsig (sb, sd);
-    toomuchP (sb, data, cc, SN_SIZE, "majorsync");
+	ssapPsig (sb, sd);
+	toomuchP (sb, data, cc, SN_SIZE, "majorsync");
 
-    result = SMajSyncResponseAux (sb, data, cc, si);
+	result = SMajSyncResponseAux (sb, data, cc, si);
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*  */
 
-int	SMajSyncResponseAux (sb, data, cc, si)
-register struct ssapblk *sb;
-char   *data;
-int	cc;
-register struct SSAPindication *si;
+int 
+SMajSyncResponseAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
 {
-    int     result;
+	int     result;
 
-    if (!(sb -> sb_requirements & SR_MAJORSYNC)
-	    && !(sb -> sb_requirements & SR_ACTIVITY)
-	    && !(sb -> sb_flags & SB_Vact))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"major synchronize service unavailable");
-    if (!(sb -> sb_flags & SB_MAA))
-	return ssaplose (si, SC_OPERATION, NULLCP,
-		"no majorsync in progress");
+	if (!(sb -> sb_requirements & SR_MAJORSYNC)
+			&& !(sb -> sb_requirements & SR_ACTIVITY)
+			&& !(sb -> sb_flags & SB_Vact))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "major synchronize service unavailable");
+	if (!(sb -> sb_flags & SB_MAA))
+		return ssaplose (si, SC_OPERATION, NULLCP,
+						 "no majorsync in progress");
 
-    if ((result = SWriteRequestAux (sb, SPDU_MAA, data, cc, 0,
-	    sb -> sb_V_M - 1, 0, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
-	freesblk (sb);
-    else {
-	sb -> sb_V_A = sb -> sb_V_R = sb -> sb_V_M;
-	if (sb -> sb_requirements & SR_ACTIVITY)
-	    if (sb -> sb_flags & SB_Vnextact)
-		sb -> sb_flags |= SB_Vact;
-	    else
-		sb -> sb_flags &= ~SB_Vact;
+	if ((result = SWriteRequestAux (sb, SPDU_MAA, data, cc, 0,
+									sb -> sb_V_M - 1, 0, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
+		freesblk (sb);
+	else {
+		sb -> sb_V_A = sb -> sb_V_R = sb -> sb_V_M;
+		if (sb -> sb_requirements & SR_ACTIVITY)
+			if (sb -> sb_flags & SB_Vnextact)
+				sb -> sb_flags |= SB_Vact;
+			else
+				sb -> sb_flags &= ~SB_Vact;
 
-	sb -> sb_flags &= ~(SB_MAA | SB_AE);
-    }
+		sb -> sb_flags &= ~(SB_MAA | SB_AE);
+	}
 
-    return result;
+	return result;
 }

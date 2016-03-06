@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/compare.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/compare.c,v 9.0 1992/06/16 12:35:39 isode Rel $
  *
  *
@@ -39,14 +39,13 @@ extern DN       dn;
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-call_compare (argc, argv)
-int             argc;
-char          **argv;
+int 
+call_compare (int argc, char **argv)
 {
 	struct DSError  error;
 	struct ds_compare_result result;
 	struct ds_compare_arg compare_arg;
-	
+
 	int             x;
 	int             att_present = 0;
 	int             print = FALSE;
@@ -62,7 +61,7 @@ char          **argv;
 		Usage (argv[0]);
 		return;
 	}
-	
+
 	for (x = 1; x < argc; x++) {
 		if (test_arg (argv[x],"-attribute",1)) {
 			str1_type = argv[++x];
@@ -104,20 +103,19 @@ char          **argv;
 		return;
 
 	/* Strong authentication */
-	if (compare_arg.cma_common.ca_security != (struct security_parms *) 0)
-	{
-	extern struct SecurityServices *dsap_security;
+	if (compare_arg.cma_common.ca_security != (struct security_parms *) 0) {
+		extern struct SecurityServices *dsap_security;
 
-	compare_arg.cma_common.ca_sig = 
-		(dsap_security->serv_sign)((caddr_t)&compare_arg, 
-			_ZCompareArgumentDataDAS, &_ZDAS_mod);
+		compare_arg.cma_common.ca_sig =
+			(dsap_security->serv_sign)((caddr_t)&compare_arg,
+									   _ZCompareArgumentDataDAS, &_ZDAS_mod);
 	}
 
 	while (ds_compare (&compare_arg, &error, &result) != DS_OK) {
 		if (dish_error (OPT, &error) == 0)
 			return;
 		compare_arg.cma_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
-	} 
+	}
 
 	if (result.cmr_common.cr_aliasdereferenced & print) {
 		ps_print (RPS, "(Alias dereferenced - ");

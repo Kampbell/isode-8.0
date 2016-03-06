@@ -1,6 +1,6 @@
 /* internet.h - TCP/IP abstractions */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/internet.h,v 5.0 88/07/21 14:39:00 mrose Rel $
  *
  *
@@ -103,18 +103,18 @@ int	select_udp_socket ();
 
 #ifdef	EXOS
 struct hostent {
-    char   *h_name;		/* official name */
-    char  **h_aliases;		/* alias list */
-    int     h_addrtype;		/* address type: AF_INET */
-    int     h_length;		/* address length: sizeof (u_long) == 4 */
-    char   *h_addr;		/* address value: (struct in_addr *) */
+	char   *h_name;		/* official name */
+	char  **h_aliases;		/* alias list */
+	int     h_addrtype;		/* address type: AF_INET */
+	int     h_length;		/* address length: sizeof (u_long) == 4 */
+	char   *h_addr;		/* address value: (struct in_addr *) */
 };
 
 struct servent {
-    char   *s_name;		/* official name */
-    char  **s_aliases;		/* alias list */
-    int     s_port;		/* port number */
-    char   *s_proto;		/* protocol beneath service */
+	char   *s_name;		/* official name */
+	char  **s_aliases;		/* alias list */
+	int     s_port;		/* port number */
+	char   *s_proto;		/* protocol beneath service */
 };
 
 

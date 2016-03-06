@@ -27,16 +27,16 @@
 #include "quipu/attr.h"
 
 typedef struct ava {            /* represents AttributeValueAssertion */
-    AttributeType ava_type;
-    AttributeValue ava_value;
-}ava, AVA;
+	AttributeType ava_type;
+	AttributeValue ava_value;
+} ava, AVA;
 
 typedef struct rdncomp {        /* RDN is sequence of attribute value   */
-				/* assertions                           */
-				/* represents RelativeDistinguishedName */
-    attrType       	rdn_at;
-    attrVal      	rdn_av;
-    struct rdncomp      *rdn_next;
+	/* assertions                           */
+	/* represents RelativeDistinguishedName */
+	attrType       	rdn_at;
+	attrVal      	rdn_av;
+	struct rdncomp      *rdn_next;
 } rdncomp, *RDN;
 
 #define NULLRDN ((RDN) 0)
@@ -48,10 +48,10 @@ RDN  rdn_cpy ();
 RDN  rdn_merge ();
 
 typedef struct dncomp {         /* DN is sequence of RDNs.              */
-				/* represents RDNSequence which is      */
-				/* equivalent to DistinguishedName      */
-    RDN                 dn_rdn;
-    struct dncomp       *dn_parent;
+	/* represents RDNSequence which is      */
+	/* equivalent to DistinguishedName      */
+	RDN                 dn_rdn;
+	struct dncomp       *dn_parent;
 } dncomp, *DN;
 
 #define NULLDN ((DN) 0)

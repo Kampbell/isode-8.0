@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/ps.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/ps.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -33,8 +33,8 @@ static int x, y;
 
 extern int two_passes;
 
-photo_start (name)
-char * name;
+int 
+photo_start (char *name)
 {
 	x = 0;
 	y = HEIGHT;
@@ -44,8 +44,8 @@ char * name;
 }
 
 
-photo_end (name)
-char * name;
+int 
+photo_end (char *name)
 {
 	/* Decoding has finished - display the image */
 
@@ -53,29 +53,29 @@ char * name;
 	return 0;
 }
 
-photo_black (length)
-int length;
+int 
+photo_black (int length)
 {
-    if (length > 0)
-        (void) printf ("%d %d moveto %d %d lineto stroke\n", x, y, x + length - 1, y);
-    x += length;
+	if (length > 0)
+		 printf ("%d %d moveto %d %d lineto stroke\n", x, y, x + length - 1, y);
+	x += length;
 }
 
-photo_white (length)
-int length;
+int 
+photo_white (int length)
 {
-    x += length;
+	x += length;
 }
 
 
 photo_line_end (line)
 bit_string * line;
 {
-    x = 0;
-    --y;
-    if (y < 0) {
-	puts ("showpage");
-	y = HEIGHT;
-    }
+	x = 0;
+	--y;
+	if (y < 0) {
+		puts ("showpage");
+		y = HEIGHT;
+	}
 }
 

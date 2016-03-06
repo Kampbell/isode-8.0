@@ -62,7 +62,7 @@ struct signature {
 	int n_bits;
 	char *encrypted;
 };
-		
+
 struct certificate {
 	struct alg_id alg;
 	int version;
@@ -115,7 +115,7 @@ struct protected_password {
 	char is_protected[1];
 	char *time1;
 	char *time2;
-	struct random_number *random1;	
+	struct random_number *random1;
 	struct random_number *random2;
 	struct alg_id * alg_id;		/* NULL - for pepsy */
 };

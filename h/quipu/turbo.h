@@ -1,6 +1,6 @@
 /* turbo.h - your comments here */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/quipu/RCS/turbo.h,v 9.0 1992/06/16 12:23:11 isode Rel $
  *
  *
@@ -77,16 +77,16 @@ extern int	avl_apply();
  */
 
 typedef struct index {
-					/* entry associated with this index */
-					/* sibling => parent		    */
+	/* entry associated with this index */
+	/* sibling => parent		    */
 	DN		i_dn;		/* subtree => base		    */
 
-					/* for subtree index: descendants   */
-					/* not held locally		    */
+	/* for subtree index: descendants   */
+	/* not held locally		    */
 	struct entry	**i_nonleafkids;
 
-					/* for both: aliases that escape    */
-					/* the scope of the index	    */
+	/* for both: aliases that escape    */
+	/* the scope of the index	    */
 	struct entry	**i_nonlocalaliases;
 
 	AttributeType	i_attr;		/* the attribute type		    */

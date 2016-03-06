@@ -14,10 +14,10 @@
 
 
 typedef struct tab_entry {
-  	char *val;
+	char *val;
 	char *name;
 	struct tab_entry *next;
-      } *table_entry;
+} *table_entry;
 
 #define NULLSYM (table_entry) 0
 

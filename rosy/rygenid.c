@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rygenid.c,v 9.0 1992/06/16 12:37:29 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosy/RCS/rygenid.c,v 9.0 1992/06/16 12:37:29 isode Rel $
  *
  *
@@ -37,7 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rygenid.c,v 9.0 1992/0
 int	RyGenID (sd)
 int	sd;
 {
-    static int	id = 0;
+	static int	id = 0;
 
-    return (++id);
+	return (++id);
 }

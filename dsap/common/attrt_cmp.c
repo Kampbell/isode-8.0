@@ -31,7 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_cmp.c,v 9
 #endif
 
 AttrT_cmp_old (x,y)
-register AttributeType x,y;
+AttributeType x,y;
 {
 	if ( x == NULLAttrT )
 		return (y ? -1 : 0);

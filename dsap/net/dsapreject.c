@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapreject.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dsapreject.c,v 9.0 1992/06/16 12:14:05 isode Rel $
  *
  *
@@ -36,10 +36,8 @@ extern LLog	* log_dsap;
 
 /* ARGSUSED */
 
-int	  DRejectRequest (sd, reason, id)
-int	  sd;
-int	  reason;
-int	  id;
+int 
+DRejectRequest (int sd, int reason, int id)
 {
 	int	  result;
 	struct RoSAPindication	  roi_s;
@@ -51,10 +49,9 @@ int	  id;
 	result = RoURejectRequest(sd, &id, reason, ROS_NOPRIO, roi);
 	watch_dog_reset();
 
-	if (result == NOTOK)
-	{
+	if (result == NOTOK) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,( "DBindReject: RoURejectRequest failed"));
-        }
+	}
 
 }
 

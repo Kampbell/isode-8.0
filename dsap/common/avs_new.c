@@ -37,7 +37,7 @@ AttributeValue pe;
 AV_Sequence  avs_comp_new (pe)
 AttributeValue pe;
 {
-AV_Sequence ptr;
+	AV_Sequence ptr;
 	ptr = avs_comp_alloc ();
 	avs_comp_fill (ptr,pe);
 	free ((char *)pe);

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/py_advise.c,v 9.0 1992/06/16 12:24:03 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/pepsy/RCS/py_advise.c,v 9.0 1992/06/16 12:24:03 isode Rel $
  *
  *
@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/py_advise.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 
 /*  */
 
@@ -36,24 +36,22 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/py_advise.c,v 9.0 199
 char   PY_pepy[BUFSIZ] = "";
 
 
-void	PY_advise (va_alist)
-va_dcl
+void	PY_advise (char* what, ...)
 {
-    va_list	ap;
+	va_list	ap;
 
-    va_start (ap);
+	va_start (ap, what);
 
-    asprintf (PY_pepy, ap);
+	asprintf (PY_pepy, what, ap);
 
-    va_end (ap);
+	va_end (ap);
 }
 #else
 /* VARARGS */
 
-void	PY_advise (what, fmt)
-char   *what,
-       *fmt;
+void 
+PY_advise (char *what, char *fmt)
 {
-    PY_advise (what, fmt);
+	PY_advise (what, fmt);
 }
 #endif

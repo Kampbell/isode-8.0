@@ -1,6 +1,6 @@
 /* ropkt.h - include file for remote operation providers (RoS-PROVIDER) */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/ropkt.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -167,7 +167,9 @@
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP, "%s", PY_pepy)
 
 
-int	ropktlose (), rosapreject (), rosaplose ();
+int	ropktlose (struct assocblk*acb, ...);
+int	rosapreject (struct assocblk*acb, ...);
+int	rosaplose (struct RoSAPindication*, ...);
 
 /*  */
 
@@ -187,7 +189,7 @@ int	ro2sswrite (), ro2sswait (), ro2ssasync (), ro2ssmask (), ro2sslose (),
 
 /*  */
 
-				/* APDU types */
+/* APDU types */
 #define	APDU_INVOKE	1	/* Invoke */
 #define	APDU_RESULT	2	/* Return result */
 #define	APDU_ERROR	3	/* Return error */
@@ -196,7 +198,7 @@ int	ro2sswrite (), ro2sswait (), ro2ssasync (), ro2ssmask (), ro2sslose (),
 #define	APDU_UNKNOWN	(-1)	/* anything other than the above */
 
 
-				/* Reject APDU types */
+/* Reject APDU types */
 #define	REJECT_GENERAL	0	/* General Problem */
 #define	  REJECT_GENERAL_BASE	ROS_GP_UNRECOG
 #define	REJECT_INVOKE	1	/* Invoke Problem */

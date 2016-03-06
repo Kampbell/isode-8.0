@@ -35,16 +35,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/psap.c,v 9.0 19
 
 extern LLog * log_dsap;
 
-psap_free (psap)
-struct PSAPaddr * psap;
+int 
+psap_free (struct PSAPaddr *psap)
 {
 	free ((char *)psap) ;
 }
 
-struct PSAPaddr * psap_cpy (a)
-struct PSAPaddr * a;
+struct PSAPaddr *
+psap_cpy (struct PSAPaddr *a)
 {
-struct PSAPaddr * r;
+	struct PSAPaddr * r;
 
 	r = (struct PSAPaddr *) smalloc (sizeof (struct PSAPaddr));
 	bzero ((char *) r,sizeof (struct PSAPaddr));
@@ -54,22 +54,22 @@ struct PSAPaddr * r;
 	return (r);
 }
 
-psap_dup (r,a)
-struct PSAPaddr * r, * a;
+int 
+psap_dup (struct PSAPaddr *r, struct PSAPaddr *a)
 {
-    *r = *a;    /* struct copy */
+	*r = *a;    /* struct copy */
 }
 
-static psap_cmp (r,a)
-struct PSAPaddr *r, *a;
+static 
+psap_cmp (struct PSAPaddr *r, struct PSAPaddr *a)
 {
-    return (bcmp ((char *) r, (char *) a, sizeof *a) ? (-1) : 0);
+	return (bcmp ((char *) r, (char *) a, sizeof *a) ? (-1) : 0);
 }
 
-static PE psap_enc (p)
-struct PSAPaddr *p;
+static PE 
+psap_enc (struct PSAPaddr *p)
 {
-PE ret_pe;
+	PE ret_pe;
 
 	if (build_DSE_PSAPaddr (&ret_pe,0,0,NULLCP,p) == NOTOK ) {
 		ret_pe = NULLPE;
@@ -78,27 +78,27 @@ PE ret_pe;
 	return (ret_pe);
 }
 
-static struct PSAPaddr * psap_dec (pe)
-PE pe;
+static struct PSAPaddr *
+psap_dec (PE pe)
 {
-struct PSAPaddr *psap;
+	struct PSAPaddr *psap;
 
 	psap = (struct PSAPaddr *) smalloc (sizeof *psap);
-	
+
 	if (parse_DSE_PSAPaddr (pe,1,NULLIP,NULLVP,psap) == NOTOK) {
 		free ((char *)psap);
 		return (NULLPA);
 	}
-		
+
 	return (psap);
 }
 
-static struct PSAPaddr * psap_parse (s)
-char * s;
+static struct PSAPaddr *
+psap_parse (char *s)
 {
-struct PSAPaddr *pa;
-struct PSAPaddr *psap;
-	
+	struct PSAPaddr *pa;
+	struct PSAPaddr *psap;
+
 	psap = (struct PSAPaddr *) calloc (1,sizeof (struct PSAPaddr));
 	if (pa=str2paddr(s)) {
 		*psap = *pa;  /* struct copy */
@@ -110,10 +110,8 @@ struct PSAPaddr *psap;
 	}
 }
 
-static psap_print (ps,p,format)
-PS ps;
-struct PSAPaddr *p;
-int format;
+static 
+psap_print (PS ps, struct PSAPaddr *p, int format)
 {
 	if (format != READOUT)
 		ps_printf (ps, "%s", _paddr2str(p,NULLNA,-1));
@@ -122,12 +120,12 @@ int format;
 
 }
 
-psap_syntax ()
-{
-	(void) add_attribute_syntax ("presentationAddress",
-		(IFP) psap_enc,		(IFP) psap_dec,
-		(IFP) psap_parse,	psap_print,
-		(IFP) psap_cpy,		psap_cmp,
-		psap_free,		NULLCP,
-		NULLIFP,		TRUE );
+int 
+psap_syntax (void) {
+	 add_attribute_syntax ("presentationAddress",
+								 (IFP) psap_enc,		(IFP) psap_dec,
+								 (IFP) psap_parse,	psap_print,
+								 (IFP) psap_cpy,		psap_cmp,
+								 psap_free,		NULLCP,
+								 NULLIFP,		TRUE );
 }

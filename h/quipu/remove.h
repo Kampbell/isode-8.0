@@ -29,8 +29,8 @@
 #include "quipu/dap.h"
 
 struct ds_removeentry_arg {
-    CommonArgs rma_common;
-    DN rma_object;
+	CommonArgs rma_common;
+	DN rma_object;
 };
 
 #endif

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapwait.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/rosap/RCS/rosapwait.c,v 9.0 1992/06/16 12:37:02 isode Rel $
  *
  * Based on an TCP-based implementation by George Michaelson of University
@@ -36,24 +36,22 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapwait.c,v 9.0 199
 
 /*    RO-WAIT.REQUEST (pseudo) */
 
-int	RoWaitRequest (sd, secs, roi)
-int	sd;
-int	secs;
-struct RoSAPindication *roi;
+int 
+RoWaitRequest (int sd, int secs, struct RoSAPindication *roi)
 {
-    SBV	    smask;
-    int     result;
-    register struct assocblk   *acb;
+	SBV	    smask;
+	int     result;
+	struct assocblk   *acb;
 
-    missingP (roi);
+	missingP (roi);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    rosapXsig (acb, sd);
+	rosapXsig (acb, sd);
 
-    result =  (*acb -> acb_rowaitrequest) (acb, NULLIP, secs, roi);
+	result =  (*acb -> acb_rowaitrequest) (acb, NULLIP, secs, roi);
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return result;
+	return result;
 }

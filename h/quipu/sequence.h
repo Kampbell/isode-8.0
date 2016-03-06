@@ -1,6 +1,6 @@
 /* sequence.h - */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/quipu/RCS/sequence.h,v 9.0 1992/06/16 12:23:11 isode Rel $
  *
  *

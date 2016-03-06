@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam.c,v 9.0 1992/06/16 12:15:43 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/ftam2/RCS/ftam.c,v 9.0 1992/06/16 12:15:43 isode Rel $
  *
  *
@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam.c,v 9.0 1992/06/
 #include <setjmp.h>
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ftamuser.h"
 #include "tailor.h"
 
@@ -58,7 +58,13 @@ static jmp_buf	intrenv;
 int	interrupted;
 
 
-void	adios (), advise ();
+static ftamloop (char **vec, int error);
+static SFD intrser (int sig);
+
+void	adios (char* what, ...);
+void	advise (char* what, ...);
+static void _advise (char* what, va_list ap);
+
 #ifndef	BRIDGE
 SFD	intrser ();
 #endif
@@ -71,402 +77,392 @@ extern char* default_prompt();
 /* ARGSUSED */
 
 #ifndef	BRIDGE
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-      **envp;
+static int arginit (char **vec);
+
+int 
+main (int argc, char **argv, char **envp)
 {
-    int     eof,
-	    status,
-            vecp;
-    SFP	    istat;
-    char   *bp,
-	    buffer[BUFSIZ],
-           *vec[NVEC + 1];
-    FILE   *fp;
+	int     eof,
+			status,
+			vecp;
+	SFP	    istat;
+	char   *bp,
+		   buffer[BUFSIZ],
+		   *vec[NVEC + 1];
+	FILE   *fp;
 
-    arginit (argv);
+	arginit (argv);
 
-    runcom = 1;
-    
-    /* The lower layers get a SIGPIPE if the remote end dies while
-     * we are sending. The SIGPIPE is followed by a DISCONNECT Request.
-     */
-    (void)signal(SIGPIPE, SIG_IGN);
+	runcom = 1;
 
-    rcinit ();
-    (void) sprintf (buffer, "%s/.ftamrc", myhome);
+	/* The lower layers get a SIGPIPE if the remote end dies while
+	 * we are sending. The SIGPIPE is followed by a DISCONNECT Request.
+	 */
+	signal(SIGPIPE, SIG_IGN);
 
-    if (!fflag && (fp = fopen (buffer, "r"))) {
-	while (fgets (buffer, sizeof buffer, fp)) {
-	    if (bp = index (buffer, '\n'))
-		*bp = NULL;
+	rcinit ();
+	 sprintf (buffer, "%s/.ftamrc", myhome);
 
-	    bzero ((char *) vec, sizeof vec);
-	    if ((vecp = str2vec (buffer, vec)) < 1)
-		continue;
+	if (!fflag && (fp = fopen (buffer, "r"))) {
+		while (fgets (buffer, sizeof buffer, fp)) {
+			if (bp = index (buffer, '\n'))
+				*bp = NULL;
 
-	    if (ftamloop (vec, NOTOK) != OK && op)
-		exit (1);
-	}
-    
-	(void) fclose (fp);
-    }
-	
-    if (hflag) {
-	vecp = 0;
-	vec[vecp++] = "open";
-	vec[vecp++] = hflag;
-	if (uflag)
-	    vec[vecp++] = uflag;
-	if (aflag)
-	    vec[vecp++] = aflag;
-	vec[vecp] = NULL;
+			bzero ((char *) vec, sizeof vec);
+			if ((vecp = str2vec (buffer, vec)) < 1)
+				continue;
 
-	if (ftamloop (vec, NOTOK) != OK && op)
-	    exit (1);
-    }
-    else {
-	if (uflag)
-	    user = strdup (uflag);
-	if (aflag)
-	    account = strdup (aflag);
-    }
+			if (ftamloop (vec, NOTOK) != OK && op)
+				exit (1);
+		}
 
-    if (concur) {
-	vecp = 0;
-	vec[vecp++] = "set";
-	vec[vecp++] = "concurrency";
-	vec[vecp++] = concur;
-	vec[vecp] = NULL;
-
-	if (ftamloop (vec, NOTOK) != OK && op)
-	    exit (1);
-    }
-
-    if (oflag) {
-	vecp = 0;
-	vec[vecp++] = "set";
-	vec[vecp++] = "override";
-	vec[vecp++] = oflag;
-	vec[vecp] = NULL;
-
-	if (ftamloop (vec, NOTOK) != OK && op)
-	    exit (1);
-    }
-	
-    runcom = 0;
-
-    if (op) {
-	for (vecp = 0; *op; op++)
-	    vec[vecp++] = *op;
-	vec[vecp] = NULL;
-
-	status = ftamfd != NOTOK ? 1 : 0;
-	switch (ftamloop (vec, NOTOK)) {
-	    case NOTOK: 
-		status = 1;
-		break;
-
-	    case OK: 
-	    case DONE: 
-	    default:
-		if (ftamfd != NOTOK)
-		    status = 0;
-		break;
-	}
-    }
-    else {
-	istat = signal (SIGINT, intrser);
-
-	eof = 0;
-	for (interrupted = 0;; interrupted = 0) {
-	    if (hash && marks >= BUFSIZ) {
-		marks = 0;
-		(void) printf ("\n");
-	    }
-
-	    if (getline (command_prompt, buffer) == NOTOK) {
-		if (eof)
-		    break;
-
-		eof = 1;
-		continue;
-	    }
-	    eof = 0;
-
-	    bzero ((char *) vec, sizeof vec);
-	    if ((vecp = str2vec (buffer, vec)) < 1)
-		continue;
-
-	    switch (ftamloop (vec, OK)) {
-		case NOTOK: 
-		    status = 1;
-		    break;
-
-		case OK: 
-		default: 
-		    if (bell)
-			(void) putchar (ringring);
-		    continue;
-
-		case DONE: 
-		    status = 0;
-		    break;
-	    }
-	    break;
+		 fclose (fp);
 	}
 
-	(void) signal (SIGINT, istat);
-    }
+	if (hflag) {
+		vecp = 0;
+		vec[vecp++] = "open";
+		vec[vecp++] = hflag;
+		if (uflag)
+			vec[vecp++] = uflag;
+		if (aflag)
+			vec[vecp++] = aflag;
+		vec[vecp] = NULL;
 
-    if (ftamfd != NOTOK) {
-	vecp = 0;
-	vec[vecp++] = "close";
-	vec[vecp] = NULL;
-	
-	(void) ftamloop (vec, NOTOK);
-    }
+		if (ftamloop (vec, NOTOK) != OK && op)
+			exit (1);
+	} else {
+		if (uflag)
+			user = strdup (uflag);
+		if (aflag)
+			account = strdup (aflag);
+	}
+
+	if (concur) {
+		vecp = 0;
+		vec[vecp++] = "set";
+		vec[vecp++] = "concurrency";
+		vec[vecp++] = concur;
+		vec[vecp] = NULL;
+
+		if (ftamloop (vec, NOTOK) != OK && op)
+			exit (1);
+	}
+
+	if (oflag) {
+		vecp = 0;
+		vec[vecp++] = "set";
+		vec[vecp++] = "override";
+		vec[vecp++] = oflag;
+		vec[vecp] = NULL;
+
+		if (ftamloop (vec, NOTOK) != OK && op)
+			exit (1);
+	}
+
+	runcom = 0;
+
+	if (op) {
+		for (vecp = 0; *op; op++)
+			vec[vecp++] = *op;
+		vec[vecp] = NULL;
+
+		status = ftamfd != NOTOK ? 1 : 0;
+		switch (ftamloop (vec, NOTOK)) {
+		case NOTOK:
+			status = 1;
+			break;
+
+		case OK:
+		case DONE:
+		default:
+			if (ftamfd != NOTOK)
+				status = 0;
+			break;
+		}
+	} else {
+		istat = signal (SIGINT, intrser);
+
+		eof = 0;
+		for (interrupted = 0;; interrupted = 0) {
+			if (hash && marks >= BUFSIZ) {
+				marks = 0;
+				 printf ("\n");
+			}
+
+			if (getftamline (command_prompt, buffer) == NOTOK) {
+				if (eof)
+					break;
+
+				eof = 1;
+				continue;
+			}
+			eof = 0;
+
+			bzero ((char *) vec, sizeof vec);
+			if ((vecp = str2vec (buffer, vec)) < 1)
+				continue;
+
+			switch (ftamloop (vec, OK)) {
+			case NOTOK:
+				status = 1;
+				break;
+
+			case OK:
+			default:
+				if (bell)
+					 putchar (ringring);
+				continue;
+
+			case DONE:
+				status = 0;
+				break;
+			}
+			break;
+		}
+
+		 signal (SIGINT, istat);
+	}
+
+	if (ftamfd != NOTOK) {
+		vecp = 0;
+		vec[vecp++] = "close";
+		vec[vecp] = NULL;
+
+		 ftamloop (vec, NOTOK);
+	}
 
 #ifdef	DEBUG
-    set_lookup_dase (0);
+	set_lookup_dase (0);
 #endif
 
-    exit (status);		/* NOTREACHED */
+	exit (status);		/* NOTREACHED */
 }
 #endif
 
 /*  */
 
 #ifndef	BRIDGE
-static	ftamloop (vec, error)
-char  **vec;
-int	error;
+static ftamloop (char **vec, int error)
 {
-    register struct dispatch   *ds;
+	struct dispatch   *ds;
 
-    if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
-	return error;
+	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
+		return error;
 
-    if (ftamfd == NOTOK) {
-	if (ds -> ds_flags & DS_OPEN) {
-	    advise (NULLCP, "not associated with virtual filestore");
-	    return error;
-	}
-    }
-    else
-	if (ds -> ds_flags & DS_CLOSE) {
-	    advise (NULLCP, "already associated with virtual filestore");
-	    return error;
-	}
-
-    if (ds -> ds_flags & DS_MODES) {
-	switch (ds -> ds_class) {
-	    case FCLASS_TRANSFER:
-		if (ftam_class != FCLASS_TRANSFER && ftam_class != FCLASS_TM) {
-		    advise (NULLCP, "need transfer service class");
-		    return error;
+	if (ftamfd == NOTOK) {
+		if (ds -> ds_flags & DS_OPEN) {
+			advise (NULLCP, "not associated with virtual filestore");
+			return error;
 		}
-		break;
+	} else if (ds -> ds_flags & DS_CLOSE) {
+		advise (NULLCP, "already associated with virtual filestore");
+		return error;
+	}
 
-	    case FCLASS_MANAGE:
-		if (ftam_class != FCLASS_MANAGE && ftam_class != FCLASS_TM) {
-		    advise (NULLCP, "need management service class");
-		    return error;
+	if (ds -> ds_flags & DS_MODES) {
+		switch (ds -> ds_class) {
+		case FCLASS_TRANSFER:
+			if (ftam_class != FCLASS_TRANSFER && ftam_class != FCLASS_TM) {
+				advise (NULLCP, "need transfer service class");
+				return error;
+			}
+			break;
+
+		case FCLASS_MANAGE:
+			if (ftam_class != FCLASS_MANAGE && ftam_class != FCLASS_TM) {
+				advise (NULLCP, "need management service class");
+				return error;
+			}
+			break;
+
+		default:
+			break;
 		}
-		break;
 
-	    default:
-		break;
+		if ((ds -> ds_units & units) != ds -> ds_units) {
+			advise (NULLCP, "need %s functional units",
+					sprintb (ds -> ds_units & ~units, UMASK));
+			return error;
+		}
 	}
 
-	if ((ds -> ds_units & units) != ds -> ds_units) {
-	    advise (NULLCP, "need %s functional units",
-		    sprintb (ds -> ds_units & ~units, UMASK));
-	    return error;
+	switch ((*ds -> ds_fnx) (vec)) {
+	case NOTOK:
+		return error;
+
+	case OK:
+	default:
+		return OK;
+
+	case DONE:
+		return DONE;
 	}
-    }
-
-    switch ((*ds -> ds_fnx) (vec)) {
-	case NOTOK: 
-	    return error;
-
-	case OK: 
-	default: 
-	    return OK;
-
-	case DONE: 
-	    return DONE;
-    }
 }
 #endif
 
 /*    ARGINIT */
 
 #ifndef	BRIDGE
-static	arginit (vec)
-char  **vec;
+static arginit (char **vec)
 {
-    register char  *ap,
-                   *pp;
+	char  *ap,
+			 *pp;
 
-    if (myname = rindex (*vec, '/'))
-	myname++;
-    if (myname == NULL || *myname == NULL)
-	myname = *vec;
+	if (myname = rindex (*vec, '/'))
+		myname++;
+	if (myname == NULL || *myname == NULL)
+		myname = *vec;
 
-    isodetailor (myname, 1);
-    ftam_log -> ll_file = strdup ("./ftam.log");
-    ll_hdinit (ftam_log, myname);
+	isodetailor (myname, 1);
+	ftam_log -> ll_file = strdup ("./ftam.log");
+	ll_hdinit (ftam_log, myname);
 
-    storename = strdup ("filestore");
-    if (ontty = isatty (fileno (stdin)))
-	verbose++;
+	storename = strdup ("filestore");
+	if (ontty = isatty (fileno (stdin)))
+		verbose++;
 
-    for (vec++; ap = *vec; vec++) {
-	if (*ap == '-') {
-	    while (*++ap)
-		switch (*ap) {
-		    case 'a': 
-			if ((pp = *++vec) == NULL || *pp == NULL)
-			    adios (NULLCP, "usage: %s -a acct", myname);
-			aflag = pp;
-			break;
+	for (vec++; ap = *vec; vec++) {
+		if (*ap == '-') {
+			while (*++ap)
+				switch (*ap) {
+				case 'a':
+					if ((pp = *++vec) == NULL || *pp == NULL)
+						adios (NULLCP, "usage: %s -a acct", myname);
+					aflag = pp;
+					break;
 
-		    case 'c':
-			if ((pp = *++vec) == NULL || *pp == NULL)
-				adios (NULLCP, "usage: %s -c mode", myname);
-			concur = pp;
-			break;
+				case 'c':
+					if ((pp = *++vec) == NULL || *pp == NULL)
+						adios (NULLCP, "usage: %s -c mode", myname);
+					concur = pp;
+					break;
 
-		    case 'd': 
-			debug++;
-			break;
+				case 'd':
+					debug++;
+					break;
 
-		    case 'f':
-			fflag++;
-			break;
+				case 'f':
+					fflag++;
+					break;
 
-		    case 'h': 
-			hash++;
-			break;
+				case 'h':
+					hash++;
+					break;
 
-		    case 'l':
-			/* line buffering */
+				case 'l':
+					/* line buffering */
 
-			setlinebuf(stdout);
+					setlinebuf(stdout);
 
-			ontty = 1;
-			
-			break;
+					ontty = 1;
 
-		    case 'o': 
-			if ((pp = *++vec) == NULL || *pp == NULL)
-			    adios (NULLCP, "usage: %s -o mode", myname);
-			oflag = pp;
-			break;
+					break;
 
-		    case 't': 
-			trace++;
-			break;
+				case 'o':
+					if ((pp = *++vec) == NULL || *pp == NULL)
+						adios (NULLCP, "usage: %s -o mode", myname);
+					oflag = pp;
+					break;
 
-		    case 'u': 
-			if ((pp = *++vec) == NULL || *pp == NULL)
-			    adios (NULLCP, "usage: %s -u user", myname);
-			uflag = pp;
-			break;
+				case 't':
+					trace++;
+					break;
 
-		    case 'v': 
-			verbose = 1;
-			break;
+				case 'u':
+					if ((pp = *++vec) == NULL || *pp == NULL)
+						adios (NULLCP, "usage: %s -u user", myname);
+					uflag = pp;
+					break;
 
-		    case 'w': 
-			watch++;
-			break;
+				case 'v':
+					verbose = 1;
+					break;
 
-		    default: 
-			adios (NULLCP, "unknown switch -%c", *ap);
+				case 'w':
+					watch++;
+					break;
+
+				default:
+					adios (NULLCP, "unknown switch -%c", *ap);
+				}
+			continue;
 		}
-	    continue;
-	}
 
-	if (hflag == NULL)
-	    hflag = ap;
-	else
-	    if (op == NULL) {
-		op = vec;
-		break;
-	    }
-    }
+		if (hflag == NULL)
+			hflag = ap;
+		else if (op == NULL) {
+			op = vec;
+			break;
+		}
+	}
 }
 #endif
 
 /*    INTERACTIVE */
 
 #ifndef	BRIDGE
-int	getline (prompt, buffer)
-char   *prompt,
-       *buffer;
+int getftamline (char *prompt, char *buffer)
 {
-    register int    i;
-    register char  *cp,
-                   *ep;
-    static int  sticky = 0;
+	int    i;
+	char  *cp,
+			 *ep;
+	static int  sticky = 0;
 
-    if (interrupted) {
-	interrupted = 0;
-	return NOTOK;
-    }
-
-    if (sticky) {
-	sticky = 0;
-	return NOTOK;
-    }
-
-    switch (setjmp (intrenv)) {
-	case OK:
-	    armed++;
-	    break;
-
-	case NOTOK:
-	    if (ontty)
-		(void) printf ("\n");	/* and fall */
-	default:
-	    armed = 0;
-	    return NOTOK;
-    }
-	
-    if (ontty) {
-
-	if(ftamfd == NOTOK && (prompt == command_prompt)) 
-	    /* use default prompt if we are no longer connected */
-	    prompt = default_prompt();
-
-	printf (prompt, ftamfd != NOTOK ? host : myname);	
-
-	(void) fflush (stdout);
-    }
-
-    for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
-	if (i == EOF) {
-	    if (ontty)
-		(void) printf ("\n");
-	    clearerr (stdin);
-	    if (cp == buffer)
-		longjmp (intrenv, DONE);
-
-	    sticky++;
-	    break;
+	if (interrupted) {
+		interrupted = 0;
+		return NOTOK;
 	}
 
-	if (cp < ep)
-	    *cp++ = i;
-    }
-    *cp = NULL;
+	if (sticky) {
+		sticky = 0;
+		return NOTOK;
+	}
 
-    armed = 0;
-    
-    return OK;
+	switch (setjmp (intrenv)) {
+	case OK:
+		armed++;
+		break;
+
+	case NOTOK:
+		if (ontty)
+			 printf ("\n");	/* and fall */
+	default:
+		armed = 0;
+		return NOTOK;
+	}
+
+	if (ontty) {
+
+		if(ftamfd == NOTOK && (prompt == command_prompt))
+			/* use default prompt if we are no longer connected */
+			prompt = default_prompt();
+
+		printf (prompt, ftamfd != NOTOK ? host : myname);
+
+		 fflush (stdout);
+	}
+
+	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
+		if (i == EOF) {
+			if (ontty)
+				 printf ("\n");
+			clearerr (stdin);
+			if (cp == buffer)
+				longjmp (intrenv, DONE);
+
+			sticky++;
+			break;
+		}
+
+		if (cp < ep)
+			*cp++ = i;
+	}
+	*cp = NULL;
+
+	armed = 0;
+
+	return OK;
 }
 #endif
 
@@ -476,17 +472,16 @@ char   *prompt,
 
 /* ARGSUSED */
 
-static	SFD intrser (sig)
-int	sig;
+static SFD intrser (int sig)
 {
 #ifndef	BSDSIGS
-    (void) signal (SIGINT, intrser);
+	 signal (SIGINT, intrser);
 #endif
 
-    if (armed)
-	longjmp (intrenv, NOTOK);
+	if (armed)
+		longjmp (intrenv, NOTOK);
 
-    interrupted++;
+	interrupted++;
 }
 #endif
 
@@ -494,79 +489,79 @@ int	sig;
 
 #ifndef	BRIDGE
 #ifndef	lint
-int	ask (va_alist)
-va_dcl
+int	ask (char* fmt, ...)
 {
-    int     x,
-            y,
-            result;
-    char    buffer[BUFSIZ];
-    va_list ap;
+	int     x,
+	y,
+	result;
+	char    buffer[BUFSIZ];
+	va_list ap;
 
-    if (interrupted) {
-	interrupted = 0;
-	return NOTOK;
-    }
+	if (interrupted) {
+		interrupted = 0;
+		return NOTOK;
+	}
 
-    if (!ontty)
-	return OK;
+	if (!ontty)
+		return OK;
 
-    switch (setjmp (intrenv)) {
-	case OK: 
-	    armed++;
-	    break;
+	switch (setjmp (intrenv)) {
+	case OK:
+		armed++;
+		break;
 
-	case NOTOK: 
-	default: 
-	    (void) printf ("\n");
-	    armed = 0;
-	    return DONE;
-    }
-    if (bell)
-	(void) putchar (ringring);
+	case NOTOK:
+	default:
+		 printf ("\n");
+		armed = 0;
+		return DONE;
+	}
+	if (bell)
+		 putchar (ringring);
 
-    va_start (ap);
+	va_start (ap, fmt);
 
-    _asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
-    va_end (ap);
-    
-again: ;
-    (void) printf ("%s? (y)es, (n)o: ", buffer);
+	va_end (ap);
 
-    x = y = getchar ();
-    while (y != '\n' && y != EOF)
-	y = getchar ();
+again:
+	;
+	 printf ("%s? (y)es, (n)o: ", buffer);
 
-    switch (x) {
-	case 'y': 
+	x = y = getchar ();
+	while (y != '\n' && y != EOF)
+		y = getchar ();
+
+	switch (x) {
+	case 'y':
 	case '\n':
-	    result = OK;
-	    break;
+		result = OK;
+		break;
 
-	case 'n': 
-	    result = NOTOK;
-	    break;
+	case 'n':
+		result = NOTOK;
+		break;
 
-	case EOF: 
-	    result = DONE;
-	    break;
+	case EOF:
+		result = DONE;
+		break;
 
-	default: 
-	    goto again;
-    }
+	default:
+		goto again;
+	}
 
-    armed = 0;
+	armed = 0;
 
-    return result;
+	return result;
 }
 #else
 /* VARARGS */
 
-int	ask (fmt)
-char   *fmt;
+int 
+ask (char *fmt)
 {
-    return ask (fmt);
+	return ask (fmt);
 }
 #endif
 #endif
@@ -577,87 +572,82 @@ char   *fmt;
 void	_advise ();
 
 
-void	adios (va_alist)
-va_dcl
+void	adios (char* what, ...)
 {
-    struct FTAMindication   ftis;
-    va_list ap;
+	struct FTAMindication   ftis;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap, what);
 
-    _advise (ap);
+	_advise (what, ap);
 
-    va_end (ap);
+	va_end (ap);
 
-    if (ftamfd != NOTOK)
-	(void) FUAbortRequest (ftamfd, FACTION_PERM,
+	if (ftamfd != NOTOK)
+		 FUAbortRequest (ftamfd, FACTION_PERM,
 		(struct FTAMdiagnostic *) 0, 0, &ftis);
 
 #ifdef	BRIDGE
-    reply (550, ftam_error);
-    exit (1);
+	reply (550, ftam_error);
+	exit (1);
 #else
-    _exit (1);
+	_exit (1);
 #endif
 }
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-       *fmt;
+void 
+adios (char *what, char *fmt)
 {
-    adios (what, fmt);
+	adios (what, fmt);
 }
 #endif
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl
+void	advise (char*what, ...)
 {
-    va_list ap;
+	va_list ap;
 
-    va_start (ap);
+	va_start (ap, what);
 
-    _advise (ap);
+	_advise (what, ap);
 
-    va_end (ap);
+	va_end (ap);
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void _advise (char* what, va_list ap)
 {
-    char    buffer[BUFSIZ];
+	char    buffer[BUFSIZ];
 
-    asprintf (buffer, ap);
+	asprintf (buffer, ap);
 
 #ifndef	BRIDGE
-    if (hash && marks >= BUFSIZ) {
-	marks = 0;
-	(void) printf ("\n");
-    }
+	if (hash && marks >= BUFSIZ) {
+		marks = 0;
+		 printf ("\n");
+	}
 
-    (void) fflush (stdout);
+	 fflush (stdout);
 
-    (void) fprintf (stderr, "%s: ", myname);
-    (void) fputs (buffer, stderr);
-    (void) fputc ('\n', stderr);
+	 fprintf (stderr, "%s: ", myname);
+	 fputs (buffer, stderr);
+	 fputc ('\n', stderr);
 
-    (void) fflush (stderr);
+	 fflush (stderr);
 #else
-    (void) ll_log (ftam_log, LLOG_NOTICE, NULLCP, "%s", buffer);
-    (void) strcpy (ftam_error, buffer);
+	 ll_log (ftam_log, LLOG_NOTICE, NULLCP, "%s", buffer);
+	 strcpy (ftam_error, buffer);
 #endif
 }
 #else
 /* VARARGS */
 
-void	advise (what, fmt)
-char   *what,
-       *fmt;
+void 
+advise (char *what, char *fmt)
 {
-    advise (what, fmt);
+	advise (what, fmt);
 }
 #endif

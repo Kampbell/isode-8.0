@@ -1,6 +1,6 @@
 /* isoaddrs.h - ISODE addressing */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/isoaddrs.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -35,13 +35,13 @@
 
 #ifdef	NULLPE
 typedef struct AEInfo {		/* "real" directory services! */
-    PE	    aei_ap_title;
-    PE	    aei_ae_qualifier;
+	PE	    aei_ap_title;
+	PE	    aei_ae_qualifier;
 
-    int	    aei_ap_id;
-    int	    aei_ae_id;
+	int	    aei_ap_id;
+	int	    aei_ae_id;
 
-    int	    aei_flags;
+	int	    aei_flags;
 #define	AEI_NULL	0x00
 #define	AEI_AP_ID	0x01
 #define	AEI_AE_ID	0x02
@@ -68,66 +68,66 @@ char   *sprintaei ();
 /*  */
 
 struct NSAPaddr {		/* this structure shouldn't have holes in it */
-    long     na_stack;			/* TS-stack */
+	long     na_stack;			/* TS-stack */
 #define	NA_NSAP	0			/*   native COTS */
 #define	NA_TCP	1			/*   RFC1006/TCP */
 #define	NA_X25	2			/*   TP0/X.25 */
 
-    long    na_community;		/* internal community # */
+	long    na_community;		/* internal community # */
 #define	SUBNET_REALNS		(-1)	/* hard-wired */
-#define	SUBNET_INT_X25		1	
-/* (unused)
-#define	SUBNET_JANET		2
- */
+#define	SUBNET_INT_X25		1
+	/* (unused)
+	#define	SUBNET_JANET		2
+	 */
 #define	SUBNET_INTERNET		3
 #define	SUBNET_DYNAMIC		100	/* dynamic start here... */
 
-    union {
-	struct na_nsap {		/* real network service */
+	union {
+		struct na_nsap {		/* real network service */
 #define	NASIZE	64			/* 20 ought to do it */
-	    char    na_nsap_address[NASIZE];
-	    char    na_nsap_addrlen;
-	    char    na_nsap_addr_class;	/* CONS/CLNS */
+			char    na_nsap_address[NASIZE];
+			char    na_nsap_addrlen;
+			char    na_nsap_addr_class;	/* CONS/CLNS */
 #define NAS_UNKNOWN	0		/* don't know */
 #define NAS_CONS	1		/* is CONS  */
 #define NAS_CLNS	2		/* is CLNS */
-	}               un_na_nsap;
+		}               un_na_nsap;
 
-	struct na_tcp {			/* emulation via RFC1006 */
+		struct na_tcp {			/* emulation via RFC1006 */
 #define	NSAP_DOMAINLEN	63
-	    char    na_tcp_domain[NSAP_DOMAINLEN + 1];
+			char    na_tcp_domain[NSAP_DOMAINLEN + 1];
 
-	    u_short na_tcp_port;	/* non-standard TCP port */
-	    u_short na_tcp_tset;	/* transport set */
+			u_short na_tcp_port;	/* non-standard TCP port */
+			u_short na_tcp_tset;	/* transport set */
 #define	NA_TSET_TCP	0x0001		/*   .. TCP */
 #define	NA_TSET_UDP	0x0002	        /*   .. UDP */
-	}               un_na_tcp;
+		}               un_na_tcp;
 
-	struct na_x25 {			/* X.25 (assume single subnet) */
+		struct na_x25 {			/* X.25 (assume single subnet) */
 #define	NSAP_DTELEN	36
-	    char    na_x25_dte[NSAP_DTELEN + 1]; /* Numeric DTE + Link */
-	    char    na_x25_dtelen;	/* number of digits used */
+			char    na_x25_dte[NSAP_DTELEN + 1]; /* Numeric DTE + Link */
+			char    na_x25_dtelen;	/* number of digits used */
 
-/* Conventionally, the PID sits at the first head bytes of user data and so
- * should probably not be mentioned specially. A macro might do it, if
- * necessary.
- */
+			/* Conventionally, the PID sits at the first head bytes of user data and so
+			 * should probably not be mentioned specially. A macro might do it, if
+			 * necessary.
+			 */
 
 #define	NPSIZE	4
-	    char    na_x25_pid[NPSIZE];	/* X.25 protocol id */
-	    char    na_x25_pidlen;	/*   .. */
+			char    na_x25_pid[NPSIZE];	/* X.25 protocol id */
+			char    na_x25_pidlen;	/*   .. */
 
 #define	CUDFSIZE 16
-	    char    na_x25_cudf[CUDFSIZE];/* call user data field */
-	    char    na_x25_cudflen;	/* .. */
-/*
- * X25 Facilities field. 
- */
+			char    na_x25_cudf[CUDFSIZE];/* call user data field */
+			char    na_x25_cudflen;	/* .. */
+			/*
+			 * X25 Facilities field.
+			 */
 #define	FACSIZE	6
-	    char    na_x25_fac[FACSIZE];	/* X.25 facilities */
-	    char    na_x25_faclen;		/*   .. */
-	}               un_na_x25;
-    }               na_un;
+			char    na_x25_fac[FACSIZE];	/* X.25 facilities */
+			char    na_x25_faclen;		/*   .. */
+		}               un_na_x25;
+	}               na_un;
 #define	na_address	na_un.un_na_nsap.na_nsap_address
 #define	na_addrlen	na_un.un_na_nsap.na_nsap_addrlen
 #define na_addr_class	na_un.un_na_nsap.na_nsap_addr_class
@@ -145,7 +145,7 @@ struct NSAPaddr {		/* this structure shouldn't have holes in it */
 #define	na_fac		na_un.un_na_x25.na_x25_fac
 #define	na_faclen	na_un.un_na_x25.na_x25_faclen
 
-/* for backwards compatibility... these two will be removed after ISODE 7.0 */
+	/* for backwards compatibility... these two will be removed after ISODE 7.0 */
 #define	na_type		na_stack
 #define	na_subnet	na_community
 };
@@ -162,17 +162,17 @@ struct NSAPinfo {
 
 struct TSAPaddr {
 #define	NTADDR	8			/* according to NIST OIW */
-    struct NSAPaddr ta_addrs[NTADDR];	/* choice of network addresses */
-    int     ta_naddr;
+	struct NSAPaddr ta_addrs[NTADDR];	/* choice of network addresses */
+	int     ta_naddr;
 
 #define	TSSIZE	64
-    int	    ta_selectlen;
+	int	    ta_selectlen;
 
-    union un_ta_type {				/* TSAP selector */
-	char    ta_un_selector[TSSIZE];
+	union un_ta_type {				/* TSAP selector */
+		char    ta_un_selector[TSSIZE];
 
-	u_short ta_un_port;
-    }               un_ta;
+		u_short ta_un_port;
+	}               un_ta;
 #define	ta_selector	un_ta.ta_un_selector
 #define	ta_port		un_ta.ta_un_port
 };
@@ -180,16 +180,16 @@ struct TSAPaddr {
 
 
 struct SSAPaddr {
-    struct TSAPaddr sa_addr;		/* transport address */
+	struct TSAPaddr sa_addr;		/* transport address */
 
 #define	SSSIZE	64
-    int	    sa_selectlen;
+	int	    sa_selectlen;
 
-    union {				/* SSAP selector */
-	char    sa_un_selector[SSSIZE];
+	union {				/* SSAP selector */
+		char    sa_un_selector[SSSIZE];
 
-	u_short sa_un_port;
-    }               un_sa;
+		u_short sa_un_port;
+	}               un_sa;
 #define	sa_selector	un_sa.sa_un_selector
 #define	sa_port		un_sa.sa_un_port
 };
@@ -197,16 +197,16 @@ struct SSAPaddr {
 
 
 struct PSAPaddr {
-    struct SSAPaddr pa_addr;		/* session address */
+	struct SSAPaddr pa_addr;		/* session address */
 
 #define	PSSIZE	64
-    int	    pa_selectlen;
+	int	    pa_selectlen;
 
-    union {				/* PSAP selector */
-	char    pa_un_selector[PSSIZE];
+	union {				/* PSAP selector */
+		char    pa_un_selector[PSSIZE];
 
-	u_short pa_un_port;
-    }               un_pa;
+		u_short pa_un_port;
+	}               un_pa;
 #define	pa_selector	un_pa.pa_un_selector
 #define	pa_port		un_pa.pa_un_port
 };
@@ -225,10 +225,10 @@ extern PE    (*acsap_lookup) ();
 
 #ifdef	NULLOID
 struct isoentity {		/* for stub directory service */
-    OIDentifier ie_identifier;
-    char    *ie_descriptor;
+	OIDentifier ie_identifier;
+	char    *ie_descriptor;
 
-    struct PSAPaddr ie_addr;
+	struct PSAPaddr ie_addr;
 };
 
 int	setisoentity (), endisoentity ();
@@ -239,7 +239,7 @@ AEI	oid2aei ();
 #endif
 
 
-				/* old-style */
+/* old-style */
 struct PSAPaddr *is2paddr ();	/* service entry to PSAPaddr */
 struct SSAPaddr *is2saddr ();	/* service entry to SSAPaddr */
 struct TSAPaddr *is2taddr ();	/* service entry to TSAPaddr */
@@ -274,17 +274,17 @@ fd_set	iserver_mask ();	/* linkage */
 /*  */
 
 /* all of this really should be in "isoqos.h" ... */
-   
+
 struct QOStype {
-				/* transport QOS */
-    int	    qos_reliability;	/* "reliability" element */
+	/* transport QOS */
+	int	    qos_reliability;	/* "reliability" element */
 #define	HIGH_QUALITY	0
 #define	LOW_QUALITY	1
 
-				/* session QOS */
-    int	    qos_sversion;	/* session version required */
-    int	    qos_extended;	/* extended control */
-    int	    qos_maxtime;	/* for SPM response during S-CONNECT */
+	/* session QOS */
+	int	    qos_sversion;	/* session version required */
+	int	    qos_extended;	/* extended control */
+	int	    qos_maxtime;	/* for SPM response during S-CONNECT */
 };
 #define	NULLQOS	((struct QOStype *) 0)
 

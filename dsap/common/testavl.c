@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/testavl.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/common/RCS/testavl.c,v 9.0 1992/06/16 12:12:39 isode Rel $
  *
  *
@@ -56,7 +56,7 @@ char	**argv;
 		case 't':	/* traverse with first, next */
 			printf( "***\n" );
 			for ( p = (char * ) avl_getfirst( tree );
-			    p != NULL; p = (char *) avl_getnext( tree, p ) )
+					p != NULL; p = (char *) avl_getnext( tree, p ) )
 				printf( "%s\n", p );
 			printf( "***\n" );
 			break;
@@ -66,7 +66,7 @@ char	**argv;
 				exit( 0 );
 			name[ strlen( name ) - 1 ] = '\0';
 			if ( (p = (char *) avl_find( tree, name, strcmp ))
-			    == NULL )
+					== NULL )
 				printf( "Not found.\n\n" );
 			else
 				printf( "%s\n\n", p );
@@ -76,8 +76,8 @@ char	**argv;
 			if ( fgets( name, sizeof( name ), stdin ) == NULL )
 				exit( 0 );
 			name[ strlen( name ) - 1 ] = '\0';
-			if ( avl_insert( &tree, strdup( name ), strcmp, 
-			    avl_dup_error ) != OK )
+			if ( avl_insert( &tree, strdup( name ), strcmp,
+							 avl_dup_error ) != OK )
 				printf( "\nNot inserted!\n" );
 			break;
 		case 'd':	/* delete */

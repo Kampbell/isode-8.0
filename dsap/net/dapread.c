@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapread.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dapread.c,v 9.0 1992/06/16 12:14:05 isode Rel $
  *
  *
@@ -34,74 +34,62 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapread.c,v 9.0 19
 
 extern	LLog	*log_dsap;
 
-dap_read (ad, id, arg, error, result)
-int				 ad;
-int				*id;
-struct ds_read_arg          *arg;
-struct ds_read_result       *result;
-struct DSError              *error;
+int 
+dap_read (int ad, int *id, struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result)
 {
-    struct DAPindication	  di_s;
-    struct DAPindication	* di = &(di_s);
+	struct DAPindication	  di_s;
+	struct DAPindication	* di = &(di_s);
 
-    DLOG(log_dsap, LLOG_TRACE, ("dap_read()"));
+	DLOG(log_dsap, LLOG_TRACE, ("dap_read()"));
 
-    ++(*id);
+	++(*id);
 
-    (void) DapRead (ad, (*id), arg, di, ROS_INTR);
+	 DapRead (ad, (*id), arg, di, ROS_INTR);
 
-    error->dse_type = DSE_NOERROR;
+	error->dse_type = DSE_NOERROR;
 
-    switch (di->di_type)
-    {
-	case DI_RESULT:
-	{
-	    struct DAPresult	* dr = &(di->di_result);
+	switch (di->di_type) {
+	case DI_RESULT: {
+		struct DAPresult	* dr = &(di->di_result);
 
-            /* Nasty struct copy */
-            (*result) = dr->dr_res.res_rd;      /* struct copy */
-            dr->dr_res.result_type = -1;        /* Prevent freeing */
-	    DRFREE (dr);
-	    return (DS_OK);
+		/* Nasty struct copy */
+		(*result) = dr->dr_res.res_rd;      /* struct copy */
+		dr->dr_res.result_type = -1;        /* Prevent freeing */
+		DRFREE (dr);
+		return (DS_OK);
 	}
 
-	case DI_ERROR:
-	{
-	    struct DAPerror	* de = &(di->di_error);
+	case DI_ERROR: {
+		struct DAPerror	* de = &(di->di_error);
 
-	    (*error) = de->de_err;	/* struct copy */
-	    return (DS_ERROR_REMOTE);
+		(*error) = de->de_err;	/* struct copy */
+		return (DS_ERROR_REMOTE);
 	}
 
 	case DI_PREJECT:
-	    error->dse_type = DSE_REMOTEERROR;
-	    return (DS_ERROR_PROVIDER);
+		error->dse_type = DSE_REMOTEERROR;
+		return (DS_ERROR_PROVIDER);
 
 	case DI_ABORT:
-	    error->dse_type = DSE_REMOTEERROR;
-	    return (DS_ERROR_CONNECT);
+		error->dse_type = DSE_REMOTEERROR;
+		return (DS_ERROR_CONNECT);
 
 	default:
-	    error->dse_type = DSE_REMOTEERROR;
-	    return (DS_ERROR_PROVIDER);
-    }
+		error->dse_type = DSE_REMOTEERROR;
+		return (DS_ERROR_PROVIDER);
+	}
 }
 
-int	  DapRead (ad, id, arg, di, asyn)
-int			  ad;
-int			  id;
-struct ds_read_arg	* arg;
-struct DAPindication	* di;
-int			  asyn;
+int 
+DapRead (int ad, int id, struct ds_read_arg *arg, struct DAPindication *di, int asyn)
 {
-    PE                  arg_pe;
+	PE                  arg_pe;
 
-    if(encode_DAS_ReadArgument(&arg_pe,1,0,NULLCP,arg) != OK)
-    {
-	return(dapreject (di, DP_INVOKE, id, NULLCP, "Read argument encoding failed"));
-    }
+	if(encode_DAS_ReadArgument(&arg_pe,1,0,NULLCP,arg) != OK) {
+		return(dapreject (di, DP_INVOKE, id, NULLCP, "Read argument encoding failed"));
+	}
 
-    return (DapInvokeReqAux (ad, id, OP_READ, arg_pe, di, asyn));
+	return (DapInvokeReqAux (ad, id, OP_READ, arg_pe, di, asyn));
 
 }
 

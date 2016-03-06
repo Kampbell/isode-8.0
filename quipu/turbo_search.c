@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/turbo_search.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/quipu/RCS/turbo_search.c,v 9.0 1992/06/16 12:34:01 isode Rel $
  *
  *
@@ -62,13 +62,13 @@ static void		subtree_refer();
 Attr_Sequence	eis_select();
 EntryInfo	*filterentry();
 
-optimized_filter( f )
-Filter	f;
+int 
+optimized_filter (Filter f)
 {
 	struct filter_item	*fi;
 
-        switch ( f->flt_type ) {
-        case FILTER_ITEM:
+	switch ( f->flt_type ) {
+	case FILTER_ITEM:
 		fi = &f->FUITEM;
 		switch ( fi->fi_type ) {
 		case FILTERITEM_GREATEROREQUAL:
@@ -76,42 +76,40 @@ Filter	f;
 			return( FALSE );
 		case FILTERITEM_SUBSTRINGS:
 			if ( (fi->UNSUB.fi_sub_initial == NULLAV
-			    && fi->UNSUB.fi_sub_final == NULLAV)
-			    || turbo_isoptimized( fi->UNSUB.fi_sub_type ) == 0 )
+					&& fi->UNSUB.fi_sub_final == NULLAV)
+					|| turbo_isoptimized( fi->UNSUB.fi_sub_type ) == 0 )
 				return( FALSE );
-			/* FALL */
+		/* FALL */
 		case FILTERITEM_APPROX:
 		case FILTERITEM_EQUALITY:
 		case FILTERITEM_PRESENT:
 			return( turbo_isoptimized( fi->UNAVA.ava_type ) );
 		}
-        case FILTER_AND:
+	case FILTER_AND:
 		for ( f = f->FUFILT; f != NULLFILTER; f = f->flt_next ) {
 			if ( optimized_filter( f ) )
 				return( TRUE );
 		}
-                return( FALSE );
-        case FILTER_OR:
+		return( FALSE );
+	case FILTER_OR:
 		for ( f = f->FUFILT; f != NULLFILTER; f = f->flt_next ) {
 			if ( !optimized_filter( f ) )
 				return( FALSE );
 		}
-                return( TRUE );
-        case FILTER_NOT:
-                return( FALSE );
-        default:
-                LLOG(log_dsap, LLOG_EXCEPTIONS,
-		    ("optimized_filter - unknown filter type"));
-                return( FALSE );
-        }
-        /* NOTREACHED */
+		return( TRUE );
+	case FILTER_NOT:
+		return( FALSE );
+	default:
+		LLOG(log_dsap, LLOG_EXCEPTIONS,
+			 ("optimized_filter - unknown filter type"));
+		return( FALSE );
+	}
+	/* NOTREACHED */
 }
 
 /* ARGSUSED */
-static apply_sacl( list, e, ska )
-EntryInfo		**list;
-Entry			e;
-struct search_kid_arg	*ska;
+static 
+apply_sacl (EntryInfo **list, Entry e, struct search_kid_arg *ska)
 {
 	EntryInfo	*p, *prev, *next;
 	int		saclerror = 0;
@@ -121,13 +119,13 @@ struct search_kid_arg	*ska;
 		next = p->ent_next;
 
 		if ( check_ancestor_sacls( (*ska->ska_local)->st_bind, NULLDN,
-		    p->ent_eptr, ska->ska_arg->sra_subset, *ska->ska_local,
-		    ska->ska_authtype, &saclerror ) == NOTOK ) {
+								   p->ent_eptr, ska->ska_arg->sra_subset, *ska->ska_local,
+								   ska->ska_authtype, &saclerror ) == NOTOK ) {
 			/* zero-results... exceeded. nothing to be returned */
 			if ( saclerror < 0 )
 				break;
 
-			/* 
+			/*
 			 * otherwise run of the mill sacl size limit
 			 * exceeded -- don't return this entry.
 			 */
@@ -154,9 +152,8 @@ struct search_kid_arg	*ska;
  * turbo_sibling_search - search a sibling index
  */
 
-turbo_sibling_search( e, ska )
-Entry			e;
-struct search_kid_arg	*ska;
+int 
+turbo_sibling_search (Entry e, struct search_kid_arg *ska)
 {
 	EntryInfo		*list;
 	Entry			*tmp;
@@ -170,7 +167,7 @@ struct search_kid_arg	*ska;
 
 	if ( e->e_children == NULLAVL ) {
 		search_refer( ska->ska_arg, e, ska->ska_local, ska->ska_refer,
-		    ska->ska_ismanager );
+					  ska->ska_ismanager );
 		return;
 	}
 
@@ -203,9 +200,9 @@ struct search_kid_arg	*ska;
 		return;
 
 	if ( ska->ska_arg->sra_searchaliases && pindex->i_nonlocalaliases
-	    != (Entry *) 0 ) {
+			!= (Entry *) 0 ) {
 		for ( tmp = pindex->i_nonlocalaliases; *tmp; tmp++ )
-			(void) do_alias( ska->ska_arg, *tmp, ska->ska_local );
+			 do_alias( ska->ska_arg, *tmp, ska->ska_local );
 	}
 }
 
@@ -213,9 +210,8 @@ struct search_kid_arg	*ska;
  * turbo_subtree_search - search a subtree index
  */
 
-turbo_subtree_search( e, ska )
-Entry			e;
-struct search_kid_arg	*ska;
+int 
+turbo_subtree_search (Entry e, struct search_kid_arg *ska)
 {
 	EntryInfo	*list;
 	Entry		*tmp;
@@ -262,15 +258,15 @@ struct search_kid_arg	*ska;
 		subtree_refer( pindex, ska );
 
 	if ( ska->ska_arg->sra_searchaliases && pindex->i_nonlocalaliases
-	    != (Entry *) 0 ) {
+			!= (Entry *) 0 ) {
 		for ( tmp = pindex->i_nonlocalaliases; *tmp; tmp++ ) {
 			int	i;
 
 			i = th_prefix( (*ska->ska_local)->st_originalbase,
-			    (*tmp)->e_alias );
+						   (*tmp)->e_alias );
 			if ( i > 0 ) {
-				(void) do_alias( ska->ska_arg, *tmp,
-				    ska->ska_local );
+				 do_alias( ska->ska_arg, *tmp,
+								 ska->ska_local );
 			}
 		}
 	}
@@ -284,13 +280,13 @@ struct search_kid_arg	*ska;
 
 	for ( tmp = pindex->i_nonleafkids; *tmp != NULLENTRY; tmp++ ) {
 		if ( ((*tmp)->e_children != NULLAVL
-		    && (*tmp)->e_allchildrenpresent == FALSE)
-		    || (*tmp)->e_children == NULLAVL ) {
+				&& (*tmp)->e_allchildrenpresent == FALSE)
+				|| (*tmp)->e_children == NULLAVL ) {
 			if ( check_acl( (*ska->ska_local)->st_bind, ACL_READ,
-			    (*tmp)->e_acl->ac_child, NULLDN ) == OK ) {
-                                search_refer( ska->ska_arg, *tmp, 
-				    ska->ska_local, ska->ska_refer, 
-				    ska->ska_ismanager);
+							(*tmp)->e_acl->ac_child, NULLDN ) == OK ) {
+				search_refer( ska->ska_arg, *tmp,
+							  ska->ska_local, ska->ska_refer,
+							  ska->ska_ismanager);
 			}
 		}
 	}
@@ -318,24 +314,22 @@ int			toplevel;
 		return( turbo_or( e, f->FUFILT, ska, pindex, toplevel ) );
 	default:
 		LLOG( log_dsap, LLOG_EXCEPTIONS,
-		    ("turbo_filterkids: cannot filter type (%d)",
-		    f->flt_type) );
+			  ("turbo_filterkids: cannot filter type (%d)",
+			   f->flt_type) );
 		return( NULLENTRYINFO );
 	}
 	/* NOT REACHED */
 }
 
-static eis_merge( ei, eilist, toplevel )
-EntryInfo	*ei;
-EntryInfo	**eilist;
-int		toplevel;
+static 
+eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel)
 {
 	int		cmp;
 	EntryInfo	*eitmp;
 
-	/* 
+	/*
 	 * add this entry to the result list. the list is
-	 * ordered here to make it easier to do and's and 
+	 * ordered here to make it easier to do and's and
 	 * or's later on.
 	 */
 
@@ -359,7 +353,7 @@ int		toplevel;
 	cmp = -1;
 	while ( eitmp->ent_next != NULLENTRYINFO ) {
 		if ((cmp = dn_order_cmp(ei->ent_dn, eitmp->ent_next->ent_dn))
-		    <= 0)
+				<= 0)
 			break;
 		eitmp = eitmp->ent_next;
 	}
@@ -378,9 +372,8 @@ int		toplevel;
 	return( OK );
 }
 
-static entry_collect( node, eilist )
-Index_node	*node;
-EntryInfo	**eilist;
+static 
+entry_collect (Index_node *node, EntryInfo **eilist)
 {
 	int		i;
 	EntryInfo	*ei;
@@ -388,12 +381,12 @@ EntryInfo	**eilist;
 
 	for ( i = 0; i < node->in_num; i++ ) {
 		if ( g_ska->ska_arg->sra_searchaliases &&
-		    node->in_entries[i]->e_alias != NULLDN )
+				node->in_entries[i]->e_alias != NULLDN )
 			continue;
 
 		if ( (ei = filterentry( g_ska->ska_arg, node->in_entries[i],
-		    (*g_ska->ska_local)->st_bind, g_ska->ska_authtype,
-		    &saclerror, *g_ska->ska_local, 0 )) == NULLENTRYINFO ) {
+								(*g_ska->ska_local)->st_bind, g_ska->ska_authtype,
+								&saclerror, *g_ska->ska_local, 0 )) == NULLENTRYINFO ) {
 			continue;
 		}
 
@@ -414,9 +407,8 @@ EntryInfo	**eilist;
 	return( OK );
 }
 
-static build_indexnode( node, bignode )
-Index_node	*node;
-Index_node	*bignode;
+static 
+build_indexnode (Index_node *node, Index_node *bignode)
 {
 	int	i, j;
 	int	low, mid, high;
@@ -469,15 +461,15 @@ Index_node	*bignode;
 			if (bignode->in_max == 0) {
 				bignode->in_max = 1;
 				bignode->in_entries =
-				    (struct entry **) malloc( (unsigned)
-				    sizeof(struct entry *) );
+					(struct entry **) malloc( (unsigned)
+											  sizeof(struct entry *) );
 				bignode->in_entries[0] = tmp1;
 			} else {
 				bignode->in_max *= 2;
 				bignode->in_entries =
-				    (struct entry **) realloc((char *)
-				    bignode->in_entries, (unsigned)
-				    (sizeof(struct entry *) * bignode->in_max));
+					(struct entry **) realloc((char *)
+											  bignode->in_entries, (unsigned)
+											  (sizeof(struct entry *) * bignode->in_max));
 			}
 		}
 		bignode->in_num++;
@@ -525,7 +517,7 @@ int			toplevel;
 
 	for ( i = 0; i < turbo_index_num; i++ ) {
 		if ( AttrT_cmp( pindex[ i ].i_attr, f->UNAVA.ava_type )
-		    == 0 )
+				== 0 )
 			break;
 	}
 
@@ -539,13 +531,13 @@ int			toplevel;
 	switch ( f->fi_type ) {
 	case FILTERITEM_EQUALITY:
 		node = (Index_node *) avl_find( pindex[ i ].i_root,
-		    (caddr_t) f->UNAVA.ava_value, indexav_cmp );
+										(caddr_t) f->UNAVA.ava_value, indexav_cmp );
 
 		if ( node == ((Index_node *) 0) )
 			break;
 
 		g_toplevel = toplevel;
-		(void) entry_collect( node, &eilist );
+		 entry_collect( node, &eilist );
 		break;
 
 	case FILTERITEM_APPROX:
@@ -553,7 +545,7 @@ int			toplevel;
 		g_count = 0;
 		small = NULL;
 		for ( word = first_word((char *) f->UNAVA.ava_value->av_struct);
-		    word; word = next_word( word ) ) {
+				word; word = next_word( word ) ) {
 			g_count++;
 			code = NULL;
 			soundex( word, &code );
@@ -574,12 +566,12 @@ int			toplevel;
 
 		node = new_indexnode();
 		g_stopearly = 0;
-		(void) avl_prefixapply(pindex[i].i_sroot,
-		    (caddr_t) small, build_indexnode, (caddr_t) node,
-		    index_soundex_prefix, (caddr_t)strlen(small), NOTOK);
+		 avl_prefixapply(pindex[i].i_sroot,
+							   (caddr_t) small, build_indexnode, (caddr_t) node,
+							   index_soundex_prefix, (caddr_t)strlen(small), NOTOK);
 #else
 		node = (Index_node *) avl_find( pindex[ i ].i_sroot,
-		    (caddr_t) small, index_soundex_cmp );
+										(caddr_t) small, index_soundex_cmp );
 #endif
 
 		/* we found nothing */
@@ -594,7 +586,7 @@ int			toplevel;
 		 */
 
 		g_toplevel = toplevel;
-		(void) entry_collect(node, &eilist);
+		 entry_collect(node, &eilist);
 
 #ifdef SOUNDEX_PREFIX
 		free((char *) node->in_entries);
@@ -604,7 +596,7 @@ int			toplevel;
 
 	case FILTERITEM_SUBSTRINGS:
 		if (f->UNSUB.fi_sub_initial == NULLAV &&
-		    f->UNSUB.fi_sub_final == NULLAV) {
+				f->UNSUB.fi_sub_final == NULLAV) {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("turbo_item: non-optimized substring filter"));
 			break;
 		}
@@ -615,15 +607,15 @@ int			toplevel;
 		if (f->UNSUB.fi_sub_initial == NULLAV) {
 			theindex = pindex[i].i_rroot;
 			thestring =
-			    strrev(f->UNSUB.fi_sub_final->avseq_av.av_struct);
+				strrev(f->UNSUB.fi_sub_final->avseq_av.av_struct);
 
-		/* no final substring so use initial */
+			/* no final substring so use initial */
 		} else if (f->UNSUB.fi_sub_final == NULLAV) {
 			theindex = pindex[i].i_root;
 			thestring =
-			    strdup(f->UNSUB.fi_sub_initial->avseq_av.av_struct);
+				strdup(f->UNSUB.fi_sub_initial->avseq_av.av_struct);
 
-		/* otherwise, use whichever is longest */
+			/* otherwise, use whichever is longest */
 		} else {
 			int	flen, ilen;
 
@@ -635,10 +627,10 @@ int			toplevel;
 				ilen = strlen(f->UNSUB.fi_sub_initial->avseq_av.av_struct);
 			}
 			thestring = (flen > ilen ?
-			    strrev(f->UNSUB.fi_sub_final->avseq_av.av_struct) :
-			    strdup(f->UNSUB.fi_sub_initial->avseq_av.av_struct));
+						 strrev(f->UNSUB.fi_sub_final->avseq_av.av_struct) :
+						 strdup(f->UNSUB.fi_sub_initial->avseq_av.av_struct));
 			theindex = (flen > ilen ? pindex[i].i_rroot :
-			    pindex[i].i_root);
+						pindex[i].i_root);
 		}
 		if (phoneflag)
 			len = telstrlen(thestring);
@@ -650,18 +642,18 @@ int			toplevel;
 		g_count = size * g_size_normalizer;
 		if (case_exact_match(f->UNSUB.fi_sub_type->oa_syntax)) {
 			if (phoneflag)
-				(void) avl_prefixapply(theindex, thestring,
-				    build_indexnode, (caddr_t) node,
-				    substring_prefix_tel_cmp, (caddr_t)len, 
-				    NOTOK);
+				 avl_prefixapply(theindex, thestring,
+									   build_indexnode, (caddr_t) node,
+									   substring_prefix_tel_cmp, (caddr_t)len,
+									   NOTOK);
 			else
-				(void) avl_prefixapply(theindex, thestring,
-				    build_indexnode, (caddr_t) node,
-				    substring_prefix_cmp, (caddr_t)len, NOTOK);
+				 avl_prefixapply(theindex, thestring,
+									   build_indexnode, (caddr_t) node,
+									   substring_prefix_cmp, (caddr_t)len, NOTOK);
 		} else {
-			(void) avl_prefixapply(theindex, thestring,
-			    build_indexnode, (caddr_t) node,
-			    substring_prefix_case_cmp, (caddr_t)len, NOTOK);
+			 avl_prefixapply(theindex, thestring,
+								   build_indexnode, (caddr_t) node,
+								   substring_prefix_case_cmp, (caddr_t)len, NOTOK);
 		}
 
 		if (node->in_num == 0) {
@@ -670,7 +662,7 @@ int			toplevel;
 		}
 
 		g_toplevel = (toplevel == 1); /* > 1 => or search */
-		(void) entry_collect(node, &eilist);
+		 entry_collect(node, &eilist);
 
 		free((char *) node->in_entries);
 		free((char *) node);
@@ -679,14 +671,14 @@ int			toplevel;
 
 	case FILTERITEM_PRESENT:
 		g_toplevel = toplevel;
-		(void) avl_apply( pindex[ i ].i_root, entry_collect,
-		    (caddr_t) &eilist, NOTOK, AVL_INORDER );
+		 avl_apply( pindex[ i ].i_root, entry_collect,
+						  (caddr_t) &eilist, NOTOK, AVL_INORDER );
 		break;
 
 	default:	/* handle other cases some day */
 		LLOG( log_dsap, LLOG_EXCEPTIONS,
-		    ("turbo_item: filter type %d not supported\n",
-		    f->fi_type) );
+			  ("turbo_item: filter type %d not supported\n",
+			   f->fi_type) );
 		break;
 	}
 
@@ -707,7 +699,7 @@ int			toplevel;
 
 	if ( f == NULLFILTER ) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS,
-		    ("turbo_and - filter has no optimized component") );
+			  ("turbo_and - filter has no optimized component") );
 		return( NULLENTRYINFO );
 	}
 
@@ -748,10 +740,8 @@ int			toplevel;
 	return( result );
 }
 
-static EntryInfo *eis_union( a, b, toplevel )
-EntryInfo	*a;
-EntryInfo	*b;
-int		toplevel;
+static EntryInfo *
+eis_union (EntryInfo *a, EntryInfo *b, int toplevel)
 {
 	EntryInfo	*result, *rtail;
 	EntryInfo	*next;
@@ -811,7 +801,7 @@ int		toplevel;
 	while (b != NULLENTRYINFO) {
 		next = b->ent_next;
 		b->ent_next = NULLENTRYINFO;
-		(void) eis_merge(b, &result, toplevel);
+		 eis_merge(b, &result, toplevel);
 		b = next;
 
 		if (toplevel && size <= 0)

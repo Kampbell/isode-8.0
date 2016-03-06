@@ -1,6 +1,6 @@
 /* sys.file.h - system independent sys/file.h */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/h/RCS/sys.file.h,v 9.0 1992/06/16 12:17:57 isode Rel $
  *
  *
@@ -33,7 +33,7 @@
 
 #ifdef  BSD42
 #include <sys/file.h>
-#else    
+#else
 #ifdef  SYS5
 #include <fcntl.h>
 #else
@@ -44,5 +44,6 @@
 #ifdef SYS5
 #include <termio.h>
 #endif
+#include <termios.h>
 
-#endif 
+#endif

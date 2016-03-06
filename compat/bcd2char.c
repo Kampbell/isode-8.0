@@ -27,26 +27,26 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/bcd2char.c,v 9.0 199
 #include "general.h"
 
 int     bcd2char (s, d, len)
-register    u_char *s;
-register char  *d;
+   u_char *s;
+char  *d;
 int     len;
 {
-    register int    i,
-		    g;
+	int    i,
+			 g;
 
-    for (i = 0; i < len; i++) {
-	g = s[i >> 1];
-	if ((i & 1) == 0)
-	    g >>= 4;
-	g &= 0xf;
+	for (i = 0; i < len; i++) {
+		g = s[i >> 1];
+		if ((i & 1) == 0)
+			g >>= 4;
+		g &= 0xf;
 
-	if (g < 0x0a)
-	    *d++ = g + '0';
-	else
-	    *d++ = g + 'a' - 0x0a;
-    }
+		if (g < 0x0a)
+			*d++ = g + '0';
+		else
+			*d++ = g + 'a' - 0x0a;
+	}
 
-    *d = 0;
+	*d = 0;
 
-    return len;
+	return len;
 }

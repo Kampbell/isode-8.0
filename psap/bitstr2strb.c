@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/bitstr2strb.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/bitstr2strb.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -32,35 +32,34 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/bitstr2strb.c,v 9.0 19
 
 /*  */
 
-char   *bitstr2strb (pe, k)
-PE	pe;
-int    *k;
+char *
+bitstr2strb (PE pe, int *k)
 {
-    register int    i,
-		    j,
-		    len,
-		    bit,
-		    mask;
-    register char   *dp;
-    char   *cp;
+	int    i,
+			 j,
+			 len,
+			 bit,
+			 mask;
+	char   *dp;
+	char   *cp;
 
-    if (pe == NULLPE)
-	return NULLCP;
+	if (pe == NULLPE)
+		return NULLCP;
 
-    *k = len = pe -> pe_nbits;
-    if ((cp = dp = calloc (1, (unsigned) (len / 8 + 2))) == NULLCP)
-	return NULLCP;
+	*k = len = pe -> pe_nbits;
+	if ((cp = dp = calloc (1, (unsigned) (len / 8 + 2))) == NULLCP)
+		return NULLCP;
 
-    for (bit = i = 0, mask = 1 << (j = 7); i < len; i++) {
-	if (bit_test (pe, i))
-	    bit |= mask;
-	if (j-- == 0)
-	    *dp++ = bit & 0xff, bit = 0, mask = 1 << (j = 7);
-	else
-	    mask >>= 1;
-    }
-    if (j != 7)
-	*dp = bit & 0xff;
+	for (bit = i = 0, mask = 1 << (j = 7); i < len; i++) {
+		if (bit_test (pe, i))
+			bit |= mask;
+		if (j-- == 0)
+			*dp++ = bit & 0xff, bit = 0, mask = 1 << (j = 7);
+		else
+			mask >>= 1;
+	}
+	if (j != 7)
+		*dp = bit & 0xff;
 
-    return cp;
+	return cp;
 }

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/flag2prim.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/psap/RCS/flag2prim.c,v 9.0 1992/06/16 12:25:44 isode Rel $
  *
  *
@@ -32,22 +32,20 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/flag2prim.c,v 9.0 1992
 
 /*  */
 
-PE	flag2prim (b, class, id)
-register int b;
-PElementClass	class;
-PElementID	id;
+PE 
+flag2prim (int b, int class, int id)
 {
-    register PE	    pe;
+	PE	    pe;
 
-    if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
-	return NULLPE;
+	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
+		return NULLPE;
 
-    if ((pe -> pe_prim = PEDalloc (pe -> pe_len = 1)) == NULLPED) {
-	pe_free (pe);
-	return NULLPE;
-    }
+	if ((pe -> pe_prim = PEDalloc (pe -> pe_len = 1)) == NULLPED) {
+		pe_free (pe);
+		return NULLPE;
+	}
 
-    *pe -> pe_prim = b ? 0xff : 0x00;
+	*pe -> pe_prim = b ? 0xff : 0x00;
 
-    return pe;
+	return pe;
 }

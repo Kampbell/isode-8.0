@@ -1,7 +1,7 @@
 /* template.c - your comments here */
 
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/cnamelist.h,v 8.1 1991/09/13 14:36:41 isode Exp $
  *
  *
@@ -11,8 +11,8 @@
  *
  * Revision 8.0  91/07/17  13:18:37  isode
  * Release 7.0
- * 
- * 
+ *
+ *
  */
 
 /*
@@ -27,9 +27,9 @@
 
 
 struct cnamelist {
-  char *shortname;
-  char *longname;
-  struct cnamelist *next;
+	char *shortname;
+	char *longname;
+	struct cnamelist *next;
 };
 
 #define NULLCNLIST (struct cnamelist *)NULL

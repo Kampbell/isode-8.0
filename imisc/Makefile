@@ -73,6 +73,8 @@ $(SBINDIR)$(ROS)imisc:	ximiscd$(LPP)
 		-@echo ""
 
 imiscd:		ximiscd$(LPP)
+		rm -f imiscd
+		ln ximiscd$(LPP) imiscd
 
 ximiscd$(LPP):	imiscd.o IMISC-Rops.o ryresponder.o IMISC_tables.o $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ imiscd.o IMISC-Rops.o ryresponder.o \
@@ -107,6 +109,8 @@ $(BINDIR)imisc$(LPP):	ximisc$(LPP)
 		-@echo ""
 
 imisc:		ximisc$(LPP)
+		rm -f imisc
+		ln ximisc$(LPP) imisc
 
 ximisc$(LPP):	imisc.o IMISC-Iops.o ryinitiator.o IMISC_tables.o $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ imisc.o IMISC-Iops.o ryinitiator.o \
@@ -156,7 +160,7 @@ manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 # clean
 ################################################################
 
-clean:;		rm -f *.ph *.o *.a IMISC* x* z* _* core
+clean:;		rm -f *.ph *.o *.a IMISC* x* z* _* core$ imisc imiscd
 
 grind:;		iprint Makefile
 		tgrind -lc ryinitiator.h ryresponder.h $(CFILES)

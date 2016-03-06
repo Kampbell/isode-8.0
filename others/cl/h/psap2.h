@@ -1,6 +1,6 @@
 /* psap2.h - include file for presentation users (PS-USER) continued  */
 
-/* 
+/*
  * $Header: /f/iso/h/RCS/psap2.h,v 5.0 88/07/21 14:39:16 mrose Rel $
  *
  *
@@ -33,21 +33,21 @@
 
 
 struct PSAPcontext {		/* presentation context */
-    int	    pc_id;		/* identifier */
+	int	    pc_id;		/* identifier */
 
-    OID	    pc_asn;		/* abstract syntax name */
+	OID	    pc_asn;		/* abstract syntax name */
 
-    OID	    pc_atn;		/* abstract transfer name */
-				/*   NULLOID if provider should handle it */
-    
-    int	    pc_result;		/* same codes as pc_result below */
+	OID	    pc_atn;		/* abstract transfer name */
+	/*   NULLOID if provider should handle it */
+
+	int	    pc_result;		/* same codes as pc_result below */
 };
 
 struct PSAPctxlist {		/* list of presentation contexts */
-    int	    pc_nctx;		/* number of contexts */
+	int	    pc_nctx;		/* number of contexts */
 
 #define	NPCTX	10		/* arbitrary */
-    struct PSAPcontext pc_ctx[NPCTX];
+	struct PSAPcontext pc_ctx[NPCTX];
 };
 #define	NULLPC	((struct PSAPctxlist *) 0)
 
@@ -60,33 +60,33 @@ char   *sprintref ();		/* return session reference in string form */
 /*  */
 
 struct PSAPstart {		/* P-CONNECT.INDICATION */
-    int	    ps_sd;		/* PRESENTATION descriptor */
+	int	    ps_sd;		/* PRESENTATION descriptor */
 
 
-    struct PSAPaddr ps_calling;	/* address of peer calling */
-    struct PSAPaddr ps_called;	/* address of peer called */
+	struct PSAPaddr ps_calling;	/* address of peer calling */
+	struct PSAPaddr ps_called;	/* address of peer called */
 
-    struct PSAPctxlist ps_ctxlist;/* list of proposed contexts */
+	struct PSAPctxlist ps_ctxlist;/* list of proposed contexts */
 
-    OID	    ps_defctx;		/* name of proposed default context */
-    int	    ps_defctxresult;	/* what the provider thinks about it */
-    
-    int	    ps_prequirements;	/* presentation requirements */
+	OID	    ps_defctx;		/* name of proposed default context */
+	int	    ps_defctxresult;	/* what the provider thinks about it */
 
-    int	    ps_srequirements;	/* session requirements */
-    int	    ps_settings;	/* initial settings of tokens */
-    long    ps_isn;		/* initial serial number */
-    
-    struct SSAPref  ps_connect;	/* session connection identifier */
+	int	    ps_prequirements;	/* presentation requirements */
 
-    int	    ps_ssdusize;	/* largest atomic SSDU */
-    int	    ps_sversion;	/* session service version number */
-    
-    struct QOStype ps_qos;	/* quality of service */
-    
-				/* initial data from peer */
-    int	    ps_ninfo;		/*   number of elements */
-    PE	    ps_info[NPDATA];	/*   data */
+	int	    ps_srequirements;	/* session requirements */
+	int	    ps_settings;	/* initial settings of tokens */
+	long    ps_isn;		/* initial serial number */
+
+	struct SSAPref  ps_connect;	/* session connection identifier */
+
+	int	    ps_ssdusize;	/* largest atomic SSDU */
+	int	    ps_sversion;	/* session service version number */
+
+	struct QOStype ps_qos;	/* quality of service */
+
+	/* initial data from peer */
+	int	    ps_ninfo;		/*   number of elements */
+	PE	    ps_info[NPDATA];	/*   data */
 };
 #define	PSFREE(ps) \
 { \
@@ -109,33 +109,33 @@ struct PSAPstart {		/* P-CONNECT.INDICATION */
 
 
 struct PSAPconnect {		/* P-CONNECT.CONFIRMATION */
-    int	    pc_sd;		/* PRESENTATION descriptor */
+	int	    pc_sd;		/* PRESENTATION descriptor */
 
-    struct PSAPaddr pc_responding;/* address of peer responding */
+	struct PSAPaddr pc_responding;/* address of peer responding */
 
-    struct PSAPctxlist pc_ctxlist;/* the list of negotiated contexts */
+	struct PSAPctxlist pc_ctxlist;/* the list of negotiated contexts */
 
-    int	    pc_defctxresult;	/* result for proposed default context name */
-    
-    int	    pc_prequirements;	/* presentation requirements */
+	int	    pc_defctxresult;	/* result for proposed default context name */
 
-    int	    pc_srequirements;	/* session requirements */
-    int	    pc_settings;	/* initial settings of tokens */
-    int	    pc_please;		/* tokens requested by PS-user */
-    long    pc_isn;		/* initial serial number */
+	int	    pc_prequirements;	/* presentation requirements */
 
-    struct SSAPref pc_connect;	/* session connection identifier */
+	int	    pc_srequirements;	/* session requirements */
+	int	    pc_settings;	/* initial settings of tokens */
+	int	    pc_please;		/* tokens requested by PS-user */
+	long    pc_isn;		/* initial serial number */
 
-    int	    pc_ssdusize;	/* largest atomic SSDU */
-    int	    pc_sversion;	/* session service version number */
+	struct SSAPref pc_connect;	/* session connection identifier */
 
-    struct QOStype pc_qos;	/* quality of service */
-    
-    int	    pc_result;		/* result */
+	int	    pc_ssdusize;	/* largest atomic SSDU */
+	int	    pc_sversion;	/* session service version number */
+
+	struct QOStype pc_qos;	/* quality of service */
+
+	int	    pc_result;		/* result */
 #define	PC_ACCEPT	(-1)
 
 #define	PC_REJECTED	0	/* Rejected by peer */
-				/* Provider-reason */
+	/* Provider-reason */
 #define	PC_NOTSPECIFIED	1	/* Reason not specified */
 #define	PC_CONGEST	2	/* Temporary congestion */
 #define	PC_EXCEEDED	3	/* Local limit exceeded */
@@ -144,18 +144,18 @@ struct PSAPconnect {		/* P-CONNECT.CONFIRMATION */
 #define	PC_DEFAULT	6	/* Default context not supported */
 #define	PC_READABLE	7	/* User-data not readable */
 #define	PC_AVAILABLE	8	/* No PSAP available */
-				/* Abort-reason */
+	/* Abort-reason */
 #define	PC_UNRECOGNIZED	9	/* Unrecognized PPDU */
 #define	PC_UNEXPECTED	10	/* Unexpected PPDU */
 #define	PC_SSPRIMITIVE	11	/* Unexpected session service primitive */
 #define	PC_PPPARAM1	12	/* Unrecognized PPDU parameter */
 #define	PC_PPPARAM2	13	/* Unexpected PPDU parameter */
 #define	PC_INVALID	14	/* Invalid PPDU parameter value */
-				/* Provider-reason */
+	/* Provider-reason */
 #define	PC_ABSTRACT	15	/* Abstract syntax not supported */
 #define	PC_TRANSFER	16	/* Proposed transfer syntaxes not supported */
 #define	PC_DCSLIMIT	17	/* Local limit on DCS exceeded */
-				/* begin UNOFFICIAL */
+	/* begin UNOFFICIAL */
 #define	PC_REFUSED	18	/* Connect request refused on this network
 				   connection */
 #define	PC_SESSION	19	/* Session disconnect */
@@ -165,14 +165,14 @@ struct PSAPconnect {		/* P-CONNECT.CONFIRMATION */
 #define	PC_OPERATION	23	/* Invalid operation */
 #define	PC_TIMER	24	/* Timer expired */
 #define	PC_WAITING	25	/* Indications waiting */
-				/* end UNOFFICIAL */
+	/* end UNOFFICIAL */
 
 #define	PC_FATAL(r)	((r) < PC_PARAMETER)
 #define	PC_OFFICIAL(r)	((r) < PC_REFUSED)
-    
-				/* initial data from peer */
-    int	    pc_ninfo;		/*   number of elements */
-    PE	    pc_info[NPDATA];	/*   data */
+
+	/* initial data from peer */
+	int	    pc_ninfo;		/*   number of elements */
+	PE	    pc_info[NPDATA];	/*   data */
 };
 #define	PCFREE(pc) \
 { \
@@ -190,9 +190,9 @@ struct PSAPconnect {		/* P-CONNECT.CONFIRMATION */
 	    pe_free ((pc) -> pc_info[PCI]), (pc) -> pc_info[PCI] = NULLPE; \
     (pc) -> pc_ninfo = 0; \
 }
-    
 
-					/* PRESENTATION requirements */
+
+/* PRESENTATION requirements */
 #define	PR_MANAGEMENT	0x0001	/* context management */
 #define	PR_RESTORATION	0x0002	/* context restoration */
 
@@ -200,11 +200,11 @@ struct PSAPconnect {		/* P-CONNECT.CONFIRMATION */
 
 
 struct PSAPdata {		/* P-READ.INDICATION */
-    int	    px_type;		/* type of indication */
-				/* same values as sx_type */
+	int	    px_type;		/* type of indication */
+	/* same values as sx_type */
 
-    int	    px_ninfo;		/* number of elements */
-    PE	    px_info[NPDATA];	/* data */
+	int	    px_ninfo;		/* number of elements */
+	PE	    px_info[NPDATA];	/* data */
 };
 #define	PXFREE(px) \
 { \
@@ -218,18 +218,18 @@ struct PSAPdata {		/* P-READ.INDICATION */
 
 
 struct PSAPtoken {		/* P-{TOKEN-*,GIVE-CONTROL}.INDICATION */
-    int	    pt_type;		/* type of indication */
-				/* same values as st_type */
+	int	    pt_type;		/* type of indication */
+	/* same values as st_type */
 
-    u_char  pt_tokens;		/* tokens offered/wanted */
-				/* same values as st_tokens */
+	u_char  pt_tokens;		/* tokens offered/wanted */
+	/* same values as st_tokens */
 
-    u_char  pt_owned;		/* tokens owned by user */
+	u_char  pt_owned;		/* tokens owned by user */
 
 
-				/* PLEASE TOKEN only */
-    int	    pt_ninfo;		/*   number of elements */
-    PE	    pt_info[NPDATA];	/*   data */
+	/* PLEASE TOKEN only */
+	int	    pt_ninfo;		/*   number of elements */
+	PE	    pt_info[NPDATA];	/*   data */
 };
 #define	PTFREE(pt) \
 { \
@@ -243,20 +243,20 @@ struct PSAPtoken {		/* P-{TOKEN-*,GIVE-CONTROL}.INDICATION */
 
 
 struct PSAPsync {		/* P-*-SYNC.{INDICATION,CONFIRMATION} */
-    int	    pn_type;		/* type of indication/confirmation */
-				/* same values as sn_type */
+	int	    pn_type;		/* type of indication/confirmation */
+	/* same values as sn_type */
 
-    int	    pn_options;		/* options (!!) */
-				/* same values as sn_options */
+	int	    pn_options;		/* options (!!) */
+	/* same values as sn_options */
 
-    long    pn_ssn;		/* serial number */
-				/* same values as sn_ssn */
+	long    pn_ssn;		/* serial number */
+	/* same values as sn_ssn */
 
-    int	    pn_settings;	/* new token settings (RESYNC only) */
+	int	    pn_settings;	/* new token settings (RESYNC only) */
 
-				/* sync data from peer */
-    int	    pn_ninfo;		/*   number of elements */
-    PE	    pn_info[NPDATA];	/*   data */
+	/* sync data from peer */
+	int	    pn_ninfo;		/*   number of elements */
+	PE	    pn_info[NPDATA];	/*   data */
 };
 #define	PNFREE(pn) \
 { \
@@ -270,22 +270,22 @@ struct PSAPsync {		/* P-*-SYNC.{INDICATION,CONFIRMATION} */
 
 
 struct PSAPactivity {		/* P-ACTIVITY-*.{INDICATION,CONFIRMATION} */
-    int	    pv_type;		/* type of indication/confirmation */
-				/* same values as sv_type */
+	int	    pv_type;		/* type of indication/confirmation */
+	/* same values as sv_type */
 
-    struct SSAPactid pv_id;	/* START/RESUME activity identifier */
+	struct SSAPactid pv_id;	/* START/RESUME activity identifier */
 
-    struct SSAPactid pv_oid;	/* RESUME old activity identifier */
-    struct SSAPref   pv_connect;/* 	  old connection identifier */
+	struct SSAPactid pv_oid;	/* RESUME old activity identifier */
+	struct SSAPref   pv_connect;/* 	  old connection identifier */
 
-    long    pv_ssn;		/* RESUME/END Serial number */
+	long    pv_ssn;		/* RESUME/END Serial number */
 
-    int	    pv_reason;		/* INTERRUPT/DISCARD */
-				/* same values as sp_reason */
-        
-				/* activity DATA from peer */
-    int	    pv_ninfo;		/*   number of elements */
-    PE	    pv_info[NPDATA];	/*   data */
+	int	    pv_reason;		/* INTERRUPT/DISCARD */
+	/* same values as sp_reason */
+
+	/* activity DATA from peer */
+	int	    pv_ninfo;		/*   number of elements */
+	PE	    pv_info[NPDATA];	/*   data */
 };
 #define	PVFREE(pv) \
 { \
@@ -299,16 +299,16 @@ struct PSAPactivity {		/* P-ACTIVITY-*.{INDICATION,CONFIRMATION} */
 
 
 struct PSAPreport {		/* P-{U,P}-EXCEPTION-REPORT.INDICATION */
-    int	    pp_peer;		/* T   = P-U-EXCEPTION-REPORT.INDICATION:
+	int	    pp_peer;		/* T   = P-U-EXCEPTION-REPORT.INDICATION:
 					pp_reason/pp_info both meaningful
 				   NIL = P-P-EXCEPTION-REPORT.INDICATION:
 					pp_reason == SP_NOREASON, or
 					pp_reason == SP_PROTOCOL */
-    int	    pp_reason;		/* same values as sp_reason */
+	int	    pp_reason;		/* same values as sp_reason */
 
-				/* report DATA from peer */
-    int	    pp_ninfo;		/*   number of elements */
-    PE	    pp_info[NPDATA];	/*   data */
+	/* report DATA from peer */
+	int	    pp_ninfo;		/*   number of elements */
+	PE	    pp_info[NPDATA];	/*   data */
 };
 #define	PPFREE(pp) \
 { \
@@ -322,9 +322,9 @@ struct PSAPreport {		/* P-{U,P}-EXCEPTION-REPORT.INDICATION */
 
 
 struct PSAPfinish {		/* P-RELEASE.INDICATION */
-				/* release DATA from peer */
-    int	    pf_ninfo;		/*   number of elements */
-    PE	    pf_info[NPDATA];	/*   data */
+	/* release DATA from peer */
+	int	    pf_ninfo;		/*   number of elements */
+	PE	    pf_info[NPDATA];	/*   data */
 };
 #define	PFFREE(pf) \
 { \
@@ -338,12 +338,12 @@ struct PSAPfinish {		/* P-RELEASE.INDICATION */
 
 
 struct PSAPrelease {		/* P-RELEASE.CONFIRMATION */
-    int	    pr_affirmative;	/* T   = connection released
+	int	    pr_affirmative;	/* T   = connection released
 				   NIL = request refused */
 
-				/* release DATA from peer */
-    int	    pr_ninfo;		/*   number of elements */
-    PE	    pr_info[NPDATA];	/*   data */
+	/* release DATA from peer */
+	int	    pr_ninfo;		/*   number of elements */
+	PE	    pr_info[NPDATA];	/*   data */
 };
 #define	PRFREE(pr) \
 { \
@@ -357,22 +357,22 @@ struct PSAPrelease {		/* P-RELEASE.CONFIRMATION */
 
 
 struct PSAPabort {		/* P-{U,P}-ABORT.INDICATION */
-    int	    pa_peer;		/* T   = P-U-ABORT.INDICATION:
+	int	    pa_peer;		/* T   = P-U-ABORT.INDICATION:
 					    pa_info/pa_ninfo is meaningful
 				   NIL = P-P-ABORT.INDICATION:
 					    pa_reason/pa_ppdu is meaningful,
 					    pa_data contains diagnostics */
 
-    int	    pa_reason;		/* same codes as pc_result */
+	int	    pa_reason;		/* same codes as pc_result */
 
-				/* abort information from peer */
-    int	    pa_ninfo;		/*   number of elements */
-    PE	    pa_info[NPDATA];	/*   data */
+	/* abort information from peer */
+	int	    pa_ninfo;		/*   number of elements */
+	PE	    pa_info[NPDATA];	/*   data */
 
-				/* diagnostics from provider */
+	/* diagnostics from provider */
 #define	PA_SIZE		512
-    int	    pa_cc;		/*   length */
-    char    pa_data[PA_SIZE];	/*   data */
+	int	    pa_cc;		/*   length */
+	char    pa_data[PA_SIZE];	/*   data */
 };
 #define	PAFREE(pa) \
 { \
@@ -386,7 +386,7 @@ struct PSAPabort {		/* P-{U,P}-ABORT.INDICATION */
 
 
 struct PSAPindication {
-    int	    pi_type;		/* the union element present */
+	int	    pi_type;		/* the union element present */
 #define	PI_DATA		0x00
 #define	PI_TOKEN	0x01
 #define	PI_SYNC		0x02
@@ -395,15 +395,15 @@ struct PSAPindication {
 #define	PI_FINISH	0x05
 #define	PI_ABORT	0x06
 
-    union {
-	struct PSAPdata pi_un_data;
-	struct PSAPtoken pi_un_token;
-	struct PSAPsync pi_un_sync;
-	struct PSAPactivity pi_un_activity;
-	struct PSAPreport pi_un_report;
-	struct PSAPfinish pi_un_finish;
-	struct PSAPabort pi_un_abort;
-    }	pi_un;
+	union {
+		struct PSAPdata pi_un_data;
+		struct PSAPtoken pi_un_token;
+		struct PSAPsync pi_un_sync;
+		struct PSAPactivity pi_un_activity;
+		struct PSAPreport pi_un_report;
+		struct PSAPfinish pi_un_finish;
+		struct PSAPabort pi_un_abort;
+	}	pi_un;
 #define	pi_data		pi_un.pi_un_data
 #define	pi_token	pi_un.pi_un_token
 #define	pi_sync		pi_un.pi_un_sync
@@ -422,7 +422,7 @@ int	PExec ();		/* SERVER only */
 int	PInit ();		/* P-CONNECT.INDICATION */
 
 int	PConnResponse ();	/* P-CONNECT.RESPONSE */
-				/* P-CONNECT.REQUEST (backwards-compatible) */
+/* P-CONNECT.REQUEST (backwards-compatible) */
 #define	PConnRequest(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14) \
 	PAsynConnRequest (a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,0)
 int	PAsynConnRequest ();	/* P-(ASYN-)CONNECT.REQUEST */

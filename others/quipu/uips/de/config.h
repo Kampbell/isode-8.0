@@ -1,6 +1,6 @@
 /* template.c - your comments here */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/config.h,v 9.0 1992/06/16 12:45:59 isode Rel $
  *
  *

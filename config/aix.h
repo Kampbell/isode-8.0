@@ -1,6 +1,6 @@
 /* aix.h - site configuration file for IBM AIX 3.2 on RS6000 Workstation */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/aix.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

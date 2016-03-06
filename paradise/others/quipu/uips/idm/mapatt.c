@@ -14,7 +14,7 @@ char *str;
 
 	cp = index(str, ' ');
 	if (cp == NULLCP) {
-		(void) fprintf(stderr, "%s", log_err_pAtt);
+		 fprintf(stderr, "%s", log_err_pAtt);
 		return;
 	}
 	*cp = '\0';

@@ -1,6 +1,6 @@
 /* ccur.h - site configuration for Concurrent RTU 6.0 */
 
-/* 
+/*
  * $Header: /xtel/isode/isode/config/RCS/ccur.h,v 9.0 1992/06/16 12:08:13 isode Rel $
  *
  *

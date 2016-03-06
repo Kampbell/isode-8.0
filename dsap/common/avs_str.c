@@ -32,13 +32,13 @@ short acl_sntx = -1;
 IFP merge_acl = NULLIFP;
 
 AV_Sequence str2avs (str,at)
-register char * str;
+char * str;
 AttributeType at;
 {
-register char * ptr;
-char * save,val;
-AV_Sequence avs = NULLAV;
-AV_Sequence newavs;
+	char * ptr;
+	char * save,val;
+	AV_Sequence avs = NULLAV;
+	AV_Sequence newavs;
 
 	if (str == NULLCP)
 		return (NULLAV);
@@ -57,7 +57,7 @@ AV_Sequence newavs;
 		if ((avs) && (at->oa_syntax == acl_sntx)) {
 			(*merge_acl)(avs,SkipSpace(str));
 			*save = val;
-			str = ptr;     
+			str = ptr;
 			continue;
 		}
 
@@ -89,16 +89,16 @@ AV_Sequence newavs;
 
 
 AV_Sequence fast_str2avs (str,at)
-register char * str;
+char * str;
 AttributeType at;
 {
-register char * ptr;
-char * save,val;
-AV_Sequence avs = NULLAV;
-AV_Sequence newavs;
-AV_Sequence fast_avs = NULLAV;
-AV_Sequence fast_tail = NULLAV;
-extern AV_Sequence avs_fast_merge ();
+	char * ptr;
+	char * save,val;
+	AV_Sequence avs = NULLAV;
+	AV_Sequence newavs;
+	AV_Sequence fast_avs = NULLAV;
+	AV_Sequence fast_tail = NULLAV;
+	extern AV_Sequence avs_fast_merge ();
 
 	if (str == NULLCP)
 		return (NULLAV);
@@ -117,7 +117,7 @@ extern AV_Sequence avs_fast_merge ();
 		if ((avs) && (at->oa_syntax == acl_sntx)) {
 			(*merge_acl)(avs,SkipSpace(str));
 			*save = val;
-			str = ptr;     
+			str = ptr;
 			continue;
 		}
 

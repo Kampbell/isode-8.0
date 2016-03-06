@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/tty.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/tty.c,v 9.0 1992/06/16 12:43:35 isode Rel $
  *
  *
@@ -36,7 +36,7 @@ char * strcpy ();
 
 char    buffer[500][500];
 int     lineno = 0,
-        pos = 0;
+		pos = 0;
 extern int PIC_LINESIZE;
 extern int NUMLINES;
 int     scale = 8;
@@ -51,11 +51,11 @@ char    show[128];
 char    display[50][50];
 
 /* ARGSUSED */
-photo_start (name)
-char   *name;
+int 
+photo_start (char *name)
 {
 	char   *ptr,
-	       *getenv ();
+		   *getenv ();
 
 
 	if ((ptr = getenv ("photo_invert")) != (char *) NULL)
@@ -67,7 +67,7 @@ char   *name;
 			equal = 1;
 		else if (strcmp (ptr, "edge") == 0) {
 			int     i,
-			        j;
+					j;
 
 			for (i = 1; i < PIC_LINESIZE; i++)
 				for (j = 1; j < NUMLINES; j++)
@@ -76,9 +76,9 @@ char   *name;
 		}
 	}
 	if ((ptr = getenv ("photo_mapping")) != (char *) NULL)
-		(void) strcpy (mapping, ptr);
+		 strcpy (mapping, ptr);
 	else
-		(void) strcpy (mapping, GREYSCALE);
+		 strcpy (mapping, GREYSCALE);
 
 	if ((ptr = getenv ("photo_scale")) != (char *) NULL) {
 		if (strcmp (ptr, "large") == 0)
@@ -90,17 +90,17 @@ char   *name;
 	}
 	scalediv = scale * scale / 8;
 
-	(void) printf ("\n");
+	 printf ("\n");
 	return (0);
 }
 
 /* ARGSUSED */
-photo_end (name)
-char   *name;
+int 
+photo_end (char *name)
 {
 	int     i,
-	        j,
-	        k;
+			j,
+			k;
 	int     numlev;
 	int     total = 0;
 	int     totlevel = 0;
@@ -128,11 +128,11 @@ char   *name;
 		for (i = 0; i < ln; i++) {
 			for (j = 0; j < PIC_LINESIZE / scale; j++) {
 				if (invert)
-					(void) putc (mapping[show[display[i][j]]],stdout);
+					 putc (mapping[show[display[i][j]]],stdout);
 				else
-					(void) putc (mapping[15 - show[display[i][j]]],stdout);
+					 putc (mapping[15 - show[display[i][j]]],stdout);
 			}
-			(void) printf ("\n");
+			 printf ("\n");
 		}
 	} else if (edges) {
 		/* edges by expansion */
@@ -166,25 +166,25 @@ char   *name;
 					for (j = lineno; j < (2 * scale) + lineno; j++)
 						cnt += ebuf[i][j];
 
-/* Need to select a grey level on the strength of the edge
- *
- *				cnt *= 4;
- *				if (cnt == (scalediv * 16))
- *					cnt = (scalediv * 16) -1;
- *
- * Just set "strong" edge cells "on" for now ...
- */
+				/* Need to select a grey level on the strength of the edge
+				 *
+				 *				cnt *= 4;
+				 *				if (cnt == (scalediv * 16))
+				 *					cnt = (scalediv * 16) -1;
+				 *
+				 * Just set "strong" edge cells "on" for now ...
+				 */
 				if (cnt > (scalediv * 2) )
 					cnt = (scalediv * 16) -1;
-				else 
-					cnt = 0;	
+				else
+					cnt = 0;
 
 				if (invert)
-					(void) putc (mapping[(cnt / scalediv)],stdout);
+					 putc (mapping[(cnt / scalediv)],stdout);
 				else
-					(void) putc (mapping[15 - (cnt / scalediv)],stdout);
+					 putc (mapping[15 - (cnt / scalediv)],stdout);
 			}
-			(void) putc ('\n',stdout);
+			 putc ('\n',stdout);
 		}
 
 	}
@@ -192,17 +192,17 @@ char   *name;
 
 }
 
-photo_black (length)
-int     length;
+int 
+photo_black (int length)
 {
 	int     i;
 
 	if (scale == 1) {
 		for (i = pos; i < length + pos; i++)
 			if (invert)
-				(void) putc (' ',stdout);
+				 putc (' ',stdout);
 			else
-				(void) putc ('#',stdout);
+				 putc ('#',stdout);
 		return;
 	}
 	for (i = pos; i < length + pos; i++)
@@ -210,17 +210,17 @@ int     length;
 	pos += length;
 }
 
-photo_white (length)
-int     length;
+int 
+photo_white (int length)
 {
 	int     i;
 
 	if (scale == 1) {
 		for (i = pos; i < length + pos; i++)
 			if (invert)
-				(void) putc ('#',stdout);
+				 putc ('#',stdout);
 			else
-				(void) putc (' ',stdout);
+				 putc (' ',stdout);
 		return;
 	}
 	for (i = pos; i < length + pos; i++)
@@ -233,12 +233,12 @@ photo_line_end (line)
 bit_string *line;
 {
 	int     i,
-	        j,
-	        k,
-	        cnt;
+			j,
+			k,
+			cnt;
 
 	if (scale == 1) {
-		(void) putc ('\n',stdout);
+		 putc ('\n',stdout);
 		return;
 	}
 	lineno++;
@@ -265,12 +265,12 @@ bit_string *line;
 
 
 			if (invert)
-				(void) putc (mapping[cnt / scalediv],stdout);
+				 putc (mapping[cnt / scalediv],stdout);
 			else
-				(void) putc (mapping[15 - (cnt / scalediv)],stdout);
+				 putc (mapping[15 - (cnt / scalediv)],stdout);
 		}
 
 		if (!equal)
-			(void) putc ('\n',stdout);
+			 putc ('\n',stdout);
 	}
 }

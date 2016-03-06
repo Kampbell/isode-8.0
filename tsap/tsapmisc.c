@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapmisc.c,v 9.0 1992/06/16 12:40:39 isode Rel $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/tsap/RCS/tsapmisc.c,v 9.0 1992/06/16 12:40:39 isode Rel $
  *
  *
@@ -41,100 +41,94 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapmisc.c,v 9.0 1992/
 int	TSelectOctets (sd, nbytes, td)
 int	sd;
 long   *nbytes;
-register struct TSAPdisconnect *td;
+struct TSAPdisconnect *td;
 {
-    int	    result;
-    long    value;
-    SBV	    smask;
-    register struct tsapblk *tb;
+	int	    result;
+	long    value;
+	SBV	    smask;
+	struct tsapblk *tb;
 
-    missingP (nbytes);
-    missingP (td);
+	missingP (nbytes);
+	missingP (td);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    tsapPsig (tb, sd);
+	tsapPsig (tb, sd);
 
-    result = OK;
-    if (tb -> tb_nreadfnx) {
-	if ((result = (*tb -> tb_nreadfnx) (tb, &value)) == NOTOK)
-	    value = 0L;
-    }
-    else {
+	result = OK;
+	if (tb -> tb_nreadfnx) {
+		if ((result = (*tb -> tb_nreadfnx) (tb, &value)) == NOTOK)
+			value = 0L;
+	} else {
 #ifdef	FIONREAD
-	if (ioctl (tb -> tb_fd, FIONREAD, (char *) &value) == NOTOK)
-	    value = 0L;
+		if (ioctl (tb -> tb_fd, FIONREAD, (char *) &value) == NOTOK)
+			value = 0L;
 #endif
 
-	switch (tb -> tb_flags & (TB_TP0 | TB_TP4)) {
-	    case TB_TCP:
-	    case TB_X25:
-	        if (value > DT_MAGIC && tb -> tb_len == 0)
-		    value -= DT_MAGIC;
-	        break;
+		switch (tb -> tb_flags & (TB_TP0 | TB_TP4)) {
+		case TB_TCP:
+		case TB_X25:
+			if (value > DT_MAGIC && tb -> tb_len == 0)
+				value -= DT_MAGIC;
+			break;
 
-	    default:
-		break;
+		default:
+			break;
+		}
 	}
-    }
 
-    if (result == OK)
-	value += (long) tb -> tb_len;
-    *nbytes = value;
+	if (result == OK)
+		value += (long) tb -> tb_len;
+	*nbytes = value;
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return result;
+	return result;
 }
 
 /*    get TSAPs */
 
-int	TGetAddresses (sd, initiating, responding, td)
-int	sd;
-struct TSAPaddr *initiating,
-		*responding;
-register struct TSAPdisconnect *td;
+int 
+TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td)
 {
-    SBV	    smask;
-    register struct tsapblk *tb;
+	SBV	    smask;
+	struct tsapblk *tb;
 
-    missingP (td);
+	missingP (td);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    tsapPsig (tb, sd);
+	tsapPsig (tb, sd);
 
-    if (initiating)
-	copyTSAPaddrX (&tb -> tb_initiating, initiating);
-    if (responding)
-	copyTSAPaddrX (&tb -> tb_responding, responding);
+	if (initiating)
+		copyTSAPaddrX (&tb -> tb_initiating, initiating);
+	if (responding)
+		copyTSAPaddrX (&tb -> tb_responding, responding);
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return OK;
+	return OK;
 }
 
 /*    define transport manager */
 
 #ifdef	MGMT
-int	TSetManager (sd, fnx, td)
-int	sd;
-IFP	fnx;
-register struct TSAPdisconnect *td;
+int 
+TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td)
 {
-    SBV	    smask;
-    register struct tsapblk *tb;
+	SBV	    smask;
+	struct tsapblk *tb;
 
-    missingP (td);
+	missingP (td);
 
-    smask = sigioblock ();
+	smask = sigioblock ();
 
-    tsapPsig (tb, sd);
+	tsapPsig (tb, sd);
 
-    tb -> tb_manfnx = fnx;
+	tb -> tb_manfnx = fnx;
 
-    (void) sigiomask (smask);
+	 sigiomask (smask);
 
-    return OK;
+	return OK;
 }
 #endif

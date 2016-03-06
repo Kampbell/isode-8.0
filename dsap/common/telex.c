@@ -42,8 +42,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/telex.c,v 9.0 1
 
 extern LLog * log_dsap;
 
-static telex_free (ptr)
-struct telex * ptr;
+static 
+telex_free (struct telex *ptr)
 {
 	free (ptr->telexnumber);
 	free (ptr->countrycode);
@@ -53,8 +53,8 @@ struct telex * ptr;
 }
 
 
-static struct telex * telex_cpy (a)
-struct telex * a;
+static struct telex *
+telex_cpy (struct telex *a)
 {
 	struct telex * result;
 
@@ -65,9 +65,8 @@ struct telex * a;
 	return (result);
 }
 
-static telex_cmp (a,b)
-struct telex * a;
-struct telex * b;
+static 
+telex_cmp (struct telex *a, struct telex *b)
 {
 	int res;
 
@@ -99,8 +98,8 @@ int format;
 }
 
 
-static struct telex* str2telex (str)
-char * str;
+static struct telex *
+str2telex (char *str)
 {
 	struct telex * result;
 	char * ptr;
@@ -198,7 +197,8 @@ PE pe;
 	return (m);
 }
 
-telex_syntax () {
+int 
+telex_syntax (void) {
 	 add_attribute_syntax ("TelexNumber",
 								 (IFP) telex_enc,	(IFP) telex_dec,
 								 (IFP) str2telex,	telex_print,

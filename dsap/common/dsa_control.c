@@ -69,7 +69,8 @@ struct sub_ch_list *sub_ch_list_cpy() ;
 static        int         chain_list_print() ;
 static        int         sub_ch_list_print() ;
 
-dsa_control_syntax() {
+int 
+dsa_control_syntax (void) {
 	 add_attribute_syntax
 	("DSAControl",
 	 (IFP)dsa_control_enc,    (IFP)dsa_control_decode,/* Encoder and decoder */
@@ -157,8 +158,8 @@ int format;
 	}
 }
 
-static struct dsa_control * dsa_control_cpy (dsa_c_ptr)
-struct dsa_control * dsa_c_ptr ;
+static struct dsa_control *
+dsa_control_cpy (struct dsa_control *dsa_c_ptr)
 {
 	struct dsa_control * new_item = (struct dsa_control *) malloc (sizeof (struct dsa_control)) ;
 
@@ -241,16 +242,14 @@ struct dsa_control * dsa_c_ptr ;
 }
 
 /* ARGSUSED */
-int
-dsa_control_cmp(a, b)
-struct dsa_control *a, *b ;
+int 
+dsa_control_cmp (struct dsa_control *a, struct dsa_control *b)
 {
 	return (2) ;
 }
 
-void
-dsa_control_free(item_to_free)
-struct dsa_control * item_to_free ;
+void 
+dsa_control_free (struct dsa_control *item_to_free)
 {
 	switch (item_to_free->dsa_control_option) {
 	case(CONTROL_SETLOGLEVEL): {
@@ -285,8 +284,8 @@ struct dsa_control * item_to_free ;
 	free ((char *)item_to_free) ;
 }
 
-struct dsa_control * str2dsa_control (str)
-char * str;
+struct dsa_control *
+str2dsa_control (char *str)
 {
 	struct dsa_control * the_item;
 
@@ -297,9 +296,8 @@ char * str;
 	return ((struct dsa_control *) 0);
 }
 
-static struct dsa_control * str2dsa_control_aux (str, item)
-char * str ;
-struct dsa_control * item ;
+static struct dsa_control *
+str2dsa_control_aux (char *str, struct dsa_control *item)
 {
 	/*	format: number $ string */
 
@@ -438,8 +436,8 @@ struct dsa_control * item ;
 	return (item) ;
 }
 
-optional_dn_free(item_to_free)
-struct optional_dn * item_to_free ;
+int 
+optional_dn_free (struct optional_dn *item_to_free)
 {
 	if (item_to_free->offset == DN_PRESENT) {
 		dn_free(item_to_free->un.selectedDN) ;
@@ -448,7 +446,8 @@ struct optional_dn * item_to_free ;
 }
 
 
-quipu_call_syntax() {
+int 
+quipu_call_syntax (void) {
 	 add_attribute_syntax
 	("Call",
 	 (IFP)quipu_call_enc,    (IFP)quipu_call_decode,     /* Encoder and decoder */
@@ -478,8 +477,8 @@ PE pe;
 	return (quipu_callptr);
 }
 
-struct quipu_call * str2quipu_call(str)
-char * str ;
+struct quipu_call *
+str2quipu_call (char *str)
 {
 	struct quipu_call * the_item ;
 
@@ -491,9 +490,8 @@ char * str ;
 }
 
 /* ARGSUSED */
-static struct quipu_call * str2quipu_call_aux(str, item)
-char * str ;
-struct quipu_call * item ;
+static struct quipu_call *
+str2quipu_call_aux (char *str, struct quipu_call *item)
 {
 	/* SPT: Forget it! The structure is horrible
 	 and should be filled in by hand!
@@ -638,8 +636,8 @@ int format ;
 	ps_printf(ps, "%d, %d", item->assoc_id, item->invok_id) ;
 }
 
-struct quipu_call * quipu_call_cpy(item)
-struct quipu_call * item ;
+struct quipu_call *
+quipu_call_cpy (struct quipu_call *item)
 {
 	struct quipu_call * tmp_item = (struct quipu_call *) 0 ;
 
@@ -669,8 +667,8 @@ struct quipu_call * item ;
 	return (tmp_item) ;
 }
 
-struct op_list * op_list_cpy(item)
-struct op_list * item ;
+struct op_list *
+op_list_cpy (struct op_list *item)
 {
 	struct op_list * new_item = (struct op_list *) 0 ;
 	struct op_list * tmp_item = (struct op_list *) 0 ;
@@ -695,8 +693,8 @@ struct op_list * item ;
 	return (new_item) ;
 }
 
-struct ops * ops_cpy(item)
-struct ops * item ;
+struct ops *
+ops_cpy (struct ops *item)
 {
 	struct ops * tmp_item = (struct ops *) malloc (sizeof (struct ops)) ;
 
@@ -739,8 +737,8 @@ struct ops * item ;
 	return (tmp_item) ;
 }
 
-struct chain_list *chain_list_cpy(item)
-struct chain_list * item ;
+struct chain_list *
+chain_list_cpy (struct chain_list *item)
 {
 	struct chain_list * new_item = (struct chain_list *) 0 ;
 	struct chain_list * tmp_item = (struct chain_list *) 0 ;
@@ -766,8 +764,8 @@ struct chain_list * item ;
 	return (new_item) ;
 }
 
-struct sub_ch_list *sub_ch_list_cpy(item)
-struct sub_ch_list *item ;
+struct sub_ch_list *
+sub_ch_list_cpy (struct sub_ch_list *item)
 {
 	struct sub_ch_list *new_item = (struct sub_ch_list *) malloc (sizeof (struct sub_ch_list)) ;
 
@@ -777,16 +775,14 @@ struct sub_ch_list *item ;
 }
 
 /* ARGSUSED */
-int
-quipu_call_cmp(a, b)
-struct quipu_call *a, *b ;
+int 
+quipu_call_cmp (struct quipu_call *a, struct quipu_call *b)
 {
 	return (2) ;
 }
 
-void
-quipu_call_free(item_to_free)
-struct quipu_call * item_to_free ;
+void 
+quipu_call_free (struct quipu_call *item_to_free)
 {
 	if (item_to_free->authorizationLevel)
 		auth_level_free(item_to_free->authorizationLevel) ;
@@ -821,9 +817,8 @@ struct quipu_call * item_to_free ;
 	free((char *)item_to_free) ;
 }
 
-int
-op_list_free(elem)
-struct op_list * elem ;
+int 
+op_list_free (struct op_list *elem)
 {
 	struct op_list * tmp_elem ;
 
@@ -836,9 +831,8 @@ struct op_list * elem ;
 	}
 }
 
-int
-ops_free(elem)
-struct ops * elem ;
+int 
+ops_free (struct ops *elem)
 {
 	dn_free(elem->base_object) ;
 	if (elem->start_time)
@@ -856,9 +850,8 @@ struct ops * elem ;
 	free((char *)elem) ;
 }
 
-int
-chain_list_free(elem)
-struct chain_list * elem ;
+int 
+chain_list_free (struct chain_list *elem)
 {
 	struct chain_list * tmp_elem ;
 
@@ -870,9 +863,8 @@ struct chain_list * elem ;
 	}
 }
 
-void
-auth_level_free(item)
-struct auth_level * item ;
+void 
+auth_level_free (struct auth_level *item)
 {
 	free((char *)item) ;
 }

@@ -36,6 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-glob.c,v 9.0 199
 #include <stdio.h>
 #include <errno.h>
 #include <pwd.h>
+#include <sys/types.h>
+#include <dirent.h>
 #include "ftamuser.h"
 
 
@@ -50,12 +52,30 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-glob.c,v 9.0 199
 #define	GAVSIZ		(NCARGS/6)
 #define	isdir(d)	((d.st_mode & S_IFMT) == S_IFDIR)
 
+static rscan (char **t, int (*f)(char));
+static sort (void);
+static acollect (char *as);
+static collect (char *as);
+static expand (char *as);
+static execbrc (char *p, char *s);
+static match (char *s, char *p);
+static amatch (char *s, char *p);
+static Gcat (char *s1, char *s2);
+static addpath (int c);
+static letter (int c);
+static digit (int c);
+static any (int c, char *s);
+static	chkrdir ( char   *path, struct stat *st);
+static getrdir (char *hdir);
+static int fatal (char *s);
+
+static char ** glob (char *v);
+static ginit (char **agargv);
 static	char **gargv;		/* Pointer to the (stack) arglist */
 static	int    gargc;		/* Number args in gargv */
 static	int    gnleft;
 static	int    gflag;
 static	int tglob();
-char	**glob();
 char	*globerr;
 static char *home;
 struct	passwd *getpwnam();
@@ -72,20 +92,20 @@ static	char *entp;
 static	char **sortbas;
 
 
-int	chkldir (), chkrdir ();
+int	chkrdir ();
+static int chkldir ( char   *path, struct stat *st);
 static int (*chkdir) () = chkldir;
 
-int	getldir (), getrdir ();
+int	getrdir ();
+static int getldir (char *hdir);
 static int (*gethdir) () = getldir;
 
-int	matchldir (), matchrdir ();
+static int matchldir (char *pattern);
+static int matchrdir (char *pattern);
 static int (*matchdir) () = matchldir;
 
 
-static
-char **
-glob(v)
-char *v;
+static char ** glob (char *v)
 {
 	char agpath[BUFSIZ];
 	char *agargv[GAVSIZ];
@@ -117,9 +137,7 @@ char *v;
 		return (gargv = copyblk(gargv));
 }
 
-static
-ginit(agargv)
-char **agargv;
+static ginit (char **agargv)
 {
 
 	agargv[0] = 0;
@@ -129,9 +147,7 @@ char **agargv;
 	gnleft = NCARGS - 4;
 }
 
-static
-collect(as)
-char *as;
+static collect (char *as)
 {
 	if (eq(as, "{") || eq(as, "{}")) {
 		Gcat(as, "");
@@ -140,9 +156,7 @@ char *as;
 		acollect(as);
 }
 
-static
-acollect(as)
-char *as;
+static acollect (char *as)
 {
 	int ogargc = gargc;
 
@@ -154,8 +168,7 @@ char *as;
 		sort();
 }
 
-static
-sort() {
+static sort (void) {
 	char **p1, **p2, *c;
 	char **Gvp = &gargv[gargc];
 
@@ -170,9 +183,7 @@ sort() {
 	sortbas = Gvp;
 }
 
-static
-expand(as)
-char *as;
+static expand (char *as)
 {
 	char *cs,
 			 *sgpathp,
@@ -228,9 +239,7 @@ endit:
 		free (csstr);
 }
 
-static
-matchldir(pattern)
-char *pattern;
+static matchldir (char *pattern)
 {
 	char	pat[MAXPATHLEN];
 	struct stat stb;
@@ -245,7 +254,7 @@ char *pattern;
 			return;
 		goto patherr2;
 	}
-	if (fstat(dirp->dd_fd, &stb) < 0)
+	if (fstat(dirfd(dirp), &stb) < 0)
 		goto patherr1;
 	if (!isdir(stb)) {
 		errno = ENOTDIR;
@@ -270,9 +279,7 @@ patherr2:
 	globerr = "Bad directory components";
 }
 
-static
-execbrc(p, s)
-char *p, *s;
+static execbrc (char *p, char *s)
 {
 	char restbuf[BUFSIZ + 2];
 	char *pe, *pm, *pl;
@@ -350,9 +357,7 @@ doit:
 	return (0);
 }
 
-static
-match(s, p)
-char *s, *p;
+static match (char *s, char *p)
 {
 	int c;
 	char *sentp;
@@ -368,9 +373,7 @@ char *s, *p;
 	return (c);
 }
 
-static
-amatch(s, p)
-char *s, *p;
+static amatch (char *s, char *p)
 {
 	int scc;
 	int ok, lc;
@@ -457,17 +460,12 @@ slash:
 	}
 }
 
-static
-chkldir (path, st)
-char   *path;
-struct stat *st;
+static chkldir ( char   *path, struct stat *st)
 {
 	return (stat (path, st) == 0 && (st -> st_mode & S_IFMT) == S_IFDIR);
 }
 
-static
-Gmatch(s, p)
-char *s, *p;
+static Gmatch (char *s, char *p)
 {
 	int scc;
 	int ok, lc;
@@ -524,9 +522,7 @@ char *s, *p;
 	}
 }
 
-static
-Gcat(s1, s2)
-char *s1, *s2;
+static Gcat (char *s1, char *s2)
 {
 	int len = strlen(s1) + strlen(s2) + 1;
 
@@ -540,9 +536,7 @@ char *s1, *s2;
 	}
 }
 
-static
-addpath(c)
-char c;
+static addpath (int c)
 {
 
 	if (gpathp >= lastgpathp)
@@ -553,10 +547,7 @@ char c;
 	}
 }
 
-static
-rscan(t, f)
-char **t;
-int (*f)();
+static rscan (char **t, int (*f)(char))
 {
 	char *p, c;
 
@@ -572,10 +563,7 @@ int (*f)();
 }
 
 #ifdef	notdef
-static
-scan(t, f)
-char **t;
-int (*f)();
+static scan (char **t, int (*f)(void))
 {
 	char *p, c;
 
@@ -585,9 +573,7 @@ int (*f)();
 }
 #endif
 
-static
-tglob(c)
-char c;
+static tglob (int c)
 {
 
 	if (any(c, globchars))
@@ -596,35 +582,26 @@ char c;
 }
 
 #ifdef	notdef
-static
-trim(c)
-char c;
+static trim (int c)
 {
 
 	return (c & TRIM);
 }
 #endif
 
-static
-letter(c)
-char c;
+static letter (int c)
 {
 
 	return (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_');
 }
 
-static
-digit(c)
-char c;
+static digit (int c)
 {
 
 	return (c >= '0' && c <= '9');
 }
 
-static
-any(c, s)
-int c;
-char *s;
+static any (int c, char *s)
 {
 
 	while (*s)
@@ -632,8 +609,8 @@ char *s;
 			return(1);
 	return(0);
 }
-blklen(av)
-char **av;
+int 
+blklen (char **av)
 {
 	int i = 0;
 
@@ -643,9 +620,7 @@ char **av;
 }
 
 char **
-blkcpy(oav, bv)
-char **oav;
-char **bv;
+blkcpy (char **oav, char **bv)
 {
 	char **av = oav;
 
@@ -654,8 +629,8 @@ char **bv;
 	return (oav);
 }
 
-blkfree(av0)
-char **av0;
+int 
+blkfree (char **av0)
 {
 	char **av = av0;
 
@@ -664,10 +639,7 @@ char **av0;
 	free((char *)av0);
 }
 
-static
-char *
-strspl(cp, dp)
-char *cp, *dp;
+static char * strspl (char *cp, char *dp)
 {
 	char *ep = malloc((unsigned)(strlen(cp) + strlen(dp) + 1));
 
@@ -678,10 +650,7 @@ char *cp, *dp;
 	return (ep);
 }
 
-static
-char **
-copyblk(v)
-char **v;
+static char ** copyblk (char **v)
 {
 	char **nv = (char **)malloc((unsigned)((blklen(v) + 1) *
 										 sizeof(char **)));
@@ -691,10 +660,7 @@ char **v;
 	return (blkcpy(nv, v));
 }
 
-static
-char *
-strend(cp)
-char *cp;
+static char * strend (char *cp)
 {
 
 	while (*cp)
@@ -707,9 +673,7 @@ char *cp;
  * user whose home directory is sought is currently.
  * We write the home directory of the user back there.
  */
-static
-getldir(hdir)
-char *hdir;
+static getldir (char *hdir)
 {
 	struct passwd *pp = getpwnam(hdir);
 
@@ -730,9 +694,7 @@ static OID   matchoid;
 
 /*  */
 
-char   *xglob1val (v, remote)
-char   *v;
-int	remote;
+char * xglob1val (char *v, int remote)
 {
 	char **gp;
 	char   *cp,
@@ -758,9 +720,7 @@ int	remote;
 
 /*  */
 
-char  **xglob (v, remote)
-char  **v;
-int	remote;
+char ** xglob (char **v, int remote)
 {
 	int    i;
 	char  *cp,
@@ -857,8 +817,7 @@ int	remote;
 
 /*  */
 
-static	matchrdir (pattern)
-char   *pattern;
+static matchrdir (char *pattern)
 {
 	char  *cp;
 	char    cwd[MAXPATHLEN],
@@ -923,17 +882,14 @@ char   *pattern;
 
 /* ARGSUSED */
 
-static	chkrdir (path, st)
-char   *path;
-struct stat *st;
+static	chkrdir ( char   *path, struct stat *st)
 {
 	return (oid_cmp (vfs[VFS_FDF].vf_oid, matchoid) == 0);
 }
 
 /*  */
 
-static getrdir (hdir)
-char    *hdir;
+static getrdir (char *hdir)
 {
 	char    buffer[BUFSIZ];
 
@@ -944,16 +900,14 @@ char    *hdir;
 
 /*  */
 
-static int  fatal (s)
-char   *s;
+static int fatal (char *s)
 {
 	adios (NULLCP, "%s", s);
 }
 
 /*  */
 
-int	f_echo (vec)
-char  **vec;
+int f_echo (char **vec)
 {
 	char  **gb,
 		  **gp,

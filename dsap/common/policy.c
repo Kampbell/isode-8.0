@@ -43,8 +43,8 @@ static CMD_TABLE permtab[] = {
 	NULLCP, 0
 };
 
-unsigned str2permission(str)
-char *str;
+unsigned 
+str2permission (char *str)
 {
 	char *cp;
 	unsigned result = 0;

@@ -43,13 +43,8 @@ extern	void	  ros_log();
 #define DUMP_ERR 	"err"
 #endif
 
-int	  DapInvokeReqAux (sd, id, op, pe, di, asyn)
-int			  sd;
-int			  id;
-int			  op;
-PE			  pe;
-struct DAPindication	* di;
-int			  asyn;
+int 
+DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, int asyn)
 {
 
 #ifdef PDU_DUMP
@@ -76,12 +71,8 @@ int			  asyn;
 	}
 }
 
-int	  DapSyncInvokeRequest (sd, id, op, pe, di)
-int			  sd;
-int			  id;
-int			  op;
-PE			  pe;
-struct DAPindication	* di;
+int 
+DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di)
 {
 	int				  result;
 	struct RoSAPindication	  roi_s;
@@ -143,12 +134,8 @@ struct DAPindication	* di;
 	return (OK);
 }
 
-int	  DapIntrInvokeRequest (sd, id, op, pe, di)
-int			  sd;
-int			  id;
-int			  op;
-PE			  pe;
-struct DAPindication	* di;
+int 
+DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di)
 {
 	int				  result;
 	struct RoSAPindication	  roi_s;
@@ -213,12 +200,8 @@ struct DAPindication	* di;
 	return (OK);
 }
 
-int	  DapAsynInvokeRequest (sd, id, op, pe, di)
-int			  sd;
-int			  id;
-int			  op;
-PE			  pe;
-struct DAPindication	* di;
+int 
+DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di)
 {
 	int				  result;
 	struct RoSAPindication	  roi_s;
@@ -249,11 +232,8 @@ struct DAPindication	* di;
 	return (OK);
 }
 
-int	  DapInterrupt(sd, id, op, di)
-int			  sd;
-int			  id;
-int			  op;
-struct DAPindication	* di;
+int 
+DapInterrupt (int sd, int id, int op, struct DAPindication *di)
 {
 	/*
 	* Abandoning. Trickier than it looks!
@@ -468,8 +448,8 @@ struct DAPindication	* di;
 static int pdu_count = -1;
 static char * pdu_dir = NULLCP;
 
-pdu_dump_init (dir)
-char * dir;
+int 
+pdu_dump_init (char *dir)
 {
 	pdu_count = 0;
 	pdu_dir = strdup (dir);
@@ -478,10 +458,8 @@ char * dir;
 	 mkdir (pdu_dir,0755);
 }
 
-pdu_dump (pe,type,op)
-PE pe;
-char * type;
-int op;
+int 
+pdu_dump (PE pe, char *type, int op)
 {
 	char filename [BUFSIZE];
 	char * oper;
@@ -556,9 +534,8 @@ int op;
 #endif
 
 #ifdef	HEAVY_DEBUG
-pdu_arg_log (pe,op)
-PE pe;
-int op;
+int 
+pdu_arg_log (PE pe, int op)
 {
 	/* PDU Level Logging */
 	switch (op) {
@@ -597,9 +574,8 @@ int op;
 	}
 }
 
-pdu_res_log (pe, op)
-PE	  pe;
-int	  op;
+int 
+pdu_res_log (PE pe, int op)
 {
 	/* PDU Level Logging */
 	switch (op) {

@@ -34,8 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/correlate.c,v 9
 extern LLog * log_dsap;
 int	entryinfo_print();
 
-correlate_search_results(sr_res)
-struct ds_search_result	* sr_res;
+int 
+correlate_search_results (struct ds_search_result *sr_res)
 {
 	struct ds_search_result	* sr_tmp;
 	struct ds_search_result	* sr_last;
@@ -75,9 +75,8 @@ struct ds_search_result	* sr_res;
 	}
 }
 
-merge_search_results(sr_res, sr_tmp)
-struct ds_search_result	* sr_res;
-struct ds_search_result	* sr_tmp;
+int 
+merge_search_results (struct ds_search_result *sr_res, struct ds_search_result *sr_tmp)
 {
 	ContinuationRef		cr_tmp;
 
@@ -136,8 +135,8 @@ struct ds_search_result	* sr_tmp;
 
 }
 
-search_result_free(arg)
-struct ds_search_result	* arg;
+int 
+search_result_free (struct ds_search_result *arg)
 {
 	DLOG(log_dsap, LLOG_DEBUG, ("search_result_free"));
 

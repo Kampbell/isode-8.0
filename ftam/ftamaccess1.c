@@ -31,14 +31,18 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamaccess1.c,v 9.0 19
 #include <signal.h>
 #include "fpkt.h"
 
+static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentity *identity, int lock, struct FTAMindication *fti);
+
 /*    F-{LOCATE,ERASE}.REQUEST */
 
-int	FAccessRequest (sd, operation, identity, lock, fti)
-int	sd;
-int	operation;
-struct FADUidentity *identity;
-int	lock;	/* F-LOCATE.REQUEST only */
-struct FTAMindication *fti;
+int 
+FAccessRequest (
+    int sd,
+    int operation,
+    struct FADUidentity *identity,
+    int lock,	/* F-LOCATE.REQUEST only */
+    struct FTAMindication *fti
+)
 {
 	SBV      smask;
 	int     result,
@@ -74,12 +78,7 @@ struct FTAMindication *fti;
 
 /*  */
 
-static int  FAccessRequestAux (fsb, state, identity, lock, fti)
-struct ftamblk *fsb;
-int	state;
-struct FADUidentity *identity;
-int	lock;
-struct FTAMindication *fti;
+static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentity *identity, int lock, struct FTAMindication *fti)
 {
 	int     result;
 	PE	    pe;

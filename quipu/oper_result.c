@@ -38,9 +38,8 @@ extern  LLog    * log_stat;
 extern time_t	  timenow;
 extern Entry cache_dsp_entry ();
 
-oper_result(cn, di)
-struct connection	* cn;
-struct DSAPindication	* di;
+int 
+oper_result (struct connection *cn, struct DSAPindication *di)
 {
 	struct DSAPresult	* dr = &(di->di_result);
 	struct oper_act *   on;

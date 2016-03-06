@@ -30,7 +30,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/oper_act.c,v 9.0 1992
 
 extern LLog * log_dsap;
 
-struct oper_act *oper_alloc() {
+struct oper_act *
+oper_alloc (void) {
 	struct oper_act	* on_ret;
 
 	on_ret = (struct oper_act *) calloc(1,sizeof(struct oper_act));
@@ -42,8 +43,8 @@ struct oper_act *oper_alloc() {
 	return(on_ret);
 }
 
-oper_free(on)
-struct oper_act *on;
+int 
+oper_free (struct oper_act *on)
 {
 	extern struct oper_act * pending_ops;
 
@@ -79,8 +80,8 @@ struct oper_act *on;
 	free((char *)on);
 }
 
-oper_extract(on)
-struct oper_act	* on;
+int 
+oper_extract (struct oper_act *on)
 {
 	DLOG(log_dsap, LLOG_TRACE, ("oper_extract()"));
 
@@ -98,8 +99,8 @@ struct oper_act	* on;
 	oper_free(on);
 }
 
-oper_conn_extract(on)
-struct oper_act	* on;
+int 
+oper_conn_extract (struct oper_act *on)
 {
 	/*
 	* Extract the operation activity block from the list held by its
@@ -138,8 +139,8 @@ struct oper_act	* on;
 	on->on_conn = NULLCONN; /* Shows that this has been conn_extracted */
 }
 
-oper_task_extract(on)
-struct oper_act	* on;
+int 
+oper_task_extract (struct oper_act *on)
 {
 	/*
 	* Extract this operation from the list held by its task.
@@ -186,9 +187,8 @@ struct oper_act	* on;
 	on->on_task = NULLTASK; /* Shows that this has been task_extracted */
 }
 
-oper_log(on,level)
-struct oper_act	* on;
-int level;
+int 
+oper_log (struct oper_act *on, int level)
 {
 	char * state;
 	char * xtype;

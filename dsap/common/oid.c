@@ -86,8 +86,8 @@ static char allow_single_oid = FALSE;
 IFP oc_load = NULLIFP;
 IFP oc_macro_add = NULLIFP;
 
-int load_oid_table (table)
-char * table;
+int 
+load_oid_table (char *table)
 {
 	char * name;
 	char filename [FILNSIZE];
@@ -213,9 +213,8 @@ char * d;
 }
 
 
-static add_entry (newname,towho)
-char * newname;
-int towho;
+static 
+add_entry (char *newname, int towho)
 {
 	char *nptr, *ptr, *sep;
 	OID oid;
@@ -321,8 +320,8 @@ int towho;
 	return TRUE;
 }
 
-char * get_oid (str)
-char * str;
+char *
+get_oid (char *str)
 {
 	static char * buffer = NULLCP;
 	char * ptr;
@@ -379,8 +378,8 @@ char * str;
 	return (buffer);
 }
 
-static char * name2gen (nodename)
-char * nodename;
+static char *
+name2gen (char *nodename)
 {
 #ifdef NOT_ANY_MORE
 	int i;
@@ -414,8 +413,8 @@ char * nodename;
 	return NULLCP;
 }
 
-static char * soid2gen (soid)
-char * soid;
+static char *
+soid2gen (char *soid)
 {
 	int i;
 	oid_table * tblptr = &OIDTable[0];
@@ -427,7 +426,8 @@ char * soid;
 	return (NULLCP);
 }
 
-static char * get_line () {
+static char *
+get_line (void) {
 	static char * buffer;
 	static int buflen;
 	char * buf;
@@ -477,7 +477,8 @@ static char * get_line () {
 	return (buffer);
 }
 
-static char * get_entry () {
+static char *
+get_entry (void) {
 	char * buf;
 	char * ptr;
 
@@ -896,7 +897,8 @@ PE pe;
 	return (oid_cpy(oid));
 }
 
-void	free_oid_buckets() {
+void 
+free_oid_buckets (void) {
 	int i;
 	struct pair *p, *np;
 
@@ -910,7 +912,8 @@ void	free_oid_buckets() {
 }
 
 
-oid_syntax () {
+int 
+oid_syntax (void) {
 	 add_attribute_syntax ("oid",
 								 (IFP) oid2pe,	(IFP) dup_prim2oid,
 								 (IFP) name2oid,	oidprint,

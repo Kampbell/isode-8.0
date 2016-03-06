@@ -31,13 +31,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamrelease2.c,v 9.0 1
 #include <signal.h>
 #include "fpkt.h"
 
+static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti);
+
 /*    F-TERMINATE.RESPONSE */
 
-int	FTerminateResponse (sd, sharedASE, charging, fti)
-int	sd;
-PE	sharedASE;
-struct FTAMcharging *charging;
-struct FTAMindication *fti;
+int 
+FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti)
 {
 	SBV	    smask;
 	int     result;
@@ -61,11 +60,7 @@ struct FTAMindication *fti;
 
 /*  */
 
-static int  FTerminateResponseAux (fsb, sharedASE, charging, fti)
-struct ftamblk *fsb;
-PE	sharedASE;
-struct FTAMcharging *charging;
-struct FTAMindication *fti;
+static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti)
 {
 	int     result;
 	PE	    pe;

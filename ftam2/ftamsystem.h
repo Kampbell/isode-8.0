@@ -39,7 +39,8 @@ extern char *myname;
 
 void	ftam_adios (), ftam_advise (), ftam_diag ();
 
-void	adios (), advise ();
+void	adios (char*what, ...);
+void	advise (int code, ...);
 
 /*    UNIX DATA */
 

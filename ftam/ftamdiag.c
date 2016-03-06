@@ -32,12 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamdiag.c,v 9.0 1992/
 
 /*  */
 
-struct type_FTAM_Diagnostic *diag2fpm (fsb, magic, diag, ndiag, fti)
-struct ftamblk *fsb;
-int	magic;
-struct FTAMdiagnostic diag[];
-int	ndiag;
-struct FTAMindication *fti;
+struct type_FTAM_Diagnostic *
+diag2fpm (struct ftamblk *fsb, int magic, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
 {
 	int    i;
 	struct FTAMdiagnostic *dp;
@@ -149,12 +145,8 @@ bad_dp:
 
 /*  */
 
-int	fpm2diag (fsb, fpm, diag, ndiag, fti)
-struct ftamblk *fsb;
-struct type_FTAM_Diagnostic *fpm;
-struct FTAMdiagnostic diag[];
-int   *ndiag;
-struct FTAMindication *fti;
+int 
+fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAMdiagnostic diag[], int *ndiag, struct FTAMindication *fti)
 {
 	int    i;
 	struct FTAMdiagnostic *dp;

@@ -31,12 +31,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/daplist.c,v 9.0 19
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 
-dap_list (ad, id, arg, error, result)
-int		  ad;
-int		* id;
-struct ds_list_arg          *arg;
-struct ds_list_result       *result;
-struct DSError              *error;
+int 
+dap_list (int ad, int *id, struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result)
 {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
@@ -79,12 +75,8 @@ struct DSError              *error;
 	}
 }
 
-int	  DapList (ad, id, arg, di, asyn)
-int			  ad;
-int			  id;
-struct ds_list_arg	* arg;
-struct DAPindication	* di;
-int			  asyn;
+int 
+DapList (int ad, int id, struct ds_list_arg *arg, struct DAPindication *di, int asyn)
 {
 	PE                  arg_pe;
 

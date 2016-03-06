@@ -31,11 +31,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/acl_info.c,v 9.0 1992
 extern AV_Sequence super_user;
 extern LLog * log_dsap;
 
-check_acl (who,mode,acl,node)
-DN     who;
-int    mode;
-struct acl_info *acl;
-DN     node;
+int 
+check_acl (DN who, int mode, struct acl_info *acl, DN node)
 {
 	struct acl_info *ptr;
 	AV_Sequence avs;
@@ -94,8 +91,8 @@ DN     node;
 }
 
 
-manager (dn)
-DN dn;
+int 
+manager (DN dn)
 {
 	AV_Sequence avs;
 

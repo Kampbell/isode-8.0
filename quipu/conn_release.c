@@ -38,8 +38,8 @@ struct connection	* conn_alloc();
 void			  conn_free();
 void			  ds_log ();
 
-conn_release(conn)
-struct connection       * conn;
+int 
+conn_release (struct connection *conn)
 {
 	int				  result;
 	struct DSAPrelease		  dr_s;
@@ -96,8 +96,8 @@ struct connection       * conn;
 	return OK;
 }
 
-conn_release_retry(conn)
-struct connection       * conn;
+int 
+conn_release_retry (struct connection *conn)
 {
 	int				  result;
 	struct DSAPrelease		  dr_s;

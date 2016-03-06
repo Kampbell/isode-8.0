@@ -68,11 +68,13 @@ extern int telnet_profile;
 
 TEXT_UPDATE *ndq_queue, *deq();		/*Incoming (From Net) NDQ's*/
 
-map(ndq)	/*Parse the given NDQ (could contain several updates).
+int 
+map (	/*Parse the given NDQ (could contain several updates).
 		  Pass individual updates to appropriate processing
 		  routine.
 		*/
-PE ndq;
+    PE ndq
+)
 {
 
 	TEXT_UPDATE *ud;
@@ -96,8 +98,10 @@ PE ndq;
 }
 
 
-display_ud(doptr) 		/*Handle Display Updates*/
-DO_UPDATE *doptr;
+int 
+display_ud ( 		/*Handle Display Updates*/
+    DO_UPDATE *doptr
+)
 {
 
 	int i;
@@ -213,8 +217,10 @@ DO_UPDATE *doptr;
 }
 
 
-control_ud(coptr)		/*Handle Control Object Updates*/
-CO_UPDATE *coptr;
+int 
+control_ud (		/*Handle Control Object Updates*/
+    CO_UPDATE *coptr
+)
 {
 
 	char active = 0;
@@ -775,8 +781,10 @@ CO_UPDATE *coptr;
 
 }
 
-attrib_hdlr(doptr)	/*Handle Write Attribute Display Object Update*/
-DO_UPDATE *doptr;
+int 
+attrib_hdlr (	/*Handle Write Attribute Display Object Update*/
+    DO_UPDATE *doptr
+)
 {
 
 
@@ -808,9 +816,8 @@ DO_UPDATE *doptr;
 #ifdef TERMIOS
 extern struct	termios oterm;
 
-int
-tmode(f)
-int f;
+int 
+tmode (int f)
 {
 	static int prevmode = 0;
 	struct termios term;
@@ -875,9 +882,8 @@ struct	ltchars noltc =	{
 	-1, -1, -1, -1, -1, -1
 };
 
-int
-tmode(f)
-int f;
+int 
+tmode (int f)
 {
 	static int prevmode = 0;
 	struct tchars *tc;
@@ -942,7 +948,8 @@ int f;
 }
 #endif
 
-kill_proc() {	/*Terminate current UNIX process using UNIX interrupt char*/
+int 
+kill_proc (void) {	/*Terminate current UNIX process using UNIX interrupt char*/
 #ifdef TERMIOS
 	struct termios term;
 
@@ -959,8 +966,10 @@ kill_proc() {	/*Terminate current UNIX process using UNIX interrupt char*/
 #endif
 }
 
-def_echo(coptr)	/*Handle Default Profile Echo Ctrl Object*/
-CO_UPDATE *coptr;
+int 
+def_echo (	/*Handle Default Profile Echo Ctrl Object*/
+    CO_UPDATE *coptr
+)
 {
 
 	char active = 0;
@@ -977,7 +986,8 @@ CO_UPDATE *coptr;
 	}
 }
 #ifdef TERMIOS
-static realptyecho(on) {
+static 
+realptyecho (int on) {
 	struct termios term;
 
 	if (tcgetattr(pty, &term) == -1) {

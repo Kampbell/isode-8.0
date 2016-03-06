@@ -35,9 +35,8 @@ extern char *dsa_address;
 extern char *myname;
 extern LLog * log_dsap;
 
-dsap_init(acptr,avptr)
-int *acptr;
-char *** avptr;
+int 
+dsap_init (int *acptr, char ***avptr)
 {
 	char * name;
 	char ** ptr;

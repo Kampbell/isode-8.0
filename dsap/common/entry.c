@@ -150,7 +150,8 @@ Entry parent;
 }
 
 
-check_known_oids () {
+int 
+check_known_oids (void) {
 	at_objectclass = AttrT_new (OBJECTCLASS_OID);
 	at_alias = AttrT_new (ALIAS_OID);
 }

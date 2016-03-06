@@ -38,8 +38,8 @@ extern  LLog    * log_stat;
 void ros_log ();
 extern char quipu_shutdown;
 
-oper_send_invoke(oper)
-       struct oper_act * oper;
+int 
+oper_send_invoke (struct oper_act *oper)
 {
 	int				  result;
 	struct DSAPindication	  di_s;

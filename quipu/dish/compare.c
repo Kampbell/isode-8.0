@@ -39,9 +39,8 @@ extern DN       dn;
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-call_compare (argc, argv)
-int             argc;
-char          **argv;
+int 
+call_compare (int argc, char **argv)
 {
 	struct DSError  error;
 	struct ds_compare_result result;

@@ -38,9 +38,8 @@ extern  LLog    * log_stat;
 #endif
 extern time_t	  timenow;
 
-oper_error(conn, di)
-struct connection	* conn;
-struct DSAPindication	* di;
+int 
+oper_error (struct connection *conn, struct DSAPindication *di)
 {
 	struct DSAPerror	* de = &(di->di_error);
 	struct oper_act *   oper;

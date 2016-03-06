@@ -61,8 +61,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/docstore.c,v 9.
 #include "quipu/syntaxes.h"
 
 
-static	documentStore_free (a)
-struct documentStore *a;
+static 
+documentStore_free (struct documentStore *a)
 {
 	if (!a)
 		return;
@@ -78,8 +78,8 @@ struct documentStore *a;
 }
 
 
-static	struct documentStore *documentStore_cpy (a)
-struct documentStore *a;
+static struct documentStore *
+documentStore_cpy (struct documentStore *a)
 {
 	struct documentStore *b;
 
@@ -96,9 +96,8 @@ struct documentStore *a;
 }
 
 
-static	documentStore_cmp (a, b)
-struct documentStore *a;
-struct documentStore *b;
+static 
+documentStore_cmp (struct documentStore *a, struct documentStore *b)
 {
 	int	    res;
 
@@ -131,8 +130,8 @@ int	format;
 }
 
 
-static	struct documentStore *str2documentStore (str)
-char   *str;
+static struct documentStore *
+str2documentStore (char *str)
 {
 	int	    method;
 	char   *d1,
@@ -225,7 +224,8 @@ PE	pe;
 	return a;
 }
 
-documentStore_syntax () {
+int 
+documentStore_syntax (void) {
 	 add_attribute_syntax ("documentStoreSyntax",
 								 (IFP) documentStore_enc,
 								 (IFP) documentStore_dec,

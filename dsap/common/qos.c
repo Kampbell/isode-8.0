@@ -45,8 +45,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/qos.c,v 9.0 199
 
 static int  CMD_SRCH ();
 
-static dsaQoS_free (a)
-struct dsaQoS *a;
+static 
+dsaQoS_free (struct dsaQoS *a)
 {
 	if (!a)
 		return;
@@ -57,8 +57,8 @@ struct dsaQoS *a;
 	free ((char *) a);
 }
 
-static struct dsaQoS *dsaQoS_cpy (a)
-struct dsaQoS *a;
+static struct dsaQoS *
+dsaQoS_cpy (struct dsaQoS *a)
 {
 	struct dsaQoS *b;
 
@@ -72,9 +72,8 @@ struct dsaQoS *a;
 	return b;
 }
 
-static	dsaQoS_cmp (a, b)
-struct dsaQoS *a;
-struct dsaQoS *b;
+static 
+dsaQoS_cmp (struct dsaQoS *a, struct dsaQoS *b)
 {
 	int	    res;
 
@@ -114,8 +113,8 @@ int	format;
 				   a -> dsa_description);
 }
 
-static struct dsaQoS *str2dsaQoS (str)
-char   *str;
+static struct dsaQoS *
+str2dsaQoS (char *str)
 {
 	int	    quality;
 	char   *ptr;
@@ -163,8 +162,8 @@ PE	pe;
 	return a;
 }
 
-static attrQoS_free (a)
-struct attrQoS *a;
+static 
+attrQoS_free (struct attrQoS *a)
 {
 	if (!a)
 		return;
@@ -172,8 +171,8 @@ struct attrQoS *a;
 	free ((char *) a);
 }
 
-static ditQoS_free (a)
-struct ditQoS *a;
+static 
+ditQoS_free (struct ditQoS *a)
 {
 	struct attrsQoS *p,
 			*q;
@@ -198,8 +197,8 @@ struct ditQoS *a;
 	free ((char *) a);
 }
 
-static struct attrQoS *attrQoS_cpy (a)
-struct attrQoS *a;
+static struct attrQoS *
+attrQoS_cpy (struct attrQoS *a)
 {
 	struct attrQoS *b;
 
@@ -209,8 +208,8 @@ struct attrQoS *a;
 	return b;
 }
 
-static struct ditQoS *ditQoS_cpy (a)
-struct ditQoS *a;
+static struct ditQoS *
+ditQoS_cpy (struct ditQoS *a)
 {
 	struct ditQoS *b;
 	struct attrsQoS  *p,
@@ -239,9 +238,8 @@ struct ditQoS *a;
 	return b;
 }
 
-static	attrQoS_cmp (a, b)
-struct attrQoS *a;
-struct attrQoS *b;
+static 
+attrQoS_cmp (struct attrQoS *a, struct attrQoS *b)
 {
 	int	    res;
 
@@ -257,9 +255,8 @@ struct attrQoS *b;
 	return 0;
 }
 
-static	ditQoS_cmp (a, b)
-struct ditQoS *a;
-struct ditQoS *b;
+static 
+ditQoS_cmp (struct ditQoS *a, struct ditQoS *b)
 {
 	int	    res;
 	struct attrsQoS *p,
@@ -360,8 +357,8 @@ int	format;
 	}
 }
 
-static struct attrQoS *str2attrQoS (str)
-char *str;
+static struct attrQoS *
+str2attrQoS (char *str)
 {
 	int	    level,
 			completeness;
@@ -395,8 +392,8 @@ char *str;
 }
 
 
-static struct ditQoS *str2ditQoS (str)
-char   *str;
+static struct ditQoS *
+str2ditQoS (char *str)
 {
 	char   *ptr,
 		   *qtr;
@@ -517,7 +514,8 @@ PE	pe;
 	return a;
 }
 
-QoS_syntax () {
+int 
+QoS_syntax (void) {
 	 add_attribute_syntax ("DSAQualitySyntax",
 								 (IFP) dsaQoS_enc,
 								 (IFP) dsaQoS_dec,

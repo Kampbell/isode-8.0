@@ -34,8 +34,8 @@ static struct PSAPaddr vfs_bound;
 
 /*  */
 
-int	f_open (vec)
-char  **vec;
+int 
+f_open (char **vec)
 {
 	int    i;
 	int     manage;
@@ -59,7 +59,7 @@ char  **vec;
 #ifdef	BRIDGE
 		return NOTOK;
 #else
-		if (getline ("host: ", buffer) == NOTOK
+		if (getftamline ("host: ", buffer) == NOTOK
 				|| str2vecX (buffer, vec, 0, NULLIP, NULL, 0) < 1)
 			return OK;
 #endif
@@ -76,7 +76,7 @@ char  **vec;
 		if (user == NULL)
 			user = strdup (myuser ? myuser : "");
 		 sprintf (prompt, "user (%s:%s): ", host, user);
-		if (getline (prompt, buffer) == NOTOK)
+		if (getftamline (prompt, buffer) == NOTOK)
 			return OK;
 		if (str2vec (buffer, vec) < 1)
 			*vec = user, user = NULL;

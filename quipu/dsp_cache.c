@@ -43,8 +43,8 @@ extern char * edbtmp_path;
 extern AttributeType at_acl;
 extern AttributeType at_objectclass;
 
-Entry cache_dsp_entry (ptr)
-EntryInfo      *ptr;
+Entry 
+cache_dsp_entry (EntryInfo *ptr)
 {
 	/* assumes entry passed is complete */
 
@@ -144,11 +144,8 @@ EntryInfo      *ptr;
 
 
 
-dsp_cache (arg,res,ctx,binddn)
-struct DSArgument *arg;
-struct DSResult   *res;
-char ctx;
-DN binddn;
+int 
+dsp_cache (struct DSArgument *arg, struct DSResult *res, int ctx, DN binddn)
 {
 	EntryInfo *ptr;
 	Entry entryptr;

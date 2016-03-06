@@ -104,8 +104,8 @@ int format;
 }
 
 
-static utccmp (a, b)
-char   *a, *b;
+static 
+utccmp (char *a, char *b)
 {
 	long    a_time,
 			mdiff;
@@ -123,7 +123,8 @@ char   *a, *b;
 }
 
 
-time_syntax () {
+int 
+time_syntax (void) {
 	 add_attribute_syntax ("UTCTime",
 								 (IFP) timeenc,	(IFP) timedec,
 								 (IFP) strdup,	utcprint,

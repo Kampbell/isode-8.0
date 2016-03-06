@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/test.c,v 9.0 19
 extern int parse_line;
 extern int parse_status;
 
-main (argc, argv)
-int argc;
-char **argv;
+int 
+main (int argc, char **argv)
 {
 	char * buffer;
 	char * getline();
@@ -101,8 +100,8 @@ char **argv;
 
 }
 
-do_parse (str)
-char *str;
+int 
+do_parse (char *str)
 {
 	Attr_Sequence as;
 	Attr_Sequence as2;

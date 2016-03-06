@@ -448,8 +448,8 @@ char            authtype;
  * SEARCH TASK HANDLING
  */
 
-st_comp_free(st)
-struct ds_search_task *st;
+int 
+st_comp_free (struct ds_search_task *st)
 {
 	extern int rc_free();
 
@@ -470,8 +470,8 @@ struct ds_search_task *st;
 
 }
 
-st_free(st)
-struct ds_search_task **st;
+int 
+st_free (struct ds_search_task **st)
 {
 	struct ds_search_task *next;
 
@@ -481,9 +481,8 @@ struct ds_search_task **st;
 	}
 }
 
-st_free_dis(st,internals)
-struct ds_search_task **st;
-int internals;
+int 
+st_free_dis (struct ds_search_task **st, int internals)
 {
 	struct ds_search_task *next;
 
@@ -497,8 +496,8 @@ int internals;
 	}
 }
 
-struct ds_search_task *st_done(st)
-struct ds_search_task **st;
+struct ds_search_task *
+st_done (struct ds_search_task **st)
 {
 	struct ds_search_task *next;
 
@@ -517,10 +516,8 @@ struct ds_search_task **st;
  */
 
 
-static          check_filter_presrch(fltr, error, dn)
-Filter fltr;
-struct DSError *error;
-DN              dn;
+static 
+check_filter_presrch (Filter fltr, struct DSError *error, DN dn)
 {
 	DLOG(log_dsap, LLOG_DEBUG, ("in check filter aux"));
 
@@ -551,10 +548,8 @@ DN              dn;
 	/* NOTREACHED */
 }
 
-static          check_filterop_presrch(fltr, error, dn)
-Filter fltr;
-struct DSError *error;
-DN              dn;
+static 
+check_filterop_presrch (Filter fltr, struct DSError *error, DN dn)
 {
 	Filter ptr;
 	int             i;
@@ -575,8 +570,8 @@ DN              dn;
 
 }
 
-static          prepare_string(c)
-caddr_t         c;
+static 
+prepare_string (caddr_t c)
 {
 	char  *p;
 
@@ -584,10 +579,8 @@ caddr_t         c;
 		*p = chrcnv[*p];
 }
 
-static          check_filteritem_presrch(fitem, error, dn)
-struct filter_item *fitem;
-struct DSError *error;
-DN              dn;
+static 
+check_filteritem_presrch (struct filter_item *fitem, struct DSError *error, DN dn)
 {
 	int             av_acl, av_update, av_schema, av_syntax;
 	int		maxlen = -1;
@@ -746,15 +739,8 @@ DN              dn;
 
 /* APPLY SEARCH TO ONE LEVEL */
 
-static          apply_search(arg, error, result, local, refer, ismanager,
-							 authtype, saclerror)
-struct ds_search_arg *arg;
-struct DSError *error;
-struct ds_search_result *result;
-struct ds_search_task **local, **refer;
-int             ismanager;
-int             authtype;
-int		*saclerror;
+static 
+apply_search (struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, int authtype, int *saclerror)
 {
 	Entry           entryptr;
 	EntryInfo      *einfo = NULLENTRYINFO;
@@ -892,9 +878,8 @@ int		*saclerror;
  * looking at levels below.
  */
 
-static          search_kid2(e, ska)
-Entry           e;
-struct search_kid_arg *ska;
+static 
+search_kid2 (Entry e, struct search_kid_arg *ska)
 {
 	struct ds_search_task *new_task;
 	EntryInfo      *eptr;
@@ -963,9 +948,8 @@ struct search_kid_arg *ska;
  * at one level below.
  */
 
-static          search_kid(e, ska)
-Entry           e;
-struct search_kid_arg *ska;
+static 
+search_kid (Entry e, struct search_kid_arg *ska)
 {
 	EntryInfo      *eptr;
 	int		saclerror = 0;
@@ -1113,14 +1097,8 @@ struct search_kid_arg *ska;
 }
 
 
-static EntryInfo *filterchildren(arg, entryptr, local, refer, ismanager,
-								 authtype, saclerror)
-struct ds_search_arg *arg;
-Entry           entryptr;
-struct ds_search_task **local, **refer;
-int             ismanager;
-char		authtype;
-int		*saclerror;
+static EntryInfo *
+filterchildren (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, int authtype, int *saclerror)
 {
 	EntryInfo      *einfo = NULLENTRYINFO;
 	int    tmp = 0;
@@ -1198,10 +1176,8 @@ int		*saclerror;
  * HANDLE ALIASES AND REFERRALS
  */
 
-do_alias(arg, eptr, local)
-struct ds_search_arg *arg;
-Entry           eptr;
-struct ds_search_task **local;
+int 
+do_alias (struct ds_search_arg *arg, Entry eptr, struct ds_search_task **local)
 {
 	struct ds_search_task *new_task;
 	struct ds_search_task *st;
@@ -1275,9 +1251,8 @@ struct ds_search_task **local;
 	return (OK);
 }
 
-static          do_base(eptr, local)
-Entry           eptr;
-struct ds_search_task **local;
+static 
+do_base (Entry eptr, struct ds_search_task **local)
 {
 	struct ds_search_task *new_task;
 
@@ -1303,11 +1278,8 @@ struct ds_search_task **local;
 	(*local)->st_next = new_task;
 }
 
-search_refer(arg, entryptr, local, refer, ismanager)
-struct ds_search_arg *arg;
-Entry           entryptr;
-struct ds_search_task **local, **refer;
-int             ismanager;
+int 
+search_refer (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task **local, struct ds_search_task **refer, int ismanager)
 {
 	struct ds_search_task *new_task;
 	struct DSError  error;
@@ -1369,15 +1341,8 @@ int             ismanager;
  * SEARCH ENTRY
  */
 
-EntryInfo      *filterentry(arg, entryptr, binddn,
-							authtype, saclerror, local, dosacl)
-struct ds_search_arg 	*arg;
-Entry  	entryptr;
-DN              	binddn;
-char			authtype;
-int            		*saclerror;
-struct ds_search_task 	*local;
-char			dosacl;
+EntryInfo *
+filterentry (struct ds_search_arg *arg, Entry entryptr, DN binddn, int authtype, int *saclerror, struct ds_search_task *local, int dosacl)
 {
 	EntryInfo	*einfo;
 
@@ -1422,10 +1387,8 @@ char			dosacl;
  * TEST FILTER AGAINST SINGLE ENTRY
  */
 
-static          check_filter(fltr, entryptr, binddn)
-Filter fltr;
-Entry  entryptr;
-DN              binddn;
+static 
+check_filter (Filter fltr, Entry entryptr, DN binddn)
 {
 	int    i;
 
@@ -1447,11 +1410,8 @@ DN              binddn;
 	/* NOTREACHED */
 }
 
-static          check_filterop(fltr, entryptr, op, binddn)
-Filter fltr;
-Entry  entryptr;
-int             op;
-DN              binddn;
+static 
+check_filterop (Filter fltr, Entry entryptr, int op, DN binddn)
 {
 	Filter ptr;
 	int             result;
@@ -1498,10 +1458,8 @@ DN              binddn;
  * CHECK FILTER ITEM AGAINST ENTRY
  */
 
-static          check_filteritem(fitem, entryptr, binddn)
-struct filter_item *fitem;
-Entry  entryptr;
-DN              binddn;
+static 
+check_filteritem (struct filter_item *fitem, Entry entryptr, DN binddn)
 {
 	Attr_Sequence as;
 	Attr_Sequence   ias = NULLATTR;
@@ -1598,10 +1556,8 @@ DN              binddn;
 	return res;
 }
 
-static          test_avs(fitem, avs, mode)
-struct filter_item *fitem;
-AV_Sequence avs;
-int    mode;
+static 
+test_avs (struct filter_item *fitem, AV_Sequence avs, int mode)
 {
 
 	for (; avs != NULLAV; avs = avs->avseq_next) {
@@ -1630,9 +1586,8 @@ int    mode;
  * SUBSTRING MATCH
  */
 
-static          substr_search(fitem, avs)
-struct filter_item *fitem;
-AV_Sequence avs;
+static 
+substr_search (struct filter_item *fitem, AV_Sequence avs)
 {
 
 	phoneflag = telephone_match(fitem->UNAVA.ava_type->oa_syntax);
@@ -1644,10 +1599,8 @@ AV_Sequence avs;
 
 
 
-static          aux_substr_search(fitem, avs, chrmatch)
-struct filter_item *fitem;
-AV_Sequence     avs;
-char            chrmatch[];
+static 
+aux_substr_search (struct filter_item *fitem, AV_Sequence avs, char chrmatch[])
 {
 	AV_Sequence loopavs;
 	char  *compstr;
@@ -1720,10 +1673,8 @@ char            chrmatch[];
 	return (OK);
 }
 
-attr_substr(str1, av, chrmatch)
-char  *str1;
-AttributeValue  av;
-char            chrmatch[];
+int 
+attr_substr (char *str1, AttributeValue av, char chrmatch[])
 {
 	char  *str2;
 	int    count;
@@ -1783,11 +1734,8 @@ char            chrmatch[];
 }
 
 
-subtask_refer(arg, local, refer, ismanager, di)
-struct ds_search_arg *arg;
-struct ds_search_task **local, **refer;
-int             ismanager;
-struct di_block *di;
+int 
+subtask_refer (struct ds_search_arg *arg, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, struct di_block *di)
 {
 	/* turn query into a referral */
 	struct ds_search_task *new_task;
@@ -1826,9 +1774,8 @@ struct di_block *di;
 	*refer = new_task;
 }
 
-dsa_search_control(arg, result)
-struct ds_search_arg *arg;
-struct ds_search_result *result;
+int 
+dsa_search_control (struct ds_search_arg *arg, struct ds_search_result *result)
 {
 	extern DN       mydsadn;
 	char            buffer[LINESIZE];

@@ -163,8 +163,8 @@ static char * malloc_fname = (char *)0;
 
 #endif	/* QUIPU_MALLOC */
 
-start_malloc_trace(f)
-char * f;
+int 
+start_malloc_trace (char *f)
 {
 #ifdef MALLOCTRACE
 	char * env, *getenv ();
@@ -188,7 +188,8 @@ char * f;
 #endif
 }
 
-stop_malloc_trace () {
+int 
+stop_malloc_trace (void) {
 #ifdef MALLOCTRACE
 	if (malloc_file)
 		 close (malloc_file);
@@ -199,8 +200,8 @@ stop_malloc_trace () {
 #ifdef QUIPU_MALLOC
 #ifdef MALLOCTRACE
 
-static write_string (p)
-char *p;
+static 
+write_string (char *p)
 {
 	char *q;
 
@@ -213,8 +214,8 @@ char *p;
 	 write(malloc_file, p, q-p-1);
 }
 
-static write_addr(addr)
-char *addr;
+static 
+write_addr (char *addr)
 {
 	char buf[20];
 	static char hex[] = "0123456789abcdef";
@@ -242,8 +243,8 @@ char *addr;
 	 write (malloc_file," ",1);
 }
 
-static write_int(x)
-unsigned x;
+static 
+write_int (unsigned x)
 {
 	char buf[20];
 	static char dec[] = "0123456789";
@@ -267,9 +268,8 @@ unsigned x;
 	 write (malloc_file," ",1);
 }
 
-static log_realloc (oldlen,newlen,bsize,addr)
-unsigned oldlen,newlen,bsize;
-char * addr;
+static 
+log_realloc (unsigned oldlen, unsigned newlen, unsigned bsize, char *addr)
 {
 	write_string ("realloc of ");
 	write_int (oldlen);
@@ -288,8 +288,8 @@ char * addr;
 	write_stack("x");
 }
 
-static print_free_list (heap)
-unsigned heap;
+static 
+print_free_list (unsigned heap)
 {
 	int i;
 	struct freelist * top;
@@ -349,7 +349,8 @@ char * x;
 	listfree->next->prev = z; \
 	listfree->next = z; }
 
-static struct freelist * new_freelist () {
+static struct freelist *
+new_freelist (void) {
 	struct freelist * flist;
 	int i;
 	struct freelist * next;
@@ -371,9 +372,11 @@ static struct freelist * new_freelist () {
 }
 
 
-static char * big_malloc (realsize)
+static char *
+big_malloc (
 /* used for mallocs of > MAXSMALL */
-unsigned realsize;
+    unsigned realsize
+)
 {
 	unsigned blocksize;
 	struct freelist * flist;
@@ -418,8 +421,8 @@ unsigned realsize;
 
 }
 
-static big_free (ptr)
-struct header *ptr;
+static 
+big_free (struct header *ptr)
 {
 	struct freelist *next;
 	struct freehead *x;
@@ -446,8 +449,8 @@ struct header *ptr;
 	x->flist = next;
 }
 
-static add_free (x)
-struct header * x;
+static 
+add_free (struct header *x)
 {
 	struct freelist *next, *c;
 	unsigned * p = sizes;
@@ -487,8 +490,8 @@ struct header * x;
 	a->next->prev = a->prev; \
 	return_freelist(a); }
 
-static struct header * next_free_block (ptr)
-struct header * ptr;
+static struct header *
+next_free_block (struct header *ptr)
 {
 	struct header * next;
 

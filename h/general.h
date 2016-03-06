@@ -240,10 +240,6 @@ char   *sys_errname ();
 #endif
 
 
-#ifdef FIXME
-void	asprintf (), _asprintf ();
-#endif
-
 void	isodetailor ();		/* also in tailor.h */
 
 

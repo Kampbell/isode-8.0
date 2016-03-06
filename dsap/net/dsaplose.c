@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsaplose.c,v 9.0 1
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "tailor.h"
 #include "quipu/dsap.h"
 
@@ -40,16 +40,15 @@ static int  _dsapreject ();
 /*  */
 
 #ifndef	lint
-int	dsaplose (va_alist)
-va_dcl {
+int	dsaplose (struct DSAPindication *di, ...)
+{
 	int	    reason,
 	result;
-	struct DSAPindication *di;
+	
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, di);
 
-	di = va_arg (ap, struct DSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _dsaplose (di, reason, ap);
@@ -61,11 +60,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	dsaplose (di, reason, what, fmt)
-struct DSAPindication *di;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+dsaplose (struct DSAPindication *di, int reason, char *what, char *fmt)
 {
 	return dsaplose (di, reason, what, fmt);
 }
@@ -74,10 +70,7 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _dsaplose (di, reason, ap)  /* what, fmt, args ... */
-struct DSAPindication *di;
-int     reason;
-va_list	ap;
+static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap)/* what, fmt, args ... */
 {
 	char  *bp;
 	char    buffer[BUFSIZ];
@@ -100,17 +93,16 @@ va_list	ap;
 #endif
 
 #ifndef	lint
-int	dsapreject (va_alist)
-va_dcl {
+int	dsapreject (struct DSAPindication *di, ...)
+{
 	int	    reason,
 	id,
 	result;
-	struct DSAPindication *di;
+	
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, di);
 
-	di = va_arg (ap, struct DSAPindication *);
 	reason = va_arg (ap, int);
 	id = va_arg (ap, int);
 
@@ -123,12 +115,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	dsapreject (di, reason, id, what, fmt)
-struct DSAPindication *di;
-int	reason;
-int	id;
-char   *what,
-	   *fmt;
+int 
+dsapreject (struct DSAPindication *di, int reason, int id, char *what, char *fmt)
 {
 	return dsapreject (di, reason, id, what, fmt);
 }
@@ -137,11 +125,13 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _dsapreject (di, reason, id, ap)  /* what, fmt, args ... */
-struct DSAPindication *di;
-int     reason;
-int	id;
-va_list	ap;
+static int 
+_dsapreject (  /* what, fmt, args ... */
+    struct DSAPindication *di,
+    int reason,
+    int id,
+    va_list ap
+)
 {
 	char  *bp;
 	char    buffer[BUFSIZ];

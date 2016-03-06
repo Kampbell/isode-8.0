@@ -70,8 +70,8 @@ char * edbtmp_path = NULLCP;
 #ifndef TURBO_DISK
 /* routine name is historic - not significant */
 
-journal (myentry)
-Entry myentry;
+int 
+journal (Entry myentry)
 {
 	char * filename, *dn2edbfile();
 	char savefile [LINESIZE], newfile[LINESIZE];
@@ -151,9 +151,8 @@ Entry myentry;
 }
 #endif TURBO_DISK
 
-modify_attr (eptr,who)
-Entry eptr;
-DN who;
+int 
+modify_attr (Entry eptr, DN who)
 {
 	AttributeType at;
 	AttributeValue av;
@@ -211,8 +210,8 @@ DN who;
 	}
 }
 
-static allowed_to_send (a,b)
-DN  a,b;
+static 
+allowed_to_send (DN a, DN b)
 {
 	/* Return TRUE if the DNs are the same */
 	/* Return TRUE if all components of 'a' match, but 'b' has one extra */
@@ -233,12 +232,8 @@ DN  a,b;
 }
 
 
-do_get_edb (arg,error,result,binddn,fd)
-struct getedb_arg *arg;
-struct DSError	  *error;
-struct getedb_result *result;
-DN binddn;
-int fd;
+int 
+do_get_edb (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd)
 {
 	Entry eptr;
 	Entry my_entry;
@@ -347,15 +342,15 @@ int fd;
 	return (DS_OK);
 }
 
-slave_update () {
+int 
+slave_update (void) {
 	 update_aux (NULLDN, 0);
 	shadow_update ();
 	lastedb_update = timenow;
 }
 
-update_aux (dn, isroot)
-DN	dn;
-int	isroot;
+int 
+update_aux (DN dn, int isroot)
 {
 	Entry my_entry, make_path();
 	Entry find_sibling();
@@ -413,9 +408,8 @@ int	isroot;
 	return((dn || isroot) ? success : OK);
 }
 
-int	 send_get_edb (version,dn,from)
-char	* version;
-DN dn,from;
+int 
+send_get_edb (char *version, DN dn, DN from)
 {
 	struct di_block		* di;
 	struct DSError		  error;
@@ -526,9 +520,8 @@ static int 	g_entry_cnt;
  * set in g_parent before the call.
  */
 
-static unravel_edb(e, error)
-Entry           e;
-struct DSError  *error;
+static 
+unravel_edb (Entry e, struct DSError *error)
 {
 	e->e_parent = g_parent;
 	if (unravel_attribute(e, error) != OK)
@@ -539,9 +532,8 @@ struct DSError  *error;
 	return OK;
 }
 
-static quick_unrav (e, error)
-Entry           e;
-struct DSError  *error;
+static 
+quick_unrav (Entry e, struct DSError *error)
 {
 	if (e->e_data == E_TYPE_CONSTRUCTOR)
 		return(OK);
@@ -558,9 +550,8 @@ struct DSError  *error;
  * is called from avl_apply.
  */
 
-static link_child(e, oldkids)
-Entry   e;
-Avlnode *oldkids;
+static 
+link_child (Entry e, Avlnode *oldkids)
 {
 	struct DSError  error;
 
@@ -599,9 +590,8 @@ Avlnode *oldkids;
 }
 
 
-process_edb(on,newop)
-struct oper_act	* on;
-struct oper_act	** newop;
+int 
+process_edb (struct oper_act *on, struct oper_act **newop)
 {
 	extern DN mydsadn;
 	Entry find_sibling();
@@ -748,8 +738,8 @@ out:
 *  get_edb_fail_wakeup suffices for both fail and error conditions
 *  arising on a get edb operation.
 */
-get_edb_fail_wakeup(on)
-struct oper_act	* on;
+int 
+get_edb_fail_wakeup (struct oper_act *on)
 {
 #ifdef notanymore
 	struct oper_act	* on_tmp;
@@ -801,10 +791,8 @@ struct oper_act	* on;
 	oper_free(on);
 }
 
-struct oper_act	* make_get_edb_op(dn, version, di)
-DN		  dn;
-char		* version;
-struct di_block	* di;
+struct oper_act *
+make_get_edb_op (DN dn, char *version, struct di_block *di)
 {
 	struct di_block	* di_tmp;
 	struct oper_act	* on_tmp;
@@ -872,12 +860,8 @@ struct edbops_list {
 
 static struct edbops_list * edbops = NULLEDBOP;
 
-static edb_start (arg,error,result,binddn,fd)
-struct getedb_arg *arg;
-struct DSError	  *error;
-struct getedb_result *result;
-DN binddn;
-int fd;
+static 
+edb_start (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd)
 {
 	PE spe, lpe, pe = NULLPE;
 	char buffer [LINESIZE];
@@ -1008,8 +992,8 @@ out:
 
 }
 
-check_getedb_ops(fd)
-int fd;
+int 
+check_getedb_ops (int fd)
 {
 	struct edbops_list * nextop, *loop, *trail = NULLEDBOP;
 
@@ -1041,12 +1025,8 @@ int fd;
 	}
 }
 
-static edb_continue (arg,error,result,binddn,fd)
-struct getedb_arg *arg;
-struct DSError	  *error;
-struct getedb_result *result;
-DN binddn;
-int fd;
+static 
+edb_continue (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd)
 {
 	struct edbops_list * nextop, *trail = NULLEDBOP;
 	PE pe = NULLPE;
@@ -1125,9 +1105,8 @@ out:
 	/* send next part of an EDB file */
 }
 
-static get_more_edb (oper,newop)
-struct oper_act	* oper;
-struct oper_act	** newop;
+static 
+get_more_edb (struct oper_act *oper, struct oper_act **newop)
 {
 	struct getedb_result	* result = &(oper->on_resp.di_result.dr_res.dcr_dsres.res_ge);
 	struct getedb_arg	* arg = &(oper->on_req.dca_dsarg.arg_ge);
@@ -1174,9 +1153,8 @@ struct oper_act	** newop;
 	*newop = on_tmp;
 }
 
-static pull_up_result (arg,result)
-struct getedb_arg * arg;
-struct getedb_result *result;
+static 
+pull_up_result (struct getedb_arg *arg, struct getedb_result *result)
 {
 	struct getedb_result *loop;
 	struct getedb_result *ln;
@@ -1276,10 +1254,8 @@ struct getedb_result *result;
 	return TRUE;
 }
 
-static read_part_edb (ps,pep,n)
-PS ps;
-PE * pep;
-int n;
+static 
+read_part_edb (PS ps, PE *pep, int n)
 {
 	int i;
 	PE pe;
@@ -1319,14 +1295,14 @@ int n;
 }
 
 
-set_edb_limit (oper)
-struct oper_act	* oper;
+int 
+set_edb_limit (struct oper_act *oper)
 {
 	oper->on_req.dca_dsarg.arg_ge.ga_maxEntries = split_size;
 }
 
-getedb_size (x)
-int x;
+int 
+getedb_size (int x)
 {
 	split_size = x;
 }

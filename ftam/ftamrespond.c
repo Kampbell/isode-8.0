@@ -32,12 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamrespond.c,v 9.0 19
 
 /*    F-INITIALIZE.INDICATION */
 
-int	FInit (vecp, vec, fts, tracing, fti)
-int	vecp;
-char  **vec;
-struct FTAMstart *fts;
-IFP	tracing;
-struct FTAMindication *fti;
+int 
+FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAMindication *fti)
 {
 	int    i;
 	PE	    pe = NULLPE;
@@ -419,25 +415,8 @@ carry_on:
 
 /*    F-INITIALIZE.RESPONSE */
 
-int	FInitializeResponse (sd, state, action, context, respondtitle,
-						 respondaddr, manage, class, units, attrs, sharedASE, fqos, contents,
-						 diag, ndiag, fti)
-int	sd;
-int	state,
-	action,
-	manage,
-	class,
-	units,
-	attrs,
-	fqos;
-OID	context;
-AEI	respondtitle;
-struct PSAPaddr *respondaddr;
-PE	sharedASE;
-struct FTAMcontentlist *contents;
-struct FTAMdiagnostic diag[];
-int	ndiag;
-struct FTAMindication *fti;
+int 
+FInitializeResponse (int sd, int state, int action, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
 {
 	int    i;
 	int	    result,

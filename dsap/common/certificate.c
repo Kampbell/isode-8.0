@@ -52,8 +52,8 @@ PE pe;
 	return (result);
 }
 
-alg_cpy(a, b)
-struct alg_id *a, *b;
+int 
+alg_cpy (struct alg_id *a, struct alg_id *b)
 {
 	a->algorithm = oid_cpy(b->algorithm);
 
@@ -66,8 +66,8 @@ struct alg_id *a, *b;
 		a->un.numeric = b->un.numeric;
 }
 
-struct certificate *cert_cpy(parm)
-struct certificate *parm;
+struct certificate *
+cert_cpy (struct certificate *parm)
 {
 	struct certificate *result;
 
@@ -96,8 +96,8 @@ struct certificate *parm;
 	return (result);
 }
 
-cert_free(parm)
-struct certificate *parm;
+int 
+cert_free (struct certificate *parm)
 {
 	dn_free(parm->issuer);
 	dn_free(parm->subject);
@@ -137,9 +137,8 @@ struct certificate *parm;
 	free((char *) parm);
 }
 
-str2alg(str, alg)
-char *str;
-struct alg_id *alg;
+int 
+str2alg (char *str, struct alg_id *alg)
 {
 	PE asn2pe();
 
@@ -156,10 +155,8 @@ struct alg_id *alg;
 	}
 }
 
-str2encrypted(str, cp, len)
-char *str;
-char **cp;
-int *len;
+int 
+str2encrypted (char *str, char **cp, int *len)
 {
 	int i;
 	int l;
@@ -181,8 +178,8 @@ int *len;
 }
 
 
-struct certificate *str2cert(str)
-char *str;
+struct certificate *
+str2cert (char *str)
 {
 	struct certificate *result;
 	char *ptr;
@@ -459,8 +456,8 @@ int format;
 					parm->key.n_bits, format);
 }
 
-int cert_cmp(a, b)
-struct certificate *a, *b;
+int 
+cert_cmp (struct certificate *a, struct certificate *b)
 {
 	int ret;
 
@@ -489,7 +486,8 @@ struct certificate *a, *b;
 	return (0);
 }
 
-certificate_syntax() {
+int 
+certificate_syntax (void) {
 	 add_attribute_syntax(
 		"Certificate",
 		(IFP) cert_enc, (IFP) cert_dec,

@@ -43,7 +43,7 @@ struct acl_attr {
 #define NULLACL_ATTR ((struct acl_attr *)0)
 #define acl_attr_alloc()  (struct acl_attr *) smalloc (sizeof (struct acl_attr));
 
-struct acl_attr * acl_attr_cpy();
+
 
 struct acl {                    /* represents ACL                       */
 	struct acl_info  *ac_child;

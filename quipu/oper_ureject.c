@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/oper_ureject.c,v 9.0 
 
 extern LLog * log_dsap;
 
-oper_ureject(conn, rou)
-struct connection	* conn;
-struct RoSAPureject     * rou;
+int 
+oper_ureject (struct connection *conn, struct RoSAPureject *rou)
 {
 	DLOG(log_dsap,LLOG_TRACE,( "oper_ureject"));
 

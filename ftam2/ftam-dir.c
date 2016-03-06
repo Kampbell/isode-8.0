@@ -26,6 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-dir.c,v 9.0 1992
 
 
 #include <stdio.h>
+#include <unistd.h>
 #include "ftamuser.h"
 
 /*    DATA */
@@ -37,16 +38,10 @@ static char *lcwd = NULL;
 
 int	fdffnx ();
 
-
-#ifndef	SYS5
-char   *getcwd ();
-#endif
-
 /*  */
 
 #ifndef	BRIDGE
-int	f_lcd (vec)
-char  **vec;
+int f_lcd (char **vec)
 {
 	char   *cp,
 		   cwd[MAXPATHLEN];
@@ -81,8 +76,8 @@ char  **vec;
 
 /*  */
 
-int	f_cd (vec)
-char  **vec;
+int 
+f_cd (char **vec)
 {
 	int	    silent;
 	char   *cp,
@@ -133,10 +128,8 @@ char  **vec;
 
 /*  */
 
-int	isdir (dir, dp, silent)
-char   *dir,
-	   *dp;
-int	silent;
+int 
+isdir (char *dir, char *dp, int silent)
 {
 	int	    result;
 	struct FTAMgroup    ftgs;
@@ -244,8 +237,8 @@ you_lose:
 
 /* ARGSUSED */
 
-int	f_pwd (vec)
-char  **vec;
+int 
+f_pwd (char **vec)
 {
 #ifndef	BRIDGE
 	char    cwd[MAXPATHLEN];
@@ -271,8 +264,8 @@ char  **vec;
 
 /*  */
 
-char   *str2file (s)
-char   *s;
+char *
+str2file (char *s)
 {
 	char  *bp;
 	static int  i = 0;

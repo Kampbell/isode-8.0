@@ -58,9 +58,8 @@ extern int call_alias_chk ();
 extern int call_dlist ();
 #endif
 
-main (argc, argv)
-int             argc;
-char          **argv;
+int 
+main (int argc, char **argv)
 {
 	extern struct SecurityServices *dsap_security;
 
@@ -125,10 +124,8 @@ char          **argv;
 	return 0;
 }
 
-osisecinit(argc, argv, fn)
-int             *argc;
-char          ***argv;
-int	fn;
+int 
+osisecinit (int *argc, char ***argv, int fn)
 {
 	char   *ap;
 	char  **argptr;

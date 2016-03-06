@@ -269,10 +269,8 @@ CommonArgs     *ca;
 	return (argc);
 }
 
-shuffle_up (argc, argv, start)
-int    argc;
-char          **argv;
-int    start;
+int 
+shuffle_up (int argc, char **argv, int start)
 {
 	int    x;
 
@@ -284,8 +282,8 @@ int    start;
 			argv[x] = argv[x + 1];
 }
 
-new_service (ptr)
-char * ptr;
+int 
+new_service (char *ptr)
 {
 
 	if (ptr != 0) {
@@ -295,8 +293,8 @@ char * ptr;
 	}
 }
 
-set_sequence (str)
-char * str;
+int 
+set_sequence (char *str)
 {
 	struct dua_sequence *ptr;
 
@@ -323,7 +321,8 @@ char * str;
 	current_sequence = ptr;
 }
 
-unset_sequence () {
+int 
+unset_sequence (void) {
 	current_sequence = NULL_DS;
 }
 

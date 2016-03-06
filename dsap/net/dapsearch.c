@@ -31,12 +31,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapsearch.c,v 9.0 
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 
-dap_search (ad, id, arg, error, result)
-int	  ad;
-int	  *id;
-struct ds_search_arg        *arg;
-struct ds_search_result     *result;
-struct DSError              *error;
+int 
+dap_search (int ad, int *id, struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result)
 {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
@@ -79,12 +75,8 @@ struct DSError              *error;
 	}
 }
 
-int	  DapSearch (ad, id, arg, di, asyn)
-int			  ad;
-int			  id;
-struct ds_search_arg	* arg;
-struct DAPindication	* di;
-int			  asyn;
+int 
+DapSearch (int ad, int id, struct ds_search_arg *arg, struct DAPindication *di, int asyn)
 {
 	PE                  arg_pe;
 

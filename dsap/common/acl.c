@@ -44,8 +44,11 @@ int acl_info_cmp ();
 static int acl_info_comp_cmp ();
 static struct acl * str2acl_aux ();
 
-static acl_free (aclptr)
-struct acl * aclptr;
+static struct acl * acl_cpy (struct acl *aclptr);
+static struct acl_attr * acl_attr_cpy (struct acl_attr *aclptr, struct acl_info *dflt);
+
+static 
+acl_free (struct acl *aclptr)
 {
 	acl_info_free (aclptr->ac_child);
 	acl_info_free (aclptr->ac_entry);
@@ -54,8 +57,8 @@ struct acl * aclptr;
 	free ((char *) aclptr);
 }
 
-static acl_attr_free (aclptr)
-struct acl * aclptr;
+static 
+acl_attr_free (struct acl *aclptr)
 {
 	struct acl_attr * ptr;
 	struct acl_attr * next;
@@ -69,8 +72,8 @@ struct acl * aclptr;
 	}
 }
 
-void acl_info_free (aclptr)
-struct acl_info * aclptr;
+void 
+acl_info_free (struct acl_info *aclptr)
 {
 	struct acl_info * ptr;
 	struct acl_info * next;
@@ -86,8 +89,8 @@ struct acl_info * aclptr;
 
 }
 
-static int acl_default_cmp (a)
-struct acl	* a;
+static int 
+acl_default_cmp (struct acl *a)
 {
 	struct acl_attr * ptr;
 
@@ -108,9 +111,8 @@ struct acl	* a;
 	return OK;
 }
 
-int	  acl_cmp (acl1, acl2)
-struct acl	* acl1;
-struct acl	* acl2;
+int 
+acl_cmp (struct acl *acl1, struct acl *acl2)
 {
 	int	  i;
 
@@ -138,9 +140,8 @@ struct acl	* acl2;
 	return(0);
 }
 
-static int	  acl_attr_cmp (acl_attr1, acl_attr2)
-struct acl_attr	* acl_attr1;
-struct acl_attr	* acl_attr2;
+static int 
+acl_attr_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2)
 {
 	struct acl_attr	* aa1;
 	struct acl_attr	* aa2;
@@ -176,9 +177,8 @@ struct acl_attr	* acl_attr2;
 
 }
 
-static int	  acl_attr_comp_cmp (acl_attr1, acl_attr2)
-struct acl_attr	* acl_attr1;
-struct acl_attr	* acl_attr2;
+static int 
+acl_attr_comp_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2)
 {
 	int	  i;
 
@@ -200,9 +200,8 @@ struct acl_attr	* acl_attr2;
 	return(0);
 }
 
-int	  acl_info_cmp (acl_info1, acl_info2)
-struct acl_info	* acl_info1;
-struct acl_info	* acl_info2;
+int 
+acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2)
 {
 	struct acl_info	* ai1;
 	struct acl_info	* ai2;
@@ -243,9 +242,8 @@ struct acl_info	* acl_info2;
 	return(0);
 }
 
-static int	  acl_info_comp_cmp (acl_info1, acl_info2)
-struct acl_info	* acl_info1;
-struct acl_info	* acl_info2;
+static int 
+acl_info_comp_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2)
 {
 	int	  i;
 
@@ -277,9 +275,8 @@ struct acl_info	* acl_info2;
 }
 
 
-struct acl_info * acl_info_new (x,y,z)
-int x,y;
-struct dn_seq * z;
+struct acl_info *
+acl_info_new (int x, int y, struct dn_seq *z)
 {
 	struct acl_info * ptr;
 
@@ -289,8 +286,7 @@ struct dn_seq * z;
 	return (ptr);
 }
 
-static struct acl * acl_cpy (aclptr)
-struct acl * aclptr;
+static struct acl * acl_cpy (struct acl *aclptr)
 {
 	struct acl * ptr;
 
@@ -322,9 +318,7 @@ PE pe;
 
 }
 
-static struct acl_attr * acl_attr_cpy (aclptr,dflt)
-struct acl_attr * aclptr;
-struct acl_info * dflt;
+static struct acl_attr * acl_attr_cpy (struct acl_attr *aclptr, struct acl_info *dflt)
 {
 	struct acl_attr * ptr;
 	struct acl_attr * ptr2;
@@ -344,8 +338,7 @@ struct acl_info * dflt;
 }
 
 
-static struct acl_info * acl_info_cpy (aclptr)
-struct acl_info * aclptr;
+static struct acl_info * acl_info_cpy (struct acl_info *aclptr)
 {
 	struct acl_info * ptr;
 	struct acl_info * ptr2;
@@ -366,17 +359,19 @@ struct acl_info * aclptr;
 	return (result);
 }
 
-struct acl_info * acl_default () {
+struct acl_info *
+acl_default (void) {
 	return (defaultacl);
 }
 
-get_default_acl () {
+int 
+get_default_acl (void) {
 	defaultacl = acl_info_alloc ();
 	set_default_acl(defaultacl);
 }
 
-set_default_acl (ai_ptr)
-struct acl_info * ai_ptr;
+int 
+set_default_acl (struct acl_info *ai_ptr)
 
 {
 	/* default -   others # read & self # write */
@@ -392,8 +387,8 @@ struct acl_info * ai_ptr;
 
 }
 
-test_acl_default (a)
-struct acl_info * a;
+int 
+test_acl_default (struct acl_info *a)
 {
 	if ((a == NULLACL_INFO) || (a == defaultacl))
 		return (OK);
@@ -429,9 +424,8 @@ struct acl_info * a;
 	return (OK);
 }
 
-static struct acl_attr * acl_attr_merge (a,b)
-struct acl_attr *a;
-struct acl_attr *b;
+static struct acl_attr *
+acl_attr_merge (struct acl_attr *a, struct acl_attr *b)
 {
 	struct acl_attr *c;
 
@@ -646,8 +640,8 @@ int format;
 			ps_print (ps,"(default)");
 }
 
-static struct acl_info * str2acl_info (strptr)
-char ** strptr;
+static struct acl_info *
+str2acl_info (char **strptr)
 {
 	char * ptr;
 	char * save,val;
@@ -747,9 +741,8 @@ char ** strptr;
 	return (acl_info_new (what,class,dnseq));
 }
 
-static struct acl * str2acl_aux (str,the_acl)
-char * str;
-struct acl * the_acl;
+static struct acl *
+str2acl_aux (char *str, struct acl *the_acl)
 {
 	struct acl_info * info;
 	char * save, *ptr, val = 0;
@@ -843,8 +836,8 @@ struct acl * the_acl;
 	return (the_acl);
 }
 
-static struct acl * str2acl (str)
-char * str;
+static struct acl *
+str2acl (char *str)
 {
 	struct acl * the_acl;
 
@@ -866,7 +859,8 @@ struct acl * acl;
 }
 
 
-acl_syntax () {
+int 
+acl_syntax (void) {
 	extern short acl_sntx;
 	extern IFP merge_acl;
 	extern IFP acl_fn;

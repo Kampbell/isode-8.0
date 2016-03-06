@@ -62,8 +62,8 @@ int	depth;
 	rsavl_print( root->avl_left, fn, fps, depth+1 );
 }
 
-savl_print( root )
-Avlnode	*root;
+int 
+savl_print (Avlnode *root)
 {
 #ifndef __STDC__
 	int	fprintf ();
@@ -87,11 +87,8 @@ Avlnode	*root;
 	 printf( "**** soundex avl_print end ****\n" );
 }
 
-static ravl_print( root, fn, fps, format, depth )
-Avlnode	*root;
-IFP	fn;
-PS	fps;
-int	format;
+static 
+ravl_print (Avlnode *root, IFP fn, PS fps, int format, int depth)
 {
 	int	i;
 
@@ -108,8 +105,8 @@ int	format;
 	ravl_print( root->avl_left, fn, fps, format, depth+1 );
 }
 
-avl_print( root )
-Avlnode	*root;
+int 
+avl_print (Avlnode *root)
 {
 	PS	fps;
 	int	rdn_print();
@@ -137,9 +134,8 @@ Avlnode	*root;
 	ps_free( fps );
 }
 
-static rprint_directory( node, depth )
-Entry	node;
-int	depth;
+static 
+rprint_directory (Entry node, int depth)
 {
 	int	i;
 
@@ -154,8 +150,8 @@ int	depth;
 						  NOTOK, AVL_INORDER );
 }
 
-print_directory( node )
-Entry	node;
+int 
+print_directory (Entry node)
 {
 	if ( (ps = ps_alloc( std_open )) == NULLPS ) {
 		 printf( "avl_print: ps_alloc failed\n" );
@@ -177,7 +173,8 @@ Entry	node;
  * for debugging...
  */
 
-print_optimized_attrs() {
+int 
+print_optimized_attrs (void) {
 	int	i;
 	PS	fps;
 
@@ -201,9 +198,8 @@ print_optimized_attrs() {
 	ps_free( fps );
 }
 
-static print_index_node( node, fps )
-Index_node	*node;
-PS		fps;
+static 
+print_index_node (Index_node *node, PS fps)
 {
 	int	i;
 
@@ -221,9 +217,8 @@ PS		fps;
 	return( OK );
 }
 
-static print_soundex_node( node, fps )
-Index_node	*node;
-PS		fps;
+static 
+print_soundex_node (Index_node *node, PS fps)
 {
 	int	i;
 
@@ -286,8 +281,8 @@ Index	*pindex;
 	ps_free( fps );
 }
 
-print_eis_list( e )
-EntryInfo	*e;
+int 
+print_eis_list (EntryInfo *e)
 {
 	DN	dnend;
 
@@ -308,8 +303,8 @@ EntryInfo	*e;
 	 printf("(end)\n");
 }
 
-print_dn( dn )
-DN	dn;
+int 
+print_dn (DN dn)
 {
 	PS	fps;
 

@@ -62,10 +62,8 @@ struct RoNOTindication	* rni;
 
 /*    ROS interface */
 
-int	  ros2dsaplose (di, event, rop)
-struct DSAPindication	* di;
-char			* event;
-struct RoSAPpreject	* rop;
+int 
+ros2dsaplose (struct DSAPindication *di, char *event, struct RoSAPpreject *rop)
 {
 	char	* cp;
 	char	  buffer[BUFSIZ];
@@ -86,10 +84,8 @@ struct RoSAPpreject	* rop;
 		return (dsaplose (di, DA_ROS, NULLCP, "%s", cp));
 }
 
-int	  ros2dsapreject (di, event, rou)
-struct DSAPindication	* di;
-char			* event;
-struct RoSAPureject	* rou;
+int 
+ros2dsapreject (struct DSAPindication *di, char *event, struct RoSAPureject *rou)
 {
 	char	* cp;
 	char	  buffer[BUFSIZ];

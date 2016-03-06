@@ -31,42 +31,36 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamgroup2.c,v 9.0 199
 #include <signal.h>
 #include "fpkt.h"
 
+static int FGroupResponse (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti);
+static int FGroupResponseAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti);
+static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti);
+static int frgrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti);
+
 /*    F-{MANAGE,BULK-{BEGIN,END}}.RESPONSE (group) */
 
-int     FManageResponse (sd, ftg, fti)
-int     sd;
-struct FTAMgroup   *ftg;
-struct FTAMindication  *fti;
+int 
+FManageResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
 {
 	return FGroupResponse (sd, ftg, FTI_MANAGEMENT, FSB_INITIALIZED, fti);
 }
 
 
-int     FBulkBeginResponse (sd, ftg, fti)
-int     sd;
-struct FTAMgroup   *ftg;
-struct FTAMindication  *fti;
+int 
+FBulkBeginResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
 {
 	return FGroupResponse (sd, ftg, FTI_BULKBEGIN, FSB_DATAIDLE, fti);
 }
 
 
-int     FBulkEndResponse (sd, ftg, fti)
-int     sd;
-struct FTAMgroup   *ftg;
-struct FTAMindication  *fti;
+int 
+FBulkEndResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
 {
 	return FGroupResponse (sd, ftg, FTI_BULKEND, FSB_INITIALIZED, fti);
 }
 
 /*    F-GROUP.RESPONSE (group) */
 
-static int  FGroupResponse (sd, ftg, type, state, fti)
-int     sd;
-struct FTAMgroup   *ftg;
-int	type,
-	state;
-struct FTAMindication  *fti;
+static int FGroupResponse (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti)
 {
 	SBV	    smask;
 	int	    result;
@@ -89,11 +83,7 @@ struct FTAMindication  *fti;
 
 /*  */
 
-static int  FGroupResponseAux (fsb, ftg, state, fti)
-struct ftamblk *fsb;
-struct FTAMgroup  *ftg;
-int	state;
-struct FTAMindication  *fti;
+static int FGroupResponseAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti)
 {
 	int    i;
 	int     did_loop,
@@ -177,11 +167,7 @@ out:
 
 /*  */
 
-static int  frgrpchk (fsb, ftg, type, fti)
-struct ftamblk *fsb;
-struct FTAMgroup *ftg;
-int	type;
-struct FTAMindication *fti;
+static int frgrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti)
 {
 	if (fsb -> fsb_flags & FSB_INIT)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not responder");
@@ -458,13 +444,7 @@ wrong_state:
 
 /*  */
 
-static int  frgrp2pdus (fsb, ftg, pdus, texts, npdu, fti)
-struct ftamblk *fsb;
-struct FTAMgroup *ftg;
-struct type_FTAM_PDU *pdus[];
-char   *texts[];
-int    *npdu;
-struct FTAMindication *fti;
+static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti)
 {
 	int     flags,
 			i;

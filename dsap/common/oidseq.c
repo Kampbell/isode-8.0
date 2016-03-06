@@ -32,8 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/oidseq.c,v 9.0 
 
 extern int oidformat;
 
-oid_seq_free (ptr)
-struct oid_seq * ptr;
+int 
+oid_seq_free (struct oid_seq *ptr)
 {
 	struct oid_seq * loop;
 	struct oid_seq * next;
@@ -45,8 +45,8 @@ struct oid_seq * ptr;
 	}
 }
 
-oid_seq_free_aux (ptr)
-struct oid_seq * ptr;
+int 
+oid_seq_free_aux (struct oid_seq *ptr)
 {
 	struct oid_seq * loop;
 	struct oid_seq * next;
@@ -57,9 +57,8 @@ struct oid_seq * ptr;
 	}
 }
 
-struct oid_seq *oid_seq_merge (a,b)
-struct oid_seq *a;
-struct oid_seq *b;
+struct oid_seq *
+oid_seq_merge (struct oid_seq *a, struct oid_seq *b)
 {
 	struct oid_seq  *aptr, *bptr, *result, *trail;
 
@@ -121,8 +120,8 @@ struct oid_seq *b;
 	return (result);
 }
 
-oid_seq_cmp (a,b)
-struct oid_seq  *a, *b;
+int 
+oid_seq_cmp (struct oid_seq *a, struct oid_seq *b)
 {
 	struct oid_seq	* aa1;
 	struct oid_seq	* aa2;
@@ -157,8 +156,8 @@ struct oid_seq  *a, *b;
 	return(0);
 }
 
-struct oid_seq * oid_seq_cpy (a)
-struct oid_seq * a;
+struct oid_seq *
+oid_seq_cpy (struct oid_seq *a)
 {
 	struct oid_seq * b;
 	struct oid_seq * c;
@@ -200,8 +199,8 @@ int format;
 			ps_printf (ps,"$%s",oid2name (ptr->oid_oid,oidformat));
 }
 
-struct oid_seq * str2oidseq (str)
-char * str;
+struct oid_seq *
+str2oidseq (char *str)
 {
 	char *ptr;
 	char *save,val;

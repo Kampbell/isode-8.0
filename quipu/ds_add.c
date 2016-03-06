@@ -48,14 +48,8 @@ extern AttributeType at_objectclass;
 extern AttributeType *turbo_index_types;
 #endif
 
-do_ds_addentry (arg, error, binddn, target, di_p, dsp, authtype)
-struct ds_addentry_arg      *arg;
-struct DSError              *error;
-DN                          binddn;
-DN                          target;
-struct di_block		**di_p;
-char 			dsp;
-char			authtype;
+int 
+do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype)
 {
 	Entry  entryptr,ptr;
 	DN  dntop, dn = NULLDN;

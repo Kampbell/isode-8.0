@@ -26,15 +26,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/file_cpy.c,v 9.
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 
-struct file_syntax * fileattr_cpy (fs)
-struct file_syntax * fs;
+struct file_syntax *
+fileattr_cpy (struct file_syntax *fs)
 {
 	fs->fs_ref++;
 	return (fs);
 }
 
-file_cmp (a,b)
-struct file_syntax *a, *b;
+int 
+file_cmp (struct file_syntax *a, struct file_syntax *b)
 {
 	if ((a->fs_attr != NULLAttrV) && (b->fs_attr != NULLAttrV))
 		return (AttrV_cmp (a->fs_attr,b->fs_attr));

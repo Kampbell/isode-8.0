@@ -55,11 +55,12 @@ struct passwd *getpwnam (), *getpwent (), *getpwuid ();
 static char mvfile[MAXPATHLEN];
 static PE   rdparam = NULLPE;
 
-char   *getfile ();
+static char *getfile (char*file);
 #ifdef	BRIDGE
 #define	E_OK	R_OK
 #else
-char   *getuser (), *getgroup ();
+static char *getuser (int uid);
+static char *getgroup (int gid);
 #endif
 
 
@@ -74,11 +75,16 @@ char   *getuser (), *getgroup ();
 #define	ftp_access(file,mode)	ftp_exist (file)
 #endif
 
+static int  chkaccess (int fd, int request, struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags);
+static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, struct FTAMdiagnostic **diags);
+static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags);
+
+static int  EACCESS ( char   *file, int	mode);
+
 /*    SELECTION REGIME */
 
-int	ftam_selection (ftg, ftm)
-struct FTAMgroup *ftg,
-		*ftm;
+int 
+ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm)
 {
 	int     action,
 			state;
@@ -839,14 +845,7 @@ done_open:
 /* ARGSUSED */
 #endif
 
-static int  chkaccess (fd, request, fc, diags)
-int	fd,
-	request;
-#ifndef	BRIDGE
-register
-#endif
-struct FTAMconcurrency *fc;
-struct FTAMdiagnostic **diags;
+static int  chkaccess (int fd, int request, struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags)
 {
 	int     result;
 #ifndef	BRIDGE
@@ -967,11 +966,7 @@ bad_concur:
 
 /*  */
 
-static int  chkattrs (fa, present, select, diags)
-struct FTAMattributes *fa;
-long	present;
-int	select;
-struct FTAMdiagnostic **diags;
+static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, struct FTAMdiagnostic **diags)
 {
 	int     id,
 			result;
@@ -1249,10 +1244,7 @@ bad_param:
 
 /*  */
 
-static int  chngattrs (present, fa, diags)
-long	present;
-struct FTAMattributes *fa;
-struct FTAMdiagnostic **diags;
+static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags)
 {
 #ifndef	BRIDGE
 	int     gid,
@@ -1364,8 +1356,7 @@ no_change:
 
 /*  */
 
-static char *getfile (file)
-char   *file;
+static char *getfile (char*file)
 {
 	char  *bp;
 #ifndef	BRIDGE
@@ -1454,8 +1445,7 @@ trunc:
    Apollo suggested these algorithms as they work better with distributed
    /etc/passwd and /etc/group files */
 
-static char *getuser (uid)
-int	uid;
+static char *getuser (int uid)
 {
 	static struct passwd *pw = NULL;
 
@@ -1466,8 +1456,7 @@ int	uid;
 
 /*  */
 
-static char *getgroup (gid)
-int	gid;
+static char *getgroup (int gid)
 {
 	struct group *gr;
 	static int	my_gid = -1;
@@ -1524,18 +1513,16 @@ char   *group;
 
 #ifndef	SYS5
 #ifndef	BRIDGE
-static int  EACCESS (file, mode)
-char   *file;
-int	mode;
+static int  EACCESS ( char   *file, int	mode)
 {
 	int	    result;
 
 	 seteuid (0);
-	 setruid (myuid);
+	 setreuid (myuid);
 
 	result = access (file, mode);
 
-	 setruid (0);
+	 setreuid (0);
 	 seteuid (myuid);
 
 	return result;
@@ -1545,9 +1532,7 @@ int	mode;
 
 /*  */
 
-static int  chgrp (file, gid)
-char   *file;
-int	gid;
+static int  chgrp ( char   *file, int	gid)
 {
 	int     i,
 			pid,
@@ -1583,9 +1568,7 @@ int	gid;
 
 /*  */
 
-static int  mkdir (dir, mode)
-char   *dir;
-int	mode;
+static int  mkdir ( char   *dir, int	mode)
 {
 	int     i,
 			pid,
@@ -1620,8 +1603,7 @@ int	mode;
 
 /*  */
 
-static int  rmdir (dir)
-char   *dir;
+static int  rmdir (char* dir)
 {
 	int     i,
 			pid,
@@ -1653,9 +1635,7 @@ char   *dir;
 
 /*  */
 
-static int  truncate (file, length)
-char   *file;
-int	length;
+static int  truncate ( char   *file, int	length)
 {
 	int	    fd;
 
@@ -1674,9 +1654,7 @@ int	length;
 
 /* ARGSUSED */
 
-int	ftruncate (fd, length)	/* works only 'cause we're lucky */
-int	fd,
-	length;
+int	ftruncate (int fd, int length)	/* works only 'cause we're lucky */
 {
 	return truncate (myfile, length);
 }
@@ -1688,8 +1666,7 @@ int	fd,
 #include <syscall.h>
 
 
-static int  unlink (file)
-char   *file;
+static int  unlink (char* file)
 {
 	if (debug) {
 		int     i,
@@ -1722,8 +1699,7 @@ again:
 }
 
 
-static int  rmdir (dir)
-char   *dir;
+static int  rmdir (char* dir)
 {
 	if (debug) {
 		int     i,
@@ -1758,10 +1734,7 @@ again:
 
 /* VARARGS2 */
 
-static int  open (file, flags, mode)
-char   *file;
-int     flags,
-		mode;
+static int  open (char* file, int flags, int mode)
 {
 	if (debug) {
 		int     i,
@@ -1792,9 +1765,7 @@ again:
 }
 
 
-static int  mkdir (dir, mode)
-char   *dir;
-int     mode;
+static int  mkdir (char* dir, iint mode)
 {
 	if (debug) {
 		int     i,
@@ -1827,10 +1798,7 @@ again:
 }
 
 
-static int  chown (file, uid, gid)
-char   *file;
-int     uid,
-		gid;
+static int  chown (char* file, int uid, int gid)
 {
 	if (debug) {
 		int     i,
@@ -1863,10 +1831,7 @@ again:
 }
 
 
-static int  fchown (fd, uid, gid)
-int     fd;
-int     uid,
-		gid;
+static int  fchown (int fd, int uid, int gid)
 {
 	if (debug) {
 		int     i,

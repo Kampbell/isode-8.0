@@ -97,8 +97,8 @@ static CMD_TABLE chtab[] = {
  * do system wide initialisations
  */
 
-dsap_tai (argc, argv)
-char    **argv;
+int 
+dsap_tai (int argc, char **argv)
 {
 	char    *arg, *term;
 	extern char * getenv ();

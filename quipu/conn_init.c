@@ -48,8 +48,8 @@ extern  void opening_analyse() ;
 extern  time_t timenow;
 extern  char   quipu_shutdown;
 
-conn_init(cn)
-struct connection	* cn;
+int 
+conn_init (struct connection *cn)
 {
 	int				  result, ds_bind_return ;
 	char			**vec;
@@ -190,8 +190,8 @@ out:
 	}
 }
 
-conn_init_res(cn)
-struct connection       * cn;
+int 
+conn_init_res (struct connection *cn)
 {
 	int				  result;
 	struct DSAPindication      di_s;
@@ -231,8 +231,8 @@ struct connection       * cn;
 	ACSFREE (acs);
 }
 
-conn_init_err(cn)
-struct connection       * cn;
+int 
+conn_init_err (struct connection *cn)
 {
 	int				  result;
 	struct DSAPindication      di_s;
@@ -272,10 +272,8 @@ struct connection       * cn;
 
 }
 
-conn_pre_init(newfd, vecp, vec)
-int newfd;
-int	  vecp;
-char	**vec;
+int 
+conn_pre_init (int newfd, int vecp, char **vec)
 {
 	struct connection	* cn = NULLCONN;
 
@@ -314,8 +312,8 @@ char	**vec;
 		DLOG (log_dsap,LLOG_NOTICE, ("opening association on %d",newfd ));
 }
 
-warn_conn_init(newfd)
-int newfd;
+int 
+warn_conn_init (int newfd)
 {
 	/* An association will come soon... */
 	struct connection	* cn = NULLCONN;

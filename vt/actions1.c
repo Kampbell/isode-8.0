@@ -43,10 +43,11 @@ extern int sd;		/*Global Session Descriptor (ISODE) */
     	adios (NULLCP, "%s: invalid result (%s)", (str), \
 	       pe_error ((p) -> pe_errno))
 
-int
-a1_0(pe)	/*NDQ-ntr in states 50B or 51Q (Release awaiting peer)*/
+int 
+a1_0 (	/*NDQ-ntr in states 50B or 51Q (Release awaiting peer)*/
 /*Also RTQ in state 51T (Release awaiting peer)*/
-PE pe;
+    PE pe
+)
 {
 	/*If quarantined data delivery were supported, we would do:
 	/*	++vnt;
@@ -60,9 +61,10 @@ PE pe;
 }
 
 
-int
-a1_1(pe)		/*NDQ-tr in states 50B or 51Q (Release Awaiting Peer)*/
-PE pe;
+int 
+a1_1 (		/*NDQ-tr in states 50B or 51Q (Release Awaiting Peer)*/
+    PE pe
+)
 {
 	/* Same comment as in a1_0 above */
 	vdatind(SEQUENCED,pe);		/*Deliver the NDQ to application*/
@@ -71,9 +73,10 @@ PE pe;
 }
 
 
-int
-a1_2(pe)		/*VASSreq from user in state 01 (No Association)*/
-PE pe;
+int 
+a1_2 (		/*VASSreq from user in state 01 (No Association)*/
+    PE pe
+)
 {
 	dr_pm_st = DEFINED;	/*Draft-VTE param. status = Defined
 				/*(SetVTPmS(P) in 9041) */
@@ -90,9 +93,10 @@ PE pe;
 }
 
 
-int
-a1_3(pe)	/*VASSrsp from user in state 03B (Associate -- Awaiting user)*/
-PE pe;
+int 
+a1_3 (	/*VASSrsp from user in state 03B (Associate -- Awaiting user)*/
+    PE pe
+)
 {
 	PE p;
 	vrsl = -1;
@@ -131,9 +135,10 @@ PE pe;
 }
 
 
-int
-a1_4(pe)	/*VASSrsp from user in state 03S (Associate -- Awaiting user)*/
-PE pe;
+int 
+a1_4 (	/*VASSrsp from user in state 03S (Associate -- Awaiting user)*/
+    PE pe
+)
 {
 	PE p;
 	vrsl = -1;
@@ -176,10 +181,11 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_5(pe)		/*RTQ (Token Request) in state 10B
+int 
+a1_5 (		/*RTQ (Token Request) in state 10B
 			  (Environment not agreed)*/
-PE pe;
+    PE pe
+)
 {
 	give_token();	/*Need a call to lower layer in ISODE to do this*/
 	return(OK);
@@ -187,9 +193,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_6(pe)	/*VGVTreq from user in 10T*/
-PE pe;
+int 
+a1_6 (	/*VGVTreq from user in 10T*/
+    PE pe
+)
 {
 	give_token();	/*Need a call to lower layer in ISODE to do this*/
 	state = S1_10N;
@@ -198,10 +205,11 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_7(pe)	/*VRELreq from user in state 10B (Env. not agreed)*/
+int 
+a1_7 (	/*VRELreq from user in state 10B (Env. not agreed)*/
 /*GTQ in 50B*/
-PE pe;
+    PE pe
+)
 {
 	if(vtok) {
 		vt_disconnect();	/*May be only TEMP*/
@@ -219,9 +227,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_8(pe)	/*VRELreq in 10T*/
-PE pe;
+int 
+a1_8 (	/*VRELreq in 10T*/
+    PE pe
+)
 {
 	vt_disconnect();	/*May be only TEMP--check function*/
 	state = S1_51T;
@@ -231,9 +240,10 @@ PE pe;
 	return(OK);
 }
 
-int
-a1_9(pe)	/*VRELrsp in 51R & 51N (Release -- Awaiting User)*/
-PE pe;
+int 
+a1_9 (	/*VRELrsp in 51R & 51N (Release -- Awaiting User)*/
+    PE pe
+)
 {
 
 
@@ -287,9 +297,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_10(pe)	/*VRQTreq(request token) n state 10N*/
-PE pe;
+int 
+a1_10 (	/*VRQTreq(request token) n state 10N*/
+    PE pe
+)
 {
 	request_token();	/*TEMP -- Need an ISODE call to really do this
 				  since there is no VTP PDU*/
@@ -303,9 +314,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_11(pe)	/*VSNEGreq (User Start Negotiation)*/
-PE pe;
+int 
+a1_11 (	/*VSNEGreq (User Start Negotiation)*/
+    PE pe
+)
 {
 
 	/*MIN not implemented*/
@@ -316,9 +328,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_12(pe)	/*VSNEGreq*/
-PE pe;
+int 
+a1_12 (	/*VSNEGreq*/
+    PE pe
+)
 {
 
 	/*MIN not implemented*/
@@ -329,9 +342,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_13(pe)	/*VSWPreq (User Switch profile request)*/
-PE pe;
+int 
+a1_13 (	/*VSWPreq (User Switch profile request)*/
+    PE pe
+)
 {
 
 	/*Switch Profile not implemented*/
@@ -342,9 +356,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_14(pe)	/*VSWPreq*/
-PE pe;
+int 
+a1_14 (	/*VSWPreq*/
+    PE pe
+)
 {
 
 	/*Switch Profile not implented*/
@@ -354,9 +369,10 @@ PE pe;
 }
 
 
-int
-a1_15(pe)		/*ASR in state 2B (Assoc. awaiting target) */
-PE pe;
+int 
+a1_15 (		/*ASR in state 2B (Assoc. awaiting target) */
+    PE pe
+)
 {
 	PE p;
 
@@ -392,9 +408,10 @@ PE pe;
 	return(SUCCESS);	/*Notify user of ASR (VASScnf)*/
 }
 
-int
-a1_16(pe)		/*ASR in state 2S (Assoc. awaiting target) */
-PE pe;
+int 
+a1_16 (		/*ASR in state 2S (Assoc. awaiting target) */
+    PE pe
+)
 {
 	PE p;
 
@@ -434,9 +451,10 @@ PE pe;
 }
 
 
-int
-a1_17(pe)		/*ASQ in state 01 (No Association)*/
-PE pe;
+int 
+a1_17 (		/*ASQ in state 01 (No Association)*/
+    PE pe
+)
 {
 
 	int result;
@@ -464,9 +482,10 @@ PE pe;
 }
 
 
-int
-a1_18(pe)	/*UDQ (uncontrolled data) in 51T (Release Awaiting Peer)*/
-PE pe;
+int 
+a1_18 (	/*UDQ (uncontrolled data) in 51T (Release Awaiting Peer)*/
+    PE pe
+)
 {
 	vdatind(SEQUENCED,pe);	/*Want to do VDATind-h but this is all that's
 				  now available*/
@@ -475,9 +494,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_19(pe)	/*GTQ in 10N or VRTQreq in 10T*/
-PE pe;
+int 
+a1_19 (	/*GTQ in 10N or VRTQreq in 10T*/
+    PE pe
+)
 {
 	vtok = TRUE;
 	vgvt_ind();	/*VGVTind -- Tell user we have token (as if he cares)*/
@@ -486,9 +506,10 @@ PE pe;
 }
 
 
-int
-a1_20(pe)	/*RLR (Release Response) in 51Q or 51T (Release Awaiting Peer)*/
-PE pe;
+int 
+a1_20 (	/*RLR (Release Response) in 51Q or 51T (Release Awaiting Peer)*/
+    PE pe
+)
 {
 
 	PE p;
@@ -534,9 +555,10 @@ PE pe;
 }
 
 
-int
-a1_21(pe)	/*DLQ (Deliver Request) in 50B or 51Q (Release Awaiting Peer)*/
-PE pe;
+int 
+a1_21 (	/*DLQ (Deliver Request) in 50B or 51Q (Release Awaiting Peer)*/
+    PE pe
+)
 {
 	if( (vra = prim2flag(pe)) == NOTOK)
 		adios(NULLCP,"a1_21: incorrect DLQ");
@@ -560,9 +582,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_22(pe)	/*RLQ (Release Request) in 50B*/
-PE pe;
+int 
+a1_22 (	/*RLQ (Release Request) in 50B*/
+    PE pe
+)
 {
 
 	vrsl = FAILURE;
@@ -581,9 +604,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_23(pe)	/*SNQ (Start negotiation) in 50B*/
-PE pe;
+int 
+a1_23 (	/*SNQ (Start negotiation) in 50B*/
+    PE pe
+)
 {
 	/*Switch Negotiation not implemented.
 	  Should probably send back negative acknowledgement. */
@@ -593,9 +617,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_24(pe)		/*SPQ (Switch Profile Request) in state 50B*/
-PE pe;
+int 
+a1_24 (		/*SPQ (Switch Profile Request) in state 50B*/
+    PE pe
+)
 {
 	/*Profile Switch not implemented.
 	  Should probably send back negative acknowledgement. */
@@ -605,9 +630,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_25(pe)	/*RLQ (Release Request) in 10B (Environment not agreed) */
-PE pe;
+int 
+a1_25 (	/*RLQ (Release Request) in 10B (Environment not agreed) */
+    PE pe
+)
 {
 	vrelind();
 	state = S1_51R;
@@ -615,9 +641,10 @@ PE pe;
 }
 
 /* ARGSUSED */
-int
-a1_26(pe)	/*RLQ (Release Request) in state 10N*/
-PE pe;
+int 
+a1_26 (	/*RLQ (Release Request) in state 10N*/
+    PE pe
+)
 {
 	vrelind();
 	state = S1_51R;
@@ -627,9 +654,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_27(pe)	/*RTQ (Request Token) in state 10T*/
-PE pe;
+int 
+a1_27 (	/*RTQ (Request Token) in state 10T*/
+    PE pe
+)
 {
 	vrtq_ind();	/*Tell Application that peer requested token*/
 
@@ -641,9 +669,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_28(pe)	/*SNQ (Start Negotiation) in 10N*/
-PE pe;
+int 
+a1_28 (	/*SNQ (Start Negotiation) in 10N*/
+    PE pe
+)
 {
 	/*MIN not implemented.
 	  Need to return NAK. */
@@ -653,9 +682,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_29(pe)	/*SNQ (Start Negotiation) in 10B*/
-PE pe;
+int 
+a1_29 (	/*SNQ (Start Negotiation) in 10B*/
+    PE pe
+)
 {
 	/*MIN not implemented.
 	  Need to send NAK to peer. */
@@ -665,9 +695,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_30(pe)	/*SPQ (Switch Profile Request) in 10B & 10N*/
-PE pe;
+int 
+a1_30 (	/*SPQ (Switch Profile Request) in 10B & 10N*/
+    PE pe
+)
 {
 	/*Switch Profile not implemented.
 	  Should send NAK to peer. */
@@ -678,9 +709,10 @@ PE pe;
 
 /* ARGSUSED */
 
-int
-a1_100(pe)	/*APQ (VT-P-ABORT -- Abort from VTPM) in any state*/
-PE pe;
+int 
+a1_100 (	/*APQ (VT-P-ABORT -- Abort from VTPM) in any state*/
+    PE pe
+)
 {
 	state = S1_01;	/*For rigor*/
 	adios(NULLCP, "protocol abort -- association terminated");
@@ -689,9 +721,10 @@ PE pe;
 
 /* ARGSUSED */
 
-int
-a1_101(pe)	/*AUQ (VT-U-ABORT -- Abort from VT User) in any state*/
-PE pe;
+int 
+a1_101 (	/*AUQ (VT-U-ABORT -- Abort from VT User) in any state*/
+    PE pe
+)
 {
 	state = S1_01;
 	adios(NULLCP,"user abort -- association terminated");
@@ -700,9 +733,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_102(pe)	/*VUABreq (Abort by User) in any state*/
-PE pe;
+int 
+a1_102 (	/*VUABreq (Abort by User) in any state*/
+    PE pe
+)
 {
 
 	PE pe_auq;
@@ -721,9 +755,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_103(pe)	/*VTAB (Irrecoverable exception condition) in any state*/
-PE pe;
+int 
+a1_103 (	/*VTAB (Irrecoverable exception condition) in any state*/
+    PE pe
+)
 {
 
 	PE pe_apq;
@@ -745,9 +780,10 @@ PE pe;
 
 
 /* ARGSUSED */
-int
-a1_107(pe)		/*Generic Action*/
-PE pe;
+int 
+a1_107 (		/*Generic Action*/
+    PE pe
+)
 {
 	/*Stay in this state*/
 	return(OK);

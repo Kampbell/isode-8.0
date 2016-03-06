@@ -32,11 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambits.c,v 9.0 1992/
 
 /*  */
 
-PE	bits2fpm (fsb, pairs, actions, fti)
-struct ftamblk *fsb;
-struct pair pairs[];
-int	actions;
-struct FTAMindication *fti;
+PE 
+bits2fpm (struct ftamblk *fsb, struct pair pairs[], int actions, struct FTAMindication *fti)
 {
 	struct pair *pp;
 	PE	    fpm;
@@ -62,12 +59,8 @@ no_mem:
 
 /* ARGSUSED */
 
-int	fpm2bits (fsb, pairs, fpm, actions, fti)
-struct ftamblk *fsb;
-struct pair pairs[];
-PE  fpm;
-int    *actions;
-struct FTAMindication *fti;
+int 
+fpm2bits (struct ftamblk *fsb, struct pair pairs[], PE fpm, int *actions, struct FTAMindication *fti)
 {
 	int    i;
 	int	bits_set=0;

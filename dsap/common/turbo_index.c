@@ -43,8 +43,8 @@ Avlnode		*subtree_index;		/* array of subtree indexes */
 Avlnode		*sibling_index;		/* array of sibling indexes */
 int		optimized_only;		/* only allow indexed searches */
 
-char *strrev( s )
-char	*s;
+char *
+strrev (char *s)
 {
 	char	*start, *rev, *rsave;
 	int	len;
@@ -922,8 +922,8 @@ AttributeType	attr;
  * attribute to be optimized during loading.
  */
 
-turbo_optimize( attr )
-char	*attr;
+int 
+turbo_optimize (char *attr)
 {
 	AttributeType	a;
 
@@ -956,8 +956,8 @@ char	*attr;
  * index_subtree - arrange for the subtree starting at tree to be indexed.
  */
 
-index_subtree( tree )
-char	*tree;
+int 
+index_subtree (char *tree)
 {
 	DN		dn, str2dn();
 	Index		*pindex;
@@ -985,8 +985,8 @@ char	*tree;
  * index_siblings - arrange for the children of parent to be indexed.
  */
 
-index_siblings( parent )
-char	*parent;
+int 
+index_siblings (char *parent)
 {
 	DN		dn, str2dn();
 	Index		*pindex;

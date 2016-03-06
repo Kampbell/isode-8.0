@@ -58,8 +58,8 @@ extern IFP oc_hier;
 #ifdef TURBO_DISK
 char fromfile;
 #endif
-char *find_nest(str)
-char *str;
+char *
+find_nest (char *str)
 {
 	char *cp, *ptr1, *ptr2;
 
@@ -302,7 +302,8 @@ PE	pe;
 	return atl;
 }
 
-attribute_syntax () {
+int 
+attribute_syntax (void) {
 	as_sntx = add_attribute_syntax ("AttributeSyntax",
 									(IFP) attrSntx_enc,
 									(IFP) attrSntx_dec,

@@ -69,10 +69,8 @@ static int ftam_nappl = sizeof ftam_appls / sizeof ftam_appls[0];
 
 /*    set tracing */
 
-int	FHookRequest (sd, tracing, fti)
-int	sd;
-IFP	tracing;
-struct FTAMindication *fti;
+int 
+FHookRequest (int sd, IFP tracing, struct FTAMindication *fti)
 {
 	SBV	    smask;
 	struct ftamblk *fsb;
@@ -95,12 +93,8 @@ struct FTAMindication *fti;
 
 /* ARGSUSED */
 
-int	FTraceHook (sd, event, fpdu, pe, rw)
-int	sd;
-char   *event,
-	   *fpdu;
-PE	pe;
-int	rw;
+int 
+FTraceHook (int sd, char *event, char *fpdu, PE pe, int rw)
 {
 	if (event)
 		LLOG (ftam_log, LLOG_ALL, ("%s %s", rw > 0 ? "event"

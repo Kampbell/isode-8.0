@@ -62,7 +62,8 @@ extern	AV_Sequence open_call_avs ;
 #endif /* QUIPU_CONSOLE */
 
 
-update_pseudo_attr () {
+int 
+update_pseudo_attr (void) {
 	/*
 		Called just before dsa_pseudo_attr is referenced.
 		Any dynamic changes should be reflected.
@@ -232,8 +233,8 @@ update_pseudo_attr () {
 #endif /* QUIPU_CONSOLE */
 }
 
-new_cacheEDB (dn)
-DN dn;
+int 
+new_cacheEDB (DN dn)
 {
 	AttributeType at;
 	AttributeValue av;
@@ -267,7 +268,8 @@ DN dn;
 
 }
 
-Attr_Sequence get_cacheEDB () {
+Attr_Sequence 
+get_cacheEDB (void) {
 	AttributeType at;
 
 	at = AttrT_new (cacheEDB);
@@ -275,8 +277,8 @@ Attr_Sequence get_cacheEDB () {
 	return (as_find_type (dsa_pseudo_attr,at));
 }
 
-write_dsa_entry(eptr)
-Entry eptr;
+int 
+write_dsa_entry (Entry eptr)
 {
 	int um;
 	FILE * fptr;
@@ -402,8 +404,8 @@ Entry eptr;
 
 }
 
-load_pseudo_attrs (data_type)
-char data_type;
+int 
+load_pseudo_attrs (int data_type)
 {
 	FILE * fptr;
 	char filename[LINESIZE];

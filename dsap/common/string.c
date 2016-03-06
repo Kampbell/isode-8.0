@@ -260,8 +260,8 @@ char *x;
 		return (prts2prim(x,strlen(x)));
 }
 
-static char * local_t61 (a)
-char * a;
+static char *
+local_t61 (char *a)
 {
 	char * b;
 
@@ -303,8 +303,8 @@ PE pe;
 #include "iso3166.h"
 #endif
 
-int	check_3166 (a)
-char   *a;
+int 
+check_3166 (char *a)
 {
 #ifdef STRICT_X500
 	int    bitno;
@@ -440,8 +440,8 @@ PE pe;
 		return (prtsdec(pe));
 }
 
-static char * quotechar (a,b)
-char a, *b;
+static char *
+quotechar (int a, char *b)
 {
 #ifdef NICER_ESCAPES
 #define CONT_CHAR	'\\'
@@ -487,8 +487,8 @@ char a, *b;
 #endif
 }
 
-static char * unquotechar (a,b)
-char *a, *b;
+static char *
+unquotechar (char *a, char *b)
 {
 	int val;
 
@@ -539,8 +539,8 @@ char *a, *b;
 }
 
 
-check_print_string (str)
-char * str;
+int 
+check_print_string (char *str)
 {
 
 	for (; *str != 0; str++) {
@@ -574,8 +574,7 @@ char * str;
 #define PARSE_INCR	240
 
 struct qbuf *
-r_octparse (str)
-char * str;
+r_octparse (char *str)
 {
 	static char 	*buf;
 	static int 		buflen = 0;
@@ -614,8 +613,8 @@ char * str;
 	return (str2qb(buf, ptr - buf, 1));
 }
 
-char * octparse (str)
-char * str;
+char *
+octparse (char *str)
 {
 	char buffer [BUFSIZ];
 	char * ptr=buffer;
@@ -641,8 +640,8 @@ char * str;
 
 #define prtparse_aux(z)	(check_print_string(z) ? strdup(z) : NULLCP)
 
-char * prtparse (str)
-char * str;
+char *
+prtparse (char *str)
 {
 	char * ptr;
 
@@ -659,8 +658,8 @@ char * str;
 	}
 }
 
-static char * cntyparse(str)
-char * str;
+static char *
+cntyparse (char *str)
 {
 	char * a;
 
@@ -675,8 +674,8 @@ char * str;
 	return (NULLCP);
 }
 
-static char * t61parse (str)
-char * str;
+static char *
+t61parse (char *str)
 {
 	extern char t61_flag;
 	char * res;
@@ -703,8 +702,8 @@ char * str;
 }
 
 
-char * cryptstring (str)
-char * str;
+char *
+cryptstring (char *str)
 {
 	char * p;
 	/* This is a SIMPLE HACK to prevent passwords being revealed */
@@ -719,8 +718,8 @@ char * str;
 	return (str);
 }
 
-char * cryptparse (str)
-char * str;
+char *
+cryptparse (char *str)
 {
 	extern char crypt_flag;
 	char * octparse ();
@@ -732,14 +731,14 @@ char * str;
 		return (octparse (str));
 }
 
-sfree (x)
-char *x;
+int 
+sfree (char *x)
 {
 	free (x);
 }
 
-pstrcmp (a,b)
-char * a, *b;
+int 
+pstrcmp (char *a, char *b)
 {
 	while (*a == *b) {
 		if (*a++ == NULL)
@@ -754,8 +753,8 @@ char * a, *b;
 
 }
 
-static tpstrcmp (a,b)
-char *a, *b;
+static 
+tpstrcmp (char *a, char *b)
 {
 	if (*a == T61_MARK)
 		a++;
@@ -774,8 +773,8 @@ char *a, *b;
 		return (-1);
 }
 
-static tlexequ (a,b)
-char *a, *b;
+static 
+tlexequ (char *a, char *b)
 {
 
 	/* lexequ with T.61 knowledge */
@@ -797,8 +796,8 @@ char *a, *b;
 		return (-1);
 }
 
-passwdcmp (a,b)
-char * a, *b;
+int 
+passwdcmp (char *a, char *b)
 {
 	if (strcmp (a,b) == 0)
 		return (0);
@@ -807,9 +806,8 @@ char * a, *b;
 
 }
 
-telcmp (a, b)
-char   *a,
-	   *b;
+int 
+telcmp (char *a, char *b)
 {
 	char c1,
 			 c2;
@@ -835,8 +833,8 @@ char   *a,
 	}
 }
 
-telstrlen( s )
-char	*s;
+int 
+telstrlen (char *s)
 {
 	int	len;
 
@@ -847,10 +845,8 @@ char	*s;
 	return( len );
 }
 
-telncmp (a, b, len)
-char   *a,
-	   *b;
-int	len;
+int 
+telncmp (char *a, char *b, int len)
 {
 	char c1,
 			 c2;
@@ -1042,8 +1038,8 @@ int format;
  * Doesn't work for a qbuf which doesn't have a head ! Don't really know what
  * is the proper form of a queue buf. Marshall's doco doesn't say
  */
-qb_cmp(qb1, qb2)
-struct	qbuf	*qb1, *qb2;
+int 
+qb_cmp (struct qbuf *qb1, struct qbuf *qb2)
 {
 	struct	qbuf	*qp1, *qp2;
 	char	*po1, *po2;
@@ -1108,10 +1104,8 @@ struct	qbuf	*qb1, *qb2;
  * actually compares them and returns 1, 0, -1 depending on wether the
  * len characters of string1 are greater, equal or less than string2
  */
-nbcmp(string1, string2, len)
-char	*string1;
-char	*string2;
-int 	len;
+int 
+nbcmp (char *string1, char *string2, int len)
 {
 	while (len-- > 0) {
 		if (*string1++ == *string2++)
@@ -1127,8 +1121,7 @@ int 	len;
 				: 0))
 
 struct qbuf *
-qb_cpy(qb)
-struct qbuf	*qb;
+qb_cpy (struct qbuf *qb)
 {
 	struct qbuf	*qp;
 	struct qbuf	*nqb;
@@ -1224,9 +1217,10 @@ again:
  * a '\0' for the convience of non binary string users
  */
 char *
-part_parse (pstr, plen)
-char **pstr;		/* address of pointer to string */
-int	*plen;		/* address of integer we set the length to */
+part_parse (
+    char **pstr,		/* address of pointer to string */
+    int *plen		/* address of integer we set the length to */
+)
 {
 	static char 	*buf;
 	static int 		buflen = 0;
@@ -1275,8 +1269,8 @@ int	*plen;		/* address of integer we set the length to */
 	return (buf);
 }
 
-case_exact_match (sntx)
-short sntx;
+int 
+case_exact_match (int sntx)
 {
 	if ((sntx < exct) || (sntx > (exct + 3)))
 		return (FALSE);
@@ -1284,8 +1278,8 @@ short sntx;
 		return (TRUE);
 }
 
-approx_string (sntx)
-short sntx;
+int 
+approx_string (int sntx)
 {
 	if ((sntx < exct) || (sntx > (exct + 7)))
 		return (FALSE);
@@ -1293,8 +1287,8 @@ short sntx;
 		return (TRUE);
 }
 
-sub_string (sntx)
-short sntx;
+int 
+sub_string (int sntx)
 {
 	if ((sntx < exct) || (sntx > (exct + 8)))
 		return (FALSE);
@@ -1302,14 +1296,15 @@ short sntx;
 		return (TRUE);
 }
 
-telephone_match (sntx)
-short sntx;
+int 
+telephone_match (int sntx)
 {
 	return( sntx == tel_sntx );
 }
 
 
-string_syntaxes () {
+int 
+string_syntaxes (void) {
 	/* Don't change ordering here unless you know
 	   the side effects !!! */
 

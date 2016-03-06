@@ -39,8 +39,8 @@ void ros_log ();
 * The DSA has produced an error for the task, encode the error,
 * generate a D-ERROR.REQUEST and update the task block.
 */
-task_error(task)
-       struct task_act * task;
+int 
+task_error (struct task_act *task)
 {
 	int				  result;
 	struct DSAPindication	  di_s;

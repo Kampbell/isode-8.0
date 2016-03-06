@@ -30,8 +30,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_seq.c,v 9.0 
 #include "quipu/util.h"
 #include "quipu/entry.h"
 
-dn_seq_free (dnseq)
-struct dn_seq * dnseq;
+int 
+dn_seq_free (struct dn_seq *dnseq)
 {
 	struct dn_seq * ptr;
 	struct dn_seq * next;
@@ -44,8 +44,8 @@ struct dn_seq * dnseq;
 
 }
 
-struct dn_seq * dn_seq_cpy (dnseq)
-struct dn_seq * dnseq;
+struct dn_seq *
+dn_seq_cpy (struct dn_seq *dnseq)
 {
 	struct dn_seq * ptr;
 	struct dn_seq * ptr2;
@@ -76,8 +76,8 @@ DN who;
 	return (NOTOK);
 }
 
-dn_seq_cmp (a,b)
-struct dn_seq * a, * b;
+int 
+dn_seq_cmp (struct dn_seq *a, struct dn_seq *b)
 {
 	struct dn_seq	* dns1;
 	struct dn_seq	* dns2;
@@ -144,8 +144,8 @@ int format;
 	}
 }
 
-struct dn_seq * str2dnseq (str)
-char * str;
+struct dn_seq *
+str2dnseq (char *str)
 {
 	char *ptr;
 	char *save,val;
@@ -225,8 +225,8 @@ struct dn_seq	* dnseq;
 	return(ret);
 }
 
-struct dn_seq	* dn_seq_pop(dnseq)
-struct dn_seq	* dnseq;
+struct dn_seq *
+dn_seq_pop (struct dn_seq *dnseq)
 {
 	struct dn_seq * ret;
 

@@ -136,9 +136,8 @@ LLog    _vt_log = {
 };
 LLog   *vt_log = &_vt_log;
 
-main(argc, argv)
-int	argc;
-char *argv[];
+int 
+main (int argc, char *argv[])
 {
 	int f = 0;
 	char *cp = line;
@@ -285,9 +284,8 @@ gotpty:
 	/*NOTREACHED*/
 }
 
-fatal(f, msg)
-int f;
-char *msg;
+int 
+fatal (int f, char *msg)
 {
 	char buf[BUFSIZ];
 
@@ -296,10 +294,8 @@ char *msg;
 	adios (NULLCP, msg);
 }
 
-fatalperror(f, msg, errnum)
-int f;
-char *msg;
-int errnum;
+int 
+fatalperror (int f, char *msg, int errnum)
 {
 	char buf[BUFSIZ];
 	extern char *sys_errlist[];
@@ -312,7 +308,8 @@ int errnum;
  * Main loop.  Select from pty and network.
  */
 
-vtd(f, p) {
+int 
+vtd (int f, int p) {
 	int on = 1;
 	int	nfds, result;
 
@@ -504,7 +501,8 @@ interrupt() {
 #endif
 }
 
-netflush() {
+int 
+netflush (void) {
 	char *cp;
 	int n;
 	int i, j;
@@ -629,7 +627,8 @@ netflush() {
 		nbackp = nfrontp = netobuf;
 }
 
-SFD	cleanup() {
+SFD 
+cleanup (void) {
 	sleep(1);
 	while(getch() > 0);	/*Clean out unread VT-DATA PDU's still held
 				  in network.  Kludge to overcome deficiency
@@ -698,7 +697,8 @@ rmut() {
 }
 
 #else
-rmut() {
+int 
+rmut (void) {
 	char *p;
 
 	p = line + sizeof(_PATH_DEV) - 1;
@@ -712,7 +712,8 @@ rmut() {
 }
 #endif
 
-bye() {
+int 
+bye (void) {
 	if(do_cleaning) {
 		rmut();
 		kill(0, SIGKILL);
@@ -720,7 +721,8 @@ bye() {
 	exit(0);
 }
 
-flushbufs() {
+int 
+flushbufs (void) {
 	pcc = 0;
 	pfrontp = pbackp = ptyobuf;
 	nfrontp = nbackp = netobuf;
@@ -730,7 +732,8 @@ flushbufs() {
 
 /*    ERRORS */
 
-void	finalbye () {
+void 
+finalbye (void) {
 	bye ();
 }
 
@@ -753,9 +756,8 @@ va_dcl {
 #else
 /* VARARGS2 */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -779,16 +781,15 @@ va_dcl {
 #else
 /* VARARGS3 */
 
-void	advise (code, what, fmt)
-int	code;
-char   *what,
-	   *fmt;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }
 #endif
 
-ptyflush() {
+int 
+ptyflush (void) {
 	int n;
 
 	if ((n = pfrontp - pbackp) > 0) {
@@ -802,7 +803,8 @@ ptyflush() {
 }
 
 #ifdef TERMIOS
-ptyecho(on) {
+int 
+ptyecho (int on) {
 	struct termios term;
 
 	ptyflush();
@@ -820,8 +822,8 @@ ptyecho(on) {
 	}
 }
 #else
-setmode(on, off)
-int on, off;
+int 
+setmode (int on, int off)
 {
 	struct sgttyb b;
 

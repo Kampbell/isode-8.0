@@ -58,8 +58,8 @@ static CMD_TABLE pdm_table [] = {
 };
 
 
-static pdmfree (pdm)
-struct pref_deliv * pdm;
+static 
+pdmfree (struct pref_deliv *pdm)
 {
 	struct pref_deliv *next;
 
@@ -69,8 +69,8 @@ struct pref_deliv * pdm;
 	}
 }
 
-static pdmcmp (a,b)
-struct pref_deliv * a, *b;
+static 
+pdmcmp (struct pref_deliv *a, struct pref_deliv *b)
 {
 	/* matching here is a bit dubious !!! */
 
@@ -86,8 +86,8 @@ struct pref_deliv * a, *b;
 
 }
 
-static struct pref_deliv * pdmcpy (a)
-struct pref_deliv * a;
+static struct pref_deliv *
+pdmcpy (struct pref_deliv *a)
 {
 	struct pref_deliv * b, *c, *result = (struct pref_deliv *) NULL;
 
@@ -108,8 +108,8 @@ struct pref_deliv * a;
 	return (result);
 }
 
-static struct pref_deliv* pdmparse (str)
-char * str;
+static struct pref_deliv *
+pdmparse (char *str)
 {
 	struct pref_deliv * result = (struct pref_deliv *) NULL;
 	struct pref_deliv * a, *b;
@@ -198,7 +198,8 @@ PE pe;
 	return (m);
 }
 
-pref_deliv_syntax () {
+int 
+pref_deliv_syntax (void) {
 	 add_attribute_syntax ("DeliveryMethod",
 								 (IFP) pdmenc,	(IFP) pdmdec,
 								 (IFP) pdmparse,pdmprint,

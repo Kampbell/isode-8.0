@@ -49,9 +49,8 @@ extern	char	dad_flag;
 char            fname[128];
 static char	new_draft;
 
-call_add (argc, argv)
-int             argc;
-char          **argv;
+int 
+call_add (int argc, char **argv)
 {
 
 	Entry           entry_ptr;
@@ -224,9 +223,8 @@ char          **argv;
 
 }
 
-make_old (file, commit)
-char * file;
-char commit;
+int 
+make_old (char *file, int commit)
 {
 	char newname[LINESIZE];
 
@@ -273,9 +271,8 @@ AV_Sequence oc;
 	return (as);
 }
 
-add_template (name, objclass)
-char           *name;
-char           *objclass;
+int 
+add_template (char *name, char *objclass)
 {
 	FILE           *fptr;
 	PS              ps;

@@ -119,7 +119,6 @@
 #endif
 
 
-int	ftamlose (), fpktlose (), ftamoops ();
 
 /*  */
 
@@ -197,6 +196,10 @@ struct ftamblk {
 
 int	freefsblk ();
 struct ftamblk *newfsblk (), *findfsblk ();
+
+int	ftamlose (struct FTAMindication* fti, ...);
+int	ftamoops (struct FTAMindication* fti, ...);
+int	fpktlose (struct ftamblk *fsb, ...);
 
 #ifndef	lint
 #define	fsbtrace(fsb,a)	if ((fsb) -> fsb_trace) (*((fsb) -> fsb_trace)) a

@@ -36,9 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/checkacl.c,v 9.0 1992
 extern int 	selector_rank[];
 extern LLog	*log_dsap;
 
-static common_prefix_len( a, b )
-char	*a;
-char	*b;
+static 
+common_prefix_len (char *a, char *b)
 {
 	int	i;
 
@@ -55,11 +54,8 @@ char	*b;
  * This information is used later when checking search acls.
  */
 
-ftype_add( l, type, len, inequstr )
-Ftypelist	*l;
-AttributeType	type;
-int		len;
-char		*inequstr;
+int 
+ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr)
 {
 	Ftypelist	new, tmp;
 	int		i, plen;
@@ -145,8 +141,8 @@ char		*inequstr;
 	return;
 }
 
-ftype_free( ft )
-Ftypelist	ft;
+int 
+ftype_free (Ftypelist ft)
 {
 	Ftypelist	next = ft;
 
@@ -158,17 +154,16 @@ Ftypelist	ft;
 	}
 }
 
-rc_free( rc )
-struct result_count	*rc;
+int 
+rc_free (struct result_count *rc)
 {
 	if ( rc->rc_types != NULLTYPEDATA )
 		free( (char *) rc->rc_types );
 	free( (char *) rc );
 }
 
-static oid_in_seq( at, seq )
-AttributeType	at;
-struct oid_seq	*seq;
+static 
+oid_in_seq (AttributeType at, struct oid_seq *seq)
 {
 	for ( ; seq != NULLOIDSEQ; seq = seq->oid_next ) {
 		if ( oid_cmp( at->oa_ot.ot_oid, seq->oid_oid ) == 0 ) {
@@ -182,10 +177,8 @@ struct oid_seq	*seq;
 	return( 0 );
 }
 
-static sacl_match( binddn, selfdn, s )
-DN		binddn;
-DN		selfdn;
-Saclinfo	s;
+static 
+sacl_match (DN binddn, DN selfdn, Saclinfo s)
 {
 	switch ( s->sac_selector ) {
 	case ACL_ENTRY:
@@ -215,12 +208,8 @@ Saclinfo	s;
 	return( 0 );
 }
 
-static check_base_sacl( binddn, selfdn, e, local, authtype )
-DN			binddn;
-DN			selfdn;
-Entry			e;
-struct ds_search_task	*local;
-char			authtype;
+static 
+check_base_sacl (DN binddn, DN selfdn, Entry e, struct ds_search_task *local, int authtype)
 {
 	AV_Sequence		avs;
 	Ftypelist		ft;
@@ -297,12 +286,8 @@ char			authtype;
 	return( OK );
 }
 
-static struct result_count *make_rc( binddn, selfdn, e, scope, local )
-DN			binddn;
-DN			selfdn;
-Entry			e;
-int			scope;
-struct ds_search_task	*local;
+static struct result_count *
+make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local)
 {
 	struct result_count	*rc;
 	AV_Sequence		avs;
@@ -398,16 +383,14 @@ static int srch2sacl_scope[] = {
 	SACL_SUBTREE		/* SRA_WHOLESUBTREE	*/
 };
 
-static entry_rc_cmp( e, rc )
-Entry			e;
-struct result_count	*rc;
+static 
+entry_rc_cmp (Entry e, struct result_count *rc)
 {
 	return( e < rc->rc_base ? -1 : e > rc->rc_base ? 1 : 0 );
 }
 
-static rc_cmp( a, b )
-struct result_count	*a;
-struct result_count	*b;
+static 
+rc_cmp (struct result_count *a, struct result_count *b)
 {
 	return( a->rc_base < b->rc_base ? -1
 			: a->rc_base > b->rc_base ? 1 : 0 );
@@ -423,14 +406,8 @@ struct result_count	*b;
  * search.
  */
 
-check_one_sacl( binddn, selfdn, ancestor, scope, local, saclerror, authtype )
-DN			binddn;
-DN			selfdn;
-Entry			ancestor;
-int			scope;
-struct ds_search_task	*local;
-int			*saclerror;
-char			authtype;
+int 
+check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_search_task *local, int *saclerror, int authtype)
 {
 	struct result_count	*rc;
 	Typedata		td;
@@ -500,14 +477,8 @@ char			authtype;
  * up to and including the base node of the search.
  */
 
-check_ancestor_sacls( binddn, selfdn, e, scope, local, authtype, saclerror )
-DN			binddn;
-DN			selfdn;
-Entry			e;
-int			scope;
-struct ds_search_task	*local;
-char			authtype;
-int			*saclerror;
+int 
+check_ancestor_sacls (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local, int authtype, int *saclerror)
 {
 	Entry			stop, ancestor;
 	extern Entry		database_root;
@@ -553,12 +524,14 @@ int			*saclerror;
 	return( OK );
 }
 
-check_lacl( binddn, selfdn, avs, scope, sizelimit )
-DN		binddn;		/* the dn requesting access 		  */
-DN		selfdn;		/* the dn of the entry containing the acl */
-AV_Sequence	avs;		/* the acl protecting the entry 	  */
-int		scope;		/* scope of acl's we want		  */
-int		*sizelimit;	/* size limit on acl we found		  */
+int 
+check_lacl (
+    DN binddn,		/* the dn requesting access 		  */
+    DN selfdn,		/* the dn of the entry containing the acl */
+    AV_Sequence avs,		/* the acl protecting the entry 	  */
+    int scope,		/* scope of acl's we want		  */
+    int *sizelimit	/* size limit on acl we found		  */
+)
 {
 	Listacl		save, tmp, l;
 	AV_Sequence	av;

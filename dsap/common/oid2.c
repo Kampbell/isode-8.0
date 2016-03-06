@@ -51,7 +51,8 @@ struct mac_buf {                        /* for handling macros */
 
 int NumMacro            = 0;
 
-want_oc_hierarchy () {
+int 
+want_oc_hierarchy (void) {
 	extern IFP oc_load;
 	extern IFP oc_macro_add;
 
@@ -59,9 +60,8 @@ want_oc_hierarchy () {
 	oc_macro_add = add_oc_macro;
 }
 
-load_obj_hier (sep,newname)
-char * sep;
-char * newname;
+int 
+load_obj_hier (char *sep, char *newname)
 {
 	if (sep == 0) {
 		LLOG (log_dsap,LLOG_FATAL,("hierarchy missing %s",newname));
@@ -75,9 +75,8 @@ char * newname;
 	return OK;
 }
 
-static struct oc_seq *oc_seq_merge (a,b)
-struct oc_seq *a;
-struct oc_seq *b;
+static struct oc_seq *
+oc_seq_merge (struct oc_seq *a, struct oc_seq *b)
 {
 	struct oc_seq  *aptr, *bptr, *result, *trail;
 
@@ -138,8 +137,8 @@ struct oc_seq *b;
 }
 
 
-static get_oc_bits (str)
-char * str;
+static 
+get_oc_bits (char *str)
 {
 	char * ptr;
 	char * ptr2;
@@ -262,7 +261,8 @@ char * str;
 
 
 
-void	dumpalloid () {
+void 
+dumpalloid (void) {
 	int i;
 	objectclass      * oc = &ocOIDTable[0];
 	oid_table_attr   * at = &attrOIDTable[0];
@@ -280,8 +280,8 @@ void	dumpalloid () {
 }
 
 
-add_oc_macro (buf,ptr)
-char * buf, *ptr;
+int 
+add_oc_macro (char *buf, char *ptr)
 {
 	 strcpy(macro[NumMacro].name,buf);
 	 strcpy(macro[NumMacro++].value,ptr);
@@ -299,7 +299,8 @@ table_seq ts;
 
 }
 
-void	free_oid_table () {
+void 
+free_oid_table (void) {
 	int i;
 	objectclass      * oc = &ocOIDTable[0];
 	oid_table_attr   * at = &attrOIDTable[0];

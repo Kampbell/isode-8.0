@@ -52,9 +52,8 @@ char            flag_show;
 char 		key_flag;
 char		print_format;
 
-read_cache (argc, argv)
-int             argc;
-char          **argv;
+int 
+read_cache (int argc, char **argv)
 {
 	extern char	doneget;
 
@@ -190,9 +189,8 @@ CommonArgs     *ca;
 }
 
 
-set_read_flags (argc,argv)
-int argc;
-char ** argv;
+int 
+set_read_flags (int argc, char **argv)
 {
 	int x;
 	AttributeType at;

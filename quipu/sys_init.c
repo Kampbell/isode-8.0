@@ -45,9 +45,8 @@ extern char * treedir;
 
 static int rmFiles();
 
-dsa_sys_init(acptr,avptr)
-int *acptr;
-char *** avptr;
+int 
+dsa_sys_init (int *acptr, char ***avptr)
 {
 	char *name;
 	char **ptr;
@@ -91,7 +90,8 @@ char *** avptr;
 }
 
 
-void mk_dsa_tmp_dir() {
+void 
+mk_dsa_tmp_dir (void) {
 	struct stat statbuf;
 	char edbtmp_buf[BUFSIZ];
 	char err_buf[BUFSIZ];

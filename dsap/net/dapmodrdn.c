@@ -31,11 +31,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapmodrdn.c,v 9.0 
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 
-dap_modifyrdn (ad, id, arg, error)
-int	  ad;
-int	  * id;
-struct ds_modifyrdn_arg     *arg;
-struct DSError              *error;
+int 
+dap_modifyrdn (int ad, int *id, struct ds_modifyrdn_arg *arg, struct DSError *error)
 {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
@@ -75,12 +72,8 @@ struct DSError              *error;
 	}
 }
 
-int	  DapModifyRDN (ad, id, arg, di, asyn)
-int			  ad;
-int			  id;
-struct ds_modifyrdn_arg	* arg;
-struct DAPindication	* di;
-int			  asyn;
+int 
+DapModifyRDN (int ad, int id, struct ds_modifyrdn_arg *arg, struct DAPindication *di, int asyn)
 {
 	PE                  arg_pe;
 

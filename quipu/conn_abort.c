@@ -38,8 +38,8 @@ struct connection	* conn_alloc();
 void			  conn_free();
 void			  ds_log ();
 
-net_send_abort(conn)
-       struct connection       * conn;
+int 
+net_send_abort (struct connection *conn)
 {
 	int				  result;
 	struct DSAPindication      di_s;
@@ -56,9 +56,8 @@ net_send_abort(conn)
 	conn->cn_ad = NOTOK;
 }
 
-force_close (fd, di)
-int fd;
-struct DSAPindication	* di;
+int 
+force_close (int fd, struct DSAPindication *di)
 {
 	struct tsapblk *tb;
 	int level = LLOG_EXCEPTIONS;
@@ -100,10 +99,8 @@ struct DSAPindication	* di;
 
 /* ARGSUSED */
 
-void	  ds_log (da, str, fd)
-struct DSAPabort	* da;
-char			* str;
-int 			fd;
+void 
+ds_log (struct DSAPabort *da, char *str, int fd)
 {
 	char buffer [BUFSIZ];
 	char * source;

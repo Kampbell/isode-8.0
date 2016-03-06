@@ -115,9 +115,8 @@ extern struct SecurityServices *dsap_security;
 
 char ** sargv;
 
-main(argc, argv)
-int    argc;
-char    **argv;
+int 
+main (int argc, char **argv)
 {
 #ifdef SBRK_DEBUG
 	unsigned proc_size = 0;
@@ -336,8 +335,8 @@ no_copy:
 static int restart = 0;
 
 /* ARGSUSED */
-SFD clean_exit(x)
-int x;
+SFD 
+clean_exit (int x)
 {
 	if (restart)
 		do_restart(x);
@@ -347,8 +346,8 @@ int x;
 
 #ifdef NOT_ANY_MORE
 
-static int check_conns (secs)
-int secs;
+static int 
+check_conns (int secs)
 {
 	struct connection		* cn;
 	int result = TRUE;

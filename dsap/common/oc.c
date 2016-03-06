@@ -298,7 +298,8 @@ int format;
 		ps_printf (ps,"%s",oc2name (oc,oidformat));
 }
 
-objectclass_syntax () {
+int 
+objectclass_syntax (void) {
 
 	oc_sntx = add_attribute_syntax ("objectclass",
 									(IFP) oc_enc,	(IFP) oc_dec,

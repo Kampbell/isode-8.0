@@ -26,7 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd.c,v 9.0 1992/06
 
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ftamsystem.h"
 
 /*    DATA */
@@ -48,10 +48,8 @@ char   *myname = "ftamd";
 
 /* ARGSUSED */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+int 
+main (int argc, char **argv, char **envp)
 {
 	int     result;
 	char   *ap;
@@ -153,9 +151,8 @@ char  **argv,
 
 /*  */
 
-void	ftam_adios (fta, event)
-struct FTAMabort *fta;
-char   *event;
+void 
+ftam_adios (struct FTAMabort *fta, char *event)
 {
 	struct FTAMindication   ftis;
 
@@ -171,9 +168,8 @@ char   *event;
 }
 
 
-void	ftam_advise (fta, event)
-struct FTAMabort *fta;
-char   *event;
+void 
+ftam_advise (struct FTAMabort *fta, char *event)
 {
 	advise (LLOG_NOTICE, NULLCP, "%s: failed", event);
 	ftam_diag (fta -> fta_diags, fta -> fta_ndiag);
@@ -192,9 +188,8 @@ static char *entity[] = {
 };
 
 
-void	ftam_diag (diag, ndiag)
-struct FTAMdiagnostic diag[];
-int	ndiag;
+void 
+ftam_diag (struct FTAMdiagnostic diag[], int ndiag)
 {
 	int    i;
 	char  *cp;
@@ -283,20 +278,19 @@ int	ndiag;
 /*  */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char* what, ...)
+{
 	struct FTAMindication   ftis;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	 _ll_log (ftam_log, LLOG_FATAL, ap);
+	 _ll_log (ftam_log, LLOG_FATAL, what, ap);
 
 	va_end (ap);
 
 	if (ftamfd != NOTOK)
-		 FUAbortRequest (ftamfd, FACTION_PERM,
-		(struct FTAMdiagnostic *) 0, 0, &ftis);
+		 FUAbortRequest (ftamfd, FACTION_PERM, (struct FTAMdiagnostic *) 0, 0, &ftis);
 
 	closewtmp ();
 
@@ -305,9 +299,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -315,26 +308,23 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, ...)
+{
+	char* what;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, code);
+	what = va_arg(ap, char*);
 
-	code = va_arg (ap, int);
-
-	 _ll_log (ftam_log, code, ap);
+	 _ll_log (ftam_log, code, what, ap);
 
 	va_end (ap);
 }
 #else
 /* VARARGS */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }

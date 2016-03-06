@@ -38,12 +38,13 @@ extern	LLog	* log_dsap;
 * Seems that this should be a #define
 */
 
-ds_unbind () {
+int 
+ds_unbind (void) {
 	return(dap_unbind(dsap_ad));
 }
 
-dap_unbind (ad)
-int	  ad;
+int 
+dap_unbind (int ad)
 {
 	int				  ret;
 	struct DAPrelease         dr_s;
@@ -71,11 +72,8 @@ int	  ad;
 
 /* ARGSUSED */
 
-int	  DapUnBindRequest (sd, secs, dr, di)
-int			  sd;
-int			  secs;
-struct DAPrelease	* dr;
-struct DAPindication	* di;
+int 
+DapUnBindRequest (int sd, int secs, struct DAPrelease *dr, struct DAPindication *di)
 {
 	int			  result;
 	struct AcSAPrelease	  acr_s;
@@ -104,11 +102,8 @@ struct DAPindication	* di;
 
 /* ARGSUSED */
 
-int	  DapUnBindRetry (sd, secs, dr, di)
-int			  sd;
-int			  secs;
-struct DAPrelease	* dr;
-struct DAPindication	* di;
+int 
+DapUnBindRetry (int sd, int secs, struct DAPrelease *dr, struct DAPindication *di)
 {
 	int			  result;
 	struct AcSAPrelease	  acr_s;

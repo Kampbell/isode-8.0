@@ -36,9 +36,8 @@ extern	LLog	* log_dsap;
 SFP	abort_vector = NULL;
 
 
-void    ros_log(rop, event)
-struct RoSAPpreject *rop;
-char   *event;
+void 
+ros_log (struct RoSAPpreject *rop, char *event)
 {
 	int level = LLOG_EXCEPTIONS;
 
@@ -56,9 +55,8 @@ char   *event;
 		(*abort_vector) (-2);
 }
 
-void    acs_log(aca, event)
-struct AcSAPabort *aca;
-char   *event;
+void 
+acs_log (struct AcSAPabort *aca, char *event)
 {
 	if(aca->aca_cc > 0)
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("%s: [%s] %*.*s", event,
@@ -71,9 +69,8 @@ char   *event;
 		(*abort_vector) (-2);
 }
 
-td_log(td, event)
-struct TSAPdisconnect   *td;
-char *event;
+int 
+td_log (struct TSAPdisconnect *td, char *event)
 {
 	if(td->td_cc > 0) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("%s: [%s] %*.*s", event,
@@ -84,8 +81,8 @@ char *event;
 	}
 }
 
-int     SetROPS(ad)
-int     ad;
+int 
+SetROPS (int ad)
 {
 	struct RoSAPindication      roi_s;
 	struct RoSAPindication      *roi = &(roi_s);

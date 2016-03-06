@@ -44,8 +44,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/teletex.c,v 9.0
 
 extern LLog * log_dsap;
 
-static teletex_free (ptr)
-struct teletex * ptr;
+static 
+teletex_free (struct teletex *ptr)
 {
 	nfree (ptr->terminal);
 	nfree (ptr->graphic);
@@ -57,8 +57,8 @@ struct teletex * ptr;
 	free ((char *) ptr);
 }
 
-static char * xstrdup (a)
-char * a;
+static char *
+xstrdup (char *a)
 {
 	if (( a == NULLCP) || (*a == NULL))
 		return (NULLCP);
@@ -66,8 +66,8 @@ char * a;
 		return (strdup (a));
 }
 
-static struct teletex * teletex_cpy (a)
-struct teletex * a;
+static struct teletex *
+teletex_cpy (struct teletex *a)
 {
 	struct teletex * result;
 
@@ -81,9 +81,8 @@ struct teletex * a;
 	return (result);
 }
 
-static teletex_cmp (a,b)
-struct teletex * a;
-struct teletex * b;
+static 
+teletex_cmp (struct teletex *a, struct teletex *b)
 {
 	int res;
 
@@ -161,8 +160,8 @@ int format;
 }
 
 
-static struct teletex* str2teletex (str)
-char * str;
+static struct teletex *
+str2teletex (char *str)
 {
 	struct teletex * result;
 	char * ptr;
@@ -297,7 +296,8 @@ PE pe;
 	return (m);
 }
 
-teletex_syntax () {
+int 
+teletex_syntax (void) {
 	 add_attribute_syntax ("TeletexTerminalIdentifier",
 								 (IFP) teletex_enc,	(IFP) teletex_dec,
 								 (IFP) str2teletex,	teletex_print,

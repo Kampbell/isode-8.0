@@ -239,12 +239,12 @@ char   *sys_errname ();
 #define	remque(e)	REMQUE ((char *) (e))
 #endif
 
+#include <stdarg.h>
+void    isosprintf(char*bp, char*what, char*fmt, ...);            /* fmt, args, ... */
+void    _isosprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, ... */
+#define asprintf isoprintf
+#define _asprintf _isoprintf
 
-#ifdef FIXME
-void	asprintf (), _asprintf ();
-#endif
-
-void	isodetailor ();		/* also in tailor.h */
 
 
 /*  time */

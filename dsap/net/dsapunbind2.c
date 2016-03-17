@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind2.c,v 9.
 
 /* ARGSUSED */
 
-int	  DUnBindAccept (sd, di)
-int			  sd;
-struct DSAPindication	* di;
+int 
+DUnBindAccept (int sd, struct DSAPindication *di)
 {
 	int			  result;
 	struct RoNOTindication	  rni_s;
@@ -57,11 +56,8 @@ struct DSAPindication	* di;
 
 /* ARGSUSED */
 
-int	  DUnBindReject (sd, status, reason, di)
-int			  sd;
-int			  status;
-int			  reason;
-struct DSAPindication	* di;
+int 
+DUnBindReject (int sd, int status, int reason, struct DSAPindication *di)
 {
 	int			  result;
 	struct RoNOTindication	  rni_s;

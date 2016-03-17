@@ -51,10 +51,8 @@ char *bitmap;
 static void  resync ();
 static int seqerrs = 0;
 
-int decode_t4 (data, name, size)
-char *data;
-char *name;
-int   size;
+int 
+decode_t4 (char *data, char *name, int size)
 {
 	PE    member;
 	PE    pe;
@@ -212,11 +210,8 @@ static int uc_black_pels [] = {
 */
 
 
-int decode_t4_aux (inbuf, winname, length, twoDimensional)
-char *inbuf;
-char *winname;
-int   length;
-int   twoDimensional;
+int 
+decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional)
 {
 	bit_string code_line,      /* output line */
 			   ref_line,       /* reference line */

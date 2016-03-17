@@ -39,8 +39,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/mailbox.c,v 9.0
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 
-static mailbox_free (ptr)
-struct mailbox * ptr;
+static 
+mailbox_free (struct mailbox *ptr)
 {
 	free (ptr->mbox);
 	free (ptr->mtype);
@@ -49,8 +49,8 @@ struct mailbox * ptr;
 }
 
 
-static struct mailbox * mailbox_cpy (a)
-struct mailbox * a;
+static struct mailbox *
+mailbox_cpy (struct mailbox *a)
 {
 	struct mailbox * result;
 
@@ -60,9 +60,8 @@ struct mailbox * a;
 	return (result);
 }
 
-static mailbox_cmp (a,b)
-struct mailbox * a;
-struct mailbox * b;
+static 
+mailbox_cmp (struct mailbox *a, struct mailbox *b)
 {
 	int res;
 
@@ -92,8 +91,8 @@ int format;
 }
 
 
-static struct mailbox* str2mailbox (str)
-char * str;
+static struct mailbox *
+str2mailbox (char *str)
 {
 	struct mailbox * result;
 	char * ptr;
@@ -142,7 +141,8 @@ PE pe;
 	return (m);
 }
 
-mailbox_syntax () {
+int 
+mailbox_syntax (void) {
 	 add_attribute_syntax ("Mailbox",
 								 (IFP) mail_enc,		(IFP) mail_dec,
 								 (IFP) str2mailbox,	mailbox_print,

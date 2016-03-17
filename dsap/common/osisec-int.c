@@ -32,8 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/osisec-int.c,v 
 
 static struct SecurityServices 	null_serv = NULLSECURITYSERVICES;
 
-struct SecurityServices*
-use_serv_null() {
+struct SecurityServices *
+use_serv_null (void) {
 	return (&null_serv);
 }
 
@@ -84,7 +84,7 @@ DN             *nameptr;
 }
 
 struct certificate_list *
-null_mkpath() {
+null_mkpath (void) {
 	return (struct certificate_list *) 0;
 }
 
@@ -113,15 +113,13 @@ struct GenericParameters *parms;
 }
 
 struct Nonce *
-nullmknonce(previous)
-struct Nonce *previous;
+nullmknonce (struct Nonce *previous)
 {
 	return ((struct Nonce *) 0);
 }
 
-int
-nullcknonce(nonce)
-struct Nonce *nonce;
+int 
+nullcknonce (struct Nonce *nonce)
 {
 	return (DSE_SC_AUTHENTICATION);
 }

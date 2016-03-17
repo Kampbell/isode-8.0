@@ -159,7 +159,8 @@ GDBM_FILE	db;
 	return save;
 }
 
-char *getnextline () {
+char *
+getnextline (void) {
 	return getline (save_db);
 }
 
@@ -291,7 +292,8 @@ char	*str;
 
 }
 
-free_phylinebuf() {
+int 
+free_phylinebuf (void) {
 	free (parse_buffer);
 	parse_buffer = NULLCP;
 	parse_len = 0;
@@ -358,10 +360,8 @@ char * getnextline ()
  * un-escape a continued line and return pointer to end of the buffer
  * if the line is continued
  */
-char	*
-unesc_cont(ptr, len)
-char	*ptr;
-int	len;
+char *
+unesc_cont (char *ptr, int len)
 {
 	char	*p;
 	int		cnt;
@@ -478,9 +478,8 @@ int	wl;
 	}
 }
 
-cnt_escp(ptr, len)
-char	*ptr;
-int	len;
+int 
+cnt_escp (char *ptr, int len)
 {
 	char	*p;
 	int		cnt;
@@ -494,9 +493,7 @@ int	len;
 }
 
 char *
-srealloc(p, nsize)
-char	*p;
-int     nsize;
+srealloc (char *p, int nsize)
 {
 	char *ptr;
 

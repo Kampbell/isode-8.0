@@ -54,9 +54,8 @@ extern char	fred_subdisplay;
 
 extern LLog    *log_dua;
 
-call_showentry (argc, argv)
-int             argc;
-char          **argv;
+int 
+call_showentry (int argc, char **argv)
 {
 	Attr_Sequence   eptr;
 	char           *vect[2];

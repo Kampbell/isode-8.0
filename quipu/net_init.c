@@ -60,10 +60,8 @@ extern  struct PSAPaddr		* dsaladdr;
 extern	struct PSAPaddr		* psap_cpy();
 int	max_conns;
 
-static int  TMagic (vecp, vec, td)
-int     *vecp;
-char   **vec;
-struct TSAPdisconnect *td;
+static int 
+TMagic (int *vecp, char **vec, struct TSAPdisconnect *td)
 {
 	int	    sd;
 	struct TSAPstart tss;
@@ -84,7 +82,8 @@ struct TSAPdisconnect *td;
 	return OK;
 }
 
-net_init() {
+int 
+net_init (void) {
 	int	    ntries,
 			ontty;
 	struct TSAPdisconnect	  td_s;

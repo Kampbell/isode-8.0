@@ -30,7 +30,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/conn.c,v 9.0 1992/06/
 
 extern LLog * log_dsap;
 
-struct connection	* conn_alloc() {
+struct connection *
+conn_alloc (void) {
 	struct connection * conn_ret;
 
 	conn_ret = (struct connection *) calloc(1,sizeof(struct connection));
@@ -39,8 +40,8 @@ struct connection	* conn_alloc() {
 	return(conn_ret);
 }
 
-conn_free(conn)
-struct connection	* conn;
+int 
+conn_free (struct connection *conn)
 {
 	DLOG(log_dsap, LLOG_TRACE, ("conn_free()"));
 
@@ -60,8 +61,8 @@ struct connection	* conn;
 	free((char *)conn);
 }
 
-conn_connect_free (cc)
-struct conn_connect	* cc;
+int 
+conn_connect_free (struct conn_connect *cc)
 {
 	bind_arg_free (&(cc->cc_req));
 
@@ -69,8 +70,8 @@ struct conn_connect	* cc;
 	DCFREE (&(cc->cc_dc));
 }
 
-conn_start_free (cs)
-struct conn_start	* cs;
+int 
+conn_start_free (struct conn_start *cs)
 {
 	if (cs->cs_svec[0])
 		free (cs->cs_svec[0]);
@@ -87,8 +88,8 @@ struct conn_start	* cs;
 	DSFREE (&(cs->cs_ds));
 }
 
-conn_extract(conn)
-struct connection	* conn;
+int 
+conn_extract (struct connection *conn)
 {
 	/*
 	* Extract all the operations made on this connection, and all
@@ -153,9 +154,8 @@ struct connection	* conn;
 	conn_free(conn);
 }
 
-conn_log(conn,level)
-struct connection       * conn;
-int level;
+int 
+conn_log (struct connection *conn, int level)
 {
 	struct oper_act     * oper;
 	struct task_act     * task;
@@ -245,8 +245,8 @@ int level;
 }
 
 #ifdef DEBUG
-conn_list_log(cn)
-struct connection	* cn;
+int 
+conn_list_log (struct connection *cn)
 {
 	struct connection	* cn_tmp;
 

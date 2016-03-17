@@ -36,10 +36,8 @@ extern LLog	* log_dsap;
 
 /* ARGSUSED */
 
-int	  DRejectRequest (sd, reason, id)
-int	  sd;
-int	  reason;
-int	  id;
+int 
+DRejectRequest (int sd, int reason, int id)
 {
 	int	  result;
 	struct RoSAPindication	  roi_s;

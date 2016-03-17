@@ -34,7 +34,8 @@ extern LLog * log_dsap;
 void end_of_task_analyse() ;
 #endif /* QUIPU_CONSOLE */
 
-struct task_act *task_alloc() {
+struct task_act *
+task_alloc (void) {
 	struct task_act	* tk_ret;
 
 	tk_ret = (struct task_act *) calloc(1,sizeof(struct task_act));
@@ -45,8 +46,8 @@ struct task_act *task_alloc() {
 	return(tk_ret);
 }
 
-task_free(tk)
-struct task_act	* tk;
+int 
+task_free (struct task_act *tk)
 {
 	DLOG(log_dsap, LLOG_TRACE, ("task_free()"));
 
@@ -67,8 +68,8 @@ struct task_act	* tk;
 /*
 *  Extract task from list held by the connection it was received on.
 */
-task_conn_extract(tk)
-struct task_act	* tk;
+int 
+task_conn_extract (struct task_act *tk)
 {
 	struct task_act	* tk_tmp;
 	struct task_act	**tk_p;
@@ -89,8 +90,8 @@ struct task_act	* tk;
 	}
 }
 
-task_extract(tk)
-struct task_act	* tk;
+int 
+task_extract (struct task_act *tk)
 {
 	struct oper_act	* on;
 
@@ -117,9 +118,8 @@ struct task_act	* tk;
 	DLOG (log_dsap,LLOG_TRACE, ("task block extracted"));
 }
 
-task_log(tk,level)
-struct task_act	* tk;
-int level;
+int 
+task_log (struct task_act *tk, int level)
 {
 	struct oper_act	* on;
 	char * state;
@@ -149,9 +149,8 @@ int level;
 }
 
 #ifdef QUIPU_CONSOLE
-void
-end_of_task_analyse(task)
-struct task_act * task ;
+void 
+end_of_task_analyse (struct task_act *task)
 {
 	extern AV_Sequence open_call_avs ;
 	extern time_t timenow ;

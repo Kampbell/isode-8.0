@@ -24,7 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/quipu_sntx.c,v 
  *
  */
 
-quipu_syntaxes () {
+int 
+quipu_syntaxes (void) {
 	static char done = 0;
 
 	if (done++)

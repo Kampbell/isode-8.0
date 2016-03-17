@@ -94,7 +94,8 @@ int len;
 	num_cmd++;
 }
 
-dish_cmd_init () {
+int 
+dish_cmd_init (void) {
 	add_dish_command ("list", 	call_list,		1);
 	add_dish_command ("compare", 	call_compare,		1);
 	add_dish_command ("search", 	call_search,		2);
@@ -141,9 +142,8 @@ LLog   *dad_log = &_dad_log;
 
 char no_rcfile;
 
-dish_init (argc, argv)
-int             argc;
-char          **argv;
+int 
+dish_init (int argc, char **argv)
 {
 	int             i;
 	char           *ttyname (), *getenv();
@@ -289,9 +289,8 @@ char          **argv;
 }
 
 /* ARGSUSED */
-unknown_cmd (argc, argv)
-int             argc;
-char          **argv;
+int 
+unknown_cmd (int argc, char **argv)
 {
 	if (frompipe)
 		ps_print (opt,"Serious dish error\n");
@@ -303,15 +302,15 @@ char          **argv;
 
 #ifdef GNUREADLINE
 
-void gnu_gets_setup () {
+void 
+gnu_gets_setup (void) {
 	extern int           rl_bind_key ();
 	extern int               *rl_insert ();
 	rl_bind_key ( '\t', rl_insert );
 }
 
-static char *gnu_gets ( buf, len )
-char                   *buf;
-int                    len;
+static char *
+gnu_gets (char *buf, int len)
 {
 	extern char          *readline ();
 	static char       *gets_line;
@@ -328,7 +327,8 @@ int                    len;
 #endif
 
 
-do_dish () {
+int 
+do_dish (void) {
 	char	       *brkset;
 	char           *command;
 	char		cmd_buf [LINESIZE];
@@ -578,9 +578,8 @@ tidy_up:
 }
 
 /* ARGSUSED */
-call_quit (argc, argv)
-int argc;
-char **argv;
+int 
+call_quit (int argc, char **argv)
 {
 	/* can only get called if run interactively - dont worry about pipe */
 	 signal (SIGINT, SIG_DFL);
@@ -597,9 +596,8 @@ char **argv;
 	exit (0);
 }
 
-set_cmd_default (cmd, dflt)
-char * cmd;
-char * dflt;
+int 
+set_cmd_default (char *cmd, char *dflt)
 {
 	int x;
 

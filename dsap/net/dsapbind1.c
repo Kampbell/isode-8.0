@@ -120,13 +120,8 @@ int			  async;
 	return (result);
 }
 
-int	  DspAsynBindRequest (calledaddr, bindarg, qos_maxtime, dc, di, async)
-struct PSAPaddr		* calledaddr;
-struct ds_bind_arg	* bindarg;
-int			  qos_maxtime;
-struct DSAPconnect	* dc;
-struct DSAPindication	* di;
-int			  async;
+int 
+DspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, int qos_maxtime, struct DSAPconnect *dc, struct DSAPindication *di, int async)
 {
 	struct SSAPref		  sf_s;
 	struct SSAPref		* sf = &(sf_s);
@@ -221,13 +216,8 @@ int			  async;
 	return (result);
 }
 
-int	  QspAsynBindRequest (calledaddr, bindarg, qos_maxtime, dc, di, async)
-struct PSAPaddr		* calledaddr;
-struct ds_bind_arg	* bindarg;
-int			  qos_maxtime;
-struct DSAPconnect	* dc;
-struct DSAPindication	* di;
-int			  async;
+int 
+QspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, int qos_maxtime, struct DSAPconnect *dc, struct DSAPindication *di, int async)
 {
 	struct SSAPref		  sf_s;
 	struct SSAPref		* sf = &(sf_s);
@@ -260,11 +250,8 @@ int			  async;
 							   bindarg, &qos, dc, di, async));
 }
 
-int	  DspAsynBindRetry (sd, do_next_nsap, dc, di)
-int			  sd;
-int			  do_next_nsap;
-struct DSAPconnect	* dc;
-struct DSAPindication	* di;
+int 
+DspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di)
 {
 	int			  result;
 	struct RoNOTindication	  rni_s;
@@ -288,11 +275,8 @@ struct DSAPindication	* di;
 	return (result);
 }
 
-int	  QspAsynBindRetry (sd, do_next_nsap, dc, di)
-int			  sd;
-int			  do_next_nsap;
-struct DSAPconnect	* dc;
-struct DSAPindication	* di;
+int 
+QspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di)
 {
 	int			  result;
 	struct RoNOTindication	  rni_s;
@@ -316,9 +300,8 @@ struct DSAPindication	* di;
 	return (result);
 }
 
-int	  DBindDecode (acc, dc)
-struct AcSAPconnect	* acc;
-struct DSAPconnect	* dc;
+int 
+DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc)
 {
 	struct ds_bind_arg  * bind_res;
 	struct ds_bind_error        * bind_err;
@@ -453,13 +436,8 @@ int			  async;
 	return (result);
 }
 
-int	  IspAsynBindRequest (calledaddr, bindarg, qos_maxtime, dc, di, async)
-struct PSAPaddr		* calledaddr;
-struct ds_bind_arg	* bindarg;
-int			  qos_maxtime;
-struct DSAPconnect	* dc;
-struct DSAPindication	* di;
-int			  async;
+int 
+IspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, int qos_maxtime, struct DSAPconnect *dc, struct DSAPindication *di, int async)
 {
 	struct SSAPref		  sf_s;
 	struct SSAPref		* sf = &(sf_s);
@@ -492,11 +470,8 @@ int			  async;
 							   bindarg, &qos, dc, di, async));
 }
 
-int	  IspAsynBindRetry (sd, do_next_nsap, dc, di)
-int			  sd;
-int			  do_next_nsap;
-struct DSAPconnect	* dc;
-struct DSAPindication	* di;
+int 
+IspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di)
 {
 	int			  result;
 	struct RoNOTindication	  rni_s;

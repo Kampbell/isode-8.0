@@ -108,9 +108,8 @@ extern	LLog	* log_dsap;
  */
 
 
-substring_encode (parm,pe)
-struct filter_item *parm;
-PE *pe;
+int 
+substring_encode (struct filter_item *parm, PE *pe)
 {
 	int		subs_type;
 	AV_Sequence	avs_temp;
@@ -349,9 +348,8 @@ PE *pe;
  */
 
 
-substring_decode (pparm,pe)
-struct filter_item ** pparm;
-PE pe;
+int 
+substring_decode (struct filter_item **pparm, PE pe)
 {
 	AV_Sequence	* avs_initial;
 	AV_Sequence	* avs_any;
@@ -632,8 +630,8 @@ PE pe;
 	return OK;
 }
 
-substring_free (parm)
-struct filter_item *parm;
+int 
+substring_free (struct filter_item *parm)
 {
 	avs_free (parm->UNSUB.fi_sub_initial);
 	avs_free (parm->UNSUB.fi_sub_any);
@@ -690,9 +688,8 @@ struct filter_item *parm;
  *
  */
 
-treestruct_encode (parm,pe)
-struct tree_struct * parm;
-PE * pe;
+int 
+treestruct_encode (struct tree_struct *parm, PE *pe)
 {
 	OID     oid_tmp;
 	int	do_once;
@@ -883,9 +880,8 @@ PE * pe;
  */
 
 
-treestruct_decode (parm,pe)
-struct tree_struct ** parm;
-PE pe;
+int 
+treestruct_decode (struct tree_struct **parm, PE pe)
 {
 
 	AttributeType	  at_tmp;
@@ -1160,9 +1156,8 @@ PE pe;
 	return OK;
 }
 
-EDB_encode (parm,pe)
-struct getedb_result *parm;
-PE *pe;
+int 
+EDB_encode (struct getedb_result *parm, PE *pe)
 {
 	struct entry *ent_tmp;
 	PE  p31 = NULLPE;
@@ -1197,9 +1192,8 @@ PE *pe;
 }
 
 
-EDB_decode_force (pparm,pe)
-struct getedb_result ** pparm;
-PE pe;
+int 
+EDB_decode_force (struct getedb_result **pparm, PE pe)
 {
 	Avlnode **tree;
 	struct entry *tmp;
@@ -1243,9 +1237,8 @@ PE pe;
 }
 
 
-EDB_decode (pparm,pe)
-struct getedb_result ** pparm;
-PE pe;
+int 
+EDB_decode (struct getedb_result **pparm, PE pe)
 {
 
 	if (pe -> pe_class != PE_CLASS_UNIV
@@ -1264,8 +1257,8 @@ PE pe;
 	return OK;
 }
 
-EDB_free (parm)
-struct getedb_result *parm;
+int 
+EDB_free (struct getedb_result *parm)
 {
 	/* All done for us at some other time (hopefully) */
 	return OK;

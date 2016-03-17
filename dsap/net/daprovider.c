@@ -60,10 +60,8 @@ struct RoNOTindication	* rni;
 
 /*    ROS interface */
 
-int	  ros2daplose (di, event, rop)
-struct DAPindication	* di;
-char			* event;
-struct RoSAPpreject	* rop;
+int 
+ros2daplose (struct DAPindication *di, char *event, struct RoSAPpreject *rop)
 {
 	char	* cp;
 	char	  buffer[BUFSIZ];
@@ -84,10 +82,8 @@ struct RoSAPpreject	* rop;
 		return (daplose (di, DA_ROS, NULLCP, "%s", cp));
 }
 
-int	  ros2dapreject (di, event, rou)
-struct DAPindication	* di;
-char			* event;
-struct RoSAPureject	* rou;
+int 
+ros2dapreject (struct DAPindication *di, char *event, struct RoSAPureject *rou)
 {
 	char	* cp;
 	char	  buffer[BUFSIZ];

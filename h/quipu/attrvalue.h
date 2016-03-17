@@ -93,8 +93,8 @@ struct acl_info {
 #define acl_info_fill(w,x,y,z)    w -> acl_categories = x ;  \
 				  w -> acl_selector_type = y; \
 				  w -> acl_name = z;
+struct acl_info * acl_info_cpy (struct acl_info *aclptr);
 struct acl_info *acl_info_new ();
-struct acl_info *acl_info_cpy();
 struct acl_info *acl_default();
 struct acl_info *acl_dflt();
 

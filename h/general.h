@@ -246,7 +246,6 @@ void    _isosprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, 
 #define _asprintf _isoprintf
 
 
-
 /*  time */
 
 #ifndef makedev

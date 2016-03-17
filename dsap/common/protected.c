@@ -54,8 +54,8 @@ PE pe;
 	return (result);
 }
 
-static struct protected_password *str2prot(str)
-char *str;
+static struct protected_password *
+str2prot (char *str)
 {
 	struct protected_password *result;
 	char *octparse();
@@ -112,9 +112,8 @@ int format;
 
 /* The reverse operation. Currently, hashes are always 4 octets long. */
 
-char *hash2str(hash, len)
-unsigned long hash;
-int *len;
+char *
+hash2str (unsigned long hash, int *len)
 {
 	char *result;
 	int i;
@@ -135,10 +134,8 @@ int *len;
 /* insecure hash function for testing purposes */
 
 /* ARGSUSED */
-unsigned long hash_passwd(seed, str, len)
-unsigned long seed;
-char *str;
-int len;
+unsigned long 
+hash_passwd (unsigned long seed, char *str, int len)
 {
 	seed = 0;
 
@@ -148,18 +145,20 @@ int len;
 }
 
 /* ARGSUSED */
-int check_guard(pwd, pwd_len, salt, hval, hlen)
-char *pwd; /* This string is not null-terminated */
-int pwd_len;
-char *salt; /* Null-terminated salt */
-char *hval; /* This string is not null-terminated */
-int hlen;
+int 
+check_guard (
+    char *pwd, /* This string is not null-terminated */
+    int pwd_len,
+    char *salt, /* Null-terminated salt */
+    char *hval, /* This string is not null-terminated */
+    int hlen
+)
 {
 	return (2);
 }
 
-static int prot_cmp (a, b)
-struct protected_password  *a, *b;
+static int 
+prot_cmp (struct protected_password *a, struct protected_password *b)
 {
 	int retval;
 
@@ -196,8 +195,8 @@ struct protected_password  *a, *b;
 	return (retval);
 }
 
-static struct protected_password *prot_cpy(parm)
-struct protected_password *parm;
+static struct protected_password *
+prot_cpy (struct protected_password *parm)
 {
 	struct protected_password *result;
 
@@ -228,8 +227,8 @@ struct protected_password *parm;
 	return (result);
 }
 
-static prot_free(parm)
-struct protected_password *parm;
+static 
+prot_free (struct protected_password *parm)
 {
 	if (parm->passwd != NULLCP)
 		free(parm->passwd);
@@ -241,7 +240,8 @@ struct protected_password *parm;
 	free((char *) parm);
 }
 
-protected_password_syntax () {
+int 
+protected_password_syntax (void) {
 	 add_attribute_syntax ("ProtectedPassword",
 								 (IFP) prot_enc,	(IFP) prot_dec,
 								 (IFP) str2prot,	prot_print,

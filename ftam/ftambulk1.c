@@ -31,16 +31,21 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambulk1.c,v 9.0 1992
 #include <signal.h>
 #include "fpkt.h"
 
+static int FReadWriteRequestAux (struct ftamblk *fsb, int state, int operation, struct FADUidentity *identity, int context, int level, int lock, struct FTAMindication *fti);
+static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti);
+
 /*    F-{READ,WRITE}.REQUEST */
 
-int	FReadWriteRequest (sd, operation, identity, context, level, lock, fti)
-int	sd;
-int	operation;
-struct FADUidentity *identity;
-int	context,		/* F-READ.REQUEST only */
-	level,			/*   .. */
-	lock;
-struct FTAMindication *fti;
+int 
+FReadWriteRequest (
+    int sd,
+    int operation,
+    struct FADUidentity *identity,
+    int context,		/* F-READ.REQUEST only */
+    int level,			/*   .. */
+    int lock,
+    struct FTAMindication *fti
+)
 {
 	SBV      smask;
 	int     result,
@@ -94,16 +99,7 @@ struct FTAMindication *fti;
 
 /*  */
 
-static int  FReadWriteRequestAux (fsb, state, operation, identity, context,
-								  level, lock, fti)
-struct ftamblk *fsb;
-int	state,
-	operation;
-struct FADUidentity *identity;
-int	context,
-	level,
-	lock;
-struct FTAMindication *fti;
+static int FReadWriteRequestAux (struct ftamblk *fsb, int state, int operation, struct FADUidentity *identity, int context, int level, int lock, struct FTAMindication *fti)
 {
 	int     result;
 	char   *fpdu;
@@ -231,10 +227,8 @@ out:
 
 /*    F-TRANSFER-END.REQUEST */
 
-int	FTransEndRequest (sd, sharedASE, fti)
-int	sd;
-PE	sharedASE;
-struct FTAMindication *fti;
+int 
+FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti)
 {
 	SBV	    smask;
 	int     result;
@@ -256,10 +250,7 @@ struct FTAMindication *fti;
 
 /*  */
 
-static int  FTransEndRequestAux (fsb, sharedASE, fti)
-struct ftamblk *fsb;
-PE	sharedASE;
-struct FTAMindication *fti;
+static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti)
 {
 	int	    result;
 	PE	    pe;

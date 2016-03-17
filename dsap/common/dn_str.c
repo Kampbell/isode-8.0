@@ -198,7 +198,8 @@ DN dn;
 	return (ret_pe);
 }
 
-dn_syntax () {
+int 
+dn_syntax (void) {
 	syntax_dn = add_attribute_syntax ("dn",
 									  (IFP) dn_enc,	(IFP) dn_dec,
 									  (IFP) str2dnX,	(IFP) dn_print,

@@ -42,8 +42,8 @@ static struct isodocument ids;
 
 /*  */
 
-int	setisodocument (f)
-int	f;
+int 
+setisodocument (int f)
 {
 	if (servf == NULL)
 		servf = fopen (isodefile (isodocuments, 0), "r");
@@ -55,7 +55,8 @@ int	f;
 }
 
 
-int	endisodocument () {
+int 
+endisodocument (void) {
 	if (servf && !stayopen) {
 		 fclose (servf);
 		servf = NULL;
@@ -66,7 +67,8 @@ int	endisodocument () {
 
 /*  */
 
-struct isodocument *getisodocument () {
+struct isodocument *
+getisodocument (void) {
 	char  *cp;
 	struct isodocument *id = &ids;
 	static char buffer[BUFSIZ + 1];
@@ -149,8 +151,8 @@ free1:
 
 /*  */
 
-struct isodocument *getisodocumentbyentry (entry)
-char    *entry;
+struct isodocument *
+getisodocumentbyentry (char *entry)
 {
 	struct isodocument *id;
 

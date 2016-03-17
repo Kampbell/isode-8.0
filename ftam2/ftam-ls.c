@@ -47,23 +47,24 @@ int	toomany;
 int	nfilent = 0;
 struct filent *filents = NULL;
 
-int	filcmp ();
-
-
 #ifdef	BRIDGE
 FILE	*fdopen();
 #endif
-static  FILE *lsfp = stdout;
+static  FILE *lsfp = NULL;//FIXME stdout;
 
 
 char   *ctime ();
 FILE   *popen ();
 
+static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi);
+static int fdfls (char *file);
+static int filcmp (struct filent **a, struct filent **b);
+
 /*  */
 
 #ifndef	BRIDGE
-int	f_fls (vec)
-char  **vec;
+int 
+f_fls (char **vec)
 {
 	int	    doingpipe,
 			result;
@@ -75,7 +76,7 @@ char  **vec;
 
 	pp = vec[0];
 	if (*++vec == NULL)  {
-		if (getline ("output to file/program: ", buffer) == NOTOK
+		if (getftamline ("output to file/program: ", buffer) == NOTOK
 				|| str2vec (buffer, vec) < 1)
 			return OK;
 	}
@@ -123,8 +124,8 @@ char  **vec;
 
 /*  */
 
-int	f_ls (vec)
-char  **vec;
+int 
+f_ls (char **vec)
 {
 	int     invis,
 			multi,
@@ -157,7 +158,7 @@ char  **vec;
 			break;
 
 		default:
-			if (getline ("file: ", buffer) == NOTOK
+			if (getftamline ("file: ", buffer) == NOTOK
 					|| str2vec (buffer, vec) < 1)
 				return OK;
 			invis = 0;
@@ -205,14 +206,7 @@ char  **vec;
 
 /*  */
 
-static int  ls (file, entry, top, first, last, invis, multi)
-char   *file,
-	   *entry;
-int	top,
-	first,
-	last,
-	invis,
-	multi;
+static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi)
 {
 	int	    recurse;
 	long    mtime;
@@ -388,8 +382,7 @@ you_lose:
 
 /*  */
 
-static int  fdfls (file)
-char   *file;
+static int fdfls (char *file)
 {
 	int    i,
 			 j,
@@ -530,10 +523,8 @@ char   *file;
 
 /* ARGSUSED */
 
-int	fdffnx (fd, px, status)
-int	fd;
-struct PSAPdata *px;
-int	status;
+int 
+fdffnx (int fd, struct PSAPdata *px, int status)
 {
 	int    i;
 	PE	    pe,
@@ -646,9 +637,7 @@ int	status;
 }
 
 
-static int  filcmp (a, b)
-struct filent **a,
-		**b;
+static int filcmp (struct filent **a, struct filent **b)
 {
 	return strcmp ((*a) -> fi_entry, (*b) -> fi_entry);
 }

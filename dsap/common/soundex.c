@@ -40,8 +40,8 @@ extern LLog *log_dsap;
 	ispunct((unsigned char) (x)) || \
 	isdigit((unsigned char) (x)) || x == '\0')
 
-char * first_word(ptr)
-char	*ptr;
+char *
+first_word (char *ptr)
 {
 	if ( ptr == NULLCP )
 		return NULLCP;
@@ -55,8 +55,8 @@ char	*ptr;
 	return(ptr);
 }
 
-char * next_word (ptr)
-char *ptr;
+char *
+next_word (char *ptr)
 {
 	if ( ptr == NULLCP )
 		return NULLCP;
@@ -77,9 +77,8 @@ char *ptr;
 	/* NOTREACHED */
 }
 
-soundex( s, c )
-char	*s;
-char	**c;
+int 
+soundex (char *s, char **c)
 {
 	char code, adjacent, ch, *p;
 	int i, cmax;
@@ -170,8 +169,8 @@ char	**c;
 static char	*g_bcode;
 static int	g_bcodelen;
 
-static match_word( a )
-char	*a;
+static 
+match_word (char *a)
 {
 	char	*as;
 	int	cmp;
@@ -187,9 +186,8 @@ char	*a;
 	return(cmp == 0);
 }
 
-soundex_cmp (a,b)
-char *a;
-char *b;
+int 
+soundex_cmp (char *a, char *b)
 {
 	char result = FALSE;
 	char * ptr;

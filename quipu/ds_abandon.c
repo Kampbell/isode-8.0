@@ -35,9 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_abandon.c,v 9.0 19
 extern LLog * log_dsap;
 /* ARGSUSED */
 
-do_ds_abandon (arg, error)
-struct ds_abandon_arg       *arg;
-struct DSError              *error;
+int 
+do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error)
 {
 	DLOG (log_dsap,LLOG_TRACE,("ds_abandon"));
 
@@ -47,8 +46,8 @@ struct DSError              *error;
 	return (NOTOK);
 }
 
-perform_abandon(tk)
-struct task_act	* tk;
+int 
+perform_abandon (struct task_act *tk)
 {
 	struct task_act	* tk_tmp;
 	struct task_act	**tk_p;
@@ -91,8 +90,8 @@ struct task_act	* tk;
 	}
 }
 
-task_abandon(tk)
-struct task_act	* tk;
+int 
+task_abandon (struct task_act *tk)
 {
 	struct oper_act	* on;
 

@@ -43,8 +43,8 @@ extern char quipu_shutdown;
 * Check what type of activity it is and dispatch to an appropriate
 * routine to handle the activity.
 */
-conn_dispatch(cn)
-struct connection	* cn;
+int 
+conn_dispatch (struct connection *cn)
 {
 	int				  result;
 	struct DSAPindication      di_s;
@@ -114,10 +114,8 @@ struct connection	* cn;
 }
 
 #ifdef QUIPU_CONSOLE
-static void
-running_analyse(cn, di)
-struct connection *cn ;
-struct DSAPindication *di ;
+static void 
+running_analyse (struct connection *cn, struct DSAPindication *di)
 {
 	extern AV_Sequence open_call_avs ;
 	extern time_t timenow ;

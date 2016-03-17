@@ -164,8 +164,8 @@ GDBM_FILE	db;
  * via avl_apply, calling turbo_write_entry to write each entry
  */
 
-turbo_writeall(e)
-Entry	e;
+int 
+turbo_writeall (Entry e)
 {
 	GDBM_FILE	db, turbo_open();
 	int		save_heap;
@@ -210,8 +210,8 @@ Entry	e;
  * written with a call to turbo_write_entry.
  */
 
-turbo_write(e)
-Entry	e;
+int 
+turbo_write (Entry e)
 {
 	GDBM_FILE	db, turbo_open();
 	int		save_heap;
@@ -251,8 +251,8 @@ Entry	e;
  * edb dbm file.
  */
 
-turbo_delete(e)
-Entry	e;
+int 
+turbo_delete (Entry e)
 {
 	static char	deletekey[256];
 	int		rc;
@@ -366,5 +366,6 @@ Entry		parent;
 
 #else
 
-turbo_delete_dummy () {}
+int 
+turbo_delete_dummy (void) {}
 #endif

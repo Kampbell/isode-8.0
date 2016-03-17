@@ -32,10 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftampass.c,v 9.0 1992/
 
 /*  */
 
-struct type_FTAM_Access__Passwords *pass2fpm (fsb, fp, fti)
-struct ftamblk *fsb;
-struct FTAMpasswords *fp;
-struct FTAMindication *fti;
+struct type_FTAM_Access__Passwords *
+pass2fpm (struct ftamblk *fsb, struct FTAMpasswords *fp, struct FTAMindication *fti)
 {
 	struct type_FTAM_Access__Passwords *fpm;
 
@@ -76,11 +74,8 @@ no_mem:
 
 /*  */
 
-int	fpm2pass (fsb, fpm, fp, fti)
-struct ftamblk *fsb;
-struct type_FTAM_Access__Passwords *fpm;
-struct FTAMpasswords *fp;
-struct FTAMindication *fti;
+int 
+fpm2pass (struct ftamblk *fsb, struct type_FTAM_Access__Passwords *fpm, struct FTAMpasswords *fp, struct FTAMindication *fti)
 {
 	struct qbuf *qb;
 

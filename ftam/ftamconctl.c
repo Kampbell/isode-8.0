@@ -56,10 +56,8 @@ struct pair fconctl_pairs [] = {
 
 /*  */
 
-struct type_FTAM_Concurrency__Control *conctl2fpm (fsb, fc, fti)
-struct ftamblk *fsb;
-struct FTAMconcurrency *fc;
-struct FTAMindication *fti;
+struct type_FTAM_Concurrency__Control *
+conctl2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti)
 {
 	struct type_FTAM_Concurrency__Control *fpm;
 
@@ -98,11 +96,8 @@ no_mem:
 
 /* ARGSUSED */
 
-int	fpm2conctl (fsb, fpm, fc, fti)
-struct ftamblk *fsb;
-struct type_FTAM_Concurrency__Control *fpm;
-struct FTAMconcurrency *fc;
-struct FTAMindication *fti;
+int 
+fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti)
 {
 	FCINIT (fc);
 
@@ -125,10 +120,8 @@ struct FTAMindication *fti;
 
 /*  */
 
-struct type_FTAM_Concurrency__Access *conacc2fpm (fsb, fc, fti)
-struct ftamblk *fsb;
-struct FTAMconcurrency *fc;
-struct FTAMindication *fti;
+struct type_FTAM_Concurrency__Access *
+conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti)
 {
 	struct type_FTAM_Concurrency__Access *fpm;
 	int key;
@@ -161,11 +154,8 @@ struct FTAMindication *fti;
 }
 
 
-int     fpm2conacc (fsb, fpm, fc, fti)
-struct ftamblk *fsb;
-struct type_FTAM_Concurrency__Access *fpm;
-struct FTAMconcurrency *fc;
-struct FTAMindication *fti;
+int 
+fpm2conacc (struct ftamblk *fsb, struct type_FTAM_Concurrency__Access *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti)
 {
 	int	    key;
 

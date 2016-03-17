@@ -105,8 +105,8 @@ AttributeType at;
 	return (NULLAttrV);
 }
 
-file_free (fs)
-struct file_syntax * fs;
+int 
+file_free (struct file_syntax *fs)
 {
 	if (fs == (struct file_syntax *) NULL)
 		return;

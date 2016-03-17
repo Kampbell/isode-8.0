@@ -31,42 +31,36 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamgroup1.c,v 9.0 199
 #include <signal.h>
 #include "fpkt.h"
 
+static int FGroupRequest (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti);
+static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti);
+static int figrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti);
+static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti);
+
 /*    F-{MANAGE,BULK-{BEGIN,END}}.REQUEST (group) */
 
-int     FManageRequest (sd, ftg, fti)
-int     sd;
-struct FTAMgroup   *ftg;
-struct FTAMindication  *fti;
+int 
+FManageRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
 {
 	return FGroupRequest (sd, ftg, FTI_MANAGEMENT, FSB_MANAGEMENT, fti);
 }
 
 
-int     FBulkBeginRequest (sd, ftg, fti)
-int     sd;
-struct FTAMgroup   *ftg;
-struct FTAMindication  *fti;
+int 
+FBulkBeginRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
 {
 	return FGroupRequest (sd, ftg, FTI_BULKBEGIN, FSB_BULKBEGIN, fti);
 }
 
 
-int     FBulkEndRequest (sd, ftg, fti)
-int     sd;
-struct FTAMgroup   *ftg;
-struct FTAMindication  *fti;
+int 
+FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
 {
 	return FGroupRequest (sd, ftg, FTI_BULKEND, FSB_BULKEND, fti);
 }
 
 /*    F-GROUP.REQUEST (group) */
 
-static int  FGroupRequest (sd, ftg, type, state, fti)
-int     sd;
-struct FTAMgroup   *ftg;
-int	type,
-	state;
-struct FTAMindication  *fti;
+static int FGroupRequest (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti)
 {
 	SBV	    smask;
 	int	    result;
@@ -89,11 +83,7 @@ struct FTAMindication  *fti;
 
 /*  */
 
-static int  FGroupRequestAux (fsb, ftg, state, fti)
-struct ftamblk *fsb;
-struct FTAMgroup  *ftg;
-int	state;
-struct FTAMindication  *fti;
+static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti)
 {
 	int    i;
 	int     did_loop,
@@ -163,11 +153,7 @@ out:
 
 /*  */
 
-static int  figrpchk (fsb, ftg, type, fti)
-struct ftamblk *fsb;
-struct FTAMgroup *ftg;
-int	type;
-struct FTAMindication *fti;
+static int figrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti)
 {
 	int     i,
 			request;
@@ -467,13 +453,7 @@ finish_create:
 
 /*  */
 
-static int  figrp2pdus (fsb, ftg, pdus, texts, npdu, fti)
-struct ftamblk *fsb;
-struct FTAMgroup *ftg;
-struct type_FTAM_PDU *pdus[];
-char   *texts[];
-int    *npdu;
-struct FTAMindication *fti;
+static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti)
 {
 	int     i;
 	struct type_FTAM_PDU *pdu;

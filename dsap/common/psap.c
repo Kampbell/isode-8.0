@@ -35,14 +35,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/psap.c,v 9.0 19
 
 extern LLog * log_dsap;
 
-psap_free (psap)
-struct PSAPaddr * psap;
+int 
+psap_free (struct PSAPaddr *psap)
 {
 	free ((char *)psap) ;
 }
 
-struct PSAPaddr * psap_cpy (a)
-struct PSAPaddr * a;
+struct PSAPaddr *
+psap_cpy (struct PSAPaddr *a)
 {
 	struct PSAPaddr * r;
 
@@ -54,20 +54,20 @@ struct PSAPaddr * a;
 	return (r);
 }
 
-psap_dup (r,a)
-struct PSAPaddr * r, * a;
+int 
+psap_dup (struct PSAPaddr *r, struct PSAPaddr *a)
 {
 	*r = *a;    /* struct copy */
 }
 
-static psap_cmp (r,a)
-struct PSAPaddr *r, *a;
+static 
+psap_cmp (struct PSAPaddr *r, struct PSAPaddr *a)
 {
 	return (bcmp ((char *) r, (char *) a, sizeof *a) ? (-1) : 0);
 }
 
-static PE psap_enc (p)
-struct PSAPaddr *p;
+static PE 
+psap_enc (struct PSAPaddr *p)
 {
 	PE ret_pe;
 
@@ -78,8 +78,8 @@ struct PSAPaddr *p;
 	return (ret_pe);
 }
 
-static struct PSAPaddr * psap_dec (pe)
-PE pe;
+static struct PSAPaddr *
+psap_dec (PE pe)
 {
 	struct PSAPaddr *psap;
 
@@ -93,8 +93,8 @@ PE pe;
 	return (psap);
 }
 
-static struct PSAPaddr * psap_parse (s)
-char * s;
+static struct PSAPaddr *
+psap_parse (char *s)
 {
 	struct PSAPaddr *pa;
 	struct PSAPaddr *psap;
@@ -110,10 +110,8 @@ char * s;
 	}
 }
 
-static psap_print (ps,p,format)
-PS ps;
-struct PSAPaddr *p;
-int format;
+static 
+psap_print (PS ps, struct PSAPaddr *p, int format)
 {
 	if (format != READOUT)
 		ps_printf (ps, "%s", _paddr2str(p,NULLNA,-1));
@@ -122,7 +120,8 @@ int format;
 
 }
 
-psap_syntax () {
+int 
+psap_syntax (void) {
 	 add_attribute_syntax ("presentationAddress",
 								 (IFP) psap_enc,		(IFP) psap_dec,
 								 (IFP) psap_parse,	psap_print,

@@ -163,9 +163,8 @@ LLog    _vt_log = {
 };
 LLog   *vt_log = &_vt_log;
 
-main(argc, argv)
-int argc;
-char *argv[];
+int 
+main (int argc, char *argv[])
 {
 	int	i,
 		fflag;
@@ -288,8 +287,8 @@ char *argv[];
 
 /*    DISPATCH */
 
-command(top)
-int top;
+int 
+command (int top)
 {
 	int eof,oldmode;
 	char *vec[NVEC + 1];
@@ -332,9 +331,8 @@ int top;
 
 /*  */
 
-static int vtploop (vec, error)
-char  **vec;
-int	error;
+static int 
+vtploop (char **vec, int error)
 {
 	struct dispatch *ds;
 
@@ -367,9 +365,8 @@ int	error;
 
 /*  */
 
-int	getline (prompt, buffer)
-char   *prompt,
-	   *buffer;
+int 
+getline (char *prompt, char *buffer)
 {
 	int    i;
 	char  *cp,
@@ -405,8 +402,8 @@ char   *prompt,
 
 /*  */
 
-struct dispatch *getds (name)
-char *name;
+struct dispatch *
+getds (char *name)
 {
 	int    longest,
 			 nmatches;
@@ -453,8 +450,8 @@ char *name;
 
 /*    OPERATIONS */
 
-static int  vt_open (vec)
-char  **vec;
+static int 
+vt_open (char **vec)
 {
 	if (*++vec == NULL) {
 		if (getline ("host: ", line) == NOTOK
@@ -469,7 +466,8 @@ char  **vec;
 }
 
 
-do_vt() {
+int 
+do_vt (void) {
 	 signal(SIGINT, intr);
 	 signal(SIGPIPE, deadpeer);
 	printf("Trying...\n");
@@ -490,8 +488,8 @@ do_vt() {
 
 /* ARGSUSED */
 
-static int  vt_close (vec)
-char  **vec;
+static int 
+vt_close (char **vec)
 {
 	 tmode(0);
 	vrelreq();
@@ -517,8 +515,8 @@ char  **vec;
 
 /* ARGSUSED */
 
-static int  vt_quit (vec)
-char  *vec;
+static int 
+vt_quit (char *vec)
 {
 	if (connected)
 		 vt_close (NULLVP);
@@ -530,8 +528,8 @@ char  *vec;
 
 /* ARGSUSED */
 
-static int  vt_status (vec)
-char  **vec;
+static int 
+vt_status (char **vec)
 {
 	 printf ("associated with terminal service on \"%s\"\n  at %s\n",
 				   peerhost, pa2str (&ts_bound));
@@ -544,8 +542,8 @@ char  **vec;
 
 /* ARGSUSED */
 
-static int  vt_suspend (vec)
-char  **vec;
+static int 
+vt_suspend (char **vec)
 {
 	int save;
 
@@ -577,8 +575,8 @@ char  **vec;
 
 /*  */
 
-static int  vt_escape (vec)
-char  **vec;
+static int 
+vt_escape (char **vec)
 {
 	char   c;
 
@@ -710,8 +708,8 @@ char    **getval ();
 
 /*  */
 
-static int  vt_set (vec)
-char  **vec;
+static int 
+vt_set (char **vec)
 {
 	int    i,
 			 j;
@@ -894,8 +892,8 @@ out_of_range:
 
 /*  */
 
-static printvar (v)
-struct var *v;
+static 
+printvar (struct var *v)
 {
 	int	    i;
 	char    buffer[BUFSIZ];
@@ -938,8 +936,8 @@ struct var *v;
 
 /* ARGSUSED */
 
-static int  set_debug (v)
-struct var *v;
+static int 
+set_debug (struct var *v)
 {
 	if (debug)
 		ll_dbinit (vt_log, myname);
@@ -950,8 +948,8 @@ struct var *v;
 
 /* ARGSUSED */
 
-static int  set_echo (v)
-struct var *v;
+static int 
+set_echo (struct var *v)
 {
 	if (!connected) {
 		advise (LLOG_NOTICE,NULLCP,  "not associated with terminal service");
@@ -964,8 +962,8 @@ struct var *v;
 
 /* ARGSUSED */
 
-static int  set_escape (v)
-struct var *v;
+static int 
+set_escape (struct var *v)
 {
 	if (*escapestr) {
 		char   *cp = control (escape = *escapestr);
@@ -978,8 +976,8 @@ struct var *v;
 
 /* ARGSUSED */
 
-static int  set_repertoire (v)
-struct var *v;
+static int 
+set_repertoire (struct var *v)
 {
 	if (!connected) {
 		advise (LLOG_NOTICE,NULLCP,  "not associated with terminal service");
@@ -991,9 +989,8 @@ struct var *v;
 
 /*  */
 
-static char **getval (name, choices)
-char *name;
-char   **choices;
+static char **
+getval (char *name, char **choices)
 {
 	int    longest,
 			 nmatches;
@@ -1039,8 +1036,8 @@ char   **choices;
 
 /*  */
 
-static struct var *getvar (name)
-char *name;
+static struct var *
+getvar (char *name)
 {
 	int    longest,
 			 nmatches;
@@ -1089,8 +1086,8 @@ char *name;
 static int helpwidth = 0;
 
 
-static int  vt_help (vec)
-char  **vec;
+static int 
+vt_help (char **vec)
 {
 	int    i,
 			 j,
@@ -1162,7 +1159,8 @@ FILE *fp;
 
 /*  */
 
-static rcinit () {
+static 
+rcinit (void) {
 	int    w;
 	char **cp;
 	struct dispatch *ds;
@@ -1211,8 +1209,8 @@ int	tcc;
 /*
  * Select from tty and network...
  */
-vt(s)
-int s;
+int 
+vt (int s)
 {
 	int c;
 	int tin = fileno(stdin), tout = fileno(stdout);
@@ -1327,8 +1325,7 @@ int s;
  * for a special character.
  */
 char *
-control(c)
-int c;
+control (int c)
 {
 	static char buf[3];
 
@@ -1345,18 +1342,20 @@ int c;
 	return (buf);
 }
 
-SFD	deadpeer() {
+SFD 
+deadpeer (void) {
 	 tmode(0);
 	longjmp(peerdied, -1);
 }
 
-SFD	intr() {
+SFD 
+intr (void) {
 	 tmode(0);
 	longjmp(toplevel, -1);
 }
 
-ttyflush(dd)
-int	dd;
+int 
+ttyflush (int dd)
 {
 	int n;
 
@@ -1374,8 +1373,8 @@ int	dd;
 		tbackp = tfrontp = ttyobuf;
 }
 
-netflush(dd)
-int	dd;
+int 
+netflush (int dd)
 {
 	char *cp;
 	int n, i, j;
@@ -1511,7 +1510,8 @@ int	dd;
 		nbackp = nfrontp = netobuf;
 }
 
-flushbufs() {
+int 
+flushbufs (void) {
 	tcc = 0;
 	tbp = tibuf;
 	nfrontp = nbackp = netobuf;
@@ -1522,7 +1522,8 @@ flushbufs() {
 
 /*    ERRORS */
 
-void	finalbye () {
+void 
+finalbye (void) {
 	 tmode (0);
 }
 
@@ -1550,9 +1551,8 @@ va_dcl {
 #else
 /* VARARGS2 */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -1596,10 +1596,8 @@ va_dcl {
 #else
 /* VARARGS3 */
 
-void	advise (code, what, fmt)
-int	code;
-char   *what,
-	   *fmt;
+void 
+advise (int code, char *what, char *fmt)
 {
 	advise (code, what, fmt);
 }
@@ -1607,10 +1605,12 @@ char   *what,
 
 /* XXX -- why is this stubbed ? */
 #ifdef TERMIOS
-ptyecho(on) {
+int 
+ptyecho (int on) {
 }
 #else
 /*ARGSUSED*/
-setmode(on, off) {
+int 
+setmode (int on, int off) {
 }
 #endif

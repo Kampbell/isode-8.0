@@ -40,9 +40,8 @@ extern char 	print_format;
 
 void	reverse_print_dn();
 
-call_showname (argc, argv)
-int             argc;
-char          **argv;
+int 
+call_showname (int argc, char **argv)
 {
 	DN              dnptr;
 	int             compact = FALSE;

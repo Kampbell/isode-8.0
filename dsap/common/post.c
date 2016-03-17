@@ -46,8 +46,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/post.c,v 9.0 19
 
 extern LLog * log_dsap;
 
-static addrfree (addr)
-struct postaddr * addr;
+static 
+addrfree (struct postaddr *addr)
 {
 	struct postaddr * next;
 	for (; addr != (struct postaddr *) NULL; addr = next) {
@@ -57,8 +57,8 @@ struct postaddr * addr;
 	}
 }
 
-static addrcmp (a,b)
-struct postaddr * a, *b;
+static 
+addrcmp (struct postaddr *a, struct postaddr *b)
 {
 	int res;
 	for (; (a != (struct postaddr *) NULL) && (b != (struct postaddr *) NULL) ;
@@ -73,8 +73,8 @@ struct postaddr * a, *b;
 
 }
 
-static struct postaddr * addrcpy (a)
-struct postaddr * a;
+static struct postaddr *
+addrcpy (struct postaddr *a)
 {
 	struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 
@@ -96,8 +96,8 @@ struct postaddr * a;
 	return (result);
 }
 
-static struct postaddr* addrparse (str)
-char * str;
+static struct postaddr *
+addrparse (char *str)
 {
 	struct postaddr * result = (struct postaddr *) NULL;
 	struct postaddr * a, *b;
@@ -311,7 +311,8 @@ PE pe;
 	return (m);
 }
 
-post_syntax () {
+int 
+post_syntax (void) {
 	 add_attribute_syntax ("PostalAddress",
 								 (IFP) addrenc,	(IFP) addrdec,
 								 (IFP) addrparse,addrprint,

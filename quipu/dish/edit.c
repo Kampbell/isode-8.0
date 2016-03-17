@@ -39,9 +39,8 @@ extern char     fname[];
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-editentry (argc, argv)
-int             argc;
-char          **argv;
+int 
+editentry (int argc, char **argv)
 {
 	char            str[LINESIZE];
 	char            prog[LINESIZE];
@@ -185,9 +184,8 @@ out2:
 }
 
 
-get_password (str,buffer)
-char * str;
-char * buffer;
+int 
+get_password (char *str, char *buffer)
 {
 
 	char            prog[LINESIZE];
@@ -216,8 +214,8 @@ char * buffer;
 	}
 }
 
-yesno (str)
-char * str;
+int 
+yesno (char *str)
 {
 	char            prog[LINESIZE];
 	extern char     inbuf[];

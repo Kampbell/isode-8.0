@@ -37,15 +37,8 @@ extern Attr_Sequence entry_find_type();
 
 static attribute_not_cached ();
 
-do_ds_compare (arg, error, result, binddn, target, di_p, dsp, authtype)
-struct ds_compare_arg       *arg;
-struct ds_compare_result    *result;
-struct DSError              *error;
-DN                          binddn;
-DN                          target;
-struct di_block		**di_p;
-char			dsp;
-char			authtype;
+int 
+do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype)
 {
 	Entry  entryptr;
 	Attr_Sequence  as;
@@ -228,10 +221,8 @@ again:
 
 }
 
-invalid_matching (at,error,dn)
-AttributeType at;
-struct DSError *error;
-DN dn;
+int 
+invalid_matching (AttributeType at, struct DSError *error, DN dn)
 {
 	error->dse_type = DSE_ATTRIBUTEERROR;
 	error->ERR_ATTRIBUTE.DSE_at_name = dn_cpy (dn);
@@ -243,12 +234,8 @@ DN dn;
 }
 
 
-static attribute_not_cached (ptr,dn,at,target,level)
-Entry ptr;
-DN dn;
-OID at;
-DN target;
-int level;
+static 
+attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level)
 {
 	struct acl_attr * aa;
 	struct oid_seq * oidptr;

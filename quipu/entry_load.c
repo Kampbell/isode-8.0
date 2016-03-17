@@ -48,8 +48,8 @@ static PS ps;
 
 #define EDBLEN	3	/* length of string "EDB" */
 
-fileexists (fname)
-char * fname;
+int 
+fileexists (char *fname)
 {
 	struct stat buf;
 
@@ -61,8 +61,8 @@ char * fname;
 	return TRUE;
 }
 
-static dir_exists (fname)
-char * fname;
+static 
+dir_exists (char *fname)
 {
 	struct stat buf;
 
@@ -81,10 +81,8 @@ char * fname;
 	return FALSE;
 }
 
-static read_mapped_rdn (aps,name,file)
-PS aps;
-char * name;
-char * file;
+static 
+read_mapped_rdn (PS aps, char *name, char *file)
 {
 	FILE * mapfp;
 #ifdef	TURBO_DISK
@@ -133,10 +131,8 @@ char * file;
 	return FALSE;
 }
 
-static write_mapped_rdn (aps,name,file)
-PS aps;
-char * name;
-char * file;
+static 
+write_mapped_rdn (PS aps, char *name, char *file)
 {
 	FILE * mapfp;
 	char mapname[LINESIZE];
@@ -236,10 +232,8 @@ char * file;
 	return TRUE;
 }
 
-static rdn2filename (aps,rdn,make)
-PS aps;
-RDN rdn;
-char make;
+static 
+rdn2filename (PS aps, RDN rdn, int make)
 {
 	char *start = aps->ps_ptr;
 	char mapbuf [LINESIZE];
@@ -290,10 +284,8 @@ char make;
 	return NOTOK;
 }
 
-static dn2filename (aps,dn,make)
-PS aps;
-DN dn;
-char make;
+static 
+dn2filename (PS aps, DN dn, int make)
 {
 	if (treedir != NULLCP) {
 		ps_print (aps,isodefile(treedir,0));
@@ -327,8 +319,8 @@ char make;
 
 }
 
-char * dn2edbfile (dn)
-DN dn;
+char *
+dn2edbfile (DN dn)
 {
 	PS aps;
 	static char result [LINESIZE];
@@ -356,9 +348,8 @@ DN dn;
 	return result;
 }
 
-static file_check (offset,entryptr)
-int offset;
-Entry entryptr;
+static 
+file_check (int offset, Entry entryptr)
 {
 	ps->ps_ptr = filename + offset;
 	ps->ps_cnt = LINESIZE - offset;
@@ -374,8 +365,8 @@ Entry entryptr;
 	return (NOTOK);
 }
 
-static sibling_expected (e)
-Entry e;
+static 
+sibling_expected (Entry e)
 {
 	AV_Sequence avs;
 
@@ -399,9 +390,8 @@ Entry e;
 
 static char got_all = TRUE;
 
-static load_a_kid(e, offset)
-Entry   e;
-int     offset;
+static 
+load_a_kid (Entry e, int offset)
 {
 	static int      entry_load_kids();
 
@@ -446,9 +436,11 @@ int     offset;
 }
 
 
-static entry_load_kids (entryptr,offset)
-Avlnode	*entryptr;	/* in this case, entryptr is really a tree of kids */
-int offset;
+static 
+entry_load_kids (
+    Avlnode *entryptr,	/* in this case, entryptr is really a tree of kids */
+    int offset
+)
 {
 	Entry	akid, parent;
 
@@ -480,26 +472,24 @@ int offset;
 
 static char got_subtree;
 
-static check_entry_free (e)
-Entry e;
+static 
+check_entry_free (Entry e)
 {
 	if (e->e_allchildrenpresent < 2)
 		got_subtree = FALSE;
 	entry_free(e);
 }
 
-parent_link(e, parent)
-Entry   e;
-Entry   parent;
+int 
+parent_link (Entry e, Entry parent)
 {
 	e->e_parent = parent;
 	set_inheritance (e);
 	return(OK);
 }
 
-static merge_entry(newentry, oldtree)
-Entry   newentry;
-Avlnode *oldtree;
+static 
+merge_entry (Entry newentry, Avlnode *oldtree)
 {
 	Entry   p;
 	int     entry_cmp();
@@ -525,9 +515,8 @@ Avlnode *oldtree;
 	return(OK);
 }
 
-Entry subtree_load (parent,dn)
-Entry parent;
-DN dn;
+Entry 
+subtree_load (Entry parent, DN dn)
 {
 	char failed = FALSE;
 	Avlnode	*treetop;
@@ -626,8 +615,8 @@ DN dn;
 
 int	refreshing;
 
-refresh_from_disk(dn)
-DN	dn;
+int 
+refresh_from_disk (DN dn)
 {
 	Entry child;
 	Entry parent;

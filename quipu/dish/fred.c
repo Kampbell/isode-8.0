@@ -112,9 +112,8 @@ struct dn_seq *dn_seq_push ();
 
 /*    FRED BACK-END */
 
-int	call_fred (argc, argv)
-int	argc;
-char  **argv;
+int 
+call_fred (int argc, char **argv)
 {
 	static int did_ufnas = 0;
 
@@ -192,9 +191,8 @@ struct dn_seq *dm2dn_seq_aux ();
 
 /*  */
 
-static	do_dm_match (n, vec)
-int	n;
-char  **vec;
+static 
+do_dm_match (int n, char **vec)
 {
 	int	    seqno;
 	char   *cp,
@@ -367,8 +365,8 @@ free_filter:
 
 /*  */
 
-static struct dn_seq *dm2dn_seq (dm)
-char   *dm;
+static struct dn_seq *
+dm2dn_seq (char *dm)
 {
 	char *dp;
 
@@ -495,9 +493,8 @@ struct dn_seq	*expand_full (),
 
 /*  */
 
-static	do_expand (n, vec)
-int	n;
-char  **vec;
+static 
+do_expand (int n, char **vec)
 {
 	int	    complete;
 	DN	    dn;
@@ -686,9 +683,8 @@ static	envlist myel = NULLEL;
 
 /*  */
 
-static	build_ufnrc (argc, argv)
-int	argc;
-char  **argv;
+static 
+build_ufnrc (int argc, char **argv)
 {
 	envlist	el;
 	envlist  en,
@@ -771,9 +767,8 @@ extern	DNS	ufn_partials;
 
 /*  */
 
-static	do_ufn_match (n, vec)
-int	n;
-char  **vec;
+static 
+do_ufn_match (int n, char **vec)
 {
 	struct dn_seq  *dns;
 
@@ -1114,9 +1109,8 @@ out:
 
 /*  */
 
-static	int	dns_compar (a, b)
-struct dn_seq **a,
-		**b;
+static int 
+dns_compar (struct dn_seq **a, struct dn_seq **b)
 {
 	int	    i;
 	DN	    adn,
@@ -1132,9 +1126,8 @@ struct dn_seq **a,
 }
 
 
-static int	dns_sort (dns, i)
-struct dn_seq **dns;
-int	i;
+static int 
+dns_sort (struct dn_seq **dns, int i)
 {
 	struct dn_seq *ptr;
 
@@ -1169,9 +1162,8 @@ int	i;
 
 /*  */
 
-static	done_match (dns, fancy)
-struct dn_seq *dns;
-char   *fancy;
+static 
+done_match (struct dn_seq *dns, char *fancy)
 {
 	int	    i;
 	struct dn_seq *ptr;
@@ -1885,7 +1877,8 @@ static struct pair {
 
 /*  */
 
-static	fred_init () {
+static 
+fred_init (void) {
 	struct pair *p;
 	struct template *t;
 	static int once_only = 1;

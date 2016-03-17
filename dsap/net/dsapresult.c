@@ -35,11 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapresult.c,v 9.0
 
 extern  LLog    * log_dsap;
 
-int	  DapResultRequest (sd, id, res, di)
-int			  sd;
-int			  id;
-struct DSResult		* res;
-struct DSAPindication	* di;
+int 
+DapResultRequest (int sd, int id, struct DSResult *res, struct DSAPindication *di)
 {
 	int				  result;
 	PE				  res_pe;
@@ -71,9 +68,8 @@ struct DSAPindication	* di;
 	return (OK);
 }
 
-int	  DapEncodeResult (pep, res)
-PE		* pep;
-struct DSResult	* res;
+int 
+DapEncodeResult (PE *pep, struct DSResult *res)
 {
 	int		success;
 
@@ -115,11 +111,8 @@ struct DSResult	* res;
 	return(success);
 }
 
-int	  DspResultRequest (sd, id, res, di)
-int			  sd;
-int			  id;
-struct ds_op_res	* res;
-struct DSAPindication	* di;
+int 
+DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di)
 {
 	int				  result;
 	PE				  res_pe;
@@ -152,9 +145,8 @@ struct DSAPindication	* di;
 	return (OK);
 }
 
-int	  DspEncodeResult (pep, res)
-PE			* pep;
-struct ds_op_res	* res;
+int 
+DspEncodeResult (PE *pep, struct ds_op_res *res)
 {
 	int		success;
 
@@ -196,11 +188,8 @@ struct ds_op_res	* res;
 	return(success);
 }
 
-int	  QspResultRequest (sd, id, res, di)
-int			  sd;
-int			  id;
-struct ds_op_res	* res;
-struct DSAPindication	* di;
+int 
+QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di)
 {
 	int				  result;
 	PE				  res_pe;
@@ -233,9 +222,8 @@ struct DSAPindication	* di;
 	return (OK);
 }
 
-int	  QspEncodeResult (pep, res)
-PE			* pep;
-struct ds_op_res	* res;
+int 
+QspEncodeResult (PE *pep, struct ds_op_res *res)
 {
 	int		success;
 
@@ -281,18 +269,14 @@ struct ds_op_res	* res;
 }
 
 
-int	  IspResultRequest (sd, id, res, di)
-int			  sd;
-int			  id;
-struct ds_op_res	* res;
-struct DSAPindication	* di;
+int 
+IspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di)
 {
 	return QspResultRequest (sd, id, res, di);
 }
 
-int	  IspEncodeResult (pep, res)
-PE			* pep;
-struct ds_op_res	* res;
+int 
+IspEncodeResult (PE *pep, struct ds_op_res *res)
 {
 	return QspEncodeResult (pep, res);
 }

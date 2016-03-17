@@ -37,9 +37,8 @@ extern LLog * log_dsap;
 extern RDN parse_rdn;
 extern char * new_version();
 
-static header_print (psa,edb)
-PS psa;
-Entry edb;
+static 
+header_print (PS psa, Entry edb)
 {
 	switch (edb->e_data) {
 	case E_DATA_MASTER:
@@ -58,9 +57,8 @@ Entry edb;
 		ps_printf (psa,"%s\n",new_version());
 }
 
-static entry_print (psa,entryptr)
-PS psa;
-Entry entryptr;
+static 
+entry_print (PS psa, Entry entryptr)
 {
 	rdn_print (psa,entryptr->e_name,EDBOUT);
 	parse_rdn = entryptr->e_name;
@@ -70,9 +68,8 @@ Entry entryptr;
 }
 
 
-static entry_block_print (psa,block)
-PS psa;
-Entry block;
+static 
+entry_block_print (PS psa, Entry block)
 {
 	Entry ptr;
 
@@ -89,9 +86,8 @@ Entry block;
 	}
 }
 
-write_edb (ptr,filename)
-Entry ptr;
-char * filename;
+int 
+write_edb (Entry ptr, char *filename)
 {
 	int um;
 	FILE * fptr;
@@ -154,7 +150,8 @@ char * filename;
 
 #else
 
-write_edb() {
+int 
+write_edb (void) {
 	LLOG (log_dsap,LLOG_FATAL,("write_edb implementation error"));
 }
 

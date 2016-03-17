@@ -45,10 +45,8 @@ typedef struct childList {
 
 static ChildList *rootChildList = NULL;
 
-char * show_picture (picture,picture_process,len)
-char    *picture;
-char    *picture_process;
-int 	len;
+char *
+show_picture (char *picture, char *picture_process, int len)
 {
 	int     ret;
 	int     pd[2];
@@ -198,7 +196,8 @@ char * proc;
 }
 
 
-hide_picture () {
+int 
+hide_picture (void) {
 	int	    pid;
 	int	status;
 
@@ -230,7 +229,8 @@ int format;
 
 extern int quipu_pe_cmp();
 
-photo_syntax () {
+int 
+photo_syntax (void) {
 	 add_attribute_syntax ("photo",
 								 (IFP)pe_cpy,	NULLIFP,
 								 NULLIFP,	picture_print,

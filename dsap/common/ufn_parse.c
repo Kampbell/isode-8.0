@@ -798,7 +798,8 @@ envlist el;
 	return (friendlyMatch_aux (c,v,el,interact,result));
 }
 
-ufn_init () {
+int 
+ufn_init (void) {
 	Attr_Sequence as;
 	int result = TRUE;
 

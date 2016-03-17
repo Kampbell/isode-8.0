@@ -46,9 +46,8 @@ int slave_edbs = 0;
 extern datum	turbo_header_key;
 #endif
 
-Avlnode *getentry_block (p_parent,fname)
-Entry p_parent;
-char * fname;
+Avlnode *
+getentry_block (Entry p_parent, char *fname)
 {
 	extern char * parse_file;
 	extern int parse_status;

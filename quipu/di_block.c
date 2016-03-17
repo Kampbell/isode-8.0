@@ -35,7 +35,8 @@ extern LLog * log_dsap;
 extern time_t timenow;
 extern struct TSAPaddr *ta2norm();
 
-struct di_block *di_alloc() {
+struct di_block *
+di_alloc (void) {
 	struct di_block	* di_ret;
 
 	di_ret = (struct di_block *) calloc(1,sizeof(struct di_block));
@@ -43,8 +44,8 @@ struct di_block *di_alloc() {
 	return(di_ret);
 }
 
-di_free(di)
-struct di_block *di;
+int 
+di_free (struct di_block *di)
 {
 	DLOG(log_dsap, LLOG_TRACE, ("di_free()"));
 
@@ -82,8 +83,8 @@ struct di_block *di;
 	free((char *)di);
 }
 
-di_extract(old_di)
-struct di_block	* old_di;
+int 
+di_extract (struct di_block *old_di)
 {
 	struct di_block	* di;
 	struct di_block	**next_di;
@@ -119,8 +120,8 @@ struct di_block	* old_di;
 	di_free(old_di);
 }
 
-di_desist(di)
-struct di_block	* di;
+int 
+di_desist (struct di_block *di)
 {
 	struct di_block	* di_tmp1;
 	struct di_block	* di_tmp1_next;
@@ -155,15 +156,15 @@ struct di_block	* di;
 	}
 }
 
-di_log(di)
-struct di_block	* di;
+int 
+di_log (struct di_block *di)
 {
 	DLOG (log_dsap,LLOG_DEBUG, ("di_block [%x] , state = %d, type = %d",
 								di, di->di_state, di->di_type));
 }
 
-di_list_log(di)
-struct di_block *di;
+int 
+di_list_log (struct di_block *di)
 {
 	struct di_block	* di_tmp;
 
@@ -180,8 +181,8 @@ struct di_block *di;
 
 static struct dn_seq * prefer_dsa_list = NULLDNSEQ;
 
-prefer_dsa (str)
-char * str;
+int 
+prefer_dsa (char *str)
 {
 	struct dn_seq * dsa, *loop;
 
@@ -199,8 +200,8 @@ char * str;
 	}
 }
 
-static di_prefer_dsa (a,b)
-DN a,b;
+static 
+di_prefer_dsa (DN a, DN b)
 {
 	int x,y;
 
@@ -236,8 +237,8 @@ DN a,b;
 
 }
 
-static di_ap2comp (di)
-struct di_block	**di;
+static 
+di_ap2comp (struct di_block **di)
 {
 	struct di_block *loop;
 	Entry eptr;
@@ -288,8 +289,8 @@ time_t when;
 		ptr->e_dsainfo->dsa_failures++;
 }
 
-static di_cmp_reliability (a,b)
-struct di_block *a, *b;
+static 
+di_cmp_reliability (struct di_block *a, struct di_block *b)
 {
 	extern time_t retry_timeout;
 	struct dsa_info *da, *db;
@@ -343,8 +344,8 @@ struct di_block *a, *b;
 	return 0;
 }
 
-static di_cmp_address (a,b)
-struct di_block *a, *b;
+static 
+di_cmp_address (struct di_block *a, struct di_block *b)
 {
 	struct NSAPaddr *na;
 	struct NSAPaddr *nb;
@@ -413,8 +414,8 @@ struct di_block *a, *b;
 	return 0;
 }
 
-static di_cmp (a,b)
-struct di_block *a, *b;
+static 
+di_cmp (struct di_block *a, struct di_block *b)
 /*
 *  Select best di_block
 *    rule 1: deferred dsa infos have lowest preference,
@@ -469,8 +470,8 @@ struct di_block *a, *b;
 }
 
 
-sort_dsa_list (dsas)
-struct di_block	**dsas;
+int 
+sort_dsa_list (struct di_block **dsas)
 {
 	struct di_block	*trail;
 	struct di_block	*old_di, *new_di;
@@ -530,9 +531,8 @@ struct di_block	**dsas;
 
 }
 
-static int	  common_address (a,tb)
-struct di_block *a;
-struct TSAPaddr *tb;
+static int 
+common_address (struct di_block *a, struct TSAPaddr *tb)
 {
 	struct TSAPaddr *ta;
 	struct NSAPaddr *na;
@@ -565,9 +565,8 @@ struct TSAPaddr *tb;
 }
 
 
-struct di_block * select_refer_dsa(di,tk)
-struct di_block *di;
-struct task_act *tk;
+struct di_block *
+select_refer_dsa (struct di_block *di, struct task_act *tk)
 {
 	struct di_block *best;
 	struct di_block *loop;
@@ -607,10 +606,8 @@ struct task_act *tk;
 	return NULL_DI_BLOCK;
 }
 
-di_rdns (di,rdns,aliases,object)
-struct di_block * di;
-int rdns, aliases;
-DN object;
+int 
+di_rdns (struct di_block *di, int rdns, int aliases, DN object)
 {
 	struct di_block *loop;
 

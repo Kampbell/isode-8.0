@@ -139,9 +139,8 @@ char           *str;
 }
 
 
-getop (str, ch)
-char           *str,
-			   *ch;
+int 
+getop (char *str, char *ch)
 {
 	int             i,
 					bracket = 0;

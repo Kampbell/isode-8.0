@@ -40,8 +40,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/cilist.c,v 9.0 
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
 
-static cilistfree (cilist)
-struct CIList * cilist;
+static 
+cilistfree (struct CIList *cilist)
 {
 	struct CIList * next;
 	for (; cilist != NULLCILIST; cilist = next) {
@@ -51,8 +51,8 @@ struct CIList * cilist;
 	}
 }
 
-static cilistcmp (a,b)
-struct CIList * a, *b;
+static 
+cilistcmp (struct CIList *a, struct CIList *b)
 {
 	int res;
 
@@ -68,8 +68,8 @@ struct CIList * a, *b;
 
 }
 
-static struct CIList * cilistcpy (a)
-struct CIList * a;
+static struct CIList *
+cilistcpy (struct CIList *a)
 {
 	struct CIList * b, *c, *result = NULLCILIST;
 
@@ -91,8 +91,8 @@ struct CIList * a;
 	return (result);
 }
 
-static struct CIList* cilistparse (str)
-char * str;
+static struct CIList *
+cilistparse (char *str)
 {
 	struct CIList * result = NULLCILIST;
 	struct CIList * a, *b;
@@ -223,7 +223,8 @@ PE pe;
 	return (m);
 }
 
-cilist_syntax () {
+int 
+cilist_syntax (void) {
 	 add_attribute_syntax ("CaseIgnoreList",
 								 (IFP) cilistenc,	(IFP) cilistdec,
 								 (IFP) cilistparse,	cilistprint,

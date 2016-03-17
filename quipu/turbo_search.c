@@ -62,8 +62,8 @@ static void		subtree_refer();
 Attr_Sequence	eis_select();
 EntryInfo	*filterentry();
 
-optimized_filter( f )
-Filter	f;
+int 
+optimized_filter (Filter f)
 {
 	struct filter_item	*fi;
 
@@ -108,10 +108,8 @@ Filter	f;
 }
 
 /* ARGSUSED */
-static apply_sacl( list, e, ska )
-EntryInfo		**list;
-Entry			e;
-struct search_kid_arg	*ska;
+static 
+apply_sacl (EntryInfo **list, Entry e, struct search_kid_arg *ska)
 {
 	EntryInfo	*p, *prev, *next;
 	int		saclerror = 0;
@@ -154,9 +152,8 @@ struct search_kid_arg	*ska;
  * turbo_sibling_search - search a sibling index
  */
 
-turbo_sibling_search( e, ska )
-Entry			e;
-struct search_kid_arg	*ska;
+int 
+turbo_sibling_search (Entry e, struct search_kid_arg *ska)
 {
 	EntryInfo		*list;
 	Entry			*tmp;
@@ -213,9 +210,8 @@ struct search_kid_arg	*ska;
  * turbo_subtree_search - search a subtree index
  */
 
-turbo_subtree_search( e, ska )
-Entry			e;
-struct search_kid_arg	*ska;
+int 
+turbo_subtree_search (Entry e, struct search_kid_arg *ska)
 {
 	EntryInfo	*list;
 	Entry		*tmp;
@@ -325,10 +321,8 @@ int			toplevel;
 	/* NOT REACHED */
 }
 
-static eis_merge( ei, eilist, toplevel )
-EntryInfo	*ei;
-EntryInfo	**eilist;
-int		toplevel;
+static 
+eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel)
 {
 	int		cmp;
 	EntryInfo	*eitmp;
@@ -378,9 +372,8 @@ int		toplevel;
 	return( OK );
 }
 
-static entry_collect( node, eilist )
-Index_node	*node;
-EntryInfo	**eilist;
+static 
+entry_collect (Index_node *node, EntryInfo **eilist)
 {
 	int		i;
 	EntryInfo	*ei;
@@ -414,9 +407,8 @@ EntryInfo	**eilist;
 	return( OK );
 }
 
-static build_indexnode( node, bignode )
-Index_node	*node;
-Index_node	*bignode;
+static 
+build_indexnode (Index_node *node, Index_node *bignode)
 {
 	int	i, j;
 	int	low, mid, high;
@@ -748,10 +740,8 @@ int			toplevel;
 	return( result );
 }
 
-static EntryInfo *eis_union( a, b, toplevel )
-EntryInfo	*a;
-EntryInfo	*b;
-int		toplevel;
+static EntryInfo *
+eis_union (EntryInfo *a, EntryInfo *b, int toplevel)
 {
 	EntryInfo	*result, *rtail;
 	EntryInfo	*next;

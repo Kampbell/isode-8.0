@@ -108,7 +108,8 @@ char * s;
 static DN username = NULLDN;
 static char password[DBA_MAX_PASSWD_LEN] = "";
 
-static bind_to_dsa () {
+static 
+bind_to_dsa (void) {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -327,7 +328,8 @@ all_done:
 }
 
 
-static	set_el () {
+static 
+set_el (void) {
 	envlist  en,
 			 *ep;
 	DN	    local_dn,
@@ -398,8 +400,10 @@ done:
 }
 
 
-set_lookup_ufn (flag)
-char	flag;	/* if TRUE always unbind */
+int 
+set_lookup_ufn (
+    int flag	/* if TRUE always unbind */
+)
 {
 	if ((unbind = flag) && bound) {
 		bound = FALSE;
@@ -415,9 +419,8 @@ char	flag;	/* if TRUE always unbind */
 
 #ifdef STANDALONE_AET_TEST
 
-main (argc,argv)
-int argc;
-char ** argv;
+int 
+main (int argc, char **argv)
 {
 	char buffer [1024];
 	int ontty, n;
@@ -458,7 +461,8 @@ char ** argv;
 	exit (0);
 }
 
-advise () {
+int 
+advise (void) {
 	;
 }
 

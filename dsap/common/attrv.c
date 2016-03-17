@@ -104,9 +104,8 @@ char	multiline;
 	syntax_table[sntx].s_multiline  = multiline;
 }
 
-set_av_pe_print (sntx,print_pe)
-short sntx;
-char *  print_pe;
+int 
+set_av_pe_print (int sntx, char *print_pe)
 {
 	if (sntx >= num_syntax)
 		return;
@@ -166,8 +165,8 @@ short x;
 	return (syntax_table[x].s_approx);
 }
 
-char * syntax2str (sntx)
-short sntx;
+char *
+syntax2str (int sntx)
 {
 	if (sntx >= num_syntax)
 		return NULLCP;
@@ -175,8 +174,8 @@ short sntx;
 	return (syntax_table[sntx].s_sntx);
 }
 
-short str2syntax (str)
-char * str;
+short 
+str2syntax (char *str)
 {
 	sntx_table * ptr;
 	int i;
@@ -277,8 +276,8 @@ AttributeValue y;
 	return (OK);
 }
 
-static strip_header(str)
-char ** str;
+static 
+strip_header (char **str)
 {
 	char * ptr, *save, val;
 	int syntax;

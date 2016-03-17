@@ -31,10 +31,18 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-put.c,v 9.0 1992
 
 
 
+#ifdef	BRIDGE
+static int  putaux (char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size);
+static int  put (char*dst, int append);
+#else
+static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size);
+static int  put (char*src, char*dst, int append);
+#endif
+
 /*  */
 
-int	f_put (vec)
-char  **vec;
+int 
+f_put (char **vec)
 {
 	int     append;
 #ifdef	BRIDGE
@@ -56,7 +64,7 @@ char  **vec;
 #ifdef	BRIDGE
 		return NOTOK;
 #else
-		if (getline ("source: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
+		if (getftamline ("source: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
 			return OK;
 		dst = NULL;
 #endif
@@ -80,7 +88,7 @@ char  **vec;
 	sglobbed = xglobbed;
 
 	if (dst == NULL) {
-		if (getline ("destination: ", buffer) == NOTOK) {
+		if (getftamline ("destination: ", buffer) == NOTOK) {
 			blkfree (src);
 			return OK;
 		}
@@ -248,14 +256,10 @@ out:
 /*  */
 
 #ifdef	BRIDGE
-static int  put (dst, append)
-char   *dst;
+static int  put (char*dst, int append)
 #else
-static int  put (src, dst, append)
-char   *src,
-	   *dst;
+static int  put (char*src, char*dst, int append)
 #endif
-int	append;
 {
 	int     bsize,
 			fd,
@@ -380,18 +384,10 @@ you_lose:
 /*  */
 
 #ifdef	BRIDGE
-static int  putaux (dst, append, fd, pe, vf, size)
-char   *dst;
+static int  putaux (char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size)
 #else
-static int  putaux (src, dst, append, fd, pe, vf, size)
-char   *src,
-	   *dst;
+static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size)
 #endif
-int	append,
-	fd;
-PE      pe;
-struct vfsmap  *vf;
-int	size;
 {
 	int    n;
 	int     cc,

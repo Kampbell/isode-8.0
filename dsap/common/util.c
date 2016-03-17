@@ -36,8 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/util.c,v 9.0 19
 extern LLog * log_dsap;
 extern char dsa_mode;
 
-char * SkipSpace (ptr)
-char * ptr;
+char *
+SkipSpace (char *ptr)
 {
 	if (ptr == NULLCP)
 		return (NULLCP);
@@ -47,8 +47,8 @@ char * ptr;
 	return (ptr);
 }
 
-void StripSpace (b)
-char *b;
+void 
+StripSpace (char *b)
 /* copy b to a less spaces and comments */
 {
 	char *a;
@@ -78,8 +78,8 @@ char *b;
 	*a = 0;
 }
 
-void StripSpace2 (b)
-char *b;
+void 
+StripSpace2 (char *b)
 /* copy b to a less spaces and comments */
 {
 	char *a;
@@ -104,8 +104,8 @@ char *b;
 	*a = 0;
 }
 
-char * TidyString2 (a)
-char * a;
+char *
+TidyString2 (char *a)
 {
 	char * b;
 	char * c;
@@ -144,8 +144,8 @@ char * a;
 	return (c);
 }
 
-char * TidyString (a)
-char * a;
+char *
+TidyString (char *a)
 {
 	char * b;
 	char * c;
@@ -261,9 +261,8 @@ char * fmt;
 #endif
 
 
-fatal (code,fmt)
-int  code;
-char *fmt;
+int 
+fatal (int code, char *fmt)
 {
 	if (dsa_mode)
 		log_dsap -> ll_syslog = LLOG_FATAL;
@@ -307,7 +306,8 @@ caddr_t ptr;
 	ps->ps_ptr = ps->ps_base;
 }
 
-stop_listeners () {
+int 
+stop_listeners (void) {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
@@ -389,7 +389,8 @@ PE a,b;
 
 IFP acl_fn = NULLIFP;
 
-struct acl_info * acl_dflt () {
+struct acl_info *
+acl_dflt (void) {
 	if (acl_fn == NULLIFP)
 		return ((struct acl_info *) NULL);
 	else

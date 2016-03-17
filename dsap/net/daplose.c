@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/daplose.c,v 9.0 19
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "tailor.h"
 #include "quipu/dap2.h"
 
@@ -40,16 +40,15 @@ static int  _dapreject ();
 /*  */
 
 #ifndef	lint
-int	daplose (va_alist)
-va_dcl {
+int	daplose (struct DAPindication *di, ...)
+{
 	int	    reason,
 	result;
-	struct DAPindication *di;
+	
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, di);
 
-	di = va_arg (ap, struct DAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _daplose (di, reason, ap);
@@ -61,11 +60,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	daplose (di, reason, what, fmt)
-struct DAPindication *di;
-int	reason;
-char   *what,
-	   *fmt;
+int 
+daplose (struct DAPindication *di, int reason, char *what, char *fmt)
 {
 	return daplose (di, reason, what, fmt);
 }
@@ -74,10 +70,12 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _daplose (di, reason, ap)  /* what, fmt, args ... */
-struct DAPindication *di;
-int     reason;
-va_list	ap;
+static int 
+_daplose (  /* what, fmt, args ... */
+    struct DAPindication *di,
+    int reason,
+    va_list ap
+)
 {
 	char  *bp;
 	char    buffer[BUFSIZ];
@@ -100,17 +98,16 @@ va_list	ap;
 #endif
 
 #ifndef	lint
-int	dapreject (va_alist)
-va_dcl {
+int	dapreject (struct DAPindication *di, ...)
+{
 	int	    reason,
 	id,
 	result;
-	struct DAPindication *di;
+	
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, di);
 
-	di = va_arg (ap, struct DAPindication *);
 	reason = va_arg (ap, int);
 	id = va_arg (ap, int);
 
@@ -123,12 +120,8 @@ va_dcl {
 #else
 /* VARARGS4 */
 
-int	dapreject (di, reason, id, what, fmt)
-struct DAPindication *di;
-int	reason;
-int	id;
-char   *what,
-	   *fmt;
+int 
+dapreject (struct DAPindication *di, int reason, int id, char *what, char *fmt)
 {
 	return dapreject (di, reason, id, what, fmt);
 }
@@ -137,11 +130,13 @@ char   *what,
 /*  */
 
 #ifndef	lint
-static int  _dapreject (di, reason, id, ap)  /* what, fmt, args ... */
-struct DAPindication *di;
-int     reason;
-int	id;
-va_list	ap;
+static int 
+_dapreject (  /* what, fmt, args ... */
+    struct DAPindication *di,
+    int reason,
+    int id,
+    va_list ap
+)
 {
 	char  *bp;
 	char    buffer[BUFSIZ];

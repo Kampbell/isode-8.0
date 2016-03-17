@@ -39,9 +39,8 @@ extern LLog *log_dsap;
 char        *dsap_usage = "[flags]";
 char        *options = "T:t:c:";
 
-tai_args (acptr,avptr)
-int *acptr;
-char ***avptr;
+int 
+tai_args (int *acptr, char ***avptr)
 {
 	char ** av;
 

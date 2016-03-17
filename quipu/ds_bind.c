@@ -53,8 +53,8 @@ extern LLog * log_stat;
 int bind_window = 300; /* Tailorable timeout for credentials */
 int auth_bind = 0;
 
-int	  ds_bind_init (cn)
-struct connection	* cn;
+int 
+ds_bind_init (struct connection *cn)
 {
 	struct ds_bind_arg	* arg = &(cn->cn_start.cs_ds.ds_bind_arg);
 	struct ds_bind_arg	* result = &(cn->cn_start.cs_res);
@@ -462,8 +462,8 @@ out:
 	}
 }
 
-bind_compare_result_wakeup(on)
-struct oper_act	* on;
+int 
+bind_compare_result_wakeup (struct oper_act *on)
 {
 
 	DLOG(log_dsap, LLOG_TRACE, ("bind_compare_result_wakeup()"));
@@ -488,8 +488,8 @@ struct oper_act	* on;
 	oper_free(on);
 }
 
-bind_compare_error_wakeup(on)
-struct oper_act	* on;
+int 
+bind_compare_error_wakeup (struct oper_act *on)
 {
 	int errmsg = DSE_SV_DITERROR;
 	int errtype = DBE_TYPE_SERVICE;
@@ -541,8 +541,8 @@ struct oper_act	* on;
 	oper_free(on);
 }
 
-bind_compare_fail_wakeup(on)
-struct oper_act	* on;
+int 
+bind_compare_fail_wakeup (struct oper_act *on)
 {
 	DLOG(log_dsap, LLOG_TRACE, ("bind_compare_fail_wakeup()"));
 
@@ -575,8 +575,8 @@ struct oper_act	* on;
 	oper_free(on);
 }
 
-do_ds_unbind (conn)
-       struct connection       * conn;
+int 
+do_ds_unbind (struct connection *conn)
 {
 	struct stat st;
 #ifndef NO_STATS
@@ -609,14 +609,14 @@ static struct dn_seq * reject_prefix_list = NULLDNSEQ;
 static struct dn_seq * accept_prefix_list = NULLDNSEQ;
 static int reject_len;
 
-reject_length (str)
-char * str;
+int 
+reject_length (char *str)
 {
 	reject_len = atoi (str);
 }
 
-reject_prefix (str)
-char * str;
+int 
+reject_prefix (char *str)
 {
 	struct dn_seq * dsa, *loop;
 
@@ -635,8 +635,8 @@ char * str;
 }
 
 
-accept_prefix (str)
-char * str;
+int 
+accept_prefix (char *str)
 {
 	struct dn_seq * dsa, *loop;
 
@@ -654,8 +654,8 @@ char * str;
 	}
 }
 
-static check_prefix_list (dn)
-DN dn;
+static 
+check_prefix_list (DN dn)
 {
 	if (accept_prefix_list) {
 
@@ -673,8 +673,8 @@ DN dn;
 	return TRUE;
 }
 
-static check_dn_length (dn)
-DN dn;
+static 
+check_dn_length (DN dn)
 {
 	int i = 0;
 	DN tmp;

@@ -55,8 +55,8 @@ extern LLog * tsap_log;
 
 time_t	timenow;
 
-dsa_wait(secs)
-int	  secs;
+int 
+dsa_wait (int secs)
 {
 	int                         vecp = 0;
 	char                        *vec[4];
@@ -267,9 +267,8 @@ int	  secs;
 
 
 #ifdef QUIPU_CONSOLE
-static void
-connecting_analyse(cn)
-struct connection *cn ;
+static void 
+connecting_analyse (struct connection *cn)
 {
 	/* SPT: The sub parts to build an openCall attribute type. */
 	AttributeType oc_att ;
@@ -375,9 +374,8 @@ struct connection *cn ;
 	}
 }
 
-void
-opening_analyse(cn)
-struct connection *cn ;
+void 
+opening_analyse (struct connection *cn)
 {
 	/* SPT: The sub parts to build an openCall attribute type. */
 	AttributeType oc_att ;
@@ -477,9 +475,8 @@ struct connection *cn ;
 }
 
 
-void
-closing_analyse(cn)
-struct connection *cn ;
+void 
+closing_analyse (struct connection *cn)
 {
 	AV_Sequence tmp_avs ;
 	int success = FALSE ;
@@ -534,9 +531,8 @@ struct connection *cn ;
 #endif
 }
 
-static void
-print_connlist(conn)
-struct connection * conn ;
+static void 
+print_connlist (struct connection *conn)
 {
 	fprintf(stderr, "***** SPT: ctx %d\n", conn->cn_ctx) ;
 }

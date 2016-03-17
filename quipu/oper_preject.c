@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/oper_preject.c,v 9.0 
 
 extern	LLog	* log_dsap;
 
-oper_preject(conn, dp)
-struct connection	* conn;
-struct DSAPpreject	* dp;
+int 
+oper_preject (struct connection *conn, struct DSAPpreject *dp)
 {
 	struct oper_act *       on;
 

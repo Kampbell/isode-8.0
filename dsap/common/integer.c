@@ -79,8 +79,8 @@ int * x,format;
 }
 #define enumprint intprint
 
-static int * intdup (x)
-int *x;
+static int *
+intdup (int *x)
 {
 	int *y;
 
@@ -91,22 +91,22 @@ int *x;
 }
 #define enumdup intdup
 
-static intcmp (x,y)
-int *x,*y;
+static 
+intcmp (int *x, int *y)
 {
 	return ( *x == *y ? 0 : (*x > *y ? 1 : -1) );
 }
 #define enumcmp intcmp
 
-static intfree (x)
-int * x;
+static 
+intfree (int *x)
 {
 	free ((char *) x);
 }
 #define enumfree intfree
 
-static int * intparse (str)
-char * str;
+static int *
+intparse (char *str)
 {
 	int atoi();
 	int * x;
@@ -118,7 +118,8 @@ char * str;
 }
 #define enumparse intparse
 
-integer_syntax () {
+int 
+integer_syntax (void) {
 	 add_attribute_syntax ("integer",
 								 (IFP) intenc,	(IFP) intdec,
 								 (IFP) intparse,	intprint,

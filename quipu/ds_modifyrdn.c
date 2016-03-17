@@ -39,14 +39,8 @@ extern int entry_cmp(), entryrdn_cmp();
 extern LLog * log_dsap;
 extern DN mydsadn;
 
-do_ds_modifyrdn (arg, error, binddn, target, di_p, dsp, authtype)
-struct ds_modifyrdn_arg     *arg;
-struct DSError              *error;
-DN                          binddn;
-DN                          target;
-struct di_block		**di_p;
-char 			dsp;
-char			authtype;
+int 
+do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype)
 {
 	Entry  entryptr;
 	RDN rdn;
@@ -241,11 +235,8 @@ char			authtype;
 }
 
 
-addrdn_attribute (eptr,newas,error,requestor,dn)
-Entry eptr;
-Attr_Sequence newas;
-struct DSError *error;
-DN requestor,dn;
+int 
+addrdn_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn)
 {
 	Attr_Sequence as;
 	struct acl_info * acl;

@@ -284,19 +284,6 @@ struct qbuf {
 #endif
 
 
-#ifdef SYS5
-
-#ifdef FIXME
-#if	!defined(WINTLI) && !defined(WIN)
-#ifndef	sun
-#define	getdtablesize()	_NFILE
-#endif
-#else
-#define	getdtablesize()	(_NFILE - 1)
-#endif
-#endif
-#endif
-
 #if	defined(RT) || defined (HPUX)
 #define	ntohs(x)	(x)
 #define	htons(x)	(x)

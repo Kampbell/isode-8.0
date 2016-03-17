@@ -103,14 +103,43 @@ struct QOStype myqos;
 
 /*    DISPATCH */
 
+static int f_set (char **vec);
+static char ** getval (char *name, char **choices);
+static int f_help (char **vec);
+static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
+
+struct var {
+	char   *v_name;
+	IP	    v_value;
+
+	char   *v_dname;
+	char  **v_dvalue;
+	char   *v_mask;
+
+	IFP	    v_hook;
+};
+
+static struct var * getvar (char *name);
+static printvar (struct var *v);
+
 #ifndef	BRIDGE
-int	f_open (), f_close (), f_quit (), f_status ();
-int	f_set (), f_help ();
-int	f_lcd (), f_cd (), f_pwd ();
-int	f_ls (), f_fls ();
-int	f_get (), f_put ();
-int	f_mv (), f_rm (), f_chgrp (), f_mkdir ();
-int	f_echo ();
+int f_put();
+int f_cd();
+int f_chgrp();
+int f_close();
+int f_ls();
+int f_echo();
+int f_fls();
+int f_get();
+int f_lcd();
+int f_mkdir();
+int f_mv();
+int f_open();
+int f_pwd();
+int f_quite();
+int f_rm();
+int f_status();
+int f_quit();
 
 
 static struct dispatch  dispatches[] = {
@@ -261,21 +290,12 @@ static char *sversions[] = {
 };
 
 
-struct var {
-	char   *v_name;
-	IP	    v_value;
-
-	char   *v_dname;
-	char  **v_dvalue;
-	char   *v_mask;
-
-	IFP	    v_hook;
-};
-
-struct var *getvar ();
 
 
-int	set_realstore (), set_trace (), set_type (), set_prompt();
+static int set_prompt (struct var *v);
+static int set_realstore (struct var *v);
+static int set_trace (struct var *v);
+static int set_type (struct var *v);
 
 /* prompt stuff */
 # define DEFAULT_PROMPT 	"%s> "
@@ -371,8 +391,7 @@ char    **getval ();
 
 /*  */
 
-static int  f_set (vec)
-char  **vec;
+static int f_set (char **vec)
 {
 	int    i,
 			 j;
@@ -551,8 +570,7 @@ out_of_range:
 
 /*  */
 
-static printvar (v)
-struct var *v;
+static printvar (struct var *v)
 {
 	int	    i;
 	char    buffer[BUFSIZ];
@@ -595,14 +613,13 @@ struct var *v;
 
 /* ARGSUSED */
 
-char*
-default_prompt() {
+char *
+default_prompt (void) {
 	return(DEFAULT_PROMPT);
 }
 
 
-static int set_prompt(v)
-struct var *v;
+static int set_prompt (struct var *v)
 {
 	char	*new = *(v->v_dvalue);
 
@@ -614,8 +631,7 @@ struct var *v;
 }
 
 
-static int  set_realstore (v)
-struct var *v;
+static int set_realstore (struct var *v)
 {
 	char   *vec[2];
 
@@ -631,8 +647,7 @@ struct var *v;
 
 /* ARGSUSED */
 
-static int  set_trace (v)
-struct var *v;
+static int set_trace (struct var *v)
 {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
@@ -647,8 +662,7 @@ struct var *v;
 
 /* ARGSUSED */
 
-static int  set_type (v)
-struct var *v;
+static int set_type (struct var *v)
 {
 	struct vfsmap *vf;
 
@@ -666,9 +680,7 @@ struct var *v;
 
 /*  */
 
-static char **getval (name, choices)
-char *name;
-char   **choices;
+static char ** getval (char *name, char **choices)
 {
 	int    longest,
 			 nmatches;
@@ -714,8 +726,7 @@ char   **choices;
 
 /*  */
 
-static struct var *getvar (name)
-char *name;
+static struct var * getvar (char *name)
 {
 	int    longest,
 			 nmatches;
@@ -765,8 +776,7 @@ static int helpwidth;
 
 /*  */
 
-static int  f_help (vec)
-char  **vec;
+static int f_help (char **vec)
 {
 	int    i,
 			 j,
@@ -887,9 +897,8 @@ struct vfsmap *myvf;
 
 /*  */
 
-void	ftam_advise (fta, event)
-struct FTAMabort *fta;
-char   *event;
+void 
+ftam_advise (struct FTAMabort *fta, char *event)
 {
 	if (hash && marks >= BUFSIZ) {
 		marks = 0;
@@ -959,8 +968,8 @@ char   *event;
 
 /*  */
 
-void	ftam_chrg (charges)
-struct FTAMcharging *charges;
+void 
+ftam_chrg (struct FTAMcharging *charges)
 {
 	int    i;
 	char   *cp;
@@ -991,11 +1000,8 @@ static char *entity[] = {
 };
 
 
-void	ftam_diag (diag, ndiag, peer, action)
-struct FTAMdiagnostic diag[];
-int	ndiag;
-int	peer,
-	action;
+void 
+ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action)
 {
 	int    i;
 	int     didit;
@@ -1177,7 +1183,8 @@ print_it:
 
 /*    MISCELLANY */
 
-rcinit () {
+int 
+rcinit (void) {
 #ifndef	BRIDGE
 	int    w;
 	char **cp;
@@ -1278,9 +1285,8 @@ FILE *fp;
 
 
 #ifndef	TMS
-timer (cc, action)
-int     cc;
-char   *action;
+int 
+timer (int cc, char *action)
 {
 	long    ms;
 	float   bs;
@@ -1303,10 +1309,7 @@ char   *action;
 }
 
 
-static  tvsub (tdiff, t1, t0)
-struct timeval *tdiff,
-		*t1,
-		*t0;
+static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
 {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
@@ -1324,9 +1327,8 @@ struct timeval *tdiff,
 long	times ();
 
 
-timer (cc, action)
-int	cc;
-char   *action;
+int 
+timer (int cc, char *action)
 {
 	long    ms;
 	float   bs;
@@ -1360,8 +1362,8 @@ char   *action;
 
 #include <arpa/ftp.h>
 
-f_type (mode)
-int	mode;
+int 
+f_type (int mode)
 {
 	switch(mode) {
 	case TYPE_A:

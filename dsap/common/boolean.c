@@ -54,8 +54,8 @@ PE pe;
 		return (strdup ("FALSE"));
 }
 
-static char * boolget (x)
-char * x;
+static char *
+boolget (char *x)
 {
 	if ((lexequ (x,"TRUE") == 0) || (lexequ (x,"FALSE") == 0))
 		return (strdup(x));
@@ -64,7 +64,8 @@ char * x;
 	return (NULLCP);
 }
 
-boolean_syntax () {
+int 
+boolean_syntax (void) {
 	 add_attribute_syntax ("boolean",
 								 (IFP) boolenc,	(IFP) booldec,
 								 (IFP) boolget,	strprint,

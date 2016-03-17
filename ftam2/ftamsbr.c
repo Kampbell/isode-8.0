@@ -391,11 +391,8 @@ int	ftamfd;
  */
 
 
-int	de2fd (fd, pe, text, effector)
-int	fd;
-PE	pe;
-int	text,
-	effector;
+int 
+de2fd (int fd, PE pe, int text, int effector)
 {
 	int    i,
 			 n;
@@ -503,8 +500,8 @@ outside:
 #define	NPWD	(sizeof PWD - 1)
 
 
-int	compath (f)
-char  *f;
+int 
+compath (char *f)
 {
 	char  *cp,
 			 *dp;

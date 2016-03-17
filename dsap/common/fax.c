@@ -66,8 +66,8 @@ static struct pair pairs[] = {
 
 /*  */
 
-static	fax_free (f)
-struct fax *f;
+static 
+fax_free (struct fax *f)
 {
 	free (f -> number);
 
@@ -79,8 +79,8 @@ struct fax *f;
 
 /*  */
 
-static struct fax *fax_cpy (a)
-struct fax *a;
+static struct fax *
+fax_cpy (struct fax *a)
 {
 	struct fax *f;
 
@@ -94,9 +94,8 @@ struct fax *a;
 
 /*  */
 
-static int  fax_cmp (a, b)
-struct fax *a;
-struct fax *b;
+static int 
+fax_cmp (struct fax *a, struct fax *b)
 {
 	int	    i;
 
@@ -166,8 +165,8 @@ int	format;
 
 /*  */
 
-static struct fax *str2fax (str)
-char  *str;
+static struct fax *
+str2fax (char *str)
 {
 	int	    value;
 	char  *ptr,
@@ -290,7 +289,8 @@ PE	pe;
 
 /*  */
 
-fax_syntax () {
+int 
+fax_syntax (void) {
 	 add_attribute_syntax ("FacsimileTelephoneNumber",
 								 (IFP) fax_enc,	(IFP) fax_dec,
 								 (IFP) str2fax,	fax_print,

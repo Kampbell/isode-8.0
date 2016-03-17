@@ -43,8 +43,8 @@ extern time_t cache_timeout;
 
 Entry local_find_entry_aux ();
 
-struct subordinate * subord_cpy (x)
-struct subordinate * x;
+struct subordinate *
+subord_cpy (struct subordinate *x)
 {
 	struct subordinate * sub;
 	struct subordinate * y;
@@ -166,7 +166,8 @@ int sizelimit;
 }
 
 
-free_all_list_cache () {
+int 
+free_all_list_cache (void) {
 	struct list_cache *ptr, *pn;
 	for (ptr = list_top; ptr != NULLCACHE; ptr = pn)  {
 		pn = ptr->list_next;
@@ -386,7 +387,8 @@ struct DSError * error;
 }
 
 
-char * new_version () {
+char *
+new_version (void) {
 	time_t clock;
 	struct UTCtime ut;
 

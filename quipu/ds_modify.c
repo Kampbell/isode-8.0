@@ -58,14 +58,8 @@ struct	acl *acl_list;
 
 int updateerror;
 
-do_ds_modifyentry (arg, error, binddn, target, di_p, dsp, authtype)
-struct ds_modifyentry_arg   *arg;
-struct DSError              *error;
-DN                          binddn;
-DN                          target;
-struct di_block		**di_p;
-char		        dsp;
-char			authtype;
+int 
+do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype)
 {
 	Entry  entryptr;
 	Entry  real_entry;
@@ -407,9 +401,8 @@ char			authtype;
 
 
 /* ARGSUSED */
-static inherit_set(e, error)
-Entry   e;
-struct DSError              *error;
+static 
+inherit_set (Entry e, struct DSError *error)
 {
 	set_inheritance (e);
 
@@ -422,11 +415,8 @@ struct DSError              *error;
 	return(OK);
 }
 
-remove_attribute (eptr,at,error,requestor,dn,real_entry)
-Entry eptr,real_entry;
-AttributeType at;
-struct DSError *error;
-DN requestor,dn;
+int 
+remove_attribute (Entry eptr, AttributeType at, struct DSError *error, DN requestor, DN dn, Entry real_entry)
 {
 	Attr_Sequence as, trail= NULLATTR, real_as;
 
@@ -481,9 +471,8 @@ DN requestor,dn;
 }
 
 
-static check_remove_type (rdn,at)
-RDN rdn;
-AttributeType at;
+static 
+check_remove_type (RDN rdn, AttributeType at)
 {
 
 	if ( AttrT_cmp (at,at_objectclass) == 0) {
@@ -504,9 +493,8 @@ AttributeType at;
 	return (OK);
 }
 
-static check_remove_values (rdn,as)
-RDN rdn;
-Attr_Sequence as;
+static 
+check_remove_values (RDN rdn, Attr_Sequence as)
 {
 	AV_Sequence as_avs;
 
@@ -534,11 +522,8 @@ Attr_Sequence as;
 
 
 
-remove_value (eptr,rmas,error,requestor,dn,real_entry)
-Entry eptr, real_entry;
-Attr_Sequence rmas;
-struct DSError *error;
-DN requestor,dn;
+int 
+remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requestor, DN dn, Entry real_entry)
 {
 	Attr_Sequence as, realas;
 	AV_Sequence rmavs,avs,trail = NULLAV;
@@ -648,11 +633,8 @@ DN requestor,dn;
 	return (OK);
 }
 
-add_attribute (eptr,newas,error,requestor,dn)
-Entry eptr;
-Attr_Sequence newas;
-struct DSError *error;
-DN requestor,dn;
+int 
+add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn)
 {
 	struct acl_attr * aa;
 	struct acl_info * ai = NULLACL_INFO;
@@ -704,11 +686,8 @@ DN requestor,dn;
 }
 
 
-mod_add_value (eptr,newas,error,requestor,dn,real_entry)
-Entry eptr,real_entry;
-Attr_Sequence newas;
-struct DSError *error;
-DN requestor,dn;
+int 
+mod_add_value (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn, Entry real_entry)
 {
 	Attr_Sequence as, realas;
 	AV_Sequence avs;
@@ -774,8 +753,8 @@ DN requestor,dn;
 }
 
 
-create_null_edb (eptr)
-Entry eptr;
+int 
+create_null_edb (Entry eptr)
 {
 	DN	save_dn ;
 	char   *filename, *dn2edbfile();

@@ -126,7 +126,8 @@ int sd;
 	 alarm (connect_time);
 }
 
-set_alarm () {
+int 
+set_alarm (void) {
 	waiting = 0;
 	 signal (SIGALRM, alarm_sig);
 	 alarm (connect_time);
@@ -146,13 +147,14 @@ int sd;
 	longjmp (dish_env,1);
 }
 
-bind_alarm () {
+int 
+bind_alarm (void) {
 	 signal (SIGALRM, bind_sig);
 	 alarm (connect_time);
 }
 
-isnumeric (ptr)
-char * ptr;
+int 
+isnumeric (char *ptr)
 {
 	if ((ptr == NULLCP) || (*ptr == 0))
 		return FALSE;
@@ -164,9 +166,8 @@ char * ptr;
 	return TRUE;
 }
 
-call_bind (argc,argv)
-int argc;
-char ** argv;
+int 
+call_bind (int argc, char **argv)
 {
 	int 	x;
 	char    noconnect = FALSE;
@@ -500,7 +501,8 @@ char ** argv;
 
 }
 
-rebind () {
+int 
+rebind (void) {
 
 	if (referral_dsa != 0) {
 		 dap_unbind (referral_dsa);
@@ -557,8 +559,8 @@ rebind () {
 	return (OK);
 }
 
-referral_bind (addr)
-struct PSAPaddr * addr;
+int 
+referral_bind (struct PSAPaddr *addr)
 {
 	if (referral_dsa != 0)
 		 dap_unbind (referral_dsa++);
@@ -609,9 +611,8 @@ struct PSAPaddr * addr;
 	return (1);
 }
 
-call_unbind (argc,argv)
-int argc;
-char ** argv;
+int 
+call_unbind (int argc, char **argv)
 {
 	int		x;
 	char		noquit = FALSE;
@@ -652,7 +653,8 @@ char ** argv;
 	}
 }
 
-unbind_from_dsa () {
+int 
+unbind_from_dsa (void) {
 	if (bound) {
 		 dap_unbind (main_dsa_id);
 		if (referral_dsa != 0) {
@@ -668,7 +670,8 @@ extern char no_rcfile;
 static time_t rc_mod_time;
 static char Dish_Home[LINESIZE];
 
-user_tailor () {
+int 
+user_tailor (void) {
 	int		isenv;
 	char           *part1;
 	char           *part2;
@@ -883,7 +886,8 @@ int sig;
 
 }
 
-static int protect_password() {
+static int 
+protect_password (void) {
 	long hash;
 	char *cp;
 	int len;
@@ -903,7 +907,8 @@ static int protect_password() {
 }
 
 
-static int sign_bindarg() {
+static int 
+sign_bindarg (void) {
 	struct Nonce *nonce;
 
 	if (dsap_security == (struct SecurityServices *) 0)

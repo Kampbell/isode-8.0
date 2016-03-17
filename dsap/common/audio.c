@@ -150,8 +150,8 @@ int format;
 #endif
 }
 
-static struct qbuf *audio_parse (str)
-char   *str;
+static struct qbuf *
+audio_parse (char *str)
 {
 	if (file_attr_length)
 		return str2qb (str, file_attr_length, 1);
@@ -159,7 +159,8 @@ char   *str;
 		return str2qb (str, strlen (str), 1);
 }
 
-audio_syntax () {
+int 
+audio_syntax (void) {
 	 add_attribute_syntax ("audio",
 								 (IFP)r_octenc,		(IFP) r_octsdec,
 								 (IFP)audio_parse,	audio_print,

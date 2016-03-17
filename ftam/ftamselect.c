@@ -33,11 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamselect.c,v 9.0 199
 
 /*    map ftam descriptors for select() */
 
-int	FSelectMask (sd, mask, nfds, fti)
-int	sd;
-fd_set *mask;
-int    *nfds;
-struct FTAMindication *fti;
+int 
+FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti)
 {
 	SBV     smask;
 	struct ftamblk *fsb;

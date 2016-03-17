@@ -812,7 +812,8 @@ int	format;
 	return;
 }
 
-sacl_syntax() {
+int 
+sacl_syntax (void) {
 	sacl_sntx = add_attribute_syntax ("SearchACLSyntax",
 									  (IFP) sacl_enc,	(IFP) sacl_decode,
 									  (IFP) str2sacl,	sacl_print,
@@ -821,7 +822,8 @@ sacl_syntax() {
 									  NULLIFP,	TRUE);
 }
 
-lacl_syntax() {
+int 
+lacl_syntax (void) {
 	lacl_sntx = add_attribute_syntax ("ListACLSyntax",
 									  (IFP) lacl_enc,	(IFP) lacl_decode,
 									  (IFP) str2lacl,	lacl_print,

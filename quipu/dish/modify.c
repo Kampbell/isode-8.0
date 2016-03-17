@@ -53,9 +53,8 @@ struct	list_element {
 extern Entry    current_entry;
 static char     new_draft;
 
-call_modify (argc, argv)
-int             argc;
-char          **argv;
+int 
+call_modify (int argc, char **argv)
 {
 	struct ds_modifyentry_arg mod_arg;
 
@@ -349,9 +348,8 @@ char          **argv;
 }
 
 
-struct entrymod * ems_append (a,b)
-struct entrymod *a;
-struct entrymod *b;
+struct entrymod *
+ems_append (struct entrymod *a, struct entrymod *b)
 {
 	struct entrymod *ptr;
 
@@ -436,8 +434,8 @@ AttributeType at;
 	return (em);
 }
 
-ems_part_free(emp)
-struct entrymod *emp;
+int 
+ems_part_free (struct entrymod *emp)
 {
 	if(emp == NULLMOD)
 		return;
@@ -447,8 +445,8 @@ struct entrymod *emp;
 
 static	int	raboof = 0;
 
-static char *foobar (string)
-char   *string;
+static char *
+foobar (char *string)
 {
 	DN	    fb;
 	PS	    ps;
@@ -484,9 +482,8 @@ you_lose:
 	return buffer;
 }
 
-dsa_control (argc, argv)
-int             argc;
-char          **argv;
+int 
+dsa_control (int argc, char **argv)
 {
 	static struct entrymod mod = {
 		EM_ADDATTRIBUTE,
@@ -589,7 +586,8 @@ out:
 	/* as_free (mod_arg.mea_changes->em_what); */
 }
 
-dsa_control_info () {
+int 
+dsa_control_info (void) {
 	struct ds_read_arg read_arg;
 	struct DSError  error;
 	struct ds_read_result result;
@@ -615,9 +613,8 @@ dsa_control_info () {
 		ps_printf (OPT, "No information !!!\n");
 }
 
-mod_template (name,noedit)
-char           *name;
-char 		noedit;
+int 
+mod_template (char *name, int noedit)
 {
 	FILE           *fptr;
 	PS              ps;
@@ -670,9 +667,8 @@ char 		noedit;
 	return (OK);
 }
 
-build_modify(start, mod_arg)
-struct	list_element	*start ;
-struct  ds_modifyentry_arg      *mod_arg ;
+int 
+build_modify (struct list_element *start, struct ds_modifyentry_arg *mod_arg)
 {
 	struct	list_element	*temp_elem ;
 	struct	entrymod	*emnew ;

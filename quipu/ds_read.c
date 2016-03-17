@@ -46,16 +46,8 @@ extern unsigned strong_policy;
 extern DN mydsadn;
 extern struct di_block * di_alloc();
 
-do_ds_read (arg, error, result, binddn, target, di_p, dsp, quipu_ctx, authtype)
-struct ds_read_arg          *arg;
-struct ds_read_result       *result;
-struct DSError              *error;
-DN                          binddn;
-DN                          target;
-struct di_block		**di_p;
-char			dsp;
-char 			quipu_ctx;
-char 			authtype;
+int 
+do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, int dsp, int quipu_ctx, int authtype)
 {
 	Entry  entryptr;
 	int retval;
@@ -241,11 +233,8 @@ out:
 
 }
 
-static cant_use_cache (ptr,dn,eis,target)
-Entry ptr;
-DN dn;
-EntryInfoSelection eis;
-DN target;
+static 
+cant_use_cache (Entry ptr, DN dn, EntryInfoSelection eis, DN target)
 {
 	Attr_Sequence as;
 	char dfltacl = FALSE;
@@ -297,13 +286,8 @@ DN target;
 	return FALSE;
 }
 
-static attribute_not_cached (ptr,dn,at,target,level,dfltacl)
-Entry ptr;
-DN dn;
-OID at;
-DN target;
-int level;
-char dfltacl;
+static 
+attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, int dfltacl)
 {
 	struct acl_attr * aa;
 	struct oid_seq * oidptr;
@@ -327,7 +311,8 @@ char dfltacl;
 }
 
 
-static Attr_Sequence  dsa_control_info() {
+static Attr_Sequence 
+dsa_control_info (void) {
 	extern int slave_edbs;
 	extern int master_edbs;
 	extern int local_master_size;
@@ -351,9 +336,8 @@ static Attr_Sequence  dsa_control_info() {
 	return (as);
 }
 
-dsa_read_control (arg,result)
-struct ds_read_arg          *arg;
-struct ds_read_result       *result;
+int 
+dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result)
 {
 
 	if ((arg->rda_eis.eis_allattributes) ||
@@ -385,9 +369,8 @@ struct ds_read_result       *result;
 
 
 
-need_pseudo_dsa (eptr,arg)
-Entry eptr;
-struct ds_read_arg *arg;
+int 
+need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg)
 {
 	Attr_Sequence as;
 

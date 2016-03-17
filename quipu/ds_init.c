@@ -57,7 +57,8 @@ time_t	timenow;
 
 static set_context ();
 
-dsa_init () {
+int 
+dsa_init (void) {
 	Attr_Sequence as, get_cacheEDB();
 	AttributeType manager;
 	DN str2dn();
@@ -211,8 +212,8 @@ dsa_init () {
 
 }
 
-static Entry load_dsa_cache_entry(dn)
-DN dn;
+static Entry 
+load_dsa_cache_entry (DN dn)
 {
 	DN ptr,trail = NULLDN;
 	Entry newentry, res;
@@ -263,8 +264,8 @@ DN dn;
 	return res;
 }
 
-static set_context (eptr)
-Entry eptr;
+static 
+set_context (Entry eptr)
 {
 	AttributeType at;
 	AttributeValue av;

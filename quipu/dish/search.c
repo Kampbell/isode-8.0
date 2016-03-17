@@ -61,9 +61,8 @@ char		allow_move = TRUE;
 
 int		csr_compar ();
 
-call_search (argc, argv)
-int             argc;
-char          **argv;
+int 
+call_search (int argc, char **argv)
 {
 	PS	aps;
 	struct ds_search_arg search_arg;

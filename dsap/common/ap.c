@@ -37,8 +37,8 @@ extern LLog * log_dsap;
 extern struct PSAPaddr * psap_cpy ();
 extern aps_free();
 
-struct access_point * qap_cpy (a)
-struct access_point * a;
+struct access_point *
+qap_cpy (struct access_point *a)
 {
 	struct access_point * r;
 
@@ -52,8 +52,8 @@ struct access_point * a;
 	return (r);
 }
 
-static qap_cmp (r,a)
-struct access_point *r, *a;
+static 
+qap_cmp (struct access_point *r, struct access_point *a)
 {
 	int res;
 
@@ -70,8 +70,8 @@ struct access_point *r, *a;
 }
 
 
-static PE qap_enc (p)
-struct access_point *p;
+static PE 
+qap_enc (struct access_point *p)
 {
 	PE ret_pe;
 
@@ -81,8 +81,8 @@ struct access_point *p;
 	return (ret_pe);
 }
 
-static struct access_point * qap_dec (pe)
-PE pe;
+static struct access_point *
+qap_dec (PE pe)
 {
 	struct access_point *qap;
 
@@ -93,8 +93,8 @@ PE pe;
 	return (qap);
 }
 
-static struct access_point * qap_parse (s)
-char * s;
+static struct access_point *
+qap_parse (char *s)
 {
 	struct PSAPaddr *pa;
 	struct access_point *qap;
@@ -129,10 +129,8 @@ char * s;
 	return qap;
 }
 
-static qap_print (ps,p,format)
-PS ps;
-struct access_point *p;
-int format;
+static 
+qap_print (PS ps, struct access_point *p, int format)
 {
 
 	dn_print (ps, p -> ap_name, format);
@@ -145,7 +143,8 @@ int format;
 
 }
 
-ap_syntax () {
+int 
+ap_syntax (void) {
 	 add_attribute_syntax ("AccessPoint",
 								 (IFP) qap_enc,		(IFP) qap_dec,
 								 (IFP) qap_parse,	qap_print,

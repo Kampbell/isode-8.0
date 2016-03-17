@@ -655,9 +655,8 @@ static int	avl_nextlist;
 #define AVL_GRABSIZE	100
 
 /* ARGSUSED 1 */
-static avl_buildlist( data, arg )
-caddr_t	data;
-int	arg;
+static 
+avl_buildlist (caddr_t data, int arg)
 {
 	static int	slots;
 
@@ -694,7 +693,8 @@ Avlnode	*root;
 	return( avl_list[ avl_nextlist++ ] );
 }
 
-caddr_t avl_getnext() {
+caddr_t 
+avl_getnext (void) {
 	if ( avl_list == 0 )
 		return( 0 );
 
@@ -708,6 +708,7 @@ caddr_t avl_getnext() {
 }
 
 
-avl_dup_error() {
+int 
+avl_dup_error (void) {
 	return( NOTOK );
 }

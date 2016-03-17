@@ -139,8 +139,8 @@ int format;
 
 static char * nextline = NULLCP;
 
-setAttributeLine(str)
-char * str;
+int 
+setAttributeLine (char *str)
 {
 	/* Recusion ? */
 
@@ -148,8 +148,8 @@ char * str;
 		*nextline++ = 0;
 }
 
-char * nextAttributeLine (str)
-char * str;
+char *
+nextAttributeLine (char *str)
 {
 	char * ptr;
 
@@ -333,7 +333,8 @@ PE pe;
 	return (m);
 }
 
-inherit_syntax () {
+int 
+inherit_syntax (void) {
 	extern short inherit_sntx;
 
 	inherit_sntx = add_attribute_syntax ("InheritedAttribute",

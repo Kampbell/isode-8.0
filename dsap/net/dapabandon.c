@@ -34,11 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapabandon.c,v 9.0
 extern  LLog    * log_dsap;
 void ros_log ();
 
-dap_abandon (ad, id, arg, error)
-int	  ad;
-int	* id;
-struct ds_abandon_arg       *arg;
-struct DSError              *error;
+int 
+dap_abandon (int ad, int *id, struct ds_abandon_arg *arg, struct DSError *error)
 {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
@@ -78,12 +75,8 @@ struct DSError              *error;
 	}
 }
 
-int	  DapAbandon (ad, id, arg, di, asyn)
-int			  ad;
-int			  id;
-struct ds_abandon_arg	* arg;
-struct DAPindication	* di;
-int			  asyn;
+int 
+DapAbandon (int ad, int id, struct ds_abandon_arg *arg, struct DAPindication *di, int asyn)
 {
 	PE                  arg_pe;
 

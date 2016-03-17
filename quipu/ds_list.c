@@ -36,15 +36,8 @@ extern LLog * log_dsap;
 extern Entry database_root;
 static int build_result();
 
-do_ds_list (arg, error, result, binddn, target, di_p, dsp, authtype)
-struct ds_list_arg          *arg;
-struct ds_list_result       *result;
-struct DSError                      *error;
-DN                                  binddn;
-DN                                  target;
-struct di_block			**di_p;
-char				dsp;
-char				authtype;
+int 
+do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype)
 {
 	Entry  entryptr;
 	int retval;
@@ -175,9 +168,8 @@ static int			g_security;
 static DN                       g_dn;
 static DN                       g_dnend;
 
-static int build_list(e, dn)
-Entry   e;
-DN      dn;
+static int 
+build_list (Entry e, DN dn)
 {
 	struct subordinate      *sub;
 
@@ -243,14 +235,8 @@ DN      dn;
 	return(0);
 }
 
-static int build_result( arg, ptr, result, error, binddn, dsp, laclsizelimit )
-Entry ptr;
-struct ds_list_arg    *arg;
-struct ds_list_result *result;
-struct DSError * error;
-DN binddn;
-char dsp;
-int laclsizelimit;
+static int 
+build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_result *result, struct DSError *error, DN binddn, int dsp, int laclsizelimit)
 {
 	DN dn;
 	DN dnend;
@@ -346,10 +332,8 @@ int laclsizelimit;
 }
 
 
-try_cache (arg,result,target)
-struct ds_list_arg          *arg;
-struct ds_list_result       *result;
-DN 					 target;
+int 
+try_cache (struct ds_list_arg *arg, struct ds_list_result *result, DN target)
 {
 	struct list_cache *ptr;
 	struct subordinate * subord_cpy();

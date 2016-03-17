@@ -68,8 +68,8 @@ typedef struct _atlist {
 #define NULLATL (atlist)NULL
 atlist at_list = NULLATL;
 
-shadow_entry (eptr)
-Entry eptr;
+int 
+shadow_entry (Entry eptr)
 {
 	DN dn, ndn;
 	Attr_Sequence as;
@@ -120,13 +120,15 @@ Entry eptr;
 				}
 }
 
-shadow_myentry () {
+int 
+shadow_myentry (void) {
 	if ( check_dnseq (shades, mydsadn) == NOTOK)
 		shades = dn_seq_push (mydsadn,shades);
 }
 
 #ifdef DEBUG
-free_shadow_lists() {
+int 
+free_shadow_lists (void) {
 	if (dn_shades)
 		dn_seq_free (dn_shades);
 	if (shades)
@@ -134,8 +136,8 @@ free_shadow_lists() {
 }
 #endif
 
-shadow_attribute (s)
-char * s;
+int 
+shadow_attribute (char *s)
 {
 	AttributeType at;
 	atlist new_atl;
@@ -150,7 +152,8 @@ char * s;
 	}
 }
 
-shadow_update () {
+int 
+shadow_update (void) {
 	struct dn_seq * dnseq;
 	struct oper_act	* op;
 	static struct ds_read_arg sarg = {
@@ -305,8 +308,8 @@ shadow_update () {
 }
 
 
-shadow_fail_wakeup (on)
-struct oper_act * on;
+int 
+shadow_fail_wakeup (struct oper_act *on)
 {
 #ifdef notanymore
 	struct oper_act	* on_tmp;
@@ -374,16 +377,15 @@ struct oper_act * on;
 }
 
 /* ARGSUSED */
-inherit_link(e, parent)
-Entry   e;
-Entry   parent;
+int 
+inherit_link (Entry e, Entry parent)
 {
 	set_inheritance (e);
 	return(OK);
 }
 
-process_shadow (on)
-struct oper_act * on;
+int 
+process_shadow (struct oper_act *on)
 {
 	Entry eptr, ne = NULLENTRY;
 	struct DSError err;

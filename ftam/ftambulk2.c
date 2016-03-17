@@ -31,15 +31,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambulk2.c,v 9.0 1992
 #include <signal.h>
 #include "fpkt.h"
 
+static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti);
+static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
+
 /*    F-TRANSFER-END.RESPONSE */
 
-int	FTransEndResponse (sd, action, sharedASE, diag, ndiag, fti)
-int	sd;
-int	action;
-PE	sharedASE;
-struct FTAMdiagnostic diag[];
-int	ndiag;
-struct FTAMindication *fti;
+int 
+FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
 {
 	SBV	    smask;
 	int     result;
@@ -71,13 +69,7 @@ struct FTAMindication *fti;
 
 /*  */
 
-static int  FTransEndResponseAux (fsb, action, sharedASE, diag, ndiag, fti)
-struct ftamblk *fsb;
-int	action;
-PE	sharedASE;
-struct FTAMdiagnostic diag[];
-int	ndiag;
-struct FTAMindication *fti;
+static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
 {
 	int	    result;
 	PE	    pe;

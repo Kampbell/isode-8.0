@@ -32,9 +32,8 @@ LLog * log_dsap;
 LLog * log_stat;
 #endif
 
-main (argc, argv)
-int argc;
-char *argv[];
+int 
+main (int argc, char *argv[])
 {
 	extern IFP unrav_fn;
 	extern IFP schema_fn;
@@ -84,8 +83,8 @@ char *argv[];
 int refreshing = FALSE;
 
 /* ARGSUSED */
-shadow_entry(eptr)
-Entry eptr;
+int 
+shadow_entry (Entry eptr)
 {
 	;
 }

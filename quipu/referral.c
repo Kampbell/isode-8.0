@@ -37,8 +37,8 @@ struct di_block	* di_alloc();
 
 static struct access_point * top_ap = NULLACCESSPOINT;
 
-struct access_point	* ap_cpy(ap)
-struct access_point	* ap;
+struct access_point *
+ap_cpy (struct access_point *ap)
 {
 	struct access_point	* ret_ap;
 	struct access_point	**tmp_ap;
@@ -61,10 +61,8 @@ struct access_point	* ap;
 }
 
 
-static ContinuationRef new_ref (name,rt,ap)
-DN name;
-int rt;
-struct access_point * ap;
+static ContinuationRef 
+new_ref (DN name, int rt, struct access_point *ap)
 {
 	ContinuationRef ptr;
 
@@ -81,9 +79,8 @@ struct access_point * ap;
 	return (ptr);
 }
 
-struct access_point * ap_append (a,b)
-struct access_point * a;
-struct access_point * b;
+struct access_point *
+ap_append (struct access_point *a, struct access_point *b)
 {
 	struct access_point * trail;
 	struct access_point * top;
@@ -100,14 +97,14 @@ struct access_point * b;
 	return (top);
 }
 
-ContinuationRef cont_ref_parent (name)
-DN name;
+ContinuationRef 
+cont_ref_parent (DN name)
 {
 	return (new_ref(name,RT_SUPERIOR,top_ap));
 }
 
-add_str_parent (sdn,spsap)
-char * sdn, *spsap;
+int 
+add_str_parent (char *sdn, char *spsap)
 {
 	DN dn,str2dn();
 	struct PSAPaddr *psap, * str2paddr();
@@ -133,7 +130,8 @@ char * sdn, *spsap;
 }
 
 #ifdef DEBUG
-free_parents() {
+int 
+free_parents (void) {
 	struct access_point * ap, *ap_next;
 
 	for (ap = top_ap; ap != NULLACCESSPOINT; ap = ap_next) {
@@ -145,7 +143,8 @@ free_parents() {
 }
 #endif
 
-struct PSAPaddr *parent_psap() {
+struct PSAPaddr *
+parent_psap (void) {
 	if (top_ap == NULLACCESSPOINT)
 		return (NULLPA);
 	return (top_ap->ap_address);
@@ -165,13 +164,8 @@ struct PSAPaddr *parent_psap() {
 *  NB - As with get_dsa_info, the blocks generated need to be further
 *  processed by the calling routine.
 */
-int	  dsa_info_new (name,dn_stack,master,entry_ptr,err,di_p)
-DN name;
-struct dn_seq	* dn_stack;
-int		  master;
-Entry entry_ptr;
-struct DSError	* err;
-struct di_block	**di_p;
+int 
+dsa_info_new (DN name, struct dn_seq *dn_stack, int master, Entry entry_ptr, struct DSError *err, struct di_block **di_p)
 {
 	AV_Sequence		  avs;
 	int			  ret_val;
@@ -315,13 +309,8 @@ out:
 	return (ret_val);
 }
 
-struct di_block * ap2di (ap,name,master,di_type,oper,cr_type)
-struct access_point *ap;
-DN name;
-char master;
-char di_type;
-struct oper_act *oper;
-int cr_type;
+struct di_block *
+ap2di (struct access_point *ap, DN name, int master, int di_type, struct oper_act *oper, int cr_type)
 {
 	struct access_point *loop;
 	struct di_block	*res = NULL_DI_BLOCK;
@@ -359,11 +348,8 @@ int cr_type;
 }
 
 
-int	  dsa_info_parent (name,err,di_p,master)
-DN		  name;
-struct DSError	* err;
-struct di_block	**di_p;
-char master;
+int 
+dsa_info_parent (DN name, struct DSError *err, struct di_block **di_p, int master)
 {
 	DLOG(log_dsap, LLOG_TRACE, ("dsa_info_parent"));
 

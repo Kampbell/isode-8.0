@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam.c,v 9.0 1992/06/
 #include <setjmp.h>
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ftamuser.h"
 #include "tailor.h"
 
@@ -58,7 +58,13 @@ static jmp_buf	intrenv;
 int	interrupted;
 
 
-void	adios (), advise ();
+static ftamloop (char **vec, int error);
+static SFD intrser (int sig);
+
+void	adios (char* what, ...);
+void	advise (char* what, ...);
+static void _advise (char* what, va_list ap);
+
 #ifndef	BRIDGE
 SFD	intrser ();
 #endif
@@ -71,10 +77,10 @@ extern char* default_prompt();
 /* ARGSUSED */
 
 #ifndef	BRIDGE
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
+static int arginit (char **vec);
+
+int 
+main (int argc, char **argv, char **envp)
 {
 	int     eof,
 			status,
@@ -184,7 +190,7 @@ char  **argv,
 				 printf ("\n");
 			}
 
-			if (getline (command_prompt, buffer) == NOTOK) {
+			if (getftamline (command_prompt, buffer) == NOTOK) {
 				if (eof)
 					break;
 
@@ -237,9 +243,7 @@ char  **argv,
 /*  */
 
 #ifndef	BRIDGE
-static	ftamloop (vec, error)
-char  **vec;
-int	error;
+static ftamloop (char **vec, int error)
 {
 	struct dispatch   *ds;
 
@@ -300,8 +304,7 @@ int	error;
 /*    ARGINIT */
 
 #ifndef	BRIDGE
-static	arginit (vec)
-char  **vec;
+static arginit (char **vec)
 {
 	char  *ap,
 			 *pp;
@@ -399,9 +402,7 @@ char  **vec;
 /*    INTERACTIVE */
 
 #ifndef	BRIDGE
-int	getline (prompt, buffer)
-char   *prompt,
-	   *buffer;
+int getftamline (char *prompt, char *buffer)
 {
 	int    i;
 	char  *cp,
@@ -471,8 +472,7 @@ char   *prompt,
 
 /* ARGSUSED */
 
-static	SFD intrser (sig)
-int	sig;
+static SFD intrser (int sig)
 {
 #ifndef	BSDSIGS
 	 signal (SIGINT, intrser);
@@ -489,8 +489,8 @@ int	sig;
 
 #ifndef	BRIDGE
 #ifndef	lint
-int	ask (va_alist)
-va_dcl {
+int	ask (char* fmt, ...)
+{
 	int     x,
 	y,
 	result;
@@ -519,9 +519,9 @@ va_dcl {
 	if (bell)
 		 putchar (ringring);
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -558,8 +558,8 @@ again:
 #else
 /* VARARGS */
 
-int	ask (fmt)
-char   *fmt;
+int 
+ask (char *fmt)
 {
 	return ask (fmt);
 }
@@ -572,14 +572,14 @@ char   *fmt;
 void	_advise ();
 
 
-void	adios (va_alist)
-va_dcl {
+void	adios (char* what, ...)
+{
 	struct FTAMindication   ftis;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_advise (ap);
+	_advise (what, ap);
 
 	va_end (ap);
 
@@ -597,9 +597,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
+void 
+adios (char *what, char *fmt)
 {
 	adios (what, fmt);
 }
@@ -607,20 +606,19 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
+void	advise (char*what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_advise (ap);
+	_advise (what, ap);
 
 	va_end (ap);
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void _advise (char* what, va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -647,9 +645,8 @@ va_list	ap;
 #else
 /* VARARGS */
 
-void	advise (what, fmt)
-char   *what,
-	   *fmt;
+void 
+advise (char *what, char *fmt)
 {
 	advise (what, fmt);
 }

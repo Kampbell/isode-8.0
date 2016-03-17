@@ -28,10 +28,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-mgmt.c,v 9.0 199
 #include <stdio.h>
 #include "ftamuser.h"
 
+static int mv (char *src, char *dst, int multi);
+static int rm (char *file, int multi);
+static int chgrp (char *group, char *file, int multi);
+static int makedir (char *dir, int multi);
+
 /*  */
 
-int	f_mv (vec)
-char  **vec;
+int f_mv (char **vec)
 {
 #ifdef	BRIDGE
 	char *src;
@@ -49,7 +53,7 @@ char  **vec;
 #ifdef	BRIDGE
 		return NOTOK;
 #else
-		if (getline ("source: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
+		if (getftamline ("source: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
 			return OK;
 		dst = NULL;
 #endif
@@ -77,7 +81,7 @@ char  **vec;
 	sglobbed = xglobbed;
 
 	if (dst == NULL) {
-		if (getline ("destination: ", buffer) == NOTOK) {
+		if (getftamline ("destination: ", buffer) == NOTOK) {
 			blkfree (src);
 			return OK;
 		}
@@ -226,10 +230,7 @@ out:
 
 /*  */
 
-static int  mv (src, dst, multi)
-char   *src,
-	   *dst;
-int	multi;
+static int mv (char *src, char *dst, int multi)
 {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
@@ -312,8 +313,8 @@ you_lose:
 
 /*  */
 
-int	f_rm (vec)
-char  **vec;
+int 
+f_rm (char **vec)
 {
 #ifndef	BRIDGE
 	int     multi;
@@ -324,7 +325,7 @@ char  **vec;
 #ifdef	BRIDGE
 		return NOTOK;
 #else
-		if (getline ("file: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
+		if (getftamline ("file: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
 			return OK;
 #endif
 	}
@@ -368,9 +369,7 @@ out:
 
 /*  */
 
-static int  rm (file, multi)
-char   *file;
-int	multi;
+static int rm (char *file, int multi)
 {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
@@ -436,8 +435,8 @@ you_lose:
 /*  */
 
 #ifndef	BRIDGE
-int	f_chgrp (vec)
-char  **vec;
+int 
+f_chgrp (char **vec)
 {
 	int     multi;
 	char    group[8 + 1];
@@ -449,14 +448,14 @@ char  **vec;
 	}
 
 	if (*++vec == NULL) {
-		if (getline ("group: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
+		if (getftamline ("group: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
 			return OK;
 	}
 
 	 strcpy (group, vec[0]);
 
 	if (*++vec == NULL) {
-		if (getline ("file: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
+		if (getftamline ("file: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
 			return OK;
 	}
 
@@ -495,10 +494,7 @@ out:
 
 /*  */
 
-static int  chgrp (group, file, multi)
-char   *group,
-	   *file;
-int	multi;
+static int chgrp (char *group, char *file, int multi)
 {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
@@ -581,8 +577,8 @@ you_lose:
 
 /*  */
 
-int	f_mkdir (vec)
-char  **vec;
+int 
+f_mkdir (char **vec)
 {
 #ifndef	BRIDGE
 	int	    multi;
@@ -594,7 +590,7 @@ char  **vec;
 #ifdef	BRIDGE
 		return NOTOK;
 #else
-		if (getline ("directory: ", buffer) == NOTOK
+		if (getftamline ("directory: ", buffer) == NOTOK
 				|| str2vec (buffer, vec) < 1)
 			return OK;
 
@@ -617,9 +613,7 @@ char  **vec;
 
 /*  */
 
-static int  makedir (dir, multi)
-char   *dir;
-int	multi;
+static int makedir (char *dir, int multi)
 {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;

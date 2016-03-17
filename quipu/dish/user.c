@@ -43,9 +43,8 @@ extern  char    fred_flag;
 
 static new_alias ();
 
-call_ds (argc,argv)
-int argc;
-char ** argv;
+int 
+call_ds (int argc, char **argv)
 {
 	extern char bound;
 	extern char * myname;
@@ -128,8 +127,8 @@ char ** argv;
 
 /*  */
 
-static new_alias (cp)
-char   *cp;
+static 
+new_alias (char *cp)
 {
 	int	    seqno;
 	DN	    sdn;

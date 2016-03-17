@@ -37,9 +37,8 @@ extern AttributeType at_objectclass;
 extern OID alias_oc;
 Attr_Sequence entry_find_type();
 
-check_avs_schema (at,avs_oc)
-AttributeType at;
-AV_Sequence avs_oc;
+int 
+check_avs_schema (AttributeType at, AV_Sequence avs_oc)
 {
 	table_seq optr;
 	AV_Sequence avs;
@@ -72,10 +71,8 @@ AV_Sequence avs_oc;
 }
 
 
-real_check_schema (eptr,as,error)
-Entry eptr;
-Attr_Sequence as;
-struct DSError * error;
+int 
+real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error)
 {
 	Attr_Sequence at;
 	table_seq optr;
@@ -177,10 +174,8 @@ struct DSError * error;
 
 }
 
-check_schema_type (eptr,attr,error)
-Entry eptr;
-AttributeType attr;
-struct DSError * error;
+int 
+check_schema_type (Entry eptr, AttributeType attr, struct DSError *error)
 {
 	Attr_Sequence at;
 	AV_Sequence avs;
@@ -220,9 +215,8 @@ struct DSError * error;
 }
 
 
-test_schema (tree,oc)
-AV_Sequence tree;
-AV_Sequence oc;
+int 
+test_schema (AV_Sequence tree, AV_Sequence oc)
 {
 	AV_Sequence aptr, tavs;
 	struct tree_struct *tptr;
@@ -254,8 +248,11 @@ AV_Sequence oc;
 	return (OK);
 }
 
-test_hierarchy (a,b)    /* see if b in oc a */
-objectclass *a, *b;
+int 
+test_hierarchy (    /* see if b in oc a */
+    objectclass *a,
+    objectclass *b
+)
 {
 	struct oc_seq * oidseq;
 
@@ -270,8 +267,8 @@ objectclass *a, *b;
 }
 
 
-check_oc_hierarchy (avs)
-AV_Sequence avs;
+int 
+check_oc_hierarchy (AV_Sequence avs)
 {
 	AV_Sequence avs1, avs2;
 	struct oc_seq * oidseq;

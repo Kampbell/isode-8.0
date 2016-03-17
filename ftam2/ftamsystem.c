@@ -76,6 +76,9 @@ struct utmp  uts;
 
 long	lseek ();
 
+static ftam_finishindication (struct FTAMfinish *ftf);
+static ftam_abortindication (struct FTAMabort *fta);
+
 /*    VFS DATA */
 
 struct vfsmap vfs[] = {
@@ -187,8 +190,8 @@ int	ftp_default = VFS_UBF;
 #endif
 
 
-int	ftam_start (fts)
-struct FTAMstart *fts;
+int 
+ftam_start (struct FTAMstart *fts)
 {
 	int    i;
 #ifndef	BRIDGE
@@ -512,8 +515,8 @@ bad1:
 
 /*  */
 
-int	ftam_indication (fti)
-struct FTAMindication *fti;
+int 
+ftam_indication (struct FTAMindication *fti)
 {
 	switch (fti -> fti_type) {
 	case FTI_FINISH:
@@ -565,8 +568,7 @@ struct FTAMindication *fti;
 
 /* ARGSUSED */
 
-static	ftam_finishindication (ftf)
-struct FTAMfinish *ftf;
+static ftam_finishindication (struct FTAMfinish *ftf)
 {
 #ifdef	DEBUG
 	long    now;
@@ -605,7 +607,8 @@ struct FTAMfinish *ftf;
 }
 
 
-closewtmp () {
+int 
+closewtmp (void) {
 #if	!defined(SYS5) && !defined(bsd43_ut_host)
 	long    now;
 
@@ -624,8 +627,7 @@ closewtmp () {
 
 /*    ABORT */
 
-static ftam_abortindication (fta)
-struct FTAMabort *fta;
+static ftam_abortindication (struct FTAMabort *fta)
 {
 	struct FTAMindication   ftis;
 

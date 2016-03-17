@@ -37,12 +37,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-trans.c,v 9.0 1
 static int  nbytes;
 
 long	lseek ();
+static	uxfget ( struct FTAMdiagnostic **diags);
+static	fdfget ( struct FTAMdiagnostic **diags);
+static  tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0);
+static int  de2fadu (PE pe, int concat);
 
 
 /*    TRANSFER */
 
-int	ftam_bulkbeginindication (ftg)
-struct FTAMgroup *ftg;
+int 
+ftam_bulkbeginindication (struct FTAMgroup *ftg)
 {
 	int	    state;
 	struct FTAMgroup    ftms;
@@ -92,8 +96,8 @@ struct FTAMgroup *ftg;
 */
 
 
-int	ftam_readwriteindication (ftrw)
-struct FTAMreadwrite *ftrw;
+int 
+ftam_readwriteindication (struct FTAMreadwrite *ftrw)
 {
 	int	    result;
 	struct FADUidentity *fa = &ftrw -> ftrw_identity;
@@ -244,8 +248,7 @@ do_cancel:
 
 /*  */
 
-static	uxfget (diags)
-struct FTAMdiagnostic **diags;
+static	uxfget ( struct FTAMdiagnostic **diags)
 {
 	int    n;
 	int	    bsize,
@@ -566,8 +569,7 @@ error_return:
 
 /*  */
 
-static	fdfget (diags)
-struct FTAMdiagnostic **diags;
+static	fdfget ( struct FTAMdiagnostic **diags)
 {
 	int	    names,
 			len,
@@ -792,9 +794,7 @@ error_return:
 
 /*  */
 
-static int  de2fadu (pe, concat)
-PE	pe;
-int	concat;
+static int  de2fadu (PE pe, int concat)
 {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
@@ -1109,10 +1109,7 @@ char   *action;
 }
 
 
-static  tvsub (tdiff, t1, t0)
-struct timeval *tdiff,
-		*t1,
-		*t0;
+static  tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0)
 {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;

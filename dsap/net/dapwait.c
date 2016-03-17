@@ -47,10 +47,8 @@ extern LLog	* log_dsap;
 
 /* ARGSUSED */
 
-int	  DapInitWaitRequest (sd, secs, di)
-int			  sd;
-int			  secs;
-struct DAPindication	* di;
+int 
+DapInitWaitRequest (int sd, int secs, struct DAPindication *di)
 {
 	int	  result;
 	struct RoSAPindication	  roi_s;
@@ -95,10 +93,8 @@ struct DAPindication	* di;
 	/* NOT REACHED */
 }
 
-int	  DapDecodeResult (sd, ror, di)
-int			  sd;
-struct RoSAPresult	* ror;
-struct DAPindication	* di;
+int 
+DapDecodeResult (int sd, struct RoSAPresult *ror, struct DAPindication *di)
 {
 	int			  success = NOTOK;
 	PE			  pe = ror->ror_result;
@@ -176,10 +172,8 @@ struct DAPindication	* di;
 	return(success);
 }
 
-int	  DapDecodeError (sd, roe, di)
-int			  sd;
-struct RoSAPerror	* roe;
-struct DAPindication	* di;
+int 
+DapDecodeError (int sd, struct RoSAPerror *roe, struct DAPindication *di)
 {
 	int			  success;
 	PE			  pe = roe->roe_param;

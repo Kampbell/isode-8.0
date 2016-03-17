@@ -109,8 +109,8 @@ Authpolicy ap;
 	return( ret_pe );
 }
 
-static get_policy( str )
-char	*str;
+static 
+get_policy (char *str)
 {
 	/* get modification policy */
 	if ( lexnequ( str, "trust", 5 ) == 0 ) {
@@ -196,7 +196,8 @@ int		format;
 	}
 }
 
-authp_syntax() {
+int 
+authp_syntax (void) {
 	extern	sfree();
 
 	authp_sntx = add_attribute_syntax ("AuthenticationPolicySyntax",

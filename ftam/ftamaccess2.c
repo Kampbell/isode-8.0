@@ -31,15 +31,19 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamaccess2.c,v 9.0 19
 #include <signal.h>
 #include "fpkt.h"
 
+static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
+
 /*    F-{LOCATE,ERASE}.RESPONSE */
 
-int	FAccessResponse (sd, action, identity, diag, ndiag, fti)
-int	sd;
-int	action;
-struct FADUidentity *identity;	/* F-LOCATE.RESPONSE only */
-struct FTAMdiagnostic diag[];
-int	ndiag;
-struct FTAMindication *fti;
+int 
+FAccessResponse (
+    int sd,
+    int action,
+    struct FADUidentity *identity,	/* F-LOCATE.RESPONSE only */
+    struct FTAMdiagnostic diag[],
+    int ndiag,
+    struct FTAMindication *fti
+)
 {
 	SBV	    smask;
 	int     result;
@@ -71,13 +75,7 @@ struct FTAMindication *fti;
 
 /*  */
 
-static int  FAccessResponseAux (fsb, action, identity, diag, ndiag, fti)
-struct ftamblk *fsb;
-int	action;
-struct FADUidentity *identity;
-struct FTAMdiagnostic diag[];
-int	ndiag;
-struct FTAMindication *fti;
+static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
 {
 	int     result;
 	PE	    pe;

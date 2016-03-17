@@ -34,8 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/ca.c,v 9.0 1992
 
 DN mydsadn = NULLDN;
 
-struct common_args      * get_ca_ref(dsarg)
-struct ds_op_arg        * dsarg;
+struct common_args *
+get_ca_ref (struct ds_op_arg *dsarg)
 {
 	struct common_args  * ca;
 
@@ -74,8 +74,8 @@ struct ds_op_arg        * dsarg;
 	return(ca);
 }
 
-cha_loopdetected(cha)
-struct chain_arg	* cha;
+int 
+cha_loopdetected (struct chain_arg *cha)
 {
 	struct trace_info	  ti_elem_s;
 	struct trace_info	* ti_elem = &(ti_elem_s);
@@ -88,9 +88,8 @@ struct chain_arg	* cha;
 	return(ti_is_elem(ti_elem, cha->cha_trace));
 }
 
-ti_is_elem(ti, ti_list)
-struct trace_info	* ti;
-struct trace_info	* ti_list;
+int 
+ti_is_elem (struct trace_info *ti, struct trace_info *ti_list)
 {
 	struct trace_info	* tip;
 
@@ -111,8 +110,8 @@ struct trace_info	* ti_list;
 	return(0);
 }
 
-struct trace_info	* ti_cpy(ti)
-struct trace_info	* ti;
+struct trace_info *
+ti_cpy (struct trace_info *ti)
 {
 	struct trace_info	* ret_ti;
 

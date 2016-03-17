@@ -33,13 +33,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-get.c,v 9.0 1992
 
 static int effector;
 
-int	ubffnx ();
-struct vfsmap *findvf ();
+static int check_get (char *dst);
+static struct vfsmap *findvf (char* file);
+static int  getloop (int fd, char* dst, IFP wfnx);
+static int  ubffnx ( int	fd, struct PSAPdata *px, int	status);
 
 /*  */
 
-int	f_get (vec)
-char  **vec;
+int 
+f_get (char **vec)
 {
 #ifndef	BRIDGE
 	int     sglobbed;
@@ -68,7 +70,7 @@ char  **vec;
 		return NOTOK;
 #else
 	if (*++vec == NULL) {
-		if (getline ("source: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
+		if (getftamline ("source: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
 			return OK;
 		dst = NULL;
 	} else {
@@ -86,7 +88,7 @@ char  **vec;
 	sglobbed = xglobbed;
 
 	if (dst == NULL) {
-		if (getline ("destination: ", buffer) == NOTOK) {
+		if (getftamline ("destination: ", buffer) == NOTOK) {
 			blkfree (src);
 			return OK;
 		}
@@ -258,8 +260,7 @@ out:
 /*  */
 
 #ifndef	BRIDGE
-static int  check_get (dst)
-char   *dst;
+static int check_get (char *dst)
 {
 	int	    result;
 	char  *cp;
@@ -282,12 +283,8 @@ char   *dst;
 
 /*  */
 
-int	getvf (src, dst, faduid, vf, wfnx)
-char   *src,
-	   *dst;
-struct FADUidentity *faduid;
-struct vfsmap *vf;
-IFP	wfnx;
+int 
+getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP wfnx)
 {
 	int	    fd,
 			result;
@@ -635,8 +632,7 @@ you_lose:
 
 /*  */
 
-static struct vfsmap *findvf (file)
-char   *file;
+static struct vfsmap *findvf (char* file)
 {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
@@ -759,10 +755,7 @@ you_lose:
 
 /*  */
 
-static int  getloop (fd, dst, wfnx)
-int	fd;
-char   *dst;
-IFP	wfnx;
+static int  getloop (int fd, char* dst, IFP wfnx)
 {
 	int	    reason,
 			result;
@@ -871,10 +864,7 @@ do_cancel:
 
 /*  */
 
-static int  ubffnx (fd, px, status)
-int	fd;
-struct PSAPdata *px;
-int	status;
+static int  ubffnx ( int	fd, struct PSAPdata *px, int	status)
 {
 	int    i,
 			 n;

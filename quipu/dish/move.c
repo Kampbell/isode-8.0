@@ -39,9 +39,8 @@ extern char move_flag;
 
 DN	fixed_pos = NULLDN;
 
-call_moveto (argc,argv)
-int argc;
-char ** argv;
+int 
+call_moveto (int argc, char **argv)
 {
 	char pwd_flag = FALSE;
 	char check_move = TRUE;
@@ -104,7 +103,8 @@ char ** argv;
 
 }
 
-consolidate_move () {
+int 
+consolidate_move (void) {
 	if (move_flag) {
 		move_flag = FALSE;
 		dn_free (fixed_pos);
@@ -112,14 +112,15 @@ consolidate_move () {
 	}
 }
 
-set_current_pos () {
+int 
+set_current_pos (void) {
 	move_flag = FALSE;
 	dn_free (dn);
 	dn = dn_cpy (fixed_pos);
 }
 
-move (arg)
-char           *arg;
+int 
+move (char *arg)
 {
 	extern int print_parse_errors;
 
@@ -240,7 +241,8 @@ char           *arg;
 
 }
 
-test_move_dn () {
+int 
+test_move_dn (void) {
 	char * name = "moveto";
 
 	/* Might do something else here... */

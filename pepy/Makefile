@@ -107,7 +107,7 @@ yacc.o:		yacc.c lex.c pepy.h $(HFILES)
 
 yacc.c:		yacc.y
 		-@echo "expect 20 shift/reduce and 9 reduce/reduce conflicts"
-		yacc $(YACCFLAGS) yacc.y
+		$(YACC) $(YACCFLAGS) yacc.y
 		mv y.tab.c $@
 
 yacc.y:		yacc.y.gnrc

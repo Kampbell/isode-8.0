@@ -89,7 +89,7 @@ yacc.o:		yacc.c lex.c $(RYHFILES)
 
 yacc.c:		yacc.y
 		-@echo "expect 20 shift/reduce and 9 reduce/reduce conflicts"
-		yacc $(YACCFLAGS) yacc.y
+		$(YACC) $(YACCFLAGS) yacc.y
 		mv y.tab.c $@
 
 yacc.y:		$(TOPDIR)pepy/yacc.y.gnrc

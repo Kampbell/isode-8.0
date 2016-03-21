@@ -88,6 +88,8 @@ MANOPTS	=	-bsd42
 MAKE	=	./make DESTDIR=$(DESTDIR) $(MFLAGS) -k
 SHELL	=	/bin/sh
 
+LEX	=	lex
+YACC	=	bison -y
 CC      =	cc
 LD	=	ld
 CFLAGS  =       $(OPTIONS) 

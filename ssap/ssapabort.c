@@ -74,9 +74,7 @@ SUAbortRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication
 
 	sb -> sb_flags &= ~(SB_ED | SB_EDACK | SB_ERACK);
 
-	if ((sb -> sb_flags & SB_EXPD)
-			&& sb -> sb_version >= SB_VRSN2
-			&& cc > 9) {
+	if ((sb -> sb_flags & SB_EXPD) && sb -> sb_version >= SB_VRSN2 && cc > 9) {
 		struct ssapkt *p;
 
 		if (p = newspkt (SPDU_PR)) {
@@ -102,6 +100,7 @@ SUAbortRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication
 		s -> s_udata = data, s -> s_ulen = cc;
 	} else
 		s -> s_udata = NULL, s -> s_ulen = 0;
+
 	result = spkt2sd (s, sb -> sb_fd, sb -> sb_flags & SB_EXPD ? 1 : 0, si);
 	s -> s_mask &= ~SMASK_UDATA_PGI;
 	s -> s_udata = NULL, s -> s_ulen = 0;

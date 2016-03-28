@@ -204,7 +204,7 @@ SActIntrRequest (int sd, int reason, struct SSAPindication *si)
 
 	ssapXsig (sb, sd);
 	if (sb -> sb_flags & SB_MAP) {
-		 sigsetmask (smask);
+		sigsetmask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP, "majorsync in progress");
 	}
 
@@ -316,7 +316,7 @@ SActDiscRequest (int sd, int reason, struct SSAPindication *si)
 
 	ssapXsig (sb, sd);
 	if (sb -> sb_flags & SB_MAP) {
-		 sigsetmask (smask);
+		sigsetmask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP, "majorsync in progress");
 	}
 

@@ -435,8 +435,7 @@ static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td)
 	struct SSAPindication sis;
 	struct SSAPabort *sa = &sis.si_abort;
 
-	if (strcmp (is -> is_entity, "session")
-			|| strcmp (is -> is_provider, "tsap"))
+	if (strcmp (is -> is_entity, "session") || strcmp (is -> is_provider, "tsap"))
 		return OK;
 
 	if (TInit (is -> is_tail - is -> is_vec, is -> is_vec, ts, td) == NOTOK)
@@ -444,16 +443,13 @@ static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td)
 
 	sd = ts -> ts_sd;
 
-	if (TConnResponse (sd, &ts -> ts_called, ts -> ts_expedited, NULLCP, 0,
-					   NULLQOS, td) == NOTOK)
+	if (TConnResponse (sd, &ts -> ts_called, ts -> ts_expedited, NULLCP, 0, NULLQOS, td) == NOTOK)
 		return NOTOK;
 
 	if (SExec (ts, &sis, psapd, setperms) == NOTOK) {
-		advise (LLOG_EXCEPTIONS, NULLCP, "service not started at ssap: %s",
-				SErrString (sa -> sa_reason));
+		advise (LLOG_EXCEPTIONS, NULLCP, "service not started at ssap: %s",	SErrString (sa -> sa_reason));
 		if (sa -> sa_cc > 0)
-			advise (LLOG_EXCEPTIONS, NULLCP, "   %*.*s",
-					sa -> sa_cc, sa -> sa_cc, sa -> sa_prdata);
+			advise (LLOG_EXCEPTIONS, NULLCP, "   %*.*s", sa -> sa_cc, sa -> sa_cc, sa -> sa_prdata);
 
 		SAFREE (sa);
 	}

@@ -49,18 +49,18 @@ struct	local_buf {
 /*  */
 
 #define PMASK_NODATA		0x000000
-#define	PMASK_CN_ID		0x000001	/*   1: Connection ID */
+#define	PMASK_CN_ID			0x000001	/*   1: Connection ID */
 #define	PMASK_CN_ITEMS		0x000002	/*   5: Connect/Accept Item */
-#define	PMASK_SYNC		0x000004	/*  15: Sync Type Item */
-#define	PMASK_TOKEN		0x000008	/*  16: Token Item */
-#define	PMASK_TDISC		0x000010	/*  17: Transport Disc */
+#define	PMASK_SYNC			0x000004	/*  15: Sync Type Item */
+#define	PMASK_TOKEN			0x000008	/*  16: Token Item */
+#define	PMASK_TDISC			0x000010	/*  17: Transport Disc */
 #define	PMASK_USER_REQ		0x000020	/*  20: Session User Req */
 #define	PMASK_VERSION		0x000040	/*  22: Version Number */
 #define	PMASK_PREPARE		0x000080	/*  24: Prepare type */
 #define	PMASK_ENCLOSE		0x000100	/*  25: Enclosure Item */
 #define PMASK_TOKEN_SET		0x000200	/*  26: Token Setting Item */
 #define	PMASK_RESYNC		0x000400	/*  27: Resync type */
-#define	PMASK_LINK		0x000800	/*  33: Linking information */
+#define	PMASK_LINK			0x000800	/*  33: Linking information */
 #define	PMASK_ACT_ID		0x001000	/*  41: Activity ID */
 #define	PMASK_SERIAL		0x002000 	/*  42: Serial Number */
 #define	PMASK_MIA_DATA		0x004000	/*  46: MIA User Data */
@@ -68,10 +68,10 @@ struct	local_buf {
 #define	PMASK_REASON		0x010000	/*  50: Refusal Reason */
 #define	PMASK_SSAP_CALLING	0x020000	/*  51: Calling SSAP ID */
 #define	PMASK_SSAP_CALLED	0x040000	/*  52: Called SSAP ID */
-#define	PMASK_UDATA		0x080000	/* 193: User data */
-#define	PMASK_XDATA		0x100000	/* 194: Extended user data */
+#define	PMASK_UDATA			0x080000	/* 193: User data */
+#define	PMASK_XDATA			0x100000	/* 194: Extended user data */
 
-#define PMASK_PGI		0x400000	/* PGI has nested PIs */
+#define PMASK_PGI			0x400000	/* PGI has nested PIs */
 #define PMASK_VARLEN		0x800000	/* PI is Variable Len */
 #define PMASK_NOTSUPPORTED	-1		/* Type not supported */
 
@@ -80,7 +80,7 @@ static int si_table[] = {
 	PMASK_REFLECT,				/* 0x00: SPDU_ER */
 	PMASK_ENCLOSE				/* 0x01: SPDU_GT & SPDU_DT */
 	| PMASK_TOKEN,
-	PMASK_TOKEN				/* 0x02: SPDU_PT */
+	PMASK_TOKEN					/* 0x02: SPDU_PT */
 	| PMASK_ENCLOSE
 	| PMASK_UDATA,
 	PMASK_NOTSUPPORTED,			/* 0x03 */
@@ -90,19 +90,19 @@ static int si_table[] = {
 	PMASK_PREPARE,				/* 0x07: SPDU_PR */
 	PMASK_ENCLOSE				/* 0x08: SPDU_NF */
 	| PMASK_UDATA,
-	PMASK_TDISC				/* 0x09: SPDU_FN */
+	PMASK_TDISC					/* 0x09: SPDU_FN */
 	| PMASK_ENCLOSE
 	| PMASK_UDATA,
 	PMASK_ENCLOSE				/* 0x0a: SPDU_DN */
 	| PMASK_UDATA,
 	PMASK_NOTSUPPORTED,			/* 0x0b */
-	PMASK_CN_ID				/* 0x0c: SPDU_RF */
+	PMASK_CN_ID					/* 0x0c: SPDU_RF */
 	| PMASK_TDISC
 	| PMASK_USER_REQ
 	| PMASK_VERSION
 	| PMASK_ENCLOSE
 	| PMASK_REASON,
-	PMASK_CN_ID				/* 0x0d: SPDU_CN */
+	PMASK_CN_ID					/* 0x0d: SPDU_CN */
 	| PMASK_CN_ITEMS
 	| PMASK_USER_REQ
 	| PMASK_VERSION
@@ -110,7 +110,7 @@ static int si_table[] = {
 	| PMASK_SSAP_CALLED
 	| PMASK_UDATA
 	| PMASK_XDATA,
-	PMASK_CN_ID				/* 0x0e: SPDU_AC */
+	PMASK_CN_ID					/* 0x0e: SPDU_AC */
 	| PMASK_CN_ITEMS
 	| PMASK_USER_REQ
 	| PMASK_VERSION
@@ -129,7 +129,7 @@ static int si_table[] = {
 	PMASK_NODATA,				/* 0x16: SPDU_GTA */
 	PMASK_NOTSUPPORTED,			/* 0x17 */
 	PMASK_NOTSUPPORTED,			/* 0x18 */
-	PMASK_TDISC				/* 0x19: SPDU_AB & SPDU_AI */
+	PMASK_TDISC					/* 0x19: SPDU_AB & SPDU_AI */
 	| PMASK_REFLECT
 	| PMASK_REASON
 	| PMASK_ENCLOSE
@@ -137,7 +137,7 @@ static int si_table[] = {
 	PMASK_NODATA,				/* 0x1a: SPDU_AA & SPDU_AIA */
 	PMASK_NOTSUPPORTED,			/* 0x1b */
 	PMASK_NOTSUPPORTED,			/* 0x1c */
-	PMASK_LINK				/* 0x1d: SPDU_AR */
+	PMASK_LINK					/* 0x1d: SPDU_AR */
 	| PMASK_ACT_ID
 	| PMASK_ENCLOSE
 	| PMASK_SERIAL
@@ -156,7 +156,7 @@ static int si_table[] = {
 	PMASK_NOTSUPPORTED,			/* 0x26 */
 	PMASK_NOTSUPPORTED,			/* 0x27 */
 	PMASK_NOTSUPPORTED,			/* 0x28 */
-	PMASK_SYNC				/* 0x29: SPDU_MAP & SPDU_AE */
+	PMASK_SYNC					/* 0x29: SPDU_MAP & SPDU_AE */
 	| PMASK_ENCLOSE
 	| PMASK_SERIAL
 	| PMASK_UDATA,
@@ -173,7 +173,7 @@ static int si_table[] = {
 	PMASK_ENCLOSE				/* 0x30: SPDU_ED */
 	| PMASK_REASON
 	| PMASK_UDATA,
-	PMASK_SYNC				/* 0x31: SPDU_MIP */
+	PMASK_SYNC					/* 0x31: SPDU_MIP */
 	| PMASK_ENCLOSE
 	| PMASK_SERIAL
 	| PMASK_UDATA,
@@ -243,19 +243,19 @@ static int si_table[] = {
 static int pi_table[] = {
 	0,					/* 0x00 */
 	PMASK_VARLEN | PMASK_CN_ID | PMASK_PGI,	/* 0x01: Connection ID */
-	0, 0, 0,				/* 0x02-04 */
+	0, 0, 0,					/* 0x02-04 */
 	PMASK_VARLEN | PMASK_CN_ITEMS | PMASK_PGI,
 	/* 0x05: Connect/Accept Item */
-	0, 0, 0,				/* 0x06-08 */
+	0, 0, 0,					/* 0x06-08 */
 	PMASK_VARLEN | PMASK_CN_ID | PMASK_LINK,/* 0x09: Called Session SS */
 	PMASK_VARLEN | PMASK_CN_ID | PMASK_LINK,/* 0x0a: Calling Session SS */
 	PMASK_VARLEN | PMASK_CN_ID | PMASK_LINK,/* 0x0b: Common Reference */
 	PMASK_VARLEN | PMASK_CN_ID | PMASK_LINK,/* 0x0c: Additional Info */
-	0, 0,					/* 0x0d-0e */
-	PMASK_SYNC,				/* 0x0f: Sync Type Item */
+	0, 0,						/* 0x0d-0e */
+	PMASK_SYNC,					/* 0x0f: Sync Type Item */
 	PMASK_TOKEN,				/* 0x10: Token Item */
 	PMASK_TDISC,				/* 0x11: Transport Disc */
-	0,					/* 0x12 */
+	0,							/* 0x12 */
 	PMASK_CN_ITEMS,				/* 0x13: Protocol Option */
 	PMASK_USER_REQ,				/* 0x14: Session User Req */
 	PMASK_VARLEN | PMASK_CN_ITEMS,		/* 0x15: TSDU Max Size */
@@ -285,32 +285,32 @@ static int pi_table[] = {
 /*  */
 
 static int pi_length[PI_TABLE_LEN] = {
-	0,					/* 0x00 */
+	0,							/* 0x00 */
 	SREF_USER_SIZE				/* 0x01: Connection ID */
 	+ SREF_COMM_SIZE
 	+ SREF_ADDT_SIZE
 	+ 6,
-	0, 0, 0,				/* 0x02-04 */
-	1 + 4 + 1 + 6 + 1 + 10,			/* 0x05: Connect/Accept Item */
-	0, 0, 0,				/* 0x06-08 */
+	0, 0, 0,					/* 0x02-04 */
+	1 + 4 + 1 + 6 + 1 + 10,		/* 0x05: Connect/Accept Item */
+	0, 0, 0,					/* 0x06-08 */
 	SREF_USER_SIZE,				/* 0x09: Called Session SS */
 	SREF_USER_SIZE,				/* 0x0a: Calling Session SS */
 	SREF_COMM_SIZE,				/* 0x0b: Common Reference */
 	SREF_ADDT_SIZE,				/* 0x0c: Additional Info */
-	0, 0,					/* 0x0d-0e */
-	1,					/* 0x0f: Sync Type Item */
-	1,					/* 0x10: Token Item */
-	1,					/* 0x11: Transport Disc */
-	0,					/* 0x12 */
-	1,					/* 0x13: Protocol Option */
-	2,					/* 0x14: Session User Req */
-	4,					/* 0x15: TSDU Max Size */
-	1,					/* 0x16: Version Number */
+	0, 0,						/* 0x0d-0e */
+	1,							/* 0x0f: Sync Type Item */
+	1,							/* 0x10: Token Item */
+	1,							/* 0x11: Transport Disc */
+	0,							/* 0x12 */
+	1,							/* 0x13: Protocol Option */
+	2,							/* 0x14: Session User Req */
+	4,							/* 0x15: TSDU Max Size */
+	1,							/* 0x16: Version Number */
 	SIZE_CN_ISN,				/* 0x17: Initial Serial Num */
-	1,					/* 0x18: Prepare Type */
-	1,					/* 0x19: Enclosure Item */
-	1,					/* 0x1a: Token setting item */
-	1,					/* 0x1b: Resync type */
+	1,							/* 0x18: Prepare Type */
+	1,							/* 0x19: Enclosure Item */
+	1,							/* 0x1a: Token setting item */
+	1,							/* 0x1b: Resync type */
 	0, 0, 0, 0, 0,				/* 0x1c-20 */
 	2 * SREF_USER_SIZE			/* 0x21: Activity Link */
 	+ SREF_COMM_SIZE
@@ -318,17 +318,17 @@ static int pi_length[PI_TABLE_LEN] = {
 	+ SID_DATA_SIZE
 	+ SIZE_CN_ISN
 	+ 6 * 2,
-	0, 0, 0, 0, 0, 0, 0,			/* 0x22-28 */
+	0, 0, 0, 0, 0, 0, 0,		/* 0x22-28 */
 	SID_DATA_SIZE,				/* 0x29: Activity ID */
 	SIZE_CN_ISN,				/* 0x2a: Serial Number */
-	0, 0, 0,				/* 0x2b-2d */
-	SEGMENT_MAX /* MIA_SIZE */,		/* 0x2e: MIA User Data */
-	0, 0,					/* 0x2f-30 */
+	0, 0, 0,					/* 0x2b-2d */
+	SEGMENT_MAX /* MIA_SIZE */,	/* 0x2e: MIA User Data */
+	0, 0,						/* 0x2f-30 */
 	SEGMENT_MAX,				/* 0x31: Reflect parameter */
-	RF_SIZE,				/* 0x32: Refusal Reason */
-	SSSIZE,					/* 0x33: Calling SSAP ID */
-	SSSIZE,					/* 0x34: Called SSAP ID */
-	0, 0,					/* 0x35-36 */
+	RF_SIZE,					/* 0x32: Refusal Reason */
+	SSSIZE,						/* 0x33: Calling SSAP ID */
+	SSSIZE,						/* 0x34: Called SSAP ID */
+	0, 0,						/* 0x35-36 */
 	SIZE_CN_ISN,				/* 0x37: 2nd initial s/n */
 };
 
@@ -597,14 +597,12 @@ spkt2tsdu (struct ssapkt *s, char **base, int *len)
 		start_spdu (s, &c, CN_BASE_SIZE);
 		If_Set (SMASK_CN_REF)
 		Put_Ref (s -> s_cn_reference, PI_CALLING_SS);
-		If_Set (SMASK_CN_OPT | SMASK_CN_TSDU | SMASK_CN_VRSN | SMASK_CN_ISN
-				| SMASK_CN_SET) {
+		If_Set (SMASK_CN_OPT | SMASK_CN_TSDU | SMASK_CN_VRSN | SMASK_CN_ISN	| SMASK_CN_SET) {
 			start_pgi (PGI_CN_ITEMS, &c);
 			If_Set (SMASK_CN_OPT)
 			Put_Item (PI_PROTOCOL_OPT, (char *) &s -> s_options);
 			If_Set (SMASK_CN_TSDU) {
-				u_long tsdu_maxsize = ((s -> s_tsdu_init & 0xffff) << 16)
-									  | (s -> s_tsdu_resp & 0xffff);
+				u_long tsdu_maxsize = ((s -> s_tsdu_init & 0xffff) << 16) | (s -> s_tsdu_resp & 0xffff);
 				tsdu_maxsize = htonl (tsdu_maxsize);
 				Put_Item (PI_TSDU_MAXSIZ, (char *) &tsdu_maxsize);
 			}
@@ -633,14 +631,12 @@ spkt2tsdu (struct ssapkt *s, char **base, int *len)
 		start_spdu (s, &c, AC_BASE_SIZE);
 		If_Set (SMASK_CN_REF)
 		Put_Ref (s -> s_cn_reference, PI_CALLED_SS);
-		If_Set (SMASK_CN_OPT | SMASK_CN_TSDU | SMASK_CN_VRSN | SMASK_CN_ISN
-				| SMASK_CN_SET) {
+		If_Set (SMASK_CN_OPT | SMASK_CN_TSDU | SMASK_CN_VRSN | SMASK_CN_ISN	| SMASK_CN_SET) {
 			start_pgi (PGI_CN_ITEMS, &c);
 			If_Set (SMASK_CN_OPT)
 			Put_Item (PI_PROTOCOL_OPT, (char *) &s -> s_options);
 			If_Set (SMASK_CN_TSDU) {
-				u_long tsdu_maxsize = ((s -> s_tsdu_init & 0xffff) << 16)
-									  | (s -> s_tsdu_resp & 0xffff);
+				u_long tsdu_maxsize = ((s -> s_tsdu_init & 0xffff) << 16) | (s -> s_tsdu_resp & 0xffff);
 				tsdu_maxsize = htonl (tsdu_maxsize);
 				Put_Item (PI_TSDU_MAXSIZ, (char *) &tsdu_maxsize);
 			}
@@ -947,26 +943,19 @@ spkt2tsdu (struct ssapkt *s, char **base, int *len)
 		start_pgi (PGI_AR_LINK, &c);
 		If_Set (SMASK_AR_REF) {
 			if (s -> s_ar_reference.sr_called_len)
-				put2spdu (PI_AR_CALLED,
-						  (int) s -> s_ar_reference.sr_called_len,
-						  s -> s_ar_reference.sr_called, &c);
+				put2spdu (PI_AR_CALLED, (int) s -> s_ar_reference.sr_called_len, s -> s_ar_reference.sr_called, &c);
 			if (s -> s_ar_reference.sr_calling_len)
-				put2spdu (PI_AR_CALLING,
-						  (int) s -> s_ar_reference.sr_calling_len,
-						  s -> s_ar_reference.sr_calling, &c);
+				put2spdu (PI_AR_CALLING, (int) s -> s_ar_reference.sr_calling_len, s -> s_ar_reference.sr_calling, &c);
 			if (s -> s_ar_reference.sr_clen)
-				put2spdu (PI_AR_COMMON, (int) s -> s_ar_reference.sr_clen,
-						  s -> s_ar_reference.sr_cdata, &c);
+				put2spdu (PI_AR_COMMON, (int) s -> s_ar_reference.sr_clen, s -> s_ar_reference.sr_cdata, &c);
 			if (s -> s_ar_reference.sr_alen)
-				put2spdu (PI_AR_ADDT, (int) s -> s_ar_reference.sr_alen,
-						  s -> s_ar_reference.sr_adata, &c);
+				put2spdu (PI_AR_ADDT, (int) s -> s_ar_reference.sr_alen, s -> s_ar_reference.sr_adata, &c);
 		}
 		If_Reset (SMASK_AR_OID) {
 			s -> s_errno = SC_PROTOCOL;
 			break;
 		}
-		put2spdu (PI_ACT_ID, (int) s -> s_ar_oid.sd_len,
-				  s -> s_ar_oid.sd_data, &c);
+		put2spdu (PI_ACT_ID, (int) s -> s_ar_oid.sd_len, s -> s_ar_oid.sd_data, &c);
 		If_Reset (SMASK_AR_SSN) {
 			s -> s_errno = SC_PROTOCOL;
 			break;
@@ -977,8 +966,7 @@ spkt2tsdu (struct ssapkt *s, char **base, int *len)
 			s -> s_errno = SC_PROTOCOL;
 			break;
 		}
-		put2spdu (PI_ACT_ID, (int) s -> s_ar_id.sd_len,
-				  s -> s_ar_id.sd_data, &c);
+		put2spdu (PI_ACT_ID, (int) s -> s_ar_id.sd_len, s -> s_ar_id.sd_data, &c);
 		If_Set (SMASK_ENCLOSE)
 		Put_Item (PI_ENCLOSE, (char *) &s -> s_enclose);
 		Put_UData (AR_SIZE);
@@ -1115,8 +1103,7 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc)
 		*cc = 0;
 	} else
 		cat0 = 1;
-	if ((base = pullqb (qb, nread = 2)) == NULL
-			|| (s = newspkt ((int) (si = *base++))) == NULL)
+	if ((base = pullqb (qb, nread = 2)) == NULL || (s = newspkt ((int) (si = *base++))) == NULL)
 		return NULLSPKT;
 
 	if (*((u_char *) base) == 255) {
@@ -1125,14 +1112,14 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc)
 			return s;
 		}
 		nread += 2;
-		s -> s_li =
-			(*((u_char *) base) << 8) + *((u_char *) (base + 1));
+		s -> s_li = (*((u_char *) base) << 8) + *((u_char *) (base + 1));
 		if (s -> s_li < 255) {
 			s -> s_errno = SC_PROTOCOL;
 			return s;
 		}
 	} else
 		s -> s_li = *((u_char *) base);
+
 	pgilen = pktlen = s -> s_li;
 
 	if (cat0)
@@ -1153,8 +1140,7 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc)
 			break;
 		}
 
-	if ((si >= SI_TABLE_LEN)
-			|| ((pmask = si_table[si]) == PMASK_NOTSUPPORTED)) {
+	if ((si >= SI_TABLE_LEN) || ((pmask = si_table[si]) == PMASK_NOTSUPPORTED)) {
 		s -> s_errno = SC_PROTOCOL;
 		return s;
 	}
@@ -1198,16 +1184,16 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc)
 			break;
 
 		default:
-			if (code < PI_TABLE_LEN
-					&& pi_table[code]
-					&& !(pmask & pi_table[code]))
+			if (code < PI_TABLE_LEN && pi_table[code] && !(pmask & pi_table[code]))
 				s -> s_errno = SC_PROTOCOL;
 			break;
 		}
 		if (s -> s_errno != SC_ACCEPT)
 			break;
+
 		if (!pgilen)
 			pgilen = pktlen;
+
 		pktlen -= (xlen + li);
 		if (li > (pgilen -= xlen)) {
 			s -> s_errno = SC_PROTOCOL;
@@ -1216,9 +1202,7 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc)
 		pgilen -= li;
 		if (li)
 			advance (li);
-		if (code < PI_TABLE_LEN
-				&& pi_table[code]
-				&& !(pi_table[code] & PMASK_PGI)) {
+		if (code < PI_TABLE_LEN && pi_table[code] && !(pi_table[code] & PMASK_PGI)) {
 			if (li) {
 				if (pi_table[code] & PMASK_VARLEN) {
 					if (li > pi_length[code]) {
@@ -1269,14 +1253,12 @@ do_pgi:
 				switch (code) {
 				case PI_AR_CALLED:
 					s -> s_ar_reference.sr_called_len = li;
-					bcopy (base, s -> s_ar_reference.sr_called,
-						   li);
+					bcopy (base, s -> s_ar_reference.sr_called, li);
 					Set (SMASK_AR_REF);
 					break;
 				case PI_AR_CALLING:
 					s -> s_ar_reference.sr_calling_len = li;
-					bcopy (base, s -> s_ar_reference.sr_calling,
-						   li);
+					bcopy (base, s -> s_ar_reference.sr_calling, li);
 					Set (SMASK_AR_REF);
 					break;
 				default:
@@ -1355,8 +1337,7 @@ do_pgi:
 
 		case PI_TSDU_MAXSIZ: {
 			u_long tsdu_maxsize;
-			bcopy (base, (char *) &tsdu_maxsize,
-				   pi_length[PI_TSDU_MAXSIZ]);
+			bcopy (base, (char *) &tsdu_maxsize,  pi_length[PI_TSDU_MAXSIZ]);
 			tsdu_maxsize = ntohl (tsdu_maxsize);
 			s -> s_tsdu_init = (tsdu_maxsize >> 16) & 0xffff;
 			s -> s_tsdu_resp = tsdu_maxsize & 0xffff;
@@ -1500,8 +1481,7 @@ do_pgi:
 			break;
 
 		case PI_ENCLOSE:
-			if ((si == SPDU_DT && (s -> s_mask & SMASK_SPDU_GT))
-					|| (si == SPDU_AI && !(s -> s_mask & SMASK_SPDU_AB))) {
+			if ((si == SPDU_DT && (s -> s_mask & SMASK_SPDU_GT)) || (si == SPDU_AI && !(s -> s_mask & SMASK_SPDU_AB))) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
@@ -1591,7 +1571,8 @@ do_pgi:
 			if (si == SPDU_AB && !(s -> s_mask & SMASK_SPDU_AB)) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
-			} else if (li > (code != PI_XDATA ? SEGMENT_MAX : CONNECT_MAX)) {
+			} else
+			if (li > (code != PI_XDATA ? SEGMENT_MAX : CONNECT_MAX)) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}

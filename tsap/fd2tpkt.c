@@ -67,13 +67,12 @@ fd2tpkt (int fd, IFP initfnx, IFP readfnx)
 static int 
 fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx)
 {
-	int    code,
-			 len,
-			 vlen;
+	int    code, len, vlen;
 	char  *vptr;
 
 	if ((code = (*initfnx) (fd, t)) != OK)
 		return code;
+
 	if (t -> t_li > TPDU_MAXLEN (t))
 		return DR_LENGTH;
 

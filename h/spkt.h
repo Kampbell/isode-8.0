@@ -320,8 +320,7 @@
     else \
 	if (n > (sb -> sb_version < SB_VRSN2 ? m : ENCLOSE_MAX)) { \
 	    (void) sigiomask (smask); \
-	    return ssaplose (si, SC_PARAMETER, NULLCP, \
-			    "too much %s user data, %d octets", p, n); \
+	    return ssaplose (si, SC_PARAMETER, NULLCP, "too much %s user data, %d octets", p, n); \
 	} \
 }
 

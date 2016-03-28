@@ -106,8 +106,7 @@ str2spkt (char *buffer)
 
 #ifdef	DEBUG
 	if (ssap_log -> ll_events & LLOG_PDUS) {
-		LLOG (ssap_log, LLOG_PDUS,
-			  ("read %d bytes, \"%s\"", strlen (buffer), buffer));
+		LLOG (ssap_log, LLOG_PDUS, ("read %d bytes, \"%s\"", strlen (buffer), buffer));
 		spkt2text (ssap_log, s, 1);
 	}
 #endif

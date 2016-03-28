@@ -14,6 +14,7 @@
 #ifndef	_CONFIG_
 #define	_CONFIG_
 
+#define DEBUG
 #define	BSD42			/* Berkeley UNIX */
 #define	SUNOS4			/*   with Sun's enhancements */
 #define	LINUX			/*   which is actually Linux */
@@ -33,5 +34,4 @@
 #define GETCWD
 #define STRDUP
 
-#define DEBUG
 #endif

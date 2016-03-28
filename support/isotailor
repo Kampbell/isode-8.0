@@ -43,7 +43,7 @@
 #
 #		fatal		- fatal errors
 #
-#		all	- exceptional events
+#		exceptions	- exceptional events
 #
 #		notice		- informational notices
 #

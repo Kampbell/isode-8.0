@@ -43,7 +43,7 @@ HFILES	=	$(HDIR)rtsap.h $(HDIR)acsap.h $(HDIR)psap2.h $(HDIR)psap.h \
 ##################################################################
 
 all:		librtsap
-inst-all:	# inst-librtsap manuals
+inst-all:	inst-librtsap manuals
 install:	inst-all clean
 lint:		l-librtsap
 

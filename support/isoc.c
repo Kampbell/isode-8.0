@@ -433,16 +433,14 @@ int	cc,
 
 	    FD_ZERO (&rfds);
 	    FD_SET (sd, &rfds);
-	    if (TNetAccept (&vecp, vec, sd + 1, &rfds, NULLFD, NULLFD, NOTOK,
-			    td) == NOTOK)
-		ts_adios (td, "T-NET-ACCEPT");
+	    if (TNetAccept (&vecp, vec, sd + 1, &rfds, NULLFD, NULLFD, NOTOK, td) == NOTOK)
+	    	ts_adios (td, "T-NET-ACCEPT");
 	}
 
 	if (TReadRequest (sd, tx, NOTOK, td) == NOTOK)
 	    ts_adios (td, "T-READ.REQUEST");
 	if (cc != tx -> tx_cc) {
-	    advise (NULLCP, "length mismatch, orig=%d echo=%d",
-		    cc, tx -> tx_cc);
+	    advise (NULLCP, "length mismatch, orig=%d echo=%d", cc, tx -> tx_cc);
 	    status++;
 	}
 	else
@@ -471,9 +469,7 @@ char   *event;
     char    data[BUFSIZ];
 
     if (td -> td_cc > 0) {
-	 sprintf (data, "[%s] %*.*s",
-		TErrString (td -> td_reason),
-		td -> td_cc, td -> td_cc, td -> td_data);
+	 sprintf (data, "[%s] %*.*s", TErrString (td -> td_reason), td -> td_cc, td -> td_cc, td -> td_data);
     }
     else
 	 sprintf (data, "[%s]", TErrString (td -> td_reason));

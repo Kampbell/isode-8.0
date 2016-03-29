@@ -355,17 +355,14 @@ drop_it:
 			switch (s -> s_code) {
 			case SPDU_PR:
 			case SPDU_EX:
-				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-								 "invalid SPDU 0x%x on Transport normal flow",
-								 s -> s_code);
+				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "invalid SPDU 0x%x on Transport normal flow", s -> s_code);
 				goto out;
 			}
 		} else { /* SPDU on transport expedited */
 			switch (s -> s_code) {
 			case SPDU_PR:
 				if (sb -> sb_pr != SPDU_PR) {
-					 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-									 "PR SPDU followed by PR");
+					 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "PR SPDU followed by PR");
 					goto out;
 				}
 			/* fall */
@@ -375,9 +372,7 @@ drop_it:
 				break;
 
 			default:
-				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-								 "invalid SPDU 0x%x on Transport expedited",
-								 s -> s_code);
+				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "invalid SPDU 0x%x on Transport expedited", s -> s_code);
 				goto out;
 			}
 		}
@@ -468,8 +463,7 @@ drop_it:
 			case SPDU_AI:	/* aka SPDU_AB */
 #endif
 			case SPDU_AB:
-				SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP,
-					  ("flush partially assembled (T))SSDU"));
+				SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP, ("flush partially assembled (T))SSDU"));
 				QBFREE (&sb -> sb_qbuf);
 				sb -> sb_len = 0;
 				break;
@@ -719,11 +713,9 @@ invalid:
 
 		case SPDU_EX:
 			if (sb -> sb_pr != SPDU_PR) {
-				SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP,
-					  ("buffering XSDU during preparation"));
+				SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP, ("buffering XSDU during preparation"));
 				if (sb -> sb_xspdu) {
-					 spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP,
-									 "unable to buffer second XSDU");
+					 spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP, "unable to buffer second XSDU");
 					break;
 				}
 				sb -> sb_xspdu = s;
@@ -732,11 +724,9 @@ invalid:
 			sx -> sx_type = SX_EXPEDITED;
 			if (s -> s_qbuf.qb_forw != &s -> s_qbuf) {
 				sx -> sx_qbuf = s -> s_qbuf;/* struct copy */
-				sx -> sx_qbuf.qb_forw -> qb_back =
-					sx -> sx_qbuf.qb_back -> qb_forw = &sx -> sx_qbuf;
+				sx -> sx_qbuf.qb_forw -> qb_back = sx -> sx_qbuf.qb_back -> qb_forw = &sx -> sx_qbuf;
 				sx -> sx_cc = s -> s_qlen;
-				s -> s_qbuf.qb_forw =
-					s -> s_qbuf.qb_back = &s -> s_qbuf;
+				s -> s_qbuf.qb_forw = s -> s_qbuf.qb_back = &s -> s_qbuf;
 				s -> s_qlen = 0;
 			}
 			freespkt (s);
@@ -814,8 +804,7 @@ spin:
 				struct SSAPdata *sk = &si -> si_data;
 
 				bzero ((char *) sk, sizeof *sk);
-				sk -> sx_qbuf.qb_forw = sk -> sx_qbuf.qb_back =
-											&sk -> sx_qbuf;
+				sk -> sx_qbuf.qb_forw = sk -> sx_qbuf.qb_back =	&sk -> sx_qbuf;
 			}
 			return DONE;
 
@@ -827,8 +816,7 @@ spin:
 				freespkt (s);
 				goto spin;
 			}
-			if (!(s -> s_mask & SMASK_MAP_SYNC)
-					|| !(s -> s_map_sync & MAP_SYNC_NOEND))
+			if (!(s -> s_mask & SMASK_MAP_SYNC) || !(s -> s_map_sync & MAP_SYNC_NOEND))
 				goto spdu_ae;
 			if (!(sb -> sb_flags & SB_Vsc))
 				sb -> sb_V_A = sb -> sb_V_M;
@@ -1355,15 +1343,14 @@ spkt2sd (struct ssapkt *s, int sd, int expedited, struct SSAPindication *si)
 	if (expedited)
 		s -> s_mask |= SMASK_SPDU_EXPD;
 	if (spkt2tsdu (s, &base, &len) == NOTOK) {
-		 ssaplose (si, s -> s_errno, NULLCP, NULLCP);
+		ssaplose (si, s -> s_errno, NULLCP, NULLCP);
 		return NOTOK;
 	}
 	if (s -> s_code == SPDU_EX) {/* only SX_EXSIZE octets, so no big deal... */
 		if (s -> s_udata) {
-			if ((dp = realloc (base, (unsigned) (i = len + s -> s_ulen)))
-					== NULL) {
+			if ((dp = realloc (base, (unsigned) (i = len + s -> s_ulen))) == NULL) {
 				free (base);
-				 ssaplose (si, SC_CONGEST, NULLCP, NULLCP);
+				ssaplose (si, SC_CONGEST, NULLCP, NULLCP);
 				return NOTOK;
 			}
 			bcopy (s -> s_udata, (base = dp) + len, s -> s_ulen);
@@ -1373,9 +1360,8 @@ spkt2sd (struct ssapkt *s, int sd, int expedited, struct SSAPindication *si)
 
 	if (len > TX_SIZE)
 		expedited = 0;
-	if ((result = expedited ? TExpdRequest (sd, base, len, td)
-				  : TDataRequest (sd, base, len, td)) == NOTOK)
-		 ts2sslose (si, expedited ? "TExpdRequest" : "TDataRequest", td);
+	if ((result = expedited ? TExpdRequest (sd, base, len, td) : TDataRequest (sd, base, len, td)) == NOTOK)
+		ts2sslose (si, expedited ? "TExpdRequest" : "TDataRequest", td);
 
 	if (base)
 		free (base);
@@ -1397,8 +1383,7 @@ sb2spkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPdat
 	struct TSAPdisconnect *td = &tds;
 
 	if (sb -> sb_pr == SPDU_PR && sb -> sb_xspdu) {
-		SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP,
-			  ("returning XSDU buffered during preparation"));
+		SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP, ("returning XSDU buffered during preparation"));
 		s = sb -> sb_xspdu;
 		sb -> sb_xspdu = NULL;
 
@@ -1406,8 +1391,7 @@ sb2spkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPdat
 	}
 
 	if (sb -> sb_spdu) {	/* get previous category 0 SPDU */
-		SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP,
-			  ("returning category 0 SPDU previously buffered"));
+		SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP, ("returning category 0 SPDU previously buffered"));
 		s = sb -> sb_spdu;
 		sb -> sb_spdu = NULL;
 
@@ -1416,8 +1400,7 @@ sb2spkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPdat
 
 	if (ty) {
 		*tx = *ty;		/* struct copy */
-		tx -> tx_qbuf.qb_forw -> qb_back =
-			tx -> tx_qbuf.qb_back -> qb_forw = &tx -> tx_qbuf;
+		tx -> tx_qbuf.qb_forw -> qb_back = tx -> tx_qbuf.qb_back -> qb_forw = &tx -> tx_qbuf;
 		bzero ((char *) ty, sizeof *ty);
 		ty -> tx_qbuf.qb_forw = ty -> tx_qbuf.qb_back = &ty -> tx_qbuf;
 	} else if (TReadRequest (sb -> sb_fd, tx, secs, td) == NOTOK) {
@@ -1431,10 +1414,8 @@ sb2spkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPdat
 
 	DLOG (ssap_log, LLOG_DEBUG, ("read TSDU, size %d", tx -> tx_cc));
 
-	if ((s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, (cc = 1, &cc))) == NULL
-			|| s -> s_errno != SC_ACCEPT) {
-		 spktlose (sb -> sb_fd, si,
-						 s ? s -> s_errno : SC_CONGEST, NULLCP, NULLCP);
+	if ((s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, (cc = 1, &cc))) == NULL || s -> s_errno != SC_ACCEPT) {
+		 spktlose (sb -> sb_fd, si, s ? s -> s_errno : SC_CONGEST, NULLCP, NULLCP);
 bad1:
 		;
 		freespkt (s);
@@ -1477,8 +1458,7 @@ bad1:
 		if (tx -> tx_cc <= 0) {
 simple:
 			;
-			DLOG (ssap_log, LLOG_DEBUG,
-				  ("got simple SPDU %d", s -> s_code));
+			DLOG (ssap_log, LLOG_DEBUG,  ("got simple SPDU %d", s -> s_code));
 			TXFREE (tx);
 			return s;
 		}
@@ -1494,15 +1474,11 @@ simple:
 		goto bad1;
 	}
 
-	DLOG (ssap_log, LLOG_DEBUG,
-		  ("got cat0 SPDU %d, %d octets left in TSDU",
-		   s -> s_code, tx -> tx_cc));
+	DLOG (ssap_log, LLOG_DEBUG, ("got cat0 SPDU %d, %d octets left in TSDU", s -> s_code, tx -> tx_cc));
 	sb -> sb_spdu = p = s;		/* save category 0 SPDU */
 
-	if ((s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, (cc = 0, &cc))) == NULL
-			|| s -> s_errno != SC_ACCEPT) {
-		 spktlose (sb -> sb_fd,
-						 si, s ? s -> s_errno : SC_CONGEST, NULLCP, NULLCP);
+	if ((s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, (cc = 0, &cc))) == NULL || s -> s_errno != SC_ACCEPT) {
+		spktlose (sb -> sb_fd, si, s ? s -> s_errno : SC_CONGEST, NULLCP, NULLCP);
 bad2:
 		;
 		freespkt (s);
@@ -1516,18 +1492,13 @@ bad2:
 		s -> s_mask |= SMASK_SPDU_EXPD;
 	tx -> tx_cc -= cc;
 
-	DLOG (ssap_log, LLOG_DEBUG,
-		  ("got cat2 SPDU %d, %d octets left in TSDU",
-		   s -> s_code, tx -> tx_cc));
-	DLOG (ssap_log, LLOG_DEBUG,
-		  ("checking concatenation of %d with %d",
-		   s -> s_code, p -> s_code));
+	DLOG (ssap_log, LLOG_DEBUG, ("got cat2 SPDU %d, %d octets left in TSDU", s -> s_code, tx -> tx_cc));
+	DLOG (ssap_log, LLOG_DEBUG, ("checking concatenation of %d with %d", s -> s_code, p -> s_code));
 	switch ((p -> s_code) << 8 | s -> s_code) {
 	case (SPDU_GT << 8) | SPDU_DT:	/* category 2 SPDUs with user data */
 		if (tx -> tx_qbuf.qb_forw != &tx -> tx_qbuf) {
 			s -> s_qbuf = tx -> tx_qbuf;/* struct copy */
-			s -> s_qbuf.qb_forw -> qb_back =
-				s -> s_qbuf.qb_back -> qb_forw = &s -> s_qbuf;
+			s -> s_qbuf.qb_forw -> qb_back = s -> s_qbuf.qb_back -> qb_forw = &s -> s_qbuf;
 			s -> s_qlen = tx -> tx_cc;
 		}
 		break;
@@ -1574,8 +1545,7 @@ bad2:
 			if ((p -> s_mask & SMASK_GT_TOKEN) && p -> s_gt_token)
 				break;
 		} else {
-			if (((p -> s_mask & SMASK_PT_TOKEN) && p -> s_pt_token)
-					|| p -> s_ulen)
+			if (((p -> s_mask & SMASK_PT_TOKEN) && p -> s_pt_token)	|| p -> s_ulen)
 				break;
 		}			/* fall... */
 

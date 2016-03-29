@@ -86,16 +86,17 @@ SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si)
 		return ssaplose (si, SC_PARAMETER, NULLCP, "no tokens to give");
 
 	if (sb -> sb_flags & SB_GTC)
-		return ssaplose (si, SC_OPERATION, NULLCP,
-						 "give control request in progress");
+		return ssaplose (si, SC_OPERATION, NULLCP, "give control request in progress");
 
 	if (settings & ST_DAT_TOKEN)
 		sb -> sb_flags &= ~(SB_EDACK | SB_ERACK);
-	else if (sb -> sb_flags & (SB_EDACK | SB_ERACK))
+	else
+	if (sb -> sb_flags & (SB_EDACK | SB_ERACK))
 		return ssaplose (si, SC_OPERATION, "exception in progress");
 
 	if ((s = newspkt (SPDU_GT)) == NULL)
 		return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+
 	s -> s_mask |= SMASK_SPDU_GT;
 
 	s -> s_mask |= SMASK_GT_TOKEN;

@@ -49,8 +49,7 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 	isodetailor (NULLCP, 0);
 
 	if (vecp < 2)
-		return ssaplose (si, SC_PARAMETER, NULLCP,
-						 "bad initialization vector");
+		return ssaplose (si, SC_PARAMETER, NULLCP, "bad initialization vector");
 	missingP (vec);
 	missingP (ss);
 	missingP (si);
@@ -66,25 +65,23 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 		if (vecp == 2) {
 			if (TRestoreState (vec[1], ts, td) == NOTOK) {
 				 ts2sslose (si, "TRestoreState", td);
-				 ssaplose (si, SC_PARAMETER, NULLCP,
-								 "bad initialization vector");
+				 ssaplose (si, SC_PARAMETER, NULLCP, "bad initialization vector");
 				goto out1;
 			}
 			bzero (vec[0], strlen (vec[0]));
 			bzero (vec[1], strlen (vec[1]));
 			*vec = NULL;
 		} else {
-			if (TConnResponse (ts -> ts_sd, &ts -> ts_called,
-							   ts -> ts_expedited,  NULLCP, 0, NULLQOS, td) == NOTOK) {
-				 ts2sslose (si, "TConnResponse", td);
-				 TDiscRequest (ts -> ts_sd, NULLCP, 0, td);
+			if (TConnResponse (ts -> ts_sd, &ts -> ts_called,  ts -> ts_expedited,  NULLCP, 0, NULLQOS, td) == NOTOK) {
+				ts2sslose (si, "TConnResponse", td);
+				TDiscRequest (ts -> ts_sd, NULLCP, 0, td);
 				goto out1;
 			}
 		}
 		sd = ts -> ts_sd;
 
 		if (TReadRequest (sb -> sb_fd = sd, tx, NOTOK, td) == NOTOK) {
-			 ts2sslose (si, "TReadRequest", td);
+			ts2sslose (si, "TReadRequest", td);
 			goto out1;
 		}
 
@@ -92,40 +89,29 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 		TXFREE (tx);
 
 		if (s == NULL || s -> s_errno != SC_ACCEPT) {
-			 spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST)
-							 | SC_REFUSE, NULLCP, NULLCP);
+			spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST) | SC_REFUSE, NULLCP, NULLCP);
 			goto out2;
 		}
 
 		if (s -> s_code != SPDU_CN) {
-			 spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST)
-							 | SC_REFUSE, NULLCP,
-							 "session protocol mangled: expected 0x%x, got 0x%x",
-							 SPDU_CN, s -> s_code);
+			spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST) | SC_REFUSE, NULLCP, "session protocol mangled: expected 0x%x, got 0x%x", SPDU_CN, s -> s_code);
 			goto out2;
 		}
 
-		if (s -> s_mask & SMASK_CN_VRSN
-				&& !(s -> s_cn_version & SB_ALLVRSNS)) {
-			 spktlose (sd, si, SC_VERSION | SC_REFUSE, NULLCP,
-							 "version mismatch: expecting something in 0x%x, got 0x%x",
-							 SB_ALLVRSNS, s -> s_cn_version);
+		if (s -> s_mask & SMASK_CN_VRSN	&& !(s -> s_cn_version & SB_ALLVRSNS)) {
+			spktlose (sd, si, SC_VERSION | SC_REFUSE, NULLCP, "version mismatch: expecting something in 0x%x, got 0x%x",				 SB_ALLVRSNS, s -> s_cn_version);
 			goto out2;
 		}
 
 		if ((s -> s_mask & SMASK_CN_REQ) &&
-				(((s -> s_cn_require & SR_EXCEPTIONS) &&
-				  !(s -> s_cn_require & SR_HALFDUPLEX))
+				(((s -> s_cn_require & SR_EXCEPTIONS) && !(s -> s_cn_require & SR_HALFDUPLEX))
 				 ||
-				 ((s -> s_cn_require & SR_CAPABILITY) &&
-				  !(s -> s_cn_require & SR_ACTIVITY))
+				 ((s -> s_cn_require & SR_CAPABILITY) && !(s -> s_cn_require & SR_ACTIVITY))
 				 ||
 				 (!(s -> s_cn_require & (SR_HALFDUPLEX | SR_DUPLEX)))
 				)
 		   ) {
-			 spktlose (sd, si, SC_PROTOCOL, NULLCP,
-							 "proposed session requirements error: got 0x%x",
-							 s -> s_cn_require);
+			spktlose (sd, si, SC_PROTOCOL, NULLCP, "proposed session requirements error: got 0x%x", s -> s_cn_require);
 			goto out2;
 		}
 
@@ -135,9 +121,7 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 					&& !(s -> s_mask & SMASK_CN_ISN))
 				 : (s -> s_mask & SMASK_CN_ISN))) {
 			 spktlose (sd, si, SC_PROTOCOL, NULLCP,
-							 "proposed session ISN error: %s, got FUs 0x%x",
-							 (s -> s_mask & SMASK_CN_ISN) ? "present" : "absent",
-							 s -> s_cn_require);
+							 "proposed session ISN error: %s, got FUs 0x%x",  (s -> s_mask & SMASK_CN_ISN) ? "present" : "absent", s -> s_cn_require);
 			goto out2;
 		}
 	} else {
@@ -152,10 +136,8 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 			if (s)
 				freespkt (s);
 			else
-				 ts2sslose (si, reason != DR_PARAMETER ? "TInit"
-								  : "TRestoreState", td);
-			 ssaplose (si, SC_PARAMETER, NULLCP,
-							 "bad initialization vector");
+				 ts2sslose (si, reason != DR_PARAMETER ? "TInit" : "TRestoreState", td);
+			ssaplose (si, SC_PARAMETER, NULLCP, "bad initialization vector");
 			goto out1;
 		}
 		bzero (vec[0], strlen (vec[0]));
@@ -344,14 +326,15 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 	}
 	if (data == NULL)
 		cc = 0;
-	else if (cc > (sb -> sb_version < SB_VRSN2 ? SC_SIZE : ENCLOSE_MAX))
-		return ssaplose (si, SC_PARAMETER, NULLCP,
-						 "too much initial user data, %d octets", cc);
+	else
+	if (cc > (sb -> sb_version < SB_VRSN2 ? SC_SIZE : ENCLOSE_MAX))
+		return ssaplose (si, SC_PARAMETER, NULLCP, "too much initial user data, %d octets", cc);
+
 	missingP (si);
 
 	if (status != SC_ACCEPT) {
 		if ((s = newspkt (SPDU_RF)) == NULL) {
-			 ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+			ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 			goto out1;
 		}
 
@@ -361,9 +344,8 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 			s -> s_mask |= SMASK_RF_REQ;
 			s -> s_rf_require = requirements;
 		}
-		if ((s -> s_rdata = malloc ((unsigned) (s -> s_rlen = 1 + cc)))
-				== NULL) {
-			 ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+		if ((s -> s_rdata = malloc ((unsigned) (s -> s_rlen = 1 + cc))) == NULL) {
+			ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 			goto out2;
 		}
 		*s -> s_rdata = status & 0xff;
@@ -376,7 +358,7 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 	}
 
 	if ((s = newspkt (SPDU_AC)) == NULL) {
-		 ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+		ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 		goto out1;
 	}
 
@@ -407,8 +389,7 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 	}
 	if (responding) {
 		s -> s_mask |= SMASK_CN_CALLED;
-		bcopy (sb -> sb_responding.sa_selector, s -> s_called,
-			   s -> s_calledlen = sb -> sb_responding.sa_selectlen);
+		bcopy (sb -> sb_responding.sa_selector, s -> s_called, s -> s_calledlen = sb -> sb_responding.sa_selectlen);
 	}
 
 	if (cc > 0) {
@@ -416,6 +397,7 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 		s -> s_udata = data, s -> s_ulen = cc;
 	} else
 		s -> s_udata = NULL, s -> s_ulen = 0;
+
 	if ((result = spkt2sd (s, sb -> sb_fd, 0, si)) == NOTOK)
 		freesblk (sb);
 	else

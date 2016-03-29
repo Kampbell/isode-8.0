@@ -464,44 +464,45 @@ SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *
 	case SPDU_AC:
 		sc -> sc_sd = sb -> sb_fd;
 		sc -> sc_result = SC_ACCEPT;
+
 		if (s -> s_mask & SMASK_CN_REF)
 			sc -> sc_connect = s -> s_cn_reference;	/* struct copy */
+
 		if (s -> s_mask & SMASK_CN_OPT)
 			sb -> sb_options = s -> s_options;
+
 		if (!(s -> s_mask & SMASK_CN_TSDU))
 			s -> s_tsdu_init = s -> s_tsdu_resp = 0;
+
 		if (s -> s_tsdu_init < sb -> sb_tsdu_us)
 			sb -> sb_tsdu_us = s -> s_tsdu_init;
+
 		if (s -> s_tsdu_resp < sb -> sb_tsdu_them)
 			sb -> sb_tsdu_them = s -> s_tsdu_resp;
+
 		if (BAD_TSDU_SIZE (sb -> sb_tsdu_us)) {
-			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-							   "perposterous TSDU size (%d) for initiator",
-							   sb -> sb_tsdu_us);
+			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "perposterous TSDU size (%d) for initiator", sb -> sb_tsdu_us);
 			goto out;
 		}
 		if (BAD_TSDU_SIZE (sb -> sb_tsdu_them)) {
-			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-							   "perposterous TSDU size (%d) for responder",
-							   sb -> sb_tsdu_them);
+			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "perposterous TSDU size (%d) for responder", sb -> sb_tsdu_them);
 			goto out;
 		}
 		if (s -> s_mask & SMASK_CN_VRSN) {
 			if (!(s -> s_cn_version & sb -> sb_vrsnmask)) {
 				/* not SC_VERSION */
-				result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-								   "version mismatch: expecting something in 0x%x, got 0x%x",
-								   sb -> sb_vrsnmask, s -> s_cn_version);
+				result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "version mismatch: expecting something in 0x%x, got 0x%x", sb -> sb_vrsnmask, s -> s_cn_version);
 				goto out;
 			}
 			sb -> sb_vrsnmask &= s -> s_cn_version;
 		}
-		sb -> sb_version = (sb -> sb_vrsnmask & (1 << SB_VRSN2))
-						   ? SB_VRSN2 : SB_VRSN1;
+		sb -> sb_version = (sb -> sb_vrsnmask & (1 << SB_VRSN2)) ? SB_VRSN2 : SB_VRSN1;
+
 		if (s -> s_mask & SMASK_CN_ISN)
 			sc -> sc_isn = sb -> sb_V_A = sb -> sb_V_M = s -> s_isn;
 		else
 			sc -> sc_isn = SERIAL_NONE;
+
 		if (!(s -> s_mask & SMASK_CN_REQ)) {
 			s -> s_mask |= SMASK_CN_REQ;
 			s -> s_cn_require = SR_DEFAULT;
@@ -511,15 +512,13 @@ SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *
 		case SR_HALFDUPLEX:
 			if (s -> s_cn_require & SR_HALFDUPLEX)
 				break;
-			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-							   "half-duplex negotiation failed");
+			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "half-duplex negotiation failed");
 			goto out;
 
 		case SR_DUPLEX:
 			if (s -> s_cn_require & SR_DUPLEX)
 				break;
-			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-							   "full-duplex negotiation failed");
+			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "full-duplex negotiation failed");
 			goto out;
 
 		default:
@@ -527,8 +526,7 @@ SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *
 		}
 #endif
 		if (s -> s_cn_require & ~sb -> sb_requirements) {
-			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-							   "requirements negotiation failed");
+			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "requirements negotiation failed");
 			goto out;
 		}
 		sb -> sb_requirements &= s -> s_cn_require;
@@ -538,31 +536,26 @@ SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *
 			break;
 
 		default:
-			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-							   "half/full-duplex negotiation failed");
+			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "half/full-duplex negotiation failed");
 			goto out;
 		}
 		if ((sb -> sb_requirements & SR_EXCEPTIONS)
 				&& !(sb -> sb_requirements & SR_HALFDUPLEX)) {
-			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-							   "exception service requires half-duplex service");
+			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "exception service requires half-duplex service");
 			goto out;
 		}
 		if ((sb -> sb_requirements & SR_CAPABILITY)
 				&& !(sb -> sb_requirements & SR_ACTIVITY)) {
-			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-							   "capability-data service requires activity-management service");
+			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "capability-data service requires activity-management service");
 			goto out;
 		}
 		sc -> sc_requirements = sb -> sb_requirements;
 		sc -> sc_settings = sc -> sc_please = 0;
 		dotokens ();
 		if (s -> s_mask & SMASK_CN_CALLED) {
-			if ((len = s -> s_calledlen)
-					> sizeof sb -> sb_responding.sa_selector)
+			if ((len = s -> s_calledlen) > sizeof sb -> sb_responding.sa_selector)
 				len = sizeof sb -> sb_responding.sa_selector;
-			bcopy (s -> s_called, sb -> sb_responding.sa_selector,
-				   sb -> sb_responding.sa_selectlen = len);
+			bcopy (s -> s_called, sb -> sb_responding.sa_selector, sb -> sb_responding.sa_selectlen = len);
 		}
 		sc -> sc_responding = sb -> sb_responding;	/* struct copy */
 		if ((sc -> sc_ssdusize = sb -> sb_tsdu_us - SSDU_MAGIC) < 0)

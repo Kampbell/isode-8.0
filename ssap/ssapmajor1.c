@@ -65,15 +65,13 @@ SMajSyncRequestAux (struct ssapblk *sb, long *ssn, char *data, int cc, int opts,
 	if (SDoActivityAux (sb, si, 0, 0) == NOTOK)
 		return NOTOK;
 
-	if ((sb -> sb_requirements & SR_ACTIVITY)
-			&& !(sb -> sb_flags & SB_Vact))
+	if ((sb -> sb_requirements & SR_ACTIVITY) && !(sb -> sb_flags & SB_Vact))
 		return ssaplose (si, SC_OPERATION, NULLCP, "no activity in progress");
 
 	if (sb -> sb_flags & SB_MAA)
 		return ssaplose (si, SC_OPERATION, "awaiting your majorsync response");
 
-	if ((result = SWriteRequestAux (sb, SPDU_MAP, data, cc, opts,
-									*ssn = sb -> sb_V_M, 0, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
+	if ((result = SWriteRequestAux (sb, SPDU_MAP, data, cc, opts, *ssn = sb -> sb_V_M, 0, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
 		freesblk (sb);
 	else {
 		sb -> sb_flags |= SB_MAP;

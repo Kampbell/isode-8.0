@@ -390,10 +390,7 @@ drop_it:
 				break;
 
 			case SPDU_RS:
-				if (SDoCollideAux (sb -> sb_flags & SB_INIT ? 1 : 0,
-								   sb -> sb_rs, sb -> sb_rsn,
-								   (int) s -> s_rs_type, (long) s -> s_rs_serial)
-						!= NOTOK)
+				if (SDoCollideAux (sb -> sb_flags & SB_INIT ? 1 : 0, sb -> sb_rs, sb -> sb_rsn, (int) s -> s_rs_type, (long) s -> s_rs_serial) != NOTOK)
 					goto drop_it;
 				break;
 
@@ -401,9 +398,7 @@ drop_it:
 				break;
 
 			case SPDU_AD:
-				if (SDoCollideAux (sb -> sb_flags & SB_INIT ? 1 : 0,
-								   sb -> sb_rs, sb -> sb_rsn, SYNC_DISC, 0L)
-						!= NOTOK)
+				if (SDoCollideAux (sb -> sb_flags & SB_INIT ? 1 : 0, sb -> sb_rs, sb -> sb_rsn, SYNC_DISC, 0L) != NOTOK)
 					goto drop_it;
 				break;
 
@@ -413,9 +408,7 @@ drop_it:
 #endif
 				if (s -> s_mask & SMASK_SPDU_AB)
 					break;
-				if (SDoCollideAux (sb -> sb_flags & SB_INIT ? 1 : 0,
-								   sb -> sb_rs, sb -> sb_rsn, SYNC_INTR, 0L)
-						!= NOTOK)
+				if (SDoCollideAux (sb -> sb_flags & SB_INIT ? 1 : 0, sb -> sb_rs, sb -> sb_rsn, SYNC_INTR, 0L) != NOTOK)
 					goto drop_it;
 				break;
 			}
@@ -583,8 +576,7 @@ drop_it:
 			if (!(sb -> sb_requirements & SR_ACTIVITY)) {
 
 invalid:
-				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-								 "invalid SPDU in this connection");
+				 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "invalid SPDU in this connection");
 				goto out;
 			}
 			break;
@@ -921,8 +913,7 @@ spin:
 			return DONE;
 
 		case SPDU_RS:
-			if (s -> s_rs_type == SYNC_RESTART
-					&& sb -> sb_V_R > s -> s_rs_serial) {
+			if (s -> s_rs_type == SYNC_RESTART && sb -> sb_V_R > s -> s_rs_serial) {
 				freespkt (s);
 				goto spin;
 			}

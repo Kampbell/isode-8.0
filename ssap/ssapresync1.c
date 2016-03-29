@@ -133,8 +133,7 @@ SReSyncRequestAux (struct ssapblk *sb, int type, long ssn, int settings, char *d
 
 	dotokens ();
 
-	if ((result = SWriteRequestAux (sb, SPDU_RS, data, cc, type, ssn,
-									settings, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
+	if ((result = SWriteRequestAux (sb, SPDU_RS, data, cc, type, ssn, settings, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
 		freesblk (sb);
 	else {
 		sb -> sb_flags |= SB_RS, sb -> sb_flags &= ~(SB_RA | SB_EDACK | SB_ERACK);

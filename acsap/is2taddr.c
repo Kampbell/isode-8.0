@@ -41,8 +41,7 @@ is2taddr (char *host, char *service, struct isoservent *is)
 	struct PSAPaddr *pa;
 	struct TSAPaddr *ta;
 
-	if ((aei = str2aei (host, service)) == NULLAEI
-			|| (pa = aei2addr (aei)) == NULLPA)
+	if ((aei = str2aei (host, service)) == NULLAEI || (pa = aei2addr (aei)) == NULLPA)
 		return NULLTA;
 
 	ta = &pa -> pa_addr.sa_addr;
@@ -50,8 +49,7 @@ is2taddr (char *host, char *service, struct isoservent *is)
 		if (is -> is_selectlen > TSSIZE)	/* XXX */
 			return NULLTA;
 
-		bcopy (is -> is_selector, ta -> ta_selector,
-			   ta -> ta_selectlen = is -> is_selectlen);
+		bcopy (is -> is_selector, ta -> ta_selector, ta -> ta_selectlen = is -> is_selectlen);
 	}
 
 	return ta;

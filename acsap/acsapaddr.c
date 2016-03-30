@@ -102,16 +102,13 @@ _str2aei (char *designator, char *qualifier, char *context, int interactive, cha
 	}
 
 	isodetailor (NULLCP, 0);
-	LLOG (addr_log, LLOG_TRACE,
-		  ("str2aei \"%s\" \"%s\" \"%s\" %d",
-		   designator, qualifier, context, interactive));
+	LLOG (addr_log, LLOG_TRACE, ("str2aei \"%s\" \"%s\" \"%s\" %d", designator, qualifier, context, interactive));
 
 	aei = NULL, lookup = NULL;
 	PY_pepy[0] = NULL;
 
 	if (ns_enabled) {
-		if (aei = str2aei_dse (designator, context, interactive, userdn,
-							   passwd)) {
+		if (aei = str2aei_dse (designator, context, interactive, userdn, passwd)) {
 			lookup = aei2addr_dse;
 #ifndef	NOSTUB
 			 strcpy (fallback1, designator);
@@ -137,8 +134,7 @@ _str2aei (char *designator, char *qualifier, char *context, int interactive, cha
 out:
 	;
 #endif
-	SLOG (addr_log, LLOG_TRACE, NULLCP,
-		  ("str2aei returns %s", aei ? sprintaei (aei) : "NULLAEI"));
+	SLOG (addr_log, LLOG_TRACE, NULLCP, ("str2aei returns %s", aei ? sprintaei (aei) : "NULLAEI"));
 
 	return aei;
 }
@@ -158,12 +154,9 @@ aei2addr (AEI aei)
 	if (lookup) {
 		pa = (*lookup) (aei);
 #ifndef	NOSTUB
-		if (pa == NULLPA
-				&& lookup == aei2addr_dse
-				&& (aei = str2aei_stub (fallback1, fallback2))
+		if (pa == NULLPA && lookup == aei2addr_dse && (aei = str2aei_stub (fallback1, fallback2))
 				&& (pa = aei2addr_stub (aei))) {
-			SLOG (addr_log, LLOG_NOTICE, NULLCP,
-				  ("fallback use of stub DSE succeeded"));
+			SLOG (addr_log, LLOG_NOTICE, NULLCP, ("fallback use of stub DSE succeeded"));
 		}
 #endif
 
@@ -171,8 +164,7 @@ aei2addr (AEI aei)
 	} else
 		pa = NULLPA;
 
-	SLOG (addr_log, LLOG_TRACE, NULLCP,
-		  ("aei2addr returns %s", paddr2str (pa, NULLNA)));
+	SLOG (addr_log, LLOG_TRACE, NULLCP, ("aei2addr returns %s", paddr2str (pa, NULLNA)));
 
 	return pa;
 }

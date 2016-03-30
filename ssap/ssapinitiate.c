@@ -48,8 +48,7 @@ static int  SAsynRetryAux2 ();
 		break; \
  \
 	    default: \
-		return ssaplose (si, SC_PARAMETER, NULLCP, \
-			"improper choice of %s token setting", type); \
+		return ssaplose (si, SC_PARAMETER, NULLCP, "improper choice of %s token setting", type); \
 	} \
 }
 

@@ -548,15 +548,14 @@ static int  ss_main ( struct isoservent *is, char   *addr)
      fflush (stderr);
 #ifndef	ASYNC
     if (SConnRequest (sf, NULLSA, sz, requirements, tokens, ISN (requirements),
-	    userdata, sizeof userdata /*SS_SIZE*/, NULLQOS, sc, si) == NOTOK) {
+	    userdata, /* sizeof userdata */ SS_SIZE, NULLQOS, sc, si) == NOTOK) {
 	 fprintf (stderr, "failed\n");
 	ss_adios (sa, "S-CONNECT.REQUEST");
     }
     sd = sc -> sc_sd;
 #else
     if ((i = SAsynConnRequest (sf, NULLSA, sz, requirements, tokens,
-	    ISN (requirements), userdata, sizeof userdata /*SS_SIZE*/, NULLQOS,
-	    sc, si, 1))
+	    ISN (requirements), userdata, /* sizeof userdata */ SS_SIZE, NULLQOS, sc, si, 1))
 	  == NOTOK) {
 	 fprintf (stderr, "failed\n");
 	ss_adios (sa, "S-(ASYN-)CONNECT.REQUEST");
@@ -583,8 +582,7 @@ static int  ss_main ( struct isoservent *is, char   *addr)
 	    adios ("failed", "select");
 	}
 
-	if ((rmask && FD_ISSET (sd, rmask) == 0)
-	        || (wmask && FD_ISSET (sd, wmask) == 0))
+	if ((rmask && FD_ISSET (sd, rmask) == 0) || (wmask && FD_ISSET (sd, wmask) == 0))
 	    continue;
 	    
 	if ((i = SAsynRetryRequest (sd, sc, si)) == NOTOK) {
@@ -595,26 +593,26 @@ static int  ss_main ( struct isoservent *is, char   *addr)
 #endif
 
     if (sc -> sc_result != SC_ACCEPT) {
-	 fprintf (stderr, "failed\n");
-	if (sc -> sc_cc > 0)
-	    adios (NULLCP, "connection rejected: [%s] %*.*s",
-			SErrString (sc -> sc_result),
-			sc -> sc_cc, sc -> sc_cc, sc -> sc_data);
-	else
-	    adios (NULLCP, "connection rejected: [%s]",
-			SErrString (sc -> sc_result));
+    	fprintf (stderr, "failed\n");
+    	if (sc -> sc_cc > 0)
+    		adios (NULLCP, "connection rejected: [%s] %*.*s", SErrString (sc -> sc_result),	sc -> sc_cc, sc -> sc_cc, sc -> sc_data);
+    	else
+    		adios (NULLCP, "connection rejected: [%s]",	SErrString (sc -> sc_result));
     }
-     fprintf (stderr, "connected\n");
+    fprintf (stderr, "connected\n");
 
 #ifdef	DEBUG
     {
-	advise (NULLCP, "responding SSAP address: %s",
-		saddr2str (&sc -> sc_responding));
+	advise (NULLCP, "responding SSAP address: %s", saddr2str (&sc -> sc_responding));
 
 	if (sc -> sc_cc > 0)
 	    advise (NULLCP, "greetings: %d octets", sc -> sc_cc);
     }
 #endif
+	if (bcmp (userdata, sc->sc_data, sc)) {
+	    advise (NULLCP, "data mismatch (0)");
+	}
+
     requirements = sc -> sc_requirements;
     nmodes = 0;
     datamodes[nmodes++] = SX_NORMAL;
@@ -648,40 +646,38 @@ static int  ss_main ( struct isoservent *is, char   *addr)
 #undef	dotoken
 
     if (requirements & SR_ACTIVITY) {
-	 strcpy (id -> sd_data, mode == echo ? "echo" : "sink");
-	id -> sd_len = strlen (id -> sd_data);
-	if (SActStartRequest (sd, id, userdata, SV_SIZE, si) == NOTOK)
-	    ss_adios (sa, "S-ACTIVITY-START.REQUEST");
+    	strcpy (id -> sd_data, mode == echo ? "echo" : "sink");
+    	id -> sd_len = strlen (id -> sd_data);
+    	if (SActStartRequest (sd, id, userdata, SV_SIZE, si) == NOTOK)
+    		ss_adios (sa, "S-ACTIVITY-START.REQUEST");
     }
 
-    if (fstat (fileno (stdin), &st) != NOTOK
-	    && (st.st_mode & S_IFMT) == S_IFREG
-	    && (cc = st.st_size) != 0) {
-	 lseek (fileno (stdin), 0L, 0);
+    if (fstat (fileno (stdin), &st) != NOTOK && (st.st_mode & S_IFMT) == S_IFREG && (cc = st.st_size) != 0) {
+    	lseek (fileno (stdin), 0L, 0);
 
-	if ((cp = malloc ((unsigned) cc)) == NULL)
-	    adios (NULLCP, "no memory");
-	for (dp = cp, j = cc; j > 0; dp += i, j -= i)
-	    switch (i = read (fileno (stdin), dp, j)) {
-		case NOTOK:
-		    adios ("on stdin", "read failed");
+    	if ((cp = malloc ((unsigned) cc)) == NULL)
+    		adios (NULLCP, "no memory");
+    	for (dp = cp, j = cc; j > 0; dp += i, j -= i)
+    		switch (i = read (fileno (stdin), dp, j)) {
+    		case NOTOK:
+    			adios ("on stdin", "read failed");
 
-		case OK:
-		    adios (NULLCP, "premature end-of-file");
+    		case OK:
+    			adios (NULLCP, "premature end-of-file");
 		    
-		default:
-		    break;
-	    }
-	for (i = 10; i > 0; i--) {
+    		default:
+    			break;
+    		}
+    	for (i = 10; i > 0; i--) {
 #ifdef	TIMER
-	    timer (0);
+    		timer (0);
 #endif
-	    ss_datarequest (sd, cp, cc, SX_NORMAL, 0);
+    		ss_datarequest (sd, cp, cc, SX_NORMAL, 0);
 #ifdef	TIMER
-	    timer (cc);
+    		timer (cc);
 #endif
-	}
-	free (cp);
+    	}
+    	free (cp);
     }
     else {
 	for (j = l = 0; fgets (buffer, sizeof buffer, stdin); ) {
@@ -696,13 +692,11 @@ static int  ss_main ( struct isoservent *is, char   *addr)
 		    if (!(requirements & SR_RESYNC) || l++ & 0x01) {
 			ss_waitfor (sd, ST_ACT_TOKEN);
 			if (l & 0x03) {
-			    if (SActIntrRequest (sd, SP_SEQUENCE, si)
-				    == NOTOK)
+			    if (SActIntrRequest (sd, SP_SEQUENCE, si) == NOTOK)
 				ss_adios (sa, "S-ACTIVITY-INTERRUPT.REQUEST");
 			}
 			else {
-			    if (SActDiscRequest (sd, SP_SEQUENCE, si)
-				    == NOTOK)
+			    if (SActDiscRequest (sd, SP_SEQUENCE, si)  == NOTOK)
 				ss_adios (sa, "S-ACTIVITY-DISCARD.REQUEST");
 			}
 			ss_waitfor (sd, -1);
@@ -718,8 +712,7 @@ static int  ss_main ( struct isoservent *is, char   *addr)
 }
 		    dotokens ();
 #undef	dotoken
-		    if (SReSyncRequest (sd, SYNC_SET, ssn - 1, tokens,
-				userdata, SN_SIZE, si) == NOTOK)
+		    if (SReSyncRequest (sd, SYNC_SET, ssn - 1, tokens, userdata, SN_SIZE, si) == NOTOK)
 			ss_adios (sa, "S-RESYNCHRONIZE.REQUEST");
 		    ss_waitfor (sd, -1);
 		    break;
@@ -733,10 +726,7 @@ static int  ss_main ( struct isoservent *is, char   *addr)
 push_data: ;
 		    ss_datarequest (sd, buffer, cc, k, 1);
 		    if (k == SX_CAPDIND
-			    && SActResumeRequest (sd, id, id, 
-				    (long) (getpid () % (SERIAL_MAX - SERIAL_MIN + 1))
-				    + SERIAL_MIN, sf, userdata, SV_SIZE, si)
-				  == NOTOK)
+			    && SActResumeRequest (sd, id, id, (long) (getpid () % (SERIAL_MAX - SERIAL_MIN + 1)) + SERIAL_MIN, sf, userdata, SV_SIZE, si) == NOTOK)
 			ss_adios (sa, "S-ACTIVITY-RESUME.REQUEST");
 		    break;
 	    }
@@ -748,8 +738,7 @@ push_data: ;
 		    ss_adios (sa, "S-TOKEN-GIVE.REQUEST");
 		else
 		    owned &= ~ST_DAT_TOKEN;
-	    if (SUReportRequest (sd, SP_NOREASON, userdata, SP_SIZE, si)
-		    == NOTOK)
+	    if (SUReportRequest (sd, SP_NOREASON, userdata, SP_SIZE, si) == NOTOK)
 		ss_adios (sa, "S-U-EXCEPTION-REPORT.REQUEST");
 	    ss_waitfor (sd, -1);
 	}    
@@ -759,10 +748,8 @@ push_data: ;
 	if (SMajSyncRequest (sd, &ssn, userdata, SN_SIZE, si) == NOTOK)
 	    switch (sa -> sa_reason) {
 		case SC_OPERATION:
-		    ss_waitfor (sd, ST_DAT_TOKEN | ST_MIN_TOKEN
-			    | ST_MAJ_TOKEN);
-		    if (SMajSyncRequest (sd, &ssn, userdata, SN_SIZE, si)
-			    == OK)
+		    ss_waitfor (sd, ST_DAT_TOKEN | ST_MIN_TOKEN | ST_MAJ_TOKEN);
+		    if (SMajSyncRequest (sd, &ssn, userdata, SN_SIZE, si) == OK)
 			break;	/* else fall */
 
 		default:
@@ -818,8 +805,7 @@ push_data: ;
 	     SUAbortRequest (sd, NULLCP, 0, si);
 
 	    if (sr -> sr_cc > 0)
-		adios (NULLCP, "release rejected by peer: %*.*s",
-			sr -> sr_cc, sr -> sr_cc, sr -> sr_data);
+		adios (NULLCP, "release rejected by peer: %*.*s", sr -> sr_cc, sr -> sr_cc, sr -> sr_data);
 	    else
 		adios (NULLCP, "release rejected by peer");
 	}
@@ -889,14 +875,11 @@ int	cc,
 		case OK: 
 		    if ((dm != SX_CAPDIND ? dm : SX_CAPDCNF)
 			    != sx -> sx_type) {
-			advise (NULLCP,
-				"data indication type mismatch, orig=%d echo=%d",
-				dm, sx -> sx_type);
+			advise (NULLCP,	"data indication type mismatch, orig=%d echo=%d", dm, sx -> sx_type);
 			status++;
 		    }
 		    if (cc != sx -> sx_cc) {
-			advise (NULLCP, "length mismatch, orig=%d echo=%d",
-				cc, sx -> sx_cc);
+			advise (NULLCP, "length mismatch, orig=%d echo=%d", cc, sx -> sx_cc);
 			status++;
 		    }
 		    else
@@ -916,15 +899,12 @@ int	cc,
 	    break;
 	}
 
-    if (sync &&
-	    (requirements & SR_MINORSYNC) && !(requirements & SR_ACTIVITY)) {
-	if (SMinSyncRequest (sd, SYNC_CONFIRM, &ssn, userdata, SN_SIZE, si)
-		== NOTOK)
+    if (sync && (requirements & SR_MINORSYNC) && !(requirements & SR_ACTIVITY)) {
+	if (SMinSyncRequest (sd, SYNC_CONFIRM, &ssn, userdata, SN_SIZE, si) == NOTOK)
 	    switch (sa -> sa_reason) {
 		case SC_OPERATION: 
 		    ss_waitfor (sd, ST_DAT_TOKEN | ST_MIN_TOKEN);
-		    if (SMinSyncRequest (sd, SYNC_CONFIRM, &ssn, userdata,
-			    SN_SIZE, si) == OK)
+		    if (SMinSyncRequest (sd, SYNC_CONFIRM, &ssn, userdata, SN_SIZE, si) == OK)
 			break;	/* else fall */
 
 		default: 
@@ -941,10 +921,8 @@ int	cc,
 	    if (SMajSyncRequest (sd, &ssn, userdata, SN_SIZE, si) == NOTOK)
 		switch (sa -> sa_reason) {
 		    case SC_OPERATION: 
-			ss_waitfor (sd, ST_DAT_TOKEN | ST_MIN_TOKEN
-				| ST_MAJ_TOKEN);
-			if (SMajSyncRequest (sd, &ssn, userdata, SN_SIZE, si)
-				== OK)
+			ss_waitfor (sd, ST_DAT_TOKEN | ST_MIN_TOKEN| ST_MAJ_TOKEN);
+			if (SMajSyncRequest (sd, &ssn, userdata, SN_SIZE, si) == OK)
 			    break;/* else fall */
 
 		    default: 
@@ -999,16 +977,14 @@ read_it: ;
 		 strcpy (buffer, "protocol screw-up");
 		if (SUAbortRequest (sd, buffer, strlen (buffer) + 1, si) == NOTOK)
 		    ss_adios (sa, "S-U-ABORT.REQUEST");
-		adios (NULLCP, "%s, data indication type=0x%x",
-			buffer, sx -> sx_type);
+		adios (NULLCP, "%s, data indication type=0x%x",	buffer, sx -> sx_type);
 
 	    case DONE: 
 		ss_event (sd, si);
 		break;
 
 	    default: 
-		adios (NULLCP, "unknown return from SReadRequest=%d",
-			result);
+		adios (NULLCP, "unknown return from SReadRequest=%d", result);
 	}
     }
 }
@@ -1035,18 +1011,14 @@ struct SSAPindication *si;
 		    break;
 
 		case ST_PLEASE: 
-		    if (SGTokenRequest (sd,
-				(int) st -> st_tokens, si)
-			    == NOTOK)
+		    if (SGTokenRequest (sd,	(int) st -> st_tokens, si) == NOTOK)
 			ss_adios (sa, "S-TOKEN-GIVE.REQUEST");
 		    else
 			owned &= ~st -> st_tokens;
 		    break;
 
 		default: 
-		    adios (NULLCP,
-			    "unknown token indication type=0x%x, %d bytes",
-			    st -> st_type, st -> st_cc);
+		    adios (NULLCP, "unknown token indication type=0x%x, %d bytes", st -> st_type, st -> st_cc);
 	    }
 	    STFREE (st);
 	    break;
@@ -1054,8 +1026,7 @@ struct SSAPindication *si;
 	case SI_SYNC: 
 	    switch (sn -> sn_type) {
 		case SN_MAJORIND: 
-		    adios (NULLCP, "majorsync indication %d, %d bytes",
-			    sn -> sn_ssn, sn -> sn_cc);
+		    adios (NULLCP, "majorsync indication %d, %d bytes", sn -> sn_ssn, sn -> sn_cc);
 		    break;
 
 		case SN_MAJORCNF: 
@@ -1063,8 +1034,7 @@ struct SSAPindication *si;
 
 		case SN_MINORIND: 
 		    adios (NULLCP, "minorsync indication %d%s, %d bytes",
-			    sn -> sn_ssn, sn -> sn_options == SYNC_CONFIRM
-			    ? " (wants confirmation)" : NULLCP, sn -> sn_cc);
+		    		sn -> sn_ssn, sn -> sn_options == SYNC_CONFIRM ? " (wants confirmation)" : NULLCP, sn -> sn_cc);
 		    break;
 
 		case SN_MINORCNF: 
@@ -1093,8 +1063,7 @@ struct SSAPindication *si;
 }
 		    dotokens ();
 #undef	dotoken
-		    if (SReSyncResponse (sd, sn -> sn_ssn, sn -> sn_settings,
-				userdata, SN_SIZE, si) == NOTOK)
+		    if (SReSyncResponse (sd, sn -> sn_ssn, sn -> sn_settings, userdata, SN_SIZE, si) == NOTOK)
 			ss_adios (sa, "S-RESYNCHRONIZE.RESPONSE");
 		    break;
 
@@ -1102,9 +1071,7 @@ struct SSAPindication *si;
 		    break;
 
 		default: 
-		    adios (NULLCP,
-			    "unknown sync indication=0x%x, ssn=%d, %d bytes",
-			    sn -> sn_type, sn -> sn_ssn, sn -> sn_cc);
+		    adios (NULLCP, "unknown sync indication=0x%x, ssn=%d, %d bytes", sn -> sn_type, sn -> sn_ssn, sn -> sn_cc);
 	    }
 	    SNFREE (sn);
 	    break;
@@ -1112,10 +1079,7 @@ struct SSAPindication *si;
 	case SI_ACTIVITY: 
 	    switch (sv -> sv_type) {
 		case SV_START: 
-		    adios (NULLCP,
-			    "activity start indication: %*.*s, %d bytes",
-			    sv -> sv_id.sd_len, sv -> sv_id.sd_len,
-			    sv -> sv_id.sd_data, sv -> sv_cc);
+		    adios (NULLCP, "activity start indication: %*.*s, %d bytes",  sv -> sv_id.sd_len, sv -> sv_id.sd_len, sv -> sv_id.sd_data, sv -> sv_cc);
 
 		case SV_RESUME: 
 		    adios (NULLCP, 
@@ -1127,32 +1091,26 @@ struct SSAPindication *si;
 			    sv -> sv_cc);
 
 		case SV_INTRIND: 
-		    adios (NULLCP,
-			    "activity interrupt indication %d, %d bytes",
-			    sv -> sv_reason, sv -> sv_cc);
+		    adios (NULLCP, "activity interrupt indication %d, %d bytes", sv -> sv_reason, sv -> sv_cc);
 
 		case SV_INTRCNF: 
 		    break;
 
 		case SV_DISCIND: 
 		    adios (NULLCP,
-			    "activity discard indication %d, %d bytes",
-			    sv -> sv_reason, sv -> sv_cc);
+			    "activity discard indication %d, %d bytes", sv -> sv_reason, sv -> sv_cc);
 
 		case SV_DISCCNF: 
 		    break;
 
 		case SV_ENDIND: 
-		    adios (NULLCP, "activity end indication %d, %d bytes",
-			    sv -> sv_ssn, sv -> sv_cc);
+		    adios (NULLCP, "activity end indication %d, %d bytes",  sv -> sv_ssn, sv -> sv_cc);
 
 		case SV_ENDCNF: 
 		    break;
 
 		default: 
-		    adios (NULLCP,
-			    "unknown activity indication=0x%x, %d bytes",
-			    sv -> sv_type, sv -> sv_cc);
+		    adios (NULLCP, "unknown activity indication=0x%x, %d bytes", sv -> sv_type, sv -> sv_cc);
 	    }
 	    SVFREE (sv);
 	    break;
@@ -1179,8 +1137,7 @@ struct SSAPindication *si;
 	    break;
 
 	default: 
-	    adios (NULLCP, "unknown indication type=0x%x",
-		    si -> si_type);
+	    adios (NULLCP, "unknown indication type=0x%x", si -> si_type);
     }
 }
 
@@ -1203,9 +1160,7 @@ char   *event;
     char    buffer[BUFSIZ];
 
     if (sa -> sa_cc > 0)
-	 sprintf (buffer, "[%s] %*.*s",
-		SErrString (sa -> sa_reason),
-		sa -> sa_cc, sa -> sa_cc, sa -> sa_prdata);
+	 sprintf (buffer, "[%s] %*.*s", SErrString (sa -> sa_reason), sa -> sa_cc, sa -> sa_cc, sa -> sa_prdata);
     else
 	 sprintf (buffer, "[%s]", SErrString (sa -> sa_reason));
 

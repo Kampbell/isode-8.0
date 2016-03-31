@@ -67,10 +67,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isoc.c,v 9.0 1992/0
 
 #define	ISN(req) \
     (req & (SR_MINORSYNC | SR_MAJORSYNC | SR_RESYNC | SR_ACTIVITY)) \
-	? (long) (SERIAL_MIN) \
+	? (long) ((getpid () % (SERIAL_MAX - SERIAL_MIN + 1)) + SERIAL_MIN) \
 	: SERIAL_NONE
 
-//	? (long) ((getpid () % (SERIAL_MAX - SERIAL_MIN + 1)) + SERIAL_MIN) \
+//	? (long) (SERIAL_MIN) \
 //
 static enum { echo, sink, XXX } mode = XXX;
 

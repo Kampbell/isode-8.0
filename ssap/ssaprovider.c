@@ -1244,7 +1244,7 @@ SDoCollideAux (int init, int localop, long localssn, int remoteop, long remotess
 	if (localop == SYNC_INTR)
 		return OK;
 
-	if (remoteop == SYNC_DISC)
+	if (remoteop == SYNC_INTR)
 		return NOTOK;
 
 	if (localop == SYNC_ABANDON) {

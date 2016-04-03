@@ -32,16 +32,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/smalloc.c,v 9.0 1992
 
 /*  */
 
-static void 
+static void
 default_smalloc_handler (void) {
 	abort ();
 }
 
 static VFP smalloc_handler = default_smalloc_handler;
 
-VFP 
-set_smalloc_handler (VFP fnx)
-{
+VFP
+set_smalloc_handler (VFP fnx) {
 	VFP savefnx = smalloc_handler;
 
 	if (fnx)
@@ -51,8 +50,7 @@ set_smalloc_handler (VFP fnx)
 }
 
 char *
-smalloc (int size)
-{
+smalloc (int size) {
 	char *ptr;
 
 	if ((ptr = malloc((unsigned) size)) == (char *)0) {

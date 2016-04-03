@@ -48,7 +48,7 @@ char * name;
 
 		Current = &attrOIDTable[attrNumEntries].oa_ot;
 		Current->ot_name = strdup(name);
-		 add_entry_aux (Current->ot_name,(caddr_t)&attrOIDTable[attrNumEntries],2,NULLCP);
+		add_entry_aux (Current->ot_name,(caddr_t)&attrOIDTable[attrNumEntries],2,NULLCP);
 		Current->ot_stroid = strdup(ptr);
 
 		oid = str2oid (Current->ot_stroid);

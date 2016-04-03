@@ -39,9 +39,8 @@ struct task_act *       task_alloc();
 struct common_args	* get_ca_ref();
 extern char	  quipu_shutdown;
 
-int 
-task_invoke (register struct connection *conn, register struct DSAPinvoke *dx)
-{
+int
+task_invoke (register struct connection *conn, register struct DSAPinvoke *dx) {
 	time_t		  timer;
 	struct task_act	* task;
 	struct extension	* ext;

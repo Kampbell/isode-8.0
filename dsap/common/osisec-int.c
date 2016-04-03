@@ -113,14 +113,12 @@ struct GenericParameters *parms;
 }
 
 struct Nonce *
-nullmknonce (struct Nonce *previous)
-{
+nullmknonce (struct Nonce *previous) {
 	return ((struct Nonce *) 0);
 }
 
-int 
-nullcknonce (struct Nonce *nonce)
-{
+int
+nullcknonce (struct Nonce *nonce) {
 	return (DSE_SC_AUTHENTICATION);
 }
 

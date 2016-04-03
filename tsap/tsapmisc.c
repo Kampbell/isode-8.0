@@ -81,16 +81,15 @@ struct TSAPdisconnect *td;
 		value += (long) tb -> tb_len;
 	*nbytes = value;
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    get TSAPs */
 
-int 
-TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td)
-{
+int
+TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td) {
 	SBV	    smask;
 	struct tsapblk *tb;
 
@@ -105,7 +104,7 @@ TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding,
 	if (responding)
 		copyTSAPaddrX (&tb -> tb_responding, responding);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return OK;
 }
@@ -113,9 +112,8 @@ TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding,
 /*    define transport manager */
 
 #ifdef	MGMT
-int 
-TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td)
-{
+int
+TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td) {
 	SBV	    smask;
 	struct tsapblk *tb;
 
@@ -127,7 +125,7 @@ TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td)
 
 	tb -> tb_manfnx = fnx;
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return OK;
 }

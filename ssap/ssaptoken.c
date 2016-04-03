@@ -51,9 +51,8 @@ static int  SPTokenRequestAux ();
 
 /*  */
 
-int 
-SGTokenRequest (int sd, int tokens, struct SSAPindication *si)
-{
+int
+SGTokenRequest (int sd, int tokens, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -66,16 +65,15 @@ SGTokenRequest (int sd, int tokens, struct SSAPindication *si)
 
 	result = SGTokenRequestAux (sb, tokens, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si)
-{
+static int
+SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si) {
 	int     result,
 			settings;
 	struct ssapkt *s;
@@ -90,8 +88,7 @@ SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si)
 
 	if (settings & ST_DAT_TOKEN)
 		sb -> sb_flags &= ~(SB_EDACK | SB_ERACK);
-	else
-	if (sb -> sb_flags & (SB_EDACK | SB_ERACK))
+	else if (sb -> sb_flags & (SB_EDACK | SB_ERACK))
 		return ssaplose (si, SC_OPERATION, "exception in progress");
 
 	if ((s = newspkt (SPDU_GT)) == NULL)
@@ -131,9 +128,8 @@ SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si)
 
 /*  */
 
-int 
-SPTokenRequest (int sd, int tokens, char *data, int cc, struct SSAPindication *si)
-{
+int
+SPTokenRequest (int sd, int tokens, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -147,16 +143,15 @@ SPTokenRequest (int sd, int tokens, char *data, int cc, struct SSAPindication *s
 
 	result = SPTokenRequestAux (sb, tokens, data, cc, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SPTokenRequestAux (struct ssapblk *sb, int tokens, char *data, int cc, struct SSAPindication *si)
-{
+static int
+SPTokenRequestAux (struct ssapblk *sb, int tokens, char *data, int cc, struct SSAPindication *si) {
 	int     result,
 			settings;
 	struct ssapkt *s;

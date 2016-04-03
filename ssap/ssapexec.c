@@ -34,9 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapexec.c,v 9.0 1992/
 
 /*    SERVER only */
 
-int 
-SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
-{
+int
+SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms) {
 	int	    sd;
 	char   *cp;
 	struct isoservent *is;
@@ -53,7 +52,7 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
 	TXFREE (tx);
 
 	if (s == NULL || s -> s_errno != SC_ACCEPT) {
-		 spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST) | SC_REFUSE, NULLCP, NULLCP);
+		spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST) | SC_REFUSE, NULLCP, NULLCP);
 		goto out1;
 	}
 
@@ -72,9 +71,8 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
 				spktlose (sd, si, SC_SSAPID | SC_REFUSE, NULLCP, "ISO service ssap/%s not found", buffer);
 				break;
 			}
-		} else
-		if ((is = getisoserventbyname ("presentation", "ssap"))  == NULL) {
-			 spktlose (sd, si, SC_SSUSER | SC_REFUSE, NULLCP, "default presentation service not found");
+		} else if ((is = getisoserventbyname ("presentation", "ssap"))  == NULL) {
+			spktlose (sd, si, SC_SSUSER | SC_REFUSE, NULLCP, "default presentation service not found");
 			break;
 		}
 
@@ -84,7 +82,7 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
 		}
 		cp = *is -> is_tail++;
 		if ((*is -> is_tail++ = spkt2str (s)) == NULL) {
-			 spktlose (sd, si, SC_CONGEST | SC_REFUSE, NULLCP, NULLCP);
+			spktlose (sd, si, SC_CONGEST | SC_REFUSE, NULLCP, NULLCP);
 			break;
 		}
 		*is -> is_tail = NULL;
@@ -99,7 +97,7 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
 		case OK:
 		default:
 			if (setperms)
-				 (*setperms) (is);
+				(*setperms) (is);
 			execv (*is -> is_vec, is -> is_vec);
 			SLOG (ssap_log, LLOG_FATAL, *is -> is_vec, ("unable to exec"));
 			TRestoreState (cp, ts, td);
@@ -109,7 +107,7 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms)
 		break;
 
 	default:
-		 spktlose (sd, si, SC_PROTOCOL | SC_REFUSE, NULLCP, "session protocol mangled: expecting 0x%x, got 0x%x", SPDU_CN, s -> s_code);
+		spktlose (sd, si, SC_PROTOCOL | SC_REFUSE, NULLCP, "session protocol mangled: expecting 0x%x, got 0x%x", SPDU_CN, s -> s_code);
 		break;
 	}
 

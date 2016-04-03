@@ -94,9 +94,8 @@ static     int	enc_buf_len;
 
 /*  */
 
-int 
-start_x25_client (struct NSAPaddr *local)
-{
+int
+start_x25_client (struct NSAPaddr *local) {
 	int     sd, pgrp;
 
 	if (local != NULLNA)
@@ -124,9 +123,8 @@ start_x25_client (struct NSAPaddr *local)
 
 /*  */
 
-int 
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
-{
+int
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	int     sd, pgrp;
 	CONN_DB     zsck;
 	CONN_DB     *sck = &zsck;
@@ -153,7 +151,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	if (local != NULLNA) {
 		local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
 		if (local -> na_dtelen == 0) {
-			 strcpy (local -> na_dte, x25_local_dte);
+			strcpy (local -> na_dte, x25_local_dte);
 			local -> na_dtelen = strlen(x25_local_dte);
 			if (local -> na_pidlen == 0 && *x25_local_pid)
 				local -> na_pidlen =
@@ -161,7 +159,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 		}
 	}
 
-	 gen2if (local, sck, ADDR_LISTEN);
+	gen2if (local, sck, ADDR_LISTEN);
 	/*
 	 * now munge this into DEC format.
 	 */
@@ -172,12 +170,12 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 
 	if (bind (sd, &addr, sizeof(addr)) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("x25 bind()"));
-		 close_x25_socket (sd);
+		close_x25_socket (sd);
 		return NOTOK;
 	}
 	if (listen (sd, backlog) < 0) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("x25 listen()"));
-		 close_x25_socket (sd);
+		close_x25_socket (sd);
 		return NOTOK;
 	}
 	return sd;
@@ -185,9 +183,8 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 
 /*  */
 
-int 
-join_x25_client (int fd, struct NSAPaddr *remote)
-{
+int
+join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB		zsck;
 	CONN_DB		*sck = &zsck;
 	sockaddr_x25	filter;
@@ -198,7 +195,7 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 	if((nfd = accept (fd, &filter, &len)) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("x25 accept()"));
 		if (compat_log -> ll_events & LLOG_EXCEPTIONS)
-			 log_call_status(fd);      /* decode useful information */
+			log_call_status(fd);      /* decode useful information */
 		return NOTOK;
 	}
 	/*
@@ -210,12 +207,12 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed",
 			  ("Taking inbound X.25 Call"));
 		if (compat_log -> ll_events & LLOG_EXCEPTIONS)
-			 log_call_status(fd);      /* decode useful information */
+			log_call_status(fd);      /* decode useful information */
 		return NOTOK;
 	}
 #ifdef  DEBUG
 	if (compat_log -> ll_events & LLOG_DEBUG)
-		 print_x25_facilities(fd, CALLED, "Effective Called");
+		print_x25_facilities(fd, CALLED, "Effective Called");
 #endif
 	/*
 	 * snarf the incoming call details. could permit some local
@@ -227,7 +224,7 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed",
 			  ("Getting remote DTE"));
 		if (compat_log -> ll_events & LLOG_EXCEPTIONS)
-			 log_call_status(fd);      /* decode useful information */
+			log_call_status(fd);      /* decode useful information */
 		return NOTOK;
 	}
 
@@ -236,11 +233,11 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed",
 			  ("Getting remote CUDF"));
 		if (compat_log -> ll_events & LLOG_EXCEPTIONS)
-			 log_call_status(fd);      /* decode useful information */
+			log_call_status(fd);      /* decode useful information */
 		return NOTOK;
 	}
 
-	 if2gen (remote, sck, ADDR_REMOTE);
+	if2gen (remote, sck, ADDR_REMOTE);
 
 	/*
 	 * now send the poor bozo the X.25 acceptance (at last!)
@@ -249,15 +246,14 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed",
 			  ("Sending Ultrix X.25 Connect Accept"));
 		if (compat_log -> ll_events & LLOG_EXCEPTIONS)
-			 log_call_status(fd);      /* decode useful information */
+			log_call_status(fd);      /* decode useful information */
 		return NOTOK;
 	}
 	return nfd;
 }
 
-int 
-join_x25_server (int fd, struct NSAPaddr *remote)
-{
+int
+join_x25_server (int fd, struct NSAPaddr *remote) {
 	CONN_DB zsck;
 	CONN_DB *sck = &zsck;
 	sockaddr_x25 template;
@@ -269,7 +265,7 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 			  ("Invalid type na%d", remote->na_stack));
 		return NOTOK;
 	}
-	 gen2if (remote, sck, ADDR_REMOTE);
+	gen2if (remote, sck, ADDR_REMOTE);
 	/*
 	 * now we have to re-map the generic forms of the DTE/CUDF/facil
 	 * into DECspeak using the X25Encode() call.
@@ -307,12 +303,12 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 	if ((nfd = connect (fd, &template, sizeof (template))) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("x25 connect()"));
 		if (compat_log -> ll_events & LLOG_EXCEPTIONS)
-			 log_call_status(fd);      /* decode useful information */
+			log_call_status(fd);      /* decode useful information */
 		return NOTOK;
 	}
 #ifdef  DEBUG
 	else if (compat_log -> ll_events & LLOG_DEBUG)
-		 log_x25_facilities(fd, CALLING, "Effective Calling");
+		log_x25_facilities(fd, CALLING, "Effective Calling");
 #endif
 	remote = if2gen (remote, sck, ADDR_REMOTE);
 	return nfd;
@@ -340,9 +336,8 @@ int	fd;
 	close(fd);
 }
 
-int 
-log_call_status (int fd)
-{
+int
+log_call_status (int fd) {
 	struct	X25PortStatus	sbuf;
 	struct	X25PortStatus	*stats = &sbuf;
 	int 			sbl	= sizeof(sbuf);
@@ -442,9 +437,8 @@ log_call_status (int fd)
 	return;
 }
 
-int 
-log_call_clear (int fd, int type)
-{
+int
+log_call_clear (int fd, int type) {
 	struct	X25ClearData	cbuf;
 	struct	X25ClearData	*cdata = &cbuf;
 	int 			cbl	= sizeof(cbuf);
@@ -539,9 +533,8 @@ log_call_clear (int fd, int type)
 
 #ifdef  DEBUG
 
-static int 
-log_x25_facilities (int fd, int coc, char *caption)
-{
+static int
+log_x25_facilities (int fd, int coc, char *caption) {
 	int	stat;
 
 	enc_buf_len = sizeof(enc_buf);
@@ -564,8 +557,7 @@ log_x25_facilities (int fd, int coc, char *caption)
 /*  */
 
 void *
-epl_prtstr (char *fmt, char *val, int vallen)
-{
+epl_prtstr (char *fmt, char *val, int vallen) {
 	static char	abuf[128];
 	static char	tbuf[128];
 	char	*c, *d;
@@ -574,22 +566,21 @@ epl_prtstr (char *fmt, char *val, int vallen)
 	if (vallen > 0) {
 		for (c = val, d = abuf; vallen; c++, vallen--) {
 			if (!isprint(*c)) {
-				 sprintf(d, " 0x%02x ", *c & 0xff);
+				sprintf(d, " 0x%02x ", *c & 0xff);
 				d += 6;
 			} else {
-				 sprintf(d, "%c", *c);
+				sprintf(d, "%c", *c);
 				d++;
 			}
 		}
 		*d = 0;
 	}
-	 sprintf(tbuf, fmt, abuf);
+	sprintf(tbuf, fmt, abuf);
 	return tbuf;
 }
 
 void *
-epl_prtbool (char *fmt, short *val, int vallen)
-{
+epl_prtbool (char *fmt, short *val, int vallen) {
 	static char	*true = "true";
 	static char	*false = "false";
 
@@ -600,17 +591,15 @@ epl_prtbool (char *fmt, short *val, int vallen)
 }
 
 void *
-epl_prtint (char *fmt, short *val, int vallen)
-{
+epl_prtint (char *fmt, short *val, int vallen) {
 	static char	tbuf[128];
 
-	 sprintf(tbuf, fmt, *val);
+	sprintf(tbuf, fmt, *val);
 	return tbuf;
 }
 
 void *
-epl_prtlst (char *fmt, short *val, int vallen)
-{
+epl_prtlst (char *fmt, short *val, int vallen) {
 	static char	*list = "[LIST]";
 
 	return list;
@@ -666,9 +655,8 @@ static struct {
 	0,	 0, 0,
 };
 
-int 
-print_x25_facilities (int fd, int coc, char *caption)
-{
+int
+print_x25_facilities (int fd, int coc, char *caption) {
 	int		numitems,stat,baud,i,j;
 	char	cbuf[128];
 	int		cbl = sizeof(cbuf);
@@ -789,9 +777,8 @@ char *s;
 	}
 }
 
-int 
-compose_text (char *xudatap, char *pid, char *cudf)
-{
+int
+compose_text (char *xudatap, char *pid, char *cudf) {
 	strcpy(xudatap,pid);
 	strcat(xudatap,DELIMITER);
 	strcat(xudatap,cudf);
@@ -812,13 +799,13 @@ X25vc		vci;
 	char                result[100];
 
 	if ((rtn = X25Info(vci,X25I_Cause,&cause[0],1)) > 0)
-		 sprintf(msg,"%02x",(int)cause[0]);
+		sprintf(msg,"%02x",(int)cause[0]);
 	else {
 		strcpy(msg,"??");
 		cause[0] = '?';
 	}
 	if ((rtn = X25Info(vci,X25I_Diagnostic,&cause[1],1)) > 0)
-		 sprintf(&msg[2]," %02x",(int)cause[1]);
+		sprintf(&msg[2]," %02x",(int)cause[1]);
 	if (what == X25_Clear) {
 		switch ((int)cause[0]) {
 		case 000:
@@ -982,9 +969,8 @@ int event_received;
 /* an incoming call will spawn the process who accepts the call */
 /* you will have to change the listeners (DAEMONS)              */
 
-int 
-start_x25_client (struct NSAPaddr *local)
-{
+int
+start_x25_client (struct NSAPaddr *local) {
 	int     error;
 	int     our_sd;
 	int     our_count;
@@ -1014,7 +1000,7 @@ start_x25_client (struct NSAPaddr *local)
 	}
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci after start_x25_client  %d ",(int) vci);
+	sprintf(our_buffer," vci after start_x25_client  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1040,9 +1026,8 @@ start_x25_client (struct NSAPaddr *local)
 
 /*  */
 
-int 
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
-{
+int
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	X25vc   vci;
 	X25vc * vcip = &vci;
 
@@ -1072,7 +1057,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	if (local != NULLNA) {
 		local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
 		if (local->na_dtelen == 0) {
-			 strcpy (local->na_dte, x25_local_dte);
+			strcpy (local->na_dte, x25_local_dte);
 			local->na_dtelen = strlen(x25_local_dte);
 			if (local->na_pidlen == 0 && *x25_local_pid)
 				local->na_pidlen =
@@ -1088,9 +1073,9 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	error = X25TakeCall(X25_InitCall,vcip);
 
 #ifdef DEBUG
-	 sprintf(our_buffer," return of X25TakeCall: %d ",error);
+	sprintf(our_buffer," return of X25TakeCall: %d ",error);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-	 sprintf(our_buffer," vci in start_x25_server  %d ",(int) vci);
+	sprintf(our_buffer," vci in start_x25_server  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1240,9 +1225,9 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	DLOG (compat_log,LLOG_DEBUG,("ACCEPT succeded in start_x25_server"));
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci after start_x25_server  %d ",(int) vci);
+	sprintf(our_buffer," vci after start_x25_server  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-	 sprintf(our_buffer," vci after start_x25_server  %d ",our_sd);
+	sprintf(our_buffer," vci after start_x25_server  %d ",our_sd);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1267,9 +1252,8 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 /*  */
 
 
-int 
-join_x25_client (int sd, struct NSAPaddr *rremote)
-{
+int
+join_x25_client (int sd, struct NSAPaddr *rremote) {
 	int error;
 	X25vc  vci;
 
@@ -1278,16 +1262,16 @@ join_x25_client (int sd, struct NSAPaddr *rremote)
 	vci =  our_get_vci(sd,"join_x25_client");
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci in join_x25_client  %d ",(int) vci);
+	sprintf(our_buffer," vci in join_x25_client  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-	 sprintf(our_buffer," sd  in join_x25_client  %d ",(int) sd);
+	sprintf(our_buffer," sd  in join_x25_client  %d ",(int) sd);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
 	/* fill call user data field and pid as received in start_x25_server */
 	/* - ugly but remote was no available in start_x25_server            */
 
-	 if2gen (rremote, p_x25_interface, NULL);
+	if2gen (rremote, p_x25_interface, NULL);
 
 	DLOG (compat_log,LLOG_DEBUG,("<-- join_x25_client"));
 
@@ -1295,9 +1279,8 @@ join_x25_client (int sd, struct NSAPaddr *rremote)
 
 }
 
-int 
-join_x25_server (int sd, struct NSAPaddr *rremote)
-{
+int
+join_x25_server (int sd, struct NSAPaddr *rremote) {
 
 	X25vc   vci;
 
@@ -1310,9 +1293,9 @@ join_x25_server (int sd, struct NSAPaddr *rremote)
 	vci =  our_get_vci(sd,"join_x25_server");
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci join_x25_server  %d ",(int) vci);
+	sprintf(our_buffer," vci join_x25_server  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-	 sprintf(our_buffer," sd  join_x25_server  %d ",(int) sd );
+	sprintf(our_buffer," sd  join_x25_server  %d ",(int) sd );
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1332,20 +1315,20 @@ loop:
 #ifdef DEBUG
 
 	bcopy( rremote->na_dte, our_buffer, (int) rremote->na_dtelen);
-	 sprintf(&our_buffer[(int) rremote->na_dtelen],"=remote dte in join_x25_server");
+	sprintf(&our_buffer[(int) rremote->na_dtelen],"=remote dte in join_x25_server");
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 
 	bcopy( rremote->na_fac, our_buffer, (int) rremote->na_faclen);
-	 sprintf(&our_buffer[(int) rremote->na_faclen],"=remote fac in join_x25_server");
+	sprintf(&our_buffer[(int) rremote->na_faclen],"=remote fac in join_x25_server");
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 
 	bcopy( rremote->na_cudf, our_buffer, (int) rremote->na_cudflen);
-	 sprintf(&our_buffer[(int)rremote->na_cudflen],"=remote cud in join_x25_server");
+	sprintf(&our_buffer[(int)rremote->na_cudflen],"=remote cud in join_x25_server");
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 
 
 	bcopy( rremote->na_pid, our_buffer, (int) rremote->na_pidlen);
-	 sprintf(&our_buffer[(int) rremote->na_pidlen],"=remote pid in join_x25_server");
+	sprintf(&our_buffer[(int) rremote->na_pidlen],"=remote pid in join_x25_server");
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 
 #endif
@@ -1353,7 +1336,7 @@ loop:
 	x25_interface.x25_cudf[X25_CUDFSIZE]='\0';
 	x25_interface.x25_dte[X25_DTELEN]= '\0';
 
-	 gen2if (rremote, p_x25_interface, NULL);
+	gen2if (rremote, p_x25_interface, NULL);
 
 	error = X25Call(vci,rremote->na_dte,demsa_local_subaddr,
 					rremote->na_fac,  (int) rremote->na_faclen,
@@ -1391,9 +1374,8 @@ loop:
 
 /* standard  case of running and waiting listener */
 
-int 
-start_x25_client (struct NSAPaddr *local)
-{
+int
+start_x25_client (struct NSAPaddr *local) {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
 	/******************************************************************/
@@ -1424,7 +1406,7 @@ start_x25_client (struct NSAPaddr *local)
 	}
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci after start_x25_client  %d ",(int) vci);
+	sprintf(our_buffer," vci after start_x25_client  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1448,9 +1430,8 @@ start_x25_client (struct NSAPaddr *local)
 
 /*  */
 
-int 
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
-{
+int
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
 	/******************************************************************/
@@ -1481,7 +1462,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	if (local != NULLNA) {
 		local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
 		if (local->na_dtelen == 0) {
-			 strcpy (local->na_dte, x25_local_dte);
+			strcpy (local->na_dte, x25_local_dte);
 			local->na_dtelen = strlen(x25_local_dte);
 			if (local->na_pidlen == 0 && *x25_local_pid)
 				local->na_pidlen =
@@ -1528,9 +1509,9 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 #endif
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci after start_x25_server  %d ",(int) vci);
+	sprintf(our_buffer," vci after start_x25_server  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-	 sprintf(our_buffer," vci after start_x25_server  %d ",our_sd);
+	sprintf(our_buffer," vci after start_x25_server  %d ",our_sd);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1562,9 +1543,8 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 /*  */
 
 
-int 
-join_x25_client (int sd, struct NSAPaddr *rremote)
-{
+int
+join_x25_client (int sd, struct NSAPaddr *rremote) {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
 	/******************************************************************/
@@ -1590,9 +1570,9 @@ join_x25_client (int sd, struct NSAPaddr *rremote)
 	vci_l =  our_get_vci(sd,"join_x25_client");
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci_l in join_x25_client  %d ",(int) vci_l);
+	sprintf(our_buffer," vci_l in join_x25_client  %d ",(int) vci_l);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-	 sprintf(our_buffer," sd  in join_x25_client  %d ",(int) sd);
+	sprintf(our_buffer," sd  in join_x25_client  %d ",(int) sd);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1611,9 +1591,9 @@ join_x25_client (int sd, struct NSAPaddr *rremote)
 		error = X25TakeCall(vci_l,vcip);
 
 #ifdef DEBUG
-		 sprintf(our_buffer," return of X25TakeCall: %d ",error);
+		sprintf(our_buffer," return of X25TakeCall: %d ",error);
 		DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-		 sprintf(our_buffer," vci in join_x25_client  %d ",(int) vci);
+		sprintf(our_buffer," vci in join_x25_client  %d ",(int) vci);
 		DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1730,9 +1710,9 @@ join_x25_client (int sd, struct NSAPaddr *rremote)
 		DLOG (compat_log,LLOG_DEBUG,("ACCEPT succeded in join_x25_client"));
 
 #ifdef DEBUG
-		 sprintf(our_buffer," vci after join_x25_client  %d ",(int) vci);
+		sprintf(our_buffer," vci after join_x25_client  %d ",(int) vci);
 		DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-		 sprintf(our_buffer," vci after join_x25_client  %d ",our_sd);
+		sprintf(our_buffer," vci after join_x25_client  %d ",our_sd);
 		DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1750,7 +1730,7 @@ join_x25_client (int sd, struct NSAPaddr *rremote)
 
 		/* fill call user data field, pid and remote address */
 
-		 if2gen (rremote, p_x25_interface, NULL);
+		if2gen (rremote, p_x25_interface, NULL);
 
 #ifdef DEBUG
 		DLOG (compat_log,LLOG_DEBUG,("<-- leave join_x25_client"));
@@ -1768,9 +1748,8 @@ join_x25_client (int sd, struct NSAPaddr *rremote)
 
 }
 
-int 
-join_x25_server (int sd, struct NSAPaddr *rremote)
-{
+int
+join_x25_server (int sd, struct NSAPaddr *rremote) {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
 	/* (should be the supported version)                              */
@@ -1789,9 +1768,9 @@ join_x25_server (int sd, struct NSAPaddr *rremote)
 	vci =  our_get_vci(sd,"join_x25_server");
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci join_x25_server  %d ",(int) vci);
+	sprintf(our_buffer," vci join_x25_server  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-	 sprintf(our_buffer," sd  join_x25_server  %d ",(int) sd );
+	sprintf(our_buffer," sd  join_x25_server  %d ",(int) sd );
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1811,19 +1790,19 @@ loop:
 #ifdef DEBUG
 
 	bcopy( rremote->na_dte, our_buffer, (int) rremote->na_dtelen);
-	 sprintf(&our_buffer[(int) rremote->na_dtelen],"=remote dte in join_x25_server");
+	sprintf(&our_buffer[(int) rremote->na_dtelen],"=remote dte in join_x25_server");
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 
 	bcopy( rremote->na_fac, our_buffer, (int) rremote->na_faclen);
-	 sprintf(&our_buffer[(int) rremote->na_faclen],"=remote fac in join_x25_server");
+	sprintf(&our_buffer[(int) rremote->na_faclen],"=remote fac in join_x25_server");
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 
 	bcopy( rremote->na_cudf, our_buffer, (int) rremote->na_cudflen);
-	 sprintf(&our_buffer[(int)rremote->na_cudflen],"=remote cud in join_x25_server");
+	sprintf(&our_buffer[(int)rremote->na_cudflen],"=remote cud in join_x25_server");
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 
 	bcopy( rremote->na_pid, our_buffer, (int) rremote->na_pidlen);
-	 sprintf(&our_buffer[(int) rremote->na_pidlen],"=remote pid in join_x25_server");
+	sprintf(&our_buffer[(int) rremote->na_pidlen],"=remote pid in join_x25_server");
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 
 #endif
@@ -1831,7 +1810,7 @@ loop:
 	x25_interface.x25_cudf[X25_CUDFSIZE]='\0';
 	x25_interface.x25_dte[X25_DTELEN]= '\0';
 
-	 gen2if (rremote, p_x25_interface, NULL);
+	gen2if (rremote, p_x25_interface, NULL);
 
 	error = X25Call(vci,rremote->na_dte,demsa_local_subaddr,
 					rremote->na_fac,  (int) rremote->na_faclen,
@@ -1882,9 +1861,9 @@ char    *buffer;
 	vci =  our_get_vci(sd,"read_x25_socket");
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci in read_x25_socket  %d ",(int) vci);
+	sprintf(our_buffer," vci in read_x25_socket  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-	 sprintf(our_buffer," sd  in read_x25_socket  %d ",(int) sd );
+	sprintf(our_buffer," sd  in read_x25_socket  %d ",(int) sd );
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1924,9 +1903,9 @@ char    *buffer;
 	vci =  our_get_vci(sd,"write_x25_socket");
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci in write_x25_socket  %d ",(int) vci);
+	sprintf(our_buffer," vci in write_x25_socket  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-	 sprintf(our_buffer," sd  in write_x25_socket  %d ",(int) sd );
+	sprintf(our_buffer," sd  in write_x25_socket  %d ",(int) sd );
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1961,9 +1940,9 @@ int     sd;
 	list_of_conn_desc[sd].descriptor           = NOTOK;
 
 #ifdef DEBUG
-	 sprintf(our_buffer," vci in close_x25_socket  %d ",(int) vci);
+	sprintf(our_buffer," vci in close_x25_socket  %d ",(int) vci);
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
-	 sprintf(our_buffer," sd  in close_x25_socket  %d ",(int) sd );
+	sprintf(our_buffer," sd  in close_x25_socket  %d ",(int) sd );
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 #endif
 
@@ -1982,13 +1961,13 @@ int     sd;
 
 #endif 	/* ULTRIX_X25_DEMSA */
 #else   /* ULTRIX_X25 */
-int 
+int
 _ultrix25_stub2()  {
 	;
 }
 #endif  /* ULTRIX_X25 */
 #else	/* X25 */
-int 
+int
 _ultrix25_stub()  {
 	;
 }

@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapmajor2.c,v 9.0 19
 
 /*    P-{MAJOR-SYNC,ACTIVITY-END}.RESPONSE */
 
-int 
-PMajSyncResponseAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype)
-{
+int
+PMajSyncResponseAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype) {
 	SBV	    smask;
 	int     len,
 			result;
@@ -61,9 +60,9 @@ PMajSyncResponseAux (int sd, PE *data, int ndata, struct PSAPindication *pi, cha
 
 	if ((result = (*sfunc) (sd, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			 ss2pslose (pb, pi, stype, sa);
+			ss2pslose (pb, pi, stype, sa);
 		else {
-			 ss2pslose (NULLPB, pi, stype, sa);
+			ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
 
@@ -80,7 +79,7 @@ out1:
 	else if (base)
 		free (base);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

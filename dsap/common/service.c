@@ -77,18 +77,18 @@ CommonArgs * ca;
 	ca->ca_servicecontrol.svc_timelimit = timelimit;
 
 	if ((opt = ps_alloc (str_open)) == NULLPS) {
-		 fprintf (stderr,"ps_alloc error\n");
+		fprintf (stderr,"ps_alloc error\n");
 		return (NOTOK);
 	}
 
 	if (str_setup (opt, buffer, LINESIZE, 1) == NOTOK) {
-		 fprintf (stderr,"ps_setup error\n");
+		fprintf (stderr,"ps_setup error\n");
 		return (NOTOK);
 	}
 
 	if (! default_serv_set)
 		if (set_default_service (opt) != OK) {
-			 fprintf (stderr,"error (1) - %s\n",buffer);
+			fprintf (stderr,"error (1) - %s\n",buffer);
 			ps_free (opt);
 			return (NOTOK);
 
@@ -97,7 +97,7 @@ CommonArgs * ca;
 	do_shuffle = FALSE;
 
 	if (do_service_control (opt,serv_argc, serv_vec, ca) < 0) {
-		 fprintf (stderr,"error (2) - %s\n",buffer);
+		fprintf (stderr,"error (2) - %s\n",buffer);
 		ps_free (opt);
 		return (NOTOK);
 	}
@@ -269,9 +269,8 @@ CommonArgs     *ca;
 	return (argc);
 }
 
-int 
-shuffle_up (int argc, char **argv, int start)
-{
+int
+shuffle_up (int argc, char **argv, int start) {
 	int    x;
 
 	for (x = start; x < argc; x++)
@@ -282,20 +281,18 @@ shuffle_up (int argc, char **argv, int start)
 			argv[x] = argv[x + 1];
 }
 
-int 
-new_service (char *ptr)
-{
+int
+new_service (char *ptr) {
 
 	if (ptr != 0) {
 		if (*default_service != 0)
-			 strcat (default_service," ");
-		 strcat (default_service,ptr);
+			strcat (default_service," ");
+		strcat (default_service,ptr);
 	}
 }
 
-int 
-set_sequence (char *str)
-{
+int
+set_sequence (char *str) {
 	struct dua_sequence *ptr;
 
 	if (lexequ (str,"reset") == 0) {
@@ -321,7 +318,7 @@ set_sequence (char *str)
 	current_sequence = ptr;
 }
 
-int 
+int
 unset_sequence (void) {
 	current_sequence = NULL_DS;
 }
@@ -397,7 +394,7 @@ char	ufn;
 	for (ptr=current_sequence->ds_data; ptr != NULL_DE; ptr=ptr->de_next, x++) {
 		ps_printf (RPS,"%-3d%s",x,ufn ? " " : " @");
 		if (ufn)
-			 ufn_dn_print_aux (RPS, ptr -> de_name, NULLDN, 0);
+			ufn_dn_print_aux (RPS, ptr -> de_name, NULLDN, 0);
 		else
 			dn_print (RPS,ptr->de_name,EDBOUT);
 		ps_print (RPS,"\n");

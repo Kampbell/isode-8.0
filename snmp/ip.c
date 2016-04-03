@@ -1390,7 +1390,7 @@ int	offset;
 				int	len;
 				u_char *d;
 				struct qbuf *q,
-						*p;
+						   *p;
 
 				p = (q = (struct qbuf *) value) -> qb_forw, len = 0;
 				do {
@@ -1521,7 +1521,7 @@ losing_noop:
 
 						/* initialize arpreq.arp_flags for ATF_PERM
 						   below... */
-						 ioctl (nd, SIOCGARP, &arpreq);
+						ioctl (nd, SIOCGARP, &arpreq);
 
 						s = "SIOCDARP";
 						if (ioctl (nd, SIOCDARP, &arpreq) == NOTOK)
@@ -1567,11 +1567,11 @@ int	offset;
 	int	    arptab_size,
 			tblsize;
 	struct arptab *ac,
-			*ae;
+			   *ae;
 	struct arptab *arptab;
 	struct adrtab *at,
-			*ap,
-			**afp;
+			   *ap,
+			   **afp;
 	struct interface *is;
 	static  int first_time = 1;
 	static  int lastq = -1;
@@ -1662,7 +1662,7 @@ no_dice:
 
 				oids.oid_elements = at -> adn_instance + 1;
 				oids.oid_nelem = at -> adn_insize - 1;
-				 strcpy (buffer, sprintoid (&oids));
+				strcpy (buffer, sprintoid (&oids));
 				oids.oid_elements = at -> adm_instance;
 				oids.oid_nelem = at -> adm_insize;
 				advise (LLOG_DEBUG, NULLCP,
@@ -1688,7 +1688,7 @@ no_dice:
 
 static int  adn_compar (a, b)
 struct adrtab **a,
-		**b;
+		   **b;
 {
 	return elem_cmp ((*a) -> adn_instance, (*a) -> adn_insize,
 					 (*b) -> adn_instance, (*b) -> adn_insize);
@@ -1697,7 +1697,7 @@ struct adrtab **a,
 
 static int  adm_compar (a, b)
 struct adrtab **a,
-		**b;
+		   **b;
 {
 	return elem_cmp ((*a) -> adm_instance, (*a) -> adm_insize,
 					 (*b) -> adm_instance, (*b) -> adm_insize);
@@ -1705,7 +1705,7 @@ struct adrtab **a,
 
 static int  ada_compar (a, b)
 struct adrtab **a,
-		**b;
+		   **b;
 {
 	return elem_cmp ((*a) -> ada_instance, (*a) -> ada_insize,
 					 (*b) -> ada_instance, (*b) -> ada_insize);
@@ -1714,9 +1714,9 @@ struct adrtab **a,
 
 static	sort_arptab () {
 	struct adrtab *at,
-			**base,
-			**afe,
-			**afp;
+			   **base,
+			   **afe,
+			   **afp;
 
 	if ((base = (struct adrtab **)
 				malloc ((unsigned) (adrNumber * sizeof *base))) == NULL)

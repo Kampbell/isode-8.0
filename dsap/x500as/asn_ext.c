@@ -108,9 +108,8 @@ extern	LLog	* log_dsap;
  */
 
 
-int 
-substring_encode (struct filter_item *parm, PE *pe)
-{
+int
+substring_encode (struct filter_item *parm, PE *pe) {
 	int		subs_type;
 	AV_Sequence	avs_temp;
 	Filter_Substrings	*subs_temp;
@@ -247,7 +246,7 @@ substring_encode (struct filter_item *parm, PE *pe)
 
 
 			}
-			 seq_addon ((*p91), p92, (*p93));
+			seq_addon ((*p91), p92, (*p93));
 			p92 = (*p93);
 		}
 
@@ -348,9 +347,8 @@ substring_encode (struct filter_item *parm, PE *pe)
  */
 
 
-int 
-substring_decode (struct filter_item **pparm, PE pe)
-{
+int
+substring_decode (struct filter_item **pparm, PE pe) {
 	AV_Sequence	* avs_initial;
 	AV_Sequence	* avs_any;
 	AV_Sequence	* avs_final;
@@ -421,7 +419,7 @@ substring_decode (struct filter_item **pparm, PE pe)
 				{
 					/* type */
 #ifdef DEBUG
-					 testdebug (p116, "type");
+					testdebug (p116, "type");
 #endif
 
 					if (decode_IF_AttributeType (p116, 1, (int *)0, NULLVP, &subs_next->fi_sub_type) == NOTOK)
@@ -445,7 +443,7 @@ substring_decode (struct filter_item **pparm, PE pe)
 					PE p118;
 
 #ifdef DEBUG
-					 testdebug (p117, "strings");
+					testdebug (p117, "strings");
 #endif
 
 					if (p117 -> pe_class != PE_CLASS_UNIV
@@ -466,7 +464,7 @@ substring_decode (struct filter_item **pparm, PE pe)
 					for (p118 = first_member (p117); p118; p118 = next_member (p117, p118)) {
 						{
 #ifdef DEBUG
-							 testdebug (p118, "element");
+							testdebug (p118, "element");
 #endif
 							av_next = AttrV_alloc();
 							av_next->av_syntax = 0;
@@ -493,7 +491,7 @@ substring_decode (struct filter_item **pparm, PE pe)
 								}
 								{
 #ifdef DEBUG
-									 testdebug (p119, "initial");
+									testdebug (p119, "initial");
 #endif
 
 									/*
@@ -537,7 +535,7 @@ substring_decode (struct filter_item **pparm, PE pe)
 								}
 								{
 #ifdef DEBUG
-									 testdebug (p121, "any");
+									testdebug (p121, "any");
 #endif
 									/*
 														if (decode_IF_AttributeValue (p121, 1, NULLINTP, NULLVP, &av_next) == NOTOK)
@@ -580,7 +578,7 @@ substring_decode (struct filter_item **pparm, PE pe)
 								}
 								{
 #ifdef DEBUG
-									 testdebug (p123, "final");
+									testdebug (p123, "final");
 #endif
 									/*
 
@@ -630,9 +628,8 @@ substring_decode (struct filter_item **pparm, PE pe)
 	return OK;
 }
 
-int 
-substring_free (struct filter_item *parm)
-{
+int
+substring_free (struct filter_item *parm) {
 	avs_free (parm->UNSUB.fi_sub_initial);
 	avs_free (parm->UNSUB.fi_sub_any);
 	avs_free (parm->UNSUB.fi_sub_final);
@@ -688,9 +685,8 @@ substring_free (struct filter_item *parm)
  *
  */
 
-int 
-treestruct_encode (struct tree_struct *parm, PE *pe)
-{
+int
+treestruct_encode (struct tree_struct *parm, PE *pe) {
 	OID     oid_tmp;
 	int	do_once;
 
@@ -743,7 +739,7 @@ treestruct_encode (struct tree_struct *parm, PE *pe)
 				}
 
 #ifdef DEBUG
-				 testdebug ((*p25), "member");
+				testdebug ((*p25), "member");
 #endif
 
 			}
@@ -752,7 +748,7 @@ treestruct_encode (struct tree_struct *parm, PE *pe)
 		}
 
 #ifdef DEBUG
-		 testdebug ((*p23), "mandatoryObjectClasses");
+		testdebug ((*p23), "mandatoryObjectClasses");
 #endif
 
 		{
@@ -791,7 +787,7 @@ treestruct_encode (struct tree_struct *parm, PE *pe)
 		}
 
 #ifdef DEBUG
-		 testdebug ((*p23), "permittedRDNs");
+		testdebug ((*p23), "permittedRDNs");
 #endif
 
 		{
@@ -815,7 +811,7 @@ treestruct_encode (struct tree_struct *parm, PE *pe)
 		}
 
 #ifdef DEBUG
-	 testdebug ((*pe), "Quipu.TreeStructureSyntax");
+	testdebug ((*pe), "Quipu.TreeStructureSyntax");
 #endif
 
 	{
@@ -880,9 +876,8 @@ treestruct_encode (struct tree_struct *parm, PE *pe)
  */
 
 
-int 
-treestruct_decode (struct tree_struct **parm, PE pe)
-{
+int
+treestruct_decode (struct tree_struct **parm, PE pe) {
 
 	AttributeType	  at_tmp;
 	OID     oid_tmp;
@@ -894,7 +889,7 @@ treestruct_decode (struct tree_struct **parm, PE pe)
 	PE p34;
 
 #ifdef DEBUG
-	 testdebug (pe, "Quipu.TreeStructureSyntax");
+	testdebug (pe, "Quipu.TreeStructureSyntax");
 #endif
 
 	if (explicit) {
@@ -945,7 +940,7 @@ treestruct_decode (struct tree_struct **parm, PE pe)
 			PE p37;
 
 #ifdef DEBUG
-			 testdebug (p35, "mandatoryObjectClasses");
+			testdebug (p35, "mandatoryObjectClasses");
 #endif
 
 			if (p35 -> pe_class != PE_CLASS_UNIV
@@ -967,7 +962,7 @@ treestruct_decode (struct tree_struct **parm, PE pe)
 				OID p38;
 
 #ifdef DEBUG
-				 testdebug (p37, "member");
+				testdebug (p37, "member");
 #endif
 
 				if (p37 -> pe_class != PE_CLASS_UNIV
@@ -1031,7 +1026,7 @@ treestruct_decode (struct tree_struct **parm, PE pe)
 			PE p41;
 
 #ifdef DEBUG
-			 testdebug (p39, "optionalObjectClasses");
+			testdebug (p39, "optionalObjectClasses");
 #endif
 
 			if (p39 -> pe_class != PE_CLASS_UNIV
@@ -1051,7 +1046,7 @@ treestruct_decode (struct tree_struct **parm, PE pe)
 
 			for (p41 = first_member (p39); p41; p41 = next_member (p39, p41)) {
 #ifdef DEBUG
-				 testdebug (p41, "member");
+				testdebug (p41, "member");
 #endif
 
 				if (p41 -> pe_class != PE_CLASS_UNIV
@@ -1094,7 +1089,7 @@ treestruct_decode (struct tree_struct **parm, PE pe)
 			PE p44;
 
 #ifdef DEBUG
-			 testdebug (p42, "permittedRDNs");
+			testdebug (p42, "permittedRDNs");
 #endif
 
 			if (p42 -> pe_class != PE_CLASS_UNIV
@@ -1116,7 +1111,7 @@ treestruct_decode (struct tree_struct **parm, PE pe)
 				PE p45;
 
 #ifdef DEBUG
-				 testdebug (p44, "member");
+				testdebug (p44, "member");
 #endif
 
 				if (p44 -> pe_class != PE_CLASS_UNIV
@@ -1136,7 +1131,7 @@ treestruct_decode (struct tree_struct **parm, PE pe)
 
 				for (p45 = first_member (p44); p45; p45 = next_member (p44, p45)) {
 #ifdef DEBUG
-					 testdebug (p45, "member");
+					testdebug (p45, "member");
 #endif
 
 					if (decode_IF_AttributeType (p45, 1, (int *)0, NULLVP, & at_tmp) == NOTOK)
@@ -1156,9 +1151,8 @@ treestruct_decode (struct tree_struct **parm, PE pe)
 	return OK;
 }
 
-int 
-EDB_encode (struct getedb_result *parm, PE *pe)
-{
+int
+EDB_encode (struct getedb_result *parm, PE *pe) {
 	struct entry *ent_tmp;
 	PE  p31 = NULLPE;
 	PE  p32_z = NULLPE;
@@ -1184,7 +1178,7 @@ EDB_encode (struct getedb_result *parm, PE *pe)
 		if (encode_Quipu_RelativeEntry (p32, 0, NULL, NULLCP, ent_tmp) == NOTOK)
 			return NOTOK;
 
-		 seq_addon ((*pe), p31, (*p32));
+		seq_addon ((*pe), p31, (*p32));
 		p31 = (*p32);
 	}
 
@@ -1192,9 +1186,8 @@ EDB_encode (struct getedb_result *parm, PE *pe)
 }
 
 
-int 
-EDB_decode_force (struct getedb_result **pparm, PE pe)
-{
+int
+EDB_decode_force (struct getedb_result **pparm, PE pe) {
 	Avlnode **tree;
 	struct entry *tmp;
 	int	entry_cmp();
@@ -1237,9 +1230,8 @@ EDB_decode_force (struct getedb_result **pparm, PE pe)
 }
 
 
-int 
-EDB_decode (struct getedb_result **pparm, PE pe)
-{
+int
+EDB_decode (struct getedb_result **pparm, PE pe) {
 
 	if (pe -> pe_class != PE_CLASS_UNIV
 			|| pe -> pe_form != PE_FORM_CONS
@@ -1257,9 +1249,8 @@ EDB_decode (struct getedb_result **pparm, PE pe)
 	return OK;
 }
 
-int 
-EDB_free (struct getedb_result *parm)
-{
+int
+EDB_free (struct getedb_result *parm) {
 	/* All done for us at some other time (hopefully) */
 	return OK;
 }

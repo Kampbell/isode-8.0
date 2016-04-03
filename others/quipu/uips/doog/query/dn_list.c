@@ -119,8 +119,8 @@ AttributeType object_type;
 		new_element->next = element;
 		*entry_list_ptr = new_element;
 	} else if (lexcmp == 0) { /* Don't want the same dn twice */
-		 free(entry_name);
-		 free((char *) new_element);
+		free(entry_name);
+		free((char *) new_element);
 
 		return FALSE;
 	} else {
@@ -131,8 +131,8 @@ AttributeType object_type;
 			if (lexcmp < 0)
 				break;
 			else if (lexcmp == 0) {
-				 free(entry_name);
-				 free((char *) new_element);
+				free(entry_name);
+				free((char *) new_element);
 
 				return FALSE;
 			} else
@@ -158,10 +158,10 @@ entryList *entry_list_ptr;
 
 	while (list != NULLEntryList) {
 		next_entry = list->next;
-		 free(list->string_dn);
+		free(list->string_dn);
 
 		/* Don't have to free sort key as it is a pointer into above string. */
-		 free((char *) list);
+		free((char *) list);
 		list = next_entry;
 	}
 

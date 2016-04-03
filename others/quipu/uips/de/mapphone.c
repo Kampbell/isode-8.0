@@ -33,14 +33,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mappho
 extern struct mapphonelist * mapphonelp;
 static struct mapphonelist * tailplp;
 
-void 
-addToPhoneList (char *str)
-{
+void
+addToPhoneList (char *str) {
 	char * cp;
 
 	cp = index(str, ':');
 	if (cp == NULLCP) {
-		 fprintf(stderr, "log an error message about parsing of phone numbermappings...\n");
+		fprintf(stderr, "log an error message about parsing of phone numbermappings...\n");
 		return;
 	}
 	*cp = '\0';
@@ -48,9 +47,8 @@ addToPhoneList (char *str)
 	addPhoneNode(str, cp);
 }
 
-void 
-addPhoneNode (char *from, char *to)
-{
+void
+addPhoneNode (char *from, char *to) {
 	struct mapphonelist * mplp;
 
 	mplp = mapphone_alloc();
@@ -65,15 +63,14 @@ addPhoneNode (char *from, char *to)
 }
 
 char *
-mapPhone (char *from)
-{
+mapPhone (char *from) {
 	struct mapphonelist * mplp;
 	static char tophone[LINESIZE];
 
 	for (mplp = mapphonelp; mplp != NULLPHLIST; mplp = mplp->next)
 		if (strncmp(from, mplp->mapfrom, strlen(mplp->mapfrom)) == 0) {
-			 strcpy(tophone, mplp->mapto);
-			 strcat(tophone, from + strlen(mplp->mapfrom));
+			strcpy(tophone, mplp->mapto);
+			strcat(tophone, from + strlen(mplp->mapfrom));
 			return tophone;
 		}
 	return from;

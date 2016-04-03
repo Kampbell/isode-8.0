@@ -35,9 +35,8 @@ static int  SRelResponseAux ();
 
 /*    S-RELEASE.RESPONSE */
 
-int 
-SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication *si)
-{
+int
+SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -51,16 +50,15 @@ SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication *si)
 
 	result = SRelResponseAux (sb, status, data, cc, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    S-RELEASE.RESPONSE */
 
-static int 
-SRelResponseAux (struct ssapblk *sb, int status, char *data, int cc, struct SSAPindication *si)
-{
+static int
+SRelResponseAux (struct ssapblk *sb, int status, char *data, int cc, struct SSAPindication *si) {
 	int     code,
 			result;
 	struct ssapkt *s;

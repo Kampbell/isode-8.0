@@ -55,9 +55,8 @@ extern LLog * tsap_log;
 
 time_t	timenow;
 
-int 
-dsa_wait (int secs)
-{
+int
+dsa_wait (int secs) {
 	int                         vecp = 0;
 	char                        *vec[4];
 	fd_set                      iads;
@@ -95,7 +94,7 @@ dsa_wait (int secs)
 			else
 				SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP,
 					  ("fd=%d for connection block(1)", cn -> cn_ad));
-			 sprintf(wbp, ", %d.", cn->cn_ad);
+			sprintf(wbp, ", %d.", cn->cn_ad);
 			wbp += (strlen(wbp) - 1);
 		} else {
 			if (cn->cn_ad > 0)
@@ -103,7 +102,7 @@ dsa_wait (int secs)
 			else
 				SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP,
 					  ("fd=%d for connection block(2)", cn -> cn_ad));
-			 sprintf(ibp, ", %d.", cn->cn_ad);
+			sprintf(ibp, ", %d.", cn->cn_ad);
 			ibp += (strlen(ibp) - 1);
 		}
 
@@ -152,7 +151,7 @@ dsa_wait (int secs)
 	}
 	watch_dog_reset();
 
-	 time (&timenow);
+	time (&timenow);
 
 	if (vecp > 0) {
 		conn_pre_init (newfd,vecp,vec);
@@ -213,7 +212,7 @@ dsa_wait (int secs)
 				closing_analyse(cn) ;
 #endif /* QUIPU_CONSOLE */
 
-				 conn_release_retry(cn);
+				conn_release_retry(cn);
 				result = OK;
 			}
 			break;
@@ -267,9 +266,8 @@ dsa_wait (int secs)
 
 
 #ifdef QUIPU_CONSOLE
-static void 
-connecting_analyse (struct connection *cn)
-{
+static void
+connecting_analyse (struct connection *cn) {
 	/* SPT: The sub parts to build an openCall attribute type. */
 	AttributeType oc_att ;
 	AttributeValue oc_av ;
@@ -332,7 +330,7 @@ connecting_analyse (struct connection *cn)
 	open_call->initiated_by_dsa = cn->cn_initiator ;
 	open_call->usersDN = dn_cpy(cn->cn_dn);
 	open_call->net_address = strdup(pa2str(cn->cn_start.cs_ds.ds_start.acs_start.ps_calling)) ;
-	 time(&timenow) ;
+	time(&timenow) ;
 	tm2ut(gmtime(&timenow), &ut) ;
 	open_call->start_time = strdup(utct2str(&ut)) ;
 	open_call->finish_time = (char *) 0 ;
@@ -374,9 +372,8 @@ connecting_analyse (struct connection *cn)
 	}
 }
 
-void 
-opening_analyse (struct connection *cn)
-{
+void
+opening_analyse (struct connection *cn) {
 	/* SPT: The sub parts to build an openCall attribute type. */
 	AttributeType oc_att ;
 	AttributeValue oc_av ;
@@ -475,9 +472,8 @@ opening_analyse (struct connection *cn)
 }
 
 
-void 
-closing_analyse (struct connection *cn)
-{
+void
+closing_analyse (struct connection *cn) {
 	AV_Sequence tmp_avs ;
 	int success = FALSE ;
 	UTCtime ut ;
@@ -531,9 +527,8 @@ closing_analyse (struct connection *cn)
 #endif
 }
 
-static void 
-print_connlist (struct connection *conn)
-{
+static void
+print_connlist (struct connection *conn) {
 	fprintf(stderr, "***** SPT: ctx %d\n", conn->cn_ctx) ;
 }
 #endif /* QUIPU_CONSOLE */

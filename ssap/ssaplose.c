@@ -39,12 +39,11 @@ static int  _ssaplose ();
 #endif
 
 #ifndef	lint
-int	spktlose (int sd, ...)
-{
+int	spktlose (int sd, ...) {
 	int	    reason,
-	result,
-	secs,
-	value;
+			result,
+			secs,
+			value;
 	struct ssapblk *sb;
 	struct ssapkt *s;
 	struct SSAPindication   sis;
@@ -72,11 +71,11 @@ int	spktlose (int sd, ...)
 
 	if ((sa = &si -> si_abort) -> sa_cc > 0) {
 		SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP,
-		("spktlose [%s] %*.*s", SErrString (sa -> sa_reason),
-		sa -> sa_cc, sa -> sa_cc, sa -> sa_prdata));
+			  ("spktlose [%s] %*.*s", SErrString (sa -> sa_reason),
+			   sa -> sa_cc, sa -> sa_cc, sa -> sa_prdata));
 	} else
 		SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP,
-		("spktlose [%s]", SErrString (sa -> sa_reason)));
+			  ("spktlose [%s]", SErrString (sa -> sa_reason)));
 
 	if (value && SC_OFFICIAL (reason)) {
 		if ((s = newspkt (SPDU_RF)) == NULL)
@@ -119,7 +118,7 @@ int	spktlose (int sd, ...)
 	}
 
 	value = spkt2sd (s, sd,
-	(sb = findsblk (sd)) && (sb -> sb_flags & SB_EXPD), si);
+					 (sb = findsblk (sd)) && (sb -> sb_flags & SB_EXPD), si);
 
 	freespkt (s);
 	if (value == NOTOK)
@@ -141,9 +140,8 @@ int	spktlose (int sd, ...)
 #else
 /* VARARGS5 */
 
-int 
-spktlose (int sd, struct SSAPindication *si, int reason, char *what, char *fmt)
-{
+int
+spktlose (int sd, struct SSAPindication *si, int reason, char *what, char *fmt) {
 	return spktlose (sd, si, reason, what, fmt);
 }
 #endif
@@ -151,10 +149,9 @@ spktlose (int sd, struct SSAPindication *si, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-int	ssaplose (struct SSAPindication*si, ...)
-{
+int	ssaplose (struct SSAPindication*si, ...) {
 	int	    reason,
-	result;
+			result;
 	va_list ap;
 
 	va_start (ap, si);
@@ -170,9 +167,8 @@ int	ssaplose (struct SSAPindication*si, ...)
 #else
 /* VARARGS4 */
 
-int 
-ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt)
-{
+int
+ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
 	return ssaplose (si, reason, what, fmt);
 }
 #endif
@@ -180,13 +176,12 @@ ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _ssaplose (	/* what, fmt, args ... */
-    struct SSAPindication *si,
-    int reason,
-    va_list ap
-)
-{
+	struct SSAPindication *si,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char  *what;
 	char  *fmt;

@@ -175,9 +175,8 @@ static  CMD_TABLE  authtab[] = {
  * do system wide initialisations
  */
 
-int 
-dsa_sys_tai (int argc, char **argv)
-{
+int
+dsa_sys_tai (int argc, char **argv) {
 	char    *arg;
 
 	if(argc < 2)
@@ -264,27 +263,27 @@ dsa_sys_tai (int argc, char **argv)
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor admin size %d", admin_size));
 		break;
 	case ADMIN_TIME:
-		 sscanf (arg, "%ld", &admin_time);
+		sscanf (arg, "%ld", &admin_time);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor admin time %ld", admin_time));
 		break;
 	case CACHE_TIME:
-		 sscanf (arg, "%ld", &cache_timeout);
+		sscanf (arg, "%ld", &cache_timeout);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor cache time %ld", cache_timeout));
 		break;
 	case RETRY_TIME:
-		 sscanf (arg, "%ld", &retry_timeout);
+		sscanf (arg, "%ld", &retry_timeout);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor retry time %ld", retry_timeout));
 		break;
 	case SLAVE_TIME:
-		 sscanf (arg, "%ld", &slave_timeout);
+		sscanf (arg, "%ld", &slave_timeout);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor slave time %ld", slave_timeout));
 		break;
 	case CONN_TIME:
-		 sscanf (arg, "%ld", &conn_timeout);
+		sscanf (arg, "%ld", &conn_timeout);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor conn time %ld", conn_timeout));
 		break;
 	case NSAP_TIME:
-		 sscanf (arg, "%ld", &nsap_timeout);
+		sscanf (arg, "%ld", &nsap_timeout);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor nsap time %ld", nsap_timeout));
 		break;
 	case SECRET_KEY:
@@ -294,11 +293,11 @@ dsa_sys_tai (int argc, char **argv)
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor dsa certificate ignored - obsolete feature"));
 		break;
 	case WATCHDOG_TIME:
-		 sscanf (arg, "%d", &watchdog_time);
+		sscanf (arg, "%d", &watchdog_time);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor watchdog time %d", watchdog_time));
 		break;
 	case WATCHDOG_DELTA:
-		 sscanf (arg, "%d", &watchdog_delta);
+		sscanf (arg, "%d", &watchdog_delta);
 		DLOG (log_dsap,LLOG_TRACE,(" Tailor watchdog delta %d", watchdog_delta));
 		break;
 	case BIND_POLICY:
@@ -346,7 +345,7 @@ dsa_sys_tai (int argc, char **argv)
 			LLOG (log_dsap,LLOG_EXCEPTIONS,(
 					  "Invalid isode option in quiputailor"));
 		else
-			 isodesetvar(arg,strdup(argv[2]),0);
+			isodesetvar(arg,strdup(argv[2]),0);
 		break;
 	case AUTH:
 		auth_bind = cmd_srch(arg, authtab);

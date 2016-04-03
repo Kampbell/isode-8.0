@@ -37,9 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind1.c,v 9.0 
 
 /* ARGSUSED */
 
-int 
-RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni)
-{
+int
+RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {
 	int			  result;
 	PE			  user_data;
 	PE			* user_data_p = &(user_data);
@@ -75,7 +74,7 @@ RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, str
 			return (DONE);
 		} else {
 			LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnbindRequest: AcRelRequest failed"));
-			 acs2ronotlose (rni, "RO-UNBIND.REQUEST", aca);
+			acs2ronotlose (rni, "RO-UNBIND.REQUEST", aca);
 			ACAFREE (aca);
 			return (NOTOK);
 		}
@@ -94,9 +93,8 @@ RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, str
 
 /* ARGSUSED */
 
-int 
-RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni)
-{
+int
+RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);
@@ -112,7 +110,7 @@ RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindicatio
 			return (DONE);
 		} else {
 			LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnbindRetry: AcRelRetryRequest failed"));
-			 acs2ronotlose (rni, "RO-UNBIND.RETRY", aca);
+			acs2ronotlose (rni, "RO-UNBIND.RETRY", aca);
 			ACAFREE (aca);
 			return (NOTOK);
 		}
@@ -127,9 +125,8 @@ RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindicatio
 	return (result);
 }
 
-int 
-ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindication *rni)
-{
+int
+ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindication *rni) {
 	PE	  pe;
 
 	if (acr->acr_ninfo == 0)

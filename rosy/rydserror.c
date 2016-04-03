@@ -60,7 +60,7 @@ struct RoSAPindication *roi;
 	PE	    pe;
 	struct opsblk *opb;
 	struct RyError **ryep,
-			*rye;
+			   *rye;
 	struct RyOperation *ryo;
 
 	missingP (roi);

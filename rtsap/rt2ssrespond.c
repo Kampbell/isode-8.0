@@ -40,9 +40,8 @@ extern int acsap_conntype;
 
 /*    RT-BEGIN.INDICATION (X.410 OPEN.INDICATION) */
 
-int 
-RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti)
-{
+int
+RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti) {
 	int     len,
 			result;
 	char   *base;
@@ -69,7 +68,7 @@ RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *r
 	SetSS2RtService (acb);
 
 	if (SInit (vecp, vec, ss, si) == NOTOK) {
-		 ss2rtslose (acb, rti, "SInit", sa);
+		ss2rtslose (acb, rti, "SInit", sa);
 		goto out1;
 	}
 
@@ -79,8 +78,8 @@ RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *r
 	base = NULLCP, len = 0;
 	acb -> acb_connect = ss -> ss_connect;	/* struct copy */
 	if ((ss -> ss_requirements &= RTS_MYREQUIRE) != RTS_MYREQUIRE) {
-		 rtsaplose (rti, RTS_PROTOCOL, NULLCP,
-						  "desired session requirements unavailable");
+		rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+				   "desired session requirements unavailable");
 		goto out2;
 	}
 	acb -> acb_requirements = ss -> ss_requirements;
@@ -107,8 +106,8 @@ RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *r
 	dotokens ();
 #undef	dotoken
 	if (acb -> acb_owned != 0 && acb -> acb_owned != acb -> acb_avail) {
-		 rtsaplose (rti, RTS_PROTOCOL, NULLCP,
-						  "token management botched");
+		rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+				   "token management botched");
 		goto out2;
 	}
 	if (acb -> acb_owned)
@@ -118,15 +117,15 @@ RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *r
 
 	if ((pe = ssdu2pe (ss -> ss_data, ss -> ss_cc, NULLCP, &result))
 			== NULLPE) {
-		 rtsaplose (rti, result != PS_ERR_NMEM ? RTS_PROTOCOL
-						  : RTS_CONGEST, NULLCP, "%s", ps_error (result));
+		rtsaplose (rti, result != PS_ERR_NMEM ? RTS_PROTOCOL
+				   : RTS_CONGEST, NULLCP, "%s", ps_error (result));
 		goto out2;
 	}
 
 	SSFREE (ss);
 
 	if (parse_OACS_PConnect (pe, 1, NULLIP, NULLVP, &pcon) == NOTOK) {
-		 pylose ();
+		pylose ();
 		pe_free (pe);
 		goto out2;
 	}
@@ -135,8 +134,8 @@ RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *r
 
 	if (pcon -> pUserData -> member_OACS_2->offset
 			== type_OACS_ConnectionData_recover) {
-		 rtsaplose (rti, RTS_CONGEST, NULLCP,
-						  "rejecting attempted recovery");
+		rtsaplose (rti, RTS_CONGEST, NULLCP,
+				   "rejecting attempted recovery");
 		pe_free (pe);
 		if ((pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET))
 				&& set_add (pe, num2prim ((integer) RTS_RECOVER, PE_CLASS_CONT,
@@ -185,8 +184,8 @@ RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *r
 out2:
 	;
 	bzero ((char *) &ref, sizeof ref);
-	 SConnResponse (acb -> acb_fd, &ref, NULLSA, sc_reason, 0, 0,
-						  SERIAL_NONE, base, len, si);
+	SConnResponse (acb -> acb_fd, &ref, NULLSA, sc_reason, 0, 0,
+				   SERIAL_NONE, base, len, si);
 	acb -> acb_fd = NOTOK;
 	if (base)
 		free (base);
@@ -201,16 +200,15 @@ out1:
 
 /*    RT-BEGIN.RESPONSE (X.410 OPEN.RESPONSE) */
 
-int 
-RtBeginResponse (int sd, int status, PE data, struct RtSAPindication *rti)
-{
+int
+RtBeginResponse (int sd, int status, PE data, struct RtSAPindication *rti) {
 	int	    len,
 			result;
 	char   *base;
 	PE	pe,
-			 p,
-			 q,
-			 r;
+	 p,
+	 q,
+	 r;
 	struct assocblk   *acb;
 	struct SSAPref ref;
 	struct SSAPindication sis;
@@ -249,7 +247,7 @@ RtBeginResponse (int sd, int status, PE data, struct RtSAPindication *rti)
 				== NULLPE) {
 no_mem:
 			;
-			 rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
+			rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
 			goto out1;
 		}
 		if (set_add (pe, p = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS,
@@ -301,7 +299,7 @@ no_mem:
 					   acb -> acb_requirements, acb -> acb_settings, SERIAL_NONE,
 					   base, len, si) == NOTOK) {
 		acb -> acb_fd = NOTOK;
-		 ss2rtslose (acb, rti, "SConnResponse", sa);
+		ss2rtslose (acb, rti, "SConnResponse", sa);
 		goto out3;
 	}
 
@@ -317,7 +315,7 @@ out2:
 	;
 	if (pe) {
 		if (data)
-			 pe_extract (pe, data);
+			pe_extract (pe, data);
 		pe_free (pe);
 	}
 	if (base)
@@ -328,8 +326,8 @@ out2:
 out1:
 	;
 	bzero ((char *) &ref, sizeof ref);
-	 SConnResponse (acb -> acb_fd, &ref, NULLSA, SC_CONGEST, 0, 0,
-						  SERIAL_NONE, NULLCP, 0, si);
+	SConnResponse (acb -> acb_fd, &ref, NULLSA, SC_CONGEST, 0, 0,
+				   SERIAL_NONE, NULLCP, 0, si);
 	acb -> acb_fd = NOTOK;
 out3:
 	;

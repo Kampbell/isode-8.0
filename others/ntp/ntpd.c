@@ -97,9 +97,8 @@ static	SFD incdebug(), decdebug();
 
 struct ntp_peer *find_peer ();
 
-int 
-main (int argc, char *argv[])
-{
+int
+main (int argc, char *argv[]) {
 	int	cc;
 	extern char *optarg;
 	int i;
@@ -210,7 +209,7 @@ main (int argc, char *argv[])
 	return 0;
 }
 
-int 
+int
 doit  {
 	struct timeval tvt;
 	fd_set readfds, writefds;
@@ -221,7 +220,7 @@ doit  {
 	int i;
 	int	newfd;
 
-	 gettimeofday(&tv, (struct timezone *) 0);
+	gettimeofday(&tv, (struct timezone *) 0);
 
 	FD_ZERO(&globmask);
 	FD_ZERO(&globwmask);
@@ -231,20 +230,20 @@ doit  {
 		FD_SET(addrs[i].fd, &globmask);
 		if (addrs[i].if_flags & IFF_BROADCAST)
 			TRACE (2, ("Addr %d: %s fd %d %s broadcast %s",
-					   i, addrs[i].name, addrs[i].fd,
-					   paddr (&addrs[i].addr),
-					   ntoa (&addrs[i].bcast)));
+			i, addrs[i].name, addrs[i].fd,
+			paddr (&addrs[i].addr),
+			ntoa (&addrs[i].bcast)));
 		else
 			TRACE (2, ("Addr %d: %s fd %d %s", i,
-					   addrs[i].name, addrs[i].fd,
-					   paddr (&addrs[i].addr)));
+			addrs[i].name, addrs[i].fd,
+			paddr (&addrs[i].addr)));
 	}
 
-	 signal(SIGINT, finish);
-	 signal(SIGTERM, finish);
+	signal(SIGINT, finish);
+	signal(SIGTERM, finish);
 #if	defined(DEBUG) && defined(SIGUSR1) && defined(SIGUSR2)
-	 signal(SIGUSR1, incdebug);
-	 signal(SIGUSR2, decdebug);
+	signal(SIGUSR1, incdebug);
+	signal(SIGUSR2, decdebug);
 #endif
 	/*
 	 * Find highest fd in use.  This might save a few microseconds in
@@ -259,25 +258,25 @@ doit  {
 
 	/* prime the pump! */
 	ticked = 1;
-	 gettimeofday(&tv, (struct timezone *) 0);
+	gettimeofday(&tv, (struct timezone *) 0);
 
 	for (;;) {	/* go into a finite but hopefully very long loop */
 
 		readfds = globmask;
 		writefds = globwmask;
 		TRACE (7, ("wait nfds %d, fds 0x%x 0x%x", selfds,
-				   readfds.fds_bits[0], writefds.fds_bits[0]));
+		readfds.fds_bits[0], writefds.fds_bits[0]));
 
 		if (ticked) {
 			ticked = 0;
 			tvt = tv;
 		}
 
-		 TNetAcceptAux (&vecp, vec, &newfd, NULLTA,
-							  selfds, &readfds,
-							  &writefds, NULLFD, (1<<CLOCK_ADJ), td);
+		TNetAcceptAux (&vecp, vec, &newfd, NULLTA,
+					   selfds, &readfds,
+					   &writefds, NULLFD, (1<<CLOCK_ADJ), td);
 
-		 gettimeofday(&tv, (struct timezone *) 0);
+		gettimeofday(&tv, (struct timezone *) 0);
 		if (tv.tv_sec - tvt.tv_sec >= (1 << CLOCK_ADJ))
 			ticked = 1;
 
@@ -296,12 +295,12 @@ doit  {
 			if (addrs[i].flags & INTF_PENDING) {
 				struct ntp_peer *p = find_peer (i);
 				if (p)
-					 make_osi_conn (find_peer(i),
-										  osiaddress);
+					make_osi_conn (find_peer(i),
+								   osiaddress);
 				continue;
 			}
 			if (addrs[i].flags & INTF_ACCEPTING) {
-				 iso_accept (&addrs[i]);
+				iso_accept (&addrs[i]);
 				continue;
 			}
 			addrs[i].uses++;
@@ -328,8 +327,7 @@ doit  {
 }
 
 struct ntp_peer *
-check_peer (struct Naddr *dst, int sock)
-{
+check_peer (struct Naddr *dst, int sock) {
 	struct ntp_peer *peer = peer_list.head;
 
 	while (peer != NULL) {
@@ -342,56 +340,54 @@ check_peer (struct Naddr *dst, int sock)
 }
 
 #ifdef	DEBUG
-void 
-dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer)
-{
+void
+dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer) {
 	struct Naddr clock_host;
 
-	 printf("Packet: %s\n", paddr (dst));
+	printf("Packet: %s\n", paddr (dst));
 
-	 printf("Leap %d, version %d, mode %d, poll %d, precision %d stratum %d",
-				  (int)(pkt->status & LEAPMASK) >> 6, (int)(pkt->status & VERSIONMASK) >> 3,
-				  pkt->status & MODEMASK, pkt->ppoll, pkt->precision,
-				  pkt->stratum);
+	printf("Leap %d, version %d, mode %d, poll %d, precision %d stratum %d",
+		   (int)(pkt->status & LEAPMASK) >> 6, (int)(pkt->status & VERSIONMASK) >> 3,
+		   pkt->status & MODEMASK, pkt->ppoll, pkt->precision,
+		   pkt->stratum);
 	switch (pkt->stratum) {
 	case 0:
 	case 1:
-		 printf(" (%.4s)\n", (char *)&pkt->refid);
+		printf(" (%.4s)\n", (char *)&pkt->refid);
 		break;
 	default:
 		clock_host.inet_ad.sin_addr.s_addr = (u_long) pkt->refid;
 		clock_host.type = AF_INET;
-		 printf(" [%s]\n", paddr (&clock_host));
+		printf(" [%s]\n", paddr (&clock_host));
 		break;
 	}
-	 printf("Synch Dist is %04X.%04X  Synch Dispersion is %04X.%04X\n",
-				  ntohs((u_short) pkt->distance.int_part),
-				  ntohs((u_short) pkt->distance.fraction),
-				  ntohs((u_short) pkt->dispersion.int_part),
-				  ntohs((u_short) pkt->dispersion.fraction));
-	 printf("Reference Timestamp is %08lx.%08lx\n",
-				  ntohl(pkt->reftime.int_part),
-				  ntohl(pkt->reftime.fraction));
-	 printf("Originate Timestamp is %08lx.%08lx\n",
-				  ntohl(pkt->org.int_part),
-				  ntohl(pkt->org.fraction));
-	 printf("Receive Timestamp is   %08lx.%08lx\n",
-				  ntohl(pkt->rec.int_part),
-				  ntohl(pkt->rec.fraction));
-	 printf("Transmit Timestamp is  %08lx.%08lx\n",
-				  ntohl(pkt->xmt.int_part),
-				  ntohl(pkt->xmt.fraction));
+	printf("Synch Dist is %04X.%04X  Synch Dispersion is %04X.%04X\n",
+		   ntohs((u_short) pkt->distance.int_part),
+		   ntohs((u_short) pkt->distance.fraction),
+		   ntohs((u_short) pkt->dispersion.int_part),
+		   ntohs((u_short) pkt->dispersion.fraction));
+	printf("Reference Timestamp is %08lx.%08lx\n",
+		   ntohl(pkt->reftime.int_part),
+		   ntohl(pkt->reftime.fraction));
+	printf("Originate Timestamp is %08lx.%08lx\n",
+		   ntohl(pkt->org.int_part),
+		   ntohl(pkt->org.fraction));
+	printf("Receive Timestamp is   %08lx.%08lx\n",
+		   ntohl(pkt->rec.int_part),
+		   ntohl(pkt->rec.fraction));
+	printf("Transmit Timestamp is  %08lx.%08lx\n",
+		   ntohl(pkt->xmt.int_part),
+		   ntohl(pkt->xmt.fraction));
 	if(peer != NULL)
-		 printf("Input Timestamp is     %08lx.%08lx\n",
-					  ntohl(peer->rec.int_part),
-					  ntohl(peer->rec.fraction));
-	 putchar('\n');
+		printf("Input Timestamp is     %08lx.%08lx\n",
+			   ntohl(peer->rec.int_part),
+			   ntohl(peer->rec.fraction));
+	putchar('\n');
 }
 #endif
 
-void 
-make_new_peer (struct ntp_peer *peer)
-{
+void
+make_new_peer (struct ntp_peer *peer) {
 	int i;
 	void	double_to_s_fixed ();
 
@@ -418,9 +414,8 @@ make_new_peer (struct ntp_peer *peer)
 /*
  *  This procedure is called to delete a peer from our list of peers.
  */
-int 
-demobilize (struct list *l, struct ntp_peer *peer)
-{
+int
+demobilize (struct list *l, struct ntp_peer *peer) {
 	extern struct ntp_peer dummy_peer;
 
 	if (keepallpeers) {
@@ -485,9 +480,8 @@ dropit:
 	return 1;
 }
 
-int 
-enqueue (struct list *l, struct ntp_peer *peer)
-{
+int
+enqueue (struct list *l, struct ntp_peer *peer) {
 	l->members++;
 	if (l->tail == NULL) {
 		/* insertion into empty list */
@@ -504,9 +498,8 @@ enqueue (struct list *l, struct ntp_peer *peer)
 }
 
 
-static void 
-timeout (int n)
-{
+static void
+timeout (int n) {
 	static int periodic = 0;
 	struct ntp_peer *peer;
 #ifndef	XADJTIME2
@@ -565,13 +558,12 @@ timeout (int n)
 
 #ifdef	DEBUG
 	if (debug)
-		 fflush(stdout);
+		fflush(stdout);
 #endif
 }
 
-static void 
-do_peer (struct ntp_peer *peer)
-{
+static void
+do_peer (struct ntp_peer *peer) {
 	if (peer -> flags & PEER_FL_SNOOZE)
 		return;
 	peer->stopwatch = 0;
@@ -615,9 +607,8 @@ do_peer (struct ntp_peer *peer)
  */
 int precision;
 
-static void 
-init_ntp (char *config)
-{
+static void
+init_ntp (char *config) {
 	struct Naddr addr;
 	char buffer[BUFSIZ];
 	FILE *fp;
@@ -655,7 +646,7 @@ init_ntp (char *config)
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"init_ntp: bad drift compensation value");
 		}
-		 fclose(fp);
+		fclose(fp);
 	}
 }
 
@@ -706,9 +697,8 @@ CMD_TABLE	config_tbl[] = {
 	"",	-1
 };
 
-int 
-config_line (char *argv[], int argc)
-{
+int
+config_line (char *argv[], int argc) {
 	int	result;
 	struct Naddr addr;
 	int	i;
@@ -886,7 +876,7 @@ config_line (char *argv[], int argc)
 			peer->flags |= PEER_FL_SYNC;
 			break;
 		default:
-			 printf("can't happen\n");
+			printf("can't happen\n");
 			abort();
 		}
 		peer->src = addr;
@@ -925,12 +915,12 @@ config_line (char *argv[], int argc)
 			peer = (struct ntp_peer *)
 				   calloc(1, sizeof(struct ntp_peer));
 			if (peer == NULL) {
-				 close(i);
+				close(i);
 				return NOTOK;
 			}
 			make_new_peer(peer);
-			 strncpy(peer->refid.rid_string,
-						   ref_clock, 4);
+			strncpy(peer->refid.rid_string,
+					ref_clock, 4);
 			peer->refid.rid_string[4] = 0;
 			peer->refid.rid_type = RID_STRING;
 			peer->flags = PEER_FL_CONFIG|PEER_FL_REFCLOCK;
@@ -971,9 +961,8 @@ CMD_TABLE tbl_peer_flags[] = {
 	NULLCP,		-1
 };
 
-int 
-other_peer_fields (struct ntp_peer *peer, char **argv, int argc)
-{
+int
+other_peer_fields (struct ntp_peer *peer, char **argv, int argc) {
 	while (argc > 0) {
 		switch (cmd_srch (argv[0], tbl_peer_flags)) {
 		case TBLPEER_VERSION:
@@ -992,9 +981,8 @@ other_peer_fields (struct ntp_peer *peer, char **argv, int argc)
 	}
 }
 
-int 
-ynorint (char *s)
-{
+int
+ynorint (char *s) {
 	if (*s == 'y' || *s == 'Y')
 		return 1;
 	if (*s == 'n' || *s == 'N')
@@ -1009,7 +997,7 @@ static int kern_hz, kern_tick;
 #define n_name n_un.n_name
 #endif
 
-static void 
+static void
 init_kern_vars  {
 	int kmem;
 	static char	*memory = "/dev/kmem";
@@ -1025,15 +1013,15 @@ init_kern_vars  {
 
 	for (i = 0; i < 3; i++) {
 #ifdef SYS5
-		 strcpy (nl[i].n_name, knames[i]);
+		strcpy (nl[i].n_name, knames[i]);
 #else
 		nl[i].n_name = knames[i];
 #endif
 	}
 #ifdef SYS5
-	 nlist("/unix", nl);
+	nlist("/unix", nl);
 #else
-	 nlist("/vmunix", nl);
+	nlist("/vmunix", nl);
 #endif
 
 	for (i = 0; i < (sizeof(kern_vars)/sizeof(kern_vars[0])); i++) {
@@ -1073,11 +1061,11 @@ init_kern_vars  {
 			   dotickadj));
 
 	if (dotickadj && tickadj && (tickadj != kern_tickadj)) {
-		 close(kmem);
+		close(kmem);
 		if ((kmem = open(memory, O_RDWR)) >= 0) {
 			if (lseek(kmem, (long)nl[0].n_value, L_SET) == -1) {
 				advise (LLOG_EXCEPTIONS, memory, "lseek fails");
-				 close(kmem);
+				close(kmem);
 				tickadj = 0;
 			}
 			if (tickadj && write(kmem, (char *)&tickadj,
@@ -1095,7 +1083,7 @@ init_kern_vars  {
 		}
 	}
 #endif	/* SETTICKADJ */
-	 close(kmem);
+	close(kmem);
 
 	/*
 	 *  If we have successfully discovered `hz' from the kernel, then we
@@ -1133,9 +1121,8 @@ init_kern_vars  {
  * addresses that have characters or byte values > 255.
  */
 
-int 
-GetHostName (char *name, struct Naddr *addr)
-{
+int
+GetHostName (char *name, struct Naddr *addr) {
 	long HostAddr;
 	struct hostent *hp;
 	char	*cp;
@@ -1181,7 +1168,7 @@ GetHostName (char *name, struct Naddr *addr)
 	return (NOTOK);
 }
 /* every hour, dump some useful information to the log */
-static void 
+static void
 hourly  {
 	char buf[200];
 	int p = 0;
@@ -1190,26 +1177,26 @@ hourly  {
 	extern double drift_comp, compliance;
 	extern int peer_switches, peer_sw_inhibited;
 
-	 sprintf(buf, "stats: dc %f comp %f peersw %d inh %d",
-				   drift_comp, compliance, peer_switches,
-				   peer_sw_inhibited);
+	sprintf(buf, "stats: dc %f comp %f peersw %d inh %d",
+			drift_comp, compliance, peer_switches,
+			peer_sw_inhibited);
 
 	if (sys.peer == NULL) {
-		 strcat(buf, " UNSYNC");
+		strcat(buf, " UNSYNC");
 #ifdef	REFCLOCK
 	} else if (sys.peer->flags & PEER_FL_REFCLOCK) {
 		p = strlen(buf);
-		 sprintf(buf + p, " off %f SYNC %.4s %d",
-					   sys.peer->estoffset,
-					   sys.peer->refid.rid_string,
-					   sys.peer->stratum);
+		sprintf(buf + p, " off %f SYNC %.4s %d",
+				sys.peer->estoffset,
+				sys.peer->refid.rid_string,
+				sys.peer->stratum);
 #endif
 	} else {
 		p = strlen(buf);
-		 sprintf(buf + p, " off %f SYNC %s %d",
-					   sys.peer->estoffset,
-					   paddr (&sys.peer->src),
-					   sys.peer->stratum);
+		sprintf(buf + p, " off %f SYNC %s %d",
+		sys.peer->estoffset,
+		paddr (&sys.peer->src),
+		sys.peer->stratum);
 	}
 	advise (LLOG_NOTICE, NULLCP, buf);
 	/*
@@ -1221,16 +1208,16 @@ hourly  {
 	if (drift_fd >= 0) {
 		drifts[drift_count % 5] = drift_comp;
 		/* works out to be 70 bytes */
-		 sprintf(buf,
-					   "%+12.10f %+12.10f %+12.10f %+12.10f %+12.10f %4d\n",
-					   drifts[drift_count % 5],
-					   drifts[(drift_count+4) % 5],
-					   drifts[(drift_count+3) % 5],
-					   drifts[(drift_count+2) % 5],
-					   drifts[(drift_count+1) % 5],
-					   drift_count + 1);
+		sprintf(buf,
+		"%+12.10f %+12.10f %+12.10f %+12.10f %+12.10f %4d\n",
+		drifts[drift_count % 5],
+		drifts[(drift_count+4) % 5],
+		drifts[(drift_count+3) % 5],
+		drifts[(drift_count+2) % 5],
+		drifts[(drift_count+1) % 5],
+		drift_count + 1);
 
-		 lseek(drift_fd, 0L, L_SET);
+		lseek(drift_fd, 0L, L_SET);
 		if (write(drift_fd, buf, strlen(buf)) < 0) {
 			advise (LLOG_EXCEPTIONS, "write error", "drift comp file");
 		}
@@ -1281,9 +1268,8 @@ int init_clock_local(), read_clock_local();
 int init_clock_psti(), read_clock_psti();
 #endif PSTI
 
-int 
-init_clock (char *name, char *type)
-{
+int
+init_clock (char *name, char *type) {
 	struct refclock *r;
 	int (*reader)();
 	int cfd;
@@ -1313,9 +1299,8 @@ init_clock (char *name, char *type)
 	return(cfd);
 }
 
-int 
-read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp)
-{
+int
+read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 	struct refclock *r;
 
 	for (r = refclocks; r; r = r->next)
@@ -1325,16 +1310,15 @@ read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp)
 }
 #endif
 
-int 
+int
 create_listeners  {
-	 create_sockets(servport);
+	create_sockets(servport);
 
 	create_osilisten (osiaddress);
 }
 
 char *
-paddr (struct Naddr *addr)
-{
+paddr (struct Naddr *addr) {
 	static char buf[128];
 
 	switch (addr -> type) {
@@ -1348,12 +1332,12 @@ paddr (struct Naddr *addr)
 		return paddr2str (&addr -> psap_ad, NULLNA);
 
 	default:
-		 sprintf (buf, "Unknown address type %d", addr -> type);
+		sprintf (buf, "Unknown address type %d", addr -> type);
 		return buf;
 	}
 }
 
-int 
+int
 envinit  {
 	int s;
 
@@ -1362,16 +1346,16 @@ envinit  {
 			exit(0);
 
 		for (s = getdtablesize(); s >= 0; s--)
-			 close(s);
-		 open("/", 0);
-		 dup2(0, 1);
-		 dup2(0, 2);
-		 setpgrp(0, getpid());
+			close(s);
+		open("/", 0);
+		dup2(0, 1);
+		dup2(0, 2);
+		setpgrp(0, getpid());
 #ifdef TIOCNOTTY
 		s = open("/dev/tty", O_RDWR);
 		if (s >= 0) {
-			 ioctl(s, TIOCNOTTY, (char *) 0);
-			 close(s);
+			ioctl(s, TIOCNOTTY, (char *) 0);
+			close(s);
 		}
 #endif
 		ll_hdinit (pgm_log, myname);
@@ -1381,13 +1365,13 @@ envinit  {
 	}
 
 	advise (LLOG_NOTICE, NULLCP,
-			"%s starting: version $Revision: 9.0 $ patchlevel %d",
-			myname, PATCHLEVEL);
+	"%s starting: version $Revision: 9.0 $ patchlevel %d",
+	myname, PATCHLEVEL);
 
 #ifdef SYS5
-	 nice (priority);
+	nice (priority);
 #else
-	 setpriority(PRIO_PROCESS, 0, priority);
+	setpriority(PRIO_PROCESS, 0, priority);
 #endif
 
 #ifdef	NOSWAP
@@ -1416,9 +1400,8 @@ va_dcl {
 #else
 /* VARARGS2 */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -1442,16 +1425,14 @@ va_dcl {
 #else
 /* VARARGS3 */
 
-void 
-advise (int code, char *what, char *fmt)
-{
+void
+advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
 
-int 
-addr_compare (struct Naddr *pa1, struct Naddr *pa2)
-{
+int
+addr_compare (struct Naddr *pa1, struct Naddr *pa2) {
 	if (pa1 -> type != pa2 -> type)
 		return 0;
 	switch (pa1 -> type) {
@@ -1469,9 +1450,8 @@ addr_compare (struct Naddr *pa1, struct Naddr *pa2)
 	}
 }
 
-int 
-psapaddr_cmp (struct PSAPaddr *pa1, struct PSAPaddr *pa2)
-{
+int
+psapaddr_cmp (struct PSAPaddr *pa1, struct PSAPaddr *pa2) {
 	char	*ps1, *ps2;
 
 	if ((ps1 = _paddr2str (pa1, NULLNA, -1)) == NULLCP)
@@ -1495,8 +1475,7 @@ find_peer (int n) {
 }
 
 struct intf *
-getintf (int *n)
-{
+getintf (int *n) {
 	int acount;
 	struct intf *ap;
 

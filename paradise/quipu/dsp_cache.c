@@ -201,7 +201,7 @@ DN binddn;
 			cache_search = TRUE;
 
 		for (ptr = res->res_sr.CSR_entries; ptr != NULLENTRYINFO; ptr = ptr->ent_next)
-			 cache_dsp_entry (ptr,cache_search);
+			cache_dsp_entry (ptr,cache_search);
 		break;
 	case OP_LIST:
 		if (ctx == DS_CTX_QUIPU_DSP)

@@ -116,7 +116,7 @@ char   *mycrypt ();
 
 static int  pw_compar (a, b)
 struct pw *a,
-		*b;
+		   *b;
 {
 	return elem_cmp (a -> pw_instance, a -> pw_insize,
 					 b -> pw_instance, b -> pw_insize);
@@ -127,7 +127,7 @@ static int  get_pw (offset)
 int	offset;
 {
 	int    i,
-			 j;
+		   j;
 	int	    cc;
 	char  *dp;
 	char   *ep;
@@ -157,14 +157,14 @@ int	offset;
 		advise (LLOG_EXCEPTIONS, "/etc/passwd", "unable to flock");
 ohoh:
 		;
-		 close (pw_fd), pw_fd = NOTOK;
+		close (pw_fd), pw_fd = NOTOK;
 		return NOTOK;
 	}
 	if (fstat (pw_fd, &st) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "/etc/passwd", "unable to fstat");
 oops:
 		;
-		 flock (pw_fd, LOCK_UN);
+		flock (pw_fd, LOCK_UN);
 		goto ohoh;
 	}
 	if ((cc = st.st_size) == 0) {
@@ -209,8 +209,8 @@ losing:
 	}
 	pw_touched = 0;
 	if (offset != type_SNMP_SMUX__PDUs_set__request) {
-		 flock (pw_fd, LOCK_UN);
-		 close (pw_fd), pw_fd = NOTOK;
+		flock (pw_fd, LOCK_UN);
+		close (pw_fd), pw_fd = NOTOK;
 	}
 
 	for (pw = pw_head, dp = pw_data; dp < ep; pw++) {
@@ -270,7 +270,7 @@ static	fill_pw (pwp)
 struct passwd *pwp;
 {
 	char  *cp,
-			 *dp;
+		  *dp;
 
 	if (dp = index (cp = pwp -> pw_name + strlen (pwp -> pw_name) + 1, '\n'))
 		*dp = NULL;
@@ -334,8 +334,8 @@ static	free_pw () {
 		free (pw_data), pw_data = NULL;
 
 	if (pw_fd != NOTOK) {
-		 flock (pw_fd, LOCK_UN);
-		 close (pw_fd), pw_fd = NOTOK;
+		flock (pw_fd, LOCK_UN);
+		close (pw_fd), pw_fd = NOTOK;
 	}
 }
 
@@ -368,7 +368,7 @@ int	isnext;
 
 static int  gr_compar (a, b)
 struct gr *a,
-		*b;
+		   *b;
 {
 	return elem_cmp (a -> gr_instance, a -> gr_insize,
 					 b -> gr_instance, b -> gr_insize);
@@ -379,7 +379,7 @@ static int  get_gr (offset)
 int	offset;
 {
 	int    i,
-			 j;
+		   j;
 	int	    cc;
 	char  *dp;
 	char   *ep;
@@ -409,14 +409,14 @@ int	offset;
 		advise (LLOG_EXCEPTIONS, "/etc/group", "unable to flock");
 ohoh:
 		;
-		 close (gr_fd), gr_fd = NOTOK;
+		close (gr_fd), gr_fd = NOTOK;
 		return NOTOK;
 	}
 	if (fstat (gr_fd, &st) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "/etc/group", "unable to fstat");
 oops:
 		;
-		 flock (gr_fd, LOCK_UN);
+		flock (gr_fd, LOCK_UN);
 		goto ohoh;
 	}
 	if ((cc = st.st_size) == 0) {
@@ -461,8 +461,8 @@ losing:
 	}
 	gr_touched = 0;
 	if (offset != type_SNMP_SMUX__PDUs_set__request) {
-		 flock (gr_fd, LOCK_UN);
-		 close (gr_fd), gr_fd = NOTOK;
+		flock (gr_fd, LOCK_UN);
+		close (gr_fd), gr_fd = NOTOK;
 	}
 
 	for (gr = gr_head, dp = gr_data; dp < ep; gr++) {
@@ -523,7 +523,7 @@ static	fill_gr (grp)
 struct group *grp;
 {
 	char *cp,
-			 *dp;
+		 *dp;
 
 	if (dp = index (cp = grp -> gr_name + strlen (grp -> gr_name) + 1, '\n'))
 		*dp = NULL;
@@ -570,8 +570,8 @@ static	free_gr () {
 		free (gr_data), gr_data = NULL;
 
 	if (gr_fd != NOTOK) {
-		 flock (gr_fd, LOCK_UN);
-		 close (gr_fd), gr_fd = NOTOK;
+		flock (gr_fd, LOCK_UN);
+		close (gr_fd), gr_fd = NOTOK;
 	}
 }
 
@@ -604,7 +604,7 @@ int	isnext;
 
 static int  gu_compar (a, b)
 struct gu *a,
-		*b;
+		   *b;
 {
 	return elem_cmp (a -> gu_instance, a -> gu_insize,
 					 b -> gu_instance, b -> gu_insize);
@@ -624,7 +624,7 @@ int	offset;
 {
 	int     i;
 	char   *cp,
-			 **ap;
+		   **ap;
 	struct gr *gr;
 	struct gu *gu;
 
@@ -887,7 +887,7 @@ try_again:
 								 strlen (grp -> gr_name));
 		}
 
-		 sprintf (buffer, "%d", pwp -> pw_gid);
+		sprintf (buffer, "%d", pwp -> pw_gid);
 		return o_string (oi, v, buffer, strlen (buffer));
 	}
 
@@ -1755,7 +1755,7 @@ char   *s;
 	long    v;
 	char    salt[3];
 
-	 srandom ((int) time ((long *) 0));
+	srandom ((int) time ((long *) 0));
 	salt[0] = itoa64[(v = random ()) & 0x3f];
 	salt[1] = itoa64[(v >> 6) & 0x3f];
 	salt[2] = NULL;
@@ -1834,7 +1834,7 @@ int	init_users () {
 
 static int  pw_sort (a, b)
 struct pw *a,
-		*b;
+		   *b;
 {
 	int	    i;
 
@@ -1853,7 +1853,7 @@ struct pw *a,
 
 static int  gr_sort (a, b)
 struct gr *a,
-		*b;
+		   *b;
 {
 	int	    i;
 
@@ -1888,8 +1888,8 @@ integer	cor;
 		if (!pw_touched)
 			goto check_gr;
 		invalid = 0;
-		 strcpy (tmpfil, "/etc/ptmpXXXXXX");
-		 unlink (mktemp (tmpfil));
+		strcpy (tmpfil, "/etc/ptmpXXXXXX");
+		unlink (mktemp (tmpfil));
 		if (!(fp = fopen (tmpfil, "w"))) {
 			advise (LLOG_FATAL, tmpfil, "unable to write");
 			goto flush_pw;
@@ -1927,13 +1927,13 @@ integer	cor;
 						"unable to set permissions for %s", pwp -> pw_dir);
 		}
 
-		 fflush (fp);
+		fflush (fp);
 		if (iserr = ferror (fp))
 			advise (LLOG_FATAL, tmpfil, "error writing");
-		 fclose (fp);
+		fclose (fp);
 
 		if (iserr)
-			 unlink (tmpfil);
+			unlink (tmpfil);
 		else {
 			if (access ("/etc/passwd.orig", F_OK) == NOTOK
 					&& errno == ENOENT
@@ -1962,8 +1962,8 @@ check_gr:
 		if (!gr_touched)
 			break;
 		invalid = 0;
-		 strcpy (tmpfil, "/etc/gtmpXXXXXX");
-		 unlink (mktemp (tmpfil));
+		strcpy (tmpfil, "/etc/gtmpXXXXXX");
+		unlink (mktemp (tmpfil));
 		if (!(fp = fopen (tmpfil, "w"))) {
 			advise (LLOG_FATAL, tmpfil, "unable to write");
 			goto flush_gr;
@@ -2007,12 +2007,12 @@ check_gr:
 			fprintf (fp, "\n");
 		}
 
-		 fflush (fp);
+		fflush (fp);
 		if (iserr = ferror (fp))
 			advise (LLOG_FATAL, tmpfil, "error writing");
-		 fclose (fp);
+		fclose (fp);
 		if (iserr)
-			 unlink (tmpfil);
+			unlink (tmpfil);
 		else {
 			if (access ("/etc/group.orig", F_OK) == NOTOK
 					&& errno == ENOENT
@@ -2053,15 +2053,15 @@ flush_gr:
 
 	pw_touched = 0;
 	if (pw_fd != NOTOK) {
-		 fstat (pw_fd, &pw_st);
-		 flock (pw_fd, LOCK_UN);
-		 close (pw_fd), pw_fd = NOTOK;
+		fstat (pw_fd, &pw_st);
+		flock (pw_fd, LOCK_UN);
+		close (pw_fd), pw_fd = NOTOK;
 	}
 
 	gr_touched = 0;
 	if (gr_fd != NOTOK) {
-		 fstat (gr_fd, &gr_st);
-		 flock (gr_fd, LOCK_UN);
-		 close (gr_fd), gr_fd = NOTOK;
+		fstat (gr_fd, &gr_st);
+		flock (gr_fd, LOCK_UN);
+		close (gr_fd), gr_fd = NOTOK;
 	}
 }

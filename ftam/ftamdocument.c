@@ -42,9 +42,8 @@ static struct isodocument ids;
 
 /*  */
 
-int 
-setisodocument (int f)
-{
+int
+setisodocument (int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isodocuments, 0), "r");
 	else
@@ -55,10 +54,10 @@ setisodocument (int f)
 }
 
 
-int 
+int
 endisodocument (void) {
 	if (servf && !stayopen) {
-		 fclose (servf);
+		fclose (servf);
 		servf = NULL;
 	}
 
@@ -152,15 +151,14 @@ free1:
 /*  */
 
 struct isodocument *
-getisodocumentbyentry (char *entry)
-{
+getisodocumentbyentry (char *entry) {
 	struct isodocument *id;
 
-	 setisodocument (0);
+	setisodocument (0);
 	while (id = getisodocument ())
 		if (strcmp (id -> id_entry, entry) == 0)
 			break;
-	 endisodocument ();
+	endisodocument ();
 
 	return id;
 }
@@ -172,11 +170,11 @@ OID	type;
 {
 	struct isodocument *id;
 
-	 setisodocument (0);
+	setisodocument (0);
 	while (id = getisodocument ())
 		if (oid_cmp (id -> id_type, type) == 0)
 			break;
-	 endisodocument ();
+	endisodocument ();
 
 	return id;
 }

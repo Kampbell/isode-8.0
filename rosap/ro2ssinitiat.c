@@ -42,9 +42,8 @@ static int  RoBeginRequestAux ();
 
 /*    RO-BEGIN.REQUEST */
 
-int 
-RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi)
-{
+int
+RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {
 	SBV     smask;
 	int     result;
 
@@ -59,16 +58,15 @@ RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, str
 
 	result = RoBeginRequestAux (called, data, roc, roi);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-RoBeginRequestAux (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi)
-{
+static int
+RoBeginRequestAux (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {
 	int	    len,
 			result,
 			settings;
@@ -122,7 +120,7 @@ no_mem:
 		goto no_mem;
 
 	if (data)
-		 pe_extract (pe, data), data = NULLPE;
+		pe_extract (pe, data), data = NULLPE;
 	pe_free (pe);
 	pe = NULLPE;
 
@@ -171,7 +169,7 @@ no_mem:
 	} else if (sc -> sc_result == SC_ABORT) {
 		acb -> acb_fd = NOTOK;
 
-		 ss2rosabort (acb, sa, roi);
+		ss2rosabort (acb, sa, roi);
 
 		roc -> roc_sd = NOTOK;
 		roc -> roc_result = ROS_ABORTED;
@@ -185,7 +183,7 @@ no_mem:
 			bzero ((char *) sa, sizeof *sa);
 			sa -> sa_reason = sc -> sc_result;
 			acb -> acb_fd = NOTOK;
-			 ss2roslose (acb, roi, "SConnRequest(pseudo)", sa);
+			ss2roslose (acb, roi, "SConnRequest(pseudo)", sa);
 
 			roc -> roc_sd = NOTOK;
 			roc -> roc_result = roi -> roi_preject.rop_reason;
@@ -230,7 +228,7 @@ no_mem:
 	}
 
 	acb -> acb_flags = ACB_CONN | ACB_ROS | ACB_INIT;
-	 RoSService (acb, roi);
+	RoSService (acb, roi);
 	if (!((acb -> acb_requirements = sc -> sc_requirements) & SR_DUPLEX)
 			&& !(acb -> acb_requirements & SR_HALFDUPLEX)) {
 		result = ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
@@ -268,7 +266,7 @@ out1:
 	SCFREE (sc);
 	if (pe) {
 		if (data)
-			 pe_extract (pe, data);
+			pe_extract (pe, data);
 		pe_free (pe);
 	}
 	freeacblk (acb);

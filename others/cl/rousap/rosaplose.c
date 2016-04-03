@@ -85,9 +85,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-int 
-ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt)
-{
+int
+ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return ropktlose (acb, roi, reason, what, fmt);
 }
 #endif
@@ -126,9 +125,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-int 
-rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt)
-{
+int
+rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return rosapreject (acb, roi, reason, what, fmt);
 }
 #endif
@@ -157,9 +155,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-int 
-rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
-{
+int
+rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return rosaplose (roi, reason, what, fmt);
 }
 #endif
@@ -167,13 +164,12 @@ rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _rosaplose (  /* what, fmt, args ... */
-    struct RoSAPindication *roi,
-    int reason,
-    va_list ap
-)
-{
+	struct RoSAPindication *roi,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct RoSAPpreject *rop;

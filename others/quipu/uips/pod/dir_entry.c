@@ -4,7 +4,7 @@ int free_dir_entry(entry)
 dirEntry entry;
 {
 	if (entry->entry_name) free(entry->entry_name);
-	 free_ent_attrs(entry->attrs);
+	free_ent_attrs(entry->attrs);
 	free((char *) entry);
 }
 

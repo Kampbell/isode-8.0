@@ -37,9 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/pipe
 
 #include "internet.h"
 
-int 
-main (int argc, char *argv[])
-{
+int
+main (int argc, char *argv[]) {
 	int 			sd,res;
 	struct sockaddr_in	sin_buf;
 	struct sockaddr_in	* sin = &sin_buf;
@@ -59,29 +58,29 @@ main (int argc, char *argv[])
 
 	if (join_tcp_server (sd, sin) == NOTOK) {
 		int	pid;
-		 close_tcp_socket (sd);
+		close_tcp_socket (sd);
 
 fork_again:
 		;
 		switch (pid = vfork ()) {
 		case 0:
 			/* child */
-			 close_tcp_socket (sd);
-			 strcpy (dishname,
-						   _isodefile (isodebinpath, "dish"));
+			close_tcp_socket (sd);
+			strcpy (dishname,
+					_isodefile (isodebinpath, "dish"));
 			{
 				int i, nfds = getdtablesize ();
 
 				for (i = fileno(stderr) + 1; i < nfds; i++)
-					 close (i);
+					close (i);
 			}
-			 execl (dishname, "dish","-pipe",NULLCP);
-			 fprintf (stderr, "unable to exec ");
+			execl (dishname, "dish","-pipe",NULLCP);
+			fprintf (stderr, "unable to exec ");
 			perror (dishname);
 			_exit (-21);
 		case -1:
 			perror ("fork");
-			 close_tcp_socket (sd);
+			close_tcp_socket (sd);
 			exit (-22);
 		default:
 			/* parent */
@@ -95,12 +94,12 @@ fork_again:
 					break;
 
 				/* need to introduce a timeout !!! */
-				 close_tcp_socket (sd);
+				close_tcp_socket (sd);
 
 				sleep (5);
 
 				if (kill (pid, 0) == NOTOK) {
-					 fprintf (stderr,"Trying again...\n");
+					fprintf (stderr,"Trying again...\n");
 					goto fork_again;
 				}
 			}
@@ -109,22 +108,22 @@ fork_again:
 	}
 
 	if ((ptr = rindex (argv[0], '/')) == NULLCP)
-		 strcpy (buffer,argv[0]);
+		strcpy (buffer,argv[0]);
 	else
-		 strcpy (buffer,++ptr);
+		strcpy (buffer,++ptr);
 
 	argc--,argv++;
 
 	while (argc--) {
-		 strcat (buffer, " \"");
-		 strcat (buffer, *argv++);
-		 strcat (buffer, "\"");
+		strcat (buffer, " \"");
+		strcat (buffer, *argv++);
+		strcat (buffer, "\"");
 	}
-	 strcat (buffer, "\n");
+	strcat (buffer, "\n");
 
 	if (send(sd, buffer, strlen(buffer), 0) == -1) {
 		perror("send");
-		 close_tcp_socket (sd);
+		close_tcp_socket (sd);
 		exit (-25);
 	}
 
@@ -133,30 +132,30 @@ fork_again:
 err_recv:
 			;
 			perror ("recv");
-			 close_tcp_socket (sd);
+			close_tcp_socket (sd);
 			exit (-26);
 		}
 		*(buffer + res) = 0;
 		if (res == 0) {
-			 close_tcp_socket (sd);
+			close_tcp_socket (sd);
 			exit (0);
 		}
 
 		if (*buffer == '2') {
 			if (res > 1)
-				 write (2,&buffer[1],--res);
+				write (2,&buffer[1],--res);
 			while ( (res = recv(sd, buffer, BUFSIZ, 0)) > 0)
-				 write (2,buffer,res);
-			 close_tcp_socket (sd);
+				write (2,buffer,res);
+			close_tcp_socket (sd);
 			exit (1);
 		} else if ((*buffer == '1') || (*buffer == '3')) {
 			int eval;
 			eval = (*buffer == '1' ? 0 : 2);
 			if (res > 1)
-				 write (1,&buffer[1],--res);
+				write (1,&buffer[1],--res);
 			while ( (res = recv(sd, buffer, BUFSIZ, 0)) > 0)
-				 write (1,buffer,res);
-			 close_tcp_socket (sd);
+				write (1,buffer,res);
+			close_tcp_socket (sd);
 			exit (eval);
 		} else {		/* 'e', 'y', 'm', or 'p' */
 			char  *cp, *ep;
@@ -170,17 +169,17 @@ err_recv:
 				case NOTOK:
 					goto err_recv;
 				case OK:
-					 fprintf (stderr,
-									"eof reading '%c' directive\n",
-									*buffer);
+					fprintf (stderr,
+							 "eof reading '%c' directive\n",
+							 *buffer);
 					exit (-28);
 				default:
 					cp += res - 1;
 					if (cp < ep)
 						continue;
-					 fprintf (stderr,
-									"'%c' directive exceeds %d octets\n",
-									*buffer, sizeof buffer - 1);
+					fprintf (stderr,
+							 "'%c' directive exceeds %d octets\n",
+							 *buffer, sizeof buffer - 1);
 					exit(-29);
 				}
 			}
@@ -188,29 +187,29 @@ err_recv:
 
 			if (*buffer == 'e') {
 				if (system (&buffer[1]))
-					 strcpy (where, "e");
+					strcpy (where, "e");
 				else
-					 getcwd (where, sizeof where);
+					getcwd (where, sizeof where);
 			} else if (*buffer == 'm') {
-				 fprintf (stderr, "\n%s\n", buffer + 1);
-				 strcpy (where, "m");
+				fprintf (stderr, "\n%s\n", buffer + 1);
+				strcpy (where, "m");
 			} else if (*buffer == 'y') {
-				 fprintf (stderr,"%s",buffer + 1);
-				 fgets (where, sizeof where, stdin);
+				fprintf (stderr,"%s",buffer + 1);
+				fgets (where, sizeof where, stdin);
 				if (cp = index (where, '\n'))
 					*cp = NULL;
 			} else {	/* 'p' */
-				 sprintf (where,
-								"Enter password for \"%s\": ",
-								buffer + 1);
-				 sprintf (where, "p%s",
-								getpassword (where));
+				sprintf (where,
+						 "Enter password for \"%s\": ",
+						 buffer + 1);
+				sprintf (where, "p%s",
+						 getpassword (where));
 			}
-			 strcat (where, "\n");
+			strcat (where, "\n");
 
 			if (send(sd, where, strlen(where), 0) == -1) {
 				perror("send");
-				 close_tcp_socket (sd);
+				close_tcp_socket (sd);
 				exit (-27);
 			}
 
@@ -244,38 +243,38 @@ char          **argv;
 	void            pipe_quit ();
 
 
-	 umask (0);
-	 sprintf (retfile, "/tmp/dish%d", getpid ());
+	umask (0);
+	sprintf (retfile, "/tmp/dish%d", getpid ());
 	if ((ptr = getenv ("DISHPROC")) == NULLCP) {
-		 sprintf (sendfile, "/tmp/dish-%d", getppid ());
-		 setenv ("DISHPROC", sendfile);
+		sprintf (sendfile, "/tmp/dish-%d", getppid ());
+		setenv ("DISHPROC", sendfile);
 	} else
-		 strcpy (sendfile, ptr);
+		strcpy (sendfile, ptr);
 
 	setbuf (stdout,NULLCP);
 	setbuf (stderr,NULLCP);
 
 	if (mknod (retfile, S_IFIFO | 0600, 0) == -1) {
-		 fprintf (stderr,"Can't create pipe '%s'\n",retfile);
+		fprintf (stderr,"Can't create pipe '%s'\n",retfile);
 		exit (-12);
 	}
 
 	for (i = 1; i <= 15; i++)
-		 signal (i, pipe_quit);
+		signal (i, pipe_quit);
 
 	if ((fd = open (sendfile, O_WRONLY | O_NDELAY)) == -1) {
-		 fprintf (stderr, "(Dish starting)\n");
+		fprintf (stderr, "(Dish starting)\n");
 		if (mknod (sendfile, S_IFIFO | 0600, 0) == -1) {
-			 fprintf (stderr,"Can't create pipe '%s'\n",sendfile);
+			fprintf (stderr,"Can't create pipe '%s'\n",sendfile);
 			exit (-11);
 		}
-		 strcpy (dishname, _isodefile (isodebinpath, "dish"));
+		strcpy (dishname, _isodefile (isodebinpath, "dish"));
 		if (vfork () == 0) {
 			/* child */
-			 execl (dishname, "dish","-pipe",NULLCP);
-			 fprintf (stderr, "unable to exec ");
+			execl (dishname, "dish","-pipe",NULLCP);
+			fprintf (stderr, "unable to exec ");
 			perror (dishname);
-			 unlink (retfile);
+			unlink (retfile);
 			_exit (-2);
 		} else {
 			fd = open (sendfile, O_WRONLY);
@@ -284,66 +283,66 @@ char          **argv;
 	}
 	argc--;
 	if ((ptr = rindex (argv[0], '/')) == NULLCP)
-		 sprintf (buffer, "%s:%s", retfile, argv[0]);
+		sprintf (buffer, "%s:%s", retfile, argv[0]);
 	else
-		 sprintf (buffer, "%s:%s", retfile, ++ptr);
+		sprintf (buffer, "%s:%s", retfile, ++ptr);
 	argv++;
 
 	while (argc--) {
-		 strcat (buffer, " \"");
-		 strcat (buffer, *argv++);
-		 strcat (buffer, "\"");
+		strcat (buffer, " \"");
+		strcat (buffer, *argv++);
+		strcat (buffer, "\"");
 	}
 
 	if ((res = write (fd, buffer, strlen (buffer))) == -1) {
-		 fprintf (stderr, "Write to DUA failed... Please retry\n");
-		 close (fd);
-		 unlink (retfile);
+		fprintf (stderr, "Write to DUA failed... Please retry\n");
+		close (fd);
+		unlink (retfile);
 		exit (-3);
 	}
-	 close (fd);
+	close (fd);
 
 	/* get results */
 	if ((fd = open (retfile, O_RDONLY)) < 0) {
-		 fprintf (stderr, "Can't read results\n");
-		 unlink (retfile);
+		fprintf (stderr, "Can't read results\n");
+		unlink (retfile);
 		exit (-4);
 	}
 
 	if ((wfd = open (retfile, O_WRONLY)) < 0) {
-		 fprintf (stderr, "Can't lock results failed\n");
-		 unlink (retfile);
-		 close (fd);
+		fprintf (stderr, "Can't lock results failed\n");
+		unlink (retfile);
+		close (fd);
 		exit (-5);
 	}
 
 	for (;;) {
 		if ((res = read (fd, buffer, BUFSIZ - 1)) == -1) {
-			 fprintf (stderr, "Read failed (%d)\n", errno);
-			 unlink (retfile);
-			 close (fd);
-			 close (wfd);
+			fprintf (stderr, "Read failed (%d)\n", errno);
+			unlink (retfile);
+			close (fd);
+			close (wfd);
 			exit (-6);
 		}
 		*(buffer + res) = 0;
 
 		if (*buffer == '2') {
-			 write (2,&buffer[1],--res);
+			write (2,&buffer[1],--res);
 			while ( (res = read (fd, buffer, BUFSIZ)) > 0)
-				 write (2,buffer,res);
-			 close (fd);
-			 close (wfd);
-			 unlink (retfile);
+				write (2,buffer,res);
+			close (fd);
+			close (wfd);
+			unlink (retfile);
 			exit (-1);
 		} else if ((*buffer == '1') || (*buffer == '3')) {
 			int eval;
 			eval = (*buffer == '1' ? 0 : 2);
-			 write (1,&buffer[1],--res);
+			write (1,&buffer[1],--res);
 			while ( (res = read (fd, buffer, BUFSIZ)) > 0)
-				 write (1,buffer,res);
-			 close (fd);
-			 close (wfd);
-			 unlink (retfile);
+				write (1,buffer,res);
+			close (fd);
+			close (wfd);
+			unlink (retfile);
 			exit (eval);
 			else {		/* 'e', 'y', 'm', or 'p' */
 				int             res2,
@@ -352,44 +351,44 @@ char          **argv;
 
 				if (*buffer == 'e') {
 					if (system (&buffer[1]))
-						 strcpy (where, "e");
+						strcpy (where, "e");
 					else
-						 getcwd (where, sizeof where);
+						getcwd (where, sizeof where);
 				} else if (*buffer == 'm') {
-					 fprintf (stderr, "\n%s\n", buffer + 1);
-					 strcpy (where, "m");
+					fprintf (stderr, "\n%s\n", buffer + 1);
+					strcpy (where, "m");
 				} else if (*buffer == 'y') {
 					char   *cp;
 
-					 fprintf (stderr,"%s",buffer + 1);
-					 fgets (where, sizeof where, stdin);
+					fprintf (stderr,"%s",buffer + 1);
+					fgets (where, sizeof where, stdin);
 					if (cp = index (where, '\n'))
 						*cp = NULL;
 				} else {	/* 'p' */
-					 sprintf (where,
-									"Enter password for \"%s\": ",
-									buffer + 1);
-					 sprintf (where, "p%s",
-									getpassword (where));
+					sprintf (where,
+							 "Enter password for \"%s\": ",
+							 buffer + 1);
+					sprintf (where, "p%s",
+							 getpassword (where));
 				}
-				 strcat (where, "\n");
+				strcat (where, "\n");
 
 				if ((nfd = open (sendfile, O_WRONLY)) == -1) {
-					 fprintf (stderr, "re-write open error\n");
-					 close (wfd);
-					 close (fd);
-					 unlink (retfile);
+					fprintf (stderr, "re-write open error\n");
+					close (wfd);
+					close (fd);
+					unlink (retfile);
 					exit (-9);
 				}
 				if ((res2 = write (nfd, where, strlen (where))) == -1) {
-					 fprintf (stderr, "Write to DUA failed (%d)... Please retry\n", res2);
-					 close (fd);
-					 close (nfd);
-					 close (wfd);
-					 unlink (retfile);
+					fprintf (stderr, "Write to DUA failed (%d)... Please retry\n", res2);
+					close (fd);
+					close (nfd);
+					close (wfd);
+					unlink (retfile);
 					exit (-10);
 				}
-				 close (nfd);
+				close (nfd);
 			}
 		}
 	}
@@ -397,8 +396,8 @@ char          **argv;
 	void pipe_quit (sig)
 	int     sig;
 	{
-		 unlink (retfile);
-		 fprintf (stderr,"(signal %d) exiting...\n",sig);
+		unlink (retfile);
+		fprintf (stderr,"(signal %d) exiting...\n",sig);
 		exit(0);
 	}
 #endif

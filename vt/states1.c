@@ -32,12 +32,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/states1.c,v 9.0 1992/06/
 	      "undefined state/event: sector is 1, state is %s, event is %d", \
 	       s1, e1)
 
-int 
+int
 s1_01 (			/* sector 1, state 01	*/
-    int event,
-    PE pe
-)
-{
+	int event,
+	PE pe
+) {
 	switch (event) {
 	case ASQ:
 		return(a1_17(pe));
@@ -58,9 +57,8 @@ s1_01 (			/* sector 1, state 01	*/
 	}
 }
 
-int 
-s1_02B (int event, PE pe)
-{
+int
+s1_02B (int event, PE pe) {
 	switch (event) {
 	case ASR:
 		return(a1_15(pe));
@@ -84,9 +82,8 @@ s1_02B (int event, PE pe)
 	}
 }
 
-int 
-s1_02S (int event, PE pe)
-{
+int
+s1_02S (int event, PE pe) {
 	switch (event) {
 	case ASR:
 		return(a1_16(pe));
@@ -110,9 +107,8 @@ s1_02S (int event, PE pe)
 	}
 }
 
-int 
-s1_03B (int event, PE pe)
-{
+int
+s1_03B (int event, PE pe) {
 	switch (event) {
 	case VASSrsp:
 		return(a1_3(pe));
@@ -136,9 +132,8 @@ s1_03B (int event, PE pe)
 	}
 }
 
-int 
-s1_03S (int event, PE pe)
-{
+int
+s1_03S (int event, PE pe) {
 	switch (event) {
 	case VASSrsp:
 		return(a1_4(pe));
@@ -162,9 +157,8 @@ s1_03S (int event, PE pe)
 	}
 }
 
-int 
-s1_10B (int event, PE pe)
-{
+int
+s1_10B (int event, PE pe) {
 	switch (event) {
 	case GTQ:
 		return(a1_107(pe));
@@ -202,9 +196,8 @@ s1_10B (int event, PE pe)
 	}
 }
 
-int 
-s1_10N (int event, PE pe)
-{
+int
+s1_10N (int event, PE pe) {
 	switch (event) {
 	case GTQ:
 		return(a1_19(pe));
@@ -236,9 +229,8 @@ s1_10N (int event, PE pe)
 	}
 }
 
-int 
-s1_10T (int event, PE pe)
-{
+int
+s1_10T (int event, PE pe) {
 	switch (event) {
 	case RTQ:
 		return(a1_27(pe));
@@ -272,9 +264,8 @@ s1_10T (int event, PE pe)
 	}
 }
 
-int 
-s1_50B (int event, PE pe)
-{
+int
+s1_50B (int event, PE pe) {
 	switch (event) {
 	case DLQ:
 		return(a1_21(pe));
@@ -313,9 +304,8 @@ s1_50B (int event, PE pe)
 }
 
 
-int 
-s1_51Q (int event, PE pe)
-{
+int
+s1_51Q (int event, PE pe) {
 	switch (event) {
 	case DLQ:
 		return(a1_21(pe));
@@ -347,9 +337,8 @@ s1_51Q (int event, PE pe)
 	}
 }
 
-int 
-s1_51R (int event, PE pe)
-{
+int
+s1_51R (int event, PE pe) {
 	switch (event) {
 	case VRELrsp:
 		return(a1_9(pe));
@@ -373,9 +362,8 @@ s1_51R (int event, PE pe)
 	}
 }
 
-int 
-s1_51N (int event, PE pe)
-{
+int
+s1_51N (int event, PE pe) {
 	switch (event) {
 	case VRELrsp:
 		return(a1_9(pe));
@@ -399,9 +387,8 @@ s1_51N (int event, PE pe)
 	}
 }
 
-int 
-s1_51T (int event, PE pe)
-{
+int
+s1_51T (int event, PE pe) {
 	switch (event) {
 	case RLR:
 		return(a1_20(pe));

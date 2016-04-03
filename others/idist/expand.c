@@ -80,15 +80,14 @@ int	argcmp();
  * Major portions of this were snarfed from csh/sh.glob.c.
  */
 struct namelist *
-expand (struct namelist *list, int wh)
-{
+expand (struct namelist *list, int wh) {
 	struct namelist *nl, *prev;
 	int n;
 	char pathbuf[BUFSIZ];
 	char *argvbuf[GAVSIZ];
 
 	if (debug) {
-		 printf("expand(%x, %d)\nlist = ", list, wh);
+		printf("expand(%x, %d)\nlist = ", list, wh);
 		prnames(list);
 	}
 
@@ -130,15 +129,14 @@ expand (struct namelist *list, int wh)
 		}
 	}
 	if (debug) {
-		 printf("expanded list = ");
+		printf("expanded list = ");
 		prnames(list);
 	}
 	return(list);
 }
 
-int 
-expstr (char *s)
-{
+int
+expstr (char *s) {
 	char *cp, *cp1;
 	struct namelist *tp;
 	char *tail;
@@ -176,13 +174,13 @@ expstr (char *s)
 			*tail = savec;
 		if (tp != NULL) {
 			for (; tp != NULL; tp = tp->n_next) {
-				 sprintf(buf, "%s%s%s",
-							   s, tp->n_name, tail);
+				sprintf(buf, "%s%s%s",
+						s, tp->n_name, tail);
 				expstr(buf);
 			}
 			return;
 		}
-		 sprintf(buf, "%s%s", s, tail);
+		sprintf(buf, "%s%s", s, tail);
 		expstr(buf);
 		return;
 	}
@@ -205,7 +203,7 @@ expstr (char *s)
 			*cp1 = '\0';
 			if (pw == NULL || strcmp(pw->pw_name, buf+1) != 0) {
 				if ((pw = getpwnam(buf+1)) == NULL) {
-					 strcat(buf, ": unknown user name");
+					strcat(buf, ": unknown user name");
 					yyerror(buf+1);
 					return;
 				}
@@ -237,9 +235,8 @@ expstr (char *s)
 	sort();
 }
 
-static 
-argcmp (char **a1, char **a2)
-{
+static
+argcmp (char **a1, char **a2) {
 
 	return (strcmp(*a1, *a2));
 }
@@ -248,9 +245,8 @@ argcmp (char **a1, char **a2)
  * If there are any Shell meta characters in the name,
  * expand into a list, after searching directory
  */
-int 
-expsh (char *s)
-{
+int
+expsh (char *s) {
 	char *cp;
 	char *spathp, *oldcp;
 	struct stat stb;
@@ -276,7 +272,7 @@ expsh (char *s)
 		cp++, pathp++;
 	*pathp = '\0';
 	if (*oldcp == '{') {
-		 execbrc(cp, (char *)NULL);
+		execbrc(cp, (char *)NULL);
 		return;
 	}
 	matchdir(cp);
@@ -285,9 +281,8 @@ endit:
 	*pathp = '\0';
 }
 
-int 
-matchdir (char *pattern)
-{
+int
+matchdir (char *pattern) {
 	struct stat stb;
 	struct dirent *dp;
 	DIR *dirp;
@@ -309,25 +304,24 @@ matchdir (char *pattern)
 			if (which & E_TILDE)
 				Cat(path, dp->d_name);
 			else {
-				 strcpy(pathp, dp->d_name);
+				strcpy(pathp, dp->d_name);
 				Cat(tilde, tpathp);
 				*pathp = '\0';
 			}
 		}
-	 closedir(dirp);
+	closedir(dirp);
 	return;
 
 patherr1:
-	 closedir(dirp);
+	closedir(dirp);
 patherr2:
-	 strcat(path, ": ");
-	 strcat(path, sys_errlist[errno]);
+	strcat(path, ": ");
+	strcat(path, sys_errlist[errno]);
 	yyerror(path);
 }
 
-int 
-execbrc (char *p, char *s)
-{
+int
+execbrc (char *p, char *s) {
 	char restbuf[BUFSIZ + 2];
 	char *pe, *pm, *pl;
 	int brclev = 0;
@@ -380,8 +374,8 @@ pend:
 doit:
 			savec = *pm;
 			*pm = 0;
-			 strcpy(lm, pl);
-			 strcat(restbuf, pe + 1);
+			strcpy(lm, pl);
+			strcat(restbuf, pe + 1);
 			*pm = savec;
 			if (s == 0) {
 				spathp = pathp;
@@ -404,9 +398,8 @@ doit:
 	return (0);
 }
 
-int 
-match (char *s, char *p)
-{
+int
+match (char *s, char *p) {
 	int c;
 	char *sentp;
 	char sexpany = expany;
@@ -421,9 +414,8 @@ match (char *s, char *p)
 	return (c);
 }
 
-int 
-amatch (char *s, char *p)
-{
+int
+amatch (char *s, char *p) {
 	int scc;
 	int ok, lc;
 	char *spathp;
@@ -508,9 +500,8 @@ slash:
 	}
 }
 
-int 
-smatch (char *s, char *p)
-{
+int
+smatch (char *s, char *p) {
 	int scc;
 	int ok, lc;
 	int c, cc;
@@ -565,9 +556,8 @@ smatch (char *s, char *p)
 	}
 }
 
-int 
-Cat (char *s1, char *s2)
-{
+int
+Cat (char *s1, char *s2) {
 	int len = strlen(s1) + strlen(s2) + 1;
 	char *s;
 
@@ -585,9 +575,8 @@ Cat (char *s1, char *s2)
 		;
 }
 
-int 
-addpath (int c)
-{
+int
+addpath (int c) {
 
 	if (pathp >= lastpathp)
 		yyerror("Pathname too long");

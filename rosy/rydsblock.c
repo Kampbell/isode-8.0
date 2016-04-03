@@ -78,7 +78,7 @@ struct dspblk *dsb;
 
 struct dspblk   *finddsblk (sd, op)
 int	sd,
-			op;
+	op;
 {
 	struct dspblk *dsb;
 
@@ -98,7 +98,7 @@ losedsblk (sd)
 int	sd;
 {
 	struct dspblk *dsb,
-			*ds2;
+			   *ds2;
 
 	if (once_only == 0)
 		return;

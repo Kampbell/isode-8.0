@@ -58,9 +58,8 @@ extern int call_alias_chk ();
 extern int call_dlist ();
 #endif
 
-int 
-main (int argc, char **argv)
-{
+int
+main (int argc, char **argv) {
 	extern struct SecurityServices *dsap_security;
 
 	quipu_syntaxes ();
@@ -124,9 +123,8 @@ main (int argc, char **argv)
 	return 0;
 }
 
-int 
-osisecinit (int *argc, char ***argv, int fn)
-{
+int
+osisecinit (int *argc, char ***argv, int fn) {
 	char   *ap;
 	char  **argptr;
 	static char   *args[10];

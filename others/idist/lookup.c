@@ -57,15 +57,14 @@ static struct syment *hashtab[HASHSIZE];
 /*
  * Define a variable from a command line argument.
  */
-int 
-define (char *name)
-{
+int
+define (char *name) {
 	char *cp, *s;
 	struct namelist *nl;
 	struct namelist *value;
 
 	if (debug)
-		 printf("define(%s)\n", name);
+		printf("define(%s)\n", name);
 
 	cp = index(name, '=');
 	if (cp == NULL)
@@ -110,7 +109,7 @@ define (char *name)
 			cp = s;
 		}
 	}
-	 lookup(name, REPLACE, value);
+	lookup(name, REPLACE, value);
 }
 
 /*
@@ -121,15 +120,14 @@ define (char *name)
  */
 
 struct namelist *
-lookup (char *name, int action, struct namelist *value)
-{
+lookup (char *name, int action, struct namelist *value) {
 	unsigned n;
 	char *cp;
 	struct syment *s;
 	char buf[256];
 
 	if (debug)
-		 printf("lookup(%s, %d, %x)\n", name, action, value);
+		printf("lookup(%s, %d, %x)\n", name, action, value);
 
 	n = 0;
 	for (cp = name; *cp; )
@@ -141,7 +139,7 @@ lookup (char *name, int action, struct namelist *value)
 			continue;
 		if (action != LOOKUP) {
 			if (action != INSERT || s->s_type != CONST) {
-				 sprintf(buf, "%s redefined", name);
+				sprintf(buf, "%s redefined", name);
 				yyerror(buf);
 			}
 		}
@@ -149,7 +147,7 @@ lookup (char *name, int action, struct namelist *value)
 	}
 
 	if (action == LOOKUP) {
-		 sprintf(buf, "%s undefined", name);
+		sprintf(buf, "%s undefined", name);
 		yyerror(buf);
 		return(NULL);
 	}

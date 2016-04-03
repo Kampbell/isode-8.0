@@ -218,15 +218,14 @@ YT  lookup_tag ();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int	    i;
 	char  *cp,
-			 *dp;
+		  *dp;
 
 	dp = pepsyversion + strlen ("pepsy ");
-	 fprintf (stderr, "pepsy %s\n", dp);
+	fprintf (stderr, "pepsy %s\n", dp);
 
 	sysout[0] = sysdef[0] = sysact[0] = NULL;
 	for (argc--, argv++; argc > 0; argc--, argv++) {
@@ -280,8 +279,8 @@ main (int argc, char **argv, char **envp)
 		if (sysin) {
 usage:
 			;
-			 fprintf (stderr,
-							"usage: pepsy [-A] [-a] [-C] [-d] [-f] [-h] [-s] module.py\n");
+			fprintf (stderr,
+					 "usage: pepsy [-A] [-a] [-C] [-d] [-f] [-h] [-s] module.py\n");
 			exit (1);
 		}
 
@@ -306,14 +305,14 @@ usage:
 		sysin = "";
 
 	if (*sysin && freopen (sysin, "r", stdin) == NULL) {
-		 fprintf (stderr, "unable to read "), perror (sysin);
+		fprintf (stderr, "unable to read "), perror (sysin);
 		exit (1);
 	}
 
 	if (strcmp (sysout, "-") == 0)
 		sysout[0] = NULL;
 	if (*sysout && freopen (sysout, "w", stdout) == NULL) {
-		 fprintf (stderr, "unable to write "), perror (sysout);
+		fprintf (stderr, "unable to write "), perror (sysout);
 		exit (1);
 	}
 
@@ -326,7 +325,7 @@ usage:
 	}
 	if (cp == NULL)
 		cp = dp + strlen (dp);
-	 sprintf (autogen, "pepsy %*.*s", cp - dp, cp - dp, dp);
+	sprintf (autogen, "pepsy %*.*s", cp - dp, cp - dp, dp);
 
 	initoidtbl ();
 
@@ -335,24 +334,22 @@ usage:
 
 /*    ERRORS */
 
-int 
-yyerror (char *s)
-{
+int
+yyerror (char *s) {
 	yyerror_aux (s);
 
 	if (*sysout)
-		 unlink (sysout);
+		unlink (sysout);
 	if (*sysdef)
-		 unlink (sysdef);
+		unlink (sysdef);
 	if (*sysact)
-		 unlink (sysact);
+		unlink (sysact);
 
 	exit (1);
 }
 
 #ifndef lint
-warning (char*fmt, ...)
-{
+warning (char*fmt, ...) {
 	return;
 //FIXME
 	char	buffer[BUFSIZ];
@@ -367,40 +364,37 @@ warning (char*fmt, ...)
 
 	va_end (ap);
 
-	 sprintf (buffer2, "Warning: %s", buffer);
+	sprintf (buffer2, "Warning: %s", buffer);
 	yyerror_aux (buffer2);
 }
 
 #else
 
 /* VARARGS1 */
-int 
-warning (char *fmt)
-{
+int
+warning (char *fmt) {
 	warning (fmt);
 }
 #endif
 
-static 
-yyerror_aux (char *s)
-{
+static
+yyerror_aux (char *s) {
 	if (linepos)
-		 fprintf (stderr, "\n"), linepos = 0;
+		fprintf (stderr, "\n"), linepos = 0;
 
 	if (eval)
-		 fprintf (stderr, "type %s: ", eval);
+		fprintf (stderr, "type %s: ", eval);
 	else
-		 fprintf (stderr, "line %d: ", yylineno);
-	 fprintf (stderr, "%s\n", s);
+		fprintf (stderr, "line %d: ", yylineno);
+	fprintf (stderr, "%s\n", s);
 	if (!eval)
-		 fprintf (stderr, "last token read was \"%s\"\n", yytext);
+		fprintf (stderr, "last token read was \"%s\"\n", yytext);
 }
 
 /*  */
 
 #ifndef	lint
-myyerror (char* fmt, ...)
-{
+myyerror (char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	char* other;
 	va_list ap;
@@ -418,8 +412,7 @@ myyerror (char* fmt, ...)
 
 
 #ifndef	lint
-static	pyyerror (YP yp , ...)
-{
+static	pyyerror (YP yp , ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 	char* fmt;
@@ -437,11 +430,11 @@ static	pyyerror (YP yp , ...)
 
 
 	if (*sysout)
-		 unlink (sysout);
+		unlink (sysout);
 	if (*sysdef)
-		 unlink (sysdef);
+		unlink (sysdef);
 	if (*sysact)
-		 unlink (sysact);
+		unlink (sysact);
 
 	exit (1);
 }
@@ -458,10 +451,10 @@ char   *fmt;
 
 /*  */
 
-int 
+int
 yywrap()  {
 	if (linepos)
-		 fprintf (stderr, "\n"), linepos = 0;
+		fprintf (stderr, "\n"), linepos = 0;
 
 	return 1;
 }
@@ -470,9 +463,8 @@ yywrap()  {
 
 /* ARGSUSED */
 
-int 
-yyprint (char *s, int f, int top)
-{
+int
+yyprint (char *s, int f, int top) {
 	int     len;
 	static int  nameoutput = 0;
 	static int  outputlinelen = 79;
@@ -483,10 +475,10 @@ yyprint (char *s, int f, int top)
 
 	if (f && didf == 0) {
 		if (linepos)
-			 fprintf (stderr, "\n\n");
+			fprintf (stderr, "\n\n");
 		else  fprintf (stderr, "\n");
 
-		 fprintf (stderr, "%s includes:", mymodule);
+		fprintf (stderr, "%s includes:", mymodule);
 		linepos = (nameoutput = strlen (mymodule) + 10) + 1;
 
 		didf = 1;
@@ -494,9 +486,9 @@ yyprint (char *s, int f, int top)
 
 	if (!nameoutput || top) {
 		if (linepos)
-			 fprintf (stderr, "\n\n");
+			fprintf (stderr, "\n\n");
 
-		 fprintf (stderr, "%s", mymodule);
+		fprintf (stderr, "%s", mymodule);
 		nameoutput = (linepos = strlen (mymodule)) + 1;
 
 #define section(flag,prefix) \
@@ -511,7 +503,7 @@ yyprint (char *s, int f, int top)
 		section (YP_PRINTER, yyprfpref);
 
 
-		 fprintf (stderr, ":");
+		fprintf (stderr, ":");
 		linepos += 2;
 
 		if (top)
@@ -521,16 +513,16 @@ yyprint (char *s, int f, int top)
 	len = strlen (s) + (f ? 2 : 0);
 	if (linepos != nameoutput)
 		if (len + linepos + 1 > outputlinelen)
-			 fprintf (stderr, "\n%*s", linepos = nameoutput, "");
+			fprintf (stderr, "\n%*s", linepos = nameoutput, "");
 		else
-			 fprintf (stderr, " "), linepos++;
-	 fprintf (stderr, f ? "(%s)" : "%s", s);
+			fprintf (stderr, " "), linepos++;
+	fprintf (stderr, f ? "(%s)" : "%s", s);
 	linepos += len;
 }
 
 /*    PASS1 */
 
-int 
+int
 pass1()  {
 }
 
@@ -538,10 +530,10 @@ pass1()  {
 
 pass1_type (encpref, decpref, prfpref, mod, id, yp)
 char  *encpref,
-		 *decpref,
-		 *prfpref,
-		 *mod,
-		 *id;
+	  *decpref,
+	  *prfpref,
+	  *mod,
+	  *id;
 YP	yp;
 {
 	SY	    sy;
@@ -551,11 +543,11 @@ YP	yp;
 
 	if (pepydebug) {
 		if (linepos)
-			 fprintf (stderr, "\n"), linepos = 0;
+			fprintf (stderr, "\n"), linepos = 0;
 
-		 fprintf (stderr, "%s.%s\n", mod ? mod : mymodule, id);
+		fprintf (stderr, "%s.%s\n", mod ? mod : mymodule, id);
 		print_type (yp, 0);
-		 fprintf (stderr, "--------\n");
+		fprintf (stderr, "--------\n");
 	} else if (!(yp -> yp_flags & YP_IMPORTED))
 		yyprint (id, 0, 0);
 
@@ -571,14 +563,14 @@ FILE *fp;
 	/* { "psap.h", "pepsy.h", "UNIV-types.h", (char *)0 }; */
 
 	int last = 0;		/* last slot available in files */
-	 fprintf (fp, "/* automatically generated by %s, do not edit! */\n\n",
-					autogen);
-	 fprintf (fp, "#ifndef\t_module_%s_defined_\n", modulename);
-	 fprintf (fp, "#define\t_module_%s_defined_\n\n", modulename);
+	fprintf (fp, "/* automatically generated by %s, do not edit! */\n\n",
+			 autogen);
+	fprintf (fp, "#ifndef\t_module_%s_defined_\n", modulename);
+	fprintf (fp, "#define\t_module_%s_defined_\n\n", modulename);
 
-	 fprintf (fp, "#ifndef\tPEPSY_VERSION\n");
-	 fprintf (fp, "#define\tPEPSY_VERSION\t\t%d\n", PEPSY_VERSION_NUMBER);
-	 fprintf (fp, "#endif\n\n");
+	fprintf (fp, "#ifndef\tPEPSY_VERSION\n");
+	fprintf (fp, "#define\tPEPSY_VERSION\t\t%d\n", PEPSY_VERSION_NUMBER);
+	fprintf (fp, "#endif\n\n");
 
 	files[last++] = "psap.h";
 	files[last++] = "pepsy.h";
@@ -596,7 +588,7 @@ FILE *fp;
 
 /*    PASS2 */
 
-int 
+int
 pass2()  {
 	SY	    sy;
 	YP	    yp;
@@ -604,7 +596,7 @@ pass2()  {
 
 	modsym_aux (mymodule, modulename);
 
-	 sprintf (sysdef, "%s%s", mymodule, Cflag ? "-t.tmp" : "-types.h");
+	sprintf (sysdef, "%s%s", mymodule, Cflag ? "-t.tmp" : "-types.h");
 	if ((fdef = fopen (sysdef, "w")) == NULL)
 		myyerror ("unable to write %s", sysdef);
 	if (!Cflag)
@@ -613,17 +605,17 @@ pass2()  {
 
 	if (!Cflag) {
 		if (mflag) {
-			 fprintf (fdef, "#ifndef\tPEPYPATH\n");
-			 fprintf (fdef, "#include <isode/pepsy/%s%s>\n", mymodule, HFILE1);
-			 fprintf (fdef, "#else\n");
-			 fprintf (fdef, "#include \"%s%s\"\n", mymodule, HFILE1);
-			 fprintf (fdef, "#endif\n");
+			fprintf (fdef, "#ifndef\tPEPYPATH\n");
+			fprintf (fdef, "#include <isode/pepsy/%s%s>\n", mymodule, HFILE1);
+			fprintf (fdef, "#else\n");
+			fprintf (fdef, "#include \"%s%s\"\n", mymodule, HFILE1);
+			fprintf (fdef, "#endif\n");
 		} else
-			 fprintf (fdef, "#include \"%s%s\"\n", mymodule, HFILE1);
+			fprintf (fdef, "#include \"%s%s\"\n", mymodule, HFILE1);
 	}
 	/* User's #include file */
 	if (iflag) {
-		 fprintf (fdef, "#include \"%s\"\n", iflag);
+		fprintf (fdef, "#include \"%s\"\n", iflag);
 	}
 
 	/*
@@ -674,12 +666,12 @@ pass2()  {
 
 	peri_pass2();
 
-	 fprintf (fdef, "#endif\n");
-	 fflush (fdef);
-	 fflush (stdout);
+	fprintf (fdef, "#endif\n");
+	fflush (fdef);
+	fflush (stdout);
 	if (ferror (stdout) || ferror (fdef))
 		myyerror ("write error - %s", sys_errname (errno));
-	 fclose (fdef);
+	fclose (fdef);
 
 	if (Cflag)
 		merge_files (mymodule);
@@ -687,7 +679,7 @@ pass2()  {
 	write_ph_file();
 	if (!sflag) {
 		if (linepos)  fprintf (stderr, "\n"), linepos = 0;
-		 fflush (stderr);
+		fflush (stderr);
 	}
 }
 
@@ -699,47 +691,46 @@ FILE *fp1, *fp2;
 
 	while ((n = fread (buf, 1, BUFSIZ, fp1)) > 0) {
 		if (fwrite (buf, 1, n, fp2) != n) {
-			 fprintf (stderr, "Write error\n");
+			fprintf (stderr, "Write error\n");
 			exit (1);
 		}
 	}
 }
 
-static void 
-merge_files (char *stem)
-{
+static void
+merge_files (char *stem) {
 	FILE *fpin, *fpout;
 	char fname[BUFSIZ];
 	char buf[BUFSIZ];
 
-	 sprintf (fname, "%s-types.h", stem);
+	sprintf (fname, "%s-types.h", stem);
 	if ((fpout = fopen (fname, "w")) == NULL)
 		myyerror ("unable to write %s", fname);
 
 	hprologue (fpout);
-	 sprintf (buf, "%s%s", stem, HFILE2);
+	sprintf (buf, "%s%s", stem, HFILE2);
 	if ((fpin = fopen (buf, "r")) == NULL)
 		myyerror ("unable to read file %s", buf);
 	copy_file (fpin, fpout);
-	 fclose (fpin);
-	 unlink (buf);
+	fclose (fpin);
+	unlink (buf);
 
-	 sprintf (buf, "%s%s", stem, HFILE1);
+	sprintf (buf, "%s%s", stem, HFILE1);
 	if ((fpin = fopen (buf, "r")) == NULL)
 		myyerror ("unable to read file %s", buf);
 	copy_file (fpin, fpout);
-	 fclose (fpin);
-	 unlink (buf);
+	fclose (fpin);
+	unlink (buf);
 
-	 sprintf (buf, "%s-t.tmp", stem);
+	sprintf (buf, "%s-t.tmp", stem);
 	if ((fpin = fopen (buf, "r")) == NULL)
 		myyerror ("unable to read file %s", buf);
 	copy_file (fpin, fpout);
-	 fclose (fpin);
-	 unlink (buf);
+	fclose (fpin);
+	unlink (buf);
 
 	if (fclose (fpout) == EOF) {
-		 fprintf (stderr, "Write error to file");
+		fprintf (stderr, "Write error to file");
 		perror ("");
 		exit (1);
 	}
@@ -811,7 +802,7 @@ char   *id,
 	   *pullup;
 {
 	int    i,
-			 j;
+		   j;
 	char    buf1[BUFSIZ];
 	YP	    y;
 	YV	    yv;
@@ -822,11 +813,11 @@ char   *id,
 	case YP_SEQ:
 	case YP_SET:
 	case YP_ANY:
-		 fprintf (fdef, "\n");
+		fprintf (fdef, "\n");
 		if (aflag)
 			printag (yp, 4, pullup);
-		 fprintf (fdef, "#define\t%s\tPElement\n",
-						modsym (mymodule, id, "type"));
+		fprintf (fdef, "#define\t%s\tPElement\n",
+				 modsym (mymodule, id, "type"));
 		if (yp -> yp_code == YP_BITLIST) {
 			i = -1;
 			for (yv = yp -> yp_value; yv; yv = yv -> yv_next)
@@ -835,64 +826,64 @@ char   *id,
 				else if (j > i)
 					i = j;
 			if (i < sizeof (int) * 8) {	/* NBBY */
-				 fprintf (fdef, "#define\t%s\t\"\\020",
-								modsym (mymodule, eval, "bits"));
+				fprintf (fdef, "#define\t%s\t\"\\020",
+						 modsym (mymodule, eval, "bits"));
 				for (yv = yp -> yp_value; yv; yv = yv -> yv_next)
 					if (yv -> yv_flags & YV_NAMED)
-						 fprintf (fdef, "\\0%o%s",
-										val2int (yv) + 1, yv -> yv_named);
+						fprintf (fdef, "\\0%o%s",
+								 val2int (yv) + 1, yv -> yv_named);
 					else
-						 fprintf (fdef, "\\0%oBIT%d",
-										val2int (yv) + 1, val2int (yv));
-				 fprintf (fdef, "\"\n");
+						fprintf (fdef, "\\0%oBIT%d",
+								 val2int (yv) + 1, val2int (yv));
+				fprintf (fdef, "\"\n");
 			}
 			for (yv = yp -> yp_value; yv; yv = yv -> yv_next) {
 				modsym_aux (yv -> yv_named, buf1);
-				 fprintf (fdef, "#define\t%s_%s\t%d\n",
-								modsym (mymodule, eval, "bit"),
-								buf1, val2int (yv));
+				fprintf (fdef, "#define\t%s_%s\t%d\n",
+						 modsym (mymodule, eval, "bit"),
+						 buf1, val2int (yv));
 			}
 		}
 		if (fflag)
-			 fprintf (fdef, "#define\t%s\tpe_free\n",
-							modsym (mymodule, id, "free"));
+			fprintf (fdef, "#define\t%s\tpe_free\n",
+					 modsym (mymodule, id, "free"));
 		break;
 
 	case YP_OCT:
-		 fprintf (fdef, "\n");
+		fprintf (fdef, "\n");
 		if (aflag)
 			printag (yp, 4, pullup);
-		 fprintf (fdef, "#define\t%s\tqbuf\n",
-						modsym (mymodule, id, "type"));
+		fprintf (fdef, "#define\t%s\tqbuf\n",
+				 modsym (mymodule, id, "type"));
 		if (fflag)
-			 fprintf (fdef, "#define\t%s\tqb_free\n",
-							modsym (mymodule, id, "free"));
+			fprintf (fdef, "#define\t%s\tqb_free\n",
+					 modsym (mymodule, id, "free"));
 		break;
 
 	case YP_OID:
-		 fprintf (fdef, "\n");
+		fprintf (fdef, "\n");
 		if (aflag)
 			printag (yp, 4, pullup);
-		 fprintf (fdef, "#define\t%s\tOIDentifier\n",
-						modsym (mymodule, id, "type"));
+		fprintf (fdef, "#define\t%s\tOIDentifier\n",
+				 modsym (mymodule, id, "type"));
 		if (fflag)
-			 fprintf (fdef, "#define\t%s\toid_free\n",
-							modsym (mymodule, id, "free"));
+			fprintf (fdef, "#define\t%s\toid_free\n",
+					 modsym (mymodule, id, "free"));
 		break;
 
 	case YP_IDEFINED:
-		 fprintf (fdef, "\n");
+		fprintf (fdef, "\n");
 		if (aflag)
 			printag (yp, 4, pullup);
-		 fprintf (fdef, "#define\t%s\t",
-						modsym (mymodule, id, "type"));
-		 fprintf (fdef, "%s\n",
-						modsym (yp -> yp_module, yp -> yp_identifier, "type"));
+		fprintf (fdef, "#define\t%s\t",
+				 modsym (mymodule, id, "type"));
+		fprintf (fdef, "%s\n",
+				 modsym (yp -> yp_module, yp -> yp_identifier, "type"));
 		if (fflag) {
-			 fprintf (fdef, "#define\t%s\t",
-							modsym (mymodule, id, "free"));
-			 fprintf (fdef, "%s\n",
-							modsym (yp -> yp_module, yp -> yp_identifier, "free"));
+			fprintf (fdef, "#define\t%s\t",
+					 modsym (mymodule, id, "free"));
+			fprintf (fdef, "%s\n",
+					 modsym (yp -> yp_module, yp -> yp_identifier, "free"));
 		}
 		break;
 
@@ -941,13 +932,13 @@ char   *id,
 	/* else fall */
 
 	default:
-		 fprintf (fdef, "\n");
+		fprintf (fdef, "\n");
 		if (aflag)
 			printag (yp, 4, pullup);
-		 fprintf (fdef, "struct %s {\n", modsym (mymodule, id, "type"));
+		fprintf (fdef, "struct %s {\n", modsym (mymodule, id, "type"));
 		pepsy (yp, 1, 1, "parm", id, "parm", flg && h2flag);
-		 fprintf (fdef, "};\n");
-		 fprintf (fdef, "#define\t%s(parm)\\\n\t%s\n", modsym (mymodule, id, "free"), gfree(mymodule, id, "parm"));
+		fprintf (fdef, "};\n");
+		fprintf (fdef, "#define\t%s(parm)\\\n\t%s\n", modsym (mymodule, id, "free"), gfree(mymodule, id, "parm"));
 
 		break;
 	}
@@ -975,26 +966,26 @@ int	direction;
 	YV	    yv;
 	YT	    yt;
 
-	 printf ("%*s", level * 4, "");
+	printf ("%*s", level * 4, "");
 
 	if (yp -> yp_flags & YP_ID) {
-		 printf ("%s", yp -> yp_id);
+		printf ("%s", yp -> yp_id);
 		if (!(yp -> yp_flags & YP_TAG))
-			 printf ("\n%*s", ++level * 4, "");
+			printf ("\n%*s", ++level * 4, "");
 	}
 
 	if (yp -> yp_flags & YP_TAG) {
 		yt = yp -> yp_tag;
-		 printf ("[%s%d]\n", classes[yt -> yt_class], val2int (yt -> yt_value));
+		printf ("[%s%d]\n", classes[yt -> yt_class], val2int (yt -> yt_value));
 		level++;
-		 printf ("%*s", level * 4, "");
+		printf ("%*s", level * 4, "");
 	}
 	if (yp -> yp_flags & YP_OPTIONAL && yp -> yp_varexp) {
 		if ((ep = index (yp -> yp_varexp, ' ')) == NULL)
 			yyerror ("Bug in varexp!");
 
-		 sprintf (varbuf, "%*.*s", ep - yp -> yp_varexp,
-						ep - yp -> yp_varexp, yp -> yp_varexp);
+		sprintf (varbuf, "%*.*s", ep - yp -> yp_varexp,
+				 ep - yp -> yp_varexp, yp -> yp_varexp);
 	}
 
 	switch (yp -> yp_code) {
@@ -1002,14 +993,14 @@ int	direction;
 		if ((yp -> yp_flags & (YP_OPTIONAL|YP_DEFAULT)) &&
 				direction == YP_DECODER) {
 			if (!top && !(yp -> yp_flags & (YP_ID | YP_TAG)))
-				 printf ("dummy-for-default\n%*s", ++level * 4, "");
+				printf ("dummy-for-default\n%*s", ++level * 4, "");
 			if (yp -> yp_flags & YP_OPTIONAL)
-				 printf ("%%{ %s -> optionals |= %s; %%}\n%*s",
-							   varbuf, yp -> yp_optcontrol, level * 4, "");
+				printf ("%%{ %s -> optionals |= %s; %%}\n%*s",
+						varbuf, yp -> yp_optcontrol, level * 4, "");
 			else
-				 printf ("%%{ %s%s = %d; %%}\n%*s",
-							   var, SVAL (yp -> yp_varexp),
-							   val2int (yp -> yp_default) ? 1 : 0, level * 4, "");
+				printf ("%%{ %s%s = %d; %%}\n%*s",
+						var, SVAL (yp -> yp_varexp),
+						val2int (yp -> yp_default) ? 1 : 0, level * 4, "");
 		}
 		break;
 
@@ -1017,14 +1008,14 @@ int	direction;
 		if ((yp -> yp_flags & (YP_OPTIONAL|YP_DEFAULT)) &&
 				direction == YP_DECODER) {
 			if (!top && !(yp -> yp_flags & (YP_ID | YP_TAG)))
-				 printf ("dummy-for-default\n%*s", ++level * 4, "");
+				printf ("dummy-for-default\n%*s", ++level * 4, "");
 			if (yp -> yp_flags & YP_OPTIONAL)
-				 printf ("%%{ %s -> optionals |= %s; %%}\n%*s",
-							   varbuf, yp -> yp_optcontrol, level * 4, "");
+				printf ("%%{ %s -> optionals |= %s; %%}\n%*s",
+						varbuf, yp -> yp_optcontrol, level * 4, "");
 			else
-				 printf ("%%{ %s%s = %d; %%}\n%*s",
-							   var, SVAL (yp -> yp_varexp),
-							   val2int (yp -> yp_default), level * 4, "");
+				printf ("%%{ %s%s = %d; %%}\n%*s",
+						var, SVAL (yp -> yp_varexp),
+						val2int (yp -> yp_default), level * 4, "");
 		}
 		break;
 
@@ -1033,14 +1024,14 @@ int	direction;
 		if ((yp -> yp_flags & (YP_OPTIONAL|YP_DEFAULT)) &&
 				direction == YP_DECODER) {
 			if (!top && !(yp -> yp_flags & (YP_ID | YP_TAG)))
-				 printf ("dummy-for-default\n%*s", ++level * 4, "");
+				printf ("dummy-for-default\n%*s", ++level * 4, "");
 			if (yp -> yp_flags & YP_OPTIONAL)
-				 printf ("%%{ %s -> optionals |= %s; %%}\n%*s",
-							   varbuf, yp -> yp_optcontrol, level * 4, "");
+				printf ("%%{ %s -> optionals |= %s; %%}\n%*s",
+						varbuf, yp -> yp_optcontrol, level * 4, "");
 			else
-				 printf ("%%{ %s%s = %d; %%}\n%*s",
-							   var, SVAL (yp -> yp_varexp), dfl2int (yp),
-							   level * 4, "");
+				printf ("%%{ %s%s = %d; %%}\n%*s",
+						var, SVAL (yp -> yp_varexp), dfl2int (yp),
+						level * 4, "");
 		}
 		break;
 
@@ -1048,55 +1039,55 @@ int	direction;
 		if ((yp -> yp_flags & (YP_OPTIONAL|YP_DEFAULT)) &&
 				direction == YP_DECODER) {
 			if (!top && !(yp -> yp_flags & (YP_ID | YP_TAG)))
-				 printf ("dummy-for-default\n%*s", ++level * 4, "");
+				printf ("dummy-for-default\n%*s", ++level * 4, "");
 			if (yp -> yp_flags & YP_OPTIONAL)
-				 printf ("%%{ %s -> optionals |= %s; %%}\n%*s",
-							   varbuf, yp -> yp_optcontrol, level * 4, "");
+				printf ("%%{ %s -> optionals |= %s; %%}\n%*s",
+						varbuf, yp -> yp_optcontrol, level * 4, "");
 			else
-				 printf ("%%{ %s%s = %g; %%}\n%*s",
-							   var, SVAL (yp -> yp_varexp),
-							   val2real (yp -> yp_default), level * 4, "");
+				printf ("%%{ %s%s = %g; %%}\n%*s",
+						var, SVAL (yp -> yp_varexp),
+						val2real (yp -> yp_default), level * 4, "");
 		}
 		break;
 
 	case YP_NULL:
 		if ((yp -> yp_flags & YP_OPTIONAL) && direction == YP_DECODER) {
 			if (!top && !(yp -> yp_flags & (YP_ID | YP_TAG)))
-				 printf ("dummy-for-default\n%*s", ++level * 4, "");
-			 printf ("%%{ %s -> optionals |= %s; %%}\n%*s",
-						   varbuf, yp -> yp_optcontrol, level * 4, "");
+				printf ("dummy-for-default\n%*s", ++level * 4, "");
+			printf ("%%{ %s -> optionals |= %s; %%}\n%*s",
+					varbuf, yp -> yp_optcontrol, level * 4, "");
 		}
 		break;
 	}
 
 	if ((yp -> yp_flags & (YP_TAG | YP_IMPLICIT)) == (YP_TAG | YP_IMPLICIT))
-		 printf ("IMPLICIT ");
+		printf ("IMPLICIT ");
 	if (yp -> yp_flags & YP_BOUND)
-		 printf ("%s < ", yp -> yp_bound);
+		printf ("%s < ", yp -> yp_bound);
 	if (yp -> yp_flags & YP_COMPONENTS)
-		 printf ("COMPONENTS OF ");
+		printf ("COMPONENTS OF ");
 	if (yp -> yp_flags & YP_ENCRYPTED)
-		 printf ("ENCRYPTED ");
+		printf ("ENCRYPTED ");
 
 	switch (yp -> yp_code) {
 	case YP_BOOL:
-		 printf ("BOOLEAN");
+		printf ("BOOLEAN");
 		switch (direction) {
 		case YP_ENCODER:
 		case YP_DECODER:
-			 printf (top ? "\n%*s[[b %s -> %s ]]" : "\n%*s[[b %s%s ]]",
-						   level * 4, "", var, SVAL (yp -> yp_varexp));
+			printf (top ? "\n%*s[[b %s -> %s ]]" : "\n%*s[[b %s%s ]]",
+					level * 4, "", var, SVAL (yp -> yp_varexp));
 			break;
 		}
 		break;
 
 	case YP_INT:
-		 printf ("INTEGER");
+		printf ("INTEGER");
 		switch (direction) {
 		case YP_ENCODER:
 		case YP_DECODER:
-			 printf (top ? "\n%*s[[i %s -> %s ]]" : "\n%*s[[i %s%s ]]",
-						   level * 4, "", var, SVAL (yp -> yp_varexp));
+			printf (top ? "\n%*s[[i %s -> %s ]]" : "\n%*s[[i %s%s ]]",
+					level * 4, "", var, SVAL (yp -> yp_varexp));
 			break;
 		}
 		break;
@@ -1104,41 +1095,41 @@ int	direction;
 	case YP_INTLIST:
 	case YP_ENUMLIST:
 		if (yp -> yp_code == YP_ENUMLIST)
-			 printf ("ENUMERATED");
+			printf ("ENUMERATED");
 		else
-			 printf ("INTEGER");
+			printf ("INTEGER");
 		switch (direction) {
 		case YP_ENCODER:
 		case YP_DECODER:
-			 printf (top ? "\n%*s[[i %s -> %s ]]\n%*s{\n"
-						   : "\n%*s[[i %s%s ]]\n%*s{\n",
-						   level * 4, "", var, SVAL (yp -> yp_varexp),
-						   level * 4, "");
+			printf (top ? "\n%*s[[i %s -> %s ]]\n%*s{\n"
+					: "\n%*s[[i %s%s ]]\n%*s{\n",
+					level * 4, "", var, SVAL (yp -> yp_varexp),
+					level * 4, "");
 			break;
 
 		default:
-			 printf (" {\n");
+			printf (" {\n");
 			break;
 		}
 		level++;
 		for (yv = yp -> yp_value; yv; yv = yv -> yv_next)
-			 printf ("%*s%s(%d)%s\n", level * 4, "", yv -> yv_named,
-						   val2int (yv), yv -> yv_next ? "," : "");
+			printf ("%*s%s(%d)%s\n", level * 4, "", yv -> yv_named,
+					val2int (yv), yv -> yv_next ? "," : "");
 		level--;
-		 printf ("%*s}", level * 4, "");
+		printf ("%*s}", level * 4, "");
 		break;
 
 	case YP_BIT:
-		 printf ("BIT STRING");
+		printf ("BIT STRING");
 		switch (direction) {
 		case YP_ENCODER:
-			 printf ("\n%*s[[x bit_parm = bitstr2strb (%s%s, &len) $ len]]",
-						   level * 4, "", var, SVAL (yp -> yp_varexp));
-			 printf ("\n%*s%%{\n%*sfree (bit_parm);\n", level * 4, "",
-						   (level + 1) * 4, "");
+			printf ("\n%*s[[x bit_parm = bitstr2strb (%s%s, &len) $ len]]",
+					level * 4, "", var, SVAL (yp -> yp_varexp));
+			printf ("\n%*s%%{\n%*sfree (bit_parm);\n", level * 4, "",
+					(level + 1) * 4, "");
 			if (action2)
-				 printf ("%*s%s\n", (level + 1) * 4, "", action2);
-			 printf ("%*s%%}\n", level * 4, "");
+				printf ("%*s%s\n", (level + 1) * 4, "", action2);
+			printf ("%*s%%}\n", level * 4, "");
 			break;
 
 		case YP_DECODER:
@@ -1148,74 +1139,74 @@ int	direction;
 		break;
 
 	case YP_BITLIST:
-		 printf ("BIT STRING");
+		printf ("BIT STRING");
 		switch (direction) {
 		case YP_ENCODER:
-			 printf ("\n%*s[[x bit_parm = bitstr2strb (%s%s, &len) $ len]]\n%*s{\n",
-						   level * 4, "", var, SVAL (yp -> yp_varexp),
-						   level * 4, "");
+			printf ("\n%*s[[x bit_parm = bitstr2strb (%s%s, &len) $ len]]\n%*s{\n",
+					level * 4, "", var, SVAL (yp -> yp_varexp),
+					level * 4, "");
 			break;
 
 		case YP_DECODER:
 		default:
-			 printf (" {\n");
+			printf (" {\n");
 			break;
 		}
 		level++;
 		for (yv = yp -> yp_value; yv; yv = yv -> yv_next)
-			 printf ("%*s%s(%d)%s\n", level * 4, "", yv -> yv_named,
-						   val2int (yv), yv -> yv_next ? "," : "");
+			printf ("%*s%s(%d)%s\n", level * 4, "", yv -> yv_named,
+					val2int (yv), yv -> yv_next ? "," : "");
 		level--;
-		 printf ("%*s}", level * 4, "");
+		printf ("%*s}", level * 4, "");
 		switch (direction) {
 		case YP_DECODER:
 			balloc (yp, var, action2, level);
 			break;
 
 		case YP_ENCODER:
-			 printf ("\n%*s%%{\n%*sfree (bit_parm);\n", level * 4, "",
-						   (level + 1) * 4, "");
+			printf ("\n%*s%%{\n%*sfree (bit_parm);\n", level * 4, "",
+					(level + 1) * 4, "");
 			if (action2)
-				 printf ("%*s%s\n", (level + 1) * 4, "", action2);
-			 printf ("%*s%%}\n", level * 4, "");
+				printf ("%*s%s\n", (level + 1) * 4, "", action2);
+			printf ("%*s%%}\n", level * 4, "");
 			break;
 		}
 		break;
 
 	case YP_OCT:
-		 printf ("OCTET STRING");
+		printf ("OCTET STRING");
 		switch (direction) {
 		case YP_ENCODER:
-			 printf ("\n%*s[[q %s%s ]]", level * 4, "",
-						   var, SVAL (yp -> yp_varexp));
+			printf ("\n%*s[[q %s%s ]]", level * 4, "",
+					var, SVAL (yp -> yp_varexp));
 			break;
 
 		case YP_DECODER:
-			 printf ("\n%*s[[q %s%s ]]", level * 4, "",
-						   var, SVAL (yp -> yp_varexp));
+			printf ("\n%*s[[q %s%s ]]", level * 4, "",
+					var, SVAL (yp -> yp_varexp));
 			break;
 		}
 		break;
 
 	case YP_REAL:
-		 printf ("REAL");
-		 printf (top ? "\n%*s[[r %s -> %s ]]" : "\n%*s[[r %s%s ]]",
-					   level * 4, "", var, SVAL (yp -> yp_varexp));
+		printf ("REAL");
+		printf (top ? "\n%*s[[r %s -> %s ]]" : "\n%*s[[r %s%s ]]",
+				level * 4, "", var, SVAL (yp -> yp_varexp));
 		break;
 
 	case YP_NULL:
-		 printf ("NULL");
+		printf ("NULL");
 		break;
 
 	case YP_SEQ:
 	case YP_SET:
 	case YP_ANY:
-		 printf ("%s", tags[yp -> yp_code]);
+		printf ("%s", tags[yp -> yp_code]);
 		switch (direction) {
 		case YP_ENCODER:
 		case YP_DECODER:
-			 printf ("\n%*s[[a %s%s ]]",
-						   level * 4, "", var, SVAL (yp -> yp_varexp));
+			printf ("\n%*s[[a %s%s ]]",
+					level * 4, "", var, SVAL (yp -> yp_varexp));
 			break;
 		}
 		break;
@@ -1223,37 +1214,37 @@ int	direction;
 	case YP_SEQTYPE:
 	case YP_SETTYPE:
 		ep = yp -> yp_code != YP_SETTYPE ? "element" : "member";
-		 printf ("%s\n", tags [yp -> yp_code]);
+		printf ("%s\n", tags [yp -> yp_code]);
 		switch (direction) {
 		case YP_ENCODER:
 			if ((y = yp -> yp_type) -> yp_declexp) {
-				 printf ("%*s%%{ %s = %s; %%}\n",
-							   (level + 1) * 4, "", y -> yp_declexp,
-							   SVAL (y -> yp_varexp));
+				printf ("%*s%%{ %s = %s; %%}\n",
+						(level + 1) * 4, "", y -> yp_declexp,
+						SVAL (y -> yp_varexp));
 			}
 			if (h2flag) {
 				if (top) {
-					 printf ("%*s<<n_parm = 0; ", (level + 1) * 4, "");
-					 printf ("n_parm < parm -> nelem; n_parm++>>\n");
+					printf ("%*s<<n_parm = 0; ", (level + 1) * 4, "");
+					printf ("n_parm < parm -> nelem; n_parm++>>\n");
 				} else {
-					 printf ("%*s<<n_%s = 0;\n%*sn_%s < %s -> nelem;\n",
-								   (level + 1) * 4, "", yp -> yp_declexp,
-								   (level + 3) * 4, "", yp -> yp_declexp,
-								   yp -> yp_declexp);
-					 printf ("%*sn_%s++>>\n",
-								   (level + 3) * 4, "", yp -> yp_declexp);
+					printf ("%*s<<n_%s = 0;\n%*sn_%s < %s -> nelem;\n",
+							(level + 1) * 4, "", yp -> yp_declexp,
+							(level + 3) * 4, "", yp -> yp_declexp,
+							yp -> yp_declexp);
+					printf ("%*sn_%s++>>\n",
+							(level + 3) * 4, "", yp -> yp_declexp);
 				}
 			} else {
 				if (top)
-					 printf ("%*s<<; parm; parm = parm -> next>>\n",
-								   (level + 1) * 4, "");
+					printf ("%*s<<; parm; parm = parm -> next>>\n",
+							(level + 1) * 4, "");
 				else
-					 printf ("%*s<<%s = %s%s;\n%*s%s;\n%*s%s = %s -> next>>\n",
-								   (level + 1) * 4, "", yp -> yp_declexp,
-								   var, SVAL (yp -> yp_varexp),
-								   (level + 3) * 4, "", yp -> yp_declexp,
-								   (level + 3) * 4, "", yp -> yp_declexp,
-								   yp -> yp_declexp);
+					printf ("%*s<<%s = %s%s;\n%*s%s;\n%*s%s = %s -> next>>\n",
+							(level + 1) * 4, "", yp -> yp_declexp,
+							var, SVAL (yp -> yp_varexp),
+							(level + 3) * 4, "", yp -> yp_declexp,
+							(level + 3) * 4, "", yp -> yp_declexp,
+							yp -> yp_declexp);
 			}
 			break;
 
@@ -1272,17 +1263,17 @@ int	direction;
 		do_type1 (yp -> yp_type, 0, level + 1, ep, "", NULLCP, direction);
 		switch (direction) {
 		case YP_DECODER:
-			 printf ("\n%*s%%{ ", (level + 1) * 4, "");
+			printf ("\n%*s%%{ ", (level + 1) * 4, "");
 			if (h2flag)
-				 printf ("n_%s++;", top ? "parm" : yp -> yp_declexp);
+				printf ("n_%s++;", top ? "parm" : yp -> yp_declexp);
 			else if (top)
-				 printf ("parm = &((*parm) -> next);");
+				printf ("parm = &((*parm) -> next);");
 			else
-				 printf ("%s = &((*%s) -> next);",
-							   yp -> yp_declexp, yp -> yp_declexp);
+				printf ("%s = &((*%s) -> next);",
+						yp -> yp_declexp, yp -> yp_declexp);
 			if (action2)
-				 printf (" %s", action2);
-			 printf (" %%}");
+				printf (" %s", action2);
+			printf (" %%}");
 			break;
 		}
 		break;
@@ -1290,8 +1281,8 @@ int	direction;
 	case YP_SEQLIST:
 	case YP_SETLIST:
 		ep = yp -> yp_code != YP_SETLIST ? "element" : "member";
-		 printf ("%s", tags [yp -> yp_code]);
-		 printf ("\n%*s%%{\n", (level + 1) * 4, "");
+		printf ("%s", tags [yp -> yp_code]);
+		printf ("\n%*s%%{\n", (level + 1) * 4, "");
 		if (direction == YP_DECODER)
 			xalloc (yp, 1, level + 2, yp -> yp_declexp,
 					yp -> yp_declexp, 0);
@@ -1299,15 +1290,15 @@ int	direction;
 			if (y -> yp_declexp)
 				switch (direction) {
 				case YP_ENCODER:
-					 printf ("%*s%s = %s;\n",
-								   (level + 2) * 4, "",
-								   y -> yp_declexp, y -> yp_varexp);
+					printf ("%*s%s = %s;\n",
+							(level + 2) * 4, "",
+							y -> yp_declexp, y -> yp_varexp);
 					break;
 
 				case YP_DECODER:
-					 printf ("%*s%s = &(%s);\n",
-								   (level + 2) * 4, "",
-								   y -> yp_declexp, y -> yp_varexp);
+					printf ("%*s%s = &(%s);\n",
+							(level + 2) * 4, "",
+							y -> yp_declexp, y -> yp_varexp);
 					break;
 				}
 			if (direction == YP_DECODER &&
@@ -1315,8 +1306,8 @@ int	direction;
 				prime_default (y, level + 2);
 			}
 		}
-		 printf ("%*s%%}\n%*s{\n", (level + 1) * 4, "",
-					   level * 4, "");
+		printf ("%*s%%}\n%*s{\n", (level + 1) * 4, "",
+				level * 4, "");
 
 		if (!hflag || !(y = yp -> yp_type) || y -> yp_next) {
 			var = "";
@@ -1326,13 +1317,13 @@ int	direction;
 			do_type1 (y, top,
 					  level + ((y -> yp_flags & (YP_ID | YP_TAG)) ? 1 : 2),
 					  ep, var, NULLCP, direction);
-			 printf ("%s\n", y -> yp_next ? ",\n" : "");
+			printf ("%s\n", y -> yp_next ? ",\n" : "");
 		}
-		 printf ("%*s}", level * 4, "");
+		printf ("%*s}", level * 4, "");
 		break;
 
 	case YP_CHOICE:
-		 printf ("CHOICE");
+		printf ("CHOICE");
 		if (!hflag || !(y = yp -> yp_type) || y -> yp_next)
 			var = "";
 		i = 0;
@@ -1342,38 +1333,38 @@ int	direction;
 		switch (direction) {
 		case YP_ENCODER:
 			if (i) {
-				 printf ("\n%*s%%{\n", (level + 1) * 4, "");
+				printf ("\n%*s%%{\n", (level + 1) * 4, "");
 				for (y = yp -> yp_type; y; y = y -> yp_next)
 					if (y -> yp_declexp)
-						 printf ("%*s%s = %s;\n", (level + 2) * 4, "",
-									   y -> yp_declexp, y -> yp_varexp);
-				 printf ("%*s%%}\n%*s", (level + 1) * 4, "",
-							   (level + 1) * 4 - 1, "" );
+						printf ("%*s%s = %s;\n", (level + 2) * 4, "",
+								y -> yp_declexp, y -> yp_varexp);
+				printf ("%*s%%}\n%*s", (level + 1) * 4, "",
+						(level + 1) * 4 - 1, "" );
 			}
 			if (*var)
-				 printf (" <<1>>");
+				printf (" <<1>>");
 			else if (top)
-				 printf (" <<parm -> offset>>");
+				printf (" <<parm -> offset>>");
 			else
-				 printf (" <<%s -> offset>>",
-							   yp -> yp_declexp);
-			 printf (i ? "\n%*s{\n" : " {\n", level * 4, "");
+				printf (" <<%s -> offset>>",
+						yp -> yp_declexp);
+			printf (i ? "\n%*s{\n" : " {\n", level * 4, "");
 			break;
 
 		case YP_DECODER:
-			 printf ("\n");
+			printf ("\n");
 			xalloc (yp, 0, level + 1, yp -> yp_declexp,
 					yp -> yp_declexp, 1);
-			 printf ("%*s{\n", level * 4, "");
+			printf ("%*s{\n", level * 4, "");
 			break;
 
 		default:
-			 printf (" {\n");
+			printf (" {\n");
 			break;
 		}
 		if (direction == YP_DECODER) {
-			 sprintf (cp = buffer, "(*(%s)) -> offset = ",
-							top ? "parm" : yp -> yp_declexp);
+			sprintf (cp = buffer, "(*(%s)) -> offset = ",
+					 top ? "parm" : yp -> yp_declexp);
 			cp += strlen (cp);
 		} else
 			cp = NULL;
@@ -1383,38 +1374,38 @@ int	direction;
 			cp = NULL;
 		for (y = yp -> yp_type; y; y = y -> yp_next) {
 			if (cp)
-				 sprintf (cp, "%s;", y -> yp_offset);
+				sprintf (cp, "%s;", y -> yp_offset);
 			do_type1 (y, top, level + 1, "choice", var,
 					  cp ? buffer : NULLCP, direction);
-			 printf ("%s\n", y -> yp_next ? ",\n" : "");
+			printf ("%s\n", y -> yp_next ? ",\n" : "");
 		}
-		 printf ("%*s}", level * 4, "");
+		printf ("%*s}", level * 4, "");
 		break;
 
 	case YP_OID:
-		 printf ("OBJECT IDENTIFIER");
+		printf ("OBJECT IDENTIFIER");
 		switch (direction) {
 		case YP_ENCODER:
 		case YP_DECODER:
-			 printf ("\n%*s[[O %s%s ]]",
-						   level * 4, "", var, SVAL (yp -> yp_varexp));
+			printf ("\n%*s[[O %s%s ]]",
+					level * 4, "", var, SVAL (yp -> yp_varexp));
 			break;
 		}
 		break;
 
 	case YP_IDEFINED:
 		if (yp -> yp_module && strcmp (yp -> yp_module, mymodule))
-			 printf ("%s.", yp -> yp_module);
-		 printf ("%s", yp -> yp_identifier);
+			printf ("%s.", yp -> yp_module);
+		printf ("%s", yp -> yp_identifier);
 		switch (direction) {
 		case YP_ENCODER:
-			 printf ("\n%*s[[p %s%s ]]",
-						   level * 4, "", var, SVAL (yp -> yp_varexp));
+			printf ("\n%*s[[p %s%s ]]",
+					level * 4, "", var, SVAL (yp -> yp_varexp));
 			break;
 
 		case YP_DECODER:
-			 printf ("\n%*s[[p &(%s%s)]]",
-						   level * 4, "", var, SVAL (yp -> yp_varexp));
+			printf ("\n%*s[[p &(%s%s)]]",
+					level * 4, "", var, SVAL (yp -> yp_varexp));
 			break;
 		}
 		break;
@@ -1436,12 +1427,12 @@ int	direction;
 		/* else fall */
 
 		default:
-			 printf ("\n%*s%%{ %s %%}", level * 4, "", action2);
+			printf ("\n%*s%%{ %s %%}", level * 4, "", action2);
 			break;
 		}
 
 	if (yp -> yp_flags & YP_OPTIONAL) {
-		 printf ("\n%*sOPTIONAL", level * 4, "");
+		printf ("\n%*sOPTIONAL", level * 4, "");
 
 		if (direction == YP_ENCODER)
 			switch (yp -> yp_code) {
@@ -1451,8 +1442,8 @@ int	direction;
 			case YP_ENUMLIST:
 			case YP_NULL:
 			case YP_REAL:
-				 printf (" <<%s -> optionals & %s >>",
-							   varbuf, yp -> yp_optcontrol);
+				printf (" <<%s -> optionals & %s >>",
+						varbuf, yp -> yp_optcontrol);
 			default:
 				break;
 
@@ -1469,32 +1460,32 @@ int	direction;
 			case YP_ANY:
 			case YP_OID:
 			case YP_IDEFINED:
-				 printf (" <<%s%s>>", var, SVAL (yp -> yp_varexp));
+				printf (" <<%s%s>>", var, SVAL (yp -> yp_varexp));
 				break;
 			}
 	} else if (yp -> yp_flags & YP_DEFAULT) {
-		 printf ("\n%*sDEFAULT ", level * 4, "");
+		printf ("\n%*sDEFAULT ", level * 4, "");
 		val2prf (yp -> yp_default, level + 2);
 
 		if (direction == YP_ENCODER)
 			switch (yp -> yp_code) {
 			case YP_BOOL:
-				 printf (" <<%s%s%s>>",
-							   val2int (yp -> yp_default) ? "!" : "",
-							   var, SVAL (yp -> yp_varexp));
+				printf (" <<%s%s%s>>",
+						val2int (yp -> yp_default) ? "!" : "",
+						var, SVAL (yp -> yp_varexp));
 				break;
 
 			case YP_INT:
 			case YP_INTLIST:
 			case YP_ENUMLIST:
-				 printf (" <<%s%s != %d>>", var, SVAL (yp -> yp_varexp),
-							   dfl2int (yp));
+				printf (" <<%s%s != %d>>", var, SVAL (yp -> yp_varexp),
+						dfl2int (yp));
 				break;
 
 			case YP_REAL:
-				 printf (" << %s%s != %g >>",
-							   var, SVAL (yp -> yp_varexp),
-							   val2real (yp -> yp_default));
+				printf (" << %s%s != %g >>",
+						var, SVAL (yp -> yp_varexp),
+						val2real (yp -> yp_default));
 				break;
 
 			case YP_NULL:
@@ -1514,7 +1505,7 @@ int	direction;
 			case YP_ANY:
 			case YP_OID:
 			case YP_IDEFINED:
-				 printf (" <<%s%s>>", var, SVAL (yp -> yp_varexp));
+				printf (" <<%s%s>>", var, SVAL (yp -> yp_varexp));
 				break;
 			}
 	}
@@ -1524,7 +1515,7 @@ int	direction;
 			&& (cp = index (yp -> yp_varexp, ' '))
 			&& strncmp (cp + 1, "-> ", 3) == 0) {
 		*cp = NULL;
-		 sprintf (buffer, "(*%s) -> %s", yp -> yp_varexp, cp + 4);
+		sprintf (buffer, "(*%s) -> %s", yp -> yp_varexp, cp + 4);
 		yp -> yp_varexp = new_string (buffer);
 	}
 }
@@ -1533,7 +1524,7 @@ int	direction;
 
 YP  lookup_type (mod, id)
 char *mod,
-		 *id;
+	 *id;
 {
 	SY	    sy;
 
@@ -1564,7 +1555,7 @@ char   *id,
 	   *var;
 {
 	int    i,
-			 j;
+		   j;
 	char  *bp;
 	char   *cp,
 		   *dp,
@@ -1576,7 +1567,7 @@ char   *id,
 	YP	    y;
 	YV	    yv;
 
-	 strcpy (bp = buf2, var);
+	strcpy (bp = buf2, var);
 	bp += strlen (bp);
 	/* Preserve the name of the field */
 	yp->yp_varexp = new_string(yp -> yp_ptrname ? yp -> yp_ptrname : id);
@@ -1585,8 +1576,8 @@ char   *id,
 	case YP_BOOL:
 		if (aflag)
 			printag (yp, level + 4, NULLCP);
-		 fprintf (fdef, "%*schar    %s;\n", level * 4, "",
-						array(id, arrayflg));
+		fprintf (fdef, "%*schar    %s;\n", level * 4, "",
+				 array(id, arrayflg));
 		break;
 
 	case YP_INT:
@@ -1594,15 +1585,15 @@ char   *id,
 	case YP_ENUMLIST:
 		if (aflag)
 			printag (yp, level + 4, NULLCP);
-		 fprintf (fdef, "%*sinteger     %s;\n", level * 4, "",
-						array(id, arrayflg));
+		fprintf (fdef, "%*sinteger     %s;\n", level * 4, "",
+				 array(id, arrayflg));
 		if (yp -> yp_code == YP_INT)
 			break;
 		for (yv = yp -> yp_value; yv; yv = yv -> yv_next) {
 			modsym_aux (yv -> yv_named, buf1);
-			 fprintf (fdef, "#define\t%s_%s\t%d\n",
-							modsym (mymodule, top ? eval : id, "int"),
-							buf1, val2int (yv));
+			fprintf (fdef, "#define\t%s_%s\t%d\n",
+					 modsym (mymodule, top ? eval : id, "int"),
+					 buf1, val2int (yv));
 		}
 		break;
 
@@ -1611,8 +1602,8 @@ char   *id,
 		if (!top) {
 			if (aflag)
 				printag (yp, level + 4, NULLCP);
-			 fprintf (fdef, "%*sPE      %s;\n", level * 4, "",
-							array(id, arrayflg));
+			fprintf (fdef, "%*sPE      %s;\n", level * 4, "",
+					 array(id, arrayflg));
 		}
 		if (yp -> yp_code != YP_BITLIST)
 			break;
@@ -1623,30 +1614,30 @@ char   *id,
 			else if (j > i)
 				i = j;
 		if (i < sizeof (int) * 8) {		/* NBBY */
-			 fprintf (fdef, "#define\t%s\t\"\\020",
-							modsym (mymodule, top ? eval : id, "bits"));
+			fprintf (fdef, "#define\t%s\t\"\\020",
+					 modsym (mymodule, top ? eval : id, "bits"));
 			for (yv = yp -> yp_value; yv; yv = yv -> yv_next)
 				if (yv -> yv_flags & YV_NAMED)
-					 fprintf (fdef, "\\0%o%s",
-									val2int (yv) + 1, yv -> yv_named);
+					fprintf (fdef, "\\0%o%s",
+							 val2int (yv) + 1, yv -> yv_named);
 				else
-					 fprintf (fdef, "\\0%oBIT%d",
-									val2int (yv) + 1, val2int (yv));
-			 fprintf (fdef, "\"\n");
+					fprintf (fdef, "\\0%oBIT%d",
+							 val2int (yv) + 1, val2int (yv));
+			fprintf (fdef, "\"\n");
 		}
 		for (yv = yp -> yp_value; yv; yv = yv -> yv_next) {
 			modsym_aux (yv -> yv_named, buf1);
-			 fprintf (fdef, "#define\t%s_%s\t%d\n",
-							modsym (mymodule, top ? eval : id, "bit"),
-							buf1, val2int (yv));
+			fprintf (fdef, "#define\t%s_%s\t%d\n",
+					 modsym (mymodule, top ? eval : id, "bit"),
+					 buf1, val2int (yv));
 		}
 		break;
 
 	case YP_REAL:
 		if (aflag)
 			printag (yp, level + 4, NULLCP);
-		 fprintf (fdef, "%*sdouble    %s;\n", level * 4, "",
-						array(id, arrayflg));
+		fprintf (fdef, "%*sdouble    %s;\n", level * 4, "",
+				 array(id, arrayflg));
 		/* yp -> yp_varexp = new_string (buf2); */
 		break;
 
@@ -1654,16 +1645,16 @@ char   *id,
 		if (!top) {
 			if (aflag)
 				printag (yp, level + 4, NULLCP);
-			 fprintf (fdef, "%*sstruct qbuf *%s;\n", level * 4, "",
-							array(id, arrayflg));
+			fprintf (fdef, "%*sstruct qbuf *%s;\n", level * 4, "",
+					 array(id, arrayflg));
 		}
 		break;
 
 	case YP_NULL:
 		if (aflag)
 			printag (yp, level + 4, NULLCP);
-		 fprintf (fdef, "%*schar    %s;\n", level * 4, "",
-						array(id, arrayflg));
+		fprintf (fdef, "%*schar    %s;\n", level * 4, "",
+				 array(id, arrayflg));
 		break;
 
 	case YP_SEQ:
@@ -1672,8 +1663,8 @@ char   *id,
 		if (!top) {
 			if (aflag)
 				printag (yp, level + 4, NULLCP);
-			 fprintf (fdef, "%*sPE      %s;\n", level * 4, "",
-							array(id, arrayflg));
+			fprintf (fdef, "%*sPE      %s;\n", level * 4, "",
+					 array(id, arrayflg));
 		}
 		break;
 
@@ -1683,16 +1674,16 @@ char   *id,
 		if ((cp = rindex (buf2, ' ')) && *++cp) {
 			if ((dp = rindex (cp, '.')) && *++dp)
 				cp = dp;
-			 sprintf (dp = buf1, "%*.*s",
-							cp - buf2, cp - buf2, buf2);
+			sprintf (dp = buf1, "%*.*s",
+					 cp - buf2, cp - buf2, buf2);
 			dp += strlen (dp);
 		} else {
-			 strcpy (buf1, buf2);
+			strcpy (buf1, buf2);
 			dp = NULL;
 		}
 		newid = yp -> yp_ptrname ? yp -> yp_ptrname : id;
 		if (h2flag && top)
-			 fprintf (fdef, "%*sinteger\tnelem;\n", level * 4, "");
+			fprintf (fdef, "%*sinteger\tnelem;\n", level * 4, "");
 		if (!top) {
 			if (yp -> yp_structname)
 				id = yp -> yp_structname;
@@ -1700,25 +1691,25 @@ char   *id,
 				id = gensym (ep, NULLCP);
 			if (aflag)
 				printag (yp, level + 4, NULLCP);
-			 fprintf (fdef, "%*sstruct %s {\n", level * 4, "", id);
+			fprintf (fdef, "%*sstruct %s {\n", level * 4, "", id);
 			if (h2flag)
-				 fprintf (fdef, "%*sinteger\tnelem;\n", (level + 1) * 4, "");
+				fprintf (fdef, "%*sinteger\tnelem;\n", (level + 1) * 4, "");
 		}
 		if (dp)
-			 strcpy (dp, newid);
-		 strcpy (bp = buf2, id);
+			strcpy (dp, newid);
+		strcpy (bp = buf2, id);
 		bp += strlen (bp);
 
 		if (!top)
 			yp -> yp_declexp = new_string (id);
 
 		if (dp)
-			 strcpy (dp, newid);
+			strcpy (dp, newid);
 		if ((y = yp -> yp_type) -> yp_code == YP_IDEFINED && hflag) {
 			modsym_aux (y -> yp_identifier, cp = buf3);
 			if (h2flag) {
 				cp += strlen(cp);
-				 sprintf (cp, "[n_%s]", PARVAL (yp->yp_declexp));
+				sprintf (cp, "[n_%s]", PARVAL (yp->yp_declexp));
 				cp = buf3;
 			}
 		} else {
@@ -1736,24 +1727,24 @@ char   *id,
 				break;
 			}
 		}
-		 sprintf (bp, " -> %s", cp);
+		sprintf (bp, " -> %s", cp);
 		level++;
 		pepsy (y, 0, level, cp, ep, buf2, h2flag);
 		*bp = NULL;
 		if (y -> yp_code != YP_IDEFINED)
 			free (cp);
 		if (!h2flag)
-			 fprintf (fdef, "\n%*sstruct %s *next;\n", level * 4, "",
-							top ? modsym (mymodule, val, "type") : id);
+			fprintf (fdef, "\n%*sstruct %s *next;\n", level * 4, "",
+					 top ? modsym (mymodule, val, "type") : id);
 
 		level--;
 
-		 strcpy (bp = buf2, var);
+		strcpy (bp = buf2, var);
 		bp += strlen (bp);
 
 		if (!top) {
-			 fprintf (fdef, "%*s} *%s;\n", level * 4, "",
-							array(newid, arrayflg));
+			fprintf (fdef, "%*s} *%s;\n", level * 4, "",
+					 array(newid, arrayflg));
 			if (!Hflag)
 				free (id);
 		}
@@ -1765,11 +1756,11 @@ char   *id,
 		if ((cp = rindex (buf2, ' ')) && *++cp) {
 			if ((dp = rindex (cp, '.')) && *++dp)
 				cp = dp;
-			 sprintf (dp = buf1, "%*.*s",
-							cp - buf2, cp - buf2, buf2);
+			sprintf (dp = buf1, "%*.*s",
+					 cp - buf2, cp - buf2, buf2);
 			dp += strlen (dp);
 		} else {
-			 strcpy (buf1, buf2);
+			strcpy (buf1, buf2);
 			dp = NULL;
 		}
 		newid = yp -> yp_ptrname ? yp -> yp_ptrname : id;
@@ -1780,19 +1771,19 @@ char   *id,
 				id = gensym (ep, NULLCP);
 			if (aflag)
 				printag (yp, level + 4, NULLCP);
-			 fprintf (fdef, "%*sstruct %s {\n", level * 4, "", id);
+			fprintf (fdef, "%*sstruct %s {\n", level * 4, "", id);
 
 			if (dp)
-				 strcpy (dp, newid);
+				strcpy (dp, newid);
 
-			 strcpy (bp = buf2, id);
+			strcpy (bp = buf2, id);
 			bp += strlen (bp);
 			yp -> yp_declexp = new_string (id);
 
 			level++;
 		}
 		if (dp)
-			 strcpy (dp, newid);
+			strcpy (dp, newid);
 		for (y = yp -> yp_type, i = 0; y; y = y -> yp_next) {
 			if (y -> yp_flags & YP_OPTIONAL)
 				switch (y -> yp_code) {
@@ -1805,22 +1796,22 @@ char   *id,
 					char obuf[BUFSIZ];
 
 					if (i == 0)
-						 fprintf (fdef, "%*sinteger     optionals;\n",
-										level * 4, "");
+						fprintf (fdef, "%*sinteger     optionals;\n",
+								 level * 4, "");
 					if (y -> yp_flags & YP_ID)
 						modsym_aux (y -> yp_id, cp = buf1);
 					else {
 						cp = gensym (ep, NULLCP);
-						 strcpy (buf1, cp);
+						strcpy (buf1, cp);
 						free (cp);
 						cp = buf1;
 					}
-					 sprintf (obuf, "%s_%s",
-									modsym (mymodule,
-											top ? eval : id,
-											"opt"), cp);
-					 fprintf (fdef, "#define\t%s (0%08o)\n", obuf,
-									1 << i);
+					sprintf (obuf, "%s_%s",
+							 modsym (mymodule,
+									 top ? eval : id,
+									 "opt"), cp);
+					fprintf (fdef, "#define\t%s (0%08o)\n", obuf,
+							 1 << i);
 #ifdef ASN1_OUTPUT
 					y -> yp_optcontrol = new_string (obuf);
 					y -> yp_flags |= YP_OPTCONTROL;
@@ -1840,24 +1831,24 @@ char   *id,
 				modsym_aux (y -> yp_id, cp = buf1);
 			else
 				cp = gensym (ep, NULLCP);
-			 sprintf (bp, " -> %s", cp);
+			sprintf (bp, " -> %s", cp);
 			pepsy (y, 0, level, cp, ep, buf2, 0);
 			*bp = NULL;
 			if (!(y -> yp_flags & YP_ID))
 				free (cp);
 			if (y -> yp_next)
-				 fprintf (fdef, "\n");
+				fprintf (fdef, "\n");
 		}
 		if (i == 1)
-			 fprintf (fdef, "%*schar    dummy;\n", level * 4, "");
+			fprintf (fdef, "%*schar    dummy;\n", level * 4, "");
 		if (!top) {
 			level--;
 
-			 strcpy (bp = buf2, var);
+			strcpy (bp = buf2, var);
 			bp += strlen (bp);
 
-			 fprintf (fdef, "%*s} *%s;\n", level * 4, "",
-							array(newid, arrayflg));
+			fprintf (fdef, "%*s} *%s;\n", level * 4, "",
+					 array(newid, arrayflg));
 			if (!Hflag)
 				free (id);
 		}
@@ -1867,11 +1858,11 @@ char   *id,
 		if ((cp = rindex (buf2, ' ')) && *++cp) {
 			if ((dp = rindex (cp, '.')) && *++dp)
 				cp = dp;
-			 sprintf (dp = buf1, "%*.*s",
-							cp - buf2, cp - buf2, buf2);
+			sprintf (dp = buf1, "%*.*s",
+					 cp - buf2, cp - buf2, buf2);
 			dp += strlen (dp);
 		} else {
-			 strcpy (buf1, buf2);
+			strcpy (buf1, buf2);
 			dp = NULL;
 		}
 		newid = yp -> yp_ptrname ? yp -> yp_ptrname : id;
@@ -1882,34 +1873,34 @@ char   *id,
 				id = gensym ("choice", NULLCP);
 			if (aflag)
 				printag (yp, level + 4, NULLCP);
-			 fprintf (fdef, "%*sstruct %s {\n", level * 4, "", id);
+			fprintf (fdef, "%*sstruct %s {\n", level * 4, "", id);
 
 			if (dp)
-				 strcpy (dp, newid);
-			 strcpy (bp = buf2, id);
+				strcpy (dp, newid);
+			strcpy (bp = buf2, id);
 			bp += strlen (bp);
 			yp -> yp_declexp = new_string (id);
 
 			level++;
 		}
 		if (dp)
-			 strcpy (dp, newid);
-		 fprintf (fdef, "%*sint         offset;\n", level * 4, "");
+			strcpy (dp, newid);
+		fprintf (fdef, "%*sint         offset;\n", level * 4, "");
 		if (top)
 			cp = modsym (mymodule, val, "type");
 		else
 			cp = id;
-		 sprintf (ep = buf1, "%s_", cp);
+		sprintf (ep = buf1, "%s_", cp);
 		ep += strlen (ep);
 		for (y = yp -> yp_type, i = 1; y; y = y -> yp_next, i++) {
 			if (y -> yp_flags & YP_ID)
 				modsym_aux (y -> yp_id, ep);
 			else
-				 sprintf (ep, "%d", i);
+				sprintf (ep, "%d", i);
 			y -> yp_offset = new_string (buf1);
-			 fprintf (fdef, "#define\t%s\t%d\n", y -> yp_offset, i);
+			fprintf (fdef, "#define\t%s\t%d\n", y -> yp_offset, i);
 		}
-		 fprintf (fdef, "\n%*sunion {\n", level * 4, "");
+		fprintf (fdef, "\n%*sunion {\n", level * 4, "");
 		level++;
 		for (y = yp -> yp_type; y; y = y -> yp_next) {
 			char	*t;
@@ -1918,7 +1909,7 @@ char   *id,
 				modsym_aux (y -> yp_id, cp = buf1);
 			else
 				cp = gensym ("choice", NULLCP);
-			 sprintf (bp, " -> un.%s", cp);
+			sprintf (bp, " -> un.%s", cp);
 			pepsy (y, 0, level, cp, "choice", buf2, 0);
 			/* prefix yp_varexp (field name) with un. so we will generate offsets that
 			 * allow for the union all the CHOICE fields are imbedded in
@@ -1931,18 +1922,18 @@ char   *id,
 			if (!(y -> yp_flags & YP_ID))
 				free (cp);
 			if (y -> yp_next)
-				 fprintf (fdef, "\n");
+				fprintf (fdef, "\n");
 		}
 		level--;
-		 fprintf (fdef, "%*s}       un;\n", level * 4, "");
+		fprintf (fdef, "%*s}       un;\n", level * 4, "");
 		if (!top) {
 			level--;
 
-			 strcpy (bp = buf2, var);
+			strcpy (bp = buf2, var);
 			bp += strlen (bp);
 
-			 fprintf (fdef, "%*s} *%s;\n", level * 4, "",
-							array(newid, arrayflg));
+			fprintf (fdef, "%*s} *%s;\n", level * 4, "",
+					 array(newid, arrayflg));
 			if (!Hflag)
 				free (id);
 		}
@@ -1952,8 +1943,8 @@ char   *id,
 		if (!top) {
 			if (aflag)
 				printag (yp, level + 4, NULLCP);
-			 fprintf (fdef, "%*sOID     %s;\n", level * 4, "",
-							array(id, arrayflg));
+			fprintf (fdef, "%*sOID     %s;\n", level * 4, "",
+					 array(id, arrayflg));
 		}
 		break;
 
@@ -1964,8 +1955,8 @@ char   *id,
 			/* Predefined Universal Type */
 			struct univ_typ *p;
 			if ((p = univtyp(yp->yp_identifier))) {
-				 fprintf (fdef, "%*s%s%s;\n", level * 4, "",
-								p->univ_data, array(id, arrayflg));
+				fprintf (fdef, "%*s%s%s;\n", level * 4, "",
+						 p->univ_data, array(id, arrayflg));
 				/*
 				        if (fflag)
 				            ferr(1, "pepsy:YP_IDEFINED:fflag not implemented\n");
@@ -1973,9 +1964,9 @@ char   *id,
 				break;
 			}
 		}
-		 fprintf (fdef, "%*sstruct %s *%s;\n", level * 4, "",
-						modsym (yp -> yp_module, yp -> yp_identifier, "type"),
-						array(id, arrayflg));
+		fprintf (fdef, "%*sstruct %s *%s;\n", level * 4, "",
+				 modsym (yp -> yp_module, yp -> yp_identifier, "type"),
+				 array(id, arrayflg));
 		break;
 
 	default:
@@ -1990,21 +1981,21 @@ YP	yp;
 int	level;
 char   *pullup;
 {
-	 fprintf (fdef, "%*s/* ", level * 4, "");
+	fprintf (fdef, "%*s/* ", level * 4, "");
 	switch (yp -> yp_code) {
 	case YP_IDEFINED:
 		if (yp -> yp_module && strcmp (yp -> yp_module, mymodule))
-			 fprintf (fdef, "%s.", yp -> yp_module);
-		 fprintf (fdef, "%s", yp -> yp_identifier);
+			fprintf (fdef, "%s.", yp -> yp_module);
+		fprintf (fdef, "%s", yp -> yp_identifier);
 		break;
 
 	default:
-		 fprintf (fdef, "%s", tags[yp -> yp_code]);
+		fprintf (fdef, "%s", tags[yp -> yp_code]);
 		break;
 	}
 	if (pullup)
-		 fprintf (fdef, " pulled up from %s", pullup);
-	 fprintf (fdef, " */\n");
+		fprintf (fdef, " pulled up from %s", pullup);
+	fprintf (fdef, " */\n");
 }
 
 /*  */
@@ -2027,38 +2018,38 @@ char   *arg,
 
 	if (arg && type) {
 		if (brackets && !didone) {
-			 printf ("%*s%%{\n", level * 4, "");
+			printf ("%*s%%{\n", level * 4, "");
 			level++, didone++;
 		}
 
 		if (h2flag && (yp -> yp_code == YP_SEQTYPE ||
 					   yp -> yp_code == YP_SETTYPE)) {
-			 printf ("%*s{\n%*sPE      xx_pe = prim2%s ($$);\n\n",
-						   level * 4, "", (level +1) * 4, "",
-						   yp -> yp_code == YP_SEQTYPE ? "seq" : "set");
-			 printf ("%*sn_%s = xx_pe -> pe_cardinal > 0 ",
-						   (level + 1) * 4, "", arg);
-			 printf ("? xx_pe -> pe_cardinal : 0;\n%*s}\n", level * 4, "");
-			 printf ("%*sif ((*(%s) = (struct %s *)\n",
-						   level * 4, "", arg, type);
-			 printf ("%*scalloc (1 + (unsigned) n_%s, sizeof **(%s)",
-						   (level + 2) * 4, "", arg, arg);
-			 printf (")) == ((struct %s *) 0)) {\n", type);
-			 printf ("%*sadvise (NULLCP, \"%%s\", PEPY_ERR_NOMEM);\n",
-						   (level + 1) * 4, "");
-			 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
-						   level * 4, "");
-			 printf ("%*s(*%s) -> nelem = n_%s;\n", level * 4, "", arg, arg);
-			 printf ("%*sn_%s = 0;\n", level * 4, "", arg);
+			printf ("%*s{\n%*sPE      xx_pe = prim2%s ($$);\n\n",
+					level * 4, "", (level +1) * 4, "",
+					yp -> yp_code == YP_SEQTYPE ? "seq" : "set");
+			printf ("%*sn_%s = xx_pe -> pe_cardinal > 0 ",
+					(level + 1) * 4, "", arg);
+			printf ("? xx_pe -> pe_cardinal : 0;\n%*s}\n", level * 4, "");
+			printf ("%*sif ((*(%s) = (struct %s *)\n",
+					level * 4, "", arg, type);
+			printf ("%*scalloc (1 + (unsigned) n_%s, sizeof **(%s)",
+					(level + 2) * 4, "", arg, arg);
+			printf (")) == ((struct %s *) 0)) {\n", type);
+			printf ("%*sadvise (NULLCP, \"%%s\", PEPY_ERR_NOMEM);\n",
+					(level + 1) * 4, "");
+			printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+					level * 4, "");
+			printf ("%*s(*%s) -> nelem = n_%s;\n", level * 4, "", arg, arg);
+			printf ("%*sn_%s = 0;\n", level * 4, "", arg);
 		} else {
-			 printf ("%*sif ((*(%s) = (struct %s *)\n",
-						   level * 4, "", arg, type);
-			 printf ("%*scalloc (1, sizeof **(%s))) == ((struct %s *) 0)) {\n",
-						   (level + 2) * 4, "", arg, type);
-			 printf ("%*sadvise (NULLCP, \"%%s\", PEPY_ERR_NOMEM);\n",
-						   (level + 1) * 4, "");
-			 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
-						   level * 4, "");
+			printf ("%*sif ((*(%s) = (struct %s *)\n",
+					level * 4, "", arg, type);
+			printf ("%*scalloc (1, sizeof **(%s))) == ((struct %s *) 0)) {\n",
+					(level + 2) * 4, "", arg, type);
+			printf ("%*sadvise (NULLCP, \"%%s\", PEPY_ERR_NOMEM);\n",
+					(level + 1) * 4, "");
+			printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "",
+					level * 4, "");
 		}
 	}
 	switch (yp -> yp_code) {
@@ -2076,13 +2067,13 @@ char   *arg,
 							   yp -> yp_code == YP_SEQLIST)) {
 					/* include allocation here - no chance later */
 					if (brackets && !didone) {
-						 printf ("%*s%%{\n", level * 4, "");
+						printf ("%*s%%{\n", level * 4, "");
 						level++, didone++;
 					}
 					if (y -> yp_declexp)
-						 printf ("%*s%s = &(%s);\n", level * 4, "",
-									   y -> yp_declexp,
-									   y -> yp_varexp);
+						printf ("%*s%s = &(%s);\n", level * 4, "",
+								y -> yp_declexp,
+								y -> yp_varexp);
 					xalloc (y, top, level, y -> yp_declexp,
 							y -> yp_declexp, 0);
 				}
@@ -2091,12 +2082,12 @@ char   *arg,
 			case YP_SETLIST:
 			case YP_CHOICE:
 				if (brackets && !didone) {
-					 printf ("%*s%%{\n", level * 4, "");
+					printf ("%*s%%{\n", level * 4, "");
 					level++, didone++;
 				}
-				 printf ("%*s%s = &(%s);\n",
-							   level * 4, "", y -> yp_declexp,
-							   y -> yp_varexp);
+				printf ("%*s%s = &(%s);\n",
+						level * 4, "", y -> yp_declexp,
+						y -> yp_varexp);
 				break;
 			}
 		break;
@@ -2104,7 +2095,7 @@ char   *arg,
 
 	if (brackets && didone) {
 		level--;
-		 printf ("%*s%%}\n", level * 4, "");
+		printf ("%*s%%}\n", level * 4, "");
 	}
 }
 
@@ -2114,19 +2105,19 @@ YP	yp;
 char   *var, *action2;
 int	level;
 {
-	 printf ("\n%*s%%{\n", level * 4, "");
+	printf ("\n%*s%%{\n", level * 4, "");
 	level++;
 
-	 printf ("%*sif ((%s%s = prim2bit (pe_cpy ($$))) == NULLPE) {\n",
-				   level * 4, "", var, SVAL (yp -> yp_varexp));
-	 printf ("%*sadvise (NULLCP, \"%%s\", PEPY_ERR_NOMEM);\n", (level + 1) * 4, "");
-	 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "", level * 4, "");
+	printf ("%*sif ((%s%s = prim2bit (pe_cpy ($$))) == NULLPE) {\n",
+			level * 4, "", var, SVAL (yp -> yp_varexp));
+	printf ("%*sadvise (NULLCP, \"%%s\", PEPY_ERR_NOMEM);\n", (level + 1) * 4, "");
+	printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "", level * 4, "");
 
 	if (action2)
-		 printf ("\n%*s%s\n", level * 4, "", action2);
+		printf ("\n%*s%s\n", level * 4, "", action2);
 
 	level--;
-	 printf ("%*s%%}", level * 4, "");
+	printf ("%*s%%}", level * 4, "");
 }
 
 #ifdef	notdef
@@ -2136,19 +2127,19 @@ char   *var,
 	   *action2;
 int	level;
 {
-	 printf ("\n%*s%%{\n", level * 4, "");
+	printf ("\n%*s%%{\n", level * 4, "");
 	level++;
 
-	 printf ("%*sif ((%s%s = str2qb ($$, $$_len, 1)) == ((struct qbuf *) 0)) {\n",
-				   level * 4, "", var, SVAL (yp -> yp_varexp));
-	 printf ("%*sadvise (NULLCP, \"%%s\", PEPY_ERR_NOMEM);\n", (level + 1) * 4, "");
-	 printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "", level * 4, "");
+	printf ("%*sif ((%s%s = str2qb ($$, $$_len, 1)) == ((struct qbuf *) 0)) {\n",
+			level * 4, "", var, SVAL (yp -> yp_varexp));
+	printf ("%*sadvise (NULLCP, \"%%s\", PEPY_ERR_NOMEM);\n", (level + 1) * 4, "");
+	printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "", level * 4, "");
 
 	if (action2)
-		 printf ("\n%*s%s\n", level * 4, "", action2);
+		printf ("\n%*s%s\n", level * 4, "", action2);
 
 	level--;
-	 printf ("%*s%%}", level * 4, "");
+	printf ("%*s%%}", level * 4, "");
 }
 #endif
 
@@ -2165,11 +2156,11 @@ YP	yp;
 int	partial;
 {
 	YP	   *x,
-			 y,
-			 z,
-			 *z1,
-			 z2,
-			 z3;
+	 y,
+	 z,
+	 *z1,
+	 z2,
+	 z3;
 
 	for (x = &yp -> yp_type; y = *x; x = &y -> yp_next) {
 		if (y -> yp_flags & (YP_TAG | YP_BOUND))
@@ -2228,10 +2219,10 @@ static	components_pullup (yp)
 YP	yp;
 {
 	YP    *x,
-			 y,
-			 z,
-			 z1,
-			 z2;
+	y,
+	z,
+	z1,
+	z2;
 
 	for (x = &yp -> yp_type; y = *x; x = &y -> yp_next) {
 		if (!(y -> yp_flags & YP_COMPONENTS))
@@ -2332,21 +2323,21 @@ int	level;
 	YV    y;
 
 	if (yv -> yv_flags & YV_ID)
-		 printf ("%s ", yv -> yv_id);
+		printf ("%s ", yv -> yv_id);
 
 	if (yv -> yv_flags & YV_TYPE)	/* will this REALLY work??? */
 		do_type1 (yv -> yv_type, 0, level, NULLCP, NULLCP, NULLCP, NULL);
 
 	switch (yv -> yv_code) {
 	case YV_BOOL:
-		 printf (yv -> yv_number ? "TRUE" : "FALSE");
+		printf (yv -> yv_number ? "TRUE" : "FALSE");
 		break;
 
 	case YV_NUMBER:
 		if (yv -> yv_named)
-			 printf ("%s", yv -> yv_named);
+			printf ("%s", yv -> yv_named);
 		else
-			 printf ("%d", yv -> yv_number);
+			printf ("%d", yv -> yv_number);
 		break;
 
 	case YV_REAL:
@@ -2354,28 +2345,28 @@ int	level;
 		break;
 
 	case YV_STRING:
-		 printf ("\"%s\"", yv -> yv_string);
+		printf ("\"%s\"", yv -> yv_string);
 		break;
 
 	case YV_IDEFINED:
 		if (yv -> yv_module)
-			 printf ("%s.", yv -> yv_module);
-		 printf ("%s", yv -> yv_identifier);
+			printf ("%s.", yv -> yv_module);
+		printf ("%s", yv -> yv_identifier);
 		break;
 
 	case YV_IDLIST:
 	case YV_VALIST:
-		 printf ("{");
+		printf ("{");
 		for (y = yv -> yv_idlist; y; y = y -> yv_next) {
-			 printf (" ");
+			printf (" ");
 			val2prf (y, level + 1);
-			 printf (y -> yv_next ? ", " : " ");
+			printf (y -> yv_next ? ", " : " ");
 		}
-		 printf ("}");
+		printf ("}");
 		break;
 
 	case YV_NULL:
-		 printf ("NULL");
+		printf ("NULL");
 		break;
 
 	default:
@@ -2383,9 +2374,8 @@ int	level;
 		/* NOTREACHED */
 	}
 }
-static 
-dump_real (double r)
-{
+static
+dump_real (double r) {
 #ifndef	BSD44
 	extern char *ecvt ();
 	char	*cp;
@@ -2393,28 +2383,28 @@ dump_real (double r)
 	int	decpt, sign;
 
 	cp = ecvt (r, 20, &decpt, &sign);
-	 strcpy (sbuf, cp);	/* cp gets overwritten by printf */
-	 printf ("{ %s%s, 10, %d }", sign ? "-" : "", sbuf,
-				   decpt - strlen (sbuf));
+	strcpy (sbuf, cp);	/* cp gets overwritten by printf */
+	printf ("{ %s%s, 10, %d }", sign ? "-" : "", sbuf,
+			decpt - strlen (sbuf));
 #else
 	char   *cp,
-			 *dp,
-			 *sp;
+		   *dp,
+		   *sp;
 	char    sbuf[128];
 
-	 sprintf (sbuf, "%.19e", r);
+	sprintf (sbuf, "%.19e", r);
 	if (*(dp = sbuf) == '-')
 		sp = "-", dp++;
 	else
 		sp = "";
 
 	if (dp[1] != '.' || (cp = index (dp, 'e')) == NULL) {
-		 printf ("{ 0, 10, 0 } -- %s --", sbuf);
+		printf ("{ 0, 10, 0 } -- %s --", sbuf);
 		return;
 	}
 	*cp++ = NULL;
-	 printf ("{ %s%c%s, 10, %d }",
-				   sp, *dp, dp + 2, atoi (cp) - strlen (dp + 2));
+	printf ("{ %s%c%s, 10, %d }",
+			sp, *dp, dp + 2, atoi (cp) - strlen (dp + 2));
 #endif
 }
 
@@ -2424,7 +2414,7 @@ static int  dfl2int (yp)
 YP	yp;
 {
 	YV	    yv,
-			 y;
+	 y;
 
 	yv = yp -> yp_default;
 	switch (yv -> yv_code) {
@@ -2470,60 +2460,60 @@ int	level;
 	if (yp == NULLYP)
 		return;
 
-	 fprintf (stderr, "%*scode=0x%x flags=%s direction=0x%x\n", level * 4, "",
-					yp -> yp_code, sprintb (yp -> yp_flags, YPBITS),
-					yp -> yp_direction);
-	 fprintf (stderr,
-					"%*sintexp=\"%s\" strexp=\"%s\" prfexp=0%o declexp=\"%s\" varexp=\"%s\"\n",
-					level * 4, "", yp -> yp_intexp, yp -> yp_strexp, yp -> yp_prfexp,
-					yp -> yp_declexp, yp -> yp_varexp);
+	fprintf (stderr, "%*scode=0x%x flags=%s direction=0x%x\n", level * 4, "",
+			 yp -> yp_code, sprintb (yp -> yp_flags, YPBITS),
+			 yp -> yp_direction);
+	fprintf (stderr,
+			 "%*sintexp=\"%s\" strexp=\"%s\" prfexp=0%o declexp=\"%s\" varexp=\"%s\"\n",
+			 level * 4, "", yp -> yp_intexp, yp -> yp_strexp, yp -> yp_prfexp,
+			 yp -> yp_declexp, yp -> yp_varexp);
 	if (yp -> yp_param_type)
-		 fprintf (stderr, "%*sparameter type=\"%s\"\n", level * 4, "",
-						yp -> yp_param_type);
+		fprintf (stderr, "%*sparameter type=\"%s\"\n", level * 4, "",
+				 yp -> yp_param_type);
 	if (yp -> yp_action0)
-		 fprintf (stderr, "%*saction0 at line %d=\"%s\"\n", level * 4, "",
-						yp -> yp_act0_lineno, yp -> yp_action0);
+		fprintf (stderr, "%*saction0 at line %d=\"%s\"\n", level * 4, "",
+				 yp -> yp_act0_lineno, yp -> yp_action0);
 	if (yp -> yp_action05)
-		 fprintf (stderr, "%*saction05 at line %d=\"%s\"\n", level * 4, "",
-						yp -> yp_act05_lineno, yp -> yp_action05);
+		fprintf (stderr, "%*saction05 at line %d=\"%s\"\n", level * 4, "",
+				 yp -> yp_act05_lineno, yp -> yp_action05);
 	if (yp -> yp_action1)
-		 fprintf (stderr, "%*saction1 at line %d=\"%s\"\n", level * 4, "",
-						yp -> yp_act1_lineno, yp -> yp_action1);
+		fprintf (stderr, "%*saction1 at line %d=\"%s\"\n", level * 4, "",
+				 yp -> yp_act1_lineno, yp -> yp_action1);
 	if (yp -> yp_action2)
-		 fprintf (stderr, "%*saction2 at line %d=\"%s\"\n", level * 4, "",
-						yp -> yp_act2_lineno, yp -> yp_action2);
+		fprintf (stderr, "%*saction2 at line %d=\"%s\"\n", level * 4, "",
+				 yp -> yp_act2_lineno, yp -> yp_action2);
 	if (yp -> yp_action3)
-		 fprintf (stderr, "%*saction3 at line %d=\"%s\"\n", level * 4, "",
-						yp -> yp_act3_lineno, yp -> yp_action3);
+		fprintf (stderr, "%*saction3 at line %d=\"%s\"\n", level * 4, "",
+				 yp -> yp_act3_lineno, yp -> yp_action3);
 
 	if (yp -> yp_flags & YP_TAG) {
-		 fprintf (stderr, "%*stag class=0x%x value=0x%x\n", level * 4, "",
-						yp -> yp_tag -> yt_class, yp -> yp_tag -> yt_value);
+		fprintf (stderr, "%*stag class=0x%x value=0x%x\n", level * 4, "",
+				 yp -> yp_tag -> yt_class, yp -> yp_tag -> yt_value);
 		print_value (yp -> yp_tag -> yt_value, level + 1);
 	}
 
 	if (yp -> yp_flags & YP_DEFAULT) {
-		 fprintf (stderr, "%*sdefault=0x%x\n", level * 4, "", yp -> yp_default);
+		fprintf (stderr, "%*sdefault=0x%x\n", level * 4, "", yp -> yp_default);
 		print_value (yp -> yp_default, level + 1);
 	}
 
 	if (yp -> yp_flags & YP_ID)
-		 fprintf (stderr, "%*sid=\"%s\"\n", level * 4, "", yp -> yp_id);
+		fprintf (stderr, "%*sid=\"%s\"\n", level * 4, "", yp -> yp_id);
 
 	if (yp -> yp_flags & YP_BOUND)
-		 fprintf (stderr, "%*sbound=\"%s\"\n", level * 4, "", yp -> yp_bound);
+		fprintf (stderr, "%*sbound=\"%s\"\n", level * 4, "", yp -> yp_bound);
 
 	if (yp -> yp_offset)
-		 fprintf (stderr, "%*soffset=\"%s\"\n", level * 4, "", yp -> yp_offset);
+		fprintf (stderr, "%*soffset=\"%s\"\n", level * 4, "", yp -> yp_offset);
 
 	switch (yp -> yp_code) {
 	case YP_INTLIST:
 	case YP_ENUMLIST:
 	case YP_BITLIST:
-		 fprintf (stderr, "%*svalue=0x%x\n", level * 4, "", yp -> yp_value);
+		fprintf (stderr, "%*svalue=0x%x\n", level * 4, "", yp -> yp_value);
 		for (yv = yp -> yp_value; yv; yv = yv -> yv_next) {
 			print_value (yv, level + 1);
-			 fprintf (stderr, "%*s----\n", (level + 1) * 4, "");
+			fprintf (stderr, "%*s----\n", (level + 1) * 4, "");
 		}
 		break;
 
@@ -2532,17 +2522,17 @@ int	level;
 	case YP_SETTYPE:
 	case YP_SETLIST:
 	case YP_CHOICE:
-		 fprintf (stderr, "%*stype=0x%x\n", level * 4, "", yp -> yp_type);
+		fprintf (stderr, "%*stype=0x%x\n", level * 4, "", yp -> yp_type);
 		for (y = yp -> yp_type; y; y = y -> yp_next) {
 			print_type (y, level + 1);
-			 fprintf (stderr, "%*s----\n", (level + 1) * 4, "");
+			fprintf (stderr, "%*s----\n", (level + 1) * 4, "");
 		}
 		break;
 
 	case YP_IDEFINED:
-		 fprintf (stderr, "%*smodule=\"%s\" identifier=\"%s\"\n",
-						level * 4, "", yp -> yp_module ? yp -> yp_module : "",
-						yp -> yp_identifier);
+		fprintf (stderr, "%*smodule=\"%s\" identifier=\"%s\"\n",
+				 level * 4, "", yp -> yp_module ? yp -> yp_module : "",
+				 yp -> yp_identifier);
 		break;
 
 	default:
@@ -2561,50 +2551,50 @@ int	level;
 	if (yv == NULLYV)
 		return;
 
-	 fprintf (stderr, "%*scode=0x%x flags=%s\n", level * 4, "",
-					yv -> yv_code, sprintb (yv -> yv_flags, YVBITS));
+	fprintf (stderr, "%*scode=0x%x flags=%s\n", level * 4, "",
+			 yv -> yv_code, sprintb (yv -> yv_flags, YVBITS));
 
 	if (yv -> yv_action)
-		 fprintf (stderr, "%*saction at line %d=\"%s\"\n", level * 4, "",
-						yv -> yv_act_lineno, yv -> yv_action);
+		fprintf (stderr, "%*saction at line %d=\"%s\"\n", level * 4, "",
+				 yv -> yv_act_lineno, yv -> yv_action);
 
 	if (yv -> yv_flags & YV_ID)
-		 fprintf (stderr, "%*sid=\"%s\"\n", level * 4, "", yv -> yv_id);
+		fprintf (stderr, "%*sid=\"%s\"\n", level * 4, "", yv -> yv_id);
 
 	if (yv -> yv_flags & YV_NAMED)
-		 fprintf (stderr, "%*snamed=\"%s\"\n", level * 4, "", yv -> yv_named);
+		fprintf (stderr, "%*snamed=\"%s\"\n", level * 4, "", yv -> yv_named);
 
 	if (yv -> yv_flags & YV_TYPE) {
-		 fprintf (stderr, "%*stype=0x%x\n", level * 4, "", yv -> yv_type);
+		fprintf (stderr, "%*stype=0x%x\n", level * 4, "", yv -> yv_type);
 		print_type (yv -> yv_type, level + 1);
 	}
 
 	switch (yv -> yv_code) {
 	case YV_NUMBER:
 	case YV_BOOL:
-		 fprintf (stderr, "%*snumber=0x%x\n", level * 4, "",
-						yv -> yv_number);
+		fprintf (stderr, "%*snumber=0x%x\n", level * 4, "",
+				 yv -> yv_number);
 		break;
 
 	case YV_STRING:
-		 fprintf (stderr, "%*sstring=\"%s\"\n", level * 4, "",
-						yv -> yv_string);
+		fprintf (stderr, "%*sstring=\"%s\"\n", level * 4, "",
+				 yv -> yv_string);
 		break;
 
 	case YV_IDEFINED:
 		if (yv -> yv_flags & YV_BOUND)
-			 fprintf (stderr, "%*smodule=\"%s\" identifier=\"%s\"\n",
-							level * 4, "", yv -> yv_module, yv -> yv_identifier);
+			fprintf (stderr, "%*smodule=\"%s\" identifier=\"%s\"\n",
+					 level * 4, "", yv -> yv_module, yv -> yv_identifier);
 		else
-			 fprintf (stderr, "%*sbound identifier=\"%s\"\n",
-							level * 4, "", yv -> yv_identifier);
+			fprintf (stderr, "%*sbound identifier=\"%s\"\n",
+					 level * 4, "", yv -> yv_identifier);
 		break;
 
 	case YV_IDLIST:
 	case YV_VALIST:
 		for (y = yv -> yv_idlist; y; y = y -> yv_next) {
 			print_value (y, level + 1);
-			 fprintf (stderr, "%*s----\n", (level + 1) * 4, "");
+			fprintf (stderr, "%*s----\n", (level + 1) * 4, "");
 		}
 		break;
 
@@ -2617,10 +2607,10 @@ int	level;
 
 static SY  new_symbol (encpref, decpref, prfpref, mod, id, type)
 char  *encpref,
-		 *decpref,
-		 *prfpref,
-		 *mod,
-		 *id;
+	  *decpref,
+	  *prfpref,
+	  *mod,
+	  *id;
 YP	type;
 {
 	SY    sy;
@@ -2638,9 +2628,8 @@ YP	type;
 }
 
 
-static SY 
-add_symbol (SY s1, SY s2)
-{
+static SY
+add_symbol (SY s1, SY s2) {
 	SY	    sy;
 
 	if (s1 == NULLSY)
@@ -2703,7 +2692,7 @@ int	lineno;
 
 YP	add_type (y, z)
 YP	y,
-		 z;
+ z;
 {
 	YP	    yp;
 
@@ -2856,7 +2845,7 @@ int	code;
 
 YV	add_value (y, z)
 YV	y,
-		 z;
+ z;
 {
 	YV	    yv;
 
@@ -2959,8 +2948,7 @@ YT	yt;
 /*    STRINGS */
 
 char *
-new_string (char *s)
-{
+new_string (char *s) {
 	char  *p;
 
 	if (s == NULLCP)
@@ -2969,7 +2957,7 @@ new_string (char *s)
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
 		yyerror ("out of memory");
 
-	 strcpy (p, s);
+	strcpy (p, s);
 	return p;
 }
 
@@ -3003,8 +2991,7 @@ static struct triple {
 /*  */
 
 char *
-modsym (char *module, char *id, char *prefix)
-{
+modsym (char *module, char *id, char *prefix) {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
@@ -3023,17 +3010,16 @@ modsym (char *module, char *id, char *prefix)
 	modsym_aux (module ? module : mymodule, buf2);
 	modsym_aux (id, buf3);
 	if (prefix)
-		 sprintf (buffer, "%s_%s_%s", buf1, buf2, buf3);
+		sprintf (buffer, "%s_%s_%s", buf1, buf2, buf3);
 	else
-		 sprintf (buffer, "%s_%s", buf2, buf3);
+		sprintf (buffer, "%s_%s", buf2, buf3);
 
 	return buffer;
 }
 
 
-static 
-modsym_aux (char *name, char *bp)
-{
+static
+modsym_aux (char *name, char *bp) {
 	char   c;
 
 	while (c = *name++)
@@ -3054,8 +3040,7 @@ modsym_aux (char *name, char *bp)
 /*  */
 
 static char *
-gensym (char *s, char *a)
-{
+gensym (char *s, char *a) {
 	int     i;
 	char  *p;
 	char    buffer[BUFSIZ];
@@ -3079,38 +3064,37 @@ gensym (char *s, char *a)
 		/* NOTREACHED */
 	}
 	if (a)
-		 sprintf (buffer, "%s_%s_%d[n_%s]", s, modulename, i, a);
+		sprintf (buffer, "%s_%s_%d[n_%s]", s, modulename, i, a);
 	else
-		 sprintf (buffer, "%s_%s_%d", s, modulename, i);
+		sprintf (buffer, "%s_%s_%d", s, modulename, i);
 
 	if ((p = malloc ((unsigned) (strlen (buffer) + 11))) == NULLCP)
 		yyerror ("out of memory");
 
-	 strcpy (p, buffer);
+	strcpy (p, buffer);
 	return p;
 }
 
 /* pepy compatible routines - you know how it is ... */
-int 
+int
 init_new_file()  {
 	;
 }
 
-int 
+int
 end_file()  {
 	;
 }
 
 static char *
-array (char *s, int flg)
-{
+array (char *s, int flg) {
 	static char buf[BUFSIZ];
 	char	*p;
 
 	if (!flg) return s;
 
 	if (p = index (s, '[')) {
-		 sprintf (buf, "%*.*s[1]", p - s, p - s, s);
+		sprintf (buf, "%*.*s[1]", p - s, p - s, s);
 		return buf;
 	}
 	return s;
@@ -3122,26 +3106,26 @@ int	level;
 {
 	switch (yp -> yp_code) {
 	case YP_BOOL:
-		 printf ("%*s%s = %d;\n", level * 4, "",
-					   SVAL (yp->yp_varexp),
-					   val2int (yp -> yp_default) ? 1 : 0);
+		printf ("%*s%s = %d;\n", level * 4, "",
+				SVAL (yp->yp_varexp),
+				val2int (yp -> yp_default) ? 1 : 0);
 		break;
 
 	case YP_INT:
-		 printf ("%*s%s = %d;\n", level * 4, "",
-					   SVAL (yp -> yp_varexp), val2int (yp -> yp_default));
+		printf ("%*s%s = %d;\n", level * 4, "",
+				SVAL (yp -> yp_varexp), val2int (yp -> yp_default));
 		break;
 
 	case YP_INTLIST:
 	case YP_ENUMLIST:
-		 printf ("%*s%s = %d;\n", level * 4, "",
-					   SVAL (yp -> yp_varexp), dfl2int (yp));
+		printf ("%*s%s = %d;\n", level * 4, "",
+				SVAL (yp -> yp_varexp), dfl2int (yp));
 		break;
 
 	case YP_REAL:
-		 printf ("%*s%s = %g;\n", level * 4, "",
-					   SVAL (yp -> yp_varexp),
-					   val2real (yp -> yp_default));
+		printf ("%*s%s = %g;\n", level * 4, "",
+				SVAL (yp -> yp_varexp),
+				val2real (yp -> yp_default));
 
 	default:
 		break;
@@ -3170,9 +3154,9 @@ OID	oid;
 	YT	    yt;
 	YV	    yv;
 
-	 sprintf (file, "%s.ph", module);
+	sprintf (file, "%s.ph", module);
 	if (oid)
-		 sprintf (p = buffer, "%s.ph", sprintoid(oid));
+		sprintf (p = buffer, "%s.ph", sprintoid(oid));
 	else
 		p = NULLCP;
 	if ((fp = open_ph_file (file, p, "r")) == NULL) {
@@ -3213,12 +3197,12 @@ OID	oid;
 					new_string (id), yp);
 	}
 
-	 fclose (fp);
+	fclose (fp);
 }
 
 /*  */
 
-static 
+static
 write_ph_file()  {
 	int	    msave;
 	char    file[BUFSIZ];
@@ -3229,9 +3213,9 @@ write_ph_file()  {
 	YT	    yt;
 	YP	    yp;
 
-	 sprintf (file, "%s.ph", mymodule);
+	sprintf (file, "%s.ph", mymodule);
 	if (mymoduleid)
-		 sprintf (cp = fileoid, "%s.ph", sprintoid(mymoduleid));
+		sprintf (cp = fileoid, "%s.ph", sprintoid(mymoduleid));
 	else
 		cp = NULLCP;
 	msave = mflag, mflag = 0;
@@ -3247,17 +3231,17 @@ write_ph_file()  {
 			continue;
 
 		if (is_any_type (yp)) {
-			 fprintf (fp, "-1/0/%d: %s", yp -> yp_direction, sy -> sy_name);
-			 fprintf (fp, " |%s %s %s\n", yyencpref, yydecpref, yyprfpref);
+			fprintf (fp, "-1/0/%d: %s", yp -> yp_direction, sy -> sy_name);
+			fprintf (fp, " |%s %s %s\n", yyencpref, yydecpref, yyprfpref);
 		} else if ((yt = lookup_tag (yp)) && yt -> yt_class != PE_CLASS_CONT) {
-			 fprintf (fp, "%d/%d/%d: %s", yt -> yt_class,
-							val2int (yt -> yt_value), yp -> yp_direction,
-							sy -> sy_name);
-			 fprintf (fp, " |%s %s %s\n", yyencpref, yydecpref, yyprfpref);
+			fprintf (fp, "%d/%d/%d: %s", yt -> yt_class,
+					 val2int (yt -> yt_value), yp -> yp_direction,
+					 sy -> sy_name);
+			fprintf (fp, " |%s %s %s\n", yyencpref, yydecpref, yyprfpref);
 		}
 	}
 
-	 fclose (fp);
+	fclose (fp);
 }
 
 /*  */
@@ -3273,7 +3257,7 @@ char *fn,
 	 *mode;
 {
 	char  *dst,
-			 *path;
+		  *path;
 	char    fnb[BUFSIZ];
 	FILE  *fp;
 	static char *pepypath = NULL;
@@ -3287,20 +3271,20 @@ char *fn,
 		if (fnoid && (fp = fopen (fnoid, mode)) != NULL)
 			return fp;
 
-		 sprintf (fnb, "../pepy/%s", fn);
+		sprintf (fnb, "../pepy/%s", fn);
 		if ((fp = fopen (fnb, mode)) != NULL)
 			return fp;
 		if (fnoid) {
-			 sprintf (fnb, "../pepy/%s", fnoid);
+			sprintf (fnb, "../pepy/%s", fnoid);
 			if ((fp = fopen (fnb, mode)) != NULL)
 				return fp;
 		}
 
-		 sprintf (fnb, "../../pepy/%s", fn);
+		sprintf (fnb, "../../pepy/%s", fn);
 		if((fp = fopen (fnb, mode)) != NULL)
 			return fp;
 		if (fnoid) {
-			 sprintf (fnb, "../../pepy/%s", fnoid);
+			sprintf (fnb, "../../pepy/%s", fnoid);
 			if ((fp = fopen (fnb, mode)) != NULL)
 				return fp;
 		}
@@ -3317,11 +3301,11 @@ char *fn,
 			*dst++ = *path++;
 		if (dst != fnb)
 			*dst++ = '/';
-		 strcpy (dst, fn);
+		strcpy (dst, fn);
 		if ((fp = fopen (fnb, mode)) != NULL)
 			break;
 		if (fnoid) {
-			 strcpy (dst, fnoid);
+			strcpy (dst, fnoid);
 			if ((fp = fopen (fnb, mode)) != NULL)
 				break;
 		}
@@ -3345,7 +3329,7 @@ YP     yp;
 
 	while (yp -> yp_code == YP_IDEFINED) {
 		if (yp -> yp_module && strcmp (yp -> yp_module, mymodule))
-			 lookup_module (yp -> yp_module, yp -> yp_modid);
+			lookup_module (yp -> yp_module, yp -> yp_modid);
 
 		if (z = lookup_type (yp -> yp_module, yp -> yp_identifier)) {
 			yp = z;
@@ -3375,14 +3359,14 @@ YP     yp;
 int  is_any_type (yp)
 YP     yp;
 {
-	   YP z;
+	YP z;
 
 	while (yp -> yp_code == YP_IDEFINED) {
 		if (yp -> yp_flags & YP_TAG)
 			return 0;
 
 		if (yp -> yp_module && strcmp (yp -> yp_module, mymodule))
-			 lookup_module (yp -> yp_module, yp -> yp_modid);
+			lookup_module (yp -> yp_module, yp -> yp_modid);
 
 		if (z = lookup_type (yp -> yp_module, yp -> yp_identifier)) {
 			yp = z;
@@ -3400,8 +3384,7 @@ YP     yp;
  * return a string with the leading pathname stripped off
  */
 char *
-pstrip (char *p)
-{
+pstrip (char *p) {
 	char *p1;
 
 	if (p1 = rindex(p, '/'))
@@ -3428,28 +3411,28 @@ char	*file[];	/* files to be included */
 	if (mflag) {
 		/* PEPYPATH version */
 
-		 fprintf (fp, "#ifndef	PEPYPATH\n");
+		fprintf (fp, "#ifndef	PEPYPATH\n");
 		for (p = file; *p; p++) {
 			if (is_stand(*p))
-				 fprintf (fp, "#include <isode/%s>\n", *p);
+				fprintf (fp, "#include <isode/%s>\n", *p);
 			else
-				 fprintf (fp, "#include \"%s\"\n", pstrip(*p));
+				fprintf (fp, "#include \"%s\"\n", pstrip(*p));
 		}
-		 fprintf (fp, "#else\n");
+		fprintf (fp, "#else\n");
 		for (p = file; *p; p++) {
-			 fprintf (fp, "#include \"%s\"\n", pstrip(*p));
+			fprintf (fp, "#include \"%s\"\n", pstrip(*p));
 		}
-		 fprintf (fp, "#endif\n\n");
+		fprintf (fp, "#endif\n\n");
 
 	} else {
 		for (p = file; *p; p++) {
 			if (is_stand(*p))
-				 fprintf (fp, "#include <isode/%s>\n", *p);
+				fprintf (fp, "#include <isode/%s>\n", *p);
 			else
-				 fprintf (fp, "#include \"%s\"\n", pstrip(*p));
+				fprintf (fp, "#include \"%s\"\n", pstrip(*p));
 		}
 	}
-	 fprintf (fp, "\n");
+	fprintf (fp, "\n");
 }
 
 /* standard files  - that should be found in the <isode> directory */
@@ -3469,9 +3452,8 @@ static char *stand_f[] = {
  * include file which should be in the include/isode directory.
  * return nonzero (true) if it is.
  */
-int 
-is_stand (char *file)
-{
+int
+is_stand (char *file) {
 	char	**p;
 	char	*f = pstrip (file);
 	for (p = stand_f; *p; p++) {
@@ -3492,11 +3474,10 @@ static int   nextmod = 0;	/* next free slot in external module table */
 /*
  * build up a list of external modules we have referenced
  */
-int 
+int
 addextmod (
-    char *p	/* name of external module */
-)
-{
+	char *p	/* name of external module */
+) {
 
 	if (nextmod >= EXTMODSIZE)
 		ferr(1, "Too many external modules reference, table overflow\n");

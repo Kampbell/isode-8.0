@@ -272,7 +272,7 @@ int	offset;
 
 static int  ut_compar (a, b)
 struct udptab **a,
-		**b;
+		   **b;
 {
 	return elem_cmp ((*a) -> ut_instance, UT_SIZE,
 					 (*b) -> ut_instance, UT_SIZE);
@@ -285,12 +285,12 @@ int	offset;
 	int    i;
 	unsigned int  *cp;
 	struct udptab *us,
-			*up,
-			**usp;
+			   *up,
+			   **usp;
 	struct inpcb  *ip;
 	struct inpcb *head,
-			udb,
-			zdb;
+			   udb,
+			   zdb;
 	struct nlist nzs;
 	struct nlist *nz = &nzs;
 	static   int first_time = 1;
@@ -372,7 +372,7 @@ int	offset;
 
 	if (i > 1) {
 		struct udptab **base,
-				**use;
+				   **use;
 
 		if ((base = (struct udptab **) malloc ((unsigned) (i * sizeof *base)))
 				== NULL)

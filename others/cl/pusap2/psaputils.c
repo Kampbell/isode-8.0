@@ -74,15 +74,14 @@ static  struct psapblk   *PuHead = &psapque;
 
 /*  */
 /*----------------------------------------------------------------------------*/
-int 
+int
 ppdu2data (
-/*----------------------------------------------------------------------------*/
-    struct psapblk *pb,
-    struct PSAPindication *pi,
-    struct PuSAPstart *ps,
-    struct type_PS_User__data *info
-)
-{
+	/*----------------------------------------------------------------------------*/
+	struct psapblk *pb,
+	struct PSAPindication *pi,
+	struct PuSAPstart *ps,
+	struct type_PS_User__data *info
+) {
 	int    i, j;
 	int	    nctx, ctx, result;
 	PE	    pe;
@@ -224,7 +223,7 @@ PE     *pe;
 		if (strcmp (psapfile, "-")) {
 			char    file[BUFSIZ];
 
-			 sprintf (file, psapfile, getpid ());
+			sprintf (file, psapfile, getpid ());
 			fp = fopen (file, "a"), isopen = 1;
 		} else
 			fp = stderr, isopen = 0,  fflush (stdout);
@@ -232,9 +231,9 @@ PE     *pe;
 		if (fp) {
 			pe2text (fp, p, 1, len);
 			if (isopen)
-				 fclose (fp);
+				fclose (fp);
 			else
-				 fflush (fp);
+				fflush (fp);
 		}
 	}
 #endif
@@ -261,7 +260,7 @@ struct PSAPindication *pi;
 				== NULL) {
 no_mem:
 			;
-			 pusaplose (pi, PC_CONGEST, NULLCP, NULLCP);
+			pusaplose (pi, PC_CONGEST, NULLCP, NULLCP);
 			goto out;
 		}
 
@@ -272,7 +271,7 @@ no_mem:
 		goto no_mem;
 	if (str_setup (ps, qb -> qb_data, qb -> qb_len, 1) == NOTOK
 			|| pe2ps_aux (ps, pe, 0) == NOTOK) {
-		 pusaplose (pi, PC_CONGEST, NULLCP, "error encoding user-info");
+		pusaplose (pi, PC_CONGEST, NULLCP, "error encoding user-info");
 		ps_free (ps);
 		goto out;
 	}
@@ -291,7 +290,7 @@ no_mem:
 		if (strcmp (psapfile, "-")) {
 			char    file[BUFSIZ];
 
-			 sprintf (file, psapfile, getpid ());
+			sprintf (file, psapfile, getpid ());
 			fp = fopen (file, "a"), isopen = 1;
 		} else
 			fp = stderr, isopen = 0,  fflush (stdout);
@@ -299,9 +298,9 @@ no_mem:
 		if (fp) {
 			pe2text (fp, pe, 0, len);
 			if (isopen)
-				 fclose (fp);
+				fclose (fp);
 			else
-				 fflush (fp);
+				fflush (fp);
 		}
 	}
 #endif
@@ -329,31 +328,31 @@ int	ndata,
 	ppdu;
 {
 	int    i,
-			 j;
+		   j;
 	PE	   *d,
-			 pe;
+	 pe;
 	struct qbuf *qb;
 	struct PSAPcontext *qp;
 	OID	    atn;
 	struct type_PS_User__data *pdu;
 	struct type_PS_Simply__encoded__data *simple;
 	struct type_PS_Fully__encoded__data **complex,
-			*full;
+			   *full;
 
 	if ((pdu = (struct type_PS_User__data *) calloc (1, sizeof *pdu))
 			== NULL) {
 no_mem:
 		;
-		 pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 
 	pdu -> offset = type_PS_User__data_simple;
 	for (d = data, i = 0; i < ndata; i++) {
 		if ((pe = *d++) == NULLPE) {
-			 pusaplose (pi, PC_PARAMETER, NULLCP,
-							  "missing %d%s PSDU", i + 1,
-							  i == 0 ? "st" : i == 1 ? "nd" : i == 2 ? "rd" : "th");
+			pusaplose (pi, PC_PARAMETER, NULLCP,
+					   "missing %d%s PSDU", i + 1,
+					   i == 0 ? "st" : i == 1 ? "nd" : i == 2 ? "rd" : "th");
 			goto out;
 		}
 
@@ -364,8 +363,8 @@ no_mem:
 
 		if (pb -> pb_ncontext > 1) {
 			if ( pe -> pe_context == PE_DFLT_CTX) {
-				 pusaplose (pi, PC_PARAMETER, NULLCP,
-								  "default context not permitted");
+				pusaplose (pi, PC_PARAMETER, NULLCP,
+						   "default context not permitted");
 				goto out;
 			}
 			pdu -> offset = type_PS_User__data_complex;
@@ -404,13 +403,13 @@ no_mem:
 				if (qp -> pc_id == pe -> pe_context)
 					break;
 			if (j >= pb -> pb_ncontext) {
-				 pusaplose (pi, PC_PARAMETER, NULLCP,
-								  "context %d is undefined", pe -> pe_context);
+				pusaplose (pi, PC_PARAMETER, NULLCP,
+						   "context %d is undefined", pe -> pe_context);
 				goto out;
 			}
 			if (qp -> pc_result != PC_ACCEPT) {
-				 pusaplose (pi, PC_PARAMETER, NULLCP,
-								  "context %d is unsupported", pe -> pe_context);
+				pusaplose (pi, PC_PARAMETER, NULLCP,
+						   "context %d is unsupported", pe -> pe_context);
 				goto out;
 			}
 			atn = qp -> pc_atn;
@@ -418,7 +417,7 @@ no_mem:
 		}
 
 		if (!atn_is_asn1 (atn)) {
-			 pusaplose (pi, PC_PARAMETER, NULLCP, "not ASN.1");
+			pusaplose (pi, PC_PARAMETER, NULLCP, "not ASN.1");
 			goto out;
 		}
 
@@ -480,9 +479,8 @@ out:
 /*----------------------------------------------------------------------------*/
 /*    SSAP interface */
 /*----------------------------------------------------------------------------*/
-int 
-ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa)
-{
+int
+ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -536,8 +534,8 @@ ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SS
 				reason = PC_WAITING;
 				break;
 			}
-		 sprintf (cp = buffer, " (%s at session)",
-						SuErrString (sa -> sa_reason));
+		sprintf (cp = buffer, " (%s at session)",
+				 SuErrString (sa -> sa_reason));
 		break;
 	}
 
@@ -571,23 +569,21 @@ va_dcl {
 }
 #else
 /* VARARGS */
-int 
-pusaplose (struct PSAPindication *pi, int reason, char *what, char *fmt)
-{
+int
+pusaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 	return pusaplose (pi, reason, what, fmt);
 }
 #endif
 
 #ifndef	lint
 /*----------------------------------------------------------------------------*/
-static int 
+static int
 _pusaplose (	/* what, fmt, args ... */
-/*----------------------------------------------------------------------------*/
-    struct PSAPindication *pi,
-    int reason,
-    va_list ap
-)
-{
+	/*----------------------------------------------------------------------------*/
+	struct PSAPindication *pi,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct PSAPabort *pa;
@@ -651,15 +647,14 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 /*---------------------------------------------------------------------------*/
 char *
 PuErrString (
-/*---------------------------------------------------------------------------*/
-    int code
-)
-{
+	/*---------------------------------------------------------------------------*/
+	int code
+) {
 	static char buffer[BUFSIZ];
 
 	if (code < reject_err0_cnt)
 		return reject_err0[code];
-	 sprintf (buffer, "unknown error code %d", code);
+	sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }
 
@@ -667,7 +662,7 @@ PuErrString (
 /*   INTERNAL */
 /*----------------------------------------------------------------------------*/
 struct psapblk *
-newpublk 
+	newpublk
 /*----------------------------------------------------------------------------*/
 {
 	struct psapblk *pb;
@@ -691,10 +686,9 @@ newpublk
 /*----------------------------------------------------------------------------*/
 struct psapblk *
 findpublk (
-/*----------------------------------------------------------------------------*/
-    int sd
-)
-{
+	/*----------------------------------------------------------------------------*/
+	int sd
+) {
 	struct psapblk *pb;
 
 	if (once_only == 0)
@@ -710,12 +704,11 @@ findpublk (
 
 /*  */
 /*----------------------------------------------------------------------------*/
-int 
+int
 freepublk (
-/*----------------------------------------------------------------------------*/
-    struct psapblk *pb
-)
-{
+	/*----------------------------------------------------------------------------*/
+	struct psapblk *pb
+) {
 	int    i;
 	struct PSAPcontext *qp;
 
@@ -761,20 +754,20 @@ IFP	fnx;
 	if (strcmp (psap2file, "-")) {
 		char	file[BUFSIZ];
 
-		 sprintf (file, psap2file, getpid ());
+		sprintf (file, psap2file, getpid ());
 		fp = fopen (file, "a"), isopen = 1;
 	} else
 		fp = stderr, isopen = 0,  fflush (stdout);
 
 	if (fp) {
 		vpushfp (fp, pe, text, rw);
-		 (*fnx) (pe, 1, NULLIP, NULLVP, NULLCP);
+		(*fnx) (pe, 1, NULLIP, NULLVP, NULLCP);
 		vpopfp ();
 
 		if (isopen)
-			 fclose (fp);
+			fclose (fp);
 		else
-			 fflush (fp);
+			fflush (fp);
 	}
 }
 #endif

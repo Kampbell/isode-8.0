@@ -52,15 +52,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2udp.c,v 9.0 19
 int	udpopen (pb, calling, called, pi, async)
 struct psapblk *pb;
 struct NSAPaddr *calling,
-		*called;
+		   *called;
 struct PSAPindication *pi;
 int	async;
 {
 	int	    fd;
 	struct sockaddr_in  lo_socket,
-			in_socket;
+			   in_socket;
 	struct sockaddr_in *lsock = &lo_socket,
-										 *isock = &in_socket;
+							*isock = &in_socket;
 	struct hostent *hp;
 
 	bzero ((char *) isock, sizeof *isock);
@@ -75,15 +75,15 @@ int	async;
 		return psaplose (pi, PC_ADDRESS, NULLCP, "%s: unknown host",
 						 called -> na_domain);
 #ifdef	notanymore
-	 strncpy (called -> na_domain, hp -> h_name,
-					sizeof called -> na_domain);
+	strncpy (called -> na_domain, hp -> h_name,
+			 sizeof called -> na_domain);
 #endif
 
 	isock -> sin_family = hp -> h_addrtype;
 	inaddr_copy (hp, isock);
 
 #ifndef	notanymore
-	 strcpy (called -> na_domain, inet_ntoa (isock -> sin_addr));
+	strcpy (called -> na_domain, inet_ntoa (isock -> sin_addr));
 #endif
 
 	bzero ((char *) lsock, sizeof *lsock);
@@ -104,16 +104,16 @@ int	async;
 		return psaplose (pi, PC_CONGEST, "socket", "unable to start");
 
 	if (join_udp_server (fd, isock) == NOTOK) {
-		 psaplose (pi, PC_REFUSED, "connection", "unable to establish");
-		 close_udp_socket (fd);
+		psaplose (pi, PC_REFUSED, "connection", "unable to establish");
+		close_udp_socket (fd);
 		return NOTOK;
 	}
 
 	if ((pb -> pb_stream = ps_alloc (dg_open)) == NULLPS
 			|| dg_setup (pb -> pb_stream, fd, MAXDGRAM, read_udp_socket,
 						 write_udp_socket, check_udp_socket) == NOTOK) {
-		 psaplose (pi, PC_CONGEST, NULLCP, NULLCP);
-		 close_udp_socket (fd);
+		psaplose (pi, PC_CONGEST, NULLCP, NULLCP);
+		close_udp_socket (fd);
 		return NOTOK;
 	}
 
@@ -149,7 +149,7 @@ struct TSAPdisconnect *td;
 {
 	static char	buffer[BUFSIZ];
 
-	 sprintf (buffer, "%c%d %s %s", PT_UDP, fd, cp1, cp2);
+	sprintf (buffer, "%c%d %s %s", PT_UDP, fd, cp1, cp2);
 
 	return buffer;
 }
@@ -179,7 +179,7 @@ struct PSAPindication *pi;
 		*cp++ = NULL;
 		na -> na_port = htons ((u_short) atoi (cp));
 	}
-	 strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
+	strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
 
 	PUservice (pb, fd);
 
@@ -192,7 +192,7 @@ struct PSAPindication *pi;
 		*cp++ = NULL;
 		na -> na_port = htons ((u_short) atoi (cp));
 	}
-	 strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
+	strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
 
 	if ((pb -> pb_stream = ps_alloc (dg_open)) == NULLPS
 			|| dg_setup (pb -> pb_stream, pb -> pb_fd, MAXDGRAM,
@@ -219,8 +219,8 @@ struct PSAPindication *pi;
 		   0);
 
 	if (pe2ps (ps = pb -> pb_stream, pb -> pb_retry) == NOTOK) {
-		 pslose (pi, ps -> ps_errno);
-		 close_udp_socket (pb -> pb_fd);
+		pslose (pi, ps -> ps_errno);
+		close_udp_socket (pb -> pb_fd);
 		return (pb -> pb_fd = NOTOK);
 	}
 
@@ -234,21 +234,21 @@ struct PSAPindication *pi;
 
 		if (reason == PC_REFUSED) {
 			errno = ETIMEDOUT;
-			 ppktlose (pb, pi, PC_REFUSED, pb -> pb_reference,
-							 "connection", "unable to establish");
+			ppktlose (pb, pi, PC_REFUSED, pb -> pb_reference,
+					  "connection", "unable to establish");
 		} else
-			 ppktlose (pb, pi, reason, pb -> pb_reference, NULLCP,
-							 NULLCP);
+			ppktlose (pb, pi, reason, pb -> pb_reference, NULLCP,
+					  NULLCP);
 
-		 close_udp_socket (pb -> pb_fd);
+		close_udp_socket (pb -> pb_fd);
 		return (pb -> pb_fd = NOTOK);
 	}
 
 	if (pb -> pb_response)
 		pe_free (pb -> pb_response);
 	if ((pb -> pb_response = ps2pe (ps = pb -> pb_stream)) == NULLPE) {
-		 pslose (pi, ps -> ps_errno);
-		 close_udp_socket (pb -> pb_fd);
+		pslose (pi, ps -> ps_errno);
+		close_udp_socket (pb -> pb_fd);
 		return (pb -> pb_fd = NOTOK);
 	}
 

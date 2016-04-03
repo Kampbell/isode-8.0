@@ -32,7 +32,7 @@ static char arg_flag [100];
 int chase_flag = 2;
 extern char * result_sequence;
 
-int 
+int
 reset_arg (void) {
 	arg_error [0] = 0;
 	arg_flag [0] = 0;
@@ -53,9 +53,8 @@ PS opt;
 }
 
 
-int 
-test_arg (char *x, char *y, int c)
-{
+int
+test_arg (char *x, char *y, int c) {
 	int count = 0;
 	char * top, *topx;
 
@@ -70,9 +69,9 @@ test_arg (char *x, char *y, int c)
 			if (count >= c)
 				return (1);
 			else {
-				 strcat (arg_error, top);
-				 strcat (arg_error, "\n");
-				 strcpy (arg_flag,topx);
+				strcat (arg_error, top);
+				strcat (arg_error, "\n");
+				strcpy (arg_flag,topx);
 				return (0);
 			}
 		if (chrcnv[*x] != chrcnv[*y])
@@ -85,9 +84,9 @@ test_arg (char *x, char *y, int c)
 	if (count >= c)
 		return (1);
 	else {
-		 strcat (arg_error, top);
-		 strcat (arg_error, "\n");
-		 strcpy (arg_flag, topx);
+		strcat (arg_error, top);
+		strcat (arg_error, "\n");
+		strcpy (arg_flag, topx);
 		return (0);
 	}
 }

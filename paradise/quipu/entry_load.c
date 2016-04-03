@@ -112,7 +112,7 @@ char * file;
 	{
 		if ((newname = rindex(ptr,'#')) == NULLCP) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS,("Seperator missing in map file \"%s\", line %d",file,parse_line));
-			 fclose (mapfp);
+			fclose (mapfp);
 			return FALSE;
 		}
 		tmp = newname;
@@ -126,13 +126,13 @@ char * file;
 			aps->ps_ptr -= i;
 			aps->ps_cnt += i;
 			ps_print (aps,SkipSpace(newname));
-			 fclose (mapfp);
+			fclose (mapfp);
 			return TRUE;
 		}
 	}
 
 	DLOG (log_dsap, LLOG_DEBUG,("%s not found in map file %s",name,file));
-	 fclose (mapfp);
+	fclose (mapfp);
 	return FALSE;
 }
 
@@ -169,8 +169,8 @@ char * file;
 		if (isascii(*nptr) && (isalnum(*nptr) || *nptr ==  '-'))
 			*mptr++ = *nptr, i++;
 
-	 strcpy (sname,name);
-	 strcpy (mptr,"XXXXXX");
+	strcpy (sname,name);
+	strcpy (mptr,"XXXXXX");
 	i = strlen (name);
 	nptr = (aps->ps_ptr -= i);
 	aps->ps_cnt += i;
@@ -185,19 +185,19 @@ char * file;
 			*mptr++ = *nptr, i++;
 	*mptr = '\0';
 
-	 strcpy (sname,name);
+	strcpy (sname,name);
 
 	i = strlen (name);
 	aps->ps_ptr -= i;
 	aps->ps_cnt += i;
 	*aps->ps_ptr = 0;
 
-	 sprintf (mapdir, "%s", aps->ps_base);
+	sprintf (mapdir, "%s", aps->ps_base);
 
 	if ((cp = tempnam (mapdir, mapname)) == NULLCP)
 		return FALSE;
 
-	 sprintf (aps->ps_base, "%s", cp);
+	sprintf (aps->ps_base, "%s", cp);
 	free (cp);
 
 	nptr = (aps->ps_base + strlen (mapdir));
@@ -219,7 +219,7 @@ char * file;
 		int um;
 		um = umask (0177);
 		mapfp = fopen (file,"w");
-		 umask (um);
+		umask (um);
 	}
 
 	if (mapfp == (FILE *)NULL) {
@@ -250,7 +250,7 @@ char make;
 
 	/* look for EDB.map file */
 	*aps->ps_ptr = 0;
-	 sprintf (mapbuf, "%sEDB.map",aps->ps_base);
+	sprintf (mapbuf, "%sEDB.map",aps->ps_base);
 
 	rdn_print (aps,rdn,DIROUT);
 	*aps->ps_ptr = 0;
@@ -516,8 +516,8 @@ Avlnode *oldtree;
 		newentry->e_allchildrenpresent = p->e_allchildrenpresent;
 		newentry->e_children = p->e_children;
 
-		 avl_apply(newentry->e_children, parent_link, (caddr_t) newentry,
-						 NOTOK, AVL_PREORDER);
+		avl_apply(newentry->e_children, parent_link, (caddr_t) newentry,
+				  NOTOK, AVL_PREORDER);
 
 		if (p->e_edbversion != NULLCP)
 			newentry->e_edbversion = strdup(p->e_edbversion);
@@ -556,7 +556,7 @@ DN dn;
 		return (NULLENTRY);
 	}
 
-	 dn2filename (ps,dn,FALSE);
+	dn2filename (ps,dn,FALSE);
 	if (*(ps->ps_ptr - 1) != '/')
 		ps_print (ps,"/EDB");
 	else
@@ -574,8 +574,8 @@ DN dn;
 		 * tree previously loaded.
 		 */
 
-		 avl_apply(treetop, merge_entry, (caddr_t) parent->e_children,
-						 NOTOK, AVL_PREORDER);
+		avl_apply(treetop, merge_entry, (caddr_t) parent->e_children,
+				  NOTOK, AVL_PREORDER);
 
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
 			parent->e_allchildrenpresent = 2;
@@ -583,7 +583,7 @@ DN dn;
 		got_subtree = TRUE;
 
 		/* free the old tree and set got_subtree */
-		 avl_free(parent->e_children, check_entry_free);
+		avl_free(parent->e_children, check_entry_free);
 
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
 			parent->e_allchildrenpresent = 2;

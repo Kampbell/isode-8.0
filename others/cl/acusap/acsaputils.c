@@ -70,7 +70,7 @@ int	ndata;
 	PE	    pe;
 	struct type_ACS_Association__information *info;
 	struct type_ACS_Association__information **pp,
-			*p;
+			   *p;
 	struct type_UNIV_EXTERNAL *q;
 
 	for (pp = &info; ndata-- > 0; pp = &p -> next) {
@@ -94,7 +94,7 @@ int	ndata;
 out:
 	;
 	free_ACS_Association__information (info);
-	 acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+	acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 	return NULL;
 }
 
@@ -151,20 +151,20 @@ int	rw;
 	if (strcmp (acsapfile, "-")) {
 		char	file[BUFSIZ];
 
-		 sprintf (file, acsapfile, getpid ());
+		sprintf (file, acsapfile, getpid ());
 		fp = fopen (file, "a"), isopen = 1;
 	} else
 		fp = stderr, isopen = 0,  fflush (stdout);
 
 	if (fp) {
 		vpushfp (fp, pe, text, rw);
-		 print_ACS_ACSE__apdu (pe, 1, NULLIP, NULLVP, NULLCP);
+		print_ACS_ACSE__apdu (pe, 1, NULLIP, NULLVP, NULLCP);
 		vpopfp ();
 
 		if (isopen)
-			 fclose (fp);
+			fclose (fp);
 		else
-			 fflush (fp);
+			fflush (fp);
 	}
 }
 #endif
@@ -173,7 +173,7 @@ int	rw;
 /*    ASSOCIATION BLOCKS */
 /*---------------------------------------------------------------------------*/
 struct assocblk *
-newacublk  {
+	newacublk  {
 	/*---------------------------------------------------------------------------*/
 	struct assocblk *acb;
 
@@ -196,10 +196,9 @@ newacublk  {
 /*---------------------------------------------------------------------------*/
 struct assocblk *
 findacublk (
-/*---------------------------------------------------------------------------*/
-    int sd
-)
-{
+	/*---------------------------------------------------------------------------*/
+	int sd
+) {
 	struct assocblk *acb;
 
 	if (once_only == 0 || sd == NOTOK)
@@ -214,12 +213,11 @@ findacublk (
 
 /*  */
 /*---------------------------------------------------------------------------*/
-int 
+int
 freeacublk (
-/*---------------------------------------------------------------------------*/
-    struct assocblk *acb
-)
-{
+	/*---------------------------------------------------------------------------*/
+	struct assocblk *acb
+) {
 	if (acb == NULL) return;
 
 	if (acb -> acb_context)
@@ -248,15 +246,14 @@ freeacublk (
 /*---------------------------------------------------------------------------*/
 /*    PSAP interface */
 /*---------------------------------------------------------------------------*/
-int 
+int
 ps2aculose (
-/*---------------------------------------------------------------------------*/
-    struct assocblk *acb,
-    struct AcSAPindication *aci,
-    char *event,
-    struct PSAPabort *pa
-)
-{
+	/*---------------------------------------------------------------------------*/
+	struct assocblk *acb,
+	struct AcSAPindication *aci,
+	char *event,
+	struct PSAPabort *pa
+) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -290,8 +287,8 @@ ps2aculose (
 		break;
 
 	default:
-		 sprintf (cp = buffer, " (%s at presentation)",
-						PuErrString (pa -> pa_reason));
+		sprintf (cp = buffer, " (%s at presentation)",
+				 PuErrString (pa -> pa_reason));
 	case PC_SESSION:
 		reason = ACS_PRESENTATION;
 		break;
@@ -328,9 +325,8 @@ va_dcl {
 }
 #else
 /* VARARGS */
-int 
-acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
-{
+int
+acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt) {
 	return acusaplose (aci, reason, what, fmt);
 }
 #endif
@@ -341,14 +337,13 @@ acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
 #ifndef	lint
 
 /*---------------------------------------------------------------------------*/
-static int 
+static int
 _acusaplose (  /* what, fmt, args ... */
-/*---------------------------------------------------------------------------*/
-    struct AcSAPindication *aci,
-    int reason,
-    va_list ap
-)
-{
+	/*---------------------------------------------------------------------------*/
+	struct AcSAPindication *aci,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct AcSAPabort *aca;
@@ -412,15 +407,14 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 /*---------------------------------------------------------------------------*/
 char *
 AcuErrString (
-/*---------------------------------------------------------------------------*/
-    int code
-)
-{
+	/*---------------------------------------------------------------------------*/
+	int code
+) {
 	static char buffer[BUFSIZ];
 
 	if (code < reject_err0_cnt)
 		return reject_err0[code];
 
-	 sprintf (buffer, "unknown error code %d", code);
+	sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }

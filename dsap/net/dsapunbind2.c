@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind2.c,v 9.
 
 /* ARGSUSED */
 
-int 
-DUnBindAccept (int sd, struct DSAPindication *di)
-{
+int
+DUnBindAccept (int sd, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -45,7 +44,7 @@ DUnBindAccept (int sd, struct DSAPindication *di)
 	watch_dog_reset();
 
 	if (result == NOTOK) {
-		 ronot2dsaplose (di, "D-UNBIND.ACCEPT", rni);
+		ronot2dsaplose (di, "D-UNBIND.ACCEPT", rni);
 		return (NOTOK);
 	}
 
@@ -56,9 +55,8 @@ DUnBindAccept (int sd, struct DSAPindication *di)
 
 /* ARGSUSED */
 
-int 
-DUnBindReject (int sd, int status, int reason, struct DSAPindication *di)
-{
+int
+DUnBindReject (int sd, int status, int reason, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -68,7 +66,7 @@ DUnBindReject (int sd, int status, int reason, struct DSAPindication *di)
 	watch_dog_reset ();
 
 	if (result == NOTOK) {
-		 ronot2dsaplose (di, "D-UNBIND.REJECT", rni);
+		ronot2dsaplose (di, "D-UNBIND.REJECT", rni);
 		return (NOTOK);
 	}
 

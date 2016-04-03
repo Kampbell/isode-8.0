@@ -45,9 +45,8 @@ extern char	move_flag;
 extern int      sizelimit;
 char  list_show;
 
-int 
-call_list (int argc, char **argv)
-{
+int
+call_list (int argc, char **argv) {
 	struct ds_list_arg list_arg;
 	struct ds_list_result result;
 	struct list_cache *ptr;
@@ -127,9 +126,8 @@ call_list (int argc, char **argv)
 	consolidate_move();
 }
 
-int 
-print_list_subordinates (struct subordinate *ptr, int prob)
-{
+int
+print_list_subordinates (struct subordinate *ptr, int prob) {
 	DN adn;
 	DN newdn;
 	int seqno;

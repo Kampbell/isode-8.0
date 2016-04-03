@@ -38,9 +38,8 @@ static int  RtUAbortRequestAux ();
 
 /*    RT-U-ABORT.REQUEST */
 
-int 
-RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti)
-{
+int
+RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;
@@ -53,16 +52,15 @@ RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti)
 
 	result = RtUAbortRequestAux (acb, data, rti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindication *rti)
-{
+static int
+RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindication *rti) {
 	int	    result;
 	PE	    pe,
 	 p;
@@ -82,7 +80,7 @@ RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindication *rti)
 									 RTAB_USERDATA)) == NOTOK
 					|| set_add (p, data) == NOTOK))) {
 		result = rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
-		 AcUAbortRequest (acb -> acb_fd, NULLPEP, 0, aci);
+		AcUAbortRequest (acb -> acb_fd, NULLPEP, 0, aci);
 		goto out;
 	}
 	pe -> pe_context = acb -> acb_rtsid;
@@ -91,7 +89,7 @@ RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindication *rti)
 	PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTABapdu", 0);
 
 	if ((result = AcUAbortRequest (acb -> acb_fd, &pe, 1, aci)) == NOTOK)
-		 acs2rtslose (acb, rti, "AcUAbortRequest", aca);
+		acs2rtslose (acb, rti, "AcUAbortRequest", aca);
 	else
 		result = OK;
 
@@ -99,7 +97,7 @@ out:
 	;
 	if (pe) {
 		if (data)
-			 pe_extract (pe, data);
+			pe_extract (pe, data);
 		pe_free (pe);
 	}
 

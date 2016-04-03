@@ -39,9 +39,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/mailbox.c,v 9.0
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 
-static 
-mailbox_free (struct mailbox *ptr)
-{
+static
+mailbox_free (struct mailbox *ptr) {
 	free (ptr->mbox);
 	free (ptr->mtype);
 
@@ -50,8 +49,7 @@ mailbox_free (struct mailbox *ptr)
 
 
 static struct mailbox *
-mailbox_cpy (struct mailbox *a)
-{
+mailbox_cpy (struct mailbox *a) {
 	struct mailbox * result;
 
 	result = (struct mailbox *) smalloc (sizeof (struct mailbox));
@@ -60,9 +58,8 @@ mailbox_cpy (struct mailbox *a)
 	return (result);
 }
 
-static 
-mailbox_cmp (struct mailbox *a, struct mailbox *b)
-{
+static
+mailbox_cmp (struct mailbox *a, struct mailbox *b) {
 	int res;
 
 	if (a == (struct mailbox *) NULL)
@@ -92,8 +89,7 @@ int format;
 
 
 static struct mailbox *
-str2mailbox (char *str)
-{
+str2mailbox (char *str) {
 	struct mailbox * result;
 	char * ptr;
 	char * mark = NULLCP;
@@ -125,7 +121,7 @@ struct mailbox * m;
 {
 	PE ret_pe;
 
-	 encode_Thorn_MailBox (&ret_pe,0,0,NULLCP,m);
+	encode_Thorn_MailBox (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -141,12 +137,12 @@ PE pe;
 	return (m);
 }
 
-int 
+int
 mailbox_syntax (void) {
-	 add_attribute_syntax ("Mailbox",
-								 (IFP) mail_enc,		(IFP) mail_dec,
-								 (IFP) str2mailbox,	mailbox_print,
-								 (IFP) mailbox_cpy,	mailbox_cmp,
-								 mailbox_free,		NULLCP,
-								 NULLIFP,		TRUE);
+	add_attribute_syntax ("Mailbox",
+						  (IFP) mail_enc,		(IFP) mail_dec,
+						  (IFP) str2mailbox,	mailbox_print,
+						  (IFP) mailbox_cpy,	mailbox_cmp,
+						  mailbox_free,		NULLCP,
+						  NULLIFP,		TRUE);
 }

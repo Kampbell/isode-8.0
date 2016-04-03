@@ -58,18 +58,17 @@ SFD	lostconn();
 /*
  * Do the commands in cmds (initialized by yyparse).
  */
-int 
-docmds (char **dhosts, int argc, char **argv)
-{
+int
+docmds (char **dhosts, int argc, char **argv) {
 	struct cmd *c;
 	struct namelist *f;
 	char **cpp;
 	extern struct cmd *cmds;
 
-	 signal(SIGHUP, cleanup);
-	 signal(SIGINT, cleanup);
-	 signal(SIGQUIT, cleanup);
-	 signal(SIGTERM, cleanup);
+	signal(SIGHUP, cleanup);
+	signal(SIGINT, cleanup);
+	signal(SIGQUIT, cleanup);
+	signal(SIGTERM, cleanup);
 
 	for (c = cmds; c != NULL; c = c->c_next) {
 		if (dhosts != NULL && *dhosts != NULL) {
@@ -111,16 +110,15 @@ found:
 /*
  * Process commands for sending files to other machines.
  */
-int 
-doarrow (char **filev, struct namelist *files, char *rhost, struct subcmd *scmds)
-{
+int
+doarrow (char **filev, struct namelist *files, char *rhost, struct subcmd *scmds) {
 	struct namelist *f;
 	struct subcmd *sc;
 	char **cpp;
 	int n, ddir, opts = options;
 
 	if (debug)
-		 printf("doarrow(%x, %s, %x)\n", files, rhost, scmds);
+		printf("doarrow(%x, %s, %x)\n", files, rhost, scmds);
 
 	if (files == NULL) {
 		advise(NULLCP, "no files to be updated");
@@ -130,11 +128,11 @@ doarrow (char **filev, struct namelist *files, char *rhost, struct subcmd *scmds
 	subcmds = scmds;
 	ddir = files->n_next != NULL;	/* destination is a directory */
 	if (nflag)
-		 printf("updating host %s\n", rhost);
+		printf("updating host %s\n", rhost);
 	else {
 		if (setjmp(env))
 			goto done;
-		 signal(SIGPIPE, lostconn);
+		signal(SIGPIPE, lostconn);
 		if (!makeconn(rhost))
 			return;
 		if ((lfp = fopen(utmpfile, "w")) == NULL)
@@ -146,7 +144,7 @@ doarrow (char **filev, struct namelist *files, char *rhost, struct subcmd *scmds
 				if (strcmp(f->n_name, *cpp) == 0)
 					goto found;
 			if (!nflag)
-				 fclose(lfp);
+				fclose(lfp);
 			continue;
 		}
 found:
@@ -164,15 +162,15 @@ found:
 	}
 done:
 	if (!nflag) {
-		 signal(SIGPIPE, cleanup);
-		 fclose(lfp);
+		signal(SIGPIPE, cleanup);
+		fclose(lfp);
 		lfp = NULL;
 	}
 	for (sc = scmds; sc != NULL; sc = sc->sc_next)
 		if (sc->sc_type == NOTIFY)
 			notify(utmpfile, rhost, sc->sc_args, 0L);
 	if (!nflag) {
-		 unlink(utmpfile);
+		unlink(utmpfile);
 		for (; ihead != NULL; ihead = ihead->nextp) {
 			free((char *)ihead);
 			if ((opts & IGNLNKS) || ihead->count == 0)
@@ -200,9 +198,8 @@ extern	char target[], *tp;
 /*
  * Process commands for comparing files to time stamp files.
  */
-int 
-dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *scmds)
-{
+int
+dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *scmds) {
 	struct subcmd *sc;
 	struct namelist *f;
 	char **cpp;
@@ -211,7 +208,7 @@ dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *scmd
 	struct stat stb;
 
 	if (debug)
-		 printf("dodcolon()\n");
+		printf("dodcolon()\n");
 
 	if (files == NULL) {
 		advise (NULLCP, "no files to be updated");
@@ -222,7 +219,7 @@ dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *scmd
 		return;
 	}
 	if (debug)
-		 printf("%s: %d\n", stamp, stb.st_mtime);
+		printf("%s: %d\n", stamp, stb.st_mtime);
 
 	subcmds = scmds;
 	lastmod = stb.st_mtime;
@@ -233,9 +230,9 @@ dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *scmd
 			advise (utmpfile, "Can't open file");
 			return;
 		}
-		 gettimeofday(&tv[0], &tz);
+		gettimeofday(&tv[0], &tz);
 		tv[1] = tv[0];
-		 utimes(stamp, tv);
+		utimes(stamp, tv);
 	}
 
 	for (f = files; f != NULL; f = f->n_next) {
@@ -251,30 +248,29 @@ found:
 	}
 
 	if (tfp != NULL)
-		 fclose(tfp);
+		fclose(tfp);
 	for (sc = scmds; sc != NULL; sc = sc->sc_next)
 		if (sc->sc_type == NOTIFY)
 			notify(utmpfile, (char *)NULL, sc->sc_args, lastmod);
 	if (!nflag && !(options & VERIFY))
-		 unlink(utmpfile);
+		unlink(utmpfile);
 }
 
 /*
  * Compare the mtime of file to the list of time stamps.
  */
-int 
-cmptime (char *name)
-{
+int
+cmptime (char *name) {
 	struct stat stb;
 
 	if (debug)
-		 printf("cmptime(%s)\n", name);
+		printf("cmptime(%s)\n", name);
 
 	if (except(name))
 		return;
 
 	if (nflag) {
-		 printf("comparing dates: %s\n", name);
+		printf("comparing dates: %s\n", name);
 		return;
 	}
 
@@ -310,9 +306,8 @@ cmptime (char *name)
 		log(tfp, "new: %s\n", name);
 }
 
-int 
-rcmptime (struct stat *st)
-{
+int
+rcmptime (struct stat *st) {
 	DIR *d;
 	struct dirent *dp;
 	char *cp;
@@ -320,7 +315,7 @@ rcmptime (struct stat *st)
 	int len;
 
 	if (debug)
-		 printf("rcmptime(%x)\n", st);
+		printf("rcmptime(%x)\n", st);
 
 	if ((d = opendir(target)) == NULL) {
 		advise (target, "can't open directory");
@@ -344,7 +339,7 @@ rcmptime (struct stat *st)
 		tp--;
 		cmptime(target);
 	}
-	 closedir(d);
+	closedir(d);
 	tp = otp;
 	*tp = '\0';
 }
@@ -367,9 +362,9 @@ time_t lmod;
 	if ((options & VERIFY) || to == NULL)
 		return;
 	if (!qflag) {
-		 printf("notify ");
+		printf("notify ");
 		if (rhost)
-			 printf("@%s ", rhost);
+			printf("@%s ", rhost);
 		prnames(to);
 	}
 	if (nflag)
@@ -381,11 +376,11 @@ time_t lmod;
 	}
 	if (fstat(fd, &stb) < 0) {
 		advise (file, "Can't stat");
-		 close(fd);
+		close(fd);
 		return;
 	}
 	if (stb.st_size == 0) {
-		 close(fd);
+		close(fd);
 		return;
 	}
 	/*
@@ -394,46 +389,45 @@ time_t lmod;
 	pf = popen(MAILCMD, "w");
 	if (pf == NULL) {
 		advise (NULLCP, "notify: \"%s\" failed", MAILCMD);
-		 close(fd);
+		close(fd);
 		return;
 	}
 	/*
 	 * Output the proper header information.
 	 */
-	 fprintf(pf, "From: idist (Remote ISO distribution program)\n");
-	 fprintf(pf, "To:");
+	fprintf(pf, "From: idist (Remote ISO distribution program)\n");
+	fprintf(pf, "To:");
 	if (!any('@', to->n_name) && rhost != NULL)
-		 fprintf(pf, " %s@%s", to->n_name, rhost);
+		fprintf(pf, " %s@%s", to->n_name, rhost);
 	else
-		 fprintf(pf, " %s", to->n_name);
+		fprintf(pf, " %s", to->n_name);
 	to = to->n_next;
 	while (to != NULL) {
 		if (!any('@', to->n_name) && rhost != NULL)
-			 fprintf(pf, ", %s@%s", to->n_name, rhost);
+			fprintf(pf, ", %s@%s", to->n_name, rhost);
 		else
-			 fprintf(pf, ", %s", to->n_name);
+			fprintf(pf, ", %s", to->n_name);
 		to = to->n_next;
 	}
-	 putc('\n', pf);
+	putc('\n', pf);
 	if (rhost != NULL)
-		 fprintf(pf, "Subject: files updated by idist from %s to %s\n",
-					   host, rhost);
+		fprintf(pf, "Subject: files updated by idist from %s to %s\n",
+				host, rhost);
 	else
-		 fprintf(pf, "Subject: files updated after %s\n", ctime(&lmod));
-	 putc('\n', pf);
+		fprintf(pf, "Subject: files updated after %s\n", ctime(&lmod));
+	putc('\n', pf);
 
 	while ((len = read(fd, buf, BUFSIZ)) > 0)
-		 fwrite(buf, 1, len, pf);
-	 close(fd);
-	 pclose(pf);
+		fwrite(buf, 1, len, pf);
+	close(fd);
+	pclose(pf);
 }
 
 /*
  * Return true if name is in the list.
  */
-int 
-inlist (struct namelist *list, char *file)
-{
+int
+inlist (struct namelist *list, char *file) {
 	struct namelist *nl;
 
 	for (nl = list; nl != NULL; nl = nl->n_next)
@@ -445,15 +439,14 @@ inlist (struct namelist *list, char *file)
 /*
  * Return TRUE if file is in the exception list.
  */
-int 
-except (char *file)
-{
+int
+except (char *file) {
 	struct	subcmd *sc;
 	struct	namelist *nl;
 	char	*p, *re_comp ();
 
 	if (debug)
-		 printf("except(%s)\n", file);
+		printf("except(%s)\n", file);
 
 	for (sc = subcmds; sc != NULL; sc = sc->sc_next) {
 		if (sc->sc_type != EXCEPT && sc->sc_type != PATTERN)
@@ -476,8 +469,7 @@ except (char *file)
 }
 
 char *
-colon (char *cp)
-{
+colon (char *cp) {
 
 	while (*cp) {
 		if (*cp == ':')

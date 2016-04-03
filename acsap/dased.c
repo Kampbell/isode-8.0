@@ -88,9 +88,8 @@ PE	grab_pe ();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int	    vecp;
 	char   *vec[4];
 	struct TSAPdisconnect   tds;
@@ -110,7 +109,7 @@ main (int argc, char **argv, char **envp)
 				*rfds;
 
 		if (!isbound && prebind)
-			 bind_to_dsa ();
+			bind_to_dsa ();
 
 		if (isbound) {
 			rfds = &ifds;
@@ -134,7 +133,7 @@ main (int argc, char **argv, char **envp)
 			if (debug)
 				advise (LLOG_DEBUG, NULLCP, "unbound from directory");
 
-			 ds_unbind ();
+			ds_unbind ();
 			isbound = 0;
 		}
 
@@ -156,7 +155,7 @@ main (int argc, char **argv, char **envp)
 		default:
 			if (isbound) {
 				if (dsap_ad != NOTOK)
-					 close (dsap_ad), dsap_ad = NOTOK;
+					close (dsap_ad), dsap_ad = NOTOK;
 				isbound = 0;
 			}
 			continue;
@@ -171,9 +170,8 @@ main (int argc, char **argv, char **envp)
 
 /*    DASE */
 
-static 
-dased (int vecp, char **vec)
-{
+static
+dased (int vecp, char **vec) {
 	int	    sd;
 	struct TSAPstart tss;
 	struct TSAPstart *ts = &tss;
@@ -223,7 +221,7 @@ dased (int vecp, char **vec)
 		if (debug)
 			advise (LLOG_DEBUG, NULLCP, "unbound from directory");
 
-		 ds_unbind ();
+		ds_unbind ();
 		isbound = 0;
 	}
 
@@ -232,9 +230,8 @@ dased (int vecp, char **vec)
 
 /*  */
 
-static 
-dase_aux (struct type_DASE_Query__REQ *req)
-{
+static
+dase_aux (struct type_DASE_Query__REQ *req) {
 	int    i;
 	int	    vecp;
 	char **vp;
@@ -341,7 +338,7 @@ no_mem:
 				goto no_mem;
 			if (strcmp (passwd, cp))
 				changed++;
-			 strcpy (passwd, cp);
+			strcpy (passwd, cp);
 			free (cp);
 		} else {
 			if (passwd[0])
@@ -350,7 +347,7 @@ no_mem:
 		}
 
 		if (isbound && changed) {
-			 ds_unbind ();
+			ds_unbind ();
 			isbound = 0;
 		}
 	}
@@ -388,7 +385,7 @@ no_mem:
 
 	if (dns -> dns_next) {
 		if (req -> interactive)
-			 dnSelect (vec[0], &dns, dase_interact, el -> Dns);
+			dnSelect (vec[0], &dns, dase_interact, el -> Dns);
 
 		for (; dns; dns = dns -> dns_next) {
 			dn = &dns -> dns_dn;
@@ -403,7 +400,7 @@ no_mem:
 all_done:
 	;
 	if (dn) {
-		 encode_IF_DistinguishedName (&rsp -> name, 1, NULL, NULLCP,*dn);
+		encode_IF_DistinguishedName (&rsp -> name, 1, NULL, NULLCP,*dn);
 #ifdef	STATS
 		advise (LLOG_NOTICE, NULLCP, "answer: %s", dn2str (*dn));
 #endif
@@ -461,7 +458,7 @@ send_rsp:
 
 /*  */
 
-static 
+static
 bind_to_dsa  {
 	struct ds_bind_arg ba;
 	struct ds_bind_arg br;
@@ -472,7 +469,7 @@ bind_to_dsa  {
 		if (debug)
 			advise (LLOG_DEBUG, NULLCP, "unbound from directory");
 
-		 ds_unbind ();
+		ds_unbind ();
 		isbound = 0;
 	}
 
@@ -488,8 +485,8 @@ bind_to_dsa  {
 	}
 
 	PY_advise (NULLCP, "unable to bind to directory (%s)",
-			   be.dbe_type == DBE_TYPE_SECURITY ? "security error"
-			   : "DSA unavailable");
+	be.dbe_type == DBE_TYPE_SECURITY ? "security error"
+	: "DSA unavailable");
 	if (prebind && very_first_time)
 		very_first_time = 0;
 	else
@@ -500,9 +497,8 @@ bind_to_dsa  {
 
 /*  */
 
-static int 
-make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be)
-{
+static int
+make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be) {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
 	bzero ((char *) be, sizeof *be);
@@ -511,14 +507,13 @@ make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_e
 	if (ba -> dba_dn = userdn)
 		ba -> dba_auth_type = DBA_AUTH_SIMPLE;
 	if (ba -> dba_passwd_len = strlen (passwd))
-		 strcpy (ba -> dba_passwd, passwd);
+		strcpy (ba -> dba_passwd, passwd);
 }
 
 /*  */
 
-static DNS 
-dase_interact (DNS dns, DN dn, char *s)
-{
+static DNS
+dase_interact (DNS dns, DN dn, char *s) {
 	int i;
 	struct type_DASE_Callback__REQ *req = NULL;
 	struct element_DASE_3 **dp;
@@ -537,8 +532,8 @@ dase_interact (DNS dns, DN dn, char *s)
 
 	if (i > 1) {
 		struct dn_seq **base,
-				**bp,
-				**ep;
+				   **bp,
+				   **ep;
 
 		if (base = (struct dn_seq **) malloc ((unsigned) (i * sizeof *base))) {
 			ep = base;
@@ -665,9 +660,8 @@ out:
 
 /*  */
 
-static int 
-dns_compar (struct dn_seq **a, struct dn_seq **b)
-{
+static int
+dns_compar (struct dn_seq **a, struct dn_seq **b) {
 	int	    i;
 	DN	    adn,
 	 bdn;
@@ -685,9 +679,8 @@ dns_compar (struct dn_seq **a, struct dn_seq **b)
 
 /* ARGSUSED */
 
-static DNS 
-just_say_no (DNS dns, DN dn, char *s)
-{
+static DNS
+just_say_no (DNS dns, DN dn, char *s) {
 	dn_seq_free (dns);
 
 	return NULL;
@@ -695,9 +688,8 @@ just_say_no (DNS dns, DN dn, char *s)
 
 /*  */
 
-static PE 
-name2psap (DN dn)
-{
+static PE
+name2psap (DN dn) {
 	int	    i;
 	AttributeType at;
 	PE	    pe;
@@ -747,9 +739,8 @@ name2psap (DN dn)
 
 /*    INIT */
 
-static 
-arginit (char **vec)
-{
+static
+arginit (char **vec) {
 	int	    argp;
 	char   *ap;
 	char  **argptr,
@@ -831,7 +822,7 @@ arginit (char **vec)
 			case 'p':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -p passwd", pgmname);
-				 strcpy (passwd, ap);
+				strcpy (passwd, ap);
 				bzero ((char *) ap, strlen (ap));
 				continue;
 
@@ -854,10 +845,10 @@ arginit (char **vec)
 
 /*  */
 
-static 
+static
 envinit  {
 	int     i,
-			sd;
+	sd;
 
 	nbits = getdtablesize ();
 
@@ -877,14 +868,14 @@ envinit  {
 			break;
 		}
 
-		 chdir ("/");
+		chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			 dup2 (sd, 0),  close (sd);
-		 dup2 (0, 1);
-		 dup2 (0, 2);
+			dup2 (sd, 0),  close (sd);
+		dup2 (0, 1);
+		dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -892,14 +883,14 @@ envinit  {
 #endif
 #ifdef  TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			 ioctl (sd, TIOCNOTTY, NULLCP);
-			 close (sd);
+			ioctl (sd, TIOCNOTTY, NULLCP);
+			close (sd);
 		}
 #else
 #ifdef  SYS5
-		 setpgrp ();
-		 signal (SIGINT, SIG_IGN);
-		 signal (SIGQUIT, SIG_IGN);
+		setpgrp ();
+		signal (SIGINT, SIG_IGN);
+		signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -908,10 +899,10 @@ envinit  {
 #ifndef sun			/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			 close (sd);
+			close (sd);
 #endif
 
-	 signal (SIGPIPE, SIG_IGN);
+	signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, pgmname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
@@ -935,9 +926,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void 
-adios (char *what, char *fmt)
-{
+static void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -960,18 +950,16 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void 
-advise (int code, char *what, char *fmt)
-{
+static void
+advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
 
 /*  */
 
-static void 
-ts_adios (struct TSAPdisconnect *td, char *event)
-{
+static void
+ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
 	exit (1);
@@ -979,17 +967,16 @@ ts_adios (struct TSAPdisconnect *td, char *event)
 
 /*  */
 
-static void 
-ts_advise (struct TSAPdisconnect *td, int code, char *event)
-{
+static void
+ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						TErrString (td -> td_reason),
-						td -> td_cc, td -> td_cc, td -> td_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 TErrString (td -> td_reason),
+				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }

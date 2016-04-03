@@ -139,9 +139,8 @@ int format;
 
 static char * nextline = NULLCP;
 
-int 
-setAttributeLine (char *str)
-{
+int
+setAttributeLine (char *str) {
 	/* Recusion ? */
 
 	if ((nextline = index (str,'\n')) != NULLCP)
@@ -149,8 +148,7 @@ setAttributeLine (char *str)
 }
 
 char *
-nextAttributeLine (char *str)
-{
+nextAttributeLine (char *str) {
 	char * ptr;
 
 #ifdef TURBO_DISK
@@ -318,7 +316,7 @@ InheritAttr m;
 {
 	PE ret_pe;
 
-	 encode_Quipu_InheritedAttribute (&ret_pe,0,0,NULLCP,m);
+	encode_Quipu_InheritedAttribute (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -333,7 +331,7 @@ PE pe;
 	return (m);
 }
 
-int 
+int
 inherit_syntax (void) {
 	extern short inherit_sntx;
 

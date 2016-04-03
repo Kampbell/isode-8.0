@@ -39,12 +39,11 @@ static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap);
 #endif
 
 #ifndef	lint
-int	ppktlose (struct psapblk*pb, ...)
-{
+int	ppktlose (struct psapblk*pb, ...) {
 	int	    len,
-	ppdu,
-	reason,
-	result;
+			ppdu,
+			reason,
+			result;
 	char   *base;
 	PE	    pe;
 	struct PSAPindication *pi;
@@ -66,11 +65,11 @@ int	ppktlose (struct psapblk*pb, ...)
 
 	if ((pa = &pi -> pi_abort) -> pa_cc > 0) {
 		SLOG (psap2_log, LLOG_EXCEPTIONS, NULLCP,
-		("ppktlose [%s] %*.*s", PErrString (pa -> pa_reason),
-		pa -> pa_cc, pa -> pa_cc, pa -> pa_data));
+			  ("ppktlose [%s] %*.*s", PErrString (pa -> pa_reason),
+			   pa -> pa_cc, pa -> pa_cc, pa -> pa_data));
 	} else
 		SLOG (psap2_log, LLOG_EXCEPTIONS, NULLCP,
-		("ppktlose [%s]", PErrString (pa -> pa_reason)));
+			  ("ppktlose [%s]", PErrString (pa -> pa_reason)));
 
 	if (pb -> pb_fd == NOTOK)
 		return result;
@@ -93,15 +92,15 @@ int	ppktlose (struct psapblk*pb, ...)
 
 	pdu -> provider__reason = (struct type_PS_Abort__reason *) &reason;
 	pdu -> event = ppdu != PPDU_NONE
-	? (struct type_PS_Event__identifier *) &ppdu
-	: NULL;
+				   ? (struct type_PS_Event__identifier *) &ppdu
+				   : NULL;
 
 	pe = NULLPE;
 	base = NULL, len = 0;
 	if (encode_PS_ARP__PPDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		PLOGP (psap2_log,PS_ARP__PPDU, pe, "ARP-PPDU", 0);
 
-		 pe2ssdu (pe, &base, &len);
+		pe2ssdu (pe, &base, &len);
 	}
 	if (pe)
 		pe_free (pe);
@@ -117,9 +116,8 @@ int	ppktlose (struct psapblk*pb, ...)
 #else
 /* VARARGS6 */
 
-int 
-ppktlose (struct psapblk *pb, struct PSAPindication *pi, int reason, int ppdu, char *what, char *fmt)
-{
+int
+ppktlose (struct psapblk *pb, struct PSAPindication *pi, int reason, int ppdu, char *what, char *fmt) {
 	return ppktlose (pb, pi, reason, ppdu, what, fmt);
 }
 #endif
@@ -127,10 +125,9 @@ ppktlose (struct psapblk *pb, struct PSAPindication *pi, int reason, int ppdu, c
 /*  */
 
 #ifndef	lint
-int	psaplose (struct PSAPindication*pi, ...)
-{
+int	psaplose (struct PSAPindication*pi, ...) {
 	int     reason,
-	result;
+			result;
 	va_list ap;
 
 	va_start (ap, pi);
@@ -146,9 +143,8 @@ int	psaplose (struct PSAPindication*pi, ...)
 #else
 /* VARARGS4 */
 
-int 
-psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt)
-{
+int
+psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 	return psaplose (pi, reason, what, fmt);
 }
 #endif
@@ -156,8 +152,7 @@ psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap) /*  what, fmt, args ... */
-{
+static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap) { /*  what, fmt, args ... */
 
 	char  *bp;
 	char  *what;

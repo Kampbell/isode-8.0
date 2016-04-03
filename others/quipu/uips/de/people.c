@@ -57,9 +57,8 @@ VFP explicitPRR[] = {makeExplicitPRRFilter, NULLVFP};
 VFP normalPRR[] = {prrFilter1, prrFilter2, prrFilter3, prrFilter4, NULLVFP};
 /*VFP normalPRR[] = {prrFilter1, prrFilter3, NULLVFP};*/
 
-int 
-listPRRs (char *parentstr, char *thisstr, struct namelist **listp)
-{
+int
+listPRRs (char *parentstr, char *thisstr, struct namelist **listp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == PERSON)
@@ -70,9 +69,8 @@ listPRRs (char *parentstr, char *thisstr, struct namelist **listp)
 		return (listMatchingPRRs(parentstr, thisstr, listp));
 }
 
-void 
-printListPRRs (char *str, struct namelist *listp, int searchparent, int pdet)
-{
+void
+printListPRRs (char *str, struct namelist *listp, int searchparent, int pdet) {
 	struct namelist * x;
 	char * savestr;
 	static char lastsavedcomp[LINESIZE];
@@ -94,7 +92,7 @@ printListPRRs (char *str, struct namelist *listp, int searchparent, int pdet)
 								SHORT_OU, strlen(SHORT_OU)) == 0)
 						if (strcmp(lastsavedcomp, savestr) != 0) {
 							printLastComponent(INDENTON, savestr, ORGUNIT, 0);
-							 strcpy(lastsavedcomp, savestr);
+							strcpy(lastsavedcomp, savestr);
 						}
 				}
 				free (savestr);
@@ -111,9 +109,8 @@ printListPRRs (char *str, struct namelist *listp, int searchparent, int pdet)
 	lastsavedcomp[0] = '\0';
 }
 
-void 
-freePRRs (struct namelist **listpp)
-{
+void
+freePRRs (struct namelist **listpp) {
 	struct namelist * w, * x;
 
 	w = *listpp;
@@ -128,15 +125,14 @@ freePRRs (struct namelist **listpp)
 	*listpp = NULLLIST;
 }
 
-int 
+int
 freePRRSearchArgs  {
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 }
 
-int 
-listAllPRRs (char *parentstr, struct namelist **listp)
-{
+int
+listAllPRRs (char *parentstr, struct namelist **listp) {
 	int ret;
 
 	sarg = * fillMostPRRSearchArgs(parentstr, SRA_WHOLESUBTREE);
@@ -151,9 +147,8 @@ listAllPRRs (char *parentstr, struct namelist **listp)
 	return ret;
 }
 
-int 
-listMatchingPRRs (char *parentstr, char *thisstr, struct namelist **listp)
-{
+int
+listMatchingPRRs (char *parentstr, char *thisstr, struct namelist **listp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -189,9 +184,8 @@ listMatchingPRRs (char *parentstr, char *thisstr, struct namelist **listp)
 	return OK;
 }
 
-int 
-listExactPRRs (char *objectstr, struct namelist **listp)
-{
+int
+listExactPRRs (char *objectstr, struct namelist **listp) {
 	int ret;
 
 	sarg = * fillMostPRRSearchArgs(objectstr, SRA_BASEOBJECT);
@@ -202,9 +196,8 @@ listExactPRRs (char *objectstr, struct namelist **listp)
 	return ret;
 }
 
-int 
-makeListPRRs (struct namelist **listp, char *parentstr)
-{
+int
+makeListPRRs (struct namelist **listp, char *parentstr) {
 	entrystruct * x;
 	int retval;
 	void onalarm();
@@ -272,8 +265,7 @@ makeListPRRs (struct namelist **listp, char *parentstr)
 }
 
 struct ds_search_arg *
-fillMostPRRSearchArgs (char *parentstr, int searchdepth)
-{
+fillMostPRRSearchArgs (char *parentstr, int searchdepth) {
 	static struct ds_search_arg arg;
 	Attr_Sequence * atl;
 	AttributeType at;
@@ -303,9 +295,8 @@ fillMostPRRSearchArgs (char *parentstr, int searchdepth)
 	return (&arg);
 }
 
-int 
-makeAllPRRFilter (struct s_filter **fpp)
-{
+int
+makeAllPRRFilter (struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();
@@ -314,9 +305,8 @@ makeAllPRRFilter (struct s_filter **fpp)
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
 
-int 
-makeExactPRRFilter (struct s_filter **fpp)
-{
+int
+makeExactPRRFilter (struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();
@@ -325,9 +315,8 @@ makeExactPRRFilter (struct s_filter **fpp)
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
 
-void 
-makeExplicitPRRFilter (char *prrstr, struct s_filter **fpp)
-{
+void
+makeExplicitPRRFilter (char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fpsav, * fpsav2;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -364,9 +353,8 @@ makeExplicitPRRFilter (char *prrstr, struct s_filter **fpp)
 }
 
 
-void 
-prrFilter1 (char *prrstr, struct s_filter **fpp)
-{
+void
+prrFilter1 (char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp1;
 	char firststring[LINESIZE];
 	char * fsp, * lsp, * laststring;
@@ -375,7 +363,7 @@ prrFilter1 (char *prrstr, struct s_filter **fpp)
 	   firstnamepart = all up to the first space
 	   lastnamepart  = all after last space */
 	if (index(prrstr, ' ') != NULLCP) {
-		 strcpy(firststring, prrstr);
+		strcpy(firststring, prrstr);
 		fsp = index(firststring, ' ');
 		*fsp = '\0';
 		lsp = rindex(fsp + 1, ' ');
@@ -402,9 +390,8 @@ prrFilter1 (char *prrstr, struct s_filter **fpp)
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
 
-void 
-prrFilter2 (char *prrstr, struct s_filter **fpp)
-{
+void
+prrFilter2 (char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 	char firststring[LINESIZE];
 	char * fsp, * lsp, * laststring;
@@ -418,7 +405,7 @@ prrFilter2 (char *prrstr, struct s_filter **fpp)
 	   this means that "paul barker" will match entries of "p barker" */
 	*fpp = NULLFILTER;
 	if (index(prrstr, ' ') != NULLCP) {
-		 strcpy(firststring, prrstr);
+		strcpy(firststring, prrstr);
 		if (strlen(firststring) == 1)
 			return;
 		fsp = index(firststring, ' ');
@@ -436,9 +423,8 @@ prrFilter2 (char *prrstr, struct s_filter **fpp)
 	}
 }
 
-void 
-prrFilter3 (char *prrstr, struct s_filter **fpp)
-{
+void
+prrFilter3 (char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();
@@ -451,9 +437,8 @@ prrFilter3 (char *prrstr, struct s_filter **fpp)
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
 
-void 
-prrFilter4 (char *prrstr, struct s_filter **fpp)
-{
+void
+prrFilter4 (char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();

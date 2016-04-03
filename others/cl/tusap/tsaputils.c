@@ -49,7 +49,7 @@ static int TPid = NOTOK;
 /*    INTERNAL */
 
 struct tsapblk *
-newtublk  {
+	newtublk  {
 	struct tsapblk *tb;
 
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);
@@ -71,12 +71,11 @@ newtublk  {
 }
 
 
-int 
-freetublk (struct tsapblk *tb)
-{
+int
+freetublk (struct tsapblk *tb) {
 	SBV     smask;
 	struct qbuf *qb,
-			*qp;
+			   *qp;
 #ifndef	SIGPOLL
 	struct TSAPdisconnect   tds;
 #endif
@@ -95,14 +94,14 @@ freetublk (struct tsapblk *tb)
 #endif
 
 	if (tb -> tb_fd != NOTOK)
-		 (*tb -> tb_closefnx) (tb -> tb_fd);
+		(*tb -> tb_closefnx) (tb -> tb_fd);
 
 	if (tb -> tb_retry)
 		freetpkt (tb -> tb_retry);
 
 #ifndef	SIGPOLL
 	if ((tb -> tb_flags & TB_ASYN) && TPid > OK) {
-		 kill (TPid, SIGTERM);
+		kill (TPid, SIGTERM);
 		TPid = NOTOK;
 	}
 #endif
@@ -128,14 +127,13 @@ freetublk (struct tsapblk *tb)
 		}
 #endif
 
-	 sigiomask (smask);
+	sigiomask (smask);
 }
 
 /*  */
 
 struct tsapblk *
-findtublk (int sd)
-{
+findtublk (int sd) {
 	struct tsapblk *tb;
 
 	if (tu_once_only == 0)

@@ -36,9 +36,8 @@ static int  SUAbortRequestAux ();
 
 /*    S-U-ABORT.REQUEST */
 
-int 
-SUAbortRequest (int sd, char *data, int cc, struct SSAPindication *si)
-{
+int
+SUAbortRequest (int sd, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -48,23 +47,22 @@ SUAbortRequest (int sd, char *data, int cc, struct SSAPindication *si)
 	smask = sigioblock ();
 
 	if ((sb = findsblk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid session descriptor");
 	}
 	toomuchP (sb, data, cc, SA_SIZE, "abort");
 
 	result = SUAbortRequestAux (sb, data, cc, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SUAbortRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
-{
+static int
+SUAbortRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si) {
 	int     result;
 	struct ssapkt *s;
 	struct TSAPdata txs;

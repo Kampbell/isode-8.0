@@ -132,8 +132,8 @@ struct type_SNMP_VarBind *v;
 int	offset;
 {
 	int   *dp,
-			 *ep,
-			 j;
+		  *ep,
+		  j;
 	int	    ifvar;
 	struct clnp_stat *cns = &clnp_stat;
 	OID    oid = oi -> oi_name;
@@ -977,7 +977,7 @@ int	offset;
 
 static int  adn_compar (a, b)
 struct adrtab **a,
-		**b;
+		   **b;
 {
 	return elem_cmp ((*a) -> adn_instance, (*a) -> adn_insize,
 					 (*b) -> adn_instance, (*b) -> adn_insize);
@@ -986,7 +986,7 @@ struct adrtab **a,
 
 static int  adm_compar (a, b)
 struct adrtab **a,
-		**b;
+		   **b;
 {
 	return elem_cmp ((*a) -> adm_instance, (*a) -> adm_insize,
 					 (*b) -> adm_instance, (*b) -> adm_insize);
@@ -1003,12 +1003,12 @@ int	offset;
 			tblsize;
 	char   *snpac;
 	char *sc,
-			 *se;
+		 *se;
 	struct adrtab *at,
-			*ap,
-			**base,
-			**afe,
-			**afp;
+			   *ap,
+			   **base,
+			   **afe,
+			   **afp;
 	struct interface *is;
 	struct rt_msghdr *rtm;
 	static  int first_time = 1;
@@ -1095,7 +1095,7 @@ int	offset;
 
 			oids.oid_elements = at -> adn_instance + 1;
 			oids.oid_nelem = at -> adn_insize - 1;
-			 strcpy (buffer, sprintoid (&oids));
+			strcpy (buffer, sprintoid (&oids));
 			oids.oid_elements = at -> adm_instance;
 			oids.oid_nelem = at -> adm_insize;
 			advise (LLOG_DEBUG, NULLCP,

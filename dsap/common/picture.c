@@ -46,8 +46,7 @@ typedef struct childList {
 static ChildList *rootChildList = NULL;
 
 char *
-show_picture (char *picture, char *picture_process, int len)
-{
+show_picture (char *picture, char *picture_process, int len) {
 	int     ret;
 	int     pd[2];
 	int     pd2[2];
@@ -67,7 +66,7 @@ show_picture (char *picture, char *picture_process, int len)
 	if (picture_process == NULLCP)
 		return ("(No external process defined !)");
 
-	 sstr2arg (picture_process, NVEC, argv, " \t");
+	sstr2arg (picture_process, NVEC, argv, " \t");
 
 	/* get next two file descriptors  used for data xfer */
 	ret = pipe(pd);
@@ -76,8 +75,8 @@ show_picture (char *picture, char *picture_process, int len)
 
 	ret = pipe(pd2);
 	if (ret == -1) {
-		 close (pd[1]);
-		 close (pd[0]);
+		close (pd[1]);
+		close (pd[0]);
 		return ("ERROR: could not create 2nd pipe");
 	}
 
@@ -87,12 +86,12 @@ show_picture (char *picture, char *picture_process, int len)
 	cl = (ChildList *) malloc(sizeof(ChildList));
 	/* generate one parent and one child process */
 	if ((cl->childpid = fork()) == -1) {
-		 free ((char *) cl);
-		 close (pd[1]);
-		 close (pd[0]);
-		 close (pd2[1]);
-		 close (pd2[0]);
-		 signal (SIGPIPE, pstat);
+		free ((char *) cl);
+		close (pd[1]);
+		close (pd[0]);
+		close (pd2[1]);
+		close (pd2[0]);
+		signal (SIGPIPE, pstat);
 		return ("ERROR: could not fork");
 	}
 	if (rootChildList == NULL)
@@ -104,17 +103,17 @@ show_picture (char *picture, char *picture_process, int len)
 	if (cl->childpid != 0) {
 
 		/* in parent process */
-		 close (pd[0]);
-		 close (pd2[1]);
+		close (pd[0]);
+		close (pd2[1]);
 
 		if (write (pd[1], picture, len) != len) {
-			 close (pd[1]);
-			 close (pd2[0]);
-			 signal (SIGPIPE, pstat);
+			close (pd[1]);
+			close (pd2[0]);
+			signal (SIGPIPE, pstat);
 			return("ERROR: length error");
 		}
 
-		 close (pd[1]);
+		close (pd[1]);
 
 		for (cp = buffer, len = BUFLEN - 1; len > 0;) {
 			if ((ret = read (pd2[0], cp, len)) <= 0)
@@ -127,11 +126,11 @@ show_picture (char *picture, char *picture_process, int len)
 				cp++;
 			*cp = NULL;
 		} else
-			 sprintf (buffer, "%s invoked", argv[0]);
+			sprintf (buffer, "%s invoked", argv[0]);
 
-		 close (pd2[0]);
+		close (pd2[0]);
 
-		 signal (SIGPIPE, pstat);
+		signal (SIGPIPE, pstat);
 
 		if ( ret < 0 )
 			return ("ERROR: read error");
@@ -141,25 +140,25 @@ show_picture (char *picture, char *picture_process, int len)
 	}
 
 	/* you're in child process */
-	 signal (SIGPIPE, pstat);
+	signal (SIGPIPE, pstat);
 
 	if (dup2(pd[0], 0) == -1)
 		_exit (-1);
-	 close (pd[0]);
-	 close (pd[1]);
+	close (pd[0]);
+	close (pd[1]);
 
 	if (dup2(pd2[1], 1) == -1)
 		_exit (-1);
-	 close (pd2[0]);
-	 close (pd2[1]);
+	close (pd2[0]);
+	close (pd2[1]);
 
-	 execv (argv[0],argv);
+	execv (argv[0],argv);
 
 	while (read (0, buffer, sizeof buffer) > 0)
 		continue;
-	 printf ("ERROR: can't execute '%s'",argv[0]);
+	printf ("ERROR: can't execute '%s'",argv[0]);
 
-	 fflush (stdout);
+	fflush (stdout);
 	/* safety catch */
 	_exit (-1);
 	/* NOTREACHED */
@@ -175,7 +174,7 @@ char * proc;
 	PS sps;
 	PE pe, grab_pe();
 
-	 ps_flush (ps);
+	ps_flush (ps);
 
 	if ((sps = ps_alloc (str_open)) == NULLPS)
 		return;
@@ -185,7 +184,7 @@ char * proc;
 	}
 
 	pe = grab_pe (av);
-	 pe2ps (sps,pe);
+	pe2ps (sps,pe);
 
 	ptr = show_picture (sps->ps_base,proc,ps_get_abs(pe));
 	ps_print (ps,ptr);
@@ -196,7 +195,7 @@ char * proc;
 }
 
 
-int 
+int
 hide_picture (void) {
 	int	    pid;
 	int	status;
@@ -205,13 +204,13 @@ hide_picture (void) {
 
 	cl = rootChildList;
 	while (cl != NULL) {
-		 kill (cl->childpid, SIGTERM);
+		kill (cl->childpid, SIGTERM);
 		while ((pid = wait (&status)) != NOTOK && cl->childpid != pid)
 			continue;
 
 		cl1 = cl;
 		cl = cl->next;
-		 free((char *) cl1);
+		free((char *) cl1);
 	}
 	rootChildList = NULL;
 }
@@ -229,21 +228,21 @@ int format;
 
 extern int quipu_pe_cmp();
 
-int 
+int
 photo_syntax (void) {
-	 add_attribute_syntax ("photo",
-								 (IFP)pe_cpy,	NULLIFP,
-								 NULLIFP,	picture_print,
-								 (IFP)pe_cpy,	quipu_pe_cmp,
-								 pe_free,	NULLCP,
-								 NULLIFP,	TRUE );
+	add_attribute_syntax ("photo",
+						  (IFP)pe_cpy,	NULLIFP,
+						  NULLIFP,	picture_print,
+						  (IFP)pe_cpy,	quipu_pe_cmp,
+						  pe_free,	NULLCP,
+						  NULLIFP,	TRUE );
 
 
-	 add_attribute_syntax ("jpeg",
-								 (IFP)pe_cpy,	NULLIFP,
-								 NULLIFP,	picture_print,
-								 (IFP)pe_cpy,	quipu_pe_cmp,
-								 pe_free,	NULLCP,
-								 NULLIFP,	TRUE );
+	add_attribute_syntax ("jpeg",
+						  (IFP)pe_cpy,	NULLIFP,
+						  NULLIFP,	picture_print,
+						  (IFP)pe_cpy,	quipu_pe_cmp,
+						  pe_free,	NULLCP,
+						  NULLIFP,	TRUE );
 
 }

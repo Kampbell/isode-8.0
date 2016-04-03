@@ -67,8 +67,8 @@ auth_bind_type auth_type;
 
 
 	if (dsa_address == NULLCP || isnull(*dsa_address)) {
-		 fprintf(stderr,
-					   "BIND ERROR - Cannot find name of DSA to bind to!\n");
+		fprintf(stderr,
+				"BIND ERROR - Cannot find name of DSA to bind to!\n");
 		return FALSE;
 	}
 
@@ -84,7 +84,7 @@ auth_bind_type auth_type;
 
 	case SIMPLE_AUTH:
 
-		 strcpy(bind_arg.dba_passwd, userpassword);
+		strcpy(bind_arg.dba_passwd, userpassword);
 		bind_arg.dba_passwd_len = strlen(userpassword);
 
 		bind_arg.dba_auth_type = DBA_AUTH_SIMPLE;
@@ -101,10 +101,10 @@ auth_bind_type auth_type;
 
 	if (secure_ds_bind(&bind_arg, &bind_error, &bind_result) != DS_OK) {
 		if (bind_error.dbe_type == DBE_TYPE_SECURITY)
-			 fprintf(stderr,
-						   "SECURITY ERROR - Cannot bind. Check credentials\n");
+			fprintf(stderr,
+					"SECURITY ERROR - Cannot bind. Check credentials\n");
 		else
-			 fprintf(stderr, "SERVICE ERROR - Cannot bind.\n");
+			fprintf(stderr, "SERVICE ERROR - Cannot bind.\n");
 
 		return FALSE;
 	}

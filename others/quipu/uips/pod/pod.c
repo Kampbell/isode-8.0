@@ -122,14 +122,14 @@ static XtActionsRec currPosActionsTable[] = {
 	{"DnMove", (XtActionProc) DnMove},
 };
 
-void 
+void
 CreateWidgets  {
 	int count;
 	Arg args[MAXARGS];
 
 	count = 0;
 	outer = XtCreateManagedWidget("outer", formWidgetClass, toplevel,
-								  args, count);
+	args, count);
 
 	dpy = XtDisplay(toplevel);
 	scr = DefaultScreen(dpy);
@@ -151,7 +151,7 @@ CreateWidgets  {
 	CreateVersionPopup();
 }
 
-void 
+void
 PodLoop  {
 	Widget PosWindow;
 	XSizeHints   hints;
@@ -159,16 +159,16 @@ PodLoop  {
 	XClassHint class_hint;
 	XTextProperty window, icon;
 	String window_name = "Directory",
-		   icon_name = "Directory";
+	icon_name = "Directory";
 
 
 	XtRealizeWidget(toplevel);
 
 	icon_pixmap = XCreatePixmapFromBitmapData(dpy, XtWindow(toplevel),
-				  icon_bits, icon_width, icon_height,
-				  BlackPixelOfScreen(screen),
-				  WhitePixelOfScreen(screen),
-				  DefaultDepthOfScreen(screen));
+	icon_bits, icon_width, icon_height,
+	BlackPixelOfScreen(screen),
+	WhitePixelOfScreen(screen),
+	DefaultDepthOfScreen(screen));
 
 	hints.flags = 0;
 
@@ -184,37 +184,37 @@ PodLoop  {
 	XStringListToTextProperty(&icon_name, 1, &icon);
 
 	XSetWMProperties(dpy, XtWindow(toplevel),
-					 &window, &icon,
-					 (char **) 0, (int) 0,
-					 &hints, &wm_hints, &class_hint);
+	&window, &icon,
+	(char **) 0, (int) 0,
+	&hints, &wm_hints, &class_hint);
 
 	PosWindow = XtNameToWidget(outer,
-							   "PosForm.PosScrolledWindow.PosWindow");
+	"PosForm.PosScrolledWindow.PosWindow");
 	print_search_area(PosWindow);
 
 	if (DefaultDepthOfScreen(screen) == 1) {
 		CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm"),
-							   gray_bits, gray_width, gray_height);
+		gray_bits, gray_width, gray_height);
 
 		CreateBackgroundPixmap(outer, gray_bits, gray_width, gray_height);
 		CreateBackgroundPixmap(XtNameToWidget(outer, "TypeForm"),
-							   gray_bits, gray_width, gray_height);
+		gray_bits, gray_width, gray_height);
 	}
 
 	CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm.searchButton"),
-						   Search_bits, Search_width, Search_height);
+	Search_bits, Search_width, Search_height);
 
 	CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm.listButton"),
-						   List_bits, List_width, List_height);
+	List_bits, List_width, List_height);
 
 	CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm.historyButton"),
-						   History_bits, History_width, History_height);
+	History_bits, History_width, History_height);
 
 	CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm.quitButton"),
-						   Quit_bits, Quit_width, Quit_height);
+	Quit_bits, Quit_width, Quit_height);
 
 	CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm.helpButton"),
-						   Help_bits, Help_width, Help_height);
+	Help_bits, Help_width, Help_height);
 
 	goto_addr();
 	SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
@@ -222,16 +222,16 @@ PodLoop  {
 	XtMainLoop();
 }
 
-void 
+void
 make_photo_widget  {
 	int count;
 	Arg args[MAXARGS];
 	Widget TextForm, TextWindow;
 
 	TextForm = XtNameToWidget(curr_read_popup,
-							  "ReadForm.TextScrolledWindow.TextForm");
+	"ReadForm.TextScrolledWindow.TextForm");
 	TextWindow = XtNameToWidget(curr_read_popup,
-								"ReadForm.TextScrolledWindow.TextForm.AttrWindow");
+	"ReadForm.TextScrolledWindow.TextForm.AttrWindow");
 
 	count = 0;
 	XtSetArg(args[count], XtNresizable, TRUE);
@@ -249,11 +249,11 @@ make_photo_widget  {
 	XtSetArg(args[count], XtNfromVert, TextWindow);
 	count++;
 	PhotoWindow = XtCreateManagedWidget("PhotoWindow",
-										labelWidgetClass,
-										TextForm, args, count);
+	labelWidgetClass,
+	TextForm, args, count);
 }
 
-void 
+void
 kill_photo  {
 	if (PhotoWindow != NULL) {
 		XtUnmanageChild(PhotoWindow);
@@ -262,7 +262,7 @@ kill_photo  {
 	}
 }
 
-void 
+void
 print_photo  {
 	int count;
 	Arg args[MAXARGS];
@@ -277,7 +277,7 @@ print_photo  {
 	XtSetValues(PhotoWindow, args, count);
 
 	XtAddCallback(PhotoWindow, XtNdestroyCallback, FreeWidgetPixmap,
-				  (XtPointer) photo_pixmap);
+	(XtPointer) photo_pixmap);
 
 	photo_pixmap = (Pixmap) 0;
 }
@@ -384,8 +384,8 @@ char *top_mess, *lower_mess;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, top_mess);
 	count++;
-	 XtCreateManagedWidget("listTitle", labelWidgetClass,
-								 ListTitleView, args, count);
+	XtCreateManagedWidget("listTitle", labelWidgetClass,
+						  ListTitleView, args, count);
 
 	count = 0;
 	swindow = XtCreateManagedWidget("ListScrolledWindow", viewportWidgetClass,
@@ -398,8 +398,8 @@ char *top_mess, *lower_mess;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, lower_mess);
 	count++;
-	 XtCreateManagedWidget("ListMessage", labelWidgetClass,
-								 ListForm, args, count);
+	XtCreateManagedWidget("ListMessage", labelWidgetClass,
+						  ListForm, args, count);
 
 	XtAddCallback(ListWindow, XtNdestroyCallback,
 				  ListDestroy, (XtPointer) list_seq);
@@ -438,8 +438,8 @@ Widget parent;
 									PosForm, args, count);
 
 	count = 0;
-	 XtCreateManagedWidget("PosWindow", formWidgetClass,
-								 swindow, args, count);
+	XtCreateManagedWidget("PosWindow", formWidgetClass,
+						  swindow, args, count);
 }
 
 static XtActionsRec actionsTable[] = {
@@ -472,8 +472,8 @@ Widget parent;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, "Searching For");
 	count++;
-	 XtCreateManagedWidget("SearchValLabel", labelWidgetClass,
-								 TypeForm, args, count);
+	XtCreateManagedWidget("SearchValLabel", labelWidgetClass,
+						  TypeForm, args, count);
 
 	count = 0;
 	XtSetArg(args[count], XtNeditType, XawtextEdit);
@@ -497,8 +497,8 @@ Widget parent;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, XtNresizable);
 	count++;
-	 XtCreateManagedWidget("TypeButton", menuButtonWidgetClass,
-								 TypeForm, args, count);
+	XtCreateManagedWidget("TypeButton", menuButtonWidgetClass,
+						  TypeForm, args, count);
 
 	XtSetKeyboardFocus(parent, SearchVal);
 
@@ -507,9 +507,8 @@ Widget parent;
 	XtOverrideTranslations(SearchVal, trans_table);
 }
 
-void 
-add_to_history (int seqnum)
-{
+void
+add_to_history (int seqnum) {
 	int count;
 	char curr_base[STRINGLEN];
 	Widget history_form, history_display, scrolwin;
@@ -539,7 +538,7 @@ add_to_history (int seqnum)
 		back_buf_num--;
 	}
 
-	 strcpy(curr_base, base_path);
+	strcpy(curr_base, base_path);
 	base_path[0] = '\0';
 
 	AddNewList(history_display, backseq,  (unsigned) back_buf_num);
@@ -547,7 +546,7 @@ add_to_history (int seqnum)
 	XtRealizeWidget(history_display);
 	XtManageChild(history_display);
 
-	 strcpy(base_path, curr_base);
+	strcpy(base_path, curr_base);
 	XawFormDoLayout(history_form, TRUE);
 
 }
@@ -590,14 +589,14 @@ Widget PosWindow;
 									   PosWindow, args, count);
 	XtAddCallback(rdn_window, XtNcallback, DnMoveRead, (XtPointer) 0);
 
-	 sprintf(trans_buf, "%d", 0);
+	sprintf(trans_buf, "%d", 0);
 
-	 strcpy(translations, trans_start_btn2);
-	 strcat(translations, trans_buf);
-	 strcat(translations, ") unset() \n ");
-	 strcat(translations, trans_start_btn3);
-	 strcat(translations, trans_buf);
-	 strcat(translations, ") unset()");
+	strcpy(translations, trans_start_btn2);
+	strcat(translations, trans_buf);
+	strcat(translations, ") unset() \n ");
+	strcat(translations, trans_start_btn3);
+	strcat(translations, trans_buf);
+	strcat(translations, ") unset()");
 
 	trans_table = XtParseTranslationTable(translations);
 	XtOverrideTranslations(rdn_window, trans_table);
@@ -606,7 +605,7 @@ Widget PosWindow;
 
 	rdn_number = 1;
 
-	 strcpy (name_array, "xx");
+	strcpy (name_array, "xx");
 
 	make_friendly(friendly_base_path, base_path);
 	end = friendly_base_path;
@@ -648,19 +647,19 @@ Widget PosWindow;
 		last_rdn = rdn_window;
 		XtAddCallback(rdn_window, XtNcallback, DnMoveRead, (XtPointer) rdn_number);
 
-		 sprintf(trans_buf, "%d", (strlen(name_array) - 1));
+		sprintf(trans_buf, "%d", (strlen(name_array) - 1));
 
-		 strcpy(translations, trans_start_btn2);
-		 strcat(translations, trans_buf);
-		 strcat(translations, ") unset() \n ");
-		 strcat(translations, trans_start_btn3);
-		 strcat(translations, trans_buf);
-		 strcat(translations, ") unset()");
+		strcpy(translations, trans_start_btn2);
+		strcat(translations, trans_buf);
+		strcat(translations, ") unset() \n ");
+		strcat(translations, trans_start_btn3);
+		strcat(translations, trans_buf);
+		strcat(translations, ") unset()");
 
 		trans_table = XtParseTranslationTable(translations);
 		XtOverrideTranslations(rdn_window, trans_table);
 
-		 strcat(name_array, "x");
+		strcat(name_array, "x");
 		rdn_number++;
 
 		*end = save;
@@ -693,7 +692,7 @@ XtPointer closure, calldata;
 	XtSetArg(args[count], XtNstring, &value);
 	count++;
 	XtGetValues(text, args, count);
-	 strcpy(mvalue, value);
+	strcpy(mvalue, value);
 
 	if (mvalue[0] == '\0') {
 		kill_message();
@@ -704,13 +703,13 @@ Click on this window to continue");
 	}
 
 	if (index(mvalue, '=') == NULLCP)
-		 sprintf(mess,
-					   "Searching for entry of type `%s'.\nPlease stand by....",
-					   filttype[typeindx]);
+		sprintf(mess,
+				"Searching for entry of type `%s'.\nPlease stand by....",
+				filttype[typeindx]);
 	else
-		 sprintf(mess,
-					   "Searching with filter `%s'.\nPlease stand by....",
-					   mvalue);
+		sprintf(mess,
+				"Searching with filter `%s'.\nPlease stand by....",
+				mvalue);
 
 	message(outer, mess);
 
@@ -727,9 +726,9 @@ Click on this window to continue");
 	switch(status) {
 	case Okay:
 		if (entry_number == 1) {
-			 strcpy(entry, (get_from_seq(1, dnseq)));
+			strcpy(entry, (get_from_seq(1, dnseq)));
 			if (!is_dit_leaf(entry)) {
-				 strcpy(base_path, entry);
+				strcpy(base_path, entry);
 				make_friendly(friendly_base_path, base_path);
 				set_search_area(XtNameToWidget
 								(outer, "PosForm.PosScrolledWindow.PosWindow"));
@@ -746,8 +745,8 @@ Click on this window to continue");
 				else
 					doError(status);
 			} else {
-				 strcpy(string, base_path);
-				 strcpy(base_path, entry);
+				strcpy(string, base_path);
+				strcpy(base_path, entry);
 				make_friendly(friendly_base_path, base_path);
 				XFlush(dpy);
 
@@ -757,7 +756,7 @@ Click on this window to continue");
 				displayReadPopup();
 
 				if (status == Okay) {
-					 strcpy(base_path, string);
+					strcpy(base_path, string);
 					make_friendly(friendly_base_path, base_path);
 				} else
 					doError(status);
@@ -765,16 +764,16 @@ Click on this window to continue");
 			clear_dnseq();
 			entry_number = 0;
 		} else if (entry_number > 0) {
-			 strcpy(mess, "Results of search under ");
+			strcpy(mess, "Results of search under ");
 
 			if (strlen(base_path) > 3) {
 				indx = 0;
 				while (friendly_base_path[indx] != ',' &&
 						friendly_base_path[indx] != '\0') indx++;
 				friendly_base_path[indx] = '\0';
-				 strcat(mess, (char *) (friendly_base_path));
+				strcat(mess, (char *) (friendly_base_path));
 			} else {
-				 strcat(mess, "The World");
+				strcat(mess, "The World");
 				indx = 0;
 			}
 
@@ -784,40 +783,40 @@ Click on this window to continue");
 		case listsizelimit:
 		case adminlimit_w_partial:
 		case timelimit_w_partial:
-			 strcpy(mess, "Results of search under ");
+			strcpy(mess, "Results of search under ");
 
 			if (strlen(base_path) > 3) {
 				indx = 0;
 				while (friendly_base_path[indx] != ',' &&
 						friendly_base_path[indx] != '\0') indx++;
 				friendly_base_path[indx] = '\0';
-				 strcat(mess, (char *) friendly_base_path);
+				strcat(mess, (char *) friendly_base_path);
 			} else {
-				 strcat(mess, "The World");
+				strcat(mess, "The World");
 				indx = 0;
 			}
 
 			switch (status) {
 			case timelimit_w_partial:
-				 sprintf(string,
-							   "%s. %s. %d %s.",
-							   "Time limit reached",
-							   "Partial results only",
-							   entry_number,
-							   "items displayed");
+				sprintf(string,
+						"%s. %s. %d %s.",
+						"Time limit reached",
+						"Partial results only",
+						entry_number,
+						"items displayed");
 				break;
 			case adminlimit_w_partial:
-				 sprintf(string,
-							   "%s. %s. %d %s.",
-							   "Administrative limit reached",
-							   "Partial results only",
-							   entry_number,
-							   "items displayed");
+				sprintf(string,
+						"%s. %s. %d %s.",
+						"Administrative limit reached",
+						"Partial results only",
+						entry_number,
+						"items displayed");
 				break;
 			case listsizelimit:
-				 sprintf(string,
-							   "List size limit exceeded. Only %d items displayed.",
-							   entry_number);
+				sprintf(string,
+						"List size limit exceeded. Only %d items displayed.",
+						entry_number);
 				break;
 			}
 
@@ -874,9 +873,9 @@ XtPointer indx, calldata;
 	if ((menu = XtNameToWidget(outer, "TypeForm.TypeButton.menu")))
 		XtDestroyWidget(menu);
 
-	 createTypeMenu(menuButton);
+	createTypeMenu(menuButton);
 
-	 strcpy(label, filttype[(int) indx]);
+	strcpy(label, filttype[(int) indx]);
 
 	count = 0;
 	XtSetArg(args[count], XtNlabel, label);
@@ -960,7 +959,7 @@ Widget parent;
 
 }
 
-static void 
+static void
 displayReadPopup  {
 	if (curr_read_popup) {
 		XtPopup(curr_read_popup, XtGrabNone);
@@ -968,9 +967,8 @@ displayReadPopup  {
 	}
 }
 
-void 
-setReadEntryName (char *entry_name)
-{
+void
+setReadEntryName (char *entry_name) {
 	Widget title, modifyButton, showAllButton;
 	int count = 0;
 	Arg args[MAXARGS];
@@ -1100,8 +1098,8 @@ static Widget createReadPopup() {
 	count = 0;
 	XtSetArg(args[count], XtNlabel, friendly_base_path);
 	count++;
-	 XtCreateManagedWidget("readTitle", commandWidgetClass,
-								 titleView, args, count);
+	XtCreateManagedWidget("readTitle", commandWidgetClass,
+						  titleView, args, count);
 
 	count = 0;
 	TextScrolledWindow = XtCreateManagedWidget("TextScrolledWindow",
@@ -1129,16 +1127,16 @@ static Widget createReadPopup() {
 	count++;
 	XtSetArg(args[count], XtNstring, "");
 	count++;
-	 XtCreateManagedWidget("SepWindow", asciiTextWidgetClass,
-								 TextForm, args, count);
+	XtCreateManagedWidget("SepWindow", asciiTextWidgetClass,
+						  TextForm, args, count);
 
 	count = 0;
 	XtSetArg(args[count], XtNresizable, TRUE);
 	count++;
 	XtSetArg(args[count], XtNstring, "");
 	count++;
-	 XtCreateManagedWidget("ValWindow", asciiTextWidgetClass,
-								 TextForm, args, count);
+	XtCreateManagedWidget("ValWindow", asciiTextWidgetClass,
+						  TextForm, args, count);
 
 	XawFormDoLayout(TextForm, FALSE);
 
@@ -1200,7 +1198,7 @@ unsigned int list_size;
 
 	*name = '\0';
 	for (n = 0; n < element_number; n++) {
-		 strcat(name, "X");
+		strcat(name, "X");
 
 		object = get_from_seq(n+1, list_seq);
 		make_friendly_rdn(friendly_rdn, object, base_path);
@@ -1227,16 +1225,16 @@ unsigned int list_size;
 
 		XtAddCallback(element, XtNcallback, ListSelect, (XtPointer) object);
 
-		 strcpy(translations, trans_start_btn2);
-		 strcat(translations,"\"");
-		 strcat(translations, object);
-		 strcat(translations,"\"");
-		 strcat(translations, ") unset()\n ");
-		 strcat(translations, trans_start_btn3);
-		 strcat(translations,"\"");
-		 strcat(translations, object);
-		 strcat(translations,"\"");
-		 strcat(translations, ") unset()");
+		strcpy(translations, trans_start_btn2);
+		strcat(translations,"\"");
+		strcat(translations, object);
+		strcat(translations,"\"");
+		strcat(translations, ") unset()\n ");
+		strcat(translations, trans_start_btn3);
+		strcat(translations,"\"");
+		strcat(translations, object);
+		strcat(translations,"\"");
+		strcat(translations, ") unset()");
 
 		trans_table = XtParseTranslationTable(translations);
 		XtOverrideTranslations(element, trans_table);
@@ -1255,9 +1253,8 @@ unsigned int list_size;
 	}
 }
 
-void 
-readEntryPrint (char *entry_ptr)
-{
+void
+readEntryPrint (char *entry_ptr) {
 	Widget entry_form = 0;
 
 	if (curr_read_popup) {
@@ -1285,9 +1282,9 @@ char *entry_ptr;
 
 	XawFormDoLayout(entry_form, FALSE);
 
-	 strcpy(vals, "");
-	 strcpy(attrs, "");
-	 strcpy(seps, "");
+	strcpy(vals, "");
+	strcpy(attrs, "");
+	strcpy(seps, "");
 
 	attr_list = XtNameToWidget(entry_form, "AttrWindow");
 	val_list = XtNameToWidget(entry_form, "ValWindow");
@@ -1314,13 +1311,13 @@ char *entry_ptr;
 			save = *str_end;
 			*str_end = '\0';
 
-			 strcat(attrs, "\n");
-			 strcat(vals, "\n");
+			strcat(attrs, "\n");
+			strcat(vals, "\n");
 
 			if (do_mail_reverse == TRUE) rfc2greybook(str_start);
-			 strcat(vals, str_start);
+			strcat(vals, str_start);
 
-			 strcat(seps, "\n");
+			strcat(seps, "\n");
 
 			val_width = XTextWidth(font, str_start, strlen(str_start))+
 						FONTWIDTH(font);
@@ -1334,14 +1331,14 @@ char *entry_ptr;
 			save = *str_end;
 			*str_end = '\0';
 
-			 strcat(attrs, "\n");
+			strcat(attrs, "\n");
 
 			if (mailformat == greybook && !lexequ(str_start, "rfc822Mailbox")) {
 				do_mail_reverse = TRUE;
-				 strcat(attrs, "mailbox");
+				strcat(attrs, "mailbox");
 			} else {
 				do_mail_reverse = FALSE;
-				 strcat(attrs, str_start);
+				strcat(attrs, str_start);
 			}
 
 			attr_width = XTextWidth(font, str_start, strlen(str_start)) +
@@ -1361,11 +1358,11 @@ char *entry_ptr;
 			save = *str_end;
 			*str_end = '\0';
 
-			 strcat(seps, "-\n");
-			 strcat(vals, "\n");
+			strcat(seps, "-\n");
+			strcat(vals, "\n");
 
 			if (do_mail_reverse == TRUE) rfc2greybook(str_start);
-			 strcat(vals, str_start);
+			strcat(vals, str_start);
 
 			val_width =
 				XTextWidth(font, str_start, strlen(str_start)) + FONTWIDTH(font);
@@ -1382,7 +1379,7 @@ char *entry_ptr;
 	sep_width = FONTWIDTH(font);
 
 	if (entry_ptr == NULLCP) {
-		 strcpy (attrs, "No Attributes found!");
+		strcpy (attrs, "No Attributes found!");
 		max_attr_width =
 			XTextWidth(font, attrs, strlen(attrs)) + FONTWIDTH(font);
 	}
@@ -1470,8 +1467,8 @@ XtPointer closure, calldata;
 	char current_path[STRINGLEN];
 	char *object = (char *) closure;
 
-	 strcpy(current_path, base_path);
-	 strcpy(base_path, object);
+	strcpy(current_path, base_path);
+	strcpy(base_path, object);
 
 	temp_read_popup = curr_read_popup;
 
@@ -1484,7 +1481,7 @@ XtPointer closure, calldata;
 	else
 		displayReadPopup();
 
-	 strcpy(base_path, current_path);
+	strcpy(base_path, current_path);
 	curr_read_popup = temp_read_popup;
 }
 
@@ -1518,7 +1515,7 @@ Widget search_area;
 	name[0] = '\0';
 
 	for (n = 0; n < rdn_number; n++) {
-		 strcat(name, "x");
+		strcat(name, "x");
 		wlist[n] = XtNameToWidget(search_area, name);
 		count++;
 	}
@@ -1561,54 +1558,54 @@ XtPointer closure, calldata;
 	case listsizelimit:
 	case adminlimit_w_partial:
 	case timelimit_w_partial:
-		 strcpy(mess, "Results of list under ");
+		strcpy(mess, "Results of list under ");
 
 		if (strlen(base_path) > 3) {
 			indx = 0;
 			while (friendly_base_path[indx] != ',' &&
 					friendly_base_path[indx] != '\0') indx++;
 			friendly_base_path[indx] = '\0';
-			 strcat(mess, (char *) friendly_base_path);
+			strcat(mess, (char *) friendly_base_path);
 		} else
-			 strcat(mess, "The World");
+			strcat(mess, "The World");
 
 		switch (status) {
 		case listsizelimit:
-			 sprintf(string,
-						   "List size limit exceeded. Only %d items displayed.",
-						   entry_number);
+			sprintf(string,
+					"List size limit exceeded. Only %d items displayed.",
+					entry_number);
 			break;
 		case adminlimit_w_partial:
-			 sprintf(string,
-						   "%s. %s. %d %s.",
-						   "Administrative limit reached",
-						   "Partial results only",
-						   entry_number,
-						   "items displayed");
+			sprintf(string,
+					"%s. %s. %d %s.",
+					"Administrative limit reached",
+					"Partial results only",
+					entry_number,
+					"items displayed");
 			break;
 		case timelimit_w_partial:
-			 sprintf (string,
-							"%s. %s. %d %s.",
-							"Time limit reached",
-							"Partial results only",
-							entry_number,
-							"items displayed");
+			sprintf (string,
+					 "%s. %s. %d %s.",
+					 "Time limit reached",
+					 "Partial results only",
+					 entry_number,
+					 "items displayed");
 			break;
 		}
 		createList(dnseq, mess, string);
 		dnseq = 0;
 		break;
 	case Okay:
-		 strcpy(mess, "Results of list under ");
+		strcpy(mess, "Results of list under ");
 
 		if (strlen(base_path) > 3) {
 			indx = 0;
 			while (friendly_base_path[indx] != ',' &&
 					friendly_base_path[indx] != '\0') indx++;
 			friendly_base_path[indx] = '\0';
-			 strcat(mess, (char *) friendly_base_path);
+			strcat(mess, (char *) friendly_base_path);
 		} else
-			 strcat(mess, "The World");
+			strcat(mess, "The World");
 
 		createList(dnseq, mess, "");
 		dnseq = 0;
@@ -1629,8 +1626,8 @@ XtPointer object, calldata;
 
 	entry_name = (char *) object;
 
-	 strcpy(parent, base_path);
-	 strcpy(base_path, entry_name);
+	strcpy(parent, base_path);
+	strcpy(base_path, entry_name);
 	make_friendly(friendly_base_path, base_path);
 
 	if (!is_dit_leaf(entry_name)) {
@@ -1640,7 +1637,7 @@ XtPointer object, calldata;
 		Move((Widget) 0, (XtPointer) entry_name, (XtPointer) 0);
 	} else {
 		Read((Widget) 0, (XtPointer) 0, (XtPointer) 0);
-		 strcpy(base_path, parent);
+		strcpy(base_path, parent);
 	}
 }
 
@@ -1654,8 +1651,8 @@ Cardinal num_params;
 	char temp_path[STRINGLEN];
 	Widget search_area = XtNameToWidget(outer,
 										"PosForm.PosScrolledWindow.PosWindow");
-	 strcpy(temp_path, base_path);
-	 strcpy(base_path, params[0]);
+	strcpy(temp_path, base_path);
+	strcpy(base_path, params[0]);
 
 	if (!is_dit_leaf(base_path)) {
 		goto_addr();
@@ -1663,7 +1660,7 @@ Cardinal num_params;
 		SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
 		XFlush(dpy);
 	} else {
-		 strcpy(base_path, temp_path);
+		strcpy(base_path, temp_path);
 		displayError(outer,
 					 "Cannot move to a leaf entry!\n\
 Click on this window to continue");
@@ -1681,8 +1678,8 @@ Cardinal num_params;
 										"PosForm.PosScrolledWindow.PosWindow");
 	char temp_path[STRINGLEN];
 
-	 strcpy(temp_path, base_path);
-	 strcpy(base_path, params[0]);
+	strcpy(temp_path, base_path);
+	strcpy(base_path, params[0]);
 
 	if (!is_dit_leaf(base_path)) {
 		List((Widget) 0, (XtPointer) 0, (XtPointer) 0);
@@ -1692,7 +1689,7 @@ Cardinal num_params;
 		SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
 		XFlush(dpy);
 	} else {
-		 strcpy(base_path, temp_path);
+		strcpy(base_path, temp_path);
 		displayError(outer,
 					 "Cannot list under this entry!\n\
 Click on this window to continue");
@@ -1808,7 +1805,7 @@ XtPointer closure, calldata;
 	search_area = XtNameToWidget(outer, "PosForm.PosScrolledWindow.PosWindow");
 
 	new_base = (char *) closure;
-	 strcpy(base_path, new_base);
+	strcpy(base_path, new_base);
 
 	make_friendly(friendly_base_path, new_base);
 	set_search_area(search_area);
@@ -1816,44 +1813,44 @@ XtPointer closure, calldata;
 	SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
 }
 
-static void 
+static void
 CreateMessagePopup  {
 	int count;
 	Arg args[MAXARGS];
 
 	count = 0;
 	standby = XtCreatePopupShell("POD: Working.",
-								 transientShellWidgetClass,
-								 toplevel, args, count);
+	transientShellWidgetClass,
+	toplevel, args, count);
 
 	count = 0;
 	XtSetArg(args[count], XtNresize, FALSE);
 	count++;
-	 XtCreateManagedWidget("standby", labelWidgetClass,
-								 standby, args, count);
+	XtCreateManagedWidget("standby", labelWidgetClass,
+	standby, args, count);
 
 	XtRealizeWidget(standby);
 }
 
-static void 
+static void
 CreateVersionPopup  {
 	Widget title, piccy, version_label, text_form;
 	Arg args[MAXARGS];
 	int count;
 	/* Have to hard to code the version number in! */
 	char *version = "Version 2.4 29th May 1991",
-		  *title_string = "Pod - POpup Directory",
-		   *author_string = "by\n\
+	*title_string = "Pod - POpup Directory",
+	*author_string = "by\n\
 Andrew Findlay, Damanjit Mahl, Stefan Nahajski\n\
 Brunel University";
 
 	count = 0;
 	version_popup = XtCreatePopupShell("About Pod", transientShellWidgetClass,
-									   toplevel, args, count);
+	toplevel, args, count);
 
 	count = 0;
 	text_form = XtCreateManagedWidget("verForm", formWidgetClass,
-									  version_popup, args, count);
+	version_popup, args, count);
 
 	count = 0;
 	XtSetArg(args[count], XtNlabel, title_string);
@@ -1861,7 +1858,7 @@ Brunel University";
 	XtSetArg(args[count], XtNresizable, TRUE);
 	count++;
 	title = XtCreateManagedWidget("verTitle", labelWidgetClass,
-								  text_form, args, count);
+	text_form, args, count);
 
 	count = 0;
 	XtSetArg(args[count], XtNlabel, version);
@@ -1871,7 +1868,7 @@ Brunel University";
 	XtSetArg(args[count], XtNresizable, TRUE);
 	count++;
 	version_label = XtCreateManagedWidget("verLabel", labelWidgetClass,
-										  text_form, args, count);
+	text_form, args, count);
 
 	count = 0;
 	XtSetArg(args[count], XtNlabel, "");
@@ -1885,7 +1882,7 @@ Brunel University";
 	XtSetArg(args[count], XtNresizable, TRUE);
 	count++;
 	piccy = XtCreateManagedWidget("teamPic", labelWidgetClass,
-								  text_form, args, count);
+	text_form, args, count);
 
 	count = 0;
 	XtSetArg(args[count], XtNlabel, author_string);
@@ -1894,8 +1891,8 @@ Brunel University";
 	count++;
 	XtSetArg(args[count], XtNresizable, TRUE);
 	count++;
-	 XtCreateManagedWidget("authLabel", labelWidgetClass,
-								 text_form, args, count);
+	XtCreateManagedWidget("authLabel", labelWidgetClass,
+	text_form, args, count);
 
 	XtRealizeWidget(version_popup);
 
@@ -1979,7 +1976,7 @@ Cardinal num_params;
 	XtPopdown(version_popup);
 }
 
-static void 
+static void
 CreateErrorPopup  {
 	Widget text;
 	int count;
@@ -1987,14 +1984,14 @@ CreateErrorPopup  {
 
 	count = 0;
 	error_popup = XtCreatePopupShell("POD: <Directory Error>",
-									 transientShellWidgetClass,
-									 toplevel, args, count);
+	transientShellWidgetClass,
+	toplevel, args, count);
 
 	count = 0;
 	XtSetArg(args[count], XtNresize, FALSE);
 	count++;
 	text = XtCreateManagedWidget("error_popup", commandWidgetClass,
-								 error_popup, args, count);
+	error_popup, args, count);
 
 	XtAddCallback(text, XtNcallback, killError, (XtPointer) 0);
 
@@ -2070,8 +2067,8 @@ to make this request!\nClick on this window to continue");
 		break;
 	case error_string_given:
 		dnseq = 0;
-		 sprintf(show_message, "%sClick on this window to continue",
-					   dir_error_message);
+		sprintf(show_message, "%sClick on this window to continue",
+				dir_error_message);
 		displayError(outer, show_message);
 		break;
 	}
@@ -2125,7 +2122,7 @@ XtPointer closure, calldata;
 	kill_error();
 }
 
-static void 
+static void
 kill_error  {
 	Arg args[MAXARGS];
 	int count;
@@ -2173,7 +2170,7 @@ char *mess;
 	XFlush(dpy);
 }
 
-void 
+void
 kill_message  {
 	Arg args[MAXARGS];
 	int count;
@@ -2197,21 +2194,21 @@ kill_message  {
 		XFreePixmap(dpy, pixmap_resource);
 }
 
-static void 
+static void
 CreateHelpPopup  {
 	Widget popup_help, popup_help_button, popup_quit_button,
-		   popup_help_form, popup_help_scrolwin;
+	popup_help_form, popup_help_scrolwin;
 
 	Arg args[MAXARGS];
 	int count;
 
 	count = 0;
 	popup_help = XtCreatePopupShell("Pod Help Screen", topLevelShellWidgetClass,
-									toplevel, args, count);
+	toplevel, args, count);
 
 	count = 0;
 	popup_help_form = XtCreateManagedWidget("popup_help_form", formWidgetClass,
-											popup_help, args, count);
+	popup_help, args, count);
 
 	count = 0;
 	XtSetArg(args[count], XtNheight, Close_height);
@@ -2219,8 +2216,8 @@ CreateHelpPopup  {
 	XtSetArg(args[count], XtNwidth, Close_width);
 	count++;
 	popup_quit_button = XtCreateManagedWidget("popup_help_quit",
-						commandWidgetClass,
-						popup_help_form, args, count);
+	commandWidgetClass,
+	popup_help_form, args, count);
 
 	XtAddCallback(popup_quit_button, XtNcallback, QuitFromHelp, (XtPointer) 0);
 
@@ -2230,31 +2227,31 @@ CreateHelpPopup  {
 	XtSetArg(args[count], XtNwidth, About_width);
 	count++;
 	popup_help_button = XtCreateManagedWidget("popup_help_general",
-						commandWidgetClass,
-						popup_help_form, args, count);
+	commandWidgetClass,
+	popup_help_form, args, count);
 
 	XtAddCallback(popup_help_button, XtNcallback, ShowVersion, (XtPointer) NULL);
 
 	count = 0;
 	popup_help_scrolwin = XtCreateManagedWidget("popup_help_scrolwin",
-						  viewportWidgetClass,
-						  popup_help_form, args, count);
+	viewportWidgetClass,
+	popup_help_form, args, count);
 
 	count = 0;
-	 XtCreateManagedWidget("popup_help_text",
-								 asciiTextWidgetClass,
-								 popup_help_scrolwin, args, count);
+	XtCreateManagedWidget("popup_help_text",
+	asciiTextWidgetClass,
+	popup_help_scrolwin, args, count);
 	XtRealizeWidget(popup_help);
 
 	CreateBackgroundPixmap(popup_help_button, About_bits,
-						   About_width, About_height);
+	About_width, About_height);
 
 	CreateBackgroundPixmap(popup_quit_button, Close_bits,
-						   Close_width, Close_height);
+	Close_width, Close_height);
 
 	if (DefaultDepthOfScreen(screen) == 1) {
 		CreateBackgroundPixmap(popup_help_form, gray_bits,
-							   gray_width, gray_height);
+		gray_width, gray_height);
 	}
 }
 
@@ -2309,8 +2306,8 @@ XtPointer closure, calldata;
 	count++;
 	XtGetValues(scrolwin, args, count);
 
-	 strcpy(filename, dua_help_dir);
-	 strcat(filename, (String) closure);
+	strcpy(filename, dua_help_dir);
+	strcat(filename, (String) closure);
 
 	count = 0;
 	XtSetArg(args[count], XtNfont, &font);
@@ -2325,23 +2322,23 @@ XtPointer closure, calldata;
 
 	height = 0;
 	if (!(file = fopen(filename, "r"))) {
-		 strcpy(filename, "./Xd/podHelpdir/");
-		 strcat(filename, (String) closure);
+		strcpy(filename, "./Xd/podHelpdir/");
+		strcat(filename, (String) closure);
 		if (!(file = fopen(filename, "r"))) {
-			 fprintf(stderr, "Helpfile '%s%s' not found\n",
-						   dua_help_dir, closure);
+			fprintf(stderr, "Helpfile '%s%s' not found\n",
+					dua_help_dir, closure);
 			return;
 		}
 	}
 
 	if (file) {
-		 strcpy(help_buf, "\0");
+		strcpy(help_buf, "\0");
 		while (fgets(help_string, STRINGLEN - 1, file)) {
 			height += (FONTHEIGHT(font));
-			 strcat(help_buf, help_string);
+			strcat(help_buf, help_string);
 		}
 
-		 fclose(file);
+		fclose(file);
 		count = 0;
 		XtSetArg(args[count], XtNstring, "");
 		count++;
@@ -2448,8 +2445,8 @@ char *mess;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, "History Window");
 	count++;
-	 XtCreateManagedWidget("HistoryTitle", labelWidgetClass,
-								 HistoryForm, args, count);
+	XtCreateManagedWidget("HistoryTitle", labelWidgetClass,
+						  HistoryForm, args, count);
 
 	count = 0;
 	swindow = XtCreateManagedWidget("ListScrolledWindow", viewportWidgetClass,
@@ -2462,8 +2459,8 @@ char *mess;
 	count = 0;
 	XtSetArg(args[count], XtNlabel, mess);
 	count++;
-	 XtCreateManagedWidget("ListMessage", labelWidgetClass,
-								 HistoryForm, args, count);
+	XtCreateManagedWidget("ListMessage", labelWidgetClass,
+						  HistoryForm, args, count);
 
 	XtAddCallback(ListWindow, XtNdestroyCallback,
 				  ListDestroy, (XtPointer) list_seq);
@@ -2509,7 +2506,7 @@ Cardinal num_params;
 {
 	if ((help_up) && strcmp(params[0], curr_help)) {
 		InsertHelp((Widget) 0, (XtPointer) params[0], (XtPointer) 0);
-		 strcpy(curr_help, params[0]);
+		strcpy(curr_help, params[0]);
 	}
 }
 
@@ -2658,7 +2655,7 @@ XtPointer object, calldata;
 	else {
 		Widget modify_form = XtNameToWidget(curr_modify_popup, "modifyForm");
 		XawFormDoLayout(modify_form, FALSE);
-		 createModifyTemplate(curr_modify_popup, (char *) object);
+		createModifyTemplate(curr_modify_popup, (char *) object);
 		XawFormDoLayout(modify_form, TRUE);
 		XtPopup(curr_modify_popup, XtGrabNone);
 		XRaiseWindow(dpy, XtWindow(curr_modify_popup));
@@ -2780,10 +2777,10 @@ XtPointer closure, calldata;
 		break;
 	default:
 		XBell(dpy, 100);
-		 strcpy(error_message, "Cannot modify!\n");
-		 strcat(error_message, mod_error.err_mess);
-		 strcat(error_message, "\n");
-		 strcat(error_message, "Click on this window to continue.");
+		strcpy(error_message, "Cannot modify!\n");
+		strcat(error_message, mod_error.err_mess);
+		strcat(error_message, "\n");
+		strcat(error_message, "Click on this window to continue.");
 		displayError(XtParent(XtParent(XtParent(w))), error_message);
 		free(mod_error.err_mess);
 	}
@@ -3301,7 +3298,7 @@ char *entry_name;
 
 	entry = (dirEntry) malloc(sizeof(dir_entry));
 	entry->entry_name = malloc((unsigned) strlen(entry_name) + 1);
-	 strcpy(entry->entry_name, entry_name);
+	strcpy(entry->entry_name, entry_name);
 	entry->attrs = attrs;
 
 	modifyViewForm = XtNameToWidget(modify_form,
@@ -3611,9 +3608,9 @@ char *entry_name;
 										 ButtonForm, args, count);
 
 	count = 0;
-	 XtCreateManagedWidget("modifyScrolledWindow",
-								 viewportWidgetClass, modifyForm,
-								 args, count);
+	XtCreateManagedWidget("modifyScrolledWindow",
+						  viewportWidgetClass, modifyForm,
+						  args, count);
 
 	entry = createModifyTemplate(modifyPopup, entry_name);
 
@@ -3818,8 +3815,8 @@ XtPointer closure, calldata;
 	Time xtime = XtLastTimestampProcessed(dpy);
 	char *string = (char *) closure;
 
-	 strcpy(curr_selection, "@");
-	 strcat(curr_selection, string);
+	strcpy(curr_selection, "@");
+	strcat(curr_selection, string);
 	XtOwnSelection(w, XA_PRIMARY, xtime, ConvSel, NULL, NULL);
 }
 

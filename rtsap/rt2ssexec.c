@@ -37,9 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ssexec.c,v 9.0 199
 
 /*    SERVER only */
 
-int 
-RtExec (struct SSAPstart *ss, struct RtSAPindication *rti, char *arg1, char *arg2, IFP hook, IFP setperms)
-{
+int
+RtExec (struct SSAPstart *ss, struct RtSAPindication *rti, char *arg1, char *arg2, IFP hook, IFP setperms) {
 	int     result,
 			result2;
 	struct isoservent *is;
@@ -100,8 +99,8 @@ congest:
 
 	case OK:
 		if (setperms)
-			 (*setperms) (is);
-		 execv (*is -> is_vec, is -> is_vec);/* fall */
+			(*setperms) (is);
+		execv (*is -> is_vec, is -> is_vec);/* fall */
 		SLOG (rtsap_log, LLOG_FATAL, *is -> is_vec, ("unable to exec"));
 	default:
 		goto congest;
@@ -114,7 +113,7 @@ out:
 	SSFREE (ss);
 
 	bzero ((char *) &ref, sizeof ref);
-	 SConnResponse (ss -> ss_sd, &ref, NULLSA, result, 0, 0,
-						  SERIAL_NONE, NULLCP, 0, si);
+	SConnResponse (ss -> ss_sd, &ref, NULLSA, result, 0, 0,
+				   SERIAL_NONE, NULLCP, 0, si);
 	return rtsaplose (rti, result2, NULLCP, NULLCP);
 }

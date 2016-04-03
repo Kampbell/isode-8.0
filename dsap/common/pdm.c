@@ -58,9 +58,8 @@ static CMD_TABLE pdm_table [] = {
 };
 
 
-static 
-pdmfree (struct pref_deliv *pdm)
-{
+static
+pdmfree (struct pref_deliv *pdm) {
 	struct pref_deliv *next;
 
 	for (; pdm != (struct pref_deliv *) NULL; pdm = next)  {
@@ -69,9 +68,8 @@ pdmfree (struct pref_deliv *pdm)
 	}
 }
 
-static 
-pdmcmp (struct pref_deliv *a, struct pref_deliv *b)
-{
+static
+pdmcmp (struct pref_deliv *a, struct pref_deliv *b) {
 	/* matching here is a bit dubious !!! */
 
 	for (; (a != (struct pref_deliv *) NULL) && (b != (struct pref_deliv *) NULL) ;
@@ -87,8 +85,7 @@ pdmcmp (struct pref_deliv *a, struct pref_deliv *b)
 }
 
 static struct pref_deliv *
-pdmcpy (struct pref_deliv *a)
-{
+pdmcpy (struct pref_deliv *a) {
 	struct pref_deliv * b, *c, *result = (struct pref_deliv *) NULL;
 
 	c = result; /* to keep lint happy */
@@ -109,8 +106,7 @@ pdmcpy (struct pref_deliv *a)
 }
 
 static struct pref_deliv *
-pdmparse (char *str)
-{
+pdmparse (char *str) {
 	struct pref_deliv * result = (struct pref_deliv *) NULL;
 	struct pref_deliv * a, *b;
 	char * ptr;
@@ -183,7 +179,7 @@ struct pref_deliv * m;
 {
 	PE ret_pe;
 
-	 encode_SA_PreferredDeliveryMethod (&ret_pe,0,0,NULLCP,m);
+	encode_SA_PreferredDeliveryMethod (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -198,14 +194,14 @@ PE pe;
 	return (m);
 }
 
-int 
+int
 pref_deliv_syntax (void) {
-	 add_attribute_syntax ("DeliveryMethod",
-								 (IFP) pdmenc,	(IFP) pdmdec,
-								 (IFP) pdmparse,pdmprint,
-								 (IFP) pdmcpy,	pdmcmp,
-								 pdmfree,	NULLCP,
-								 NULLIFP,	TRUE);
+	add_attribute_syntax ("DeliveryMethod",
+						  (IFP) pdmenc,	(IFP) pdmdec,
+						  (IFP) pdmparse,pdmprint,
+						  (IFP) pdmcpy,	pdmcmp,
+						  pdmfree,	NULLCP,
+						  NULLIFP,	TRUE);
 
 }
 

@@ -45,7 +45,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psapinitiate.c,v 
 int	PAsynConnRequest (calling, called, ctxlist, defctxname, prequirements,
 					  srequirements, isn, settings, ref, data, ndata, qos, pc, pi, async)
 struct PSAPaddr *calling,
-		*called;
+		   *called;
 int	prequirements,
 	srequirements,
 	settings,
@@ -113,7 +113,7 @@ struct PSAPindication *pi;
 	result = PConnRequestAux (calling, called, ctxlist, ref, data[0], qos,
 							  pc, pi, async);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
@@ -123,7 +123,7 @@ struct PSAPindication *pi;
 static int  PConnRequestAux (calling, called, ctxlist, ref, data, qos, pc, pi,
 							 async)
 struct PSAPaddr *calling,
-		*called;
+		   *called;
 struct PSAPctxlist *ctxlist;
 struct SSAPref *ref;
 PE	data;
@@ -143,7 +143,7 @@ int	async;
 
 	if ((pref = (struct type_PS_SessionConnectionIdentifier *)
 				malloc (sizeof *pref)) == NULL) {
-		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out1;
 	}
 	pb -> pb_reference = pref;
@@ -156,7 +156,7 @@ int	async;
 			== NULL) {
 no_mem:
 		;
-		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	if (ref -> sr_alen > 0) {
@@ -169,7 +169,7 @@ no_mem:
 		pref -> additionalReferenceInformation = NULL;
 
 	if ((pb -> pb_ber = ode2oid (DFLT_ATN)) == NULLOID) {
-		 psaplose (pi, PC_ABSTRACT, NULLCP, "%s: unknown", DFLT_ATN);
+		psaplose (pi, PC_ABSTRACT, NULLCP, "%s: unknown", DFLT_ATN);
 		goto out2;
 	}
 	if ((pb -> pb_ber = oid_cpy (pb -> pb_ber)) == NULLOID)
@@ -179,7 +179,7 @@ no_mem:
 	{
 		int	i;
 		struct PSAPcontext *pp,
-				*qp;
+				   *qp;
 
 		i = ctxlist -> pc_nctx - 1;
 		for (pp = ctxlist -> pc_ctx, qp = pb -> pb_contexts;
@@ -192,23 +192,23 @@ no_mem:
 				break;
 
 			default:
-				 psaplose (pi, PC_PARAMETER, NULLCP,
-								 "illegal value for PCI (%d)",
-								 pp -> pc_id);
+				psaplose (pi, PC_PARAMETER, NULLCP,
+						  "illegal value for PCI (%d)",
+						  pp -> pc_id);
 				goto out2;
 			}
 
 			if (pp -> pc_asn == NULLOID) {
-				 psaplose (pi, PC_PARAMETER, NULLCP,
-								 "no abstract syntax name given for context %d",
-								 pp -> pc_id);
+				psaplose (pi, PC_PARAMETER, NULLCP,
+						  "no abstract syntax name given for context %d",
+						  pp -> pc_id);
 				goto out2;
 			}
 
 			if (pp -> pc_atn && !atn_is_ok (pb, pp -> pc_atn)) {
-				 psaplose (pi, PC_TRANSFER, NULLCP,
-								 "unknown transfer syntax given for context %d",
-								 pp -> pc_id);
+				psaplose (pi, PC_TRANSFER, NULLCP,
+						  "unknown transfer syntax given for context %d",
+						  pp -> pc_id);
 				goto out2;
 			}
 
@@ -218,7 +218,7 @@ no_mem:
 		}
 	}
 	if (asn == NULLOID) {
-		 psaplose (pi, PC_PARAMETER, NULLCP, "PCI for SASE not present");
+		psaplose (pi, PC_PARAMETER, NULLCP, "PCI for SASE not present");
 		goto out2;
 	}
 
@@ -257,8 +257,8 @@ no_mem:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
-						 PY_pepy);
+		psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+				  PY_pepy);
 		goto out1;
 	}
 
@@ -314,7 +314,7 @@ static struct nsapent {
 static int  PConnRequestAux2 (pb, calling, called, qos, pi, async)
 struct psapblk *pb;
 struct TSAPaddr *calling,
-		*called;
+		   *called;
 struct QOStype *qos;
 struct PSAPindication *pi;
 int	async;
@@ -389,12 +389,12 @@ struct PSAPindication *pi;
 	smask = sigioblock ();
 
 	if ((pb = findpblk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
 	if (pb -> pb_flags & PB_CONN) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return psaplose (pi, PC_OPERATION, NULLCP,
 						 "presentation descriptor connected");
 	}
@@ -413,7 +413,7 @@ struct PSAPindication *pi;
 		break;
 	}
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
@@ -446,8 +446,8 @@ struct PSAPindication *pi;
 	pb -> pb_response = NULL;
 
 	if (result == NOTOK) {
-		 ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
-						 "error decoding PDU: %s", PY_pepy);
+		ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
+				  "error decoding PDU: %s", PY_pepy);
 		goto out;
 	}
 
@@ -456,7 +456,7 @@ struct PSAPindication *pi;
 	switch (pdu -> offset) {
 	case type_PS_PDUs_connectResponse: {
 		struct type_PS_ConnectResponse__PDU *cr =
-					pdu -> un.connectResponse;
+				pdu -> un.connectResponse;
 
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, cr -> reference)) {
@@ -487,7 +487,7 @@ struct PSAPindication *pi;
 		{
 			int	i;
 			struct PSAPcontext *pp,
-					*qp;
+					   *qp;
 
 			i = pb -> pb_ncontext;
 			for (pp = pb -> pb_contexts, qp = pc -> pc_ctxlist.pc_ctx;

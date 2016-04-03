@@ -48,9 +48,8 @@ extern  void opening_analyse() ;
 extern  time_t timenow;
 extern  char   quipu_shutdown;
 
-int 
-conn_init (struct connection *cn)
-{
+int
+conn_init (struct connection *cn) {
 	int				  result, ds_bind_return ;
 	char			**vec;
 	struct DSAPstart		* ds;
@@ -79,7 +78,7 @@ conn_init (struct connection *cn)
 	}
 
 	if (quipu_shutdown) {
-		 DBindReject (ds, ACS_PERMANENT, ACS_USER_NOREASON, di);
+		DBindReject (ds, ACS_PERMANENT, ACS_USER_NOREASON, di);
 		conn_extract (cn);
 		return;
 	}
@@ -108,7 +107,7 @@ out:
 		LLOG (log_dsap,LLOG_EXCEPTIONS, ("Bad Selector (%d): %s",
 										 ds->ds_sd, paddr2str(&(ds->ds_start.acs_start.ps_calling),NULLNA)));
 
-		 DBindReject (ds, ACS_PERMANENT, ACS_USER_NOREASON, di);
+		DBindReject (ds, ACS_PERMANENT, ACS_USER_NOREASON, di);
 		conn_extract (cn);
 		return;
 	}
@@ -185,14 +184,13 @@ out:
 		break;
 	default:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Unexpected return by ds_bind_init"));
-		 DBindReject (ds, ACS_TRANSIENT, ACS_USER_NOREASON, di);
+		DBindReject (ds, ACS_TRANSIENT, ACS_USER_NOREASON, di);
 		break;
 	}
 }
 
-int 
-conn_init_res (struct connection *cn)
-{
+int
+conn_init_res (struct connection *cn) {
 	int				  result;
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &(di_s);
@@ -231,9 +229,8 @@ conn_init_res (struct connection *cn)
 	ACSFREE (acs);
 }
 
-int 
-conn_init_err (struct connection *cn)
-{
+int
+conn_init_err (struct connection *cn) {
 	int				  result;
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &di_s;
@@ -272,9 +269,8 @@ conn_init_err (struct connection *cn)
 
 }
 
-int 
-conn_pre_init (int newfd, int vecp, char **vec)
-{
+int
+conn_pre_init (int newfd, int vecp, char **vec) {
 	struct connection	* cn = NULLCONN;
 
 	for (cn = connlist; cn != NULLCONN; cn = cn->cn_next)
@@ -312,9 +308,8 @@ conn_pre_init (int newfd, int vecp, char **vec)
 		DLOG (log_dsap,LLOG_NOTICE, ("opening association on %d",newfd ));
 }
 
-int 
-warn_conn_init (int newfd)
-{
+int
+warn_conn_init (int newfd) {
 	/* An association will come soon... */
 	struct connection	* cn = NULLCONN;
 

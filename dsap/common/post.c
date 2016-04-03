@@ -46,9 +46,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/post.c,v 9.0 19
 
 extern LLog * log_dsap;
 
-static 
-addrfree (struct postaddr *addr)
-{
+static
+addrfree (struct postaddr *addr) {
 	struct postaddr * next;
 	for (; addr != (struct postaddr *) NULL; addr = next) {
 		next = addr->pa_next;
@@ -57,9 +56,8 @@ addrfree (struct postaddr *addr)
 	}
 }
 
-static 
-addrcmp (struct postaddr *a, struct postaddr *b)
-{
+static
+addrcmp (struct postaddr *a, struct postaddr *b) {
 	int res;
 	for (; (a != (struct postaddr *) NULL) && (b != (struct postaddr *) NULL) ;
 			a = a->pa_next, b=b->pa_next)
@@ -74,8 +72,7 @@ addrcmp (struct postaddr *a, struct postaddr *b)
 }
 
 static struct postaddr *
-addrcpy (struct postaddr *a)
-{
+addrcpy (struct postaddr *a) {
 	struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 
 	c = result; /* to keep lint quiet ! */
@@ -97,8 +94,7 @@ addrcpy (struct postaddr *a)
 }
 
 static struct postaddr *
-addrparse (char *str)
-{
+addrparse (char *str) {
 	struct postaddr * result = (struct postaddr *) NULL;
 	struct postaddr * a, *b;
 	char * ptr;
@@ -148,7 +144,7 @@ addrparse (char *str)
 						  ("Truncating Postal Address component '%s' to 30 chars",a->addrcomp));
 					tmp = a->addrcomp;
 					a->addrcomp = smalloc (UB_POSTAL_STRING + 1);
-					 strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
+					strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
 					a->addrcomp[UB_POSTAL_STRING] = 0;
 					free (tmp);
 				}
@@ -171,7 +167,7 @@ addrparse (char *str)
 						  ("Truncating Postal Address component '%s' to 30 chars",a->addrcomp));
 					tmp = a->addrcomp;
 					a->addrcomp = smalloc (UB_POSTAL_STRING + 1);
-					 strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
+					strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
 					a->addrcomp[UB_POSTAL_STRING] = 0;
 					free (tmp);
 				}
@@ -264,7 +260,7 @@ struct postaddr * m;
 {
 	PE ret_pe;
 
-	 encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
+	encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -294,7 +290,7 @@ PE pe;
 					  ("Truncating Postal Address component '%s' to 30 chars",a->addrcomp));
 				tmp = a->addrcomp;
 				a->addrcomp = smalloc (UB_POSTAL_STRING + 1);
-				 strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
+				strncpy (a->addrcomp, tmp, UB_POSTAL_STRING);
 				a->addrcomp[UB_POSTAL_STRING] = 0;
 				free (tmp);
 			}
@@ -311,14 +307,14 @@ PE pe;
 	return (m);
 }
 
-int 
+int
 post_syntax (void) {
-	 add_attribute_syntax ("PostalAddress",
-								 (IFP) addrenc,	(IFP) addrdec,
-								 (IFP) addrparse,addrprint,
-								 (IFP) addrcpy,	addrcmp,
-								 addrfree,	NULLCP,
-								 NULLIFP,	TRUE);
+	add_attribute_syntax ("PostalAddress",
+						  (IFP) addrenc,	(IFP) addrdec,
+						  (IFP) addrparse,addrprint,
+						  (IFP) addrcpy,	addrcmp,
+						  addrfree,	NULLCP,
+						  NULLIFP,	TRUE);
 
 }
 

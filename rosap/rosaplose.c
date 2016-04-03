@@ -41,11 +41,10 @@ static int  _rosaplose ();
 #endif
 
 #ifndef	lint
-int	ropktlose (struct assocblk*acb, ...)
-{
+int	ropktlose (struct assocblk*acb, ...) {
 	int	    reason,
-	result,
-	value;
+			result,
+			value;
 	struct RoSAPindication *roi;
 	struct RoSAPpreject *rop;
 	va_list ap;
@@ -61,15 +60,15 @@ int	ropktlose (struct assocblk*acb, ...)
 
 	if ((rop = &roi -> roi_preject) -> rop_cc > 0) {
 		SLOG (rosap_log, LLOG_EXCEPTIONS, NULLCP,
-		("ropktlose [%s] %*.*s", RoErrString (rop -> rop_reason),
-		rop -> rop_cc, rop -> rop_cc, rop -> rop_data));
+			  ("ropktlose [%s] %*.*s", RoErrString (rop -> rop_reason),
+			   rop -> rop_cc, rop -> rop_cc, rop -> rop_data));
 	} else
 		SLOG (rosap_log, LLOG_EXCEPTIONS, NULLCP,
-		("ropktlose [%s]", RoErrString (rop -> rop_reason)));
+			  ("ropktlose [%s]", RoErrString (rop -> rop_reason)));
 
 	if (acb == NULLACB
-	|| acb -> acb_fd == NOTOK
-	|| acb -> acb_ropktlose == NULLIFP)
+			|| acb -> acb_fd == NOTOK
+			|| acb -> acb_ropktlose == NULLIFP)
 		return result;
 
 	switch (reason) {
@@ -93,9 +92,8 @@ int	ropktlose (struct assocblk*acb, ...)
 #else
 /* VARARGS5 */
 
-int 
-ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt)
-{
+int
+ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return ropktlose (acb, roi, reason, what, fmt);
 }
 #endif
@@ -103,10 +101,9 @@ ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *
 /*  */
 
 #ifndef	lint
-int	rosapreject (struct assocblk*acb, ...)
-{
+int	rosapreject (struct assocblk*acb, ...) {
 	int	    reason,
-	result;
+			result;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi;
 	va_list ap;
@@ -121,8 +118,8 @@ int	rosapreject (struct assocblk*acb, ...)
 	va_end (ap);
 
 	if (RoURejectRequestAux (acb, NULLIP, reason - REJECT_GENERAL_BASE,
-	REJECT_GENERAL, 0, &rois) == NOTOK
-	&& ROS_FATAL (rois.roi_preject.rop_reason)) {
+							 REJECT_GENERAL, 0, &rois) == NOTOK
+			&& ROS_FATAL (rois.roi_preject.rop_reason)) {
 		*roi = rois;		/* struct copy */
 		result = NOTOK;
 	}
@@ -132,9 +129,8 @@ int	rosapreject (struct assocblk*acb, ...)
 #else
 /* VARARGS5 */
 
-int 
-rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt)
-{
+int
+rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return rosapreject (acb, roi, reason, what, fmt);
 }
 #endif
@@ -142,10 +138,9 @@ rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char
 /*  */
 
 #ifndef	lint
-int	rosaplose (struct RoSAPindication*roi, ...)
-{
+int	rosaplose (struct RoSAPindication*roi, ...) {
 	int	    reason,
-	result;
+			result;
 	va_list ap;
 
 	va_start (ap, roi);
@@ -161,9 +156,8 @@ int	rosaplose (struct RoSAPindication*roi, ...)
 #else
 /* VARARGS4 */
 
-int 
-rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
-{
+int
+rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return rosaplose (roi, reason, what, fmt);
 }
 #endif
@@ -171,13 +165,12 @@ rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _rosaplose (  /* what, fmt, args ... */
-    struct RoSAPindication *roi,
-    int reason,
-    va_list ap
-)
-{
+	struct RoSAPindication *roi,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char  *what;
 	char  *fmt;

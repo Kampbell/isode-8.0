@@ -36,9 +36,8 @@ static int  SRelRetryRequestAux ();
 
 /*    S-RELEASE.REQUEST */
 
-int 
-SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
-{
+int
+SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -53,7 +52,7 @@ SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struc
 
 	result = SRelRequestAux (sb, data, cc, secs, sr, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
@@ -68,9 +67,8 @@ SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struc
 }
 
 
-static int 
-SRelRequestAux (struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
-{
+static int
+SRelRequestAux (struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
 	struct ssapkt *s;
 
 	dotokens ();
@@ -109,9 +107,8 @@ SRelRequestAux (struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrel
 
 /*    S-RELEASE-RETRY.REQUEST (pseudo) */
 
-int 
-SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
-{
+int
+SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
 	SBV	    smask;
 	int	    result;
 	struct ssapblk *sb;
@@ -129,16 +126,15 @@ SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindicatio
 	else
 		result = SRelRetryRequestAux (sb, secs, sr, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SRelRetryRequestAux (struct ssapblk *sb, int secs, struct SSAPrelease *sr, struct SSAPindication *si)
-{
+static int
+SRelRetryRequestAux (struct ssapblk *sb, int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
 	int	    code,
 			result;
 	struct ssapkt *s;
@@ -225,9 +221,9 @@ waiting:
 	default:
 bad_nf:
 		;
-		 spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-						 "session protocol mangled: not expecting 0x%x",
-						 s -> s_code);
+		spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+				  "session protocol mangled: not expecting 0x%x",
+				  s -> s_code);
 		break;
 	}
 

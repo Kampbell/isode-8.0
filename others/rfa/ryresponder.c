@@ -49,9 +49,8 @@ static jmp_buf toplevel;
 
 
 
-int 
-ros_init (int vecp, char **vec)
-{
+int
+ros_init (int vecp, char **vec) {
 	int	    reply,
 			result,
 			sd;
@@ -106,9 +105,8 @@ ros_init (int vecp, char **vec)
 }
 
 
-int 
-ros_work (int fd)
-{
+int
+ros_work (int fd) {
 	int	    result;
 	caddr_t out;
 	struct AcSAPindication  acis;
@@ -124,8 +122,8 @@ ros_work (int fd)
 		if (stopfnx)
 			(*stopfnx) (fd, (struct AcSAPfinish *) 0);
 	case DONE:
-		 AcUAbortRequest (fd, NULLPEP, 0, &acis);
-		 RyLose (fd, roi);
+		AcUAbortRequest (fd, NULLPEP, 0, &acis);
+		RyLose (fd, roi);
 		return NOTOK;
 	}
 
@@ -146,9 +144,8 @@ ros_work (int fd)
 }
 
 
-int 
-ros_indication (int sd, struct RoSAPindication *roi)
-{
+int
+ros_indication (int sd, struct RoSAPindication *roi) {
 	int	    reply,
 			result;
 
@@ -211,9 +208,8 @@ ros_indication (int sd, struct RoSAPindication *roi)
 }
 
 
-int 
-ros_lose (struct TSAPdisconnect *td)
-{
+int
+ros_lose (struct TSAPdisconnect *td) {
 	if (td -> td_cc > 0)
 		adios (NULLCP, "TNetAccept: [%s] %*.*s",
 			   TErrString (td -> td_reason), td -> td_cc, td -> td_cc,
@@ -223,9 +219,8 @@ ros_lose (struct TSAPdisconnect *td)
 }
 
 
-void 
-ros_adios (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	cleanup ();
@@ -234,32 +229,30 @@ ros_adios (struct RoSAPpreject *rop, char *event)
 }
 
 
-void 
-ros_advise (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
-						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
+		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
 
-void 
-acs_advise (struct AcSAPabort *aca, char *event)
-{
+void
+acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						AcErrString (aca -> aca_reason),
-						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 AcErrString (aca -> aca_reason),
+				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -270,9 +263,8 @@ acs_advise (struct AcSAPabort *aca, char *event)
 /*--------------------------------------------------------------*/
 /*  ureject							*/
 /*--------------------------------------------------------------*/
-int 
-ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
-{
+int
+ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 

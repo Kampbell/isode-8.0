@@ -35,9 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapinvoke.c,v 9.0
 
 extern  LLog    * log_dsap;
 
-int 
-DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindication *di)
-{
+int
+DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindication *di) {
 	int				  result;
 	PE				  arg_pe;
 	struct RoSAPindication	  roi_s;
@@ -67,9 +66,8 @@ DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindication 
 	return (OK);
 }
 
-int 
-DapEncodeInvoke (PE *pep, struct DSArgument *arg)
-{
+int
+DapEncodeInvoke (PE *pep, struct DSArgument *arg) {
 	int		success;
 
 	switch(arg->arg_type) {
@@ -109,9 +107,8 @@ DapEncodeInvoke (PE *pep, struct DSArgument *arg)
 	return(success);
 }
 
-int 
-DspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di)
-{
+int
+DspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di) {
 	int				  result;
 	PE				  arg_pe;
 	struct RoSAPindication	  roi_s;
@@ -143,9 +140,8 @@ DspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *
 	return (OK);
 }
 
-int 
-DspEncodeInvoke (PE *pep, struct ds_op_arg *arg)
-{
+int
+DspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 	int		success;
 
 	switch(arg->dca_dsarg.arg_type) {
@@ -185,9 +181,8 @@ DspEncodeInvoke (PE *pep, struct ds_op_arg *arg)
 	return(success);
 }
 
-int 
-QspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di)
-{
+int
+QspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di) {
 	int				  result;
 	PE				  arg_pe;
 	struct RoSAPindication	  roi_s;
@@ -219,9 +214,8 @@ QspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *
 	return (OK);
 }
 
-int 
-QspEncodeInvoke (PE *pep, struct ds_op_arg *arg)
-{
+int
+QspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 	int		success;
 
 	switch(arg->dca_dsarg.arg_type) {
@@ -265,15 +259,13 @@ QspEncodeInvoke (PE *pep, struct ds_op_arg *arg)
 }
 
 
-int 
-IspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di)
-{
+int
+IspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di) {
 	return QspInvokeRequest (sd, id, arg, di);
 }
 
-int 
-IspEncodeInvoke (PE *pep, struct ds_op_arg *arg)
-{
+int
+IspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 	return QspEncodeInvoke (pep, arg);
 }
 

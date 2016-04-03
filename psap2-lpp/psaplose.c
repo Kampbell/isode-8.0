@@ -112,7 +112,7 @@ va_dcl {
 		if (encode_PS_Abort__PDU (&pe, 1, 0, NULLCP, pdu) != NOTOK) {
 			PLOGP (psap2_log,PS_PDUs, pe, "Abort-PDU", 0);
 
-			 pe2ps (pb -> pb_stream, pe);
+			pe2ps (pb -> pb_stream, pe);
 		}
 		if (pe)
 			pe_free (pe);

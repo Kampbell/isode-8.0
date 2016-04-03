@@ -99,9 +99,8 @@ static int  f_ufn ();
 
 /*    WHOIS */
 
-int 
-f_whois (char **vec)
-{
+int
+f_whois (char **vec) {
 	if (strcmp (*vec, "whois") == 0)
 		vec++;
 
@@ -110,16 +109,15 @@ f_whois (char **vec)
 
 /*  */
 
-static int 
-f_whois_aux (char **vec)
-{
+static int
+f_whois_aux (char **vec) {
 	int	    c,
 			mailbox,
 			multiple,
 			result;
 	char *bp,
-			 *cp,
-			 *dp;
+		 *cp,
+		 *dp;
 	char    buffer[BUFSIZ],
 			orgname[BUFSIZ];
 	struct area_guide *ag;
@@ -274,7 +272,7 @@ stuff_area:
 you_really_lose:
 			;
 			if (mail) {
-				 fprintf (stdfp, "\n\n");
+				fprintf (stdfp, "\n\n");
 				goto print_help;
 			}
 			return NOTOK;
@@ -528,7 +526,7 @@ name_or_something:
 print_help:
 		;
 		for (ap = whois_help; *ap; ap++)
-			 fprintf (stdfp, "%s%s", *ap, EOLN);
+			fprintf (stdfp, "%s%s", *ap, EOLN);
 
 		return OK;
 	} else if (w -> w_inputype == W_NAME && w -> w_nametype == W_NULL)
@@ -542,7 +540,7 @@ print_help:
 				&& w -> w_area == NULL
 				&& (cp = index (w -> w_input, '@'))
 				&& !index (++cp, '*')) {
-			 sprintf (bp, "fred -dm2dn %s", cp);
+			sprintf (bp, "fred -dm2dn %s", cp);
 			bp += strlen (bp);
 			mailbox = 1;
 
@@ -552,26 +550,26 @@ print_help:
 		return whois_aux (w);
 	}
 
-	 sprintf (bp,
-					"search %s -norelative -singlelevel -dontdereference -sequence default -types aliasedObjectName -value -nosearchalias ",
-					limits (-1));
+	sprintf (bp,
+			 "search %s -norelative -singlelevel -dontdereference -sequence default -types aliasedObjectName -value -nosearchalias ",
+			 limits (-1));
 	bp += strlen (bp);
 
 	for (ag = areas; ag -> ag_record; ag++)
 		if (ag -> ag_record == w -> w_areatype)
 			break;
 	if (w -> w_geography) {
-		 sprintf (bp, "\"%s\" ", w -> w_geography);
+		sprintf (bp, "\"%s\" ", w -> w_geography);
 		bp += strlen (bp);
 
 		w -> w_geography = NULL;
 	} else if (ag -> ag_area) {
-		 sprintf (bp, "\"%s\" ", ag -> ag_area);
+		sprintf (bp, "\"%s\" ", ag -> ag_area);
 		bp += strlen (bp);
 	}
 
-	 sprintf (bp, "-filter \"objectClass=%s & %s%s\"",
-					ag -> ag_class, ag -> ag_rdn, eqstr (w -> w_area, 0));
+	sprintf (bp, "-filter \"objectClass=%s & %s%s\"",
+			 ag -> ag_class, ag -> ag_rdn, eqstr (w -> w_area, 0));
 	bp += strlen (bp);
 
 multiple_searching:
@@ -582,7 +580,7 @@ multiple_searching:
 	if (interrupted) {
 you_lose:
 		;
-		 fclose (fp);
+		fclose (fp);
 		return NOTOK;
 	}
 
@@ -597,7 +595,7 @@ you_lose:
 		*cp = NULL;
 
 		if (!isdigit (*buffer)) {
-			 fprintf (stderr, "%s\n", buffer);
+			fprintf (stderr, "%s\n", buffer);
 			continue;
 		}
 
@@ -610,7 +608,7 @@ you_lose:
 			cp++;
 
 		if (multiple == 0 && (c = getc (fp)) != EOF) {
-			 ungetc (c, fp);
+			ungetc (c, fp);
 			multiple = 1;
 		}
 
@@ -631,31 +629,30 @@ you_lose:
 				goto out;
 			}
 		else if (verbose) {
-			 fprintf (stdfp, "Trying @%s ...\n", cp);
-			 fflush (stdfp);
+			fprintf (stdfp, "Trying @%s ...\n", cp);
+			fflush (stdfp);
 		}
 
-		 sprintf (orgname, "@%s", cp);
-		 whois_aux (w);
+		sprintf (orgname, "@%s", cp);
+		whois_aux (w);
 
-		 fprintf (stdfp, EOLN);
-		 fflush (stdfp);
+		fprintf (stdfp, EOLN);
+		fflush (stdfp);
 	}
 
 out:
 	;
-	 fclose (fp);
+	fclose (fp);
 
 	return OK;
 }
 
 /*  */
 
-static 
-whois_aux (struct whois *w)
-{
+static
+whois_aux (struct whois *w) {
 	char *bp,
-			 *cp;
+		 *cp;
 	char   *handle,
 		   buffer[BUFSIZ];
 	struct area_guide *ag;
@@ -672,34 +669,34 @@ whois_aux (struct whois *w)
 		return NOTOK;
 
 	case W_HANDLE:
-		 sprintf (bp, "showentry \"%s\" %s -fred -dontdereference",
-						w -> w_input, limits (0));
+		sprintf (bp, "showentry \"%s\" %s -fred -dontdereference",
+				 w -> w_input, limits (0));
 		bp += strlen (bp);
 		goto options;
 
 	case W_MAILBOX:
-		 sprintf (bp, "search %s -fred ", limits (1));
+		sprintf (bp, "search %s -fred ", limits (1));
 		bp += strlen (bp);
 
 		if (w -> w_area) {
-			 sprintf (bp, "\"%s\" ", w -> w_area);
+			sprintf (bp, "\"%s\" ", w -> w_area);
 			bp += strlen (bp);
 		}
 
-		 sprintf (bp, "-subtree -filter \"");
+		sprintf (bp, "-subtree -filter \"");
 		bp += strlen (bp);
 
 		cp = w -> w_input;
 		if (*cp == '@')
-			 sprintf (bp, "mail=*%s", cp);
+			sprintf (bp, "mail=*%s", cp);
 		else if (*(cp + strlen (cp) - 1) == '@' || !index (cp, '@'))
-			 sprintf (bp, "mail=%s*", cp);
+			sprintf (bp, "mail=%s*", cp);
 		else if (index (cp, '*'))
-			 sprintf (bp, "mail=%s", cp);
+			sprintf (bp, "mail=%s", cp);
 		else
-			 sprintf (bp,
-							"(mail=%s | otherMailbox=internet$%s)",
-							cp, cp);
+			sprintf (bp,
+					 "(mail=%s | otherMailbox=internet$%s)",
+					 cp, cp);
 		bp += strlen (bp);
 		break;
 
@@ -710,25 +707,25 @@ whois_aux (struct whois *w)
 				*cp = '*';
 		}
 
-		 sprintf (bp, "search %s -%s ", limits (1),
-						kflag ? "show" : "fred");
+		sprintf (bp, "search %s -%s ", limits (1),
+				 kflag ? "show" : "fred");
 		bp += strlen (bp);
 
 		if (w -> w_area) {
-			 sprintf (bp, "\"%s\" -subtree ", w -> w_area);
+			sprintf (bp, "\"%s\" -subtree ", w -> w_area);
 			bp += strlen (bp);
 		} else if (w -> w_geography) {
-			 sprintf (bp, "\"%s\" ", w -> w_geography);
+			sprintf (bp, "\"%s\" ", w -> w_geography);
 			bp += strlen (bp);
 		} else if (ag -> ag_area) {
-			 sprintf (bp, "\"%s\" %s ", ag -> ag_area,
-							ag -> ag_search);
+			sprintf (bp, "\"%s\" %s ", ag -> ag_area,
+					 ag -> ag_search);
 			bp += strlen (bp);
 		} else {
-			 sprintf (bp, "-subtree ");
+			sprintf (bp, "-subtree ");
 			bp += strlen (bp);
 		}
-		 sprintf (bp, "-filter \"");
+		sprintf (bp, "-filter \"");
 		bp += strlen (bp);
 
 		handle = eqstr (w -> w_input, 0);
@@ -739,51 +736,51 @@ whois_aux (struct whois *w)
 				if (w -> w_title
 						&& (w -> w_record == W_NULL
 							|| w -> w_nametype == W_SURNAME)) {
-					 sprintf (bp, "( ");
+					sprintf (bp, "( ");
 					bp += strlen (bp);
 				}
 				if (w -> w_record == W_NULL) {
-					 sprintf (bp, "o%s | ou%s | l%s | ",
-									handle, handle, handle, handle);
+					sprintf (bp, "o%s | ou%s | l%s | ",
+							 handle, handle, handle, handle);
 					bp += strlen (bp);
 				}
 
 				if (w -> w_nametype == W_SURNAME) {
 					if (w -> w_record == W_PERSON && !w -> w_title) {
-						 sprintf (bp, "( ");
+						sprintf (bp, "( ");
 						bp += strlen (bp);
 					}
-					 sprintf (bp, "surname%s | mail=%s@* ",
-									eqstr (w -> w_input, 1),
-									w -> w_input);
+					sprintf (bp, "surname%s | mail=%s@* ",
+							 eqstr (w -> w_input, 1),
+							 w -> w_input);
 					bp += strlen (bp);
 					if (w -> w_record == W_PERSON && !w -> w_title) {
-						 sprintf (bp, ") ");
+						sprintf (bp, ") ");
 						bp += strlen (bp);
 					}
 				} else {
-					 sprintf (bp, "cn%s ", handle);
+					sprintf (bp, "cn%s ", handle);
 					bp += strlen (bp);
 				}
 
 				if (w -> w_title
 						&& (w -> w_record == W_NULL
 							|| w -> w_nametype == W_SURNAME)) {
-					 sprintf (bp, ") ");
+					sprintf (bp, ") ");
 					bp += strlen (bp);
 				}
 			}
 			if (w -> w_title) {
-				 sprintf (bp, "%stitle%s",
-								handle ? "& " : "",
-								eqstr (w -> w_title, 1));
+				sprintf (bp, "%stitle%s",
+						 handle ? "& " : "",
+						 eqstr (w -> w_title, 1));
 				bp += strlen (bp);
 			}
 			break;
 
 		default:
 			if (strcmp (handle, "=*")) {
-				 sprintf (bp, "%s%s", ag -> ag_rdn, handle);
+				sprintf (bp, "%s%s", ag -> ag_rdn, handle);
 				bp += strlen (bp);
 			}
 			break;
@@ -793,38 +790,38 @@ whois_aux (struct whois *w)
 
 	if (w -> w_record == W_PERSON
 			|| (w -> w_record != W_NULL && strcmp (handle, "=*"))) {
-		 sprintf (bp, " & ");
+		sprintf (bp, " & ");
 		bp += strlen (bp);
 	}
 
 	if (w -> w_record != W_NULL) {
-		 sprintf (bp, "objectClass=%s", ag -> ag_class);
+		sprintf (bp, "objectClass=%s", ag -> ag_class);
 		bp += strlen (bp);
 	}
 
-	 sprintf (bp, "\"");
+	sprintf (bp, "\"");
 	bp += strlen (bp);
 
 options:
 	;
 	if (w -> w_output & W_EXPAND) {
-		 sprintf (bp, " -expand");
+		sprintf (bp, " -expand");
 		bp += strlen (bp);
 	}
 	if (w -> w_output & W_FULL) {
-		 sprintf (bp, " -full");
+		sprintf (bp, " -full");
 		bp += strlen (bp);
 	}
 	if (w -> w_output & W_SUMMARY) {
-		 sprintf (bp, " -summary");
+		sprintf (bp, " -summary");
 		bp += strlen (bp);
 	}
 	if (w -> w_output & W_SUBDISPLAY) {
-		 sprintf (bp, " -subdisplay");
+		sprintf (bp, " -subdisplay");
 		bp += strlen (bp);
 	}
 
-	 sprintf (bp, " -sequence %s", "default");
+	sprintf (bp, " -sequence %s", "default");
 	bp += strlen (bp);
 
 	return dish (buffer, 0);
@@ -832,9 +829,8 @@ options:
 
 /*  */
 
-static int 
-test_arg (char *user, char *full, int minlen)
-{
+static int
+test_arg (char *user, char *full, int minlen) {
 	int	    i;
 
 	if ((i = strlen (user)) < minlen
@@ -848,21 +844,20 @@ test_arg (char *user, char *full, int minlen)
 /*  */
 
 static char *
-eqstr (char *s, int exact)
-{
+eqstr (char *s, int exact) {
 	static char buffer[BUFSIZ];
 
 	if (s == NULL)
 		return NULL;
 
 	if (index (s, '*'))
-		 sprintf (buffer, "=%s", s);
+		sprintf (buffer, "=%s", s);
 	else if (soundex)
-		 sprintf (buffer, "~=%s", s);
+		sprintf (buffer, "~=%s", s);
 	else if (exact)
-		 sprintf (buffer, "=%s", s);
+		sprintf (buffer, "=%s", s);
 	else
-		 sprintf (buffer, "=*%s*", s);
+		sprintf (buffer, "=*%s*", s);
 
 	return buffer;
 }
@@ -870,36 +865,35 @@ eqstr (char *s, int exact)
 /*  */
 
 static char *
-limits (int isearch)
-{
+limits (int isearch) {
 	char *bp;
 	static char buffer[100];
 
 	bp = buffer;
 
 	if (phone) {
-		 strcpy (bp, "-phone ");
+		strcpy (bp, "-phone ");
 		bp += strlen (bp);
 	}
 
 #ifdef	notdef	/* don't do this! */
 	if (isearch) {
-		 strcpy (bp, "-searchalias ");
+		strcpy (bp, "-searchalias ");
 		bp += strlen (bp);
 	}
 #endif
 
-	 strcpy (bp, "-nosizelimit ");
+	strcpy (bp, "-nosizelimit ");
 	bp += strlen (bp);
 
 	if (timelimit > 0)
-		 sprintf (bp, "-timelimit %d", timelimit);
+		sprintf (bp, "-timelimit %d", timelimit);
 	else
-		 strcpy (bp, "-notimelimit");
+		strcpy (bp, "-notimelimit");
 	bp += strlen (bp);
 
 	if (isearch >= 0 && (network || oneshot)) {
-		 strcpy (bp, " -nofredseq");
+		strcpy (bp, " -nofredseq");
 		bp += strlen (bp);
 	}
 
@@ -917,20 +911,20 @@ char   *command;
 	FILE   *fp,
 		   *savfp;
 
-	 strcpy (tmpfil, "/tmp/fredXXXXXX");
-	 unlink (mktemp (tmpfil));
+	strcpy (tmpfil, "/tmp/fredXXXXXX");
+	unlink (mktemp (tmpfil));
 
 	if ((fp = fopen (tmpfil, "w+")) == NULL) {
 		advise (tmpfil, "unable to create");
 		return NULL;
 	}
-	 unlink (tmpfil);
+	unlink (tmpfil);
 
 	savfp = stdfp, stdfp = fp;
 	savnet = network, network = 0;
 	savpage = dontpage, dontpage = 1;
 
-	 dish (command, 0);
+	dish (command, 0);
 
 	dontpage = savpage;
 	network = savnet;
@@ -943,31 +937,30 @@ char   *command;
 
 /*  */
 
-static int 
-f_ufn (char **vec)
-{
+static int
+f_ufn (char **vec) {
 	char   *cp,
 		   buffer[BUFSIZ];
 	static int lastq = -1;
 
 	if ((cp = vec[0]) == NULL || strcmp (cp, "-help") == 0) {
-		 fprintf (stdfp, "whois name...\n");
-		 fprintf (stdfp, "    find something in the white pages\n");
+		fprintf (stdfp, "whois name...\n");
+		fprintf (stdfp, "    find something in the white pages\n");
 
 		return OK;
 	}
 
 	if (!test_ufn (cp)) {
-		 strcpy (buffer, cp);
-		 str2vec (buffer, vec);
+		strcpy (buffer, cp);
+		str2vec (buffer, vec);
 		return f_whois_aux (vec);
 	}
 
-	 sprintf (buffer, "fred -ufn %s-options %x,%s",
-					phone ? "-phone," : "", ufn_options, cp);
+	sprintf (buffer, "fred -ufn %s-options %x,%s",
+			 phone ? "-phone," : "", ufn_options, cp);
 
 	if (lastq != area_quantum) {
-		 sync_ufnrc ();
+		sync_ufnrc ();
 
 		lastq = area_quantum;
 	}
@@ -977,9 +970,8 @@ f_ufn (char **vec)
 
 /*  */
 
-int 
-test_ufn (char *cp)
-{
+int
+test_ufn (char *cp) {
 	char *dp;
 
 	if (*(dp = cp) == '!')

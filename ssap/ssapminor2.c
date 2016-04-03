@@ -35,9 +35,8 @@ static int  SMinSyncResponseAux ();
 
 /*    S-MINOR-SYNC.RESPONSE */
 
-int 
-SMinSyncResponse (int sd, long ssn, char *data, int cc, struct SSAPindication *si)
-{
+int
+SMinSyncResponse (int sd, long ssn, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -53,16 +52,15 @@ SMinSyncResponse (int sd, long ssn, char *data, int cc, struct SSAPindication *s
 
 	result = SMinSyncResponseAux (sb, ssn, data, cc, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SMinSyncResponseAux (struct ssapblk *sb, long ssn, char *data, int cc, struct SSAPindication *si)
-{
+static int
+SMinSyncResponseAux (struct ssapblk *sb, long ssn, char *data, int cc, struct SSAPindication *si) {
 	int     result;
 
 	if (!(sb -> sb_requirements & SR_MINORSYNC))

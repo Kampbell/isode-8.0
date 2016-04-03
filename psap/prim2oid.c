@@ -43,7 +43,7 @@ PE	pe;
 	unsigned int i,
 			 *ip;
 	PElementData dp,
-			 ep;
+				 ep;
 	OID	o = &oid;
 
 	if (once_only) {
@@ -98,7 +98,7 @@ PE	pe;
 /*  */
 
 #ifdef DEBUG
-int 
+int
 free_static_oid()  {
 	if (!once_only && oid.oid_elements) {
 		free ((char *) oid.oid_elements);

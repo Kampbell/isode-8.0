@@ -36,8 +36,7 @@ static int  fd2tpktaux ();
 static int  readx ();
 
 struct tsapkt *
-fd2tpkt (int fd, IFP initfnx, IFP readfnx)
-{
+fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
 	struct tsapkt *t;
 
 	if ((t = newtpkt (0)) == NULL)
@@ -61,9 +60,8 @@ fd2tpkt (int fd, IFP initfnx, IFP readfnx)
 
 /*  */
 
-static int 
-fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx)
-{
+static int
+fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 	int    code, len, vlen;
 	char  *vptr;
 
@@ -312,11 +310,10 @@ fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx)
 
 /*  */
 
-static int 
-readx (int fd, char *buffer, int n, IFP readfnx)
-{
+static int
+readx (int fd, char *buffer, int n, IFP readfnx) {
 	int    i,
-			 cc;
+		   cc;
 	char   *bp;
 
 	for (bp = buffer, i = n; i > 0; bp += cc, i -= cc) {
@@ -338,9 +335,8 @@ readx (int fd, char *buffer, int n, IFP readfnx)
 
 /*  */
 
-int 
-tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx)
-{
+int
+tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
 	int     i,
 			ilen,
 			ulen;
@@ -472,8 +468,8 @@ tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx)
 
 	i = (*writefnx) (tb, t, outptr, ilen);
 
-	 sigiomask (smask);
-	 signal (SIGPIPE, pstat);
+	sigiomask (smask);
+	signal (SIGPIPE, pstat);
 
 	if (i != NOTOK)
 		i = OK;
@@ -486,8 +482,7 @@ tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx)
 /*  */
 
 struct tsapkt *
-newtpkt (int code)
-{
+newtpkt (int code) {
 	struct tsapkt *t;
 
 	t = (struct tsapkt *) calloc (1, sizeof *t);
@@ -501,9 +496,8 @@ newtpkt (int code)
 }
 
 
-int 
-freetpkt (struct tsapkt *t)
-{
+int
+freetpkt (struct tsapkt *t) {
 	if (t == NULL)
 		return;
 

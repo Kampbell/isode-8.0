@@ -37,9 +37,8 @@ static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, str
 
 /*    F-DATA.REQUEST */
 
-int 
-FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti)
-{
+int
+FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -52,15 +51,14 @@ FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti)
 
 	result = FDataRequestAux (fsb, fadus, nfadu, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct FTAMindication *fti)
-{
+static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct FTAMindication *fti) {
 	int    i;
 	PE	    pe,
 	 *pep;
@@ -107,7 +105,7 @@ static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct F
 	}
 
 	if (PDataRequest (fsb -> fsb_fd, fadus, nfadu, pi) == NOTOK) {
-		 ps2ftamlose (fsb, fti, "PDataRequest", pa);
+		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		if (PC_FATAL (pa -> pa_reason))
 			freefsblk (fsb);
 
@@ -119,9 +117,8 @@ static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct F
 
 /*    F-DATA-END.REQUEST */
 
-int 
-FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+int
+FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -145,15 +142,14 @@ FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, st
 
 	result = FDataEndRequestAux (fsb, action, diag, ndiag, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int FDataEndRequestAux (struct ftamblk *fsb, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+static int FDataEndRequestAux (struct ftamblk *fsb, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;
@@ -183,7 +179,7 @@ static int FDataEndRequestAux (struct ftamblk *fsb, int action, struct FTAMdiagn
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -210,8 +206,8 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-						 "error encoding PDU: %s", PY_pepy);
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
 
@@ -228,7 +224,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		 ps2ftamlose (fsb, fti, "PDataRequest", pa);
+		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
 
@@ -239,9 +235,8 @@ out:
 
 /*    F-CANCEL.REQUEST */
 
-int 
-FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+int
+FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -265,15 +260,14 @@ FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], 
 
 	result = FCancelRequestAux (fsb, action, sharedASE, diag, ndiag, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    result,
 			settings;
 	char   *prequest;
@@ -297,7 +291,7 @@ static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, str
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -328,8 +322,8 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-						 "error encoding PDU: %s", PY_pepy);
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
 
@@ -360,7 +354,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		 ps2ftamlose (fsb, fti, prequest, pa);
+		ps2ftamlose (fsb, fti, prequest, pa);
 		goto out;
 	}
 
@@ -377,9 +371,8 @@ out:
 
 /*    F-CANCEL.RESPONSE */
 
-int 
-FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+int
+FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -403,16 +396,15 @@ FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[],
 
 	result = FCancelResponseAux (fsb, action, sharedASE, diag, ndiag, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-int 
-FCancelResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+int
+FCancelResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    result;
 	char   *prequest;
 	PE	    pe;
@@ -429,7 +421,7 @@ FCancelResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdi
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -460,8 +452,8 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-						 "error encoding PDU: %s", PY_pepy);
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
 
@@ -490,7 +482,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		 ps2ftamlose (fsb, fti, prequest, pa);
+		ps2ftamlose (fsb, fti, prequest, pa);
 		goto out;
 	}
 

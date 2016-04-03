@@ -40,15 +40,14 @@ static int  ubffnx ( int	fd, struct PSAPdata *px, int	status);
 
 /*  */
 
-int 
-f_get (char **vec)
-{
+int
+f_get (char **vec) {
 #ifndef	BRIDGE
 	int     sglobbed;
 	char  *bp;
 	char  *dst,
-			 **gp,
-			 **src;
+		  **gp,
+		  **src;
 	char   *freedst = NULL,
 			buffer[BUFSIZ];
 	struct stat st;
@@ -151,10 +150,10 @@ ask_it:
 				   && (st.st_mode & S_IFMT) == S_IFDIR) {
 #ifdef apollo
 			if (*dst == '/')
-				 sprintf (bp = buffer, "%s", dst);
+				sprintf (bp = buffer, "%s", dst);
 			else
 #endif
-				 sprintf (bp = buffer, "%s/", dst);
+				sprintf (bp = buffer, "%s/", dst);
 			bp += strlen (bp);
 			switch (realstore) {
 			case RFS_UNIX:
@@ -167,13 +166,13 @@ ask_it:
 			default:
 				break;
 			}
-			 strcpy (bp, dst);
+			strcpy (bp, dst);
 			dst = buffer;
 			goto ask_it;
 		}
 
 		if (check_get (dst) != NOTOK)
-			 getvf (*src, dst, faduid, vf, ubffnx);
+			getvf (*src, dst, faduid, vf, ubffnx);
 		goto out;
 	}
 
@@ -185,10 +184,10 @@ ask_it:
 	case RFS_UNIX:
 #ifdef apollo
 		if (dst && dst[strlen (dst) - 1] == '/')
-			 sprintf (bp = buffer, "%s", dst);
+			sprintf (bp = buffer, "%s", dst);
 		else
 #endif
-			 sprintf (bp = buffer, "%s/", dst ? dst : ".");
+			sprintf (bp = buffer, "%s/", dst ? dst : ".");
 		bp += strlen (bp);
 		break;
 
@@ -219,7 +218,7 @@ ask_it:
 			dst = *gp;
 			break;
 		}
-		 strcpy (bp, dst);
+		strcpy (bp, dst);
 		dst = buffer;
 
 		if (sglobbed) {
@@ -241,7 +240,7 @@ ask_it:
 
 		if (check_get (dst) == NOTOK)
 			break;
-		 getvf (*gp, dst, faduid, vf, ubffnx);
+		getvf (*gp, dst, faduid, vf, ubffnx);
 
 		if (ftamfd == NOTOK)
 			break;
@@ -260,8 +259,7 @@ out:
 /*  */
 
 #ifndef	BRIDGE
-static int check_get (char *dst)
-{
+static int check_get (char *dst) {
 	int	    result;
 	char  *cp;
 
@@ -283,9 +281,8 @@ static int check_get (char *dst)
 
 /*  */
 
-int 
-getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP wfnx)
-{
+int
+getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP wfnx) {
 	int	    fd,
 			result;
 #ifdef	BRIDGE
@@ -446,9 +443,9 @@ getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP
 						break;
 					}
 				if (parm)
-					 fre_obj (parm,
-									_ZDOCS_mod.md_dtab[myvf -> vf_number],
-									&_ZDOCS_mod, 1);
+					fre_obj (parm,
+							 _ZDOCS_mod.md_dtab[myvf -> vf_number],
+							 &_ZDOCS_mod, 1);
 			}
 			if (debug)
 				advise (NULLCP, "effector=%d", effector);
@@ -495,8 +492,8 @@ getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP
 			dp -> ftd_identifier = FS_ACC_LCL;
 			dp -> ftd_observer = dp -> ftd_source = EREF_IFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
-			 sprintf (dp -> ftd_data, "unable to write %s: %s",
-							dst, sys_errname (errno));
+			sprintf (dp -> ftd_data, "unable to write %s: %s",
+					 dst, sys_errname (errno));
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
 
@@ -504,7 +501,7 @@ getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP
 								dp - diags, fti) == NOTOK) {
 				ftam_advise (fta, "F-CANCEL.REQUEST");
 				if (fd != NOTOK)
-					 close (fd);
+					close (fd);
 				return NOTOK;
 			}
 
@@ -528,7 +525,7 @@ getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP
 
 	if (fd != NOTOK) {
 		(*wfnx) (fd, (struct PSAPdata *) 0, DONE);
-		 close (fd);
+		close (fd);
 	}
 
 	switch (result) {
@@ -632,8 +629,7 @@ you_lose:
 
 /*  */
 
-static struct vfsmap *findvf (char* file)
-{
+static struct vfsmap *findvf (char* file) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
@@ -704,10 +700,10 @@ static struct vfsmap *findvf (char* file)
 						&& oid_cmp (vf -> vf_oid, fa -> fa_contents) == 0) {
 					if (fa -> fa_parameter && vf -> vf_number >= 0) {
 						if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
-							 fre_obj (vf -> vf_parameter,
-											_ZDOCS_mod.md_dtab[vf
-															   -> vf_number],
-											&_ZDOCS_mod, 1);
+							fre_obj (vf -> vf_parameter,
+									 _ZDOCS_mod.md_dtab[vf
+														-> vf_number],
+									 &_ZDOCS_mod, 1);
 						vf -> vf_parameter = NULL, vf -> vf_flags &= ~VF_PARM;
 						if (dec_f (vf -> vf_number, &_ZDOCS_mod,
 								   fa -> fa_parameter, 1, NULLIP, NULLVP,
@@ -755,8 +751,7 @@ you_lose:
 
 /*  */
 
-static int  getloop (int fd, char* dst, IFP wfnx)
-{
+static int  getloop (int fd, char* dst, IFP wfnx) {
 	int	    reason,
 			result;
 	struct FTAMindication   ftis;
@@ -772,7 +767,7 @@ static int  getloop (int fd, char* dst, IFP wfnx)
 			FD_ZERO (&rfds);
 			/* interrupt causes EINTR */
 			if (FSelectMask (ftamfd, &rfds, &nfds, fti) == OK)
-				 xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
+				xselect (nfds, &rfds, NULLFD, NULLFD, NOTOK);
 		}
 
 		if (interrupted) {
@@ -813,7 +808,7 @@ do_cancel:
 				dp -> ftd_identifier = reason;
 				dp -> ftd_observer = dp -> ftd_source = EREF_IFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
-				 strcpy (dp -> ftd_data, sys_errname (errno));
+				strcpy (dp -> ftd_data, sys_errname (errno));
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				dp++;
 
@@ -864,12 +859,11 @@ do_cancel:
 
 /*  */
 
-static int  ubffnx ( int	fd, struct PSAPdata *px, int	status)
-{
+static int  ubffnx ( int	fd, struct PSAPdata *px, int	status) {
 	int    i,
-			 n;
+		   n;
 	PE	    pe,
-			 *pep;
+	 *pep;
 	static int	    cc;
 
 	if (px == NULL) {
@@ -917,11 +911,11 @@ static int  ubffnx ( int	fd, struct PSAPdata *px, int	status)
 			cc += n;
 		if (hash) {
 			if (hash > 1)
-				 printf ("%d\r", cc);
+				printf ("%d\r", cc);
 			else
 				for (; marks < cc; marks += BUFSIZ)
-					 putchar ('#');
-			 fflush (stdout);
+					putchar ('#');
+			fflush (stdout);
 		}
 	}
 

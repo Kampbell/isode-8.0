@@ -130,27 +130,25 @@ int te;
 
 	if (te > 0 && te <= t_nerr)
 		return t_errlist[te];
-	 sprintf (tbuf, "Terrno %d", te);
+	sprintf (tbuf, "Terrno %d", te);
 	return tbuf;
 }
 
-static 
-tli_lose (struct TSAPdisconnect *td, int fd, int reason, char *str)
-{
+static
+tli_lose (struct TSAPdisconnect *td, int fd, int reason, char *str) {
 	int eindex = errno;
 	int tindex = t_errno;
-	 tsaplose (td, reason, sys_terrname (t_errno), str);
+	tsaplose (td, reason, sys_terrname (t_errno), str);
 	if (fd != NOTOK)
-		 t_close (fd);
+		t_close (fd);
 	errno = eindex;
 	t_errno = tindex;
 	return NOTOK;
 }
 
 #ifdef RTnet_R02
-static int 
-tp4err2gen (int err)
-{
+static int
+tp4err2gen (int err) {
 	int ret;
 
 	switch (err & 0xff) {
@@ -189,9 +187,8 @@ tp4err2gen (int err)
 #endif
 
 /* open and bind an endpoint */
-static int 
-tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, int context)
-{
+static int
+tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, int context) {
 	int fd;
 	char * tli_dev = tli_clts_dev;
 	struct NSAPinfo *ni;
@@ -240,7 +237,7 @@ tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, int context)
 		 * we could be given someting else.
 		 * Only care about selector
 		 */
-		 tp42gen(&bound_ta, &bound->addr);
+		tp42gen(&bound_ta, &bound->addr);
 		if ((qlen && bound->qlen < 1) ||
 				ta->ta_selectlen != bound_ta.ta_selectlen ||
 				memcmp(ta->ta_selector, bound_ta.ta_selector,
@@ -249,7 +246,7 @@ tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, int context)
 
 			t_unbind(fd);
 			fd = tli_lose (td, fd, DR_CONGEST, "address in use");
-			 strcpy(buf, taddr2str(ta));
+			strcpy(buf, taddr2str(ta));
 			LLOG (tsap_log, LLOG_EXCEPTIONS,
 				  ("tried to bind to %s but got %s", buf, taddr2str(&bound_ta)));
 			goto out;
@@ -279,9 +276,8 @@ out:
  *	whether t_getinfo() return defaults or current values once a
  *	connection is established.
  */
-static int 
-tp4info (struct tsapblk *tb, struct TSAPdisconnect *td)
-{
+static int
+tp4info (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	struct t_info info;
 	int	    len;
 
@@ -315,14 +311,13 @@ tp4info (struct tsapblk *tb, struct TSAPdisconnect *td)
 	return OK;
 }
 
-static int 
-tp4getdis (int fd, struct TSAPdisconnect *td)
-{
+static int
+tp4getdis (int fd, struct TSAPdisconnect *td) {
 	struct t_discon *discon;
 
 	discon = (struct t_discon *)t_alloc (fd, T_DIS, T_ALL);
 	if (t_rcvdis (fd, discon) == NOTOK) {
-		 tli_lose (td, NOTOK, DR_NETWORK, "t_discon");
+		tli_lose (td, NOTOK, DR_NETWORK, "t_discon");
 		goto out;
 	}
 	if (discon != (struct t_discon *)0) {
@@ -346,9 +341,8 @@ out:
 
 /*    UPPER HALF */
 
-static int 
-TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td)
-{
+static int
+TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
 	struct t_call *sndcall;
 	struct t_call *rcvcall;
 	struct TSAPaddr ta;
@@ -442,7 +436,7 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 
 	t_free ((char *)sndcall, T_CALL);
 
-	 tp42gen (&ta, &rcvcall -> addr);
+	tp42gen (&ta, &rcvcall -> addr);
 	copyTSAPaddrY(&ta, &tb -> tb_responding);
 
 	if (cc = rcvcall->udata.len) {
@@ -450,7 +444,7 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 			free (tb -> tb_data);
 		if ((tb -> tb_data = malloc ((unsigned) cc)) == NULLCP) {
 			t_free ((char *)rcvcall, T_CALL);
-			 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+			tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 		}
 		bcopy (rcvcall->udata.buf, tb->tb_data, tb->tb_cc = cc);
 	} else
@@ -476,9 +470,8 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 
 /*  */
 
-static int 
-TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td)
-{
+static int
+TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	struct t_call *call;
 
 	if (tb->tb_cc == -1) { /* call not yet connected */
@@ -498,7 +491,7 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 
 		if ((call = (struct t_call *)
 					t_alloc (tb -> tb_fd, T_CALL, T_ALL)) == NULL) {
-			 tli_lose (td, NOTOK, DR_CONGEST, "t_alloc ");
+			tli_lose (td, NOTOK, DR_CONGEST, "t_alloc ");
 			goto out;
 		}
 
@@ -507,9 +500,9 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 			if (t_errno == TNODATA)
 				return CONNECTING_2;
 			else if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
-				 tp4getdis(tb -> tb_fd, td);
+				tp4getdis(tb -> tb_fd, td);
 			else
-				 tli_lose (td, NOTOK, DR_REFUSED, "t_rcvconnect");
+				tli_lose (td, NOTOK, DR_REFUSED, "t_rcvconnect");
 			goto out;
 		}
 
@@ -517,15 +510,15 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 			int flags;
 			if ((flags = fcntl (tb -> tb_fd, F_GETFL, 0)) == NOTOK) {
 				t_free ((char *)call, T_CALL);
-				 tsaplose (td, DR_CONGEST, "failed", "fcntl");
+				tsaplose (td, DR_CONGEST, "failed", "fcntl");
 				goto out;
 			}
 
 			flags &= ~FNDELAY;
-			 fcntl (tb -> tb_fd, F_SETFL, flags);
+			fcntl (tb -> tb_fd, F_SETFL, flags);
 		}
 
-		 tp42gen (&ta, &call -> addr);
+		tp42gen (&ta, &call -> addr);
 		copyTSAPaddrY(&ta, &tb -> tb_responding);
 
 		if (call -> udata.len > 0)
@@ -569,9 +562,8 @@ out:
 
 /*  */
 
-static int 
-TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td)
-{
+static int
+TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int	    i;
 
 	DLOG (tsap_log, LLOG_DEBUG, ("TStart: \"%s\"", cp));
@@ -605,9 +597,8 @@ TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnec
  */
 /* ARGSUSED */
 
-static int 
-TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td)
-{
+static int
+TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
 	struct t_call *call;
 	int result;
 
@@ -616,7 +607,7 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 		goto reject;
 
 	if ((call = (struct t_call *)t_alloc(tb->tb_fd, T_CALL, T_ALL)) == NULL) {
-		 tli_lose (td, result, DR_CONGEST, "t_alloc");
+		tli_lose (td, result, DR_CONGEST, "t_alloc");
 		goto reject;
 	}
 
@@ -631,19 +622,19 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 			  ("t_accept fail: t_errno=%d, t_look=%d",
 			   t_errno, t_look(tb->tb_fd)));
 		if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
-			 tp4getdis(tb -> tb_fd, td);
+			tp4getdis(tb -> tb_fd, td);
 		else
-			 tli_lose (td, result, DR_CONGEST, "t_accept");
+			tli_lose (td, result, DR_CONGEST, "t_accept");
 		t_free ((char *)call, T_CALL);
 		return NOTOK;
 	}
 	t_free ((char *)call, T_CALL);
 
 	/* OK - we have the new call - lets pretend we are back where we were...*/
-	 t_close (tb -> tb_fd); /* finished with this - get rid of it! */
-	 dup2 (result, tb -> tb_fd);
-	 t_close(result);
-	 t_sync(tb -> tb_fd);
+	t_close (tb -> tb_fd); /* finished with this - get rid of it! */
+	dup2 (result, tb -> tb_fd);
+	t_close(result);
+	t_sync(tb -> tb_fd);
 
 	/* Phew - we now have everything as it should be - I hope */
 
@@ -661,16 +652,15 @@ reject: {
 
 		bzero((char *)&dis, sizeof dis);
 		dis.sequence = tb->tb_seq;
-		 t_snddis(tb->tb_fd, &dis);
+		t_snddis(tb->tb_fd, &dis);
 		return NOTOK;
 	}
 }
 
 /*  */
 
-static int 
-TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td)
-{
+static int
+TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
 	int cc;
 	int	async;
 	int	    flags;
@@ -699,9 +689,9 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 
 		if ((qb = (struct qbuf *) malloc (sizeof *qb + (unsigned) cc))
 				== NULL) {
-			 tsaplose (td, DR_CONGEST, NULLCP,
-							 "unable to malloc %d octets for pseudo-writev, failing...",
-							 cc);
+			tsaplose (td, DR_CONGEST, NULLCP,
+					  "unable to malloc %d octets for pseudo-writev, failing...",
+					  cc);
 			freetblk (tb);
 
 			return NOTOK;
@@ -721,7 +711,7 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 		}
 
 		if ((async = fcntl (tb -> tb_fd, F_GETFL, 0)) != NOTOK)
-			 fcntl (tb -> tb_fd, F_SETFL, async | FNDELAY);
+			fcntl (tb -> tb_fd, F_SETFL, async | FNDELAY);
 
 		nc = t_snd (tb -> tb_fd, qb -> qb_data, qb -> qb_len, 0);
 		DLOG (tsap_log, LLOG_TRACE,
@@ -730,15 +720,15 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 
 
 		if (async != NOTOK)
-			 fcntl (tb -> tb_fd, F_SETFL, async);
+			fcntl (tb -> tb_fd, F_SETFL, async);
 
 		if (nc != cc) {
 			if (nc == NOTOK) {
 				if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT) {
-					 tp4getdis(tb -> tb_fd, td);
+					tp4getdis(tb -> tb_fd, td);
 					goto losing;
 				} else if (t_errno != TFLOW) {
-					 tsaplose (td, DR_CONGEST, "failed", "sendmsg");
+					tsaplose (td, DR_CONGEST, "failed", "sendmsg");
 					goto losing;
 				}
 
@@ -807,9 +797,9 @@ losing:
 			free(d);
 		if (ret == NOTOK) {
 			if (t_errno == TLOOK && t_look(tb -> tb_fd) == T_DISCONNECT)
-				 tp4getdis(tb -> tb_fd, td);
+				tp4getdis(tb -> tb_fd, td);
 			else
-				 tsaplose (td, DR_CONGEST, "failed", "sendmsg");
+				tsaplose (td, DR_CONGEST, "failed", "sendmsg");
 			freetblk (tb);
 
 			return NOTOK;
@@ -828,16 +818,15 @@ done:
 
 /*  */
 
-static int 
-TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
-{
+static int
+TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    nc,
 			onoff,
 			result;
 	struct qbuf *qb;
 
 	if ((onoff = fcntl (tb -> tb_fd, F_GETFL, 0)) != NOTOK)
-		 fcntl (tb -> tb_fd, F_SETFL, onoff | FNDELAY);
+		fcntl (tb -> tb_fd, F_SETFL, onoff | FNDELAY);
 
 
 	while ((qb = tb -> tb_qwrites.qb_forw) != &tb -> tb_qwrites) {
@@ -876,7 +865,7 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 out:
 	;
 	if (onoff != NOTOK)
-		 fcntl (tb -> tb_fd, F_SETFL, onoff);
+		fcntl (tb -> tb_fd, F_SETFL, onoff);
 
 	return result;
 }
@@ -885,9 +874,8 @@ out:
 
 /* ARGSUSED */
 
-static int 
-TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob)
-{
+static int
+TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
 	int	    cc;
 	struct qbuf *qb;
 	static struct qbuf *spare_qb = 0;
@@ -907,7 +895,7 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 		}
 		if (qb == NULL && (qb = (struct qbuf *)
 								malloc ((unsigned) (sizeof *qb + tb -> tb_tsdusize))) == NULL) {
-			 tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
+			tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
 			break;
 		} else
 			qb -> qb_len = tb -> tb_tsdusize;
@@ -922,17 +910,17 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 			case TLOOK:
 				switch (t_look (tb -> tb_fd)) {
 				case T_DISCONNECT:
-					 tp4getdis(tb -> tb_fd, td);
+					tp4getdis(tb -> tb_fd, td);
 					break;
 				default:
-					 tsaplose (td, DR_CONGEST, NULLCP,
-									 "unexpected event %d",
-									 t_look(tb -> tb_fd));
+					tsaplose (td, DR_CONGEST, NULLCP,
+							  "unexpected event %d",
+							  t_look(tb -> tb_fd));
 					break;
 				}
 				goto out;
 			default:
-				 tli_lose (td, NOTOK, DR_CONGEST, "t_rcv");
+				tli_lose (td, NOTOK, DR_CONGEST, "t_rcv");
 				break;
 			}
 			break;
@@ -1011,9 +999,8 @@ out:
 
 /*  */
 
-static int 
-TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
-{
+static int
+TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int	    result = OK;
 	struct t_call *call;
 
@@ -1035,9 +1022,8 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
 
 /* ARGSUSED */
 
-static int 
-TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
-{
+static int
+TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct t_call *call;
 
 	SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP, ("TPM error %d", reason));
@@ -1059,9 +1045,8 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
 
 /* ARGSUSED */
 
-int 
-tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async)
-{
+int
+tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
 	int	    fd,
 			onoff;
 	struct TSAPaddr tzs;
@@ -1095,11 +1080,11 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 		return NOTOK;
 	}
 
-	 tp4init (tb);
+	tp4init (tb);
 
 	if (async)
 		if ((onoff = fcntl (fd, F_GETFL, 0)) != NOTOK)
-			 fcntl (fd, F_SETFL, onoff | FNDELAY);
+			fcntl (fd, F_SETFL, onoff | FNDELAY);
 
 	return (async ? OK : DONE);
 }
@@ -1108,9 +1093,8 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 
 /* ARGSUSED */
 
-static int 
-retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td)
-{
+static int
+retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	fd_set  mask;
 
 	FD_ZERO (&mask);
@@ -1134,23 +1118,21 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td)
  */
 
 char *
-tp4save (int fd, int seq, int exp, struct tsapADDR *calling_ta, struct tsapADDR *called_ta, struct TSAPdisconnect *td)
-{
+tp4save (int fd, int seq, int exp, struct tsapADDR *calling_ta, struct tsapADDR *called_ta, struct TSAPdisconnect *td) {
 	struct TSAPaddr calling, called;
 	static char buffer[BUFSIZ];
 
 	copyTSAPaddrX(called_ta, &called);
 	copyTSAPaddrX(calling_ta, &calling);
-	 sprintf (buffer, "%c%d.%d.%d %s %s", NT_TLI, fd, seq, exp,
-					taddr2str(&calling), taddr2str(&called));
+	sprintf (buffer, "%c%d.%d.%d %s %s", NT_TLI, fd, seq, exp,
+			 taddr2str(&calling), taddr2str(&called));
 	return buffer;
 }
 
 /*  */
 
-int 
-tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
-{
+int
+tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int	    fd, exp;
 	char calling_buf[BUFSIZ];
 	char called_buf[BUFSIZ];
@@ -1183,15 +1165,14 @@ tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 		tb -> tb_flags |= TB_EXPD;
 	else
 		tb -> tb_flags &= ~TB_EXPD;
-	 tp4init (tb);
+	tp4init (tb);
 	return OK;
 }
 
 /*  */
 
-int 
-tp4init (struct tsapblk *tb)
-{
+int
+tp4init (struct tsapblk *tb) {
 
 	tb -> tb_connPfnx = TConnect;
 	tb -> tb_retryPfnx = TRetry;
@@ -1223,9 +1204,8 @@ tp4init (struct tsapblk *tb)
 
 /* ARGSUSED */
 
-int 
-start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td)
-{
+int
+start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
 	int	    sd;
 
 	if ((sd = tp4bind (local_ta, 100, td, TLI_CTX_LISTEN)) == NOTOK)
@@ -1236,9 +1216,8 @@ start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, st
 
 /*  */
 
-int 
-join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *seqp, int *expdp, struct TSAPdisconnect *td)
-{
+int
+join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *seqp, int *expdp, struct TSAPdisconnect *td) {
 	struct t_call *call;
 	int sd;
 
@@ -1256,7 +1235,7 @@ join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *se
 		else
 			return tli_lose (td, NOTOK, DR_CONGEST, "t_listen");
 	}
-	 tp42gen (remote_ta, &call -> addr);
+	tp42gen (remote_ta, &call -> addr);
 	*seqp = call -> sequence;
 	if ((*ccp = call -> udata.len) > 0)
 		bcopy (call -> udata.buf, ud, *ccp);
@@ -1290,13 +1269,12 @@ join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *se
  */
 
 /* ARGSUSED */
-int 
+int
 gen2tp4 ( /* dependant on Addressing */
-    struct TSAPaddr *generic,
-    struct netbuf *specific,
-    int context
-)
-{
+	struct TSAPaddr *generic,
+	struct netbuf *specific,
+	int context
+) {
 	char *cp;
 
 #ifdef ICL_TLI
@@ -1333,7 +1311,7 @@ out_space:
 		return NOTOK;
 	}
 
-	 strcat (cp, prefix);
+	strcat (cp, prefix);
 	cp += strlen(cp);
 	*cp++ = 0x0;
 
@@ -1506,9 +1484,8 @@ out_space:
 
 /*  */
 
-int 
-tp42gen (struct TSAPaddr *generic, struct netbuf *specific)
-{
+int
+tp42gen (struct TSAPaddr *generic, struct netbuf *specific) {
 	char *cp;
 	struct NSAPaddr *na = generic -> ta_addrs;
 
@@ -1618,8 +1595,8 @@ int	fd;
 }
 
 #else
-int 
-_ts2tli_stub(){
+int
+_ts2tli_stub() {
 	;
 }
 #endif

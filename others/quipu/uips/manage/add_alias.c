@@ -44,9 +44,8 @@ extern	PS	rps;
 extern	Entry	current_entry;
 static	char	new_draft;
 
-int 
-call_add_alias (int argc, char **argv)
-{
+int
+call_add_alias (int argc, char **argv) {
 	DN		oj_dn, aoj_dn ;
 	DN		save_dn, dnptr, trail ;
 	DN		moddn;
@@ -113,9 +112,9 @@ call_add_alias (int argc, char **argv)
 	}
 
 	if (home = getenv ("HOME"))
-		 sprintf (fname, "%s/.dishdraft", home);
+		sprintf (fname, "%s/.dishdraft", home);
 	else
-		 strcpy (fname, "./.dishdraft");
+		strcpy (fname, "./.dishdraft");
 	new_draft = FALSE;
 
 	if ((argc = service_control (OPT, argc, argv, &add_arg.ada_common)) == -1)
@@ -332,7 +331,7 @@ call_add_alias (int argc, char **argv)
 		return ;
 	}
 	fprintf(fd, "\nobjectClass= quipuObject & alias & top\n") ;
-	 fclose(fd) ;
+	fclose(fd) ;
 
 	if (move (objectname) != OK) {
 		ps_printf (OPT,"Unknown option %s\n",objectname);
@@ -346,7 +345,7 @@ call_add_alias (int argc, char **argv)
 	}
 	entry_ptr = get_default_entry (NULLENTRY);
 	entry_ptr->e_attributes = get_attributes (fd);
-	 fclose (fd);
+	fclose (fd);
 	if (parse_status != 0)
 		return ;
 

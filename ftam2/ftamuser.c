@@ -215,12 +215,12 @@ struct dispatch *getds (name)
 char *name;
 {
 	int    longest,
-			 nmatches;
+		   nmatches;
 	char  *p,
-			 *q;
+		  *q;
 	char    buffer[BUFSIZ];
 	struct dispatch   *ds,
-			*fs;
+			   *fs;
 
 	longest = nmatches = 0;
 	for (ds = dispatches; p = ds -> ds_name; ds++) {
@@ -247,7 +247,7 @@ char *name;
 	default:
 		for (ds = dispatches, p = buffer; q = ds -> ds_name; ds++)
 			if (strncmp (q, name, longest) == 0) {
-				 sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
+				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
 		advise (NULLCP, "ambiguous operation, it could be one of:%s",
@@ -391,14 +391,13 @@ char    **getval ();
 
 /*  */
 
-static int f_set (char **vec)
-{
+static int f_set (char **vec) {
 	int    i,
-			 j;
+		   j;
 	int     value,
 			vflag;
 	char **cp,
-			 *dp;
+		 *dp;
 	struct var *v;
 
 	if (*++vec == NULL) {
@@ -416,17 +415,17 @@ static int f_set (char **vec)
 			columns = 1;
 		lines = ((u - vars) + columns - 1) / columns;
 
-		 printf ("Variables:\n");
+		printf ("Variables:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
 				v = vars + j * lines + i;
-				 printf ("%s", v -> v_name);
+				printf ("%s", v -> v_name);
 				if (v + lines >= u) {
-					 printf ("\n");
+					printf ("\n");
 					break;
 				}
 				for (w = strlen (v -> v_name); w < width; w = (w + 8) & ~7)
-					 putchar ('\t');
+					putchar ('\t');
 			}
 
 		return OK;
@@ -450,18 +449,18 @@ static int f_set (char **vec)
 
 	if (strcmp (*vec, "?") == 0) {
 		if (v -> v_value && (cp = v -> v_dvalue)) {
-			 printf ("use %s of:", v -> v_mask ? "any" : "one");
+			printf ("use %s of:", v -> v_mask ? "any" : "one");
 			for (i = 0; *cp; cp++)
-				 printf ("%s \"%s\"", i++ ? "," : "", *cp);
+				printf ("%s \"%s\"", i++ ? "," : "", *cp);
 			if (v -> v_mask)
-				 printf (";\n\tor  \"all\";\n\tor a hexadecimal number from 0 to 0x%x\n",
-							   (1 << (i - 1)) - 1);
+				printf (";\n\tor  \"all\";\n\tor a hexadecimal number from 0 to 0x%x\n",
+						(1 << (i - 1)) - 1);
 			else
-				 printf (";\n\tor a number from 0 to %d\n",
-							   cp - v -> v_dvalue - 1);
+				printf (";\n\tor a number from 0 to %d\n",
+						cp - v -> v_dvalue - 1);
 		} else
-			 printf ("use any %s value\n",
-						   v -> v_value ? "integer" : "string");
+			printf ("use any %s value\n",
+					v -> v_value ? "integer" : "string");
 
 		return OK;
 	}
@@ -570,43 +569,42 @@ out_of_range:
 
 /*  */
 
-static printvar (struct var *v)
-{
+static printvar (struct var *v) {
 	int	    i;
 	char    buffer[BUFSIZ];
 
 	if (runcom)
 		return;
 
-	 printf ("%-*s = ", varwidth1, v -> v_name);
+	printf ("%-*s = ", varwidth1, v -> v_name);
 	if (v -> v_value) {
 		i = *v -> v_value;
 
 		if (v -> v_mask) {
 			if (v -> v_dvalue) {
 				if (i == 0)
-					 printf ("%-*s", varwidth2, v -> v_dvalue[i]);
+					printf ("%-*s", varwidth2, v -> v_dvalue[i]);
 				else {
-					 strcpy (buffer, sprintb (i, v -> v_mask));
+					strcpy (buffer, sprintb (i, v -> v_mask));
 					if ((int)strlen (buffer) <= varwidth2)
-						 printf ("%-*s", varwidth2, buffer);
+						printf ("%-*s", varwidth2, buffer);
 					else
-						 printf ("%s\n%*s", buffer, varwidth1 + varwidth2 + 3,
-									   "");
+						printf ("%s\n%*s", buffer, varwidth1 + varwidth2 + 3,
+								"");
 				}
 			} else
-				 printf ("0x%-*x", varwidth2 - 2, i);
+				printf ("0x%-*x", varwidth2 - 2, i);
 		} else {
 			if (v -> v_dvalue)
-				 printf ("%-*s", varwidth2, v -> v_dvalue[i]);
+				printf ("%-*s", varwidth2, v -> v_dvalue[i]);
 			else
-				 printf ("%-*d", varwidth2, i);
+				printf ("%-*d", varwidth2, i);
 		}
 	} else if (*v -> v_dvalue) {
-		 sprintf (buffer, "\"%s\"", *v -> v_dvalue);
-		 printf ("%-*s", varwidth2, buffer);
+		sprintf (buffer, "\"%s\"", *v -> v_dvalue);
+		printf ("%-*s", varwidth2, buffer);
 	}
-	 printf ("    - %s\n", v -> v_dname);
+	printf ("    - %s\n", v -> v_dname);
 }
 
 /*  */
@@ -619,8 +617,7 @@ default_prompt (void) {
 }
 
 
-static int set_prompt (struct var *v)
-{
+static int set_prompt (struct var *v) {
 	char	*new = *(v->v_dvalue);
 
 	if(!new || !lexequ(new, DEFAULT_PROMPT_STR)) {
@@ -631,15 +628,14 @@ static int set_prompt (struct var *v)
 }
 
 
-static int set_realstore (struct var *v)
-{
+static int set_realstore (struct var *v) {
 	char   *vec[2];
 
 	if (ftamfd != NOTOK) {
 		vec[0] = "sd";
 		vec[1] = NULLCP;
 
-		 f_cd (vec);
+		f_cd (vec);
 	}
 }
 
@@ -647,8 +643,7 @@ static int set_realstore (struct var *v)
 
 /* ARGSUSED */
 
-static int set_trace (struct var *v)
-{
+static int set_trace (struct var *v) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
@@ -662,8 +657,7 @@ static int set_trace (struct var *v)
 
 /* ARGSUSED */
 
-static int set_type (struct var *v)
-{
+static int set_type (struct var *v) {
 	struct vfsmap *vf;
 
 	if (ftamfd == NOTOK)
@@ -680,14 +674,13 @@ static int set_type (struct var *v)
 
 /*  */
 
-static char ** getval (char *name, char **choices)
-{
+static char ** getval (char *name, char **choices) {
 	int    longest,
-			 nmatches;
+		   nmatches;
 	char  *p,
-			 *q,
-			 **cp,
-			 **fp;
+		  *q,
+		  **cp,
+		  **fp;
 	char    buffer[BUFSIZ];
 
 	longest = nmatches = 0;
@@ -715,7 +708,7 @@ static char ** getval (char *name, char **choices)
 	default:
 		for (cp = choices, p = buffer; q = *cp; cp++)
 			if (strncmp (q, name, longest) == 0) {
-				 sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
+				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
 		advise (NULLCP, "ambiguous value, it could be one of:%s",
@@ -726,15 +719,14 @@ static char ** getval (char *name, char **choices)
 
 /*  */
 
-static struct var * getvar (char *name)
-{
+static struct var * getvar (char *name) {
 	int    longest,
-			 nmatches;
+		   nmatches;
 	char  *p,
-			 *q;
+		  *q;
 	char    buffer[BUFSIZ];
 	struct var *v,
-			*f;
+			   *f;
 
 	longest = nmatches = 0;
 	for (v = vars; p = v -> v_name; v++) {
@@ -761,7 +753,7 @@ static struct var * getvar (char *name)
 	default:
 		for (v = vars, p = buffer; q = v -> v_name; v++)
 			if (strncmp (q, name, longest) == 0) {
-				 sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
+				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
 		advise (NULLCP, "ambiguous variable, it could be one of:%s",
@@ -776,16 +768,15 @@ static int helpwidth;
 
 /*  */
 
-static int f_help (char **vec)
-{
+static int f_help (char **vec) {
 	int    i,
-			 j,
-			 w;
+		   j,
+		   w;
 	int     columns,
 			width,
 			lines;
 	struct dispatch   *ds,
-			*es;
+			   *es;
 
 	for (es = dispatches; es -> ds_name; es++)
 		continue;
@@ -796,20 +787,20 @@ static int f_help (char **vec)
 			columns = 1;
 		lines = ((es - dispatches) + columns - 1) / columns;
 
-		 printf ("Operations:\n");
+		printf ("Operations:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
 				ds = dispatches + j * lines + i;
-				 printf ("%s", ds -> ds_name);
+				printf ("%s", ds -> ds_name);
 				if (ds + lines >= es) {
-					 printf ("\n");
+					printf ("\n");
 					break;
 				}
 				for (w = strlen (ds -> ds_name); w < width; w = (w + 8) & ~7)
-					 putchar ('\t');
+					putchar ('\t');
 			}
 
-		 printf ("\nversion info:\t%s\n\t\t%s\n", ftamversion, isodeversion);
+		printf ("\nversion info:\t%s\n\t\t%s\n", ftamversion, isodeversion);
 
 		return OK;
 	}
@@ -817,11 +808,11 @@ static int f_help (char **vec)
 	for (; *vec; vec++)
 		if (strcmp (*vec, "?") == 0) {
 			for (ds = dispatches; ds -> ds_name; ds++)
-				 printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
+				printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
 
 			break;
 		} else if (ds = getds (*vec))
-			 printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
+			printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
 
 	return OK;
 }
@@ -897,62 +888,61 @@ struct vfsmap *myvf;
 
 /*  */
 
-void 
-ftam_advise (struct FTAMabort *fta, char *event)
-{
+void
+ftam_advise (struct FTAMabort *fta, char *event) {
 	if (hash && marks >= BUFSIZ) {
 		marks = 0;
-		 printf ("\n");
+		printf ("\n");
 	}
 
-	 fflush (stdout);
+	fflush (stdout);
 
 	if (fta -> fta_peer) {
 #ifdef	BRIDGE
-		 sprintf (ftam_error, "%s: peer aborted association, due to ",
-						event);
+		sprintf (ftam_error, "%s: peer aborted association, due to ",
+				 event);
 #else
-		 fprintf (stderr, "%s: peer aborted association, due to ", event);
+		fprintf (stderr, "%s: peer aborted association, due to ", event);
 #endif
 		switch (fta -> fta_action) {
 		case FACTION_TRANS:
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"transient-error");
+			sprintf (ftam_error + strlen (ftam_error),
+					 "transient-error");
 #else
-			 fprintf (stderr, "transient-error");
+			fprintf (stderr, "transient-error");
 #endif
 			break;
 
 		case FACTION_PERM:
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"permanent-error");
+			sprintf (ftam_error + strlen (ftam_error),
+					 "permanent-error");
 #else
-			 fprintf (stderr, "permanent-error");
+			fprintf (stderr, "permanent-error");
 #endif
 			break;
 
 		default:
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"action result %d", fta -> fta_action);
+			sprintf (ftam_error + strlen (ftam_error),
+					 "action result %d", fta -> fta_action);
 #else
-			 fprintf (stderr, "action result %d", fta -> fta_action);
+			fprintf (stderr, "action result %d", fta -> fta_action);
 #endif
 			break;
 		}
 #ifndef	BRIDGE
-		 fprintf (stderr, "\n");
+		fprintf (stderr, "\n");
 #endif
 	} else
 #ifdef	BRIDGE
-		 sprintf (ftam_error + strlen (ftam_error), "%s: failed\n",
-						event);
+		sprintf (ftam_error + strlen (ftam_error), "%s: failed\n",
+				 event);
 	if (verbose)
 		advise (NULLCP, "%s", ftam_error);
 #else
-		 fprintf (stderr, "%s: failed\n", event);
+		fprintf (stderr, "%s: failed\n", event);
 #endif
 	ftam_diag (fta -> fta_diags, fta -> fta_ndiag, fta -> fta_peer,
 			   FACTION_PERM);
@@ -968,9 +958,8 @@ ftam_advise (struct FTAMabort *fta, char *event)
 
 /*  */
 
-void 
-ftam_chrg (struct FTAMcharging *charges)
-{
+void
+ftam_chrg (struct FTAMcharging *charges) {
 	int    i;
 	char   *cp;
 	struct fc_charge  *fc;
@@ -980,11 +969,11 @@ ftam_chrg (struct FTAMcharging *charges)
 			i >= 0;
 			fc++, i--, cp = "    %s: %d %s\n")
 #ifdef	BRIDGE
-		 sprintf (ftam_error, cp, fc -> fc_resource, fc -> fc_value,
-						fc -> fc_unit);
+		sprintf (ftam_error, cp, fc -> fc_resource, fc -> fc_value,
+				 fc -> fc_unit);
 	advise (NULLCP, "%s", ftam_error);
 #else
-		 printf (cp, fc -> fc_resource, fc -> fc_value, fc -> fc_unit);
+		printf (cp, fc -> fc_resource, fc -> fc_value, fc -> fc_unit);
 #endif
 }
 
@@ -1000,9 +989,8 @@ static char *entity[] = {
 };
 
 
-void 
-ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action)
-{
+void
+ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action) {
 	int    i;
 	int     didit;
 	struct FTAMdiagnostic *dp;
@@ -1013,32 +1001,32 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action)
 	for (dp = diag, i = ndiag - 1; i >= 0; dp++, i--) {
 		if (dp -> ftd_identifier != FS_GEN_NOREASON) {
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"%s", FErrString (dp -> ftd_identifier));
+			sprintf (ftam_error + strlen (ftam_error),
+					 "%s", FErrString (dp -> ftd_identifier));
 #else
-			 printf ("%s", FErrString (dp -> ftd_identifier));
+			printf ("%s", FErrString (dp -> ftd_identifier));
 #endif
 			if (dp -> ftd_cc > 0)
 #ifdef	BRIDGE
-				 sprintf (ftam_error + strlen (ftam_error),
-								": %*.*s", dp -> ftd_cc, dp -> ftd_cc,
-								dp -> ftd_data);
+				sprintf (ftam_error + strlen (ftam_error),
+						 ": %*.*s", dp -> ftd_cc, dp -> ftd_cc,
+						 dp -> ftd_data);
 #else
-				 printf (": %*.*s", dp -> ftd_cc, dp -> ftd_cc, dp -> ftd_data);
+				printf (": %*.*s", dp -> ftd_cc, dp -> ftd_cc, dp -> ftd_data);
 #endif
 		} else if (dp -> ftd_cc > 0)
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"%*.*s", dp -> ftd_cc, dp -> ftd_cc,
-							dp -> ftd_data);
+			sprintf (ftam_error + strlen (ftam_error),
+					 "%*.*s", dp -> ftd_cc, dp -> ftd_cc,
+					 dp -> ftd_data);
 #else
-			 printf ("%*.*s", dp -> ftd_cc, dp -> ftd_cc, dp -> ftd_data);
+			printf ("%*.*s", dp -> ftd_cc, dp -> ftd_cc, dp -> ftd_data);
 #endif
 
 #ifdef	BRIDGE
 		advise (NULLCP, "%s", ftam_error);
 #else
-		 printf ("\n");
+		printf ("\n");
 #endif
 
 		didit = 0;
@@ -1048,20 +1036,20 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action)
 				break;
 			didit++;
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"    type informative");
+			sprintf (ftam_error + strlen (ftam_error),
+					 "    type informative");
 #else
-			 printf ("    type informative");
+			printf ("    type informative");
 #endif
 			break;
 
 		case DIAG_TRANS:
 			didit++;
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"    type transient");
+			sprintf (ftam_error + strlen (ftam_error),
+					 "    type transient");
 #else
-			 printf ("    type transient");
+			printf ("    type transient");
 #endif
 			break;
 
@@ -1072,20 +1060,20 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action)
 				break;
 			didit++;
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"    type permanent");
+			sprintf (ftam_error + strlen (ftam_error),
+					 "    type permanent");
 #else
-			 printf ("    type permanent");
+			printf ("    type permanent");
 #endif
 			break;
 
 		default:
 			didit++;
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"    type %d", dp -> ftd_type);
+			sprintf (ftam_error + strlen (ftam_error),
+					 "    type %d", dp -> ftd_type);
 #else
-			 printf ("    type %d", dp -> ftd_type);
+			printf ("    type %d", dp -> ftd_type);
 #endif
 			break;
 		}
@@ -1106,23 +1094,23 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action)
 print_it:
 			;
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"%sobserver %s", didit++ ? ", " : "    ",
-							entity[dp -> ftd_observer]);
+			sprintf (ftam_error + strlen (ftam_error),
+					 "%sobserver %s", didit++ ? ", " : "    ",
+					 entity[dp -> ftd_observer]);
 #else
-			 printf ("%sobserver %s", didit++ ? ", " : "    ",
-						   entity[dp -> ftd_observer]);
+			printf ("%sobserver %s", didit++ ? ", " : "    ",
+					entity[dp -> ftd_observer]);
 #endif
 			break;
 
 		default:
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"%sobserver %d", didit++ ? ", " : "    ",
-							dp -> ftd_observer);
+			sprintf (ftam_error + strlen (ftam_error),
+					 "%sobserver %d", didit++ ? ", " : "    ",
+					 dp -> ftd_observer);
 #else
-			 printf ("%sobserver %d", didit++ ? ", " : "    ",
-						   dp -> ftd_observer);
+			printf ("%sobserver %d", didit++ ? ", " : "    ",
+					dp -> ftd_observer);
 #endif
 			break;
 		}
@@ -1139,40 +1127,40 @@ print_it:
 		case EREF_IFPM:
 		case EREF_RFPM:
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"%ssource %s", didit++ ? ", " : "    ",
-							entity[dp -> ftd_source]);
+			sprintf (ftam_error + strlen (ftam_error),
+					 "%ssource %s", didit++ ? ", " : "    ",
+					 entity[dp -> ftd_source]);
 #else
-			 printf ("%ssource %s", didit++ ? ", " : "    ",
-						   entity[dp -> ftd_source]);
+			printf ("%ssource %s", didit++ ? ", " : "    ",
+					entity[dp -> ftd_source]);
 #endif
 			break;
 
 		default:
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"%ssource %d", didit++ ? ", " : "    ",
-							dp -> ftd_source);
+			sprintf (ftam_error + strlen (ftam_error),
+					 "%ssource %d", didit++ ? ", " : "    ",
+					 dp -> ftd_source);
 #else
-			 printf ("%ssource %d", didit++ ? ", " : "    ",
-						   dp -> ftd_source);
+			printf ("%ssource %d", didit++ ? ", " : "    ",
+					dp -> ftd_source);
 #endif
 			break;
 		}
 
 		if (dp -> ftd_delay != DIAG_NODELAY)
 #ifdef	BRIDGE
-			 sprintf (ftam_error + strlen (ftam_error),
-							"%ssuggested-delay %d", didit++ ? ", " : "    ",
-							dp -> ftd_delay);
+			sprintf (ftam_error + strlen (ftam_error),
+					 "%ssuggested-delay %d", didit++ ? ", " : "    ",
+					 dp -> ftd_delay);
 #else
-			 printf ("%ssuggested-delay %d", didit++ ? ", " : "    ",
-						   dp -> ftd_delay);
+			printf ("%ssuggested-delay %d", didit++ ? ", " : "    ",
+					dp -> ftd_delay);
 #endif
 
 #ifndef	BRIDGE
 		if (didit)
-			 printf ("\n");
+			printf ("\n");
 #endif
 	}
 #ifdef	BRIDGE
@@ -1183,7 +1171,7 @@ print_it:
 
 /*    MISCELLANY */
 
-int 
+int
 rcinit (void) {
 #ifndef	BRIDGE
 	int    w;
@@ -1285,20 +1273,19 @@ FILE *fp;
 
 
 #ifndef	TMS
-int 
-timer (int cc, char *action)
-{
+int
+timer (int cc, char *action) {
 	long    ms;
 	float   bs;
 	struct timeval  stop,
-			td;
+			   td;
 	static struct timeval   start;
 
 	if (cc == 0) {
-		 gettimeofday (&start, (struct timezone *) 0);
+		gettimeofday (&start, (struct timezone *) 0);
 		return;
 	} else
-		 gettimeofday (&stop, (struct timezone  *) 0);
+		gettimeofday (&stop, (struct timezone  *) 0);
 
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
@@ -1309,8 +1296,7 @@ timer (int cc, char *action)
 }
 
 
-static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
-{
+static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
@@ -1327,9 +1313,8 @@ static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
 long	times ();
 
 
-int 
-timer (int cc, char *action)
-{
+int
+timer (int cc, char *action) {
 	long    ms;
 	float   bs;
 	long    stop,
@@ -1362,9 +1347,8 @@ timer (int cc, char *action)
 
 #include <arpa/ftp.h>
 
-int 
-f_type (int mode)
-{
+int
+f_type (int mode) {
 	switch(mode) {
 	case TYPE_A:
 		tmode = VFS_UTF;

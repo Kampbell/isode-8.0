@@ -31,15 +31,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapsearch.c,v 9.0 
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 
-int 
-dap_search (int ad, int *id, struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result)
-{
+int
+dap_search (int ad, int *id, struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result) {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
 
 	++(*id);
 
-	 DapSearch (ad, (*id), arg, di, ROS_INTR);
+	DapSearch (ad, (*id), arg, di, ROS_INTR);
 
 	error->dse_type = DSE_NOERROR;
 
@@ -75,9 +74,8 @@ dap_search (int ad, int *id, struct ds_search_arg *arg, struct DSError *error, s
 	}
 }
 
-int 
-DapSearch (int ad, int id, struct ds_search_arg *arg, struct DAPindication *di, int asyn)
-{
+int
+DapSearch (int ad, int id, struct ds_search_arg *arg, struct DAPindication *di, int asyn) {
 	PE                  arg_pe;
 
 	if(encode_DAS_SearchArgument(&arg_pe,1,0,NULLCP,arg) != OK) {

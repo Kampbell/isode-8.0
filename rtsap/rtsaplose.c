@@ -39,11 +39,10 @@ static int  _rtsaplose ();
 /*  */
 
 #ifndef	lint
-int	rtpktlose (struct assocblk*acb, ...)
-{
+int	rtpktlose (struct assocblk*acb, ...) {
 	int	    reason,
-	result,
-	value;
+			result,
+			value;
 	struct RtSAPindication *rti;
 	struct RtSAPabort *rta;
 	va_list ap;
@@ -59,15 +58,15 @@ int	rtpktlose (struct assocblk*acb, ...)
 
 	if ((rta = &rti -> rti_abort) -> rta_cc > 0) {
 		SLOG (rtsap_log, LLOG_EXCEPTIONS, NULLCP,
-		("rtpktlose [%s] %*.*s", RtErrString (rta -> rta_reason),
-		rta -> rta_cc, rta -> rta_cc, rta -> rta_data));
+			  ("rtpktlose [%s] %*.*s", RtErrString (rta -> rta_reason),
+			   rta -> rta_cc, rta -> rta_cc, rta -> rta_data));
 	} else
 		SLOG (rtsap_log, LLOG_EXCEPTIONS, NULLCP,
-		("rtpktlose [%s]", RtErrString (rta -> rta_reason)));
+			  ("rtpktlose [%s]", RtErrString (rta -> rta_reason)));
 
 	if (acb == NULLACB
-	|| acb -> acb_fd == NOTOK
-	|| acb -> acb_rtpktlose == NULLIFP)
+			|| acb -> acb_fd == NOTOK
+			|| acb -> acb_rtpktlose == NULLIFP)
 		return result;
 
 	switch (reason) {
@@ -91,9 +90,8 @@ int	rtpktlose (struct assocblk*acb, ...)
 #else
 /* VARARGS5 */
 
-int 
-rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, char *what, char *fmt)
-{
+int
+rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 	return rtpktlose (acb, rti, reason, what, fmt);
 }
 #endif
@@ -101,10 +99,9 @@ rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, char *
 /*  */
 
 #ifndef	lint
-int	rtsaplose (struct RtSAPindication*rti, ...)
-{
+int	rtsaplose (struct RtSAPindication*rti, ...) {
 	int	    reason,
-	result;
+			result;
 	va_list ap;
 
 	va_start (ap, rti);
@@ -120,9 +117,8 @@ int	rtsaplose (struct RtSAPindication*rti, ...)
 #else
 /* VARARGS4 */
 
-int 
-rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt)
-{
+int
+rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 	return rtsaplose (rti, reason, what, fmt);
 }
 #endif
@@ -130,13 +126,12 @@ rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _rtsaplose (  /* what, fmt, args ... */
-    struct RtSAPindication *rti,
-    int reason,
-    va_list ap
-)
-{
+	struct RtSAPindication *rti,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char  *what;
 	char  *fmt;

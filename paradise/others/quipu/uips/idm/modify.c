@@ -59,13 +59,13 @@ int de_Modify() {
 	as = as_comp_alloc();
 	as = NULLATTR;
 
-	 sprintf(more, yes_string);  /* Enter loop */
+	sprintf(more, yes_string);  /* Enter loop */
 
 	while (!(strcmp(more, yes_string))) {
 		enterString(MODIFY, person, plp);
 
 		if (!(strcmp(person, quit_String))) {
-			 sprintf(more, no_string);
+			sprintf(more, no_string);
 			if (noEntries > 0) {
 				freePRRs(&plp);
 			}
@@ -73,36 +73,36 @@ int de_Modify() {
 		}
 		if (strlen(person) <= 0) {
 			if (strlen(default_person) <= 0) {
-				 printf("%s %s %s\n", enter_entry_name, quit_String, to_quit);
+				printf("%s %s %s\n", enter_entry_name, quit_String, to_quit);
 				continue;
 			} else {
-				 sprintf(person, "%s", default_person);
+				sprintf(person, "%s", default_person);
 			}
 		}
-		 printf("\n");
+		printf("\n");
 
 		if (noEntries > 0) {
 			freePRRs(&plp);
 		}
 		if (listPRRs(posdit, person, &plp) != OK) {
 			searchFail(person);
-			 de_exit(-1);
+			de_exit(-1);
 		} else {
 			noEntries = listlen(plp);
 			if (noEntries == 0) {
-				 printf("\n%s", no_ent_found);
+				printf("\n%s", no_ent_found);
 				freePRRs(&plp);
 			} else if (noEntries == 1) {
 				highNumber = 0;
 				rdn = copy_string(lastComponent(plp->name, PERSON));
-				 sprintf(default_person, "%s", rdn);
+				sprintf(default_person, "%s", rdn);
 				pagerOn(NUMBER_NOT_ALLOWED);
 				printLastComponent(INDENTON, plp->name, PERSON, 0);
 				status = get_objectClassPRR(plp, &objectType);
 				if (status != OK) {
-					 printf(no_p_rl_rm);
+					printf(no_p_rl_rm);
 				} else {
-					 modify_av(plp->name, rdn, objectType);
+					modify_av(plp->name, rdn, objectType);
 				}
 			} else {
 				pagerOn(NUMBER_ALLOWED);
@@ -177,20 +177,20 @@ reprintDetails:		/* object class has not changed */
 	status = existing_at(rdn, &count, objectType, TRUE);
 	status = check_new_at(&new_count, objectType);
 	if (count <= 0 && new_count <= 0) {
-		 printf(noAtt_mod);
+		printf(noAtt_mod);
 		return OK;
 	}
 
 	if (count <= 0) {
-		 sprintf(cp, newAttr_str);
+		sprintf(cp, newAttr_str);
 		goto only_new_attributes;
 	} else {
 		if (arenew == TRUE && new_count > 0 ) {
-			 printf("%s %s %s %s:  ", entAtt_new_nmb, quit_String,
-						  to_quit, this_entry);
+			printf("%s %s %s %s:  ", entAtt_new_nmb, quit_String,
+				   to_quit, this_entry);
 		} else {
-			 printf("%s %s %s %s:  ", entAtt_nmb, quit_String,
-						  to_quit, this_entry);
+			printf("%s %s %s %s:  ", entAtt_nmb, quit_String,
+				   to_quit, this_entry);
 		}
 	}
 
@@ -216,8 +216,8 @@ only_new_attributes:
 			return OK;
 		}
 		if (count > 0) {
-			 printf("%s, %s %s %s:  ", entAtt_mod, quit_String,
-						  to_quit, this_entry);
+			printf("%s, %s %s %s:  ", entAtt_mod, quit_String,
+				   to_quit, this_entry);
 			new = TRUE;
 			goto get_atnumber;
 		} else {
@@ -239,11 +239,11 @@ only_new_attributes:
 		if ((n < 1 || n > count) ||
 				((strlen(cp) <= 0) && (n == 0))) {
 			if (count == 1) {
-				 printf("`%d' %s %s %s\n\n", n, is_inv1, quit_String, to_quit);
+				printf("`%d' %s %s %s\n\n", n, is_inv1, quit_String, to_quit);
 			} else if ((strlen(cp) <= 0) && (n == 0)) {
-				 printf("%s %s %s\n\n", is_invCR, quit_String, to_quit);
+				printf("%s %s %s\n\n", is_invCR, quit_String, to_quit);
 			} else {
-				 printf("`%d' %s %d, %s \n\n", n, is_invRng, count, enter_q_help);
+				printf("`%d' %s %d, %s \n\n", n, is_invRng, count, enter_q_help);
 			}
 			if (new == FALSE) {
 				goto reprintDetails;
@@ -258,8 +258,8 @@ only_new_attributes:
 					}
 					return OK;
 				}
-				 printf("%s %s %s %s:  ", entAtt_mod, quit_String,
-							  to_quit, this_entry);
+				printf("%s %s %s %s:  ", entAtt_mod, quit_String,
+					   to_quit, this_entry);
 				goto get_atnumber;
 			}
 		} else {
@@ -267,7 +267,7 @@ only_new_attributes:
 				status = get_new_attr(dn, n);
 				return OK;
 			}
-			 printf(removeValue);
+			printf(removeValue);
 
 			if (objectType == PERSON ||
 					objectType == ROLE   ||
@@ -298,23 +298,23 @@ only_new_attributes:
 			modify = FALSE;
 
 prompt_value:
-			 printf("\n");
-			 sprintf(attr_name, attr2name(as_entry->attr_type, OIDPART));
+			printf("\n");
+			sprintf(attr_name, attr2name(as_entry->attr_type, OIDPART));
 			addr_changed = FALSE;
 			if (is_postal_address(attr_name) == TRUE) {
-				 printf("%s (%d %s)\n", mapAttName(attr_name), LINES_PA, idm_lines);
+				printf("%s (%d %s)\n", mapAttName(attr_name), LINES_PA, idm_lines);
 				str = val2str(&(as_entry->attr_value->avseq_av));
-				 rtnstr2dlrstr(str, addrstr2);
-				 strcpy(addrstr, addrstr2); /* save original */
+				rtnstr2dlrstr(str, addrstr2);
+				strcpy(addrstr, addrstr2); /* save original */
 				status = ask_addr(attr_name, addrstr2);
 				if (!(strcmp(addrstr2, quit_String))) {
-					 sprintf(str, quit_String);
+					sprintf(str, quit_String);
 				} else if ((strcmp(addrstr, addrstr2))) {
 					addr_changed = TRUE;
 					if (strlen(addrstr2) > 0) {
-						 sprintf(str, addrstr2);
+						sprintf(str, addrstr2);
 					} else {
-						 sprintf(str, "-"); /* Delete the value */
+						sprintf(str, "-"); /* Delete the value */
 					}
 				}
 
@@ -329,11 +329,11 @@ prompt_value:
 				}
 			} else if (is_dn(attr_name) == TRUE) {
 				str = val2dnstr(&(as_entry->attr_value->avseq_av));
-				 sprintf(dnstr2, str);
-				 strcpy(dnstr, dnstr2);
+				sprintf(dnstr2, str);
+				strcpy(dnstr, dnstr2);
 				status = ask_dnhnc(str, attr_name);
 				if (status != OK) {
-					 sprintf(str, quit_String);
+					sprintf(str, quit_String);
 				}
 
 				if ((strcmp(str, dnstr2))) {
@@ -341,35 +341,35 @@ prompt_value:
 				}
 
 			} else if (is_tlx(attr_name) == TRUE) {
-				 printf("%s (%s, %s %s %s)\n", mapAttName(attr_name), number_str,
-							  country_str, and_str, ansBack_str);
+				printf("%s (%s, %s %s %s)\n", mapAttName(attr_name), number_str,
+					   country_str, and_str, ansBack_str);
 				str = val2dnstr(&(as_entry->attr_value->avseq_av));
-				 sprintf(dnstr2, str);
-				 strcpy(dnstr, dnstr2);
+				sprintf(dnstr2, str);
+				strcpy(dnstr, dnstr2);
 				status = ask_tlx(attr_name, str);
 				if (status != OK) {
-					 sprintf(str, quit_String);
+					sprintf(str, quit_String);
 				}
 				if ((strcmp(str, dnstr2))) {
 					tlx_changed = TRUE;
 					if (strlen(str) <= 0) {
-						 sprintf(str, "-"); /* Delete the value */
+						sprintf(str, "-"); /* Delete the value */
 					}
 				}
 			} else if (is_x400(attr_name) == TRUE) {
 				str = val2dnstr(&(as_entry->attr_value->avseq_av));
-				 sprintf(dnstr2, str);
-				 strcpy(dnstr, dnstr2);  /* original EDB value to delete */
-				 printf("%s [%s]:  ", mapAttName(attr_name),
-							  val2str(&(as_entry->attr_value->avseq_av)));
+				sprintf(dnstr2, str);
+				strcpy(dnstr, dnstr2);  /* original EDB value to delete */
+				printf("%s [%s]:  ", mapAttName(attr_name),
+					   val2str(&(as_entry->attr_value->avseq_av)));
 				if (gets(str) == NULLCP) {
 					/* behave as for an interrupt */
 					clearerr(stdin);
 					onint1();
 				}
 			} else {
-				 printf("%s [%s]:  ", mapAttName(attr_name),
-							  val2str(&(as_entry->attr_value->avseq_av)));
+				printf("%s [%s]:  ", mapAttName(attr_name),
+					   val2str(&(as_entry->attr_value->avseq_av)));
 				if (gets(str) == NULLCP) {
 					/* behave as for an interrupt */
 					clearerr(stdin);
@@ -379,7 +379,7 @@ prompt_value:
 				}
 			}
 			if (!(strcmp(str, quit_String))) {
-				 printf(ent_not_mod);
+				printf(ent_not_mod);
 				free(cp);
 				free(cp2);
 				free(str);
@@ -390,20 +390,20 @@ prompt_value:
 			} else if (strlen(str) == 1 && index(str, '-') != 0) {
 				/* We must delete this value */
 				if (is_postal_address(attr_name) == TRUE) {
-					 sprintf(buffer, "%s=%s", attr_name, addrstr);
+					sprintf(buffer, "%s=%s", attr_name, addrstr);
 				} else if (is_dn(attr_name) == TRUE) {
-					 sprintf(buffer, "%s=%s", attr_name, dnstr);
+					sprintf(buffer, "%s=%s", attr_name, dnstr);
 				} else if (is_tlx(attr_name) == TRUE) {
-					 sprintf(buffer, "%s=%s", attr_name, dnstr);
+					sprintf(buffer, "%s=%s", attr_name, dnstr);
 				} else if (is_x400(attr_name) == TRUE) {
-					 sprintf(buffer, "%s=%s", attr_name, dnstr);
+					sprintf(buffer, "%s=%s", attr_name, dnstr);
 				} else {
-					 sprintf(buffer, "%s=%s", attr_name,
-								   val2str(&(as_entry->attr_value->avseq_av)));
+					sprintf(buffer, "%s=%s", attr_name,
+							val2str(&(as_entry->attr_value->avseq_av)));
 				}
 				delete_count++;
 				if ((as = str2as(buffer)) == NULLATTR) {
-					 printf(fail_mod_buf);
+					printf(fail_mod_buf);
 					return NOTOK;
 				}
 
@@ -423,30 +423,30 @@ prompt_value:
 				/* change a value (delete and add) */
 				if (is_postal_address(attr_name) == TRUE) {
 					if (addr_changed == TRUE) {
-						 sprintf(buffer, "%s=%s", attr_name, addrstr);
+						sprintf(buffer, "%s=%s", attr_name, addrstr);
 					} else {
 						goto next_value;
 					}
 				} else if (is_dn(attr_name) == TRUE) {
 					if (dn_changed == TRUE) {
-						 sprintf(buffer, "%s=%s", attr_name, dnstr);
+						sprintf(buffer, "%s=%s", attr_name, dnstr);
 					} else {
 						goto next_value;
 					}
 				} else if (is_tlx(attr_name) == TRUE) {
 					if (tlx_changed == TRUE) {
-						 sprintf(buffer, "%s=%s", attr_name, dnstr);
+						sprintf(buffer, "%s=%s", attr_name, dnstr);
 					} else {
 						goto next_value;
 					}
 				} else if (is_x400(attr_name) == TRUE) {
-					 sprintf(buffer, "%s=%s", attr_name, dnstr);
+					sprintf(buffer, "%s=%s", attr_name, dnstr);
 				} else {
-					 sprintf(buffer, "%s=%s", attr_name,
-								   val2str(&(as_entry->attr_value->avseq_av)));
+					sprintf(buffer, "%s=%s", attr_name,
+							val2str(&(as_entry->attr_value->avseq_av)));
 				}
 				if ((as = str2as(buffer)) == NULLATTR) {
-					 printf(fail_mod_buf);
+					printf(fail_mod_buf);
 					return NOTOK;
 				}
 
@@ -454,14 +454,14 @@ prompt_value:
 				emnew = em_alloc();
 				emnew->em_type = EM_REMOVEVALUES;
 				emnew->em_what = as_cpy(as);
-				 sprintf(buffer, "%s=%s", attr_name, str);
+				sprintf(buffer, "%s=%s", attr_name, str);
 				if ((as = str2as(buffer)) == NULLATTR) {
-					 printf(inv_value);
+					printf(inv_value);
 					goto prompt_value;
 				} else if ((is_phone_fax(attr_name) == TRUE) &&
 						   (strlen(str) > CHARS_PHONE)) {
-					 printf("%s %d %s\n", inv_length, CHARS_PHONE, characters);
-					 printf(enter_again);
+					printf("%s %d %s\n", inv_length, CHARS_PHONE, characters);
+					printf(enter_again);
 					goto prompt_value;
 				}
 				emnew->em_next = em_alloc();
@@ -509,14 +509,14 @@ next_value:
 						at = NULLAttrT;
 						at = str2AttrT("objectClass");
 						av = NULLAttrV;
-						 sprintf(buffer, "%s", "mhsUser");
+						sprintf(buffer, "%s", "mhsUser");
 						av = str2AttrV(buffer, at->oa_syntax);
 						avl = avs_comp_new(av);
 						acl = NULLACL_INFO;
 						as = as_comp_new(at, avl, acl);
 						if (as == NULLATTR) {
-							 printf(fail_mod_rmmhs);
-							 printf(err_rprtHlpdsk);
+							printf(fail_mod_rmmhs);
+							printf(err_rprtHlpdsk);
 						}
 						emnew->em_next->em_next->em_what = as_cpy(as);
 						emnew->em_next->em_next->em_next = NULLMOD;
@@ -525,7 +525,7 @@ next_value:
 					modarg.mea_changes = ems_append(modarg.mea_changes, emnew);
 				}
 
-				 dm_modentry(dn);
+				dm_modentry(dn);
 			}
 		}
 	} else {
@@ -533,7 +533,7 @@ next_value:
 			free(cp);
 			free(cp2);
 			free(str);
-			 sprintf(default_person, "");	/* clear default value */
+			sprintf(default_person, "");	/* clear default value */
 			if (as_entry != NULLATTR) {
 				as_free(as_entry);
 			}
@@ -542,8 +542,8 @@ next_value:
 			displayFile("attr_numbers", FALSE);
 			goto reprintDetails;
 		} else {
-			 printf("`%s' %s %s, %s %s\n",
-						  cp, is_inv, enter_q_help, quit_String, to_quit);
+			printf("`%s' %s %s, %s %s\n",
+				   cp, is_inv, enter_q_help, quit_String, to_quit);
 			goto reprintDetails;
 		}
 	}
@@ -588,8 +588,8 @@ char * dn;
 	fillMostModArg();
 
 	modarg.mea_object = str2dn(dn);
-	 printf("%s   %s ", mod_entry, please_wait);
-	 fflush(stdout);
+	printf("%s   %s ", mod_entry, please_wait);
+	fflush(stdout);
 	rfrl_msg = TRUE;
 
 modify_entry:
@@ -600,10 +600,10 @@ modify_entry:
 			rfrl_msg = FALSE;
 			goto modify_entry;
 		} else {
-			 printf(ent_not_mod);
+			printf(ent_not_mod);
 		}
 	} else {
-		 printf(done);
+		printf(done);
 	}
 	rfrl_msg = TRUE;
 }
@@ -636,13 +636,13 @@ char dlrstr[];
 	int spaces;
 
 	if (strlen(rtnstr) <= 0) {
-		 strcpy(dlrstr, "");
+		strcpy(dlrstr, "");
 		return OK;
 	}
 
 	start = rtnstr;
 	cp = start;
-	 strcpy(dlrstr, "");
+	strcpy(dlrstr, "");
 	first_time = TRUE;
 
 	cp = index(cp, '\n');
@@ -650,12 +650,12 @@ char dlrstr[];
 	while ((cp != NULLCP)) {
 		if (first_time == TRUE) {
 			first_time = FALSE; /* First line does not have spaces */
-			 strncat(dlrstr, start, cp-start);
+			strncat(dlrstr, start, cp-start);
 		} else {
 			spaces = strspn(start, " ");
-			 strncat(dlrstr, start+spaces, cp-start-spaces);
+			strncat(dlrstr, start+spaces, cp-start-spaces);
 		}
-		 strcat(dlrstr, "$");
+		strcat(dlrstr, "$");
 		cp++;
 		start = cp;
 		cp = index(cp, '\n');
@@ -663,10 +663,10 @@ char dlrstr[];
 
 	if (first_time == TRUE) {
 		/* Only one line was entered */
-		 strcpy(dlrstr, start); /* Copy the entire string */
+		strcpy(dlrstr, start); /* Copy the entire string */
 	} else {
 		spaces = strspn(start, " ");
-		 strcat(dlrstr, start+spaces); /* Concatenate last part */
+		strcat(dlrstr, start+spaces); /* Concatenate last part */
 	}
 	return OK;
 }
@@ -685,19 +685,19 @@ int objectType;
 
 	if (objectType == PERSON) {
 		pagerOn(NUMBER_NOT_ALLOWED);
-		 printEmptyAttributes(plp, prratts, &count);
+		printEmptyAttributes(plp, prratts, &count);
 	} else if (objectType == ROLE) {
 		pagerOn(NUMBER_NOT_ALLOWED);
-		 printEmptyAttributes(plp, rlatts, &count);
+		printEmptyAttributes(plp, rlatts, &count);
 	} else if (objectType == ROOM) {
 		pagerOn(NUMBER_NOT_ALLOWED);
-		 printEmptyAttributes(plp, rmatts, &count);
+		printEmptyAttributes(plp, rmatts, &count);
 	} else if (objectType == ORG) {
 		pagerOn(NUMBER_NOT_ALLOWED);
-		 printEmptyAttributes(olp, orgatts, &count);
+		printEmptyAttributes(olp, orgatts, &count);
 	} else if (objectType == ORGUNIT) {
 		pagerOn(NUMBER_NOT_ALLOWED);
-		 printEmptyAttributes(oulp, ouatts, &count);
+		printEmptyAttributes(oulp, ouatts, &count);
 	}
 
 	*atcount = count;
@@ -716,15 +716,15 @@ int objectType;
 	int count;
 
 	if (objectType == PERSON) {
-		 checkForEmptyAttributes(plp, prratts, &count);
+		checkForEmptyAttributes(plp, prratts, &count);
 	} else if (objectType == ROLE) {
-		 checkForEmptyAttributes(plp, rlatts, &count);
+		checkForEmptyAttributes(plp, rlatts, &count);
 	} else if (objectType == ROOM) {
-		 checkForEmptyAttributes(plp, rmatts, &count);
+		checkForEmptyAttributes(plp, rmatts, &count);
 	} else if (objectType == ORG) {
-		 checkForEmptyAttributes(olp, orgatts, &count);
+		checkForEmptyAttributes(olp, orgatts, &count);
 	} else if (objectType == ORGUNIT) {
-		 checkForEmptyAttributes(oulp, ouatts, &count);
+		checkForEmptyAttributes(oulp, ouatts, &count);
 	}
 
 	*atcount = count;
@@ -756,45 +756,45 @@ int numbers;				/* Unfortunately a control flag,
 	if (objectType == PERSON) {
 		pagerOn(NUMBER_NOT_ALLOWED);
 		if (listPRRs(posdit, rdn, &plp) != OK) {
-			 searchFail(rdn);
+			searchFail(rdn);
 			free(str);
 			return NOTOK;
 		}
 		if (numbers == TRUE) {
-			 printDetailsNumbers(PERSON, plp, &count);
+			printDetailsNumbers(PERSON, plp, &count);
 		} else {
-			 printDetails(PERSON, plp);
+			printDetails(PERSON, plp);
 		}
 	} else if (objectType == ROLE) {
 		pagerOn(NUMBER_NOT_ALLOWED);
 		if (listPRRRl(posdit, rdn, &plp) != OK) {
-			 searchFail(rdn);
+			searchFail(rdn);
 			free(str);
 			return NOTOK;
 		}
 		if (numbers == TRUE) {
-			 printDetailsNumbers(PERSON, plp, &count);
+			printDetailsNumbers(PERSON, plp, &count);
 		} else {
-			 printDetails(PERSON, plp);
+			printDetails(PERSON, plp);
 		}
 	} else if (objectType == ROOM) {
 		pagerOn(NUMBER_NOT_ALLOWED);
 		if (listPRRRm(posdit, rdn, &plp) != OK) {
-			 searchFail(rdn);
+			searchFail(rdn);
 			free(str);
 			return NOTOK;
 		}
 		if (numbers == TRUE) {
-			 printDetailsNumbers(PERSON, plp, &count);
+			printDetailsNumbers(PERSON, plp, &count);
 		} else {
-			 printDetails(PERSON, plp);
+			printDetails(PERSON, plp);
 		}
 	} else if (objectType == ORG) {
 		tmp_posdit = malloc(LINESIZE);
-		 sprintf(tmp_posdit, posdit);
+		sprintf(tmp_posdit, posdit);
 		tmp_posdit = removeLastRDN(tmp_posdit);
 		if (listOrgs(tmp_posdit, rdn, &olp) != OK) {
-			 searchFail(rdn);
+			searchFail(rdn);
 			free(tmp_posdit);
 			free(str);
 			return NOTOK;
@@ -802,16 +802,16 @@ int numbers;				/* Unfortunately a control flag,
 		free(tmp_posdit);
 		pagerOn(NUMBER_NOT_ALLOWED);
 		if (numbers == TRUE) {
-			 printDetailsNumbers(ORG, olp, &count);
+			printDetailsNumbers(ORG, olp, &count);
 		} else {
-			 printDetails(ORG, olp);
+			printDetails(ORG, olp);
 		}
 	} else if (objectType == ORGUNIT) {
 		tmp_posdit = malloc(LINESIZE);
-		 sprintf(tmp_posdit, posdit);
+		sprintf(tmp_posdit, posdit);
 		tmp_posdit = removeLastRDN(tmp_posdit);
 		if (listOUs(posdit, rdn, &oulp) != OK) {
-			 searchFail(rdn);
+			searchFail(rdn);
 			free(str);
 			free(tmp_posdit);
 			return NOTOK;
@@ -819,9 +819,9 @@ int numbers;				/* Unfortunately a control flag,
 		free(tmp_posdit);
 		pagerOn(NUMBER_NOT_ALLOWED);
 		if (numbers == TRUE) {
-			 printDetailsNumbers(ORGUNIT, oulp, &count);
+			printDetailsNumbers(ORGUNIT, oulp, &count);
 		} else {
-			 printDetails(ORGUNIT, oulp);
+			printDetails(ORGUNIT, oulp);
 		}
 
 	}
@@ -860,9 +860,9 @@ int * count;
 			/* it was not found, print it */
 			(*count)++;
 			if ((*count) == 1) {
-				 printf("\n");
+				printf("\n");
 			}
-			 printf("        %d  %s\n", *count, mapAttName(name));
+			printf("        %d  %s\n", *count, mapAttName(name));
 		}
 		if (objatts->next != NULL) {
 			objatts = objatts->next;
@@ -873,7 +873,7 @@ int * count;
 	}
 	objatts = saveprr;
 	if ((*count) == 0) {
-		 printf(all_attVal);
+		printf(all_attVal);
 	}
 }
 checkForEmptyAttributes(lp, objatts, count)
@@ -955,33 +955,33 @@ int at_number;
 		position--;
 	}
 
-	 sprintf(attr_name, tmp->name);
+	sprintf(attr_name, tmp->name);
 
 prompt_attr:
 	if (is_postal_address(attr_name) == TRUE) {
-		 printf("%s %s (%d %s)\n", enter_msg, mapAttName(attr_name),
-					  LINES_PA, idm_lines);
-		 sprintf(addrstr2, "");
+		printf("%s %s (%d %s)\n", enter_msg, mapAttName(attr_name),
+			   LINES_PA, idm_lines);
+		sprintf(addrstr2, "");
 		status = ask_addr(attr_name, addrstr2);
 		if (!(strcmp(addrstr2, quit_String))) {
-			 sprintf(str, quit_String);
+			sprintf(str, quit_String);
 		} else {
-			 sprintf(str, addrstr2);
+			sprintf(str, addrstr2);
 		}
 	} else if (is_dn(attr_name) == TRUE) {
 		status = ask_dnhnc(str, attr_name);
 		if (status != OK) {
-			 sprintf(str, quit_String);
+			sprintf(str, quit_String);
 		}
 	} else if (is_tlx(attr_name) == TRUE) {
-		 printf("%s (%s, %s %s %s)\n", mapAttName(attr_name), number_str,
-					  country_str, and_str, ansBack_str);
+		printf("%s (%s, %s %s %s)\n", mapAttName(attr_name), number_str,
+			   country_str, and_str, ansBack_str);
 		status = ask_tlx(attr_name, str);
 		if (status != OK) {
-			 sprintf(str, quit_String);
+			sprintf(str, quit_String);
 		}
 	} else {
-		 printf("%s %s  :  ", enter_msg, mapAttName(attr_name));
+		printf("%s %s  :  ", enter_msg, mapAttName(attr_name));
 
 		if (gets(str) == NULLCP) {
 			/* behave as for an interrupt */
@@ -998,13 +998,13 @@ prompt_attr:
 		displayFile(attr_name, FALSE);
 		goto prompt_attr;
 	} else if ((strlen(str)) <= 0) {
-		 printf("%s %s %s %s", ent_val, quit_String, to_quit, enting_val);
+		printf("%s %s %s %s", ent_val, quit_String, to_quit, enting_val);
 		goto prompt_attr;
 	}
 
-	 sprintf(buffer, "%s=%s", attr_name, str);
+	sprintf(buffer, "%s=%s", attr_name, str);
 	if ((as = str2as(buffer)) == NULLATTR) {
-		 printf("%s, %s\n", err_invAtSntx, enter_q_help);
+		printf("%s, %s\n", err_invAtSntx, enter_q_help);
 		goto prompt_attr;
 	} else {
 		if (!(strcmp(attr_name, "mhsORAddresses")) &&
@@ -1013,14 +1013,14 @@ prompt_attr:
 			at_mhs = NULLAttrT;
 			at_mhs = str2AttrT("objectClass");
 			av_mhs = NULLAttrV;
-			 sprintf(buffer_mhs, "%s", "mhsUser");
+			sprintf(buffer_mhs, "%s", "mhsUser");
 			av_mhs = str2AttrV(buffer_mhs, at_mhs->oa_syntax);
 			avs_mhs = avs_comp_new(av_mhs);
 			acl_mhs = NULLACL_INFO;
 			as_mhs = as_comp_new(at_mhs, avs_mhs, acl_mhs);
 			if (as_mhs == NULLATTR) {
-				 printf(fail_mod_adMHS);
-				 printf(err_rprtHlpdsk);
+				printf(fail_mod_adMHS);
+				printf(err_rprtHlpdsk);
 			}
 		}
 		modarg.mea_changes = NULLMOD; /* initially no changes */
@@ -1044,7 +1044,7 @@ prompt_attr:
 			free(str);
 			return NOTOK;
 		} else {
-			 dm_modentry(dn);
+			dm_modentry(dn);
 		}
 	}
 
@@ -1069,43 +1069,43 @@ int * new_value;
 	more = malloc(LINESIZE);
 	str  = malloc(LINESIZE);
 
-	 sprintf(str, "Enterloop");
+	sprintf(str, "Enterloop");
 	*new_value = FALSE;
 
 	while (strlen(str) > 0) {
 		if (is_postal_address(attr_name) == TRUE) {
-			 sprintf(prompt, "%s %s", have_another, mapAttName(attr_name));
-			 de_prompt_yesno(prompt, more, no_string);
+			sprintf(prompt, "%s %s", have_another, mapAttName(attr_name));
+			de_prompt_yesno(prompt, more, no_string);
 			if (!(strcmp(more, no_string))) {
 				return OK;
 			}
-			 printf("%s %s (%d %s)\n", opt_add, mapAttName(attr_name),
-						  LINES_PA, idm_lines);
-			 sprintf(addrstr2, "");
-			 ask_addr(attr_name, addrstr2);
-			 sprintf(str, addrstr2);
+			printf("%s %s (%d %s)\n", opt_add, mapAttName(attr_name),
+				   LINES_PA, idm_lines);
+			sprintf(addrstr2, "");
+			ask_addr(attr_name, addrstr2);
+			sprintf(str, addrstr2);
 		} else if (is_dn(attr_name) == TRUE) {
-			 sprintf(prompt, "%s %s", have_another, mapAttName(attr_name));
-			 de_prompt_yesno(prompt, more, no_string);
+			sprintf(prompt, "%s %s", have_another, mapAttName(attr_name));
+			de_prompt_yesno(prompt, more, no_string);
 			if (!(strcmp(more, no_string))) {
 				return OK;
 			}
-			 sprintf(str, "");
-			 printf("\n");
-			 ask_dnhnc(str, attr_name);
+			sprintf(str, "");
+			printf("\n");
+			ask_dnhnc(str, attr_name);
 		} else if (is_tlx(attr_name) == TRUE) {
-			 sprintf(prompt, "%s %s", have_another, mapAttName(attr_name));
-			 de_prompt_yesno(prompt, more, no_string);
+			sprintf(prompt, "%s %s", have_another, mapAttName(attr_name));
+			de_prompt_yesno(prompt, more, no_string);
 			if (!(strcmp(more, no_string))) {
 				return OK;
 			}
-			 sprintf(str, "");
-			 printf("\n");
-			 printf("%s %s (%s, %s %s %s)\n", opt_add, mapAttName(attr_name),
-						  number_str, country_str, and_str, ansBack_str);
-			 ask_tlx(attr_name, str);
+			sprintf(str, "");
+			printf("\n");
+			printf("%s %s (%s, %s %s %s)\n", opt_add, mapAttName(attr_name),
+				   number_str, country_str, and_str, ansBack_str);
+			ask_tlx(attr_name, str);
 		} else {
-			 printf("%s %s:  ", opt_add, mapAttName(attr_name));
+			printf("%s %s:  ", opt_add, mapAttName(attr_name));
 			if (gets(str) == NULLCP) {
 				/* behave as for an interrupt */
 				clearerr(stdin);
@@ -1116,19 +1116,19 @@ int * new_value;
 		}
 
 		if (!(strcmp(str, quit_String))) {
-			 printf("\n%s", ent_not_mod);
+			printf("\n%s", ent_not_mod);
 			return NOTOK;
 		} else if (!(strcmp(str, "?"))) {
 			displayFile(attr_name, FALSE);
 		} else if (strlen(str) > 0) {
-			 sprintf(buffer, "%s=%s", attr_name, str);
+			sprintf(buffer, "%s=%s", attr_name, str);
 			if ((as = str2as(buffer)) == NULLATTR) {
-				 printf(inv_Value);
+				printf(inv_Value);
 				continue;
 			} else if ((is_phone_fax(attr_name) == TRUE) &&
 					   (strlen(str) > CHARS_PHONE)) {
-				 printf("%s %d %s\n", inv_length, CHARS_PHONE, characters);
-				 printf(enter_again);
+				printf("%s %d %s\n", inv_length, CHARS_PHONE, characters);
+				printf(enter_again);
 				continue;
 			}
 			emnew = NULLMOD;
@@ -1157,7 +1157,7 @@ int * objectType;
 	savestr	= malloc(LINESIZE);
 	temprdn	= malloc(LINESIZE);
 
-	 sprintf(savestr, rdn);
+	sprintf(savestr, rdn);
 	/*    temprdn = copy_string(lastComponent(savestr, ORGUNIT));
 	    if (!(strcmp(temprdn, rdn)))
 	      { /* Same, modifying C, ORG or ORGUNIT, check which one it is */
@@ -1256,7 +1256,7 @@ int dm_ModifyOrg() {
 	as = as_comp_alloc();
 	as = NULLATTR;
 
-	 sprintf(savestr, posdit);
+	sprintf(savestr, posdit);
 	savestr = removeLastRDN(savestr);
 
 	rdn = copy_string(lastComponent(posdit, ORGUNIT));
@@ -1265,26 +1265,26 @@ int dm_ModifyOrg() {
 	cp = rindex(posdit, '@');
 	status = get_objectClass(cp, &objectType);
 	if (status != OK) {
-		 printf(org_unk_type);
-		 printf("\n %s", err_rprtHlpdsk);
+		printf(org_unk_type);
+		printf("\n %s", err_rprtHlpdsk);
 		return OK;  /* Treat as if everything went OK */
 	}
-	 sprintf(more, yes_string);	/* Enter loop */
+	sprintf(more, yes_string);	/* Enter loop */
 
 	while (!(strcmp(more, yes_string))) {
 		if (objectType == ORG) {
 			if (listOrgs(savestr, rdn, &olp) != OK) {
 				searchFail(rdn);
-				 de_exit(-1);
+				de_exit(-1);
 			} else {
 				noEntries = listlen(olp);
 				if (noEntries == 0) {
-					 printf(no_orgFound);
+					printf(no_orgFound);
 				} else if (noEntries == 1) {
-					 printf("\n");
+					printf("\n");
 					pagerOn(NUMBER_NOT_ALLOWED);
-					 printLastComponent(INDENTON, olp->name, ORG, FALSE);
-					 printf("\n");
+					printLastComponent(INDENTON, olp->name, ORG, FALSE);
+					printf("\n");
 					rdn = copy_string(lastComponent(olp->name, ORG));
 					status = modify_av(olp->name, rdn, objectType);
 					if (status != OK) {
@@ -1293,12 +1293,12 @@ int dm_ModifyOrg() {
 					highNumber = 0;
 					if (listOrgs(savestr, rdn, &olp) != OK) {
 						searchFail(rdn);
-						 de_exit(-1);
+						de_exit(-1);
 					}
-					 printf("\n");
+					printf("\n");
 					pagerOn(NUMBER_NOT_ALLOWED);
-					 printLastComponent(INDENTON, olp->name, ORG, FALSE);
-					 printf("\n");
+					printLastComponent(INDENTON, olp->name, ORG, FALSE);
+					printf("\n");
 					status = existing_at(rdn, &ignore, objectType, FALSE);
 				} else {
 					pagerOn(NUMBER_ALLOWED);
@@ -1308,16 +1308,16 @@ int dm_ModifyOrg() {
 		} else if (objectType == ORGUNIT) {
 			if (listOUs(savestr, rdn, &oulp) != OK) {
 				searchFail(rdn);
-				 de_exit(-1);
+				de_exit(-1);
 			} else {
 				noEntries = listlen(oulp);
 				if (noEntries == 0) {
-					 printf(no_ouFound);
+					printf(no_ouFound);
 				} else if (noEntries == 1) {
-					 printf("\n");
+					printf("\n");
 					pagerOn(NUMBER_NOT_ALLOWED);
-					 printLastComponent(INDENTON, oulp->name, ORGUNIT, FALSE);
-					 printf("\n");
+					printLastComponent(INDENTON, oulp->name, ORGUNIT, FALSE);
+					printf("\n");
 					rdn = copy_string(lastComponent(oulp->name, ORGUNIT));
 					status = modify_av(oulp->name, rdn, objectType);
 					if (status != OK) {
@@ -1326,12 +1326,12 @@ int dm_ModifyOrg() {
 					highNumber = 0;
 					if (listOUs(savestr, rdn, &oulp) != OK) {
 						searchFail(rdn);
-						 de_exit(-1);
+						de_exit(-1);
 					}
-					 printf("\n");
+					printf("\n");
 					pagerOn(NUMBER_NOT_ALLOWED);
-					 printLastComponent(INDENTON, oulp->name, ORGUNIT, FALSE);
-					 printf("\n");
+					printLastComponent(INDENTON, oulp->name, ORGUNIT, FALSE);
+					printf("\n");
 					status = existing_at(rdn, &ignore, objectType, FALSE);
 				} else {
 					pagerOn(NUMBER_ALLOWED);
@@ -1339,7 +1339,7 @@ int dm_ModifyOrg() {
 				}
 			}
 		} else {
-			 printf(org_ou_only);
+			printf(org_ou_only);
 			break;
 		}
 		de_prompt_yesno(ask_ifmorechngs, more, yes_string);
@@ -1372,27 +1372,27 @@ prompt_new_password() {
 
 get_old_pswd:
 	count++;
-	 sprintf(temp2, "%s :  ", ask_old_password);
-	 sprintf(old_pswd, getpass(temp2));
+	sprintf(temp2, "%s :  ", ask_old_password);
+	sprintf(old_pswd, getpass(temp2));
 	if (!(strcmp(old_pswd, quit_String))) {
-		 printf(pswd_not_changed);
+		printf(pswd_not_changed);
 		free(temp2);
 		return OK;
 	}
 
 	if (!(strcmp(old_pswd, password))) {
 get_new_pswd:
-		 sprintf(temp2, "%s :  ", ask_new_password);
-		 sprintf(new_pswd, getpass(temp2));
+		sprintf(temp2, "%s :  ", ask_new_password);
+		sprintf(new_pswd, getpass(temp2));
 		if (!(strcmp(new_pswd, quit_String))) {
-			 printf(pswd_not_changed);
+			printf(pswd_not_changed);
 			free(temp2);
 			return OK;
 		}
-		 sprintf(temp2, "%s :  ", ask_vfy_password);
-		 sprintf(vfy_pswd, getpass(temp2));
+		sprintf(temp2, "%s :  ", ask_vfy_password);
+		sprintf(vfy_pswd, getpass(temp2));
 		if (!(strcmp(vfy_pswd, quit_String))) {
-			 printf(pswd_not_changed);
+			printf(pswd_not_changed);
 			free(temp2);
 			return OK;
 		}
@@ -1402,18 +1402,18 @@ get_new_pswd:
 				goto get_new_pswd;
 			} else {
 				/* update memory variable */
-				 sprintf(password, "%s", new_pswd);
+				sprintf(password, "%s", new_pswd);
 			}
 		} else {
-			 printf(vfy_pswd_fail);
+			printf(vfy_pswd_fail);
 			goto get_new_pswd;
 		}
 	} else {
-		 printf(wrong_old_pswd);
-		 printf(pswd_tryagain);
+		printf(wrong_old_pswd);
+		printf(pswd_tryagain);
 		if (count > PSWD_TRY_LIMIT) {
-			 printf(pswd_lmt_xcd);
-			 de_exit(-1);
+			printf(pswd_lmt_xcd);
+			de_exit(-1);
 		} else {
 			goto get_old_pswd;
 		}
@@ -1432,10 +1432,10 @@ char new_pswd[];
 
 	char buffer[LINESIZE];
 
-	 sprintf(buffer, "userPassword=%s", old_pswd);
+	sprintf(buffer, "userPassword=%s", old_pswd);
 
 	if ((as = str2as(buffer)) == NULLATTR) {
-		 printf("\n%s", fail_mod_buf);
+		printf("\n%s", fail_mod_buf);
 		return NOTOK;
 	}
 	modarg.mea_changes = NULLMOD; /* initially no changes */
@@ -1443,9 +1443,9 @@ char new_pswd[];
 	emnew = em_alloc();
 	emnew->em_type = EM_REMOVEVALUES;
 	emnew->em_what = as_cpy(as);
-	 sprintf(buffer, "userPassword=%s", new_pswd);
+	sprintf(buffer, "userPassword=%s", new_pswd);
 	if ((as = str2as(buffer)) == NULLATTR) {
-		 printf("%s, %s %s\n", inv_Value, quit_String, to_quit);
+		printf("%s, %s %s\n", inv_Value, quit_String, to_quit);
 		return NOTOK;
 	}
 	emnew->em_next = em_alloc();
@@ -1453,6 +1453,6 @@ char new_pswd[];
 	emnew->em_next->em_what = as_cpy(as);
 	emnew->em_next->em_next = NULLMOD;
 	modarg.mea_changes = ems_append(modarg.mea_changes, emnew);
-	 dm_modentry(username);
+	dm_modentry(username);
 	return OK;
 }

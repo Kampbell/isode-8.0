@@ -32,9 +32,8 @@ LLog * log_dsap;
 LLog * log_stat;
 #endif
 
-int 
-main (int argc, char *argv[])
-{
+int
+main (int argc, char *argv[]) {
 	extern IFP unrav_fn;
 	extern IFP schema_fn;
 	int real_unravel_attribute ();
@@ -55,13 +54,13 @@ main (int argc, char *argv[])
 		fatal (-1, "Can't load oid tables");
 	check_dsa_known_oids ();
 
-	 ll_close (log_dsap);
+	ll_close (log_dsap);
 	ll_dbinit (log_dsap, "testedb");
 	log_dsap -> ll_events = LLOG_FATAL | LLOG_EXCEPTIONS;
 
 	if ((treetop = getentry_block (NULLENTRY, argc > 1 ? argv [1] : "./EDB"))
 			!= NULL) {
-		 printf ("EDB ok\n");
+		printf ("EDB ok\n");
 #ifdef DEBUG
 		thedb = get_default_entry(NULLENTRY);
 		thedb->e_children = treetop;
@@ -73,7 +72,7 @@ main (int argc, char *argv[])
 		exit (0);
 	}
 
-	 printf ("EDB not ok\n");
+	printf ("EDB not ok\n");
 
 	return 1;
 }
@@ -83,9 +82,8 @@ main (int argc, char *argv[])
 int refreshing = FALSE;
 
 /* ARGSUSED */
-int 
-shadow_entry (Entry eptr)
-{
+int
+shadow_entry (Entry eptr) {
 	;
 }
 

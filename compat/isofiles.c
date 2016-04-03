@@ -35,8 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isofiles.c,v 9.0 199
 /*  */
 
 char *
-_isodefile (char *path, char *file)
-{
+_isodefile (char *path, char *file) {
 	static char buffer[BUFSIZ];
 
 	isodetailor (NULLCP, 0);	/* not really recursive */
@@ -45,9 +44,9 @@ _isodefile (char *path, char *file)
 			|| (*file == '.'
 				&& (file[1] == '/'
 					|| (file[1] == '.' && file[2] == '/'))))
-		 strcpy (buffer, file);
+		strcpy (buffer, file);
 	else
-		 sprintf (buffer, "%s%s", path, file);
+		sprintf (buffer, "%s%s", path, file);
 
 	return buffer;
 }

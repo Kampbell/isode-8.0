@@ -69,7 +69,7 @@ int te;
 
 	if (te > 0 && te <= t_nerr)
 		return t_errlist[te];
-	 sprintf (tbuf, "Terrno %d", te);
+	sprintf (tbuf, "Terrno %d", te);
 	return tbuf;
 }
 
@@ -82,7 +82,7 @@ char *str;
 	SLOG (compat_log, LLOG_EXCEPTIONS, sys_terrname (t_errno),
 		  ("%s failed:", str));
 	if (fd != NOTOK)
-		 close_tcp_socket (fd);
+		close_tcp_socket (fd);
 	errno = eindex;
 	t_errno = tindex;
 	return NOTOK;
@@ -95,7 +95,7 @@ int fd;
 
 	discon = (struct t_discon *)t_alloc (fd, T_DIS, T_ALL);
 	if (t_rcvdis (fd, discon) == NOTOK) {
-		 tli_lose (NOTOK, "t_discon");
+		tli_lose (NOTOK, "t_discon");
 		goto out;
 	}
 out:
@@ -125,7 +125,7 @@ int	priv;
 		if ((bind = (struct t_bind *)t_alloc (sd, T_BIND, T_ALL)) == NULL)
 			return tli_lose (sd, "t_alloc");
 		if ((bound = (struct t_bind *)t_alloc (sd, T_BIND, T_ALL)) == NULL) {
-			 tli_lose (sd, "t_alloc");
+			tli_lose (sd, "t_alloc");
 			t_free(bind);
 			return NOTOK;
 		}
@@ -239,7 +239,7 @@ int	backlog,
 		return tli_lose (sd, "t_alloc");
 
 	if ((bound = (struct t_bind *)t_alloc (sd, T_BIND, T_ALL)) == NULL) {
-		 tli_lose (sd, "t_alloc");
+		tli_lose (sd, "t_alloc");
 		t_free(bind);
 		return(NOTOK);
 	}
@@ -288,16 +288,16 @@ struct sockaddr_in *sock;
 		return tli_lose (NOTOK, "t_alloc");
 
 	if (t_listen(fd, call) == NOTOK) {
-		 tli_lose (NOTOK, "t_listen");
+		tli_lose (NOTOK, "t_listen");
 		if (t_errno == TLOOK && t_look(fd) == T_DISCONNECT)
-			 tligetdis(fd);
+			tligetdis(fd);
 		goto out;
 	}
 	bcopy(call->addr.buf, (char *)sock, call->addr.len);
 	call->udata.len = call->opt.len = call->addr.len = 0;
 
 	if ((result = t_open (DEVTLI, O_RDWR, NULL)) == NOTOK) {
-		 tli_lose (NOTOK, "t_open");
+		tli_lose (NOTOK, "t_open");
 		goto disconnect;
 	}
 	FD_CLR (result, &inprogress);
@@ -310,7 +310,7 @@ struct sockaddr_in *sock;
 	if (t_accept (fd, result, call) == NOTOK) {
 		result = tli_lose (result, "t_accept");
 		if (t_errno == TLOOK && t_look(fd) == T_DISCONNECT)
-			 tligetdis(fd);
+			tligetdis(fd);
 		else
 			goto disconnect;
 	}
@@ -350,7 +350,7 @@ struct sockaddr_in *sock;
 
 	if ((retry ? t_rcvconnect(fd, (struct t_call *)0)
 			: t_connect (fd, call, NULL)) == NOTOK) {
-		 tli_lose (NOTOK, retry ? "t_rcvconnect" : "t_connect");
+		tli_lose (NOTOK, retry ? "t_rcvconnect" : "t_connect");
 		t_free ((char *)call);
 		switch (t_errno) {
 
@@ -367,7 +367,7 @@ struct sockaddr_in *sock;
 				break;
 
 			case T_DISCONNECT:
-				 tligetdis(fd);
+				tligetdis(fd);
 				errno = ECONNREFUSED;
 				break;
 			}

@@ -33,9 +33,8 @@ void user_tailor(), main_bind(), cnnct_bind(), interact(), help_init();
 
 void exit();
 
-int 
-main (unsigned int argc, char *argv[])
-{
+int
+main (unsigned int argc, char *argv[]) {
 	print_parse_errors = FALSE;
 	quipu_syntaxes();
 
@@ -64,9 +63,8 @@ main (unsigned int argc, char *argv[])
 	return(0);
 }
 
-void 
-read_args (unsigned int argc, char ***avptr)
-{
+void
+read_args (unsigned int argc, char ***avptr) {
 	char **av;
 	char *cp;
 
@@ -101,38 +99,35 @@ read_args (unsigned int argc, char ***avptr)
 	}
 }
 
-void 
+void
 setsignals  {
 	int     i;
 
 	for (i=0; i<18; i++)
-		 signal(i, SIG_DFL);
+		signal(i, SIG_DFL);
 }
 
-void 
-eprint (char *str)
-{
+void
+eprint (char *str) {
 	tprint(str);
 }
 
-void 
+void
 sd_quit  {
 	quit("\n", 0);
 }
 
-void 
-quit (char *error, int sig)
-{
+void
+quit (char *error, int sig) {
 	endwidgets();
-	 ds_unbind();
+	ds_unbind();
 	hide_picture();
-	 printf(error);
+	printf(error);
 	exit(sig);
 }
 
-void 
-int_quit (int sig)
-{
+void
+int_quit (int sig) {
 	quit("\n", sig);
 }
 
@@ -147,7 +142,7 @@ va_dcl {
 
 	code = va_arg (ap, int);
 
-	 _ll_log (log_dsap, code, ap);
+	_ll_log (log_dsap, code, ap);
 
 	va_end (ap);
 }

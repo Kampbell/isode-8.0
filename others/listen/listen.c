@@ -36,9 +36,8 @@ static char *mycontext = "isode listen demo";
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int	    secs,
 			vecp;
 	char   *vec[4];
@@ -103,7 +102,7 @@ main (int argc, char **argv, char **envp)
 			ss -> ss_ssdusize);
 
 	/* stop listening, we have what we want */
-	 TNetClose (NULLTA, td);
+	TNetClose (NULLTA, td);
 
 	bzero ((char *) sbi, sizeof *sbi);
 	sbi -> sb_sd = ss -> ss_sd;

@@ -62,9 +62,8 @@ extern	int	xselect_blocking_on_intr;
 
 /*    T-DATA.REQUEST */
 
-int 
-TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
-{
+int
+TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 	SBV     smask,
 			imask;
 	SFP	    istat;
@@ -84,7 +83,7 @@ TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 	tsapPsig (tb, sd);
 
 	if ((istat = signal (SIGINT, SIG_DFL)) != SIG_DFL) {
-		 signal (SIGINT, istat);
+		signal (SIGINT, istat);
 		imask = siginblock ();
 	}
 
@@ -94,18 +93,17 @@ TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 	result = (*tb -> tb_writePfnx) (tb, uvs, 0, td);
 
 	if (istat != SIG_DFL)
-		 siginmask (imask);
+		siginmask (imask);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    T-EXPEDITED-DATA.REQUEST */
 
-int 
-TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
-{
+int
+TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 	SBV     smask,
 			imask;
 	SFP	    istat;
@@ -126,7 +124,7 @@ TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 	tsapPsig (tb, sd);
 
 	if ((istat = signal (SIGINT, SIG_DFL)) != SIG_DFL) {
-		 signal (SIGINT, istat);
+		signal (SIGINT, istat);
 		imask = siginblock ();
 	}
 
@@ -140,18 +138,17 @@ TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 						   "expedited service unavailable");
 
 	if (istat != SIG_DFL)
-		 siginmask (imask);
+		siginmask (imask);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    T-WRITE.REQUEST (pseudo; write user data vectors) */
 
-int 
-TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td)
-{
+int
+TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td) {
 	int    n;
 	SBV     smask,
 			imask;
@@ -173,25 +170,24 @@ TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td)
 	tsapPsig (tb, sd);
 
 	if ((istat = signal (SIGINT, SIG_DFL)) != SIG_DFL) {
-		 signal (SIGINT, istat);
+		signal (SIGINT, istat);
 		imask = siginblock ();
 	}
 
 	result = (*tb -> tb_writePfnx) (tb, uv, 0, td);
 
 	if (istat != SIG_DFL)
-		 siginmask (imask);
+		siginmask (imask);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    T-READ.REQUEST (pseudo; synchronous read) */
 
-int 
-TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *td)
-{
+int
+TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *td) {
 	SBV	    smask,
 			imask;
 	SFP	    istat;
@@ -211,7 +207,7 @@ TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *td)
 	tsapPsig (tb, sd);
 
 	if ((istat = signal (SIGINT, SIG_DFL)) != SIG_DFL) {
-		 signal (SIGINT, istat);
+		signal (SIGINT, istat);
 		imask = siginblock ();
 	}
 
@@ -255,18 +251,17 @@ out:
 	;
 
 	if (istat != SIG_DFL)
-		 siginmask (imask);
+		siginmask (imask);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    T-DISCONNECT.REQUEST */
 
-int 
-TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
-{
+int
+TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 	SBV     smask;
 	int     result;
 	struct tsapblk *tb;
@@ -276,14 +271,14 @@ TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 	smask = sigioblock ();
 
 	if ((tb = findtblk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return tsaplose (td, DR_PARAMETER, NULLCP,
 						 "invalid transport descriptor");
 	}
 
 	result = (*tb -> tb_discPfnx) (tb, data, cc, td);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
@@ -293,9 +288,8 @@ TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td)
 static	SFD DATAser ();
 
 
-int 
-TSetIndications (int sd, IFP data, IFP disc, struct TSAPdisconnect *td)
-{
+int
+TSetIndications (int sd, IFP data, IFP disc, struct TSAPdisconnect *td) {
 	SBV	    smask;
 	int     result;
 	struct tsapblk *tb;
@@ -327,18 +321,17 @@ TSetIndications (int sd, IFP data, IFP disc, struct TSAPdisconnect *td)
 	 * TBD: We could be more efficient by only doing this for only
 	 * one file descriptor.
 	 */
-	 DATAser(0, 0L, ((struct sigcontext *) NULL));
+	DATAser(0, 0L, ((struct sigcontext *) NULL));
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    map transport descriptors for select() */
 
-int 
-TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td)
-{
+int
+TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td) {
 	SBV     smask;
 	struct tsapblk *tb;
 
@@ -348,19 +341,19 @@ TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td)
 	smask = sigioblock ();
 
 	if ((tb = findtblk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return tsaplose (td, DR_PARAMETER, NULLCP,
 						 "invalid transport descriptor");
 	}
 
 	if (tb -> tb_checkfnx && (*tb -> tb_checkfnx) (tb) == OK) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return tsaplose (td, DR_WAITING, NULLCP, NULLCP);
 	}
 
 	selmask (tb -> tb_fd, *mask, *nfds);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return OK;
 }
@@ -395,14 +388,14 @@ struct sigcontext *sc;
 #endif
 	IFP	    disc;
 	struct tsapblk *tb,
-			*tb2;
+			   *tb2;
 	struct TSAPdata txs;
 	struct TSAPdata   *tx = &txs;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect *td = &tds;
 
 #ifndef	BSDSIGS
-	 signal (SIGEMT, DATAser);
+	signal (SIGEMT, DATAser);
 
 	smask = sigioblock ();
 #endif
@@ -453,20 +446,19 @@ struct sigcontext *sc;
 	}
 
 #ifndef	SIGPOLL
-	 kill (TPid, SIGEMT);
+	kill (TPid, SIGEMT);
 #endif
 
 #ifndef	BSDSIGS
-	 sigiomask (smask);
+	sigiomask (smask);
 #endif
 }
 
 /*  */
 
 #ifndef	SIGPOLL
-static int 
-TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td)
-{
+static int
+TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int     i,
 			nfds;
 	fd_set  mask;
@@ -477,7 +469,7 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td)
 	static int  inited = 0;
 
 	if (TPid > OK) {
-		 kill (TPid, SIGTERM);
+		kill (TPid, SIGTERM);
 		TPid = NOTOK;
 	}
 
@@ -497,9 +489,9 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td)
 		int    smask = sigsetmask (sigblock (0) & ~sigmask (SIGEMT));
 #endif
 
-		 signal (SIGEMT, DATAser);
+		signal (SIGEMT, DATAser);
 #ifndef	BSDSIGS
-		 sigiomask (smask);
+		sigiomask (smask);
 #endif
 		inited++;
 	}
@@ -508,11 +500,11 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td)
 		return tsaplose (td, DR_CONGEST, NULLCP,
 						 "ISO service tsap/isore not found");
 
-	 sprintf (buf1, "%d", nfds);
+	sprintf (buf1, "%d", nfds);
 	*is -> is_tail++ = buf1;
-	 sprintf (buf2, "0x%x", mask.fds_bits[0]);
+	sprintf (buf2, "0x%x", mask.fds_bits[0]);
 	*is -> is_tail++ = buf2;
-	 sprintf (buf3, "%d", getpid ());
+	sprintf (buf3, "%d", getpid ());
 	*is -> is_tail++ = buf3;
 	*is -> is_tail = NULL;
 
@@ -522,8 +514,8 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td)
 			continue;
 
 		case OK:
-			 signal (SIGEMT, SIG_DFL);
-			 execv (*is -> is_vec, is -> is_vec);
+			signal (SIGEMT, SIG_DFL);
+			execv (*is -> is_vec, is -> is_vec);
 			_exit (1);
 
 		default:
@@ -541,9 +533,8 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td)
 #endif
 
 
-static int 
-TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td)
-{
+static int
+TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    result;
 #ifndef	SUNOS4
 	int	    pgrp;
@@ -552,7 +543,7 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td)
 
 	if (tb -> tb_flags & TB_ASYN) {
 		if (!inited) {
-			 signal (SIGPOLL, DATAser);
+			signal (SIGPOLL, DATAser);
 
 			inited++;
 		}
@@ -634,9 +625,8 @@ newtblk()  {
 }
 
 
-int 
-freetblk (struct tsapblk *tb)
-{
+int
+freetblk (struct tsapblk *tb) {
 	SBV     smask;
 #ifndef	SIGPOLL
 	struct TSAPdisconnect   tds;
@@ -648,7 +638,7 @@ freetblk (struct tsapblk *tb)
 	smask = sigioblock ();
 
 	if (tb -> tb_fd != NOTOK) {
-		 (*tb -> tb_closefnx) (tb -> tb_fd);
+		(*tb -> tb_closefnx) (tb -> tb_fd);
 #ifdef  MGMT
 		if (tb -> tb_manfnx)
 			(*tb -> tb_manfnx) (DISCREQ, tb);
@@ -667,7 +657,7 @@ freetblk (struct tsapblk *tb)
 
 #ifndef	SIGPOLL
 	if ((tb -> tb_flags & TB_ASYN) && TPid > OK) {
-		 kill (TPid, SIGTERM);
+		kill (TPid, SIGTERM);
 		TPid = NOTOK;
 	}
 #endif
@@ -685,19 +675,18 @@ freetblk (struct tsapblk *tb)
 #ifndef	SIGPOLL
 	for (tb = THead -> tb_forw; tb != THead; tb = tb -> tb_forw)
 		if (tb -> tb_fd != NOTOK && (tb -> tb_flags & TB_ASYN)) {
-			 TWakeUp (tb, &tds);
+			TWakeUp (tb, &tds);
 			break;
 		}
 #endif
 
-	 sigiomask (smask);
+	sigiomask (smask);
 }
 
 /*  */
 
 struct tsapblk *
-findtblk (int sd)
-{
+findtblk (int sd) {
 	struct tsapblk *tb;
 
 	if (once_only == 0)
@@ -712,9 +701,8 @@ findtblk (int sd)
 
 /*  */
 
-int 
-copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out)
-{
+int
+copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out) {
 	bzero ((char *) out, sizeof *out);
 
 	bcopy (in -> ta_selector, out -> ta_selector,
@@ -727,9 +715,8 @@ copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out)
 }
 
 
-int 
-copyTSAPaddrY (struct TSAPaddr *in, struct tsapADDR *out)
-{
+int
+copyTSAPaddrY (struct TSAPaddr *in, struct tsapADDR *out) {
 	bzero ((char *) out, sizeof *out);
 
 	bcopy (in -> ta_selector, out -> ta_selector,

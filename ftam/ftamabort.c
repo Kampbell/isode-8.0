@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamabort.c,v 9.0 1992
 
 /*    F-U-ABORT.REQUEST */
 
-int 
-FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+int
+FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -59,16 +58,15 @@ FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, str
 	result = FAbortRequestAux (fsb, type_FTAM_PDU_f__u__abort__request, action,
 							   diag, ndiag, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-int 
-FAbortRequestAux (struct ftamblk *fsb, int id, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+int
+FAbortRequestAux (struct ftamblk *fsb, int id, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct AcSAPindication  acis;
@@ -129,7 +127,7 @@ carry_on:
 		free_FTAM_PDU (pdu);
 
 	if (result == NOTOK)
-		 acs2ftamlose (fsb, fti, "AcUAbortRequest", aca);
+		acs2ftamlose (fsb, fti, "AcUAbortRequest", aca);
 	else {
 		fsb -> fsb_fd = NOTOK;
 		result = OK;

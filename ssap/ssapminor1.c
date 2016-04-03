@@ -35,9 +35,8 @@ static int  SMinSyncRequestAux ();
 
 /*    S-MINOR-SYNC.REQUEST */
 
-int 
-SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPindication *si)
-{
+int
+SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -61,16 +60,15 @@ SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPind
 
 	result = SMinSyncRequestAux (sb, type, ssn, data, cc, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc, struct SSAPindication *si)
-{
+static int
+SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc, struct SSAPindication *si) {
 	int     result;
 
 	if (!(sb -> sb_requirements & SR_MINORSYNC))

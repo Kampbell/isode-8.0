@@ -83,9 +83,8 @@ extern struct namelist * orgatts;
 extern struct namelist * ouatts;
 extern struct namelist * prratts;
 
-int 
-initialisations (int argc, char **argv)
-{
+int
+initialisations (int argc, char **argv) {
 	FILE *config_file;
 	char linebuf[LINESIZE], user_file[LINESIZE];
 	char * cp;
@@ -115,43 +114,43 @@ initialisations (int argc, char **argv)
 
 	/* Read in dsaptailor file */
 	if ((config_file = fopen(isodefile(tailfile, 0), "r")) == (FILE *) NULL) {
-		 fprintf(stderr,
-					   "Cannot open `dsaptailor' file. Attempting to continue.\n");
+		fprintf(stderr,
+				"Cannot open `dsaptailor' file. Attempting to continue.\n");
 	} else {
 		while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP)
 			if ((*linebuf != '#') && (*linebuf != '\n'))  tai_string (linebuf);
 
-		 fclose(config_file);
+		fclose(config_file);
 	}
 
 	/* turn off logging that we are not interested in */
-	 isodesetvar("compatlevel", "none", 0);
-	 isodesetvar("addrlevel", "none", 0);
-	 isodesetvar("tsaplevel", "none", 0);
-	 isodesetvar("ssaplevel", "none", 0);
-	 isodesetvar("psaplevel", "none", 0);
-	 isodesetvar("psap2level", "none", 0);
-	 isodesetvar("acsaplevel", "none", 0);
-	 isodesetvar("rosaplevel", "none", 0);
+	isodesetvar("compatlevel", "none", 0);
+	isodesetvar("addrlevel", "none", 0);
+	isodesetvar("tsaplevel", "none", 0);
+	isodesetvar("ssaplevel", "none", 0);
+	isodesetvar("psaplevel", "none", 0);
+	isodesetvar("psap2level", "none", 0);
+	isodesetvar("acsaplevel", "none", 0);
+	isodesetvar("rosaplevel", "none", 0);
 	isodexport("de");
 
 	if ((config_file = fopen(isodefile("de/detailor", 0), "r")) == (FILE *) NULL) {
-		 fprintf(stderr,
-					   "Cannot open `detailor' file. Attempting to continue.\n");
+		fprintf(stderr,
+				"Cannot open `detailor' file. Attempting to continue.\n");
 	} else {
 		while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP)
 			if ((*linebuf != '#') && (*linebuf != '\n')) read_de_option(linebuf);
 
-		 fclose(config_file);
+		fclose(config_file);
 	}
 
 	if ((cp = getenv("HOME")) != NULLCP) {
-		 strcpy(user_file, cp);
-		 strcat(user_file, "/.derc");
+		strcpy(user_file, cp);
+		strcat(user_file, "/.derc");
 		if ((config_file = fopen(isodefile(user_file, 0), "r")) != (FILE *) NULL) {
 			while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP)
 				if ((*linebuf != '#') && (*linebuf != '\n')) read_de_option(linebuf);
-			 fclose(config_file);
+			fclose(config_file);
 		}
 	}
 
@@ -163,11 +162,11 @@ initialisations (int argc, char **argv)
 				argc--;
 				argv++;
 				if (argv != (char **)NULL) {
-					 strcpy(callingDteNumber, *argv);
+					strcpy(callingDteNumber, *argv);
 					argc--;
 					argv++;
 				} else
-					 strcpy(callingDteNumber, "");
+					strcpy(callingDteNumber, "");
 				break;
 			default:
 				fprintf(stderr, "Argument parsing problem.  Don't understand -%c flag\n", *cp);
@@ -176,8 +175,8 @@ initialisations (int argc, char **argv)
 	}
 
 
-	 printf("%*s%s\n\n", (80 - (int)strlen(welcomeMessage)) / 2, "",
-				  welcomeMessage);
+	printf("%*s%s\n\n", (80 - (int)strlen(welcomeMessage)) / 2, "",
+		   welcomeMessage);
 
 	initVideo();
 
@@ -189,9 +188,8 @@ initialisations (int argc, char **argv)
  * Read in an option from detailor or derc file.
  *
  */
-static void 
-read_de_option (char *line)
-{
+static void
+read_de_option (char *line) {
 	char *part1, *part2;
 	extern char *TidyString(), *SkipSpace();
 	int n;
@@ -204,13 +202,13 @@ read_de_option (char *line)
 	part2 = TidyString(part2);
 
 	if (lexequ(part1, "welcomeMessage") == 0) {
-		 strcpy(welcomeMessage, part2);
+		strcpy(welcomeMessage, part2);
 	} else if (lexequ(part1, "default_country") == 0) {
-		 strcpy(qinfo[COUNTRY].defvalue, part2);
+		strcpy(qinfo[COUNTRY].defvalue, part2);
 	} else if (lexequ(part1, "default_org") == 0) {
-		 strcpy(qinfo[ORG].defvalue, part2);
+		strcpy(qinfo[ORG].defvalue, part2);
 	} else if (lexequ(part1, "default_dept") == 0) {
-		 strcpy(qinfo[ORGUNIT].defvalue, part2);
+		strcpy(qinfo[ORGUNIT].defvalue, part2);
 	} else if (lexequ(part1, "dsa_address") == 0) {
 		if (dsaAddFound == FALSE) {
 			dsa_address = copy_string(part2);
@@ -315,17 +313,17 @@ char *rtn;
 }
 */
 
-int 
+int
 welcome  {
 	FILE * welcome_file;
 	char linebuf[LINESIZE];
 
 	if ((welcome_file = fopen(isodefile("de/dewelcome", 0), "r")) == (FILE *) NULL)
-		 fprintf(stderr,
-					   "Cannot open `dewelcome' file. Attempting to continue.\n");
+		fprintf(stderr,
+		"Cannot open `dewelcome' file. Attempting to continue.\n");
 	else {
 		while(fgets(linebuf, sizeof(linebuf), welcome_file) != NULLCP)
-			 fputs(linebuf, stdout);
-		 fclose(welcome_file);
+			fputs(linebuf, stdout);
+		fclose(welcome_file);
 	}
 }

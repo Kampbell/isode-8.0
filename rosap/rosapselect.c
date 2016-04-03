@@ -38,9 +38,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapselect.c,v 9.0 1
 
 /* ARGSUSED */
 
-int 
-RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi)
-{
+int
+RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -54,13 +53,13 @@ RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 	rosapPsig (acb, sd);
 
 	if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING)) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 	}
 
 	result = (*acb -> acb_roselectmask) (acb, mask, nfds, roi);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

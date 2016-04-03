@@ -96,7 +96,7 @@ AttributeValue av;
 			PS fps;
 			fps = ps_alloc (std_open);
 			if ((std_setup (fps,fptr)) == NOTOK) {
-				 fclose (fptr);
+				fclose (fptr);
 				ps_free (fps);
 				goto out;
 			}
@@ -125,7 +125,7 @@ AttributeValue av;
 			file_attr_length = 0;
 			free (buffer);
 		}
-		 fclose (fptr);
+		fclose (fptr);
 	} else
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("Attribute file '%s' not found",fs->fs_name));
 

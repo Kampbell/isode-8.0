@@ -61,9 +61,8 @@ static double reltime();
 #define DEBUG	1
 int debug = 1;
 
-int 
-main (int argc, char **argv)
-{
+int
+main (int argc, char **argv) {
 	struct timeval *tvp, *otvp;
 
 	debug = argc;
@@ -176,7 +175,7 @@ struct timeval **tvpp, **otvpp;
 	timeout.tv_sec = 2;
 	timeout.tv_usec = 0;
 
-	 ioctl(cfd, TIOCFLUSH, 0);	/* scrap the I/O queues */
+	ioctl(cfd, TIOCFLUSH, 0);	/* scrap the I/O queues */
 
 	/* BEGIN TIME CRITICAL CODE SECTION!!!!!! */
 	/* EVERY CYCLE FROM THIS POINT OUT ADDS TO THE INACCURACY OF
@@ -212,13 +211,13 @@ struct timeval **tvpp, **otvpp;
 		return(1);
 	}
 
-	 gettimeofday(&mytime, (struct timezone *)0);
+	gettimeofday(&mytime, (struct timezone *)0);
 	/* END OF TIME CRITICAL CODE SECTION!!!! */
 
 	if (clockdata[i-1] != '\n') {
 #ifdef DEBUG
 		if (debug) printf("radioclock format error1 (%.12s)(0x%x)\n",
-									clockdata, clockdata[12]);
+							  clockdata, clockdata[12]);
 		else
 #endif DEBUG
 			if ((nerrors++%ERR_RATE) == 0)
@@ -265,23 +264,23 @@ struct timeval **tvpp, **otvpp;
 	if (stat1 != 0x4 && (nerrors++%ERR_RATE)==0) {
 #ifdef DEBUG
 		if (debug) printf("radioclock fault #%d 0x%x:%s%s%s%s%s%s\n",
-									nerrors, stat1,
-									stat1&0x20?" Out of Spec,":"",
-									stat1&0x10?" Hardware Fault,":"",
-									stat1&0x8?" Signal Fault,":"",
-									stat1&0x4?" Time Avail,":"",
-									stat1&0x2?" Year Mismatch,":"",
-									stat1&0x1?" Clock Reset,":"");
+							  nerrors, stat1,
+							  stat1&0x20?" Out of Spec,":"",
+							  stat1&0x10?" Hardware Fault,":"",
+							  stat1&0x8?" Signal Fault,":"",
+							  stat1&0x4?" Time Avail,":"",
+							  stat1&0x2?" Year Mismatch,":"",
+							  stat1&0x1?" Clock Reset,":"");
 		else {
 #endif DEBUG
-			 sprintf(message, "radioclock fault #%d 0x%x:%s%s%s%s%s%s\n",
-						   nerrors, stat1,
-						   stat1&0x20?" Out of Spec,":"",
-						   stat1&0x10?" Hardware Fault,":"",
-						   stat1&0x8?" Signal Fault,":"",
-						   stat1&0x4?" Time Avail,":"",
-						   stat1&0x2?" Year Mismatch,":"",
-						   stat1&0x1?" Clock Reset,":"");
+			sprintf(message, "radioclock fault #%d 0x%x:%s%s%s%s%s%s\n",
+					nerrors, stat1,
+					stat1&0x20?" Out of Spec,":"",
+					stat1&0x10?" Hardware Fault,":"",
+					stat1&0x8?" Signal Fault,":"",
+					stat1&0x4?" Time Avail,":"",
+					stat1&0x2?" Year Mismatch,":"",
+					stat1&0x1?" Clock Reset,":"");
 			advise (LLOG_EXCEPTIONS, NULLCP, "%s", message);
 		}
 	}
@@ -291,14 +290,14 @@ struct timeval **tvpp, **otvpp;
 			rtm->tm_hour > 23 || rtm->tm_yday > 365) && (nerrors++%ERR_RATE)==0) {
 #ifdef DEBUG
 		if (debug) printf("radioclock bogon #%d: %dd %dh %dm %ds %dms\n",
-									nerrors, rtm->tm_yday, rtm->tm_hour,
-									rtm->tm_min, rtm->tm_sec, millis);
+							  nerrors, rtm->tm_yday, rtm->tm_hour,
+							  rtm->tm_min, rtm->tm_sec, millis);
 		else
 #endif DEBUG
-			 sprintf(message,
-						   "radioclock bogon #%d: %dd %dh %dm %ds %dms\n",
-						   nerrors, rtm->tm_yday, rtm->tm_hour,
-						   rtm->tm_min, rtm->tm_sec, millis);
+			sprintf(message,
+					"radioclock bogon #%d: %dd %dh %dm %ds %dms\n",
+					nerrors, rtm->tm_yday, rtm->tm_hour,
+					rtm->tm_min, rtm->tm_sec, millis);
 		advise (LLOG_EXCEPTIONS, NULLCP, "%s", message);
 		return(1);
 	}
@@ -307,17 +306,17 @@ struct timeval **tvpp, **otvpp;
 	diff =  reltime(rtm, millis*1000) - reltime(mtm, mytime.tv_usec);
 #ifdef DEBUG
 	if (debug > 1)
-		 printf("Clock time:  19%d day %03d %02d:%02d:%02d.%03d diff %.3f\n",
-					  rtm->tm_year, rtm->tm_yday, rtm->tm_hour,
-					  rtm->tm_min, rtm->tm_sec, millis, diff);
+		printf("Clock time:  19%d day %03d %02d:%02d:%02d.%03d diff %.3f\n",
+			   rtm->tm_year, rtm->tm_yday, rtm->tm_hour,
+			   rtm->tm_min, rtm->tm_sec, millis, diff);
 #endif DEBUG
 
 	if (diff > (90*24*60*60.0) && (nerrors++%ERR_RATE)==0) {
 #ifdef DEBUG
 		if (debug)
-			 printf("offset excessive (system 19%d/%d, clock 19%d/%d)\n",
-						  mtm->tm_year, mtm->tm_yday,
-						  rtm->tm_year, mtm->tm_yday);
+			printf("offset excessive (system 19%d/%d, clock 19%d/%d)\n",
+				   mtm->tm_year, mtm->tm_yday,
+				   rtm->tm_year, mtm->tm_yday);
 		else
 #endif DEBUG
 			advise (LLOG_EXCEPTIONS, NULLCP,
@@ -332,25 +331,25 @@ struct timeval **tvpp, **otvpp;
 	radiotime.tv_usec = (diff - (double)radiotime.tv_sec) * 1000000;
 #ifdef DEBUG
 	if (debug > 1) {
-		 printf("System time: 19%d day %03d %02d:%02d:%02d.%03d\n",
-					  mtm->tm_year, mtm->tm_yday, mtm->tm_hour,
-					  mtm->tm_min, mtm->tm_sec, mytime.tv_usec/1000);
-		 printf("stat1 0%o, stat2 0%o: ", stat1, stat2);
+		printf("System time: 19%d day %03d %02d:%02d:%02d.%03d\n",
+			   mtm->tm_year, mtm->tm_yday, mtm->tm_hour,
+			   mtm->tm_min, mtm->tm_sec, mytime.tv_usec/1000);
+		printf("stat1 0%o, stat2 0%o: ", stat1, stat2);
 		if (stat1 || stat2)
-			 printf("%s%s%s%s%s%s%s%s%s%s%s%s",
-						  stat1&0x20?" Out of Spec,":"",
-						  stat1&0x10?" Hardware Fault,":"",
-						  stat1&0x8?" Signal Fault,":"",
-						  stat1&0x4?" Time Avail,":"",
-						  stat1&0x2?" Year Mismatch,":"",
-						  stat1&0x1?" Clock Reset,":"",
-						  stat2&0x20?" DST on,":"",
-						  stat2&0x10?" 12hr mode,":"",
-						  stat2&0x8?" PM,":"",
-						  stat2&0x4?" Spare?,":"",
-						  stat2&0x2?" DST??? +1,":"",
-						  stat2&0x1?" DST??? -1,":"");
-		 printf("\n");
+			printf("%s%s%s%s%s%s%s%s%s%s%s%s",
+				   stat1&0x20?" Out of Spec,":"",
+				   stat1&0x10?" Hardware Fault,":"",
+				   stat1&0x8?" Signal Fault,":"",
+				   stat1&0x4?" Time Avail,":"",
+				   stat1&0x2?" Year Mismatch,":"",
+				   stat1&0x1?" Clock Reset,":"",
+				   stat2&0x20?" DST on,":"",
+				   stat2&0x10?" 12hr mode,":"",
+				   stat2&0x8?" PM,":"",
+				   stat2&0x4?" Spare?,":"",
+				   stat2&0x2?" DST??? +1,":"",
+				   stat2&0x1?" DST??? -1,":"");
+		printf("\n");
 	}
 #endif DEBUG
 	/* If necessary, acknowledge "Clock Reset" flag bit */

@@ -38,9 +38,8 @@ static struct isoentity ies;
 
 /*  */
 
-int 
-str2aet_seq (char *designator, char *qualifier, struct isoentity *iep)
-{
+int
+str2aet_seq (char *designator, char *qualifier, struct isoentity *iep) {
 	int     hitdes,
 			hitqual;
 	char    descriptor[BUFSIZ],
@@ -48,11 +47,11 @@ str2aet_seq (char *designator, char *qualifier, struct isoentity *iep)
 			qualdflt[BUFSIZ];
 	struct isoentity  *ie;
 	struct isoentity ids,
-			iqs;
+			   iqs;
 
-	 sprintf (objent, "%s-%s", designator, qualifier);
-	 sprintf (desdflt, "%s-%s", designator, "default");
-	 sprintf (qualdflt, "%s-%s", "default", qualifier);
+	sprintf (objent, "%s-%s", designator, qualifier);
+	sprintf (desdflt, "%s-%s", designator, "default");
+	sprintf (qualdflt, "%s-%s", "default", qualifier);
 	hitdes = hitqual = 0;
 	bzero ((char *) &ids, sizeof ids);
 	bzero ((char *) &iqs, sizeof iqs);
@@ -90,7 +89,7 @@ str2aet_seq (char *designator, char *qualifier, struct isoentity *iep)
 			continue;
 		}
 	}
-	 endisoentity ();
+	endisoentity ();
 
 	if (!ie && hitqual) {
 		ie = &ies;

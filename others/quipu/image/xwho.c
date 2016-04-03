@@ -124,9 +124,8 @@ static struct host *hosts;
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int	    nfds;
 	fd_set  rfds;
 
@@ -144,7 +143,7 @@ main (int argc, char **argv, char **envp)
 		fd_set	ifds;
 
 		ifds = rfds;
-		 xselect (nfds, &ifds, NULLFD, NULLFD, sleepsw);
+		xselect (nfds, &ifds, NULLFD, NULLFD, sleepsw);
 
 		update_X ();
 	}
@@ -152,14 +151,13 @@ main (int argc, char **argv, char **envp)
 
 /*    ARGINIT */
 
-int 
-arginit (char **vec)
-{
+int
+arginit (char **vec) {
 	int	    n,
 			nhosts;
 	char  *ap,
-			 *cp,
-			 *lp;
+		  *cp,
+		  *lp;
 	struct hostent *hp;
 
 	if (myname = rindex (*vec, '/'))
@@ -219,7 +217,7 @@ arginit (char **vec)
 					== NULL)
 				adios (NULLCP, "out of memory");
 
-			 strcpy (*host_end++ = ap, hp -> h_name);
+			strcpy (*host_end++ = ap, hp -> h_name);
 		}
 
 	init_aka (myname, 1, lp);
@@ -228,7 +226,7 @@ arginit (char **vec)
 		ll_dbinit (pgm_log, myname);
 	else
 		ll_hdinit (pgm_log, myname);
-	 ll_open (pgm_log);
+	ll_open (pgm_log);
 
 	if ((DISP = XOpenDisplay (display)) == NULL)
 		adios (NULLCP, "unable to open display \"%s\"",
@@ -271,7 +269,7 @@ arginit (char **vec)
 
 /*    XWINDOWS */
 
-static 
+static
 update_X  {
 	struct host   *hp;
 	struct face   *fp;
@@ -297,10 +295,10 @@ update_X  {
 			}
 
 			if (debug)
-				 fprintf (stderr, "%s: %dx%d+%d+%d/%d\n",
-								hp -> h_name, hp -> h_frame.width,
-								hp -> h_frame.height, hp -> h_frame.x,
-								hp -> h_frame.y, hp -> h_frame.bdrwidth);
+				fprintf (stderr, "%s: %dx%d+%d+%d/%d\n",
+						 hp -> h_name, hp -> h_frame.width,
+						 hp -> h_frame.height, hp -> h_frame.x,
+						 hp -> h_frame.y, hp -> h_frame.bdrwidth);
 			hp -> h_window = XCreateSimpleWindow (DISP, mywindow,
 												  hp -> h_frame.x,
 												  hp -> h_frame.y,
@@ -328,10 +326,10 @@ update_X  {
 					XDestroyWindow (DISP, fp -> f_window);
 
 				if (debug)
-					 fprintf (stderr, "%s: %dx%d+%d+%d/%d\n",
-									fp -> f_name, fp -> f_frame.width,
-									fp -> f_frame.height, fp -> f_frame.x,
-									fp -> f_frame.y, fp -> f_frame.bdrwidth);
+					fprintf (stderr, "%s: %dx%d+%d+%d/%d\n",
+							 fp -> f_name, fp -> f_frame.width,
+							 fp -> f_frame.height, fp -> f_frame.x,
+							 fp -> f_frame.y, fp -> f_frame.bdrwidth);
 				fp -> f_window = XCreateSimpleWindow(DISP, mywindow,
 													 fp -> f_frame.x,
 													 fp -> f_frame.y,
@@ -352,10 +350,10 @@ update_X  {
 
 /*  */
 
-static int 
+static int
 service_X  {
 	int	    wh,
-			ww;
+	ww;
 	Window w;
 	struct face   *fp;
 	struct host   *hp;
@@ -393,16 +391,16 @@ service_X  {
 
 		case MapNotify:
 			if (debug)
-				 fprintf (stderr, "MapNotify\n");
+				fprintf (stderr, "MapNotify\n");
 			mapped = 1;
 			display_top ();
 			break;
 
 		case ConfigureNotify:
 			if (debug)
-				 fprintf (stderr, "ConfigureNotify %dx%d\n",
-								((XConfigureEvent *) xe) -> height,
-								((XConfigureEvent *) xe) -> width);
+				fprintf (stderr, "ConfigureNotify %dx%d\n",
+						 ((XConfigureEvent *) xe) -> height,
+						 ((XConfigureEvent *) xe) -> width);
 			if (((XConfigureEvent *) xe) -> window == mywindow
 					&& (wh = ((XConfigureEvent *) xe) -> height) > 0
 					&& (ww = ((XConfigureEvent *) xe) -> width) > 0)
@@ -411,18 +409,18 @@ service_X  {
 
 		case UnmapNotify:
 			if (debug)
-				 fprintf (stderr, "UnmapNotify\n");
+				fprintf (stderr, "UnmapNotify\n");
 			mapped = 0;
 			break;
 
 		case ReparentNotify:
 			if (debug)
-				 fprintf (stderr, "ReparentNotify\n");
+				fprintf (stderr, "ReparentNotify\n");
 			break;
 
 		default:
 			if (debug)
-				 fprintf (stderr, "Event %d\n", xe -> type);
+				fprintf (stderr, "Event %d\n", xe -> type);
 			break;
 		}
 	}
@@ -430,7 +428,7 @@ service_X  {
 
 /*  */
 
-static 
+static
 init_X  {
 	char    def[BUFSIZ];
 
@@ -443,13 +441,13 @@ init_X  {
 		myframe.width = DisplayWidth (DISP, SCRN) - bwidth * 2;
 	myframe.x = DisplayWidth (DISP, SCRN) - (myframe.width + bwidth * 2);
 	myframe.y = 0;
-	 sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
-					myframe.x, myframe.y);
+	sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
+	myframe.x, myframe.y);
 
 	if (debug)
-		 fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
-						myframe.width, myframe.height, myframe.x, myframe.y,
-						myframe.bdrwidth);
+		fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
+		myframe.width, myframe.height, myframe.x, myframe.y,
+		myframe.bdrwidth);
 
 	hints.width = largest_w + 100;
 	hints.height = largest_h + 100;
@@ -461,14 +459,14 @@ init_X  {
 	xswattrs_mask = CWBackPixel | CWBorderPixel;
 
 	mywindow = XCreateWindow (DISP, RootWindow (DISP, SCRN),
-							  myframe.x, myframe.y,
-							  myframe.width, myframe.height,
-							  myframe.bdrwidth,
-							  0, InputOutput, (Visual *) CopyFromParent,
-							  xswattrs_mask, &xswattrs);
+	myframe.x, myframe.y,
+	myframe.width, myframe.height,
+	myframe.bdrwidth,
+	0, InputOutput, (Visual *) CopyFromParent,
+	xswattrs_mask, &xswattrs);
 
 	XSetStandardProperties (DISP, mywindow, myname, "X Who", None,
-							(char **) 0, 0, &hints);
+	(char **) 0, 0, &hints);
 
 	XSelectInput (DISP, mywindow, ExposureMask | StructureNotifyMask);
 
@@ -478,7 +476,7 @@ init_X  {
 
 /*  */
 
-static 
+static
 layout_X  {
 	int     h;
 	struct face   *fp;
@@ -489,18 +487,18 @@ layout_X  {
 
 	for (hp = hosts; hp; hp = hp -> h_next) {
 		int     hh,
-				hw;
+		hw;
 
 		hh = hw = 0;
 		if (hp -> h_window == NULL || hp -> h_frame.y != h) {
 			int	    direction_return,
-					font_ascent_return,
-					font_descent_return;
+			font_ascent_return,
+			font_descent_return;
 
 			hp -> h_frame.bdrwidth = 2;
 			XTextExtents (myfont, hp -> h_string, strlen (hp -> h_string),
-						  &direction_return, &font_ascent_return,
-						  &font_descent_return, &mychar);
+			&direction_return, &font_ascent_return,
+			&font_descent_return, &mychar);
 			hp -> h_ascent = mychar.ascent;
 			hp -> h_frame.height = mychar.ascent + mychar.descent;
 			hp -> h_frame.border = backpix;
@@ -561,18 +559,17 @@ layout_X  {
 
 /*  */
 
-static 
+static
 display_top  {
 	if (debug)
-		 fprintf (stderr, "top window\n");
+		fprintf (stderr, "top window\n");
 }
 
 
-static 
-display_host (struct host *hp)
-{
+static
+display_host (struct host *hp) {
 	if (debug)
-		 fprintf (stderr, "%s:\n", hp -> h_name);
+		fprintf (stderr, "%s:\n", hp -> h_name);
 
 	XDrawImageString (DISP, hp -> h_window, hp -> h_gc, 0, hp -> h_ascent,
 					  hp -> h_string, strlen (hp -> h_string));
@@ -580,9 +577,8 @@ display_host (struct host *hp)
 
 /*  */
 
-static 
-display_face (struct face *fp)
-{
+static
+display_face (struct face *fp) {
 	int     sx,
 			sy,
 			dx,
@@ -601,10 +597,10 @@ display_face (struct face *fp)
 	h = min (xm -> height, im -> height);
 
 	if (debug) {
-		 fprintf (stderr, "im: %dx%d frame:%dx%d\n",
-						im -> width, im -> height, xm -> width, xm -> height);
-		 fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
-						sx, sy, dx, dy, w, h);
+		fprintf (stderr, "im: %dx%d frame:%dx%d\n",
+				 im -> width, im -> height, xm -> width, xm -> height);
+		fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
+				 sx, sy, dx, dy, w, h);
 	}
 
 	image = XCreateImage (DISP, DefaultVisual (DISP, SCRN), 1, XYBitmap, 0,
@@ -622,36 +618,34 @@ display_face (struct face *fp)
 
 /*  */
 
-static int 
-facecmp (struct face **f1, struct face **f2)
-{
+static int
+facecmp (struct face **f1, struct face **f2) {
 	return strcmp ((*f1) -> f_name, (*f2) -> f_name);
 }
 
 
-static int 
-hostcmp (struct host **h1, struct host **h2)
-{
+static int
+hostcmp (struct host **h1, struct host **h2) {
 	return strcmp ((*h1) -> h_name, (*h2) -> h_name);
 }
 
 
-static 
+static
 read_X  {
 	int	    fd,
-			n;
+	n;
 	long    now;
 	struct dirent *dp;
 	struct face *fp,
-			**fpp;
+		**fpp;
 	struct host *hp,
-			**hpp;
+		**hpp;
 	struct whod wds;
 	struct whod *wd = &wds;
 	struct whoent *we;
 	static DIR *dd = NULL;
 
-	 time (&now);
+	time (&now);
 	for (hp = hosts; hp; hp = hp -> h_next) {
 		hp -> h_up = 0;
 		for (fp = hp -> h_faces; fp; fp = fp -> f_next)
@@ -674,7 +668,7 @@ read_X  {
 		if ((fd = open (dp -> d_name, O_RDONLY)) == NOTOK)
 			continue;
 		n = read (fd, (char *) wd, sizeof *wd);
-		 close (fd);
+		close (fd);
 		if ((n -= sizeof *wd - sizeof wd -> wd_we) < 0)
 			continue;
 
@@ -683,7 +677,7 @@ read_X  {
 
 		for (hp = hosts; hp; hp = hp -> h_next)
 			if (strncmp (hp -> h_name, wd -> wd_hostname,
-						 sizeof wd -> wd_hostname) == 0)
+			sizeof wd -> wd_hostname) == 0)
 				break;
 		if (hp == NULL) {
 			if ((hp = (struct host *) calloc (1, sizeof *hp)) == NULL)
@@ -691,11 +685,11 @@ read_X  {
 			hp -> h_next = hosts;
 			hosts = hp;
 
-			 strncpy (hp -> h_name, wd -> wd_hostname,
-							sizeof wd -> wd_hostname);
-			 sprintf (hp -> h_string, "%s:", hp -> h_name);
+			strncpy (hp -> h_name, wd -> wd_hostname,
+			sizeof wd -> wd_hostname);
+			sprintf (hp -> h_string, "%s:", hp -> h_name);
 			hp -> h_frame.width = XTextWidth (myfont, hp -> h_string,
-											  strlen (hp -> h_string));
+			strlen (hp -> h_string));
 		}
 
 		hp -> h_up = 1;
@@ -714,8 +708,8 @@ read_X  {
 				fp -> f_next = hp -> h_faces;
 				hp -> h_faces = fp;
 
-				 strncpy (fp -> f_name, we -> we_utmp.out_name,
-								sizeof we -> we_utmp.out_name);
+				strncpy (fp -> f_name, we -> we_utmp.out_name,
+						 sizeof we -> we_utmp.out_name);
 
 				if (display_this_host (hp -> h_name)
 						&& (fp -> f_imap = fetch_image (fp -> f_name, NULLCP))
@@ -771,16 +765,16 @@ read_X  {
 				struct face **faces;
 
 				if ((faces = (struct face **)
-							 calloc ((unsigned) j, sizeof *faces)) == NULL)
+				calloc ((unsigned) j, sizeof *faces)) == NULL)
 					continue;
 				for (fp = hp -> h_faces, fq = faces;
-						*fq = fp;
-						fp = fp -> f_next, fq++)
+				*fq = fp;
+				fp = fp -> f_next, fq++)
 					continue;
 				qsort ((char *) faces, j, sizeof *faces, (IFP)facecmp);
 				for (fq = faces, fpp = &hp -> h_faces;
-						*fpp = *fq;
-						fq++, fpp = &(*fpp) -> f_next)
+				*fpp = *fq;
+				fq++, fpp = &(*fpp) -> f_next)
 					continue;
 
 				free ((char *) faces);
@@ -811,9 +805,8 @@ out:
 
 /*  */
 
-static int 
-display_this_host (char *n)
-{
+static int
+display_this_host (char *n) {
 	char **ap;
 
 	if (host_list == host_end)

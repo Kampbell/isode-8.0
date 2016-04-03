@@ -35,7 +35,7 @@ struct ds_search_result sresult;
 struct DSError serror;
 
 struct s_filter *
-andfilter  {
+	andfilter  {
 	struct s_filter * fp;
 
 	fp = filter_alloc();
@@ -45,7 +45,7 @@ andfilter  {
 }
 
 struct s_filter *
-orfilter  {
+	orfilter  {
 	struct s_filter * fp;
 
 	fp = filter_alloc();
@@ -55,8 +55,7 @@ orfilter  {
 }
 
 struct s_filter *
-eqfilter (int matchtype, char *type, char *value)
-{
+eqfilter (int matchtype, char *type, char *value) {
 	struct s_filter * fp;
 	AttributeType at;
 
@@ -72,8 +71,7 @@ eqfilter (int matchtype, char *type, char *value)
 }
 
 struct s_filter *
-subsfilter (int substrtype, char *type, char *value)
-{
+subsfilter (int substrtype, char *type, char *value) {
 	struct s_filter * fp;
 	AttributeType at;
 
@@ -107,8 +105,7 @@ subsfilter (int substrtype, char *type, char *value)
 }
 
 struct s_filter *
-presfilter (char *type)
-{
+presfilter (char *type) {
 	struct s_filter * fp;
 
 	fp = filter_alloc();

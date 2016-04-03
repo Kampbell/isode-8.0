@@ -34,9 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/baduser.c,v 9.0 1992
 
 /*  */
 
-int 
-baduser (char *file, char *user)
-{
+int
+baduser (char *file, char *user) {
 	int     hit,
 			tries;
 	char  *bp;
@@ -69,7 +68,7 @@ baduser (char *file, char *user)
 			}
 		}
 
-		 fclose (fp);
+		fclose (fp);
 	}
 
 

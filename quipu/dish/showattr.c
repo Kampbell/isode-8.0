@@ -81,7 +81,7 @@ AttributeType at;
 
 }
 
-int 
+int
 show_unknown (void) {
 	ignore_unknown = TRUE;
 }
@@ -127,9 +127,8 @@ AttributeType at;
 	return (TRUE);
 }
 
-int 
-new_ignore (char *ptr)
-{
+int
+new_ignore (char *ptr) {
 	AttributeType at;
 	Attr_Sequence newas;
 

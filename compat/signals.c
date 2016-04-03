@@ -50,7 +50,7 @@ int	sig;
 IFP	func;
 {
 	struct sigvec   sv1,
-			sv2;
+			   sv2;
 
 	sv1.sv_handler = func;
 	sv1.sv_mask = sv1.sv_onstack = 0;
@@ -71,10 +71,9 @@ static int pending = 0;
 
 static SFP handler[NSIG];
 
-static SFD 
-sigser (int sig)
-{
-	 signal (sig, sigser);
+static SFD
+sigser (int sig) {
+	signal (sig, sigser);
 
 	pending |= sigmask (sig);
 }
@@ -82,11 +81,10 @@ sigser (int sig)
 /*  */
 #ifndef SVR4_UCB
 
-int 
-sigblock (int mask)
-{
+int
+sigblock (int mask) {
 	int    sig,
-			 smask;
+		   smask;
 	long    omask = blocked;
 
 	if (mask == 0)
@@ -102,11 +100,10 @@ sigblock (int mask)
 	return omask;
 }
 
-int 
-sigsetmask (int mask)
-{
+int
+sigsetmask (int mask) {
 	int    sig,
-			 smask;
+		   smask;
 	long    omask = blocked;
 
 	for (sig = 1, smask = sigmask (sig); sig < NSIG; sig++, smask <<= 1)
@@ -119,11 +116,11 @@ sigsetmask (int mask)
 			blocked |= smask;
 		} else if (smask & blocked) {
 			blocked &= ~smask;
-			 signal (sig, handler[sig] != BADSIG ? handler[sig]
-						   : SIG_DFL);
+			signal (sig, handler[sig] != BADSIG ? handler[sig]
+					: SIG_DFL);
 			if (smask & pending) {
 				pending &= ~smask;
-				 kill (getpid (), sig);
+				kill (getpid (), sig);
 			}
 		}
 

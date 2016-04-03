@@ -86,9 +86,8 @@ static char allow_single_oid = FALSE;
 IFP oc_load = NULLIFP;
 IFP oc_macro_add = NULLIFP;
 
-int 
-load_oid_table (char *table)
-{
+int
+load_oid_table (char *table) {
 	char * name;
 	char filename [FILNSIZE];
 	char * extension;
@@ -99,10 +98,10 @@ load_oid_table (char *table)
 
 	isodetable = isodefile(table, 0);
 
-	 strcpy (filename,isodetable);
+	strcpy (filename,isodetable);
 	extension = &filename[strlen(isodetable)];
 
-	 strcpy (extension,".gen");
+	strcpy (extension,".gen");
 	if (( f_table = fopen (filename,"r")) == (FILE *) NULL) {
 bad_file:
 		;
@@ -123,9 +122,9 @@ bad_entry:
 		}
 		allow_single_oid = FALSE;
 	}
-	 fclose (f_table);
+	fclose (f_table);
 
-	 strcpy (extension,".at");
+	strcpy (extension,".at");
 	if (( f_table = fopen (filename,"r")) == (FILE *) NULL)
 		goto bad_file;
 
@@ -135,9 +134,9 @@ bad_entry:
 		if (!add_entry (name,ATTR))
 			goto bad_entry;
 	}
-	 fclose (f_table);
+	fclose (f_table);
 
-	 strcpy (extension,".oc");
+	strcpy (extension,".oc");
 	if (( f_table = fopen (filename,"r")) == (FILE *) NULL)
 		goto bad_file;
 
@@ -147,7 +146,7 @@ bad_entry:
 		if (!add_entry (name,OC))
 			goto bad_entry;
 	}
-	 fclose (f_table);
+	fclose (f_table);
 	return OK;
 }
 
@@ -213,9 +212,8 @@ char * d;
 }
 
 
-static 
-add_entry (char *newname, int towho)
-{
+static
+add_entry (char *newname, int towho) {
 	char *nptr, *ptr, *sep;
 	OID oid;
 	oid_table * Current;
@@ -321,8 +319,7 @@ add_entry (char *newname, int towho)
 }
 
 char *
-get_oid (char *str)
-{
+get_oid (char *str) {
 	static char * buffer = NULLCP;
 	char * ptr;
 	char * dotptr;
@@ -365,7 +362,7 @@ get_oid (char *str)
 					return (NULLCP);  /* inconsistent */
 			}
 			deref = TRUE;
-			 strcpy (buffer,soid);
+			strcpy (buffer,soid);
 			ptr = buffer + strlen (soid);
 		} else
 			*ptr++ = *str++;
@@ -379,8 +376,7 @@ get_oid (char *str)
 }
 
 static char *
-name2gen (char *nodename)
-{
+name2gen (char *nodename) {
 #ifdef NOT_ANY_MORE
 	int i;
 	oid_table * tblptr = &OIDTable[0];
@@ -414,8 +410,7 @@ name2gen (char *nodename)
 }
 
 static char *
-soid2gen (char *soid)
-{
+soid2gen (char *soid) {
 	int i;
 	oid_table * tblptr = &OIDTable[0];
 	for (i=0; i<NumEntries; i++,tblptr++) {
@@ -660,14 +655,14 @@ oid_table * ot;
 				*str++ = DOT;
 				continue;
 			}
-			 strcat (buffer,".");
-			 strcat (buffer,ptr);
+			strcat (buffer,".");
+			strcat (buffer,ptr);
 			*str++ = DOT;
 		} else
 			str++;
 
-	 strcat (buffer,".");
-	 strcat (buffer,ot->ot_name);
+	strcat (buffer,".");
+	strcat (buffer,ot->ot_name);
 	return (&buffer[1]);
 }
 
@@ -701,14 +696,14 @@ oid_table * ot;
 				*str++ = DOT;
 				break;
 			} else
-				 strcpy (buffer,ptr);
+				strcpy (buffer,ptr);
 			last = str;
 			*str++ = DOT;
 
 		} else
 			str++;
 
-	 strcat (buffer,last);
+	strcat (buffer,last);
 	return (buffer);
 }
 
@@ -897,7 +892,7 @@ PE pe;
 	return (oid_cpy(oid));
 }
 
-void 
+void
 free_oid_buckets (void) {
 	int i;
 	struct pair *p, *np;
@@ -912,13 +907,13 @@ free_oid_buckets (void) {
 }
 
 
-int 
+int
 oid_syntax (void) {
-	 add_attribute_syntax ("oid",
-								 (IFP) oid2pe,	(IFP) dup_prim2oid,
-								 (IFP) name2oid,	oidprint,
-								 (IFP) oid_cpy,	oid_cmp,
-								 oid_free,	NULLCP,
-								 NULLIFP,	FALSE );
+	add_attribute_syntax ("oid",
+						  (IFP) oid2pe,	(IFP) dup_prim2oid,
+						  (IFP) name2oid,	oidprint,
+						  (IFP) oid_cpy,	oid_cmp,
+						  oid_free,	NULLCP,
+						  NULLIFP,	FALSE );
 }
 

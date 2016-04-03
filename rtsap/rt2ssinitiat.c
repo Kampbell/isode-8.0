@@ -40,9 +40,8 @@ static int  RtBeginRequestAux ();
 
 /*    RT-BEGIN.REQUEST (X.410 OPEN.REQUEST) */
 
-int 
-RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti)
-{
+int
+RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti) {
 	SBV     smask;
 	int     result;
 
@@ -75,16 +74,15 @@ RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, 
 
 	result = RtBeginRequestAux (called, calling, mode, turn, data, rtc, rti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-RtBeginRequestAux (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti)
-{
+static int
+RtBeginRequestAux (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti) {
 	int	    len,
 			result,
 			settings;
@@ -93,9 +91,9 @@ RtBeginRequestAux (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode
 	struct isoservent *is;
 #endif
 	PE	pe,
-			 p,
-			 q,
-			 r;
+	 p,
+	 q,
+	 r;
 	struct assocblk *acb;
 	struct SSAPref srs;
 	struct SSAPref *sr = &srs;
@@ -153,7 +151,7 @@ no_mem:
 		goto no_mem;
 
 	if (data)
-		 pe_extract (pe, data), data = NULLPE;
+		pe_extract (pe, data), data = NULLPE;
 	pe_free (pe);
 	pe = NULLPE;
 
@@ -208,7 +206,7 @@ no_mem:
 	} else if (sc -> sc_result == SC_ABORT) {
 		acb -> acb_fd = NOTOK;
 
-		 ss2rtsabort (acb, sa, rti);
+		ss2rtsabort (acb, sa, rti);
 
 		rtc -> rtc_sd = NOTOK;
 		rtc -> rtc_result = RTS_ABORTED;
@@ -222,7 +220,7 @@ no_mem:
 			bzero ((char *) sa, sizeof *sa);
 			sa -> sa_reason = sc -> sc_result;
 			acb -> acb_fd = NOTOK;
-			 ss2rtslose (acb, rti, "SConnRequest(pseudo)", sa);
+			ss2rtslose (acb, rti, "SConnRequest(pseudo)", sa);
 
 			rtc -> rtc_sd = NOTOK;
 			rtc -> rtc_result = rti -> rti_abort.rta_reason;
@@ -357,7 +355,7 @@ out1:
 	SCFREE (sc);
 	if (pe) {
 		if (data)
-			 pe_extract (pe, data);
+			pe_extract (pe, data);
 		pe_free (pe);
 	}
 	freeacblk (acb);

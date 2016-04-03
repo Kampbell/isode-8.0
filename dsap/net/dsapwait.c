@@ -50,9 +50,8 @@ extern char dsa_mode;
 
 /* ARGSUSED */
 
-int 
-DWaitRequest (int ctx, int sd, int secs, struct DSAPindication *di)
-{
+int
+DWaitRequest (int ctx, int sd, int secs, struct DSAPindication *di) {
 	int	  result;
 
 	switch (ctx) {
@@ -81,9 +80,8 @@ DWaitRequest (int ctx, int sd, int secs, struct DSAPindication *di)
 	return (result);
 }
 
-static 
-dsap_wait_err (char *str, struct RoSAPindication *roi, int sd)
-{
+static
+dsap_wait_err (char *str, struct RoSAPindication *roi, int sd) {
 	int op;
 	char * err;
 	int cc = 0;
@@ -141,9 +139,8 @@ dsap_wait_err (char *str, struct RoSAPindication *roi, int sd)
 
 }
 
-int 
-DapRespWaitRequest (int sd, int secs, struct DSAPindication *di)
-{
+int
+DapRespWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -210,9 +207,8 @@ DapRespWaitRequest (int sd, int secs, struct DSAPindication *di)
 	}
 }
 
-int 
-DspWaitRequest (int sd, int secs, struct DSAPindication *di)
-{
+int
+DspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -271,9 +267,8 @@ DspWaitRequest (int sd, int secs, struct DSAPindication *di)
 	}
 }
 
-int 
-QspWaitRequest (int sd, int secs, struct DSAPindication *di)
-{
+int
+QspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -334,9 +329,8 @@ QspWaitRequest (int sd, int secs, struct DSAPindication *di)
 	}
 }
 
-int 
-DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
-{
+int
+DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = rox->rox_args;
 	struct ds_op_arg	* dsarg = &(di->di_invoke.dx_arg);
@@ -445,9 +439,8 @@ DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 	return(success);
 }
 
-int 
-DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
-{
+int
+DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = rox->rox_args;
 
@@ -549,9 +542,8 @@ DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 	return(success);
 }
 
-int 
-DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
-{
+int
+DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = ror->ror_result;
 
@@ -645,9 +637,8 @@ DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 	return(success);
 }
 
-int 
-QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
-{
+int
+QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = rox->rox_args;
 
@@ -753,9 +744,8 @@ QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 	return (success);
 }
 
-int 
-QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
-{
+int
+QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = ror->ror_result;
 
@@ -854,9 +844,8 @@ QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 	return(success);
 }
 
-int 
-DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di)
-{
+int
+DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = roe->roe_param;
 	struct DSError	* err = &(di->di_error.de_err);
@@ -947,9 +936,8 @@ DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di)
 	return(success);
 }
 
-int 
-DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication *di)
-{
+int
+DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication *di) {
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
 
@@ -971,21 +959,18 @@ DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication *di)
 
 /* Isp == Qsp here */
 
-int 
-IspWaitRequest (int sd, int secs, struct DSAPindication *di)
-{
+int
+IspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	return QspWaitRequest (sd, secs, di);
 }
 
-int 
-IspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
-{
+int
+IspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
 	return QspDecodeInvoke (sd, rox, di);
 }
 
-int 
-IspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
-{
+int
+IspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
 	return QspDecodeResult (sd, ror, di);
 }
 
@@ -996,22 +981,20 @@ IFP restart_fn = NULLIFP;
 static char * watch_dog_where;
 static watchdogfinal = FALSE;
 
-int 
-watch_dog_final (SFP fn)
-{
+int
+watch_dog_final (SFP fn) {
 	watchdogfinal = TRUE;
 
 	if (dsa_mode) {
 		watch_dog_where = "FINAL";
-		 signal (SIGALRM, fn);
-		 alarm (watchdog_time);
+		signal (SIGALRM, fn);
+		alarm (watchdog_time);
 	}
 }
 
 /* ARGSUSED */
-static SFD 
-watch_dog_activate (int sd)
-{
+static SFD
+watch_dog_activate (int sd) {
 	static char called = FALSE;
 
 	if (!called) {
@@ -1029,9 +1012,8 @@ watch_dog_activate (int sd)
 }
 
 /* ARGSUSED */
-static SFD 
-slack_watch_dog_activate (int sd)
-{
+static SFD
+slack_watch_dog_activate (int sd) {
 	LLOG (log_dsap, LLOG_EXCEPTIONS,
 		  ("Watchdog: blocking in %s, trying again...",
 		   watch_dog_where));
@@ -1039,9 +1021,8 @@ slack_watch_dog_activate (int sd)
 	watch_dog (watch_dog_where);
 }
 
-int 
-watch_dog (char *where)
-{
+int
+watch_dog (char *where) {
 	/*
 		A simple timer to stop DSAs holding onto associations, due to
 		a lower level failure.
@@ -1051,14 +1032,13 @@ watch_dog (char *where)
 
 	if (dsa_mode) {
 		watch_dog_where = where;
-		 signal (SIGALRM, watch_dog_activate);
-		 alarm (watchdog_time);
+		signal (SIGALRM, watch_dog_activate);
+		alarm (watchdog_time);
 	}
 }
 
-static 
-slack_watch_dog (char *where)
-{
+static
+slack_watch_dog (char *where) {
 	/*
 		A simple timer to stop DSAs holding onto associations, due to
 		a lower level failure.
@@ -1069,41 +1049,40 @@ slack_watch_dog (char *where)
 
 	if (dsa_mode) {
 		watch_dog_where = where;
-		 signal (SIGALRM, slack_watch_dog_activate);
-		 alarm (watchdog_time);
+		signal (SIGALRM, slack_watch_dog_activate);
+		alarm (watchdog_time);
 	}
 }
 
-int 
-watch_dog_aux (char *where, unsigned secs)
-{
+int
+watch_dog_aux (char *where, unsigned secs) {
 
 	if (watchdogfinal)
 		return;
 
 	if (dsa_mode) {
 		watch_dog_where = where;
-		 signal (SIGALRM, watch_dog_activate);
-		 alarm (secs);
+		signal (SIGALRM, watch_dog_activate);
+		alarm (secs);
 	}
 }
 
-int 
+int
 watch_dog_reset (void) {
 	if (watchdogfinal)
 		return;
 
 	if (dsa_mode) {
-		 signal (SIGALRM, SIG_IGN);
-		 alarm ((unsigned) 0);
+		signal (SIGALRM, SIG_IGN);
+		alarm ((unsigned) 0);
 	}
 }
 
-int 
+int
 watch_dog_final_reset (void) {
 	if (dsa_mode) {
-		 signal (SIGALRM, SIG_IGN);
-		 alarm ((unsigned) 0);
+		signal (SIGALRM, SIG_IGN);
+		alarm ((unsigned) 0);
 	}
 }
 

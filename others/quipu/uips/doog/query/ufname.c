@@ -52,7 +52,7 @@ searchPath ufnpaths = NULLSearchPath;
 ufnStatus get_ufn_status(request_id)
 QCardinal request_id;
 {
-	 _get_request_of_id(request_id);
+	_get_request_of_id(request_id);
 
 	return NULLUfnStatus;
 
@@ -101,7 +101,7 @@ QCardinal *id_ptr;
 	int name_part_count;
 
 	/* Record request invocation */
-	 _request_invoked(UFNAME, id_ptr);
+	_request_invoked(UFNAME, id_ptr);
 
 	request = _get_request_of_id(*id_ptr);
 	new_request = request->UFNAME_REC;
@@ -154,9 +154,9 @@ QCardinal *id_ptr;
 		root_part->is_resolved = TRUE;
 		root_part->is_bottom_level = no;
 
-		 dn_list_add(path == NULLEntryList? "" : path->string_dn,
-						   &root_part->exact_matches,
-						   NULLAttrT);
+		dn_list_add(path == NULLEntryList? "" : path->string_dn,
+					&root_part->exact_matches,
+					NULLAttrT);
 		new_request->path = new_request->path->next;
 
 		root_part->exact_match_num = 1;
@@ -380,7 +380,7 @@ ufnameRec ufnrec;
 		}
 
 	/* Implace search parameters. */
-	 get_default_service(&search_arg.sra_common);
+	get_default_service(&search_arg.sra_common);
 
 	search_arg.sra_common.ca_servicecontrol.svc_options =
 		search_arg.sra_common.ca_servicecontrol.svc_options | SVC_OPT_PREFERCHAIN;
@@ -1163,7 +1163,7 @@ struct DSResult *ds_result;
 
 				if (ufnrec->path != NULLEntryList && part->is_resolved != TRUE)
 					if (follow_path(ufnrec) == TRUE) {
-						 free((char *) results);
+						free((char *) results);
 						return RQ_processing;
 					}
 
@@ -1177,7 +1177,7 @@ struct DSResult *ds_result;
 
 				return RQ_results_returned;
 			} else {
-				 free((char *) results);
+				free((char *) results);
 				return RQ_processing;
 			}
 		}
@@ -1228,12 +1228,12 @@ struct DSResult *ds_result;
 						curr_part = curr_part->next) {
 					if (curr_part->part_name != NULLCP) {
 						if (resolved_part[0] != '\0') {
-							 strcpy(buf, resolved_part);
-							 strcpy(resolved_part, curr_part->part_name);
-							 strcat(resolved_part, ", ");
-							 strcat(resolved_part, buf);
+							strcpy(buf, resolved_part);
+							strcpy(resolved_part, curr_part->part_name);
+							strcat(resolved_part, ", ");
+							strcat(resolved_part, buf);
 						} else
-							 strcpy(resolved_part, curr_part->part_name);
+							strcpy(resolved_part, curr_part->part_name);
 					}
 				}
 
@@ -1290,12 +1290,12 @@ struct DSResult *ds_result;
 							curr_part = curr_part->next)
 						if (curr_part->part_name != NULLCP) {
 							if (resolved_part[0] != '\0') {
-								 strcpy(buf, resolved_part);
-								 strcpy(resolved_part, curr_part->part_name);
-								 strcat(resolved_part, ", ");
-								 strcat(resolved_part, buf);
+								strcpy(buf, resolved_part);
+								strcpy(resolved_part, curr_part->part_name);
+								strcat(resolved_part, ", ");
+								strcat(resolved_part, buf);
 							} else
-								 strcpy(resolved_part, curr_part->part_name);
+								strcpy(resolved_part, curr_part->part_name);
 						}
 
 					unresolved_part[0] = '\0';
@@ -1305,13 +1305,13 @@ struct DSResult *ds_result;
 							curr_part = curr_part->next)
 						if (curr_part->part_name != NULLCP) {
 							if (unresolved_part[0] != '\0') {
-								 strcpy(buf, unresolved_part);
-								 strcpy(unresolved_part,
-											  curr_part->part_name);
-								 strcat(unresolved_part, ", ");
-								 strcat(unresolved_part, buf);
+								strcpy(buf, unresolved_part);
+								strcpy(unresolved_part,
+									   curr_part->part_name);
+								strcat(unresolved_part, ", ");
+								strcat(unresolved_part, buf);
 							} else
-								 strcpy(unresolved_part, curr_part->part_name);
+								strcpy(unresolved_part, curr_part->part_name);
 						}
 
 					ufnrec->results = results;
@@ -1375,7 +1375,7 @@ struct DSResult *ds_result;
 
 				return RQ_results_returned;
 			} else {
-				 free((char *) results);
+				free((char *) results);
 				return RQ_processing;
 			}
 		}
@@ -1596,7 +1596,7 @@ struct DSError *error;
 
 				return RQ_results_returned;
 			} else {
-				 free((char *) results);
+				free((char *) results);
 				return RQ_processing;
 			}
 		}
@@ -1643,9 +1643,9 @@ ufnameRec ufnrec;
 	ufnrec->name_parts->exact_match_num = 1;
 	ufnrec->name_parts->is_resolved = TRUE;
 
-	 dn_list_add(ufnrec->path->string_dn,
-					   &(ufnrec->name_parts->exact_matches),
-					   NULLAttrT);
+	dn_list_add(ufnrec->path->string_dn,
+				&(ufnrec->name_parts->exact_matches),
+				NULLAttrT);
 
 	ufnrec->path = ufnrec->path->next;
 

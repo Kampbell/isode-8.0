@@ -59,15 +59,15 @@ int	offset;
 			tblsize;
 #ifdef	ultrix
 	struct rtentry **rtaddr,
-			**rtnet,
-			**rthost;
+			   **rtnet,
+			   **rthost;
 #else
 	struct mbuf **rtaddr,
-			**rtnet,
-			**rthost;
+			   **rtnet,
+			   **rthost;
 #endif
 	struct rtetab  *rt,
-			*rp;
+			   *rp;
 	struct nlist nzs;
 	struct nlist *nz = &nzs;
 	static   int lastq = -1;
@@ -198,7 +198,7 @@ out1:
 
 static int  rt_compar (a, b)
 struct rtetab **a,
-		**b;
+		   **b;
 {
 	int	    i;
 
@@ -212,8 +212,8 @@ struct rtetab **a,
 
 sort_rtetab () {
 	struct rtetab  *rt,
-			**base,
-			**rte;
+			   **base,
+			   **rte;
 
 	if ((base = (struct rtetab **)
 				malloc ((unsigned) (routeNumber * sizeof *base)))
@@ -275,7 +275,7 @@ static int  get_route (re)
 struct rtentry *re;
 {
 	struct rtetab *rt,
-			*rz;
+			   *rz;
 #ifdef	BSD44
 	union sockaddr_un rtsock;
 	struct nlist nzs;
@@ -370,7 +370,7 @@ struct rtentry *re;
 #ifdef	BSD44
 static int  get_radix_nodes () {
 	struct radix_node_head *rnh,
-			head;
+			   head;
 	struct nlist nzs;
 	struct nlist *nz = &nzs;
 

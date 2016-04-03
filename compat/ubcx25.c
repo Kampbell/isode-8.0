@@ -49,9 +49,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ubcx25.c,v 9.0 1992/
 
 /*  */
 
-int 
-start_x25_client (struct NSAPaddr *local)
-{
+int
+start_x25_client (struct NSAPaddr *local) {
 	int     sd, pgrp;
 
 	if (local != NULLNA)
@@ -72,9 +71,8 @@ start_x25_client (struct NSAPaddr *local)
 
 /*  */
 
-int 
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
-{
+int
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	int     sd, pgrp;
 #ifdef	notyet
 #ifdef	BSD43
@@ -98,7 +96,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	if (local != NULLNA) {
 		local -> na_stack = NA_X25, local -> na_community = ts_comm_x25_default;
 		if (local -> na_dtelen == 0) {
-			 strcpy (local -> na_dte, x25_local_dte);
+			strcpy (local -> na_dte, x25_local_dte);
 			local -> na_dtelen = strlen(x25_local_dte);
 			if (local -> na_pidlen == 0 && *x25_local_pid)
 				local -> na_pidlen =
@@ -106,10 +104,10 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 		}
 	}
 
-	 gen2if (local, sck, ADDR_LISTEN);
+	gen2if (local, sck, ADDR_LISTEN);
 	if (bind (sd, sck, sizeof(CONN_DB)) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-		 close_x25_socket (sd);
+		close_x25_socket (sd);
 		return NOTOK;
 	}
 
@@ -117,41 +115,39 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 #ifdef	notyet		/* not sure if these are supported... */
 #ifndef	BSD43
 	if (opt1)
-		 setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
+		setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
 	if (opt2)
-		 setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
+		setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
 #else
 	onoff = 1;
 	if (opt1)
-		 setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
+		setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
 	if (opt2)
-		 setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
+		setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
 #endif
 
-	 listen (sd, backlog);
+	listen (sd, backlog);
 
 	return sd;
 }
 
 /*  */
 
-int 
-join_x25_client (int fd, struct NSAPaddr *remote)
-{
+int
+join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB     sck;
 	int     len = sizeof sck;
 	int         nfd;
 
 	if((nfd = accept (fd, (struct sockaddr *) &sck, &len)) == NOTOK)
 		return NOTOK;
-	 if2gen (remote, &sck, ADDR_REMOTE);
+	if2gen (remote, &sck, ADDR_REMOTE);
 	return nfd;
 }
 
-int 
-join_x25_server (int fd, struct NSAPaddr *remote)
-{
+int
+join_x25_server (int fd, struct NSAPaddr *remote) {
 	CONN_DB zsck;
 	CONN_DB *sck = &zsck;
 
@@ -160,7 +156,7 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 			  ("Invalid type na%d", remote->na_stack));
 		return NOTOK;
 	}
-	 gen2if (remote, sck, ADDR_REMOTE);
+	gen2if (remote, sck, ADDR_REMOTE);
 	return connect (fd, sck, sizeof (CONN_DB));
 }
 
@@ -295,10 +291,10 @@ char    *buffer;
 #endif
 
 #else   /* UBC_X25 */
-int 
+int
 _ubcx25_stub2()  {}
 #endif  /* UBC_X25 */
 #else	/* X25 */
-int 
+int
 _ubcx25_stub()  {}
 #endif  /* X25 */

@@ -36,8 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/pa2str.c,v 9.0 1992/
 /*    Presentation Address to String */
 
 char *
-pa2str (struct PSAPaddr *px)
-{
+pa2str (struct PSAPaddr *px) {
 	char *bp;
 	struct PSAPaddr pas;
 	struct PSAPaddr *pa = &pas;
@@ -50,7 +49,7 @@ pa2str (struct PSAPaddr *px)
 	if (ta -> ta_selectlen > 0
 			&& ta -> ta_selectlen < sizeof ta -> ta_selector) {
 		char *dp,
-				 *ep;
+			 *ep;
 		struct TSAPaddr *tz;
 		int n, m;
 
@@ -81,8 +80,8 @@ pa2str (struct PSAPaddr *px)
 		if (dp >= ep && (tz = str2taddr (ta -> ta_selector))) {
 			pa -> pa_addr.sa_addr = *tz;	    /* struct copy */
 bridge:
-			 sprintf (bp, "%s through TS bridge at ",
-							paddr2str (pa, NULLNA));
+			sprintf (bp, "%s through TS bridge at ",
+					 paddr2str (pa, NULLNA));
 			bp += strlen (bp);
 
 			bzero ((char *) pa, sizeof *pa);
@@ -91,7 +90,7 @@ bridge:
 		}
 	}
 normal:
-	 strcpy (bp, paddr2str (pa, NULLNA));
+	strcpy (bp, paddr2str (pa, NULLNA));
 
 	return buffer;
 }

@@ -54,8 +54,7 @@ extern Entry local_find_entry_aux();
 static int relayfordsa();
 
 struct connection *
-make_conn_block (DN name, struct PSAPaddr *addr, int conn_ctx)
-{
+make_conn_block (DN name, struct PSAPaddr *addr, int conn_ctx) {
 	struct connection	* cn;
 
 	struct TSAPaddr *ta;
@@ -119,9 +118,8 @@ make_conn_block (DN name, struct PSAPaddr *addr, int conn_ctx)
 	return(cn);
 }
 
-int 
-link_op_to_conn (struct oper_act *on)
-{
+int
+link_op_to_conn (struct oper_act *on) {
 	char		  conn_ctx = DS_CTX_X500_DSP;
 	struct di_block	* di;
 	struct di_block	**next_di;
@@ -371,9 +369,8 @@ link_op_to_conn (struct oper_act *on)
 	return(NOTOK);
 }
 
-int 
-oper_chain (struct oper_act *on)
-{
+int
+oper_chain (struct oper_act *on) {
 	if(link_op_to_conn(on) == OK) {
 		if(on->on_conn == NULLCONN) {
 			DLOG(log_dsap, LLOG_DEBUG, ("oper_chain - link_op_to_conn: OK but no conn"));
@@ -412,9 +409,8 @@ oper_chain (struct oper_act *on)
 	return(OK);
 }
 
-int 
-task_chain (struct task_act *tk, struct di_block *di)
-{
+int
+task_chain (struct task_act *tk, struct di_block *di) {
 	struct oper_act	* on;
 	struct DSError	* err = &(tk->tk_resp.di_error.de_err);
 	struct di_block	* di_tmp;
@@ -538,9 +534,8 @@ task_chain (struct task_act *tk, struct di_block *di)
 	return(OK);
 }
 
-int 
-oper_rechain (struct oper_act *on)
-{
+int
+oper_rechain (struct oper_act *on) {
 	struct DSE_referral         * ref = &(on->on_resp.di_error.de_err.ERR_REFERRAL);
 	struct continuation_ref     * cref;
 	struct chain_arg	* cha = &(on->on_req.dca_charg);
@@ -626,8 +621,7 @@ oper_rechain (struct oper_act *on)
 }
 
 struct oper_act *
-task2oper (struct task_act *tk)
-{
+task2oper (struct task_act *tk) {
 	struct chain_arg	* cha = &(tk->tk_dx.dx_arg.dca_charg);
 	struct continuation_ref	* cref = tk->tk_resp.di_error.de_err.ERR_REFERRAL.DSE_ref_candidates;
 	struct trace_info		* ti;
@@ -699,9 +693,8 @@ task2oper (struct task_act *tk)
 	return(on);
 }
 
-int 
-chain_ok (struct task_act *tk, int refer_ok, DN dsadn)
-{
+int
+chain_ok (struct task_act *tk, int refer_ok, DN dsadn) {
 	struct common_args	* ca;
 	struct common_args	* get_ca_ref();
 
@@ -782,9 +775,8 @@ chain_ok (struct task_act *tk, int refer_ok, DN dsadn)
 	return(TRUE);
 }
 
-int 
-task_result_wakeup (struct oper_act *on)
-{
+int
+task_result_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 
 	DLOG(log_dsap, LLOG_TRACE, ("task_result_wakeup"));
@@ -815,9 +807,8 @@ task_result_wakeup (struct oper_act *on)
 	}
 }
 
-int 
-task_error_wakeup (struct oper_act *on)
-{
+int
+task_error_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 	char free_error = TRUE;
 
@@ -860,9 +851,8 @@ task_error_wakeup (struct oper_act *on)
 	}
 }
 
-int 
-task_fail_wakeup (struct oper_act *on)
-{
+int
+task_fail_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 	struct DSError	* err;
 
@@ -897,9 +887,8 @@ task_fail_wakeup (struct oper_act *on)
 	task_extract(tk);
 }
 
-int 
-task_dsa_info_wakeup (struct di_block *di)
-{
+int
+task_dsa_info_wakeup (struct di_block *di) {
 	struct task_act	* tk = di->di_task;
 
 
@@ -943,8 +932,7 @@ task_dsa_info_wakeup (struct di_block *di)
 }
 
 static struct access_point *
-di2ap (struct di_block *di)
-{
+di2ap (struct di_block *di) {
 	struct access_point *ap;
 
 	switch(di->di_state) {
@@ -973,9 +961,8 @@ di2ap (struct di_block *di)
 
 }
 
-int 
-di2cref (struct di_block *di, struct DSError *err, int ctx)
-{
+int
+di2cref (struct di_block *di, struct DSError *err, int ctx) {
 	struct continuation_ref     * cref;
 	struct di_block * loop;
 	struct access_point *ap_append(), *ap;
@@ -1049,9 +1036,8 @@ di2cref (struct di_block *di, struct DSError *err, int ctx)
 	return OK;
 }
 
-int 
-oper_fail_wakeup (struct oper_act *on)
-{
+int
+oper_fail_wakeup (struct oper_act *on) {
 	DLOG(log_dsap, LLOG_TRACE, ("oper_fail_wakeup()"));
 	/*
 	*  Attempt to perform operation remotely has failed.
@@ -1080,7 +1066,7 @@ oper_fail_wakeup (struct oper_act *on)
 		get_edb_fail_wakeup(on);
 		break;
 	case ON_TYPE_SHADOW:
-		 shadow_fail_wakeup(on);
+		shadow_fail_wakeup(on);
 		break;
 	default:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("oper_fail_wakeup - op has invalid type"));
@@ -1089,9 +1075,8 @@ oper_fail_wakeup (struct oper_act *on)
 }
 
 
-int 
-subtask_chain (struct task_act *tk)
-{
+int
+subtask_chain (struct task_act *tk) {
 	struct ds_search_task	*refer;
 	struct ds_search_task	*nref;
 	struct ds_search_task	* trail = NULL_ST;
@@ -1137,7 +1122,7 @@ subtask_chain (struct task_act *tk)
 					break;
 			}
 		} else
-			 di2cref(di_tmp, &err, tk->tk_conn->cn_ctx);
+			di2cref(di_tmp, &err, tk->tk_conn->cn_ctx);
 
 		on = oper_alloc();
 		on->on_type = ON_TYPE_SUBTASK;
@@ -1257,9 +1242,8 @@ subtask_chain (struct task_act *tk)
 
 }
 
-int 
-subtask_result_wakeup (struct oper_act *on)
-{
+int
+subtask_result_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 	struct ds_search_task	**next_st;
 	struct ds_search_task	* st;
@@ -1319,9 +1303,8 @@ subtask_result_wakeup (struct oper_act *on)
 	}
 }
 
-int 
-subtask_error_wakeup (struct oper_act *on)
-{
+int
+subtask_error_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 	struct ds_search_task	**next_st;
 	struct ds_search_task	* st;
@@ -1379,9 +1362,8 @@ subtask_error_wakeup (struct oper_act *on)
 	}
 }
 
-int 
-subtask_fail_wakeup (struct oper_act *on)
-{
+int
+subtask_fail_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 	struct DSError	* err;
 	struct ds_search_task	**next_st;
@@ -1425,9 +1407,8 @@ subtask_fail_wakeup (struct oper_act *on)
 	}
 }
 
-int 
-subtask_dsa_info_wakeup (struct di_block *di)
-{
+int
+subtask_dsa_info_wakeup (struct di_block *di) {
 	struct task_act	* tk = di->di_task;
 
 
@@ -1466,9 +1447,8 @@ subtask_dsa_info_wakeup (struct di_block *di)
 }
 
 
-int 
-add_cref2poq (struct ds_search_result *res, ContinuationRef cref)
-{
+int
+add_cref2poq (struct ds_search_result *res, ContinuationRef cref) {
 	ContinuationRef cr;
 
 	if (res->CSR_cr == NULLCONTINUATIONREF) {
@@ -1481,9 +1461,8 @@ add_cref2poq (struct ds_search_result *res, ContinuationRef cref)
 	cr->cr_next = cref;
 }
 
-int 
-relay_dsa (struct oper_act *on)
-{
+int
+relay_dsa (struct oper_act *on) {
 	struct DSError  err;
 	struct di_block *di = NULL_DI_BLOCK;
 	Entry my_entry;
@@ -1568,9 +1547,8 @@ relay_dsa (struct oper_act *on)
 
 static struct dn_seq * relays_for = NULLDNSEQ;
 
-int 
-allowrelay (char *str)
-{
+int
+allowrelay (char *str) {
 	struct dn_seq * dsa, *loop;
 
 	if (( dsa=str2dnseq(str)) == NULLDNSEQ) {
@@ -1587,9 +1565,8 @@ allowrelay (char *str)
 	}
 }
 
-static int 
-relayfordsa (DN dn)
-{
+static int
+relayfordsa (DN dn) {
 	if ( check_dnseq (relays_for, dn) == OK)
 		return TRUE;
 
@@ -1598,9 +1575,8 @@ relayfordsa (DN dn)
 
 
 #ifdef QUIPU_CONSOLE
-void 
-chaining_analyse (struct task_act *task, struct di_block *di)
-{
+void
+chaining_analyse (struct task_act *task, struct di_block *di) {
 	AV_Sequence tmp_avs = open_call_avs ;
 	struct op_list * tmp_op_list ;
 	struct chain_list * tmp_ch_list ;

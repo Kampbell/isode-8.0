@@ -36,11 +36,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sel2str.c,v 9.0 1992
 /*  */
 
 char *
-sel2str (char *sel, int len, int quoted)
-{
+sel2str (char *sel, int len, int quoted) {
 	char *cp,
-			 *dp,
-			 *ep;
+		 *dp,
+		 *ep;
 	static int    i = 0;
 	static char buf1[NASIZE * 2 + 1],
 		   buf2[NASIZE * 2 + 1],
@@ -56,8 +55,8 @@ sel2str (char *sel, int len, int quoted)
 		if (len == 2) {
 			if (quoted < 0)
 				goto ugly;
-			 sprintf (cp, "#%d",
-							(sel[0] & 0xff) << 8 | (sel[1] & 0xff));
+			sprintf (cp, "#%d",
+					 (sel[0] & 0xff) << 8 | (sel[1] & 0xff));
 			goto out;
 		}
 #endif
@@ -69,7 +68,7 @@ sel2str (char *sel, int len, int quoted)
 		if (len > NASIZE * 2)
 			len = NASIZE * 2;
 
-		 sprintf (cp, len ? "\"%*.*s\"" : "\"\"", len, len, sel);
+		sprintf (cp, len ? "\"%*.*s\"" : "\"\"", len, len, sel);
 	} else {
 ugly:
 		;

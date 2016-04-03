@@ -52,7 +52,7 @@ char  **argv,
 	struct SSAPindication *si = &sis;
 	struct SSAPabort *sa = &si -> si_abort;
 	struct sblk incoming,
-			outgoing;
+			   outgoing;
 	SB	    sbi = &incoming,
 			sbo = &outgoing;
 

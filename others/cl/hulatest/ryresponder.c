@@ -260,9 +260,8 @@ char  **vec;
 
 /*  */
 
-static int 
-ros_work (int fd)
-{
+static int
+ros_work (int fd) {
 	int	    result;
 	caddr_t out;
 	struct AcSAPindication  acis;
@@ -279,7 +278,7 @@ ros_work (int fd)
 			(*stopfnx) (fd, (struct AcSAPfinish *) 0);
 	case DONE:
 		/* HULA	     AcUAbortRequest (fd, NULLPEP, 0, &acis); */
-		 RyLose (fd, roi);
+		RyLose (fd, roi);
 		return NOTOK;
 	}
 
@@ -301,9 +300,8 @@ ros_work (int fd)
 
 /*  */
 
-static int 
-ros_indication (int sd, struct RoSAPindication *roi)
-{
+static int
+ros_indication (int sd, struct RoSAPindication *roi) {
 	int	    reply,
 			result;
 
@@ -387,42 +385,39 @@ struct TSAPdisconnect *td;
 
 /*    ERRORS */
 
-void 
-ros_adios (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	longjmp (toplevel, NOTOK);
 }
 
 
-void 
-ros_advise (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
-						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
+		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (NULLCP, LOG_INFO, "%s: %s", event, buffer);
 }
 
 /*  */
 
-void 
-acs_advise (struct AcSAPabort *aca, char *event)
-{
+void
+acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						AcuErrString (aca -> aca_reason),
-						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 AcuErrString (aca -> aca_reason),
+				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (NULLCP, LOG_INFO, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -452,9 +447,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -478,9 +472,8 @@ va_dcl {
 }
 
 
-static void 
-_advise (int code, char *what, va_list ap)
-{
+static void
+_advise (int code, char *what, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, ap);
@@ -488,19 +481,18 @@ _advise (int code, char *what, va_list ap)
 	syslog (code, "%s", buffer);
 
 	if (debug) {
-		 fflush (stdout);
+		fflush (stdout);
 
 		fprintf (stderr, "[%d] %s", code, buffer);
-		 fputc ('\n', stderr);
-		 fflush (stderr);
+		fputc ('\n', stderr);
+		fflush (stderr);
 	}
 }
 #else
 /* VARARGS */
 
-void 
-advise (char *what, int code, char *fmt)
-{
+void
+advise (char *what, int code, char *fmt) {
 	advise (what, code, fmt);
 }
 #endif
@@ -523,9 +515,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-ryr_advise (char *what, char *fmt)
-{
+void
+ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

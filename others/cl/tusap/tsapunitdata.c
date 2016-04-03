@@ -104,7 +104,7 @@ static int TPid = NOTOK;
  ****************************************************************
  */
 
-int 
+int
 TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdisconnect *td)
 
 {
@@ -247,7 +247,7 @@ TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdiscon
  ****************************************************************
  */
 
-int 
+int
 TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, struct TSAPdisconnect *td)
 
 
@@ -478,7 +478,7 @@ TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, struct
  ****************************************************************
  */
 
-int 
+int
 TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
 
 {
@@ -533,7 +533,7 @@ TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
  ****************************************************************
  */
 
-int 
+int
 TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 
 {
@@ -602,8 +602,8 @@ TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 
 #endif
 			default:
-			 tusaplose (td, DR_ADDRESS, NULLCP,
-							  "unknown network type: 0x%x (%c)", *vec[0], *vec[0]);
+			tusaplose (td, DR_ADDRESS, NULLCP,
+					   "unknown network type: 0x%x (%c)", *vec[0], *vec[0]);
 			freetblk (tb);
 			return NOTOK;
 		}
@@ -655,7 +655,7 @@ TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
  ****************************************************************
  */
 
-int 
+int
 TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, struct udvec *uv, struct TSAPdisconnect *td)
 
 
@@ -718,7 +718,7 @@ TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct QOSt
  ****************************************************************
  */
 
-int 
+int
 TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 
 
@@ -880,7 +880,7 @@ TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 	 *  Restore the mask.
 	 */
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	/*
 	 *  And return the result from the write.  To succeed, it
@@ -917,7 +917,7 @@ TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
  ****************************************************************
  */
 
-int 
+int
 TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdisconnect *td)
 
 {
@@ -1009,8 +1009,8 @@ TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdisconnect
 	hp = gethostbyaddr ((char *) &socket.sin_addr,
 						sizeof socket.sin_addr,
 						socket.sin_family);
-	 strcpy ( na-> na_domain, hp ? hp -> h_name :
-					inet_ntoa (socket.sin_addr));
+	strcpy ( na-> na_domain, hp ? hp -> h_name :
+			 inet_ntoa (socket.sin_addr));
 
 	na -> na_port = socket.sin_port;
 	na -> na_tset = NA_TSET_UDP;
@@ -1096,7 +1096,7 @@ IFP	data;
 
 	result = TUnitDataWakeUp (tb);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
@@ -1139,7 +1139,7 @@ int    *nfds;
 	 */
 
 	if ((tb = findtublk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return tusaplose ( td,
 						   DR_PARAMETER,
 						   NULLCP,
@@ -1153,7 +1153,7 @@ int    *nfds;
 	selmask (tb -> tb_fd, *mask, *nfds);
 
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return OK;
 
@@ -1175,7 +1175,7 @@ int    *nfds;
  */
 
 
-static int 
+static int
 UNITDATAser (int sig, long code, struct sigcontext *sc)
 
 {
@@ -1190,12 +1190,12 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 #endif
 	IFP	    disc;
 	struct tsapblk *tb,
-			*tb2;
+			   *tb2;
 	struct TSAPdata txs;
 	struct TSAPdata   *tx = &txs;
 
 #ifndef	BSDSIGS
-	 signal (SIGEMT, UNITDATAser);
+	signal (SIGEMT, UNITDATAser);
 
 	smask = sigioblock ();
 #endif
@@ -1249,11 +1249,11 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 	 */
 
 #ifndef	SIGPOLL
-	 kill (TPid, SIGEMT);
+	kill (TPid, SIGEMT);
 #endif
 
 #ifndef	BSDSIGS
-	 sigiomask (smask);
+	sigiomask (smask);
 #endif
 
 }
@@ -1264,7 +1264,7 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 
 #ifndef	SIGPOLL
 
-static int 
+static int
 TUnitDataWakeUp (struct tsapblk *tb)
 
 {
@@ -1278,7 +1278,7 @@ TUnitDataWakeUp (struct tsapblk *tb)
 	static int  inited = 0;
 
 	if (TPid > OK) {
-		 kill (TPid, SIGTERM);
+		kill (TPid, SIGTERM);
 		TPid = NOTOK;
 	}
 
@@ -1299,9 +1299,9 @@ TUnitDataWakeUp (struct tsapblk *tb)
 		int    smask = sigsetmask (sigblock (0) & ~sigmask (SIGEMT));
 #endif
 
-		 signal (SIGEMT, UNITDATAser);
+		signal (SIGEMT, UNITDATAser);
 #ifndef	BSDSIGS
-		 sigiomask (smask);
+		sigiomask (smask);
 #endif
 		inited++;
 	}
@@ -1309,11 +1309,11 @@ TUnitDataWakeUp (struct tsapblk *tb)
 	if ((is = getisoserventbyname ("udisore", "tsap")) == NULL)
 		return tusaplose (td, DR_CONGEST, NULLCP, "ISO service tsap/isore not found");
 
-	 sprintf (buf1, "%d", nfds);
+	sprintf (buf1, "%d", nfds);
 	*is -> is_tail++ = buf1;
-	 sprintf (buf2, "0x%x", mask.fds_bits[0]);
+	sprintf (buf2, "0x%x", mask.fds_bits[0]);
 	*is -> is_tail++ = buf2;
-	 sprintf (buf3, "%d", getpid ());
+	sprintf (buf3, "%d", getpid ());
 	*is -> is_tail++ = buf3;
 	*is -> is_tail = NULL;
 
@@ -1323,8 +1323,8 @@ TUnitDataWakeUp (struct tsapblk *tb)
 			continue;
 
 		case OK:
-			 signal (SIGEMT, SIG_DFL);
-			 execv (*is -> is_vec, is -> is_vec);
+			signal (SIGEMT, SIG_DFL);
+			execv (*is -> is_vec, is -> is_vec);
 			_exit (1);
 
 		default:
@@ -1353,7 +1353,7 @@ struct tsapblk *tb;
 
 	if (tb -> tb_flags & TB_ASYN) {
 		if (!inited) {
-			 signal (SIGPOLL, UNITDATAser);
+			signal (SIGPOLL, UNITDATAser);
 
 			inited++;
 		}
@@ -1403,7 +1403,7 @@ struct tsapblk *tb;
 
 /*  */
 
-int 
+int
 newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
 
 {
@@ -1440,8 +1440,7 @@ newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
 /*  */
 
 static struct TSAPaddr *
-newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na)
-{
+newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na) {
 	static struct TSAPaddr tzs;
 	struct TSAPaddr *tz = &tzs;
 	struct NSAPaddr *nz = tz -> ta_addrs;

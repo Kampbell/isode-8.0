@@ -41,15 +41,14 @@ extern AV_Sequence avs_cpy_enc ();
 extern Attr_Sequence dsa_pseudo_attr;
 extern AttributeType at_acl;
 
-Attr_Sequence 
+Attr_Sequence
 eis_select (
-    EntryInfoSelection eis,
-    Entry entryptr,
-    DN dn,
-    int qctx,	/* If TRUE - it is a Quipu context association */
-    DN node
-)
-{
+	EntryInfoSelection eis,
+	Entry entryptr,
+	DN dn,
+	int qctx,	/* If TRUE - it is a Quipu context association */
+	DN node
+) {
 	Attr_Sequence result = NULLATTR;
 	Attr_Sequence trail;
 	Attr_Sequence temp;
@@ -177,9 +176,8 @@ got_always:
 }
 
 
-Attr_Sequence 
-attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node)
-{
+Attr_Sequence
+attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node) {
 	Attr_Sequence result = NULLATTR;
 	Attr_Sequence trail;
 	Attr_Sequence temp;
@@ -237,15 +235,14 @@ attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node)
 }
 
 
-Attr_Sequence 
+Attr_Sequence
 dsa_eis_select (
-    EntryInfoSelection eis,
-    Entry entryptr,
-    DN dn,
-    int qctx,	/* If TRUE - it is a Quipu context association */
-    DN node
-)
-{
+	EntryInfoSelection eis,
+	Entry entryptr,
+	DN dn,
+	int qctx,	/* If TRUE - it is a Quipu context association */
+	DN node
+) {
 	Attr_Sequence result = NULLATTR;
 	Attr_Sequence trail;
 	Attr_Sequence temp;
@@ -290,9 +287,8 @@ dsa_eis_select (
 	return (result);
 }
 
-Attr_Sequence 
-cpy_as_comp (Attr_Sequence as)
-{
+Attr_Sequence
+cpy_as_comp (Attr_Sequence as) {
 	Attr_Sequence ptr;
 
 	if (as==NULLATTR) {
@@ -309,9 +305,8 @@ cpy_as_comp (Attr_Sequence as)
 }
 
 
-static Attr_Sequence 
-cpy_as_comp_type (Attr_Sequence as)
-{
+static Attr_Sequence
+cpy_as_comp_type (Attr_Sequence as) {
 	Attr_Sequence ptr;
 
 	if (as==NULLATTR) {
@@ -328,9 +323,8 @@ cpy_as_comp_type (Attr_Sequence as)
 
 
 
-int 
-eis_check (EntryInfoSelection eis, Entry entryptr, DN dn)
-{
+int
+eis_check (EntryInfoSelection eis, Entry entryptr, DN dn) {
 	Attr_Sequence temp;
 	Attr_Sequence as;
 	DN node;
@@ -363,9 +357,8 @@ eis_check (EntryInfoSelection eis, Entry entryptr, DN dn)
 	return OK;
 }
 
-static Attr_Sequence 
-as_cpy_type (Attr_Sequence as)
-{
+static Attr_Sequence
+as_cpy_type (Attr_Sequence as) {
 	Attr_Sequence start;
 	Attr_Sequence ptr,ptr2;
 	Attr_Sequence eptr;
@@ -381,9 +374,8 @@ as_cpy_type (Attr_Sequence as)
 	return (start);
 }
 
-static Attr_Sequence 
-as_cpy_enc (Attr_Sequence as, DN dn, DN node, int qctx)
-{
+static Attr_Sequence
+as_cpy_enc (Attr_Sequence as, DN dn, DN node, int qctx) {
 	Attr_Sequence start;
 	Attr_Sequence ptr,ptr2;
 	Attr_Sequence eptr;

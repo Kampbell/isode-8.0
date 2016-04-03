@@ -37,9 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind2.c,v 9.0 
 
 /* ARGSUSED */
 
-int 
-RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni)
-{
+int
+RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) {
 	/*
 	* What is provided here is in-line handling of the
 	* (usually NULL) user data as an unbind argument value.
@@ -78,9 +77,8 @@ RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni)
 
 /* ARGSUSED */
 
-int 
-RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni)
-{
+int
+RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni) {
 	int			  result;
 	PE			  user_data;
 	PE			* user_data_p = &(user_data);
@@ -111,7 +109,7 @@ RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni)
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindResult: AcRelResponse failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
-		 acs2ronotlose (rni, "RO-UNBIND.RESULT", aca);
+		acs2ronotlose (rni, "RO-UNBIND.RESULT", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
@@ -123,9 +121,8 @@ RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni)
 
 /* ARGSUSED */
 
-int 
-RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni)
-{
+int
+RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni) {
 	int			  result;
 	PE			  user_data;
 	PE			* user_data_p = &(user_data);
@@ -155,7 +152,7 @@ RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni)
 
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindError: AcRelResponse failed"));
-		 acs2ronotlose (rni, "RO-UNBIND.ERROR", aca);
+		acs2ronotlose (rni, "RO-UNBIND.ERROR", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
@@ -167,9 +164,8 @@ RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni)
 
 /* ARGSUSED */
 
-int 
-RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni)
-{
+int
+RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);
@@ -181,7 +177,7 @@ RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni)
 
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindReject: AcRelResponse failed"));
-		 acs2ronotlose (rni, "RO-UNBIND.ERROR", aca);
+		acs2ronotlose (rni, "RO-UNBIND.ERROR", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}

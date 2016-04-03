@@ -62,8 +62,7 @@ int backup = 0;
 			  err++; }
 
 char *
-cut (char *s)
-{
+cut (char *s) {
 	char *s1;
 
 	for (; *s && isspace(*s); s++)
@@ -81,9 +80,8 @@ cut (char *s)
 
 
 
-int 
-tailor (char *fn)
-{
+int
+tailor (char *fn) {
 	FILE *f;
 	char buf[BUFSIZ];
 	char *errp, *v, *o, *index();

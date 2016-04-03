@@ -58,17 +58,17 @@ int	e_actions, d_actions, p_actions; /* number of actions of each type */
 
 FILE   *ffopen();
 
-int 
+int
 peri_pass2()  {
 	char *inc;	/* *_pre_defs.h file */
 
 	if (!sflag)
-		 fflush(stderr);
+		fflush(stderr);
 
 	tab = notidtoid(mymodule);
 
 	if (strcmp(mymodule, "UNIV"))
-		 lookup_module("UNIV", NULLOID);
+		lookup_module("UNIV", NULLOID);
 
 	inc = my_strcat (mymodule, HFILE2);
 
@@ -94,9 +94,8 @@ peri_pass2()  {
  *			module. contains references to all the tables.
  *		lint declaractions for the "pepy" functions
  */
-int 
-gen_tablefile (char *inc)
-{
+int
+gen_tablefile (char *inc) {
 
 	int     nentries;
 	int     encflag = 1, decflag = 1, prntflag = 1;
@@ -110,16 +109,16 @@ gen_tablefile (char *inc)
 	 * everything else we need
 	 * Assumption. types file in the same directory as the _tables
 	 */
-	 fprintf(fptab, "#include <stdio.h>\n");
-	 fprintf(fptab, "#include \"%s%s\"\n\n", mymodule, GENTYPES);
+	fprintf(fptab, "#include <stdio.h>\n");
+	fprintf(fptab, "#include \"%s%s\"\n\n", mymodule, GENTYPES);
 
 	if (start_action) {
-		 fprintf (fptab, "\n# line %d \"%s\"\n", start_action->a_line, sysin);
-		 fputs (start_action->a_data, fptab);
+		fprintf (fptab, "\n# line %d \"%s\"\n", start_action->a_line, sysin);
+		fputs (start_action->a_data, fptab);
 	}
 
-	 fprintf (fptab, "\nextern caddr_t %s%s%s[];\t/* forward decl */\n",
-					PREFIX, PTR_TABNAME, tab);
+	fprintf (fptab, "\nextern caddr_t %s%s%s[];\t/* forward decl */\n",
+			 PREFIX, PTR_TABNAME, tab);
 
 	/*
 	 * loop through and generate all the default values definitions
@@ -136,11 +135,11 @@ gen_tablefile (char *inc)
 		}
 	}
 
-	 fprintf(fptab, "\n#define OFFSET(t,f)\t((int ) &(((t *)0)->f))\n\n");
+	fprintf(fptab, "\n#define OFFSET(t,f)\t((int ) &(((t *)0)->f))\n\n");
 #ifndef	hpux
-	 fprintf(fptab, "\n#define AOFFSET(t,f)\t((int ) (((t *)0)->f))\n\n");
+	fprintf(fptab, "\n#define AOFFSET(t,f)\t((int ) (((t *)0)->f))\n\n");
 #else
-	 fprintf(fptab, "\n#define AOFFSET(t,f)\t((int ) &(((t *)0)->f[0]))\n\n");
+	fprintf(fptab, "\n#define AOFFSET(t,f)\t((int ) &(((t *)0)->f[0]))\n\n");
 #endif
 	nentries = 0;
 	/*
@@ -172,11 +171,11 @@ gen_tablefile (char *inc)
 	}
 
 	fphh = ffopen(inc); /* thing_pre_defs.h */
-	 fprintf(fphh, "\nextern modtyp	%s%s%s;\n",
-				   PREFIX, tab, MODTYP_SUFFIX);
+	fprintf(fphh, "\nextern modtyp	%s%s%s;\n",
+			PREFIX, tab, MODTYP_SUFFIX);
 	out_final_defs(fphh);
 	if (fclose(fphh) == EOF) {
-		 fprintf (stderr, "Write error to file");
+		fprintf (stderr, "Write error to file");
 		perror (inc);
 		exit (1);
 	}
@@ -188,14 +187,14 @@ gen_tablefile (char *inc)
 	gen_modtype(fptab, nentries, encflag, decflag, prntflag);
 
 	if (final_action) {
-		 fprintf (fptab, "\n# line %d \"%s\"\n", final_action->a_line, sysin);
-		 fputs (final_action->a_data, fptab);
+		fprintf (fptab, "\n# line %d \"%s\"\n", final_action->a_line, sysin);
+		fputs (final_action->a_data, fptab);
 	}
 
 	gen_lint(fptab);
 
 	if(fclose(fptab) == EOF) {
-		 fprintf (stderr, "Write error to file");
+		fprintf (stderr, "Write error to file");
 		perror ("");
 		exit (1);
 	}
@@ -204,9 +203,8 @@ gen_tablefile (char *inc)
 /*
  * generate the *-types.h file
  */
-int 
-gen_typesfile (char *inc)
-{
+int
+gen_typesfile (char *inc) {
 	char   *buf;
 #ifdef ACT_CODE
 	int     encflag = 1, decflag = 1, prntflag = 1;
@@ -220,16 +218,16 @@ gen_typesfile (char *inc)
 	fph = ffopen(my_strcat(mymodule, HFILE1)); /* thing_defs.h */
 	if (!Cflag) {
 		if (mflag) {
-			 fprintf (fph, "#ifndef\tPEPYPATH\n");
-			 fprintf (fph, "#include <isode/pepsy/%s>\n", inc);
-			 fprintf (fph, "#else\n");
-			 fprintf (fph, "#include \"%s\"\n", inc);
-			 fprintf (fph, "#endif\n\n\n");
+			fprintf (fph, "#ifndef\tPEPYPATH\n");
+			fprintf (fph, "#include <isode/pepsy/%s>\n", inc);
+			fprintf (fph, "#else\n");
+			fprintf (fph, "#include \"%s\"\n", inc);
+			fprintf (fph, "#endif\n\n\n");
 		} else {
 			if (is_stand (inc))
-				 fprintf (fph, "#include <isode/pepsy/%s>\n", inc);
+				fprintf (fph, "#include <isode/pepsy/%s>\n", inc);
 			else
-				 fprintf (fph, "#include \"%s\"\n", inc);
+				fprintf (fph, "#include \"%s\"\n", inc);
 		}
 	}
 
@@ -247,7 +245,7 @@ gen_typesfile (char *inc)
 
 	/* define the macros to support posy functions */
 
-	 fprintf(fph, "\n#ifndef\tlint\n");
+	fprintf(fph, "\n#ifndef\tlint\n");
 	for (sy = mysymbols; sy; sy = sy->sy_next) {
 		eval = sy->sy_name;
 		yp = sy->sy_type;
@@ -257,19 +255,19 @@ gen_typesfile (char *inc)
 		if (yp->yp_flags & YP_IMPORTED)
 			continue;
 		if (strcmp(sy->sy_module, mymodule)) {
-			 fprintf(stderr, "mymodule unsuitable for module name e.g %s and %s(mymodule)\n", sy->sy_module, mymodule);
+			fprintf(stderr, "mymodule unsuitable for module name e.g %s and %s(mymodule)\n", sy->sy_module, mymodule);
 			exit(1);
 		}
 		if (yp->yp_direction & YP_ENCODER || Aflag) {
 			buf = modsym (sy -> sy_module, sy -> sy_name, yyencdflt);
-			 fprintf(fph, "#define %s", buf);
-			 fprintf(fph, "(pe, top, len, buffer, parm) \\\n");
-			 fprintf(fph, "    %s(%s%s, ", ENCFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
-			 fprintf(fph, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
-			 fprintf(fph, "pe, top, len, buffer, (char *) parm)\n\n");
+			fprintf(fph, "#define %s", buf);
+			fprintf(fph, "(pe, top, len, buffer, parm) \\\n");
+			fprintf(fph, "    %s(%s%s, ", ENCFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
+			fprintf(fph, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
+			fprintf(fph, "pe, top, len, buffer, (char *) parm)\n\n");
 #ifdef ACT_CODE
 			if (encflag) {
-				 fprintf(fpe, "%s%s", ENC_FNCNAME, tab);
+				fprintf(fpe, "%s%s", ENC_FNCNAME, tab);
 				open_func(fpe);
 				encflag--;
 			}
@@ -283,14 +281,14 @@ gen_typesfile (char *inc)
 			buf = modsym (sy -> sy_module, sy -> sy_name, yydecdflt);
 			if (bflag)
 				init_new_file();
-			 fprintf(fph, "#define %s", buf);
-			 fprintf(fph, "(pe, top, len, buffer, parm) \\\n");
-			 fprintf(fph, "    %s(%s%s, ", DECFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
-			 fprintf(fph, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
-			 fprintf(fph, "pe, top, len, buffer, (char **) parm)\n\n");
+			fprintf(fph, "#define %s", buf);
+			fprintf(fph, "(pe, top, len, buffer, parm) \\\n");
+			fprintf(fph, "    %s(%s%s, ", DECFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
+			fprintf(fph, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
+			fprintf(fph, "pe, top, len, buffer, (char **) parm)\n\n");
 #if ACT_CODE
 			if (decflag) {
-				 fprintf(fpd, "%s%s", DEC_FNCNAME, tab);
+				fprintf(fpd, "%s%s", DEC_FNCNAME, tab);
 				open_func(fpd);
 				decflag--;
 			}
@@ -302,18 +300,18 @@ gen_typesfile (char *inc)
 			buf = modsym (sy -> sy_module, sy -> sy_name, yyprfdflt);
 			if (bflag)
 				init_new_file();
-			 fprintf(fph, "#define %s", buf);
-			 fprintf(fph, "(pe, top, len, buffer, parm) \\\n");
-			 fprintf(fph, "    %s(%s%s, ", PRNTFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
-			 fprintf(fph, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
-			 fprintf(fph, "pe, top, len, buffer)\n");
-			 fprintf(fph, "#define %s_P", buf);
-			 fprintf(fph, "    %s%s, ", PREFIX,
-						   proc_name(sy->sy_name, 1));
-			 fprintf(fph, "&%s%s%s\n\n", PREFIX, tab, MODTYP_SUFFIX);
+			fprintf(fph, "#define %s", buf);
+			fprintf(fph, "(pe, top, len, buffer, parm) \\\n");
+			fprintf(fph, "    %s(%s%s, ", PRNTFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
+			fprintf(fph, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
+			fprintf(fph, "pe, top, len, buffer)\n");
+			fprintf(fph, "#define %s_P", buf);
+			fprintf(fph, "    %s%s, ", PREFIX,
+					proc_name(sy->sy_name, 1));
+			fprintf(fph, "&%s%s%s\n\n", PREFIX, tab, MODTYP_SUFFIX);
 #ifdef  ACT_CODE
 			if (prntflag) {
-				 fprintf(fpp, "%s%s", PRNT_FNCNAME, tab);
+				fprintf(fpp, "%s%s", PRNT_FNCNAME, tab);
 				open_func(fpp);
 				prntflag--;
 			}
@@ -324,7 +322,7 @@ gen_typesfile (char *inc)
 		if (!bflag && ferror(stdout))
 			myyerror("write error - %s", sys_errname(errno));
 	}
-	 fprintf(fph, "\n#endif   /* lint */\n");
+	fprintf(fph, "\n#endif   /* lint */\n");
 
 #ifdef	ACT_CODE
 	if (!encflag) {
@@ -339,7 +337,7 @@ gen_typesfile (char *inc)
 #endif
 
 	if (fclose(fph) == EOF) {
-		 fprintf (stderr, "Write error to file");
+		fprintf (stderr, "Write error to file");
 		perror ("");
 		exit (1);
 	}
@@ -359,32 +357,32 @@ SY      sy;
 	YP	yp;
 
 	yp = sy->sy_type;
-	 fprintf(fp,"static ptpe %s%s[] = {\n", ETABLE, proc_name(sy->sy_name, 0));
-	 fprintf(fp, "\t{ PE_START, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
-				   PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
+	fprintf(fp,"static ptpe %s%s[] = {\n", ETABLE, proc_name(sy->sy_name, 0));
+	fprintf(fp, "\t{ PE_START, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
+			PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
 
 	tenc_typ(fp, yp, sy->sy_name, NULLCP);
 
-	 fprintf(fp, "\t{ PE_END, 0, 0, 0, (char **)&%s%s%s[%d] }\n",
-				   PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
-	 fprintf(fp, "\t};\n");
-	 fprintf(fp, "\n");
+	fprintf(fp, "\t{ PE_END, 0, 0, 0, (char **)&%s%s%s[%d] }\n",
+			PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
+	fprintf(fp, "\t};\n");
+	fprintf(fp, "\n");
 }
 
 gen_dectbl(fp, sy)
 FILE	*fp;
 SY      sy;
 {
-	 fprintf(fp,"static ptpe %s%s[] = {\n", DTABLE, proc_name(sy->sy_name, 0));
-	 fprintf(fp, "\t{ PE_START, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
-				   PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
+	fprintf(fp,"static ptpe %s%s[] = {\n", DTABLE, proc_name(sy->sy_name, 0));
+	fprintf(fp, "\t{ PE_START, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
+			PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
 
 	tdec_typ(fp, sy->sy_type, sy->sy_name, NULLCP);
 
-	 fprintf(fp, "\t{ PE_END, 0, 0, 0, (char **)&%s%s%s[%d] }\n",
-				   PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
-	 fprintf(fp, "\t};\n");
-	 fprintf(fp, "\n");
+	fprintf(fp, "\t{ PE_END, 0, 0, 0, (char **)&%s%s%s[%d] }\n",
+			PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
+	fprintf(fp, "\t};\n");
+	fprintf(fp, "\n");
 }
 
 
@@ -392,16 +390,16 @@ gen_prnttbl(fp, sy)
 FILE	*fp;
 SY      sy;
 {
-	 fprintf(fp,"static ptpe %s%s[] = {\n",PTABLE, proc_name(sy->sy_name, 0));
-	 fprintf(fp, "\t{ PE_START, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
-				   PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
+	fprintf(fp,"static ptpe %s%s[] = {\n",PTABLE, proc_name(sy->sy_name, 0));
+	fprintf(fp, "\t{ PE_START, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
+			PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
 
 	tprnt_typ(fp, sy->sy_type, sy->sy_name, NULLCP);
 
-	 fprintf(fp, "\t{ PE_END, 0, 0, 0, (char **)&%s%s%s[%d] }\n",
-				   PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
-	 fprintf(fp, "\t};\n");
-	 fprintf(fp, "\n");
+	fprintf(fp, "\t{ PE_END, 0, 0, 0, (char **)&%s%s%s[%d] }\n",
+			PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
+	fprintf(fp, "\t};\n");
+	fprintf(fp, "\n");
 }
 
 
@@ -414,46 +412,46 @@ FILE	*fp;
 	SY	sy;
 	int	empty = 1;
 
-	 fprintf(fp, "static ptpe *etabl[] = {\n");
+	fprintf(fp, "static ptpe *etabl[] = {\n");
 	for (sy = mysymbols; sy; sy = sy->sy_next) {
 		if (sy->sy_type->yp_flags & YP_IMPORTED)
 			continue;
 		if (sy->sy_type->yp_direction & YP_ENCODER || Aflag) {
-			 fprintf(fp, "\t%s%s,\n", ETABLE, proc_name(sy->sy_name, 0));
+			fprintf(fp, "\t%s%s,\n", ETABLE, proc_name(sy->sy_name, 0));
 			empty = 0;
 		}
 	}
 	if (empty)
-		 fprintf(fp, "\t0,\n");
-	 fprintf(fp, "\t};\n\n");
+		fprintf(fp, "\t0,\n");
+	fprintf(fp, "\t};\n\n");
 	empty = 1;
 
-	 fprintf(fp, "static ptpe *dtabl[] = {\n");
+	fprintf(fp, "static ptpe *dtabl[] = {\n");
 	for (sy = mysymbols; sy; sy = sy->sy_next) {
 		if (sy->sy_type->yp_flags & YP_IMPORTED)
 			continue;
 		if (sy->sy_type->yp_direction & YP_DECODER || Aflag) {
-			 fprintf(fp, "\t%s%s,\n", DTABLE, proc_name(sy->sy_name, 0));
+			fprintf(fp, "\t%s%s,\n", DTABLE, proc_name(sy->sy_name, 0));
 			empty = 0;
 		}
 	}
 	if (empty)
-		 fprintf(fp, "\t0,\n");
-	 fprintf(fp, "\t};\n\n");
+		fprintf(fp, "\t0,\n");
+	fprintf(fp, "\t};\n\n");
 	empty = 1;
 
-	 fprintf(fp, "static ptpe *ptabl[] = {\n");
+	fprintf(fp, "static ptpe *ptabl[] = {\n");
 	for (sy = mysymbols; sy; sy = sy->sy_next) {
 		if (sy->sy_type->yp_flags & YP_IMPORTED)
 			continue;
 		if (sy->sy_type->yp_direction & YP_PRINTER || Aflag) {
-			 fprintf(fp, "\t%s%s,\n", PTABLE, proc_name(sy->sy_name, 0));
+			fprintf(fp, "\t%s%s,\n", PTABLE, proc_name(sy->sy_name, 0));
 			empty = 0;
 		}
 	}
 	if (empty)
-		 fprintf(fp, "\t0,\n");
-	 fprintf(fp, "\t};\n\n");
+		fprintf(fp, "\t0,\n");
+	fprintf(fp, "\t};\n\n");
 
 	/* produce pointer table */
 	dump_ptrtab(fp);
@@ -468,37 +466,37 @@ int     no;
 int     f1, f2, f3;
 {
 	if (!f1)
-		 fprintf(fp, "extern PE\t%s%s();\n", ENC_FNCNAME, tab);
+		fprintf(fp, "extern PE\t%s%s();\n", ENC_FNCNAME, tab);
 	if (!f2)
-		 fprintf(fp, "extern PE\t%s%s();\n", DEC_FNCNAME, tab);
+		fprintf(fp, "extern PE\t%s%s();\n", DEC_FNCNAME, tab);
 	if (!f3)
-		 fprintf(fp, "extern PE\t%s%s();\n", PRNT_FNCNAME, tab);
-	 fprintf(fp, "\n");
-	 fprintf(fp, "modtyp %s%s%s = {\n", PREFIX, tab, MODTYP_SUFFIX);
-	 fprintf(fp, "\t\"%s\",\n", mymodule);	/* name */
-	 fprintf(fp, "\t%d,\n", no);		/* number of entries */
+		fprintf(fp, "extern PE\t%s%s();\n", PRNT_FNCNAME, tab);
+	fprintf(fp, "\n");
+	fprintf(fp, "modtyp %s%s%s = {\n", PREFIX, tab, MODTYP_SUFFIX);
+	fprintf(fp, "\t\"%s\",\n", mymodule);	/* name */
+	fprintf(fp, "\t%d,\n", no);		/* number of entries */
 	/* coding tables */
-	 fprintf(fp, "\tetabl,\n");
-	 fprintf(fp, "\tdtabl,\n");
-	 fprintf(fp, "\tptabl,\n");
+	fprintf(fp, "\tetabl,\n");
+	fprintf(fp, "\tdtabl,\n");
+	fprintf(fp, "\tptabl,\n");
 	/* action tables */
 	if (e_actions > 0)
-		 fprintf(fp, "\tefn_%s,\n", tab);
+		fprintf(fp, "\tefn_%s,\n", tab);
 	else
-		 fprintf(fp, "\t0,\n");	/* no action code */
+		fprintf(fp, "\t0,\n");	/* no action code */
 
 	if (d_actions > 0)
-		 fprintf(fp, "\tdfn_%s,\n", tab);
+		fprintf(fp, "\tdfn_%s,\n", tab);
 	else
-		 fprintf(fp, "\t0,\n");	/* no action code */
+		fprintf(fp, "\t0,\n");	/* no action code */
 
 	if (p_actions > 0)
-		 fprintf(fp, "\tpfn_%s,\n", tab);
+		fprintf(fp, "\tpfn_%s,\n", tab);
 	else
-		 fprintf(fp, "\t0,\n");	/* no action code */
+		fprintf(fp, "\t0,\n");	/* no action code */
 
-	 fprintf(fp, "\t%s%s%s,\n", PREFIX, PTR_TABNAME, tab);
-	 fprintf(fp, "\t};\n\n");
+	fprintf(fp, "\t%s%s%s,\n", PREFIX, PTR_TABNAME, tab);
+	fprintf(fp, "\t};\n\n");
 }
 
 /*
@@ -511,7 +509,7 @@ char   *name;
 	FILE   *fp;
 
 	if ((fp = fopen(name, "w")) == NULL) {
-		 fprintf(stderr, "Can't create the file %s", name);
+		fprintf(stderr, "Can't create the file %s", name);
 		exit(1);
 	}
 	return fp;
@@ -525,14 +523,14 @@ file_header(fp, act)
 FILE   *fp;
 char   *act;
 {
-	 fprintf(fp, "#include %s\n", PSAP_DOT_H);
-	 fprintf(fp, "#include \"%s\"\n", INCFILE1);
-	 fprintf(fp, "#include \"%s\"\n", act);
-	 fprintf(fp, "#include \"%s%s\"\n\n", mymodule, GENTYPES);
-	 fprintf(fp, "#ifndef PEPYPARM\n");
-	 fprintf(fp, "#define PEPYPARM char *\n");
-	 fprintf(fp, "#endif\n");
-	 fprintf(fp, "extern PEPYPARM NullParm;\n\n");
+	fprintf(fp, "#include %s\n", PSAP_DOT_H);
+	fprintf(fp, "#include \"%s\"\n", INCFILE1);
+	fprintf(fp, "#include \"%s\"\n", act);
+	fprintf(fp, "#include \"%s%s\"\n\n", mymodule, GENTYPES);
+	fprintf(fp, "#ifndef PEPYPARM\n");
+	fprintf(fp, "#define PEPYPARM char *\n");
+	fprintf(fp, "#endif\n");
+	fprintf(fp, "extern PEPYPARM NullParm;\n\n");
 }
 
 #endif
@@ -544,14 +542,14 @@ open_func(fp)
 FILE   *fp;
 {
 
-	 fprintf(fp, "(pe, parm, p, mod)\n");
-	 fprintf(fp, "PE\tpe;\n");
-	 fprintf(fp, "PEPYPARM\tparm;\n");
-	 fprintf(fp, "ptpe\t*p;\n");
-	 fprintf(fp, "modtyp\t*mod;\n");
-	 fprintf(fp, "{\n");
+	fprintf(fp, "(pe, parm, p, mod)\n");
+	fprintf(fp, "PE\tpe;\n");
+	fprintf(fp, "PEPYPARM\tparm;\n");
+	fprintf(fp, "ptpe\t*p;\n");
+	fprintf(fp, "modtyp\t*mod;\n");
+	fprintf(fp, "{\n");
 	/* action 0 ???? */
-	 fprintf(fp, "\tswitch (p->pe_ucode) {\n");
+	fprintf(fp, "\tswitch (p->pe_ucode) {\n");
 }
 
 /*
@@ -560,25 +558,25 @@ FILE   *fp;
 close_func(fp)
 FILE   *fp;
 {
-	 fprintf(fp, "\t\tdefault:\n");
-	 fprintf(fp, "\t\t\tbreak;\n");
-	 fprintf(fp, "\t}\n");
-	 fprintf(fp, "\treturn OK;\n}\n\n");
+	fprintf(fp, "\t\tdefault:\n");
+	fprintf(fp, "\t\t\tbreak;\n");
+	fprintf(fp, "\t}\n");
+	fprintf(fp, "\treturn OK;\n}\n\n");
 }
 
 /*
  * print the table id_table
  */
-int 
+int
 print_table()  {
 	int     i;
 	id_entry *t;
 
 	for (i = 0; i < TABLESIZE; i++) {
 		for (t = id_table[i]; t != NULL; t = t->next)
-			 printf("%s(%d) -->   ", t->r_value, t->def_value);
+			printf("%s(%d) -->   ", t->r_value, t->def_value);
 		if (id_table[i] != NULL)
-			 printf("NULL -- %d\n", i);
+			printf("NULL -- %d\n", i);
 	}
 }
 static struct univ_typ univ_tab[] = {
@@ -653,8 +651,7 @@ extern struct univ_typ *simptyp();
  * should be processed
  */
 struct univ_typ *
-univtyp (char *name)
-{
+univtyp (char *name) {
 	int     low, high, i;
 	struct univ_typ *p;
 
@@ -688,9 +685,8 @@ univtyp (char *name)
  * numbers are greater then all letters lower case are greater then
  * upper case There must be a better way !
  */
-int 
-scmp (char *s1, char *s2)
-{
+int
+scmp (char *s1, char *s2) {
 	while (*s1 == *s2 && *s2)
 		s1++, s2++;
 	if (*s1 == '\0' && *s2 == '\0')
@@ -721,9 +717,8 @@ scmp (char *s1, char *s2)
 /*
  * lookup a symbol and return a pointer to it
  */
-SY 
-syfind (char *name)
-{
+SY
+syfind (char *name) {
 	SY      sy;
 
 	for (sy = mysymbols; sy; sy = sy->sy_next) {
@@ -774,7 +769,7 @@ YP      yp;
 		return (&oid);
 
 	case YP_IDEFINED:
-		 strncpy(p->univ_tab, yp->yp_identifier, MSTRING);
+		strncpy(p->univ_tab, yp->yp_identifier, MSTRING);
 		return (&obj);
 
 
@@ -871,7 +866,7 @@ FILE	*fp;
 	SY      sy;
 	YP      yp;
 
-	 fprintf(fp, "\n#if\tdefined(lint) || defined(PEPSY_LINKABLE_FUNCS)\n");
+	fprintf(fp, "\n#if\tdefined(lint) || defined(PEPSY_LINKABLE_FUNCS)\n");
 	for (sy = mysymbols; sy; sy = sy->sy_next) {
 		eval = sy->sy_name;
 		yp = sy->sy_type;
@@ -881,57 +876,57 @@ FILE	*fp;
 		if (yp->yp_flags & YP_IMPORTED)
 			continue;
 		if (strcmp(sy->sy_module, mymodule)) {
-			 fprintf(stderr,
-						   "mymodule unsuitable for module name e.g %s and %s(mymodule)\n",
-						   sy->sy_module, mymodule);
+			fprintf(stderr,
+					"mymodule unsuitable for module name e.g %s and %s(mymodule)\n",
+					sy->sy_module, mymodule);
 			exit(1);
 		}
 		if (yysection & YP_ENCODER) {
 			/* Encoding routine */
 			buf = modsym (sy -> sy_module, sy -> sy_name, yyencdflt);
-			 fprintf(fp, "\n#undef %s\n", buf);
-			 fprintf(fp, "int	%s", buf);
-			 fprintf(fp, "(pe, top, len, buffer, parm)\n");
-			 fprintf(fp, "PE     *pe;\n");
-			 fprintf(fp, "int\ttop,\n\tlen;\n");
-			 fprintf(fp, "char   *buffer;\n");
-			 fprintf(fp, "%s *parm;\n", sym2type(sy));
-			 fprintf(fp, "{\n  return (%s(%s%s, ",
-						   ENCFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
-			 fprintf(fp, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
-			 fprintf(fp, "pe, top, len, buffer,\n\t\t(char *) parm));\n}\n");
+			fprintf(fp, "\n#undef %s\n", buf);
+			fprintf(fp, "int	%s", buf);
+			fprintf(fp, "(pe, top, len, buffer, parm)\n");
+			fprintf(fp, "PE     *pe;\n");
+			fprintf(fp, "int\ttop,\n\tlen;\n");
+			fprintf(fp, "char   *buffer;\n");
+			fprintf(fp, "%s *parm;\n", sym2type(sy));
+			fprintf(fp, "{\n  return (%s(%s%s, ",
+					ENCFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
+			fprintf(fp, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
+			fprintf(fp, "pe, top, len, buffer,\n\t\t(char *) parm));\n}\n");
 		}
 
 		if (yysection & YP_DECODER) {
 			/* Decoding routine */
 			buf = modsym (sy -> sy_module, sy -> sy_name, yydecdflt);
-			 fprintf(fp, "\n#undef %s\n", buf);
-			 fprintf(fp, "int	%s", buf);
-			 fprintf(fp, "(pe, top, len, buffer, parm)\n");
-			 fprintf(fp, "PE\tpe;\n");
-			 fprintf(fp, "int\ttop,\n       *len;\n");
-			 fprintf(fp, "char  **buffer;\n");
-			 fprintf(fp, "%s **parm;\n", sym2type(sy));
-			 fprintf(fp, "{\n  return (%s(%s%s, ",
-						   DECFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
-			 fprintf(fp, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
-			 fprintf(fp, "pe, top, len, buffer,\n\t\t(char **) parm));\n}\n");
+			fprintf(fp, "\n#undef %s\n", buf);
+			fprintf(fp, "int	%s", buf);
+			fprintf(fp, "(pe, top, len, buffer, parm)\n");
+			fprintf(fp, "PE\tpe;\n");
+			fprintf(fp, "int\ttop,\n       *len;\n");
+			fprintf(fp, "char  **buffer;\n");
+			fprintf(fp, "%s **parm;\n", sym2type(sy));
+			fprintf(fp, "{\n  return (%s(%s%s, ",
+					DECFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
+			fprintf(fp, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
+			fprintf(fp, "pe, top, len, buffer,\n\t\t(char **) parm));\n}\n");
 		}
 
 		if (yysection & YP_PRINTER) {
 			/* Printing routine */
 			buf = modsym (sy -> sy_module, sy -> sy_name, yyprfdflt);
-			 fprintf(fp, "\n#undef %s\n/* ARGSUSED */\n", buf);
-			 fprintf(fp, "int	%s", buf);
-			 fprintf(fp, "(pe, top, len, buffer, parm)\n");
-			 fprintf(fp, "PE\tpe;\n");
-			 fprintf(fp, "int\ttop,\n       *len;\n");
-			 fprintf(fp, "char  **buffer;\n");
-			 fprintf(fp, "%s *parm;\n", sym2type(sy));
-			 fprintf(fp, "{\n  return (%s(%s%s, ",
-						   PRNTFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
-			 fprintf(fp, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
-			 fprintf(fp, "pe, top, len, buffer));\n}\n");
+			fprintf(fp, "\n#undef %s\n/* ARGSUSED */\n", buf);
+			fprintf(fp, "int	%s", buf);
+			fprintf(fp, "(pe, top, len, buffer, parm)\n");
+			fprintf(fp, "PE\tpe;\n");
+			fprintf(fp, "int\ttop,\n       *len;\n");
+			fprintf(fp, "char  **buffer;\n");
+			fprintf(fp, "%s *parm;\n", sym2type(sy));
+			fprintf(fp, "{\n  return (%s(%s%s, ",
+					PRNTFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
+			fprintf(fp, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
+			fprintf(fp, "pe, top, len, buffer));\n}\n");
 		}
 
 		if (!fflag)
@@ -952,16 +947,16 @@ FILE	*fp;
 
 		/* Free routine */
 		buf = modsym (sy -> sy_module, sy -> sy_name, "free");
-		 fprintf(fp, "\n#undef %s\n", buf);
-		 fprintf(fp, "void %s(val)\n", buf);
-		 fprintf(fp, "%s *val;\n", sym2type(sy));
-		 fprintf(fp, "{\n");
-		 fprintf(fp, "%s;\n", gfree(sy->sy_module, sy->sy_name, "val"));
-		 fprintf(fp, "}\n");
+		fprintf(fp, "\n#undef %s\n", buf);
+		fprintf(fp, "void %s(val)\n", buf);
+		fprintf(fp, "%s *val;\n", sym2type(sy));
+		fprintf(fp, "{\n");
+		fprintf(fp, "%s;\n", gfree(sy->sy_module, sy->sy_name, "val"));
+		fprintf(fp, "}\n");
 
 	}
 
-	 fprintf(fp, "\n#endif\t/* lint||PEPSY_LINKABLE_FUNCS */\n");
+	fprintf(fp, "\n#endif\t/* lint||PEPSY_LINKABLE_FUNCS */\n");
 
 	if (ferror(fp))
 		myyerror("write error - %s", sys_errname(errno));
@@ -976,9 +971,8 @@ static int 	ptr_max = 0;
 /*
  * add the given pointer to the pointer table and return its index
  */
-int 
-addptr (char *p)
-{
+int
+addptr (char *p) {
 	int	ind;
 	int i;
 	char *s;
@@ -998,16 +992,16 @@ addptr (char *p)
 			ptr_tab = (char **) realloc ((char *)ptr_tab, (unsigned)sizeof(char **) * (ptr_max *= 2));
 	}
 	if (ptr_tab == NULL) {
-		 fprintf(stderr, "\npointer table out of memeory (%d needed)\n",
-					   ptr_cnt);
+		fprintf(stderr, "\npointer table out of memeory (%d needed)\n",
+				ptr_cnt);
 		exit(1);
 	}
 
 	if ((s = malloc ((unsigned) (strlen (p) + 1))) == NULLCP) {
-		 fprintf(stderr, "\naddptr:out of memory\n");
+		fprintf(stderr, "\naddptr:out of memory\n");
 		exit(1);
 	}
-	 strcpy (s, p);
+	strcpy (s, p);
 
 	ptr_tab[ind = ptr_cnt++] = s;
 
@@ -1021,7 +1015,7 @@ FILE	*fp;
 	int		i;
 
 
-	 fprintf(fp, "\n/* Pointer table %d entries */\n", ptr_cnt);
+	fprintf(fp, "\n/* Pointer table %d entries */\n", ptr_cnt);
 
 #ifdef PUT_PEPSY_STATIC_BACK
 	/*
@@ -1029,19 +1023,19 @@ FILE	*fp;
 	   a real hard time.  So leave it out, unless really needed.
 	*/
 
-	 fprintf(fp, "static caddr_t %s%s%s[] = {\n", PREFIX, PTR_TABNAME, tab);
+	fprintf(fp, "static caddr_t %s%s%s[] = {\n", PREFIX, PTR_TABNAME, tab);
 #else
 
-	 fprintf(fp, "caddr_t %s%s%s[] = {\n", PREFIX, PTR_TABNAME, tab);
+	fprintf(fp, "caddr_t %s%s%s[] = {\n", PREFIX, PTR_TABNAME, tab);
 #endif
 
 	for (i = 0; i < ptr_cnt; i++)
-		 fprintf(fp, "    (caddr_t ) %s,\n", ptr_tab[i]);
+		fprintf(fp, "    (caddr_t ) %s,\n", ptr_tab[i]);
 
 	if (ptr_cnt <= 0)
-		 fprintf(fp, "    (caddr_t ) 0,\n");	/* for fussy C compilers */
+		fprintf(fp, "    (caddr_t ) 0,\n");	/* for fussy C compilers */
 
-	 fprintf(fp, "};\n");
+	fprintf(fp, "};\n");
 }
 
 /*
@@ -1054,15 +1048,14 @@ FILE	*fp;
  * return NULLCP, otherwise return the new type in a temporary buffer
  */
 char *
-rm_indirect (char *p)
-{
+rm_indirect (char *p) {
 	static char	buf[STRSIZE];
 	int		i;
 
 	if (p == NULLCP || *p == '\0' || (i = strlen(p)) >= STRSIZE)
 		return (NULLCP);
 
-	 strncpy(buf, p, STRSIZE);
+	strncpy(buf, p, STRSIZE);
 
 	for (; i >= 0; i--) {
 		if (buf[i] == '*') {
@@ -1081,8 +1074,7 @@ rm_indirect (char *p)
  * if it fails return NULLCP
  */
 char *
-getfldbit (char *p, char **pstr)
-{
+getfldbit (char *p, char **pstr) {
 	static char buf[STRSIZE];
 
 	if (p == NULLCP || pstr == (char **)0)
@@ -1119,8 +1111,7 @@ getfldbit (char *p, char **pstr)
 
 /* return a pointer after the current batch of white space if any */
 char *
-skipspace (char *p)
-{
+skipspace (char *p) {
 	if (p == NULLCP)
 		return (NULLCP);
 
@@ -1135,8 +1126,7 @@ skipspace (char *p)
  * else return NULLCP
  */
 char *
-getfield (char *p)
-{
+getfield (char *p) {
 	static char buf[STRSIZE];
 	char	*buf1;
 
@@ -1185,8 +1175,7 @@ getfield (char *p)
  * get an identifier into the given buffer [A-Za-z_] are legal chars
  */
 char *
-getid (char *p, char *buf, int len)
-{
+getid (char *p, char *buf, int len) {
 	char	*fbuf;
 
 	fbuf = buf;
@@ -1214,8 +1203,7 @@ getid (char *p, char *buf, int len)
  * identifier - should really be called get field reference
  */
 char *
-getidordot (char *p, char *buf, int len)
-{
+getidordot (char *p, char *buf, int len) {
 	char	*fbuf;
 
 	fbuf = buf;
@@ -1254,9 +1242,8 @@ static char *noindstr[] = {
  * determine if the given field means no indirection wanted and so return 1
  * else return 0
  */
-int 
-noindirect (char *f)
-{
+int
+noindirect (char *f) {
 	char *p, **ps;
 	int		l;
 
@@ -1321,11 +1308,11 @@ FILE	*fp;
 	YP	yp;
 
 	if (e_actions > 0) {
-		 fprintf(fp, "\n/*VARARGS*/");
-		 fprintf(fp, "\nstatic\tint\nefn_%s(__p, ppe, _Zp)\ncaddr_t	__p;\n", tab);
-		 fprintf(fp, "PE	*ppe;\nptpe	*_Zp;\n{\n");
-		 fprintf(fp, "\t\t\n\t/* %d cases */\n    switch(_Zp->pe_ucode) {\n",
-					   e_actions);
+		fprintf(fp, "\n/*VARARGS*/");
+		fprintf(fp, "\nstatic\tint\nefn_%s(__p, ppe, _Zp)\ncaddr_t	__p;\n", tab);
+		fprintf(fp, "PE	*ppe;\nptpe	*_Zp;\n{\n");
+		fprintf(fp, "\t\t\n\t/* %d cases */\n    switch(_Zp->pe_ucode) {\n",
+				e_actions);
 		for (sy = mysymbols; sy; sy = sy->sy_next) {
 			yp = sy->sy_type;
 			if (yp->yp_flags & YP_IMPORTED)
@@ -1335,17 +1322,17 @@ FILE	*fp;
 				gen_actions(fp, yp, G_ENC);
 
 		}
-		 fprintf(fp,
-					   "    default:\n        return (pepsylose(NULLMODTYP, _Zp, *ppe, \"enf_%s:Bad table entry: %%d\",\n             _Zp->pe_ucode));\n",
-					   tab);
-		 fprintf(fp, "\t\t}\t/* switch */\n    return (OK);\n}\n");
+		fprintf(fp,
+				"    default:\n        return (pepsylose(NULLMODTYP, _Zp, *ppe, \"enf_%s:Bad table entry: %%d\",\n             _Zp->pe_ucode));\n",
+				tab);
+		fprintf(fp, "\t\t}\t/* switch */\n    return (OK);\n}\n");
 	}
 	if (d_actions > 0) {
-		 fprintf(fp, "\n/*VARARGS*/");
-		 fprintf(fp, "\nstatic\tint\ndfn_%s(__p, pe, _Zp, _val)\ncaddr_t	__p;\n", tab);
-		 fprintf(fp, "PE	pe;\nptpe	*_Zp;\nint _val;\n{\n");
-		 fprintf(fp, "\t\t\n\t/* %d cases */\n    switch(_Zp->pe_ucode) {\n",
-					   d_actions);
+		fprintf(fp, "\n/*VARARGS*/");
+		fprintf(fp, "\nstatic\tint\ndfn_%s(__p, pe, _Zp, _val)\ncaddr_t	__p;\n", tab);
+		fprintf(fp, "PE	pe;\nptpe	*_Zp;\nint _val;\n{\n");
+		fprintf(fp, "\t\t\n\t/* %d cases */\n    switch(_Zp->pe_ucode) {\n",
+				d_actions);
 		for (sy = mysymbols; sy; sy = sy->sy_next) {
 			yp = sy->sy_type;
 			if (yp->yp_flags & YP_IMPORTED)
@@ -1355,17 +1342,17 @@ FILE	*fp;
 				gen_actions(fp, yp, G_DEC);
 
 		}
-		 fprintf(fp,
-					   "    default:\n        return (pepsylose(NULLMODTYP, _Zp, pe, \"dnf_%s:Bad table entry: %%d\",\n            _Zp->pe_ucode));\n",
-					   tab);
-		 fprintf(fp, "\t\t}\t/* switch */\n    return (OK);\n}\n");
+		fprintf(fp,
+				"    default:\n        return (pepsylose(NULLMODTYP, _Zp, pe, \"dnf_%s:Bad table entry: %%d\",\n            _Zp->pe_ucode));\n",
+				tab);
+		fprintf(fp, "\t\t}\t/* switch */\n    return (OK);\n}\n");
 	}
 	if (p_actions > 0) {
-		 fprintf(fp, "\n/*VARARGS*/");
-		 fprintf(fp, "\nstatic\tint\npfn_%s(pe, _Zp)\n", tab);
-		 fprintf(fp, "PE	pe;\nptpe	*_Zp;\n{\n");
-		 fprintf(fp, "\t\t\n\t/* %d cases */\n    switch(_Zp->pe_ucode) {\n",
-					   p_actions);
+		fprintf(fp, "\n/*VARARGS*/");
+		fprintf(fp, "\nstatic\tint\npfn_%s(pe, _Zp)\n", tab);
+		fprintf(fp, "PE	pe;\nptpe	*_Zp;\n{\n");
+		fprintf(fp, "\t\t\n\t/* %d cases */\n    switch(_Zp->pe_ucode) {\n",
+				p_actions);
 		for (sy = mysymbols; sy; sy = sy->sy_next) {
 			yp = sy->sy_type;
 
@@ -1376,10 +1363,10 @@ FILE	*fp;
 				gen_actions(fp, yp, G_PNT);
 
 		}
-		 fprintf(fp,
-					   "    default:\n        return (pepsylose(NULLMODTYP, _Zp, NULLPE, \"pnf_%s:Bad table entry: %%d\",\n            _Zp->pe_ucode));\n",
-					   tab);
-		 fprintf(fp, "\t\t}\t/* switch */\n    return (OK);\n}\n");
+		fprintf(fp,
+				"    default:\n        return (pepsylose(NULLMODTYP, _Zp, NULLPE, \"pnf_%s:Bad table entry: %%d\",\n            _Zp->pe_ucode));\n",
+				tab);
+		fprintf(fp, "\t\t}\t/* switch */\n    return (OK);\n}\n");
 	}
 }
 
@@ -1446,11 +1433,11 @@ int	ret;
 
 	if ((int)strlen(type) > STRSIZE)
 		ferr(1, "dumpact:type too big");
-	 strncpy(buf, type, STRSIZE);
+	strncpy(buf, type, STRSIZE);
 	if (form != G_DEC)
-		 strncat(buf, "*", STRSIZE);
+		strncat(buf, "*", STRSIZE);
 	else
-		 strncat(buf, "**", STRSIZE);
+		strncat(buf, "**", STRSIZE);
 	type = buf;
 	switch (form) {
 	case G_ENC:
@@ -1469,32 +1456,32 @@ int	ret;
 		return;
 
 	if (form != G_PNT)
-		 fprintf(fp, "\n#define parm	((%s )__p)\n\tcase %d: /* %s */\n",
-					   type, act->a_num, comm ? comm : "");
+		fprintf(fp, "\n#define parm	((%s )__p)\n\tcase %d: /* %s */\n",
+				type, act->a_num, comm ? comm : "");
 	else
-		 fprintf(fp, "\n\tcase %d: /* %s */\n", act->a_num, comm ? comm : "");
+		fprintf(fp, "\n\tcase %d: /* %s */\n", act->a_num, comm ? comm : "");
 
-	 fprintf(fp, "\t\t{\n# line %d \"%s\"\n", act->a_line, sysin);
+	fprintf(fp, "\t\t{\n# line %d \"%s\"\n", act->a_line, sysin);
 
 	switch (ret) {
 	case GEN_ASSIGN:
 		if (control_act (act) == -1)
-			 fprintf (fp, "\t\t/* ignored - empty expression */\n");
+			fprintf (fp, "\t\t/* ignored - empty expression */\n");
 		else fprintf (fp, "\t\t(%s) = _val;\n", act -> a_data);
 		break;
 	case GEN_RETURN:
-		 fprintf (fp, "\t\treturn (%s);\n",act -> a_data);
+		fprintf (fp, "\t\treturn (%s);\n",act -> a_data);
 		break;
 	default:
-		 fputs (act -> a_data, fp);
-		 putc (';', fp);
+		fputs (act -> a_data, fp);
+		putc (';', fp);
 		break;
 	}
 
-	 fprintf(fp, "\n\t\t}\n\t    break;\n");
+	fprintf(fp, "\n\t\t}\n\t    break;\n");
 
 	if (form != G_PNT)
-		 fprintf(fp, "\n#undef parm\n");
+		fprintf(fp, "\n#undef parm\n");
 	act -> a_line = -1;		/* mark as done */
 }
 
@@ -1510,13 +1497,13 @@ YP	yp;
 	char *p;
 
 	if (yp->yp_param_type == NULLCP) {
-		 fprintf(stderr, "\npartyp2str no param_type field\n");
+		fprintf(stderr, "\npartyp2str no param_type field\n");
 		exit(1);
 	}
 
 	if ((p = rm_indirect(yp->yp_param_type)) == NULLCP) {
-		 fprintf(stderr, "\npartyp2str can't extract direct type from %s\n",
-					   yp->yp_param_type);
+		fprintf(stderr, "\npartyp2str can't extract direct type from %s\n",
+				yp->yp_param_type);
 		exit(1);
 	}
 
@@ -1526,14 +1513,13 @@ YP	yp;
  * produce a string giving the type of a symbol, in a static buffer
  */
 char *
-sym2type (SY sy)
-{
+sym2type (SY sy) {
 	static char buffer[STRSIZE];
 
 	if (sy->sy_type && sy->sy_type->yp_param_type)
 		return (partyp2str(sy->sy_type));
 
-	 sprintf(buffer, "struct %s", modsym(sy->sy_module, sy->sy_name, "type"));
+	sprintf(buffer, "struct %s", modsym(sy->sy_module, sy->sy_name, "type"));
 
 	return (buffer);
 }
@@ -1552,12 +1538,12 @@ YP yp;
 		if (yp -> yp_code == YP_IDEFINED &&
 				yp -> yp_module != NULL &&
 				strcmp (yp -> yp_module, mymodule) != 0) {
-			 sprintf (genbuf, "%s.%s", yp->yp_module, s);
+			sprintf (genbuf, "%s.%s", yp->yp_module, s);
 			s = genbuf;
 		}
 	}
 	pindex = addsptr(s);
-	 sprintf (genbuf, "(char **)&%s%s%s[%d]",
-					PREFIX, PTR_TABNAME, tab, pindex);
+	sprintf (genbuf, "(char **)&%s%s%s[%d]",
+			 PREFIX, PTR_TABNAME, tab, pindex);
 	return genbuf;
 }

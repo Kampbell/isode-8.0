@@ -73,12 +73,12 @@ struct opsblk *opb;
 
 #ifdef PEPSY_DEFINITIONS
 	if (opb -> opb_out && opb -> opb_free_mod)
-		 fre_obj (opb -> opb_out,
-						opb -> opb_free_mod -> md_dtab[opb -> opb_free_index],
-						opb -> opb_free_mod, 1);
+		fre_obj (opb -> opb_out,
+				 opb -> opb_free_mod -> md_dtab[opb -> opb_free_index],
+				 opb -> opb_free_mod, 1);
 #else
 	if (opb -> opb_out && opb -> opb_free)
-		 (*opb -> opb_free) (opb -> opb_out);
+		(*opb -> opb_free) (opb -> opb_out);
 #endif
 
 	if (opb -> opb_pe)
@@ -93,8 +93,8 @@ struct opsblk *opb;
 
 struct opsblk   *findopblk (sd, id, flags)
 int	sd,
-			id,
-			flags;
+	id,
+	flags;
 {
 	struct opsblk *opb;
 
@@ -117,7 +117,7 @@ struct opsblk   *firstopblk (sd)
 int	sd;
 {
 	struct opsblk *opb,
-			*op2;
+			   *op2;
 
 	if (once_only == 0)
 		return NULL;
@@ -141,7 +141,7 @@ int	sd;
 int	reason;
 {
 	struct opsblk *opb,
-			*op2;
+			   *op2;
 	struct RoSAPindication  rois;
 
 	if (once_only == 0)
@@ -166,9 +166,8 @@ int	reason;
 
 /* VARARGS */
 
-int 
-rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt)
-{
+int
+rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return rosaplose (roi, reason, what, fmt);
 }
 #endif

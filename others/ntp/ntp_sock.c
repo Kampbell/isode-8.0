@@ -22,7 +22,7 @@ extern void receive();
 #ifdef	TEST
 
 
-int 
+int
 main  {
 	int i, cc, val;
 	char foo[10];
@@ -30,31 +30,31 @@ main  {
 	advise(LLOG_DEBUG, NULLCP, "ifconfig test");
 	create_sockets(htons(43242));
 	for (i = 0; i < nintf; i++) {
-		 printf("%d: %s fd %d  addr %s  mask %x ",
-					  i, addrs[i].name, addrs[i].fd,
-					  paddr (addrs[i].addr),
-					  ntohl(addrs[i].mask.sin_addr.s_addr));
+		printf("%d: %s fd %d  addr %s  mask %x ",
+		i, addrs[i].name, addrs[i].fd,
+		paddr (addrs[i].addr),
+		ntohl(addrs[i].mask.sin_addr.s_addr));
 		cc = sizeof(val);
 		if (getsockopt(addrs[0].fd, SOL_SOCKET, SO_BROADCAST,
-					   (char*)&val, &cc)) {
+		(char*)&val, &cc)) {
 			perror("getsockopt");
 			exit(1);
 		}
-		 printf("BCAST opt %d", val);
+		printf("BCAST opt %d", val);
 		cc = sizeof(val);
 		if (getsockopt(addrs[0].fd, SOL_SOCKET, SO_RCVBUF,
 					   (char*)&val, &cc)) {
 			perror("getsockopt");
 			exit(1);
 		}
-		 printf("sockbuf size = %d ", val);
-		 putchar('\n');
+		printf("sockbuf size = %d ", val);
+		putchar('\n');
 	}
 
 	for (i=0; i < nintf; i++) {
-		 fprintf(stderr, "Read fd %d.. ", addrs[i].fd);
+		fprintf(stderr, "Read fd %d.. ", addrs[i].fd);
 		cc = read(addrs[i].fd, foo, 10);
-		 fprintf(stderr, " returns %d ", cc);
+		fprintf(stderr, " returns %d ", cc);
 		perror("read errno");
 	}
 }
@@ -65,9 +65,8 @@ main  {
  *  If we can't determine the interface configuration, just listen with one
  *  socket at the INADDR_ANY address.
  */
-int 
-create_sockets (unsigned int port)
-{
+int
+create_sockets (unsigned int port) {
 	struct intf *ap;
 	int	no;
 
@@ -100,9 +99,8 @@ create_sockets (unsigned int port)
  *  Grab interface configuration, and create a socket for each interface
  *  address.
  */
-int 
-create_sockets (unsigned int port)
-{
+int
+create_sockets (unsigned int port) {
 	char	buf[1024];
 	struct intf *ap;
 	struct	ifconf	ifc;
@@ -194,7 +192,7 @@ create_sockets (unsigned int port)
 next:
 		;
 	}
-	 close(vs);
+	close(vs);
 
 	for (i = 0; i < nintf; i++) {
 		if ((addrs[i].flags & INTF_VALID) == 0)
@@ -251,9 +249,8 @@ next:
 
 #endif
 
-int 
-recv_inet (struct intf *ap, struct timeval *tvp)
-{
+int
+recv_inet (struct intf *ap, struct timeval *tvp) {
 	int	dstlen;
 	int	cc;
 	struct Naddr peers;
@@ -282,8 +279,8 @@ recv_inet (struct intf *ap, struct timeval *tvp)
 	if (cc < sizeof(*pkt)) {
 #ifdef	DEBUG
 		if (debug)
-			 printf("Runt packet from %s\n",
-						  paddr (peer));
+			printf("Runt packet from %s\n",
+				   paddr (peer));
 #endif
 		return -1;
 	}
@@ -294,7 +291,7 @@ recv_inet (struct intf *ap, struct timeval *tvp)
 	}
 #ifdef	DEBUG
 	if (debug > 3) {
-		 printf ("\nInput ");
+		printf ("\nInput ");
 		dump_pkt(peer, pkt, (struct ntp_peer *)NULL);
 	}
 #endif
@@ -309,9 +306,8 @@ recv_inet (struct intf *ap, struct timeval *tvp)
 	return 0;
 }
 
-int 
-send_inet (struct intf *ap, char *pkt, int size, struct Naddr *peer)
-{
+int
+send_inet (struct intf *ap, char *pkt, int size, struct Naddr *peer) {
 	if (ap -> addr.type != AF_INET) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"Bad address type in sent_inet");
@@ -334,9 +330,8 @@ send_inet (struct intf *ap, char *pkt, int size, struct Naddr *peer)
 #define	N_NTP_PKTS \
       ((PKTBUF_SIZE - sizeof(struct ntpinfo))/(sizeof(struct clockinfo)))
 
-int 
-query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap)
-{
+int
+query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap) {
 	extern struct list peer_list;
 	extern struct sysdata sys;
 	char packet[PKTBUF_SIZE];
@@ -414,8 +409,8 @@ query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap)
 		cip++;
 		if (nip->count++ >= N_NTP_PKTS - 1) {
 			nip->seq =seq++;
-			 send_inet (ap, (char *)packet,
-							  sizeof (packet), dst);
+			send_inet (ap, (char *)packet,
+					   sizeof (packet), dst);
 			nip->type = INFO_REPLY;
 			nip->count = 0;
 			cip = (struct clockinfo *)&nip[1];
@@ -423,7 +418,7 @@ query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap)
 	}
 	if (nip->count) {
 		nip->seq = seq;
-		 send_inet (ap, (char *)packet,
-						  sizeof (packet), dst);
+		send_inet (ap, (char *)packet,
+				   sizeof (packet), dst);
 	}
 }

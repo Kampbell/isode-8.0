@@ -79,9 +79,8 @@ static void tsbridge (), do_the_biz (), copy_tsdu (), arginit (), envinit ();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect  *td = &tds;
 	struct TSAPaddr tas, *ta = &tas;
@@ -130,9 +129,8 @@ main (int argc, char **argv, char **envp)
 
 /*  */
 
-static void 
-tsbridge (int vecp, char **vec, struct TSAPaddr *ta)
-{
+static void
+tsbridge (int vecp, char **vec, struct TSAPaddr *ta) {
 	struct TSAPstart tss;
 	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
@@ -185,7 +183,7 @@ tsbridge (int vecp, char **vec, struct TSAPaddr *ta)
 	if (TConnRequest (fromta, tota, ts -> ts_expedited,
 					  ts -> ts_data, ts -> ts_cc, &ts -> ts_qos,
 					  tc, td) == NOTOK) {
-		 TDiscRequest (sd, td -> td_data, td -> td_cc, td);
+		TDiscRequest (sd, td -> td_data, td -> td_cc, td);
 		ts_adios(td, "T-CONNECT.REQUEST");
 	}
 	if (TConnResponse (sd, NULLTA,
@@ -201,9 +199,8 @@ tsbridge (int vecp, char **vec, struct TSAPaddr *ta)
 
 /*  */
 
-static void 
-do_the_biz (int sd1, int sd2)
-{
+static void
+do_the_biz (int sd1, int sd2) {
 	int nfds = 0;
 	fd_set rmask, imask;
 	struct TSAPdisconnect   tds;
@@ -229,9 +226,8 @@ do_the_biz (int sd1, int sd2)
 
 /*  */
 
-static void 
-copy_tsdu (int s1, int s2)
-{
+static void
+copy_tsdu (int s1, int s2) {
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect  *td = &tds;
 	struct TSAPdata txs;
@@ -301,9 +297,8 @@ copy_tsdu (int s1, int s2)
 
 /*  */
 
-static void 
-ts_discon (struct TSAPdisconnect *td, int sd)
-{
+static void
+ts_discon (struct TSAPdisconnect *td, int sd) {
 	ts_close (sd, "Normal Disconnect");
 	ts_advise (td, LLOG_NOTICE, "T-DISCONNECT.INDICATION");
 
@@ -312,9 +307,8 @@ ts_discon (struct TSAPdisconnect *td, int sd)
 
 /*  */
 
-static void 
-ts_close (int sd, char *event)
-{
+static void
+ts_close (int sd, char *event) {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
 
@@ -327,9 +321,8 @@ ts_close (int sd, char *event)
 
 /*  */
 
-static void 
-ts_adios (struct TSAPdisconnect *td, char *event)
-{
+static void
+ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
 	exit (1);
@@ -337,17 +330,16 @@ ts_adios (struct TSAPdisconnect *td, char *event)
 
 /*  */
 
-static void 
-ts_advise (struct TSAPdisconnect *td, int code, char *event)
-{
+static void
+ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						TErrString (td -> td_reason),
-						td -> td_cc, td -> td_cc, td -> td_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 TErrString (td -> td_reason),
+				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
@@ -356,8 +348,7 @@ ts_advise (struct TSAPdisconnect *td, int code, char *event)
 static int isnew = 1;
 
 static struct TSAPaddr *
-getnewta (struct TSAPaddr *ta, int sd, ContTbl *ctp)
-{
+getnewta (struct TSAPaddr *ta, int sd, ContTbl *ctp) {
 	static struct TSAPaddr newta;
 	struct TSAPaddr *nta = &newta;
 	char	buffer[TSSIZE + 1];
@@ -418,8 +409,7 @@ getnewta (struct TSAPaddr *ta, int sd, ContTbl *ctp)
 /*  */
 
 static struct TSAPaddr *
-maketa (struct TSAPaddr *ta, long type, ContTbl *ctp)
-{
+maketa (struct TSAPaddr *ta, long type, ContTbl *ctp) {
 	static struct TSAPaddr newta;
 	struct TSAPaddr *nta = &newta;
 	char	*p;
@@ -498,8 +488,7 @@ maketa (struct TSAPaddr *ta, long type, ContTbl *ctp)
 /*  */
 
 static ContTbl *
-find_connection (struct TSAPaddr *ta)
-{
+find_connection (struct TSAPaddr *ta) {
 	ContTbl *ctp;
 	struct NSAPaddr *na1, *na2;
 
@@ -553,9 +542,8 @@ find_connection (struct TSAPaddr *ta)
 
 /*  */
 
-static void 
-arginit (char **vec)
-{
+static void
+arginit (char **vec) {
 	char   *ap;
 	struct TSAPaddr *ta;
 
@@ -570,7 +558,7 @@ arginit (char **vec)
 			case 'T':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -T tailorfile", myname);
-				 isodesetailor (ap);
+				isodesetailor (ap);
 				isodetailor (myname, 0);
 				ll_hdinit (pgm_log, myname);
 				continue;
@@ -615,9 +603,8 @@ arginit (char **vec)
 
 /*  */
 
-static void 
-read_file (char *file)
-{
+static void
+read_file (char *file) {
 	FILE	*fp;
 	char	buf[BUFSIZ];
 	char	*vec[50];
@@ -680,15 +667,15 @@ read_file (char *file)
 	}
 
 	if (strcmp (file, "-") != 0)
-		 fclose (fp);
+		fclose (fp);
 }
 
 /*  */
 
-static void 
+static void
 envinit  {
 	int     i,
-			sd;
+	sd;
 
 	nbits = getdtablesize ();
 
@@ -708,14 +695,14 @@ envinit  {
 			break;
 		}
 
-		 chdir ("/");
+		chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			 dup2 (sd, 0),  close (sd);
-		 dup2 (0, 1);
-		 dup2 (0, 2);
+			dup2 (sd, 0),  close (sd);
+		dup2 (0, 1);
+		dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -723,14 +710,14 @@ envinit  {
 #endif
 #ifdef  TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			 ioctl (sd, TIOCNOTTY, NULLCP);
-			 close (sd);
+			ioctl (sd, TIOCNOTTY, NULLCP);
+			close (sd);
 		}
 #else
 #ifdef  SYS5
-		 setpgrp ();
-		 signal (SIGINT, SIG_IGN);
-		 signal (SIGQUIT, SIG_IGN);
+		setpgrp ();
+		signal (SIGINT, SIG_IGN);
+		signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -739,10 +726,10 @@ envinit  {
 #ifndef sun			/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			 close (sd);
+			close (sd);
 #endif
 
-	 signal (SIGPIPE, SIG_IGN);
+	signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, myname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
@@ -766,9 +753,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void 
-adios (char *what, char *fmt)
-{
+static void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -791,9 +777,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-static void 
-advise (int code, char *what, char *fmt)
-{
+static void
+advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

@@ -29,9 +29,8 @@ void	ros_adios (), ros_advise (), acs_adios (), acs_advise (),
 		advise (), adios ();
 PE	build_bind_arg ();
 
-int 
-main (int argc, char **argv)
-{
+int
+main (int argc, char **argv) {
 	extern char	*optarg;
 	extern int	optind;
 	int	opt;
@@ -43,7 +42,7 @@ main (int argc, char **argv)
 			sleeptime = atoi (optarg);
 			break;
 		default:
-			 fprintf (stderr, "Usage: %s [-s] host\n", myname);
+			fprintf (stderr, "Usage: %s [-s] host\n", myname);
 			break;
 		}
 
@@ -60,9 +59,8 @@ main (int argc, char **argv)
 }
 
 
-int 
-ntp_monitor (char *host)
-{
+int
+ntp_monitor (char *host) {
 	int	sd;
 
 	sd = mk_connect (host);
@@ -75,9 +73,8 @@ ntp_monitor (char *host)
 	}
 }
 
-int 
-mk_connect (char *addr)
-{
+int
+mk_connect (char *addr) {
 	int sd;
 	struct SSAPref sfs;
 	struct SSAPref *sf;
@@ -128,7 +125,7 @@ mk_connect (char *addr)
 	pc -> pc_ctx[0].pc_atn = NULLOID;
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		 bzero ((char *) sf, sizeof *sf);
+		bzero ((char *) sf, sizeof *sf);
 	}
 
 	if (AcAssocRequest (ctx, NULLAEI, NULLAEI, NULLPA, pa,
@@ -152,9 +149,8 @@ mk_connect (char *addr)
 	return sd;
 }
 
-int 
-ac_failed (struct AcSAPconnect *acc)
-{
+int
+ac_failed (struct AcSAPconnect *acc) {
 	if (acc -> acc_ninfo > 0) {
 		struct type_NTP_BindError *binderr;
 		char	*cp = NULLCP;
@@ -204,9 +200,8 @@ ac_failed (struct AcSAPconnect *acc)
 }
 
 
-int 
-send_request (int sd)
-{
+int
+send_request (int sd) {
 	struct RoSAPindication rois;
 	struct RoSAPindication *roi = &rois;
 	struct RoSAPpreject *rop = &roi -> roi_preject;
@@ -234,18 +229,17 @@ send_request (int sd)
 }
 
 /* ARGSUSED */
-int 
-query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, struct RoSAPindication *roi)
-{
+int
+query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, struct RoSAPindication *roi) {
 	struct type_NTP_ClockInfo *clock;
 	char	*p, c;
 	int 	i;
 
-	 printf (" %4.4s %4.4s %5.5s %8.8s %8.8s %8.8s %s\n",
-				   "Stratum", "Poll", "Reach", "Delay", "Offset", "Disp", "host");
+	printf (" %4.4s %4.4s %5.5s %8.8s %8.8s %8.8s %s\n",
+			"Stratum", "Poll", "Reach", "Delay", "Offset", "Disp", "host");
 	for (i = 0; i < 44; i++)
-		 putchar('-');
-	 putchar ('\n');
+		putchar('-');
+	putchar ('\n');
 	for (; result; result = result -> next) {
 		clock = result -> ClockInfo;
 
@@ -260,33 +254,32 @@ query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, 
 			c = '>';
 		if (bit_test (clock -> flags, bit_NTP_flags_inactive))
 			c = '!';
-		 putchar (c);
-		 printf ("%4d", clock -> stratum);
-		 printf (" %4d", clock -> timer);
-		 printf ("   %03o", clock -> reachability);
-		 printf (" %8d", clock -> estdelay);
-		 printf (" %8d", clock -> estoffset);
-		 printf (" %8d", clock -> estdisp);
+		putchar (c);
+		printf ("%4d", clock -> stratum);
+		printf (" %4d", clock -> timer);
+		printf ("   %03o", clock -> reachability);
+		printf (" %8d", clock -> estdelay);
+		printf (" %8d", clock -> estoffset);
+		printf (" %8d", clock -> estdisp);
 		p = qb2str (clock -> remoteAddress);
-		 printf (" %s", p);
+		printf (" %s", p);
 		free(p);
 		if (c == '>') {
 			struct type_NTP_ClockIdentifier *ci =
-						clock -> reference;
+					clock -> reference;
 			p = qb2str(ci -> un.referenceClock);
-			 printf (" (%s)", p);
+			printf (" (%s)", p);
 			free (p);
 		}
-		 putchar ('\n');
+		putchar ('\n');
 	}
 	return OK;
 }
 
 
 /* ARGSUSED */
-int 
-query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi)
-{
+int
+query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {
 	struct RyError *rye;
 
 	if (error == RY_REJECT) {
@@ -310,10 +303,10 @@ static PE build_bind_arg () {
 	bindarg -> version =
 		pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
 				  PE_PRIM_BITS);
-	 bit_on (bindarg -> version,
-				   bit_NTP_version_version__1);
-	 bit_on (bindarg -> version,
-				   bit_NTP_version_version__2);
+	bit_on (bindarg -> version,
+			bit_NTP_version_version__1);
+	bit_on (bindarg -> version,
+			bit_NTP_version_version__2);
 
 	bindarg -> mode = (struct type_NTP_BindMode *)
 					  calloc (1, sizeof *bindarg->mode);
@@ -327,51 +320,47 @@ static PE build_bind_arg () {
 	return pe;
 }
 
-void 
-ros_adios (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	_exit (1);
 }
 
 
-void 
-ros_advise (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
-						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
+		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
 /* ^L */
 
-void 
-acs_adios (struct AcSAPabort *aca, char *event)
-{
+void
+acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
 
 	_exit (1);
 }
 
 
-void 
-acs_advise (struct AcSAPabort *aca, char *event)
-{
+void
+acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						AcErrString (aca -> aca_reason),
-						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 AcErrString (aca -> aca_reason),
+				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -396,9 +385,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -423,20 +411,19 @@ va_list ap;
 
 	asprintf (buffer, ap);
 
-	 fflush (stdout);
+	fflush (stdout);
 
-	 fprintf (stderr, "%s: ", myname);
-	 fputs (buffer, stderr);
-	 fputc ('\n', stderr);
+	fprintf (stderr, "%s: ", myname);
+	fputs (buffer, stderr);
+	fputc ('\n', stderr);
 
-	 fflush (stderr);
+	fflush (stderr);
 }
 #else
 /* VARARGS */
 
-void 
-advise (char *what, char *fmt)
-{
+void
+advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
@@ -456,9 +443,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-ryr_advise (char *what, char *fmt)
-{
+void
+ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

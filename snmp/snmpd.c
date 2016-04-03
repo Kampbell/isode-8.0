@@ -318,7 +318,7 @@ char  **argv,
 						failed++;
 						continue;
 					}
-					 ioctl (udp, FIOCLEX, NULLCP);
+					ioctl (udp, FIOCLEX, NULLCP);
 					if (udp >= nfds)
 						nfds = udp + 1;
 					FD_SET (udp, &ifds);
@@ -353,7 +353,7 @@ do_clts:
 					union sockaddr_osi lo_socket;
 					union sockaddr_osi *lsock = &lo_socket;
 
-					 gen2tp4 (ta, lsock);
+					gen2tp4 (ta, lsock);
 					if ((clts = start_clts_server (lsock, 0, 0, 0))
 							== NOTOK) {
 						advise (LLOG_EXCEPTIONS, "failed",
@@ -361,7 +361,7 @@ do_clts:
 						failed++;
 						continue;
 					}
-					 ioctl (clts, FIOCLEX, NULLCP);
+					ioctl (clts, FIOCLEX, NULLCP);
 					if (clts >= nfds)
 						nfds = clts + 1;
 					FD_SET (clts, &ifds);
@@ -424,7 +424,7 @@ do_clts:
 		if (smux_enabled) {
 			if ((smux = start_tcp_server (lsock, SOMAXCONN, 0, 0)) == NOTOK)
 				adios ("failed", "start_tcp_server for SMUX");
-			 ioctl (smux, FIOCLEX, NULLCP);
+			ioctl (smux, FIOCLEX, NULLCP);
 			if (smux >= nfds)
 				nfds = smux + 1;
 			FD_SET (smux, &ifds);
@@ -474,7 +474,7 @@ do_clts:
 		if (smux != NOTOK
 				&& FD_ISSET (smux, &rfds)
 				&& (fd = start_smux ()) != NOTOK) {
-			 ioctl (fd, FIOCLEX, NULLCP);
+			ioctl (fd, FIOCLEX, NULLCP);
 			if (fd >= nfds)
 				nfds = fd + 1;
 			FD_SET (fd, &ifds);
@@ -493,7 +493,7 @@ do_clts:
 
 #ifdef	COTS
 		if (vecp > 0 && (fd = start_tsap (vecp, vec)) != NOTOK) {
-			 ioctl (fd, FIOCLEX, NULLCP);
+			ioctl (fd, FIOCLEX, NULLCP);
 			if (fd >= nfds)
 				nfds = fd + 1;
 			FD_SET (fd, &ifds);
@@ -504,7 +504,7 @@ do_clts:
 			if (FD_ISSET (fd, &rfds) && FD_ISSET (fd, &cfds))
 				doit_cots (fd);
 
-		 gettimeofday (tv, (struct timezone *) 0);
+		gettimeofday (tv, (struct timezone *) 0);
 		tv -> tv_sec -= (long) IDLE_TIME;
 
 		for (fd = 0; fd < nfds; fd++)
@@ -513,7 +513,7 @@ do_clts:
 					advise (LLOG_EXCEPTIONS, NULLCP,
 							"clearing connection from %d: %s", fd,
 							taddr2str (taddrs + fd));
-					 TDiscRequest (fd, NULLCP, 0, td);
+					TDiscRequest (fd, NULLCP, 0, td);
 
 					FD_CLR (fd, &ifds);
 					FD_CLR (fd, &cfds);
@@ -540,23 +540,23 @@ do_clts:
 #endif
 #ifdef	TCP
 			if (udp != NOTOK) {
-				 close_udp_socket (udp);
+				close_udp_socket (udp);
 				FD_CLR (udp, &ifds);
 				udp = NOTOK;
 			}
 #endif
 #ifdef	CLTS
 			if (clts != NOTOK) {
-				 close_clts_socket (clts);
+				close_clts_socket (clts);
 				FD_CLR (clts, &ifds);
 				clts = NOTOK;
 			}
 #endif
 #ifdef	COTS
-			 TNetClose (NULLTA, td);
+			TNetClose (NULLTA, td);
 			for (fd = 0; fd < nfds; fd++)
 				if (FD_ISSET (fd, &cfds)) {
-					 TDiscRequest (fd, NULLCP, 0, td);
+					TDiscRequest (fd, NULLCP, 0, td);
 					FD_CLR (fd, &ifds);
 					FD_CLR (fd, &cfds);
 					proxy_clear (fd);
@@ -566,10 +566,10 @@ do_clts:
 #ifdef	SMUX
 			{
 				struct smuxPeer *pb,
-						*qb;
+						   *qb;
 
 				if (smux != NOTOK)
-					 close_tcp_socket (smux), smux = NOTOK;
+					close_tcp_socket (smux), smux = NOTOK;
 				for (pb = PHead -> pb_forw; pb != PHead; pb = qb) {
 					qb = pb -> pb_forw;
 
@@ -587,7 +587,7 @@ do_clts:
 			}
 #endif
 
-			 execv (spath, sargv);
+			execv (spath, sargv);
 			adios (spath, "unable to execv");
 			break;
 
@@ -611,11 +611,11 @@ char   *event;
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						TErrString (td -> td_reason),
-						td -> td_cc, td -> td_cc, td -> td_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 TErrString (td -> td_reason),
+				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
@@ -639,14 +639,14 @@ int	pd;
 		adios ("failed", "join_udp_client");
 	}
 
-	 sprintf (source, "Internet=%s+%d+2",
-					cp = inet_ntoa (isock -> sin_addr),
-					(int) ntohs (isock -> sin_port));
+	sprintf (source, "Internet=%s+%d+2",
+			 cp = inet_ntoa (isock -> sin_addr),
+			 (int) ntohs (isock -> sin_port));
 
 	bzero ((char *) na, sizeof *na);
 	na -> na_stack = NA_TCP;
 	na -> na_community = ts_comm_tcp_default;
-	 strncpy (na -> na_domain, cp, sizeof na -> na_domain - 1);
+	strncpy (na -> na_domain, cp, sizeof na -> na_domain - 1);
 	na -> na_port = isock -> sin_port;
 
 	doit_aux (fd, na, read_udp_socket, write_udp_socket, check_udp_socket);
@@ -655,7 +655,7 @@ int	pd;
 		pqr -> pq_fd = fd, pqr -> pq_closefnx = close_udp_socket;
 	else
 #endif
-		 close_udp_socket (fd);
+		close_udp_socket (fd);
 }
 #endif
 
@@ -677,9 +677,9 @@ int	pd;
 			return;
 		adios ("failed", "join_tcp_client");
 	}
-	 tp42gen (ta, isock);
+	tp42gen (ta, isock);
 
-	 strcpy (source, taddr2str (ta));
+	strcpy (source, taddr2str (ta));
 
 	doit_aux (fd, ta -> ta_addrs, read_clts_socket, write_clts_socket,
 			  check_clts_socket);
@@ -688,7 +688,7 @@ int	pd;
 		pqr -> pq_fd = fd, pqr -> pq_closefnx = close_clts_socket;
 	else
 #endif
-		 close_clts_socket (fd);
+		close_clts_socket (fd);
 }
 #endif
 
@@ -722,7 +722,7 @@ char  **vec;
 	}
 
 	taddrs[ts -> ts_sd] = ts -> ts_calling;	/* struct copy */
-	 gettimeofday (lru + ts -> ts_sd, (struct timezone *) 0);
+	gettimeofday (lru + ts -> ts_sd, (struct timezone *) 0);
 
 	return ts -> ts_sd;
 }
@@ -732,14 +732,14 @@ char  **vec;
 static	doit_cots (fd)
 int	fd;
 {
-	 strcpy (source, taddr2str (taddrs + fd));
+	strcpy (source, taddr2str (taddrs + fd));
 	doit_aux (fd, &(taddrs[fd].ta_addrs[0]), ts_read, ts_write, NULLIFP);
 #ifndef	SNMPT
 	if (pqr)
 		pqr -> pq_fd = fd, pqr -> pq_closefnx = NULLIFP;
 #endif
 
-	 gettimeofday (lru + fd, (struct timezone *) 0);
+	gettimeofday (lru + fd, (struct timezone *) 0);
 }
 #endif
 
@@ -828,7 +828,7 @@ IFP	rfx,
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"clearing connection from %d: %s", fd,
 					taddr2str (taddrs + fd));
-			 TDiscRequest (fd, NULLCP, 0, &tds);
+			TDiscRequest (fd, NULLCP, 0, &tds);
 
 			FD_CLR (fd, &ifds);
 			FD_CLR (fd, &cfds);
@@ -848,7 +848,7 @@ out:
 		/* BEGIN MOBY PEPSY HACK... */
 
 		struct type_SNMP_VarBindList *vp =
-					msg -> data -> un.get__request -> variable__bindings;
+				msg -> data -> un.get__request -> variable__bindings;
 
 		free_SNMP_VarBindList (vp);
 
@@ -1056,11 +1056,11 @@ no_mem:
 		if (idx = do_pass (msg, offset, vu)) {
 			int	status = parm -> error__status;
 
-			 do_pass (msg, type_SNMP_PDUs_rollback, vu);
+			do_pass (msg, type_SNMP_PDUs_rollback, vu);
 
 			parm -> error__status = status;
 		} else
-			 do_pass (msg, type_SNMP_PDUs_commit, vu);
+			do_pass (msg, type_SNMP_PDUs_commit, vu);
 		gc_set ();
 		break;
 	}
@@ -1265,9 +1265,9 @@ get_next:
 static	gc_set () {
 #ifdef	SMUX
 	struct smuxPeer *pb,
-			*qb;
+			   *qb;
 	struct smuxTree *tb,
-			*ub;
+			   *ub;
 
 	for (pb = PHead -> pb_forw; pb != PHead; pb = qb) {
 		qb = pb -> pb_forw;
@@ -1284,7 +1284,7 @@ static	gc_set () {
 	}
 #endif
 
-	 chekmem ((struct nlist *) 0);
+	chekmem ((struct nlist *) 0);
 }
 
 /*    PROXY */
@@ -1313,7 +1313,7 @@ struct community *comm;
 				advise (LLOG_NOTICE, NULLCP, "proxy flush");
 				if (pq -> pq_closefnx) {
 					ps_free (pq -> pq_ps);
-					 (*pq -> pq_closefnx) (pq -> pq_fd);
+					(*pq -> pq_closefnx) (pq -> pq_fd);
 				}
 				QBFREE (&pq -> pq_community);
 				break;
@@ -1386,7 +1386,7 @@ out:
 
 		if (pq -> pq_closefnx) {
 			ps_free (pq -> pq_ps);
-			 (*pq -> pq_closefnx) (pq -> pq_fd);
+			(*pq -> pq_closefnx) (pq -> pq_fd);
 		}
 		QBFREE (&pq -> pq_community);
 
@@ -1405,7 +1405,7 @@ struct type_SNMP_Message *msg;
 {
 	integer  request;
 	struct proxyque *pq,
-			*qp;
+			   *qp;
 	PE	    pe;
 
 	request = msg -> data -> un.get__request -> request__id;
@@ -1444,7 +1444,7 @@ out:
 
 	if (pq -> pq_closefnx) {
 		ps_free (pq -> pq_ps);
-		 (*pq -> pq_closefnx) (pq -> pq_fd);
+		(*pq -> pq_closefnx) (pq -> pq_fd);
 	}
 	QBFREE (&pq -> pq_community);
 
@@ -1461,7 +1461,7 @@ static	proxy_clear (fd)
 int	fd;
 {
 	struct proxyque *pq,
-			*qp;
+			   *qp;
 
 again:
 	;
@@ -1471,7 +1471,7 @@ again:
 
 			if (pq -> pq_closefnx) {
 				ps_free (pq -> pq_ps);
-				 (*pq -> pq_closefnx) (pq -> pq_fd);
+				(*pq -> pq_closefnx) (pq -> pq_fd);
 			}
 			QBFREE (&pq -> pq_community);
 
@@ -1505,7 +1505,7 @@ static int  start_smux () {
 		advise (LLOG_EXCEPTIONS, NULLCP, "doit_smux: out of memory");
 out:
 		;
-		 close_tcp_socket (fd);
+		close_tcp_socket (fd);
 		return NOTOK;
 	}
 
@@ -1513,10 +1513,10 @@ out:
 
 	/* Format sockets consistantly with other places in this program,
 	   with a plus sign between the internet address and port number.  (EJP) */
-	 sprintf (pb -> pb_source, "%s+%d",
-					inet_ntoa (pb -> pb_address.sin_addr),
-					(int) ntohs (pb -> pb_address.sin_port));
-	 strcpy (source, pb -> pb_source);
+	sprintf (pb -> pb_source, "%s+%d",
+			 inet_ntoa (pb -> pb_address.sin_addr),
+			 (int) ntohs (pb -> pb_address.sin_port));
+	strcpy (source, pb -> pb_source);
 
 	if ((pb -> pb_ps = ps_alloc (fdx_open)) == NULLPS
 			|| fdx_setup (pb -> pb_ps, fd) == NOTOK) {
@@ -1562,7 +1562,7 @@ int	fd;
 		return;
 	}
 
-	 strcpy (source, pb -> pb_source);
+	strcpy (source, pb -> pb_source);
 
 	if ((pe = ps2pe (pb -> pb_ps)) == NULLPE) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "ps2pe: %s (SMUX %s)",
@@ -1611,7 +1611,7 @@ struct type_SNMP_SMUX__PDUs *pdu;
 			goto unexpected;
 		{
 			struct type_SNMP_SimpleOpen *simple =
-						pdu -> un.simple;
+					pdu -> un.simple;
 			struct smuxEntry *se;
 
 			if (simple -> version != int_SNMP_version_version__1) {
@@ -1674,7 +1674,7 @@ struct type_SNMP_SMUX__PDUs *pdu;
 			goto unexpected;
 		{
 			struct type_SNMP_RReqPDU *rreq =
-						pdu -> un.registerRequest;
+					pdu -> un.registerRequest;
 			struct type_SNMP_RRspPDU rrsp;
 			struct type_SNMP_SMUX__PDUs rsp;
 			struct smuxReserved *sr;
@@ -1728,7 +1728,7 @@ struct type_SNMP_SMUX__PDUs *pdu;
 				ot -> ot_status = OT_OPTIONAL;
 				export_view (ot);
 
-				 add_objects (ot);
+				add_objects (ot);
 			} else {
 				if (rreq -> operation == int_SNMP_operation_delete) {
 					for (tb = (struct smuxTree *) ot -> ot_smux;
@@ -1945,9 +1945,9 @@ int	offset;
 	int	    status,
 			orig_id;
 	struct type_SNMP_VarBindList *orig_bindings,
-			vps;
+			   vps;
 	struct type_SNMP_SMUX__PDUs  req,
-			*rsp;
+			   *rsp;
 	struct type_SNMP_SOutPDU cor;
 	struct type_SNMP_GetResponse__PDU *get;
 	PE	    pe;
@@ -2142,7 +2142,7 @@ static	pb_free (pb)
 struct smuxPeer *pb;
 {
 	struct smuxTree *tb,
-			*ub;
+			   *ub;
 
 	if (pb == NULL)
 		return;
@@ -2158,7 +2158,7 @@ struct smuxPeer *pb;
 		ps_free (pb -> pb_ps);
 
 	if (pb -> pb_fd != NOTOK) {
-		 close_tcp_socket (pb -> pb_fd);
+		close_tcp_socket (pb -> pb_fd);
 		FD_CLR (pb -> pb_fd, &ifds);
 		FD_CLR (pb -> pb_fd, &sfds);
 	}
@@ -2179,7 +2179,7 @@ static	tb_free (tb)
 struct smuxTree *tb;
 {
 	struct smuxTree *tp,
-			**tpp;
+			   **tpp;
 
 	if (tb == NULL)
 		return;
@@ -2243,7 +2243,7 @@ char   *name;
 struct NSAPaddr *na;
 {
 	struct community *c,
-			*d;
+			   *d;
 
 	d = NULL;
 	for (c = CHead -> c_forw; c != CHead; c = c -> c_forw)
@@ -2330,7 +2330,7 @@ out:
 		goto no_mem;
 	pdu -> un.trap = parm;
 
-	 strcpy (myhost, TLocalHostName ());
+	strcpy (myhost, TLocalHostName ());
 	if (hp = gethostbystring (myhost)) {
 		struct sockaddr_in sin;
 
@@ -2535,7 +2535,7 @@ no_mem:
 				source);
 		goto out;
 	}
-	 time (&now);
+	time (&now);
 
 	if (tm = gmtime (&now))
 		tm2ut (tm, ut);
@@ -2557,7 +2557,7 @@ no_mem:
 			advise (LLOG_EXCEPTIONS, NULLCP, "pe2ps: %s (%s)",
 					ps_error (audit -> ps_errno), source);
 
-		 ps_flush (audit);
+		ps_flush (audit);
 	} else
 		advise (LLOG_EXCEPTIONS, NULLCP, "encode_SNMP_Audit: %s (%s)",
 				PY_pepy, source);
@@ -2611,9 +2611,9 @@ char	**vec;
 
 		if (getcwd (sfile, sizeof sfile - (i + 1))) {
 			ap = sfile + strlen (sfile);
-			 sprintf (ap, "%s%s", ap > sfile + 1 ? "/" : "", sargv[0]);
+			sprintf (ap, "%s%s", ap > sfile + 1 ? "/" : "", sargv[0]);
 		} else
-			 strcpy (sfile, _isodefile (isodesbinpath, myname));
+			strcpy (sfile, _isodefile (isodesbinpath, myname));
 
 		spath = sfile;
 	}
@@ -2662,7 +2662,7 @@ char	**vec;
 	x25_na -> na_stack = NA_X25;
 	x25_na -> na_community = ts_comm_x25_default;
 	if (x25_local_dte && *x25_local_dte) {
-		 strcpy (x25_na -> na_dte, x25_local_dte);
+		strcpy (x25_na -> na_dte, x25_local_dte);
 		x25_na -> na_dtelen = strlen (x25_na -> na_dte);
 	}
 #ifndef	SNMPT
@@ -2756,7 +2756,7 @@ char	**vec;
 			case 'a':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -a x121address", myname);
-				 strcpy (x25_na -> na_dte, ap);
+				strcpy (x25_na -> na_dte, ap);
 				x25_na -> na_dtelen = strlen (ap);
 				continue;
 
@@ -2824,14 +2824,14 @@ static  envinit () {
 			break;
 		}
 
-		 chdir ("/");
+		chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			 dup2 (sd, 0),  close (sd);
-		 dup2 (0, 1);
-		 dup2 (0, 2);
+			dup2 (sd, 0),  close (sd);
+		dup2 (0, 1);
+		dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -2839,14 +2839,14 @@ static  envinit () {
 #endif
 #ifdef	TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			 ioctl (sd, TIOCNOTTY, NULLCP);
-			 close (sd);
+			ioctl (sd, TIOCNOTTY, NULLCP);
+			close (sd);
 		}
 #else
 #ifdef	SYS5
-		 setpgrp ();
-		 signal (SIGINT, SIG_IGN);
-		 signal (SIGQUIT, SIG_IGN);
+		setpgrp ();
+		signal (SIGINT, SIG_IGN);
+		signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -2863,11 +2863,11 @@ static  envinit () {
 #endif
 		if (pgm_log -> ll_fd == sd)
 			continue;
-		 close (sd);
+		close (sd);
 	}
 #endif
 
-	 signal (SIGPIPE, SIG_IGN);
+	signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, myname);
 
@@ -2908,15 +2908,15 @@ static  envinit () {
 	o_advise = (IFP) advise;
 #endif
 
-	 sprintf (file, "/etc/%s.pid", myname);
+	sprintf (file, "/etc/%s.pid", myname);
 	if (fp = fopen (file, "w")) {
-		 fprintf (fp, "%d\n", getpid ());
-		 fclose (fp);
+		fprintf (fp, "%d\n", getpid ());
+		fclose (fp);
 	}
 
 	advise (LLOG_NOTICE, NULLCP, "starting");
 #ifdef	DEBUG
-	 signal (SIGHUP, hupser);
+	signal (SIGHUP, hupser);
 #endif
 }
 
@@ -2939,8 +2939,8 @@ int	sig;
 			sbrk (0), pe_allocs, pe_frees, pe_most);
 
 	for (p = pe_active; p; p = p -> pe_link) {
-		 sprintf (buffer, "active PE 0x%x (refcnt %d)", (caddr_t) p,
-						p -> pe_refcnt);
+		sprintf (buffer, "active PE 0x%x (refcnt %d)", (caddr_t) p,
+				 p -> pe_refcnt);
 
 		_vpdu (pgm_log, vunknown, p, buffer, -1);
 	}
@@ -3000,7 +3000,7 @@ static	readconfig () {
 			continue;
 		if (cp = index (buffer, '\n'))
 			*cp = NULL;
-		 strcpy (line, buffer);
+		strcpy (line, buffer);
 
 		bzero ((char *) vec, sizeof vec);
 		if (str2vec (buffer, vec) < 1)
@@ -3017,7 +3017,7 @@ static	readconfig () {
 					line);
 	}
 
-	 fclose (fp);
+	fclose (fp);
 }
 
 /*  */

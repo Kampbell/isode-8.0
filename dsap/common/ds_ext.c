@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/ds_ext.c,v 9.0 
 
 extern	LLog	* log_dsap;
 
-int 
-subords_free (struct subordinate *subp)
-{
+int
+subords_free (struct subordinate *subp) {
 	if(subp == NULLSUBORD)
 		return;
 	subords_free(subp->sub_next);
@@ -42,9 +41,8 @@ subords_free (struct subordinate *subp)
 	free((char *)subp);
 }
 
-int 
-ems_free (struct entrymod *emp)
-{
+int
+ems_free (struct entrymod *emp) {
 	if(emp == NULLMOD)
 		return;
 	ems_free(emp->em_next);
@@ -52,9 +50,8 @@ ems_free (struct entrymod *emp)
 	free((char *)emp);
 }
 
-int 
-aps_free (struct access_point *app)
-{
+int
+aps_free (struct access_point *app) {
 	if(app == NULLACCESSPOINT)
 		return;
 

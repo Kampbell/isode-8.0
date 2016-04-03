@@ -71,18 +71,17 @@ static int fix_mem();
  * decode the specified type of the specified module into the given
  * pe
  */
-int 
+int
 dec_f (
-/* ARGSUSED */
-    int typ,			/* which type it is */
-    modtyp *mod,			/* Module it is from */
-    PE pe,
-    int explicit,
-    int *len,
-    char **buf,
-    char **parm
-)
-{
+	/* ARGSUSED */
+	int typ,			/* which type it is */
+	modtyp *mod,			/* Module it is from */
+	PE pe,
+	int explicit,
+	int *len,
+	char **buf,
+	char **parm
+) {
 	ptpe    *p;
 	int	    iflag;	/* are we called internally ? */
 
@@ -119,15 +118,14 @@ bad:
  * offset field which makes it different to pr_type routine which
  * must assume that it has an offset.
  */
-static int 
+static int
 pr_obj (
-    int expl,			/* do we look at the tag */
-    PE pe,
-    char **parm,
-    ptpe *p,
-    modtyp *mod			/* Module it is from */
-)
-{
+	int expl,			/* do we look at the tag */
+	PE pe,
+	char **parm,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+) {
 	int     cnt = 0;
 
 
@@ -193,15 +191,14 @@ bad:
  * Parse a single type. If a basic type parse it, if a compound type
  * call the appropriate parsing routine
  */
-static int 
+static int
 pr_type (
-    int expl,			/* do we look at the tag */
-    PE pe,
-    char **parm,
-    ptpe *p,
-    modtyp *mod			/* Module it is from */
-)
-{
+	int expl,			/* do we look at the tag */
+	PE pe,
+	char **parm,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+) {
 	int	cnt = 0;
 	int len;
 	OID     oid;
@@ -651,14 +648,13 @@ bad:
  * Parse a sequence, calling appropriate routines to parse each sub
  * type
  */
-static int 
+static int
 pr_seq (
-    PE head,
-    char **parm,
-    ptpe *p,
-    modtyp *mod			/* Module it is from */
-)
-{
+	PE head,
+	char **parm,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+) {
 	PE      pe;
 	int    *popt = NULL;	/* Pointer to optional field */
 	int     optcnt = 0;		/* Number of optionals bits so far */
@@ -912,14 +908,13 @@ bad:
 /*
  * Parse a set, calling appropriate routines to parse each sub type
  */
-static int 
+static int
 pr_set (
-    PE head,
-    char **parm,
-    ptpe *p,
-    modtyp *mod			/* Module it is from */
-)
-{
+	PE head,
+	char **parm,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+) {
 	PE      pe;
 	int    *popt = NULL;	/* Pointer to optional field */
 	int     optcnt = 0;		/* Number of optionals bits so far */
@@ -1171,14 +1166,13 @@ bad:
  * Parse a sequence of calling appropriate routines to parse each sub
  * type
  */
-static int 
+static int
 pr_seqof (
-    PE head,
-    char **parm,
-    ptpe *p,
-    modtyp *mod			/* Module it is from */
-)
-{
+	PE head,
+	char **parm,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+) {
 	PE      pe;
 	ptpe    *start;		/* first entry in list */
 	int     dflt = 0;
@@ -1372,14 +1366,13 @@ bad:
 /*
  * Parse a setof, calling appropriate routines to parse each sub type
  */
-static int 
+static int
 pr_setof (
-    PE head,
-    char **parm,
-    ptpe *p,
-    modtyp *mod			/* Module it is from */
-)
-{
+	PE head,
+	char **parm,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+) {
 	PE      pe;
 	ptpe    *start;
 	char	*nparm;
@@ -1567,14 +1560,13 @@ bad:
 /*
  * parse a choice field. This means find which choice is taken
  */
-static int 
+static int
 pr_choice (
-    PE head,
-    char **parm,
-    ptpe *p,
-    modtyp *mod			/* Module it is from */
-)
-{
+	PE head,
+	char **parm,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+) {
 	int    *poffset;
 	int     cnt;
 	ptpe    *savep = NULLTPE;
@@ -1631,7 +1623,7 @@ pr_choice (
 			cnt++;
 		}
 	}
-	 pepsylose(mod, p, head, "pr_choice: no choice taken");
+	pepsylose(mod, p, head, "pr_choice: no choice taken");
 bad:
 	return (NOTOK);
 }
@@ -1640,14 +1632,13 @@ bad:
  * Parse a single type for explicit tag If a basic type parse it, if
  * a compound type call the appropriate parsing routine
  */
-static int 
+static int
 pr_etype (
-    PE pe,
-    char **parm,
-    ptpe *p,
-    modtyp *mod			/* Module it is from */
-)
-{
+	PE pe,
+	char **parm,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+) {
 	int cnt;
 	char    *nparm;
 
@@ -2014,9 +2005,8 @@ bad:
  * object is a CHOICE there are more than one possible tag that could
  * match and in this case we must try to match each one of them.
  */
-static PE 
-setpresent (PE head, ptpe *p, modtyp *mod)
-{
+static PE
+setpresent (PE head, ptpe *p, modtyp *mod) {
 	PE      pe;
 	modtyp	*nmod;
 
@@ -2056,9 +2046,8 @@ setpresent (PE head, ptpe *p, modtyp *mod)
 /*
  * set the default value to that value in the structure
  */
-static int 
-setdval (ptpe *typ, ptpe *dflt, char **parm, modtyp *mod)
-{
+static int
+setdval (ptpe *typ, ptpe *dflt, char **parm, modtyp *mod) {
 	char	*p;
 	integer	i;
 	int		no;	/* number of octets */
@@ -2071,8 +2060,8 @@ again:
 			break;	/* already allocated */
 
 		if ((*(parm) = (char *) calloc(1, (unsigned ) typ->pe_tag)) == NULL) {
-			 pepsylose (mod, typ, NULLPE,
-							  "setdval:calloc failed on %d", typ->pe_tag);
+			pepsylose (mod, typ, NULLPE,
+					   "setdval:calloc failed on %d", typ->pe_tag);
 			return NOTOK;
 		}
 	/* fall through and do the same stuff as for ETAG */
@@ -2191,8 +2180,8 @@ again:
 		 * dmp_tpe("setdval: type not implemented", typ, mod); - need
 		 * mod
 		 */
-		 pepsylose(mod, typ, NULLPE,
-						 "setdval: %d not implemented", typ->pe_type);
+		pepsylose(mod, typ, NULLPE,
+				  "setdval: %d not implemented", typ->pe_type);
 		return NOTOK;
 	}
 	return OK;
@@ -2203,9 +2192,8 @@ again:
  * this is present because it then believes the object is present and
  * tries to process it ...
  */
-static int 
-fix_mem (char **parm, ptpe *p)
-{
+static int
+fix_mem (char **parm, ptpe *p) {
 	if (p->pe_type != SOBJECT || p[-1].pe_type != MEMALLOC
 			|| p[1].pe_type != PE_END)
 		SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP, ("fix_mem:inconsistency"));

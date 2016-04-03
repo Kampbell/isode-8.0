@@ -71,14 +71,14 @@ struct ssapkt *s;
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			 sprintf (file, ssapfile, getpid ());
+			sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				fprintf (fp, "str = %d/\"%s\"\n", strlen (buffer), buffer);
 				spkt2text (fp, s, 0);
-				 fclose (fp);
+				fclose (fp);
 			}
 		} else {
-			 fflush (stdout);
+			fflush (stdout);
 			fprintf (stderr, "str = %d/\"%s\"\n", strlen (buffer), buffer);
 			spkt2text (stderr, s, 0);
 		}
@@ -91,14 +91,13 @@ struct ssapkt *s;
 /*  */
 
 struct ssapkt *
-str2spkt (char *buffer)
-{
+str2spkt (char *buffer) {
 	int	    cc;
 	char    packet[CONNECT_MAX + BUFSIZ];
 	struct ssapkt *s;
 	struct qbuf qbs;
 	struct qbuf *qb = &qbs,
-								  *qp;
+					 *qp;
 
 	bzero ((char *) qb, sizeof *qb);
 	qb -> qb_forw = qb -> qb_back = qb;
@@ -123,15 +122,15 @@ str2spkt (char *buffer)
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			 sprintf (file, ssapfile, getpid ());
+			sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				fprintf (fp, "str = %d/\"%s\"\n", strlen (buffer), buffer);
 				if (s)
 					spkt2text (fp, s, 1);
-				 fclose (fp);
+				fclose (fp);
 			}
 		} else {
-			 fflush (stdout);
+			fflush (stdout);
 			fprintf (stderr, "str = %d/\"%s\"\n", strlen (buffer), buffer);
 			if (s)
 				spkt2text (stderr, s, 1);

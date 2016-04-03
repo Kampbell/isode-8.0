@@ -37,8 +37,7 @@ extern LLog * log_dsap;
 extern char dsa_mode;
 
 char *
-SkipSpace (char *ptr)
-{
+SkipSpace (char *ptr) {
 	if (ptr == NULLCP)
 		return (NULLCP);
 
@@ -47,7 +46,7 @@ SkipSpace (char *ptr)
 	return (ptr);
 }
 
-void 
+void
 StripSpace (char *b)
 /* copy b to a less spaces and comments */
 {
@@ -78,7 +77,7 @@ StripSpace (char *b)
 	*a = 0;
 }
 
-void 
+void
 StripSpace2 (char *b)
 /* copy b to a less spaces and comments */
 {
@@ -105,8 +104,7 @@ StripSpace2 (char *b)
 }
 
 char *
-TidyString2 (char *a)
-{
+TidyString2 (char *a) {
 	char * b;
 	char * c;
 	int i = 0;
@@ -145,8 +143,7 @@ TidyString2 (char *a)
 }
 
 char *
-TidyString (char *a)
-{
+TidyString (char *a) {
 	char * b;
 	char * c;
 	int i = 0;
@@ -255,21 +252,20 @@ ps_printf (ps,fmt)
 PS ps;
 char * fmt;
 {
-	 ps_printf (ps,fmt) ;
+	ps_printf (ps,fmt) ;
 }
 
 #endif
 
 
-int 
-fatal (int code, char *fmt)
-{
+int
+fatal (int code, char *fmt) {
 	if (dsa_mode)
 		log_dsap -> ll_syslog = LLOG_FATAL;
 	LLOG (log_dsap,LLOG_FATAL,("Quipu failure (%d): %s",code,fmt));
 	stop_listeners ();
-	 fflush (stdout);
-	 fprintf (stderr,"Quipu failure (%d): %s\n",code,fmt);
+	fflush (stdout);
+	fprintf (stderr,"Quipu failure (%d): %s\n",code,fmt);
 	exit (code);
 }
 
@@ -306,13 +302,13 @@ caddr_t ptr;
 	ps->ps_ptr = ps->ps_base;
 }
 
-int 
+int
 stop_listeners (void) {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
 	/* close all listeners */
-	 TNetClose (NULLTA,td);
+	TNetClose (NULLTA,td);
 }
 
 quipu_pe_cmp (a,b)

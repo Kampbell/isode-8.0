@@ -818,9 +818,8 @@ yyerrhandle:
 #line 100 "config.b"
 
 
-static int 
-yylex (YYSTYPE *lvalp, YYLTYPE *llocp)
-{
+static int
+yylex (YYSTYPE *lvalp, YYLTYPE *llocp) {
 	int c;
 	QCardinal count = 0;
 	FILE *lexfile = config_file;
@@ -863,7 +862,7 @@ yylex (YYSTYPE *lvalp, YYLTYPE *llocp)
 
 		if (c == '\"' || c == '\0') {
 			lexeme[count] = '\0';
-			 strcpy(lvalp->strval, lexeme);
+			strcpy(lvalp->strval, lexeme);
 
 			return STRING;
 		}
@@ -882,7 +881,7 @@ yylex (YYSTYPE *lvalp, YYLTYPE *llocp)
 
 	if (c == EOF) return 0;
 
-	 fseek(lexfile, (long) -1, 1);
+	fseek(lexfile, (long) -1, 1);
 
 	lexeme[count] = '\0';
 
@@ -914,14 +913,13 @@ yylex (YYSTYPE *lvalp, YYLTYPE *llocp)
 }
 
 /* ARGSUSED */
-int 
-yyerror (char *err)
-{
-	 fprintf(stderr, "Line %d. ", config_line_num);
-	 fprintf(stderr,
-				   "Parse error in file `%s' at or near `%s'.\n",
-				   config_file_name,
-				   lexeme);
+int
+yyerror (char *err) {
+	fprintf(stderr, "Line %d. ", config_line_num);
+	fprintf(stderr,
+			"Parse error in file `%s' at or near `%s'.\n",
+			config_file_name,
+			lexeme);
 	exit(1);
 }
 

@@ -33,11 +33,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamacl.c,v 9.0 1992/0
 /*  */
 
 struct type_FTAM_Access__Control__List *
-acl2fpm (struct ftamblk *fsb, struct FTAMacelement *fe, struct FTAMindication *fti)
-{
+acl2fpm (struct ftamblk *fsb, struct FTAMacelement *fe, struct FTAMindication *fti) {
 	struct type_FTAM_Access__Control__List *fpmp;
 	struct type_FTAM_Access__Control__List  *fpm,
-			**fpc;
+			   **fpc;
 	struct type_FTAM_Access__Control__Element *ace;
 
 	fpmp = NULL, fpc = &fpmp;
@@ -46,7 +45,7 @@ acl2fpm (struct ftamblk *fsb, struct FTAMacelement *fe, struct FTAMindication *f
 				   calloc (1, sizeof *fpm)) == NULL) {
 no_mem:
 			;
-			 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+			ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 			;
 			if (fpmp)
@@ -61,8 +60,8 @@ out:
 		fpm -> Access__Control__Element = ace;
 
 		if (fe -> fe_actions & FA_PERM_TRAVERSAL) {
-			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-							 "bad value for action-list");
+			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+					  "bad value for action-list");
 			goto out;
 		}
 		if ((ace -> action__list = bits2fpm (fsb, frequested_pairs,
@@ -103,11 +102,10 @@ out:
 
 /*  */
 
-int 
-fpm2acl (struct ftamblk *fsb, struct type_FTAM_Access__Control__List *fpm, struct FTAMacelement **fe, struct FTAMindication *fti)
-{
+int
+fpm2acl (struct ftamblk *fsb, struct type_FTAM_Access__Control__List *fpm, struct FTAMacelement **fe, struct FTAMindication *fti) {
 	struct FTAMacelement *fc,
-			**fl;
+			   **fl;
 	struct type_FTAM_Access__Control__Element *ace;
 
 	*(fl = fe) = NULL;
@@ -118,7 +116,7 @@ fpm2acl (struct ftamblk *fsb, struct type_FTAM_Access__Control__List *fpm, struc
 		if ((fc = (struct FTAMacelement *) calloc (1, sizeof *fc)) == NULL) {
 no_mem:
 			;
-			 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+			ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 			;
 			if (fc = *fl)

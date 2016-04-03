@@ -227,7 +227,7 @@ Saclinfo acl;
 {
 	PE ret_pe;
 
-	 encode_Quipu_SearchACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
+	encode_Quipu_SearchACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
 
 	return( ret_pe );
 }
@@ -617,7 +617,7 @@ Listacl acl;
 {
 	PE ret_pe;
 
-	 encode_Quipu_ListACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
+	encode_Quipu_ListACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
 
 	return( ret_pe );
 }
@@ -812,7 +812,7 @@ int	format;
 	return;
 }
 
-int 
+int
 sacl_syntax (void) {
 	sacl_sntx = add_attribute_syntax ("SearchACLSyntax",
 									  (IFP) sacl_enc,	(IFP) sacl_decode,
@@ -822,7 +822,7 @@ sacl_syntax (void) {
 									  NULLIFP,	TRUE);
 }
 
-int 
+int
 lacl_syntax (void) {
 	lacl_sntx = add_attribute_syntax ("ListACLSyntax",
 									  (IFP) lacl_enc,	(IFP) lacl_decode,

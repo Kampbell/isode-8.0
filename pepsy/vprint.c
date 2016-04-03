@@ -70,7 +70,7 @@ static char   *oct2str (), *newbuf ();
 
 /*    VPUSH/VPOP */
 
-int 
+int
 vpush()  {
 	if (didvpush)
 		vwrite ("\n"), didvpush = 0;
@@ -88,7 +88,7 @@ vpush()  {
 }
 
 
-int 
+int
 vpop()  {
 	if (didname || docomma)
 		vwrite ("\n");
@@ -105,9 +105,8 @@ vpop()  {
 
 /*    VNAME/VTAG */
 
-int 
-vname (char *name)
-{
+int
+vname (char *name) {
 	if (didvpush)
 		vwrite ("\n"), didvpush = 0;
 	else if (docomma)
@@ -121,9 +120,8 @@ vname (char *name)
 }
 
 
-int 
-vtag (int class, int id)
-{
+int
+vtag (int class, int id) {
 	char *bp;
 	static char buffer[BUFSIZ];
 
@@ -136,7 +134,7 @@ vtag (int class, int id)
 	case PE_CLASS_UNIV:
 	case PE_CLASS_APPL:
 	case PE_CLASS_PRIV:
-		 sprintf (bp, "%s ", py_classlist[class]);
+		sprintf (bp, "%s ", py_classlist[class]);
 		bp += strlen (bp);
 		break;
 
@@ -144,7 +142,7 @@ vtag (int class, int id)
 	default:
 		break;
 	}
-	 sprintf (bp, "%d]", id);
+	sprintf (bp, "%d]", id);
 
 	vname (buffer);
 }
@@ -152,8 +150,7 @@ vtag (int class, int id)
 /*    VPRINT */
 
 #ifndef	lint
-vprint (char*fmt, ...)
-{
+vprint (char*fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 
@@ -172,15 +169,14 @@ vprint (char*fmt, ...)
 #else
 /* VARARGS */
 
-int 
-vprint (char *fmt)
-{
+int
+vprint (char *fmt) {
 	vprint (fmt);
 }
 #endif
 
 
-static 
+static
 vprint1()  {
 	if (didvpush) {
 		vwrite ("\n"), didvpush = 0;
@@ -198,7 +194,7 @@ indent:
 }
 
 
-static 
+static
 vprint2()  {
 	if (vlevel == 0)
 		vwrite ("\n");
@@ -208,21 +204,20 @@ vprint2()  {
 
 /*  */
 
-static 
-vwrite (char *s)
-{
+static
+vwrite (char *s) {
 	if (vfp)
 		(*vfnx) (vfp, "%s", s);
 	else {
 		char   c,
-				 *cp;
+			   *cp;
 
 		if (vps)
 			for (cp = s; *cp; cp++) {
 				if (*cp == '\n' )
-					 ps_write (vps, (PElementData) " ", 1);
+					ps_write (vps, (PElementData) " ", 1);
 				else
-					 ps_write (vps, (PElementData) cp, 1);
+					ps_write (vps, (PElementData) cp, 1);
 			}
 		else
 			for (cp = s; *cp; )
@@ -232,9 +227,8 @@ vwrite (char *s)
 
 /*    VSTRING */
 
-int 
-vstring (PE pe)
-{
+int
+vstring (PE pe) {
 	PE	    p;
 
 	switch (pe -> pe_form) {
@@ -255,14 +249,13 @@ vstring (PE pe)
 /*  */
 
 static char *
-oct2str (char *s, int len)
-{
+oct2str (char *s, int len) {
 	int     ia5ok;
 	int    k;
 	char  *bp,
-			 *cp,
-			 *dp,
-			 *zp;
+		  *cp,
+		  *dp,
+		  *zp;
 
 	ia5ok = 1, k = 0;
 	for (dp = (cp = s) + len; cp < dp; cp++) {
@@ -299,7 +292,7 @@ oct2str (char *s, int len)
 	switch (ia5ok) {
 	case 1:
 		zp = newbuf (len + 2);
-		 sprintf (zp, "\"%*.*s\"", len, len, s);
+		sprintf (zp, "\"%*.*s\"", len, len, s);
 		break;
 
 	case -1:
@@ -332,7 +325,7 @@ oct2str (char *s, int len)
 					break;
 				}
 			}
-		 sprintf (bp, "\"");
+		sprintf (bp, "\"");
 		break;
 
 	case 0:
@@ -340,10 +333,10 @@ oct2str (char *s, int len)
 		bp = zp = newbuf (len * 2 + 3);
 		*bp++ = '\'';
 		for (cp = s; cp < dp; cp++) {
-			 sprintf (bp, "%02x", *cp & 0xff);
+			sprintf (bp, "%02x", *cp & 0xff);
 			bp += strlen (bp);
 		}
-		 sprintf (bp, "'H");
+		sprintf (bp, "'H");
 		break;
 	}
 
@@ -353,16 +346,15 @@ oct2str (char *s, int len)
 /*  */
 
 char *
-bit2str (PE pe, char *s)
-{
+bit2str (PE pe, char *s) {
 	int     ia5ok;
 	int    hit,
-			 i,
-			 j,
-			 k;
+		   i,
+		   j,
+		   k;
 	char  *bp,
-			 *cp,
-			 *zp;
+		  *cp,
+		  *zp;
 
 	j = pe -> pe_nbits;
 	if ((cp = s) && *++cp) {
@@ -413,13 +405,13 @@ bit2str (PE pe, char *s)
 				hit++;
 			}
 
-		 sprintf (bp, "%s}", hit ? " " : "");
+		sprintf (bp, "%s}", hit ? " " : "");
 	} else {
 		bp = zp = newbuf (j + 3);
 		*bp++ = '\'';
 		for (i = 0; i < j; i++)
 			*bp++ = bit_test (pe, i) ? '1' : '0';
-		 sprintf (bp, "'B");
+		sprintf (bp, "'B");
 	}
 
 	return zp;
@@ -431,9 +423,8 @@ bit2str (PE pe, char *s)
 #undef vunknown
 #endif
 
-int 
-vunknown (PE pe)
-{
+int
+vunknown (PE pe) {
 	int     i;
 #ifdef	notyet	    /* could comment this in, but then all programs need -lm */
 	double  j;
@@ -517,8 +508,8 @@ bad_pe:
 			break;
 
 		case PE_ID (PE_CLASS_UNIV, PE_CONS_EXTN):
-			 print_UNIV_EXTERNAL (pe, 1, NULLIP, NULLVP,
-										NULLCP);
+			print_UNIV_EXTERNAL (pe, 1, NULLIP, NULLVP,
+								 NULLCP);
 			return;
 
 		default:
@@ -562,19 +553,18 @@ char	* s;
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 }
 
-int 
+int
 vpopfp()  {
 	(*vfnx) (vfp, "-------\n");
-	 fflush (vfp);
+	fflush (vfp);
 
 	vpopp ();
 }
 
 /*    VPUSHSTR/VPOPSTR */
 
-int 
-vpushstr (char *cp)
-{
+int
+vpushstr (char *cp) {
 	vfp = NULL;
 	vbp = vsp = cp;
 
@@ -582,7 +572,7 @@ vpushstr (char *cp)
 }
 
 
-int 
+int
 vpopstr()  {
 	while (--vbp >= vsp)
 		if (*vbp != ' ')
@@ -594,9 +584,8 @@ vpopstr()  {
 
 /*    VPUSHPP */
 
-int 
-vpushpp (caddr_t pv, IFP pfnx, PE pe, char *text, int rw)
-{
+int
+vpushpp (caddr_t pv, IFP pfnx, PE pe, char *text, int rw) {
 	vfp = (FILE *) pv, vfnx = pfnx;
 
 	(*vfnx) (vfp, "%s %s", rw ? "read" : "wrote", text ? text : "pdu");
@@ -607,15 +596,14 @@ vpushpp (caddr_t pv, IFP pfnx, PE pe, char *text, int rw)
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 }
 
-int 
+int
 vpopp()  {
 	vfp = stdout, vfnx = (IFP) fprintf;
 }
 
 
-int 
-vpushquipu (PS ps)
-{
+int
+vpushquipu (PS ps) {
 	vps = ps;
 	vfp = NULL;
 
@@ -623,7 +611,7 @@ vpushquipu (PS ps)
 }
 
 
-int 
+int
 vpopquipu()  {
 	vpopp();
 	vps = NULLPS;
@@ -648,10 +636,10 @@ int	rw;
 
 	bp = buffer;
 	sprintf (bp, "%s %s", rw ? "read" : "wrote",
-					text ? text : "pdu");
+			 text ? text : "pdu");
 	bp += strlen (bp);
 	if (pe -> pe_context != PE_DFLT_CTX) {
-		 sprintf (bp, ", context %d", pe -> pe_context);
+		sprintf (bp, ", context %d", pe -> pe_context);
 		bp += strlen (bp);
 	}
 	LLOG (lp, LLOG_ALL, ("%s", buffer));
@@ -659,13 +647,13 @@ int	rw;
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 
 	if (mod == NULL)
-		 vunknown (pe);
+		vunknown (pe);
 	else
-		 prnt_f (ind, mod, pe, 1, NULLIP, NULLVP);
+		prnt_f (ind, mod, pe, 1, NULLIP, NULLVP);
 
-	 ll_printf (lp, "-------\n");
+	ll_printf (lp, "-------\n");
 
-	 ll_sync (lp);
+	ll_sync (lp);
 
 	vfp = stdout, vfnx = (IFP) fprintf;
 }
@@ -675,8 +663,7 @@ int	rw;
 static char *bufp = NULL;
 
 static char *
-newbuf (int i)
-{
+newbuf (int i) {
 	static unsigned int len = 0;
 
 	if (i++ < len)
@@ -693,37 +680,36 @@ newbuf (int i)
 }
 /*  VPDU - support for backwards compatibility */
 
-int 
-_vpdu (LLog *lp, IFP fnx, PE pe, char *text, int rw)
-{
+int
+_vpdu (LLog *lp, IFP fnx, PE pe, char *text, int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
 
 	vfp = (FILE *) lp, vfnx = ll_printf;
 
 	bp = buffer;
-	 sprintf (bp, "%s %s", rw ? "read" : "wrote",
-					text ? text : "pdu");
+	sprintf (bp, "%s %s", rw ? "read" : "wrote",
+			 text ? text : "pdu");
 	bp += strlen (bp);
 	if (pe -> pe_context != PE_DFLT_CTX) {
-		 sprintf (bp, ", context %d", pe -> pe_context);
+		sprintf (bp, ", context %d", pe -> pe_context);
 		bp += strlen (bp);
 	}
 	LLOG (lp, LLOG_ALL, ("%s", buffer));
 
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 
-	 (*fnx) (pe, 1, NULLIP, NULLVP, NULLCP);
+	(*fnx) (pe, 1, NULLIP, NULLVP, NULLCP);
 
-	 ll_printf (lp, "-------\n");
+	ll_printf (lp, "-------\n");
 
-	 ll_sync (lp);
+	ll_sync (lp);
 
 	vfp = stdout, vfnx = (IFP) fprintf;
 }
 
 #ifdef DEBUG
-int 
+int
 free_pepsy_bp()  {
 	if (bufp)
 		free(bufp);

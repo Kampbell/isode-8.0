@@ -33,15 +33,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftampass.c,v 9.0 1992/
 /*  */
 
 struct type_FTAM_Access__Passwords *
-pass2fpm (struct ftamblk *fsb, struct FTAMpasswords *fp, struct FTAMindication *fti)
-{
+pass2fpm (struct ftamblk *fsb, struct FTAMpasswords *fp, struct FTAMindication *fti) {
 	struct type_FTAM_Access__Passwords *fpm;
 
 	if ((fpm = (struct type_FTAM_Access__Passwords *)
 			   calloc (1, sizeof *fpm)) == NULL) {
 no_mem:
 		;
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		if (fpm)
 			free_FTAM_Access__Passwords (fpm);
 		return NULL;
@@ -74,9 +73,8 @@ no_mem:
 
 /*  */
 
-int 
-fpm2pass (struct ftamblk *fsb, struct type_FTAM_Access__Passwords *fpm, struct FTAMpasswords *fp, struct FTAMindication *fti)
-{
+int
+fpm2pass (struct ftamblk *fsb, struct type_FTAM_Access__Passwords *fpm, struct FTAMpasswords *fp, struct FTAMindication *fti) {
 	struct qbuf *qb;
 
 	bzero ((char *) fp, sizeof *fp);

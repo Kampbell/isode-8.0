@@ -48,9 +48,8 @@ extern AttributeType at_objectclass;
 extern AttributeType *turbo_index_types;
 #endif
 
-int 
-do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype)
-{
+int
+do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype) {
 	Entry  entryptr,ptr;
 	DN  dntop, dn = NULLDN;
 	DN  trail = NULLDN;
@@ -243,7 +242,7 @@ do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN binddn, D
 
 	/* add the entry */
 	DATABASE_HEAP;
-	 avl_insert(&entryptr->e_children, (caddr_t) ptr, entry_cmp, avl_dup_error);
+	avl_insert(&entryptr->e_children, (caddr_t) ptr, entry_cmp, avl_dup_error);
 	GENERAL_HEAP;
 
 	if (entryptr->e_leaf) {

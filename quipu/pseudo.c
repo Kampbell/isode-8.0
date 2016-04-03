@@ -62,7 +62,7 @@ extern	AV_Sequence open_call_avs ;
 #endif /* QUIPU_CONSOLE */
 
 
-int 
+int
 update_pseudo_attr (void) {
 	/*
 		Called just before dsa_pseudo_attr is referenced.
@@ -148,7 +148,7 @@ update_pseudo_attr (void) {
 		struct op_list * tmp_op_list ;
 		time_t timenow ;
 
-		 time (&timenow) ;
+		time (&timenow) ;
 
 		tmp_op_list = ((struct quipu_call *)tmp_avs->avseq_av.av_struct)->pending_ops ;
 		while(tmp_op_list != (struct op_list *) 0) {
@@ -233,9 +233,8 @@ update_pseudo_attr (void) {
 #endif /* QUIPU_CONSOLE */
 }
 
-int 
-new_cacheEDB (DN dn)
-{
+int
+new_cacheEDB (DN dn) {
 	AttributeType at;
 	AttributeValue av;
 	AV_Sequence avs;
@@ -268,7 +267,7 @@ new_cacheEDB (DN dn)
 
 }
 
-Attr_Sequence 
+Attr_Sequence
 get_cacheEDB (void) {
 	AttributeType at;
 
@@ -277,9 +276,8 @@ get_cacheEDB (void) {
 	return (as_find_type (dsa_pseudo_attr,at));
 }
 
-int 
-write_dsa_entry (Entry eptr)
-{
+int
+write_dsa_entry (Entry eptr) {
 	int um;
 	FILE * fptr;
 	char filename[LINESIZE];
@@ -289,22 +287,22 @@ write_dsa_entry (Entry eptr)
 	update_pseudo_attr ();
 
 	if (dsa_pseudo_attr) {
-		 sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
+		sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
 
 		um = umask (0177);
 		if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("can't write DSA pseudo entry: \"%s\" (%d)",filename,errno));
 		}
-		 umask (um);
+		umask (um);
 
 		if ((ps = ps_alloc (std_open)) == NULLPS) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
-			 fclose (fptr);
+			fclose (fptr);
 			return;
 		}
 		if (std_setup (ps,fptr) == NOTOK) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("std_setup failed"));
-			 fclose (fptr);
+			fclose (fptr);
 			return;
 		}
 
@@ -315,14 +313,14 @@ write_dsa_entry (Entry eptr)
 
 		if (ps->ps_errno != PS_ERR_NONE) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA ps error: %s",ps_error(ps->ps_errno)));
-			 fclose (fptr);
+			fclose (fptr);
 			return;
 		}
 		ps_free (ps);
 
 		if (fflush (fptr) != 0) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA flush error: %d",errno));
-			 fclose (fptr);
+			fclose (fptr);
 			return;
 		}
 #if	defined(SYS5) && !defined(SVR4)
@@ -330,7 +328,7 @@ write_dsa_entry (Entry eptr)
 #else
 		if (fsync (fileno(fptr)) != 0) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA fsync error: %d",errno));
-			 fclose (fptr);
+			fclose (fptr);
 			return;
 		}
 #endif
@@ -345,22 +343,22 @@ write_dsa_entry (Entry eptr)
 	if (eptr->e_data == E_DATA_MASTER)
 		return;
 
-	 sprintf (filename,"%sDSA.real",isodefile(treedir,0));
+	sprintf (filename,"%sDSA.real",isodefile(treedir,0));
 
 	um = umask (0177);
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("can't write DSA pseudo entry: \"%s\" (%d)",filename,errno));
 	}
-	 umask (um);
+	umask (um);
 
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
-		 fclose (fptr);
+		fclose (fptr);
 		return;
 	}
 	if (std_setup (ps,fptr) == NOTOK) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("std_setup failed"));
-		 fclose (fptr);
+		fclose (fptr);
 		return;
 	}
 
@@ -375,14 +373,14 @@ write_dsa_entry (Entry eptr)
 
 	if (ps->ps_errno != PS_ERR_NONE) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA ps error: %s",ps_error(ps->ps_errno)));
-		 fclose (fptr);
+		fclose (fptr);
 		return;
 	}
 	ps_free (ps);
 
 	if (fflush (fptr) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA flush error: %d",errno));
-		 fclose (fptr);
+		fclose (fptr);
 		return;
 	}
 #if     defined(SYS5) && !defined(SVR4)
@@ -390,7 +388,7 @@ write_dsa_entry (Entry eptr)
 #else
 	if (fsync (fileno(fptr)) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA fsync error: %d",errno));
-		 fclose (fptr);
+		fclose (fptr);
 		return;
 	}
 #endif
@@ -404,16 +402,15 @@ write_dsa_entry (Entry eptr)
 
 }
 
-int 
-load_pseudo_attrs (int data_type)
-{
+int
+load_pseudo_attrs (int data_type) {
 	FILE * fptr;
 	char filename[LINESIZE];
 	DN dn;
 
 	/* write e_attributes, and preserved attributes to DSA file */
 
-	 sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
+	sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
 
 	/* What if DSA at top level with same name as us !?! */
 	parse_file = filename;
@@ -432,14 +429,14 @@ load_pseudo_attrs (int data_type)
 #endif
 			LLOG (log_dsap,LLOG_TRACE,("Error in DSA pseudo entry: \"%s\" (%d)",filename,errno));
 
-		 fclose (fptr);
+		fclose (fptr);
 
 	}
 
 	if (data_type == E_DATA_MASTER)
 		return;
 
-	 sprintf (filename,"%sDSA.real",isodefile(treedir,0));
+	sprintf (filename,"%sDSA.real",isodefile(treedir,0));
 
 	if ((fptr = fopen (filename,"r")) == (FILE *) NULL)
 		LLOG (log_dsap,LLOG_TRACE,("No DSA real entry: \"%s\" (%d)",filename,errno));
@@ -452,7 +449,7 @@ load_pseudo_attrs (int data_type)
 #endif
 			LLOG (log_dsap,LLOG_TRACE,("Error in DSA real entry: \"%s\" (%d)",filename,errno));
 
-		 fclose (fptr);
+		fclose (fptr);
 	}
 
 }

@@ -67,7 +67,7 @@ OID	dctx;
 	if (AcInit (vecp, vec, acs, aci) == NOTOK)
 		return acs2rtslose (NULLACB, rti, "AcInit", aca);
 	if ((acb = findacblk (acs -> acs_sd)) == NULLACB) {
-		 rtsaplose (rti, RTS_PROTOCOL, NULLCP, "ACSE mangled");
+		rtsaplose (rti, RTS_PROTOCOL, NULLCP, "ACSE mangled");
 		goto out;
 	}
 	acb -> acb_flags |= ACB_RTS;
@@ -76,8 +76,8 @@ OID	dctx;
 
 	acb -> acb_connect = ps -> ps_connect;	/* struct copy */
 	if ((ps -> ps_srequirements &= RTS_MYREQUIRE) != RTS_MYREQUIRE) {
-		 rtsaplose (rti, RTS_PROTOCOL, NULLCP,
-						  "desired session requirements unavailable");
+		rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+				   "desired session requirements unavailable");
 		goto out;
 	}
 	acb -> acb_requirements = ps -> ps_srequirements;
@@ -104,8 +104,8 @@ OID	dctx;
 	dotokens ();
 #undef	dotoken
 	if (acb -> acb_owned != 0 && acb -> acb_owned != acb -> acb_avail) {
-		 rtsaplose (rti, RTS_PROTOCOL, NULLCP,
-						  "token management botched");
+		rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+				   "token management botched");
 		goto out;
 	}
 	if (acb -> acb_owned)
@@ -114,18 +114,18 @@ OID	dctx;
 	acb -> acb_ssdusize = ps -> ps_ssdusize;
 
 	if ((pe = acs -> acs_info[0]) == NULLPE) {
-		 rtsaplose (rti, RTS_PROTOCOL, NULLCP, NULLCP);
+		rtsaplose (rti, RTS_PROTOCOL, NULLCP, NULLCP);
 		goto out;
 	}
 	if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
-		 pylose ();
+		pylose ();
 		goto out;
 	}
 
 	PLOGP (rtsap_log,RTS_RTORQapdu, pe, "RTORQapdu", 1);
 
 	if (rtpdu -> offset != type_RTS_RTSE__apdus_rtorq__apdu) {
-		 rtsaplose (rti, RTS_PROTOCOL, NULLCP, "Unexpected PDU");
+		rtsaplose (rti, RTS_PROTOCOL, NULLCP, "Unexpected PDU");
 		free_RTS_RTSE__apdus (rtpdu);
 		goto out;
 	}
@@ -147,8 +147,8 @@ OID	dctx;
 		if (dctx)
 			oid = dctx;
 		else if ((oid = RT_ASN_OID) == NULLOID) {
-			 rtsaplose (rti, RTS_PARAMETER, NULLCP,
-							  "%s: unknown", RT_ASN);
+			rtsaplose (rti, RTS_PARAMETER, NULLCP,
+					   "%s: unknown", RT_ASN);
 			free_RTS_RTSE__apdus(rtpdu);
 			goto out;
 		}
@@ -157,15 +157,15 @@ OID	dctx;
 		for (pp = ps -> ps_ctxlist.pc_ctx; i >= 0; i--, pp++)
 			if (pp -> pc_id == ctx) {
 				if (oid_cmp (pp -> pc_asn, oid)) {
-					 rtsaplose (rti, RTS_PROTOCOL, NULLCP,
-									  "wrong ASN for RTSE (%s)",
-									  sprintoid (pp -> pc_asn));
+					rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+							   "wrong ASN for RTSE (%s)",
+							   sprintoid (pp -> pc_asn));
 					free_RTS_RTSE__apdus(rtpdu);
 					goto out;
 				}
 				if (pp -> pc_result != PC_ACCEPT) {
-					 rtsaplose (rti, RTS_PROTOCOL, NULLCP,
-									  "PCI for RTSE not accepted");
+					rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+							   "PCI for RTSE not accepted");
 					free_RTS_RTSE__apdus(rtpdu);
 					goto out;
 				}
@@ -174,8 +174,8 @@ OID	dctx;
 			}
 
 		if (acb -> acb_rtsid == PE_DFLT_CTX) {
-			 rtsaplose (rti, RTS_PROTOCOL, NULLCP,
-							  "unable to find PCI for RTSE");
+			rtsaplose (rti, RTS_PROTOCOL, NULLCP,
+					   "unable to find PCI for RTSE");
 			free_RTS_RTSE__apdus(rtpdu);
 			goto out;
 		}
@@ -189,8 +189,8 @@ OID	dctx;
 	rts -> rts_turn = acb -> acb_flags & ACB_TURN ? RTS_RESPONDER
 					  : RTS_INITIATOR;
 	if (prtorq -> connectionDataRQ -> offset == type_RTS_ConnectionData_open) {
-		 pe_extract(pe, rts -> rts_data = prtorq -> connectionDataRQ
-												-> un.open);
+		pe_extract(pe, rts -> rts_data = prtorq -> connectionDataRQ
+										 -> un.open);
 		if (rts -> rts_data)
 			rts -> rts_data -> pe_refcnt ++;
 	} else
@@ -210,10 +210,10 @@ OID	dctx;
 out:
 	;
 	/* XXX: should do RTORQ APDU, but can't give any useful info... */
-	 AcAssocResponse (acs -> acs_sd, ACS_TRANSIENT, ACS_USER_NOREASON,
-							NULLOID, NULLAEI, NULLPA, &ps -> ps_ctxlist,
-							ps -> ps_defctxresult, 0, 0, SERIAL_NONE, 0, &ps -> ps_connect,
-							NULLPEP, 0, aci);
+	AcAssocResponse (acs -> acs_sd, ACS_TRANSIENT, ACS_USER_NOREASON,
+					 NULLOID, NULLAEI, NULLPA, &ps -> ps_ctxlist,
+					 ps -> ps_defctxresult, 0, 0, SERIAL_NONE, 0, &ps -> ps_connect,
+					 NULLPEP, 0, aci);
 
 	ACSFREE (acs);
 	if (dctx) oid_free (dctx);
@@ -255,7 +255,7 @@ struct RtSAPindication *rti;
 			== NULLPE) {
 no_mem:
 		;
-		 rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
+		rtsaplose (rti, RTS_CONGEST, NULLCP, "out of memory");
 		goto out1;
 	}
 	switch (status) {
@@ -296,7 +296,7 @@ no_mem:
 		struct PSAPcontext *pp;
 
 		if (ctxlist -> pc_nctx > NPCTX) {
-			 rtsaplose (rti, RTS_PARAMETER, NULLCP, "too many contexts");
+			rtsaplose (rti, RTS_PARAMETER, NULLCP, "too many contexts");
 			goto out1;
 		}
 
@@ -305,8 +305,8 @@ no_mem:
 				i--, pp++)
 			if (acb -> acb_rtsid == pp -> pc_id) {
 				if (pp -> pc_result != PC_ACCEPT) {
-					 acsaplose (aci, ACS_PARAMETER, NULLCP,
-									  "PCI for RTSE not accepted");
+					acsaplose (aci, ACS_PARAMETER, NULLCP,
+							   "PCI for RTSE not accepted");
 					goto out1;
 				}
 			}
@@ -328,7 +328,7 @@ no_mem:
 							  &acb -> acb_connect, &pe, 1, aci);
 
 	if (result == NOTOK) {
-		 acs2rtslose (acb, rti, "AcAssocResponse", aca);
+		acs2rtslose (acb, rti, "AcAssocResponse", aca);
 		if (ACS_FATAL (aca -> aca_reason))
 			goto out2;
 		else
@@ -340,7 +340,7 @@ no_mem:
 out2:
 	if (pe) {
 		if (data)
-			 pe_extract (pe, data);
+			pe_extract (pe, data);
 		pe_free (pe);
 	}
 
@@ -348,9 +348,9 @@ out2:
 
 out1:
 	;
-	 AcAssocResponse (acb -> acb_fd, ACS_TRANSIENT, ACS_USER_NOREASON,
-							NULLOID, NULLAEI, NULLPA, NULLPC, PC_ACCEPT, 0, 0, SERIAL_NONE,
-							0, &acb -> acb_connect, NULLPEP, 0, aci);
+	AcAssocResponse (acb -> acb_fd, ACS_TRANSIENT, ACS_USER_NOREASON,
+					 NULLOID, NULLAEI, NULLPA, NULLPC, PC_ACCEPT, 0, 0, SERIAL_NONE,
+					 0, &acb -> acb_connect, NULLPEP, 0, aci);
 
 	result = NOTOK;
 	goto out2;

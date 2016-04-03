@@ -13,9 +13,8 @@
 extern LLog *pgm_log;
 
 /* ARGSUSED */
-int 
-init_clock_local (char *file)
-{
+int
+init_clock_local (char *file) {
 	struct intf *ap;
 	int	acount;
 
@@ -27,13 +26,12 @@ init_clock_local (char *file)
 }
 
 /* ARGSUSED */
-int 
-read_clock_local (int cfd, struct timeval **tvp, struct timeval **mtvp)
-{
+int
+read_clock_local (int cfd, struct timeval **tvp, struct timeval **mtvp) {
 	static struct timeval realtime, mytime;
 
 	TRACE (2, ("read_local_clock"));
-	 gettimeofday(&realtime, (struct timezone *)0);
+	gettimeofday(&realtime, (struct timezone *)0);
 	mytime = realtime;
 	*tvp = &realtime;
 	*mtvp = &mytime;

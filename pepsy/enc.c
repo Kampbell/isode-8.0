@@ -64,22 +64,21 @@ static int en_etype();
  * encode the specified type of the specified module into the given
  * pe
  */
-int 
+int
 enc_f (
-/* ARGSUSED */
-    int typ,			/* which type it is */
-    modtyp *mod,			/* Module it is from */
-    PE *pe,
-    int explicit,
-    int len,
-    char *buf,
-    char *parm
-)
-{
+	/* ARGSUSED */
+	int typ,			/* which type it is */
+	modtyp *mod,			/* Module it is from */
+	PE *pe,
+	int explicit,
+	int len,
+	char *buf,
+	char *parm
+) {
 	ptpe *p;
 
 	if (typ < 0 || typ >= mod->md_nentries) {
-		 pepsylose (mod, NULLTPE, NULLPE, "enc_f:Illegal typ %d", typ);
+		pepsylose (mod, NULLTPE, NULLPE, "enc_f:Illegal typ %d", typ);
 		return NOTOK;
 	}
 
@@ -109,14 +108,13 @@ enc_f (
  * use en_type to handle this which must always assume the field can
  * have an offset.
  */
-static int 
+static int
 en_obj (
-    PEPYPARM parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    PE *rpe		/* Return value PE */
-)
-{
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	PE *rpe		/* Return value PE */
+) {
 	PE      pe = NULLPE;	/* for pepsylose calls */
 	int     cnt = 0;
 
@@ -175,14 +173,13 @@ bad:
  * Encode a single type. If a basic type encode it, if a compound
  * type call the appropriate encoding routine
  */
-static int 
+static int
 en_type (
-    PEPYPARM parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    PE *rpe		/* Return value PE */
-)
-{
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	PE *rpe		/* Return value PE */
+) {
 	PE      pe = NULLPE;
 	int     cnt = 0;
 	int     i;			/* Integer for encoding type */
@@ -537,14 +534,13 @@ bad:
  * Build a sequence, calling appropriate routines to build each sub
  * type
  */
-static int 
+static int
 en_seq (
-    PEPYPARM parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    PE *rpe		/* Return value PE */
-)
-{
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	PE *rpe		/* Return value PE */
+) {
 	PE      head;
 	PE      pe = NULLPE;
 	ptpe    *tmp;		/* first entry in list */
@@ -728,14 +724,13 @@ bad:
 /*
  * Parse a set, calling appropriate routines to parse each sub type
  */
-static int 
+static int
 en_set (
-    PEPYPARM parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    PE *rpe		/* Return value PE */
-)
-{
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	PE *rpe		/* Return value PE */
+) {
 	PE      head;
 	PE      pe = NULLPE;
 	ptpe    *tmp;
@@ -920,14 +915,13 @@ bad:
  * Parse a sequence of calling appropriate routines to parse each sub
  * type
  */
-static int 
+static int
 en_seqof (
-    PEPYPARM parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    PE *rpe		/* Return value PE */
-)
-{
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	PE *rpe		/* Return value PE */
+) {
 	PE      head;
 	PE      pe = NULLPE;
 	ptpe    *start;		/* first entry in list */
@@ -1073,14 +1067,13 @@ bad:
 /*
  * Parse a setof, calling appropriate routines to parse each sub type
  */
-static int 
+static int
 en_setof (
-    PEPYPARM parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    PE *rpe		/* Return value PE */
-)
-{
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	PE *rpe		/* Return value PE */
+) {
 	PE      head;
 	PE      pe = NULLPE, last = NULLPE;
 	ptpe    *start;
@@ -1228,14 +1221,13 @@ bad:
  * encode a choice field. This means find which choice is taken and
  * call en_type to encode it
  */
-static int 
+static int
 en_choice (
-    PEPYPARM parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    PE *rpe		/* Return value PE */
-)
-{
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	PE *rpe		/* Return value PE */
+) {
 	int     cnt;
 	ptpe *p2;
 
@@ -1287,9 +1279,8 @@ en_choice (
 /*
  * check to see if the object is present or not
  */
-static int 
-chkobj (modtyp *mod, ptpe *p, PE head)
-{
+static int
+chkobj (modtyp *mod, ptpe *p, PE head) {
 
 	for (; p->pe_type != PE_END; NEXT_TPE(p)) {
 		if (!ISDTYPE(p))
@@ -1315,14 +1306,13 @@ chkobj (modtyp *mod, ptpe *p, PE head)
  * routine. Similar to en_type except we do the indirection on the
  * ucode field
  */
-static int 
+static int
 en_etype (
-    PEPYPARM parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    PE *rpe		/* Return value PE */
-)
-{
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	PE *rpe		/* Return value PE */
+) {
 	ptpe    *tmp;
 	PE      pe = NULLPE;
 

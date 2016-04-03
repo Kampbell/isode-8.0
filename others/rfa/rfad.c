@@ -70,9 +70,8 @@ char homedir[BUFSIZ];
 
 /*   MAIN */
 
-int 
-main (int argc, char **argv)
-{
+int
+main (int argc, char **argv) {
 	int initiate ();
 	char buf[BUFSIZ];
 	struct dispatch   *ds;
@@ -138,7 +137,7 @@ main (int argc, char **argv)
 }
 
 
-int 
+int
 cleanup  {
 }
 
@@ -178,7 +177,7 @@ PE  *pe;
 
 	userid = pw -> pw_uid;
 	groupid = pw -> pw_gid;
-	 strcpy (homedir, pw -> pw_dir);
+	strcpy (homedir, pw -> pw_dir);
 
 	cp = qb2str (initial -> password);
 

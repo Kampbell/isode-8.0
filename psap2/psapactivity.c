@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapactivity.c,v 9.0 
 
 /*    P-CONTROL-GIVE.REQUEST */
 
-int 
-PGControlRequest (int sd, struct PSAPindication *pi)
-{
+int
+PGControlRequest (int sd, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -50,9 +49,9 @@ PGControlRequest (int sd, struct PSAPindication *pi)
 
 	if ((result = SGControlRequest (sd, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			 ss2pslose (pb, pi, "SGControlRequest", sa);
+			ss2pslose (pb, pi, "SGControlRequest", sa);
 		else {
-			 ss2pslose (NULLPB, pi, "SGControlRequest", sa);
+			ss2pslose (NULLPB, pi, "SGControlRequest", sa);
 			goto out1;
 		}
 	else
@@ -62,16 +61,15 @@ PGControlRequest (int sd, struct PSAPindication *pi)
 		freepblk (pb);
 out1:
 	;
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    P-ACTIVITY-START.REQUEST */
 
-int 
-PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct PSAPindication *pi)
-{
+int
+PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;
@@ -94,9 +92,9 @@ PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct PSAP
 
 	if ((result = SActStartRequest (sd, id, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			 ss2pslose (pb, pi, "SActStartRequest", sa);
+			ss2pslose (pb, pi, "SActStartRequest", sa);
 		else {
-			 ss2pslose (NULLPB, pi, "SActStartRequest", sa);
+			ss2pslose (NULLPB, pi, "SActStartRequest", sa);
 			goto out1;
 		}
 
@@ -113,16 +111,15 @@ out1:
 	else if (base)
 		free (base);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    P-ACTIVITY-RESUME.REQUEST */
 
-int 
-PActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi)
-{
+int
+PActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;
@@ -146,9 +143,9 @@ PActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn
 	if ((result = SActResumeRequest (sd, id, oid, ssn, ref, base, len, &sis))
 			== NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			 ss2pslose (pb, pi, "SActResumeRequest", sa);
+			ss2pslose (pb, pi, "SActResumeRequest", sa);
 		else {
-			 ss2pslose (NULLPB, pi, "SActResumeRequest", sa);
+			ss2pslose (NULLPB, pi, "SActResumeRequest", sa);
 			goto out1;
 		}
 
@@ -165,16 +162,15 @@ out1:
 	else if (base)
 		free (base);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    P-ACTIVITY-{INTERRUPT,DISCARD}.REQUEST */
 
-int 
-PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc, char *stype)
-{
+int
+PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc, char *stype) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -191,9 +187,9 @@ PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc, ch
 
 	if ((result = (*sfunc) (sd, reason, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			 ss2pslose (pb, pi, stype, sa);
+			ss2pslose (pb, pi, stype, sa);
 		else {
-			 ss2pslose (NULLPB, pi, stype, sa);
+			ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
 
@@ -201,16 +197,15 @@ PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc, ch
 		freepblk (pb);
 out1:
 	;
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    P-ACTIVITY-{INTERRUPT,DISCARD}.RESPONSE */
 
-int 
-PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *stype)
-{
+int
+PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *stype) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -227,9 +222,9 @@ PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *stype)
 
 	if ((result = (*sfunc) (sd, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			 ss2pslose (pb, pi, stype, sa);
+			ss2pslose (pb, pi, stype, sa);
 		else {
-			 ss2pslose (NULLPB, pi, stype, sa);
+			ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
 
@@ -237,7 +232,7 @@ PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *stype)
 		freepblk (pb);
 out1:
 	;
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

@@ -116,9 +116,9 @@ char   *type;
 		char *t1;
 		/* we have a [[ P type ]] specification */
 		if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-			 fprintf(stderr,
-						   "\ntenc_typ:SETLIST can't extract direct type from %s\n",
-						   yp->yp_param_type);
+			fprintf(stderr,
+					"\ntenc_typ:SETLIST can't extract direct type from %s\n",
+					yp->yp_param_type);
 			exit(1);
 		}
 		t = strdup(t1);
@@ -144,8 +144,8 @@ char   *type;
 
 	if ((yp->yp_flags & YP_PARMVAL) && yp->yp_parm) {
 		if ((f = getfield(yp->yp_parm)) == NULLCP) {
-			 fprintf(stderr, "\ntenc_typ: can't extract field from %s\n",
-						   yp->yp_parm);
+			fprintf(stderr, "\ntenc_typ: can't extract field from %s\n",
+					yp->yp_parm);
 			exit(1);
 		}
 		f = strdup(f);
@@ -158,18 +158,18 @@ char   *type;
 		char	*bitno;
 
 		if (yp -> yp_optional_act && yp -> yp_optional_act -> yal_enc) {
-			 fprintf (fp, "\t{ BOPTIONAL, %d, 0, FL_USELECT, %s},\n",
-							yp -> yp_optional_act -> yal_enc -> a_num,
-							genstrform(yp));
+			fprintf (fp, "\t{ BOPTIONAL, %d, 0, FL_USELECT, %s},\n",
+					 yp -> yp_optional_act -> yal_enc -> a_num,
+					 genstrform(yp));
 		} else {
 			if ((f1 = getfldbit(yp->yp_optcontrol, &bitno)) == NULLCP) {
-				 fprintf(stderr,
-							   "\ntenc_typ:BOPTIONAL: can't extract field from %s\n",
-							   yp->yp_optcontrol);
+				fprintf(stderr,
+						"\ntenc_typ:BOPTIONAL: can't extract field from %s\n",
+						yp->yp_optcontrol);
 				exit(1);
 			}
-			 fprintf(fp, "\t{ BOPTIONAL, AOFFSET(%s, %s), %s, 0, %s},\n",
-						   t, f1, bitno, genstrform(yp));
+			fprintf(fp, "\t{ BOPTIONAL, AOFFSET(%s, %s), %s, 0, %s},\n",
+					t, f1, bitno, genstrform(yp));
 		}
 	}
 
@@ -177,9 +177,9 @@ char   *type;
 	 * ever defines a type with more than one explicit tag
 	 */
 	if (yp->yp_flags & YP_TAG && !(yp->yp_flags & YP_IMPLICIT)) {
-		 fprintf(fp, "\t{ ETAG, 0, ");
-		 fprintf(fp, "%s, %s, %s },\n", ec_tag(yp), ec_class(yp),
-					   genstrform(yp));
+		fprintf(fp, "\t{ ETAG, 0, ");
+		fprintf(fp, "%s, %s, %s },\n", ec_tag(yp), ec_class(yp),
+				genstrform(yp));
 	}
 
 	if (yp->yp_yfn && yp->yp_yfn->yfn_enc) {
@@ -258,8 +258,8 @@ char   *type;
 		}
 		t = NULL;
 		p1 = NULL;
-		 fprintf(fp, "\t{ SBITSTRING, 0, %s, %s, %s },\n",
-					   c_tag(yp), c_class(yp), genstrform(yp));
+		fprintf(fp, "\t{ SBITSTRING, 0, %s, %s, %s },\n",
+				c_tag(yp), c_class(yp), genstrform(yp));
 		break;
 
 	case YP_OCT:
@@ -297,8 +297,8 @@ char   *type;
 				break;
 
 			default:
-				 fprintf(stderr,"\ntenc_typ: Unknown Octet string specifier %c\n",
-							   yp->yp_prfexp);
+				fprintf(stderr,"\ntenc_typ: Unknown Octet string specifier %c\n",
+						yp->yp_prfexp);
 				exit(1);
 			}
 			break;
@@ -310,8 +310,8 @@ char   *type;
 		}
 		t = NULL;
 		p1 = NULL;
-		 fprintf(fp, "\t{ SOCTETSTRING, 0, %s, %s, %s },\n",
-					   c_tag(yp), c_class(yp), genstrform(yp));
+		fprintf(fp, "\t{ SOCTETSTRING, 0, %s, %s, %s },\n",
+				c_tag(yp), c_class(yp), genstrform(yp));
 		break;
 
 	case YP_OID:
@@ -323,8 +323,8 @@ char   *type;
 		}
 		t = NULL;
 		p1 = NULL;
-		 fprintf(fp, "\t{ SOBJID, 0, %s, %s, %s },\n",
-					   c_tag(yp), c_class(yp), genstrform(yp));
+		fprintf(fp, "\t{ SOBJID, 0, %s, %s, %s },\n",
+				c_tag(yp), c_class(yp), genstrform(yp));
 		break;
 
 
@@ -339,8 +339,8 @@ char   *type;
 		}
 		t = NULL;
 		p1 = NULL;
-		 fprintf(fp, "\t{ SANY, 0, %s, %s, %s },\n",
-					   c_tag(yp), c_class(yp), genstrform(yp));
+		fprintf(fp, "\t{ SANY, 0, %s, %s, %s },\n",
+				c_tag(yp), c_class(yp), genstrform(yp));
 		break;
 
 	case YP_NULL:
@@ -392,8 +392,8 @@ char   *type;
 		}
 do_obj:
 		if (yp->yp_flags & YP_TAG && yp->yp_flags & YP_IMPLICIT)
-			 fprintf(fp, "\t{ IMP_OBJ, 0, %s, %s, %s },\n",
-						   c_tag(yp), c_class(yp), genstrform(yp));
+			fprintf(fp, "\t{ IMP_OBJ, 0, %s, %s, %s },\n",
+					c_tag(yp), c_class(yp), genstrform(yp));
 		if (yp->yp_module == NULL
 				|| strcmp(yp->yp_module, mymodule) == 0) {
 			if (f == NULL || noindirect(f)) {	/* No offset type */
@@ -414,8 +414,8 @@ do_obj:
 						 concat("_Z", strp2name(yp->yp_identifier, yp->yp_module)),
 						 c_class(yp), yp);
 
-			 fprintf(fp, "\t{ EXTMOD, %d, 0, 0, %s },\n",
-						   gen_modref(yp->yp_module), genstrform(yp));
+			fprintf(fp, "\t{ EXTMOD, %d, 0, 0, %s },\n",
+					gen_modref(yp->yp_module), genstrform(yp));
 		}
 		break;
 
@@ -434,9 +434,9 @@ do_obj:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					 fprintf(stderr,
-								   "\ntenc_typ:SEQLIST: can't extract direct type from %s\n",
-								   yp->yp_param_type);
+					fprintf(stderr,
+							"\ntenc_typ:SEQLIST: can't extract direct type from %s\n",
+							yp->yp_param_type);
 					exit(1);
 				}
 				yp->yp_structname = strdup(t1);
@@ -448,14 +448,14 @@ do_obj:
 				yp->yp_structname = t;
 
 			if (optfield(y)) {
-				 fprintf(fp,
-							   "\t{ OPTL, OFFSET(%s, optionals), 0, 0, %s },\n",
-							   yp->yp_structname, genstrform(yp));
+				fprintf(fp,
+						"\t{ OPTL, OFFSET(%s, optionals), 0, 0, %s },\n",
+						yp->yp_structname, genstrform(yp));
 			}
 			tenc_loop(fp, y, id, yp->yp_structname);
 		}
-		 fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n",
-					   genstrform (yp));
+		fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n",
+				genstrform (yp));
 		en_ptr = save_ptr;
 		cons_type--;
 		break;
@@ -473,9 +473,9 @@ do_obj:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					 fprintf(stderr,
-								   "\ntenc_typ:SETLIST can't extract direct type from %s\n",
-								   yp->yp_param_type);
+					fprintf(stderr,
+							"\ntenc_typ:SETLIST can't extract direct type from %s\n",
+							yp->yp_param_type);
 					exit(1);
 				}
 				yp->yp_structname = strdup(t1);
@@ -486,13 +486,13 @@ do_obj:
 			} else
 				yp->yp_structname = t;
 			if (optfield(y)) {
-				 fprintf(fp,
-							   "\t{ OPTL, OFFSET(%s, optionals), 0, 0, %s },\n",
-							   yp->yp_structname, genstrform(yp));
+				fprintf(fp,
+						"\t{ OPTL, OFFSET(%s, optionals), 0, 0, %s },\n",
+						yp->yp_structname, genstrform(yp));
 			}
 			tenc_loop(fp, y, id, yp->yp_structname);
 		}
-		 fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n", genstrform(yp));
+		fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n", genstrform(yp));
 		en_ptr = save_ptr;
 		cons_type--;
 		break;
@@ -508,9 +508,9 @@ do_obj:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					 fprintf(stderr,
-								   "\ntenc_typ:SETLIST can't extract direct type from %s\n",
-								   yp->yp_param_type);
+					fprintf(stderr,
+							"\ntenc_typ:SETLIST can't extract direct type from %s\n",
+							yp->yp_param_type);
 					exit(1);
 				}
 				yp->yp_structname = strdup(t1);
@@ -526,18 +526,18 @@ do_obj:
 			char *f1;
 
 			if ((f1 = getfield(yp->yp_control)) == NULLCP) {
-				 fprintf(stderr, "\ntenc_typ:SEQ OF: can't extract field from %s\n",
-							   yp->yp_control);
+				fprintf(stderr, "\ntenc_typ:SEQ OF: can't extract field from %s\n",
+						yp->yp_control);
 				exit(1);
 			}
-			 fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0, %s },\n",
-						   yp->yp_structname, f1, genstrform(yp));
+			fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0, %s },\n",
+					yp->yp_structname, f1, genstrform(yp));
 		} else if (yp->yp_structname != NULL)
-			 fprintf(fp, "\t{ PE_END, OFFSET(%s, next), 0, 0, %s },\n",
-						   yp->yp_structname, genstrform(yp));
+			fprintf(fp, "\t{ PE_END, OFFSET(%s, next), 0, 0, %s },\n",
+					yp->yp_structname, genstrform(yp));
 		else
-			 fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n",
-						   genstrform(yp));
+			fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n",
+					genstrform(yp));
 		en_ptr = save_ptr;
 		cons_type--;
 		break;
@@ -554,9 +554,9 @@ do_obj:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					 fprintf(stderr,
-								   "\ntenc_typ:SETTYPE can't extract direct type from %s\n",
-								   yp->yp_param_type);
+					fprintf(stderr,
+							"\ntenc_typ:SETTYPE can't extract direct type from %s\n",
+							yp->yp_param_type);
 					exit(1);
 				}
 				yp->yp_structname = strdup(t1);
@@ -572,18 +572,18 @@ do_obj:
 			char *f1;
 
 			if ((f1 = getfield(yp->yp_control)) == NULLCP) {
-				 fprintf(stderr, "\ntenc_typ:SET OF: can't extract field from %s\n",
-							   yp->yp_control);
+				fprintf(stderr, "\ntenc_typ:SET OF: can't extract field from %s\n",
+						yp->yp_control);
 				exit(1);
 			}
-			 fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0, %s },\n",
-						   yp->yp_structname, f1, genstrform(yp));
+			fprintf(fp, "\t{ PE_END, OFFSET(%s, %s), 0, 0, %s },\n",
+					yp->yp_structname, f1, genstrform(yp));
 		} else if (yp->yp_structname != NULL)
-			 fprintf(fp, "\t{ PE_END, OFFSET(%s, next), 0, 0, %s },\n",
-						   yp->yp_structname, genstrform(yp));
+			fprintf(fp, "\t{ PE_END, OFFSET(%s, next), 0, 0, %s },\n",
+					yp->yp_structname, genstrform(yp));
 		else
-			 fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n",
-						   genstrform(yp));
+			fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n",
+					genstrform(yp));
 		en_ptr = save_ptr;
 		cons_type--;
 		break;
@@ -607,9 +607,9 @@ do_obj:
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
-					 fprintf(stderr,
-								   "\ntenc_typ:CHOICE can't extract direct type from %s\n",
-								   yp->yp_param_type);
+					fprintf(stderr,
+							"\ntenc_typ:CHOICE can't extract direct type from %s\n",
+							yp->yp_param_type);
 					exit(1);
 				}
 				yp->yp_structname = strdup(t1);
@@ -621,28 +621,28 @@ do_obj:
 				yp->yp_structname = t;
 
 			if (yp -> yp_control_act && yp->yp_control_act->yal_enc) {
-				 fprintf (fp, "\t{ SCTRL, %d, 0, FL_USELECT, %s },\n",
-								yp -> yp_control_act -> yal_enc -> a_num,
-								genstrform(yp));
+				fprintf (fp, "\t{ SCTRL, %d, 0, FL_USELECT, %s },\n",
+						 yp -> yp_control_act -> yal_enc -> a_num,
+						 genstrform(yp));
 			} else if (yp->yp_flags & YP_CONTROLLED) {
 				char *f1;
 
 				if ((f1 = getfield(yp->yp_control)) == NULLCP) {
-					 fprintf(stderr, "\ntenc_typ:CHOICE: can't extract field from %s\n",
-								   yp->yp_control);
+					fprintf(stderr, "\ntenc_typ:CHOICE: can't extract field from %s\n",
+							yp->yp_control);
 					exit(1);
 				}
-				 fprintf(fp, "\t{ SCTRL, OFFSET(%s, %s), 0, 0, %s },\n",
-							   yp->yp_structname, f1, genstrform(yp));
+				fprintf(fp, "\t{ SCTRL, OFFSET(%s, %s), 0, 0, %s },\n",
+						yp->yp_structname, f1, genstrform(yp));
 			} else if (yp->yp_structname != NULL)
-				 fprintf(fp, "\t{ SCTRL, OFFSET(%s, offset), 0, 0, %s },\n",
-							   yp->yp_structname, genstrform(yp));
+				fprintf(fp, "\t{ SCTRL, OFFSET(%s, offset), 0, 0, %s },\n",
+						yp->yp_structname, genstrform(yp));
 			else
 				ferr(1, "\nCHOICE missing SCTRL\n");
 			tenc_loop(fp, y, id, yp->yp_structname);
 		}
-		 fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n",
-					   genstrform(yp));
+		fprintf(fp, "\t{ PE_END, 0, 0, 0, %s },\n",
+				genstrform(yp));
 		en_ptr = save_ptr;
 		cons_type--;
 		break;
@@ -687,7 +687,7 @@ YP      yp;
 			ferrd (1, "c_tag:Unknown Tag %d", yp->yp_code);
 	}
 
-	 sprintf(buf, "%d", i);
+	sprintf(buf, "%d", i);
 
 	return (buf);
 }
@@ -707,7 +707,7 @@ YP      yp;
 
 	i = yp->yp_tag->yt_value->yv_number;
 
-	 sprintf(buf, "%d", i);
+	sprintf(buf, "%d", i);
 
 	return (buf);
 }
@@ -746,10 +746,10 @@ PElementClass cl;
 	if (yp->yp_flags & YP_OPTIONAL
 			&& ((yp->yp_flags & (YP_OPTIONAL|YP_OPTCONTROL|YP_DEFAULT))
 				!= (YP_OPTIONAL|YP_OPTCONTROL))) {
-		 strncpy(buf, p1, STRSIZE);
+		strncpy(buf, p1, STRSIZE);
 		p1 = strncat(buf, "|FL_OPTIONAL", STRSIZE);
 	} else if (yp->yp_flags & YP_DEFAULT) {
-		 strncpy(buf, p1, STRSIZE);
+		strncpy(buf, p1, STRSIZE);
 		p1 = strncat(buf, "|FL_DEFAULT", STRSIZE);
 	}
 	return (p1);
@@ -864,10 +864,10 @@ YP      yp;
 	if ((yp->yp_flags & YP_OPTIONAL)
 			&& ((yp->yp_flags & (YP_OPTIONAL|YP_OPTCONTROL|YP_DEFAULT))
 				!= (YP_OPTIONAL|YP_OPTCONTROL))) {
-		 strncpy(buf, p1, STRSIZE);
+		strncpy(buf, p1, STRSIZE);
 		p1 = strncat(buf, "|FL_OPTIONAL", STRSIZE);
 	} else if (yp->yp_flags & YP_DEFAULT) {
-		 strncpy(buf, p1, STRSIZE);
+		strncpy(buf, p1, STRSIZE);
 		p1 = strncat(buf, "|FL_DEFAULT", STRSIZE);
 	}
 	return (p1);
@@ -890,10 +890,9 @@ char   *type;
 /*
  * Print the string and exit if argument greater than zero
  */
-int 
-ferr (int i, char *s)
-{
-	 fprintf(stderr, "%s", s);
+int
+ferr (int i, char *s) {
+	fprintf(stderr, "%s", s);
 	if (i > 0)
 		exit(i);
 }
@@ -901,10 +900,9 @@ ferr (int i, char *s)
 /*
  * Print the integer and exit if argument greater than zero
  */
-int 
-ferrd (int i, char *s, int d)
-{
-	 fprintf(stderr, s, d);
+int
+ferrd (int i, char *s, int d) {
+	fprintf(stderr, s, d);
 	if (i > 0)
 		exit(i);
 }
@@ -912,10 +910,9 @@ ferrd (int i, char *s, int d)
 /*
  * Print the string and exit if argument greater than zero
  */
-int 
-ferrs (int i, char *s, char *d)
-{
-	 fprintf(stderr, s, d);
+int
+ferrs (int i, char *s, char *d) {
+	fprintf(stderr, s, d);
 	if (i > 0)
 		exit(i);
 }
@@ -924,8 +921,7 @@ ferrs (int i, char *s, char *d)
  * return a copy of the string s minus its last character
  */
 char *
-strip_last (char *s)
-{
+strip_last (char *s) {
 	char   *t, *r;
 
 	if (s) {
@@ -942,9 +938,8 @@ strip_last (char *s)
  * add the declaration specified by the strings type and id to the
  * start of the declaration list
  */
-int 
-add_list (char *type, char *id)
-{
+int
+add_list (char *type, char *id) {
 
 	s_table *prev;
 
@@ -961,14 +956,14 @@ add_list (char *type, char *id)
 /*
  * print the declaration list
  */
-int 
+int
 print_list()  {
 	s_table *prev;
 
 	for (prev = head; prev != NULL; prev = prev->next) {
-		 printf("type is %s\n", prev->type);
-		 printf("name is %s\n", prev->name);
-		 printf("\n");
+		printf("type is %s\n", prev->type);
+		printf("name is %s\n", prev->name);
+		printf("\n");
 	}
 }
 
@@ -976,9 +971,8 @@ print_list()  {
  * parse the declaration in the string s returning the type in v1 and
  * the name in v2
  */
-int 
-parse_decl (char **s, char **v1, char **v2)
-{
+int
+parse_decl (char **s, char **v1, char **v2) {
 	char   *t;
 
 	for (t = *s; *t != '\0' && !(isalnum(*t) || *t == '_'); t++);
@@ -1006,8 +1000,7 @@ parse_decl (char **s, char **v1, char **v2)
  * return the next identifier in the string s
  */
 char *
-get_val (char **s)
-{
+get_val (char **s) {
 	char   *t, *r;
 
 	for (t = *s; *t != '\0' && !(isalnum(*t) || *t == '_' || *t == '.'); t++);
@@ -1028,8 +1021,7 @@ get_val (char **s)
  * ';' or '\0') of the string s
  */
 char *
-get_comp (char **s)
-{
+get_comp (char **s) {
 	char   *t, *r;
 
 	for (t = *s; *t != '\0' && !(isalnum(*t) || *t == '_' || *t == ';'); t++);
@@ -1050,8 +1042,7 @@ get_comp (char **s)
  * definitions for the variables generated by posy
  */
 char *
-get_string (char *s, int direction)
-{
+get_string (char *s, int direction) {
 	char   *t, *t1;
 
 	if (direction & YP_ENCODER)
@@ -1136,16 +1127,15 @@ char   *type;
  * after having run notid on them first
  */
 char *
-strp2name (char *s1, char *s2)
-{
+strp2name (char *s1, char *s2) {
 	char   *p;
 	static char buf[STRSIZE * 2 + 5];
 
 	if ((int)strlen(s1) > STRSIZE || (int)strlen(s2) > STRSIZE)
 		ferr(1, "strp2name:string to big\n");
-	 strcpy(buf, p = notidtoid(s1));
+	strcpy(buf, p = notidtoid(s1));
 	free(p);
-	 strcat(buf, p = notidtoid(s2));
+	strcat(buf, p = notidtoid(s2));
 	free(p);
 
 	return (buf);
@@ -1341,30 +1331,30 @@ dumpdef1:	/* Bitstrings */
 	yp->yp_action0 = label;
 	yp->yp_act0_lineno = size;
 	i = (size + NBPC - 1) / NBPC;
-	 fprintf(fp, "\nstatic unsigned char %s[] = ", label);
+	fprintf(fp, "\nstatic unsigned char %s[] = ", label);
 	if (printable(str, i))
 		prstr(fp, str, i);
 	else
 		prhstr(fp, str, i);
-	 fprintf(fp, ";\n");
+	fprintf(fp, ";\n");
 	return;
 
 dumpdef2:	/* Octet strings (and aliases) */
 	label = genlabel(name, yp);
 	yp->yp_action0 = label;
 	yp->yp_act0_lineno = size;
-	 fprintf(fp, "\nstatic unsigned char %s[] = ", label);
+	fprintf(fp, "\nstatic unsigned char %s[] = ", label);
 	if (printable(str, size))
 		prstr(fp, str, size);
 	else
 		prhstr(fp, str, size);
-	 fprintf(fp, ";\n");
+	fprintf(fp, ";\n");
 	return;
 
 dumpdef3:	/* Reals */
 	label = genlabel(name, yp);
 	yp->yp_action0 = label;
-	 fprintf(fp, "\nstatic double %s = %f;\n", label, yv1->yv_real);
+	fprintf(fp, "\nstatic double %s = %f;\n", label, yv1->yv_real);
 	return;
 
 }
@@ -1424,8 +1414,8 @@ int     which;			/* Which type of entries to generate
 		switch (yv->yv_code) {
 		case YV_NUMBER:
 		case YV_BOOL:
-			 fprintf(fp, "\t{ %s,	%d,	0,	0, %s },\n", ndflt,
-						   yp->yp_default->yv_number, genstrform(yp));
+			fprintf(fp, "\t{ %s,	%d,	0,	0, %s },\n", ndflt,
+					yp->yp_default->yv_number, genstrform(yp));
 			break;
 
 		case YV_IDEFINED:
@@ -1433,8 +1423,8 @@ int     which;			/* Which type of entries to generate
 				ferrs(1, "gdflt:BOOL/INT:cannot find definition of %s\n",
 					  yv->yv_identifier);
 			}
-			 fprintf(fp, "\t{ %s,	%d,	0,	0, %s },\n", ndflt,
-						   yv1->yv_number, genstrform(yp));
+			fprintf(fp, "\t{ %s,	%d,	0,	0, %s },\n", ndflt,
+					yv1->yv_number, genstrform(yp));
 			break;
 
 		default:
@@ -1453,9 +1443,9 @@ int     which;			/* Which type of entries to generate
 		case YV_HSTRING:
 		case YV_BSTRING:
 		case YV_VALIST:
-			 fprintf(fp, "\t{ %s,	%d,	%d,	0, %s },\n", ndflt,
-						   yp->yp_act0_lineno, addptr(yp->yp_action0),
-						   genstrform(yp));
+			fprintf(fp, "\t{ %s,	%d,	%d,	0, %s },\n", ndflt,
+					yp->yp_act0_lineno, addptr(yp->yp_action0),
+					genstrform(yp));
 			break;
 
 		default:
@@ -1477,9 +1467,9 @@ int     which;			/* Which type of entries to generate
 				 */
 #endif
 		case YV_REAL:
-			 fprintf(fp, "\t{ %s,	0,	%d,	0, %s },\n", ndflt,
-						   addptr(concat("&", yp->yp_action0)),
-						   genstrform(yp));
+			fprintf(fp, "\t{ %s,	0,	%d,	0, %s },\n", ndflt,
+					addptr(concat("&", yp->yp_action0)),
+					genstrform(yp));
 			break;
 
 		default:
@@ -1494,9 +1484,9 @@ int     which;			/* Which type of entries to generate
 		case YV_STRING:
 		case YV_HSTRING:
 		case YV_BSTRING:
-			 fprintf(fp, "\t{ %s,	%d,	%d,	0, %s },\n", ndflt,
-						   yp->yp_act0_lineno, addptr(yp->yp_action0),
-						   genstrform(yp));
+			fprintf(fp, "\t{ %s,	%d,	%d,	0, %s },\n", ndflt,
+					yp->yp_act0_lineno, addptr(yp->yp_action0),
+					genstrform(yp));
 			break;
 
 		default:
@@ -1515,8 +1505,8 @@ int     which;			/* Which type of entries to generate
 	case YP_CHOICE:
 	case YP_ANY:
 	case YP_OID:
-		 fprintf(fp, "\t{ %s,	0,	0,	0, %s },\n",
-					   ndflt, genstrform(yp));
+		fprintf(fp, "\t{ %s,	0,	0,	0, %s },\n",
+				ndflt, genstrform(yp));
 		break;
 
 	default:
@@ -1632,16 +1622,16 @@ FILE   *fp;
 char   *str;
 int     len;
 {
-	 fputc('"', fp);
+	fputc('"', fp);
 	while (len-- > 0) {
 		if (isprint(*str & 0xff)) {
-			 fputc(*str & 0xff, fp);
+			fputc(*str & 0xff, fp);
 			str++;
 			continue;
 		}
-		 fprintf(fp, "\\%0o", *str & 0xff);
+		fprintf(fp, "\\%0o", *str & 0xff);
 	}
-	 fputc('"', fp);
+	fputc('"', fp);
 #define MAXPLINE	16
 }
 /*
@@ -1655,26 +1645,25 @@ int     len;
 {
 	int     npline;		/* number on this line */
 
-	 fprintf(fp, "{\n");
+	fprintf(fp, "{\n");
 	npline = 0;
 	while (len > 0) {
 		if (npline >= MAXPLINE) {
-			 fputc('\n', fp);
+			fputc('\n', fp);
 			npline = 0;
 		}
 		npline++;
-		 fprintf(fp, " 0x%02x,", *str++ & 0xff);
+		fprintf(fp, " 0x%02x,", *str++ & 0xff);
 		len--;
 	}
-	 fprintf(fp, "}");
+	fprintf(fp, "}");
 }
 /*
  * determine if the string is printable i.e. only sensible to be read
  * as a character string. 1 (true) if it is 0, if it isn't
  */
-int 
-printable (char *str, int i)
-{
+int
+printable (char *str, int i) {
 	while (i-- > 0) {
 		if (!isprint(*str & 0xff))
 			return (0);		/* look for the first non printable
@@ -1699,10 +1688,10 @@ YP      yp;
 	p1 = notidtoid(name);
 	if (yp->yp_flags & YP_ID) {
 		p2 = notidtoid(yp->yp_id);
-		 sprintf(buf, "L%s_%s_%d", p1, p2, cnt++);
+		sprintf(buf, "L%s_%s_%d", p1, p2, cnt++);
 		free(p2);
 	} else
-		 sprintf(buf, "L%s_X_%d", p1, cnt++);
+		sprintf(buf, "L%s_X_%d", p1, cnt++);
 	free(p1);
 
 	return (my_new_str(buf));
@@ -1710,15 +1699,14 @@ YP      yp;
 /*
  * generate a ptr table reference for the given module table entry
  */
-int 
-gen_modref (char *mod)
-{
+int
+gen_modref (char *mod) {
 	char	buf[BUFSIZ];
 	char	*p1;
 	int		ind;
 
 	p1 = notidtoid(mod);
-	 sprintf(buf, "&%s%s%s", PREFIX, p1, MODTYP_SUFFIX);
+	sprintf(buf, "&%s%s%s", PREFIX, p1, MODTYP_SUFFIX);
 	ind = addptr(buf);
 	free(p1);
 
@@ -1726,12 +1714,11 @@ gen_modref (char *mod)
 }
 
 char *
-setfield (char *p)
-{
+setfield (char *p) {
 	char	*f;
 
 	if ((f = getfield(p)) == NULLCP) {
-		 fprintf(stderr, "\nsetfield: can't extract field from %s\n", p);
+		fprintf(stderr, "\nsetfield: can't extract field from %s\n", p);
 		exit(1);
 	}
 	return (strdup(f));
@@ -1881,10 +1868,10 @@ char	*flags;
 			/* EXPLICIT TAG so generate an ETAG */
 			if (pd_yt)
 				yt = pd_yt;  /* if we have a value passed down use that */
-			 fprintf(fp, "\t{ ETAG, 0, %d, %s%s, %s },\n",
-						   yt->yt_value->yv_number,
-						   class2str(yt->yt_class), flags,
-						   genstrform(yp));
+			fprintf(fp, "\t{ ETAG, 0, %d, %s%s, %s },\n",
+					yt->yt_value->yv_number,
+					class2str(yt->yt_class), flags,
+					genstrform(yp));
 			pd_yt = NULLYT; /* non't pass on any value */
 
 		} else if ((yp->yp_flags & (YP_TAG|YP_IMPLICIT))== (YP_TAG|YP_IMPLICIT)) {
@@ -2058,9 +2045,9 @@ char	*fn;	/* name of routine to generate */
 char	*dummy;
 {
 
-	 fprintf(fp, "\t{ FN_CALL, %d, %s, %s, %s },\n",
-				   addptr(fn), c_tag(yp), c_class(yp),
-				   genstrform(yp));
+	fprintf(fp, "\t{ FN_CALL, %d, %s, %s, %s },\n",
+			addptr(fn), c_tag(yp), c_class(yp),
+			genstrform(yp));
 }
 /*
  * declare the functions that are used
@@ -2071,16 +2058,16 @@ FILE	*fp;
 YFN	fn;
 {
 	if (fn->yfn_enc) {
-		 fprintf(fp, "extern int	%s();\n", fn->yfn_enc);
+		fprintf(fp, "extern int	%s();\n", fn->yfn_enc);
 	}
 	if (fn->yfn_dec) {
-		 fprintf(fp, "extern int	%s();\n", fn->yfn_dec);
+		fprintf(fp, "extern int	%s();\n", fn->yfn_dec);
 	}
 	if (fn->yfn_prt) {
-		 fprintf(fp, "extern int	%s();\n", fn->yfn_prt);
+		fprintf(fp, "extern int	%s();\n", fn->yfn_prt);
 	}
 	if (fn->yfn_fre) {
-		 fprintf(fp, "extern int	%s();\n", fn->yfn_fre);
+		fprintf(fp, "extern int	%s();\n", fn->yfn_fre);
 	}
 }
 /*
@@ -2091,8 +2078,8 @@ FILE	*fp;
 Action	act;
 YP yp;
 {
-	 fprintf(fp, "\t{ UCODE, %d, 0, 0, %s }, /* line %d */\n",
-				   act->a_num, genstrform (yp), act->a_line);
+	fprintf(fp, "\t{ UCODE, %d, 0, 0, %s }, /* line %d */\n",
+			act->a_num, genstrform (yp), act->a_line);
 }
 
 /*
@@ -2109,11 +2096,11 @@ YP 	yp;
 	if (f && t) {
 		if (*f == '&')
 			f++;
-		 fprintf(fp, "\t{ %s, OFFSET(%s, %s), %s, %s, %s },\n",
-					   typ, t, f, cl, fl, genstrform (yp));
+		fprintf(fp, "\t{ %s, OFFSET(%s, %s), %s, %s, %s },\n",
+				typ, t, f, cl, fl, genstrform (yp));
 	} else
-		 fprintf(fp, "\t{ %s, 0, %s, %s, %s },\n",
-					   typ, cl, fl, genstrform(yp));
+		fprintf(fp, "\t{ %s, 0, %s, %s, %s },\n",
+				typ, cl, fl, genstrform(yp));
 }
 
 /*
@@ -2130,11 +2117,11 @@ YP	yp;
 
 	if (f && t && *f == '&') {
 		f++;
-		 fprintf(fp, "\t{ S%s, OFFSET(%s, %s), %s, %s, %s },\n",
-					   typ, t, f, cl, fl, genstrform (yp));
+		fprintf(fp, "\t{ S%s, OFFSET(%s, %s), %s, %s, %s },\n",
+				typ, t, f, cl, fl, genstrform (yp));
 	} else
-		 fprintf(fp, "\t{ S%s, 0, %s, %s, %s },\n",
-					   typ, cl, fl, genstrform(yp));
+		fprintf(fp, "\t{ S%s, 0, %s, %s, %s },\n",
+				typ, cl, fl, genstrform(yp));
 }
 
 /*
@@ -2142,11 +2129,10 @@ YP	yp;
  * the printing routines with
  */
 char *
-int2tstr (int i)
-{
+int2tstr (int i) {
 	static char	buf[STRSIZE];
 
-	 sprintf(buf, "%d", i);
+	sprintf(buf, "%d", i);
 
 	return (buf);
 }
@@ -2164,12 +2150,11 @@ static char	*codetab[] = {
  * produce a user readable name for a yp_code value
  */
 char *
-code2name (int code)
-{
+code2name (int code) {
 	static char	buf[STRSIZE];
 
 	if (code < 0 || code > YP_IMPTYPE) {
-		 sprintf(buf, "Unknown code (%d)", code);
+		sprintf(buf, "Unknown code (%d)", code);
 		return (buf);
 	}
 
@@ -2189,30 +2174,30 @@ YP	yp;
 	p = buf;
 	if (yp->yp_code == YP_IDEFINED) {
 		if (yp->yp_module) {
-			 sprintf(p, "%s.", yp->yp_module);
+			sprintf(p, "%s.", yp->yp_module);
 			p += strlen(p);
 		}
 		if (yp->yp_identifier)
-			 sprintf(p, "%s", yp->yp_identifier);
+			sprintf(p, "%s", yp->yp_identifier);
 		else
-			 strcpy(p, "(no identifier)");
+			strcpy(p, "(no identifier)");
 		p += strlen(p);
 		if (yp->yp_modid) {
-			 sprintf(p, " (%s)", sprintoid(yp->yp_modid));
+			sprintf(p, " (%s)", sprintoid(yp->yp_modid));
 			p += strlen(p);
 		}
 	} else {
-		 sprintf(p, "%s", code2name(yp->yp_code));
+		sprintf(p, "%s", code2name(yp->yp_code));
 		p += strlen(p);
 	}
 
 	if (yp->yp_flags & YP_ID) {
-		 sprintf(p, " %s", yp->yp_id);
+		sprintf(p, " %s", yp->yp_id);
 		p += strlen(p);
 	}
 
 	if (yp->yp_lineno > 0) {
-		 sprintf(p, " on line %d", yp->yp_lineno);
+		sprintf(p, " on line %d", yp->yp_lineno);
 		p += strlen(p);
 	}
 

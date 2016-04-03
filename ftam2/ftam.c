@@ -79,9 +79,8 @@ extern char* default_prompt();
 #ifndef	BRIDGE
 static int arginit (char **vec);
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int     eof,
 			status,
 			vecp;
@@ -101,7 +100,7 @@ main (int argc, char **argv, char **envp)
 	signal(SIGPIPE, SIG_IGN);
 
 	rcinit ();
-	 sprintf (buffer, "%s/.ftamrc", myhome);
+	sprintf (buffer, "%s/.ftamrc", myhome);
 
 	if (!fflag && (fp = fopen (buffer, "r"))) {
 		while (fgets (buffer, sizeof buffer, fp)) {
@@ -116,7 +115,7 @@ main (int argc, char **argv, char **envp)
 				exit (1);
 		}
 
-		 fclose (fp);
+		fclose (fp);
 	}
 
 	if (hflag) {
@@ -187,7 +186,7 @@ main (int argc, char **argv, char **envp)
 		for (interrupted = 0;; interrupted = 0) {
 			if (hash && marks >= BUFSIZ) {
 				marks = 0;
-				 printf ("\n");
+				printf ("\n");
 			}
 
 			if (getftamline (command_prompt, buffer) == NOTOK) {
@@ -211,7 +210,7 @@ main (int argc, char **argv, char **envp)
 			case OK:
 			default:
 				if (bell)
-					 putchar (ringring);
+					putchar (ringring);
 				continue;
 
 			case DONE:
@@ -221,7 +220,7 @@ main (int argc, char **argv, char **envp)
 			break;
 		}
 
-		 signal (SIGINT, istat);
+		signal (SIGINT, istat);
 	}
 
 	if (ftamfd != NOTOK) {
@@ -229,7 +228,7 @@ main (int argc, char **argv, char **envp)
 		vec[vecp++] = "close";
 		vec[vecp] = NULL;
 
-		 ftamloop (vec, NOTOK);
+		ftamloop (vec, NOTOK);
 	}
 
 #ifdef	DEBUG
@@ -243,8 +242,7 @@ main (int argc, char **argv, char **envp)
 /*  */
 
 #ifndef	BRIDGE
-static ftamloop (char **vec, int error)
-{
+static ftamloop (char **vec, int error) {
 	struct dispatch   *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
@@ -304,10 +302,9 @@ static ftamloop (char **vec, int error)
 /*    ARGINIT */
 
 #ifndef	BRIDGE
-static arginit (char **vec)
-{
+static arginit (char **vec) {
 	char  *ap,
-			 *pp;
+		  *pp;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -402,11 +399,10 @@ static arginit (char **vec)
 /*    INTERACTIVE */
 
 #ifndef	BRIDGE
-int getftamline (char *prompt, char *buffer)
-{
+int getftamline (char *prompt, char *buffer) {
 	int    i;
 	char  *cp,
-			 *ep;
+		  *ep;
 	static int  sticky = 0;
 
 	if (interrupted) {
@@ -426,7 +422,7 @@ int getftamline (char *prompt, char *buffer)
 
 	case NOTOK:
 		if (ontty)
-			 printf ("\n");	/* and fall */
+			printf ("\n");	/* and fall */
 	default:
 		armed = 0;
 		return NOTOK;
@@ -440,13 +436,13 @@ int getftamline (char *prompt, char *buffer)
 
 		printf (prompt, ftamfd != NOTOK ? host : myname);
 
-		 fflush (stdout);
+		fflush (stdout);
 	}
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
 			if (ontty)
-				 printf ("\n");
+				printf ("\n");
 			clearerr (stdin);
 			if (cp == buffer)
 				longjmp (intrenv, DONE);
@@ -472,10 +468,9 @@ int getftamline (char *prompt, char *buffer)
 
 /* ARGSUSED */
 
-static SFD intrser (int sig)
-{
+static SFD intrser (int sig) {
 #ifndef	BSDSIGS
-	 signal (SIGINT, intrser);
+	signal (SIGINT, intrser);
 #endif
 
 	if (armed)
@@ -489,11 +484,10 @@ static SFD intrser (int sig)
 
 #ifndef	BRIDGE
 #ifndef	lint
-int	ask (char* fmt, ...)
-{
+int	ask (char* fmt, ...) {
 	int     x,
-	y,
-	result;
+			y,
+			result;
 	char    buffer[BUFSIZ];
 	va_list ap;
 
@@ -512,12 +506,12 @@ int	ask (char* fmt, ...)
 
 	case NOTOK:
 	default:
-		 printf ("\n");
+		printf ("\n");
 		armed = 0;
 		return DONE;
 	}
 	if (bell)
-		 putchar (ringring);
+		putchar (ringring);
 
 	va_start (ap, fmt);
 
@@ -527,7 +521,7 @@ int	ask (char* fmt, ...)
 
 again:
 	;
-	 printf ("%s? (y)es, (n)o: ", buffer);
+	printf ("%s? (y)es, (n)o: ", buffer);
 
 	x = y = getchar ();
 	while (y != '\n' && y != EOF)
@@ -558,9 +552,8 @@ again:
 #else
 /* VARARGS */
 
-int 
-ask (char *fmt)
-{
+int
+ask (char *fmt) {
 	return ask (fmt);
 }
 #endif
@@ -572,8 +565,7 @@ ask (char *fmt)
 void	_advise ();
 
 
-void	adios (char* what, ...)
-{
+void	adios (char* what, ...) {
 	struct FTAMindication   ftis;
 	va_list ap;
 
@@ -584,8 +576,8 @@ void	adios (char* what, ...)
 	va_end (ap);
 
 	if (ftamfd != NOTOK)
-		 FUAbortRequest (ftamfd, FACTION_PERM,
-		(struct FTAMdiagnostic *) 0, 0, &ftis);
+		FUAbortRequest (ftamfd, FACTION_PERM,
+						(struct FTAMdiagnostic *) 0, 0, &ftis);
 
 #ifdef	BRIDGE
 	reply (550, ftam_error);
@@ -597,17 +589,15 @@ void	adios (char* what, ...)
 #else
 /* VARARGS */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 
 #ifndef	lint
-void	advise (char*what, ...)
-{
+void	advise (char*what, ...) {
 	va_list ap;
 
 	va_start (ap, what);
@@ -618,8 +608,7 @@ void	advise (char*what, ...)
 }
 
 
-static void _advise (char* what, va_list ap)
-{
+static void _advise (char* what, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
@@ -627,27 +616,26 @@ static void _advise (char* what, va_list ap)
 #ifndef	BRIDGE
 	if (hash && marks >= BUFSIZ) {
 		marks = 0;
-		 printf ("\n");
+		printf ("\n");
 	}
 
-	 fflush (stdout);
+	fflush (stdout);
 
-	 fprintf (stderr, "%s: ", myname);
-	 fputs (buffer, stderr);
-	 fputc ('\n', stderr);
+	fprintf (stderr, "%s: ", myname);
+	fputs (buffer, stderr);
+	fputc ('\n', stderr);
 
-	 fflush (stderr);
+	fflush (stderr);
 #else
-	 ll_log (ftam_log, LLOG_NOTICE, NULLCP, "%s", buffer);
-	 strcpy (ftam_error, buffer);
+	ll_log (ftam_log, LLOG_NOTICE, NULLCP, "%s", buffer);
+	strcpy (ftam_error, buffer);
 #endif
 }
 #else
 /* VARARGS */
 
-void 
-advise (char *what, char *fmt)
-{
+void
+advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif

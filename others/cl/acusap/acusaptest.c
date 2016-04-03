@@ -83,9 +83,8 @@ void advise();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	char buffer[80], *bptr;
 
 	printf ("\n AcuSAP test driver for AUNITDATA\n");
@@ -158,8 +157,8 @@ main (int argc, char **argv, char **envp)
 
 
 /*-------------------------------------*/
-int 
-togglemode 
+int
+togglemode
 /*-------------------------------------*/
 {
 	printf ("\n Current mode is ");
@@ -176,8 +175,8 @@ togglemode
 
 
 /*-------------------------------------*/
-int 
-bind 
+int
+bind
 /*-------------------------------------*/
 {
 	/*  set binding variables: title, presentation address, and ctxlist */
@@ -188,7 +187,7 @@ bind
 		if (mode == CLIENT_MODE) {
 			printf ("\n Binding the client side\n");
 			if ((csd = AcUnitDataBind (NOTOK, BIND_STATIC, ctx, NULLAEI, aei,
-									   NULLPA, pa, pc, qos, aci) ) == NOTOK ) {
+			NULLPA, pa, pc, qos, aci) ) == NOTOK ) {
 				printf ("\n Bind unit data service failed\n");
 				acs_adios (aca, "A-UNIT-DATA BIND");
 			} else
@@ -196,7 +195,7 @@ bind
 		} else { /* SERVER_MODE */
 			printf ("\n Binding the server side\n");
 			if ((ssd = AcUnitDataBind (NOTOK, BIND_DYNAMIC, ctx, aei, NULLAEI,
-									   pa, NULLPA, pc, qos, aci) ) == NOTOK ) {
+			pa, NULLPA, pc, qos, aci) ) == NOTOK ) {
 				printf ("\n Bind unit data service failed\n");
 				acs_adios (aca, "A-UNIT-DATA BIND");
 			} else
@@ -206,8 +205,8 @@ bind
 }
 
 /*-------------------------------------*/
-int 
-initbindvars 
+int
+initbindvars
 /*-------------------------------------*/
 {
 	/*  set up bind static variables for test */
@@ -234,8 +233,8 @@ initbindvars
 
 
 /*-------------------------------------*/
-int 
-unbind 
+int
+unbind
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -255,8 +254,8 @@ unbind
 
 
 /*-------------------------------------*/
-int 
-listenup 
+int
+listenup
 /*-------------------------------------*/
 {
 	;
@@ -298,8 +297,8 @@ listenup
 }
 
 /*-------------------------------------*/
-int 
-audtsendreq 
+int
+audtsendreq
 /*-------------------------------------*/
 {
 	/*  first set binding variables: title, presentation address, and ctxlist */
@@ -328,8 +327,8 @@ audtsendreq
 }
 
 /*-------------------------------------*/
-int 
-audtsend 
+int
+audtsend
 /*-------------------------------------*/
 {
 	int	sum, result;
@@ -367,8 +366,8 @@ audtsend
 
 
 /*-------------------------------------*/
-int 
-audtread 
+int
+audtread
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -379,7 +378,7 @@ audtread
 			    printf ("\n validation of context and/or title failed\n");
 		*/
 		if ( decode_ADD_Sum ( cacs.acs_info[0], 1, NULLIP, NULLVP, &pSum )
-				== NOTOK )
+		== NOTOK )
 			printf ("\n read ok but decode failed\n");
 		else
 			printf ( "\n successful: sum = %d\n", pSum->parm );
@@ -395,11 +394,11 @@ audtread
 		*/
 		Addends.addend1 = Addends.addend2 = 0;
 		if ( decode_ADD_Addends (sacs.acs_info[0], 1, NULLIP, NULLVP, &pAddends)
-				== NOTOK )
+		== NOTOK )
 			printf ("\n read ok but decode failed\n");
 		else
 			printf ( "\n successful: Addends = %d, %d\n",
-					 pAddends->addend1, pAddends->addend2 );
+			pAddends->addend1, pAddends->addend2 );
 		clientaei = psacs -> acs_callingtitle;	/* struct copy */
 		ACSFREE(psacs);
 		return;
@@ -412,13 +411,12 @@ rfail:
 }
 
 /*-------------------------------------*/
-int 
+int
 validbinding (
-/*-------------------------------------*/
-    int sd,
-    struct AcuSAPstart *acs
-)
-{
+	/*-------------------------------------*/
+	int sd,
+	struct AcuSAPstart *acs
+) {
 	struct assocblk *acb;
 
 #define	AEICMP(aei1,aei2) \
@@ -447,8 +445,8 @@ validbinding (
 
 
 /*-------------------------------------*/
-int 
-audtrebind 
+int
+audtrebind
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE)
@@ -467,7 +465,7 @@ audtrebind
 		end cheat */
 
 		if ( AcUnitDataRebind (ssd, &clientaei,
-							   &psacs->acs_start.ps_calling, aci) == NOTOK )
+		&psacs->acs_start.ps_calling, aci) == NOTOK )
 
 		{
 			printf ("\n Rebind unit data service failed\n");
@@ -479,12 +477,11 @@ audtrebind
 
 
 /*-------------------------------------*/
-static 
+static
 printsrv (
-/*-------------------------------------*/
-    struct isoservent *is
-)
-{
+	/*-------------------------------------*/
+	struct isoservent *is
+) {
 	int    n = is -> is_tail - is -> is_vec - 1;
 	char **ap = is -> is_vec;
 
@@ -500,12 +497,11 @@ printsrv (
 
 /*  */
 /*-------------------------------------*/
-static 
+static
 printpaddr (
-/*-------------------------------------*/
-    struct PSAPaddr *pa
-)
-{
+	/*-------------------------------------*/
+	struct PSAPaddr *pa
+) {
 	struct SSAPaddr   *sa = &(pa -> pa_addr);
 	struct TSAPaddr   *ta = &(sa -> sa_addr);
 	struct NSAPaddr   *na = ta -> ta_addrs;
@@ -557,26 +553,24 @@ printpaddr (
 
 
 
-void 
-acs_adios (struct AcSAPabort *aca, char *event)
-{
+void
+acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
 
 	_exit (1);
 }
 
 
-void 
-acs_advise (struct AcSAPabort *aca, char *event)
-{
+void
+acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						AcuErrString (aca -> aca_reason),
-						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 AcuErrString (aca -> aca_reason),
+				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		 sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
+		sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -597,9 +591,8 @@ va_dcl {
 }
 #else
 /* VARARGS */
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -614,24 +607,22 @@ va_dcl {
 	va_end (ap);
 }
 
-static void 
-_advise (va_list ap)
-{
+static void
+_advise (va_list ap) {
 	char    buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
-	 fflush (stdout);
+	fflush (stdout);
 	fprintf (stderr, "%s: ", myservice);
-	 fputs (buffer, stderr);
-	 fputc ('\n', stderr);
-	 fflush (stderr);
+	fputs (buffer, stderr);
+	fputc ('\n', stderr);
+	fflush (stderr);
 }
 #else
 /* VARARGS */
 
-void 
-advise (char *what, char *fmt)
-{
+void
+advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
@@ -649,9 +640,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-ryr_advise (char *what, char *fmt)
-{
+void
+ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

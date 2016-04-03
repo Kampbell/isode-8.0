@@ -103,15 +103,14 @@ Authpolicy ap;
 {
 	PE ret_pe;
 
-	 encode_Quipu_AuthenticationPolicySyntax( &ret_pe, 0, 0, NULLCP,
+	encode_Quipu_AuthenticationPolicySyntax( &ret_pe, 0, 0, NULLCP,
 			ap );
 
 	return( ret_pe );
 }
 
-static 
-get_policy (char *str)
-{
+static
+get_policy (char *str) {
 	/* get modification policy */
 	if ( lexnequ( str, "trust", 5 ) == 0 ) {
 		return( AP_TRUST );
@@ -196,7 +195,7 @@ int		format;
 	}
 }
 
-int 
+int
 authp_syntax (void) {
 	extern	sfree();
 

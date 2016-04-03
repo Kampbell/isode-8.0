@@ -1,6 +1,5 @@
-__END_DECLS 
-main (int argc, char **argv, char **envp)
-{
+__END_DECLS
+main (int argc, char **argv, char **envp) {
 	int	    len,
 			paddr_type;
 	char   *prefix,

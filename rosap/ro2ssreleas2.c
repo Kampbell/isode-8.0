@@ -38,9 +38,8 @@ static int  RoEndResponseAux ();
 
 /*    RO-END.RESPONSE */
 
-int 
-RoEndResponse (int sd, struct RoSAPindication *roi)
-{
+int
+RoEndResponse (int sd, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -53,7 +52,7 @@ RoEndResponse (int sd, struct RoSAPindication *roi)
 
 	result = RoEndResponseAux (acb, roi);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 
@@ -61,9 +60,8 @@ RoEndResponse (int sd, struct RoSAPindication *roi)
 
 /*  */
 
-static int 
-RoEndResponseAux (struct assocblk *acb, struct RoSAPindication *roi)
-{
+static int
+RoEndResponseAux (struct assocblk *acb, struct RoSAPindication *roi) {
 	int     result;
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;

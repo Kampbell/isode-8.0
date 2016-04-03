@@ -61,9 +61,8 @@ newacblk()  {
 
 /*  */
 
-int 
-freeacblk (struct assocblk *acb)
-{
+int
+freeacblk (struct assocblk *acb) {
 	if (acb == NULL)
 		return;
 
@@ -77,17 +76,17 @@ freeacblk (struct assocblk *acb)
 			if (acb -> acb_flags & ACB_RTS) {/* recurse */
 				struct AcSAPindication  acis;
 
-				 (*acb -> acb_uabort) (acb -> acb_fd, NULLPEP, 0, &acis);
+				(*acb -> acb_uabort) (acb -> acb_fd, NULLPEP, 0, &acis);
 				return;
 			} else {
 				struct PSAPindication   pis;
 
-				 (*acb -> acb_uabort) (acb -> acb_fd, NULLPEP, 0, &pis);
+				(*acb -> acb_uabort) (acb -> acb_fd, NULLPEP, 0, &pis);
 			}
 		} else {
 			struct SSAPindication   sis;
 
-			 (*acb -> acb_uabort) (acb -> acb_fd, NULLCP, 0, &sis);
+			(*acb -> acb_uabort) (acb -> acb_fd, NULLCP, 0, &sis);
 		}
 
 	if (acb -> acb_flags & ACB_FINISH)
@@ -111,8 +110,7 @@ freeacblk (struct assocblk *acb)
 /*  */
 
 struct assocblk *
-findacblk (int sd)
-{
+findacblk (int sd) {
 	struct assocblk *acb;
 
 	if (once_only == 0)

@@ -68,14 +68,13 @@ extern int telnet_profile;
 
 TEXT_UPDATE *ndq_queue, *deq();		/*Incoming (From Net) NDQ's*/
 
-int 
+int
 map (	/*Parse the given NDQ (could contain several updates).
 		  Pass individual updates to appropriate processing
 		  routine.
 		*/
-    PE ndq
-)
-{
+	PE ndq
+) {
 
 	TEXT_UPDATE *ud;
 
@@ -98,11 +97,10 @@ map (	/*Parse the given NDQ (could contain several updates).
 }
 
 
-int 
+int
 display_ud ( 		/*Handle Display Updates*/
-    DO_UPDATE *doptr
-)
-{
+	DO_UPDATE *doptr
+) {
 
 	int i;
 	char *pt;
@@ -217,11 +215,10 @@ display_ud ( 		/*Handle Display Updates*/
 }
 
 
-int 
+int
 control_ud (		/*Handle Control Object Updates*/
-    CO_UPDATE *coptr
-)
-{
+	CO_UPDATE *coptr
+) {
 
 	char active = 0;
 #ifdef TERMIOS
@@ -335,7 +332,7 @@ control_ud (		/*Handle Control Object Updates*/
 							ni_image |= ECHO_OBJ;
 							vt_set_nego(ni_image,ECHO_OBJ);/*Respond "WILL"*/
 						}
-						 tmode(1);
+						tmode(1);
 						nego_state |= ECHO_OBJ;
 						cur_emode = ECHO_NOW;	/*Want Server to Echo*/
 					}
@@ -781,11 +778,10 @@ control_ud (		/*Handle Control Object Updates*/
 
 }
 
-int 
+int
 attrib_hdlr (	/*Handle Write Attribute Display Object Update*/
-    DO_UPDATE *doptr
-)
-{
+	DO_UPDATE *doptr
+) {
 
 
 	if(doptr->do_cmd.wrt_attrib.attr_id == 0)
@@ -806,7 +802,7 @@ attrib_hdlr (	/*Handle Write Attribute Display Object Update*/
 				transparent = 1;
 			} else printf("Attribute for unavailable repertoire\n");
 		} else printf("Attribute update with invalid extent (%d)\n",
-								doptr->do_cmd.wrt_attrib.attr_ext);
+						  doptr->do_cmd.wrt_attrib.attr_ext);
 	} else
 		advise(LLOG_NOTICE,NULLCP,  "Attribute Update with invalid I.D. (%d)\n", doptr->do_cmd.wrt_attrib.attr_id);
 }
@@ -816,9 +812,8 @@ attrib_hdlr (	/*Handle Write Attribute Display Object Update*/
 #ifdef TERMIOS
 extern struct	termios oterm;
 
-int 
-tmode (int f)
-{
+int
+tmode (int f) {
 	static int prevmode = 0;
 	struct termios term;
 	int onoff, old;
@@ -882,9 +877,8 @@ struct	ltchars noltc =	{
 	-1, -1, -1, -1, -1, -1
 };
 
-int 
-tmode (int f)
-{
+int
+tmode (int f) {
 	static int prevmode = 0;
 	struct tchars *tc;
 	struct ltchars *ltc;
@@ -948,7 +942,7 @@ tmode (int f)
 }
 #endif
 
-int 
+int
 kill_proc (void) {	/*Terminate current UNIX process using UNIX interrupt char*/
 #ifdef TERMIOS
 	struct termios term;
@@ -956,21 +950,20 @@ kill_proc (void) {	/*Terminate current UNIX process using UNIX interrupt char*/
 	if (tcgetattr(pty, &term) == -1)
 		perror("tcgetattr");
 	else if (term.c_cc[VINTR] != _POSIX_VDISABLE)
-		 putch(term.c_cc[VINTR]);
+		putch(term.c_cc[VINTR]);
 #else
 	if(ioctl(pty,TIOCGETC,(char *)&otc) == -1) {
 		perror("ioctl");
 		adios(NULLCP, "ioctl failed");
 	}
-	 putch(otc.t_intrc);
+	putch(otc.t_intrc);
 #endif
 }
 
-int 
+int
 def_echo (	/*Handle Default Profile Echo Ctrl Object*/
-    CO_UPDATE *coptr
-)
-{
+	CO_UPDATE *coptr
+) {
 
 	char active = 0;
 
@@ -980,13 +973,13 @@ def_echo (	/*Handle Default Profile Echo Ctrl Object*/
 	if (active & ECHO_OBJ) {
 		if(*coptr->co_cmd.bool_update.value & ECHO_OBJ)
 			/*True means do local echo*/
-			 tmode(2);
+			tmode(2);
 		else
-			 tmode(1);
+			tmode(1);
 	}
 }
 #ifdef TERMIOS
-static 
+static
 realptyecho (int on) {
 	struct termios term;
 

@@ -45,9 +45,8 @@ static int  opdu_proc ();
 
 /*  */
 
-int 
-acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *roi)
-{
+int
+acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *roi) {
 	struct type_ROS_ROSEapdus *papdu;
 	struct type_ROS_OPDU	*popdu;
 	int rosap_type;
@@ -58,10 +57,10 @@ acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *ro
 			? decode_ROS_ROSEapdus (pe, 1, NULLIP, NULLVP, &papdu)
 			: decode_ROS_OPDU (pe, 1, NULLIP, NULLVP, &popdu))
 			== NOTOK) {
-		 rosapreject (acb, roi, rosap_type != APDU_UNKNOWN
-							? ROS_GP_MISTYPED
-							: ROS_GP_UNRECOG,
-							NULLCP, "%s", PY_pepy);
+		rosapreject (acb, roi, rosap_type != APDU_UNKNOWN
+					 ? ROS_GP_MISTYPED
+					 : ROS_GP_UNRECOG,
+					 NULLCP, "%s", PY_pepy);
 		pe_free (pe);
 
 		return NOTOK;
@@ -99,9 +98,8 @@ acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *ro
  * RoSAPindication structure
  */
 
-static int 
-apdu_proc (int sd, struct type_ROS_ROSEapdus *papdu, PE *pe, struct RoSAPindication *roi, struct assocblk *acb, int *invokeID)
-{
+static int
+apdu_proc (int sd, struct type_ROS_ROSEapdus *papdu, PE *pe, struct RoSAPindication *roi, struct assocblk *acb, int *invokeID) {
 	int	    rosap_id;
 
 	bzero ((char *) roi, sizeof *roi);
@@ -194,9 +192,8 @@ apdu_proc (int sd, struct type_ROS_ROSEapdus *papdu, PE *pe, struct RoSAPindicat
  * simpilfy matters. What is an OPDU - an Old PDU ??
  */
 
-static int 
-opdu_proc (int sd, struct type_ROS_OPDU *popdu, PE *pe, struct RoSAPindication *roi, struct assocblk *acb, int *invokeID)
-{
+static int
+opdu_proc (int sd, struct type_ROS_OPDU *popdu, PE *pe, struct RoSAPindication *roi, struct assocblk *acb, int *invokeID) {
 	int	rosap_id;
 
 	bzero ((char *) roi, sizeof *roi);
@@ -219,7 +216,7 @@ opdu_proc (int sd, struct type_ROS_OPDU *popdu, PE *pe, struct RoSAPindication *
 		{
 			struct RoSAPresult *ror = &roi -> roi_result;
 			struct type_ROS_ReturnResult *piv
-						= popdu -> un.choice_ROS_9;
+					= popdu -> un.choice_ROS_9;
 
 			rosap_id = ror -> ror_id = piv -> invokeID -> parm;
 			ror -> ror_result = pe_expunge (*pe, piv -> result);
@@ -229,10 +226,10 @@ opdu_proc (int sd, struct type_ROS_OPDU *popdu, PE *pe, struct RoSAPindication *
 
 	case type_ROS_OPDU_3:
 		roi -> roi_type = ROI_ERROR;
-	{
+		{
 			struct RoSAPerror *roe = &roi -> roi_error;
 			struct type_ROS_ReturnError *per
-						= popdu -> un.choice_ROS_10;
+					= popdu -> un.choice_ROS_10;
 
 			rosap_id = roe -> roe_id = per -> invokeID;;
 			roe -> roe_error = per -> element_ROS_3 -> parm;
@@ -243,7 +240,7 @@ opdu_proc (int sd, struct type_ROS_OPDU *popdu, PE *pe, struct RoSAPindication *
 
 	case type_ROS_OPDU_4:
 		roi -> roi_type = ROI_UREJECT;
-	{
+		{
 			struct RoSAPureject   *rou = &roi -> roi_ureject;
 			struct type_ROS_Reject *prj = popdu->un.choice_ROS_11;
 
@@ -293,9 +290,8 @@ static int REprob[] = { ROS_REP_UNRECOG, ROS_REP_UNEXP, ROS_REP_RECERR,
 /* return the ISODE code from the numbers passed in the data or NOTOK if
  * it finds an illegal value
  */
-static int 
-prob2num (struct choice_ROS_3 *prob)
-{
+static int
+prob2num (struct choice_ROS_3 *prob) {
 	int num;
 
 	switch (prob -> offset) {

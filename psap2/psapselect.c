@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapselect.c,v 9.0 19
 
 /*    map presentation descriptors for select() */
 
-int 
-PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi)
-{
+int
+PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi) {
 	SBV     smask;
 	struct psapblk *pb;
 	struct SSAPindication   sis;
@@ -48,7 +47,7 @@ PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi)
 	smask = sigioblock ();
 
 	if ((pb = findpblk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
@@ -56,17 +55,17 @@ PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi)
 	if (SSelectMask (pb -> pb_fd, mask, nfds, &sis) == NOTOK)
 		switch (sa -> sa_reason) {
 		case SC_WAITING:
-			 sigiomask (smask);
+			sigiomask (smask);
 			return psaplose (pi, PC_WAITING, NULLCP, NULLCP);
 
 		default:
-			 ss2pslose (pb, pi, "SSelectMask", sa);
+			ss2pslose (pb, pi, "SSelectMask", sa);
 			freepblk (pb);
-			 sigiomask (smask);
+			sigiomask (smask);
 			return NOTOK;
 		}
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return OK;
 }

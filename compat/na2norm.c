@@ -44,11 +44,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/na2norm.c,v 9.0 1992
 /*  */
 
 struct NSAPaddr *
-na2norm (struct NSAPaddr *na)
-{
+na2norm (struct NSAPaddr *na) {
 	int	    ilen;
 	char  *cp,
-			 *dp;
+		  *dp;
 	char    nsap[NASIZE * 2 + 1];
 	struct hostent *hp;
 	struct ts_interim *ts;
@@ -81,20 +80,20 @@ na2norm (struct NSAPaddr *na)
 			return NULLNA;
 		}
 #define	s2a(b)	(((int) (b)) & 0xff)
-		 sprintf (cp, "%03d%03d%03d%03d",
-						s2a (hp -> h_addr[0]),
-						s2a (hp -> h_addr[1]),
-						s2a (hp -> h_addr[2]),
-						s2a (hp -> h_addr[3]));
+		sprintf (cp, "%03d%03d%03d%03d",
+				 s2a (hp -> h_addr[0]),
+				 s2a (hp -> h_addr[1]),
+				 s2a (hp -> h_addr[2]),
+				 s2a (hp -> h_addr[3]));
 		cp += strlen (cp);
 #undef	s2a
 
 		if (na -> na_port) {
-			 sprintf (cp, "%05d", (int) ntohs (na -> na_port));
+			sprintf (cp, "%05d", (int) ntohs (na -> na_port));
 			cp += strlen (cp);
 
 			if (na -> na_tset && na -> na_tset != NA_TSET_TCP) {
-				 sprintf (cp, "%05d", (int) na -> na_tset);
+				sprintf (cp, "%05d", (int) na -> na_tset);
 				cp += strlen (cp);
 			}
 		}
@@ -106,7 +105,7 @@ na2norm (struct NSAPaddr *na)
 				&& na -> na_pidlen == 0
 				&& na -> na_dte[0] != '0') {	/* SEK - X121 form */
 			/* should be more general */
-			 sprintf (nsap, "36%014s", na -> na_dte);
+			sprintf (nsap, "36%014s", na -> na_dte);
 			ts = NULL;
 			break;
 		}
@@ -118,13 +117,13 @@ na2norm (struct NSAPaddr *na)
 		else
 			*cp++ = '0';
 		if (ilen) {
-			 sprintf (cp, "%01d", ilen);
+			sprintf (cp, "%01d", ilen);
 			cp += strlen (cp);
 
 			for (; ilen-- > 0; cp += 3)
-				 sprintf (cp, "%03d", *dp++ & 0xff);
+				sprintf (cp, "%03d", *dp++ & 0xff);
 		}
-		 strcpy (cp, na -> na_dte);
+		strcpy (cp, na -> na_dte);
 		break;
 
 	default:

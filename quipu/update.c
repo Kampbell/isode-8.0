@@ -70,16 +70,15 @@ char * edbtmp_path = NULLCP;
 #ifndef TURBO_DISK
 /* routine name is historic - not significant */
 
-int 
-journal (Entry myentry)
-{
+int
+journal (Entry myentry) {
 	char * filename, *dn2edbfile();
 	char savefile [LINESIZE], newfile[LINESIZE];
 	DN dn;
 	extern char * treedir;
 	extern char * parse_file;
 	Entry liststart;
-	
+
 
 	if (myentry == NULLENTRY) {
 		LLOG (log_dsap,LLOG_FATAL,("update edb problem"));
@@ -112,26 +111,26 @@ journal (Entry myentry)
 			return NOTOK;
 		}
 
-		 strcpy (newfile,filename);
-		 strcat (newfile,".new");
+		strcpy (newfile,filename);
+		strcat (newfile,".new");
 
 		if ( write_edb(liststart,newfile) != OK) {
-			 unlink (newfile);
+			unlink (newfile);
 			dn_free (dn);
 			return NOTOK;
 		}
 
-		 strcpy (savefile,filename);
-		 strcat (savefile,".bak");
+		strcpy (savefile,filename);
+		strcat (savefile,".bak");
 
-		 unlink (savefile);
+		unlink (savefile);
 		if (link (filename, savefile) == NOTOK)
 			SLOG (log_dsap, LLOG_EXCEPTIONS, savefile,
 				  ("unable to link %s to", filename));
 #ifdef ISC  /* Interactive UNIX V R3 */
 		else
 			/* dangerous - but rename will fail without it */
-			 unlink (filename);
+			unlink (filename);
 #endif
 		if (rename (newfile, filename) == NOTOK) {
 			SLOG (log_dsap, LLOG_EXCEPTIONS, filename,
@@ -151,9 +150,8 @@ journal (Entry myentry)
 }
 #endif TURBO_DISK
 
-int 
-modify_attr (Entry eptr, DN who)
-{
+int
+modify_attr (Entry eptr, DN who) {
 	AttributeType at;
 	AttributeValue av;
 	AV_Sequence avs;
@@ -210,9 +208,8 @@ modify_attr (Entry eptr, DN who)
 	}
 }
 
-static 
-allowed_to_send (DN a, DN b)
-{
+static
+allowed_to_send (DN a, DN b) {
 	/* Return TRUE if the DNs are the same */
 	/* Return TRUE if all components of 'a' match, but 'b' has one extra */
 	/* False otherwise */
@@ -232,9 +229,8 @@ allowed_to_send (DN a, DN b)
 }
 
 
-int 
-do_get_edb (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd)
-{
+int
+do_get_edb (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd) {
 	Entry eptr;
 	Entry my_entry;
 	AV_Sequence avs;
@@ -342,16 +338,15 @@ do_get_edb (struct getedb_arg *arg, struct DSError *error, struct getedb_result 
 	return (DS_OK);
 }
 
-int 
+int
 slave_update (void) {
-	 update_aux (NULLDN, 0);
+	update_aux (NULLDN, 0);
 	shadow_update ();
 	lastedb_update = timenow;
 }
 
-int 
-update_aux (DN dn, int isroot)
-{
+int
+update_aux (DN dn, int isroot) {
 	Entry my_entry, make_path();
 	Entry find_sibling();
 	extern DN mydsadn;
@@ -400,7 +395,7 @@ update_aux (DN dn, int isroot)
 		if(dn || isroot)
 			break;
 
-		 dsa_wait (0);	/* accept any results of previous ops */
+		dsa_wait (0);	/* accept any results of previous ops */
 
 	}
 	avs_free (avs_head);
@@ -408,9 +403,8 @@ update_aux (DN dn, int isroot)
 	return((dn || isroot) ? success : OK);
 }
 
-int 
-send_get_edb (char *version, DN dn, DN from)
-{
+int
+send_get_edb (char *version, DN dn, DN from) {
 	struct di_block		* di;
 	struct DSError		  error;
 	struct oper_act		* on;
@@ -439,7 +433,7 @@ send_get_edb (char *version, DN dn, DN from)
 				LLOG (log_dsap, LLOG_NOTICE, ("%s", buffer));
 			}
 
-			 ps_free (ps);
+			ps_free (ps);
 		}
 
 #ifdef DEBUG
@@ -491,7 +485,7 @@ send_get_edb (char *version, DN dn, DN from)
 				LLOG (log_dsap, LLOG_NOTICE, ("%s", buffer));
 			}
 
-			 ps_free (ps);
+			ps_free (ps);
 		}
 
 		return(OK);
@@ -520,9 +514,8 @@ static int 	g_entry_cnt;
  * set in g_parent before the call.
  */
 
-static 
-unravel_edb (Entry e, struct DSError *error)
-{
+static
+unravel_edb (Entry e, struct DSError *error) {
 	e->e_parent = g_parent;
 	if (unravel_attribute(e, error) != OK)
 		return(NOTOK);
@@ -532,9 +525,8 @@ unravel_edb (Entry e, struct DSError *error)
 	return OK;
 }
 
-static 
-quick_unrav (Entry e, struct DSError *error)
-{
+static
+quick_unrav (Entry e, struct DSError *error) {
 	if (e->e_data == E_TYPE_CONSTRUCTOR)
 		return(OK);
 
@@ -550,9 +542,8 @@ quick_unrav (Entry e, struct DSError *error)
  * is called from avl_apply.
  */
 
-static 
-link_child (Entry e, Avlnode *oldkids)
-{
+static
+link_child (Entry e, Avlnode *oldkids) {
 	struct DSError  error;
 
 	Entry   old_entry;
@@ -573,8 +564,8 @@ link_child (Entry e, Avlnode *oldkids)
 	turbo_add2index(e);
 
 	/* link children to their new parent */
-	 avl_apply(e->e_children, parent_link, (caddr_t) e,
-					 NOTOK, AVL_PREORDER);
+	avl_apply(e->e_children, parent_link, (caddr_t) e,
+			  NOTOK, AVL_PREORDER);
 	/* And unravel them to set new ACL pointers */
 	/* MAY need to make this recursive */
 	if (avl_apply(e->e_children, quick_unrav, (caddr_t) &error,
@@ -590,9 +581,8 @@ link_child (Entry e, Avlnode *oldkids)
 }
 
 
-int 
-process_edb (struct oper_act *on, struct oper_act **newop)
-{
+int
+process_edb (struct oper_act *on, struct oper_act **newop) {
 	extern DN mydsadn;
 	Entry find_sibling();
 	Entry eptr;
@@ -683,7 +673,7 @@ process_edb (struct oper_act *on, struct oper_act **newop)
 	}
 
 
-	 dsa_wait (0);	/* progress any other connections before writing EDB */
+	dsa_wait (0);	/* progress any other connections before writing EDB */
 
 	if (eptr->e_children == NULLAVL)
 		slave_edbs++;
@@ -728,7 +718,7 @@ out:
 	;
 
 	if (on->on_conn) {
-		 time (&timenow);
+		time (&timenow);
 		on->on_conn->cn_last_used = timenow - conn_timeout + nsap_timeout;
 	}
 
@@ -738,9 +728,8 @@ out:
 *  get_edb_fail_wakeup suffices for both fail and error conditions
 *  arising on a get edb operation.
 */
-int 
-get_edb_fail_wakeup (struct oper_act *on)
-{
+int
+get_edb_fail_wakeup (struct oper_act *on) {
 #ifdef notanymore
 	struct oper_act	* on_tmp;
 	struct oper_act	**on_p;
@@ -754,7 +743,7 @@ get_edb_fail_wakeup (struct oper_act *on)
 		log_ds_error (& on -> on_resp.di_error.de_err);
 
 		if (on->on_conn) {
-			 time (&timenow);
+			time (&timenow);
 			on->on_conn->cn_last_used =
 				timenow - conn_timeout + nsap_timeout;
 		}
@@ -792,8 +781,7 @@ get_edb_fail_wakeup (struct oper_act *on)
 }
 
 struct oper_act *
-make_get_edb_op (DN dn, char *version, struct di_block *di)
-{
+make_get_edb_op (DN dn, char *version, struct di_block *di) {
 	struct di_block	* di_tmp;
 	struct oper_act	* on_tmp;
 	struct getedb_arg	* arg;
@@ -860,9 +848,8 @@ struct edbops_list {
 
 static struct edbops_list * edbops = NULLEDBOP;
 
-static 
-edb_start (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd)
-{
+static
+edb_start (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd) {
 	PE spe, lpe, pe = NULLPE;
 	char buffer [LINESIZE];
 	char *fname = NULLCP;
@@ -880,14 +867,14 @@ out:
 		if (pe)
 			pe_free (pe);
 		if (fptr)
-			 fclose (fptr);
+			fclose (fptr);
 		error->dse_type = DSE_SERVICEERROR;
 		error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNAVAILABLE;
 		return (DS_X500_ERROR);
 	}
 
 	/* This is a slow process, take a look at the network... */
-	 dsa_wait (0);
+	dsa_wait (0);
 
 	/* write PE to file */
 
@@ -895,7 +882,7 @@ out:
 	   old files etc.  Worry about optimization later.
 	*/
 
-	 sprintf (buffer,"%s/%s.XXXXXX",edbtmp_path,result->gr_version);
+	sprintf (buffer,"%s/%s.XXXXXX",edbtmp_path,result->gr_version);
 	if ((fname = mktemp (strdup(buffer))) == NULLCP) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,
 			  ("Too many getedbs at once '%s'",fname));
@@ -904,7 +891,7 @@ out:
 
 	um = umask (0177);
 	if ((fptr = fopen (fname,"w")) != NULL) {
-		 umask (um);
+		umask (um);
 		if ((fps = ps_alloc (std_open)) == NULLPS) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,
 				  ("Could not alloc PS file '%s'",fname));
@@ -917,7 +904,7 @@ out:
 			goto out;
 		}
 	} else {
-		 umask (um);
+		umask (um);
 		LLOG ( log_dsap,LLOG_EXCEPTIONS,
 			   ("Could not open EDB/PE file '%s'",fname));
 		goto out;
@@ -981,7 +968,7 @@ out:
 	edbops = nextop;
 
 	/* This is a slow process, take a look at the network... */
-	 dsa_wait (0);
+	dsa_wait (0);
 
 	pe_free (pe);
 
@@ -992,9 +979,8 @@ out:
 
 }
 
-int 
-check_getedb_ops (int fd)
-{
+int
+check_getedb_ops (int fd) {
 	struct edbops_list * nextop, *loop, *trail = NULLEDBOP;
 
 	/* step through the list to find oper... */
@@ -1007,12 +993,12 @@ check_getedb_ops (int fd)
 			continue;
 		}
 
-		 fclose ((FILE *)nextop->edb_ps->ps_addr);
+		fclose ((FILE *)nextop->edb_ps->ps_addr);
 		ps_free (nextop -> edb_ps);
 		dn_free (nextop -> edb_name);
 		dn_free (nextop -> bind_name);
 
-		 unlink (nextop -> edb_fname);
+		unlink (nextop -> edb_fname);
 		free (nextop -> edb_fname);
 		free (nextop -> edb_version);
 
@@ -1025,9 +1011,8 @@ check_getedb_ops (int fd)
 	}
 }
 
-static 
-edb_continue (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd)
-{
+static
+edb_continue (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd) {
 	struct edbops_list * nextop, *trail = NULLEDBOP;
 	PE pe = NULLPE;
 
@@ -1085,12 +1070,12 @@ out:
 	result->gr_pe = pe;
 	result->gr_nextEntryPos = 0;
 
-	 fclose ((FILE *)nextop->edb_ps->ps_addr);
+	fclose ((FILE *)nextop->edb_ps->ps_addr);
 	ps_free (nextop -> edb_ps);
 	dn_free (nextop -> edb_name);
 	dn_free (nextop -> bind_name);
 
-	 unlink (nextop -> edb_fname);
+	unlink (nextop -> edb_fname);
 	free (nextop -> edb_fname);
 	free (nextop -> edb_version);
 
@@ -1105,9 +1090,8 @@ out:
 	/* send next part of an EDB file */
 }
 
-static 
-get_more_edb (struct oper_act *oper, struct oper_act **newop)
-{
+static
+get_more_edb (struct oper_act *oper, struct oper_act **newop) {
 	struct getedb_result	* result = &(oper->on_resp.di_result.dr_res.dcr_dsres.res_ge);
 	struct getedb_arg	* arg = &(oper->on_req.dca_dsarg.arg_ge);
 	struct getedb_arg	* narg;
@@ -1153,9 +1137,8 @@ get_more_edb (struct oper_act *oper, struct oper_act **newop)
 	*newop = on_tmp;
 }
 
-static 
-pull_up_result (struct getedb_arg *arg, struct getedb_result *result)
-{
+static
+pull_up_result (struct getedb_arg *arg, struct getedb_result *result) {
 	struct getedb_result *loop;
 	struct getedb_result *ln;
 	PE pe, npe, spe, lpe, zpe;	/* what useful names ! */
@@ -1249,14 +1232,13 @@ pull_up_result (struct getedb_arg *arg, struct getedb_result *result)
 
 	pe_free(pe);
 
-	 dsa_wait (0);	/* accept any results of previous ops */
+	dsa_wait (0);	/* accept any results of previous ops */
 
 	return TRUE;
 }
 
-static 
-read_part_edb (PS ps, PE *pep, int n)
-{
+static
+read_part_edb (PS ps, PE *pep, int n) {
 	int i;
 	PE pe;
 	PE lpe = NULLPE;
@@ -1295,14 +1277,12 @@ read_part_edb (PS ps, PE *pep, int n)
 }
 
 
-int 
-set_edb_limit (struct oper_act *oper)
-{
+int
+set_edb_limit (struct oper_act *oper) {
 	oper->on_req.dca_dsarg.arg_ge.ga_maxEntries = split_size;
 }
 
-int 
-getedb_size (int x)
-{
+int
+getedb_size (int x) {
 	split_size = x;
 }

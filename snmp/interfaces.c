@@ -366,7 +366,7 @@ int	offset;
 	case type_SNMP_PDUs_commit:
 		is -> ifn_admin = is -> ifn_touched;
 		bzero ((char *) &ifreq, sizeof ifreq);
-		 strcpy (ifreq.ifr_name, is -> ifn_descr);
+		strcpy (ifreq.ifr_name, is -> ifn_descr);
 		if (ioctl (nd, SIOCGIFFLAGS, &ifreq) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, "failed", "SIOCGIFFLAGS on %s",
 					is -> ifn_descr);
@@ -462,7 +462,7 @@ init_interfaces () {
 	struct ifnet *ifnet;
 	OT	    ot;
 	struct interface  *is,
-			**ifp;
+			   **ifp;
 	struct nlist nzs;
 	struct nlist *nz = &nzs;
 
@@ -506,8 +506,8 @@ disabled:
 				== NOTOK)
 			goto disabled;
 		is -> ifn_descr[sizeof is -> ifn_descr - 1] = NULL;
-		 sprintf (is -> ifn_descr + strlen (is -> ifn_descr), "%d",
-						ifn -> if_unit);
+		sprintf (is -> ifn_descr + strlen (is -> ifn_descr), "%d",
+				 ifn -> if_unit);
 
 #ifdef	BSD44
 		switch (is -> ifn_type = ifn -> if_type) {
@@ -550,7 +550,7 @@ disabled:
 		*((integer *) ot -> ot_info) = ifNumber = i;
 	}
 
-	 get_interfaces (type_SNMP_PDUs_get__request);
+	get_interfaces (type_SNMP_PDUs_get__request);
 
 	if (ot = text2obj ("ifIndex"))
 		ot -> ot_getfnx = o_interfaces,
@@ -639,7 +639,7 @@ disabled:
 
 static int  adr_compar (a, b)
 struct address **a,
-		**b;
+		   **b;
 {
 	int    i;
 
@@ -658,10 +658,10 @@ int	offset;
 	int	    adrNumber = 0;
 	struct interface  *is;
 	struct address    *as,
-			*ap,
-			**base,
-			**afe,
-			**afp;
+			   *ap,
+			   **base,
+			   **afe,
+			   **afp;
 	static   int first_time = 1;
 	static   int lastq = -1;
 
@@ -694,11 +694,11 @@ int	offset;
 		struct ifaddr *ifa;
 #ifdef	BSD44
 		union sockaddr_un ifsocka,
-				ifsockb;
+				  ifsockb;
 #endif
 		union sockaddr_un ifsockc;
 		union sockaddr_un *ia,
-				*ib;
+				  *ib;
 		union sockaddr_un *ic = &ifsockc;
 #endif
 #ifndef	BSD44
@@ -716,7 +716,7 @@ int	offset;
 			continue;
 
 		if (nd != NOTOK) {
-			 strcpy (ifreq.ifr_name, is -> ifn_descr);
+			strcpy (ifreq.ifr_name, is -> ifn_descr);
 			if (ioctl (nd, SIOCGIFNETMASK, (char *) &ifreq) == NOTOK) {
 				if (debug)
 					advise (LLOG_EXCEPTIONS, "failed", "SIOCGIFNETMASK on %s",
@@ -787,7 +787,7 @@ int	offset;
 				continue;
 
 			if (nd != NOTOK) {
-				 strcpy (ifreq.ifr_name, is -> ifn_descr);
+				strcpy (ifreq.ifr_name, is -> ifn_descr);
 				if (ioctl (nd, SIOCGIFNETMASK, (char *) &ifreq) == NOTOK) {
 					if (debug)
 						advise (LLOG_EXCEPTIONS, "failed",

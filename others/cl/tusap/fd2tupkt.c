@@ -55,13 +55,13 @@ IFP	initfnx,
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			 sprintf (file, tsapfile, getpid ());
+			sprintf (file, tsapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				tpkt2text (fp, t, 1);
-				 fclose (fp);
+				fclose (fp);
 			}
 		} else {
-			 fflush (stdout);
+			fflush (stdout);
 			tpkt2text (stderr, t, 1);
 		}
 	}
@@ -79,8 +79,8 @@ IFP	initfnx,
 	readfnx;
 {
 	int    code,
-			 len,
-			 vlen;
+		   len,
+		   vlen;
 	char  *vptr;
 
 	if ((code = (*initfnx) (fd, t)) != OK)
@@ -329,7 +329,7 @@ int	n;
 IFP	readfnx;
 {
 	int    i,
-			 cc;
+		   cc;
 	char   *bp;
 
 	for (bp = buffer, i = n; i > 0; bp += cc, i -= cc) {
@@ -483,13 +483,13 @@ IFP	writefnx;
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			 sprintf (file, tsapfile, getpid ());
+			sprintf (file, tsapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				tpkt2text (fp, t, 0);
-				 fclose (fp);
+				fclose (fp);
 			}
 		} else {
-			 fflush (stdout);
+			fflush (stdout);
 			tpkt2text (stderr, t, 0);
 		}
 	}
@@ -500,8 +500,8 @@ IFP	writefnx;
 
 	i = (*writefnx) (fd, t, outptr, ilen);
 
-	 sigiomask (smask);
-	 signal (SIGPIPE, pstat);
+	sigiomask (smask);
+	signal (SIGPIPE, pstat);
 
 	return (i != NOTOK ? OK : DR_NETWORK);
 }
@@ -509,8 +509,7 @@ IFP	writefnx;
 /*  */
 
 struct tsapkt *
-newtpkt (int code)
-{
+newtpkt (int code) {
 	struct tsapkt *t;
 
 	t = (struct tsapkt *) calloc (1, sizeof *t);
@@ -524,9 +523,8 @@ newtpkt (int code)
 }
 
 
-int 
-freetpkt (struct tsapkt *t)
-{
+int
+freetpkt (struct tsapkt *t) {
 	if (t == NULL)
 		return;
 

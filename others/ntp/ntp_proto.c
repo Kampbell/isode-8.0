@@ -70,16 +70,15 @@ void	process_packet(), clock_update(), clear(), clock_filter(),
 /* 3.4. Event Processing */
 
 /* 3.4.1. Transmit Procedure */
-void 
-transmit (struct ntp_peer *peer)
-{
+void
+transmit (struct ntp_peer *peer) {
 	struct timeval txtv;
 	static struct ntpdata ntpframe;
 	struct ntpdata *pkt = &ntpframe;
 	int i;
 
 	if (peer->src.type == AF_OSI) {
-		 transmit_osi (peer);
+		transmit_osi (peer);
 		return;
 	}
 
@@ -95,7 +94,7 @@ transmit (struct ntp_peer *peer)
 	pkt->reftime = sys.reftime;
 	pkt->org = peer->org;
 	pkt->rec = peer->rec;
-	 gettimeofday(&txtv, (struct timezone *) 0);
+	gettimeofday(&txtv, (struct timezone *) 0);
 
 #ifdef notdef
 	if (peer->flags & PEER_FL_AUTHENABLE &&
@@ -174,7 +173,7 @@ transmit (struct ntp_peer *peer)
 
 #ifdef	DEBUG
 	if (debug > 5) {
-		 printf("\nSent ");
+		printf("\nSent ");
 		dump_pkt(&peer->src, pkt, (struct ntp_peer *)NULL);
 	}
 #endif
@@ -229,9 +228,8 @@ transmit (struct ntp_peer *peer)
 }
 
 #ifdef REFCLOCK
-void 
-refclock_input (struct ntp_peer *peer, struct ntpdata *pkt)
-{
+void
+refclock_input (struct ntp_peer *peer, struct ntpdata *pkt) {
 	struct timeval *tvp;
 	struct timeval *otvp;
 
@@ -252,7 +250,7 @@ refclock_input (struct ntp_peer *peer, struct ntpdata *pkt)
 	double_to_s_fixed(&pkt->dispersion, 0.0);
 #ifdef	DEBUG
 	if (debug > 5) {
-		 printf("\nFaking packet ");
+		printf("\nFaking packet ");
 		dump_pkt(&peer->src, pkt, (struct ntp_peer *)NULL);
 	}
 #endif
@@ -262,9 +260,8 @@ refclock_input (struct ntp_peer *peer, struct ntpdata *pkt)
 #endif REFCLOCK
 
 /* 3.4.2. Receive Procedure */
-void 
-receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int sock)
-{
+void
+receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int sock) {
 	struct ntp_peer *peer;
 	int peer_mode;
 
@@ -431,9 +428,8 @@ receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int sock)
 
 
 /* 3.4.3 Packet procedure */
-void 
-process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, struct ntp_peer *peer)
-{
+void
+process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, struct ntp_peer *peer) {
 	double t1, t2, t3, t4, offset, delay;
 	short duplicate, bogus;
 
@@ -537,9 +533,8 @@ process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, str
 
 /* 3.4.5 Clock update procedure */
 
-void 
-clock_update (struct ntp_peer *peer)
-{
+void
+clock_update (struct ntp_peer *peer) {
 	double temp;
 	extern int adj_logical();
 
@@ -638,7 +633,7 @@ clock_update (struct ntp_peer *peer)
 
 /* 3.4.6 Initialization procedure */
 
-void 
+void
 initialize  {
 	sys.leap = ALARM;	/* indicate unsynchronized */
 	sys.stratum = 0;
@@ -658,9 +653,8 @@ initialize  {
 }
 
 /* 3.4.7 Clear Procedure */
-void 
-clear (struct ntp_peer *peer)
-{
+void
+clear (struct ntp_peer *peer) {
 	int i;
 
 	TRACE (3, ("clear: emptied filter for %s",
@@ -684,9 +678,8 @@ clear (struct ntp_peer *peer)
 
 
 /* 3.4.8 Poll Update Procedure */
-void 
-poll_update (struct ntp_peer *peer, int new_hpoll)
-{
+void
+poll_update (struct ntp_peer *peer, int new_hpoll) {
 	int interval;
 
 	peer->hpoll = MAX(NTP_MINPOLL, MIN(NTP_MAXPOLL, new_hpoll));
@@ -719,9 +712,9 @@ poll_update (struct ntp_peer *peer, int new_hpoll)
 
 /* 3.4.9 Authentication Procedures */
 #if	0
-int 
+int
 encrypt  {}
-int 
+int
 decrypt  {}
 #endif
 
@@ -733,9 +726,8 @@ decrypt  {}
  *  different PEER_FILTER values should be much easier.
  */
 
-void 
-clock_filter (struct ntp_peer *peer, double new_delay, double new_offset)
-{
+void
+clock_filter (struct ntp_peer *peer, double new_delay, double new_offset) {
 	double offset[PEER_SHIFT], delay[PEER_SHIFT];
 	double temp, d, w;
 	int i, j, samples;
@@ -807,7 +799,7 @@ clock_filter (struct ntp_peer *peer, double new_delay, double new_offset)
 }
 
 /* 4.2 Clock Select Procedure */
-void 
+void
 select_clock  {
 	struct ntp_peer *ptmp, *peer = peer_list.head;
 	struct sel_lst {
@@ -830,7 +822,7 @@ select_clock  {
 		if(sanity_check(peer)) {
 			sel_lst[candidates].peer = peer;
 			sel_lst[candidates].distance = peer->estdisp +
-										   s_fixed_to_double(&peer->dispersion);
+			s_fixed_to_double(&peer->dispersion);
 			peer->flags |= PEER_FL_SANE;
 			candidates++;
 		}
@@ -1038,9 +1030,8 @@ select_clock  {
 	}
 }
 
-int 
-sanity_check (struct ntp_peer *peer)
-{
+int
+sanity_check (struct ntp_peer *peer) {
 	TRACE (7, ("Checking peer %s stratum %d",
 			   paddr (&peer->src), peer->stratum));
 

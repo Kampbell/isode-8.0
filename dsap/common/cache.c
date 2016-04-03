@@ -44,8 +44,7 @@ extern time_t cache_timeout;
 Entry local_find_entry_aux ();
 
 struct subordinate *
-subord_cpy (struct subordinate *x)
-{
+subord_cpy (struct subordinate *x) {
 	struct subordinate * sub;
 	struct subordinate * y;
 	struct subordinate * top;
@@ -166,7 +165,7 @@ int sizelimit;
 }
 
 
-int 
+int
 free_all_list_cache (void) {
 	struct list_cache *ptr, *pn;
 	for (ptr = list_top; ptr != NULLCACHE; ptr = pn)  {
@@ -392,7 +391,7 @@ new_version (void) {
 	time_t clock;
 	struct UTCtime ut;
 
-	 time (&clock);
+	time (&clock);
 	tm2ut (gmtime (&clock),&ut);
 	return (strdup(utct2str(&ut)));
 }

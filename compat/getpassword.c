@@ -42,14 +42,13 @@ char   *getpass ();
 /* roll our own since want to get past UNIX's limit of 8 octets... */
 
 char *
-getpassword (char *prompt)
-{
+getpassword (char *prompt) {
 #ifndef	BSD44
 	int    c;
 	int	    flags,
 			isopen;
 	char  *bp,
-			 *ep;
+		  *ep;
 #if	!defined(LINUX) && !defined(SYS5) && !defined(XOS_2)
 	struct sgttyb   sg;
 #else
@@ -66,7 +65,7 @@ getpassword (char *prompt)
 		setbuf (fp, NULLCP), isopen = 1;
 	else {
 		if (c != NOTOK)
-			 close (c);
+			close (c);
 
 		fp = stdin, isopen = 0;
 	}
@@ -75,23 +74,23 @@ getpassword (char *prompt)
 	istat = signal (SIGINT, SIG_IGN);
 
 #if	!defined(LINUX) && !defined(SYS5) && !defined(XOS_2)
-	 gtty (fileno (fp), &sg);
+	gtty (fileno (fp), &sg);
 	flags = sg.sg_flags;
 	sg.sg_flags &= ~ECHO;
-	 stty (fileno (fp), &sg);
+	stty (fileno (fp), &sg);
 #else
-	 ioctl (fileno (fp), TCGETA, (char *) &sg);
+	ioctl (fileno (fp), TCGETA, (char *) &sg);
 	flags = sg.c_lflag;
 	sg.c_lflag &= ~ECHO;
-	 ioctl (fileno (fp), TCSETAW, (char *) &sg);
+	ioctl (fileno (fp), TCSETAW, (char *) &sg);
 #endif
 
 #ifdef SUNLINK_7_0
-	 fprintf (stdout, "%s", prompt);
-	 fflush (stdout);
+	fprintf (stdout, "%s", prompt);
+	fflush (stdout);
 #else
-	 fprintf (stderr, "%s", prompt);
-	 fflush (stderr);
+	fprintf (stderr, "%s", prompt);
+	fflush (stderr);
 #endif
 
 	for (ep = (bp = buffer) + sizeof buffer - 1; (c = getc (fp)) != EOF;)
@@ -106,25 +105,25 @@ getpassword (char *prompt)
 	*bp = NULL;
 
 #ifdef SUNLINK_7_0
-	 fprintf (stdout, "\n");
-	 fflush (stdout);
+	fprintf (stdout, "\n");
+	fflush (stdout);
 #else
-	 fprintf (stderr, "\n");
-	 fflush (stderr);
+	fprintf (stderr, "\n");
+	fflush (stderr);
 #endif
 
 #if	!defined(LINUX) && !defined(SYS5) && !defined(XOS_2)
 	sg.sg_flags = flags;
-	 stty (fileno (fp), &sg);
+	stty (fileno (fp), &sg);
 #else
 	sg.c_lflag = flags;
-	 ioctl (fileno (fp), TCSETAW, (char *) &sg);
+	ioctl (fileno (fp), TCSETAW, (char *) &sg);
 #endif
 
-	 signal (SIGINT, istat);
+	signal (SIGINT, istat);
 
 	if (isopen)
-		 fclose (fp);
+		fclose (fp);
 
 	return buffer;
 #else

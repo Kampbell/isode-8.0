@@ -44,8 +44,7 @@ Avlnode		*sibling_index;		/* array of sibling indexes */
 int		optimized_only;		/* only allow indexed searches */
 
 char *
-strrev (char *s)
-{
+strrev (char *s) {
 	char	*start, *rev, *rsave;
 	int	len;
 
@@ -224,8 +223,8 @@ static index_free( pindex )
 Index	*pindex;
 {
 	dn_free( pindex->i_dn );
-	 avl_free( pindex->i_root, indexav_free );
-	 avl_free( pindex->i_sroot, soundex_free );
+	avl_free( pindex->i_root, indexav_free );
+	avl_free( pindex->i_sroot, soundex_free );
 	free( (char *) pindex );
 }
 
@@ -310,10 +309,10 @@ int		ps;
 {
 	int	i;
 
-	 printf( "\t(%s)\n",n->in_value );
+	printf( "\t(%s)\n",n->in_value );
 	for ( i = 0; i < n->in_num; i++ )
-		 printf( "\t\t%s\n",
-					   n->in_entries[i]->e_name->rdn_av.av_struct);
+		printf( "\t\t%s\n",
+				n->in_entries[i]->e_name->rdn_av.av_struct);
 	return( OK );
 }
 
@@ -616,15 +615,15 @@ Entry	e;		/* the entry these attrs belong to */
 
 		/* sibling index */
 		if ( sibindex ) {
-			 turbo_attr_insert( sibindex, e, as->attr_type,
-									  as->attr_value );
+			turbo_attr_insert( sibindex, e, as->attr_type,
+							   as->attr_value );
 		}
 
 		savedn = NULLDN;
 		while ( dn->dn_parent != NULLDN ) {
 			if ( subindex = get_subtree_index( dn ) ) {
-				 turbo_attr_insert( subindex, e,
-										  as->attr_type, as->attr_value );
+				turbo_attr_insert( subindex, e,
+								   as->attr_type, as->attr_value );
 			}
 
 			for ( prevdn = NULLDN, tmpdn = dn;
@@ -836,15 +835,15 @@ Entry	e;
 
 		/* sibling index */
 		if ( sibindex ) {
-			 turbo_attr_delete( sibindex, e, as->attr_type,
-									  as->attr_value );
+			turbo_attr_delete( sibindex, e, as->attr_type,
+							   as->attr_value );
 		}
 
 		savedn = NULLDN;
 		while ( dn->dn_parent != NULLDN ) {
 			if ( subindex = get_subtree_index( dn ) ) {
-				 turbo_attr_delete( subindex, e,
-										  as->attr_type, as->attr_value );
+				turbo_attr_delete( subindex, e,
+								   as->attr_type, as->attr_value );
 			}
 
 			for ( prevdn = NULLDN, tmpdn = dn;
@@ -922,9 +921,8 @@ AttributeType	attr;
  * attribute to be optimized during loading.
  */
 
-int 
-turbo_optimize (char *attr)
-{
+int
+turbo_optimize (char *attr) {
 	AttributeType	a;
 
 	if ( (a = str2AttrT( attr )) == NULLAttrT ) {
@@ -956,9 +954,8 @@ turbo_optimize (char *attr)
  * index_subtree - arrange for the subtree starting at tree to be indexed.
  */
 
-int 
-index_subtree (char *tree)
-{
+int
+index_subtree (char *tree) {
 	DN		dn, str2dn();
 	Index		*pindex;
 
@@ -985,9 +982,8 @@ index_subtree (char *tree)
  * index_siblings - arrange for the children of parent to be indexed.
  */
 
-int 
-index_siblings (char *parent)
-{
+int
+index_siblings (char *parent) {
 	DN		dn, str2dn();
 	Index		*pindex;
 

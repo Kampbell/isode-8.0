@@ -104,9 +104,8 @@ char	* orig;
 	return(result);
 }
 
-static 
-str_seq_free (struct str_seq *arg)
-{
+static
+str_seq_free (struct str_seq *arg) {
 	if (arg == (struct str_seq *)NULL)
 		return;
 
@@ -120,8 +119,7 @@ str_seq_free (struct str_seq *arg)
 }
 
 static struct str_seq *
-str_seq_cpy (struct str_seq *arg)
-{
+str_seq_cpy (struct str_seq *arg) {
 	struct str_seq	* ret;
 
 	if (arg == (struct str_seq *)NULL)
@@ -136,9 +134,8 @@ str_seq_cpy (struct str_seq *arg)
 	return (ret);
 }
 
-static 
-str_seq_cmp (struct str_seq *arg1, struct str_seq *arg2)
-{
+static
+str_seq_cmp (struct str_seq *arg1, struct str_seq *arg2) {
 	int	  ret;
 
 	if (arg1 == (struct str_seq *)NULL)
@@ -175,8 +172,7 @@ int		  format;
 }
 
 static struct str_seq *
-str2str_seq (char *orig)
-{
+str2str_seq (char *orig) {
 	struct str_seq	* result;
 	struct str_seq	**ss;
 	char		* ptr_prev;
@@ -208,9 +204,8 @@ str2str_seq (char *orig)
 	return (result);
 }
 
-static 
-addr_info_free (struct addr_info *arg)
-{
+static
+addr_info_free (struct addr_info *arg) {
 	if (arg == (struct addr_info *)NULL)
 		return;
 
@@ -254,8 +249,7 @@ addr_info_free (struct addr_info *arg)
 }
 
 static struct addr_info *
-addr_info_cpy (struct addr_info *arg)
-{
+addr_info_cpy (struct addr_info *arg) {
 	struct addr_info	* ret;
 
 	if (arg == (struct addr_info *)NULL)
@@ -360,9 +354,8 @@ addr_info_cpy (struct addr_info *arg)
 	return (ret);
 }
 
-static 
-addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2)
-{
+static
+addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2) {
 	int	  ret;
 
 	if (arg1 == (struct addr_info *)NULL)
@@ -625,8 +618,7 @@ int			  format;
 }
 
 static struct addr_info *
-str2addr_info (char *orig)
-{
+str2addr_info (char *orig) {
 	struct addr_info	* result;
 	char			* copy;
 	char			* ptr_prev;
@@ -1023,9 +1015,8 @@ str2addr_info (char *orig)
 	return (result);
 }
 
-static 
-nrs_routes_free (struct nrs_routes *arg)
-{
+static
+nrs_routes_free (struct nrs_routes *arg) {
 	if (arg == (struct nrs_routes *)NULL)
 		return;
 
@@ -1042,8 +1033,7 @@ nrs_routes_free (struct nrs_routes *arg)
 }
 
 static struct nrs_routes *
-nrs_routes_cpy (struct nrs_routes *arg)
-{
+nrs_routes_cpy (struct nrs_routes *arg) {
 	struct nrs_routes * ret;
 
 	if (arg == (struct nrs_routes *)NULL)
@@ -1063,9 +1053,8 @@ nrs_routes_cpy (struct nrs_routes *arg)
 	return (ret);
 }
 
-static 
-nrs_routes_cmp (struct nrs_routes *arg1, struct nrs_routes *arg2)
-{
+static
+nrs_routes_cmp (struct nrs_routes *arg1, struct nrs_routes *arg2) {
 	int	  ret;
 
 	if (arg1 == (struct nrs_routes *)NULL)
@@ -1111,8 +1100,7 @@ int			  format;
 }
 
 static struct nrs_routes *
-str2nrs_routes (char *orig)
-{
+str2nrs_routes (char *orig) {
 	struct nrs_routes	* result;
 	struct nrs_routes	**rt;
 	char			* copy;
@@ -1202,9 +1190,8 @@ str2nrs_routes (char *orig)
 	return (result);
 }
 
-static 
-nrs_info_free (struct nrs_info *arg)
-{
+static
+nrs_info_free (struct nrs_info *arg) {
 	if (arg == (struct nrs_info *)NULL)
 		return;
 
@@ -1215,8 +1202,7 @@ nrs_info_free (struct nrs_info *arg)
 }
 
 static struct nrs_info *
-nrs_info_cpy (struct nrs_info *arg)
-{
+nrs_info_cpy (struct nrs_info *arg) {
 	struct nrs_info * result;
 
 	if (arg == (struct nrs_info *)NULL)
@@ -1233,9 +1219,8 @@ nrs_info_cpy (struct nrs_info *arg)
 	return (result);
 }
 
-static 
-nrs_info_cmp (struct nrs_info *arg1, struct nrs_info *arg2)
-{
+static
+nrs_info_cmp (struct nrs_info *arg1, struct nrs_info *arg2) {
 	if (arg1 == (struct nrs_info *) NULL)
 		if (arg2 == (struct nrs_info *) NULL)
 			return (0);
@@ -1368,9 +1353,8 @@ int		  format;
 		nrs_routes_print (ps, nrs->routes, format);
 }
 
-static 
-str2context (char *orig)
-{
+static
+str2context (char *orig) {
 	char	* str;
 	char	* cc;
 	int	  its_all_digits;
@@ -1441,9 +1425,8 @@ str2context (char *orig)
 	}
 }
 
-static 
-str2addr_sp_id (char *orig)
-{
+static
+str2addr_sp_id (char *orig) {
 	char	* str;
 	char	* cc;
 	int	  its_all_digits;
@@ -1493,8 +1476,7 @@ str2addr_sp_id (char *orig)
 }
 
 static struct nrs_info *
-str2nrs_info (char *orig)
-{
+str2nrs_info (char *orig) {
 	struct nrs_info	* result;
 	char		* copy;
 	char		* ptr_prev;
@@ -1577,13 +1559,13 @@ PE pe;
 	return (nrs);
 }
 
-int 
+int
 nrs_info_syntax (void) {
-	 add_attribute_syntax ("NRSInformation",
-								 (IFP) nrs_info_enc,	(IFP) nrs_info_dec,
-								 (IFP) str2nrs_info,	nrs_info_print,
-								 (IFP) nrs_info_cpy,	nrs_info_cmp,
-								 nrs_info_free,		NULLCP,
-								 NULLIFP,		TRUE);
+	add_attribute_syntax ("NRSInformation",
+						  (IFP) nrs_info_enc,	(IFP) nrs_info_dec,
+						  (IFP) str2nrs_info,	nrs_info_print,
+						  (IFP) nrs_info_cpy,	nrs_info_cmp,
+						  nrs_info_free,		NULLCP,
+						  NULLIFP,		TRUE);
 }
 

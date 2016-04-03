@@ -98,7 +98,7 @@ char *bp;
 	for (;;) {
 		switch (c = getc(pfp)) {
 		case EOF:
-			 fclose(pfp);
+			fclose(pfp);
 			pfp = NULL;
 			return(0);
 		case '\n':
@@ -119,7 +119,7 @@ char *bp;
 			if (skip)
 				continue;
 			if (bp >= tbuf+BUFSIZ) {
-				 write(2, "Termcap entry too long\n", 23);
+				write(2, "Termcap entry too long\n", 23);
 				*bp = '\0';
 				return(1);
 			}
@@ -130,7 +130,7 @@ char *bp;
 
 endprent() {
 	if (pfp != NULL)
-		 fclose(pfp);
+		fclose(pfp);
 }
 
 /*
@@ -165,7 +165,7 @@ char *bp, *name;
 		if (*cp!='/') {
 			cp2 = getenv("TERM");
 			if (cp2==(char *) 0 || strcmp(name,cp2)==0) {
-				 strcpy(bp,cp);
+				strcpy(bp,cp);
 				return(tnchktc());
 			} else {
 				tf = open(_PATH_PRINTCAP, 0);
@@ -186,7 +186,7 @@ char *bp, *name;
 			if (i == cnt) {
 				cnt = read(tf, ibuf, BUFSIZ);
 				if (cnt <= 0) {
-					 close(tf);
+					close(tf);
 					return (0);
 				}
 				i = 0;
@@ -200,7 +200,7 @@ char *bp, *name;
 				break;
 			}
 			if (cp >= bp+BUFSIZ) {
-				 write(2,"Termcap entry too long\n", 23);
+				write(2,"Termcap entry too long\n", 23);
 				break;
 			} else
 				*cp++ = c;
@@ -211,7 +211,7 @@ char *bp, *name;
 		 * The real work for the match.
 		 */
 		if (tnamatch(name)) {
-			 close(tf);
+			close(tf);
 			return(tnchktc());
 		}
 	}
@@ -234,20 +234,20 @@ tnchktc() {
 	p = tbuf + strlen(tbuf) - 2;	/* before the last colon */
 	while (*--p != ':')
 		if (p<tbuf) {
-			 write(2, "Bad termcap entry\n", 18);
+			write(2, "Bad termcap entry\n", 18);
 			return (0);
 		}
 	p++;
 	/* p now points to beginning of last field */
 	if (p[0] != 't' || p[1] != 'c')
 		return(1);
-	 strcpy(tcname,p+3);
+	strcpy(tcname,p+3);
 	q = tcname;
 	while (q && *q != ':')
 		q++;
 	*q = 0;
 	if (++hopcount > MAXHOP) {
-		 write(2, "Infinite tc= loop\n", 18);
+		write(2, "Infinite tc= loop\n", 18);
 		return (0);
 	}
 	if (tgetent(tcbuf, tcname) != 1)
@@ -256,10 +256,10 @@ tnchktc() {
 		;
 	l = p - holdtbuf + strlen(q);
 	if (l > BUFSIZ) {
-		 write(2, "Termcap entry too long\n", 23);
+		write(2, "Termcap entry too long\n", 23);
 		q[BUFSIZ - (p-tbuf)] = 0;
 	}
-	 strcpy(p, q+1);
+	strcpy(p, q+1);
 	tbuf = holdtbuf;
 	return(1);
 }

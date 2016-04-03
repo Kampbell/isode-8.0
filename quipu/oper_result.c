@@ -38,9 +38,8 @@ extern  LLog    * log_stat;
 extern time_t	  timenow;
 extern Entry cache_dsp_entry ();
 
-int 
-oper_result (struct connection *cn, struct DSAPindication *di)
-{
+int
+oper_result (struct connection *cn, struct DSAPindication *di) {
 	struct DSAPresult	* dr = &(di->di_result);
 	struct oper_act *   on;
 
@@ -69,7 +68,7 @@ oper_result (struct connection *cn, struct DSAPindication *di)
 
 		/* If we have the arguments we could do more caching here. */
 		if (dr->dr_res.dcr_dsres.result_type == OP_READ)
-			 cache_dsp_entry (&dr->dr_res.dcr_dsres.res_rd.rdr_entry);
+			cache_dsp_entry (&dr->dr_res.dcr_dsres.res_rd.rdr_entry);
 
 		ds_res_free (&dr->dr_res.dcr_dsres);
 		oper_extract(on);

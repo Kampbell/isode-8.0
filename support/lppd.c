@@ -91,9 +91,8 @@ void	ts_advise ();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int	    listening,
 			vecp;
 	char   *vec[4];
@@ -164,9 +163,8 @@ main (int argc, char **argv, char **envp)
 
 /* ARGSUSED */
 
-static int 
-lppd (int vecp, char **vec, struct TSAPaddr *ta)
-{
+static int
+lppd (int vecp, char **vec, struct TSAPaddr *ta) {
 	u_short port = ta -> ta_addrs[0].na_port;
 	struct dispatch *dp;
 	struct isoservent *is;
@@ -189,33 +187,31 @@ lppd (int vecp, char **vec, struct TSAPaddr *ta)
 	advise (LLOG_NOTICE, NULLCP, "exec \"%s\" for \"%s\"", *is -> is_vec,
 			dp -> dp_entity);
 
-	 execv (*is -> is_vec, is -> is_vec);
+	execv (*is -> is_vec, is -> is_vec);
 
 	adios (*is -> is_vec, "unable to exec");
 }
 
 /*  */
 
-static void 
-ts_advise (struct TSAPdisconnect *td, int code, char *event)
-{
+static void
+ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						TErrString (td -> td_reason),
-						td -> td_cc, td -> td_cc, td -> td_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 TErrString (td -> td_reason),
+				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
 /*  */
 
-static 
-arginit (char **vec)
-{
+static
+arginit (char **vec) {
 	int    n;
 	char  *ap;
 	struct stat st;
@@ -237,7 +233,7 @@ arginit (char **vec)
 			&& st.st_uid != 0)
 		adios (NULLCP, "%s not owned by root", ap);
 
-	 strcpy (myhost, TLocalHostName ());
+	strcpy (myhost, TLocalHostName ());
 
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
@@ -249,7 +245,7 @@ arginit (char **vec)
 			case 's':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -s service-designator");
-				 strcpy (myhost, ap);
+				strcpy (myhost, ap);
 				continue;
 
 			default:
@@ -265,7 +261,7 @@ arginit (char **vec)
 	bzero ((char *) dps, sizeof dps);
 	dz = dps;
 
-	 setisoservent (0);
+	setisoservent (0);
 	while (is = getisoservent ())
 		if (strcmp (is -> is_provider, "lpp") == 0
 				&& access (*is -> is_vec, X_OK) != NOTOK) {
@@ -303,22 +299,22 @@ arginit (char **vec)
 							malloc ((unsigned) (strlen (is -> is_entity) + 1)))
 						== NULL)
 					adios (NULLCP, "out of memory");
-				 strcpy (dz -> dp_entity, is -> is_entity);
+				strcpy (dz -> dp_entity, is -> is_entity);
 				dz -> dp_port = na -> na_port;
 				dz++;
 			}
 		}
 no_more:
 	;
-	 endisoservent ();
+	endisoservent ();
 }
 
 /*  */
 
-static 
+static
 envinit  {
 	int     i,
-			sd;
+	sd;
 
 	nbits = getdtablesize ();
 
@@ -338,14 +334,14 @@ envinit  {
 			break;
 		}
 
-		 chdir ("/");
+		chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			 dup2 (sd, 0),  close (sd);
-		 dup2 (0, 1);
-		 dup2 (0, 2);
+			dup2 (sd, 0),  close (sd);
+		dup2 (0, 1);
+		dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -353,14 +349,14 @@ envinit  {
 #endif
 #ifdef	TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			 ioctl (sd, TIOCNOTTY, NULLCP);
-			 close (sd);
+			ioctl (sd, TIOCNOTTY, NULLCP);
+			close (sd);
 		}
 #else
 #ifdef	SYS5
-		 setpgrp ();
-		 signal (SIGINT, SIG_IGN);
-		 signal (SIGQUIT, SIG_IGN);
+		setpgrp ();
+		signal (SIGINT, SIG_IGN);
+		signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -369,10 +365,10 @@ envinit  {
 #ifndef	sun		/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			 close (sd);
+			close (sd);
 #endif
 
-	 signal (SIGPIPE, SIG_IGN);
+	signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, myname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
@@ -408,9 +404,8 @@ void  adios (char* what, char* fmt, ...)
 #else
 /* VARARGS */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -441,9 +436,8 @@ void  advise (int code, ...)
 #else
 /* VARARGS */
 
-void 
-advise (int code, char *what, char *fmt)
-{
+void
+advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

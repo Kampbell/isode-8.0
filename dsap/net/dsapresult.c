@@ -35,9 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapresult.c,v 9.0
 
 extern  LLog    * log_dsap;
 
-int 
-DapResultRequest (int sd, int id, struct DSResult *res, struct DSAPindication *di)
-{
+int
+DapResultRequest (int sd, int id, struct DSResult *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
@@ -68,9 +67,8 @@ DapResultRequest (int sd, int id, struct DSResult *res, struct DSAPindication *d
 	return (OK);
 }
 
-int 
-DapEncodeResult (PE *pep, struct DSResult *res)
-{
+int
+DapEncodeResult (PE *pep, struct DSResult *res) {
 	int		success;
 
 	switch(res->result_type) {
@@ -111,9 +109,8 @@ DapEncodeResult (PE *pep, struct DSResult *res)
 	return(success);
 }
 
-int 
-DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di)
-{
+int
+DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
@@ -145,9 +142,8 @@ DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *
 	return (OK);
 }
 
-int 
-DspEncodeResult (PE *pep, struct ds_op_res *res)
-{
+int
+DspEncodeResult (PE *pep, struct ds_op_res *res) {
 	int		success;
 
 	switch(res->dcr_dsres.result_type) {
@@ -188,9 +184,8 @@ DspEncodeResult (PE *pep, struct ds_op_res *res)
 	return(success);
 }
 
-int 
-QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di)
-{
+int
+QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
@@ -222,9 +217,8 @@ QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *
 	return (OK);
 }
 
-int 
-QspEncodeResult (PE *pep, struct ds_op_res *res)
-{
+int
+QspEncodeResult (PE *pep, struct ds_op_res *res) {
 	int		success;
 
 	switch(res->dcr_dsres.result_type) {
@@ -269,15 +263,13 @@ QspEncodeResult (PE *pep, struct ds_op_res *res)
 }
 
 
-int 
-IspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di)
-{
+int
+IspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {
 	return QspResultRequest (sd, id, res, di);
 }
 
-int 
-IspEncodeResult (PE *pep, struct ds_op_res *res)
-{
+int
+IspEncodeResult (PE *pep, struct ds_op_res *res) {
 	return QspEncodeResult (pep, res);
 }
 

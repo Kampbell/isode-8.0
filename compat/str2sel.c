@@ -38,9 +38,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2sel.c,v 9.0 1992
 
 /*    STR2SEL */
 
-int 
-str2sel (char *s, int quoted, char *sel, int n)
-{
+int
+str2sel (char *s, int quoted, char *sel, int n) {
 	int     i,
 			r;
 	char  *cp;

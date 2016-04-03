@@ -64,8 +64,7 @@ static int reject_err8_cnt = sizeof reject_err8 / sizeof reject_err8[0];
 /*  */
 
 char *
-SErrString (int code)
-{
+SErrString (int code) {
 	int    fcode;
 	static char buffer[50];
 
@@ -76,6 +75,6 @@ SErrString (int code)
 	} else if (code < reject_err0_cnt)
 		return reject_err0[code];
 
-	 sprintf (buffer, "unknown error code 0x%x", code);
+	sprintf (buffer, "unknown error code 0x%x", code);
 	return buffer;
 }

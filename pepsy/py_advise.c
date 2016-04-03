@@ -36,8 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/py_advise.c,v 9.0 199
 char   PY_pepy[BUFSIZ] = "";
 
 
-void	PY_advise (char* what, ...)
-{
+void	PY_advise (char* what, ...) {
 	va_list	ap;
 
 	va_start (ap, what);
@@ -49,9 +48,8 @@ void	PY_advise (char* what, ...)
 #else
 /* VARARGS */
 
-void 
-PY_advise (char *what, char *fmt)
-{
+void
+PY_advise (char *what, char *fmt) {
 	PY_advise (what, fmt);
 }
 #endif

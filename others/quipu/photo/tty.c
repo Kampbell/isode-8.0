@@ -51,9 +51,8 @@ char    show[128];
 char    display[50][50];
 
 /* ARGSUSED */
-int 
-photo_start (char *name)
-{
+int
+photo_start (char *name) {
 	char   *ptr,
 		   *getenv ();
 
@@ -76,9 +75,9 @@ photo_start (char *name)
 		}
 	}
 	if ((ptr = getenv ("photo_mapping")) != (char *) NULL)
-		 strcpy (mapping, ptr);
+		strcpy (mapping, ptr);
 	else
-		 strcpy (mapping, GREYSCALE);
+		strcpy (mapping, GREYSCALE);
 
 	if ((ptr = getenv ("photo_scale")) != (char *) NULL) {
 		if (strcmp (ptr, "large") == 0)
@@ -90,14 +89,13 @@ photo_start (char *name)
 	}
 	scalediv = scale * scale / 8;
 
-	 printf ("\n");
+	printf ("\n");
 	return (0);
 }
 
 /* ARGSUSED */
-int 
-photo_end (char *name)
-{
+int
+photo_end (char *name) {
 	int     i,
 			j,
 			k;
@@ -128,11 +126,11 @@ photo_end (char *name)
 		for (i = 0; i < ln; i++) {
 			for (j = 0; j < PIC_LINESIZE / scale; j++) {
 				if (invert)
-					 putc (mapping[show[display[i][j]]],stdout);
+					putc (mapping[show[display[i][j]]],stdout);
 				else
-					 putc (mapping[15 - show[display[i][j]]],stdout);
+					putc (mapping[15 - show[display[i][j]]],stdout);
 			}
-			 printf ("\n");
+			printf ("\n");
 		}
 	} else if (edges) {
 		/* edges by expansion */
@@ -180,11 +178,11 @@ photo_end (char *name)
 					cnt = 0;
 
 				if (invert)
-					 putc (mapping[(cnt / scalediv)],stdout);
+					putc (mapping[(cnt / scalediv)],stdout);
 				else
-					 putc (mapping[15 - (cnt / scalediv)],stdout);
+					putc (mapping[15 - (cnt / scalediv)],stdout);
 			}
-			 putc ('\n',stdout);
+			putc ('\n',stdout);
 		}
 
 	}
@@ -192,17 +190,16 @@ photo_end (char *name)
 
 }
 
-int 
-photo_black (int length)
-{
+int
+photo_black (int length) {
 	int     i;
 
 	if (scale == 1) {
 		for (i = pos; i < length + pos; i++)
 			if (invert)
-				 putc (' ',stdout);
+				putc (' ',stdout);
 			else
-				 putc ('#',stdout);
+				putc ('#',stdout);
 		return;
 	}
 	for (i = pos; i < length + pos; i++)
@@ -210,17 +207,16 @@ photo_black (int length)
 	pos += length;
 }
 
-int 
-photo_white (int length)
-{
+int
+photo_white (int length) {
 	int     i;
 
 	if (scale == 1) {
 		for (i = pos; i < length + pos; i++)
 			if (invert)
-				 putc ('#',stdout);
+				putc ('#',stdout);
 			else
-				 putc (' ',stdout);
+				putc (' ',stdout);
 		return;
 	}
 	for (i = pos; i < length + pos; i++)
@@ -238,7 +234,7 @@ bit_string *line;
 			cnt;
 
 	if (scale == 1) {
-		 putc ('\n',stdout);
+		putc ('\n',stdout);
 		return;
 	}
 	lineno++;
@@ -265,12 +261,12 @@ bit_string *line;
 
 
 			if (invert)
-				 putc (mapping[cnt / scalediv],stdout);
+				putc (mapping[cnt / scalediv],stdout);
 			else
-				 putc (mapping[15 - (cnt / scalediv)],stdout);
+				putc (mapping[15 - (cnt / scalediv)],stdout);
 		}
 
 		if (!equal)
-			 putc ('\n',stdout);
+			putc ('\n',stdout);
 	}
 }

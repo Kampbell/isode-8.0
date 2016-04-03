@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamselect.c,v 9.0 199
 
 /*    map ftam descriptors for select() */
 
-int 
-FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti)
-{
+int
+FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti) {
 	SBV     smask;
 	struct ftamblk *fsb;
 	struct PSAPindication   pis;
@@ -56,17 +55,17 @@ FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti)
 		case PC_WAITING:
 waiting:
 			;
-			 sigiomask (smask);
+			sigiomask (smask);
 			return ftamlose (fti, FS_GEN_WAITING, 0, NULLCP, NULLCP);
 
 		default:
-			 ps2ftamlose (fsb, fti, "PSelectMask", pa);
+			ps2ftamlose (fsb, fti, "PSelectMask", pa);
 			freefsblk (fsb);
-			 sigiomask (smask);
+			sigiomask (smask);
 			return NOTOK;
 		}
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return OK;
 }

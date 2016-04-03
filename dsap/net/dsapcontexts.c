@@ -78,9 +78,8 @@ OID			  app_ctx;
 }
 
 /* ARGSUSED */
-int 
-judge_ctxlist (struct PSAPctxlist *req_ctxlist, struct PSAPctxlist *ok_ctxlist)
-{
+int
+judge_ctxlist (struct PSAPctxlist *req_ctxlist, struct PSAPctxlist *ok_ctxlist) {
 	int			  ctxlist_notok = OK;
 	int                   i;
 	int                   j;
@@ -156,36 +155,32 @@ OID			  ctx_oid;
 	return(NOTOK);
 }
 
-int 
-check_dap_ctxlist (struct PSAPctxlist *ctxlist)
-{
+int
+check_dap_ctxlist (struct PSAPctxlist *ctxlist) {
 	if (judge_ctxlist (ctxlist, x500_da_pcdl) != OK)
 		return (NOTOK);
 
 	return (find_ctx_id (ctxlist, x500_da_as));
 }
 
-int 
-check_dsp_ctxlist (struct PSAPctxlist *ctxlist)
-{
+int
+check_dsp_ctxlist (struct PSAPctxlist *ctxlist) {
 	if (judge_ctxlist (ctxlist, x500_ds_pcdl) != OK)
 		return (NOTOK);
 
 	return (find_ctx_id (ctxlist, x500_ds_as));
 }
 
-int 
-check_qsp_ctxlist (struct PSAPctxlist *ctxlist)
-{
+int
+check_qsp_ctxlist (struct PSAPctxlist *ctxlist) {
 	if (judge_ctxlist (ctxlist, quipu_ds_pcdl) != OK)
 		return (NOTOK);
 
 	return (find_ctx_id (ctxlist, quipu_ds_as));
 }
 
-int 
-check_isp_ctxlist (struct PSAPctxlist *ctxlist)
-{
+int
+check_isp_ctxlist (struct PSAPctxlist *ctxlist) {
 	if (judge_ctxlist (ctxlist, internet_ds_pcdl) != OK)
 		return (NOTOK);
 

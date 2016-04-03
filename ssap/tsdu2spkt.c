@@ -401,9 +401,8 @@ static int pi_length[PI_TABLE_LEN] = {
 
 /*  */
 
-static 
-start_spdu (struct ssapkt *s, struct local_buf *c, int basesize)
-{
+static
+start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
 	if (s -> s_udata)
 		switch (s -> s_code) {
 		case SPDU_DT: 	/* caller responsible for this... */
@@ -481,9 +480,8 @@ start_spdu (struct ssapkt *s, struct local_buf *c, int basesize)
 
 /*  */
 
-static int 
-end_spdu (int code, struct local_buf *c)
-{
+static int
+end_spdu (int code, struct local_buf *c) {
 	if (c -> len) {
 		if (c -> allocli > 254) {
 			if (c -> li < 255) {
@@ -512,27 +510,24 @@ end_spdu (int code, struct local_buf *c)
 
 /*  */
 
-static 
-start_pgi (int code, struct local_buf *c)
-{
+static
+start_pgi (int code, struct local_buf *c) {
 	put2spdu ((int) code, 0, NULLCP, c);
 	if (c -> len)
 		c -> pgi = (c -> ptr - c -> top - 1);
 }
 
 
-static 
-end_pgi (struct local_buf *c)
-{
+static
+end_pgi (struct local_buf *c) {
 	if (c -> len)
 		*(c -> top + c -> pgi) = (c -> len - c -> left) - (c -> pgi + 1);
 }
 
 /*  */
 
-static 
-put2spdu (int code, int li, char *value, struct local_buf *c)
-{
+static
+put2spdu (int code, int li, char *value, struct local_buf *c) {
 	int     cl = li;
 	char   *p1,
 		   *p2;
@@ -585,9 +580,8 @@ put2spdu (int code, int li, char *value, struct local_buf *c)
 
 /*  */
 
-int 
-spkt2tsdu (struct ssapkt *s, char **base, int *len)
-{
+int
+spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 	struct local_buf    c;
 	char    isn[SIZE_CN_ISN + 1];
 
@@ -1012,9 +1006,8 @@ spkt2tsdu (struct ssapkt *s, char **base, int *len)
 
 /*  */
 
-static u_long 
-str2ssn (char *s, int n)
-{
+static u_long
+str2ssn (char *s, int n) {
 	u_long u;
 
 	for (u = 0L; n > 0; n--)
@@ -1039,8 +1032,7 @@ str2ssn (char *s, int n)
     else
 
 static char *
-pullqb (struct qbuf *qb, int n)
-{
+pullqb (struct qbuf *qb, int n) {
 	int    i;
 	int	    once;
 	char  *cp;
@@ -1083,8 +1075,7 @@ pullqb (struct qbuf *qb, int n)
 /*  */
 
 struct ssapkt *
-tsdu2spkt (struct qbuf *qb, int len, int *cc)
-{
+tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 	int    li;
 	int     cat0,
 			nread,
@@ -1571,8 +1562,7 @@ do_pgi:
 			if (si == SPDU_AB && !(s -> s_mask & SMASK_SPDU_AB)) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
-			} else
-			if (li > (code != PI_XDATA ? SEGMENT_MAX : CONNECT_MAX)) {
+			} else if (li > (code != PI_XDATA ? SEGMENT_MAX : CONNECT_MAX)) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
@@ -1772,8 +1762,7 @@ do_pgi:
 /*  */
 
 struct ssapkt *
-newspkt (int code)
-{
+newspkt (int code) {
 	struct ssapkt *s;
 
 	s = (struct ssapkt *) calloc (1, sizeof *s);
@@ -1787,9 +1776,8 @@ newspkt (int code)
 }
 
 
-int 
-freespkt (struct ssapkt *s)
-{
+int
+freespkt (struct ssapkt *s) {
 	if (s == NULL)
 		return;
 

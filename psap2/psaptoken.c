@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaptoken.c,v 9.0 199
 
 /*    P-TOKEN-GIVE.REQUEST */
 
-int 
-PGTokenRequest (int sd, int tokens, struct PSAPindication *pi)
-{
+int
+PGTokenRequest (int sd, int tokens, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -50,9 +49,9 @@ PGTokenRequest (int sd, int tokens, struct PSAPindication *pi)
 
 	if ((result = SGTokenRequest (sd, tokens, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			 ss2pslose (pb, pi, "SGTokenRequest", sa);
+			ss2pslose (pb, pi, "SGTokenRequest", sa);
 		else {
-			 ss2pslose (NULLPB, pi, "SGTokenRequest", sa);
+			ss2pslose (NULLPB, pi, "SGTokenRequest", sa);
 			goto out1;
 		}
 	else
@@ -62,16 +61,15 @@ PGTokenRequest (int sd, int tokens, struct PSAPindication *pi)
 		freepblk (pb);
 out1:
 	;
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    P-TOKEN-PLEASE.REQUEST */
 
-int 
-PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindication *pi)
-{
+int
+PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;
@@ -94,9 +92,9 @@ PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindication *
 
 	if ((result = SPTokenRequest (sd, tokens, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			 ss2pslose (pb, pi, "SPTokenRequest", sa);
+			ss2pslose (pb, pi, "SPTokenRequest", sa);
 		else {
-			 ss2pslose (NULLPB, pi, "SPTokenRequest", sa);
+			ss2pslose (NULLPB, pi, "SPTokenRequest", sa);
 			goto out1;
 		}
 
@@ -113,7 +111,7 @@ out1:
 	else if (base)
 		free (base);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

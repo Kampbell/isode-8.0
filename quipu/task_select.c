@@ -47,8 +47,7 @@ static time_t last_log_close = (time_t)0;
 
 
 struct task_act *
-task_select (int *secs_p)
-{
+task_select (int *secs_p) {
 	struct connection	* cn;
 	struct connection	* cn_tmp;
 	struct connection	**next_cn;
@@ -64,7 +63,7 @@ task_select (int *secs_p)
 	extern char	  startup_update;
 	struct oper_act	* newop = NULLOPER;
 
-	 time (&timenow);
+	time (&timenow);
 	(*secs_p) = NOTOK;
 	conns_used = 0;
 
@@ -400,7 +399,7 @@ task_select (int *secs_p)
 
 #ifndef NO_STATS
 	if ( (timenow - last_log_close) >= LOGOPENTIME ) {
-		 ll_close (log_stat);
+		ll_close (log_stat);
 		last_log_close = timenow;
 	} else {
 		if ( (ret_tk == NULLTASK) && (*secs_p >= LOGOPENTIME))
@@ -414,9 +413,8 @@ task_select (int *secs_p)
 	return(ret_tk);
 }
 
-int 
-timeout_task (struct task_act *tk)
-{
+int
+timeout_task (struct task_act *tk) {
 	struct oper_act	* on;
 	struct DSError	* err = &(tk->tk_resp.di_error.de_err);
 	struct ds_search_task *tmp;
@@ -478,9 +476,8 @@ timeout_task (struct task_act *tk)
 }
 
 
-int 
-schedule_operation (struct oper_act *x)
-{
+int
+schedule_operation (struct oper_act *x) {
 	struct oper_act *y;
 	struct oper_act * on;
 	DN xdn;

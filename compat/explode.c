@@ -40,9 +40,8 @@ static char nib2hex[0x10] = {
 
 /*  */
 
-int 
-explode (char *a, u_char *b, int n)
-{
+int
+explode (char *a, u_char *b, int n) {
 	int    i;
 	u_char c;
 

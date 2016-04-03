@@ -54,9 +54,8 @@ void orgFilter1(), orgFilter2(), orgFilter3(), orgFilter4();
 VFP explicitOrg[] = {makeExplicitOrgFilter, NULLVFP};
 VFP normalOrg[] = {orgFilter1, orgFilter2, orgFilter3, orgFilter4, NULLVFP};
 
-int 
-listOrgs (char *cstr, char *ostr, struct namelist **olistp)
-{
+int
+listOrgs (char *cstr, char *ostr, struct namelist **olistp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == ORG)
@@ -67,9 +66,8 @@ listOrgs (char *cstr, char *ostr, struct namelist **olistp)
 		return (listMatchingOrgs(cstr, ostr, olistp));
 }
 
-void 
-printListOrgs (char *org, struct namelist *olistp)
-{
+void
+printListOrgs (char *org, struct namelist *olistp) {
 	struct namelist * x;
 	int i;
 
@@ -85,9 +83,8 @@ printListOrgs (char *org, struct namelist *olistp)
 	}
 }
 
-void 
-freeOrgs (struct namelist **listpp)
-{
+void
+freeOrgs (struct namelist **listpp) {
 	struct namelist * x, * y;
 
 	x = *listpp;
@@ -102,7 +99,7 @@ freeOrgs (struct namelist **listpp)
 	*listpp = NULLLIST;
 }
 
-void 
+void
 freeOrgSearchArgs  {
 	/*
 	Attr_Sequence atl, x;
@@ -120,9 +117,8 @@ freeOrgSearchArgs  {
 }
 
 
-int 
-listAllOrgs (char *cstr, struct namelist **olistp)
-{
+int
+listAllOrgs (char *cstr, struct namelist **olistp) {
 	int ret;
 
 	sarg = * fillMostOrgSearchArgs(cstr, SRA_ONELEVEL);
@@ -137,9 +133,8 @@ listAllOrgs (char *cstr, struct namelist **olistp)
 	return ret;
 }
 
-int 
-listMatchingOrgs (char *cstr, char *ostr, struct namelist **olistp)
-{
+int
+listMatchingOrgs (char *cstr, char *ostr, struct namelist **olistp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -173,9 +168,8 @@ listMatchingOrgs (char *cstr, char *ostr, struct namelist **olistp)
 	return OK;
 }
 
-int 
-listExactOrgs (char *ostr, struct namelist **olistp)
-{
+int
+listExactOrgs (char *ostr, struct namelist **olistp) {
 	int ret;
 
 	sarg = * fillMostOrgSearchArgs(ostr, SRA_BASEOBJECT);
@@ -186,9 +180,8 @@ listExactOrgs (char *ostr, struct namelist **olistp)
 	return ret;
 }
 
-int 
-makeListOrganisations (struct namelist **olistp)
-{
+int
+makeListOrganisations (struct namelist **olistp) {
 	entrystruct * x;
 	int retval;
 
@@ -221,8 +214,7 @@ makeListOrganisations (struct namelist **olistp)
 }
 
 struct ds_search_arg *
-fillMostOrgSearchArgs (char *cstr, int searchdepth)
-{
+fillMostOrgSearchArgs (char *cstr, int searchdepth) {
 	static struct ds_search_arg arg;
 	Attr_Sequence * atl;
 	AttributeType at;
@@ -255,15 +247,13 @@ fillMostOrgSearchArgs (char *cstr, int searchdepth)
 	return (&arg);
 }
 
-int 
-makeAllOrgFilter (struct s_filter **fpp)
-{
+int
+makeAllOrgFilter (struct s_filter **fpp) {
 	*fpp = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATION);
 }
 
-void 
-makeExplicitOrgFilter (char *ostr, struct s_filter **fpp)
-{
+void
+makeExplicitOrgFilter (char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -288,9 +278,8 @@ makeExplicitOrgFilter (char *ostr, struct s_filter **fpp)
 	fp->flt_next = NULLFILTER;
 }
 
-void 
-orgFilter1 (char *ostr, struct s_filter **fpp)
-{
+void
+orgFilter1 (char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -299,9 +288,8 @@ orgFilter1 (char *ostr, struct s_filter **fpp)
 	fp->flt_next = NULLFILTER;
 }
 
-void 
-orgFilter2 (char *ostr, struct s_filter **fpp)
-{
+void
+orgFilter2 (char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -310,9 +298,8 @@ orgFilter2 (char *ostr, struct s_filter **fpp)
 	fp->flt_next = NULLFILTER;
 }
 
-void 
-orgFilter3 (char *ostr, struct s_filter **fpp)
-{
+void
+orgFilter3 (char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -321,9 +308,8 @@ orgFilter3 (char *ostr, struct s_filter **fpp)
 	fp->flt_next = NULLFILTER;
 }
 
-void 
-orgFilter4 (char *ostr, struct s_filter **fpp)
-{
+void
+orgFilter4 (char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();

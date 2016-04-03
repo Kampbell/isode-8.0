@@ -63,9 +63,8 @@ static	type_info ();
 
 
 
-void 
-spkt2text (LLog *lp, struct ssapkt *s, int read)
-{
+void
+spkt2text (LLog *lp, struct ssapkt *s, int read) {
 	char   *rw = read ? "<--- " : "---> ";
 
 	LLOG (lp, LLOG_ALL,  ("dump of SPDU 0x%x, errno=0x%x mask=0x%x%s",   s, s -> s_errno, s -> s_mask, s -> s_mask & SMASK_SPDU_EXPD ? " (expedited)" : ""));
@@ -337,14 +336,13 @@ spkt2text (LLog *lp, struct ssapkt *s, int read)
 		}
 	ll_printf (lp, "%s)\n", rw);
 
-	 ll_sync (lp);
+	ll_sync (lp);
 }
 
 /*  */
 
-static 
-type_id (LLog *lp, char *type, char *rw, char *selector, int len)
-{
+static
+type_id (LLog *lp, char *type, char *rw, char *selector, int len) {
 	char    buffer[BUFSIZ];
 
 	buffer[explode (buffer, (u_char *) selector, len)] = NULL;
@@ -353,16 +351,14 @@ type_id (LLog *lp, char *type, char *rw, char *selector, int len)
 }
 
 
-static 
-type_ssn (LLog *lp, char *rw, char *what, u_long ssn)
-{
+static
+type_ssn (LLog *lp, char *rw, char *what, u_long ssn) {
 	ll_printf (lp, "%s%s/ %d\n", rw, what, ssn);
 }
 
 
-static 
-type_bits (LLog *lp, char *rw, char *s, int bits, int mask, char *t)
-{
+static
+type_bits (LLog *lp, char *rw, char *s, int bits, int mask, char *t) {
 	ll_printf (lp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
 	if (bits & ~mask)
 		ll_printf (lp, ": illegal use of %s", sprintc (bits & ~mask, t));
@@ -379,9 +375,8 @@ type_bits (LLog *lp, char *rw, char *s, int bits, int mask, char *t)
 	: "reserved"); \
 }
 
-static 
-type_settings (LLog *lp, char *rw, int settings)
-{
+static
+type_settings (LLog *lp, char *rw, int settings) {
 	int     token;
 
 	ll_printf (lp, "%sSETTINGS/", rw);
@@ -392,17 +387,15 @@ type_settings (LLog *lp, char *rw, int settings)
 #undef	dotoken
 
 
-static 
-type_tsdu (LLog *lp, char *rw, int init, int resp)
-{
+static
+type_tsdu (LLog *lp, char *rw, int init, int resp) {
 	ll_printf (lp, "%sTSDU/ INITIATOR: %d, RESPONDER: %d\n",
-					  rw, init, resp);
+			   rw, init, resp);
 }
 
 
-static 
-type_ref (LLog *lp, char *rw, struct SSAPref *ref)
-{
+static
+type_ref (LLog *lp, char *rw, struct SSAPref *ref) {
 	ll_printf (lp, "%sREFERENCE/", rw);
 	if (ref -> sr_vlen)
 		type_info (lp, "<CALLING %d", (int) ref -> sr_calling_len,
@@ -418,24 +411,21 @@ type_ref (LLog *lp, char *rw, struct SSAPref *ref)
 }
 
 
-static 
-type_vrsn (LLog *lp, char *rw, int version)
-{
+static
+type_vrsn (LLog *lp, char *rw, int version) {
 	ll_printf (lp, "%sVERSION/ 0x%x\n", rw, version);
 }
 
 
-static 
-type_reason (LLog *lp, char *rw, int reason)
-{
+static
+type_reason (LLog *lp, char *rw, int reason) {
 	ll_printf (lp, "%sREASON/ 0x%x: %s\n", rw, reason,
-					  SErrString ((int) reason));
+			   SErrString ((int) reason));
 }
 
 
-static 
-type_prepare (LLog *lp, char *rw, int type)
-{
+static
+type_prepare (LLog *lp, char *rw, int type) {
 	ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
 	case PR_MAA:
@@ -458,9 +448,8 @@ type_prepare (LLog *lp, char *rw, int type)
 }
 
 
-static 
-type_error (LLog *lp, char *rw, int reason)
-{
+static
+type_error (LLog *lp, char *rw, int reason) {
 	ll_printf (lp, "%sREASON/ ", rw);
 	switch (reason) {
 	case SP_NOREASON:
@@ -489,9 +478,8 @@ type_error (LLog *lp, char *rw, int reason)
 }
 
 
-static 
-type_resync (LLog *lp, char *rw, int type)
-{
+static
+type_resync (LLog *lp, char *rw, int type) {
 	ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
 	case SYNC_RESTART:
@@ -511,18 +499,16 @@ type_resync (LLog *lp, char *rw, int type)
 }
 
 
-static 
-type_data (LLog *lp, char *type, char *rw, int len, char *data)
-{
+static
+type_data (LLog *lp, char *type, char *rw, int len, char *data) {
 	ll_printf (lp, "%s%s DATA/ ", rw, type);
 	type_info (lp, "%d", len, data);
 	ll_printf (lp, "\n");
 }
 
 
-static 
-type_info (LLog *lp, char *fmt, int len, char *data)
-{
+static
+type_info (LLog *lp, char *fmt, int len, char *data) {
 	char    buffer[BUFSIZ];
 
 	ll_printf (lp, fmt, len);
@@ -536,8 +522,7 @@ type_info (LLog *lp, char *fmt, int len, char *data)
 
 /* ARGSUSED */
 
-void 
-text2spkt (struct ssapkt *s)
-{
+void
+text2spkt (struct ssapkt *s) {
 	/* NOT YET IMPLEMENTED */
 }

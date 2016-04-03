@@ -35,9 +35,8 @@ void read_bind_args(), read_args(), quit();
 
 void exit();
 
-int 
-main (unsigned int argc, char **argv)
-{
+int
+main (unsigned int argc, char **argv) {
 	char **null_argv = (char **) NULL;
 	char *mess;
 
@@ -92,9 +91,8 @@ main (unsigned int argc, char **argv)
 	return 0;
 }
 
-void 
-read_args (unsigned int *acptr, char ***avptr)
-{
+void
+read_args (unsigned int *acptr, char ***avptr) {
 	char *cp;
 	char **av;
 
@@ -126,9 +124,8 @@ read_args (unsigned int *acptr, char ***avptr)
 	}
 }
 
-void 
-read_bind_args (unsigned int *acptr, char ***avptr)
-{
+void
+read_bind_args (unsigned int *acptr, char ***avptr) {
 	char *cp;
 	char **av;
 	bool got_user_name = FALSE,
@@ -151,7 +148,7 @@ read_bind_args (unsigned int *acptr, char ***avptr)
 			break;
 		case 'p':
 			if (*++av != NULLCP) {
-				 strcpy(passwd, *av);
+				strcpy(passwd, *av);
 				got_password = TRUE;
 			}
 			break;
@@ -163,10 +160,9 @@ read_bind_args (unsigned int *acptr, char ***avptr)
 	if (got_user_name == TRUE && got_password == FALSE) passwd[0] = '\0';
 }
 
-void 
-quit (int sig)
-{
-	 ds_unbind();
+void
+quit (int sig) {
+	ds_unbind();
 	exit(sig);
 }
 
@@ -180,7 +176,7 @@ va_dcl {
 	va_start (ap);
 
 	code = va_arg (ap, int);
-	 _ll_log (log_dsap, code, ap);
+	_ll_log (log_dsap, code, ap);
 
 	va_end (ap);
 }

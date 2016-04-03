@@ -47,7 +47,7 @@ Entry directory;
 			turbo_index_delete(directory);
 
 		if (directory->e_children != NULLAVL)
-			 avl_free(directory->e_children, directory_free);
+			avl_free(directory->e_children, directory_free);
 
 		switch (directory->e_data) {
 		case E_TYPE_SLAVE:
@@ -150,7 +150,7 @@ Entry parent;
 }
 
 
-int 
+int
 check_known_oids (void) {
 	at_objectclass = AttrT_new (OBJECTCLASS_OID);
 	at_alias = AttrT_new (ALIAS_OID);

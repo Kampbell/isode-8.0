@@ -65,9 +65,8 @@ int quit_command = 0;
 /*--------------------------------------------------------------*/
 /*  getLocalFileRfaInfo						*/
 /*--------------------------------------------------------------*/
-int 
-getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int reg)
-{
+int
+getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int reg) {
 	int rc;
 
 
@@ -114,9 +113,8 @@ getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int r
 /*--------------------------------------------------------------*/
 /*  Local List Dir						*/
 /*--------------------------------------------------------------*/
-int 
-do_localListDir (char **av)
-{
+int
+do_localListDir (char **av) {
 	struct RfaInfo *rfa, *rfalist;
 	char *fn;
 	int rc;
@@ -150,9 +148,8 @@ do_localListDir (char **av)
 /*--------------------------------------------------------------*/
 /*  List Dir							*/
 /*--------------------------------------------------------------*/
-int 
-do_listDir (char **av)
-{
+int
+do_listDir (char **av) {
 	struct RfaInfo *rfa, *rfalist;
 	int rc;
 	char *fn;
@@ -186,9 +183,8 @@ do_listDir (char **av)
 /*--------------------------------------------------------------*/
 /*  getRemoteRfaInfoList
 /*--------------------------------------------------------------*/
-int 
-getRemoteRfaInfoList (char *fn, struct RfaInfo **rfap)
-{
+int
+getRemoteRfaInfoList (char *fn, struct RfaInfo **rfap) {
 	struct type_RFA_FileName *arg;
 	struct type_RFA_FileInfoList *fil;
 	int res, rc;
@@ -220,9 +216,8 @@ getRemoteRfaInfoList (char *fn, struct RfaInfo **rfap)
 /*--------------------------------------------------------------*/
 /*  Get File							*/
 /*--------------------------------------------------------------*/
-int 
-do_getFile (char **av)
-{
+int
+do_getFile (char **av) {
 	int rc, new = 0;
 	struct RfaInfo *rfalist, *rfa;
 	char *fn, buf[512];
@@ -329,9 +324,8 @@ do_getFile (char **av)
 /*--------------------------------------------------------------*/
 /*  unlockFile							*/
 /*--------------------------------------------------------------*/
-int 
-do_unlockFile (char **av)
-{
+int
+do_unlockFile (char **av) {
 	int rc;
 	struct RfaInfo *rfalist, *rfa;
 	char *fn;
@@ -376,9 +370,8 @@ do_unlockFile (char **av)
 /*--------------------------------------------------------------*/
 /*  lockFile							*/
 /*--------------------------------------------------------------*/
-int 
-do_lockFile (char **av)
-{
+int
+do_lockFile (char **av) {
 	struct type_RFA_RequestMasterRes *rmr;
 	struct type_RFA_RequestMasterArg *rma;
 	int res, rc;
@@ -479,9 +472,8 @@ do_lockFile (char **av)
 /*--------------------------------------------------------------*/
 /*  master							*/
 /*--------------------------------------------------------------*/
-int 
-do_master (char **av)
-{
+int
+do_master (char **av) {
 	int rc, res;
 	struct RfaInfo *rfalist, *rfa, *remoteRfaList, *rrfa;
 	char *fn, *shortTime();
@@ -618,9 +610,8 @@ do_master (char **av)
 /*--------------------------------------------------------------*/
 /* slave							*/
 /*--------------------------------------------------------------*/
-int 
-do_slave (char **av)
-{
+int
+do_slave (char **av) {
 	int rc;
 	struct RfaInfo *rfalist, *rfa, *remoteRfaList, *rrfa;
 	char *fn, *shortTime();
@@ -724,9 +715,8 @@ do_slave (char **av)
 /*--------------------------------------------------------------*/
 /* unregister							*/
 /*--------------------------------------------------------------*/
-int 
-do_un(char **av)
-{
+int
+do_un(char **av) {
 	int rc;
 	struct RfaInfo *rfalist, *rfa;
 	char *fn;
@@ -777,9 +767,8 @@ do_un(char **av)
 /*--------------------------------------------------------------*/
 /*  rsyncdir							*/
 /*--------------------------------------------------------------*/
-int 
-do_rsyncdir (char **av)
-{
+int
+do_rsyncdir (char **av) {
 	char *fn;
 	int rc;
 
@@ -809,9 +798,8 @@ do_rsyncdir (char **av)
 /*--------------------------------------------------------------*/
 /*  syncdir							*/
 /*--------------------------------------------------------------*/
-int 
-do_syncdir (char **av)
-{
+int
+do_syncdir (char **av) {
 	int rc;
 	char *fn;
 
@@ -843,21 +831,18 @@ do_syncdir (char **av)
 /*--------------------------------------------------------------*/
 /*  settransfer							*/
 /*--------------------------------------------------------------*/
-int 
-do_setreq (char **av)
-{
+int
+do_setreq (char **av) {
 	do_settransfer(av, RI_TR_REQ);
 }
 
-int 
-do_setauto (char **av)
-{
+int
+do_setauto (char **av) {
 	do_settransfer(av, RI_TR_AUTO);
 }
 
-int 
-do_settransfer (char **av, int mode)
-{
+int
+do_settransfer (char **av, int mode) {
 	int rc;
 	struct RfaInfo *rfalist, *rfa;
 	char *fn, *shortTime();
@@ -888,18 +873,16 @@ do_settransfer (char **av, int mode)
 /*--------------------------------------------------------------*/
 /*  Print WD							*/
 /*--------------------------------------------------------------*/
-int 
-do_pwd (char **av)
-{
+int
+do_pwd (char **av) {
 	fprintf(out,"working directory: %s\n",*cwd_remote? cwd_remote : "/");
 }
 
 /*--------------------------------------------------------------*/
 /*  Change Dir							*/
 /*--------------------------------------------------------------*/
-int 
-do_changeDir (char **av)
-{
+int
+do_changeDir (char **av) {
 	char *s, *r, *fn = *av;
 
 	if (fn == NULL) {
@@ -931,9 +914,8 @@ do_changeDir (char **av)
 /*--------------------------------------------------------------*/
 /*  timesync							*/
 /*--------------------------------------------------------------*/
-int 
-do_timesync (char **av)
-{
+int
+do_timesync (char **av) {
 	struct type_RFA_SyncTimeArg sta;
 	struct type_RFA_SyncTimeRes *str;
 	int res, rc;
@@ -992,9 +974,8 @@ do_timesync (char **av)
 /*--------------------------------------------------------------*/
 /*  quit							*/
 /*--------------------------------------------------------------*/
-int 
-do_quit (char **av)
-{
+int
+do_quit (char **av) {
 	quit_command++;
 }
 
@@ -1002,9 +983,8 @@ do_quit (char **av)
 /*--------------------------------------------------------------*/
 /*  Execute Command						*/
 /*--------------------------------------------------------------*/
-int 
-executeCommand (char *cmd)
-{
+int
+executeCommand (char *cmd) {
 	char **ap, *aps[BUFSIZ];
 	static struct cmd {
 		char	*n;
@@ -1120,18 +1100,18 @@ executeCommand (char *cmd)
 	return OK;
 }
 
-int 
+int
 cleanup  {
 }
 
 
-int 
+int
 getConnection  {
 	if (connected)
 		return OK;
 	if (makeconn(host, passwd, user) == NOTOK)  {
 		fprintf(err,"*** provider error: can't establish connection to %s ***\n"
-				, host);
+		, host);
 		return NOTOK;
 	}
 	connected = 1;
@@ -1139,9 +1119,8 @@ getConnection  {
 }
 
 
-int 
-main (int ac, char **av)
-{
+int
+main (int ac, char **av) {
 	char c, buf[BUFSIZ];
 	extern char *optarg;
 	extern int optind;

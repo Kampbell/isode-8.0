@@ -69,15 +69,14 @@ extern char isode_x25_errflag;
 static int  TConnRequestAux ();
 static int  TConnAttempt ();
 
-	struct TSAPaddr *ta2norm (struct TSAPaddr *ta);
+struct TSAPaddr *ta2norm (struct TSAPaddr *ta);
 static struct TSAPaddr *newtaddr ();
 static struct TSAPaddr *maketsbaddr ();
 
 /*    T-(ASYN-)CONNECT.REQUEST */
 
-int 
-TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async)
-{
+int
+TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async) {
 	int  n;
 	SBV     smask;
 	int     result;
@@ -108,16 +107,15 @@ TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedit
 	result = TConnRequestAux (calling, called, expedited, data, cc, qos,
 							  tc, td, async);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async)
-{
+static int
+TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async) {
 	int	    result;
 	struct tsapblk *tb;
 
@@ -156,7 +154,7 @@ TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedite
 		if ((tb -> tb_data = malloc ((unsigned) cc)) == NULLCP) {
 no_mem:
 			;
-			 tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
+			tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 			goto out;
 		}
 		bcopy (data, tb -> tb_data, cc);
@@ -193,9 +191,8 @@ out:
 
 /*  */
 
-static int 
-TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async)
-{
+static int
+TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async) {
 	int   n;
 	int	    didone,
 			l,
@@ -325,9 +322,8 @@ TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async)
 
 /*    T-ASYN-RETRY.REQUEST (pseudo) */
 
-int 
-TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
-{
+int
+TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	SBV     smask;
 	int     result;
 	struct tsapblk *tb;
@@ -339,12 +335,12 @@ TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 	smask = sigioblock ();
 
 	if ((tb = findtblk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return tsaplose (td, DR_PARAMETER, NULLCP,
 						 "invalid transport descriptor");
 	}
 	if (tb -> tb_flags & TB_CONN) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return tsaplose (td, DR_OPERATION, NULLCP,
 						 "transport descriptor connected");
 	}
@@ -371,8 +367,8 @@ TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 		case CONNECTING_1:
 		case CONNECTING_2:
 			if (tb -> tb_fd != sd) {
-				 dup2 (tb -> tb_fd, sd);
-				 close (tb -> tb_fd);
+				dup2 (tb -> tb_fd, sd);
+				close (tb -> tb_fd);
 				tb -> tb_fd = sd;
 			}
 			break;
@@ -398,16 +394,15 @@ TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 		break;
 	}
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    T-ASYN-NEXT.REQUEST (pseudo) */
 
-int 
-TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
-{
+int
+TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	SBV     smask;
 	int     result;
 	struct tsapblk *tb;
@@ -419,14 +414,14 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 	smask = sigioblock ();
 
 	if ((tb = findtblk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return tsaplose (td, DR_PARAMETER, NULLCP,
 						 "invalid transport descriptor");
 	}
 
 #ifdef notanymore
 	if (tb -> tb_flags & TB_CONN) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return tsaplose (td, DR_OPERATION, NULLCP,
 						 "transport descriptor connected");
 	}
@@ -439,12 +434,12 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 
 	/* close previous connection attempt */
 	if (tb -> tb_fd != NOTOK)
-		 (*tb -> tb_closefnx) (tb -> tb_fd);
+		(*tb -> tb_closefnx) (tb -> tb_fd);
 	tb -> tb_fd = NOTOK;
 
 	if (ta -> ta_naddr <= 1) {
 		freetblk (tb);
-		 sigiomask (smask);
+		sigiomask (smask);
 		return tsaplose (td, DR_PARAMETER, NULLCP, "no more NSAPs to try");
 	}
 	*tb -> tb_called = *newtaddr (ta, &ta -> ta_addrs[1],
@@ -457,8 +452,8 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 	case CONNECTING_1:
 	case CONNECTING_2:
 		if (tb -> tb_fd != sd) {
-			 dup2 (tb -> tb_fd, sd);
-			 close (tb -> tb_fd);
+			dup2 (tb -> tb_fd, sd);
+			close (tb -> tb_fd);
 			tb -> tb_fd = sd;
 		}
 		break;
@@ -468,7 +463,7 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 		break;
 	}
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
@@ -476,8 +471,7 @@ TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 /*  */
 
 static struct TSAPaddr *
-newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n)
-{
+newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n) {
 	static struct TSAPaddr tzs;
 	struct TSAPaddr *tz = &tzs;
 	struct NSAPaddr *nz = tz -> ta_addrs;
@@ -496,14 +490,13 @@ newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n)
 /*  */
 
 struct TSAPaddr *
-ta2norm (struct TSAPaddr *ta)
-{
+ta2norm (struct TSAPaddr *ta) {
 	int    n,
-			 *ip;
+		   *ip;
 	static struct TSAPaddr tzs;
 	struct TSAPaddr *tz = &tzs;
 	struct NSAPaddr *na,
-			*ca;
+			   *ca;
 
 	SLOG (addr_log, LLOG_TRACE, NULLCP,
 		  ("ta2norm %s", taddr2str (ta)));
@@ -549,8 +542,7 @@ ta2norm (struct TSAPaddr *ta)
 /*  */
 
 static struct TSAPaddr *
-maketsbaddr (char *cp, struct NSAPaddr *na, struct TSAPaddr *ta)
-{
+maketsbaddr (char *cp, struct NSAPaddr *na, struct TSAPaddr *ta) {
 	static struct TSAPaddr newta;
 	struct TSAPaddr *nta = &newta;
 	struct TSAPaddr *taz;

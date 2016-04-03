@@ -115,7 +115,7 @@ init_system () {
 	OT	    ot;
 	struct sys_pair *sp;
 
-	 gethostname (buffer, sizeof buffer);
+	gethostname (buffer, sizeof buffer);
 	pairs[SYS_NAME].s_text = buffer;
 
 	for (sp = pairs; sp -> s_name; sp++)
@@ -125,9 +125,9 @@ init_system () {
 
 			if (sp -> s_text)
 				if (ot -> ot_syntax)
-					 (*ot -> ot_syntax -> os_parse) ((struct qbuf **)
-														   &ot -> ot_info,
-														   sp -> s_text);
+					(*ot -> ot_syntax -> os_parse) ((struct qbuf **)
+													&ot -> ot_info,
+													sp -> s_text);
 				else
 					advise (LLOG_EXCEPTIONS, NULLCP, "%s: no syntax",
 							sp -> s_name);

@@ -33,7 +33,7 @@ static void read_quipurc();
 
 void exit();
 
-void 
+void
 initialize  {
 	char *homeconfig = "/.doogrc";
 	char *sysconfig = "doogrc";
@@ -45,38 +45,38 @@ initialize  {
 #endif
 
 	if (testing == FALSE) {
-		 strcpy(config_file_name, getenv("HOME"));
-		 strcat(config_file_name, homeconfig);
+		strcpy(config_file_name, getenv("HOME"));
+		strcat(config_file_name, homeconfig);
 
 		if ((config_file = fopen(config_file_name, "r")) == (FILE *) NULL) {
-			 strcpy(config_file_name, isodefile(sysconfig, 0));
+			strcpy(config_file_name, isodefile(sysconfig, 0));
 
 			if ((config_file = fopen(config_file_name, "r")) == (FILE *) NULL) {
-				 fprintf(stderr,
-							   "Cannot find `doogrc' tailor file. Exiting.\n");
+				fprintf(stderr,
+				"Cannot find `doogrc' tailor file. Exiting.\n");
 				exit (1);
 			}
 		}
 	} else {
-		 strcpy(config_file_name, "./");
-		 strcat(config_file_name, sysconfig);
+		strcpy(config_file_name, "./");
+		strcat(config_file_name, sysconfig);
 
 		if ((config_file = fopen(config_file_name, "r")) == (FILE *) NULL) {
-			 fprintf(stderr, "Cannot find `doogrc' tailor file.\n");
-			 fprintf(stderr,
-						   "To test, run `doog -test' in the source directory.\n");
+			fprintf(stderr, "Cannot find `doogrc' tailor file.\n");
+			fprintf(stderr,
+			"To test, run `doog -test' in the source directory.\n");
 
 			exit(1);
 		}
 	}
 
-	 parseConfig();
-	 fclose(config_file);
+	parseConfig();
+	fclose(config_file);
 
 	read_quipurc();
 }
 
-static void 
+static void
 read_quipurc  {
 	char quipurc[LINESIZE];
 	char *quipurc_name = "/.quipurc";
@@ -85,8 +85,8 @@ read_quipurc  {
 	char line[LINESIZE];
 	FILE *qfile;
 
-	 strcpy(quipurc, getenv("HOME"));
-	 strcat(quipurc, quipurc_name);
+	strcpy(quipurc, getenv("HOME"));
+	strcat(quipurc, quipurc_name);
 
 	if ((qfile = fopen(quipurc, "r")) == NULL) return;
 
@@ -104,20 +104,20 @@ read_quipurc  {
 		part2 = TidyString(part2);
 
 		if ((lexequ(part1, "username") == 0) && *username == '\0')
-			 strcpy (username, part2);
+			strcpy (username, part2);
 		else if ((lexequ(part1, "password") == 0) && *userpassword == '\0')
-			 strcpy (userpassword, part2);
+			strcpy (userpassword, part2);
 		else if (lexequ (part1, "dsap") == 0)
-			 tai_string (part2);
+			tai_string (part2);
 		else if (lexequ (part1, "isode") == 0) {
 			char *split;
 			if ((split = index (part2,' ')) != NULLCP) {
 				*split++ = 0;
-				 isodesetvar (part2, split, 0);
+				isodesetvar (part2, split, 0);
 			}
 		} else if (lexequ(part1, "service") == 0)
 			new_service (part2);
 	}
 	isodexport(NULLCP);
-	 fclose(qfile);
+	fclose(qfile);
 }

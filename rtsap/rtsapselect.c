@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapselect.c,v 9.0 1
 
 /*    map association descriptors for select() */
 
-int 
-RtSelectMask (int sd, fd_set *mask, int *nfds, struct RtSAPindication *rti)
-{
+int
+RtSelectMask (int sd, fd_set *mask, int *nfds, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -49,14 +48,14 @@ RtSelectMask (int sd, fd_set *mask, int *nfds, struct RtSAPindication *rti)
 	rtsapPsig (acb, sd);
 
 	if (acb -> acb_flags & ACB_PLEASE) {
-		 sigiomask (smask);
+		sigiomask (smask);
 
 		return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
 	}
 
 	result = (*acb -> acb_rtselectmask) (acb, mask, nfds, rti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

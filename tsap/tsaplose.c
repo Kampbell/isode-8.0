@@ -46,10 +46,9 @@ static int  _tsaplose ();
 #endif
 
 #ifndef	lint
-int	tpktlose (struct tsapblk* tb, ...)
-{
+int	tpktlose (struct tsapblk* tb, ...) {
 	int	    reason,
-	result;
+			result;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect  *td;
 	va_list ap;
@@ -70,11 +69,11 @@ int	tpktlose (struct tsapblk* tb, ...)
 
 	if (td -> td_cc > 0) {
 		SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP,
-		("tpktlose [%s] %*.*s", TErrString (td -> td_reason), td -> td_cc,
-		td -> td_cc, td -> td_data));
+			  ("tpktlose [%s] %*.*s", TErrString (td -> td_reason), td -> td_cc,
+			   td -> td_cc, td -> td_data));
 	} else
 		SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP,
-		("tpktlose [%s]", TErrString (td -> td_reason)));
+			  ("tpktlose [%s]", TErrString (td -> td_reason)));
 
 #ifdef  MGMT
 	if (tb -> tb_manfnx)
@@ -110,9 +109,8 @@ int	tpktlose (struct tsapblk* tb, ...)
 #else
 /* VARARGS5 */
 
-int 
-tpktlose (struct tsapblk *tb, struct TSAPdisconnect *td, int reason, char *what, char *fmt)
-{
+int
+tpktlose (struct tsapblk *tb, struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 	return tpktlose (tb, td, reason, what, fmt);
 }
 #endif
@@ -120,10 +118,9 @@ tpktlose (struct tsapblk *tb, struct TSAPdisconnect *td, int reason, char *what,
 /*  */
 
 #ifndef	lint
-int	tsaplose (struct TSAPdisconnect*td, ...)
-{
+int	tsaplose (struct TSAPdisconnect*td, ...) {
 	int	    reason,
-	result;
+			result;
 	va_list ap;
 
 	va_start (ap, td);
@@ -140,9 +137,8 @@ int	tsaplose (struct TSAPdisconnect*td, ...)
 #else
 /* VARARGS4 */
 
-int 
-tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt)
-{
+int
+tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 	return tsaplose (td, reason, what, fmt);
 }
 #endif
@@ -150,13 +146,12 @@ tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _tsaplose (	/* what, fmt, args ... */
-    struct TSAPdisconnect *td,
-    int reason,
-    va_list ap
-)
-{
+	struct TSAPdisconnect *td,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char  *what;
 	char  *fmt;

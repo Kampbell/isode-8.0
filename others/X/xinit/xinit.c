@@ -111,9 +111,8 @@ int serverpid = -1;
 int clientpid = -1;
 extern int	errno;
 
-int 
-sigCatch (int sig)
-{
+int
+sigCatch (int sig) {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
 	Error("unexpected signal %d\r\n", sig);
@@ -122,18 +121,16 @@ sigCatch (int sig)
 }
 
 #ifdef SYSV
-int 
-sigAlarm (int sig)
-{
+int
+sigAlarm (int sig) {
 	signal (sig, sigAlarm);
 }
 #endif /* SYSV */
 
-static 
+static
 Execute (
-    char **vec				/* has room from up above */
-)
-{
+	char **vec				/* has room from up above */
+) {
 	execvp (vec[0], vec);
 	if (access (vec[0], R_OK) == 0) {
 		vec--;				/* back it up to stuff shell in */
@@ -143,9 +140,8 @@ Execute (
 	return;
 }
 
-int 
-main (int argc, char **argv)
-{
+int
+main (int argc, char **argv) {
 	char **sptr = server;
 	char **cptr = client;
 	char **ptr;
@@ -255,7 +251,7 @@ main (int argc, char **argv)
 			strcpy (xinitrcbuf, cp);
 			required = True;
 		} else if ((cp = getenv ("HOME")) != NULL) {
-			 sprintf (xinitrcbuf, "%s/%s", cp, XINITRC);
+			sprintf (xinitrcbuf, "%s/%s", cp, XINITRC);
 		}
 		if (xinitrcbuf[0]) {
 			if (access (xinitrcbuf, F_OK) == 0) {
@@ -282,7 +278,7 @@ main (int argc, char **argv)
 			strcpy (xserverrcbuf, cp);
 			required = True;
 		} else if ((cp = getenv ("HOME")) != NULL) {
-			 sprintf (xserverrcbuf, "%s/%s", cp, XSERVERRC);
+			sprintf (xserverrcbuf, "%s/%s", cp, XSERVERRC);
 		}
 		if (xserverrcbuf[0]) {
 			if (access (xserverrcbuf, F_OK) == 0) {
@@ -331,9 +327,8 @@ main (int argc, char **argv)
  *	waitforserver - wait for X server to start up
  */
 
-int 
-waitforserver (int serverpid)
-{
+int
+waitforserver (int serverpid) {
 	int	ncycles	 = 120;		/* # of cycles to wait */
 	int	cycles;			/* Wait cycle count */
 
@@ -358,9 +353,8 @@ waitforserver (int serverpid)
 /*
  * return TRUE if we timeout waiting for pid to exit, FALSE otherwise.
  */
-int 
-processTimeout (int pid, int timeout, char *string)
-{
+int
+processTimeout (int pid, int timeout, char *string) {
 	int	i = 0, pidfound = -1;
 	static char	*laststring;
 
@@ -390,9 +384,8 @@ processTimeout (int pid, int timeout, char *string)
 	return( pid != pidfound );
 }
 
-int 
-Error (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9)
-{
+int
+Error (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9) {
 	extern char	*sys_errlist[];
 
 	fprintf(stderr, "%s:  ", program);
@@ -401,16 +394,14 @@ Error (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7
 	fprintf(stderr, fmt, x0,x1,x2,x3,x4,x5,x6,x7,x8,x9);
 }
 
-int 
-Fatal (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9)
-{
+int
+Fatal (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9) {
 	Error(fmt, x0,x1,x2,x3,x4,x5,x6,x7,x8,x9);
 	exit(ERR_EXIT);
 }
 
-int 
-startServer (char *server[])
-{
+int
+startServer (char *server[]) {
 	int	serverpid;
 
 	serverpid = vfork();
@@ -423,10 +414,10 @@ startServer (char *server[])
 		 * don't hang on read/write to control tty
 		 */
 #ifdef SIGTTIN
-		 signal(SIGTTIN, SIG_IGN);
+		signal(SIGTTIN, SIG_IGN);
 #endif
 #ifdef SIGTTOU
-		 signal(SIGTTOU, SIG_IGN);
+		signal(SIGTTOU, SIG_IGN);
 #endif
 
 		/*
@@ -488,9 +479,8 @@ startServer (char *server[])
 	return(serverpid);
 }
 
-int 
-startClient (char *client[])
-{
+int
+startClient (char *client[]) {
 	int	clientpid;
 
 	if ((clientpid = vfork()) == 0) {
@@ -523,9 +513,8 @@ Display *dpy;
 	return;
 }
 
-static 
-shutdown (int serverpid, int clientpid)
-{
+static
+shutdown (int serverpid, int clientpid) {
 	/* have kept display opened, so close it now */
 	if (clientpid > 0) {
 		XSetIOErrorHandler (ignorexio);
@@ -577,7 +566,7 @@ shutdown (int serverpid, int clientpid)
  * make a new copy of environment that has room for DISPLAY
  */
 
-int 
+int
 set_environment  {
 	int nenvvars;
 	char **newPtr, **oldPtr;
@@ -590,8 +579,8 @@ set_environment  {
 	newenviron = (char **) malloc ((nenvvars + 2) * sizeof(char **));
 	if (!newenviron) {
 		fprintf (stderr,
-				 "%s:  unable to allocate %d pointers for environment\n",
-				 program, nenvvars + 2);
+		"%s:  unable to allocate %d pointers for environment\n",
+		program, nenvvars + 2);
 		exit (1);
 	}
 

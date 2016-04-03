@@ -29,9 +29,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-manage.c,v 9.0 
 
 /*    MANAGEMENT */
 
-int 
-ftam_managementindication (struct FTAMgroup *ftg)
-{
+int
+ftam_managementindication (struct FTAMgroup *ftg) {
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
 	struct FTAMindication   ftis;
@@ -42,10 +41,10 @@ ftam_managementindication (struct FTAMgroup *ftg)
 	if (myfd != NOTOK) {
 #ifndef	BRIDGE
 		unlock ();
-		 close (myfd);
+		close (myfd);
 #else
-		 close (myfd);
-		 ftp_reply ();
+		close (myfd);
+		ftp_reply ();
 #endif
 		myfd = NOTOK;
 	}

@@ -52,9 +52,8 @@ static int  SReSyncRequestAux ();
 
 /*  */
 
-int 
-SReSyncRequest (int sd, int type, long ssn, int settings, char *data, int cc, struct SSAPindication *si)
-{
+int
+SReSyncRequest (int sd, int type, long ssn, int settings, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -88,16 +87,15 @@ SReSyncRequest (int sd, int type, long ssn, int settings, char *data, int cc, st
 
 	result = SReSyncRequestAux (sb, type, ssn, settings, data, cc, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SReSyncRequestAux (struct ssapblk *sb, int type, long ssn, int settings, char *data, int cc, struct SSAPindication *si)
-{
+static int
+SReSyncRequestAux (struct ssapblk *sb, int type, long ssn, int settings, char *data, int cc, struct SSAPindication *si) {
 	int     result;
 
 	if (!(sb -> sb_requirements & SR_RESYNC))

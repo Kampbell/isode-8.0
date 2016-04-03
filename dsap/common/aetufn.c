@@ -55,23 +55,23 @@ char * s;
 	if (dns == NULLDNS)
 		return NULLDNS;
 
-	 printf ("Please select from the following (matching '%s'):\n",s);
+	printf ("Please select from the following (matching '%s'):\n",s);
 	while (dns != NULLDNS) {
-		 printf ("  %s [y/n] ? ",dn2ufn(dns->dns_dn,FALSE));
-		 fflush (stdout);
+		printf ("  %s [y/n] ? ",dn2ufn(dns->dns_dn,FALSE));
+		fflush (stdout);
 again:
 		;
 		if (gets (buf) == NULL) {
 			clearerr (stdin);
-			 printf ("\n");
+			printf ("\n");
 			return result;
 		}
 
 		if ((buf[0] == NULL)
 				|| (strlen(buf) != 1)
 				|| ((buf[0] != 'y') && (buf[0] != 'n'))) {
-			 printf ("Please type 'y' or 'n': ");
-			 fflush (stdout);
+			printf ("Please type 'y' or 'n': ");
+			fflush (stdout);
 			goto again;
 		}
 
@@ -108,7 +108,7 @@ char * s;
 static DN username = NULLDN;
 static char password[DBA_MAX_PASSWD_LEN] = "";
 
-static 
+static
 bind_to_dsa (void) {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
@@ -117,7 +117,7 @@ bind_to_dsa (void) {
 	bindarg.dba_version = DBA_VERSION_V1988;
 	bindarg.dba_dn = username;
 	if (bindarg.dba_passwd_len = strlen (password))
-		 strcpy (bindarg.dba_passwd, password);
+		strcpy (bindarg.dba_passwd, password);
 
 	if (ds_bind (&bindarg,&binderr,&bindresult) != DS_OK) {
 		PY_advise (NULLCP, "unable to bind to directory (%s)",
@@ -226,9 +226,9 @@ PE     *real_name;
 	}
 	password[0] = NULL;
 	if (passwd)
-		 strcpy (password, passwd);
+		strcpy (password, passwd);
 
-	 strcpy (buffer, name);
+	strcpy (buffer, name);
 	if (*buffer == '@') {
 		static DN dnstat;
 
@@ -283,7 +283,7 @@ out:
 		/* Multiple hits */
 		/* Continue until one works */
 		if ( ontty )
-			 dnSelect (name,&dns,ufn_interact,el->Dns);
+			dnSelect (name,&dns,ufn_interact,el->Dns);
 
 		for (; dns!= NULLDNS; dns=dns->dns_next) {
 			dn = &dns -> dns_dn;
@@ -297,17 +297,17 @@ all_done:
 	if (dn) {
 		PS	    ps = NULLPS;
 
-		 encode_IF_DistinguishedName (real_name, 1, 0, NULLCP, *dn);
+		encode_IF_DistinguishedName (real_name, 1, 0, NULLCP, *dn);
 
 		if (ontty
 				&& (ps = ps_alloc (str_open))
 				&& str_setup (ps, NULLCP, 0, 0) != NOTOK) {
-			 ufn_dn_print_aux (ps, *dn, NULLDN, 0);
+			ufn_dn_print_aux (ps, *dn, NULLDN, 0);
 			ps_print (ps, " ");
 			*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
 
-			 printf ("[ using %s ]\n", ps -> ps_base);
-			 fflush (stdout);
+			printf ("[ using %s ]\n", ps -> ps_base);
+			fflush (stdout);
 
 			ps -> ps_ptr = ps -> ps_base, ps -> ps_cnt = ps -> ps_bufsiz;
 		}
@@ -328,7 +328,7 @@ all_done:
 }
 
 
-static 
+static
 set_el (void) {
 	envlist  en,
 			 *ep;
@@ -400,11 +400,10 @@ done:
 }
 
 
-int 
+int
 set_lookup_ufn (
-    int flag	/* if TRUE always unbind */
-)
-{
+	int flag	/* if TRUE always unbind */
+) {
 	if ((unbind = flag) && bound) {
 		bound = FALSE;
 		ds_unbind ();
@@ -419,9 +418,8 @@ set_lookup_ufn (
 
 #ifdef STANDALONE_AET_TEST
 
-int 
-main (int argc, char **argv)
-{
+int
+main (int argc, char **argv) {
 	char buffer [1024];
 	int ontty, n;
 	PE title, paddr;
@@ -430,8 +428,8 @@ main (int argc, char **argv)
 
 	ontty = isatty (fileno (stdin));
 	for (n=1; n<argc; n++) {
-		 strcat (buffer," ");
-		 strcat (buffer, argv[n]);
+		strcat (buffer," ");
+		strcat (buffer, argv[n]);
 	}
 
 	isodetailor ("ufn_aet",1);
@@ -449,19 +447,19 @@ main (int argc, char **argv)
 			fprintf (stderr, "parse of presentation address failed: %s",
 					 PY_pepy);
 		else
-			 printf ("%s\n", paddr2str (&pas));
+			printf ("%s\n", paddr2str (&pas));
 	} else
 		fprintf (stderr, "directory returns no value");
 
 	if (title) {
-		 printf ("AETitle\n");
+		printf ("AETitle\n");
 		vunknown (title);
 	}
 
 	exit (0);
 }
 
-int 
+int
 advise (void) {
 	;
 }

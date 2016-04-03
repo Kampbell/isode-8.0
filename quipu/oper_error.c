@@ -38,9 +38,8 @@ extern  LLog    * log_stat;
 #endif
 extern time_t	  timenow;
 
-int 
-oper_error (struct connection *conn, struct DSAPindication *di)
-{
+int
+oper_error (struct connection *conn, struct DSAPindication *di) {
 	struct DSAPerror	* de = &(di->di_error);
 	struct oper_act *   oper;
 
@@ -102,7 +101,7 @@ oper_error (struct connection *conn, struct DSAPindication *di)
 		get_edb_fail_wakeup(oper);
 		break;
 	case ON_TYPE_SHADOW:
-		 shadow_fail_wakeup(oper);
+		shadow_fail_wakeup(oper);
 		break;
 	default:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("oper_error - on_type invalid"));

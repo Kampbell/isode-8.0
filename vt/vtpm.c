@@ -78,9 +78,8 @@ struct PSAPfinish *pf;
 /*		this PE from the network				    */
 /****************************************************************************/
 
-int 
-get_event (int dd, PE *pe)
-{
+int
+get_event (int dd, PE *pe) {
 	int	result, event;
 	PE	nullpe;
 
@@ -247,9 +246,8 @@ int	((**sectors[])()) = {s0, s1, s2, s3, s4, s5};
 unsigned	state = 0,
 			sector = 1;
 
-int 
-do_event (int event, PE pe)
-{
+int
+do_event (int event, PE pe) {
 	if (debug)
 		advise(LLOG_DEBUG,NULLCP,
 			   "in do_event, sector is %d, state is %d, event is %d (%s)",
@@ -263,12 +261,11 @@ do_event (int event, PE pe)
 }
 
 /* ARGSUSED */
-int 
+int
 pn_ind ( /* sync indications */
-    int dd,
-    struct PSAPsync *psync
-)
-{
+	int dd,
+	struct PSAPsync *psync
+) {
 	switch(psync->pn_type) {
 	case SN_MAJORIND:
 		advise(LLOG_DEBUG,NULLCP,  "vt: got SN_MAJORIND");
@@ -319,9 +316,8 @@ pn_ind ( /* sync indications */
 /*									     */
 /*****************************************************************************/
 
-int 
-p_data (PE pdu)
-{
+int
+p_data (PE pdu) {
 
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
@@ -345,9 +341,8 @@ p_data (PE pdu)
 /*									    */
 /****************************************************************************/
 
-int 
-p_maj_sync_req (PE pdu)
-{
+int
+p_maj_sync_req (PE pdu) {
 	long ssn;
 
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
@@ -371,9 +366,8 @@ p_maj_sync_req (PE pdu)
 /*									    */
 /****************************************************************************/
 
-int 
-p_maj_sync_resp (PE pdu)
-{
+int
+p_maj_sync_resp (PE pdu) {
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
 	if (PMajSyncResponse(sd, &pdu, 1, &pi) != OK)
@@ -395,9 +389,8 @@ p_maj_sync_resp (PE pdu)
 /*									   */
 /***************************************************************************/
 
-int 
-p_typed_data (PE pdu)
-{
+int
+p_typed_data (PE pdu) {
 
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
@@ -418,9 +411,8 @@ p_typed_data (PE pdu)
 /*			outgoing events that are mapped to P_RESYNC.REQUEST) */
 /*****************************************************************************/
 
-int 
-p_resync_req (PE pdu, int type)
-{
+int
+p_resync_req (PE pdu, int type) {
 
 	long ssn = 0; /* should be made a global at some time */
 	int settings = ST_INIT_VALUE;
@@ -451,9 +443,8 @@ p_resync_req (PE pdu, int type)
 /*									    */
 /****************************************************************************/
 
-int 
-p_resync_resp (PE pdu)
-{
+int
+p_resync_resp (PE pdu) {
 
 	long ssn = 0; /* should be made a global at some time */
 	int settings = ST_INIT_VALUE;
@@ -476,9 +467,8 @@ p_resync_resp (PE pdu)
 /*	RETURNS:		OK					    */
 /****************************************************************************/
 
-int 
-asr (PE pe, int status)
-{
+int
+asr (PE pe, int status) {
 
 	/*	include "pe" as user data on the AcAssocResponse
 	*/
@@ -523,14 +513,13 @@ asr (PE pe, int status)
 
 
 
-int 
+int
 send_bad_asr (	/*Compose and send ASR with result = failure.  Encode
 			  ASR-FailureReason using the reason parameter
 			  (0 means no reason).
 			*/
-    int reason
-)
-{
+	int reason
+) {
 
 	PE asr_pe;
 	ASR_MSG ud;
@@ -554,21 +543,20 @@ send_bad_asr (	/*Compose and send ASR with result = failure.  Encode
 }
 
 
-int 
+int
 send_rlr (	/*Send RLR (Release Response) PDU to peer.  The RLR is
 		  built by vrelrsp().  It is sent by a call to Association
 		  Control.
 		*/
-    PE pe
-)
-{
+	PE pe
+) {
 	pe -> pe_context = 1;
 	if(AcRelResponse(sd,ACS_ACCEPT,ACR_NORMAL,&pe,1,aci) == NOTOK)
 		acs_adios (&aci->aci_abort, "A-RELEASE.RESPONSE");
 }
 
 
-int 
+int
 clear_vte (void) {	/*Clear VT Environment.  */
 
 	/*Nothing to do for now since we have no formalized environment
@@ -577,14 +565,14 @@ clear_vte (void) {	/*Clear VT Environment.  */
 }
 
 
-int 
+int
 vgvt_ind (void) {	/*Indication to User that peer has given the token*/
 
 	/*Don't know how to indicate this to user yet*/
 }
 
 
-int 
+int
 vrtq_ind (void) {	/*Indicate to User that peer has requested token*/
 
 	/*Don't know how to give indication to user.
@@ -592,7 +580,7 @@ vrtq_ind (void) {	/*Indicate to User that peer has requested token*/
 }
 
 
-int 
+int
 give_token (void)	/*Transfer Token to peer.  For VTP, all tokens are given
 		  at once so no need to discriminate between them.
 		*/
@@ -609,7 +597,7 @@ give_token (void)	/*Transfer Token to peer.  For VTP, all tokens are given
 }
 
 
-int 
+int
 request_token (void) {	/*Request Tokens from peer*/
 
 	int vt_tokens;
@@ -622,16 +610,15 @@ request_token (void) {	/*Request Tokens from peer*/
 		ps_adios (&vt_pi.pi_abort, "P-PLEASE-TOKENS.REQUEST");
 }
 
-int 
+int
 send_all (void) {	/*TEMP -- Should be supplied by Sector 5 actions*/
 	advise(LLOG_DEBUG,NULLCP,  "send_all dummy routine");
 }
 
 /*  */
 
-void 
-acs_adios (struct AcSAPabort *aa, char *event)
-{
+void
+acs_adios (struct AcSAPabort *aa, char *event) {
 	acs_advise (aa, event);
 
 	finalbye ();
@@ -640,26 +627,24 @@ acs_adios (struct AcSAPabort *aa, char *event)
 }
 
 
-static void 
-acs_advise (struct AcSAPabort *aa, char *event)
-{
+static void
+acs_advise (struct AcSAPabort *aa, char *event) {
 	char	buffer[BUFSIZ];
 
 	if (aa -> aca_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						AcErrString (aa -> aca_reason),
-						aa -> aca_cc, aa -> aca_cc, aa -> aca_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 AcErrString (aa -> aca_reason),
+				 aa -> aca_cc, aa -> aca_cc, aa -> aca_data);
 	else
-		 sprintf (buffer, "[%s]", AcErrString (aa -> aca_reason));
+		sprintf (buffer, "[%s]", AcErrString (aa -> aca_reason));
 
 	advise (LLOG_NOTICE,NULLCP,  "%s: %s (source %d)", event, buffer,
 			aa -> aca_source);
 }
 
 
-static void 
-ps_adios (struct PSAPabort *pab, char *event)
-{
+static void
+ps_adios (struct PSAPabort *pab, char *event) {
 	ps_advise (pab, event);
 
 	finalbye ();
@@ -668,17 +653,16 @@ ps_adios (struct PSAPabort *pab, char *event)
 }
 
 
-static void 
-ps_advise (struct PSAPabort *pab, char *event)
-{
+static void
+ps_advise (struct PSAPabort *pab, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (pab -> pa_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						PErrString (pab -> pa_reason),
-						pab -> pa_cc, pab -> pa_cc, pab -> pa_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 PErrString (pab -> pa_reason),
+				 pab -> pa_cc, pab -> pa_cc, pab -> pa_data);
 	else
-		 sprintf (buffer, "[%s]", PErrString (pab -> pa_reason));
+		sprintf (buffer, "[%s]", PErrString (pab -> pa_reason));
 
 	advise (LLOG_NOTICE,NULLCP,  "%s: %s%s", event, buffer,
 			pab -> pa_peer ? " (peer initiated)" : "");

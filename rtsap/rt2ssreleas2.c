@@ -35,9 +35,8 @@ static int  RtEndResponseAux ();
 
 /*    RT-END.RESPONSE (X.410 CLOSE.RESPONSE) */
 
-int 
-RtEndResponse (int sd, struct RtSAPindication *rti)
-{
+int
+RtEndResponse (int sd, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -50,7 +49,7 @@ RtEndResponse (int sd, struct RtSAPindication *rti)
 
 	result = RtEndResponseAux (acb, rti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 
@@ -58,9 +57,8 @@ RtEndResponse (int sd, struct RtSAPindication *rti)
 
 /*  */
 
-static int 
-RtEndResponseAux (struct assocblk *acb, struct RtSAPindication *rti)
-{
+static int
+RtEndResponseAux (struct assocblk *acb, struct RtSAPindication *rti) {
 	int     result;
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;

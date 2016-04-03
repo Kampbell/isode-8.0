@@ -100,7 +100,7 @@ int			  async;
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : RoAsynBindRequest failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
-		 acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
+		acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
@@ -116,7 +116,7 @@ int			  async;
 		} else if (acc->acc_result != ACS_PERMANENT ) {
 			LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : not ACS_ACCEPT [%d,%d]",acc->acc_result,aci->aci_type));
 			if (aci->aci_type == ACI_ABORT) {
-				 acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
+				acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
 				ACAFREE (aca);
 				return result;
 			}
@@ -138,9 +138,8 @@ int			  async;
 
 /* ARGSUSED */
 
-int 
-RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNOTindication *rni)
-{
+int
+RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &aci_s;
@@ -156,7 +155,7 @@ RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNO
 
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.RETRY : AcAsynRetryRequest failed"));
-		 acs2ronotlose (rni, "RO-BIND.RETRY", aca);
+		acs2ronotlose (rni, "RO-BIND.RETRY", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
@@ -172,7 +171,7 @@ RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNO
 		} else if (acc->acc_result != ACS_PERMANENT ) {
 			LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : not ACS_ACCEPT"));
 			if (aci->aci_type == ACI_ABORT) {
-				 acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
+				acs2ronotlose (rni, "RO-BIND.REQUEST", aca);
 				ACAFREE (aca);
 				return result;
 			}
@@ -189,9 +188,8 @@ RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNO
 	return (result);
 }
 
-int 
-ParseRoBindResponse (struct AcSAPconnect *acc, struct RoNOTindication *rni)
-{
+int
+ParseRoBindResponse (struct AcSAPconnect *acc, struct RoNOTindication *rni) {
 	PE	  pe;
 
 	if (acc->acc_ninfo == 0)

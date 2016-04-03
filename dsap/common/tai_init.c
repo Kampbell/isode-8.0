@@ -38,7 +38,7 @@ extern  char    *tailfile;
 extern  LLog    *log_dsap;
 
 
-int 
+int
 dsap_tai_init (void) {
 	FILE    *fp;
 	char    *cp;
@@ -59,14 +59,13 @@ dsap_tai_init (void) {
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("tai_string failed %s",buf));
 
 
-	 fclose(fp);
+	fclose(fp);
 	return OK;
 }
 
 
-int 
-tai_string (char *str)
-{
+int
+tai_string (char *str) {
 	char    *args[MAXTAIARGS];
 	char    *p;
 	int     ac;

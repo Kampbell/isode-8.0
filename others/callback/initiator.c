@@ -36,9 +36,8 @@ static char *mycontext = "isode callback demo";
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int	    vecp;
 	char   *taddr,
 		   *vec[4];
@@ -60,7 +59,7 @@ main (int argc, char **argv, char **envp)
 	AEI	    aei;
 	struct PSAPaddr *pa;
 	struct sblk incoming,
-			outgoing;
+			   outgoing;
 	SB	    sbi = &incoming,
 			sbo = &outgoing;
 
@@ -163,7 +162,7 @@ main (int argc, char **argv, char **envp)
 			ss -> ss_ssdusize);
 
 	/* stop listening, we have what we want */
-	 TNetClose (NULLTA, td);
+	TNetClose (NULLTA, td);
 
 	bzero ((char *) sbi, sizeof *sbi);
 	sbi -> sb_sd = ss -> ss_sd;

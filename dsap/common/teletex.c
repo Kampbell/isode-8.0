@@ -44,9 +44,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/teletex.c,v 9.0
 
 extern LLog * log_dsap;
 
-static 
-teletex_free (struct teletex *ptr)
-{
+static
+teletex_free (struct teletex *ptr) {
 	nfree (ptr->terminal);
 	nfree (ptr->graphic);
 	nfree (ptr->control);
@@ -58,8 +57,7 @@ teletex_free (struct teletex *ptr)
 }
 
 static char *
-xstrdup (char *a)
-{
+xstrdup (char *a) {
 	if (( a == NULLCP) || (*a == NULL))
 		return (NULLCP);
 	else
@@ -67,8 +65,7 @@ xstrdup (char *a)
 }
 
 static struct teletex *
-teletex_cpy (struct teletex *a)
-{
+teletex_cpy (struct teletex *a) {
 	struct teletex * result;
 
 	result = (struct teletex *) smalloc (sizeof (struct teletex));
@@ -81,9 +78,8 @@ teletex_cpy (struct teletex *a)
 	return (result);
 }
 
-static 
-teletex_cmp (struct teletex *a, struct teletex *b)
-{
+static
+teletex_cmp (struct teletex *a, struct teletex *b) {
 	int res;
 
 	if (a == (struct teletex *) NULL)
@@ -161,8 +157,7 @@ int format;
 
 
 static struct teletex *
-str2teletex (char *str)
-{
+str2teletex (char *str) {
 	struct teletex * result;
 	char * ptr;
 	char * mark = NULLCP;
@@ -274,7 +269,7 @@ struct teletex * m;
 {
 	PE ret_pe;
 
-	 encode_SA_TeletexTerminalIdentifier (&ret_pe,0,0,NULLCP,m);
+	encode_SA_TeletexTerminalIdentifier (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -296,12 +291,12 @@ PE pe;
 	return (m);
 }
 
-int 
+int
 teletex_syntax (void) {
-	 add_attribute_syntax ("TeletexTerminalIdentifier",
-								 (IFP) teletex_enc,	(IFP) teletex_dec,
-								 (IFP) str2teletex,	teletex_print,
-								 (IFP) teletex_cpy,	teletex_cmp,
-								 teletex_free,		NULLCP,
-								 NULLIFP,		TRUE);
+	add_attribute_syntax ("TeletexTerminalIdentifier",
+						  (IFP) teletex_enc,	(IFP) teletex_dec,
+						  (IFP) str2teletex,	teletex_print,
+						  (IFP) teletex_cpy,	teletex_cmp,
+						  teletex_free,		NULLCP,
+						  NULLIFP,		TRUE);
 }

@@ -41,7 +41,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/jpegphot
 
 char            command[512];
 
-int 
+int
 mygetchar  {
 	char            c;
 
@@ -54,7 +54,7 @@ mygetchar  {
 /*
  * SkipAsn1Len - skip the ASN-1 encoded length (variable # of octets)
  */
-void 
+void
 SkipAsn1Len  {
 	unsigned char   c;
 
@@ -63,62 +63,61 @@ SkipAsn1Len  {
 	if (c > 0x80) {
 		c &= ~0x80;
 		while (c--) {
-			 mygetchar();
+			mygetchar();
 		}
 	}
 }
 
-void 
-DoG3Fax (int firstChar)
-{
+void
+DoG3Fax (int firstChar) {
 	char            buffer[8192];
 	FILE           *newPipe;
 	int             len;
 
-	 strncpy(command, isodefile("g3fax/Xphoto", 1), sizeof(command) - 1);
-	 fprintf(stderr, "command IS '%s' ", command);
+	strncpy(command, isodefile("g3fax/Xphoto", 1), sizeof(command) - 1);
+	fprintf(stderr, "command IS '%s' ", command);
 	newPipe = popen(command, "w");
 	if (newPipe == NULL) {
-		 fprintf(stderr, "command '%s' failed", command);
+		fprintf(stderr, "command '%s' failed", command);
 		perror(" ");
 		exit(BAD_EXIT);
 	}
-	 fwrite((char *)&firstChar, 1, 1, newPipe);
+	fwrite((char *)&firstChar, 1, 1, newPipe);
 
 	while (len = read(0, buffer, sizeof(buffer))) {
 		if (!fwrite(buffer, 1, len, newPipe)) {
-			 fprintf(stderr, "write to pipe failed for '%s'", command);
+			fprintf(stderr, "write to pipe failed for '%s'", command);
 			perror(" ");
 			exit(BAD_EXIT);
 		}
 	}
 
-	 pclose(newPipe);
+	pclose(newPipe);
 	exit(0);
 }
 
-void 
+void
 DoNewJPEG  {
 	SkipAsn1Len();
 
-	 strncpy(command, isodefile("g3fax/jpeg.sh", 1), sizeof(command) - 1);
+	strncpy(command, isodefile("g3fax/jpeg.sh", 1), sizeof(command) - 1);
 
 	if (execl(command, "xphoto-jpeg", 0)) {
-		 fprintf(stderr, "command '%s' failed", command);
+		fprintf(stderr, "command '%s' failed", command);
 		perror(" ");
 		exit(BAD_EXIT);
 	}
 	/*NOTREACHED*/
 }
 
-void 
+void
 DoJPEG  {
 	SkipAsn1Len();
 
-	 strncpy(command, isodefile("g3fax/jpeg.sh", 1), sizeof(command) - 1);
+	strncpy(command, isodefile("g3fax/jpeg.sh", 1), sizeof(command) - 1);
 
 	if (execl(command, "xphoto-jpeg", 0)) {
-		 fprintf(stderr, "command '%s' failed", command);
+		fprintf(stderr, "command '%s' failed", command);
 		perror(" ");
 		exit(BAD_EXIT);
 	}
@@ -126,9 +125,8 @@ DoJPEG  {
 }
 
 /* ARGSUSED */
-void 
-main (int argc, char **argv, char **envp)
-{
+void
+main (int argc, char **argv, char **envp) {
 	unsigned char   firstChar;
 
 	firstChar = mygetchar();
@@ -147,7 +145,7 @@ main (int argc, char **argv, char **envp)
 		DoG3Fax(firstChar);
 		break;
 	default:
-		 fprintf(stderr, "Unknown Photo Format: %d\n", firstChar);
+		fprintf(stderr, "Unknown Photo Format: %d\n", firstChar);
 		exit(BAD_EXIT);
 	}
 	/*NOTREACHED*/

@@ -92,9 +92,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2sunlink.c,v 9.0 199
 
 /*    UPPER HALF */
 
-static int 
-TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td)
-{
+static int
+TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tp4pkt *t;
 #ifdef SUNLINK_7_0   /* 13-Jun-91: added by Dave D. for SunNet OSI 7.0 bug */
@@ -155,9 +154,8 @@ out:
 
 /*  */
 
-static int 
-TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td)
-{
+static int
+TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	int	    cc,
 			header_len,
 			onoff;
@@ -178,7 +176,7 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 		}
 
 	if ((t = newtp4pkt ((TP_EVENT) 0)) == NULL) {
-		 tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
+		tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
 		goto out;
 	}
 
@@ -190,18 +188,18 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 			return CONNECTING_2;
 		}
 
-		 tsaplose (td, DR_CONGEST, "failed", "recvfrom");
+		tsaplose (td, DR_CONGEST, "failed", "recvfrom");
 		goto out;
 	}
 
 	if (async)
-		 ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
+		ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
 
 	switch (t -> tp4_event) {
 	case TP_CONNECT_CONF:
 		tc -> tc_sd = tb -> tb_fd;
 		tc -> tc_tsdusize = tb -> tb_tsdusize = MAXTP4;
-		 tp42genX (&tb -> tb_responding, &t -> tp4_calling);
+		tp42genX (&tb -> tb_responding, &t -> tp4_calling);
 		copyTSAPaddrX (&tb -> tb_responding, &tc -> tc_responding);
 		if ((tb -> tb_flags & TB_EXPD) && !t -> tp4_expedited)
 			tb -> tb_flags &= ~TB_EXPD;
@@ -231,9 +229,9 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 		break;
 
 	default:
-		 tsaplose (td, DR_NETWORK, NULLCP,
-						 "expecting 0x%x, got 0x%x",
-						 TP_CONNECT_CONF, t -> tp4_event);
+		tsaplose (td, DR_NETWORK, NULLCP,
+				  "expecting 0x%x, got 0x%x",
+				  TP_CONNECT_CONF, t -> tp4_event);
 		break;
 	}
 
@@ -248,9 +246,8 @@ out:
 
 /*  */
 
-static int 
-TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td)
-{
+static int
+TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int	    cc,
 			i,
 			result;
@@ -271,8 +268,8 @@ TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnec
 	if (tp -> tp4_expedited)
 		tb -> tb_flags |= TB_EXPD;
 
-	 tp42genX (&tb -> tb_initiating, &tp -> tp4_calling);
-	 tp42genX (&tb -> tb_responding, &tp -> tp4_called);
+	tp42genX (&tb -> tb_initiating, &tp -> tp4_calling);
+	tp42genX (&tb -> tb_responding, &tp -> tp4_called);
 
 	ts -> ts_sd = tb -> tb_fd;
 	copyTSAPaddrX (&tb -> tb_initiating, &ts -> ts_calling);
@@ -305,9 +302,8 @@ out:
 
 /* ARGSUSED */
 
-static int 
-TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td)
-{
+static int
+TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tp4pkt *tp;
 	SFP	    pstat;
@@ -316,9 +312,9 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 		return tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
 
 	if (responding)
-		 gen2tp4X (&tb -> tb_responding, &tp -> tp4_called,
-						 tb -> tb_initiating.ta_present
-						 ? &tb -> tb_initiating.ta_addr : NULLNA);
+		gen2tp4X (&tb -> tb_responding, &tp -> tp4_called,
+				  tb -> tb_initiating.ta_present
+				  ? &tb -> tb_initiating.ta_addr : NULLNA);
 
 	if (tb -> tb_flags & TB_EXPD)
 		tp -> tp4_expedited = 1;
@@ -339,7 +335,7 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 			(*tb -> tb_manfnx) (OPREQIN, tb);
 #endif
 	}
-	 signal (SIGPIPE, pstat);
+	signal (SIGPIPE, pstat);
 
 	freetp4pkt (tp);
 
@@ -356,9 +352,8 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 #endif
 
 
-static int 
-TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td)
-{
+static int
+TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
 	int	    cc,
 			flags,
 			j,
@@ -368,7 +363,7 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 	int	    dlen;
 #endif
 	char *bp,
-			 *ep;
+		 *ep;
 #ifndef	SUNLINK_6_0
 	char *dp;
 	char    data[MAXTP4];
@@ -378,11 +373,11 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 	struct tp4pkt *tp;
 	struct iovec iovs[MSG_MAXIOVLEN];
 	struct iovec *vv,
-			*wv;
+			   *wv;
 	SFP	    pstat;
 
 	if ((tp = newtp4pkt (expedited ? TP_X_DATA_REQ : TP_DATA_REQ)) == NULL) {
-		 tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
+		tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
 		goto out;
 	}
 
@@ -410,9 +405,9 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 
 		if ((qb = (struct qbuf *) malloc (sizeof *qb + (unsigned) cc))
 				== NULL) {
-			 tsaplose (td, DR_CONGEST, NULLCP,
-							 "unable to malloc %d octets for pseudo-writev, failing...",
-							 cc);
+			tsaplose (td, DR_CONGEST, NULLCP,
+					  "unable to malloc %d octets for pseudo-writev, failing...",
+					  cc);
 			freetp4pkt (tp);
 			freetblk (tb);
 
@@ -446,21 +441,21 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 		msg -> msg_accrightslen = 0;
 
 		pstat = signal (SIGPIPE, SIG_IGN);
-		 ioctl (tb -> tb_fd, FIONBIO, (onoff = 1, (char *) &onoff));
+		ioctl (tb -> tb_fd, FIONBIO, (onoff = 1, (char *) &onoff));
 
 		nc = sendmsg (tb -> tb_fd, msg, flags);
 
-		 ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
-		 signal (SIGPIPE, pstat);
+		ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
+		signal (SIGPIPE, pstat);
 
 		if (nc != cc) {
 			if (nc == NOTOK) {
 				if (errno == EPIPE) {
-					 ReadDisc(tb, td);
+					ReadDisc(tb, td);
 					goto losing;
 				}
 				if (errno != EWOULDBLOCK) {
-					 tsaplose (td, DR_CONGEST, "failed", "sendmsg");
+					tsaplose (td, DR_CONGEST, "failed", "sendmsg");
 					goto losing;
 				}
 
@@ -529,18 +524,18 @@ losing:
 		msg -> msg_accrightslen = 0;
 
 		if (sendmsg (tb -> tb_fd, msg, flags) == NOTOK) {
-			 signal (SIGPIPE, pstat);
+			signal (SIGPIPE, pstat);
 
 			if (errno == EPIPE) {
-				 ReadDisc(tb, td);
+				ReadDisc(tb, td);
 				goto out;
 			}
-			 tsaplose (td, DR_CONGEST, "failed", "sendmsg");
+			tsaplose (td, DR_CONGEST, "failed", "sendmsg");
 			goto out;
 		}
 	}
 
-	 signal (SIGPIPE, pstat);
+	signal (SIGPIPE, pstat);
 
 done:
 	;
@@ -564,9 +559,8 @@ out:
 
 /*  */
 
-static int 
-TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
-{
+static int
+TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    nc,
 			onoff,
 			result;
@@ -592,7 +586,7 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 	pstat = signal (SIGPIPE, SIG_IGN);
 	smask = sigioblock ();
 
-	 ioctl (tb -> tb_fd, FIONBIO, (onoff = 1, (char *) &onoff));
+	ioctl (tb -> tb_fd, FIONBIO, (onoff = 1, (char *) &onoff));
 
 	while ((qb = tb -> tb_qwrites.qb_forw) != &tb -> tb_qwrites) {
 		vv -> iov_base = qb -> qb_data, vv -> iov_len = qb -> qb_len;
@@ -630,10 +624,10 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 
 out:
 	;
-	 ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
+	ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
 
-	 sigiomask (smask);
-	 signal (SIGPIPE, pstat);
+	sigiomask (smask);
+	signal (SIGPIPE, pstat);
 
 	freetp4pkt (tp);
 	return result;
@@ -641,9 +635,8 @@ out:
 
 /*  */
 
-static int 
-TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob)
-{
+static int
+TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
 	int	    cc,
 			header_len;
 	struct qbuf *qb;
@@ -656,7 +649,7 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 		if ((qb = (struct qbuf *) malloc ((unsigned) (sizeof *qb + sizeof *tp
 										  + tb -> tb_tsdusize)))
 				== NULL) {
-			 tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
+			tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
 			break;
 		}
 		tp = (struct tp4pkt *) qb -> qb_base;
@@ -666,7 +659,7 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 		if ((cc = recvfrom (tb -> tb_fd, qb -> qb_data, tb -> tb_tsdusize,
 							oob ? MSG_OSI_OOB : 0,
 							(struct sockaddr *) tp, &header_len)) == NOTOK) {
-			 tsaplose (td, DR_CONGEST, "failed", "recvfrom");
+			tsaplose (td, DR_CONGEST, "failed", "recvfrom");
 			break;
 		}
 
@@ -717,9 +710,9 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 			break;
 
 		default:
-			 tsaplose (td, DR_NETWORK, NULLCP,
-							 "unexpected response 0x%x",
-							 (int) (tp -> tp4_event));
+			tsaplose (td, DR_NETWORK, NULLCP,
+					  "unexpected response 0x%x",
+					  (int) (tp -> tp4_event));
 			break;
 		}
 
@@ -735,9 +728,8 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 
 /*  */
 
-static int 
-ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td)
-{
+static int
+ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	TP_MSG_DISCONNECT tps, *tp = &tps;
 	int header_len = sizeof (*tp);
 	int cc;
@@ -745,11 +737,11 @@ ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td)
 	if ((cc = recvfrom(tb->tb_fd, td->td_data, sizeof(td->td_data),
 					   MSG_OSI_OOB,
 					   (struct sockaddr *) tp, &header_len)) == NOTOK) {
-		 tsaplose (td, DR_CONGEST, "failed", "recvfrom");
+		tsaplose (td, DR_CONGEST, "failed", "recvfrom");
 	} else if (tp -> tp_event != TP_DISCONNECT_IND) {
-		 tsaplose (td, DR_NETWORK, NULLCP,
-						 "unexpected non-DR 0x%x",
-						 (int) (tp -> tp_event));
+		tsaplose (td, DR_NETWORK, NULLCP,
+				  "unexpected non-DR 0x%x",
+				  (int) (tp -> tp_event));
 	} else {
 		td -> td_reason = (int) tp -> reason;
 		td -> td_cc = cc;
@@ -759,9 +751,8 @@ ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td)
 
 /*  */
 
-static int 
-TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
-{
+static int
+TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tp4pkt *tp;
 	SFP	    pstat;
@@ -779,7 +770,7 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
 				result = tsaplose (td, DR_CONGEST, "failed", "sendto");
 		else
 			result = OK;
-		 signal (SIGPIPE, pstat);
+		signal (SIGPIPE, pstat);
 
 		freetp4pkt (tp);
 	} else
@@ -794,9 +785,8 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
 
 /* ARGSUSED */
 
-static int 
-TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
-{
+static int
+TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct tp4pkt *tp;
 
 	SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP, ("TPM error %d", reason));
@@ -804,8 +794,8 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
 	if (tp = newtp4pkt (TP_DISCONNECT_REQ)) {
 		tp -> tp4_reason = (TP_DR_REASON) reason;
 
-		 sendto (tb -> tb_fd, NULLCP, 0, 0, (struct sockaddr *) tp,
-					   sizeof (TP_MSG_DISCONNECT));
+		sendto (tb -> tb_fd, NULLCP, 0, 0, (struct sockaddr *) tp,
+				sizeof (TP_MSG_DISCONNECT));
 
 		freetp4pkt (tp);
 	}
@@ -815,9 +805,8 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
 
 /* ARGSUSED */
 
-int 
-tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async)
-{
+int
+tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
 	int	    fd,
 			onoff;
 	struct TSAPaddr tzs;
@@ -833,22 +822,22 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 		tz -> ta_naddr = 1;
 	}
 
-	 gen2tp4 (tz, &ifaddr, remote_na);
+	gen2tp4 (tz, &ifaddr, remote_na);
 
 	if ((fd = socket (AF_OSI, SOCK_EVENT, OSIPROTO_TP_EVENT)) == NOTOK)
 		return tsaplose (td, DR_CONGEST, "socket", "unable to start");
 
 	if (bind (fd, (struct sockaddr *) &ifaddr, sizeof ifaddr) == NOTOK) {
-		 tsaplose (td, DR_ADDRESS, "socket", "unable to bind");
-		 close (fd);
+		tsaplose (td, DR_ADDRESS, "socket", "unable to bind");
+		close (fd);
 		return NOTOK;
 	}
 
 	tb -> tb_fd = fd;
-	 tp4init (tb);
+	tp4init (tb);
 
 	if (async)
-		 ioctl (fd, FIONBIO, (onoff = 1, (char *) &onoff));
+		ioctl (fd, FIONBIO, (onoff = 1, (char *) &onoff));
 
 	return (async ? OK : DONE);
 }
@@ -857,9 +846,8 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 
 /* ARGSUSED */
 
-static int 
-retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td)
-{
+static int
+retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	fd_set  mask;
 
 	FD_ZERO (&mask);
@@ -875,19 +863,17 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td)
 /* ARGSUSED */
 
 char *
-tp4save (int fd, struct TSAPdisconnect *td)
-{
+tp4save (int fd, struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
 
-	 sprintf (buffer, "%c%d", NT_SUN, fd);
+	sprintf (buffer, "%c%d", NT_SUN, fd);
 	return buffer;
 }
 
 /*  */
 
-int 
-tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
-{
+int
+tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int	    fd;
 
 	if (sscanf (buffer, "%d", &fd) != 1 || fd < 0)
@@ -895,16 +881,15 @@ tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 						 "bad initialization vector \"%s\"", buffer);
 
 	tb -> tb_fd = fd;
-	 tp4init (tb);
+	tp4init (tb);
 
 	return OK;
 }
 
 /*  */
 
-int 
-tp4init (struct tsapblk *tb)
-{
+int
+tp4init (struct tsapblk *tb) {
 	tb -> tb_connPfnx = TConnect;
 	tb -> tb_retryPfnx = TRetry;
 
@@ -937,26 +922,25 @@ tp4init (struct tsapblk *tb)
 
 /* ARGSUSED */
 
-int 
-start_tp4_server (struct TSAPaddr *sock, int backlog, int opt1, int opt2, struct TSAPdisconnect *td)
-{
+int
+start_tp4_server (struct TSAPaddr *sock, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
 	int	    sd;
 	OSI_ADDR	ifaddr;
 
-	 gen2tp4 (sock, &ifaddr, NULLNA);
+	gen2tp4 (sock, &ifaddr, NULLNA);
 
 	if ((sd = socket (AF_OSI, SOCK_EVENT, OSIPROTO_TP_EVENT)) == NOTOK)
 		return tsaplose (td, DR_CONGEST, "socket", "unable to start");
 
 	if (bind (sd, (struct sockaddr *) &ifaddr, sizeof ifaddr) == NOTOK) {
-		 tsaplose (td, DR_ADDRESS, "socket", "unable to bind");
-		 close (sd);
+		tsaplose (td, DR_ADDRESS, "socket", "unable to bind");
+		close (sd);
 		return NOTOK;
 	}
 
 	if (listen (sd, backlog) == NOTOK) {
-		 tsaplose (td, DR_ADDRESS, "listen", "");
-		 close (sd);
+		tsaplose (td, DR_ADDRESS, "listen", "");
+		close (sd);
 		return NOTOK;
 	}
 
@@ -969,9 +953,8 @@ start_tp4_server (struct TSAPaddr *sock, int backlog, int opt1, int opt2, struct
 /* ARGSUSED */
 #endif
 
-int 
-join_tp4_client (int fd, struct TSAPaddr *sock, struct TSAPdisconnect *td)
-{
+int
+join_tp4_client (int fd, struct TSAPaddr *sock, struct TSAPdisconnect *td) {
 	int	    len,
 			sd;
 	OSI_ADDR	ifaddr;
@@ -985,7 +968,7 @@ join_tp4_client (int fd, struct TSAPaddr *sock, struct TSAPdisconnect *td)
 	 * only works for local connections.  Non-local connections
 	 * causes a core dump when I try to convert.
 	 */
-	 tp42gen (sock, &ifaddr);
+	tp42gen (sock, &ifaddr);
 #endif
 
 	return sd;
@@ -1169,6 +1152,6 @@ TP_EVENT code;
 	return tp;
 }
 #else
-int 
-_ts2sunlink_stub(){}
+int
+_ts2sunlink_stub() {}
 #endif

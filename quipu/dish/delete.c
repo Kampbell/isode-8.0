@@ -40,9 +40,8 @@ extern DN       dn;
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-int 
-call_delete (int argc, char **argv)
-{
+int
+call_delete (int argc, char **argv) {
 	DN              dnptr,
 	trail = NULLDN;
 	struct ds_removeentry_arg remove_arg;

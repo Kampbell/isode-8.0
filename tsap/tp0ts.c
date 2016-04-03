@@ -42,9 +42,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tp0ts.c,v 9.0 1992/06/
 
 /*  */
 
-static int 
-TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td)
-{
+static int
+TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
 	struct tsapkt *t;
 
 	if (!(tb -> tb_flags & TB_TCP)) {
@@ -65,7 +64,7 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 	t -> t_cr.cr_class = CR_CLASS_TP0;
 	{
 		int    i,
-				 j;
+			   j;
 		int     k;
 
 		i = k = tb -> tb_tsdusize + tb -> tb_tpduslop;
@@ -104,9 +103,8 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 
 /*  */
 
-static int 
-TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td)
-{
+static int
+TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	int	    len;
 	struct tsapkt *t;
 
@@ -127,7 +125,7 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 			}
 
 		if (tpkt2fd (tb, t, tb -> tb_writefnx) == NOTOK) {
-			 tsaplose (td, t -> t_errno, NULLCP, NULLCP);
+			tsaplose (td, t -> t_errno, NULLCP, NULLCP);
 			goto out;
 		}
 
@@ -146,7 +144,7 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 
 	if ((t = fd2tpkt (tb -> tb_fd, tb -> tb_initfnx, tb -> tb_readfnx)) == NULL
 			|| t -> t_errno != OK) {
-		 tsaplose (td, t ? t -> t_errno : DR_CONGEST, NULLCP, NULLCP);
+		tsaplose (td, t ? t -> t_errno : DR_CONGEST, NULLCP, NULLCP);
 		goto out;
 	}
 
@@ -154,14 +152,14 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 	case TPDU_CC:
 		tc -> tc_sd = tb -> tb_fd;
 		if (CR_CLASS (t) != CR_CLASS_TP0) {
-			 tpktlose (tb, td, DR_PROTOCOL, NULLCP,
-							 "proposed class 0, got back 0x%x", CR_CLASS (t));
+			tpktlose (tb, td, DR_PROTOCOL, NULLCP,
+					  "proposed class 0, got back 0x%x", CR_CLASS (t));
 			goto out;
 		}
 		if (tb -> tb_srcref != t -> t_cc.cc_dstref) {
-			 tpktlose (tb, td, DR_MISMATCH, NULLCP,
-							 "sent srcref of 0x%x, got 0x%x",
-							 ntohs (tb -> tb_srcref), ntohs (t -> t_cc.cc_dstref));
+			tpktlose (tb, td, DR_MISMATCH, NULLCP,
+					  "sent srcref of 0x%x, got 0x%x",
+					  ntohs (tb -> tb_srcref), ntohs (t -> t_cc.cc_dstref));
 			goto out;
 		}
 		tb -> tb_dstref = t -> t_cc.cc_srcref;
@@ -238,9 +236,9 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 		goto out;
 
 	default:
-		 tpktlose (tb, td, DR_PROTOCOL, NULLCP,
-						 "transport protocol mangled: expecting 0x%x, got 0x%x",
-						 TPDU_CC, TPDU_CODE (t));
+		tpktlose (tb, td, DR_PROTOCOL, NULLCP,
+				  "transport protocol mangled: expecting 0x%x, got 0x%x",
+				  TPDU_CC, TPDU_CODE (t));
 		goto out;
 	}
 
@@ -254,9 +252,8 @@ out:
 
 /*  */
 
-static int 
-TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td)
-{
+static int
+TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int	    len,
 			result;
 	struct tsapkt *t;
@@ -328,9 +325,8 @@ out:
 
 /* ARGSUSED */
 
-static int 
-TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td)
-{
+static int
+TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tsapkt *t;
 
@@ -346,7 +342,7 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 	t -> t_cc.cc_class = CR_CLASS_TP0;
 	{
 		int    i,
-				 j;
+			   j;
 		int     k;
 
 		i = k = tb -> tb_tsdusize + tb -> tb_tpduslop;
@@ -374,7 +370,7 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 	copyTPKTdata (t, data, cc);
 
 	if ((result = tpkt2fd (tb, t, tb -> tb_writefnx)) == NOTOK)
-		 tsaplose (td, t -> t_errno, NULLCP, NULLCP);
+		tsaplose (td, t -> t_errno, NULLCP, NULLCP);
 	else {
 		tb -> tb_flags |= TB_CONN;
 #ifdef  MGMT
@@ -390,9 +386,8 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 
 /*  */
 
-static int 
-TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td)
-{
+static int
+TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
 	int	    cc,
 			j,
 			len,
@@ -401,10 +396,10 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 	int	    dlen;
 #endif
 	char *bp,
-			 *ep;
+		 *ep;
 	struct tsapkt *t;
 	struct udvec *vv,
-			*wv;
+			   *wv;
 
 #if	defined(X25) || defined(MGMT)
 	dlen = 0;
@@ -437,7 +432,7 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 			t -> t_dt.dt_nr |= DT_EOT;
 
 		if ((result = tpkt2fd (tb, t, tb -> tb_writefnx)) == NOTOK) {
-			 tsaplose (td, t -> t_errno, NULLCP, NULLCP);
+			tsaplose (td, t -> t_errno, NULLCP, NULLCP);
 #ifdef	X25
 			if (tb -> tb_flags & TB_X25)
 				LLOG (x25_log, LLOG_NOTICE,
@@ -467,9 +462,8 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 
 /* ARGSUSED */
 
-static int 
-TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob)
-{
+static int
+TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
 	int     eot;
 	struct tsapkt *t = NULL;
 
@@ -478,8 +472,8 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 
 	for (;;) {
 		if (oob) { /* out of band data should not be present! */
-			 tsaplose (td, DR_NETWORK, NULLCP,
-							 "Out of band data received");
+			tsaplose (td, DR_NETWORK, NULLCP,
+					  "Out of band data received");
 #ifdef  X25
 			if (tb -> tb_flags & TB_X25)
 				LLOG (x25_log, LLOG_NOTICE,
@@ -492,8 +486,8 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 		if ((t = fd2tpkt (tb -> tb_fd, tb -> tb_initfnx, tb -> tb_readfnx))
 				== NULL
 				|| t -> t_errno != OK) {
-			 tsaplose (td, t ? t -> t_errno : DR_CONGEST, NULLCP,
-							 NULLCP);
+			tsaplose (td, t ? t -> t_errno : DR_CONGEST, NULLCP,
+					  NULLCP);
 #ifdef	X25
 			if (tb -> tb_flags & TB_X25)
 				LLOG (x25_log, LLOG_NOTICE,
@@ -573,9 +567,9 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 			break;
 
 		default:
-			 tpktlose (tb, td, DR_PROTOCOL, NULLCP,
-							 "transport protocol mangled: not expecting 0x%x",
-							 TPDU_CODE (t));
+			tpktlose (tb, td, DR_PROTOCOL, NULLCP,
+					  "transport protocol mangled: not expecting 0x%x",
+					  TPDU_CODE (t));
 			break;
 		}
 		break;
@@ -589,9 +583,8 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 
 /*  */
 
-static int 
-TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
-{
+static int
+TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int     result;
 #ifdef	TCP
 	struct tsapkt *t;
@@ -607,7 +600,7 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
 			copyTPKTdata (t, data, cc);
 
 			if ((result = tpkt2fd (tb, t, tb -> tb_writefnx)) == NOTOK)
-				 tsaplose (td, t -> t_errno, NULLCP, NULLCP);
+				tsaplose (td, t -> t_errno, NULLCP, NULLCP);
 
 			freetpkt (t);
 		} else
@@ -627,9 +620,8 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td)
 
 /*  */
 
-static 
-TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
-{
+static
+TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct tsapkt  *t;
 
 	switch (reason) {
@@ -663,7 +655,7 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td)
 		break;
 	}
 	if (t) {
-		 tpkt2fd (tb, t, tb -> tb_writefnx);
+		tpkt2fd (tb, t, tb -> tb_writefnx);
 		freetpkt (t);
 	}
 }
@@ -705,12 +697,11 @@ extern	int	errno;
 
 /*  */
 
-int 
-tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n)
-{
+int
+tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 	int    cc;
 	char   *p,
-			 *q;
+		   *q;
 	struct qbuf *qb;
 	struct udvec  *uv;
 #if	defined(WRITEV) || defined(SUN_X25) || defined(CAMTEC_CCL)
@@ -775,7 +766,7 @@ tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n)
 #ifdef	SUN_X25
 		if (tb -> tb_flags & TB_X25
 				&& compat_log -> ll_events & LLOG_EXCEPTIONS)
-			 log_cause_and_diag (tb -> tb_fd);
+			log_cause_and_diag (tb -> tb_fd);
 #endif
 	} else if (tb -> tb_flags & TB_X25) {
 		DLOG (compat_log, LLOG_DEBUG, ("X.25 write %d bytes", cc));
@@ -841,10 +832,10 @@ single:
 
 		if (tb -> tb_flags & TB_QWRITES) {
 #ifdef	FIONBIO
-			 ioctl (tb -> tb_fd, FIONBIO, (onoff = 1, (char *) &onoff));
+			ioctl (tb -> tb_fd, FIONBIO, (onoff = 1, (char *) &onoff));
 #else
 #ifdef	O_NDELAY
-			 fcntl (tb -> tb_fd, F_SETFL, O_NDELAY);
+			fcntl (tb -> tb_fd, F_SETFL, O_NDELAY);
 #endif
 #endif
 		}
@@ -855,10 +846,10 @@ single:
 #ifdef	NODELAY
 		if (tb -> tb_flags & TB_QWRITES) {
 #ifdef	FIONBIO
-			 ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
+			ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
 #else
 #ifdef	O_NDELAY
-			 fcntl (tb -> tb_fd, F_SETFL, 0x00);
+			fcntl (tb -> tb_fd, F_SETFL, 0x00);
 #endif
 #endif
 		}
@@ -874,7 +865,7 @@ single:
 #if defined(SUN_X25) && defined(X25_WRITE_BUFFER_FULL)
 					/* Need SunNet 7.0 patch 100328-09 + full buffer fix */
 					if (tb -> tb_flags & TB_X25)
-						 ioctl (tb -> tb_fd, X25_WRITE_BUFFER_FULL, 0);
+						ioctl (tb -> tb_fd, X25_WRITE_BUFFER_FULL, 0);
 
 #endif
 					nc = 0;
@@ -973,9 +964,8 @@ out:
 /*  */
 
 #ifdef	NODELAY
-static int 
-TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
-{
+static int
+TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    nc,
 			onoff,
 			result;
@@ -989,10 +979,10 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 	smask = sigioblock ();
 
 #ifdef	FIONBIO
-	 ioctl (tb -> tb_fd, FIONBIO, (onoff = 1, (char *) &onoff));
+	ioctl (tb -> tb_fd, FIONBIO, (onoff = 1, (char *) &onoff));
 #else
 #ifdef	O_NDELAY
-	 fcntl (tb -> tb_fd, F_SETFL, O_NDELAY);
+	fcntl (tb -> tb_fd, F_SETFL, O_NDELAY);
 #endif
 #endif
 
@@ -1009,7 +999,7 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 #if defined(SUN_X25) && defined(X25_WRITE_BUFFER_FULL)
 				/* Need SunNet 7.0 patch 100328-09 + full buffer fix */
 				if (tb -> tb_flags & TB_X25)
-					 ioctl (tb -> tb_fd, X25_WRITE_BUFFER_FULL, 0);
+					ioctl (tb -> tb_fd, X25_WRITE_BUFFER_FULL, 0);
 
 #endif
 				nc = 0;
@@ -1042,15 +1032,15 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td)
 out:
 	;
 #ifdef	FIONBIO
-	 ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
+	ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
 #else
 #ifdef	O_NDELAY
-	 fcntl (tb -> tb_fd, F_SETFL, 0x00);
+	fcntl (tb -> tb_fd, F_SETFL, 0x00);
 #endif
 #endif
 
-	 sigiomask (smask);
-	 signal (SIGPIPE, pstat);
+	sigiomask (smask);
+	signal (SIGPIPE, pstat);
 
 	return result;
 }
@@ -1058,9 +1048,8 @@ out:
 
 /*  */
 
-int 
-tp0init (struct tsapblk *tb)
-{
+int
+tp0init (struct tsapblk *tb) {
 	tb -> tb_connPfnx = TConnect;
 	tb -> tb_retryPfnx = TRetry;
 

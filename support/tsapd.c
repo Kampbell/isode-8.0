@@ -183,9 +183,8 @@ static	arginit ();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int	    failed,
 			vecp;
 	char   *vec[4];
@@ -230,7 +229,7 @@ main (int argc, char **argv, char **envp)
 		int	secs;
 		long	now;
 
-		 time (&now);
+		time (&now);
 		now++;
 
 		if ((secs = (int) (nextime - now)) <= 0) {
@@ -257,16 +256,16 @@ main (int argc, char **argv, char **envp)
 
 #ifdef SYS5
 #ifdef HPUX
-		 signal(SIGCHLD, cldser);
+		signal(SIGCHLD, cldser);
 #else
-		 signal(SIGCLD, cldser);
+		signal(SIGCLD, cldser);
 #endif
 #endif
 
 		switch (TNetFork (vecp, vec, td)) {
 		case OK:
 #ifdef	IAE
-			 signal (SIGHUP, SIG_DFL);
+			signal (SIGHUP, SIG_DFL);
 #endif
 			ll_hdinit (pgm_log, pgmname);
 			break;
@@ -290,9 +289,8 @@ static char buffer1[4096];
 static char buffer2[32768];
 
 
-static int 
-tsapd (int vecp, char **vec)
-{
+static int
+tsapd (int vecp, char **vec) {
 	char    buffer[BUFSIZ];
 #ifndef	IAE
 	struct isoservent *is;
@@ -307,8 +305,8 @@ tsapd (int vecp, char **vec)
 	IFP	    hook;
 
 	/* begin UGLY */
-	 strcpy (buffer1, vec[1]);
-	 strcpy (buffer2, vec[2]);
+	strcpy (buffer1, vec[1]);
+	strcpy (buffer2, vec[2]);
 	/* end UGLY */
 
 	if (TInit (vecp, vec, ts, td) == NOTOK) {
@@ -336,15 +334,15 @@ tsapd (int vecp, char **vec)
 
 	if (is >= iz) {
 #endif
-			 sprintf (buffer, "OSI service tsap/%s not found",
-							sel2str (ts -> ts_called.ta_selector,
-									 ts -> ts_called.ta_selectlen, 1));
+			sprintf (buffer, "OSI service tsap/%s not found",
+					 sel2str (ts -> ts_called.ta_selector,
+							  ts -> ts_called.ta_selectlen, 1));
 			goto out;
 		}
 #ifndef IAE
 	} else if (hook == NULLIFP
 			   || (is = getisoserventbyname ("session", "tsap")) == NULL) {
-		 strcpy (buffer, "default session service not found");
+		strcpy (buffer, "default session service not found");
 		goto out;
 	}
 	*is -> is_tail++ = buffer1;
@@ -367,13 +365,13 @@ tsapd (int vecp, char **vec)
 
 	case OK:
 	default:
-		 setperms (is);
+		setperms (is);
 #ifdef ULTRIX_X25_DEMSA
 		if (Pre_Exec(is -> is_vec,"Pre_exec in tsapd") == OK)
 #endif
-			 execv (*is -> is_vec, is -> is_vec);
-		 sprintf (buffer, "unable to exec %s: %s",
-						*is -> is_vec, sys_errname (errno));
+			execv (*is -> is_vec, is -> is_vec);
+		sprintf (buffer, "unable to exec %s: %s",
+				 *is -> is_vec, sys_errname (errno));
 		SLOG (pgm_log, LLOG_FATAL, NULLCP, ("%s", buffer));
 		break;
 	}
@@ -383,7 +381,7 @@ out:
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s", buffer);
 	if ((int)strlen (buffer) >= TD_SIZE)
 		buffer[0] = NULL;
-	 TDiscRequest (ts -> ts_sd, buffer, strlen (buffer) + 1, td);
+	TDiscRequest (ts -> ts_sd, buffer, strlen (buffer) + 1, td);
 
 	exit (1);
 }
@@ -400,26 +398,25 @@ struct IAEntry *is;
 	struct stat st;
 
 	if (stat (*is -> is_vec, &st) == NOTOK) {
-		 setgid (1);
-		 setuid (1);
+		setgid (1);
+		setuid (1);
 	} else {
-		 setgid (st.st_gid);
-		 setuid (st.st_uid);
+		setgid (st.st_gid);
+		setuid (st.st_uid);
 	}
 }
 
 /*  */
 
-static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event)
-{
+static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						TErrString (td -> td_reason),
-						td -> td_cc, td -> td_cc, td -> td_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 TErrString (td -> td_reason),
+				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		 sprintf (buffer, "[%s]", TErrString (td -> td_reason));
+		sprintf (buffer, "[%s]", TErrString (td -> td_reason));
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
@@ -427,8 +424,7 @@ static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event)
 /*  */
 
 #ifndef	NOGOSIP
-static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td)
-{
+static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
 	int	    sd;
 	struct TSAPstart    tss;
 	struct TSAPstart  *ts = &tss;
@@ -464,8 +460,7 @@ static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td)
 \07ACTIVITY\010NEGOTIATED\011CAPABILITY\012EXCEPTIONS\013TYPEDATA"
 
 
-static int  psapd ( struct isoservent *is, struct SSAPindication *si)
-{
+static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 	struct SSAPstart    sss;
 	struct SSAPstart  *ss = &sss;
 	struct PSAPindication  pis;
@@ -484,8 +479,8 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si)
 		return OK;
 
 	/* begin UGLY */
-	 strcpy (buffer1, *(is -> is_tail - 2));
-	 strcpy (buffer2, *(is -> is_tail - 1));
+	strcpy (buffer1, *(is -> is_tail - 2));
+	strcpy (buffer2, *(is -> is_tail - 1));
 	/* end UGLY */
 	if (SInit (is -> is_tail - is -> is_vec, is -> is_vec, ss, si) == NOTOK)
 		return NOTOK;
@@ -569,7 +564,7 @@ char	**vec;
 
 	rflag = 0;
 
-	 strcpy (myhost, TLocalHostName ());
+	strcpy (myhost, TLocalHostName ());
 
 	bzero ((char *) tas, sizeof tas);
 	tz = tas;
@@ -599,7 +594,7 @@ char	**vec;
 	x25_na -> na_stack = NA_X25;
 	x25_na -> na_community = ts_comm_x25_default;
 	if (x25_local_dte && *x25_local_dte) {
-		 strcpy (x25_na -> na_dte, x25_local_dte);
+		strcpy (x25_na -> na_dte, x25_local_dte);
 		x25_na -> na_dtelen = strlen (x25_na -> na_dte);
 	}
 	if (x25_local_pid && *x25_local_pid)
@@ -616,7 +611,7 @@ char	**vec;
 	x2584_na = tz -> ta_addrs;
 	x2584_na -> na_stack = NA_NSAP;
 	x2584_na -> na_community = ts_comm_nsap_default;
-	 strcpy (x2584_na -> na_address, "00");
+	strcpy (x2584_na -> na_address, "00");
 	x2584_na -> na_addrlen = 2;
 	tz -> ta_naddr = 1;
 
@@ -628,7 +623,7 @@ char	**vec;
 	if (!(ts_stacks & (TS_TP4|TS_X2584)))
 		tp4service = 0;
 
-	 setisoservent (0);
+	setisoservent (0);
 
 	tp4_na_start = tp4_na_end = tz;
 
@@ -653,7 +648,7 @@ char	**vec;
 			tz++;
 			tp4_na_end = tz;
 		}
-	 endisoservent ();
+	endisoservent ();
 #endif
 
 	for (vec++; ap = *vec; vec++) {
@@ -706,7 +701,7 @@ char	**vec;
 			case 'a':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -a x121address", pgmname);
-				 strcpy (x25_na -> na_dte, ap);
+				strcpy (x25_na -> na_dte, ap);
 				x25_na -> na_dtelen = strlen (ap);
 				continue;
 
@@ -732,7 +727,7 @@ char	**vec;
 				for (loop_na = tp4_na_start;
 						loop_na != tp4_na_end; loop_na++) {
 					loop_na -> ta_addrs -> na_dtelen = strlen (ap);
-					 strcpy (loop_na -> ta_addrs -> na_dte, ap);
+					strcpy (loop_na -> ta_addrs -> na_dte, ap);
 					loop_na -> ta_naddr = 1;
 					loop_na -> ta_addrs -> na_stack = NA_X25;
 					loop_na -> ta_addrs -> na_community = ts_comm_x25_default;
@@ -850,10 +845,10 @@ char	**vec;
 
 	dsap_init (&argp, (argptr = args, &argptr));
 
-	 strcpy (myhost, TLocalHostName ());
+	strcpy (myhost, TLocalHostName ());
 	if (local_dit == NULLCP)
 		local_dit = "";
-	 strcpy (base, local_dit);
+	strcpy (base, local_dit);
 
 	if (!(ts_stacks & TS_TCP))
 		tcpservice = 0;
@@ -907,9 +902,9 @@ char	**vec;
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -D DIT", pgmname);
 				if (*ap == '@')
-					 strcpy (base, ap);
+					strcpy (base, ap);
 				else
-					 sprintf (base, "%s@%s", local_dit, ap);
+					sprintf (base, "%s@%s", local_dit, ap);
 				continue;
 
 			case 'm':
@@ -933,7 +928,7 @@ char	**vec;
 			case 'p':
 				if ((ap = *++vec) == NULL || *ap == '-')
 					adios (NULLCP, "usage: %s -p password", pgmname);
-				 strcpy (passwd, ap);
+				strcpy (passwd, ap);
 				bzero ((char *) ap, strlen (ap));
 				continue;
 
@@ -1004,34 +999,34 @@ char	**vec;
 
 static	search_directory ( int	firstime;
 {
-	)nt	    i;
+							)nt	    i;
 	struct ds_search_arg *sa = &search_arg;
-	struct ds_search_result search_result;
-	struct ds_search_result *sr = &search_result;
-	struct DSError error;
-	struct DSError *se = &error;
-	EntryInfo *ptr;
-	struct IAEntry  *ia;
-	struct TSAPaddr *ta,
-			*tb,
-			*ty;
-	struct TSAPaddr tys[NTADDRS];
-	int found_listen;
+		struct ds_search_result search_result;
+			struct ds_search_result *sr = &search_result;
+				struct DSError error;
+					struct DSError *se = &error;
+						EntryInfo *ptr;
+						struct IAEntry  *ia;
+							struct TSAPaddr *ta,
+								*tb,
+								*ty;
+								struct TSAPaddr tys[NTADDRS];
+									int found_listen;
 
-	advise (LLOG_NOTICE, NULLCP,
-			"searching directory for iSODEApplicationEntity objects");
+								advise (LLOG_NOTICE, NULLCP,
+										"searching directory for iSODEApplicationEntity objects");
 
-	while (rebind_to_directory () == NOTOK) {
-		if (!firstime)
-			return;
+								while (rebind_to_directory () == NOTOK) {
+									if (!firstime)
+										return;
 
-		if (debug)
-			advise (LLOG_DEBUG, NULLCP, "sleeping for 5 minutes...");
-		sleep ((unsigned) 5 * 60);
-	}
+									if (debug)
+										advise (LLOG_DEBUG, NULLCP, "sleeping for 5 minutes...");
+									sleep ((unsigned) 5 * 60);
+								}
 
 	for (;;) {
-		if (debug) {
+	if (debug) {
 			pslog (pgm_log, LLOG_DEBUG, "performing subtree search of",
 				   (IFP) dn_print, (caddr_t) sa -> sra_baseobject);
 			pslog (pgm_log, LLOG_DEBUG, "  for", fi_print,
@@ -1052,14 +1047,14 @@ static	search_directory ( int	firstime;
 	}
 
 	if (sr -> srr_correlated != TRUE)
-		correlate_search_results (sr);
+	correlate_search_results (sr);
 
 	if (!firstime)
 		for (ia = iae; ia < iz; ia++) {
-			free (ia -> is_vector);
-			free (ia -> is_vec[0]);
-			free ((char *) ia -> is_vec);
-		}
+	free (ia -> is_vector);
+		free (ia -> is_vec[0]);
+		free ((char *) ia -> is_vec);
+	}
 
 	bzero ((char *) iae, sizeof iae);
 	iz = iae;
@@ -1069,10 +1064,10 @@ static	search_directory ( int	firstime;
 
 	i = 0;
 	for (ptr = sr -> CSR_entries; ptr; ptr = ptr -> ent_next) {
-		Attr_Sequence eptr;
-		AV_Sequence   avs;
+	Attr_Sequence eptr;
+	AV_Sequence   avs;
 
-		if (iz >= iae + NENTRIES) {
+	if (iz >= iae + NENTRIES) {
 			pslog (pgm_log, LLOG_EXCEPTIONS,
 				   "too many services, starting with", (IFP)dn_print,
 				   (caddr_t) ptr -> ent_dn);
@@ -1126,7 +1121,7 @@ static	search_directory ( int	firstime;
 								malloc ((unsigned) (strlen (cp) + 1)))
 							== NULL)
 						adios (NULLCP, "out of memory allocating iaeVector");
-					 strcpy (iz -> is_vector, cp);
+					strcpy (iz -> is_vector, cp);
 
 					if ((vecp = str2vec (iz -> is_vector, evec)) < 1)
 						goto losing_iae;
@@ -1150,7 +1145,7 @@ static	search_directory ( int	firstime;
 								malloc ((unsigned) (strlen (cp) + 1)))
 							== NULL)
 						adios (NULLCP, "out of memory allocating pgmVector");
-					 strcpy (iz -> is_vec[0], cp);
+					strcpy (iz -> is_vec[0], cp);
 				}
 				continue;
 			}
@@ -1220,7 +1215,7 @@ losing_iae:
 				char    buffer[BUFSIZ];
 				int n;
 
-				 strcpy (buffer, taddr2str (tb));
+				strcpy (buffer, taddr2str (tb));
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"two services with the same transport selector: %s and %s",
 						buffer, taddr2str (ta));
@@ -1234,89 +1229,89 @@ losing_iae:
 	}
 
 	if (sr -> CSR_cr) {
-		advise (LLOG_EXCEPTIONS, NULLCP,
-				"partial results only (not all DSAs could be reached)");
+	advise (LLOG_EXCEPTIONS, NULLCP,
+			"partial results only (not all DSAs could be reached)");
 	} else if (sr -> CSR_limitproblem != LSR_NOLIMITPROBLEM) {
-		advise (LLOG_EXCEPTIONS, NULLCP, "%s limit exceeded",
-				sr -> CSR_limitproblem == LSR_TIMELIMITEXCEEDED
-				? "time"
-				: sr -> CSR_limitproblem == LSR_SIZELIMITEXCEEDED
-				? "size" : "administrative");
+	advise (LLOG_EXCEPTIONS, NULLCP, "%s limit exceeded",
+			sr -> CSR_limitproblem == LSR_TIMELIMITEXCEEDED
+			? "time"
+			: sr -> CSR_limitproblem == LSR_SIZELIMITEXCEEDED
+			? "size" : "administrative");
 	}
 
 	if (i == 0)
-		adios (NULLCP, "search failed to find anything");
+	adios (NULLCP, "search failed to find anything");
 	else if (debug)
 		advise (LLOG_DEBUG, NULLCP, "%d match%s found",
 				i, i != 1 ? "es" : "");
 
-	dn_free (sr -> CSR_object);
-	entryinfo_free (sr -> CSR_entries, 0);
-	crefs_free (sr -> CSR_cr);
+		dn_free (sr -> CSR_object);
+		entryinfo_free (sr -> CSR_entries, 0);
+		crefs_free (sr -> CSR_cr);
 
-	 unbind_from_directory ();
+		unbind_from_directory ();
 
-	if (!firstime) {
-		int	failed = 0;
-		struct TSAPdisconnect tds;
+		if (!firstime) {
+			int	failed = 0;
+			struct TSAPdisconnect tds;
 
-		for (ta = tas; ta < tz; ta++) {
-			for (tb = tys; tb < ty; tb++)
-				if (bcmp ((char *) ta, (char *) tb, sizeof *ta) == 0)
-					break;
-			if (tb >= ty) {
-				advise (LLOG_NOTICE, NULLCP, "closing %s", taddr2str (ta));
+			for (ta = tas; ta < tz; ta++) {
+					for (tb = tys; tb < ty; tb++)
+						if (bcmp ((char *) ta, (char *) tb, sizeof *ta) == 0)
+							break;
+					if (tb >= ty) {
+						advise (LLOG_NOTICE, NULLCP, "closing %s", taddr2str (ta));
 
-				if (TNetClose (ta, &tds) == NOTOK)
-					ts_advise (&tds, LLOG_EXCEPTIONS, "TNetClose failed");
+						if (TNetClose (ta, &tds) == NOTOK)
+							ts_advise (&tds, LLOG_EXCEPTIONS, "TNetClose failed");
 
-				listening--;
+						listening--;
+					}
+				}
+
+				for (ta = tys; ta < ty; ta++) {
+					for (tb = tas; tb < tz; tb++)
+						if (bcmp ((char *) ta, (char *) tb, sizeof *ta) == 0)
+							break;
+					if (tb >= tz) {
+						struct NSAPaddr *na;
+
+						if (ta -> ta_naddr) {
+							if (((na = ta -> ta_addrs) -> na_stack < 0
+									|| na -> na_stack
+									>= sizeof services / sizeof services[0]))
+								adios (NULLCP, "unknown network type 0x%x",
+									   na -> na_stack);
+						} else
+							na = NULLNA;
+
+						if (!*services[na ? na -> na_stack : NA_NSAP])
+							continue;
+
+						advise (LLOG_NOTICE, NULLCP, "listening on %s",
+								taddr2str (ta));
+
+						if (TNetListen (ta, &tds) == NOTOK) {
+							ts_advise (&tds, LLOG_EXCEPTIONS, "TNetListen failed");
+							failed++;
+						} else
+							listening++;
+					}
+				}
+
+				if (!listening)
+					adios (NULLCP, failed ? "no successful listens"
+						   : "no network services selected");
+
 			}
-		}
-
-		for (ta = tys; ta < ty; ta++) {
-			for (tb = tas; tb < tz; tb++)
-				if (bcmp ((char *) ta, (char *) tb, sizeof *ta) == 0)
-					break;
-			if (tb >= tz) {
-				struct NSAPaddr *na;
-
-				if (ta -> ta_naddr) {
-					if (((na = ta -> ta_addrs) -> na_stack < 0
-							|| na -> na_stack
-							>= sizeof services / sizeof services[0]))
-						adios (NULLCP, "unknown network type 0x%x",
-							   na -> na_stack);
-				} else
-					na = NULLNA;
-
-				if (!*services[na ? na -> na_stack : NA_NSAP])
-					continue;
-
-				advise (LLOG_NOTICE, NULLCP, "listening on %s",
-						taddr2str (ta));
-
-				if (TNetListen (ta, &tds) == NOTOK) {
-					ts_advise (&tds, LLOG_EXCEPTIONS, "TNetListen failed");
-					failed++;
-				} else
-					listening++;
-			}
-		}
-
-		if (!listening)
-			adios (NULLCP, failed ? "no successful listens"
-				   : "no network services selected");
-
-	}
 	bzero ((char *) tas, sizeof tas);
 	tz = tas;
 
 	for (ta = tys; ta < ty; *tz++ = *ta++)	/* struct copy */
-		continue;
+continue;
 
-	if (debug) {
-		advise (LLOG_DEBUG, NULLCP, "application entitites...");
+if (debug) {
+	advise (LLOG_DEBUG, NULLCP, "application entitites...");
 		for (ia = iae; ia < iz; ia++)
 			advise (LLOG_DEBUG, NULLCP, "  addr=%s vector=%s",
 					taddr2str (&ia -> is_addr), ia -> is_vector);
@@ -1326,7 +1321,7 @@ losing_iae:
 			advise (LLOG_DEBUG, NULLCP, "  addr=%s", taddr2str (ta));
 	}
 
-	 time (&nextime);
+	time (&nextime);
 	nextime += IAETIME;
 }
 
@@ -1334,14 +1329,14 @@ losing_iae:
 
 static	bind_to_directory () {
 	struct ds_bind_arg bind_arg,
-			bind_result;
+			   bind_result;
 	struct ds_bind_arg *ba = &bind_arg,
-										 *br = &bind_result;
+							*br = &bind_result;
 	struct ds_bind_error bind_error;
 	struct ds_bind_error *be = &bind_error;
 	static int very_first_time = 1;
 
-	 unbind_from_directory ();
+	unbind_from_directory ();
 
 	make_bind_args (ba, br, be);
 
@@ -1377,21 +1372,20 @@ static int  rebind_to_directory () {
 		if (debug)
 			advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
 
-		 dap_unbind (referral_dsa);
+		dap_unbind (referral_dsa);
 		referral_dsa = NOTOK;
 		dsap_ad = main_dsa;
 	}
 
 	if (!isbound)
-		 bind_to_directory ();
+		bind_to_directory ();
 
 	return (isbound ? OK : NOTOK);
 }
 
 /*  */
 
-static	int	make_bind_args ( struct ds_bind_arg *ba, *br; struct ds_bind_error *be)
-{
+static	int	make_bind_args ( struct ds_bind_arg *ba, *br; struct ds_bind_error *be) {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
 	bzero ((char *) be, sizeof *be);
@@ -1400,7 +1394,7 @@ static	int	make_bind_args ( struct ds_bind_arg *ba, *br; struct ds_bind_error *b
 	if (ba -> dba_dn = userdn)
 		ba -> dba_auth_type = DBA_AUTH_SIMPLE;
 	if (ba -> dba_passwd_len = strlen (passwd))
-		 strcpy (ba -> dba_passwd, passwd);
+		strcpy (ba -> dba_passwd, passwd);
 }
 
 /*  */
@@ -1413,12 +1407,12 @@ static int  unbind_from_directory () {
 			if (debug)
 				advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
 
-			 dap_unbind (referral_dsa);
+			dap_unbind (referral_dsa);
 			referral_dsa = NOTOK;
 			dsap_ad = main_dsa;
 		}
 
-		 ds_unbind ();
+		ds_unbind ();
 		isbound = 0;
 	}
 
@@ -1433,24 +1427,24 @@ static int  do_error ( struct DSError *de;
 {
 	if (de -> dse_type == DSE_REFERRAL
 			&& de -> ERR_REFERRAL.DSE_ref_candidates) {
-		)egister struct access_point *ap;
-		struct ds_bind_arg bind_arg,
+							 )egister struct access_point *ap;
+			struct ds_bind_arg bind_arg,
 				bind_result;
-		struct ds_bind_arg *ba = &bind_arg,
-											 *br = &bind_result;
-		struct ds_bind_error bind_error;
-		struct ds_bind_error *be = &bind_error;
+				struct ds_bind_arg *ba = &bind_arg,
+										*br = &bind_result;
+					struct ds_bind_error bind_error;
+						struct ds_bind_error *be = &bind_error;
 
-		ap = de -> ERR_REFERRAL.DSE_ref_candidates -> cr_accesspoints;
+							ap = de -> ERR_REFERRAL.DSE_ref_candidates -> cr_accesspoints;
 
-		if (referral_dsa != NOTOK) {
-			if (debug)
-				advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
+							if (referral_dsa != NOTOK) {
+							if (debug)
+									advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
 
-			 dap_unbind (referral_dsa);
-			referral_dsa = NOTOK;
-			dsap_ad = main_dsa;
-		}
+								dap_unbind (referral_dsa);
+								referral_dsa = NOTOK;
+								dsap_ad = main_dsa;
+							}
 
 		make_bind_args (ba, br, be);
 
@@ -1470,13 +1464,13 @@ static int  do_error ( struct DSError *de;
 		dsap_ad = referral_dsa;
 
 		if (debug)
-			advise (LLOG_DEBUG, NULLCP, "referral in progress");
+		advise (LLOG_DEBUG, NULLCP, "referral in progress");
 
 		ds_error_free (de);
 		return OK;
 	}
 
-	pslog (pgm_log, LLOG_EXCEPTIONS, "DAP error:", de_print, (caddr_t) de);
+pslog (pgm_log, LLOG_EXCEPTIONS, "DAP error:", de_print, (caddr_t) de);
 
 	if (dsa_dead) {
 		dsa_dead = 0;
@@ -1485,11 +1479,11 @@ static int  do_error ( struct DSError *de;
 			if (debug)
 				advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
 
-			 dap_unbind (referral_dsa);
+			dap_unbind (referral_dsa);
 			referral_dsa = NOTOK;
 			dsap_ad = main_dsa;
 		} else
-			 unbind_from_directory ();
+			unbind_from_directory ();
 	}
 
 	return NOTOK;
@@ -1519,7 +1513,7 @@ static SFD  hupser (sig)
 int	sig;
 {
 #ifndef	BSD42
-	 signal (sig, hupser);
+	signal (sig, hupser);
 #endif
 
 	search_directory (0);
@@ -1541,7 +1535,7 @@ int   sig;
 	pid = wait(&status);
 #endif /* HPUX */
 
-	 signal(sig, cldser);
+	signal(sig, cldser);
 }
 #endif /* SYS5 */
 
@@ -1577,14 +1571,14 @@ static  envinit () {
 			}
 		}
 
-		 chdir ("/");
+		chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			 dup2 (sd, 0),  close (sd);
-		 dup2 (0, 1);
-		 dup2 (0, 2);
+			dup2 (sd, 0),  close (sd);
+		dup2 (0, 1);
+		dup2 (0, 2);
 
 #ifdef	SETSID
 		if (setsid () == NOTOK)
@@ -1592,14 +1586,14 @@ static  envinit () {
 #endif
 #ifdef	TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			 ioctl (sd, TIOCNOTTY, NULLCP);
-			 close (sd);
+			ioctl (sd, TIOCNOTTY, NULLCP);
+			close (sd);
 		}
 #else
 #ifdef	SYS5
-		 setpgrp ();
-		 signal (SIGINT, SIG_IGN);
-		 signal (SIGQUIT, SIG_IGN);
+		setpgrp ();
+		signal (SIGINT, SIG_IGN);
+		signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
@@ -1608,24 +1602,23 @@ static  envinit () {
 #ifndef	sun		/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
-			 close (sd);
+			close (sd);
 #endif
 
-	 signal (SIGPIPE, SIG_IGN);
+	signal (SIGPIPE, SIG_IGN);
 
 	ll_hdinit (pgm_log, pgmname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
 
 #ifdef	IAE
-	 signal (SIGHUP, hupser);
+	signal (SIGHUP, hupser);
 #endif
 }
 
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (char*what, ...)
-{
+void	adios (char*what, ...) {
 	va_list ap;
 
 	va_start (ap, what);
@@ -1649,8 +1642,7 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (int code, ...)
-{
+void	advise (int code, ...) {
 	char* what;
 	va_list ap;
 

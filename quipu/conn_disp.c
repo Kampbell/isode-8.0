@@ -43,9 +43,8 @@ extern char quipu_shutdown;
 * Check what type of activity it is and dispatch to an appropriate
 * routine to handle the activity.
 */
-int 
-conn_dispatch (struct connection *cn)
-{
+int
+conn_dispatch (struct connection *cn) {
 	int				  result;
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &di_s;
@@ -114,9 +113,8 @@ conn_dispatch (struct connection *cn)
 }
 
 #ifdef QUIPU_CONSOLE
-static void 
-running_analyse (struct connection *cn, struct DSAPindication *di)
-{
+static void
+running_analyse (struct connection *cn, struct DSAPindication *di) {
 	extern AV_Sequence open_call_avs ;
 	extern time_t timenow ;
 	AV_Sequence tmp_avs ;
@@ -225,7 +223,7 @@ running_analyse (struct connection *cn, struct DSAPindication *di)
 			break;
 		}
 		}
-		 time(&timenow) ;
+		time(&timenow) ;
 		tm2ut(gmtime(&timenow), &ut) ;
 		tmp_op_list->operation_list->start_time = strdup(utct2str(&ut)) ;
 		tmp_op_list->operation_list->finish_time = (char *) 0 ;
@@ -274,7 +272,7 @@ running_analyse (struct connection *cn, struct DSAPindication *di)
 		tmp_op_list->operation_list->operation_id = 0 ;
 		tmp_op_list->operation_list->invoke_id = cn->cn_op_id ;
 		tmp_op_list->operation_list->base_object = dn_cpy(cn->cn_dn) ;
-		 time(&timenow) ;
+		time(&timenow) ;
 		tm2ut(gmtime(&timenow), &ut) ;
 		tmp_op_list->operation_list->start_time = strdup(utct2str(&ut)) ;
 		tmp_op_list->operation_list->finish_time = (char *) 0 ;
@@ -299,7 +297,7 @@ running_analyse (struct connection *cn, struct DSAPindication *di)
 		}
 
 		/* Now fill out the finish time */
-		 time(&timenow) ;
+		time(&timenow) ;
 		tm2ut(gmtime(&timenow), &ut) ;
 		((struct quipu_call *)tmp_avs->avseq_av.av_struct)->finish_time = strdup(utct2str(&ut)) ;
 #ifdef SPT_DEBUG

@@ -34,9 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/conn_finish.c,v 9.0 1
 extern  LLog    * log_dsap;
 
 /* ARGSUSED */
-int 
-conn_finish (struct connection *conn, struct DSAPfinish *df)
-{
+int
+conn_finish (struct connection *conn, struct DSAPfinish *df) {
 	int			  result;
 	struct oper_act	* on;
 	extern time_t	  conn_timeout, timenow;
@@ -87,9 +86,8 @@ conn_finish (struct connection *conn, struct DSAPfinish *df)
 
 }
 
-int 
-conn_rel_abort (struct connection *conn)
-{
+int
+conn_rel_abort (struct connection *conn) {
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &di_s;
 

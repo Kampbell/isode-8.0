@@ -21,9 +21,8 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntpsubs.c,v 9.0 
 /*
  *  The nice thing here is that the quantity is NEVER signed.
  */
-double 
-ul_fixed_to_double (struct l_fixedpt *t)
-{
+double
+ul_fixed_to_double (struct l_fixedpt *t) {
 	double a, b;
 #ifdef	GENERIC_UNS_BUG
 	int i;
@@ -58,9 +57,8 @@ ul_fixed_to_double (struct l_fixedpt *t)
  */
 
 #if	0
-double 
-l_fixed_to_double (struct l_fixedpt *t)
-{
+double
+l_fixed_to_double (struct l_fixedpt *t) {
 	double a,b;
 
 	if (ntohl(t->int_part) & 0x80000000) {
@@ -94,9 +92,8 @@ l_fixed_to_double (struct l_fixedpt *t)
 /*
  *  Here we have to worry about the high order bit being signed
  */
-double 
-s_fixed_to_double (struct s_fixedpt *t)
-{
+double
+s_fixed_to_double (struct s_fixedpt *t) {
 	double a;
 
 	if (ntohs(t->int_part) & 0x8000) {
@@ -112,9 +109,8 @@ s_fixed_to_double (struct s_fixedpt *t)
 	return (a);
 }
 
-void 
-double_to_l_fixed (struct l_fixedpt *t, double value)
-{
+void
+double_to_l_fixed (struct l_fixedpt *t, double value) {
 	double temp;
 
 	if (value >= (double) 0.0) {
@@ -135,9 +131,8 @@ double_to_l_fixed (struct l_fixedpt *t, double value)
 	}
 }
 
-void 
-double_to_s_fixed (struct s_fixedpt *t, double value)
-{
+void
+double_to_s_fixed (struct s_fixedpt *t, double value) {
 	double temp;
 
 	if (value >= (double) 0.0) {
@@ -163,9 +158,8 @@ double_to_s_fixed (struct s_fixedpt *t, double value)
 	problem.  Reported it to Bob O'Brien of SMI
 */
 #ifdef	SUN_FLT_BUG
-void 
-tstamp (struct l_fixedpt *stampp, struct timeval *tvp)
-{
+void
+tstamp (struct l_fixedpt *stampp, struct timeval *tvp) {
 	int tt;
 	double dd;
 
@@ -175,9 +169,8 @@ tstamp (struct l_fixedpt *stampp, struct timeval *tvp)
 	stampp->fraction = ntohl((tt << 1));
 }
 #else
-void 
-tstamp (struct l_fixedpt *stampp, struct timeval *tvp)
-{
+void
+tstamp (struct l_fixedpt *stampp, struct timeval *tvp) {
 	stampp->int_part = ntohl((u_long) (JAN_1970 + tvp->tv_sec));
 	stampp->fraction = ntohl((u_long) ((float) tvp->tv_usec * 4294.967295));
 }
@@ -189,14 +182,13 @@ tstamp (struct l_fixedpt *stampp, struct timeval *tvp)
  */
 
 char *
-ntoa (struct sockaddr_in *nsin)
-{
+ntoa (struct sockaddr_in *nsin) {
 	static int i = 0;
 	static char bufs[8][64];
 
-	 sprintf (bufs[i], ntohs (nsin->sin_port) ?
-					"INET %s/%d" : "INET %s", inet_ntoa (nsin->sin_addr),
-					ntohs(nsin->sin_port));
+	sprintf (bufs[i], ntohs (nsin->sin_port) ?
+			 "INET %s/%d" : "INET %s", inet_ntoa (nsin->sin_addr),
+			 ntohs(nsin->sin_port));
 	return bufs[i];
 }
 

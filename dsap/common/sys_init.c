@@ -35,9 +35,8 @@ extern char *dsa_address;
 extern char *myname;
 extern LLog * log_dsap;
 
-int 
-dsap_init (int *acptr, char ***avptr)
-{
+int
+dsap_init (int *acptr, char ***avptr) {
 	char * name;
 	char ** ptr;
 	int cnt;
@@ -60,7 +59,7 @@ dsap_init (int *acptr, char ***avptr)
 		cnt = *acptr;
 		ptr = *avptr;
 	}
-	 tai_args (acptr,avptr);
+	tai_args (acptr,avptr);
 
 	if (dsap_tai_init() != OK)
 		fatal (-1,"Tailor failure");
@@ -72,9 +71,9 @@ dsap_init (int *acptr, char ***avptr)
 			fatal (-1, "dsa_address not set");
 
 	if (acptr != (int *)NULL)
-		 tai_args (&cnt,&ptr);  /* second call IS needed */
+		tai_args (&cnt,&ptr);  /* second call IS needed */
 	else
-		 tai_args (acptr,avptr);
+		tai_args (acptr,avptr);
 
 	LLOG (log_dsap,LLOG_NOTICE,("Loading oid table (%s)",oidtable));
 	if (load_oid_table (oidtable) == NOTOK)

@@ -706,17 +706,17 @@ envlist read_envlist() {
 	int i = 0;
 
 	if (home = getenv ("UFNRC"))
-		 strcpy (ufnrc, home);
+		strcpy (ufnrc, home);
 	else if (home = getenv ("HOME"))
-		 sprintf (ufnrc, "%s/.ufnrc", home);
+		sprintf (ufnrc, "%s/.ufnrc", home);
 	else
-		 strcpy (ufnrc, "./.ufnrc");
+		strcpy (ufnrc, "./.ufnrc");
 
 	opened = ufnrc;
 	if ((file = fopen (ufnrc,"r")) == 0) {
 		def = isodefile("ufnrc",0);
 		if ((file = fopen(def,"r")) == 0) {
-			 sprintf (PY_pepy,"Can't open '%s' or '%s'",ufnrc,def);
+			sprintf (PY_pepy,"Can't open '%s' or '%s'",ufnrc,def);
 			return NULLEL;
 		}
 		opened = def;
@@ -731,16 +731,16 @@ envlist read_envlist() {
 		if (isspace (*p)) {
 			/* part of current environment */
 			if (!dtail) {
-				 sprintf (PY_pepy, "Unexpected blank at start of line %d in %s",i,opened);
-				 fclose (file);
+				sprintf (PY_pepy, "Unexpected blank at start of line %d in %s",i,opened);
+				fclose (file);
 				return NULLEL;
 			}
 			p = TidyString(p);
 			if (*p == '-')
 				dn = NULLDN;
 			else if ((dn = str2dn (p)) == NULLDN) {
-				 sprintf (PY_pepy, "Bad DN in environment file (%s) line %d",opened,i);
-				 fclose (file);
+				sprintf (PY_pepy, "Bad DN in environment file (%s) line %d",opened,i);
+				fclose (file);
 				return NULLEL;
 			}
 			dtail->dns_next = dn_seq_alloc();
@@ -753,8 +753,8 @@ envlist read_envlist() {
 		p = TidyString (p);
 
 		if ((ptr = index (p,':')) == NULLCP) {
-			 sprintf (PY_pepy, "':' missing in environment file (%s) line %d",opened,i);
-			 fclose (file);
+			sprintf (PY_pepy, "':' missing in environment file (%s) line %d",opened,i);
+			fclose (file);
 			return NULLEL;
 		}
 
@@ -764,8 +764,8 @@ envlist read_envlist() {
 		if (*ptr == '-')
 			dn = NULLDN;
 		else if ((dn = str2dn (ptr)) == NULLDN) {
-			 sprintf (PY_pepy, "Bad DN in environment file (%s) line %d",opened,i);
-			 fclose (file);
+			sprintf (PY_pepy, "Bad DN in environment file (%s) line %d",opened,i);
+			fclose (file);
 			return NULLEL;
 		}
 
@@ -799,7 +799,7 @@ envlist read_envlist() {
 
 	}
 
-	 fclose (file);
+	fclose (file);
 
 	return top;
 }
@@ -824,7 +824,7 @@ envlist el;
 	PY_pepy[0] = NULL;
 	if (el == NULLEL) {
 		if ((el = read_envlist ()) == NULLEL) {
-			 sprintf (PY_pepy,"Can't read environment");
+			sprintf (PY_pepy,"Can't read environment");
 			return 0;
 		}
 	}
@@ -909,11 +909,11 @@ Filter	fi;
 
 	if (nps == NULLPS) {
 		if ((nps = ps_alloc (std_open)) == NULL) {
-			 fprintf (stderr, "ps_alloc(std_open): you lose\n");
+			fprintf (stderr, "ps_alloc(std_open): you lose\n");
 			return;
 		}
 		if (std_setup (nps, stdout) == NOTOK) {
-			 fprintf (stderr, "std_setup(stdout): you lose\n");
+			fprintf (stderr, "std_setup(stdout): you lose\n");
 			ps_free (nps);
 			nps = NULL;
 			return;
@@ -927,6 +927,6 @@ Filter	fi;
 	print_filter (nps, fi, 0);
 
 	ps_print (nps, "\n\n");
-	 ps_flush (nps);
+	ps_flush (nps);
 }
 #endif

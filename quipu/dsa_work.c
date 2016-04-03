@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/dsa_work.c,v 9.0 1992
 extern LLog * log_dsap;
 extern char quipu_shutdown;
 
-int 
-dsa_work (struct task_act *tk)
-{
+int
+dsa_work (struct task_act *tk) {
 	struct DSArgument   *arg;
 	struct DSError      *err;
 	struct DSResult     *res;
@@ -65,7 +64,7 @@ dsa_work (struct task_act *tk)
 			force_close (tk->tk_conn->cn_ad,
 						 (struct DSAPindication *)NULL);
 		else
-			 conn_release(tk->tk_conn);
+			conn_release(tk->tk_conn);
 
 		task_extract(tk);
 
@@ -305,9 +304,8 @@ dsa_work (struct task_act *tk)
 
 }
 
-int 
-search_continue (struct task_act *tk)
-{
+int
+search_continue (struct task_act *tk) {
 	struct ds_search_result * tk_sr = &(tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr);
 
 	/* Set up next part of search result to collate remote sub-searches */
@@ -329,9 +327,8 @@ search_continue (struct task_act *tk)
 
 
 #ifndef NO_STATS
-int 
-log_x500_event (struct DSArgument *arg, int context, DN orig, DN dsptarget, int ad, struct task_act *tk)
-{
+int
+log_x500_event (struct DSArgument *arg, int context, DN orig, DN dsptarget, int ad, struct task_act *tk) {
 	extern LLog * log_stat;
 	char * op;
 	DN daptarget = NULLDN;
@@ -388,9 +385,9 @@ log_x500_event (struct DSArgument *arg, int context, DN orig, DN dsptarget, int 
 	}
 
 	if (log_stat -> ll_events & LLOG_DEBUG)
-		 sprintf (buf,"%s (%d) [%d]",op,ad,tk->tk_dx.dx_id);
+		sprintf (buf,"%s (%d) [%d]",op,ad,tk->tk_dx.dx_id);
 	else
-		 sprintf (buf,"%s (%d)",op,ad);
+		sprintf (buf,"%s (%d)",op,ad);
 
 	if (context == DS_CTX_X500_DAP)
 		pslog (log_stat,LLOG_NOTICE,buf,(IFP)dn_print,(caddr_t)daptarget);

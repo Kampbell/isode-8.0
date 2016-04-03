@@ -46,9 +46,8 @@ extern unsigned strong_policy;
 extern DN mydsadn;
 extern struct di_block * di_alloc();
 
-int 
-do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, int dsp, int quipu_ctx, int authtype)
-{
+int
+do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, int dsp, int quipu_ctx, int authtype) {
 	Entry  entryptr;
 	int retval;
 #ifdef NOTUSED
@@ -233,9 +232,8 @@ out:
 
 }
 
-static 
-cant_use_cache (Entry ptr, DN dn, EntryInfoSelection eis, DN target)
-{
+static
+cant_use_cache (Entry ptr, DN dn, EntryInfoSelection eis, DN target) {
 	Attr_Sequence as;
 	char dfltacl = FALSE;
 
@@ -286,9 +284,8 @@ cant_use_cache (Entry ptr, DN dn, EntryInfoSelection eis, DN target)
 	return FALSE;
 }
 
-static 
-attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, int dfltacl)
-{
+static
+attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, int dfltacl) {
 	struct acl_attr * aa;
 	struct oid_seq * oidptr;
 
@@ -311,7 +308,7 @@ attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, int dfltac
 }
 
 
-static Attr_Sequence 
+static Attr_Sequence
 dsa_control_info (void) {
 	extern int slave_edbs;
 	extern int master_edbs;
@@ -321,8 +318,8 @@ dsa_control_info (void) {
 	char buffer [LINESIZE];
 	Attr_Sequence as;
 
-	 sprintf (buffer,"%d Master entries (in %d EDBs), %d Slave entries (in %d EDBs), %d Cached entries",
-					local_master_size,master_edbs,local_slave_size,slave_edbs,local_cache_size);
+	sprintf (buffer,"%d Master entries (in %d EDBs), %d Slave entries (in %d EDBs), %d Cached entries",
+			 local_master_size,master_edbs,local_slave_size,slave_edbs,local_cache_size);
 
 	as=as_comp_alloc();
 	as->attr_acl = NULLACL_INFO;
@@ -336,9 +333,8 @@ dsa_control_info (void) {
 	return (as);
 }
 
-int 
-dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result)
-{
+int
+dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result) {
 
 	if ((arg->rda_eis.eis_allattributes) ||
 			(arg->rda_eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY))
@@ -369,9 +365,8 @@ dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result)
 
 
 
-int 
-need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg)
-{
+int
+need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg) {
 	Attr_Sequence as;
 
 	if (quipu_ctx_supported (eptr) <= 2)

@@ -62,9 +62,8 @@ int	depth;
 	rsavl_print( root->avl_left, fn, fps, depth+1 );
 }
 
-int 
-savl_print (Avlnode *root)
-{
+int
+savl_print (Avlnode *root) {
 #ifndef __STDC__
 	int	fprintf ();
 #else
@@ -75,21 +74,20 @@ savl_print (Avlnode *root)
 #endif
 #endif
 
-	 printf( "**** soundex avl_print ****\n" );
+	printf( "**** soundex avl_print ****\n" );
 
 	if ( root == 0 ) {
-		 printf( "NULL\n" );
+		printf( "NULL\n" );
 		return;
 	}
 
 	( void ) rsavl_print( root, fprintf, (FILE *)stdout, 0 );
 
-	 printf( "**** soundex avl_print end ****\n" );
+	printf( "**** soundex avl_print end ****\n" );
 }
 
-static 
-ravl_print (Avlnode *root, IFP fn, PS fps, int format, int depth)
-{
+static
+ravl_print (Avlnode *root, IFP fn, PS fps, int format, int depth) {
 	int	i;
 
 	if ( root == 0 )
@@ -105,38 +103,36 @@ ravl_print (Avlnode *root, IFP fn, PS fps, int format, int depth)
 	ravl_print( root->avl_left, fn, fps, format, depth+1 );
 }
 
-int 
-avl_print (Avlnode *root)
-{
+int
+avl_print (Avlnode *root) {
 	PS	fps;
 	int	rdn_print();
 
-	 printf( "**** avl_print ****\n" );
+	printf( "**** avl_print ****\n" );
 
 	if ( root == 0 ) {
-		 printf( "NULL\n" );
+		printf( "NULL\n" );
 		return;
 	}
 
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
-		 printf( "avl_print: ps_alloc failed\n" );
+		printf( "avl_print: ps_alloc failed\n" );
 		return;
 	}
 	if ( std_setup( fps, stdout ) == NOTOK ) {
-		 printf( "avl_print: std_setup failed\n" );
+		printf( "avl_print: std_setup failed\n" );
 		return;
 	}
 
 	( void ) ravl_print( root, rdn_print, fps, EDBOUT, 0 );
 
-	 printf( "**** avl_print end ****\n" );
+	printf( "**** avl_print end ****\n" );
 
 	ps_free( fps );
 }
 
-static 
-rprint_directory (Entry node, int depth)
-{
+static
+rprint_directory (Entry node, int depth) {
 	int	i;
 
 	for ( i = 0; i < depth; i++ )
@@ -146,26 +142,25 @@ rprint_directory (Entry node, int depth)
 	ps_print( ps, "\n" );
 
 	if ( node->e_children != NULLAVL )
-		 avl_apply( node->e_children, rprint_directory, (caddr_t) (depth + 1),
-						  NOTOK, AVL_INORDER );
+		avl_apply( node->e_children, rprint_directory, (caddr_t) (depth + 1),
+				   NOTOK, AVL_INORDER );
 }
 
-int 
-print_directory (Entry node)
-{
+int
+print_directory (Entry node) {
 	if ( (ps = ps_alloc( std_open )) == NULLPS ) {
-		 printf( "avl_print: ps_alloc failed\n" );
+		printf( "avl_print: ps_alloc failed\n" );
 		return;
 	}
 	if ( std_setup( ps, stdout ) == NOTOK ) {
-		 printf( "avl_print: std_setup failed\n" );
+		printf( "avl_print: std_setup failed\n" );
 		return;
 	}
 
 	rprint_directory( node, 0 );
 
 	ps_free( ps );
-	 fflush( stdout );
+	fflush( stdout );
 }
 
 /*
@@ -173,17 +168,17 @@ print_directory (Entry node)
  * for debugging...
  */
 
-int 
+int
 print_optimized_attrs (void) {
 	int	i;
 	PS	fps;
 
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
-		 printf( "turbo_index_print: ps_alloc failed\n" );
+		printf( "turbo_index_print: ps_alloc failed\n" );
 		return;
 	}
 	if ( std_setup( fps, stdout ) == NOTOK ) {
-		 printf( "turbo_index_print: std_setup failed\n" );
+		printf( "turbo_index_print: std_setup failed\n" );
 		return;
 	}
 
@@ -198,9 +193,8 @@ print_optimized_attrs (void) {
 	ps_free( fps );
 }
 
-static 
-print_index_node (Index_node *node, PS fps)
-{
+static
+print_index_node (Index_node *node, PS fps) {
 	int	i;
 
 	ps_print( fps, "\t" );
@@ -217,9 +211,8 @@ print_index_node (Index_node *node, PS fps)
 	return( OK );
 }
 
-static 
-print_soundex_node (Index_node *node, PS fps)
-{
+static
+print_soundex_node (Index_node *node, PS fps) {
 	int	i;
 
 	ps_print( fps, "\t" );
@@ -247,16 +240,16 @@ Index	*pindex;
 	int	i;
 
 	if ( pindex == (Index *) 0 ) {
-		 printf("NULLINDEX\n");
+		printf("NULLINDEX\n");
 		return;
 	}
 
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
-		 printf( "turbo_index_print: ps_alloc failed\n" );
+		printf( "turbo_index_print: ps_alloc failed\n" );
 		return;
 	}
 	if ( std_setup( fps, stdout ) == NOTOK ) {
-		 printf( "turbo_index_print: std_setup failed\n" );
+		printf( "turbo_index_print: std_setup failed\n" );
 		return;
 	}
 
@@ -265,14 +258,14 @@ Index	*pindex;
 		ps_printf( fps, "  Index for attribute (%s)\n",
 				   pindex[i].i_attr->oa_ot.ot_name );
 
-		 avl_apply( pindex[i].i_root, print_index_node, (caddr_t) fps,
-						  NOTOK, AVL_INORDER );
+		avl_apply( pindex[i].i_root, print_index_node, (caddr_t) fps,
+				   NOTOK, AVL_INORDER );
 
 		ps_printf( fps, "  Soundex index for attribute (%s)\n",
 				   pindex[i].i_attr->oa_ot.ot_name );
 
-		 avl_apply( pindex[i].i_sroot, print_soundex_node, (caddr_t) fps,
-						  NOTOK, AVL_INORDER );
+		avl_apply( pindex[i].i_sroot, print_soundex_node, (caddr_t) fps,
+				   NOTOK, AVL_INORDER );
 
 		ps_print( fps, "  Endof index\n" );
 	}
@@ -281,13 +274,12 @@ Index	*pindex;
 	ps_free( fps );
 }
 
-int 
-print_eis_list (EntryInfo *e)
-{
+int
+print_eis_list (EntryInfo *e) {
 	DN	dnend;
 
 	if ( e == NULLENTRYINFO ) {
-		 printf("\tNULL\n");
+		printf("\tNULL\n");
 		return;
 	}
 
@@ -296,31 +288,30 @@ print_eis_list (EntryInfo *e)
 				dnend = dnend->dn_parent )
 			;	/* NULL */
 
-		 printf("\t(%s)\n", dnend->dn_rdn->rdn_av.av_struct);
+		printf("\t(%s)\n", dnend->dn_rdn->rdn_av.av_struct);
 
 		e = e->ent_next;
 	}
-	 printf("(end)\n");
+	printf("(end)\n");
 }
 
-int 
-print_dn (DN dn)
-{
+int
+print_dn (DN dn) {
 	PS	fps;
 
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
-		 printf( "turbo_index_print: ps_alloc failed\n" );
+		printf( "turbo_index_print: ps_alloc failed\n" );
 		return;
 	}
 	if ( std_setup( fps, stdout ) == NOTOK ) {
-		 printf( "turbo_index_print: std_setup failed\n" );
+		printf( "turbo_index_print: std_setup failed\n" );
 		return;
 	}
 
 	ps_print( fps, "\tDN= " );
 	dn_print( fps, dn, EDBOUT );
 	ps_print( fps, "\n" );
-	 ps_flush( fps );
+	ps_flush( fps );
 
 	ps_free( fps );
 }

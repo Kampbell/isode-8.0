@@ -47,8 +47,7 @@ extern datum	turbo_header_key;
 #endif
 
 Avlnode *
-getentry_block (Entry p_parent, char *fname)
-{
+getentry_block (Entry p_parent, char *fname) {
 	extern char * parse_file;
 	extern int parse_status;
 	extern int parse_line;
@@ -56,7 +55,7 @@ getentry_block (Entry p_parent, char *fname)
 	char *version;
 	Avlnode	*tree;
 	Avlnode	*get_entries_aux();
-	
+
 	time_t cache_age;
 
 #ifdef TURBO_DISK
@@ -101,11 +100,11 @@ getentry_block (Entry p_parent, char *fname)
 #ifdef TURBO_DISK
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		 gdbm_close (file);
+		gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
-		 fclose (file);
+		fclose (file);
 		return (NULLAVL);
 #endif
 	}
@@ -130,12 +129,12 @@ getentry_block (Entry p_parent, char *fname)
 		p_parent->e_children = NULLAVL ;
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		 gdbm_close (file);
+		gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
 		p_parent->e_children = NULLAVL;
-		 fclose (file);
+		fclose (file);
 		return(NULLAVL) ;
 #endif
 	}
@@ -148,11 +147,11 @@ getentry_block (Entry p_parent, char *fname)
 #ifdef TURBO_DISK
 		save_heap = mem_heap;
 		GENERAL_HEAP;
-		 gdbm_close (file);
+		gdbm_close (file);
 		mem_heap = save_heap;
 		return(NULLAVL);
 #else
-		 fclose (file);
+		fclose (file);
 		return(NULLAVL);
 #endif
 	}
@@ -173,11 +172,11 @@ getentry_block (Entry p_parent, char *fname)
 #ifdef TURBO_DISK
 	save_heap = mem_heap;
 	GENERAL_HEAP;
-	 gdbm_close (file);
+	gdbm_close (file);
 	mem_heap = save_heap;
 	return(tree);
 #else
-	 fclose (file);
+	fclose (file);
 	return (tree);
 #endif
 }

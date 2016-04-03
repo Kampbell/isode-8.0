@@ -118,25 +118,25 @@ int port;
 	s = socket(hp->h_addrtype, SOCK_STREAM, 0);
 	if (s < 0) {
 		sprintf(ftp_error,"ftp: socket %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
 		return (NOTOK);
 	}
 	if (bind(s, (struct sockaddr *)&hisctladdr, sizeof (hisctladdr)) < 0) {
 		sprintf(ftp_error,"ftp: bind %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	inaddr_copy (hp, &hisctladdr);
 	hisctladdr.sin_port = htons ((u_short) port);
 	if (connect(s, (struct sockaddr *)&hisctladdr, sizeof (hisctladdr)) < 0) {
 		sprintf(ftp_error,"ftp: connect %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	len = sizeof (myctladdr);
 	if (getsockname(s, (struct sockaddr *)&myctladdr, &len) < 0) {
 		sprintf(ftp_error,"ftp: getsockname %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	cin = fdopen(s, "r");
@@ -149,7 +149,7 @@ int port;
 			fclose(cout);
 		goto bad;
 	}
-	 getreply(0); 		/* read startup message from server */
+	getreply(0); 		/* read startup message from server */
 	connected = 1;
 	return (OK);
 bad:
@@ -210,13 +210,13 @@ va_list ap;
 
 	if (cout == NULL) {
 		sprintf(ftp_error,"No control connection for command %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
 		return (NOTOK);
 	}
 
 	_asprintf (buffer, NULLCP, ap);
 	fprintf (cout, "%s\r\n", buffer);
-	 fflush(cout);
+	fflush(cout);
 	if (verbose)
 		advise (LLOG_DEBUG, NULLCP, "<--- %s", buffer);
 	return (getreply(!strcmp(buffer, "QUIT")));
@@ -304,9 +304,9 @@ char *cmd, /* *local, */ *remote;
 
 bad:
 	if (data >= 0)
-		 close(data), data = -1;
+		close(data), data = -1;
 	if (expectingreply) {
-		 getreply(0);
+		getreply(0);
 		expectingreply = 0;
 	}
 	return(NOTOK);
@@ -333,9 +333,9 @@ char *cmd, /* *local,*/ *remote;
 	return(din);
 bad:
 	if (data >= 0)
-		 close(data), data = -1;
+		close(data), data = -1;
 	if (expectingreply) {
-		 getreply(0);
+		getreply(0);
 		expectingreply = 0;
 	}
 	return(NOTOK);
@@ -360,11 +360,11 @@ noport:
 	if (sendport)
 		data_addr.sin_port = 0;	/* let system pick one */
 	if (data != -1)
-		 close (data);
+		close (data);
 	data = socket(AF_INET, SOCK_STREAM, 0);
 	if (data < 0) {
 		sprintf(ftp_error,"ftp: socket %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
 		return (NOTOK);
 	}
 	if (!sendport)
@@ -374,12 +374,12 @@ noport:
 		if (setsockopt(data, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof on) < 0) {
 #endif
 			sprintf(ftp_error,"ftp: setsockopt (reuse address) %s",
-						  (errno <= sys_nerr)? sys_errlist[errno]:"");
+					(errno <= sys_nerr)? sys_errlist[errno]:"");
 			goto bad;
 		}
 	if (bind(data, (struct sockaddr *)&data_addr, sizeof (data_addr)) < 0) {
 		sprintf(ftp_error,"ftp: bind %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	if (options & SO_DEBUG &&
@@ -389,16 +389,16 @@ noport:
 			setsockopt(data, SOL_SOCKET, SO_DEBUG, (char *) &on, on) < 0)
 #endif
 		sprintf(ftp_error,"ftp: setsockopt (ignoreg) %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
 	len = sizeof (data_addr);
 	if (getsockname(data, (struct sockaddr *)&data_addr, &len) < 0) {
 		sprintf(ftp_error,"ftp: getsockname  %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	if (listen(data, 1) < 0) {
 		sprintf(ftp_error,"ftp: listen  %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
 		goto bad;
 	}
 	if (sendport) {
@@ -417,7 +417,7 @@ noport:
 	}
 	return (OK);
 bad:
-	 close(data), data = -1;
+	close(data), data = -1;
 	return (NOTOK);
 }
 
@@ -432,11 +432,11 @@ char *modeX;
 	s = accept(data, (struct sockaddr *) &from, &fromlen);
 	if (s < 0) {
 		sprintf(ftp_error,"ftp: accept  %s",
-					  (errno <= sys_nerr)? sys_errlist[errno]:"");
-		 close(data), data = -1;
+				(errno <= sys_nerr)? sys_errlist[errno]:"");
+		close(data), data = -1;
 		return (NOTOK);
 	}
-	 close(data);
+	close(data);
 	data = s;
 	return (data);
 }
@@ -450,8 +450,8 @@ lostpeer() {
 			cout = NULL;
 		}
 		if (data >= 0) {
-			 shutdown(data, 1+1);
-			 close(data);
+			shutdown(data, 1+1);
+			close(data);
 			data = -1;
 		}
 		connected = 0;

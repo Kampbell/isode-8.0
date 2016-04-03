@@ -1,6 +1,5 @@
-__END_DECLS 
-op_requestMaster (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
-{
+__END_DECLS
+op_requestMaster (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_RFA_RequestMasterArg *rma =
 		(struct type_RFA_RequestMasterArg *) in;
 	struct type_RFA_RequestMasterRes rmr;

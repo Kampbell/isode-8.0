@@ -52,8 +52,7 @@ PE pe;
 }
 
 struct certificate_list *
-str2cpair (char *str)
-{
+str2cpair (char *str) {
 	struct certificate_list *result;
 	char *ptr;
 
@@ -112,8 +111,7 @@ int format;
 }
 
 struct certificate_list *
-cpair_cpy (struct certificate_list *parm)
-{
+cpair_cpy (struct certificate_list *parm) {
 	struct certificate_list *result;
 
 	result = (struct certificate_list *) calloc(1, sizeof(*result));
@@ -128,9 +126,8 @@ cpair_cpy (struct certificate_list *parm)
 }
 
 
-int 
-cpair_cmp (struct certificate_list *a, struct certificate_list *b)
-{
+int
+cpair_cmp (struct certificate_list *a, struct certificate_list *b) {
 	int retval;
 
 	if (a->cert == (struct certificate *) 0) {
@@ -163,9 +160,8 @@ cpair_cmp (struct certificate_list *a, struct certificate_list *b)
 	return (retval);
 }
 
-int 
-cpair_free (struct certificate_list *parm)
-{
+int
+cpair_free (struct certificate_list *parm) {
 	if (parm->cert)
 		cert_free(parm->cert);
 	if (parm->reverse)
@@ -173,9 +169,9 @@ cpair_free (struct certificate_list *parm)
 	free((char *) parm);
 }
 
-int 
+int
 certificate_pair_syntax (void) {
-	 add_attribute_syntax(
+	add_attribute_syntax(
 		"CertificatePair",
 		(IFP) cpair_enc,	(IFP) cpair_dec,
 		(IFP) str2cpair,	printcpair,

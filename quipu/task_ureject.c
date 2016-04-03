@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/task_ureject.c,v 9.0 
 
 extern	LLog	* log_dsap;
 
-int 
-send_ro_ureject (int ad, int *id_p, int urej)
-{
+int
+send_ro_ureject (int ad, int *id_p, int urej) {
 	struct RoSAPindication      roi_s;
 	struct RoSAPindication      *roi = &roi_s;
 	struct RoSAPpreject         *rop = &(roi->roi_preject);

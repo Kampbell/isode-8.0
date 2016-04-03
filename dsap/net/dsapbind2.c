@@ -37,9 +37,8 @@ extern LLog	* log_dsap;
 
 /* ARGSUSED */
 
-int 
-DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di)
-{
+int
+DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -64,7 +63,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 		if ((ds->ds_pctx_id = check_dap_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS, ("Unacceptable Abstract Syntaxes for X.500 DAP"));
 			watch_dog ("RoBindReject (DAP)");
-			 RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
+			RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 			watch_dog_reset ();
 			return (dsaplose (di, DA_PCDL, NULLCP, "DAP BIND INDICATION"));
 		}
@@ -74,7 +73,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 		if ((ds->ds_pctx_id = check_dsp_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS, ("Unacceptable Abstract Syntaxes for X.500 DSP"));
 			watch_dog ("RoBindReject (DSP)");
-			 RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
+			RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 			watch_dog_reset ();
 			return (dsaplose (di, DA_PCDL, NULLCP, "DSP BIND INDICATION"));
 		}
@@ -84,7 +83,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 		if ((ds->ds_pctx_id = check_qsp_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS, ("Unacceptable Abstract Syntaxes for QUIPU DSP"));
 			watch_dog ("RoBindReject (QSP)");
-			 RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
+			RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 			watch_dog_reset ();
 			return (dsaplose (di, DA_PCDL, NULLCP, "QSP BIND INDICATION"));
 		}
@@ -94,7 +93,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 		if ((ds->ds_pctx_id = check_isp_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS, ("Unacceptable Abstract Syntaxes for Internet DSP"));
 			watch_dog ("RoBindReject (ISP)");
-			 RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
+			RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 			watch_dog_reset ();
 			return (dsaplose (di, DA_PCDL, NULLCP, "ISP BIND INDICATION"));
 		}
@@ -103,7 +102,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 	case NOTOK:
 	default:
 		watch_dog ("RoBindReject (default)");
-		 RoBindReject(acs, ACS_TRANSIENT, ACS_CONTEXT, rni);
+		RoBindReject(acs, ACS_TRANSIENT, ACS_CONTEXT, rni);
 		watch_dog_reset ();
 		return (dsaplose (di, DA_APP_CONTEXT, NULLCP, "BIND INDICATION"));
 	}
@@ -117,7 +116,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 	/* Decode bind argument */
 	if ((acs->acs_ninfo != 1) || (acs->acs_info[0] == NULLPE)) {
 		watch_dog ("RoBindReject (ninfo)");
-		 RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
+		RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 		watch_dog_reset ();
 		return (dsaplose (di, DA_ARG_DEC, NULLCP, "BIND INDICATION"));
 	}
@@ -125,7 +124,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 	if (decode_DAS_DirectoryBindArgument (acs->acs_info[0],
 										  1, NULLCP, NULLIP, &bind_arg) != OK) {
 		watch_dog ("RoBindReject (decode)");
-		 RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
+		RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 		watch_dog_reset ();
 		return (dsaplose (di, DA_ARG_DEC, NULLCP, "BIND INDICATION"));
 	}
@@ -245,9 +244,8 @@ struct DSAPindication	* di;
 
 /*    D-BIND.REJECT */
 
-int 
-DBindReject (struct DSAPstart *ds, int status, int reason, struct DSAPindication *di)
-{
+int
+DBindReject (struct DSAPstart *ds, int status, int reason, struct DSAPindication *di) {
 	int			  result;
 	struct AcSAPstart	* acs = &(ds->ds_start);
 	struct RoNOTindication	  rni_s;

@@ -39,7 +39,7 @@ struct protected_password *x;
 {
 	PE result = NULLPE;
 
-	 encode_Quipu_ProtectedPassword (&result, 0, 0, NULLCP, x);
+	encode_Quipu_ProtectedPassword (&result, 0, 0, NULLCP, x);
 	return (result);
 }
 
@@ -55,8 +55,7 @@ PE pe;
 }
 
 static struct protected_password *
-str2prot (char *str)
-{
+str2prot (char *str) {
 	struct protected_password *result;
 	char *octparse();
 
@@ -113,8 +112,7 @@ int format;
 /* The reverse operation. Currently, hashes are always 4 octets long. */
 
 char *
-hash2str (unsigned long hash, int *len)
-{
+hash2str (unsigned long hash, int *len) {
 	char *result;
 	int i;
 
@@ -134,9 +132,8 @@ hash2str (unsigned long hash, int *len)
 /* insecure hash function for testing purposes */
 
 /* ARGSUSED */
-unsigned long 
-hash_passwd (unsigned long seed, char *str, int len)
-{
+unsigned long
+hash_passwd (unsigned long seed, char *str, int len) {
 	seed = 0;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("Hash = %D", seed));
@@ -145,21 +142,19 @@ hash_passwd (unsigned long seed, char *str, int len)
 }
 
 /* ARGSUSED */
-int 
+int
 check_guard (
-    char *pwd, /* This string is not null-terminated */
-    int pwd_len,
-    char *salt, /* Null-terminated salt */
-    char *hval, /* This string is not null-terminated */
-    int hlen
-)
-{
+	char *pwd, /* This string is not null-terminated */
+	int pwd_len,
+	char *salt, /* Null-terminated salt */
+	char *hval, /* This string is not null-terminated */
+	int hlen
+) {
 	return (2);
 }
 
-static int 
-prot_cmp (struct protected_password *a, struct protected_password *b)
-{
+static int
+prot_cmp (struct protected_password *a, struct protected_password *b) {
 	int retval;
 
 	if (a->is_protected[0] == (char) 0) {
@@ -196,8 +191,7 @@ prot_cmp (struct protected_password *a, struct protected_password *b)
 }
 
 static struct protected_password *
-prot_cpy (struct protected_password *parm)
-{
+prot_cpy (struct protected_password *parm) {
 	struct protected_password *result;
 
 	result = (struct protected_password *)
@@ -227,9 +221,8 @@ prot_cpy (struct protected_password *parm)
 	return (result);
 }
 
-static 
-prot_free (struct protected_password *parm)
-{
+static
+prot_free (struct protected_password *parm) {
 	if (parm->passwd != NULLCP)
 		free(parm->passwd);
 	if (parm->time1 != NULLCP)
@@ -240,13 +233,13 @@ prot_free (struct protected_password *parm)
 	free((char *) parm);
 }
 
-int 
+int
 protected_password_syntax (void) {
-	 add_attribute_syntax ("ProtectedPassword",
-								 (IFP) prot_enc,	(IFP) prot_dec,
-								 (IFP) str2prot,	prot_print,
-								 (IFP) prot_cpy,	prot_cmp,
-								 prot_free,	NULLCP,
-								 NULLIFP,	FALSE);
+	add_attribute_syntax ("ProtectedPassword",
+						  (IFP) prot_enc,	(IFP) prot_dec,
+						  (IFP) str2prot,	prot_print,
+						  (IFP) prot_cpy,	prot_cmp,
+						  prot_free,	NULLCP,
+						  NULLIFP,	FALSE);
 }
 

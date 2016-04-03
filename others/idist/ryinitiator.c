@@ -44,9 +44,8 @@ static int ryconnect ();
 
 /*    INITIATOR */
 
-int 
-makeconn (char *thehost)
-{
+int
+makeconn (char *thehost) {
 	int	result;
 	PE	data;
 	struct type_Idist_Initiate *initial;
@@ -61,7 +60,7 @@ makeconn (char *thehost)
 		closeconn ();
 	}
 
-	 strcpy (lasthost, thehost);
+	strcpy (lasthost, thehost);
 
 	if ((initial = (struct type_Idist_Initiate *)
 				   malloc (sizeof *initial)) == NULL)
@@ -71,21 +70,21 @@ makeconn (char *thehost)
 
 	if (cp = index(thehost, '@')) {
 		rhost = cp + 1;
-		 strncpy (ruser, thehost, cp - thehost);
+		strncpy (ruser, thehost, cp - thehost);
 		ruser[cp - thehost] = 0;
 	} else {
-		 strcpy (ruser, user);
+		strcpy (ruser, user);
 		rhost = thehost;
 	}
 	if (!qflag)
-		 printf ("updating host %s\n", rhost);
-	 sprintf (buf, "user (%s:%s): ", rhost, ruser);
+		printf ("updating host %s\n", rhost);
+	sprintf (buf, "user (%s:%s): ", rhost, ruser);
 	cp = getstring (buf);
 	if (cp == NULL)
 		cp = ruser;
 	initial -> user = str2qb (cp, strlen (cp), 1);
 
-	 sprintf (buf, "password (%s:%s): ", rhost, cp);
+	sprintf (buf, "password (%s:%s): ", rhost, cp);
 	cp = getpassword (buf);
 
 	initial -> passwd = str2qb (cp, strlen(cp), 1);
@@ -152,7 +151,7 @@ PE	data;
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		 bzero ((char *) sf, sizeof *sf);
+		bzero ((char *) sf, sizeof *sf);
 	}
 
 	if (AcAssocRequest (ctx, NULLAEI, aei, NULLPA, pa, pc, NULLOID,
@@ -182,7 +181,7 @@ PE	data;
 	return OK;
 }
 
-int 
+int
 closeconn  {
 	struct AcSAPrelease acrs;
 	struct AcSAPrelease   *acr = &acrs;
@@ -197,7 +196,7 @@ closeconn  {
 		acs_adios (aca, "A-RELEASE.REQUEST");
 
 	if (!acr -> acr_affirmative) {
-		 AcUAbortRequest (ry_sd, NULLPEP, 0, aci);
+		AcUAbortRequest (ry_sd, NULLPEP, 0, aci);
 		adios (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
 	}
 
@@ -241,7 +240,7 @@ IFP	rfx, efx;
 	}
 
 	if (mod  && ind >= 0 && arg)
-		 fre_obj (arg, mod -> md_dtab[ind], mod, 1);
+		fre_obj (arg, mod -> md_dtab[ind], mod, 1);
 
 	return result_value;
 }
@@ -252,9 +251,8 @@ IFP	rfx, efx;
 
 SFD cleanup ();
 
-void 
-ros_adios (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	cleanup ();
@@ -263,25 +261,23 @@ ros_adios (struct RoSAPpreject *rop, char *event)
 }
 
 
-void 
-ros_advise (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
-						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
+		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
 /*  */
 
-void 
-acs_adios (struct AcSAPabort *aca, char *event)
-{
+void
+acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
 
 	cleanup ();
@@ -289,17 +285,16 @@ acs_adios (struct AcSAPabort *aca, char *event)
 }
 
 
-void 
-acs_advise (struct AcSAPabort *aca, char *event)
-{
+void
+acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						AcErrString (aca -> aca_reason),
-						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 AcErrString (aca -> aca_reason),
+				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -328,9 +323,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -349,27 +343,25 @@ va_dcl {
 }
 
 
-static void 
-_advise (va_list ap)
-{
+static void
+_advise (va_list ap) {
 	char    buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
 
-	 fflush (stdout);
+	fflush (stdout);
 
-	 fprintf (stderr, "%s: ", myname);
-	 fputs (buffer, stderr);
-	 fputc ('\n', stderr);
+	fprintf (stderr, "%s: ", myname);
+	fputs (buffer, stderr);
+	fputc ('\n', stderr);
 
-	 fflush (stderr);
+	fflush (stderr);
 }
 #else
 /* VARARGS */
 
-void 
-advise (char *what, char *fmt)
-{
+void
+advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
@@ -389,21 +381,19 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-ryr_advise (char *what, char *fmt)
-{
+void
+ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif
 
 char *
-getstring (char *prompt)
-{
+getstring (char *prompt) {
 	static char buffer[BUFSIZ];
 	char	*cp;
 
-	 fputs (prompt, stdout);
-	 fflush (stdout);
+	fputs (prompt, stdout);
+	fflush (stdout);
 
 	if (fgets (buffer, sizeof buffer, stdin) == NULL)
 		return NULLCP;

@@ -39,9 +39,8 @@ extern time_t cache_timeout;
 extern DN  mydsadn;
 extern struct di_block * di_alloc();
 
-int 
-find_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_stack, int master, Entry *ent_p, struct DSError *err, struct di_block **di_p, int optype)
-{
+int
+find_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_stack, int master, Entry *ent_p, struct DSError *err, struct di_block **di_p, int optype) {
 	int deref = FALSE;
 	extern time_t cache_timeout;
 	DN dn_found;
@@ -174,9 +173,8 @@ out:
 	return (DS_OK);
 }
 
-int 
-find_child_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_stack, int master, Entry *ent_p, struct DSError *err, struct di_block **di_p)
-{
+int
+find_child_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_stack, int master, Entry *ent_p, struct DSError *err, struct di_block **di_p) {
 	/* this is very similar to find_entry(), except a top level */
 	/* constructor is allowed */
 	int deref = FALSE;
@@ -261,18 +259,17 @@ find_child_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_stac
 	return (DS_OK);
 }
 
-int 
+int
 really_find_entry (
-    DN object,
-    int deref,
-    struct dn_seq *dn_stack,
-    int master,	/* Generate only master references - NB
+	DN object,
+	int deref,
+	struct dn_seq *dn_stack,
+	int master,	/* Generate only master references - NB
 				   does not imply returned entry is master */
-    Entry *ent_p,
-    struct DSError *err,
-    struct di_block **di_p
-)
-{
+	Entry *ent_p,
+	struct DSError *err,
+	struct di_block **di_p
+) {
 	Entry parent;
 	Avlnode *kids;
 	int entryrdn_cmp ();
@@ -467,9 +464,8 @@ really_find_entry (
 }
 
 
-int 
-referral_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p, int chain)
-{
+int
+referral_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p, int chain) {
 	int ret;
 	struct di_block     * di_tmp;
 
@@ -501,9 +497,8 @@ referral_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, st
 
 }
 
-int 
-constructor_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p)
-{
+int
+constructor_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p) {
 	DLOG (log_dsap,LLOG_TRACE,("constructor dsa_info"));
 
 	if (ptr != NULLENTRY)
@@ -512,9 +507,8 @@ constructor_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr,
 	return(constructor_dsa_info_aux(object,dn_stack,master,ptr,err,di_p));
 }
 
-int 
-constructor_dsa_info_aux (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p)
-{
+int
+constructor_dsa_info_aux (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p) {
 	DLOG (log_dsap,LLOG_TRACE,("construct dsa_info aux"));
 
 	/* follow entry back, until something that is not a CONSTRUCTOR */
@@ -532,17 +526,16 @@ constructor_dsa_info_aux (DN object, struct dn_seq *dn_stack, int master, Entry 
 	return(dsa_info_parent(object,err,di_p,master));
 }
 
-int 
+int
 no_reply_child (
-    DN object,
-    DN dn, 	/* tail - not matched */
-    struct dn_seq *dn_stack,
-    int master,
-    Entry entryptr,
-    struct DSError *err,
-    struct di_block **di_p
-)
-{
+	DN object,
+	DN dn, 	/* tail - not matched */
+	struct dn_seq *dn_stack,
+	int master,
+	Entry entryptr,
+	struct DSError *err,
+	struct di_block **di_p
+) {
 	DN dn_tmp;
 
 	DLOG (log_dsap,LLOG_TRACE,("no reply child"));
@@ -566,17 +559,16 @@ no_reply_child (
 	return(constructor_dsa_info_aux (object, dn_stack, master, entryptr, err, di_p));
 }
 
-int 
+int
 no_reply_edb (
-    DN object,
-    DN dn, 	/* tail - not matched */
-    struct dn_seq *dn_stack,
-    int master,
-    Entry entryptr,
-    struct DSError *err,
-    struct di_block **di_p
-)
-{
+	DN object,
+	DN dn, 	/* tail - not matched */
+	struct dn_seq *dn_stack,
+	int master,
+	Entry entryptr,
+	struct DSError *err,
+	struct di_block **di_p
+) {
 	DN dn_tmp;
 	Entry akid;
 

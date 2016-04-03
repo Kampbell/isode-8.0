@@ -70,9 +70,8 @@ long	lseek ();
 
 /*  */
 
-int 
-ll_open (LLog *lp)
-{
+int
+ll_open (LLog *lp) {
 	int	    mask,
 			mode;
 	char   *bp,
@@ -88,7 +87,7 @@ ll_open (LLog *lp)
 			|| *lp -> ll_file == NULL) {
 you_lose:
 		;
-		 ll_close (lp);
+		ll_close (lp);
 		lp -> ll_stat |= LLOGERR;
 		return NOTOK;
 	}
@@ -103,8 +102,8 @@ you_lose:
 		return OK;
 	}
 
-	 sprintf (bp = buffer, _isodefile (isodelogpath, lp -> ll_file),
-					getpid ());
+	sprintf (bp = buffer, _isodefile (isodelogpath, lp -> ll_file),
+			 getpid ());
 
 	mode = O_WRONLY | O_APPEND;
 	if (lp -> ll_stat & LLOGCRT)
@@ -112,7 +111,7 @@ you_lose:
 
 	mask = umask (~0666);
 	lp -> ll_fd = open (bp, mode, 0666);
-	 umask (mask);
+	umask (mask);
 
 	if (ll_check (lp) == NOTOK)
 		return (NOTOK);
@@ -124,9 +123,8 @@ you_lose:
 
 /*  */
 
-int 
-ll_close (LLog *lp)
-{
+int
+ll_close (LLog *lp) {
 	int	    status;
 
 	if (lp -> ll_fd == NOTOK)
@@ -141,8 +139,7 @@ ll_close (LLog *lp)
 /*  */
 
 #ifndef	lint
-int	ll_log (LLog*lp, ...)
-{
+int	ll_log (LLog*lp, ...) {
 	int	    event, result;
 	char* what;
 	va_list ap;
@@ -161,18 +158,16 @@ int	ll_log (LLog*lp, ...)
 #else
 /* VARARGS4 */
 
-int 
-ll_log (LLog *lp, int event, char *what, char *fmt)
-{
+int
+ll_log (LLog *lp, int event, char *what, char *fmt) {
 	return ll_log (lp, event, what, fmt);
 }
 #endif
 
 /*  */
 
-int 
-_ll_log (LLog *lp, int event, char* what, va_list ap)	/* fmt, args ... */
-{
+int
+_ll_log (LLog *lp, int event, char* what, va_list ap) {	/* fmt, args ... */
 	int	    cc, status;
 	char *bp;
 	char* fmt;
@@ -219,10 +214,10 @@ _ll_log (LLog *lp, int event, char* what, va_list ap)	/* fmt, args ... */
 			break;
 		}
 
-		 syslog (priority, "%s", buffer + 13);
+		syslog (priority, "%s", buffer + 13);
 
 		if (lp -> ll_stat & LLOGCLS)
-			 closelog ();
+			closelog ();
 	}
 #endif
 
@@ -232,13 +227,13 @@ _ll_log (LLog *lp, int event, char* what, va_list ap)	/* fmt, args ... */
 		lp -> ll_stat |= LLOGTTY;
 
 	if (lp -> ll_stat & LLOGTTY) {
-		 fflush (stdout);
+		fflush (stdout);
 
 		if (lp -> ll_fd != NOTOK)
-			 fprintf (stderr, "LOGGING: ");
-		 fputs (bp, stderr);
-		 fputc ('\n', stderr);
-		 fflush (stderr);
+			fprintf (stderr, "LOGGING: ");
+		fputs (bp, stderr);
+		fputc ('\n', stderr);
+		fflush (stderr);
 	}
 	bp += strlen (bp);
 
@@ -256,7 +251,7 @@ _ll_log (LLog *lp, int event, char* what, va_list ap)	/* fmt, args ... */
 
 	if ((status = write (lp -> ll_fd, buffer, cc)) != cc) {
 		if (status == NOTOK) {
-			 ll_close (lp);
+			ll_close (lp);
 error:
 			;
 			lp -> ll_stat |= LLOGERR;
@@ -275,11 +270,10 @@ error:
 
 /*  */
 
-void 
-ll_hdinit (LLog *lp, char *prefix)
-{
+void
+ll_hdinit (LLog *lp, char *prefix) {
 	char  *cp,
-			 *up;
+		  *up;
 	char    buffer[BUFSIZ],
 			user[10];
 
@@ -297,11 +291,11 @@ ll_hdinit (LLog *lp, char *prefix)
 
 	if ((up = getenv ("USER")) == NULLCP
 			&& (up = getenv ("LOGNAME")) == NULLCP) {
-		 sprintf (user, "#%d", getuid ());
+		sprintf (user, "#%d", getuid ());
 		up = user;
 	}
-	 sprintf (buffer, "%-8.8s %05d (%-8.8s)",
-					cp, getpid () % 100000, up);
+	sprintf (buffer, "%-8.8s %05d (%-8.8s)",
+			 cp, getpid () % 100000, up);
 
 	if (lp -> ll_stat & LLOGHDR)
 		free (lp -> ll_hdr);
@@ -310,15 +304,14 @@ ll_hdinit (LLog *lp, char *prefix)
 	if ((lp -> ll_hdr = malloc ((unsigned) (strlen (buffer) + 1))) == NULLCP)
 		return;
 
-	 strcpy (lp -> ll_hdr, buffer);
+	strcpy (lp -> ll_hdr, buffer);
 	lp -> ll_stat |= LLOGHDR;
 }
 
 /*  */
 
-void 
-ll_dbinit (LLog *lp, char *prefix)
-{
+void
+ll_dbinit (LLog *lp, char *prefix) {
 	char  *cp;
 	char    buffer[BUFSIZ];
 
@@ -330,13 +323,13 @@ ll_dbinit (LLog *lp, char *prefix)
 		if (cp == NULL || *cp == NULL)
 			cp = prefix;
 
-		 sprintf (buffer, "./%s.log", cp);
+		sprintf (buffer, "./%s.log", cp);
 
 		if ((lp -> ll_file = malloc ((unsigned) (strlen (buffer) + 1)))
 				== NULLCP)
 			return;
 
-		 strcpy (lp -> ll_file, buffer);
+		strcpy (lp -> ll_file, buffer);
 	}
 
 	lp -> ll_events |= LLOG_ALL;
@@ -346,8 +339,7 @@ ll_dbinit (LLog *lp, char *prefix)
 /*  */
 
 #ifndef	lint
-int	ll_printf (LLog*lp, ...)
-{
+int	ll_printf (LLog*lp, ...) {
 	int	    result;
 	va_list ap;
 
@@ -362,9 +354,8 @@ int	ll_printf (LLog*lp, ...)
 #else
 /* VARARGS2 */
 
-int 
-ll_printf (LLog *lp, char *fmt)
-{
+int
+ll_printf (LLog *lp, char *fmt) {
 	return ll_printf (lp, fmt);
 }
 #endif
@@ -374,8 +365,7 @@ ll_printf (LLog *lp, char *fmt)
 #ifndef	lint
 static
 #endif
-int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
-{
+int  _ll_printf (LLog*lp, va_list ap) {	/* fmt, args ... */
 	int	    cc,
 			status;
 	char   *bp;
@@ -398,13 +388,13 @@ int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 		lp -> ll_stat |= LLOGTTY;
 
 	if (lp -> ll_stat & LLOGTTY) {
-		 fflush (stdout);
+		fflush (stdout);
 
 		if (bp)
-			 fputs (bp, stderr);
+			fputs (bp, stderr);
 		else
-			 fputs (fmt, stderr);
-		 fflush (stderr);
+			fputs (fmt, stderr);
+		fflush (stderr);
 	}
 	if (bp)
 		bp += strlen (bp);
@@ -414,8 +404,7 @@ int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 			return OK;
 		if (ll_open (lp) == NOTOK)
 			return NOTOK;
-	} else 
-	if ((!llp || llp[lp -> ll_fd].ll_checks-- < 0) && ll_check (lp) == NOTOK)
+	} else if ((!llp || llp[lp -> ll_fd].ll_checks-- < 0) && ll_check (lp) == NOTOK)
 		return NOTOK;
 
 	if (bp)
@@ -425,7 +414,7 @@ int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 
 	if ((status = write (lp -> ll_fd, bp ? buffer : fmt, cc)) != cc) {
 		if (status == NOTOK) {
-			 ll_close (lp);
+			ll_close (lp);
 			lp -> ll_stat |= LLOGERR;
 			return NOTOK;
 		}
@@ -441,9 +430,8 @@ int  _ll_printf (LLog*lp, va_list ap)		/* fmt, args ... */
 
 /*  */
 
-int 
-ll_sync (LLog *lp)
-{
+int
+ll_sync (LLog *lp) {
 	if (lp -> ll_stat & LLOGCLS)
 		return ll_close (lp);
 
@@ -453,8 +441,7 @@ ll_sync (LLog *lp)
 /*  */
 
 #ifndef	lint
-char   *ll_preset (char* fmt, ...)
-{
+char   *ll_preset (char* fmt, ...) {
 	va_list ap;
 	static char buffer[BUFSIZ];
 
@@ -470,17 +457,15 @@ char   *ll_preset (char* fmt, ...)
 /* VARARGS1 */
 
 char *
-ll_preset (char *fmt)
-{
+ll_preset (char *fmt) {
 	return ll_preset (fmt);
 }
 #endif
 
 /*  */
 
-int 
-ll_check (LLog *lp)
-{
+int
+ll_check (LLog *lp) {
 #ifndef	BSD42
 	int	    fd;
 	char    buffer[BUFSIZ];
@@ -498,7 +483,7 @@ ll_check (LLog *lp)
 		return OK;
 
 	if (!(lp -> ll_stat & LLOGZER)) {
-		 ll_close (lp);
+		ll_close (lp);
 
 #ifndef	BSD42
 error:
@@ -510,17 +495,17 @@ error:
 
 #ifdef	BSD42
 #ifdef	SUNOS4
-	 ftruncate (lp -> ll_fd, (off_t) 0);
+	ftruncate (lp -> ll_fd, (off_t) 0);
 #else
-	 ftruncate (lp -> ll_fd, 0);
+	ftruncate (lp -> ll_fd, 0);
 #endif
-	 lseek (lp -> ll_fd, 0L, 0);
+	lseek (lp -> ll_fd, 0L, 0);
 	return OK;
 #else
-	 sprintf (buffer, _isodefile (isodelogpath, lp -> ll_file), getpid ());
+	sprintf (buffer, _isodefile (isodelogpath, lp -> ll_file), getpid ());
 	if ((fd = open (buffer, O_WRONLY | O_APPEND | O_TRUNC)) == NOTOK)
 		goto error;
-	 close (fd);
+	close (fd);
 	return OK;
 #endif
 }
@@ -530,24 +515,23 @@ error:
 /*
  * ll_defmhdr - Default "make header" routine.
  */
-int 
+int
 ll_defmhdr (
-    char *bufferp,		/* Buffer pointer */
-    char *headerp,		/* Static header string */
-    char *dheaderp		/* Dynamic header string */
-)
-{
+	char *bufferp,		/* Buffer pointer */
+	char *headerp,		/* Static header string */
+	char *dheaderp		/* Dynamic header string */
+) {
 	time_t    clock;
 	struct tm *tm;
 
-	 time (&clock);
+	time (&clock);
 	tm = localtime (&clock);
 
-	 sprintf (bufferp, "%2d/%2d %2d:%02d:%02d %s %s ",
-					tm -> tm_mon + 1, tm -> tm_mday,
-					tm -> tm_hour, tm -> tm_min, tm -> tm_sec,
-					headerp ? headerp : "",
-					dheaderp ? dheaderp : "");
+	sprintf (bufferp, "%2d/%2d %2d:%02d:%02d %s %s ",
+			 tm -> tm_mon + 1, tm -> tm_mday,
+			 tm -> tm_hour, tm -> tm_min, tm -> tm_sec,
+			 headerp ? headerp : "",
+			 dheaderp ? dheaderp : "");
 	return OK;
 }
 
@@ -556,9 +540,8 @@ ll_defmhdr (
 /*
  * ll_setmhdr - Set "make header" routine, overriding default.
  */
-IFP 
-ll_setmhdr (IFP make_header_routine)
-{
+IFP
+ll_setmhdr (IFP make_header_routine) {
 	IFP result = _ll_header_routine;
 
 	_ll_header_routine = make_header_routine;
@@ -572,8 +555,7 @@ ll_setmhdr (IFP make_header_routine)
 #ifdef ULTRIX_X25_DEMSA
 
 char *
-CAT (char *x, char *y)
-{
+CAT (char *x, char *y) {
 	if ( strlen(x)+strlen(y)-2 > BUFSIZ-1 )
 		return (char *) y;
 	else {

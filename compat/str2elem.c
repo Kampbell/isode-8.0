@@ -34,13 +34,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2elem.c,v 9.0 199
 
 /*  */
 
-int 
-str2elem (char *s, unsigned int elements[])
-{
+int
+str2elem (char *s, unsigned int elements[]) {
 	int    i;
 	unsigned int  *ip;
 	char  *cp,
-			 *dp;
+		  *dp;
 
 	if (s == NULLCP || *s == 0)
 		return NOTOK;

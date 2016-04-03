@@ -42,9 +42,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/telex.c,v 9.0 1
 
 extern LLog * log_dsap;
 
-static 
-telex_free (struct telex *ptr)
-{
+static
+telex_free (struct telex *ptr) {
 	free (ptr->telexnumber);
 	free (ptr->countrycode);
 	free (ptr->answerback);
@@ -54,8 +53,7 @@ telex_free (struct telex *ptr)
 
 
 static struct telex *
-telex_cpy (struct telex *a)
-{
+telex_cpy (struct telex *a) {
 	struct telex * result;
 
 	result = (struct telex *) smalloc (sizeof (struct telex));
@@ -65,9 +63,8 @@ telex_cpy (struct telex *a)
 	return (result);
 }
 
-static 
-telex_cmp (struct telex *a, struct telex *b)
-{
+static
+telex_cmp (struct telex *a, struct telex *b) {
 	int res;
 
 	if (a == (struct telex *) NULL)
@@ -99,8 +96,7 @@ int format;
 
 
 static struct telex *
-str2telex (char *str)
-{
+str2telex (char *str) {
 	struct telex * result;
 	char * ptr;
 	char * mark = NULLCP;
@@ -169,7 +165,7 @@ struct telex * m;
 {
 	PE ret_pe;
 
-	 encode_SA_TelexNumber (&ret_pe,0,0,NULLCP,m);
+	encode_SA_TelexNumber (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -197,12 +193,12 @@ PE pe;
 	return (m);
 }
 
-int 
+int
 telex_syntax (void) {
-	 add_attribute_syntax ("TelexNumber",
-								 (IFP) telex_enc,	(IFP) telex_dec,
-								 (IFP) str2telex,	telex_print,
-								 (IFP) telex_cpy,	telex_cmp,
-								 telex_free,		NULLCP,
-								 NULLIFP,		TRUE);
+	add_attribute_syntax ("TelexNumber",
+						  (IFP) telex_enc,	(IFP) telex_dec,
+						  (IFP) str2telex,	telex_print,
+						  (IFP) telex_cpy,	telex_cmp,
+						  telex_free,		NULLCP,
+						  NULLIFP,		TRUE);
 }

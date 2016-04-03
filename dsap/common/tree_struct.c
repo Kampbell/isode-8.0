@@ -34,17 +34,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/tree_struct.c,v
 extern int oidformat;
 
 /* ARGSUSED */
-int 
-tree_struct_free (struct tree_struct *ptr)
-{
+int
+tree_struct_free (struct tree_struct *ptr) {
 	/* don't free objectclass - in static table */
 	free ((char *)ptr);
 }
 
 
 static struct tree_struct *
-tree_struct_cpy (struct tree_struct *a)
-{
+	tree_struct_cpy (struct tree_struct *a) {
 	struct tree_struct * result;
 
 	result = tree_struct_alloc ();
@@ -52,9 +50,8 @@ tree_struct_cpy (struct tree_struct *a)
 	return (result);
 }
 
-static 
-tree_struct_cmp (struct tree_struct *a, struct tree_struct *b)
-{
+static
+tree_struct_cmp (struct tree_struct *a, struct tree_struct *b) {
 	if (a == NULLTREE)
 		return (b==NULLTREE ? 0 : -1 );
 
@@ -76,8 +73,7 @@ int format;
 
 
 static struct tree_struct *
-str2schema (char *str)
-{
+str2schema (char *str) {
 	struct tree_struct * ts;
 	objectclass * str2oc();
 
@@ -95,7 +91,7 @@ struct tree_struct * ts;
 {
 	PE ret_pe;
 
-	 encode_Quipu_TreeStructureSyntax(&ret_pe,0,0,NULLCP,ts);
+	encode_Quipu_TreeStructureSyntax(&ret_pe,0,0,NULLCP,ts);
 
 	return (ret_pe);
 }
@@ -111,12 +107,12 @@ PE pe;
 	return (ts);
 }
 
-int 
+int
 schema_syntax (void) {
-	 add_attribute_syntax ("schema",
-								 (IFP) ts_enc,		(IFP) ts_dec,
-								 (IFP) str2schema,	tree_struct_print,
-								 (IFP) tree_struct_cpy,	tree_struct_cmp,
-								 tree_struct_free,	NULLCP,
-								 NULLIFP,		FALSE );
+	add_attribute_syntax ("schema",
+						  (IFP) ts_enc,		(IFP) ts_dec,
+						  (IFP) str2schema,	tree_struct_print,
+						  (IFP) tree_struct_cpy,	tree_struct_cmp,
+						  tree_struct_free,	NULLCP,
+						  NULLIFP,		FALSE );
 }

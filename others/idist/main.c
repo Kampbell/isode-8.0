@@ -82,9 +82,8 @@ struct	passwd *pw;	/* pointer to static area used by getpwent */
 struct	group *gr;	/* pointer to static area used by getgrent */
 char	*myname = "idist";
 
-int 
-main (int argc, char *argv[])
-{
+int
+main (int argc, char *argv[]) {
 	int cmdargs = 0;
 	char *dhosts[NHOSTS], **hp = dhosts;
 	extern	int optind;
@@ -102,8 +101,8 @@ main (int argc, char *argv[])
 	if (pw == NULL)
 		adios (NULLCP, "Who are you?");
 
-	 strcpy(user, pw->pw_name);
-	 strcpy(homedir, pw->pw_dir);
+	strcpy(user, pw->pw_name);
+	strcpy(homedir, pw->pw_dir);
 	groupid = pw->pw_gid;
 	host = getlocalhost ();
 
@@ -193,7 +192,7 @@ main (int argc, char *argv[])
 	argc -= optind;
 	argv += optind;
 
-	 mktemp(utmpfile);
+	mktemp(utmpfile);
 
 	if (cmdargs)
 		docmdargs(argc, argv);
@@ -208,7 +207,7 @@ main (int argc, char *argv[])
 				adios (distfile, "Can't open file");
 			}
 		}
-		 yyparse();
+		yyparse();
 		if (nerrs == 0)
 			docmds(dhosts, argc, argv);
 	}
@@ -216,21 +215,20 @@ main (int argc, char *argv[])
 	return(nerrs != 0);
 }
 
-int 
+int
 usage  {
 	advise (NULLCP,
-			"Usage: %s [-nqbhirvwyD] [-f distfile] [-d var=value] [-m host] [file ...]\n",
-			myname);
+	"Usage: %s [-nqbhirvwyD] [-f distfile] [-d var=value] [-m host] [file ...]\n",
+	myname);
 	adios(NULLCP, "or: %s [-nqbhirvwyD] -c source [...] machine[:dest]\n",
-		  myname);
+	myname);
 }
 
 /*
  * rcp like interface for distributing files.
  */
-int 
-docmdargs (int nargs, char *args[])
-{
+int
+docmdargs (int nargs, char *args[]) {
 	struct namelist *nl, *prev;
 	char *cp;
 	struct namelist *files, *hosts;
@@ -270,9 +268,9 @@ docmdargs (int nargs, char *args[])
 	}
 
 	if (debug) {
-		 printf("docmdargs()\nfiles = ");
+		printf("docmdargs()\nfiles = ");
 		prnames(files);
-		 printf("hosts = ");
+		printf("hosts = ");
 		prnames(hosts);
 	}
 	insert((char *)NULL, files, hosts, cmds);
@@ -282,13 +280,12 @@ docmdargs (int nargs, char *args[])
 /*
  * Print a list of NAME blocks (mostly for debugging).
  */
-int 
-prnames (struct namelist *nl)
-{
-	 printf("( ");
+int
+prnames (struct namelist *nl) {
+	printf("( ");
 	while (nl != NULL) {
-		 printf("%s ", nl->n_name);
+		printf("%s ", nl->n_name);
 		nl = nl->n_next;
 	}
-	 printf(")\n");
+	printf(")\n");
 }

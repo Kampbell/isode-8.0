@@ -47,15 +47,13 @@ extern void exit();
 #ifdef lint
 /* VARARGS4 */
 
-int 
-pepsylose (modtyp *module, ptpe *p, PE pe, char *str)
-{
+int
+pepsylose (modtyp *module, ptpe *p, PE pe, char *str) {
 	return pepsylose (module, p, pe, str);
 }
 
 #else
-int	pepsylose (modtyp*module, ...)
-{
+int	pepsylose (modtyp*module, ...) {
 	va_list	ap;
 	ptpe	*p, *p1;
 	char	*cp;
@@ -68,22 +66,22 @@ int	pepsylose (modtyp*module, ...)
 	pe = va_arg (ap, PE);
 
 	_asprintf (buffer, NULLCP, NULLCP, ap);
-	 sprintf (PY_pepy, "%s: module %s ",
-	buffer, module ? module -> md_name : "<none>");
+	sprintf (PY_pepy, "%s: module %s ",
+			 buffer, module ? module -> md_name : "<none>");
 	if (p) {
 		for (p1 = p; p1 -> pe_type != PE_END; p1++)
 			continue;
 		cp = PY_pepy + strlen (PY_pepy);
 		sprintf (cp, "encoding %s expecting %s,class=%s/%d",
-		pname(p1),
-		pr_petype (p -> pe_type),
-		pe_classlist[p -> pe_flags & FL_CLASS],
-		p -> pe_tag);
+				 pname(p1),
+				 pr_petype (p -> pe_type),
+				 pe_classlist[p -> pe_flags & FL_CLASS],
+				 p -> pe_tag);
 	}
 	if (pe && ((int)pe -> pe_class) < pe_maxclass) {
 		cp = PY_pepy + strlen (PY_pepy);
-		 sprintf (cp, " found %s/%d", pe_classlist[pe -> pe_class],
-		pe -> pe_id);
+		sprintf (cp, " found %s/%d", pe_classlist[pe -> pe_class],
+				 pe -> pe_id);
 	}
 
 	SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
@@ -100,15 +98,13 @@ int	pepsylose (modtyp*module, ...)
 #ifdef lint
 /* VARARGS4 */
 
-int 
-ppepsylose (modtyp *module, ptpe *p, PE pe, char *str)
-{
+int
+ppepsylose (modtyp *module, ptpe *p, PE pe, char *str) {
 	return ppepsylose (module, p, pe, str);
 }
 
 #else
-int	ppepsylose (modtyp*module, ...)
-{
+int	ppepsylose (modtyp*module, ...) {
 	va_list	ap;
 	ptpe	*p;
 	char	*cp;
@@ -121,21 +117,21 @@ int	ppepsylose (modtyp*module, ...)
 	pe = va_arg (ap, PE);
 
 	_asprintf (buffer, NULLCP, NULLCP, ap);
-	 sprintf (PY_pepy, "%s: module %s",
-	buffer, module ? module -> md_name : "<none>");
+	sprintf (PY_pepy, "%s: module %s",
+			 buffer, module ? module -> md_name : "<none>");
 	if (p) {
 		cp = PY_pepy + strlen (PY_pepy);
-		 sprintf (cp, " %s/class=%s/id=%d",
-		pr_petype (p -> pe_type),
-		pe_classlist[p -> pe_flags & FL_CLASS],
-		p -> pe_tag);
+		sprintf (cp, " %s/class=%s/id=%d",
+				 pr_petype (p -> pe_type),
+				 pe_classlist[p -> pe_flags & FL_CLASS],
+				 p -> pe_tag);
 		if (p->pe_typename)
-			 sprintf (cp, "(%s)", *p -> pe_typename);
+			sprintf (cp, "(%s)", *p -> pe_typename);
 	}
 	if (pe && ((int)pe -> pe_class) < pe_maxclass) {
 		cp = PY_pepy + strlen (PY_pepy);
-		 sprintf (cp, " got %s/%d", pe_classlist[pe -> pe_class],
-		pe -> pe_id);
+		sprintf (cp, " got %s/%d", pe_classlist[pe -> pe_class],
+				 pe -> pe_id);
 	}
 
 	SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
@@ -152,10 +148,9 @@ int	ppepsylose (modtyp*module, ...)
  * print out the message and if the arguement is greater than 0
  * terminate
  */
-int 
-ferr (int n, char *mesg)
-{
-	 printf(mesg);
+int
+ferr (int n, char *mesg) {
+	printf(mesg);
 	if (n > 0)
 		exit(n);
 }
@@ -163,10 +158,9 @@ ferr (int n, char *mesg)
  * print out the message and number and if the arguement is greater
  * than 0 terminate
  */
-int 
-ferrd (int n, char *mesg, int d)
-{
-	 printf(mesg, d);
+int
+ferrd (int n, char *mesg, int d) {
+	printf(mesg, d);
 	if (n > 0)
 		exit(n);
 }
@@ -179,18 +173,17 @@ ferrd (int n, char *mesg, int d)
 #define TYP_PRINT	2
 #define TYP_LAST	2
 
-int 
+int
 dmp_tpe (
-    char *s,
-    ptpe *p,
-    modtyp *mod			/* Module it is from */
-)
-{
+	char *s,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+) {
 	int     typ, i, j;
 	ptpe   **par, **prev;
 	char   *name;
 
-	 printf("%s: (%s)", s, mod->md_name);
+	printf("%s: (%s)", s, mod->md_name);
 	/*
 	 * Calculate what table it is in - we assume they are in order of
 	 * increasing address
@@ -221,13 +214,13 @@ dmp_tpe (
 			break;
 
 		default:
-			 pepsylose (mod, p, NULLPE, "dmp_tpe:typ = %d internal error\n",
-							  typ);
+			pepsylose (mod, p, NULLPE, "dmp_tpe:typ = %d internal error\n",
+					   typ);
 			return;
 		}
 	}
 	if (par == NULL) {
-		 printf("can't find entry 0x%x\n", p);
+		printf("can't find entry 0x%x\n", p);
 		return;
 	}
 	prev = par;
@@ -237,12 +230,12 @@ dmp_tpe (
 		par++;
 	}
 	if (par == prev)
-		 pepsylose (mod, p, NULLPE,
-						  "dmp_tpe:par == prev == 0x%x internal error\n", (int) par);
+		pepsylose (mod, p, NULLPE,
+				   "dmp_tpe:par == prev == 0x%x internal error\n", (int) par);
 	par--;
 	j = p - *par;
 
-	 printf("%s type %d + %d ", name, par - prev, j);
+	printf("%s type %d + %d ", name, par - prev, j);
 	pr_entry(p);
 }
 #define NENTRY(x)	((sizeof (x)/sizeof (x[0])))
@@ -309,28 +302,26 @@ static CMD_TABLE pepsy_type_tbl[] = {
 };
 
 char *
-pr_petype (int type)
-{
+pr_petype (int type) {
 	static char nbuf[30];
 	char *p;
 
 	if ((p = rcmd_srch (type, pepsy_type_tbl)) == NULLCP)
-		 sprintf (p = nbuf, "%d", type);
+		sprintf (p = nbuf, "%d", type);
 	return p;
 }
 
-int 
-pr_entry (ptpe *p)
-{
-	 printf ("%s, ", pr_petype (p -> pe_type));
-	 printf("%d, %d, %d}\n", p->pe_ucode, p->pe_tag, p->pe_flags);
+int
+pr_entry (ptpe *p) {
+	printf ("%s, ", pr_petype (p -> pe_type));
+	printf("%d, %d, %d}\n", p->pe_ucode, p->pe_tag, p->pe_flags);
 }
 
 
 /*
  * null function for what evr purposes
  */
-int 
+int
 f_null()  {
 }
 
@@ -338,9 +329,8 @@ f_null()  {
  * compare a given number of bits pointed to by the two character
  * pointers return 0 if they are the same non zero otherwise
  */
-int 
-bitscmp (char *p1, char *p2, int len)
-{
+int
+bitscmp (char *p1, char *p2, int len) {
 	int i;
 	unsigned int mask;
 
@@ -363,9 +353,8 @@ bitscmp (char *p1, char *p2, int len)
  * compare an octet string and a qb and return 0 if they are the same
  * and non zero otherwise
  */
-int 
-ostrcmp (char *p, int len, struct qbuf *qb)
-{
+int
+ostrcmp (char *p, int len, struct qbuf *qb) {
 	struct qbuf *qp;
 
 	if (len < 0 || qb == NULL || p == NULL)
@@ -392,15 +381,14 @@ ostrcmp (char *p, int len, struct qbuf *qb)
 /*
  * Is data present for the optional item? 1 for yes 0 for no
  */
-int 
+int
 hasdata (
-    PEPYPARM parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    int *popt,
-    int *optcnt
-)
-{
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	int *popt,
+	int *optcnt
+) {
 	int	val;
 
 	switch (p->pe_type) {
@@ -454,14 +442,13 @@ next:
  * structure and if so return greater than zero (meaning don't encode this
  * item). On error return NOTOK
  */
-int 
+int
 same (
-    ptpe *typ,
-    ptpe *dflt,
-    char *parm,
-    modtyp *mod			/* Module it is from */
-)
-{
+	ptpe *typ,
+	ptpe *dflt,
+	char *parm,
+	modtyp *mod			/* Module it is from */
+) {
 	int     val;
 	int	len;
 	char   *p1;
@@ -501,7 +488,7 @@ same (
 		}
 bstring:
 		if ((p1 = bitstr2strb(pe, &val)) == NULL) {
-			 pepsylose (mod, typ, pe, "same:bad bitstring\n");
+			pepsylose (mod, typ, pe, "same:bad bitstring\n");
 			return (NOTOK);
 			/* Should really abort encoding here but how can we comunicate this
 			 * to the routine that calls us?
@@ -623,8 +610,8 @@ o1string:
 
 
 	default:
-		 pepsylose (mod, typ, NULLPE, "same: %d not implemented\n",
-						  typ->pe_type);
+		pepsylose (mod, typ, NULLPE, "same: %d not implemented\n",
+				   typ->pe_type);
 		return (NOTOK);
 	}
 
@@ -636,16 +623,15 @@ o1string:
  * one element
  */
 ptpe *
-next_tpe (ptpe *p)
-{
+next_tpe (ptpe *p) {
 	int     level;
 
 
 
 	level = 0;
 	if (p->pe_type == PE_END) {
-		 pepsylose (NULLMODTYP, p, NULLPE,
-						  "next_tpe:internal error: unexpected PE_END found");
+		pepsylose (NULLMODTYP, p, NULLPE,
+				   "next_tpe:internal error: unexpected PE_END found");
 		return (p);
 	}
 	do {
@@ -721,14 +707,13 @@ again:
  * Is there a match at for this tag and class pair. Return 1 if yes 0
  * if no We will search through contained objects and through choices
  */
-int 
+int
 ismatch (
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    unsigned int cl,
-    unsigned int tag
-)
-{
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	unsigned int cl,
+	unsigned int tag
+) {
 	while (!ISDTYPE(p) && p->pe_type != PE_END)
 		p++;
 	if (p->pe_type == PE_END)
@@ -778,8 +763,7 @@ ismatch (
  * bascially skip over any ETAGS that (an arbitary number but almost always 1)
  */
 ptpe *
-fdflt_f (ptpe *p)
-{
+fdflt_f (ptpe *p) {
 	if (p->pe_type != DFLT_F)
 		ferr(1, "fdlt_f:Internal Error missing DFLT_F\n");
 
@@ -795,8 +779,7 @@ fdflt_f (ptpe *p)
  * find the DFLT_B entry
  */
 ptpe *
-fdflt_b (ptpe *p)
-{
+fdflt_b (ptpe *p) {
 	for (p++; p->pe_type != PE_END; p++) {
 		if (p->pe_type == DFLT_B)
 			return (p);

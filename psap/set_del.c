@@ -32,12 +32,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/set_del.c,v 9.0 1992/0
 
 /*  */
 
-int 
-set_del (PE pe, int class, int id)
-{
+int
+set_del (PE pe, int class, int id) {
 	int    pe_id;
 	PE	   *p,
-			 q;
+	 q;
 
 	pe_id = PE_ID (class, id);
 	for (p = &pe -> pe_cons; q = *p; p = &q -> pe_next)

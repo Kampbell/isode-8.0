@@ -72,9 +72,8 @@ static int pe_id_overshift = PE_ID_MASK << (PE_ID_BITS - PE_ID_SHIFT);
 
 /*  */
 
-PE 
-qbuf2pe_f (int *result)
-{
+PE
+qbuf2pe_f (int *result) {
 	PE	pe;
 	struct qbuf *qp;
 	byte c, d;
@@ -218,9 +217,8 @@ you_lose:
 
 /*  */
 
-static int 
-qb_read_cons (PE *pe, PElementLen len, int *cresult)
-{
+static int
+qb_read_cons (PE *pe, PElementLen len, int *cresult) {
 	int    cc;
 	PE    p, q;
 	int result;
@@ -285,9 +283,8 @@ no_cons:
 
 /*  */
 
-static 
-qbuf2data (PElementData data, PElementLen len)
-{
+static
+qbuf2data (PElementData data, PElementLen len) {
 	struct qbuf *qp;
 	int i, cc;
 
@@ -314,7 +311,7 @@ leave:
 /*  */
 
 #ifdef DEBUG
-int 
+int
 qbprintf()  {
 	int len;
 	struct qbuf *qb;
@@ -322,10 +319,10 @@ qbprintf()  {
 
 	for(qb = Fqb, cp = qb->qb_data; qb != Hqb; qb = qb->qb_forw) {
 		for(len = 0; len < qb->qb_len; cp++, len++) {
-			 ll_printf (psap_log, "%x ", *cp);
+			ll_printf (psap_log, "%x ", *cp);
 			if((len % 15) == 0)  ll_printf(psap_log, "\n");
 		}
 	}
-	 ll_sync (psap_log);
+	ll_sync (psap_log);
 }
 #endif

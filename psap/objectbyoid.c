@@ -44,11 +44,11 @@ OID	oid;
 		  ("getisobjectbyoid %s", sprintoid (oid)));
 #endif
 
-	 setisobject (0);
+	setisobject (0);
 	while (io = getisobject ())
 		if (oid_cmp (oid, &io -> io_identity) == 0)
 			break;
-	 endisobject ();
+	endisobject ();
 
 	if (io) {
 #ifdef	DEBUG

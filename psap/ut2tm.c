@@ -45,8 +45,7 @@ static  int makewkday ();
 /*  */
 
 struct tm *
-ut2tm (UTC ut)
-{
+ut2tm (UTC ut) {
 	static struct tm   tms;
 	struct tm *tm = &tms;
 
@@ -102,9 +101,8 @@ ut2tm (UTC ut)
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
 
 
-static int 
-makewkday (UTC ut)
-{
+static int
+makewkday (UTC ut) {
 	int     d,
 			mon,
 			year;

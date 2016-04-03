@@ -35,9 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ts2ps.c,v 9.0 1992/06/
 
 /*  */
 
-int 
-ts_read (int fd, struct qbuf **q)
-{
+int
+ts_read (int fd, struct qbuf **q) {
 	struct qbuf *qb;
 	struct TSAPdata  txs;
 	struct TSAPdata *tx = &txs;
@@ -78,9 +77,8 @@ ts_read (int fd, struct qbuf **q)
 }
 
 
-int 
-ts_write (int fd, struct qbuf *qb)
-{
+int
+ts_write (int fd, struct qbuf *qb) {
 	struct TSAPdisconnect  tds;
 	struct TSAPdisconnect *td = &tds;
 

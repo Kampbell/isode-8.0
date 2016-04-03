@@ -65,13 +65,12 @@ static struct la_cache {
 	OID	oid;
 } Cache[ODECACHESIZE];
 
-static void 
-preloadcache (char *str)
-{
+static void
+preloadcache (char *str) {
 	struct la_cache *cp = &Cache[0];
 	struct isobject *io;
 
-	 setisobject (0);
+	setisobject (0);
 	while (io = getisobject ()) {
 		if (strcmp (str, io -> io_descriptor) == 0 ||
 				strcmp (DFLT_ASN, io -> io_descriptor) == 0 ||
@@ -86,18 +85,17 @@ preloadcache (char *str)
 					cp -> oid = NULLOID;
 				}
 			} else {
-				 strcpy (cp -> descriptor, io -> io_descriptor);
+				strcpy (cp -> descriptor, io -> io_descriptor);
 				cp -> ref = 1;
 				cp ++;
 			}
 		}
 	}
-	 endisobject ();
+	endisobject ();
 }
 
-OID 
-ode2oid (char *descriptor)
-{
+OID
+ode2oid (char *descriptor) {
 	struct isobject *io;
 	int i, least;
 	struct la_cache *cp, *cpn;
@@ -139,13 +137,13 @@ ode2oid (char *descriptor)
 		}
 		cpn -> ref = 0;
 	} else
-		 strcpy (cpn -> descriptor, descriptor);
+		strcpy (cpn -> descriptor, descriptor);
 
 	return (&io -> io_identity);
 }
 
 #ifdef DEBUG
-int 
+int
 free_oid_cache()  {
 	struct la_cache *cp;
 	int i;

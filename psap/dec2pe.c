@@ -11,7 +11,7 @@ main() {
 		buf[0]=(char) i;
 		if (result) write(1, buf, 1);
 		else {
-			 fprintf(stderr,"Conversion failed at byte number %d\n", count);
+			fprintf(stderr,"Conversion failed at byte number %d\n", count);
 			exit(1);
 		}
 	}

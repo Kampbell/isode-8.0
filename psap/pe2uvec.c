@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2uvec.c,v 9.0 1992/0
 
 /*  */
 
-int 
-pe2uvec (PE pe, struct udvec **uv)
-{
+int
+pe2uvec (PE pe, struct udvec **uv) {
 	int	    cc;
 #ifdef	DEBUG
 	int	    len;
@@ -67,8 +66,8 @@ pe2uvec (PE pe, struct udvec **uv)
 #ifdef	DEBUG
 	if (psap_log -> ll_events & LLOG_PDUS) {
 		int	i,
-					j,
-					k;
+			j,
+			k;
 		struct udvec *vv;
 
 		i = j = k = 0;

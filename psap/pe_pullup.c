@@ -35,9 +35,8 @@ static PElementData	pe_pullup_aux ();
 
 /*  */
 
-int 
-pe_pullup (PE pe)
-{
+int
+pe_pullup (PE pe) {
 	PElementLen	    len;
 	PElementData dp;
 	PE	    p;
@@ -60,17 +59,16 @@ pe_pullup (PE pe)
 
 /*  */
 
-static PElementData 
-pe_pullup_aux (PE pe, int *len)
-{
+static PElementData
+pe_pullup_aux (PE pe, int *len) {
 	int    i,
-			 k;
+		   k;
 	int     j;
 	PElementClass class;
 	PElementID id;
 	PElementData dp,
-			 ep,
-			 fp;
+				 ep,
+				 fp;
 	PE	    p;
 
 	switch (pe -> pe_form) {

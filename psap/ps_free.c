@@ -32,11 +32,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_free.c,v 9.0 1992/0
 
 /*  */
 
-void 
-ps_free (PS ps)
-{
+void
+ps_free (PS ps) {
 	if (ps -> ps_closeP)
-		 (*ps -> ps_closeP) (ps);
+		(*ps -> ps_closeP) (ps);
 
 	free ((char *) ps);
 }

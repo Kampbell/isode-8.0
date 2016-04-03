@@ -38,7 +38,7 @@ OID oid;
 	int    i;
 	unsigned int  *ip;
 	char  *bp,
-			 *cp;
+		  *cp;
 	static char buffer[BUFSIZ];
 
 	if (oid == NULLOID || oid -> oid_nelem < 1)
@@ -49,7 +49,7 @@ OID oid;
 	for (ip = oid -> oid_elements, i = oid -> oid_nelem, cp = "";
 			i-- > 0;
 			ip++, cp = ".") {
-		 sprintf (bp, "%s%u", cp, *ip);
+		sprintf (bp, "%s%u", cp, *ip);
 		bp += strlen (bp);
 	}
 

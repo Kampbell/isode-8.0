@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2bit.c,v 9.0 1992/
 
 /*  */
 
-PE 
-prim2bit (PE pe)
-{
+PE
+prim2bit (PE pe) {
 	int	    i;
 	PElementData bp;
 	PElementLen len;

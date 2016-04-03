@@ -38,11 +38,10 @@ static int  ps_get_len ();
 
 /*  */
 
-int 
-ps_get_abs (PE pe)
-{
-	   PElementLen len;
-	   PE p;
+int
+ps_get_abs (PE pe) {
+	PElementLen len;
+	PE p;
 
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
@@ -82,9 +81,8 @@ ps_get_abs (PE pe)
 
 /*  */
 
-static int 
-ps_get_id (PE pe)
-{
+static int
+ps_get_id (PE pe) {
 	int    i;
 	PElementID id;
 
@@ -98,9 +96,8 @@ ps_get_id (PE pe)
 
 /*  */
 
-static int 
-ps_get_len (PE pe)
-{
+static int
+ps_get_len (PE pe) {
 	int    i;
 	PElementLen len;
 

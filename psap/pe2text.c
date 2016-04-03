@@ -37,16 +37,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2text.c,v 9.0 1992/0
 
 /* ARGSUSED */
 
-static int 
-ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line)
-{
+static int
+ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line) {
 	LLog    *lp = (LLog *) ps -> ps_addr;
 
 	if (lp -> ll_stat & LLOGTTY) {
-		 fflush (stdout);
+		fflush (stdout);
 
-		 fwrite ((char *) data, sizeof *data, (int) n, stderr);
-		 fflush (stderr);
+		fwrite ((char *) data, sizeof *data, (int) n, stderr);
+		fflush (stderr);
 	}
 
 	if (lp -> ll_fd == NOTOK) {
@@ -62,9 +61,8 @@ ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line)
 
 /*  */
 
-static int 
-ll_psopen (PS ps)
-{
+static int
+ll_psopen (PS ps) {
 	ps -> ps_writeP = ll_pswrite;
 
 	return OK;
@@ -74,34 +72,33 @@ ll_psopen (PS ps)
 
 /*  */
 
-void 
-pe2text (LLog *lp, PE pe, int rw, int cc)
-{
+void
+pe2text (LLog *lp, PE pe, int rw, int cc) {
 	char   *bp;
 	char   buffer[BUFSIZ];
 	PS ps;
 
 	bp = buffer;
-	 sprintf (bp, "%s PE", rw ? "read" : "wrote");
+	sprintf (bp, "%s PE", rw ? "read" : "wrote");
 	bp += strlen (bp);
 	if (pe -> pe_context != PE_DFLT_CTX) {
-		 sprintf (bp, ", context %d", pe -> pe_context);
+		sprintf (bp, ", context %d", pe -> pe_context);
 		bp += strlen (bp);
 	}
 	if (cc != NOTOK) {
-		 sprintf (bp, ", length %d", cc);
+		sprintf (bp, ", length %d", cc);
 		bp += strlen (bp);
 	}
 	LLOG (lp, LLOG_ALL, ("%s", buffer));
 
 	if ((ps = ps_alloc (ll_psopen)) != NULLPS) {
 		if (ll_psetup (ps, lp) != NOTOK)
-			 pe2pl (ps, pe);
+			pe2pl (ps, pe);
 
 		ps_free (ps);
 	}
 
-	 ll_printf (lp, "-------\n");
+	ll_printf (lp, "-------\n");
 
-	 ll_sync (lp);
+	ll_sync (lp);
 }

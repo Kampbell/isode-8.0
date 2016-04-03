@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/seq_addon.c,v 9.0 1992
 
 /*  */
 
-int 
-seq_addon (PE pe, PE last, PE new)
-{
+int
+seq_addon (PE pe, PE last, PE new) {
 	if (pe == NULLPE)
 		return NOTOK;
 	if (last == NULLPE)

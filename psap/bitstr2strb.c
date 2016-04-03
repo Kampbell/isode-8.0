@@ -33,13 +33,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/bitstr2strb.c,v 9.0 19
 /*  */
 
 char *
-bitstr2strb (PE pe, int *k)
-{
+bitstr2strb (PE pe, int *k) {
 	int    i,
-			 j,
-			 len,
-			 bit,
-			 mask;
+		   j,
+		   len,
+		   bit,
+		   mask;
 	char   *dp;
 	char   *cp;
 

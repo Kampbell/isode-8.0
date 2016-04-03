@@ -33,10 +33,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2qb.c,v 9.0 1992/0
 /*  */
 
 struct qbuf *
-prim2qb (PE pe)
-{
+prim2qb (PE pe) {
 	struct qbuf *qb,
-			*qp;
+			   *qp;
 	PE	    p;
 	PElementClass class;
 	PElementID id;
@@ -63,7 +62,7 @@ prim2qb (PE pe)
 		class = p -> pe_class, id = p -> pe_id;
 		for (p = pe -> pe_cons; p; p = p -> pe_next) {
 			struct qbuf *qpp,
-					*qbp;
+					   *qbp;
 
 			if ((p -> pe_class != class || p -> pe_id != id)
 					&& (p -> pe_class != PE_CLASS_UNIV

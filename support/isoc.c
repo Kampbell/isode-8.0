@@ -869,8 +869,7 @@ int	cc,
 		    ss_adios (sa, "S-READ.REQUEST");
 
 		case OK: 
-		    if ((dm != SX_CAPDIND ? dm : SX_CAPDCNF)
-			    != sx -> sx_type) {
+		    if ((dm != SX_CAPDIND ? dm : SX_CAPDCNF) != sx -> sx_type) {
 			advise (NULLCP,	"data indication type mismatch, orig=%d echo=%d", dm, sx -> sx_type);
 			status++;
 		    }

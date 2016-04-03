@@ -38,14 +38,14 @@ PElementClass	class;
 PElementID	id;
 {
 	int    i,
-			 m,
-			 n,
-			 *mp,
-			 *np;
+		   m,
+		   n,
+		   *mp,
+		   *np;
 	unsigned int j,
 			 *ip;
 	PElementData dp,
-			 ep;
+				 ep;
 	PE	    pe;
 
 	if (o == NULLOID

@@ -68,9 +68,8 @@ typedef struct _atlist {
 #define NULLATL (atlist)NULL
 atlist at_list = NULLATL;
 
-int 
-shadow_entry (Entry eptr)
-{
+int
+shadow_entry (Entry eptr) {
 	DN dn, ndn;
 	Attr_Sequence as;
 	AV_Sequence avs;
@@ -120,14 +119,14 @@ shadow_entry (Entry eptr)
 				}
 }
 
-int 
+int
 shadow_myentry (void) {
 	if ( check_dnseq (shades, mydsadn) == NOTOK)
 		shades = dn_seq_push (mydsadn,shades);
 }
 
 #ifdef DEBUG
-int 
+int
 free_shadow_lists (void) {
 	if (dn_shades)
 		dn_seq_free (dn_shades);
@@ -136,9 +135,8 @@ free_shadow_lists (void) {
 }
 #endif
 
-int 
-shadow_attribute (char *s)
-{
+int
+shadow_attribute (char *s) {
 	AttributeType at;
 	atlist new_atl;
 
@@ -152,7 +150,7 @@ shadow_attribute (char *s)
 	}
 }
 
-int 
+int
 shadow_update (void) {
 	struct dn_seq * dnseq;
 	struct oper_act	* op;
@@ -297,8 +295,8 @@ shadow_update (void) {
 			eptr -> e_refcount++;
 			op -> on_dsas -> di_state = DI_COMPLETE;
 		} else
-			 constructor_dsa_info (dnseq -> dns_dn, NULLDNSEQ,
-										 TRUE, eptr, &err, &(op -> on_dsas) );
+			constructor_dsa_info (dnseq -> dns_dn, NULLDNSEQ,
+								  TRUE, eptr, &err, &(op -> on_dsas) );
 
 		if ( op -> on_dsas )
 			schedule_operation (op);
@@ -308,9 +306,8 @@ shadow_update (void) {
 }
 
 
-int 
-shadow_fail_wakeup (struct oper_act *on)
-{
+int
+shadow_fail_wakeup (struct oper_act *on) {
 #ifdef notanymore
 	struct oper_act	* on_tmp;
 	struct oper_act	**on_p;
@@ -330,7 +327,7 @@ shadow_fail_wakeup (struct oper_act *on)
 		log_ds_error (& on -> on_resp.di_error.de_err);
 
 		if (on->on_conn) {
-			 time (&timenow);
+			time (&timenow);
 			on->on_conn->cn_last_used =
 				timenow - conn_timeout + nsap_timeout;
 		}
@@ -377,16 +374,14 @@ shadow_fail_wakeup (struct oper_act *on)
 }
 
 /* ARGSUSED */
-int 
-inherit_link (Entry e, Entry parent)
-{
+int
+inherit_link (Entry e, Entry parent) {
 	set_inheritance (e);
 	return(OK);
 }
 
-int 
-process_shadow (struct oper_act *on)
-{
+int
+process_shadow (struct oper_act *on) {
 	Entry eptr, ne = NULLENTRY;
 	struct DSError err;
 	Attr_Sequence new_as, as, tas;
@@ -501,8 +496,8 @@ process_shadow (struct oper_act *on)
 		ds_error_free (&err);
 		goto out;
 	}
-	 avl_apply(eptr->e_children, inherit_link,
-					 (caddr_t) eptr, NOTOK, AVL_PREORDER);
+	avl_apply(eptr->e_children, inherit_link,
+			  (caddr_t) eptr, NOTOK, AVL_PREORDER);
 
 	if (eptr->e_parent->e_edbversion)
 		free (eptr->e_parent->e_edbversion);
@@ -528,7 +523,7 @@ process_shadow (struct oper_act *on)
 out:
 	;
 
-	 time (&timenow);
+	time (&timenow);
 	if (ne)
 		ne->e_age = timenow;
 

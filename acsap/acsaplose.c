@@ -43,10 +43,9 @@ static int _acsaplose (struct AcSAPindication *aci, int reason, va_list ap); /* 
 int	acsaplose (struct AcSAPindication*aci, ...);
 
 #ifndef	lint
-int	acpktlose (struct assocblk*acb, ...)
-{
+int	acpktlose (struct assocblk*acb, ...) {
 	int	    reason,
-	result;
+			result;
 	PE	    pe;
 	struct AcSAPindication *aci;
 	struct PSAPindication   pis;
@@ -93,9 +92,8 @@ int	acpktlose (struct assocblk*acb, ...)
 #else
 /* VARARGS5 */
 
-int 
-acpktlose (struct assocblk *acb, struct AcSAPindication *aci, int reason, char *what, char *fmt)
-{
+int
+acpktlose (struct assocblk *acb, struct AcSAPindication *aci, int reason, char *what, char *fmt) {
 	return acpktlose (acb, aci, reason, what, fmt);
 }
 #endif
@@ -103,10 +101,9 @@ acpktlose (struct assocblk *acb, struct AcSAPindication *aci, int reason, char *
 /*  */
 
 #ifndef	lint
-int	acsaplose (struct AcSAPindication*aci, ...)
-{
+int	acsaplose (struct AcSAPindication*aci, ...) {
 	int	    reason,
-	result;
+			result;
 	va_list ap;
 
 	va_start (ap, aci);
@@ -122,9 +119,8 @@ int	acsaplose (struct AcSAPindication*aci, ...)
 #else
 /* VARARGS4 */
 
-int 
-acsaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
-{
+int
+acsaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt) {
 	return acsaplose (aci, reason, what, fmt);
 }
 #endif
@@ -132,8 +128,7 @@ acsaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int _acsaplose (  struct AcSAPindication *aci, int reason, va_list ap) /* what, fmt, args ... */
-{
+static int _acsaplose (  struct AcSAPindication *aci, int reason, va_list ap) { /* what, fmt, args ... */
 	char  *bp;
 	char  *what;
 	char  *fmt;

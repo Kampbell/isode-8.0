@@ -39,9 +39,8 @@ extern DN       dn;
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-int 
-call_modifyrdn (int argc, char **argv)
-{
+int
+call_modifyrdn (int argc, char **argv) {
 	struct ds_modifyrdn_arg modrdn_arg;
 	struct DSError  error;
 	RDN             newname = NULLRDN;

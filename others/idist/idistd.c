@@ -94,17 +94,16 @@ struct group *gr;
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int initiate ();
 	oumask = umask (0);
 
 	host = getlocalhost ();
 
-	 ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
-						dispatches, table_Idist_Operations, initiate,
-						NULLIFP);
+	ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
+				 dispatches, table_Idist_Operations, initiate,
+				 NULLIFP);
 
 	exit (0);		/* NOTREACHED */
 }
@@ -314,10 +313,10 @@ struct RoSAPindication *roi;
 		if (cfile == NULL)
 			return i_strerror (sd, error_Idist_protocol,
 							   "File not open", rox, roi);
-		 fflush (cfile);
+		fflush (cfile);
 		if (ferror (cfile))
 			return syserror (sd, error_Idist_writeerror, rox, roi);
-		 fclose (cfile);
+		fclose (cfile);
 		if ( fixup () < 0)
 			return error (sd, error_Idist_fileproblem,
 						  (caddr_t) ia5list, rox, roi);
@@ -414,7 +413,7 @@ struct RoSAPindication *roi;
 				sd, ryo -> ryo_name);
 
 	str = qb2str (arg);
-	 sprintf (buf, "%s/%s", target, str);
+	sprintf (buf, "%s/%s", target, str);
 	free (str);
 	result = i_remove (buf);
 
@@ -482,17 +481,15 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-static int 
-i_strerror (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
-{
+static int
+i_strerror (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	addtoia5 (str, strlen(str));
 
 	return error (sd, err, (caddr_t)ia5list, rox, roi);
 }
 
-static int 
-syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
-{
+static int
+syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 
 	return i_strerror (sd, err, sys_errname (errno), rox, roi);
 }
@@ -500,9 +497,8 @@ syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 
 /*    U-REJECT */
 
-static int 
-ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
-{
+static int
+ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 
@@ -533,7 +529,7 @@ PE	*pe;
 		return init_lose (ACS_PERMANENT, pe, "Version mismatch");
 
 	cp = qb2str (initial -> user);
-	 strcpy (user, cp);
+	strcpy (user, cp);
 	free (cp);
 
 	if (baduser (NULLCP, user)) {
@@ -549,7 +545,7 @@ PE	*pe;
 
 	userid = pw -> pw_uid;
 	groupid = pw -> pw_gid;
-	 strcpy (homedir, pw -> pw_dir);
+	strcpy (homedir, pw -> pw_dir);
 
 	cp = qb2str (initial -> passwd);
 
@@ -580,7 +576,7 @@ PE	*pe;
 		return init_lose (ACS_PERMANENT, pe, "Can't set user id");
 	}
 
-	 mktemp (utmpfile);
+	mktemp (utmpfile);
 
 	return ACS_ACCEPT;
 }

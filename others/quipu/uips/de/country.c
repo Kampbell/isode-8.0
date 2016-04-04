@@ -51,9 +51,8 @@ void coFilter1(), coFilter2(), coFilter3(), coFilter4();
 VFP explicitCo[] = {makeExplicitCoFilter, NULLVFP};
 VFP normalCo[] = {coFilter1, coFilter2, coFilter3, coFilter4, NULLVFP};
 
-int 
-makeRootCountry (struct namelist **clistp)
-{
+int
+makeRootCountry (struct namelist **clistp) {
 	*clistp = list_alloc();
 	(*clistp)->name = copy_string("root");
 	(*clistp)->ats = NULLATTR;
@@ -62,9 +61,8 @@ makeRootCountry (struct namelist **clistp)
 }
 
 
-int 
-listCos (char *cstr, struct namelist **clistp)
-{
+int
+listCos (char *cstr, struct namelist **clistp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == COUNTRY)
@@ -78,9 +76,8 @@ listCos (char *cstr, struct namelist **clistp)
 		return(listMatchingCos(cstr, clistp));
 }
 
-void 
-printListCos (char *cstr, struct namelist *clistp)
-{
+void
+printListCos (char *cstr, struct namelist *clistp) {
 	struct namelist * x;
 	int i;
 
@@ -93,9 +90,8 @@ printListCos (char *cstr, struct namelist *clistp)
 	}
 }
 
-void 
-freeCos (struct namelist **listpp)
-{
+void
+freeCos (struct namelist **listpp) {
 	struct namelist * x, * y;
 
 	x = *listpp;
@@ -110,14 +106,13 @@ freeCos (struct namelist **listpp)
 	*listpp = NULLLIST;
 }
 
-void 
+void
 freeCoSearchArgs  {
 	dn_free(sarg.sra_baseobject);
 }
 
-int 
-listAllCos (struct namelist **clistp)
-{
+int
+listAllCos (struct namelist **clistp) {
 	int ret;
 
 	sarg = * fillMostCountrySearchArgs(NULLCP, SRA_ONELEVEL);
@@ -133,9 +128,8 @@ listAllCos (struct namelist **clistp)
 	return ret;
 }
 
-int 
-listMatchingCos (char *cstr, struct namelist **clistp)
-{
+int
+listMatchingCos (char *cstr, struct namelist **clistp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -169,9 +163,8 @@ listMatchingCos (char *cstr, struct namelist **clistp)
 	return OK;
 }
 
-int 
-listExactCos (char *objectstr, struct namelist **clistp)
-{
+int
+listExactCos (char *objectstr, struct namelist **clistp) {
 	int ret;
 
 	sarg = * fillMostCountrySearchArgs(objectstr, SRA_BASEOBJECT);
@@ -182,9 +175,8 @@ listExactCos (char *objectstr, struct namelist **clistp)
 	return ret;
 }
 
-int 
-makeListCountries (struct namelist **clistp)
-{
+int
+makeListCountries (struct namelist **clistp) {
 	entrystruct * x;
 	int retval;
 
@@ -215,8 +207,7 @@ makeListCountries (struct namelist **clistp)
 }
 
 struct ds_search_arg *
-fillMostCountrySearchArgs (char *objectstr, int searchdepth)
-{
+fillMostCountrySearchArgs (char *objectstr, int searchdepth) {
 	static struct ds_search_arg arg;
 	static CommonArgs sca = default_common_args;
 
@@ -233,9 +224,8 @@ fillMostCountrySearchArgs (char *objectstr, int searchdepth)
 	return (&arg);
 }
 
-int 
-makeAllCoFilter (struct s_filter **fpp)
-{
+int
+makeAllCoFilter (struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();
@@ -243,9 +233,8 @@ makeAllCoFilter (struct s_filter **fpp)
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_LOCALITY);
 }
 
-void 
-makeExplicitCoFilter (char *cstr, struct s_filter **fpp)
-{
+void
+makeExplicitCoFilter (char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, *fp2;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -287,9 +276,8 @@ makeExplicitCoFilter (char *cstr, struct s_filter **fpp)
 
 }
 
-void 
-coFilter1 (char *cstr, struct s_filter **fpp)
-{
+void
+coFilter1 (char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -304,9 +292,8 @@ coFilter1 (char *cstr, struct s_filter **fpp)
 	fp = fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_LOCALITY_NAME, cstr);
 }
 
-void 
-coFilter2 (char *cstr, struct s_filter **fpp)
-{
+void
+coFilter2 (char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -318,9 +305,8 @@ coFilter2 (char *cstr, struct s_filter **fpp)
 	fp = fp->flt_next = subsfilter(LEADSUBSTR, DE_LOCALITY_NAME, cstr);
 }
 
-void 
-coFilter3 (char *cstr, struct s_filter **fpp)
-{
+void
+coFilter3 (char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -332,9 +318,8 @@ coFilter3 (char *cstr, struct s_filter **fpp)
 	fp = fp->flt_next = subsfilter(ANYSUBSTR, DE_LOCALITY_NAME, cstr);
 }
 
-void 
-coFilter4 (char *cstr, struct s_filter **fpp)
-{
+void
+coFilter4 (char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();

@@ -50,9 +50,8 @@ static int  process ();
 
 /* ARGSUSED */
 
-int 
-PY_pp (int argc, char **argv, char **envp, IFP pfx)
-{
+int
+PY_pp (int argc, char **argv, char **envp, IFP pfx) {
 	int    status = 0;
 	char  *cp;
 	FILE  *fp;
@@ -86,7 +85,7 @@ PY_pp (int argc, char **argv, char **envp, IFP pfx)
 				continue;
 			}
 			status += process (cp, fp, pfx);
-			 fclose (fp);
+			fclose (fp);
 		}
 
 	return status;
@@ -139,7 +138,7 @@ done:
 			break;
 		}
 
-		 (*pfx) (pe, 1, NULLIP, NULLVP, NULLCP);
+		(*pfx) (pe, 1, NULLIP, NULLVP, NULLCP);
 
 		pe_free (pe);
 	}
@@ -154,8 +153,7 @@ done:
 static void	_advise (char*what, ...);
 
 
-static void  adios (char*what, ...)
-{
+static void  adios (char*what, ...) {
 	va_list ap;
 
 	va_start (ap, what);
@@ -169,17 +167,15 @@ static void  adios (char*what, ...)
 #else
 /* VARARGS */
 
-static void 
-adios (char *what, char *fmt)
-{
+static void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 
 #ifndef	lint
-static void  advise (char*what, ...)
-{
+static void  advise (char*what, ...) {
 	va_list ap;
 
 	va_start (ap, what);
@@ -190,8 +186,7 @@ static void  advise (char*what, ...)
 }
 
 
-static void  _advise (char*what, ...)
-{
+static void  _advise (char*what, ...) {
 	char    buffer[BUFSIZ];
 
 	va_list ap;
@@ -200,22 +195,21 @@ static void  _advise (char*what, ...)
 
 	asprintf (buffer, what, ap);
 
-	 fflush (stdout);
+	fflush (stdout);
 
-	 fprintf (stderr, "%s: ", myname);
-	 fputs (buffer, stderr);
-	 fputc ('\n', stderr);
+	fprintf (stderr, "%s: ", myname);
+	fputs (buffer, stderr);
+	fputc ('\n', stderr);
 
-	 fflush (stderr);
+	fflush (stderr);
 
 	va_end (ap);
 }
 #else
 /* VARARGS */
 
-static void 
-advise (char *what, char *fmt)
-{
+static void
+advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif

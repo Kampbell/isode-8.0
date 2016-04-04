@@ -66,7 +66,7 @@ extern short acl_sntx;
 extern AV_Sequence oc_avs();
 Attr_Sequence entry_find_type();
 
-int 
+int
 check_dsa_known_oids (void) {
 	/* set pointers to special attributes */
 

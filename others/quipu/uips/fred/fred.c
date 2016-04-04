@@ -93,9 +93,8 @@ static	log_utmp ();
 
 /* ARGSUSED  */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int	    eof,
 			status,
 			vecp;
@@ -104,7 +103,7 @@ main (int argc, char **argv, char **envp)
 			buffer[BUFSIZ],
 			*vec[NVEC + 1];
 	struct sockaddr_in in_socket,
-			*isock = &in_socket;
+			   *isock = &in_socket;
 
 	arginit (argv);
 
@@ -132,7 +131,7 @@ main (int argc, char **argv, char **envp)
 						while ((c = getc (stdin)) == ' ' || c == '\t')
 							continue;
 						if (c != EOF)
-							 ungetc (c, stdin);
+							ungetc (c, stdin);
 						else {
 							c = NULL;
 							break;
@@ -141,7 +140,7 @@ main (int argc, char **argv, char **envp)
 						if (c == EOF)
 							c = NULL;
 						else
-							 ungetc (c, stdin);
+							ungetc (c, stdin);
 						break;
 					}
 				} else if (cp < ep)
@@ -173,34 +172,34 @@ main (int argc, char **argv, char **envp)
 		if (!from && !reply_to && !sender)
 			adios (NULLCP, "unable to determine return address");
 
-		 sprintf (buffer, "/bin/mail \"%s\"",
-						ep = reply_to ? reply_to : from ? from : sender);
+		sprintf (buffer, "/bin/mail \"%s\"",
+				 ep = reply_to ? reply_to : from ? from : sender);
 		if (watch) {
-			 fprintf (stderr, "%s\n", buffer);
-			 fflush (stderr);
+			fprintf (stderr, "%s\n", buffer);
+			fflush (stderr);
 		}
 
-		 signal (SIGPIPE, SIG_IGN);
+		signal (SIGPIPE, SIG_IGN);
 		if ((fp = popen (buffer, "w")) == NULL)
 			adios ("failed", "popen");
 
 		stdfp = errfp = fp;
 
-		 fprintf (stdfp, "To: %s\nSubject: Re: %s\n\n",
-						ep, subject ? subject : "white pages query");
-		 fflush (stdfp);
+		fprintf (stdfp, "To: %s\nSubject: Re: %s\n\n",
+				 ep, subject ? subject : "white pages query");
+		fflush (stdfp);
 
 		if (f_bind (NULLVP) == NOTOK)
 			adios (NULLCP, "unable to open the white pages");
 
 		if (subject) {
-			 strcpy (buffer, subject);
-			 ll_log (fred_log, LLOG_NOTICE, NULLCP, "%s asks: %s",
-						   ep, buffer);
+			strcpy (buffer, subject);
+			ll_log (fred_log, LLOG_NOTICE, NULLCP, "%s asks: %s",
+					ep, buffer);
 
 			bzero ((char *) vec, sizeof vec);
 			if (str2vecY (buffer, vec) < 1)
-				 f_help (NULLVP);
+				f_help (NULLVP);
 			else if (fredloop (vec, NOTOK) != OK)
 				status = 1;
 		} else {
@@ -217,10 +216,10 @@ main (int argc, char **argv, char **envp)
 					if (buffer[0] == NULL)
 						break;
 
-					 ll_log (fred_log, LLOG_NOTICE, NULLCP,
-								   "%s asks: %s", ep, buffer);
+					ll_log (fred_log, LLOG_NOTICE, NULLCP,
+							"%s asks: %s", ep, buffer);
 
-					 fprintf (stdfp, "%s>>> %s\n", didone ? "\n\n" : "", buffer);
+					fprintf (stdfp, "%s>>> %s\n", didone ? "\n\n" : "", buffer);
 
 					bzero ((char *) vec, sizeof vec);
 					if (str2vecY (buffer, vec) < 1)
@@ -234,10 +233,10 @@ main (int argc, char **argv, char **envp)
 				}
 
 			if (!didone)
-				 f_help (NULLVP);
+				f_help (NULLVP);
 		}
 
-		 fclose (fp);
+		fclose (fp);
 
 		stdfp = stdout;
 
@@ -249,19 +248,19 @@ main (int argc, char **argv, char **envp)
 
 		if (getpeername (fileno (stdin), (struct sockaddr *) isock,
 						 (len = sizeof *isock, &len)) != NOTOK) {
-			 sprintf (address, "%s/%d",
-							inet_ntoa (isock -> sin_addr),
-							ntohs (isock -> sin_port));
+			sprintf (address, "%s/%d",
+					 inet_ntoa (isock -> sin_addr),
+					 ntohs (isock -> sin_port));
 
 			rcmap (isock);
 		} else {
-			 ll_log (fred_log, LLOG_EXCEPTIONS, "failed", "getpeername");
-			 strcpy (address, "peer");
+			ll_log (fred_log, LLOG_EXCEPTIONS, "failed", "getpeername");
+			strcpy (address, "peer");
 		}
 	} else {
 		struct hostent *hp;
 
-		 strcpy (address, getlocalhost ());
+		strcpy (address, getlocalhost ());
 
 		if (hp = gethostbystring (address)) {
 			bzero ((char *) isock, sizeof *isock);
@@ -274,7 +273,7 @@ main (int argc, char **argv, char **envp)
 	}
 
 	if (!fflag) {
-		 sprintf (buffer, "%s/.fredrc", myhome);
+		sprintf (buffer, "%s/.fredrc", myhome);
 		rcfile (buffer, op ? 1 : 0, 0);
 	}
 
@@ -284,7 +283,7 @@ main (int argc, char **argv, char **envp)
 	if (network) {
 		errfp = stdout;
 
-		 strcpy (buffer, "whois ");
+		strcpy (buffer, "whois ");
 		switch (fetchline (buffer + (sizeof "whois " - 1),
 						   sizeof buffer - (sizeof "whois " - 1), stdin)) {
 		case NOTOK:
@@ -304,12 +303,12 @@ main (int argc, char **argv, char **envp)
 		if (cp = index (buffer, '\n'))
 			*cp = NULL;
 
-		 ll_log (fred_log, LLOG_NOTICE, NULLCP, "%s asks: %s",
-					   address, buffer);
+		ll_log (fred_log, LLOG_NOTICE, NULLCP, "%s asks: %s",
+				address, buffer);
 
 		bzero ((char *) vec, sizeof vec);
 		if (str2vecY (buffer, vec) < 2)
-			 f_help (NULLVP);
+			f_help (NULLVP);
 		else if (fredloop (vec, NOTOK) != OK)
 			status = 1;
 
@@ -333,7 +332,7 @@ main (int argc, char **argv, char **envp)
 				}
 
 			for (cp = buffer; *op; cp += strlen (cp))
-				 sprintf (cp, " %s%s%s", bp, *op++, bp);
+				sprintf (cp, " %s%s%s", bp, *op++, bp);
 
 			vec[vecp++] = "whois";
 			vec[vecp++] = buffer;
@@ -361,7 +360,7 @@ main (int argc, char **argv, char **envp)
 
 			switch (setjmp (alrmenv)) {
 			case OK:
-				 alarm ((unsigned) 300);
+				alarm ((unsigned) 300);
 				break;
 
 			default:
@@ -379,11 +378,11 @@ main (int argc, char **argv, char **envp)
 		eof = 0;
 
 		if (alarming)
-			 alarm ((unsigned) 0);
+			alarm ((unsigned) 0);
 
 		if (logging)
-			 ll_log (fred_log, LLOG_NOTICE, NULLCP, "command: %s",
-						   buffer);
+			ll_log (fred_log, LLOG_NOTICE, NULLCP, "command: %s",
+					buffer);
 
 		bzero ((char *) vec, sizeof vec);
 		if ((vecp = str2vecY (buffer, vec)) < 1)
@@ -405,20 +404,19 @@ main (int argc, char **argv, char **envp)
 		break;
 	}
 
-	 signal (SIGINT, istat);
+	signal (SIGINT, istat);
 
 were_out_of_here:
 	;
-	 f_quit (NULLVP);
+	f_quit (NULLVP);
 
 	exit (mail ? 0 : status);		/* NOTREACHED */
 }
 
 /*    ARGINIT */
 
-static 
-arginit (char **vec)
-{
+static
+arginit (char **vec) {
 	char  *ap;
 
 	if (myname = rindex (*vec, '/'))
@@ -501,12 +499,11 @@ arginit (char **vec)
 
 /*    INTERACTIVE */
 
-int 
-getline (char *prompt, char *buffer)
-{
+int
+getline (char *prompt, char *buffer) {
 	int    i;
 	char  *cp,
-			 *ep;
+		  *ep;
 	static int  sticky = 0;
 
 	if (interrupted) {
@@ -526,21 +523,21 @@ getline (char *prompt, char *buffer)
 
 	case NOTOK:
 		if (ontty)
-			 printf ("\n");	/* and fall */
+			printf ("\n");	/* and fall */
 	default:
 		armed = 0;
 		return NOTOK;
 	}
 
 	if (ontty) {
-		 printf (prompt, myname);
-		 fflush (stdout);
+		printf (prompt, myname);
+		fflush (stdout);
 	}
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
 			if (ontty)
-				 printf ("\n");
+				printf ("\n");
 			clearerr (stdin);
 			if (cp == buffer)
 				longjmp (intrenv, DONE);
@@ -577,7 +574,7 @@ FILE  *iop;
 	p = s;
 	while (--n > 0 && (c = getc (iop)) != EOF) {
 		while (c == IAC) {
-			 getc (iop);
+			getc (iop);
 			c = getc (iop);
 		}
 		if ((*p++ = c) == '\n')
@@ -600,7 +597,7 @@ static	SFD alrmser (sig)
 int	sig;
 {
 #ifndef	BSDSIGS
-	 signal (SIGALRM, alrmser);
+	signal (SIGALRM, alrmser);
 #endif
 
 	longjmp (alrmenv, NOTOK);
@@ -614,7 +611,7 @@ static	SFD intrser (sig)
 int	sig;
 {
 #ifndef	BSDSIGS
-	 signal (SIGINT, intrser);
+	signal (SIGINT, intrser);
 #endif
 
 	if (armed)
@@ -649,7 +646,7 @@ va_dcl {
 
 	case NOTOK:
 	default:
-		 printf ("\n");
+		printf ("\n");
 		armed = 0;
 		return DONE;
 	}
@@ -662,7 +659,7 @@ va_dcl {
 
 again:
 	;
-	 printf ("%s", buffer);
+	printf ("%s", buffer);
 
 	x = y = getchar ();
 	while (y != '\n' && y != EOF)
@@ -694,21 +691,19 @@ again:
 #else
 /* VARARGS */
 
-int 
-ask (char *fmt)
-{
+int
+ask (char *fmt) {
 	return ask (fmt);
 }
 #endif
 
 /*  */
 
-int 
-str2vecY (char *buffer, char **vec)
-{
+int
+str2vecY (char *buffer, char **vec) {
 	int	    i;
 	char *cp,
-			 *dp;
+		 *dp;
 
 	if (nametype <= 1) {
 normal:
@@ -751,9 +746,8 @@ normal:
 
  */
 
-static 
-rcmap (struct sockaddr_in *isock)
-{
+static
+rcmap (struct sockaddr_in *isock) {
 	u_long	hostaddr,
 			netmask,
 			netaddr;
@@ -798,12 +792,12 @@ rcmap (struct sockaddr_in *isock)
 		break;
 	}
 
-	 fclose (fp);
+	fclose (fp);
 
 done:
 	;
-	 setgid (getgid ());
-	 setuid (getuid ());
+	setgid (getgid ());
+	setuid (getuid ());
 }
 
 /*    ERRORS */
@@ -824,22 +818,21 @@ va_dcl {
 	va_start (ap);
 
 	if (network)
-		 _ll_log (fred_log, LLOG_FATAL, ap);
+		_ll_log (fred_log, LLOG_FATAL, ap);
 
 	_advise (ap);
 
 	va_end (ap);
 
-	 f_quit (NULLVP);
+	f_quit (NULLVP);
 
 	_exit (1);
 }
 #else
 /* VARARGS */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -866,20 +859,19 @@ va_list	ap;
 
 	asprintf (buffer, ap);
 
-	 fflush (stdfp);
+	fflush (stdfp);
 
-	 fprintf (fp, "%s: ", myname);
-	 fputs (buffer, fp);
-	 fputs (EOLN, fp);
+	fprintf (fp, "%s: ", myname);
+	fputs (buffer, fp);
+	fputs (EOLN, fp);
 
-	 fflush (fp);
+	fflush (fp);
 }
 #else
 /* VARARGS */
 
-void 
-advise (char *what, char *fmt)
-{
+void
+advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
@@ -934,25 +926,25 @@ static	log_utmp () {
 		if (ut -> ut_name[0] == NULL || SCMPN (ut -> ut_line, line))
 			continue;
 #ifndef	BSD42
-		 ll_log (fred_log, LLOG_NOTICE, NULLCP, "%.*s on %.*s",
-					   NMAX, ut -> ut_name, LMAX, ut -> ut_line);
+		ll_log (fred_log, LLOG_NOTICE, NULLCP, "%.*s on %.*s",
+				NMAX, ut -> ut_name, LMAX, ut -> ut_line);
 #else
-		 ll_log (fred_log, LLOG_NOTICE, NULLCP,
-					   "%.*s on %.*s (%.*s)",
-					   NMAX, ut -> ut_name, LMAX, ut -> ut_line,
-					   HMAX, ut -> ut_host);
+		ll_log (fred_log, LLOG_NOTICE, NULLCP,
+				"%.*s on %.*s (%.*s)",
+				NMAX, ut -> ut_name, LMAX, ut -> ut_line,
+				HMAX, ut -> ut_host);
 #endif
 		break;
 	}
-	 close (ud);
+	close (ud);
 #else
 	setutent ();
 	while (ut = getutent ()) {
 		if (ut -> ut_type != USER_PROCESS || SCMPN (ut -> ut_line, line))
 			continue;
 
-		 ll_log (fred_log, LLOG_NOTICE, NULLCP, "%.*s on %.*s",
-					   NMAX, ut -> ut_name, LMAX, ut -> ut_line);
+		ll_log (fred_log, LLOG_NOTICE, NULLCP, "%.*s on %.*s",
+				NMAX, ut -> ut_name, LMAX, ut -> ut_line);
 		break;
 	}
 	endutent ();

@@ -36,9 +36,8 @@ static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, 
 
 /*    F-TRANSFER-END.RESPONSE */
 
-int 
-FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+int
+FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -62,15 +61,14 @@ FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[
 
 	result = FTransEndResponseAux (fsb, action, sharedASE, diag, ndiag, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    result;
 	PE	    pe;
 	struct PSAPindication   pis;
@@ -88,7 +86,7 @@ static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, 
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -119,8 +117,8 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-						 "error encoding PDU: %s", PY_pepy);
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
 
@@ -137,7 +135,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		 ps2ftamlose (fsb, fti, "PDataRequest", pa);
+		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
 

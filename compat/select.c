@@ -62,27 +62,24 @@ static fd_set in_rfds, in_wfds, in_efds;
 static fd_set out_rfds, out_wfds, out_efds;
 static int out_n;
 
-void 
-rhandler (int fd)
-{
+void
+rhandler (int fd) {
 	if ( FD_ISSET(fd,&in_rfds) ) {
 		FD_SET(fd,&out_rfds);
 		out_n++;
 	}
 }
 
-void 
-whandler (int fd)
-{
+void
+whandler (int fd) {
 	if ( FD_ISSET(fd,&in_wfds) ) {
 		FD_SET(fd,&out_wfds);
 		out_n++;
 	}
 }
 
-void 
-xhandler (int fd)
-{
+void
+xhandler (int fd) {
 	if ( FD_ISSET(fd,&in_efds) ) {
 		FD_SET(fd,&out_efds);
 		out_n++;
@@ -92,9 +89,8 @@ xhandler (int fd)
 #endif
 #endif
 
-int 
-selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs)
-{
+int
+selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs) {
 	int     n;
 	fd_set  ifds,
 			ofds,
@@ -242,8 +238,7 @@ selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs)
 #include "sys/soioctl.h"
 
 
-int	selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
-{
+int	selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs) {
 	int    fd;
 	int     n;
 	fd_set  ifds,
@@ -296,8 +291,7 @@ int	selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
 #if defined(TLI_TP) && defined(TLI_POLL)
 #include <poll.h>
 
-int selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
-{
+int selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs) {
 	int i, j, n;
 	struct pollfd pollfds[128];
 
@@ -384,8 +378,7 @@ caddr_t	data;
 #if !(defined(_AIX) && defined(X25))
 /* We have an AIX specific version if X25 is defined */
 
-int	xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs)
-{
+int	xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs) {
 	int    fd;
 	int	    n;
 	fd_set  ifds,

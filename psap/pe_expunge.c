@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_expunge.c,v 9.0 199
 
 /*  */
 
-PE 
-pe_expunge (PE pe, PE r)
-{
+PE
+pe_expunge (PE pe, PE r) {
 	if (r) {
 		if (pe == r)
 			return r;

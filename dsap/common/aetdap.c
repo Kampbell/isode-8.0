@@ -42,7 +42,7 @@ static char password[DBA_MAX_PASSWD_LEN] = "";
 
 /*  */
 
-static 
+static
 bind_to_dsa (void) {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
@@ -51,7 +51,7 @@ bind_to_dsa (void) {
 	bindarg.dba_version = DBA_VERSION_V1988;
 	bindarg.dba_dn = username;
 	if (bindarg.dba_passwd_len = strlen (password))
-		 strcpy (bindarg.dba_passwd, password);
+		strcpy (bindarg.dba_passwd, password);
 
 	if (ds_bind (&bindarg,&binderr,&bindresult) != DS_OK) {
 		PY_advise (NULLCP, "unable to bind to directory (%s)",
@@ -126,7 +126,7 @@ PE     *real_name;
 
 		if (qualifier == NULLCP)
 			qualifier = context ? context: "default";
-		 sprintf (buffer, "%s@cn=%s", name, qualifier);
+		sprintf (buffer, "%s@cn=%s", name, qualifier);
 	}
 
 	name = buffer;
@@ -156,7 +156,7 @@ out:
 	}
 	password[0] = NULL;
 	if (passwd)
-		 strcpy (password, passwd);
+		strcpy (password, passwd);
 
 	if (! bound) {
 		if (!bind_to_dsa ()) {
@@ -177,20 +177,20 @@ out:
 		ds_error_free (&error);
 		if (unbind) {
 			bound = FALSE;
-			 ds_unbind();
+			ds_unbind();
 		}
 		dn_free (dn);
 		AttrT_free (at);
 		as_free (read_arg.rda_eis.eis_select);
 		goto out;
 	} else {
-		 encode_IF_DistinguishedName (real_name,1,0,NULLCP,dn);
+		encode_IF_DistinguishedName (real_name,1,0,NULLCP,dn);
 		if (result.rdr_entry.ent_attr == NULLATTR) {
 			PY_advise (NULLCP, "No '%s' attribute in entry '%s'",
 					   DSAADDRESS_OID, name);
 			if (unbind) {
 				bound = FALSE;
-				 ds_unbind();
+				ds_unbind();
 			}
 			dn_free (dn);
 			AttrT_free (at);
@@ -199,7 +199,7 @@ out:
 		}
 		if (unbind) {
 			bound = FALSE;
-			 ds_unbind();
+			ds_unbind();
 		}
 		dn_free (dn);
 		AttrT_free (at);
@@ -212,11 +212,10 @@ out:
 
 /*  */
 
-int 
+int
 set_lookup_dap (
-    int flag		/* if TRUE always unbind */
-)
-{
+	int flag		/* if TRUE always unbind */
+) {
 	extern char * oidtable;
 
 	if ((unbind = flag) && bound) {

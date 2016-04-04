@@ -261,8 +261,7 @@ char *x;
 }
 
 static char *
-local_t61 (char *a)
-{
+local_t61 (char *a) {
 	char * b;
 
 	if (a == NULLCP)
@@ -270,8 +269,8 @@ local_t61 (char *a)
 
 	b = smalloc (strlen(a) +2);
 	*b++ = T61_MARK;
-	 strcpy (b,a);
-	 free (a);
+	strcpy (b,a);
+	free (a);
 	return (--b);
 }
 
@@ -303,9 +302,8 @@ PE pe;
 #include "iso3166.h"
 #endif
 
-int 
-check_3166 (char *a)
-{
+int
+check_3166 (char *a) {
 #ifdef STRICT_X500
 	int    bitno;
 #endif
@@ -441,8 +439,7 @@ PE pe;
 }
 
 static char *
-quotechar (int a, char *b)
-{
+quotechar (int a, char *b) {
 #ifdef NICER_ESCAPES
 #define CONT_CHAR	'\\'
 
@@ -475,21 +472,20 @@ quotechar (int a, char *b)
 #endif
 
 	default:
-		 sprintf (b,"\\%02x", a & 0xff);
+		sprintf (b,"\\%02x", a & 0xff);
 		b += 3;
 		break;
 	}
 	return (b);
 #else
-	 sprintf (b,"\\%02x", a & 0xff);
+	sprintf (b,"\\%02x", a & 0xff);
 	b += 3;
 	return (b);
 #endif
 }
 
 static char *
-unquotechar (char *a, char *b)
-{
+unquotechar (char *a, char *b) {
 	int val;
 
 #ifdef NICER_ESCAPES
@@ -539,9 +535,8 @@ unquotechar (char *a, char *b)
 }
 
 
-int 
-check_print_string (char *str)
-{
+int
+check_print_string (char *str) {
 
 	for (; *str != 0; str++) {
 		if ((isascii((*str)& 0xff)) && (isalnum ((*str) & 0xff)))
@@ -574,8 +569,7 @@ check_print_string (char *str)
 #define PARSE_INCR	240
 
 struct qbuf *
-r_octparse (char *str)
-{
+r_octparse (char *str) {
 	static char 	*buf;
 	static int 		buflen = 0;
 	char	*ptr;
@@ -614,8 +608,7 @@ r_octparse (char *str)
 }
 
 char *
-octparse (char *str)
-{
+octparse (char *str) {
 	char buffer [BUFSIZ];
 	char * ptr=buffer;
 	int i;
@@ -641,8 +634,7 @@ octparse (char *str)
 #define prtparse_aux(z)	(check_print_string(z) ? strdup(z) : NULLCP)
 
 char *
-prtparse (char *str)
-{
+prtparse (char *str) {
 	char * ptr;
 
 	if ((*str == '\\') && (*(str+1) == '2')
@@ -659,8 +651,7 @@ prtparse (char *str)
 }
 
 static char *
-cntyparse (char *str)
-{
+cntyparse (char *str) {
 	char * a;
 
 	if ((a=prtparse(str)) == NULLCP)
@@ -675,8 +666,7 @@ cntyparse (char *str)
 }
 
 static char *
-t61parse (char *str)
-{
+t61parse (char *str) {
 	extern char t61_flag;
 	char * res;
 
@@ -703,8 +693,7 @@ t61parse (char *str)
 
 
 char *
-cryptstring (char *str)
-{
+cryptstring (char *str) {
 	char * p;
 	/* This is a SIMPLE HACK to prevent passwords being revealed */
 	/* at a glance.  It buys virtually no extra security */
@@ -719,8 +708,7 @@ cryptstring (char *str)
 }
 
 char *
-cryptparse (char *str)
-{
+cryptparse (char *str) {
 	extern char crypt_flag;
 	char * octparse ();
 
@@ -731,15 +719,13 @@ cryptparse (char *str)
 		return (octparse (str));
 }
 
-int 
-sfree (char *x)
-{
+int
+sfree (char *x) {
 	free (x);
 }
 
-int 
-pstrcmp (char *a, char *b)
-{
+int
+pstrcmp (char *a, char *b) {
 	while (*a == *b) {
 		if (*a++ == NULL)
 			return (0);
@@ -753,9 +739,8 @@ pstrcmp (char *a, char *b)
 
 }
 
-static 
-tpstrcmp (char *a, char *b)
-{
+static
+tpstrcmp (char *a, char *b) {
 	if (*a == T61_MARK)
 		a++;
 	if (*b == T61_MARK)
@@ -773,9 +758,8 @@ tpstrcmp (char *a, char *b)
 		return (-1);
 }
 
-static 
-tlexequ (char *a, char *b)
-{
+static
+tlexequ (char *a, char *b) {
 
 	/* lexequ with T.61 knowledge */
 
@@ -796,9 +780,8 @@ tlexequ (char *a, char *b)
 		return (-1);
 }
 
-int 
-passwdcmp (char *a, char *b)
-{
+int
+passwdcmp (char *a, char *b) {
 	if (strcmp (a,b) == 0)
 		return (0);
 	else
@@ -806,11 +789,10 @@ passwdcmp (char *a, char *b)
 
 }
 
-int 
-telcmp (char *a, char *b)
-{
+int
+telcmp (char *a, char *b) {
 	char c1,
-			 c2;
+		 c2;
 
 	for (;;) {
 		while (c1 = *a++)
@@ -833,9 +815,8 @@ telcmp (char *a, char *b)
 	}
 }
 
-int 
-telstrlen (char *s)
-{
+int
+telstrlen (char *s) {
 	int	len;
 
 	for ( len = 0; *s; s++ )
@@ -845,11 +826,10 @@ telstrlen (char *s)
 	return( len );
 }
 
-int 
-telncmp (char *a, char *b, int len)
-{
+int
+telncmp (char *a, char *b, int len) {
 	char c1,
-			 c2;
+		 c2;
 
 	for (;;) {
 		while (c1 = *a++)
@@ -914,7 +894,7 @@ int format;
 			return;
 		}
 		ps_print (ps,"{CRYPT}");
-		 strcpy (ptr,str);
+		strcpy (ptr,str);
 		octprint (ps,cryptstring(ptr),format);
 	}
 }
@@ -929,7 +909,7 @@ int format;
 {
 	char 	buf[MAXLINE + BUFSLOP];
 	register	char *str;
-		char *ptr = buf;
+	char *ptr = buf;
 
 	char	*pend = buf + MAXLINE;
 	char	*optr = buf;
@@ -966,7 +946,7 @@ again:
 				if (format != READOUT)
 					*optr++ = '\\';	/* Continuation character */
 				*optr++ = '\n';
-				 ps_write(ps, (PElementData)buf, optr - buf);
+				ps_write(ps, (PElementData)buf, optr - buf);
 				optr = ptr = buf;
 				goto again;
 			}
@@ -974,7 +954,7 @@ again:
 		}
 	}
 	if (ptr > buf)
-		 ps_write(ps, (PElementData)buf, ptr - buf);
+		ps_write(ps, (PElementData)buf, ptr - buf);
 }
 
 /* ARGSUSED */
@@ -1018,7 +998,7 @@ int format;
 				*optr++ = '\\';
 				*optr++ = '\n';
 			}
-			 ps_write (ps, (PElementData)buf, optr - buf);
+			ps_write (ps, (PElementData)buf, optr - buf);
 			ptr = optr = buf;
 			continue;
 		}
@@ -1027,7 +1007,7 @@ int format;
 	}
 
 	if (optr > buf)
-		 ps_write (ps, (PElementData)buf, optr - buf);
+		ps_write (ps, (PElementData)buf, optr - buf);
 }
 
 
@@ -1038,9 +1018,8 @@ int format;
  * Doesn't work for a qbuf which doesn't have a head ! Don't really know what
  * is the proper form of a queue buf. Marshall's doco doesn't say
  */
-int 
-qb_cmp (struct qbuf *qb1, struct qbuf *qb2)
-{
+int
+qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
 	struct	qbuf	*qp1, *qp2;
 	char	*po1, *po2;
 	int	len1, len2;
@@ -1104,9 +1083,8 @@ qb_cmp (struct qbuf *qb1, struct qbuf *qb2)
  * actually compares them and returns 1, 0, -1 depending on wether the
  * len characters of string1 are greater, equal or less than string2
  */
-int 
-nbcmp (char *string1, char *string2, int len)
-{
+int
+nbcmp (char *string1, char *string2, int len) {
 	while (len-- > 0) {
 		if (*string1++ == *string2++)
 			continue;
@@ -1121,8 +1099,7 @@ nbcmp (char *string1, char *string2, int len)
 				: 0))
 
 struct qbuf *
-qb_cpy (struct qbuf *qb)
-{
+qb_cpy (struct qbuf *qb) {
 	struct qbuf	*qp;
 	struct qbuf	*nqb;
 	struct qbuf	*nqp;
@@ -1165,7 +1142,7 @@ int	len;	/* number of characters in string */
 {
 	char 	buf[MAXLINE + BUFSLOP];
 	register	char *str;
-		char *ptr = buf;
+	char *ptr = buf;
 
 	char	*pend = buf + MAXLINE;
 	char	*optr = buf;
@@ -1195,7 +1172,7 @@ again:
 		if (ptr >= pend) {
 			*optr++ = '\\';	/* Continuation character */
 			*optr++ = '\n';
-			 ps_write(ps, (PElementData)buf, optr - buf);
+			ps_write(ps, (PElementData)buf, optr - buf);
 			optr = ptr = buf;
 			goto again;
 		}
@@ -1206,7 +1183,7 @@ again:
 	*ptr++ = '\\';
 	*ptr++ = 'Z';
 	if (ptr > buf)
-		 ps_write(ps, (PElementData)buf, ptr - buf);
+		ps_write(ps, (PElementData)buf, ptr - buf);
 }
 /*
  * extract the next string that was written using out_print
@@ -1218,10 +1195,9 @@ again:
  */
 char *
 part_parse (
-    char **pstr,		/* address of pointer to string */
-    int *plen		/* address of integer we set the length to */
-)
-{
+	char **pstr,		/* address of pointer to string */
+	int *plen		/* address of integer we set the length to */
+) {
 	static char 	*buf;
 	static int 		buflen = 0;
 	char	*str;
@@ -1269,41 +1245,37 @@ part_parse (
 	return (buf);
 }
 
-int 
-case_exact_match (int sntx)
-{
+int
+case_exact_match (int sntx) {
 	if ((sntx < exct) || (sntx > (exct + 3)))
 		return (FALSE);
 	else
 		return (TRUE);
 }
 
-int 
-approx_string (int sntx)
-{
+int
+approx_string (int sntx) {
 	if ((sntx < exct) || (sntx > (exct + 7)))
 		return (FALSE);
 	else
 		return (TRUE);
 }
 
-int 
-sub_string (int sntx)
-{
+int
+sub_string (int sntx) {
 	if ((sntx < exct) || (sntx > (exct + 8)))
 		return (FALSE);
 	else
 		return (TRUE);
 }
 
-int 
-telephone_match (int sntx)
-{
+int
+telephone_match (int sntx) {
 	return( sntx == tel_sntx );
 }
 
 
-int 
+int
 string_syntaxes (void) {
 	/* Don't change ordering here unless you know
 	   the side effects !!! */
@@ -1325,72 +1297,72 @@ string_syntaxes (void) {
 									 sfree,		NULLCP,
 									 soundex_match,	TRUE);
 
-	 add_attribute_syntax ("printablestring",
-								 (IFP) strenc,	(IFP) prtsdec,
-								 (IFP) prtparse,	strprint,
-								 (IFP) strdup,	pstrcmp,
-								 sfree,		NULLCP,
-								 soundex_match,	TRUE);
+	add_attribute_syntax ("printablestring",
+						  (IFP) strenc,	(IFP) prtsdec,
+						  (IFP) prtparse,	strprint,
+						  (IFP) strdup,	pstrcmp,
+						  sfree,		NULLCP,
+						  soundex_match,	TRUE);
 
-	 add_attribute_syntax ("ia5string",
-								 (IFP) ia5enc,	(IFP) ia5sdec,
-								 (IFP) octparse,	octprint,
-								 (IFP) strdup,	pstrcmp,
-								 sfree,		NULLCP,
-								 soundex_match,	TRUE);
+	add_attribute_syntax ("ia5string",
+						  (IFP) ia5enc,	(IFP) ia5sdec,
+						  (IFP) octparse,	octprint,
+						  (IFP) strdup,	pstrcmp,
+						  sfree,		NULLCP,
+						  soundex_match,	TRUE);
 
 	/* 5-8 ignore strings */
 
-	 add_attribute_syntax ("countrystring",
-								 (IFP) strenc,	(IFP) cntydec,
-								 (IFP) cntyparse,strprint,
-								 (IFP) strdup,	lexequ,
-								 sfree,		NULLCP,
-								 soundex_match,	TRUE);
+	add_attribute_syntax ("countrystring",
+						  (IFP) strenc,	(IFP) cntydec,
+						  (IFP) cntyparse,strprint,
+						  (IFP) strdup,	lexequ,
+						  sfree,		NULLCP,
+						  soundex_match,	TRUE);
 
-	 add_attribute_syntax ("DestinationString",
-								 (IFP) strenc,	(IFP) prtsdec,
-								 (IFP) prtparse,	strprint,
-								 (IFP) strdup,	lexequ,
-								 sfree,		NULLCP,
-								 soundex_match,	TRUE);
+	add_attribute_syntax ("DestinationString",
+						  (IFP) strenc,	(IFP) prtsdec,
+						  (IFP) prtparse,	strprint,
+						  (IFP) strdup,	lexequ,
+						  sfree,		NULLCP,
+						  soundex_match,	TRUE);
 
-	 add_attribute_syntax ("caseignorestring",
-								 (IFP) strenc,	(IFP) t61dec,
-								 (IFP) t61parse,	strprint,
-								 (IFP) strdup,	tlexequ,
-								 sfree,		NULLCP,
-								 soundex_match,	TRUE);
+	add_attribute_syntax ("caseignorestring",
+						  (IFP) strenc,	(IFP) t61dec,
+						  (IFP) t61parse,	strprint,
+						  (IFP) strdup,	tlexequ,
+						  sfree,		NULLCP,
+						  soundex_match,	TRUE);
 
-	 add_attribute_syntax ("caseIgnoreIa5string",
-								 (IFP) ia5enc,	(IFP) ia5sdec,
-								 (IFP) octparse,	octprint,
-								 (IFP) strdup,	lexequ,
-								 sfree,		NULLCP,
-								 soundex_match,	TRUE);
+	add_attribute_syntax ("caseIgnoreIa5string",
+						  (IFP) ia5enc,	(IFP) ia5sdec,
+						  (IFP) octparse,	octprint,
+						  (IFP) strdup,	lexequ,
+						  sfree,		NULLCP,
+						  soundex_match,	TRUE);
 
 	/* 1-9 -> substrings */
-	 add_attribute_syntax ("numericstring",
-								 (IFP) nstrenc,	(IFP) numsdec,
-								 (IFP) strdup,	strprint,
-								 (IFP) strdup,	pstrcmp,
-								 sfree,		NULLCP,
-								 NULLIFP,	FALSE);
+	add_attribute_syntax ("numericstring",
+						  (IFP) nstrenc,	(IFP) numsdec,
+						  (IFP) strdup,	strprint,
+						  (IFP) strdup,	pstrcmp,
+						  sfree,		NULLCP,
+						  NULLIFP,	FALSE);
 
 
 	/* Not really strings at all (yet!) */
-	 add_attribute_syntax ("octetstring",
-								 (IFP) r_octenc,	(IFP) r_octsdec,
-								 (IFP) r_octparse, r_octprint,
-								 (IFP) qb_cpy,	qb_cmp,
-								 qb_free,		NULLCP,
-								 NULLIFP,	TRUE);
+	add_attribute_syntax ("octetstring",
+						  (IFP) r_octenc,	(IFP) r_octsdec,
+						  (IFP) r_octparse, r_octprint,
+						  (IFP) qb_cpy,	qb_cmp,
+						  qb_free,		NULLCP,
+						  NULLIFP,	TRUE);
 
-	 add_attribute_syntax ("password",
-								 (IFP) octenc,	(IFP) octsdec,
-								 (IFP) cryptparse,	cryptprint,
-								 (IFP) strdup,	passwdcmp,
-								 sfree,		NULLCP,
-								 NULLIFP,	TRUE);
+	add_attribute_syntax ("password",
+						  (IFP) octenc,	(IFP) octsdec,
+						  (IFP) cryptparse,	cryptprint,
+						  (IFP) strdup,	passwdcmp,
+						  sfree,		NULLCP,
+						  NULLIFP,	TRUE);
 }
 

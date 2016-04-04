@@ -52,9 +52,8 @@ static fre_choice();
  * first time freeing all the "children" of the data structure - then
  * the second time free the structure itself
  */
-int 
-fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree)
-{
+int
+fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree) {
 	char   *malptr = NULL;	/* Have we seen a malloc */
 	int	    ndofree = dofree;	/* Does the function below deallocate space */
 
@@ -62,7 +61,7 @@ fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree)
 		return (OK);
 
 	if (p->pe_type != PE_START) {
-		 pepsylose (mod, p, NULLPE, "fre_obj: missing PE_START\n");
+		pepsylose (mod, p, NULLPE, "fre_obj: missing PE_START\n");
 		return (NOTOK);
 	}
 
@@ -100,14 +99,13 @@ fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree)
  * fall back to this so we can put the code to free something just
  * here once and it will handle all the cases else where
  */
-int 
+int
 fre_type (
-    char *parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    int dofree
-)
-{
+	char *parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	int dofree
+) {
 
 	if (parm == 0)
 		return OK;
@@ -205,7 +203,7 @@ again:
 
 	case SEXTOBJ:
 		if (p[1].pe_type != EXTMOD) {
-			 pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
+			pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
 			return (NOTOK);
 		}
 		if (fre_obj(parm + p->pe_ucode, (EXT2MOD(mod, (p + 1)))->md_dtab[p->pe_tag],
@@ -215,7 +213,7 @@ again:
 
 	case EXTOBJ:
 		if (p[1].pe_type != EXTMOD) {
-			 pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
+			pepsylose (mod, p, NULLPE, "fre_type:missing EXTMOD");
 			return (NOTOK);
 		}
 		if (fre_obj(*(char **) (parm + p->pe_ucode),
@@ -311,8 +309,8 @@ again:
 		break;
 
 	default:
-		 pepsylose (mod, p, NULLPE, "fre_type: %d not implemented\n",
-						  p->pe_type);
+		pepsylose (mod, p, NULLPE, "fre_type: %d not implemented\n",
+				   p->pe_type);
 		return (NOTOK);
 	}
 
@@ -322,14 +320,13 @@ again:
 /*
  * free elements of a sequential type. e.g. sequence or set
  */
-static 
+static
 fre_seq (
-    char *parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    int dofree
-)
-{
+	char *parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	int dofree
+) {
 	/*    int    *popt = NULL;	Pointer to optional field */
 	char   *malptr = NULL;	/* Have we seen a malloc */
 	int	    ndofree = dofree;	/* Does the function below deallocate space */
@@ -340,8 +337,8 @@ fre_seq (
 
 	if (p->pe_type != SEQ_START && p->pe_type != SET_START
 			&& p->pe_type != SSEQ_START && p->pe_type != SSET_START) {
-		 pepsylose (mod, p, NULLPE, "fre_seq: bad starting item %d\n",
-						  p->pe_type);
+		pepsylose (mod, p, NULLPE, "fre_seq: bad starting item %d\n",
+				   p->pe_type);
 		return (NOTOK);
 	}
 	p++;
@@ -422,7 +419,7 @@ fre_seq (
 
 		case SEXTOBJ:
 			if (p[1].pe_type != EXTMOD) {
-				 pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
+				pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
 				return (NOTOK);
 			}
 			if (fre_obj(parm + p->pe_ucode, (EXT2MOD(mod, (p + 1)))->md_dtab[p->pe_tag],
@@ -432,7 +429,7 @@ fre_seq (
 
 		case EXTOBJ:
 			if (p[1].pe_type != EXTMOD) {
-				 pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
+				pepsylose (mod, p, NULLPE, "fre_seq:missing EXTMOD");
 				return (NOTOK);
 			}
 			if (fre_obj(*(char **) (parm + p->pe_ucode),
@@ -462,14 +459,13 @@ fre_seq (
  * free all the fields in a SET OF/SEQUENCE OF type structure. We
  * must follow the linked list until the end
  */
-static 
+static
 fre_seqof (
-    char *parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    int dofree
-)
-{
+	char *parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	int dofree
+) {
 	ptpe    *start;		/* first entry in list */
 	char   *oparm;
 
@@ -478,7 +474,7 @@ fre_seqof (
 
 	if (p->pe_type != SEQOF_START && p->pe_type != SETOF_START
 			&& p->pe_type != SSEQOF_START && p->pe_type != SSETOF_START) {
-		 pepsylose (mod, p, NULLPE, "fre_seqof: illegal field");
+		pepsylose (mod, p, NULLPE, "fre_seqof: illegal field");
 		return (NOTOK);
 	}
 	for (start = p; (char *) parm != NULL; p = start) {
@@ -551,8 +547,8 @@ fre_seqof (
 
 			case SEXTOBJ:
 				if (p[1].pe_type != EXTMOD) {
-					 pepsylose (mod, p, NULLPE,
-									  "fre_seqof: missing EXTMOD");
+					pepsylose (mod, p, NULLPE,
+							   "fre_seqof: missing EXTMOD");
 					return (NOTOK);
 				}
 				if (fre_obj(parm + p->pe_ucode, (EXT2MOD(mod, (p + 1)))->md_dtab[p->pe_tag],
@@ -562,8 +558,8 @@ fre_seqof (
 
 			case EXTOBJ:
 				if (p[1].pe_type != EXTMOD) {
-					 pepsylose (mod, p, NULLPE,
-									  "fre_seqof: missing EXTMOD");
+					pepsylose (mod, p, NULLPE,
+							   "fre_seqof: missing EXTMOD");
 					return (NOTOK);
 				}
 				if (fre_obj(*(char **) (parm + p->pe_ucode),
@@ -597,14 +593,13 @@ fre_seqof (
  * which item is present and then call the appropriate routine to
  * free it
  */
-static 
+static
 fre_choice (
-    char *parm,
-    ptpe *p,
-    modtyp *mod,			/* Module it is from */
-    int dofree
-)
-{
+	char *parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	int dofree
+) {
 	int     cnt;
 	char   *malptr = NULL;	/* Have we seen a malloc */
 	int	    ndofree = dofree;	/* Does the function below deallocate space */
@@ -613,8 +608,8 @@ fre_choice (
 		return OK;
 
 	if (p->pe_type != CHOICE_START && p->pe_type != SCHOICE_START) {
-		 pepsylose (mod, p, NULLPE,
-						  "fre_choice:CHOICE_START missing found %d\n", p->pe_type);
+		pepsylose (mod, p, NULLPE,
+				   "fre_choice:CHOICE_START missing found %d\n", p->pe_type);
 	}
 	p++;
 
@@ -629,15 +624,15 @@ fre_choice (
 		p++;
 	}
 	if (p->pe_type != SCTRL) {
-		 pepsylose (mod, p, NULLPE,
-						  "fre_choice: missing SCTRL information\n");
+		pepsylose (mod, p, NULLPE,
+				   "fre_choice: missing SCTRL information\n");
 		return (NOTOK);
 	}
 	cnt = *(int *) (parm + p->pe_ucode);
 	if (cnt != 0)
 		cnt--;
 	if (cnt < 0) {
-		 pepsylose (mod, p, NULLPE,"fre_choice:offset negative %d", cnt);
+		pepsylose (mod, p, NULLPE,"fre_choice:offset negative %d", cnt);
 		return (NOTOK);
 	}
 	for (p++; p->pe_type != PE_END; NEXT_TPE(p)) {
@@ -655,7 +650,7 @@ fre_choice (
 		}
 	}
 
-	 pepsylose (mod, p, NULLPE, "fre_choice: no choice taken");
+	pepsylose (mod, p, NULLPE, "fre_choice: no choice taken");
 	return (NOTOK);
 }
 /*
@@ -664,9 +659,8 @@ fre_choice (
  * Basically we have to stop FN_CALL being tested by hasdata which will call
  * the decoding function which is illegal and gives rubbish.
  */
-int 
-callsfn (ptpe *p, modtyp *mod)
-{
+int
+callsfn (ptpe *p, modtyp *mod) {
 
 	while (p->pe_type != PE_END) {
 		switch (p->pe_type) {
@@ -688,7 +682,7 @@ callsfn (ptpe *p, modtyp *mod)
 		}
 	}
 
-	 pepsylose (mod, p, NULLPE,"callsfn:Corrupted tables:PE_END found\n");
+	pepsylose (mod, p, NULLPE,"callsfn:Corrupted tables:PE_END found\n");
 	ferr(1, "callsfn:Mangled tables\n");
 	/*NOTREACHED*/
 

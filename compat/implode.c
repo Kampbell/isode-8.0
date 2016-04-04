@@ -54,9 +54,8 @@ char	hex2nib[0x80] = {
 
 /*  */
 
-int 
-implode (u_char *a, char *b, int n)
-{
+int
+implode (u_char *a, char *b, int n) {
 	int    i;
 
 	for (i = 0; i < n; i += 2) {

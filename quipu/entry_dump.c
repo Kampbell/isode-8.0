@@ -37,9 +37,8 @@ extern LLog * log_dsap;
 extern RDN parse_rdn;
 extern char * new_version();
 
-static 
-header_print (PS psa, Entry edb)
-{
+static
+header_print (PS psa, Entry edb) {
 	switch (edb->e_data) {
 	case E_DATA_MASTER:
 		ps_print (psa,"MASTER\n");
@@ -57,9 +56,8 @@ header_print (PS psa, Entry edb)
 		ps_printf (psa,"%s\n",new_version());
 }
 
-static 
-entry_print (PS psa, Entry entryptr)
-{
+static
+entry_print (PS psa, Entry entryptr) {
 	rdn_print (psa,entryptr->e_name,EDBOUT);
 	parse_rdn = entryptr->e_name;
 	ps_print (psa,"\n");
@@ -68,9 +66,8 @@ entry_print (PS psa, Entry entryptr)
 }
 
 
-static 
-entry_block_print (PS psa, Entry block)
-{
+static
+entry_block_print (PS psa, Entry block) {
 	Entry ptr;
 
 	header_print (psa,block);
@@ -86,30 +83,29 @@ entry_block_print (PS psa, Entry block)
 	}
 }
 
-int 
-write_edb (Entry ptr, char *filename)
-{
+int
+write_edb (Entry ptr, char *filename) {
 	int um;
 	FILE * fptr;
 	PS entryps;
 	extern char * parse_file;
-	
+
 
 	um = umask (0177);
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("file_open failed: \"%s\" (%d)",filename,errno));
 		return NOTOK;
 	}
-	 umask (um);
+	umask (um);
 
 	if ((entryps = ps_alloc (std_open)) == NULLPS) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
-		 fclose (fptr);
+		fclose (fptr);
 		return NOTOK;
 	}
 	if (std_setup (entryps,fptr) == NOTOK) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("std_setup failed"));
-		 fclose (fptr);
+		fclose (fptr);
 		return NOTOK;
 	}
 
@@ -119,14 +115,14 @@ write_edb (Entry ptr, char *filename)
 
 	if (entryps->ps_errno != PS_ERR_NONE) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb ps error: %s",ps_error(entryps->ps_errno)));
-		 fclose (fptr);
+		fclose (fptr);
 		return NOTOK;
 	}
 	ps_free (entryps);
 
 	if (fflush (fptr) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb flush error: %d",errno));
-		 fclose (fptr);
+		fclose (fptr);
 		return NOTOK;
 	}
 #if     defined(SYS5) && !defined(SVR4)
@@ -134,7 +130,7 @@ write_edb (Entry ptr, char *filename)
 #else
 	if (fsync (fileno(fptr)) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb fsync error: %d",errno));
-		 fclose (fptr);
+		fclose (fptr);
 		return NOTOK;
 	}
 #endif
@@ -150,7 +146,7 @@ write_edb (Entry ptr, char *filename)
 
 #else
 
-int 
+int
 write_edb (void) {
 	LLOG (log_dsap,LLOG_FATAL,("write_edb implementation error"));
 }

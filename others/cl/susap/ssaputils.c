@@ -33,7 +33,7 @@ static struct ssapblk *SuHead = &susapque;
 /*    INTERNAL */
 
 struct ssapblk *
-newsublk  {
+	newsublk  {
 	struct ssapblk *sb;
 
 	sb = (struct ssapblk   *) calloc (1, sizeof *sb);
@@ -55,11 +55,10 @@ newsublk  {
 }
 
 
-int 
-freesublk (struct ssapblk *sb)
-{
+int
+freesublk (struct ssapblk *sb) {
 	struct qbuf *qb,
-			*qp;
+			   *qp;
 
 	if (sb == NULL)
 		return;
@@ -89,8 +88,7 @@ freesublk (struct ssapblk *sb)
 /*  */
 
 struct ssapblk *
-findsublk (int sd)
-{
+findsublk (int sd) {
 	struct ssapblk *sb;
 
 	if (su_once_only == 0)

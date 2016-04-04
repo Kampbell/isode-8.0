@@ -35,15 +35,14 @@ static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentit
 
 /*    F-{LOCATE,ERASE}.REQUEST */
 
-int 
+int
 FAccessRequest (
-    int sd,
-    int operation,
-    struct FADUidentity *identity,
-    int lock,	/* F-LOCATE.REQUEST only */
-    struct FTAMindication *fti
-)
-{
+	int sd,
+	int operation,
+	struct FADUidentity *identity,
+	int lock,	/* F-LOCATE.REQUEST only */
+	struct FTAMindication *fti
+) {
 	SBV      smask;
 	int     result,
 			state;
@@ -71,15 +70,14 @@ FAccessRequest (
 
 	result = FAccessRequestAux (fsb, state, identity, lock, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentity *identity, int lock, struct FTAMindication *fti)
-{
+static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentity *identity, int lock, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;
@@ -100,7 +98,7 @@ static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentit
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -131,8 +129,8 @@ out:
 	}
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-						 "error encoding PDU: %s", PY_pepy);
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
 
@@ -150,7 +148,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		 ps2ftamlose (fsb, fti, "PDataRequest", pa);
+		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
 

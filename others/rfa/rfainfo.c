@@ -161,8 +161,7 @@ int stat;
  * mallocRfaInfo - malloc list elements
  *------------------------------------------------------*/
 struct RfaInfo *
-mallocRfaInfo (char *fn)
-{
+mallocRfaInfo (char *fn) {
 	struct RfaInfo *rfa;
 
 	if ((rfa = (struct RfaInfo *) malloc(sizeof(struct RfaInfo))) == NULL) {
@@ -179,9 +178,8 @@ mallocRfaInfo (char *fn)
 /*------------------------------------------------------
  * freeRfaInfoList - free list elements
  *------------------------------------------------------*/
-void 
-freeRfaInfoList (struct RfaInfo *rfa)
-{
+void
+freeRfaInfoList (struct RfaInfo *rfa) {
 	struct RfaInfo *r;
 
 	for (; rfa; rfa = r) {
@@ -262,9 +260,8 @@ FILE *fp;
 /*------------------------------------------------------
  * closeAndUnlockRfainfo
  *------------------------------------------------------*/
-static int 
-closeAndUnlockRfainfo (char *fn)
-{
+static int
+closeAndUnlockRfainfo (char *fn) {
 	struct LockEntry *le, **lep;
 
 	for (lep = &lockList; *lep; lep = &((*lep)->le_next))
@@ -293,9 +290,8 @@ closeAndUnlockRfainfo (char *fn)
 /*------------------------------------------------------
  * releaseRfaInfoList - unlock list and free it
  *------------------------------------------------------*/
-void 
-releaseRfaInfoList (char *fn, struct RfaInfo *rfa)
-{
+void
+releaseRfaInfoList (char *fn, struct RfaInfo *rfa) {
 	closeAndUnlockRfainfo(fn);
 	freeRfaInfoList(rfa);
 }
@@ -303,9 +299,8 @@ releaseRfaInfoList (char *fn, struct RfaInfo *rfa)
 /*------------------------------------------------------
  * statFile - return RfaInfo with results of stat(2) for "fn"
  *------------------------------------------------------*/
-static int 
-statFile (char *fn, struct RfaInfo *rfa)
-{
+static int
+statFile (char *fn, struct RfaInfo *rfa) {
 	struct stat st;
 	struct group *gr, *getgrgid();
 	struct passwd *pw, *getpwuid();
@@ -437,9 +432,8 @@ struct RfaInfo **rfap;
 /*------------------------------------------------------
  * getRfaInfoList - get file info list for "dir"
  *------------------------------------------------------*/
-int 
-getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int locked)
-{
+int
+getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int locked) {
 	struct RfaInfo *rfalist = NULL, **rfap = & rfalist;
 	DIR *dirp;
 	struct dirent *dp;
@@ -559,9 +553,8 @@ err_cleanup:
 /*------------------------------------------------------
  * putRfaInfoList - write RFA file info list to ".rfainfo"
  *------------------------------------------------------*/
-int 
-putRfaInfoList (char *dirname, struct RfaInfo *rfa)
-{
+int
+putRfaInfoList (char *dirname, struct RfaInfo *rfa) {
 	FILE *backup_f;
 	char buf[BUFSIZ];
 	struct LockEntry *le;
@@ -611,8 +604,7 @@ putRfaInfoList (char *dirname, struct RfaInfo *rfa)
  * extractRfaInfo - extract RFA file info by filename
  *------------------------------------------------------*/
 struct RfaInfo *
-extractRfaInfo (char *fn, struct RfaInfo **rfap)
-{
+extractRfaInfo (char *fn, struct RfaInfo **rfap) {
 	struct RfaInfo *h;
 
 	for (; *rfap; rfap = &((*rfap)->ri_next))
@@ -628,9 +620,8 @@ extractRfaInfo (char *fn, struct RfaInfo **rfap)
 /*------------------------------------------------------
  * remRfaInfo - remove RFA file info from list
  *------------------------------------------------------*/
-void 
-remRfaInfo (char *fn, struct RfaInfo **rfap)
-{
+void
+remRfaInfo (char *fn, struct RfaInfo **rfap) {
 	struct RfaInfo *h;
 
 	if ((h = extractRfaInfo(fn, rfap))) {
@@ -643,8 +634,7 @@ remRfaInfo (char *fn, struct RfaInfo **rfap)
  * findRfaInfo - find RFA file info by filename
  *------------------------------------------------------*/
 struct RfaInfo *
-findRfaInfo (char *fn, struct RfaInfo *rfa)
-{
+findRfaInfo (char *fn, struct RfaInfo *rfa) {
 	for (; rfa; rfa = rfa->ri_next)
 		if (strcmp(fn, rfa->ri_filename) == 0)
 			return rfa;
@@ -654,9 +644,8 @@ findRfaInfo (char *fn, struct RfaInfo *rfa)
 /*------------------------------------------------------
  * sortRfaInfoList - sort RFA list
  *------------------------------------------------------*/
-void 
-sortRfaInfoList (struct RfaInfo **rfap)
-{
+void
+sortRfaInfoList (struct RfaInfo **rfap) {
 	struct RfaInfo *tnext, *tosort, *sorted, **spp;
 
 	sorted = NULL;

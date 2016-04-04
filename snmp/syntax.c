@@ -131,12 +131,12 @@ OS	os;
 
 
 static	add_integer () {
-	 add_syntax ("INTEGER", integer_encode, integer_decode, integer_free,
-					   integer_parse, integer_print);
-	 add_syntax ("Services", integer_encode, integer_decode,
-					   integer_free, integer_parse, services_print);
-	 add_syntax ("Privileges", integer_encode, integer_decode,
-					   integer_free, integer_parse, privs_print);
+	add_syntax ("INTEGER", integer_encode, integer_decode, integer_free,
+				integer_parse, integer_print);
+	add_syntax ("Services", integer_encode, integer_decode,
+				integer_free, integer_parse, services_print);
+	add_syntax ("Privileges", integer_encode, integer_decode,
+				integer_free, integer_parse, privs_print);
 }
 
 /*    OCTET STRING */
@@ -214,7 +214,7 @@ struct qbuf *x;
 OS	os;
 {
 	char *cp,
-			 *ep;
+		 *ep;
 	char   *p;
 	struct qbuf *qb;
 
@@ -243,12 +243,12 @@ OS	os;
 
 
 static	add_string () {
-	 add_syntax ("OctetString", string_encode, string_decode, qb_free,
-					   string_parse, string_print);
-	 add_syntax ("DisplayString", string_encode, string_decode, qb_free,
-					   string_parse, string_display);
-	 add_syntax ("PhysAddress", string_encode, string_decode, qb_free,
-					   string_parse, string_print);
+	add_syntax ("OctetString", string_encode, string_decode, qb_free,
+				string_parse, string_print);
+	add_syntax ("DisplayString", string_encode, string_decode, qb_free,
+				string_parse, string_display);
+	add_syntax ("PhysAddress", string_encode, string_decode, qb_free,
+				string_parse, string_print);
 }
 
 /*    OBJECT IDENTIFIER */
@@ -300,7 +300,7 @@ OS	os;
 	char  *cp,
 		  ode[BUFSIZ];
 
-	 strcpy (ode, oid2ode (x));
+	strcpy (ode, oid2ode (x));
 	printf ("%s", ode);
 	if (strcmp (ode, cp = sprintoid (x)))
 		printf (" (%s)", cp);
@@ -308,8 +308,8 @@ OS	os;
 
 
 static	add_object () {
-	 add_syntax ("ObjectID", object_encode, object_decode, oid_free,
-					   object_parse, object_print);
+	add_syntax ("ObjectID", object_encode, object_decode, oid_free,
+				object_parse, object_print);
 }
 
 /*    NULL */
@@ -372,8 +372,8 @@ OS	os;
 
 
 static	add_null () {
-	 add_syntax ("NULL", null_encode, null_decode, null_free, null_parse,
-					   null_print);
+	add_syntax ("NULL", null_encode, null_decode, null_free, null_parse,
+				null_print);
 }
 
 /*    IpAddress */
@@ -461,8 +461,8 @@ OS	os;
 
 
 static	add_ipaddr () {
-	 add_syntax ("IpAddress", ipaddr_encode, ipaddr_decode, ipaddr_free,
-					   ipaddr_parse, ipaddr_print);
+	add_syntax ("IpAddress", ipaddr_encode, ipaddr_decode, ipaddr_free,
+				ipaddr_parse, ipaddr_print);
 }
 
 /*    NetworkAddress */
@@ -470,8 +470,8 @@ static	add_ipaddr () {
 /* good enough for now (and probably forever)... */
 
 static	add_netaddr () {
-	 add_syntax ("NetworkAddress", ipaddr_encode, ipaddr_decode,
-					   ipaddr_free, ipaddr_parse, ipaddr_print);
+	add_syntax ("NetworkAddress", ipaddr_encode, ipaddr_decode,
+				ipaddr_free, ipaddr_parse, ipaddr_print);
 }
 
 /*    UNSIGNED LONGs */
@@ -481,7 +481,7 @@ PE	pe;
 {
 	u_long   i;
 	PElementData dp,
-			 ep;
+				 ep;
 
 	if (pe -> pe_form != PE_FORM_PRIM || (dp = pe -> pe_prim) == NULLPED)
 		return pe_seterr (pe, PE_ERR_PRIM, 0);
@@ -596,8 +596,8 @@ OS	os;
 
 
 static	add_counter () {
-	 add_syntax ("Counter", counter_encode, counter_decode, counter_free,
-					   counter_parse, counter_print);
+	add_syntax ("Counter", counter_encode, counter_decode, counter_free,
+				counter_parse, counter_print);
 }
 
 /*    Gauge */
@@ -614,8 +614,8 @@ PE     *pe;
 
 
 static	add_gauge () {
-	 add_syntax ("Gauge", gauge_encode, counter_decode, counter_free,
-					   counter_parse, counter_print);
+	add_syntax ("Gauge", gauge_encode, counter_decode, counter_free,
+				counter_parse, counter_print);
 }
 
 /*    TimeTicks */
@@ -663,8 +663,8 @@ OS	os;
 
 
 static	add_timeticks () {
-	 add_syntax ("TimeTicks", timeticks_encode, counter_decode,
-					   counter_free, counter_parse, timeticks_print);
+	add_syntax ("TimeTicks", timeticks_encode, counter_decode,
+				counter_free, counter_parse, timeticks_print);
 }
 
 /*    CnlpAddress */
@@ -756,8 +756,8 @@ OS	os;
 
 
 static	add_clnpaddr () {
-	 add_syntax ("ClnpAddress", clnpaddr_encode, clnpaddr_decode,
-					   clnpaddr_free, clnpaddr_parse, clnpaddr_print);
+	add_syntax ("ClnpAddress", clnpaddr_encode, clnpaddr_decode,
+				clnpaddr_free, clnpaddr_parse, clnpaddr_print);
 }
 
 /*  */

@@ -106,7 +106,7 @@ int (*select)(), (*dcomp)();
 		}
 		names[nitems-1] = p;
 	}
-	 closedir(dirp);
+	closedir(dirp);
 	if (nitems && dcomp != NULL)
 		qsort((char *) names, nitems, sizeof(struct dirent *), dcomp);
 	*namelist = names;

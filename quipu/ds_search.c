@@ -434,7 +434,7 @@ char            authtype;
 			st_free(local);
 			if (saclerror == 0)
 				result->CSR_limitproblem = LSR_NOLIMITPROBLEM;
-			 dsa_search_control(arg, result);
+			dsa_search_control(arg, result);
 			return (DS_OK);
 		}
 		(*local) = st_done(local);
@@ -448,9 +448,8 @@ char            authtype;
  * SEARCH TASK HANDLING
  */
 
-int 
-st_comp_free (struct ds_search_task *st)
-{
+int
+st_comp_free (struct ds_search_task *st) {
 	extern int rc_free();
 
 	dn_free(st->st_baseobject);
@@ -459,7 +458,7 @@ st_comp_free (struct ds_search_task *st)
 	if (st->st_save != NULL_ST)
 		st_free(&st->st_save);
 	if (--st->st_saclrefcount <= 0) {
-		 avl_free((Avlnode *) st->st_sacls, rc_free);
+		avl_free((Avlnode *) st->st_sacls, rc_free);
 		free((char *) st->st_saclheader);
 	}
 	if (--st->st_ftyperefcount <= 0) {
@@ -470,9 +469,8 @@ st_comp_free (struct ds_search_task *st)
 
 }
 
-int 
-st_free (struct ds_search_task **st)
-{
+int
+st_free (struct ds_search_task **st) {
 	struct ds_search_task *next;
 
 	for (; (*st) != NULL_ST; (*st) = next) {
@@ -481,9 +479,8 @@ st_free (struct ds_search_task **st)
 	}
 }
 
-int 
-st_free_dis (struct ds_search_task **st, int internals)
-{
+int
+st_free_dis (struct ds_search_task **st, int internals) {
 	struct ds_search_task *next;
 
 	for (; (*st) != NULL_ST; (*st) = next) {
@@ -497,8 +494,7 @@ st_free_dis (struct ds_search_task **st, int internals)
 }
 
 struct ds_search_task *
-st_done (struct ds_search_task **st)
-{
+st_done (struct ds_search_task **st) {
 	struct ds_search_task *next;
 
 	if ((next = (*st)->st_next) == NULL_ST)
@@ -516,9 +512,8 @@ st_done (struct ds_search_task **st)
  */
 
 
-static 
-check_filter_presrch (Filter fltr, struct DSError *error, DN dn)
-{
+static
+check_filter_presrch (Filter fltr, struct DSError *error, DN dn) {
 	DLOG(log_dsap, LLOG_DEBUG, ("in check filter aux"));
 
 	switch (fltr->flt_type) {
@@ -548,9 +543,8 @@ check_filter_presrch (Filter fltr, struct DSError *error, DN dn)
 	/* NOTREACHED */
 }
 
-static 
-check_filterop_presrch (Filter fltr, struct DSError *error, DN dn)
-{
+static
+check_filterop_presrch (Filter fltr, struct DSError *error, DN dn) {
 	Filter ptr;
 	int             i;
 
@@ -570,18 +564,16 @@ check_filterop_presrch (Filter fltr, struct DSError *error, DN dn)
 
 }
 
-static 
-prepare_string (caddr_t c)
-{
+static
+prepare_string (caddr_t c) {
 	char  *p;
 
 	for (p = (char *) c; *p; p++)
 		*p = chrcnv[*p];
 }
 
-static 
-check_filteritem_presrch (struct filter_item *fitem, struct DSError *error, DN dn)
-{
+static
+check_filteritem_presrch (struct filter_item *fitem, struct DSError *error, DN dn) {
 	int             av_acl, av_update, av_schema, av_syntax;
 	int		maxlen = -1;
 	extern char     chrcnv[];
@@ -739,9 +731,8 @@ check_filteritem_presrch (struct filter_item *fitem, struct DSError *error, DN d
 
 /* APPLY SEARCH TO ONE LEVEL */
 
-static 
-apply_search (struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, int authtype, int *saclerror)
-{
+static
+apply_search (struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, int authtype, int *saclerror) {
 	Entry           entryptr;
 	EntryInfo      *einfo = NULLENTRYINFO;
 	struct di_block *di_tmp;
@@ -878,9 +869,8 @@ apply_search (struct ds_search_arg *arg, struct DSError *error, struct ds_search
  * looking at levels below.
  */
 
-static 
-search_kid2 (Entry e, struct search_kid_arg *ska)
-{
+static
+search_kid2 (Entry e, struct search_kid_arg *ska) {
 	struct ds_search_task *new_task;
 	EntryInfo      *eptr;
 	int		saclerror = 0;
@@ -948,9 +938,8 @@ search_kid2 (Entry e, struct search_kid_arg *ska)
  * at one level below.
  */
 
-static 
-search_kid (Entry e, struct search_kid_arg *ska)
-{
+static
+search_kid (Entry e, struct search_kid_arg *ska) {
 	EntryInfo      *eptr;
 	int		saclerror = 0;
 #ifdef TURBO_INDEX
@@ -1046,12 +1035,12 @@ search_kid (Entry e, struct search_kid_arg *ska)
 				 * SEARCH_DELTA_SIZE entries searched.
 				 */
 				if (!ska->ska_domore)
-					 dsa_wait(0);
+					dsa_wait(0);
 
 				ska->ska_tmp = 0;
 				ska->ska_domore = TRUE;
-				 avl_apply(e->e_children, search_kid2,
-								 (caddr_t) ska, NOTOK, AVL_INORDER);
+				avl_apply(e->e_children, search_kid2,
+						  (caddr_t) ska, NOTOK, AVL_INORDER);
 
 				if (timelimit <= (timenow = time((time_t *) 0)))
 					return (NOTOK);
@@ -1060,7 +1049,7 @@ search_kid (Entry e, struct search_kid_arg *ska)
 					ska->ska_domore = (ska->ska_tmp <
 									   (SEARCH_DELTA_SIZE / 5));
 				if (!ska->ska_domore)
-					 dsa_wait(0);
+					dsa_wait(0);
 			}
 			/*
 			It doesn't seem to make much sense to do this here with the avl's...
@@ -1098,8 +1087,7 @@ search_kid (Entry e, struct search_kid_arg *ska)
 
 
 static EntryInfo *
-filterchildren (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, int authtype, int *saclerror)
-{
+filterchildren (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, int authtype, int *saclerror) {
 	EntryInfo      *einfo = NULLENTRYINFO;
 	int    tmp = 0;
 	char            domore = TRUE;
@@ -1123,7 +1111,7 @@ filterchildren (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task
 		return (NULLENTRYINFO);
 	}
 	if (entryptr->e_alias != NULLDN) {
-		 do_alias(arg, entryptr, local);
+		do_alias(arg, entryptr, local);
 		return (NULLENTRYINFO);
 	}
 	if ((ptr = entryptr->e_children) == NULLAVL
@@ -1145,24 +1133,24 @@ filterchildren (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task
 #ifdef TURBO_INDEX
 	/* non optimized filter */
 	if ((*local)->st_optimized == 0) {
-		 avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+		avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 
 		/* optimized filter & subtree search & subtree indexed */
 	} else if (arg->sra_subset == SRA_WHOLESUBTREE
 			   && get_subtree_index((*local)->st_baseobject)) {
-		 turbo_subtree_search(entryptr, &ska);
+		turbo_subtree_search(entryptr, &ska);
 
 		/* optimized filter & sibling search & siblings indexed */
 	} else if (arg->sra_subset == SRA_ONELEVEL
 			   && get_sibling_index((*local)->st_baseobject)) {
-		 turbo_sibling_search(entryptr, &ska);
+		turbo_sibling_search(entryptr, &ska);
 
 		/* optimized filter, but no index to search */
 	} else {
-		 avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+		avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 	}
 #else
-	 avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+	avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 #endif
 
 	tmp = ska.ska_tmp;
@@ -1176,9 +1164,8 @@ filterchildren (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task
  * HANDLE ALIASES AND REFERRALS
  */
 
-int 
-do_alias (struct ds_search_arg *arg, Entry eptr, struct ds_search_task **local)
-{
+int
+do_alias (struct ds_search_arg *arg, Entry eptr, struct ds_search_task **local) {
 	struct ds_search_task *new_task;
 	struct ds_search_task *st;
 	DN              st_dn;
@@ -1251,9 +1238,8 @@ do_alias (struct ds_search_arg *arg, Entry eptr, struct ds_search_task **local)
 	return (OK);
 }
 
-static 
-do_base (Entry eptr, struct ds_search_task **local)
-{
+static
+do_base (Entry eptr, struct ds_search_task **local) {
 	struct ds_search_task *new_task;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("Making baseobject search"));
@@ -1278,9 +1264,8 @@ do_base (Entry eptr, struct ds_search_task **local)
 	(*local)->st_next = new_task;
 }
 
-int 
-search_refer (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task **local, struct ds_search_task **refer, int ismanager)
-{
+int
+search_refer (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task **local, struct ds_search_task **refer, int ismanager) {
 	struct ds_search_task *new_task;
 	struct DSError  error;
 	struct di_block *di_tmp;
@@ -1342,8 +1327,7 @@ search_refer (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task *
  */
 
 EntryInfo *
-filterentry (struct ds_search_arg *arg, Entry entryptr, DN binddn, int authtype, int *saclerror, struct ds_search_task *local, int dosacl)
-{
+filterentry (struct ds_search_arg *arg, Entry entryptr, DN binddn, int authtype, int *saclerror, struct ds_search_task *local, int dosacl) {
 	EntryInfo	*einfo;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("search: filter entry"));
@@ -1387,9 +1371,8 @@ filterentry (struct ds_search_arg *arg, Entry entryptr, DN binddn, int authtype,
  * TEST FILTER AGAINST SINGLE ENTRY
  */
 
-static 
-check_filter (Filter fltr, Entry entryptr, DN binddn)
-{
+static
+check_filter (Filter fltr, Entry entryptr, DN binddn) {
 	int    i;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("in check filter"));
@@ -1410,9 +1393,8 @@ check_filter (Filter fltr, Entry entryptr, DN binddn)
 	/* NOTREACHED */
 }
 
-static 
-check_filterop (Filter fltr, Entry entryptr, int op, DN binddn)
-{
+static
+check_filterop (Filter fltr, Entry entryptr, int op, DN binddn) {
 	Filter ptr;
 	int             result;
 
@@ -1458,9 +1440,8 @@ check_filterop (Filter fltr, Entry entryptr, int op, DN binddn)
  * CHECK FILTER ITEM AGAINST ENTRY
  */
 
-static 
-check_filteritem (struct filter_item *fitem, Entry entryptr, DN binddn)
-{
+static
+check_filteritem (struct filter_item *fitem, Entry entryptr, DN binddn) {
 	Attr_Sequence as;
 	Attr_Sequence   ias = NULLATTR;
 	AttributeType   at;
@@ -1556,9 +1537,8 @@ check_filteritem (struct filter_item *fitem, Entry entryptr, DN binddn)
 	return res;
 }
 
-static 
-test_avs (struct filter_item *fitem, AV_Sequence avs, int mode)
-{
+static
+test_avs (struct filter_item *fitem, AV_Sequence avs, int mode) {
 
 	for (; avs != NULLAV; avs = avs->avseq_next) {
 		switch (((int) (*fitem->fi_ifp) (avs->avseq_av.av_struct, fitem->UNAVA.ava_value->av_struct))) {
@@ -1586,9 +1566,8 @@ test_avs (struct filter_item *fitem, AV_Sequence avs, int mode)
  * SUBSTRING MATCH
  */
 
-static 
-substr_search (struct filter_item *fitem, AV_Sequence avs)
-{
+static
+substr_search (struct filter_item *fitem, AV_Sequence avs) {
 
 	phoneflag = telephone_match(fitem->UNAVA.ava_type->oa_syntax);
 	for (; avs != NULLAV; avs = avs->avseq_next)
@@ -1599,9 +1578,8 @@ substr_search (struct filter_item *fitem, AV_Sequence avs)
 
 
 
-static 
-aux_substr_search (struct filter_item *fitem, AV_Sequence avs, char chrmatch[])
-{
+static
+aux_substr_search (struct filter_item *fitem, AV_Sequence avs, char chrmatch[]) {
 	AV_Sequence loopavs;
 	char  *compstr;
 	char           *top;
@@ -1673,9 +1651,8 @@ aux_substr_search (struct filter_item *fitem, AV_Sequence avs, char chrmatch[])
 	return (OK);
 }
 
-int 
-attr_substr (char *str1, AttributeValue av, char chrmatch[])
-{
+int
+attr_substr (char *str1, AttributeValue av, char chrmatch[]) {
 	char  *str2;
 	int    count;
 	char           *top, *top2;
@@ -1734,9 +1711,8 @@ attr_substr (char *str1, AttributeValue av, char chrmatch[])
 }
 
 
-int 
-subtask_refer (struct ds_search_arg *arg, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, struct di_block *di)
-{
+int
+subtask_refer (struct ds_search_arg *arg, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, struct di_block *di) {
 	/* turn query into a referral */
 	struct ds_search_task *new_task;
 
@@ -1774,9 +1750,8 @@ subtask_refer (struct ds_search_arg *arg, struct ds_search_task **local, struct 
 	*refer = new_task;
 }
 
-int 
-dsa_search_control (struct ds_search_arg *arg, struct ds_search_result *result)
-{
+int
+dsa_search_control (struct ds_search_arg *arg, struct ds_search_result *result) {
 	extern DN       mydsadn;
 	char            buffer[LINESIZE];
 	Attr_Sequence   as;
@@ -1803,7 +1778,7 @@ dsa_search_control (struct ds_search_arg *arg, struct ds_search_result *result)
 	if (result->CSR_entries)
 		entryinfo_free(result->CSR_entries, 0);
 
-	 sprintf(buffer, "%d", big_size - size);
+	sprintf(buffer, "%d", big_size - size);
 
 	as = as_comp_alloc();
 	as->attr_acl = NULLACL_INFO;

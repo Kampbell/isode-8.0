@@ -54,7 +54,7 @@ static char *isomacros = "isomacros";
 
 /* this routine should be called with *p_n_colon=0 initially  */
 
-int 
+int
 dec_x25_demsa_invalid_dte (char *s, int *p_n_colon)
 /*
 the destination DTE address in case of outgoing calls may be specified by
@@ -116,8 +116,7 @@ static struct macro *Mbuckets[MBUCKETS];
 /*    MACROS */
 
 static struct macro *
-name2macro (char *name)
-{
+name2macro (char *name) {
 	struct macro *m;
 
 	read_macros ();
@@ -140,15 +139,14 @@ name2macro (char *name)
 /*  */
 
 static struct macro *
-value2macro (char *value)
-{
+value2macro (char *value) {
 	int   i,
-			 j,
-			 k;
+		  j,
+		  k;
 	struct macro *m,
-			*p,
-			**np,
-			**pp;
+			   *p,
+			   **np,
+			   **pp;
 
 	read_macros ();
 
@@ -174,7 +172,7 @@ value2macro (char *value)
 
 /*  */
 
-static int 
+static int
 read_macros()  {
 	char *hp;
 	char    buffer[BUFSIZ];
@@ -189,15 +187,14 @@ read_macros()  {
 
 	if ((hp = getenv ("HOME")) == NULL)
 		hp = ".";
-	 sprintf (buffer, "%s/.isode_macros", hp);
+	sprintf (buffer, "%s/.isode_macros", hp);
 	read_file (buffer);
 }
 
 /*  */
 
-static int 
-read_file (char *file)
-{
+static int
+read_file (char *file) {
 	char *cp;
 	char    buffer[BUFSIZ + 1],
 			*vec[NVEC + NSLACK + 1];
@@ -218,19 +215,18 @@ read_file (char *file)
 			break;
 	}
 
-	 fclose (fp);
+	fclose (fp);
 }
 
 /*  */
 
-static int 
-add_macro (char *name, char *value)
-{
+static int
+add_macro (char *name, char *value) {
 	int	    i;
 	char  *cp;
 	char    buffer[BUFSIZ];
 	struct macro *m,
-			*p;
+			   *p;
 
 	if (cp = index (value, '=')) {
 		*cp++ = NULL;
@@ -241,7 +237,7 @@ add_macro (char *name, char *value)
 			return OK;
 		}
 
-		 sprintf (value = buffer, "%s%s", p -> m_value, cp);
+		sprintf (value = buffer, "%s%s", p -> m_value, cp);
 	}
 
 	if ((m = (struct macro *) calloc (1, sizeof *m)) == NULL) {
@@ -259,8 +255,8 @@ add_macro (char *name, char *value)
 		free ((char *) m);
 		return NOTOK;
 	}
-	 strcpy (m -> m_name, name);
-	 strcpy (m -> m_value, value);
+	strcpy (m -> m_name, name);
+	strcpy (m -> m_value, value);
 
 	m -> m_chain = Mbuckets[i = MHASH (m -> m_name)];
 	Mbuckets[i] = m;
@@ -271,8 +267,7 @@ add_macro (char *name, char *value)
 /*  */
 
 char *
-macro2str (char *name)
-{
+macro2str (char *name) {
 	struct macro *m = name2macro (name);
 
 	return (m ? m -> m_value : NULLCP);
@@ -335,18 +330,17 @@ loslab: ; \
 /*  */
 
 struct PSAPaddr *
-str2paddr (char *str)
-{
+str2paddr (char *str) {
 	int    state,
-			 *lp;
+		   *lp;
 	int	    j,
 			lens[3];
 	char  *cp,
-			 *dp,
-			 *ep,
-			 *fp,
-			 *np,
-			 **sp;
+		  *dp,
+		  *ep,
+		  *fp,
+		  *np,
+		  **sp;
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			nsap[NASIZE * 2 + 1];
@@ -367,7 +361,7 @@ str2paddr (char *str)
 	i = i % 2;
 
 	bzero ((char *) pa, sizeof *pa);
-	 strcpy (buf1, str);
+	strcpy (buf1, str);
 
 	state = PS_INIT;
 	sp = sels, lp = lens;
@@ -386,7 +380,7 @@ str2paddr (char *str)
 					return NULLPA;
 				}
 				*cp++ = NULL;
-				 strcpy (*sp, dp);
+				strcpy (*sp, dp);
 				*lp = strlen (dp);
 				break;
 
@@ -453,15 +447,15 @@ stuff_selectors:
 						  ("non-existant macro \"%s\"", ep));
 					return NULLPA;
 				}
-				 sprintf (ep = buf2, "%s%s", m -> m_value, dp);
+				sprintf (ep = buf2, "%s%s", m -> m_value, dp);
 			}
 
 			{
 				int    k,
-						 l,
-						 n;
+					   l,
+					   n;
 				struct ts_interim *ts,
-						*tp;
+						   *tp;
 
 				tp = NULL, n = 0;
 				k = strlen (ep);
@@ -547,12 +541,12 @@ too_many:
 					/* X121 form -- should be more general
 					 * Only applies if the DSP is NULL
 					 */
-					 strcpy (nsap, dp);
+					strcpy (nsap, dp);
 					if ((na -> na_dtelen = strlen (nsap)) > NSAP_DTELEN) {
 						dp = nsap;
 						goto invalid_dte;
 					}
-					 strcpy (na -> na_dte, nsap);
+					strcpy (na -> na_dte, nsap);
 					na -> na_stack = NA_X25;
 					na -> na_community = SUBNET_INT_X25;
 					goto next;
@@ -564,16 +558,16 @@ too_many:
 						fp = pp -> p_dec1, padchar = '1';
 					else
 						fp = pp -> p_dec0, padchar = '0';
-					 strcpy (nsap, fp);
+					strcpy (nsap, fp);
 					fp = nsap + strlen (nsap);
 					for (len = pp -> p_idi_len - strlen (dp);
 							len > 0;
 							len--)
 						*fp++ = padchar;
-					 strcpy (fp, dp);
+					strcpy (fp, dp);
 					fp += strlen (fp);
 					if (*ep != NULL)
-						 strcpy (fp, ep + 1);
+						strcpy (fp, ep + 1);
 					goto handle_dsp;
 
 				case 'x':
@@ -581,13 +575,13 @@ too_many:
 						fp = pp -> p_hex1, padchar = '1';
 					else
 						fp = pp -> p_hex0, padchar = '0';
-					 strcpy (nsap, fp);
+					strcpy (nsap, fp);
 					fp = nsap + strlen (nsap);
 					for (len = pp -> p_idi_len - strlen (dp);
 							len > 0;
 							len--)
 						*fp++ = padchar;
-					 strcpy (fp, dp);
+					strcpy (fp, dp);
 					/* Odd length IDI padded below */
 					goto handle_dsp;
 
@@ -598,7 +592,7 @@ too_many:
 							   pp -> p_name));
 						return NULLPA;
 					}
-					 strcpy (nsap, pp -> p_ia5);
+					strcpy (nsap, pp -> p_ia5);
 					goto handle_dsp;
 
 handle_dsp:
@@ -617,7 +611,7 @@ handle_dsp:
 								 NULLPA, L3);
 						na -> na_addrlen += j;
 					} else if (*ep == 'l') {
-						 strcpy (dp, ep + 1);
+						strcpy (dp, ep + 1);
 						na -> na_addrlen += strlen (ep + 1);
 					}
 					break;
@@ -627,13 +621,13 @@ handle_dsp:
 						fp = pp -> p_dec1, padchar = '1';
 					else
 						fp = pp -> p_dec0, padchar = '0';
-					 strcpy (nsap, fp);
+					strcpy (nsap, fp);
 					fp = nsap + strlen (nsap);
 					for (len = pp -> p_idi_len - strlen (dp);
 							len > 0;
 							len--)
 						*fp++ = padchar;
-					 strcpy (fp, dp);
+					strcpy (fp, dp);
 					if (strncmp ("RFC-1006+", ep,
 								 sizeof "RFC-1006+" - 1) == 0) {
 #ifdef	h_addr
@@ -656,9 +650,9 @@ handle_dsp:
 								  ("%s: unknown host", dp));
 							return NULLPA;
 						}
-						 strcpy (na -> na_domain,
-									   inet_ntoa (*(struct in_addr *)
-												  hp -> h_addr));
+						strcpy (na -> na_domain,
+								inet_ntoa (*(struct in_addr *)
+										   hp -> h_addr));
 						if (*ep) {
 							if ((ep = index (dp = ep, '+')) == NULL)
 								ep = dp + strlen (dp);
@@ -677,8 +671,8 @@ handle_dsp:
 								goto too_many;
 							bcopy ((char *) (na - 1), (char *) na,
 								   sizeof *na);
-							 strcpy (na -> na_domain,
-										   inet_ntoa (*(struct in_addr *) *ap));
+							strcpy (na -> na_domain,
+									inet_ntoa (*(struct in_addr *) *ap));
 						}
 #endif
 						break;
@@ -721,7 +715,7 @@ invalid_dte:
 						if (np - dp > NSAP_DTELEN + 1)
 							goto invalid_dte;
 #endif
-						 strcpy (na -> na_dte, dp);
+						strcpy (na -> na_dte, dp);
 						na -> na_dtelen = strlen (na -> na_dte);
 						if (*ep) {
 							char   *cudf,
@@ -821,17 +815,16 @@ next:
 
 /*  */
 
-int 
-macro2comm (char *name, struct ts_interim *ts)
-{
+int
+macro2comm (char *name, struct ts_interim *ts) {
 	int	    j,
 			len;
 	char  *ap,
-			 *cp,
-			 *dp,
-			 *ep,
-			 *fp,
-			 *np;
+		  *cp,
+		  *dp,
+		  *ep,
+		  *fp,
+		  *np;
 	char    padchar,
 			addr[NASIZE * 2 + 1],
 			buffer[BUFSIZ];
@@ -841,7 +834,7 @@ macro2comm (char *name, struct ts_interim *ts)
 	if ((cp = macro2str (name)) == NULLCP)
 		return NOTOK;
 	ts -> ts_value = cp;
-	 strcpy (buffer, cp);
+	strcpy (buffer, cp);
 	ap = addr;
 
 	if ((ep = index (dp = buffer, '+')) == NULL)
@@ -867,7 +860,7 @@ macro2comm (char *name, struct ts_interim *ts)
 
 	if (!ep) {
 		/* No IDI */
-		 strcpy (ap, pp -> p_dec0);
+		strcpy (ap, pp -> p_dec0);
 		ap += strlen (ap);
 		goto out;
 	}
@@ -888,7 +881,7 @@ macro2comm (char *name, struct ts_interim *ts)
 
 	if (lexequ (pp -> p_name, "X121") == 0 && *ep == NULL) {
 		/* Only used if there is no DSP */
-		 strcpy (ap, dp);
+		strcpy (ap, dp);
 		ap += strlen (ap);
 
 		ts -> ts_syntax = NA_X25;
@@ -903,14 +896,14 @@ macro2comm (char *name, struct ts_interim *ts)
 			fp = pp -> p_dec1, padchar = '1';
 		else
 			fp = pp -> p_dec0, padchar = '0';
-		 strcpy (ap, fp);
+		strcpy (ap, fp);
 		ap += strlen (ap);
 		for (len = pp -> p_idi_len - strlen (dp); len > 0; len--)
 			*ap++ = padchar;
-		 strcpy (ap, dp);
+		strcpy (ap, dp);
 		ap += strlen (ap);
 		if (*ep != NULL)
-			 strcpy (ap, ep + 1);
+			strcpy (ap, ep + 1);
 		break;
 
 	case 'x':
@@ -918,11 +911,11 @@ macro2comm (char *name, struct ts_interim *ts)
 			fp = pp -> p_hex1, padchar = '1';
 		else
 			fp = pp -> p_hex0, padchar = '0';
-		 strcpy (ap, fp);
+		strcpy (ap, fp);
 		ap += strlen (ap);
 		for (len = pp -> p_idi_len - strlen (dp); len > 0; len--)
 			*ap++ = padchar;
-		 strcpy (ap, dp);
+		strcpy (ap, dp);
 		/* Odd length IDI padded below */
 		break;
 
@@ -932,7 +925,7 @@ macro2comm (char *name, struct ts_interim *ts)
 				  ("No IA5 syntax for AFI \"%s\": %s", pp -> p_name, cp));
 			return NOTOK;
 		}
-		 strcpy (ap, pp -> p_ia5);
+		strcpy (ap, pp -> p_ia5);
 		break;
 
 	default:
@@ -940,11 +933,11 @@ macro2comm (char *name, struct ts_interim *ts)
 			fp = pp -> p_dec1, padchar = '1';
 		else
 			fp = pp -> p_dec0, padchar = '0';
-		 strcpy (ap, fp);
+		strcpy (ap, fp);
 		ap += strlen (ap);
 		for (len = pp -> p_idi_len - strlen (dp); len > 0; len--)
 			*ap++ = padchar;
-		 strcpy (ap, dp);
+		strcpy (ap, dp);
 		ap += strlen (ap);
 
 		if ((ep = index (dp = ep, '+')) == NULL)
@@ -965,7 +958,7 @@ macro2comm (char *name, struct ts_interim *ts)
 		else
 			*ep++ = NULL;
 
-		 strcpy (ap, dp);
+		strcpy (ap, dp);
 
 		if (*ep) {
 			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
@@ -992,7 +985,7 @@ out:
 		break;
 
 	case 'l':
-		 strcpy (np, ep + 1);
+		strcpy (np, ep + 1);
 		np += strlen (ep + 1);
 		break;
 
@@ -1007,11 +1000,10 @@ out:
 /*    PADDR2STR */
 
 static char *
-SEL2STR (char *sel, int len)
-{
+SEL2STR (char *sel, int len) {
 	char  *cp,
-			 *dp,
-			 *ep;
+		  *dp,
+		  *ep;
 	static char buffer[PSSIZE * 2 + 4];
 
 	if (len <= 0)
@@ -1031,7 +1023,7 @@ SEL2STR (char *sel, int len)
 				cp = buffer;
 				*cp++ = '\'';
 				cp += explode (cp, (u_char *) sel, len);
-				 strcpy (cp, "'H");
+				strcpy (cp, "'H");
 				return buffer;
 			}
 			break;
@@ -1048,13 +1040,12 @@ SEL2STR (char *sel, int len)
 /*  */
 
 char *
-_paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact)
-{
+_paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact) {
 	int   n;
 	int	    first;
 	char *bp,
-			 *cp,
-			 *dp;
+		 *cp,
+		 *dp;
 	struct macro *m;
 	struct SSAPaddr *sa;
 	struct TSAPaddr *ta;
@@ -1073,7 +1064,7 @@ _paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact)
 	if (pa == NULLPA) {
 bad_pa:
 		;
-		 strcpy (bp, "NULLPA");
+		strcpy (bp, "NULLPA");
 		return bp;
 	}
 	sa = &pa -> pa_addr;
@@ -1085,18 +1076,18 @@ bad_pa:
 		na = ta -> ta_addrs;
 
 	if (pa -> pa_selectlen > 0) {
-		 sprintf (cp, "%s/",
-						SEL2STR (pa -> pa_selector, pa -> pa_selectlen));
+		sprintf (cp, "%s/",
+				 SEL2STR (pa -> pa_selector, pa -> pa_selectlen));
 		cp += strlen (cp);
 	}
 	if (sa -> sa_selectlen > 0 || bp != cp) {
-		 sprintf (cp, "%s/",
-						SEL2STR (sa -> sa_selector, sa -> sa_selectlen));
+		sprintf (cp, "%s/",
+				 SEL2STR (sa -> sa_selector, sa -> sa_selectlen));
 		cp += strlen (cp);
 	}
 	if (ta -> ta_selectlen > 0 || bp != cp) {
-		 sprintf (cp, "%s/",
-						SEL2STR (ta -> ta_selector, ta -> ta_selectlen));
+		sprintf (cp, "%s/",
+				 SEL2STR (ta -> ta_selector, ta -> ta_selectlen));
 		cp += strlen (cp);
 	}
 
@@ -1122,7 +1113,7 @@ bad_pa:
 			if ((ca = na2norm (na)) == NULLNA)
 				goto bad_pa;
 
-			 strcpy (cp, "NS+");
+			strcpy (cp, "NS+");
 			cp += strlen (cp);
 
 			cp += explode (cp, (u_char *) ca -> na_address, ca -> na_addrlen);
@@ -1144,7 +1135,7 @@ bad_pa:
 				   ts -> ts_name, na -> na_community));
 			goto bad_pa;
 		}
-		 strcpy (dp = cp, ts -> ts_value);
+		strcpy (dp = cp, ts -> ts_value);
 		cp += strlen (cp) - 1;
 		if (*cp != '+')
 			*++cp = '+', *++cp = NULL;
@@ -1155,7 +1146,7 @@ bad_pa:
 			struct afi_info *a;
 
 		case NA_NSAP:
-			 strcpy (cp = dp, "NS+");
+			strcpy (cp = dp, "NS+");
 			cp += strlen (cp);
 
 			cp += explode (cp, (u_char *) na -> na_address, na -> na_addrlen);
@@ -1183,7 +1174,7 @@ bad_pa:
 				dsp = cp + a->p_idi_len;		/* find DSP */
 				while (cp < dsp && *cp == pad)
 					cp++;			/* skip pad chars */
-				 sprintf(buf, "%s+%.*s", a->p_name, dsp - cp, cp);
+				sprintf(buf, "%s+%.*s", a->p_name, dsp - cp, cp);
 
 				/*
 				 * If we have an odd number of characters in IDI &
@@ -1199,8 +1190,8 @@ bad_pa:
 						 'f')
 					*cp = '\0';
 				if (*dsp)
-					 sprintf(buf+strlen(buf), "+%c%s", dspmark, dsp);
-				 strcpy(dp, buf);
+					sprintf(buf+strlen(buf), "+%c%s", dspmark, dsp);
+				strcpy(dp, buf);
 				cp = dp + strlen(dp);
 				break;
 			}
@@ -1208,14 +1199,14 @@ bad_pa:
 
 
 		case NA_TCP:
-			 strcpy (cp, na -> na_domain);
+			strcpy (cp, na -> na_domain);
 			cp += strlen (cp);
 			if (na -> na_port) {
-				 sprintf (cp, "+%d", (int) ntohs (na -> na_port));
+				sprintf (cp, "+%d", (int) ntohs (na -> na_port));
 				cp += strlen (cp);
 
 				if (na -> na_tset) {
-					 sprintf (cp, "+%d", (int) na -> na_tset);
+					sprintf (cp, "+%d", (int) na -> na_tset);
 					cp += strlen (cp);
 				}
 			}
@@ -1226,19 +1217,19 @@ bad_pa:
 					&& na -> na_cudflen == 0
 					&& na -> na_pidlen == 0
 					&& na -> na_dte[0] != '0') {
-				 sprintf (cp = dp, "X121+%s", na -> na_dte);
+				sprintf (cp = dp, "X121+%s", na -> na_dte);
 				cp += strlen (cp);
 			} else {
-				 strcpy (cp, na -> na_dte);
+				strcpy (cp, na -> na_dte);
 				cp += strlen (cp);
 				if (na -> na_pidlen > 0) {
-					 strcpy (cp, "+PID+");
+					strcpy (cp, "+PID+");
 					cp += strlen (cp);
 
 					cp += explode (cp, (u_char *) na -> na_pid,
 								   (int) na -> na_pidlen);
 				} else if (na -> na_cudflen > 0) {
-					 strcpy (cp, "+CUDF+");
+					strcpy (cp, "+CUDF+");
 					cp += strlen (cp);
 
 					cp += explode (cp, (u_char *) na -> na_cudf,
@@ -1259,9 +1250,9 @@ bad_pa:
 		if (!compact && (m = value2macro (dp))) {
 			char    buffer[BUFSIZ];
 
-			 sprintf (buffer, "%s=%s", m -> m_name,
-							dp + strlen (m -> m_value));
-			 strcpy (dp, buffer);
+			sprintf (buffer, "%s=%s", m -> m_name,
+					 dp + strlen (m -> m_value));
+			strcpy (dp, buffer);
 			cp = dp + strlen (dp);
 		}
 	}
@@ -1273,11 +1264,11 @@ bad_pa:
 /*  */
 
 #ifdef DEBUG
-int 
+int
 free_macros()  {
 	int    i;
 	struct macro *m,
-			*p;
+			   *p;
 
 	for (i = MBUCKETS; i-- > 0; )
 		for (p = Mbuckets[i]; p; p = m) {

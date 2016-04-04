@@ -55,9 +55,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet.c,v 9.0 199
 /* For real networking, nothing is better than 4BSD! */
 
 
-int 
-start_tcp_client (struct sockaddr_in *sock, int priv)
-{
+int
+start_tcp_client (struct sockaddr_in *sock, int priv) {
 	int    port;
 	int     eindex,
 			sd;
@@ -88,7 +87,7 @@ start_tcp_client (struct sockaddr_in *sock, int priv)
 		default:
 			eindex = errno;
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-			 close_tcp_socket (sd);
+			close_tcp_socket (sd);
 			errno = eindex;
 			return NOTOK;
 		}
@@ -111,9 +110,8 @@ got_socket:
 
 /*  */
 
-int 
-start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
-{
+int
+start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
 	int    port;
 	int     eindex,
 			sd;
@@ -149,7 +147,7 @@ start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 
 		eindex = errno;
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-		 close_tcp_socket (sd);
+		close_tcp_socket (sd);
 		errno = eindex;
 		return NOTOK;
 	}
@@ -168,7 +166,7 @@ start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 		default:
 			eindex = errno;
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-			 close_tcp_socket (sd);
+			close_tcp_socket (sd);
 			errno = eindex;
 			return NOTOK;
 		}
@@ -202,7 +200,7 @@ got_socket:
 			  ("set socket option 0x%x", opt2));
 #endif
 
-	 listen (sd, backlog);
+	listen (sd, backlog);
 
 	return sd;
 }
@@ -319,7 +317,7 @@ int	fd;
 #endif
 
 #ifdef	never_do_this_if_from_join_tcp_client
-	 shutdown (fd, 2);
+	shutdown (fd, 2);
 #endif
 
 	return (close (fd));
@@ -339,9 +337,8 @@ int	fd;
    and we must prematurely bind the sockets to IP addresses. */
 
 
-int 
-start_tcp_client (struct sockaddr_in *sock, int priv)
-{
+int
+start_tcp_client (struct sockaddr_in *sock, int priv) {
 	int    port;
 	int     sd;
 	struct hostent *hp;
@@ -379,9 +376,8 @@ start_tcp_client (struct sockaddr_in *sock, int priv)
 
 /*  */
 
-int 
-start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
-{
+int
+start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
 	int    port;
 	int     sd;
 	struct hostent *hp;
@@ -427,8 +423,7 @@ static char *addrs[2] = { NULL };
 #endif
 
 struct hostent *
-gethostbystring (char *s)
-{
+gethostbystring (char *s) {
 	struct hostent *h;
 #ifndef	DG
 	int result;
@@ -467,8 +462,7 @@ char   *raddr ();
 
 
 struct hostent *
-gethostbyaddr (char *addr, int len, int type)
-{
+gethostbyaddr (char *addr, int len, int type) {
 	long    iaddr;
 	char   *name;
 	static char buffer[BUFSIZ];
@@ -481,7 +475,7 @@ gethostbyaddr (char *addr, int len, int type)
 	if ((name = raddr (iaddr)) == NULL)
 		return NULL;
 
-	 strcpy (buffer, name);
+	strcpy (buffer, name);
 	free (name);
 
 	h -> h_name = buffer;
@@ -495,8 +489,7 @@ gethostbyaddr (char *addr, int len, int type)
 
 
 struct hostent *
-gethostbyname (char *name)
-{
+gethostbyname (char *name) {
 	static long iaddr;
 	static char buffer[BUFSIZ];
 	static struct hostent   hs;
@@ -505,7 +498,7 @@ gethostbyname (char *name)
 	if ((iaddr = rhost (&name)) == NOTOK)
 		return NULL;
 
-	 strcpy (buffer, name);
+	strcpy (buffer, name);
 	free (name);
 
 	h -> h_name = buffer;
@@ -589,8 +582,7 @@ static struct servent   services[] = {
 
 
 struct servent *
-getservbyname (char *name, char *proto)
-{
+getservbyname (char *name, char *proto) {
 	struct servent *s;
 
 	for (s = services; s -> s_name; s++)
@@ -612,21 +604,19 @@ getservbyname (char *name, char *proto)
 #define	s2a(b)	(((int) (b)) & 0xff)
 
 char *
-inet_ntoa (struct in_addr in)
-{
+inet_ntoa (struct in_addr in) {
 	char  *s = (char *) &in;
 	static char addr[4 * 3 + 3 + 1];
 
-	 sprintf (addr, "%d.%d.%d.%d",
-					s2a (s[0]), s2a (s[1]), s2a (s[2]), s2a (s[3]));
+	sprintf (addr, "%d.%d.%d.%d",
+			 s2a (s[0]), s2a (s[1]), s2a (s[2]), s2a (s[3]));
 
 	return addr;
 }
 
 
-u_long 
-inet_addr (char *cp)
-{
+u_long
+inet_addr (char *cp) {
 	int    base;
 	char   c;
 	u_long val;
@@ -695,9 +685,8 @@ inet_addr (char *cp)
 	return htonl (val);
 }
 
-u_long 
-inet_network (char *cp)
-{
+u_long
+inet_network (char *cp) {
 	int    base;
 	char   c;
 	u_long val;

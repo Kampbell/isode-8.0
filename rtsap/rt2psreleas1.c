@@ -35,9 +35,8 @@ static int  RtCloseRequestAux ();
 
 /*    RT-CLOSE.REQUEST */
 
-int 
-RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti)
-{
+int
+RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;
@@ -51,16 +50,15 @@ RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct Rt
 
 	result = RtCloseRequestAux (acb, reason, data, acr, rti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti)
-{
+static int
+RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
 	int	    result;
 	struct AcSAPindication acis;
 	struct AcSAPindication *aci = &acis;

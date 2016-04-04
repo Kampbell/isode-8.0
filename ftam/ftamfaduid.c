@@ -33,8 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamfaduid.c,v 9.0 199
 /*  */
 
 struct type_FTAM_FADU__Identity *
-faduid2fpm (struct ftamblk *fsb, struct FADUidentity *fa, struct FTAMindication *fti)
-{
+faduid2fpm (struct ftamblk *fsb, struct FADUidentity *fa, struct FTAMindication *fti) {
 	int    n;
 	char **ap;
 	struct type_FTAM_FADU__Identity *fpm;
@@ -44,7 +43,7 @@ faduid2fpm (struct ftamblk *fsb, struct FADUidentity *fa, struct FTAMindication 
 			== NULL) {
 no_mem:
 		;
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (fpm)
@@ -63,8 +62,8 @@ out:
 		default:
 bad_value:
 			;
-			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-							 "bad value in FADU identity");
+			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+					  "bad value in FADU identity");
 			goto out;
 		}
 		fpm -> un.first__last = fa -> fa_firstlast;
@@ -130,8 +129,8 @@ bad_value:
 		break;
 
 	default:
-		 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-						 "bad type for FADU identity");
+		ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+				  "bad type for FADU identity");
 		goto out;
 	}
 
@@ -140,9 +139,8 @@ bad_value:
 
 /*  */
 
-int 
-fpm2faduid (struct ftamblk *fsb, struct type_FTAM_FADU__Identity *fpm, struct FADUidentity *fa, struct FTAMindication *fti)
-{
+int
+fpm2faduid (struct ftamblk *fsb, struct type_FTAM_FADU__Identity *fpm, struct FADUidentity *fa, struct FTAMindication *fti) {
 	int    n;
 	char **ap;
 	struct name_element *f4;

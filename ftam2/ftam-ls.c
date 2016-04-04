@@ -63,9 +63,8 @@ static int filcmp (struct filent **a, struct filent **b);
 /*  */
 
 #ifndef	BRIDGE
-int 
-f_fls (char **vec)
-{
+int
+f_fls (char **vec) {
 	int	    doingpipe,
 			result;
 	SFP	    pstat;
@@ -109,11 +108,11 @@ f_fls (char **vec)
 	result = f_ls (vec);
 
 	if (doingpipe) {
-		 pclose (fp);
-		 signal (SIGPIPE, pstat);
+		pclose (fp);
+		signal (SIGPIPE, pstat);
 	} else {
 		free (cp);
-		 fclose (fp);
+		fclose (fp);
 	}
 
 	lsfp = stdout;
@@ -124,9 +123,8 @@ f_fls (char **vec)
 
 /*  */
 
-int 
-f_ls (char **vec)
-{
+int
+f_ls (char **vec) {
 	int     invis,
 			multi,
 			result;
@@ -142,7 +140,7 @@ f_ls (char **vec)
 			return OK;
 		}
 
-		 time (&now);
+		time (&now);
 		longtimeago = now - 6L * 30L * 24L * 60L * 60L;
 	}
 
@@ -171,9 +169,9 @@ f_ls (char **vec)
 #ifdef	BRIDGE
 	if ((fd = dataconn ("LIST")) == NOTOK
 			|| (lsfp = fdopen (fd, "w")) == NULL) {
-		 sprintf (ftam_error, "out of memory");
+		sprintf (ftam_error, "out of memory");
 		if (fd != NOTOK) {
-			 close (fd);
+			close (fd);
 			return NOTOK;
 		}
 		return DONE;
@@ -197,8 +195,8 @@ f_ls (char **vec)
 		blkfree (vec);
 	}
 #ifdef	BRIDGE
-	 fclose (lsfp);
-	 close (fd);
+	fclose (lsfp);
+	close (fd);
 #endif
 
 	return result;
@@ -206,8 +204,7 @@ f_ls (char **vec)
 
 /*  */
 
-static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi)
-{
+static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi) {
 	int	    recurse;
 	long    mtime;
 	char   *s;
@@ -267,7 +264,7 @@ static int ls (char *file, char *entry, int top, int first, int last, int invis,
 		struct FTAMattributes *fa = &ftse -> ftse_attrs;
 
 		if (multi && ftse -> ftse_state != FSTATE_SUCCESS)
-			 printf ("%s\n", fa -> fa_files[0]);
+			printf ("%s\n", fa -> fa_files[0]);
 		ftam_diag (ftse -> ftse_diags, ftse -> ftse_ndiag, 1,
 				   ftse -> ftse_action);
 		if (ftse -> ftse_state != FSTATE_SUCCESS)
@@ -296,9 +293,9 @@ static int ls (char *file, char *entry, int top, int first, int last, int invis,
 			recurse++;
 			if (!didrecurse && !first)
 #ifdef	BRIDGE
-				 fprintf (lsfp, "\r\n");
+				fprintf (lsfp, "\r\n");
 #else
-				 fprintf (lsfp, "\n");
+				fprintf (lsfp, "\n");
 #endif
 		}
 		if (!invis)
@@ -315,21 +312,21 @@ static int ls (char *file, char *entry, int top, int first, int last, int invis,
 				for (uf = vfs; uf -> vf_entry; uf++)
 					if (oid_cmp (uf -> vf_oid, fa -> fa_contents) == 0)
 						break;
-				 fprintf (lsfp, "%c ", uf -> vf_entry ? uf -> vf_stat : ' ');
+				fprintf (lsfp, "%c ", uf -> vf_entry ? uf -> vf_stat : ' ');
 			} else
-				 fprintf (lsfp, "  ");
-			 fprintf (lsfp, "%-8.8s %-8.8s %8d ", s ? s : "",
-							(fa -> fa_present & FA_ACCOUNT) ? fa -> fa_account : "",
-							(fa -> fa_present & FA_FILESIZE) ? fa -> fa_filesize : 0);
+				fprintf (lsfp, "  ");
+			fprintf (lsfp, "%-8.8s %-8.8s %8d ", s ? s : "",
+					 (fa -> fa_present & FA_ACCOUNT) ? fa -> fa_account : "",
+					 (fa -> fa_present & FA_FILESIZE) ? fa -> fa_filesize : 0);
 			if (ut) {
 				mtime = gtime (ut2tm (ut));
 				s = ctime (&mtime);
 				if (mtime < longtimeago || mtime > now)
-					 fprintf (lsfp, "%-7.7s %-4.4s ", s + 4, s + 20);
+					fprintf (lsfp, "%-7.7s %-4.4s ", s + 4, s + 20);
 				else
-					 fprintf (lsfp, "%-12.12s ", s + 4);
+					fprintf (lsfp, "%-12.12s ", s + 4);
 			} else
-				 fprintf (lsfp, "             ");
+				fprintf (lsfp, "             ");
 		}
 		if (!invis) {
 			char *dp;
@@ -337,9 +334,9 @@ static int ls (char *file, char *entry, int top, int first, int last, int invis,
 			dp = top && (fa -> fa_present & FA_FILENAME) ? fa -> fa_files[0]
 				 : entry;
 #ifdef	BRIDGE
-			 fprintf (lsfp, "%s%s\r\n", dp, multi && recurse ? ":" : "");
+			fprintf (lsfp, "%s%s\r\n", dp, multi && recurse ? ":" : "");
 #else
-			 fprintf (lsfp, "%s%s\n", dp, multi && recurse ? ":" : "");
+			fprintf (lsfp, "%s%s\n", dp, multi && recurse ? ":" : "");
 #endif
 		}
 	}
@@ -359,17 +356,17 @@ static int ls (char *file, char *entry, int top, int first, int last, int invis,
 		faduid -> fa_type = FA_FIRSTLAST;
 		faduid -> fa_firstlast = FA_FIRST;
 
-		 fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
-		 getvf (file, NULLCP, faduid, vf, fdffnx);
+		fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
+		getvf (file, NULLCP, faduid, vf, fdffnx);
 
-		 fdfls (file);
+		fdfls (file);
 
-		 fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
+		fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
 		didrecurse++;
 	}
 
 	if (top && !last && didrecurse)
-		 fprintf (lsfp, "\n");
+		fprintf (lsfp, "\n");
 
 	FTGFREE (ftg);
 	return OK;
@@ -382,29 +379,28 @@ you_lose:
 
 /*  */
 
-static int fdfls (char *file)
-{
+static int fdfls (char *file) {
 	int    i,
-			 j,
-			 w;
+		   j,
+		   w;
 	int     columns,
 			width,
 			lines;
 	char   *bp,
 		   buffer[BUFSIZ];
 	struct filent *fi,
-			**xi,
-			**yi;
+			   **xi,
+			   **yi;
 
 	switch (realstore) {
 	case RFS_UNIX:
 		if (strcmp (file, ".")) {
 #ifdef apollo
 			if (*file == '/')
-				 sprintf (bp = buffer, "%s", file);
+				sprintf (bp = buffer, "%s", file);
 			else
 #endif
-				 sprintf (bp = buffer, "%s/", file);
+				sprintf (bp = buffer, "%s/", file);
 			bp += strlen (bp);
 			i = bp - buffer;
 			for (xi = &filents; fi = *xi;)
@@ -438,12 +434,12 @@ static int fdfls (char *file)
 	case 1:
 		fi = filents;
 		if (dashl)
-			 ls (fi -> fi_name, fi -> fi_entry, 0, 1, 1, 0, 0);
+			ls (fi -> fi_name, fi -> fi_entry, 0, 1, 1, 0, 0);
 		else
 #ifdef	BRIDGE
-			 fprintf (lsfp, "%s\r\n", fi -> fi_entry);
+			fprintf (lsfp, "%s\r\n", fi -> fi_entry);
 #else
-			 fprintf (lsfp, "%s\n", fi -> fi_entry);
+			fprintf (lsfp, "%s\n", fi -> fi_entry);
 #endif
 		break;
 
@@ -468,17 +464,17 @@ static int fdfls (char *file)
 			}
 
 			for (fi = filents; fi; fi = fi -> fi_next)
-				 ls (fi -> fi_name, fi -> fi_entry, 0, fi == filents,
-						   fi -> fi_next == NULL, 0, 1);
+				ls (fi -> fi_name, fi -> fi_entry, 0, fi == filents,
+					fi -> fi_next == NULL, 0, 1);
 			break;
 		}
 
 		if (!xi) {
 			for (fi = filents; fi; fi = fi -> fi_next)
 #ifdef	BRIDGE
-				 fprintf (lsfp, "%s\r\n", fi -> fi_entry);
+				fprintf (lsfp, "%s\r\n", fi -> fi_entry);
 #else
-				 fprintf (lsfp, "%s\n", fi -> fi_entry);
+				fprintf (lsfp, "%s\n", fi -> fi_entry);
 #endif
 			break;
 		}
@@ -498,20 +494,20 @@ static int fdfls (char *file)
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
 				fi = xi[w = j * lines + i];
-				 fprintf (lsfp, "%s", fi -> fi_entry);
+				fprintf (lsfp, "%s", fi -> fi_entry);
 				if (w + lines >= nfilent) {
 #ifdef	BRIDGE
-					 fputc ('\r', lsfp);
-					 fputc ('\n', lsfp);
+					fputc ('\r', lsfp);
+					fputc ('\n', lsfp);
 #else
-					 fputc ('\n', lsfp);
+					fputc ('\n', lsfp);
 #endif
 					break;
 				}
 				for (w = strlen (fi -> fi_entry);
 						w < width;
 						w = (w + 8) & ~7)
-					 fputc ('\t', lsfp);
+					fputc ('\t', lsfp);
 			}
 		free ((char *) xi);
 	}
@@ -523,12 +519,11 @@ static int fdfls (char *file)
 
 /* ARGSUSED */
 
-int 
-fdffnx (int fd, struct PSAPdata *px, int status)
-{
+int
+fdffnx (int fd, struct PSAPdata *px, int status) {
 	int    i;
 	PE	    pe,
-			 *pep;
+	 *pep;
 	struct filent *fi;
 
 	if (px == NULL) {
@@ -637,7 +632,6 @@ fdffnx (int fd, struct PSAPdata *px, int status)
 }
 
 
-static int filcmp (struct filent **a, struct filent **b)
-{
+static int filcmp (struct filent **a, struct filent **b) {
 	return strcmp ((*a) -> fi_entry, (*b) -> fi_entry);
 }

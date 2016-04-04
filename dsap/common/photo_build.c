@@ -314,7 +314,7 @@ get_node ()
 /* so we need to count each string as it is read in.
 */
 
-int 
+int
 build_trees (void) {
 	i;
 	char **  string;

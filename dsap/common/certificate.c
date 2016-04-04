@@ -38,7 +38,7 @@ struct certificate *parm;
 {
 	PE pe;
 
-	 encode_AF_Certificate(&pe, 0, 0, NULLCP, parm);
+	encode_AF_Certificate(&pe, 0, 0, NULLCP, parm);
 	return (pe);
 }
 
@@ -52,9 +52,8 @@ PE pe;
 	return (result);
 }
 
-int 
-alg_cpy (struct alg_id *a, struct alg_id *b)
-{
+int
+alg_cpy (struct alg_id *a, struct alg_id *b) {
 	a->algorithm = oid_cpy(b->algorithm);
 
 	if (b->asn)
@@ -67,8 +66,7 @@ alg_cpy (struct alg_id *a, struct alg_id *b)
 }
 
 struct certificate *
-cert_cpy (struct certificate *parm)
-{
+cert_cpy (struct certificate *parm) {
 	struct certificate *result;
 
 	result = (struct certificate *) calloc(1, sizeof(struct certificate));
@@ -96,9 +94,8 @@ cert_cpy (struct certificate *parm)
 	return (result);
 }
 
-int 
-cert_free (struct certificate *parm)
-{
+int
+cert_free (struct certificate *parm) {
 	dn_free(parm->issuer);
 	dn_free(parm->subject);
 
@@ -137,9 +134,8 @@ cert_free (struct certificate *parm)
 	free((char *) parm);
 }
 
-int 
-str2alg (char *str, struct alg_id *alg)
-{
+int
+str2alg (char *str, struct alg_id *alg) {
 	PE asn2pe();
 
 	if ((str == NULLCP) || (*str == '\0')) {
@@ -155,9 +151,8 @@ str2alg (char *str, struct alg_id *alg)
 	}
 }
 
-int 
-str2encrypted (char *str, char **cp, int *len)
-{
+int
+str2encrypted (char *str, char **cp, int *len) {
 	int i;
 	int l;
 	int k = 0;
@@ -172,15 +167,14 @@ str2encrypted (char *str, char **cp, int *len)
 	*cp = malloc((unsigned)(l+1)/2);
 	*len = 8*((l+1)/2) - k;
 	for (i=0; i<(l+1)/2; i++) {
-		 sscanf(str+2*i, "%02x", &tmp);
+		sscanf(str+2*i, "%02x", &tmp);
 		(*cp)[i] = tmp & 255;
 	}
 }
 
 
 struct certificate *
-str2cert (char *str)
-{
+str2cert (char *str) {
 	struct certificate *result;
 	char *ptr;
 	OID oid;
@@ -456,9 +450,8 @@ int format;
 					parm->key.n_bits, format);
 }
 
-int 
-cert_cmp (struct certificate *a, struct certificate *b)
-{
+int
+cert_cmp (struct certificate *a, struct certificate *b) {
 	int ret;
 
 	ret = dn_cmp(a->issuer, b->issuer);
@@ -486,9 +479,9 @@ cert_cmp (struct certificate *a, struct certificate *b)
 	return (0);
 }
 
-int 
+int
 certificate_syntax (void) {
-	 add_attribute_syntax(
+	add_attribute_syntax(
 		"Certificate",
 		(IFP) cert_enc, (IFP) cert_dec,
 		(IFP) str2cert, (IFP) printcert,

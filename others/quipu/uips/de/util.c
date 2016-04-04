@@ -50,72 +50,70 @@ extern int alarmCount;
 extern int bindTimeout;
 void onint1();
 
-int 
-listlen (struct namelist *lp)
-{
+int
+listlen (struct namelist *lp) {
 	int len;
 
 	for (len = 0; lp != NULLLIST; lp = lp->next, len++) {};
 	return len;
 }
 
-unsigned int 
+unsigned int
 alarmLen  {
 	if ((lexequ(qinfo[ORG].entered, origDefaultOrg) == 0) &&
-			(lexequ(qinfo[COUNTRY].entered, origDefaultCo) == 0))
+	(lexequ(qinfo[COUNTRY].entered, origDefaultCo) == 0))
 		return localAlarmTime;
 	else
 		return remoteAlarmTime;
 }
 
-void 
+void
 initAlarm  {
 	void onalarm();
 
 	alarmCount = 0;
-	 signal(SIGALRM, (VFP) onalarm);
-	 alarm(alarmLen());
+	signal(SIGALRM, (VFP) onalarm);
+	alarm(alarmLen());
 }
 
-void 
+void
 alarmCleanUp  {
-	 signal(SIGALRM, SIG_IGN);
-	 alarm(0);
+	signal(SIGALRM, SIG_IGN);
+	alarm(0);
 	if (alarmCount > 1) {
 		alarmCount = 0;
-		 printf("\n\n");
+		printf("\n\n");
 	}
 }
 
-void 
+void
 handleTimeout  {
 	de_unbind();
-	 signal(SIGALRM, SIG_IGN);
+	signal(SIGALRM, SIG_IGN);
 }
 
-void 
+void
 startUnbindTimer  {
 	void handleTimeout();
 
-	 signal(SIGALRM, (VFP) handleTimeout);
-	 alarm((unsigned)bindTimeout);
+	signal(SIGALRM, (VFP) handleTimeout);
+	alarm((unsigned)bindTimeout);
 }
 
-void 
+void
 stopUnbindTimer  {
-	 signal(SIGALRM, SIG_IGN);
-	 alarm(0);
+	signal(SIGALRM, SIG_IGN);
+	alarm(0);
 }
 
 char *
-copy_string (char *string)
-{
+copy_string (char *string) {
 	char *new_string;
 
 	if (string == NULLCP) return NULLCP;
 
 	new_string = (char *) smalloc((strlen(string) + 1));
-	 strcpy(new_string, string);
+	strcpy(new_string, string);
 
 	return new_string;
 }
@@ -151,9 +149,8 @@ DN	dn;
 
 /* determine wildcard type of already validated string */
 
-int 
-starstring (char *istr, char **ostr1, char **ostr2)
-{
+int
+starstring (char *istr, char **ostr1, char **ostr2) {
 	char * lastcp, *cp;
 
 	lastcp = istr + strlen(istr) - 1;
@@ -179,9 +176,8 @@ starstring (char *istr, char **ostr1, char **ostr2)
 
 
 /* print last component of a dn string - optionally indented by type */
-void 
-printLastComponent (int indent, char *dnstr, int objectType, int printNumber)
-{
+void
+printLastComponent (int indent, char *dnstr, int objectType, int printNumber) {
 	char * cp1, * cp2, * savestring;
 
 	if (strcmp(dnstr, "root") == 0)
@@ -206,7 +202,7 @@ printLastComponent (int indent, char *dnstr, int objectType, int printNumber)
 			pageprint("      ");
 			break;
 		default:
-			 fprintf(stderr, "WOT's THIS?  ");
+			fprintf(stderr, "WOT's THIS?  ");
 			break;
 		}
 	}
@@ -218,8 +214,7 @@ printLastComponent (int indent, char *dnstr, int objectType, int printNumber)
 }
 
 char *
-lastComponent (char *dnstr, int objectType)
-{
+lastComponent (char *dnstr, int objectType) {
 	char * cp, * cp2, *cp3, * savestring;
 	int gotmatch;
 
@@ -284,8 +279,7 @@ lastComponent (char *dnstr, int objectType)
 }
 
 char *
-removeLastRDN (char *dnstr)
-{
+removeLastRDN (char *dnstr) {
 	char * cp;
 
 	cp = copy_string(dnstr);
@@ -294,8 +288,7 @@ removeLastRDN (char *dnstr)
 }
 
 char *
-lastRDN (char *dnstr)
-{
+lastRDN (char *dnstr) {
 	char * cp;
 
 	cp = rindex(dnstr, '@');
@@ -305,14 +298,13 @@ lastRDN (char *dnstr)
 		return (++cp);
 }
 
-void 
+void
 clearProblemFlags  {
 	limitProblem = notAllReached = FALSE;
 }
 
-void 
-setProblemFlags (struct ds_search_result sresult)
-{
+void
+setProblemFlags (struct ds_search_result sresult) {
 	if ((sresult.CSR_limitproblem == LSR_SIZELIMITEXCEEDED) ||
 			(sresult.CSR_limitproblem == LSR_ADMINSIZEEXCEEDED))
 		limitProblem = TRUE;
@@ -322,9 +314,8 @@ setProblemFlags (struct ds_search_result sresult)
 }
 
 
-int 
-showAnyProblems (char *str)
-{
+int
+showAnyProblems (char *str) {
 	if (limitProblem == TRUE) {
 		pageprint("\nA limit has been imposed by the managers of the data which prevents the \n");
 		pageprint("listing of all the entries in the Directory beyond this point.  Try and\n");
@@ -344,28 +335,26 @@ showAnyProblems (char *str)
 }
 
 
-void 
-logSearchSuccess (char *outcome, char *objecttype, char *string, int searchNumber, int noMatches)
-{
+void
+logSearchSuccess (char *outcome, char *objecttype, char *string, int searchNumber, int noMatches) {
 	char filterNumberString[20];
 
 	if (deLogLevel > 1) {
 		if (searchNumber == 0)
-			 strcpy(filterNumberString, "explicit");
+			strcpy(filterNumberString, "explicit");
 		else
-			 sprintf(filterNumberString, "%d", searchNumber);
+			sprintf(filterNumberString, "%d", searchNumber);
 
-		 ll_log (de_log, LLOG_NOTICE, NULLCP,
-					   "searchOutcome:%s:%s:%s:%s:%d", objecttype,
-					   outcome, string, filterNumberString, noMatches);
+		ll_log (de_log, LLOG_NOTICE, NULLCP,
+				"searchOutcome:%s:%s:%s:%s:%d", objecttype,
+				outcome, string, filterNumberString, noMatches);
 	}
 }
 
-void 
-logListSuccess (char *outcome, char *objecttype, int noMatches)
-{
+void
+logListSuccess (char *outcome, char *objecttype, int noMatches) {
 	if (deLogLevel > 1) {
-		 ll_log (de_log, LLOG_NOTICE, NULLCP,
-					   "listOutcome:%s:%s:%d", objecttype, outcome, noMatches);
+		ll_log (de_log, LLOG_NOTICE, NULLCP,
+				"listOutcome:%s:%s:%d", objecttype, outcome, noMatches);
 	}
 }

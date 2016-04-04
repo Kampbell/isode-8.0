@@ -58,9 +58,8 @@ struct	acl *acl_list;
 
 int updateerror;
 
-int 
-do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype)
-{
+int
+do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype) {
 	Entry  entryptr;
 	Entry  real_entry;
 	struct entrymod *eptr;
@@ -401,9 +400,8 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 
 
 /* ARGSUSED */
-static 
-inherit_set (Entry e, struct DSError *error)
-{
+static
+inherit_set (Entry e, struct DSError *error) {
 	set_inheritance (e);
 
 	if (e->e_data == E_TYPE_CONSTRUCTOR)
@@ -415,9 +413,8 @@ inherit_set (Entry e, struct DSError *error)
 	return(OK);
 }
 
-int 
-remove_attribute (Entry eptr, AttributeType at, struct DSError *error, DN requestor, DN dn, Entry real_entry)
-{
+int
+remove_attribute (Entry eptr, AttributeType at, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
 	Attr_Sequence as, trail= NULLATTR, real_as;
 
 	DLOG (log_dsap,LLOG_DEBUG,("remove attribute"));
@@ -471,9 +468,8 @@ remove_attribute (Entry eptr, AttributeType at, struct DSError *error, DN reques
 }
 
 
-static 
-check_remove_type (RDN rdn, AttributeType at)
-{
+static
+check_remove_type (RDN rdn, AttributeType at) {
 
 	if ( AttrT_cmp (at,at_objectclass) == 0) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("no objectclass mods"));
@@ -493,9 +489,8 @@ check_remove_type (RDN rdn, AttributeType at)
 	return (OK);
 }
 
-static 
-check_remove_values (RDN rdn, Attr_Sequence as)
-{
+static
+check_remove_values (RDN rdn, Attr_Sequence as) {
 	AV_Sequence as_avs;
 
 	/* check that the value trying to remove is not distinguished */
@@ -522,9 +517,8 @@ check_remove_values (RDN rdn, Attr_Sequence as)
 
 
 
-int 
-remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requestor, DN dn, Entry real_entry)
-{
+int
+remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
 	Attr_Sequence as, realas;
 	AV_Sequence rmavs,avs,trail = NULLAV;
 	int i;
@@ -633,9 +627,8 @@ remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requesto
 	return (OK);
 }
 
-int 
-add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn)
-{
+int
+add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn) {
 	struct acl_attr * aa;
 	struct acl_info * ai = NULLACL_INFO;
 	struct oid_seq * oidptr;
@@ -686,9 +679,8 @@ add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN reques
 }
 
 
-int 
-mod_add_value (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn, Entry real_entry)
-{
+int
+mod_add_value (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
 	Attr_Sequence as, realas;
 	AV_Sequence avs;
 	char * dn2edbfile();
@@ -753,9 +745,8 @@ mod_add_value (Entry eptr, Attr_Sequence newas, struct DSError *error, DN reques
 }
 
 
-int 
-create_null_edb (Entry eptr)
-{
+int
+create_null_edb (Entry eptr) {
 	DN	save_dn ;
 	char   *filename, *dn2edbfile();
 	Entry	empty_entry;
@@ -791,7 +782,7 @@ create_null_edb (Entry eptr)
 	}
 #else
 	if (write_edb(empty_entry, filename) != OK) {
-		 unlink (filename);
+		unlink (filename);
 		fatal(-33, "SPT: ds_modify: 2 writing new NLN out failed.\n") ;
 	}
 #endif

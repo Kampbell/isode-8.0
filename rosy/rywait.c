@@ -142,13 +142,13 @@ struct RoSAPindication *roi;
 			*rox = roi -> roi_invoke;	/* struct copy */
 
 			if (op2 = findopblk (sd, rox -> rox_id, OPB_RESPONDER)) {
-				 rosaplose (roi, result = ROS_IP_DUP, NULLCP,
-								  "duplicate invocation %d", rox -> rox_id);
+				rosaplose (roi, result = ROS_IP_DUP, NULLCP,
+						   "duplicate invocation %d", rox -> rox_id);
 
 bad_request:
 				;
-				 RoURejectRequest (sd, &rox -> rox_id, result,
-										 ROS_NOPRIO, roi);
+				RoURejectRequest (sd, &rox -> rox_id, result,
+								  ROS_NOPRIO, roi);
 				ROXFREE (rox);
 
 				if (opb == NULLOPB)
@@ -159,9 +159,9 @@ bad_request:
 			if ((dsb = finddsblk (sd, rox -> rox_op)) == NULLDSB
 					&& (dsb = finddsblk (NOTOK, rox -> rox_op))
 					== NULLDSB) {
-				 rosaplose (roi, result = ROS_IP_UNRECOG, NULLCP,
-								  "unexpected invocation %d of operation %d",
-								  rox -> rox_id, rox -> rox_op);
+				rosaplose (roi, result = ROS_IP_UNRECOG, NULLCP,
+						   "unexpected invocation %d of operation %d",
+						   rox -> rox_id, rox -> rox_op);
 				goto bad_request;
 			}
 
@@ -173,10 +173,10 @@ bad_request:
 #else
 				if (!ryo -> ryo_arg_decode) {	/* XXX: MISTYPED? */
 #endif
-					 rosaplose (roi, result = ROS_IP_MISTYPED,
-									  NULLCP,
-									  "unexpected argument for invocation %d of operation %s/%d",
-									  rox -> rox_id, ryo -> ryo_name, ryo -> ryo_op);
+					rosaplose (roi, result = ROS_IP_MISTYPED,
+							   NULLCP,
+							   "unexpected argument for invocation %d of operation %s/%d",
+							   rox -> rox_id, ryo -> ryo_name, ryo -> ryo_op);
 					goto bad_request;
 				}
 
@@ -189,20 +189,20 @@ bad_request:
 				if ((*ryo -> ryo_arg_decode) (rox -> rox_args, 1, NULLIP,
 											  NULLVP, &in) == NOTOK) {
 #endif
-					 rosaplose (roi, result = ROS_IP_MISTYPED,
-									  NULLCP,
-									  "mistyped argument for invocation %d of operation %s/%d [%s]",
-									  rox -> rox_id, ryo -> ryo_name, ryo -> ryo_op,
-									  PY_pepy);
+					rosaplose (roi, result = ROS_IP_MISTYPED,
+							   NULLCP,
+							   "mistyped argument for invocation %d of operation %s/%d [%s]",
+							   rox -> rox_id, ryo -> ryo_name, ryo -> ryo_op,
+							   PY_pepy);
 					goto bad_request;
 				}
 			}
 
 			if (ryo -> ryo_result || ryo -> ryo_errors) {
 				if ((op2 = newopblk (sd, rox -> rox_id)) == NULLOPB) {
-					 rosaplose (roi, result = ROS_IP_LIMIT, NULLCP,
-									  "unable to allocate opblock for invocation %d of operation %s/%d",
-									  rox -> rox_id, ryo -> ryo_name, ryo -> ryo_op);
+					rosaplose (roi, result = ROS_IP_LIMIT, NULLCP,
+							   "unable to allocate opblock for invocation %d of operation %s/%d",
+							   rox -> rox_id, ryo -> ryo_name, ryo -> ryo_op);
 					goto bad_request;
 				}
 				op2 -> opb_flags &= ~OPB_INITIATOR;
@@ -213,13 +213,13 @@ bad_request:
 			result = (*dsb -> dsb_vector) (sd, ryo, rox, in, roi);
 #ifdef PEPSY_DEFINITIONS
 			if (in && ryo -> ryo_arg_mod)
-				 fre_obj (in,
-								ryo -> ryo_arg_mod
-								-> md_dtab[ryo -> ryo_arg_index],
-								ryo -> ryo_arg_mod, 1);
+				fre_obj (in,
+						 ryo -> ryo_arg_mod
+						 -> md_dtab[ryo -> ryo_arg_index],
+						 ryo -> ryo_arg_mod, 1);
 #else
 			if (in && ryo -> ryo_arg_free)
-				 (*ryo -> ryo_arg_free) (in);
+				(*ryo -> ryo_arg_free) (in);
 #endif
 			ROXFREE (rox);
 
@@ -247,8 +247,8 @@ bad_request:
 			if ((op2 = findopblk (sd, ror -> ror_id, OPB_INITIATOR))
 					== NULLOPB
 					|| (op2 -> opb_flags & OPB_EVENT)) {
-				 RoURejectRequest (sd, &ror -> ror_id,
-										 ROS_RRP_UNRECOG, ROS_NOPRIO, roi);
+				RoURejectRequest (sd, &ror -> ror_id,
+								  ROS_RRP_UNRECOG, ROS_NOPRIO, roi);
 				RORFREE (ror);
 				goto next;
 			}
@@ -357,8 +357,8 @@ waiting:
 			if ((op2 = findopblk (sd, roe -> roe_id, OPB_INITIATOR))
 					== NULLOPB
 					|| (op2 -> opb_flags & OPB_EVENT)) {
-				 RoURejectRequest (sd, &roe -> roe_id,
-										 ROS_REP_UNRECOG, ROS_NOPRIO, roi);
+				RoURejectRequest (sd, &roe -> roe_id,
+								  ROS_REP_UNRECOG, ROS_NOPRIO, roi);
 				ROEFREE (roe);
 				goto next;
 			}
@@ -487,8 +487,8 @@ bad_response:
 		{
 			struct RoSAPureject   *rou = &roi -> roi_ureject;
 
-			 RoURejectRequest (op2 -> opb_fd, &op2 -> opb_id,
-									 result, ROS_NOPRIO, roi);
+			RoURejectRequest (op2 -> opb_fd, &op2 -> opb_id,
+							  result, ROS_NOPRIO, roi);
 
 			roi -> roi_type = ROI_UREJECT;
 			rou -> rou_id = op2 -> opb_id;

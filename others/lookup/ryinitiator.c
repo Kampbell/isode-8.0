@@ -100,7 +100,7 @@ IFP	quit;
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		 bzero ((char *) sf, sizeof *sf);
+		bzero ((char *) sf, sizeof *sf);
 	}
 
 	if (argc < 3) {
@@ -114,7 +114,7 @@ IFP	quit;
 		printf ("using %s\n", isodeversion);
 
 		printf ("%s... ", argv[1]);
-		 fflush (stdout);
+		fflush (stdout);
 
 		iloop = 1;
 	} else {
@@ -142,7 +142,7 @@ IFP	quit;
 	}
 	if (iloop) {
 		printf ("connected\n");
-		 fflush (stdout);
+		fflush (stdout);
 	}
 
 	sd = acc -> acc_sd;
@@ -177,9 +177,8 @@ IFP	quit;
 
 /*  */
 
-static 
-invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args)
-{
+static
+invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
 	int	    result;
 	caddr_t in;
 	struct RoSAPindication  rois;
@@ -212,18 +211,17 @@ invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args)
 	}
 
 	if (ds -> ds_mod && ds -> ds_ind >= 0 && in)
-		 fre_obj (in, ds -> ds_mod -> md_dtab[ds -> ds_ind],
-						ds -> ds_mod, 1);
+		fre_obj (in, ds -> ds_mod -> md_dtab[ds -> ds_ind],
+				 ds -> ds_mod, 1);
 }
 
 /*  */
 
-static int 
-getline (char *buffer)
-{
+static int
+getline (char *buffer) {
 	int    i;
 	char  *cp,
-			 *ep;
+		  *ep;
 	static int  sticky = 0;
 
 	if (sticky) {
@@ -232,7 +230,7 @@ getline (char *buffer)
 	}
 
 	printf ("%s> ", myname);
-	 fflush (stdout);
+	fflush (stdout);
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
@@ -256,51 +254,47 @@ getline (char *buffer)
 
 /*  */
 
-void 
-ros_adios (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	_exit (1);
 }
 
 
-void 
-ros_advise (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
-						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
+		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
 /*  */
 
-void 
-acs_adios (struct AcSAPabort *aca, char *event)
-{
+void
+acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
 
 	_exit (1);
 }
 
 
-void 
-acs_advise (struct AcSAPabort *aca, char *event)
-{
+void
+acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						AcErrString (aca -> aca_reason),
-						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 AcErrString (aca -> aca_reason),
+				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -327,9 +321,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -348,27 +341,25 @@ va_dcl {
 }
 
 
-static void 
-_advise (va_list ap)
-{
+static void
+_advise (va_list ap) {
 	char    buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
 
-	 fflush (stdout);
+	fflush (stdout);
 
 	fprintf (stderr, "%s: ", myname);
-	 fputs (buffer, stderr);
-	 fputc ('\n', stderr);
+	fputs (buffer, stderr);
+	fputc ('\n', stderr);
 
-	 fflush (stderr);
+	fflush (stderr);
 }
 #else
 /* VARARGS */
 
-void 
-advise (char *what, char *fmt)
-{
+void
+advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
@@ -388,9 +379,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-ryr_advise (char *what, char *fmt)
-{
+void
+ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

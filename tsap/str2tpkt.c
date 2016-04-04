@@ -37,13 +37,12 @@ static int	readfnx (), getfnx (), writefnx (), putfnx ();
 /*  */
 
 char *
-tpkt2str (struct tsapkt *t)
-{
+tpkt2str (struct tsapkt *t) {
 	int	    cc;
 	char    packet[BUFSIZ];
 	static char buffer[2 * sizeof packet + 1];
 
-	 writefnx ((struct tsapblk *) NOTOK, packet, 0);
+	writefnx ((struct tsapblk *) NOTOK, packet, 0);
 	if (tpkt2fd ((struct tsapblk *) 0, t, putfnx) == NOTOK)
 		return NULLCP;
 
@@ -63,16 +62,15 @@ tpkt2str (struct tsapkt *t)
 /*  */
 
 struct tsapkt *
-str2tpkt (char *buffer)
-{
+str2tpkt (char *buffer) {
 	char    packet[BUFSIZ];
 	struct tsapkt *t;
 
 	DLOG (tsap_log, LLOG_PDUS,
 		  ("read %d bytes, \"%s\"", strlen (buffer), buffer));
 
-	 getfnx (NOTOK, NULLPKT, packet,
-				   implode ((u_char *) packet, buffer, strlen (buffer)));
+	getfnx (NOTOK, NULLPKT, packet,
+			implode ((u_char *) packet, buffer, strlen (buffer)));
 	t = fd2tpkt (0, getfnx, readfnx);
 
 	return t;
@@ -80,13 +78,12 @@ str2tpkt (char *buffer)
 
 /*  */
 
-static int 
-getfnx (int fd, struct tsapkt *t, char *buffer, int n)
-{
+static int
+getfnx (int fd, struct tsapkt *t, char *buffer, int n) {
 	static int  cc;
 
 	if (fd == NOTOK) {
-		 readfnx (NOTOK, buffer, cc = n);
+		readfnx (NOTOK, buffer, cc = n);
 		return OK;
 	}
 
@@ -105,9 +102,8 @@ getfnx (int fd, struct tsapkt *t, char *buffer, int n)
 }
 
 
-static int 
-readfnx (int fd, char *buffer, int n)
-{
+static int
+readfnx (int fd, char *buffer, int n) {
 	int    i;
 	static int  cc;
 	static char *bp;
@@ -128,9 +124,8 @@ readfnx (int fd, char *buffer, int n)
 
 /*  */
 
-static int 
-putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n)
-{
+static int
+putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 	int    cc;
 	struct udvec  *uv;
 
@@ -163,9 +158,8 @@ putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n)
 
 /*  */
 
-static int 
-writefnx (struct tsapblk *tb, char *buffer, int n)
-{
+static int
+writefnx (struct tsapblk *tb, char *buffer, int n) {
 	static int  cc;
 	static char *bp;
 

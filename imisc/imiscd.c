@@ -93,9 +93,8 @@ char   *ctime ();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, PLocalHostName (), myservice, NULLCP,
 				 dispatches, table_IMISC_Operations, NULLIFP, NULLIFP);
 
@@ -303,7 +302,7 @@ struct RoSAPindication *roi;
 	if ((ud = open ("/etc/utmp", 0)) == NOTOK) {
 		int	result;
 
-		 sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
+		sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
@@ -321,19 +320,19 @@ struct RoSAPindication *roi;
 			continue;
 		if ((dp = ctime (&ut -> ut_time)) == NULL)
 			goto congested;
-		 sprintf (buffer, "%-*.*s %-*.*s %.12s",
-						NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line, dp + 4);
+		sprintf (buffer, "%-*.*s %-*.*s %.12s",
+				 NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line, dp + 4);
 #ifdef	BSD42
 		if (ut -> ut_host[0])
-			 sprintf (buffer + strlen (buffer), "\t(%.*s)",
-							HMAX, ut -> ut_host);
+			sprintf (buffer + strlen (buffer), "\t(%.*s)",
+					 HMAX, ut -> ut_host);
 #endif
 
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
 	}
-	 close (ud);
+	close (ud);
 #else
 	setutent ();
 	while (ut = getutent ()) {
@@ -341,9 +340,9 @@ struct RoSAPindication *roi;
 			continue;
 		if ((dp = ctime (&ut -> ut_time)) == NULL)
 			goto congested;
-		 sprintf (buffer, "%-*.*s %-*.*s %.12s",
-						NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line,
-						dp + 4);
+		sprintf (buffer, "%-*.*s %-*.*s %.12s",
+				 NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line,
+				 dp + 4);
 
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
@@ -388,12 +387,12 @@ caddr_t	in;
 struct RoSAPindication *roi;
 {
 	int    i,
-			 j;
+		   j;
 	char  *dp,
-			 *de,
-			 *rs,
-			 *rp,
-			 *re;
+		  *de,
+		  *rs,
+		  *rp,
+		  *re;
 	char    line[LINSIZ + 1],
 			ring[BUFSIZ];
 	struct type_IMISC_IA5List *ia5;
@@ -616,14 +615,13 @@ int	rand (), srand ();
 			    return NOTOK;
 
 
-static int 
-pwdgen (char *pw)
-{
+static int
+pwdgen (char *pw) {
 	int    i,
-			 j;
+		   j;
 	char   c,
-			 *f,
-			 *s;
+		   *f,
+		   *s;
 	struct pair   *pair;
 	struct web *web;
 	static int  latch = 0;
@@ -633,17 +631,17 @@ pwdgen (char *pw)
 				  (((unsigned) (strlen (Dx) + strlen (Lx) + strlen (Nx)))))
 				== NULL)
 			return NOTOK;
-		 strcpy (s = Mx, Dx);
+		strcpy (s = Mx, Dx);
 		s += strlen (s);
-		 strcpy (s, Lx);
+		strcpy (s, Lx);
 		s += strlen (s);
-		 strcpy (s, Nx);
+		strcpy (s, Nx);
 		s += strlen (s);
 
 #ifndef	SYS5
-		 srandom ((int) time ((long *) 0));
+		srandom ((int) time ((long *) 0));
 #else
-		 srand ((unsigned int) time ((long *) 0));
+		srand ((unsigned int) time ((long *) 0));
 #endif
 
 		latch++;
@@ -695,12 +693,11 @@ static struct obj {
 };
 
 
-static int 
-object (char *pw)
-{
+static int
+object (char *pw) {
 	int    n;
 	char  *f,
-			 *s;
+		  *s;
 	char    buffer[BUFSIZ];
 	struct obj *o;
 
@@ -743,7 +740,7 @@ struct RoSAPindication *roi;
 			vecq,
 			pd[2];
 	char  *bp,
-			 *dp;
+		  *dp;
 	char    buffer[BUFSIZ],
 			data[BUFSIZ],
 			*pgm,
@@ -796,7 +793,7 @@ oops:
 		ia5 = NULL;
 		ia5p = &ia5;
 
-		 sprintf (buffer, "%s: %s", pgm, sys_errname (errno));
+		sprintf (buffer, "%s: %s", pgm, sys_errname (errno));
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
@@ -814,29 +811,29 @@ oops:
 
 	switch (vfork ()) {
 	case NOTOK:
-		 close (pd[0]);
-		 close (pd[1]);
+		close (pd[0]);
+		close (pd[1]);
 		result = error_IMISC_unableToFork;
 		goto oops;
 
 	case OK:
 		if ((fd = open ("/dev/null", 2)) != NOTOK) {
 			if (fd != 0)
-				 dup2 (fd, 0),  close (fd);
+				dup2 (fd, 0),  close (fd);
 		}
-		 dup2 (pd[1], 1);
-		 dup2 (pd[1], 2);
-		 close (pd[0]);
-		 close (pd[1]);
+		dup2 (pd[1], 1);
+		dup2 (pd[1], 2);
+		close (pd[0]);
+		close (pd[1]);
 		if (execuid != 0) {
-			 setgid (execgid);
-			 setuid (execuid);
+			setgid (execgid);
+			setuid (execuid);
 		}
-		 execvp (pgm, vec);
+		execvp (pgm, vec);
 		_exit (1);
 
 	default:
-		 close (pd[1]);
+		close (pd[1]);
 		for (vecp = vecq; bp = vec[vecp]; vecp++) {
 			free (bp);
 			vec[vecp] = NULL;
@@ -849,13 +846,13 @@ oops:
 			switch (i = read (pd[0], buffer, sizeof buffer)) {
 			case NOTOK:
 				i = errno;
-				 close (pd[0]);
+				close (pd[0]);
 				errno = i;
 				result = error_IMISC_errorReading;
 				goto oops;
 
 			case OK:
-				 close (pd[0]);
+				close (pd[0]);
 				if (dp != data) {
 					*dp = NULL;
 					if ((*ia5p = str2ia5list (data)) == NULL)
@@ -962,7 +959,7 @@ struct RoSAPindication *roi;
 	result = error_IMISC_userNotLoggedIn;
 #ifndef	SYS5
 	if ((ud = open ("/etc/utmp", 0)) == NOTOK) {
-		 sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
+		sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
 		if ((ia5 = str2ia5list (buffer)) == NULL)
 			goto congested;
 
@@ -983,7 +980,7 @@ struct RoSAPindication *roi;
 			else
 				result = error_IMISC_unableToOpenFile;
 	}
-	 close (ud);
+	close (ud);
 #else
 	setutent ();
 	while (ut = getutent ()) {
@@ -1023,9 +1020,8 @@ out:
 
 /*  */
 
-static int 
-do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp)
-{
+static int
+do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	int     i,
 			pid;
 	char   *bp,
@@ -1033,9 +1029,9 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp)
 	struct stat st;
 	FILE   *fp;
 
-	 strcpy (bp = tty, "/dev/");
+	strcpy (bp = tty, "/dev/");
 	bp += strlen (bp);
-	 strncpy (bp, ut -> ut_line, LMAX);
+	strncpy (bp, ut -> ut_line, LMAX);
 	bp += LMAX;
 	*bp = NULL;
 	if (stat (tty, &st) == NOTOK
@@ -1059,14 +1055,14 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp)
 		return NOTOK;
 	if ((fp = fopen (tty, "w")) == NULL)
 		_exit (1);
-	 fprintf (fp, "\r\nmessage from %s:\r\n\007", from);
+	fprintf (fp, "\r\nmessage from %s:\r\n\007", from);
 	for (i = 0, bp = NULL; i < vecp; i++, bp = " ") {
 		if (bp)
-			 fputs (bp, fp);
-		 fputs (vec[i], fp);
+			fputs (bp, fp);
+		fputs (vec[i], fp);
 	}
-	 fputs ("\r\n", fp);
-	 fclose (fp);
+	fputs ("\r\n", fp);
+	fclose (fp);
 	_exit (0);			/* NOTREACHED */
 }
 
@@ -1098,9 +1094,8 @@ struct RoSAPindication *roi;
 
 /*    ERROR */
 
-static int 
-error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
-{
+static int
+error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
 
@@ -1109,9 +1104,8 @@ error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindi
 
 /*    U-REJECT */
 
-static int 
-ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
-{
+static int
+ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 
@@ -1121,8 +1115,7 @@ ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *ro
 /*    TYPES */
 
 struct type_IMISC_IA5List *
-str2ia5list (char *s)
-{
+str2ia5list (char *s) {
 	struct type_IMISC_IA5List *ia5;
 
 	if ((ia5 = (struct type_IMISC_IA5List  *) calloc (1, sizeof *ia5)) == NULL)

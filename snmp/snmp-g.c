@@ -129,8 +129,8 @@ int	hi;
 		adios (NULLCP, "no syntax defined for object \"%s\"", ot -> ot_text);
 	name = os -> os_name;
 
-	 add_syntax (ot -> ot_text, os -> os_encode, os -> os_decode,
-					   os -> os_free, os -> os_parse, os -> os_print);
+	add_syntax (ot -> ot_text, os -> os_encode, os -> os_decode,
+				os -> os_free, os -> os_parse, os -> os_print);
 	if ((os = text2syn (ot -> ot_text)) == NULL)
 		adios (NULLCP, "lost syntax for object \"%s\"", ot -> ot_text);
 	ot -> ot_syntax = os;

@@ -39,9 +39,8 @@ static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle
 
 /*    F-INITIALIZE.REQUEST */
 
-int 
-FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti)
-{
+int
+FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti) {
 	SBV     smask;
 	int     result;
 
@@ -106,15 +105,14 @@ not_enough:
 									contents, initiator, account, password, passlen, qos, tracing, ftc,
 									fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti)
-{
+static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti) {
 	int	i;
 	int	    bits,
 			rcvd_bits,
@@ -290,8 +288,8 @@ no_mem:
 	req -> checkpoint__window = 1;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-						 "error encoding PDU: %s", PY_pepy);
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+				  "error encoding PDU: %s", PY_pepy);
 		goto out1;
 	}
 
@@ -325,7 +323,7 @@ no_mem:
 							 qos, acc, aci);
 
 	if (result == NOTOK) {
-		 acs2ftamlose (fsb, fti, "AcAssocRequest", aca);
+		acs2ftamlose (fsb, fti, "AcAssocRequest", aca);
 		goto out1;
 	}
 
@@ -355,7 +353,7 @@ no_mem:
 			struct FTAMabort *fta = &fti -> fti_abort;
 
 			aca -> aca_reason = acc -> acc_result;
-			 acs2ftamlose (fsb, fti, "AcAssocRequest(pseudo)", aca);
+			acs2ftamlose (fsb, fti, "AcAssocRequest(pseudo)", aca);
 
 			ftc -> ftc_sd = NOTOK;
 			ftc -> ftc_state = FSTATE_FAILURE;
@@ -630,8 +628,8 @@ too_many:
 		}
 	}
 	if (rsp -> diagnostic)
-		 fpm2diag (fsb, rsp -> diagnostic, ftc -> ftc_diags,
-						 &ftc -> ftc_ndiag, fti);
+		fpm2diag (fsb, rsp -> diagnostic, ftc -> ftc_diags,
+				  &ftc -> ftc_ndiag, fti);
 	ftc -> ftc_ssdusize = fsb -> fsb_ssdusize;
 	ftc -> ftc_qos = pc -> pc_qos;	/* struct copy */
 

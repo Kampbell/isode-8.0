@@ -39,9 +39,8 @@ extern char     fname[];
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-int 
-editentry (int argc, char **argv)
-{
+int
+editentry (int argc, char **argv) {
 	char            str[LINESIZE];
 	char            prog[LINESIZE];
 	int             res;
@@ -55,19 +54,19 @@ editentry (int argc, char **argv)
 		return (NOTOK);
 	}
 
-	 sprintf (str, "%s %s",
-					_isodefile (isodebinpath, "editentry"), fname);
+	sprintf (str, "%s %s",
+			 _isodefile (isodebinpath, "editentry"), fname);
 
 	if (!frompipe)
 		return (system (str) ? NOTOK : OK);
 
 	if (!dad_flag) {
-		 sprintf (prog, "e%s\n", str);
+		sprintf (prog, "e%s\n", str);
 
 		send_pipe_aux (prog);
 
 		if ((res = read_pipe_aux (prog,sizeof prog)) < 1) {
-			 fprintf (stderr, "read failure\n");
+			fprintf (stderr, "read failure\n");
 			remote_prob = TRUE;
 			return (NOTOK);
 		} else {
@@ -80,8 +79,8 @@ editentry (int argc, char **argv)
 
 				/* relative path... prefix cwd */
 				*(prog + res) = 0;
-				 sprintf (tempbuf, "%s/%s", prog, fname);
-				 strcpy (fname, tempbuf);
+				sprintf (tempbuf, "%s/%s", prog, fname);
+				strcpy (fname, tempbuf);
 			}
 		}
 	} else {
@@ -94,7 +93,7 @@ editentry (int argc, char **argv)
 		char *cp, *dp;
 		FILE *fp;
 		struct stat st;
-		
+
 
 		if ((fp = fopen (fname, "r+")) == NULL) {
 			ps_printf (OPT, "unable to open %s for rw: %s\n",
@@ -107,15 +106,15 @@ editentry (int argc, char **argv)
 			ps_printf (OPT, "%s: not a regular file\n", fname);
 out:
 			;
-			 fclose (fp);
+			fclose (fp);
 			return NOTOK;
 		}
 
-		 sprintf (prog, "e%d\n", cc);
+		sprintf (prog, "e%d\n", cc);
 		send_pipe_aux (prog);
 
 		if ((res = read_pipe_aux (prog, sizeof prog)) < 1) {
-			 fprintf (stderr, "read failure\n");
+			fprintf (stderr, "read failure\n");
 			remote_prob = TRUE;
 			goto out;
 		} else if ((res == 1) && (*prog == 'e')) {
@@ -150,18 +149,18 @@ out2:
 		free (cp), cp = NULL;
 
 		if ((res = read_pipe_aux2 (&cp, &cc)) < 1) {
-			 ps_printf (OPT, "read failure\n");
+			ps_printf (OPT, "read failure\n");
 			remote_prob = TRUE;
 			goto out;
 		}
 		if (res == 1) {
 			if (*cp != 'e')
-				 ps_printf (OPT, "remote protocol error: %s\n",
-								  cp);
+				ps_printf (OPT, "remote protocol error: %s\n",
+						   cp);
 			goto out;
 		}
 
-		 fclose (fp);
+		fclose (fp);
 		if ((fp = fopen (fname, "w")) == NULL) {
 			ps_printf (OPT, "unable to re-open %s for writing: %s\n",
 					   fname, sys_errname (errno));
@@ -176,7 +175,7 @@ out2:
 		}
 
 		free (cp);
-		 fclose (fp);
+		fclose (fp);
 #endif
 	}
 
@@ -184,9 +183,8 @@ out2:
 }
 
 
-int 
-get_password (char *str, char *buffer)
-{
+int
+get_password (char *str, char *buffer) {
 
 	char            prog[LINESIZE];
 	int             res;
@@ -196,27 +194,26 @@ get_password (char *str, char *buffer)
 	char * 		getpassword ();
 
 	if (frompipe) {
-		 sprintf (prog, "p%s\n", str);
+		sprintf (prog, "p%s\n", str);
 
 		send_pipe_aux (prog);
 
 		if ((res = read_pipe_aux (prog,sizeof prog)) < 1) {
-			 fprintf (stderr, "read failure\n");
+			fprintf (stderr, "read failure\n");
 			remote_prob = TRUE;
 			return;
 		} else {
 			*(prog+res) = 0;
-			 strcpy (buffer, prog + 1);
+			strcpy (buffer, prog + 1);
 		}
 	} else {
-		 sprintf (buffer,"Enter password for \"%s\": ",str);
-		 strcpy (buffer,getpassword (buffer));
+		sprintf (buffer,"Enter password for \"%s\": ",str);
+		strcpy (buffer,getpassword (buffer));
 	}
 }
 
-int 
-yesno (char *str)
-{
+int
+yesno (char *str) {
 	char            prog[LINESIZE];
 	extern char     inbuf[];
 	extern int      fd;
@@ -224,18 +221,18 @@ yesno (char *str)
 	char * 		getpassword ();
 
 	if (frompipe) {
-		 sprintf (prog, "y%s\n", str);
+		sprintf (prog, "y%s\n", str);
 
 		send_pipe_aux (prog);
 
 		if (read_pipe_aux (prog,sizeof prog) < 1) {
-			 fprintf (stderr, "read failure\n");
+			fprintf (stderr, "read failure\n");
 			remote_prob = TRUE;
 			return FALSE;
 		}
 	} else {
 		ps_printf (OPT,"%s",str);
-		 fgets (prog, sizeof prog, stdin);
+		fgets (prog, sizeof prog, stdin);
 	}
 
 	switch (prog[0]) {

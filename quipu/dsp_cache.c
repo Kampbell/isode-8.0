@@ -43,9 +43,8 @@ extern char * edbtmp_path;
 extern AttributeType at_acl;
 extern AttributeType at_objectclass;
 
-Entry 
-cache_dsp_entry (EntryInfo *ptr)
-{
+Entry
+cache_dsp_entry (EntryInfo *ptr) {
 	/* assumes entry passed is complete */
 
 	Entry           make_path ();
@@ -144,9 +143,8 @@ cache_dsp_entry (EntryInfo *ptr)
 
 
 
-int 
-dsp_cache (struct DSArgument *arg, struct DSResult *res, int ctx, DN binddn)
-{
+int
+dsp_cache (struct DSArgument *arg, struct DSResult *res, int ctx, DN binddn) {
 	EntryInfo *ptr;
 	Entry entryptr;
 	Attr_Sequence as, eis_select (), attr_eis_select ();
@@ -180,7 +178,7 @@ dsp_cache (struct DSArgument *arg, struct DSResult *res, int ctx, DN binddn)
 		break;
 	case OP_SEARCH:
 		for (ptr = res->res_sr.CSR_entries; ptr != NULLENTRYINFO; ptr = ptr->ent_next)
-			 cache_dsp_entry (ptr);
+			cache_dsp_entry (ptr);
 		break;
 	case OP_LIST:
 		if (ctx == DS_CTX_QUIPU_DSP)

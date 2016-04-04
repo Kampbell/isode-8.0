@@ -41,16 +41,16 @@ int de_Read() {
 
 	fillMostRmArg();
 
-	 sprintf(more, yes_string);		/* Enter loop */
+	sprintf(more, yes_string);		/* Enter loop */
 
 	highNumber = 0;
 
 	while (!(strcmp(more, yes_string))) {
-		 sprintf(default_person, "");	/* Avoid default */
+		sprintf(default_person, "");	/* Avoid default */
 		enterString(ENTRY, person, plp);
 
 		if (!(strcmp(person, quit_String))) {
-			 sprintf(more, no_string);
+			sprintf(more, no_string);
 			if (noEntries > 0) {
 				freePRRs(&plp);
 			}
@@ -58,13 +58,13 @@ int de_Read() {
 		}
 		if (strlen(person) <= 0) {
 			if (strlen(default_person) <= 0) {
-				 printf("%s %s %s\n", enter_entry_name, quit_String, to_quit);
+				printf("%s %s %s\n", enter_entry_name, quit_String, to_quit);
 				continue;
 			} else {
-				 sprintf(person, "%s", default_person);
+				sprintf(person, "%s", default_person);
 			}
 		}
-		 printf("\n");
+		printf("\n");
 
 		if (noEntries > 0) {
 			freePRRs(&plp);
@@ -78,14 +78,14 @@ int de_Read() {
 		noEntries = listlen(plp);
 
 		if (noEntries == 0) {
-			 printf(no_ent_found);
+			printf(no_ent_found);
 			freePRRs(&plp);
 			continue;
 		} else if (noEntries == 1) {
 			rdn = copy_string(lastComponent(plp->name, PERSON));
 			status = get_objectClassPRR(plp, &objectType);
 			if (status != OK) {
-				 printf(no_p_rl_rm);
+				printf(no_p_rl_rm);
 				continue;
 			} else if (objectType == PERSON) {
 				if (listPRRs(posdit, rdn, &plp) != OK) {
@@ -100,12 +100,12 @@ int de_Read() {
 					searchFail(rdn);
 				}
 			} else {
-				 printf(no_p_rl_rm);
+				printf(no_p_rl_rm);
 				continue;
 			}
 			pagerOn(NUMBER_NOT_ALLOWED);
 			printListPRRs(person, plp, COUNTRY, TRUE);
-			 sprintf(default_person, "%s", rdn);
+			sprintf(default_person, "%s", rdn);
 			highNumber = 0;
 		} else {
 			/* more than 1, select from list */

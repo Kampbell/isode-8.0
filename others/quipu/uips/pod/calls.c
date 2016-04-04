@@ -100,8 +100,7 @@ char *file_names[MAXTYPES];
 char dua_help_dir[SMALLSTRING];
 
 char *
-get_strioid (char *ptr)
-{
+get_strioid (char *ptr) {
 	char *end_ptr;
 
 	while(*ptr == '"') ptr++;
@@ -116,9 +115,8 @@ get_strioid (char *ptr)
 	return ptr;
 }
 
-void 
-put_dn_and_password (char *dn, char *password, char *name)
-{
+void
+put_dn_and_password (char *dn, char *password, char *name) {
 	str_seq alias_list = alias_seq;
 	int seq_num;
 
@@ -127,39 +125,39 @@ put_dn_and_password (char *dn, char *password, char *name)
 		if (!lexequ(name, alias_list->dname)) break;
 
 	if (alias_list == NULLDS) {
-		 strcpy(dn, name);
+		strcpy(dn, name);
 		*password = '\0';
 	} else {
-		 strcpy(dn, get_from_seq(seq_num, aliased_dn_seq));
+		strcpy(dn, get_from_seq(seq_num, aliased_dn_seq));
 
 		if (get_from_seq(seq_num, password_seq) != NULLCP)
-			 strcpy(password, get_from_seq(seq_num, password_seq));
+			strcpy(password, get_from_seq(seq_num, password_seq));
 		else
 			*password = '\0';
 	}
 }
 
-void 
+void
 user_tailor  {
 	char *part1, *part2;
 	char *getenv(), *TidyString(), *SkipSpace();
 	char *config_dir = "/.duaconfig",
-		  *type_dir = "/filterTypes",
-		   *readTypes = "/readTypes",
-			*friendlyNames = "/friendlyNames",
-			 *options = "/.duarc",
-			  *typeDefaults = "/typeDefaults";
+	*type_dir = "/filterTypes",
+	*readTypes = "/readTypes",
+	*friendlyNames = "/friendlyNames",
+	*options = "/.duarc",
+	*typeDefaults = "/typeDefaults";
 
 	char user_path[BUFSIZ], read_path[BUFSIZ],
-		 type_path[BUFSIZ], options_path[BUFSIZ],
-		 friendly_path[BUFSIZ], type_defaults_path[BUFSIZ],
-		 dua_config_dir[BUFSIZ];
+	type_path[BUFSIZ], options_path[BUFSIZ],
+	friendly_path[BUFSIZ], type_defaults_path[BUFSIZ],
+	dua_config_dir[BUFSIZ];
 
 	char stroid_buf[BUFSIZ];
 	char Read_in_Stuff[STRINGLEN];
 
 	extern  char * dsa_address,
-			* myname;
+	* myname;
 	extern  char * tailfile;
 
 	char *str, *sptr, *p, *end;
@@ -181,50 +179,50 @@ user_tailor  {
 	if((config_file = fopen(isodefile(tailfile,0), "r")) == (FILE *) NULL) {
 		kill_message();
 		message((Widget) NULL,
-				"Cannot open `dsaptailor' file. Attempting to continue.");
+		"Cannot open `dsaptailor' file. Attempting to continue.");
 	} else {
 		while(fgets(Read_in_Stuff, sizeof(Read_in_Stuff), config_file) != NULLCP)
 			if ((*Read_in_Stuff != '#') && (*Read_in_Stuff != '\n') )
-				 tai_string (Read_in_Stuff);
+				tai_string (Read_in_Stuff);
 
-		 fclose(config_file);
+		fclose(config_file);
 	}
 
-	 strcpy(dua_config_dir, isodefile("xd", 0));
-	 strcpy(dua_help_dir, dua_config_dir);
+	strcpy(dua_config_dir, isodefile("xd", 0));
+	strcpy(dua_help_dir, dua_config_dir);
 
-	 strcat(dua_config_dir, "/duaconfig/");
-	 strcat(dua_help_dir, "/podHelpdir/");
+	strcat(dua_config_dir, "/duaconfig/");
+	strcat(dua_help_dir, "/podHelpdir/");
 
-	 strcpy (user_path, getenv("HOME"));
-	 strcpy(read_path, user_path);
-	 strcpy(type_path, user_path);
-	 strcpy(friendly_path, user_path);
-	 strcpy(type_defaults_path, user_path);
+	strcpy (user_path, getenv("HOME"));
+	strcpy(read_path, user_path);
+	strcpy(type_path, user_path);
+	strcpy(friendly_path, user_path);
+	strcpy(type_defaults_path, user_path);
 
-	 strcat(read_path, config_dir);
-	 strcat(read_path, readTypes);
-	 strcat(type_path, config_dir);
-	 strcat(type_path, type_dir);
-	 strcat(friendly_path, config_dir);
-	 strcat(friendly_path, friendlyNames);
-	 strcat(type_defaults_path, config_dir);
-	 strcat(type_defaults_path, typeDefaults);
+	strcat(read_path, config_dir);
+	strcat(read_path, readTypes);
+	strcat(type_path, config_dir);
+	strcat(type_path, type_dir);
+	strcat(friendly_path, config_dir);
+	strcat(friendly_path, friendlyNames);
+	strcat(type_defaults_path, config_dir);
+	strcat(type_defaults_path, typeDefaults);
 
 	if (testing) {
-		 strcpy(type_path, "./Xd/duaconfig/");
-		 strcat(type_path, type_dir);
+		strcpy(type_path, "./Xd/duaconfig/");
+		strcat(type_path, type_dir);
 		if (!(config_directory = opendir(type_path))) {
-			 fprintf(stderr,
-						   "File error! Test pod should be run from source directory!\n");
+			fprintf(stderr,
+			"File error! Test pod should be run from source directory!\n");
 			quit(1);
 		}
 	} else {
 		if (!(config_directory = opendir(type_path))) {
-			 strcpy(type_path, dua_config_dir);
-			 strcat(type_path, type_dir);
+			strcpy(type_path, dua_config_dir);
+			strcat(type_path, type_dir);
 			if(!(config_directory = opendir(type_path))) {
-				 fprintf(stderr, "Can't find directory %s!\n", type_dir);
+				fprintf(stderr, "Can't find directory %s!\n", type_dir);
 				quit(1);
 			}
 		}
@@ -238,48 +236,48 @@ user_tailor  {
 				(char *) malloc((unsigned int)
 								(strlen(dir_ent->d_name) +
 								 strlen(type_path) + 2));
-			 strcpy(file_names[filt_num], type_path);
-			 strcat(file_names[filt_num], "/");
-			 strcat(file_names[filt_num], dir_ent->d_name);
+			strcpy(file_names[filt_num], type_path);
+			strcat(file_names[filt_num], "/");
+			strcat(file_names[filt_num], dir_ent->d_name);
 			filt_num++;
 		}
 	}
-	 closedir(config_directory);
+	closedir(config_directory);
 
 	if (testing) {
-		 strcpy(options_path, "./Xd/duaconfig/duarc");
+		strcpy(options_path, "./Xd/duaconfig/duarc");
 		parse_duarc(options_path);
 	} else {
-		 strcpy(options_path, dua_config_dir);
-		 strcpy(options_path, "duarc");
+		strcpy(options_path, dua_config_dir);
+		strcpy(options_path, "duarc");
 		parse_duarc(options_path);
 	}
 
-	 strcpy(options_path, user_path);
-	 strcat(options_path, options);
+	strcpy(options_path, user_path);
+	strcat(options_path, options);
 	parse_duarc(options_path);
 
 
 	if (testing) {
-		 strcpy(read_path, "./Xd/duaconfig/");
-		 strcat(read_path, readTypes);
+		strcpy(read_path, "./Xd/duaconfig/");
+		strcat(read_path, readTypes);
 		if (!(config_file = fopen(read_path, "r"))) {
-			 fprintf(stderr, "File error! Test pod must be run from source directory!\n");
+			fprintf(stderr, "File error! Test pod must be run from source directory!\n");
 			quit(1);
 		}
 	} else {
 		if (!(config_file = fopen(read_path, "r"))) {
-			 strcpy(read_path, dua_config_dir);
-			 strcat(read_path, readTypes);
+			strcpy(read_path, dua_config_dir);
+			strcat(read_path, readTypes);
 			if (!(config_file = fopen(read_path, "r"))) {
-				 fprintf(stderr, "Can't find read file (%s)!\n", read_path);
+				fprintf(stderr, "Can't find read file (%s)!\n", read_path);
 				quit(1);
 			}
 		}
 	}
 
 	while(fgets(Read_in_Stuff, STRINGLEN, config_file) != 0) {
-		 strcpy(stroid_buf, get_strioid(Read_in_Stuff));
+		strcpy(stroid_buf, get_strioid(Read_in_Stuff));
 		if (*stroid_buf) {
 			if (!read_types)
 				read_types = as_comp_new(AttrT_new(stroid_buf), NULLAV, NULLACL_INFO);
@@ -289,7 +287,7 @@ user_tailor  {
 			}
 		}
 	}
-	 fclose(config_file);
+	fclose(config_file);
 
 #ifdef USE_PP
 
@@ -300,25 +298,25 @@ user_tailor  {
 								 NULLAV, NULLACL_INFO);
 	else {
 		read_types2 = as_comp_new(AttrT_new("2.6.5.2.6"),
-								  NULLAV, NULLACL_INFO);
+		NULLAV, NULLACL_INFO);
 		read_types = as_merge(read_types, read_types2);
 	}
 
 #endif
 
 	if (testing) {
-		 strcpy(friendly_path, "./Xd/duaconfig/");
-		 strcat(friendly_path, friendlyNames);
+		strcpy(friendly_path, "./Xd/duaconfig/");
+		strcat(friendly_path, friendlyNames);
 		if (!(config_file = fopen(friendly_path, "r"))) {
-			 fprintf(stderr, "File error! Test pod must be run from source directory!\n");
+			fprintf(stderr, "File error! Test pod must be run from source directory!\n");
 			quit(1);
 		}
 	} else {
 		if (!(config_file = fopen(friendly_path, "r"))) {
-			 strcpy(friendly_path, dua_config_dir);
-			 strcat(friendly_path, friendlyNames);
+			strcpy(friendly_path, dua_config_dir);
+			strcat(friendly_path, friendlyNames);
 			if (!(config_file = fopen(friendly_path, "r"))) {
-				 fprintf(stderr, "Can't find read file (%s)!\n", friendly_path);
+				fprintf(stderr, "Can't find read file (%s)!\n", friendly_path);
 				quit(1);
 			}
 		}
@@ -353,7 +351,7 @@ user_tailor  {
 			*str = '\0';
 
 			if (name_map[fname_num]) {
-				 strcpy(name_map[fname_num]->fname, sptr);
+				strcpy(name_map[fname_num]->fname, sptr);
 				fname_num++;
 				name_map[fname_num] = 0;
 			}
@@ -362,15 +360,15 @@ user_tailor  {
 
 	for (curr_filt = 0; curr_filt < filt_num; curr_filt++) {
 		if (!(config_file = fopen(file_names[curr_filt], "r"))) {
-			 fprintf(stderr, "Can't find file %s!\n", file_names[curr_filt]);
+			fprintf(stderr, "Can't find file %s!\n", file_names[curr_filt]);
 			quit(1);
 		}
 		filt_arr[curr_filt] = (filt_struct  *) NULL;
 		filtvalue[curr_filt] = (char *) malloc(STRINGLEN);
 		*filtvalue[curr_filt] = '\0';
 
-		 yyparse();
-		 fclose(config_file);
+		yyparse();
+		fclose(config_file);
 	}
 
 	filttype[curr_filt] = NULLCP;
@@ -378,18 +376,18 @@ user_tailor  {
 		free(file_names[count]);
 
 	if (testing) {
-		 strcpy(type_defaults_path, "./Xd/duaconfig/");
-		 strcat(type_defaults_path, typeDefaults);
+		strcpy(type_defaults_path, "./Xd/duaconfig/");
+		strcat(type_defaults_path, typeDefaults);
 		if (!(config_file = fopen(type_defaults_path, "r"))) {
-			 fprintf(stderr, "File error! Test pod must be run from source directory.\n");
+			fprintf(stderr, "File error! Test pod must be run from source directory.\n");
 			quit(1);
 		}
 	} else {
 		if (!(config_file = fopen(type_defaults_path, "r"))) {
-			 strcpy(type_defaults_path, dua_config_dir);
-			 strcat(type_defaults_path, typeDefaults);
+			strcpy(type_defaults_path, dua_config_dir);
+			strcat(type_defaults_path, typeDefaults);
 			if (!(config_file = fopen(type_defaults_path, "r"))) {
-				 fprintf(stderr, "File error! Can't find typeDefaults file.\n");
+				fprintf(stderr, "File error! Can't find typeDefaults file.\n");
 				quit(1);
 			}
 		}
@@ -423,7 +421,7 @@ user_tailor  {
 										   part2, (int) (end - part2))) n++;
 
 			if (n == filt_num) {
-				 fprintf(stderr, "Parsing error in typeDefaults file!");
+				fprintf(stderr, "Parsing error in typeDefaults file!");
 				quit(1);
 			} else {
 				tempints[count] = n;
@@ -432,7 +430,7 @@ user_tailor  {
 				while (!isalpha(*part2) && *part2 != ':' && part2 != '\0') part2++;
 
 				if (*part2 == '\0') {
-					 fprintf(stderr, "Parsing error in typeDefaults file!");
+					fprintf(stderr, "Parsing error in typeDefaults file!");
 					quit(1);
 				}
 
@@ -442,7 +440,7 @@ user_tailor  {
 					while (!isspace(*end) && *end != ',' &&
 							*end != ':' && *end != '\0') end++;
 					if (*end == '\0') {
-						 fprintf(stderr, "Parsing error in typeDefaults file!");
+						fprintf(stderr, "Parsing error in typeDefaults file!");
 						quit(1);
 					}
 				} else end = part2;
@@ -459,13 +457,13 @@ user_tailor  {
 			while (n < filt_num && strcmp(filttype[n], p)) n++;
 
 			if (n == filt_num) {
-				 fprintf(stderr, "Parsing error in typeDefaults file!");
+				fprintf(stderr, "Parsing error in typeDefaults file!");
 				quit(1);
 			} else {
 				num = 0;
 				while (num < count && n != tempints[num]) num++;
 				if (num == count) {
-					 fprintf(stderr, "Parsing error in typeDefaults file!");
+					fprintf(stderr, "Parsing error in typeDefaults file!");
 					quit(1);
 				}
 			}
@@ -473,7 +471,7 @@ user_tailor  {
 			defaults[default_num] = n;
 
 			levels[default_num] = malloc((unsigned int) (strlen(part1) + 1));
-			 strcpy(levels[default_num], part1);
+			strcpy(levels[default_num], part1);
 			available_types[default_num] =
 				(int *) malloc((unsigned int) (sizeof(int) * (count+1)));
 
@@ -485,12 +483,11 @@ user_tailor  {
 		}
 	}
 
-	 fclose(config_file);
+	fclose(config_file);
 }
 
-void 
-parse_duarc (char *options_path)
-{
+void
+parse_duarc (char *options_path) {
 	char *SkipSpace(), *TidyString();
 	char *p, *part1, *part2, *part3;
 	char Read_in_Stuff[BUFSIZ];
@@ -511,26 +508,26 @@ parse_duarc (char *options_path)
 			part2 = TidyString(part2);
 
 			if ((lexequ(part1, "username") == 0) && *namestr == '\0')
-				 strcpy (namestr, part2);
+				strcpy (namestr, part2);
 			else if ((lexequ(part1, "password") == 0) && *passwd == '\0')
-				 strcpy (passwd, part2);
+				strcpy (passwd, part2);
 			else if (lexequ(part1, "prefergreybook") == 0) {
 				if (*part2 != '\0' && lexequ(part2, "TRUE") != 0)
 					mailformat = rfc822;
 				else
 					mailformat = greybook;
 			} else if (lexequ (part1, "dsap") == 0)
-				 tai_string (part2);
+				tai_string (part2);
 			else if (lexequ (part1, "isode") == 0) {
 				char *split;
 				if ((split = index (part2,' ')) != NULLCP) {
 					*split++ = 0;
-					 isodesetvar (part2, split, 0);
+					isodesetvar (part2, split, 0);
 				}
 			} else if (lexequ(part1, "service") == 0)
 				new_service (part2);
 			else if (lexequ(part1, "history") == 0) {
-				 sscanf(part2, "%d", &histlimit);
+				sscanf(part2, "%d", &histlimit);
 				if (histlimit < 1) histlimit = 1;
 			} else if (lexequ(part1, "readnonleaf") == 0) {
 				if (lexequ(part2, "TRUE") == 0) read_all_flag = TRUE;
@@ -548,7 +545,7 @@ parse_duarc (char *options_path)
 			}
 		}
 		isodexport(myname);
-		 fclose(config_file);
+		fclose(config_file);
 	}
 }
 
@@ -558,16 +555,16 @@ cnnct_bind  {
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
 	extern char *dsa_address,
-		   *myname;
+	*myname;
 
 	if (namestr[0] != '\0' && passwd[0] == '\0') {
 		kill_message();
 		message((Widget) NULL,
-				"Enter password at command line!");
-		 strcpy(passwd, getpassword("Enter user password: "));
+		"Enter password at command line!");
+		strcpy(passwd, getpassword("Enter user password: "));
 		kill_message();
 		message((Widget) NULL,
-				"Connecting to Directory. Please wait.");
+		"Connecting to Directory. Please wait.");
 	}
 
 	/* set dsa_address */
@@ -576,7 +573,7 @@ cnnct_bind  {
 
 	if (dsa_address == NULLCP || *dsa_address == '\0') {
 		return
-			("Cannot find name of DSA to bind to! Click on this window to exit.");
+		("Cannot find name of DSA to bind to! Click on this window to exit.");
 	}
 
 	/* now bind */
@@ -586,22 +583,22 @@ cnnct_bind  {
 		bindarg.dba_passwd [0] = '\0';
 	} else {
 		bindarg.dba_passwd_len = strlen(passwd);
-		 strcpy (bindarg.dba_passwd, passwd);
+		strcpy (bindarg.dba_passwd, passwd);
 	}
 
 	bindarg.dba_dn = (*namestr == 0? NULLDN: str2dn(namestr));
 
 	if (ds_bind (&bindarg, &binderr, &bindresult) != DS_OK) {
 		return(binderr.dbe_type == DBE_TYPE_SECURITY?
-			   "Security error - Check name and pasword.\n\
+		"Security error - Check name and pasword.\n\
 Click on this window to exit.":
-			   "Service error - Can't connect to directory!\n\
+		"Service error - Can't connect to directory!\n\
 Click on this window to exit.");
 	} else {
 		user_name = bindarg.dba_dn;
 
 		if(local_dit && *local_dit)
-			 strcpy(base_path, local_dit);
+			strcpy(base_path, local_dit);
 
 #ifndef NO_STATS
 		LLOG (log_stat,LLOG_NOTICE,("bound ('%s' to '%s')",namestr,dsa_address));
@@ -622,7 +619,7 @@ Click on this window to exit.");
 	return NULLCP;
 }
 
-void 
+void
 set_default_type  {
 	int count;
 	DN base_name;
@@ -635,11 +632,11 @@ set_default_type  {
 			base_name = base_name->dn_parent;
 
 		for (count = 0
-					 ;
-				count < default_num && base_name &&
-				strcmp(levels[count], base_name->dn_rdn->rdn_at->oa_ot.ot_stroid)
-				;
-				count++)
+		;
+		count < default_num && base_name &&
+		strcmp(levels[count], base_name->dn_rdn->rdn_at->oa_ot.ot_stroid)
+		;
+		count++)
 			;
 
 		dn_free(d_name);
@@ -680,12 +677,11 @@ char * cptr;
 
 	ps_free (ps);
 
-	 strcpy(cptr, buffer);
+	strcpy(cptr, buffer);
 }
 
-void 
-make_friendly (char *fstr, char *str)
-{
+void
+make_friendly (char *fstr, char *str) {
 	char *end, *start;
 	char save;
 	char buffer[LINESIZE];
@@ -727,10 +723,10 @@ make_friendly (char *fstr, char *str)
 		make_friendly_aux(buffer, start);
 
 		if (*fstr == '\0')
-			 strcpy(fstr, buffer);
+			strcpy(fstr, buffer);
 		else {
-			 strcat(fstr, ", ");
-			 strcat(fstr, buffer);
+			strcat(fstr, ", ");
+			strcat(fstr, buffer);
 		}
 	}
 
@@ -738,9 +734,8 @@ make_friendly (char *fstr, char *str)
 }
 
 
-static void 
-make_friendly_aux (char *fstr, char *rdn)
-{
+static void
+make_friendly_aux (char *fstr, char *rdn) {
 	char *start, *end, *string;
 	char save;
 	short int mapped;
@@ -762,14 +757,14 @@ make_friendly_aux (char *fstr, char *rdn)
 		while (!mapped &&
 				(string = get_from_seq(seqnum++, name_map[count]->names)))
 			if (!strcmp(string, start)) {
-				 strcat(fstr, name_map[count]->fname);
+				strcat(fstr, name_map[count]->fname);
 				mapped = TRUE;
 			}
 	}
 
 	if (!mapped) {
-		 strcat(fstr, start);
-		 strcat(fstr, " = ");
+		strcat(fstr, start);
+		strcat(fstr, " = ");
 	} else {
 		if (*name_map[--count]->fname != '\0')  strcat(fstr, " = ");
 	}
@@ -787,32 +782,31 @@ make_friendly_aux (char *fstr, char *rdn)
 	*end = '\0';
 
 	if (index(start, ',') == NULLCP)
-		 strcat(fstr, start);
+		strcat(fstr, start);
 	else {
-		 strcat(fstr, "\"");
-		 strcat(fstr, start);
-		 strcat(fstr, "\"");
+		strcat(fstr, "\"");
+		strcat(fstr, start);
+		strcat(fstr, "\"");
 	}
 
 	*end = save;
 
 	if (save == '\0' || save == '@') return;
 	else if (save == '%') {
-		 strcat(fstr, " (");
+		strcat(fstr, " (");
 
 		for (start = fstr; *start != '\0'; start++)
 			;
 
 		make_friendly_aux(start, ++end);
 
-		 strcat(fstr, ")");
+		strcat(fstr, ")");
 	}
 }
 
 
-void 
-make_friendly_rdn (char *friendly, char *object, char *base)
-{
+void
+make_friendly_rdn (char *friendly, char *object, char *base) {
 	char *front;
 	char save;
 	int count;
@@ -852,7 +846,7 @@ make_friendly_rdn (char *friendly, char *object, char *base)
 		make_friendly(friendly, object);
 }
 
-int 
+int
 goto_addr  {
 	char *str;
 	int count = 0;
@@ -875,16 +869,15 @@ goto_addr  {
 	}
 }
 
-int 
+int
 clear_dnseq  {
 	free_seq(dnseq);
 	dnseq = NULLDS;
 	dn_number = 0;
 }
 
-int 
-is_dit_leaf (char *name)
-{
+int
+is_dit_leaf (char *name) {
 	struct ds_list_arg      list_arg;
 	struct ds_list_result   list_result;
 	struct list_cache       *cached_list;
@@ -945,16 +938,14 @@ is_dit_leaf (char *name)
 }
 
 char *
-GetSurname (char *name)
-{
+GetSurname (char *name) {
 	while (*name != '\0') name++;
 	while (*name != ' ' && *name != '=') name--;
 	return ++name;
 }
 
 char *
-GetWholeRelName (char *name)
-{
+GetWholeRelName (char *name) {
 	while (*name!= '\0') name++;
 	while (*name != '=') name--;
 	while (!isalpha(*name)) name++;

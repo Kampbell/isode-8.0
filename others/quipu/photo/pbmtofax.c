@@ -58,9 +58,8 @@ extern int standardwidth;
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int     bitcount;
 	bit    *bitrow;
 	bit *bP;
@@ -128,21 +127,21 @@ main (int argc, char **argv, char **envp)
 		} else if (file) {
 usage:
 			;
-			 fputs ("usage: pbmtofax [-2d] [-cr] [-ul] [-b4l] [-a3w] [-b4w] [-uc]\n",
-						  stderr);
-			 fputs ("                [-old] [-nopreamble] [file]\n", stderr);
-			 fputc ('\n', stderr);
-			 fputs ("  -2d  select two dimensional encoding mode\n", stderr);
-			 fputs ("  -cr  set coarse resolution indication\n", stderr);
-			 fputs ("  -ul  set unlimited image length indication\n", stderr);
-			 fputs ("  -b4l set B4 length indication\n", stderr);
-			 fputs ("  -a3w set A3 width indication\n", stderr);
-			 fputs ("  -b4w set B4 width indication\n", stderr);
-			 fputs ("  -sw  force standard width (1728 pels)\n", stderr);
-			 fputs ("  -uc  set uncompressed mode indication\n", stderr);
-			 fputs ("  -old encode fax using old photo format\n", stderr);
-			 fputs ("  -nopreamble   encode fax without any preamble info\n", stderr);
-			 fputs ("  -reversebits  create an inverse image\n", stderr);
+			fputs ("usage: pbmtofax [-2d] [-cr] [-ul] [-b4l] [-a3w] [-b4w] [-uc]\n",
+				   stderr);
+			fputs ("                [-old] [-nopreamble] [file]\n", stderr);
+			fputc ('\n', stderr);
+			fputs ("  -2d  select two dimensional encoding mode\n", stderr);
+			fputs ("  -cr  set coarse resolution indication\n", stderr);
+			fputs ("  -ul  set unlimited image length indication\n", stderr);
+			fputs ("  -b4l set B4 length indication\n", stderr);
+			fputs ("  -a3w set A3 width indication\n", stderr);
+			fputs ("  -b4w set B4 width indication\n", stderr);
+			fputs ("  -sw  force standard width (1728 pels)\n", stderr);
+			fputs ("  -uc  set uncompressed mode indication\n", stderr);
+			fputs ("  -old encode fax using old photo format\n", stderr);
+			fputs ("  -nopreamble   encode fax without any preamble info\n", stderr);
+			fputs ("  -reversebits  create an inverse image\n", stderr);
 			exit (1);
 		} else
 			file = cp;
@@ -190,7 +189,7 @@ usage:
 
 	optbuf = encode_t4 (twoDimensional ? 4 : 1, data, skip);
 
-	 fwrite (optbuf, optlen, sizeof *optbuf, stdout);
+	fwrite (optbuf, optlen, sizeof *optbuf, stdout);
 
 	exit (0);
 }

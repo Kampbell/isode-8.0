@@ -33,18 +33,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamattr.c,v 9.0 1992/
 /*  */
 
 struct type_FTAM_Read__Attributes *
-attr2fpm (struct ftamblk *fsb, struct FTAMattributes *fa, struct FTAMindication *fti)
-{
+attr2fpm (struct ftamblk *fsb, struct FTAMattributes *fa, struct FTAMindication *fti) {
 	int    i;
 	char  *cp,
-			 **ap;
+		  **ap;
 	struct type_FTAM_Read__Attributes *fpm;
 
 	if ((fpm = (struct type_FTAM_Read__Attributes *) calloc (1, sizeof *fpm))
 			== NULL) {
 no_mem:
 		;
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (fpm)
@@ -54,26 +53,26 @@ out:
 
 	if (fa -> fa_present & FA_FILENAME) {
 		struct type_FTAM_Filename__Attribute *fn,
-				**fc;
+				   **fc;
 
 		if (fa -> fa_novalue & FA_FILENAME) {
-			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-							 "filename not present");
+			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+					  "filename not present");
 			goto out;
 		}
 
 		if (fa -> fa_nfile > NFFILE) {
-			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-							 "too many filenames");
+			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+					  "too many filenames");
 			goto out;
 		}
 
 		fc = &fpm -> filename;
 		for (ap = fa -> fa_files, i = fa -> fa_nfile - 1; i >= 0; ap++, i--) {
 			if (*ap == NULL) {
-				 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-								 "empty filename at slot %d",
-								 fa -> fa_nfile - i - 1);
+				ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+						  "empty filename at slot %d",
+						  fa -> fa_nfile - i - 1);
 				goto out;
 			}
 
@@ -92,8 +91,8 @@ out:
 
 	if (fa -> fa_present & FA_ACTIONS) {
 		if (fa -> fa_novalue & FA_ACTIONS) {
-			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-							 "permitted-actions not present");
+			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+					  "permitted-actions not present");
 			goto out;
 		}
 
@@ -105,13 +104,13 @@ out:
 
 	if (fa -> fa_present & FA_CONTENTS) {
 		if (fa -> fa_novalue & FA_CONTENTS) {
-			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-							 "contents-type not present");
+			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+					  "contents-type not present");
 			goto out;
 		}
 		if (fa -> fa_contents == NULLOID) {
-			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-							 "missing contents-type");
+			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+					  "missing contents-type");
 			goto out;
 		}
 		if ((fpm -> contents__type =
@@ -126,8 +125,8 @@ out:
 
 	if (fa -> fa_present & FA_ACCOUNT) {
 		if (fa -> fa_account == NULL) {
-			 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-							 "missing account");
+			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+					  "missing account");
 			goto out;
 		}
 		if ((fpm -> storage__account =
@@ -228,8 +227,8 @@ out:
 				break;
 
 			default:
-				 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-								 "bad value for file-availability");
+				ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+						  "bad value for file-availability");
 				goto out;
 			}
 		}
@@ -282,8 +281,8 @@ out:
 				type_FTAM_Legal__Qualification__Attribute_no__value__available;
 		else {
 			if (fa -> fa_legal == NULL) {
-				 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-								 "missing legal-qualification");
+				ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+						  "missing legal-qualification");
 				goto out;
 			}
 			fpm -> legal__qualification -> offset =
@@ -301,8 +300,8 @@ out:
 	 * pmk.
 	 */
 	if (fa -> fa_present & FA_PRIVATE) {
-		 ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
-						 "private-use attribute not supported");
+		ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
+				  "private-use attribute not supported");
 		goto out;
 	}
 
@@ -311,9 +310,8 @@ out:
 
 /*  */
 
-int 
-fpm2attr (struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struct FTAMattributes *fa, struct FTAMindication *fti)
-{
+int
+fpm2attr (struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struct FTAMattributes *fa, struct FTAMindication *fti) {
 	char   *cp;
 	UTC     u;
 
@@ -329,8 +327,8 @@ fpm2attr (struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struct FT
 		ap = fa -> fa_files, n = NFFILE;
 		for (fn = fpm -> filename; fn; fn = fn -> next) {
 			if (n-- <= 0) {
-				 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-								 "too many names in filename");
+				ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+						  "too many names in filename");
 out:
 				;
 				FAFREE (fa);
@@ -339,8 +337,8 @@ out:
 			if ((*ap++ = qb2str (fn -> GraphicString)) == NULL) {
 no_mem:
 				;
-				 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-								 "out of memory");
+				ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+						  "out of memory");
 				goto out;
 			}
 			fa -> fa_nfile++;
@@ -496,9 +494,8 @@ no_mem:
 
 /*  */
 
-void 
-FAFREE (struct FTAMattributes *fa)
-{
+void
+FAFREE (struct FTAMattributes *fa) {
 	int FAI;
 
 	for (FAI = (fa) -> fa_nfile - 1; FAI >= 0; FAI--)

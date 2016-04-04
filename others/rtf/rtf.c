@@ -57,9 +57,8 @@ char   *getenv ();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int	    result,
 			sd;
 	char   *file;
@@ -106,7 +105,7 @@ main (int argc, char **argv, char **envp)
 	rtz -> rta_addr = *sa;	/* struct copy */
 
 	fprintf (stderr, "%s...", host);
-	 fflush (stderr);
+	fflush (stderr);
 	if (RtBeginRequest (rtz, RTS_TWA, turn, pe, rtc, rti) == NOTOK) {
 		fprintf (stderr, "failed\n");
 		rts_adios (rta, "RT-BEGIN.REQUEST");
@@ -140,7 +139,7 @@ main (int argc, char **argv, char **envp)
 		else
 			timer (nbytes);
 
-		 close (fd);
+		close (fd);
 	} else {
 		if (RtSetUpTrans (sd, uptrans, rti) == NOTOK)
 			rts_adios (rta, "set UpTrans upcall");
@@ -172,7 +171,7 @@ main (int argc, char **argv, char **envp)
 			case RTI_TRANSFER: {
 #ifndef	lint
 				struct RtSAPtransfer *rtt =
-							&rti -> rti_transfer;
+						&rti -> rti_transfer;
 #endif
 
 				if (nbytes == 0)
@@ -219,11 +218,10 @@ main (int argc, char **argv, char **envp)
 /* ARGSUSED */
 
 static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti)
-{
 	int    cc;
 	int	    n;
 	char *dp,
-			 *ep;
+		 *ep;
 	static int bsize;
 	static char *bp = NULL;
 
@@ -383,7 +381,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 /*  */
 
 static arginit (char **vec)
-{
 	char *ap;
 	char    prompt[BUFSIZ];
 
@@ -443,7 +440,7 @@ usage:
 
 	if (password == NULL) {
 		if (strcmp (user, "ANON")) {
-			 sprintf (prompt, "password (%s:%s): ", host, user);
+			sprintf (prompt, "password (%s:%s): ", host, user);
 			password = getpassword (prompt);
 		} else
 			password = user ? user : "";

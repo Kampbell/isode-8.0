@@ -35,9 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprespond.c,v 9.0 19
 
 static int  refuse ();
 
-int 
-SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
-{
+int
+SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
 	int	    len;
 	struct ssapblk *sb;
 	struct ssapkt *s;
@@ -64,8 +63,8 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 
 		if (vecp == 2) {
 			if (TRestoreState (vec[1], ts, td) == NOTOK) {
-				 ts2sslose (si, "TRestoreState", td);
-				 ssaplose (si, SC_PARAMETER, NULLCP, "bad initialization vector");
+				ts2sslose (si, "TRestoreState", td);
+				ssaplose (si, SC_PARAMETER, NULLCP, "bad initialization vector");
 				goto out1;
 			}
 			bzero (vec[0], strlen (vec[0]));
@@ -120,8 +119,8 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 				 ? (!(s -> s_cn_require & SR_ACTIVITY)
 					&& !(s -> s_mask & SMASK_CN_ISN))
 				 : (s -> s_mask & SMASK_CN_ISN))) {
-			 spktlose (sd, si, SC_PROTOCOL, NULLCP,
-							 "proposed session ISN error: %s, got FUs 0x%x",  (s -> s_mask & SMASK_CN_ISN) ? "present" : "absent", s -> s_cn_require);
+			spktlose (sd, si, SC_PROTOCOL, NULLCP,
+					  "proposed session ISN error: %s, got FUs 0x%x",  (s -> s_mask & SMASK_CN_ISN) ? "present" : "absent", s -> s_cn_require);
 			goto out2;
 		}
 	} else {
@@ -136,7 +135,7 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si)
 			if (s)
 				freespkt (s);
 			else
-				 ts2sslose (si, reason != DR_PARAMETER ? "TInit" : "TRestoreState", td);
+				ts2sslose (si, reason != DR_PARAMETER ? "TInit" : "TRestoreState", td);
 			ssaplose (si, SC_PARAMETER, NULLCP, "bad initialization vector");
 			goto out1;
 		}
@@ -265,9 +264,8 @@ out1:
 
 /*  */
 
-int 
-SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int status, int requirements, int settings, long isn, char *data, int cc, struct SSAPindication *si)
-{
+int
+SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int status, int requirements, int settings, long isn, char *data, int cc, struct SSAPindication *si) {
 	int     result,
 			please;
 	struct ssapkt *s;
@@ -326,8 +324,7 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 	}
 	if (data == NULL)
 		cc = 0;
-	else
-	if (cc > (sb -> sb_version < SB_VRSN2 ? SC_SIZE : ENCLOSE_MAX))
+	else if (cc > (sb -> sb_version < SB_VRSN2 ? SC_SIZE : ENCLOSE_MAX))
 		return ssaplose (si, SC_PARAMETER, NULLCP, "too much initial user data, %d octets", cc);
 
 	missingP (si);
@@ -423,9 +420,8 @@ out1:
 
 /*  */
 
-static int 
-refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si)
-{
+static int
+refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si) {
 	int     result;
 	struct TSAPdata txs;
 	struct TSAPdata   *tx = &txs;

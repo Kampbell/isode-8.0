@@ -83,21 +83,21 @@ alarmLen() {
 void initAlarm() {
 	void onalarm();
 
-	 signal(SIGALRM, (VFP) onalarm);
+	signal(SIGALRM, (VFP) onalarm);
 	dots = alarmLen() / 2;
 	dotsPrinted = 0;
-	 alarm(2);
+	alarm(2);
 }
 
 void
 alarmCleanUp() {
-	 signal(SIGALRM, SIG_IGN);
-	 alarm(0);
+	signal(SIGALRM, SIG_IGN);
+	alarm(0);
 	if (dotsPrinted > 0) {
 		if (dotsPrinted < dots)
 			clearDots();
 		else
-			 printf("\n\n");
+			printf("\n\n");
 		dotsPrinted = 0;
 	}
 }
@@ -114,19 +114,19 @@ clearDots() {
 void
 handleTimeout() {
 	de_unbind();
-	 signal(SIGALRM, SIG_IGN);
+	signal(SIGALRM, SIG_IGN);
 }
 
 void startUnbindTimer() {
 	void handleTimeout();
 
-	 signal(SIGALRM, (VFP) handleTimeout);
-	 alarm((unsigned)bindTimeout);
+	signal(SIGALRM, (VFP) handleTimeout);
+	alarm((unsigned)bindTimeout);
 }
 
 void stopUnbindTimer() {
-	 signal(SIGALRM, SIG_IGN);
-	 alarm(0);
+	signal(SIGALRM, SIG_IGN);
+	alarm(0);
 }
 
 char *
@@ -138,7 +138,7 @@ char *string;
 	if (string == NULLCP) return NULLCP;
 
 	new_string = (char *) smalloc((strlen(string) + 1));
-	 strcpy(new_string, string);
+	strcpy(new_string, string);
 
 	return new_string;
 }
@@ -269,7 +269,7 @@ int printNumber;
 			pageprint("      ");
 			break;
 		default:
-			 fprintf(stderr, "WOT's THIS?  ");
+			fprintf(stderr, "WOT's THIS?  ");
 			break;
 		}
 	}
@@ -438,13 +438,13 @@ int noMatches;
 
 	if (deLogLevel > 1) {
 		if (searchNumber == 0)
-			 strcpy(filterNumberString, "explicit");
+			strcpy(filterNumberString, "explicit");
 		else
-			 sprintf(filterNumberString, "%d", searchNumber);
+			sprintf(filterNumberString, "%d", searchNumber);
 
-		 ll_log (de_log, LLOG_NOTICE, NULLCP,
-					   "searchOutcome:%s:%s:%s:%s:%d", objecttype,
-					   outcome, string, filterNumberString, noMatches);
+		ll_log (de_log, LLOG_NOTICE, NULLCP,
+				"searchOutcome:%s:%s:%s:%s:%d", objecttype,
+				outcome, string, filterNumberString, noMatches);
 	}
 }
 
@@ -454,8 +454,8 @@ char * objecttype;
 int noMatches;
 {
 	if (deLogLevel > 1) {
-		 ll_log (de_log, LLOG_NOTICE, NULLCP,
-					   "listOutcome:%s:%s:%d", objecttype, outcome, noMatches);
+		ll_log (de_log, LLOG_NOTICE, NULLCP,
+				"listOutcome:%s:%s:%d", objecttype, outcome, noMatches);
 	}
 }
 
@@ -464,8 +464,8 @@ char * outcome;
 char * objecttype;
 {
 	if (deLogLevel > 1) {
-		 ll_log (de_log, LLOG_NOTICE, NULLCP,
-					   "readOutcome:%s:%s", objecttype, outcome);
+		ll_log (de_log, LLOG_NOTICE, NULLCP,
+				"readOutcome:%s:%s", objecttype, outcome);
 	}
 }
 

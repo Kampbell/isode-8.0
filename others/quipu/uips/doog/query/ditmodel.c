@@ -153,7 +153,7 @@ AttributeType search_type;
 	curr_type->object_type = search_type;
 } /* set_search_attr */
 
-int 
+int
 test_init_ditmodel  {
 	entryList search_path;
 	AttributeType country, org, ou, loc, person;
@@ -191,64 +191,64 @@ test_init_ditmodel  {
 	/* Search attrs */
 	search_path = NULLEntryList;
 
-	 dn_list_insert("c=us", &search_path, country);
-	 dn_list_insert("c=gb", &search_path, country);
+	dn_list_insert("c=us", &search_path, country);
+	dn_list_insert("c=gb", &search_path, country);
 
 	set_default_path(country, search_path);
 
 	set_search_attr("Country",
-					country,
-					AttrT_new("0.9.2342.19200300.99.1.8"));
+	country,
+	AttrT_new("0.9.2342.19200300.99.1.8"));
 
 	search_path = NULLEntryList;
 
-	 dn_list_insert("c=gb@o=nottingham university", &search_path, org);
-	 dn_list_insert("c=gb@o=university college london", &search_path, org);
-	 dn_list_insert("c=gb@o=edinburgh university", &search_path, org);
-	 dn_list_insert("c=gb@o=joint network team", &search_path, org);
-	 dn_list_insert("c=gb@o=brunel university", &search_path, org);
+	dn_list_insert("c=gb@o=nottingham university", &search_path, org);
+	dn_list_insert("c=gb@o=university college london", &search_path, org);
+	dn_list_insert("c=gb@o=edinburgh university", &search_path, org);
+	dn_list_insert("c=gb@o=joint network team", &search_path, org);
+	dn_list_insert("c=gb@o=brunel university", &search_path, org);
 
 	set_default_path(loc, search_path);
 
 	set_search_attr("Place",
-					loc,
-					AttrT_new("2.5.4.7"));
+	loc,
+	AttrT_new("2.5.4.7"));
 
 	set_default_path(org, search_path);
 
 	set_search_attr("Organization",
-					org,
-					AttrT_new("2.5.4.10"));
+	org,
+	AttrT_new("2.5.4.10"));
 
 	set_search_attr("Organization",
-					org,
-					AttrT_new("2.5.4.7"));
+	org,
+	AttrT_new("2.5.4.7"));
 
 	search_path = NULLEntryList;
 
 	set_default_path(ou, search_path);
 
 	set_search_attr("Department",
-					ou,
-					AttrT_new("2.5.4.11"));
+	ou,
+	AttrT_new("2.5.4.11"));
 
 	set_search_attr("Department",
-					ou,
-					AttrT_new("2.5.4.7"));
+	ou,
+	AttrT_new("2.5.4.7"));
 
 	search_path = NULLEntryList;
 
-	 dn_list_insert("c=gb@o=nottingham university", &search_path, org);
-	 dn_list_insert("c=gb@o=university college london", &search_path, org);
-	 dn_list_insert("c=gb@o=edinburgh university", &search_path, org);
-	 dn_list_insert("c=gb@o=brunel university", &search_path, org);
-	 dn_list_insert("c=gb@o=joint network team", &search_path, org);
+	dn_list_insert("c=gb@o=nottingham university", &search_path, org);
+	dn_list_insert("c=gb@o=university college london", &search_path, org);
+	dn_list_insert("c=gb@o=edinburgh university", &search_path, org);
+	dn_list_insert("c=gb@o=brunel university", &search_path, org);
+	dn_list_insert("c=gb@o=joint network team", &search_path, org);
 
 	set_default_path(person, search_path);
 
 	set_search_attr("Person",
-					person,
-					AttrT_new("2.5.4.3"));
+	person,
+	AttrT_new("2.5.4.3"));
 }
 
 /*

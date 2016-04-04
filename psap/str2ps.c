@@ -34,9 +34,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2ps.c,v 9.0 1992/06
 
 /* ARGSUSED */
 
-static int 
-str_read (PS ps, PElementData data, PElementLen n, int in_line)
-{
+static int
+str_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int    cc;
 
 	if (ps -> ps_base == NULLCP || (cc = ps -> ps_cnt) <= 0)
@@ -53,9 +52,8 @@ str_read (PS ps, PElementData data, PElementLen n, int in_line)
 
 /* ARGSUSED */
 
-static int 
-str_write (PS ps, PElementData data, PElementLen n, int in_line)
-{
+static int
+str_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	int    cc;
 	char  *cp;
 
@@ -90,9 +88,8 @@ partial:
 }
 
 
-static int 
-str_close (PS ps)
-{
+static int
+str_close (PS ps) {
 	if (ps -> ps_base && !ps -> ps_inline)
 		free (ps -> ps_base);
 
@@ -101,9 +98,8 @@ str_close (PS ps)
 
 /*  */
 
-int 
-str_open (PS ps)
-{
+int
+str_open (PS ps) {
 	ps -> ps_readP = str_read;
 	ps -> ps_writeP = str_write;
 	ps -> ps_closeP = str_close;
@@ -112,9 +108,8 @@ str_open (PS ps)
 }
 
 
-int 
-str_setup (PS ps, char *cp, int cc, int in_line)
-{
+int
+str_setup (PS ps, char *cp, int cc, int in_line) {
 	char  *dp;
 
 	if (in_line) {

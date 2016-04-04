@@ -35,9 +35,8 @@ static int FTerminateRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMr
 
 /*    F-TERMINATE.REQUEST */
 
-int 
-FTerminateRequest (int sd, PE sharedASE, struct FTAMrelease *ftr, struct FTAMindication *fti)
-{
+int
+FTerminateRequest (int sd, PE sharedASE, struct FTAMrelease *ftr, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -51,15 +50,14 @@ FTerminateRequest (int sd, PE sharedASE, struct FTAMrelease *ftr, struct FTAMind
 
 	result = FTerminateRequestAux (fsb, sharedASE, ftr, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int FTerminateRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMrelease *ftr, struct FTAMindication *fti)
-{
+static int FTerminateRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMrelease *ftr, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct AcSAPrelease acrs;
@@ -81,7 +79,7 @@ static int FTerminateRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMr
 
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -99,8 +97,8 @@ out:
 		goto out;
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-						 "error encoding PDU: %s", PY_pepy);
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
 
@@ -120,7 +118,7 @@ out:
 		if (aca -> aca_source == ACA_USER)
 			return acs2ftamabort (fsb, aca, fti);
 
-		 acs2ftamlose (fsb, fti, "AcRelRequest", aca);
+		acs2ftamlose (fsb, fti, "AcRelRequest", aca);
 		goto out;
 	}
 

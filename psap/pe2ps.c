@@ -40,9 +40,8 @@ int  ps_write_len ();
 
 /*  */
 
-int 
-pe2ps_aux (PS ps, PE pe, int eval)
-{
+int
+pe2ps_aux (PS ps, PE pe, int eval) {
 	int     result;
 
 	if (eval > 0)
@@ -52,7 +51,7 @@ pe2ps_aux (PS ps, PE pe, int eval)
 			break;
 
 		case PE_FORM_CONS:
-			 ps_get_abs (pe);
+			ps_get_abs (pe);
 			break;
 		}
 
@@ -63,9 +62,8 @@ pe2ps_aux (PS ps, PE pe, int eval)
 }
 
 
-static int 
-pe2ps_aux2 (PS ps, PE pe, int eval)
-{
+static int
+pe2ps_aux2 (PS ps, PE pe, int eval) {
 	PE	    p;
 
 	if (pe -> pe_form == PE_FORM_ICONS) {
@@ -104,9 +102,8 @@ pe2ps_aux2 (PS ps, PE pe, int eval)
 
 /*  */
 
-int 
-ps_write_id (PS ps, PE pe)
-{
+int
+ps_write_id (PS ps, PE pe) {
 	byte    buffer[1 + sizeof (PElementID)];
 	byte  *bp = buffer;
 	PElementForm    form;
@@ -148,12 +145,11 @@ ps_write_id (PS ps, PE pe)
 /* probably should integrate the non-PE_LEN_SMAX case with the algorithm in
    num2prim() for a single, unified routine */
 
-int 
-ps_write_len (PS ps, PE pe)
-{
+int
+ps_write_len (PS ps, PE pe) {
 	byte    buffer[1 + sizeof (PElementLen)];
 	byte  *bp = buffer,
-					*ep;
+		   *ep;
 	PElementLen len;
 
 	if ((len = pe -> pe_len) == PE_LEN_INDF)

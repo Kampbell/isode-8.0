@@ -42,9 +42,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-int 
-susaplose (struct SSAPindication *si, int reason, char *what, char *fmt)
-{
+int
+susaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
 	return susaplose (si, reason, what, fmt);
 }
 #endif
@@ -52,13 +51,12 @@ susaplose (struct SSAPindication *si, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _susaplose (	/* what, fmt, args ... */
-    struct SSAPindication *si,
-    int reason,
-    va_list ap
-)
-{
+	struct SSAPindication *si,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct SSAPabort *sa;
@@ -83,9 +81,8 @@ _susaplose (	/* what, fmt, args ... */
 
 /*  */
 
-int 
-ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td)
-{
+int
+ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -113,8 +110,8 @@ ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td)
 		break;
 
 	default:
-		 sprintf (cp = buffer, " (%s at transport)",
-						TuErrString (td -> td_reason));
+		sprintf (cp = buffer, " (%s at transport)",
+				 TuErrString (td -> td_reason));
 	case DR_NETWORK:
 		reason = SC_TRANSPORT;
 		break;

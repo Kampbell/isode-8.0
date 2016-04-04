@@ -137,7 +137,7 @@ char *argv[];
 	if (initialisations(argc, argv) != OK)
 		de_exit(-1);
 
-	 tailorHelp();
+	tailorHelp();
 
 	if (de_bind(FALSE) != OK)
 		de_exit(-1);
@@ -158,18 +158,18 @@ char *argv[];
 	/* exit from this loop (and thus from the program) is handled by the
 	   enterString routine */
 	for (;;) {
-		 setjmp(sjbuf);
+		setjmp(sjbuf);
 		highNumber = 0;
 		abandoned = FALSE;
 		accessrightproblem = FALSE;
 		if (controlCtoQuit == TRUE)
-			 signal(SIGINT, cleanupok);
+			signal(SIGINT, cleanupok);
 		else
-			 signal(SIGINT, onint1);
+			signal(SIGINT, onint1);
 
-		 enterString(PERSON);
+		enterString(PERSON);
 
-		 signal(SIGINT, onint1);
+		signal(SIGINT, onint1);
 
 		if (index(qinfo[PERSON].entered, ',') != NULLCP) {
 			doUfnSearch();
@@ -183,21 +183,21 @@ char *argv[];
 
 		if (deptQ) {
 			highNumber = 0;
-			 enterString(ORGUNIT);
+			enterString(ORGUNIT);
 
 			if (boundToDSA == FALSE)
 				if (de_bind(FALSE) == NOTOK) /* don`t block */
 					de_exit(-1);
 		}
 enterorg:
-		 enterString(ORG);
+		enterString(ORG);
 		highNumber = 0;
 		if ((exactMatch != ORG) ||
 				((strcmp(qinfo[ORG].entered, qinfo[ORG].defvalue) != 0) &&
 				 (exactMatch != ORG)) ||
 				(searchfail == TRUE)) {
 entercountry:
-			 enterString(COUNTRY);
+			enterString(COUNTRY);
 		}
 
 		/* look at the input strings and decide what sort of search or list
@@ -206,10 +206,10 @@ entercountry:
 		/* must have entered a country */
 		if (strlen(qinfo[COUNTRY].entered) == 0) {
 			if (strlen(qinfo[ORG].entered) == 0) {
-				 printf("Must enter an organisation and country\n\n");
+				printf("Must enter an organisation and country\n\n");
 				goto enterorg;
 			} else {
-				 printf("Must enter a country\n\n");
+				printf("Must enter a country\n\n");
 				goto entercountry;
 			}
 		}
@@ -223,10 +223,10 @@ entercountry:
 		}
 
 		if (deLogLevel)
-			 ll_log (de_log, LLOG_NOTICE, NULLCP,
-						   "Search: co=%s, org=%s, ou=%s, cn=%s",
-						   qinfo[COUNTRY].entered, qinfo[ORG].entered,
-						   qinfo[ORGUNIT].entered, qinfo[PERSON].entered);
+			ll_log (de_log, LLOG_NOTICE, NULLCP,
+					"Search: co=%s, org=%s, ou=%s, cn=%s",
+					qinfo[COUNTRY].entered, qinfo[ORG].entered,
+					qinfo[ORGUNIT].entered, qinfo[PERSON].entered);
 
 		searchfail = FALSE;
 
@@ -272,7 +272,7 @@ entercountry:
 					goto set_up_defaults;
 				else {
 					if (res == NO_DEPT_FOUND) {
-						 doPRR(matched, ORG);
+						doPRR(matched, ORG);
 						goto set_up_defaults;
 					} else
 						break;
@@ -280,35 +280,35 @@ entercountry:
 			case PARENT_PRINTED:
 				goto set_up_defaults;
 			}
-			 doPRR(matched, ORGUNIT);
+			doPRR(matched, ORGUNIT);
 		} else { /* ou is null */
 			freeOUs(&qinfo[ORGUNIT].lp);
 			/* if prev ou value was non-null, force search for people */
 			if (strlen(qinfo[ORGUNIT].defvalue) != 0)
 				freePRRs(&qinfo[PERSON].lp);
-			 doPRR(matched, ORG);
+			doPRR(matched, ORG);
 		}
 
 set_up_defaults:
 		/* set up defaults for next time round */
 		/* note that the list default is converted to null */
 		/* except for country */
-		 strcpy(qinfo[COUNTRY].defvalue, qinfo[COUNTRY].entered);
+		strcpy(qinfo[COUNTRY].defvalue, qinfo[COUNTRY].entered);
 
 		if (strcmp(qinfo[ORG].entered, "*") == 0)
-			 strcpy(qinfo[ORG].defvalue, "");
+			strcpy(qinfo[ORG].defvalue, "");
 		else
-			 strcpy(qinfo[ORG].defvalue, qinfo[ORG].entered);
+			strcpy(qinfo[ORG].defvalue, qinfo[ORG].entered);
 
 		if (strcmp(qinfo[ORGUNIT].entered, "*") == 0)
-			 strcpy(qinfo[ORGUNIT].defvalue, "");
+			strcpy(qinfo[ORGUNIT].defvalue, "");
 		else
-			 strcpy(qinfo[ORGUNIT].defvalue, qinfo[ORGUNIT].entered);
+			strcpy(qinfo[ORGUNIT].defvalue, qinfo[ORGUNIT].entered);
 
 		if (strcmp(qinfo[PERSON].entered, "*") == 0)
-			 strcpy(qinfo[PERSON].defvalue, "");
+			strcpy(qinfo[PERSON].defvalue, "");
 		else
-			 strcpy(qinfo[PERSON].defvalue, qinfo[PERSON].entered);
+			strcpy(qinfo[PERSON].defvalue, qinfo[PERSON].entered);
 	}
 	/* and that's all for now */
 }
@@ -341,7 +341,7 @@ doCountry() {
 		       strcpy(qinfo[COUNTRY].defvalue, qinfo[COUNTRY].entered);
 		*/
 		if (listCos(qinfo[COUNTRY].entered, &qinfo[COUNTRY].lp) != OK) {
-			 searchFail(COUNTRY);
+			searchFail(COUNTRY);
 			return QUERY_ERROR;
 		}
 		qinfo[COUNTRY].listlen = listlen(qinfo[COUNTRY].lp);
@@ -351,8 +351,8 @@ doCountry() {
 				return QUERY_ERROR;
 			} else {
 				resetprint("No countries match `%s'\n\n", qinfo[COUNTRY].entered);
-				 strcpy(qinfo[COUNTRY].defvalue, "");
-				 enterString(COUNTRY);
+				strcpy(qinfo[COUNTRY].defvalue, "");
+				enterString(COUNTRY);
 				continue;
 			}
 		} else if (qinfo[COUNTRY].listlen == 1) {
@@ -364,7 +364,7 @@ doCountry() {
 					break;
 				}
 			}
-			 strcpy(qinfo[COUNTRY].displayed, qinfo[COUNTRY].lp->name);
+			strcpy(qinfo[COUNTRY].displayed, qinfo[COUNTRY].lp->name);
 			printLastComponent(INDENTON, qinfo[COUNTRY].lp->name, COUNTRY, 0);
 			strcpy(matched, qinfo[COUNTRY].lp->name);
 			return NAME_PRINTED;
@@ -375,7 +375,7 @@ doCountry() {
 						(strlen(qinfo[PERSON].entered) != 0)) {
 					foundFollowing();
 					printListCos(qinfo[COUNTRY].entered, qinfo[COUNTRY].lp);
-					 enterString(COUNTRY);
+					enterString(COUNTRY);
 					continue;
 				} else {
 					printListCos(qinfo[COUNTRY].entered, qinfo[COUNTRY].lp);
@@ -384,7 +384,7 @@ doCountry() {
 			else {
 				matchFollowing();
 				printListCos(qinfo[COUNTRY].entered, qinfo[COUNTRY].lp);
-				 enterString(COUNTRY);
+				enterString(COUNTRY);
 				continue;
 			}
 		}
@@ -422,7 +422,7 @@ int searchUnder;
 			resetprint("\nNothing to search for as no organisation name entered.  Either enter\n");
 			resetprint("an organisation name at the prompt, or press <CR> to start the\n");
 			resetprint("query again\n\n");
-			 enterString(ORG);
+			enterString(ORG);
 			if (strlen(qinfo[ORG].entered) == 0)
 				return NO_ORG_ENTERED;
 		}
@@ -430,7 +430,7 @@ int searchUnder;
 		pagerOn(NUMBER_ALLOWED);
 
 		if (listOrgs(matchstring, qinfo[ORG].entered, &qinfo[ORG].lp) != OK) {
-			 searchFail(ORG);
+			searchFail(ORG);
 			return QUERY_ERROR;
 		}
 		qinfo[ORG].listlen = listlen(qinfo[ORG].lp);
@@ -487,7 +487,7 @@ int searchUnder;
 				matchFollowing();
 			printNames(LOCALITY);
 			printListOrgs(qinfo[ORG].entered, qinfo[ORG].lp);
-			 enterString(ORG);
+			enterString(ORG);
 			continue;
 		}
 	}
@@ -502,7 +502,7 @@ char * costr;
 	resetprint("No organisations match `%s'\n\n", qinfo[ORG].entered);
 	resetprint("Checking to see if entry might be under a locality\n");
 	if (listLocs(costr, "*", &qinfo[LOCALITY].lp) != OK) {
-		 searchFail(LOCALITY);
+		searchFail(LOCALITY);
 		return QUERY_ERROR;
 	}
 	noLocs = qinfo[LOCALITY].listlen = listlen(qinfo[LOCALITY].lp);
@@ -522,7 +522,7 @@ char * costr;
 			foundFollowing();
 			printNames(COUNTRY);
 			printListLocs("*", qinfo[LOCALITY].lp);
-			 enterString(LOCALITY);
+			enterString(LOCALITY);
 			if (strcmp(qinfo[LOCALITY].entered, "") == 0) {
 				return NO_LOCALITY_SELECTED;
 			}
@@ -530,7 +530,7 @@ char * costr;
 				continue;
 			freeLocs(&qinfo[LOCALITY].lp);
 			if (listLocs(costr, qinfo[LOCALITY].entered, &qinfo[LOCALITY].lp) != OK) {
-				 searchFail(LOCALITY);
+				searchFail(LOCALITY);
 				return QUERY_ERROR;
 			}
 		}
@@ -578,7 +578,7 @@ char matchstring [];
 		if (listOUs(matchstring, qinfo[ORGUNIT].entered, &qinfo[ORGUNIT].lp) != OK) {
 			if (searchFail(ORGUNIT) != SF_ABANDONED) {
 				/* initialise value to discard default which failed */
-				 strcpy(qinfo[ORGUNIT].entered, "");
+				strcpy(qinfo[ORGUNIT].entered, "");
 			}
 			return PARENT_PRINTED;
 		}
@@ -593,7 +593,7 @@ char matchstring [];
 				/*         strcpy(qinfo[ORGUNIT].defvalue, ""); */
 				resetprint("\n      No departments match `%s'.\n",
 						   qinfo[ORGUNIT].entered);
-				 strcpy(qinfo[ORGUNIT].entered, "");
+				strcpy(qinfo[ORGUNIT].entered, "");
 			}
 			if (strlen(qinfo[PERSON].entered) == 0) {
 				resetprint("      Displaying organisation details.\n\n");
@@ -619,13 +619,13 @@ char matchstring [];
 				foundFollowing();
 				printNames(ORG);
 				printListOUs(qinfo[ORGUNIT].entered, qinfo[ORGUNIT].lp);
-				 enterString(ORGUNIT);
+				enterString(ORGUNIT);
 				continue;
 			} else {
 				matchFollowing();
 				printNames(ORG);
 				printListOUs(qinfo[ORGUNIT].entered, qinfo[ORGUNIT].lp);
-				 enterString(ORGUNIT);
+				enterString(ORGUNIT);
 				if (strlen(qinfo[ORGUNIT].entered) == 0)
 					return NO_DEPT_FOUND;
 				continue;
@@ -653,7 +653,7 @@ int searchparent;
 
 		if (listPRRs(matchstring, qinfo[PERSON].entered, &qinfo[PERSON].lp) != OK) {
 			if (searchFail(PERSON) != SF_ABANDONED)
-				 strcpy(qinfo[PERSON].entered, "");
+				strcpy(qinfo[PERSON].entered, "");
 			return PARENT_PRINTED;
 		}
 		qinfo[PERSON].listlen = listlen(qinfo[PERSON].lp);
@@ -688,9 +688,9 @@ int searchparent;
 				/* If number entered, continue trying to resolve the query.
 				Otherwise start a fresh query */
 				if (strcmp(qinfo[PERSON].entered, "*") == 0)
-					 strcpy(qinfo[PERSON].defvalue, "");
+					strcpy(qinfo[PERSON].defvalue, "");
 				else
-					 strcpy(qinfo[PERSON].defvalue, qinfo[PERSON].entered);
+					strcpy(qinfo[PERSON].defvalue, qinfo[PERSON].entered);
 				if (enterString(PERSON) == 0)
 					break;
 				else
@@ -783,85 +783,85 @@ int objectType;
 	switch(objectType) {
 	case PERSON:
 		if (strlen(gotValue) != 0) {
-			 strcpy(qinfo[objectType].entered, gotValue);
+			strcpy(qinfo[objectType].entered, gotValue);
 			gotValue[0] = '\0';
 			break;
 		}
-		 sprintf(prompt, "\nPerson's name, q to quit, ");
+		sprintf(prompt, "\nPerson's name, q to quit, ");
 		if (strlen(qinfo[objectType].defvalue) != 0)
-			 sprintf(prompt, "%s<CR> for `%s', ", prompt,
-						   qinfo[objectType].defvalue);
-		 sprintf(prompt, "%s* to %s, ? for help\n%s", prompt,
-					   browseMess ? "browse" : "list people", prstr);
+			sprintf(prompt, "%s<CR> for `%s', ", prompt,
+					qinfo[objectType].defvalue);
+		sprintf(prompt, "%s* to %s, ? for help\n%s", prompt,
+				browseMess ? "browse" : "list people", prstr);
 		enterAndValidate(prompt, qinfo[objectType].entered, objectType,
 						 qinfo[objectType].defvalue, qinfo[objectType].lp, &numEnt);
 		/* if a string was entered, but a number could validly have been
 		entered, store value in gotValue for next invocation of this function */
 		if ((highNumber > 0) && (numEnt == 0))
-			 strcpy(gotValue, qinfo[objectType].entered);
+			strcpy(gotValue, qinfo[objectType].entered);
 		break;
 	case ORGUNIT:
-		 sprintf(prompt, "Department name, * to %s, ",
-					   browseMess ? "browse" : "list depts");
+		sprintf(prompt, "Department name, * to %s, ",
+				browseMess ? "browse" : "list depts");
 		if (strcmp(qinfo[objectType].defvalue, "*") == 0)
-			 sprintf(prompt, "%s<CR> to %s all depts, ", prompt,
-						   browseMess ? "browse" : "list");
+			sprintf(prompt, "%s<CR> to %s all depts, ", prompt,
+					browseMess ? "browse" : "list");
 		else {
 			if (strlen(qinfo[objectType].defvalue) == 0) {
 				if (strlen(qinfo[PERSON].entered) != 0)
-					 sprintf(prompt, "%s<CR> to search all depts, ", prompt);
+					sprintf(prompt, "%s<CR> to search all depts, ", prompt);
 			} else {
-				 strcat(prompt, "- to search all departments,\n           ");
-				 sprintf(prompt, "%s<CR> to search for `%s', ",
-							   prompt, qinfo[objectType].defvalue);
+				strcat(prompt, "- to search all departments,\n           ");
+				sprintf(prompt, "%s<CR> to search for `%s', ",
+						prompt, qinfo[objectType].defvalue);
 			}
 		}
-		 sprintf(prompt, "%s? for help\n%s", prompt, prstr);
+		sprintf(prompt, "%s? for help\n%s", prompt, prstr);
 		enterAndValidate(prompt, qinfo[objectType].entered, objectType,
 						 qinfo[objectType].defvalue, qinfo[objectType].lp, &numEnt);
 		break;
 	case ORG:
-		 sprintf(prompt, "Organisation name, ");
+		sprintf(prompt, "Organisation name, ");
 		if (strcmp(qinfo[objectType].defvalue, "") != 0) {
-			 sprintf(prompt, "%s<CR> to search `%s', ", prompt,
-						   qinfo[objectType].defvalue);
+			sprintf(prompt, "%s<CR> to search `%s', ", prompt,
+					qinfo[objectType].defvalue);
 			if ((int)strlen(qinfo[objectType].defvalue) > 10)
-				 sprintf(prompt, "%s\n           ", prompt);
+				sprintf(prompt, "%s\n           ", prompt);
 		}
-		 sprintf(prompt, "%s* to %s, ", prompt,
-					   browseMess ? "browse" : "list orgs");
-		 sprintf(prompt, "%s? for help\n%s", prompt, prstr);
+		sprintf(prompt, "%s* to %s, ", prompt,
+				browseMess ? "browse" : "list orgs");
+		sprintf(prompt, "%s? for help\n%s", prompt, prstr);
 		enterAndValidate(prompt, qinfo[objectType].entered, objectType,
 						 qinfo[objectType].defvalue, qinfo[objectType].lp, &numEnt);
 		break;
 	case LOCALITY:
-		 sprintf(prompt, "Locality name, ");
+		sprintf(prompt, "Locality name, ");
 		if (strcmp(qinfo[objectType].defvalue, "") != 0) {
-			 sprintf(prompt, "%s<CR> to search `%s', ", prompt,
-						   qinfo[objectType].defvalue);
+			sprintf(prompt, "%s<CR> to search `%s', ", prompt,
+					qinfo[objectType].defvalue);
 			if ((int)strlen(qinfo[objectType].defvalue) > 10)
-				 sprintf(prompt, "%s\n           ", prompt);
+				sprintf(prompt, "%s\n           ", prompt);
 		}
-		 sprintf(prompt, "%s* to %s, ", prompt,
-					   browseMess ? "browse" : "list localities");
-		 sprintf(prompt, "%s? for help\n%s", prompt, prstr);
+		sprintf(prompt, "%s* to %s, ", prompt,
+				browseMess ? "browse" : "list localities");
+		sprintf(prompt, "%s? for help\n%s", prompt, prstr);
 		enterAndValidate(prompt, qinfo[objectType].entered, objectType,
 						 qinfo[objectType].defvalue, qinfo[objectType].lp, &numEnt);
 		break;
 	case COUNTRY:
-		 sprintf(prompt, "Country name, ");
+		sprintf(prompt, "Country name, ");
 		if ((strcmp(qinfo[objectType].defvalue, "") != 0) &&
 				(strcmp(qinfo[objectType].defvalue, "*") != 0))
-			 sprintf(prompt, "%s<CR> to search `%s', ", prompt,
-						   qinfo[objectType].defvalue);
-		 sprintf(prompt, "%s* to %s, ", prompt,
-					   browseMess ? "browse" : "list countries");
-		 sprintf(prompt, "%s? for help\n%s", prompt, prstr);
+			sprintf(prompt, "%s<CR> to search `%s', ", prompt,
+					qinfo[objectType].defvalue);
+		sprintf(prompt, "%s* to %s, ", prompt,
+				browseMess ? "browse" : "list countries");
+		sprintf(prompt, "%s? for help\n%s", prompt, prstr);
 		enterAndValidate(prompt, qinfo[objectType].entered, objectType,
 						 qinfo[objectType].defvalue, qinfo[objectType].lp, &numEnt);
 		break;
 	default:
-		 fprintf(stderr, "Unknown type in enterString\n");
+		fprintf(stderr, "Unknown type in enterString\n");
 		break;
 	}
 	stopUnbindTimer();
@@ -893,17 +893,17 @@ int * nep;
 	if ((n = getpnum()) != -1) {
 		if ((n > highNumber) || (n < 1)) { /* check number against valid range */
 			if (highNumber > 0)
-				 fprintf(stderr, "Invalid number entered (maximum = %d)\n\n",
-							   highNumber);
+				fprintf(stderr, "Invalid number entered (maximum = %d)\n\n",
+						highNumber);
 			else
-				 fprintf(stderr,
-							   "No list of entries current.  Entry of a number invalid\n");
+				fprintf(stderr,
+						"No list of entries current.  Entry of a number invalid\n");
 		} else { /* valid number */
 			for (i = 1; i < n; i++, lp = lp->next) {};
 			cp = copy_string(lastComponent(lp->name, objectType));
 			exactMatch = objectType;
-			 strcpy(exactString, lp->name);
-			 strcpy(buf, cp);
+			strcpy(exactString, lp->name);
+			strcpy(buf, cp);
 			free(cp);
 			*nep = n;
 			return;
@@ -913,7 +913,7 @@ int * nep;
 	for (;;) {
 		exactMatch = -1;
 		writeInverse(prompt);
-		 putchar(' ');
+		putchar(' ');
 		if (gets(buf) == NULLCP) /* deal with control-D */
 			if (objectType == PERSON)
 				/* exit the program */
@@ -979,18 +979,18 @@ int * nep;
 			n = atoi(cp);
 			if ((n > highNumber) || (n < 1)) { /* check number against valid range */
 				if (highNumber > 0)
-					 fprintf(stderr, "Invalid number entered (maximum = %d)\n\n",
-								   highNumber);
+					fprintf(stderr, "Invalid number entered (maximum = %d)\n\n",
+							highNumber);
 				else
-					 fprintf(stderr,
-								   "No list of entries current.  Entry of a number invalid\n");
+					fprintf(stderr,
+							"No list of entries current.  Entry of a number invalid\n");
 				continue;
 			} else {
 				for (i = 1; i < n; i++, lp = lp->next) {};
 				free(cp);
 				cp = copy_string(lastComponent(lp->name, objectType));
 				exactMatch = objectType;
-				 strcpy(exactString, lp->name);
+				strcpy(exactString, lp->name);
 				*nep = n;
 			}
 		}
@@ -1025,7 +1025,7 @@ int * nep;
 			continue;
 		}
 	}
-	 strcpy(buf, cp);
+	strcpy(buf, cp);
 	free(cp);
 }
 
@@ -1036,7 +1036,7 @@ char * str;
 	int i;
 
 	for (;;) {
-		 printf("%s", str);
+		printf("%s", str);
 		if (gets(buf) == NULLCP) /* control-D */
 			return 'y';
 		for (i = 0; buf[i] != '\0'; i++)
@@ -1049,29 +1049,29 @@ char * str;
 }
 
 displayValidWildCards() {
-	 printf("The following wild-card formats are acceptable:\n");
-	 printf("\t*\n\txxx*\n\t*xxx*\n\t*xxx\n\txx*xx\n\n");
+	printf("The following wild-card formats are acceptable:\n");
+	printf("\t*\n\txxx*\n\t*xxx*\n\t*xxx\n\txx*xx\n\n");
 }
 
 countryCodeMessage(str) {
-	 printf("<%s> is not a valid two-letter country code.\n", str);
-	 printf("Either enter a valid two-letter code, or enter the country name more fully.\n\n", str);
+	printf("<%s> is not a valid two-letter country code.\n", str);
+	printf("Either enter a valid two-letter code, or enter the country name more fully.\n\n", str);
 }
 
 void
 onint1() {
-	 putchar('\n');
+	putchar('\n');
 	/* simulate search failure -
 	   this ensures that the "country question" is asked */
 	searchfail = TRUE;
 	/* destroy default values - a bit of a hack
 	   but it is difficult to know what the defaults should be when a
 	   query is interrupted */
-	 strcpy(qinfo[COUNTRY].defvalue, "");
-	 strcpy(qinfo[LOCALITY].defvalue, "");
-	 strcpy(qinfo[ORG].defvalue, "");
-	 strcpy(qinfo[ORGUNIT].defvalue, "");
-	 strcpy(qinfo[PERSON].defvalue, "");
+	strcpy(qinfo[COUNTRY].defvalue, "");
+	strcpy(qinfo[LOCALITY].defvalue, "");
+	strcpy(qinfo[ORG].defvalue, "");
+	strcpy(qinfo[ORGUNIT].defvalue, "");
+	strcpy(qinfo[PERSON].defvalue, "");
 	longjmp(sjbuf, 0);
 }
 
@@ -1084,7 +1084,7 @@ cleanup(exitCode)
 int exitCode;
 {
 	if (boundToDSA == TRUE)
-		 de_unbind();
+		de_unbind();
 #ifdef SPEC_MALL
 	stop_malloc_trace();
 #endif
@@ -1095,21 +1095,21 @@ int exitCode;
 void
 onalarm() {
 
-	 signal(SIGALRM, (VFP) onalarm);
-	 alarm(2);
+	signal(SIGALRM, (VFP) onalarm);
+	alarm(2);
 	if (dotsPrinted == 0)
 		printf("%s", SEARCHMESS);
 	if (dotsPrinted == dots)
 		resetprint("\nThis operation is taking some time.\nControl-C, if you wish to abandon the operation.\n\n");
 	else if (dotsPrinted == (dots + 1)) {
 		resetprint("Still trying ...");
-		 fflush(stdout);
+		fflush(stdout);
 	} else if (dotsPrinted < dots) {
 		printf(".");
-		 fflush(stdout);
+		fflush(stdout);
 	} else {
 		resetprint(".");
-		 fflush(stdout);
+		fflush(stdout);
 	}
 	dotsPrinted++;
 }

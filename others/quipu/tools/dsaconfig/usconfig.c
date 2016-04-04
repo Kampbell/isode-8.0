@@ -225,9 +225,8 @@ struct edbdir topdirs[] = {
 /* ARGSUSED */
 
 /* main () -- main function for program */
-void 
-main (int argc, char **argv)
-{
+void
+main (int argc, char **argv) {
 	struct pair *pp;			/* pair pointer */
 	extern struct pair * findpair ();
 	extern void arginit (), read_config (), read_dsas ();
@@ -301,9 +300,8 @@ main (int argc, char **argv)
 
 /*  */
 /* arginit () -- parse command line, and initialize from it */
-void 
-arginit (int ac, char **av)
-{
+void
+arginit (int ac, char **av) {
 	int i,j,k;
 	struct pair *wildlife;
 
@@ -358,7 +356,7 @@ arginit (int ac, char **av)
 
 /*  */
 /* read_dsas () -- read in identities and locations of regional DSAs */
-void 
+void
 read_dsas  {
 	u_short lncnt;			/* linecount */
 	char *cp;				/* character pointer */
@@ -379,8 +377,8 @@ read_dsas  {
 
 	lncnt = 0;
 	for (lncnt = 1, i = 0;
-			i < N_REGIONS && fgets (line, BUFSIZ-1, fp) != (char *)NULL;
-			lncnt++) {
+	i < N_REGIONS && fgets (line, BUFSIZ-1, fp) != (char *)NULL;
+	lncnt++) {
 
 		/* check for comment line ... */
 		if (line[0] == '#')		/* a comment? */
@@ -397,7 +395,7 @@ read_dsas  {
 
 		case 1:			/* syntax error ... */
 			advise (NULLCP, "syntax error, line %d: insufficient parameters",
-					lncnt);
+			lncnt);
 			continue;
 
 		case 2:
@@ -405,7 +403,7 @@ read_dsas  {
 
 		default:
 			advise (NULLCP, "syntax error, line %d: too many parameters",
-					lncnt);
+			lncnt);
 			continue;
 		}				/* end, tokenize line */
 
@@ -421,7 +419,7 @@ read_dsas  {
 }
 /*  */
 /* read_config () -- parse configuration file, and initialize from it */
-void 
+void
 read_config  {
 	u_short lncnt;			/* linecount */
 	char *toks[NVEC+1];			/* tokens on line */
@@ -471,7 +469,7 @@ read_config  {
 				advise (NULLCP, "unknown variable %s, line %d", toks[0], lncnt);
 			else
 				advise (NULLCP, "no value specified for variable %s, line %d",
-						toks[0], lncnt);
+				toks[0], lncnt);
 			continue;
 
 		case 2:
@@ -479,7 +477,7 @@ read_config  {
 
 		default:
 			advise (NULLCP, "syntax error: multiple values specified, line %d",
-					lncnt);
+			lncnt);
 			continue;
 		}				/* end, tokenize line */
 
@@ -599,14 +597,14 @@ out:
 	}					/* end, ip address specified */
 
 	if ((pp = findpair ("port", 0x01)) != (struct pair *)NULL &&
-			pp->p_val == (char *)NULL) {
+	pp->p_val == (char *)NULL) {
 		pp->p_val = strdup ("17003");
 	}
 
 	/* initialize middle initial based on middle name, if necessary */
 	if ((pp = findpair ("middlename", 0x00)) != (struct pair *)NULL &&
-			(pp2 = findpair ("middleinitial", 0x01)) != (struct pair *)NULL &&
-			pp2->p_val == (char *)NULL) {
+	(pp2 = findpair ("middleinitial", 0x01)) != (struct pair *)NULL &&
+	pp2->p_val == (char *)NULL) {
 		buf[0] = pp->p_val[0];
 		buf[1] = '\0';
 
@@ -615,7 +613,7 @@ out:
 
 	/* initialize personal phone, if possible */
 	if ((pp = findpair ("persphone", 0x01)) != (struct pair *)NULL &&
-			pp->p_val == (char *)NULL)
+	pp->p_val == (char *)NULL)
 		if ((pp2 = findpair ("telephone", 0x00)) != (struct pair *)NULL)
 			if ((pp3 = findpair ("extension", 0x00)) != (struct pair *)NULL) {
 				sprintf(buf,"%s x%s",pp2->p_val,pp3->p_val);
@@ -627,7 +625,7 @@ out:
 
 	/* initialize postal address, if necessary */
 	if ((pp = findpair ("postaladdress", 0x01)) != (struct pair *)NULL &&
-			pp->p_val == (char *)NULL) {
+	pp->p_val == (char *)NULL) {
 
 		cp = buf;				/* start at the beginning ... */
 		bzero (buf, BUFSIZ);		/* clear buffer */
@@ -699,7 +697,7 @@ out:
 		cp2 = pp->p_val;			/* point at postal address */
 
 		for (cp2 = pp->p_val, i = 1; cp = strchr (cp2, (int)'$');
-				cp2 = cp + 1, ++i) {
+		cp2 = cp + 1, ++i) {
 			*cp = '\0';			/* null terminate */
 
 			if (strlen (cp2) > 30)
@@ -721,12 +719,11 @@ out:
 
 /*  */
 /* bad_postaladdress () -- print error message for a bad postal address */
-void 
+void
 bad_postaladdress (
-    char *line,				/* offending line */
-    int postdef			/* postal address defined? */
-)
-{
+	char *line,				/* offending line */
+	int postdef			/* postal address defined? */
+) {
 	advise (NULLCP,"line:\n\t%s\nis illegal in a postal address", line);
 
 	if (!postdef)
@@ -743,7 +740,7 @@ bad_postaladdress (
 
 /*  */
 /* build_top () -- build root, c=US */
-void 
+void
 build_top  {
 	struct pair *pp;
 	int i;
@@ -776,11 +773,10 @@ build_top  {
 
 /*  */
 /* add_us () -- add national organization to US EDB */
-void 
+void
 add_us (
-    struct pair *orgcode			/* ansi organization code */
-)
-{
+	struct pair *orgcode			/* ansi organization code */
+) {
 	extern void copy_edb ();
 
 	bzero (buf, BUFSIZ);
@@ -801,11 +797,10 @@ add_us (
 
 /*  */
 /* add_state () -- build state entry, adding organization if necessary*/
-void 
+void
 add_state (
-    int addorg			/* add organization to state entry? */
-)
-{
+	int addorg			/* add organization to state entry? */
+) {
 	struct pair *state;			/* name of state */
 	extern void copy_edb ();
 	extern struct pair *findpair ();
@@ -855,7 +850,7 @@ add_state (
 }
 
 /*  */
-void 
+void
 build_dsa  {
 	unlink (DSAENTRY);
 	bzero (buf, BUFSIZ);
@@ -869,7 +864,7 @@ build_dsa  {
 
 /*  */
 /* build_orgedb () -- build skeleton EDB for organization */
-void 
+void
 build_orgedb  {
 	struct pair *pp;		/* to get pair values */
 	char *orgnm;		/* name of organization */
@@ -884,7 +879,7 @@ build_orgedb  {
 	/* set up location of organization */
 	bzero (file, BUFSIZ);
 	if ((pp = findpair ("orgcode", 0x00)) != (struct pair *)NULL ||
-			chartered_by_congress)
+	chartered_by_congress)
 		sprintf (file,"%s/o=%s", USDN,orgnm);
 	else {				/* org. has regional standing */
 		if ((pp = findpair ("state", 0x00)) == (struct pair *)NULL)
@@ -913,7 +908,7 @@ build_orgedb  {
 }
 
 /* build_ouedb () -- build skeleton EDB for organizational unit */
-void 
+void
 build_ouedb  {
 	struct pair *pp;		/* to get pair values */
 	char *orgnm;		/* name of organization */
@@ -934,7 +929,7 @@ build_ouedb  {
 	bzero (file, BUFSIZ);
 
 	if ((pp = findpair ("orgcode", 0x00)) != (struct pair *)NULL ||
-			chartered_by_congress)
+	chartered_by_congress)
 		sprintf (file,"%s/o=%s/ou=%s", USDN, orgnm, ounm);
 	else {				/* org. has regional standing */
 		if ((pp = findpair ("state", 0x00)) == (struct pair *)NULL)
@@ -964,7 +959,7 @@ build_ouedb  {
 
 /*  */
 /* build_tailor () -- build tailor files */
-void 
+void
 build_tailor  {
 	extern void make_file ();
 
@@ -973,7 +968,7 @@ build_tailor  {
 }
 
 /* build_scripts () -- build script files */
-void 
+void
 build_scripts  {
 	extern void make_file ();
 
@@ -983,7 +978,7 @@ build_scripts  {
 }
 
 /* build_uifl () -- build user interface configuration files */
-void 
+void
 build_uifl  {
 	extern void make_file ();
 
@@ -997,7 +992,7 @@ build_uifl  {
 
 /*  */
 /* create_sedfile () -- create sed file to convert templates */
-void 
+void
 create_sedfile  {
 	FILE *sedfp;			/* sed file pointer */
 	struct pair *pp;			/* to get pair values */
@@ -1032,7 +1027,7 @@ create_sedfile  {
 
 	for (i = 0; usstates[i].s_nm != (char *)NULL; ++i)
 		if (stnmlen == strlen (pp->p_val) &&
-				strcmp (pp->p_val, usstates[i].s_nm) == 0)
+		strcmp (pp->p_val, usstates[i].s_nm) == 0)
 			break;
 
 	if (usstates[i].s_nm == (char *)NULL)
@@ -1042,9 +1037,9 @@ create_sedfile  {
 
 	/* put in appropriate regional DSA */
 	fprintf (sedfp,"s!@(parentdsa)!%s!g\n",
-			 regional_dsas[sp->s_region].dsa_name);
+	regional_dsas[sp->s_region].dsa_name);
 	fprintf (sedfp,"s!@(parentaddr)!%s!g\n",
-			 regional_dsas[sp->s_region].dsa_addr);
+	regional_dsas[sp->s_region].dsa_addr);
 
 	/* get organization name */
 	if ((pp = findpair ("organization", 0x00)) == (struct pair *)NULL)
@@ -1052,7 +1047,7 @@ create_sedfile  {
 	orgnm = pp->p_val;
 
 	if ((pp = findpair ("orgcode", 0x00)) != (struct pair *)NULL ||
-			chartered_by_congress) {
+	chartered_by_congress) {
 		fprintf (sedfp, "s!@(dnprefix)!%s@o=%s!g\n", USDN, orgnm);
 	} else {
 		fprintf (sedfp, "s!@(dnprefix)!%s@st=%s@o=%s!g\n", USDN, sp->s_nm, orgnm);
@@ -1071,12 +1066,11 @@ create_sedfile  {
 
 /*  */
 /* make_file () -- create a file from a template */
-void 
+void
 make_file (
-    char *fl,				/* file to be created */
-    char *tmpl				/* template to use */
-)
-{
+	char *fl,				/* file to be created */
+	char *tmpl				/* template to use */
+) {
 	if (access (fl, F_OK) == 0)	{	/* file already exists? */
 		sprintf (oldfile, "%s.old", fl);
 
@@ -1092,7 +1086,7 @@ make_file (
 
 /*  */
 /* build_mesgfl () -- build file that needs to be sent to wpp-manager */
-void 
+void
 build_mesgfl  {
 	FILE *msgfp;			/* pointer to message file */
 	FILE *fp;				/* pointer to various EDB entries */
@@ -1117,7 +1111,7 @@ build_mesgfl  {
 
 	/* determine if this is a regional or national organization */
 	if ((pp = findpair ("orgcode", 0x00)) != (struct pair *)NULL ||
-			chartered_by_congress) {
+	chartered_by_congress) {
 		nationalorg = 0x7f;		/* a national organization */
 	} else
 		nationalorg = 0x00;		/* a regional organization */
@@ -1127,7 +1121,7 @@ build_mesgfl  {
 		fprintf (msgfp,"--- Addition to %s/EDB ---\n", USDN);
 	else
 		fprintf (msgfp,"--- Addition to %s/st=%s/EDB ---\n",
-				 USDN, statenm);
+		USDN, statenm);
 
 	if ((fp = fopen (ORGENTRY, "r")) == (FILE *)NULL)
 		adios (NULLCP, "cannot open %s", ORGENTRY);
@@ -1157,13 +1151,12 @@ build_mesgfl  {
 
 /*  */
 /* copy_edb () -- create an EDB, or append to an existing EDB */
-void 
+void
 copy_edb (
-    char *dir,				/* place where EDB should go */
-    char *edbtmpl,				/* location of EDB template */
-    int append			/* append, nonzero if so */
-)
-{
+	char *dir,				/* place where EDB should go */
+	char *edbtmpl,				/* location of EDB template */
+	int append			/* append, nonzero if so */
+) {
 	FILE *edbfp;			/* EDB file pointer */
 	FILE *tmplfp;			/* template file pointer */
 
@@ -1207,10 +1200,9 @@ copy_edb (
 /* findpair () -- find 'pair' structure corresponding to name provided */
 struct pair *
 findpair (
-    char *nm,				/* name of 'pair' to find */
-    int any				/* 'pair' can have any value? */
-)
-{
+	char *nm,				/* name of 'pair' to find */
+	int any				/* 'pair' can have any value? */
+) {
 	int i;				/* index and counter */
 	int nmlen;				/* length of name */
 
@@ -1227,7 +1219,7 @@ findpair (
 
 /*  */
 /* set_permissions () -- set appropriate permissions on database directory */
-void 
+void
 set_permissions  {
 	struct pair *pp;			/* to get pair values */
 	char *owner, *group;		/* owner and group */
@@ -1284,14 +1276,14 @@ set_permissions  {
 	if (system (buf) != 0)
 		adios (NULLCP, "cannot perform chown -- system failed");
 	sprintf (buf, "chmod 755 %s/startup.sh %s/nightly.sh",
-			 wildlife, wildlife);
+	wildlife, wildlife);
 	if (system (buf) != 0)
 		adios (NULLCP, "cannot perform chmod -- system failed");
 }
 
 /*  */
 /* make_usstates () -- generate EDB format entries for the U.S. states */
-void 
+void
 make_usstates  {
 	int i,j;
 	char *masterdsa;
@@ -1323,9 +1315,9 @@ timestamp  {
 	struct UTCtime ut;
 	static char timestamp [32];
 
-	 time (&clock);
+	time (&clock);
 	tm2ut (gmtime (&clock), &ut);
-	 strcpy (timestamp, gent2str (&ut));
+	strcpy (timestamp, gent2str (&ut));
 
 	return (timestamp);
 }
@@ -1375,19 +1367,18 @@ va_dcl {
 	va_end (ap);
 }
 
-void 
-_advise (va_list ap)
-{
+void
+_advise (va_list ap) {
 
 	char buffer[BUFSIZ];
 
 	asprintf (buffer, ap);
 
-	 fflush (stdout);
+	fflush (stdout);
 
 	fprintf (stderr, "%s: ", prgnm);
-	 fputs (buffer, stderr);
-	 fputc ('\n',stderr);
+	fputs (buffer, stderr);
+	fputc ('\n',stderr);
 
 	fflush(stderr);
 }
@@ -1396,9 +1387,8 @@ _advise (va_list ap)
 
 /* VARARGS */
 
-void 
-advise (char *what, char *fmt)
-{
+void
+advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 

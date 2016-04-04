@@ -121,14 +121,14 @@ char ** argv;
 	home = malloc(LINESIZE);
 
 	/* turn off logging that we are not interested in */
-	 isodesetvar("compatlevel", "none", 0);
-	 isodesetvar("addrlevel", "none", 0);
-	 isodesetvar("tsaplevel", "none", 0);
-	 isodesetvar("ssaplevel", "none", 0);
-	 isodesetvar("psaplevel", "none", 0);
-	 isodesetvar("psap2level", "none", 0);
-	 isodesetvar("acsaplevel", "none", 0);
-	 isodesetvar("rosaplevel", "none", 0);
+	isodesetvar("compatlevel", "none", 0);
+	isodesetvar("addrlevel", "none", 0);
+	isodesetvar("tsaplevel", "none", 0);
+	isodesetvar("ssaplevel", "none", 0);
+	isodesetvar("psaplevel", "none", 0);
+	isodesetvar("psap2level", "none", 0);
+	isodesetvar("acsaplevel", "none", 0);
+	isodesetvar("rosaplevel", "none", 0);
 	/*  isodexport("idm"); */
 
 	addToList(&coatts, "masterDSA");
@@ -137,42 +137,42 @@ char ** argv;
 
 	/* Read in dsaptailor file */
 	if ((config_file = fopen(isodefile(tailfile, 0), "r")) == (FILE *) NULL) {
-		 fprintf(stderr, dsap_notOpen);
+		fprintf(stderr, dsap_notOpen);
 	} else {
 		while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP)
 			if ((*linebuf != '#') && (*linebuf != '\n'))  tai_string (linebuf);
 
-		 fclose(config_file);
+		fclose(config_file);
 	}
 
 	if ((home = getenv("HOME")) != NULLCP) {
-		 sprintf(tailorfile, "%s%s", home, "/.dmtailor");
+		sprintf(tailorfile, "%s%s", home, "/.dmtailor");
 		if ((config_file = fopen(isodefile(tailorfile, 0), "r")) == (FILE *) NULL) {
 			if ((config_file = fopen(isodefile("dm/dmtailor", 0), "r")) == (FILE *) NULL) {
-				 fprintf(stderr, dm_notOpen);
-				 de_exit(-1);
+				fprintf(stderr, dm_notOpen);
+				de_exit(-1);
 			} else {
 				while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP) {
 					if ((*linebuf != '#') && (*linebuf != '\n')) read_de_option(linebuf);
 				}
-				 fclose(config_file);
+				fclose(config_file);
 			}
 		} else {
 			while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP) {
 				if ((*linebuf != '#') && (*linebuf != '\n')) read_de_option(linebuf);
 			}
-			 fclose(config_file);
+			fclose(config_file);
 		}
 	} else {
 		if ((config_file = fopen(isodefile("dm/dmtailor", 0), "r")) == (FILE *) NULL) {
-			 fprintf(stderr, dm_notOpen);
-			 pagerOn(NUMBER_NOT_ALLOWED);
-			 de_exit(-1);
+			fprintf(stderr, dm_notOpen);
+			pagerOn(NUMBER_NOT_ALLOWED);
+			de_exit(-1);
 		} else {
 			while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP) {
 				if ((*linebuf != '#') && (*linebuf != '\n')) read_de_option(linebuf);
 			}
-			 fclose(config_file);
+			fclose(config_file);
 		}
 	}
 	/*
@@ -209,11 +209,11 @@ char ** argv;
 				argc--;
 				argv++;
 				if (argv != (char **)NULL) {
-					 strcpy(callingDteNumber, *argv);
+					strcpy(callingDteNumber, *argv);
 					argc--;
 					argv++;
 				} else
-					 strcpy(callingDteNumber, "");
+					strcpy(callingDteNumber, "");
 				break;
 			default:
 				fprintf(stderr, "%s %c %s", flag_prob, *cp, flag);
@@ -222,8 +222,8 @@ char ** argv;
 	}
 
 
-	 printf("%*s%s\n\n", (80 - strlen(welcomeMessage)) / 2, "",
-				  welcomeMessage);
+	printf("%*s%s\n\n", (80 - strlen(welcomeMessage)) / 2, "",
+		   welcomeMessage);
 
 	initVideo();
 
@@ -251,43 +251,43 @@ char *line;
 	part2 = TidyString(part2);
 
 	if (lexequ(part1, "welcomeMessage") == 0) {
-		 strcpy(welcomeMessage, part2);
+		strcpy(welcomeMessage, part2);
 	} else if (lexequ(part1, "default_country") == 0) {
-		 strcpy(default_country, part2);
+		strcpy(default_country, part2);
 	} else if (lexequ(part1, "default_org") == 0) {
-		 strcpy(default_organisation, part2);
+		strcpy(default_organisation, part2);
 	} else if (lexequ(part1, "default_dept") == 0) {
-		 strcpy(default_department, part2);
+		strcpy(default_department, part2);
 	} else if (lexequ(part1, "prrOC") == 0) {
-		 strcpy(prrOC, part2);
+		strcpy(prrOC, part2);
 	} else if (lexequ(part1, "rlOC") == 0) {
-		 strcpy(rlOC, part2);
+		strcpy(rlOC, part2);
 	} else if (lexequ(part1, "rmOC") == 0) {
-		 strcpy(rmOC, part2);
+		strcpy(rmOC, part2);
 	} else if (lexequ(part1, "dept") == 0) {
-		 strcpy(have_department, part2);
+		strcpy(have_department, part2);
 	} else if (lexequ(part1, "change_posdit") == 0) {
-		 strcpy(change_posdit, part2);
+		strcpy(change_posdit, part2);
 	} else if (lexequ(part1, "change_posdn") == 0) {
-		 strcpy(change_posdn, part2);
+		strcpy(change_posdn, part2);
 	} else if (lexequ(part1, "org_compel") == 0) {
-		 strcpy(org_compel, part2);
+		strcpy(org_compel, part2);
 	} else if (lexequ(part1, "search_mgr") == 0) {
-		 strcpy(search_mgr, part2);
+		strcpy(search_mgr, part2);
 	} else if (lexequ(part1, "addorg") == 0)  {
-		 strcpy(addorg, part2);
+		strcpy(addorg, part2);
 	} else if (lexequ(part1, "country_mgr") == 0)  {
-		 strcpy(country_mgr, part2);
+		strcpy(country_mgr, part2);
 	} else if (lexequ(part1, "masterDSA") == 0)  {
-		 strcpy(masterDSA, part2);
+		strcpy(masterDSA, part2);
 	} else if (lexequ(part1, "init_user") == 0) {
-		 strcpy(init_user, part2);
+		strcpy(init_user, part2);
 	} else if (lexequ(part1, "init_pswd") == 0) {
-		 strcpy(init_pswd, part2);
+		strcpy(init_pswd, part2);
 	} else if (lexequ(part1, "addorg_posdit") == 0) {
-		 strcpy(addorg_posdit, part2);
+		strcpy(addorg_posdit, part2);
 	} else if (lexequ(part1, "just_dn") == 0) {
-		 strcpy(just_dn, part2);
+		strcpy(just_dn, part2);
 	} else if (lexequ(part1, "wanAccess") == 0) {
 		if (lexequ(part2, "off") == 0) {
 			wanAccess = FALSE;
@@ -295,21 +295,21 @@ char *line;
 			wanAccess = TRUE;
 		}
 	} else if (lexequ(part1, "language") == 0) {
-		 strcpy(language, part2);
+		strcpy(language, part2);
 	} else if (lexequ(part1, "dsa_address") == 0) {
 		dsa_address = copy_string(part2);
 	} else if (lexequ(part1, "username") == 0) {
-		 sprintf(username, part2);
+		sprintf(username, part2);
 		username_intrctv = FALSE;
 	} else if (lexequ(part1, "password") == 0) {
-		 sprintf(password, part2);
+		sprintf(password, part2);
 		pswd_intrctv = FALSE;
 	} else if (lexequ(part1, "posdit") == 0) {
-		 sprintf(posdit, part2);
+		sprintf(posdit, part2);
 	} else if (lexequ(part1, "yes") == 0) {
-		 sprintf(yes_string, part2);
+		sprintf(yes_string, part2);
 	} else if (lexequ(part1, "no") == 0) {
-		 sprintf(no_string, part2);
+		sprintf(no_string, part2);
 	} else if (lexequ(part1, "delogfile") == 0) {
 		de_log->ll_file = copy_string(part2);
 	} else if (lexequ(part1, "byeByeMessage") == 0) {
@@ -343,7 +343,7 @@ char *line;
 		addToAttList(part2);
 	} else if (lexequ(part1, "commonatt") == 0) {
 		if ((str2AttrT(part2)) == NULLAttrT) {
-			 printf("%s   %s -- %s", inv_attrT, part2, ignored);
+			printf("%s   %s -- %s", inv_attrT, part2, ignored);
 		} else {
 			addToList(&rmatts, part2);
 			addToList(&rlatts, part2);
@@ -353,31 +353,31 @@ char *line;
 		}
 	} else if (lexequ(part1, "orgatt") == 0) {
 		if ((str2AttrT(part2)) == NULLAttrT) {
-			 printf("%s   %s -- %s", inv_attrT, part2, ignored);
+			printf("%s   %s -- %s", inv_attrT, part2, ignored);
 		} else {
 			addToList(&orgatts, part2);
 		}
 	} else if (lexequ(part1, "ouatt") == 0) {
 		if ((str2AttrT(part2)) == NULLAttrT) {
-			 printf("%s   %s -- %s", inv_attrT, part2, ignored);
+			printf("%s   %s -- %s", inv_attrT, part2, ignored);
 		} else {
 			addToList(&ouatts, part2);
 		}
 	} else if (lexequ(part1, "prratt") == 0) {
 		if ((str2AttrT(part2)) == NULLAttrT) {
-			 printf("%s   %s -- %s", inv_attrT, part2, ignored);
+			printf("%s   %s -- %s", inv_attrT, part2, ignored);
 		} else {
 			addToList(&prratts, part2);
 		}
 	} else if (lexequ(part1, "rlatt") == 0) {
 		if ((str2AttrT(part2)) == NULLAttrT) {
-			 printf("%s   %s -- %s", inv_attrT, part2, ignored);
+			printf("%s   %s -- %s", inv_attrT, part2, ignored);
 		} else {
 			addToList(&rlatts, part2);
 		}
 	} else if (lexequ(part1, "rmatt") == 0) {
 		if ((str2AttrT(part2)) == NULLAttrT) {
-			 printf("%s   %s -- %s", inv_attrT, part2, ignored);
+			printf("%s   %s -- %s", inv_attrT, part2, ignored);
 		} else {
 			addToList(&rmatts, part2);
 		}
@@ -422,15 +422,15 @@ welcome() {
 	char linebuf[LINESIZE];
 	char welcome_lang[LINESIZE];
 
-	 strcpy(welcome_lang, "./");
-	 strcat(welcome_lang, language);
-	 strcat(welcome_lang, "welcome");
+	strcpy(welcome_lang, "./");
+	strcat(welcome_lang, language);
+	strcat(welcome_lang, "welcome");
 	if ((welcome_file = fopen(isodefile(welcome_lang, 0), "r")) == (FILE *) NULL)
-		 fprintf(stderr, wlcm_notOpen);
+		fprintf(stderr, wlcm_notOpen);
 	else {
 		while(fgets(linebuf, sizeof(linebuf), welcome_file) != NULLCP)
-			 fputs(linebuf, stdout);
-		 fclose(welcome_file);
+			fputs(linebuf, stdout);
+		fclose(welcome_file);
 	}
 }
 

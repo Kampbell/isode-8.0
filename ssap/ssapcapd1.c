@@ -35,9 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapcapd1.c,v 9.0 1992
 
 static  int SCapdRequestAux ();
 
-int 
-SCapdRequest (int sd, char *data, int cc, struct SSAPindication *si)
-{
+int
+SCapdRequest (int sd, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -51,16 +50,15 @@ SCapdRequest (int sd, char *data, int cc, struct SSAPindication *si)
 
 	result = SCapdRequestAux (sb, data, cc, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SCapdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si)
-{
+static int
+SCapdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si) {
 	int     result;
 
 	if (!(sb -> sb_requirements & SR_CAPABILITY))

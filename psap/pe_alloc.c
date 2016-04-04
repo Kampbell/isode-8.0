@@ -76,9 +76,8 @@ PE	pe_active = NULLPE;
 
 /*  */
 
-PE 
-pe_alloc (int class, int form, int id)
-{
+PE
+pe_alloc (int class, int form, int id) {
 	int    i;
 	PE	    pe;
 

@@ -43,9 +43,8 @@ extern	void	  ros_log();
 #define DUMP_ERR 	"err"
 #endif
 
-int 
-DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, int asyn)
-{
+int
+DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, int asyn) {
 
 #ifdef PDU_DUMP
 	pdu_dump (pe,DUMP_ARG,op);
@@ -71,9 +70,8 @@ DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, int as
 	}
 }
 
-int 
-DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di)
-{
+int
+DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -134,9 +132,8 @@ DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di)
 	return (OK);
 }
 
-int 
-DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di)
-{
+int
+DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -200,9 +197,8 @@ DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di)
 	return (OK);
 }
 
-int 
-DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di)
-{
+int
+DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -232,9 +228,8 @@ DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di)
 	return (OK);
 }
 
-int 
-DapInterrupt (int sd, int id, int op, struct DAPindication *di)
-{
+int
+DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 	/*
 	* Abandoning. Trickier than it looks!
 	* Need to RoInvoke an abandon op, which will receive
@@ -448,19 +443,17 @@ DapInterrupt (int sd, int id, int op, struct DAPindication *di)
 static int pdu_count = -1;
 static char * pdu_dir = NULLCP;
 
-int 
-pdu_dump_init (char *dir)
-{
+int
+pdu_dump_init (char *dir) {
 	pdu_count = 0;
 	pdu_dir = strdup (dir);
 	LLOG (log_dsap, LLOG_NOTICE, ("PDU Tracing enabled - %s",dir));
 
-	 mkdir (pdu_dir,0755);
+	mkdir (pdu_dir,0755);
 }
 
-int 
-pdu_dump (PE pe, char *type, int op)
-{
+int
+pdu_dump (PE pe, char *type, int op) {
 	char filename [BUFSIZE];
 	char * oper;
 	PS ps;
@@ -511,7 +504,7 @@ pdu_dump (PE pe, char *type, int op)
 	if (strcmp (type,DUMP_ERR) == 0)
 		oper = "oper";
 
-	 sprintf (filename, "%s/%s_%s.%d",pdu_dir,oper,type,pdu_count);
+	sprintf (filename, "%s/%s_%s.%d",pdu_dir,oper,type,pdu_count);
 	DLOG (log_dsap,LLOG_DEBUG,("Writing PDU to file %s",filename));
 
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
@@ -521,22 +514,21 @@ pdu_dump (PE pe, char *type, int op)
 
 	ps = ps_alloc (std_open);
 	if (std_setup (ps,fptr) != OK) {
-		 fclose (fptr);
+		fclose (fptr);
 		return;
 	}
 
-	 pe2pl (ps,pe);
+	pe2pl (ps,pe);
 
-	 fclose (fptr);
+	fclose (fptr);
 	ps_free (ps);
 
 }
 #endif
 
 #ifdef	HEAVY_DEBUG
-int 
-pdu_arg_log (PE pe, int op)
-{
+int
+pdu_arg_log (PE pe, int op) {
 	/* PDU Level Logging */
 	switch (op) {
 	case OP_READ:
@@ -574,9 +566,8 @@ pdu_arg_log (PE pe, int op)
 	}
 }
 
-int 
-pdu_res_log (PE pe, int op)
-{
+int
+pdu_res_log (PE pe, int op) {
 	/* PDU Level Logging */
 	switch (op) {
 	case OP_READ:

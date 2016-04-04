@@ -38,18 +38,17 @@ static nvmatch ();
 
 /*  */
 
-int 
-setenv (const char *name, const char *value, int overwrite)
-{
+int
+setenv (const char *name, const char *value, int overwrite) {
 	int    i;
 	char **ep,
-			 **nep,
-			 *cp;
+		 **nep,
+		 *cp;
 
 	if ((cp = malloc ((unsigned) (strlen (name) + strlen (value) + 2)))
 			== NULL)
 		return 1;
-	 sprintf (cp, "%s=%s", name, value);
+	sprintf (cp, "%s=%s", name, value);
 
 	for (ep = environ, i = 0; *ep; ep++, i++)
 		if (nvmatch (name, *ep)) {
@@ -72,9 +71,8 @@ setenv (const char *name, const char *value, int overwrite)
 
 /*  */
 
-int 
-unsetenv (const char *name)
-{
+int
+unsetenv (const char *name) {
 	char  **ep,
 		  **nep;
 
@@ -93,9 +91,8 @@ unsetenv (const char *name)
 
 /*  */
 
-static 
-nvmatch (char *s1, char *s2)
-{
+static
+nvmatch (char *s1, char *s2) {
 	while (*s1 == *s2++)
 		if (*s1++ == '=')
 			return 1;

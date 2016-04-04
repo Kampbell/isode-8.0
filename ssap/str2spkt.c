@@ -34,8 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/str2spkt.c,v 9.0 1992/
 /*  */
 
 char *
-spkt2str (struct ssapkt *s)
-{
+spkt2str (struct ssapkt *s) {
 	int     i,
 			len;
 	char   *base,
@@ -82,14 +81,13 @@ spkt2str (struct ssapkt *s)
 /*  */
 
 struct ssapkt *
-str2spkt (char *buffer)
-{
+str2spkt (char *buffer) {
 	int	    cc;
 	char    packet[CONNECT_MAX + BUFSIZ];
 	struct ssapkt *s;
 	struct qbuf qbs;
 	struct qbuf *qb = &qbs,
-								  *qp;
+					 *qp;
 
 	bzero ((char *) qb, sizeof *qb);
 	qb -> qb_forw = qb -> qb_back = qb;

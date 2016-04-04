@@ -114,8 +114,8 @@ again:
 
 						/* interrupt causes EINTR */
 						if (RoSelectMask (sd, &rfds, &nfds, roi) == OK)
-							 xselect (nfds, &rfds, NULLFD,
-											NULLFD, NOTOK);
+							xselect (nfds, &rfds, NULLFD,
+									 NULLFD, NOTOK);
 					}
 					if (interrupted) {
 						result = rosaplose (roi, ROS_INTERRUPTED,
@@ -161,7 +161,7 @@ again:
 	}
 
 	if (class == ROS_INTR)
-		 signal (SIGINT, istat);
+		signal (SIGINT, istat);
 
 	return result;
 }
@@ -170,11 +170,10 @@ again:
 
 /* ARGSUSED */
 
-static SFD 
-intrser (int sig)
-{
+static SFD
+intrser (int sig) {
 #ifndef	BSDSIGS
-	 signal (SIGINT, intrser);
+	signal (SIGINT, intrser);
 #endif
 
 	interrupted++;

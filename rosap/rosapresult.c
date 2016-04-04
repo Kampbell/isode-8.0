@@ -39,9 +39,8 @@ static int  RoResultRequestAux ();
 
 /*    RO-RESULT.REQUEST */
 
-int 
-RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi)
-{
+int
+RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     status;
 	struct assocblk   *acb;
@@ -54,19 +53,18 @@ RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct R
 
 	status = RoResultRequestAux (acb, invokeID, op, result, priority, roi);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return status;
 }
 
 /*  */
 
-static int 
-RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi)
-{
+static int
+RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi) {
 	PE pe,
-			 p,
-			 q;
+	p,
+	q;
 
 	if ((acb -> acb_flags & ACB_INIT) && (acb -> acb_flags & ACB_ROS))
 		return rosaplose (roi, ROS_OPERATION, NULLCP, "not responder");
@@ -117,7 +115,7 @@ RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int p
 		if (encode_ROS_ROSEapdus(&pe, 1, 0, NULL, &apdu) == NOTOK) {
 fail:
 			if (pe) {
-				 pe_extract (pe, result);
+				pe_extract (pe, result);
 				pe_free (pe);
 			}
 			freeacblk (acb);
@@ -144,7 +142,7 @@ fail:
 					   || seq_add (q, result, -1) == NOTOK))
 				: seq_add (p, result, -1) == NOTOK)) {
 		if (pe) {
-			 pe_extract (pe, result);
+			pe_extract (pe, result);
 			pe_free (pe);
 		}
 		freeacblk (acb);

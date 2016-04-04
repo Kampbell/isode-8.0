@@ -35,9 +35,8 @@ static int  PRelRetryRequestAux ();
 
 /*    P-RELEASE.REQUEST */
 
-int 
-PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, struct PSAPindication *pi)
-{
+int
+PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
@@ -77,16 +76,15 @@ PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, stru
 
 out:
 	;
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    P-RELEASE-RETRY.REQUEST (pseudo) */
 
-int 
-PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindication *pi)
-{
+int
+PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
@@ -104,16 +102,15 @@ PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindicatio
 	else
 		result = PRelRetryRequestAux (pb, secs, pr, pi);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi)
-{
+static int
+PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	int	    result;
 	char   *id = pb -> pb_flags & PB_RELEASE ? "SRelRetryRequest"
 				 : "SRelRequest";
@@ -136,14 +133,14 @@ PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struc
 		}
 
 		if (sa -> sa_peer) {
-			 ss2psabort (pb, sa, pi);
+			ss2psabort (pb, sa, pi);
 			goto out1;
 		}
 		if (SC_FATAL (sa -> sa_reason)) {
-			 ss2pslose (pb, pi, id, sa);
+			ss2pslose (pb, pi, id, sa);
 			goto out2;
 		} else {
-			 ss2pslose (NULLPB, pi, id, sa);
+			ss2pslose (NULLPB, pi, id, sa);
 			goto out1;
 		}
 	}

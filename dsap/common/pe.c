@@ -45,7 +45,7 @@ int     format;
 	char buffer [LINESIZE];
 
 	if ( format == FILEOUT) {
-		 pe2ps (ps,pe);
+		pe2ps (ps,pe);
 		return;
 	}
 
@@ -60,9 +60,9 @@ int     format;
 		return;
 
 	if (format != READOUT)
-		 ps_write (ps, (PElementData)"{ASN}", 5);
+		ps_write (ps, (PElementData)"{ASN}", 5);
 
-	 pe2ps (sps,pe);
+	pe2ps (sps,pe);
 
 	s = buffer;
 
@@ -77,13 +77,13 @@ int     format;
 		if ( j >= EDB_LINEWRAP ) {
 			*s++ = '\\';
 			*s++ = '\n';
-			 ps_write (ps, (PElementData)buffer, j);
+			ps_write (ps, (PElementData)buffer, j);
 			s = buffer;
 			j = 0;
 		}
 	}
-	 ps_write (ps, (PElementData)buffer, j);
-	 ps_write (ps, (PElementData)"00", 2);
+	ps_write (ps, (PElementData)buffer, j);
+	ps_write (ps, (PElementData)"00", 2);
 	ps_free (sps);
 
 }
@@ -123,7 +123,7 @@ char * str;
 		*ptr++ &= 0xff;
 		i += 2;
 #ifdef oldcode
-		 sscanf (str,"%2x",&val);
+		sscanf (str,"%2x",&val);
 
 		*ptr++ = val & 0xff;
 		str++;

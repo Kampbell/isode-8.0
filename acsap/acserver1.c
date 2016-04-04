@@ -35,9 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acserver1.c,v 9.0 199
 
 /*  */
 
-int 
-isodeserver (int argc, char **argv, AEI aei, IFP initfnx, IFP workfnx, IFP losefnx, struct TSAPdisconnect *td)
-{
+int
+isodeserver (int argc, char **argv, AEI aei, IFP initfnx, IFP workfnx, IFP losefnx, struct TSAPdisconnect *td) {
 	if (iserver_init (argc, argv, aei, initfnx, td) == NOTOK)
 		return NOTOK;
 

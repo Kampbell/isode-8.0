@@ -1,4 +1,4 @@
-__END_DECLS int 
+__END_DECLS int
 uderror (int err)
 
 

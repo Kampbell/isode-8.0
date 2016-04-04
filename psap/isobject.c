@@ -43,9 +43,8 @@ static struct isobject    ios;
 
 /*  */
 
-int 
-setisobject (int f)
-{
+int
+setisobject (int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isobjects, 0), "r");
 	else
@@ -56,10 +55,10 @@ setisobject (int f)
 }
 
 
-int 
+int
 endisobject()  {
 	if (servf && !stayopen) {
-		 fclose (servf);
+		fclose (servf);
 		servf = NULL;
 	}
 

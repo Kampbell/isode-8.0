@@ -163,9 +163,8 @@ LLog    _vt_log = {
 };
 LLog   *vt_log = &_vt_log;
 
-int 
-main (int argc, char *argv[])
-{
+int
+main (int argc, char *argv[]) {
 	int	i,
 		fflag;
 	char   *logname,
@@ -225,7 +224,7 @@ main (int argc, char *argv[])
 
 	for(i=1; i<argc; i++) {
 		if (peerhost[0] == NULL && (*argv[i] != '-')) {
-			 strcpy(peerhost,argv[i]);
+			strcpy(peerhost,argv[i]);
 		} else if(!strcmp(argv[i], "-g")) {
 			vtp_profile.arg_val.tel_arg_list.full_ascii = 0;
 			advise(LLOG_DEBUG,NULLCP,"using ASCII GO repertoire");
@@ -243,7 +242,7 @@ main (int argc, char *argv[])
 			if ((logname = argv[++i]) == NULL || *logname == '-')
 				adios (NULLCP, "usage: %s -F logfile", myname);
 			vt_log -> ll_file = logname;
-			 ll_close (vt_log);
+			ll_close (vt_log);
 			advise(LLOG_DEBUG,NULLCP, "logging to %s",logname);
 		} else
 			adios("usage: %s [-g] [-D] [-B] [-f] [-F logfile] [hostname]",
@@ -254,7 +253,7 @@ main (int argc, char *argv[])
 	runcom = 1;
 
 	rcinit ();
-	 sprintf (buffer, "%s/.vtrc", myhome);
+	sprintf (buffer, "%s/.vtrc", myhome);
 	if (!fflag && (fp = fopen (buffer, "r"))) {
 		char   *bp;
 
@@ -270,7 +269,7 @@ main (int argc, char *argv[])
 				exit (1);
 		}
 
-		 fclose (fp);
+		fclose (fp);
 	}
 
 	runcom = 0;
@@ -280,31 +279,30 @@ main (int argc, char *argv[])
 			exit(0);
 		do_vt();
 	}
-	 setjmp(toplevel);
+	setjmp(toplevel);
 	for (;;)
 		command(1);
 }
 
 /*    DISPATCH */
 
-int 
-command (int top)
-{
+int
+command (int top) {
 	int eof,oldmode;
 	char *vec[NVEC + 1];
 
 	oldmode = tmode(0);
 	if (!top)
-		 putchar('\n');
+		putchar('\n');
 	else
-		 signal (SIGINT, SIG_DFL);
+		signal (SIGINT, SIG_DFL);
 	eof = 0;
 	for (;;) {
 		if (getline ("%s> ", line) == NOTOK) {
 			if (eof) {
 				if (!connected)
 					exit (0);
-				 vt_status (NULLVP);
+				vt_status (NULLVP);
 				break;
 			}
 
@@ -323,17 +321,16 @@ command (int top)
 	if (!top) {
 		if (!connected)
 			longjmp(toplevel, 1);
-		 fflush (stdout);
-		 fflush (stderr);
-		 tmode(oldmode);
+		fflush (stdout);
+		fflush (stderr);
+		tmode(oldmode);
 	}
 }
 
 /*  */
 
-static int 
-vtploop (char **vec, int error)
-{
+static int
+vtploop (char **vec, int error) {
 	struct dispatch *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
@@ -365,12 +362,11 @@ vtploop (char **vec, int error)
 
 /*  */
 
-int 
-getline (char *prompt, char *buffer)
-{
+int
+getline (char *prompt, char *buffer) {
 	int    i;
 	char  *cp,
-			 *ep;
+		  *ep;
 	static int  sticky = 0;
 
 	if (sticky) {
@@ -379,7 +375,7 @@ getline (char *prompt, char *buffer)
 	}
 
 	printf (prompt, connected ? peerhost : myname);
-	 fflush (stdout);
+	fflush (stdout);
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
@@ -403,15 +399,14 @@ getline (char *prompt, char *buffer)
 /*  */
 
 struct dispatch *
-getds (char *name)
-{
+getds (char *name) {
 	int    longest,
-			 nmatches;
+		   nmatches;
 	char  *p,
-			 *q;
+		  *q;
 	char    buffer[BUFSIZ];
 	struct dispatch   *ds,
-			*fs;
+			   *fs;
 
 	longest = nmatches = 0;
 	for (ds = dispatches; p = ds -> ds_name; ds++) {
@@ -438,7 +433,7 @@ getds (char *name)
 	default:
 		for (ds = dispatches, p = buffer; q = ds -> ds_name; ds++)
 			if (strncmp (q, name, longest) == 0) {
-				 sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
+				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
 		advise (LLOG_NOTICE,NULLCP,
@@ -450,26 +445,25 @@ getds (char *name)
 
 /*    OPERATIONS */
 
-static int 
-vt_open (char **vec)
-{
+static int
+vt_open (char **vec) {
 	if (*++vec == NULL) {
 		if (getline ("host: ", line) == NOTOK
 				|| str2vecX (line, vec, 0, NULLIP, NULL, 0) < 1)
 			return NOTOK;
 	}
 
-	 strcpy (peerhost, *vec);
+	strcpy (peerhost, *vec);
 	do_vt ();
 
 	return OK;
 }
 
 
-int 
+int
 do_vt (void) {
-	 signal(SIGINT, intr);
-	 signal(SIGPIPE, deadpeer);
+	signal(SIGINT, intr);
+	signal(SIGPIPE, deadpeer);
 	printf("Trying...\n");
 	fflush(stdout);
 
@@ -477,7 +471,7 @@ do_vt (void) {
 		return;
 
 	connected++;
-	 vt_status (NULLVP);
+	vt_status (NULLVP);
 	printf ("escape character is '%s'\n", escapestr);
 	if (setjmp(peerdied) == 0)
 		vt(fd);
@@ -488,10 +482,9 @@ do_vt (void) {
 
 /* ARGSUSED */
 
-static int 
-vt_close (char **vec)
-{
-	 tmode(0);
+static int
+vt_close (char **vec) {
+	tmode(0);
 	vrelreq();
 	if (getch () >= -1) {
 		advise (LLOG_DEBUG,NULLCP,  "flushing input queue...");
@@ -515,11 +508,10 @@ vt_close (char **vec)
 
 /* ARGSUSED */
 
-static int 
-vt_quit (char *vec)
-{
+static int
+vt_quit (char *vec) {
 	if (connected)
-		 vt_close (NULLVP);
+		vt_close (NULLVP);
 
 	exit(0);	/* NOTREACHED */
 }
@@ -528,12 +520,11 @@ vt_quit (char *vec)
 
 /* ARGSUSED */
 
-static int 
-vt_status (char **vec)
-{
-	 printf ("associated with terminal service on \"%s\"\n  at %s\n",
-				   peerhost, pa2str (&ts_bound));
-	 printf ("  using %s profile\n", vtp_profile.profile_name);
+static int
+vt_status (char **vec) {
+	printf ("associated with terminal service on \"%s\"\n  at %s\n",
+			peerhost, pa2str (&ts_bound));
+	printf ("  using %s profile\n", vtp_profile.profile_name);
 
 	return OK;
 }
@@ -542,9 +533,8 @@ vt_status (char **vec)
 
 /* ARGSUSED */
 
-static int 
-vt_suspend (char **vec)
-{
+static int
+vt_suspend (char **vec) {
 	int save;
 
 	save = tmode(0);
@@ -568,16 +558,15 @@ vt_suspend (char **vec)
 		adios(NULLCP, "ioctl failed");
 	}
 #endif
-	 tmode(save);
+	tmode(save);
 
 	return OK;
 }
 
 /*  */
 
-static int 
-vt_escape (char **vec)
-{
+static int
+vt_escape (char **vec) {
 	char   c;
 
 	if (*++vec == NULL) {
@@ -708,15 +697,14 @@ char    **getval ();
 
 /*  */
 
-static int 
-vt_set (char **vec)
-{
+static int
+vt_set (char **vec) {
 	int    i,
-			 j;
+		   j;
 	int     value,
 			vflag;
 	char **cp,
-			 *dp;
+		 *dp;
 	struct var *v;
 
 	if (*++vec == NULL) {
@@ -744,7 +732,7 @@ vt_set (char **vec)
 					break;
 				}
 				for (w = strlen (v -> v_name); w < width; w = (w + 8) & ~7)
-					 putchar ('\t');
+					putchar ('\t');
 			}
 
 		return DONE;
@@ -771,18 +759,18 @@ vt_set (char **vec)
 
 	if (strcmp (*vec, "?") == 0) {
 		if (v -> v_value && (cp = v -> v_dvalue)) {
-			 printf ("use %s of:", v -> v_mask ? "any" : "one");
+			printf ("use %s of:", v -> v_mask ? "any" : "one");
 			for (i = 0; *cp; cp++)
-				 printf ("%s \"%s\"", i++ ? "," : "", *cp);
+				printf ("%s \"%s\"", i++ ? "," : "", *cp);
 			if (v -> v_mask)
-				 printf (";\n\tor  \"all\";\n\tor a hexadecimal number from 0 to 0x%x\n",
-							   (1 << (i - 1)) - 1);
+				printf (";\n\tor  \"all\";\n\tor a hexadecimal number from 0 to 0x%x\n",
+						(1 << (i - 1)) - 1);
 			else
-				 printf (";\n\tor a number from 0 to %d\n",
-							   cp - v -> v_dvalue - 1);
+				printf (";\n\tor a number from 0 to %d\n",
+						cp - v -> v_dvalue - 1);
 		} else
 			printf ("use any %s value\n",
-						  v -> v_value ? "integer" : "string");
+					v -> v_value ? "integer" : "string");
 
 		return DONE;
 	}
@@ -892,9 +880,8 @@ out_of_range:
 
 /*  */
 
-static 
-printvar (struct var *v)
-{
+static
+printvar (struct var *v) {
 	int	    i;
 	char    buffer[BUFSIZ];
 
@@ -910,12 +897,12 @@ printvar (struct var *v)
 				if (i == 0)
 					printf ("%-*s", varwidth2, v -> v_dvalue[i]);
 				else {
-					 strcpy (buffer, sprintb (i, v -> v_mask));
+					strcpy (buffer, sprintb (i, v -> v_mask));
 					if ((int)strlen (buffer) <= varwidth2)
 						printf ("%-*s", varwidth2, buffer);
 					else
 						printf ("%s\n%*s", buffer, varwidth1 + varwidth2 + 3,
-									  "");
+								"");
 				}
 			} else
 				printf ("0x%-*x", varwidth2 - 2, i);
@@ -926,7 +913,7 @@ printvar (struct var *v)
 				printf ("%-*d", varwidth2, i);
 		}
 	} else if (*v -> v_dvalue) {
-		 sprintf (buffer, "\"%s\"", *v -> v_dvalue);
+		sprintf (buffer, "\"%s\"", *v -> v_dvalue);
 		printf ("%-*s", varwidth2, buffer);
 	}
 	printf ("    - %s\n", v -> v_dname);
@@ -936,9 +923,8 @@ printvar (struct var *v)
 
 /* ARGSUSED */
 
-static int 
-set_debug (struct var *v)
-{
+static int
+set_debug (struct var *v) {
 	if (debug)
 		ll_dbinit (vt_log, myname);
 	else
@@ -948,9 +934,8 @@ set_debug (struct var *v)
 
 /* ARGSUSED */
 
-static int 
-set_echo (struct var *v)
-{
+static int
+set_echo (struct var *v) {
 	if (!connected) {
 		advise (LLOG_NOTICE,NULLCP,  "not associated with terminal service");
 		return;
@@ -962,9 +947,8 @@ set_echo (struct var *v)
 
 /* ARGSUSED */
 
-static int 
-set_escape (struct var *v)
-{
+static int
+set_escape (struct var *v) {
 	if (*escapestr) {
 		char   *cp = control (escape = *escapestr);
 
@@ -976,9 +960,8 @@ set_escape (struct var *v)
 
 /* ARGSUSED */
 
-static int 
-set_repertoire (struct var *v)
-{
+static int
+set_repertoire (struct var *v) {
 	if (!connected) {
 		advise (LLOG_NOTICE,NULLCP,  "not associated with terminal service");
 		return;
@@ -990,14 +973,13 @@ set_repertoire (struct var *v)
 /*  */
 
 static char **
-getval (char *name, char **choices)
-{
+getval (char *name, char **choices) {
 	int    longest,
-			 nmatches;
+		   nmatches;
 	char  *p,
-			 *q,
-			 **cp,
-			 **fp;
+		  *q,
+		  **cp,
+		  **fp;
 	char    buffer[BUFSIZ];
 
 	longest = nmatches = 0;
@@ -1025,7 +1007,7 @@ getval (char *name, char **choices)
 	default:
 		for (cp = choices, p = buffer; q = *cp; cp++)
 			if (strncmp (q, name, longest) == 0) {
-				 sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
+				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
 		advise (LLOG_NOTICE,NULLCP,  "ambiguous value, it could be one of:%s",
@@ -1037,15 +1019,14 @@ getval (char *name, char **choices)
 /*  */
 
 static struct var *
-getvar (char *name)
-{
+getvar (char *name) {
 	int    longest,
-			 nmatches;
+		   nmatches;
 	char  *p,
-			 *q;
+		  *q;
 	char    buffer[BUFSIZ];
 	struct var *v,
-			*f;
+			   *f;
 
 	longest = nmatches = 0;
 	for (v = vars; p = v -> v_name; v++) {
@@ -1072,7 +1053,7 @@ getvar (char *name)
 	default:
 		for (v = vars, p = buffer; q = v -> v_name; v++)
 			if (strncmp (q, name, longest) == 0) {
-				 sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
+				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
 		advise (LLOG_NOTICE,NULLCP,
@@ -1086,17 +1067,16 @@ getvar (char *name)
 static int helpwidth = 0;
 
 
-static int 
-vt_help (char **vec)
-{
+static int
+vt_help (char **vec) {
 	int    i,
-			 j,
-			 w;
+		   j,
+		   w;
 	int     columns,
 			width,
 			lines;
 	struct dispatch   *ds,
-			*es;
+			   *es;
 
 	for (es = dispatches; es -> ds_name; es++)
 		continue;
@@ -1117,7 +1097,7 @@ vt_help (char **vec)
 					break;
 				}
 				for (w = strlen (ds -> ds_name); w < width; w = (w + 8) & ~7)
-					 putchar ('\t');
+					putchar ('\t');
 			}
 
 		printf ("\n");
@@ -1159,7 +1139,7 @@ FILE *fp;
 
 /*  */
 
-static 
+static
 rcinit (void) {
 	int    w;
 	char **cp;
@@ -1209,9 +1189,8 @@ int	tcc;
 /*
  * Select from tty and network...
  */
-int 
-vt (int s)
-{
+int
+vt (int s) {
 	int c;
 	int tin = fileno(stdin), tout = fileno(stdout);
 	int nfds, result;
@@ -1222,7 +1201,7 @@ vt (int s)
 
 	nego_state = 0;
 	if(telnet_profile) {
-		 tmode(2);
+		tmode(2);
 		vt_rem_echo(&ni_image);		/*Request Remote Echo*/
 		vt_sup_ga(&ni_image);		/*Request Suppress Go Ahead*/
 		repertoire = 1;
@@ -1317,7 +1296,7 @@ vt (int s)
 		if (FD_ISSET (tout, &obits) && (tfrontp - tbackp) > 0)
 			ttyflush(tout);
 	}
-	 tmode(0);
+	tmode(0);
 }
 
 /*
@@ -1325,8 +1304,7 @@ vt (int s)
  * for a special character.
  */
 char *
-control (int c)
-{
+control (int c) {
 	static char buf[3];
 
 	if (c == 0177)
@@ -1342,21 +1320,20 @@ control (int c)
 	return (buf);
 }
 
-SFD 
+SFD
 deadpeer (void) {
-	 tmode(0);
+	tmode(0);
 	longjmp(peerdied, -1);
 }
 
-SFD 
+SFD
 intr (void) {
-	 tmode(0);
+	tmode(0);
 	longjmp(toplevel, -1);
 }
 
-int 
-ttyflush (int dd)
-{
+int
+ttyflush (int dd) {
 	int n;
 
 	if ((n = tfrontp - tbackp) > 0) {
@@ -1373,9 +1350,8 @@ ttyflush (int dd)
 		tbackp = tfrontp = ttyobuf;
 }
 
-int 
-netflush (int dd)
-{
+int
+netflush (int dd) {
 	char *cp;
 	int n, i, j;
 	int nl_flag;		/*If current PDU includes newline, follow it
@@ -1498,7 +1474,7 @@ netflush (int dd)
 	}
 	if (n < 0) {
 		if (errno != ENOBUFS && errno != EWOULDBLOCK) {
-			 tmode(0);
+			tmode(0);
 			perror(peerhost);
 			close(dd);
 			longjmp(peerdied, -1);
@@ -1510,7 +1486,7 @@ netflush (int dd)
 		nbackp = nfrontp = netobuf;
 }
 
-int 
+int
 flushbufs (void) {
 	tcc = 0;
 	tbp = tibuf;
@@ -1522,9 +1498,9 @@ flushbufs (void) {
 
 /*    ERRORS */
 
-void 
+void
 finalbye (void) {
-	 tmode (0);
+	tmode (0);
 }
 
 
@@ -1539,21 +1515,20 @@ va_dcl {
 
 	code = va_arg (ap, int);
 
-	 _ll_log (vt_log, code, ap);
+	_ll_log (vt_log, code, ap);
 
 	va_end (ap);
 
 	if (connected && latched++ == 0)
-		 vt_close (NULLVP);
+		vt_close (NULLVP);
 
 	_exit (1);
 }
 #else
 /* VARARGS2 */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -1576,18 +1551,18 @@ va_dcl {
 	flags = vt_log -> ll_stat;
 
 	if (code & (LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE)) {
-		 fflush (stdout);
+		fflush (stdout);
 
-		 fprintf (stderr, "%s: ", myname);
-		 fputs (buffer, stderr);
-		 fputc ('\n', stderr);
+		fprintf (stderr, "%s: ", myname);
+		fputs (buffer, stderr);
+		fputc ('\n', stderr);
 
-		 fflush (stderr);
+		fflush (stderr);
 
 		vt_log -> ll_stat &= ~LLOGTTY;
 	}
 
-	 ll_log (vt_log, code, NULLCP, "%s", buffer);
+	ll_log (vt_log, code, NULLCP, "%s", buffer);
 
 	vt_log -> ll_stat = flags;
 
@@ -1596,21 +1571,20 @@ va_dcl {
 #else
 /* VARARGS3 */
 
-void 
-advise (int code, char *what, char *fmt)
-{
+void
+advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
 
 /* XXX -- why is this stubbed ? */
 #ifdef TERMIOS
-int 
+int
 ptyecho (int on) {
 }
 #else
 /*ARGSUSED*/
-int 
+int
 setmode (int on, int off) {
 }
 #endif

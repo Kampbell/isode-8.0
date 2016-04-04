@@ -32,17 +32,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapactchk.c,v 9.0 199
 
 /*  */
 
-int 
-SDoActivityAux (struct ssapblk *sb, struct SSAPindication *si, int act, int rls)
-{
+int
+SDoActivityAux (struct ssapblk *sb, struct SSAPindication *si, int act, int rls) {
 	if (act) {
 		if (!(sb -> sb_requirements & SR_ACT_EXISTS))
 			return ssaplose (si, SC_OPERATION, NULLCP, "activity management service unavailable");
 
 		if (sb -> sb_flags & SB_Vact)
 			return ssaplose (si, SC_OPERATION, NULLCP, "activity in progress");
-	} else
-	if (!(sb -> sb_requirements & SR_MAJ_EXISTS))
+	} else if (!(sb -> sb_requirements & SR_MAJ_EXISTS))
 		return ssaplose (si, SC_OPERATION, NULLCP, "major synchronize service unavailable");
 
 	if ((sb -> sb_requirements & SR_DAT_EXISTS)	&& !(sb -> sb_owned & ST_DAT_TOKEN))
@@ -54,8 +52,7 @@ SDoActivityAux (struct ssapblk *sb, struct SSAPindication *si, int act, int rls)
 	if (act) {
 		if (!(sb -> sb_owned & ST_ACT_TOKEN))
 			return ssaplose (si, SC_OPERATION, NULLCP, "activity token not owned by you");
-	} else
-	if (!(sb -> sb_owned & ST_MAJ_TOKEN))
+	} else if (!(sb -> sb_owned & ST_MAJ_TOKEN))
 		return ssaplose (si, SC_OPERATION, NULLCP, "majorsync token not owned by you");
 
 	if (rls)

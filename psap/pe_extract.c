@@ -34,11 +34,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_extract.c,v 9.0 199
 
 /* assumes that q appears at most once directly under p... */
 
-int 
-pe_extract (PE pe, PE r)
-{
+int
+pe_extract (PE pe, PE r) {
 	PE	   *p,
-			 q;
+	 q;
 
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:

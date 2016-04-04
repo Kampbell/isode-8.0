@@ -361,7 +361,7 @@ try_again:
 
 static int  tt_compar (a, b)
 struct tcptab **a,
-		**b;
+		   **b;
 {
 	return elem_cmp ((*a) -> tt_instance, TT_SIZE,
 					 (*b) -> tt_instance, TT_SIZE);
@@ -374,11 +374,11 @@ int	offset;
 	int    i;
 	unsigned int  *cp;
 	struct tcptab *ts,
-			*tp,
-			**tsp;
+			   *tp,
+			   **tsp;
 	struct inpcb  *ip;
 	struct inpcb *head,
-			tcb;
+			   tcb;
 	struct nlist nzs;
 	struct nlist *nz = &nzs;
 	static   int first_time = 1;
@@ -451,7 +451,7 @@ int	offset;
 
 	if ((tcpConnections = i) > 1) {
 		struct tcptab **base,
-				**tse;
+				   **tse;
 
 		if ((base = (struct tcptab **) malloc ((unsigned) (i * sizeof *base)))
 				== NULL)

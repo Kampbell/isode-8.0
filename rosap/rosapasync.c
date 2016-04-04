@@ -36,9 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapasync.c,v 9.0 19
 
 /*    define vectors for INDICATION events */
 
-int 
-RoSetIndications (int sd, IFP indication, struct RoSAPindication *roi)
-{
+int
+RoSetIndications (int sd, IFP indication, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -50,13 +49,13 @@ RoSetIndications (int sd, IFP indication, struct RoSAPindication *roi)
 	rosapPsig (acb, sd);
 
 	if (acb -> acb_apdu || (acb -> acb_flags & ACB_CLOSING)) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP);
 	}
 
 	result = (*acb -> acb_rosetindications) (acb, indication, roi);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

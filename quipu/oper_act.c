@@ -43,9 +43,8 @@ oper_alloc (void) {
 	return(on_ret);
 }
 
-int 
-oper_free (struct oper_act *on)
-{
+int
+oper_free (struct oper_act *on) {
 	extern struct oper_act * pending_ops;
 
 	DLOG(log_dsap, LLOG_TRACE, ("oper_free(%x)",on));
@@ -80,9 +79,8 @@ oper_free (struct oper_act *on)
 	free((char *)on);
 }
 
-int 
-oper_extract (struct oper_act *on)
-{
+int
+oper_extract (struct oper_act *on) {
 	DLOG(log_dsap, LLOG_TRACE, ("oper_extract()"));
 
 	if(on->on_conn != NULLCONN)
@@ -99,9 +97,8 @@ oper_extract (struct oper_act *on)
 	oper_free(on);
 }
 
-int 
-oper_conn_extract (struct oper_act *on)
-{
+int
+oper_conn_extract (struct oper_act *on) {
 	/*
 	* Extract the operation activity block from the list held by its
 	* connection.
@@ -139,9 +136,8 @@ oper_conn_extract (struct oper_act *on)
 	on->on_conn = NULLCONN; /* Shows that this has been conn_extracted */
 }
 
-int 
-oper_task_extract (struct oper_act *on)
-{
+int
+oper_task_extract (struct oper_act *on) {
 	/*
 	* Extract this operation from the list held by its task.
 	*/
@@ -187,9 +183,8 @@ oper_task_extract (struct oper_act *on)
 	on->on_task = NULLTASK; /* Shows that this has been task_extracted */
 }
 
-int 
-oper_log (struct oper_act *on, int level)
-{
+int
+oper_log (struct oper_act *on, int level) {
 	char * state;
 	char * xtype;
 

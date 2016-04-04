@@ -41,9 +41,8 @@ static int  put (char*src, char*dst, int append);
 
 /*  */
 
-int 
-f_put (char **vec)
-{
+int
+f_put (char **vec) {
 	int     append;
 #ifdef	BRIDGE
 	int     result;
@@ -51,9 +50,9 @@ f_put (char **vec)
 #else
 	int	    sglobbed;
 	char  *bp,
-			 *dst,
-			 **gp,
-			 **src;
+		  *dst,
+		  **gp,
+		  **src;
 	char   *freedst = NULL,
 			buffer[BUFSIZ];
 #endif
@@ -149,16 +148,16 @@ ask_it:
 					break;
 #ifdef apollo
 				if (*dst == '/')
-					 sprintf (bp = buffer, "%s", dst);
+					sprintf (bp = buffer, "%s", dst);
 				else
 #endif
-					 sprintf (bp = buffer, "%s/", dst);
+					sprintf (bp = buffer, "%s/", dst);
 				bp += strlen (bp);
 				if (dst = rindex (*src, '/'))
 					dst++;
 				if (dst == NULL || *dst == NULL)
 					dst = *src;
-				 strcpy (bp, dst);
+				strcpy (bp, dst);
 				dst = buffer;
 				goto ask_it;
 
@@ -167,7 +166,7 @@ ask_it:
 			}
 
 		dst = str2file (dst);
-		 put (*src, dst, append);
+		put (*src, dst, append);
 		goto out;
 	}
 
@@ -180,15 +179,15 @@ ask_it:
 		if (dst)
 #ifdef apollo
 			if (*(bp = str2file (dst)) == '/') {
-				 strcpy (buffer, bp);
+				strcpy (buffer, bp);
 				bp = buffer;
 			} else
 #endif
-				 sprintf (bp = buffer, "%s/", str2file (dst));
+				sprintf (bp = buffer, "%s/", str2file (dst));
 		else if (rcwd)
-			 sprintf (bp = buffer, "%s", str2file (""));
+			sprintf (bp = buffer, "%s", str2file (""));
 		else
-			 strcpy (bp = buffer, "./");
+			strcpy (bp = buffer, "./");
 		bp += strlen (bp);
 		break;
 
@@ -213,7 +212,7 @@ ask_it:
 			dst = *gp;
 			break;
 		}
-		 strcpy (bp, dst);
+		strcpy (bp, dst);
 		dst = str2file (buffer);
 
 		if (sglobbed) {
@@ -234,7 +233,7 @@ ask_it:
 						dst);
 		}
 
-		 put (*gp, dst, append);
+		put (*gp, dst, append);
 
 		if (ftamfd == NOTOK)
 			break;
@@ -289,7 +288,7 @@ static int  put (char*src, char*dst, int append)
 		advise (src, "unable to fstat");
 you_lose:
 		;
-		 close (fd);
+		close (fd);
 		return NOTOK;
 	}
 	if ((st.st_mode & S_IFMT) != S_IFREG) {
@@ -319,7 +318,7 @@ you_lose:
 #ifdef	BRIDGE
 you_lose:
 		;
-		 close (fd);
+		close (fd);
 		return NOTOK;
 #else
 		goto you_lose;
@@ -356,9 +355,9 @@ you_lose:
 #endif
 	if (watch) {
 #ifndef	BRIDGE
-		 printf ("Selecting FADU size of %d\n", size);
-		 printf ("based on blksize of %d and estimated integral FADU size of %d\n",
-					   bsize, magic);
+		printf ("Selecting FADU size of %d\n", size);
+		printf ("based on blksize of %d and estimated integral FADU size of %d\n",
+				bsize, magic);
 #endif
 	}
 
@@ -376,7 +375,7 @@ you_lose:
 
 	pe_free (pe);
 
-	 close (fd);
+	close (fd);
 
 	return result;
 }
@@ -593,9 +592,9 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 						break;
 					}
 				if (parm)
-					 fre_obj (parm,
-									_ZDOCS_mod.md_dtab[myvf -> vf_number],
-									&_ZDOCS_mod, 1);
+					fre_obj (parm,
+							 _ZDOCS_mod.md_dtab[myvf -> vf_number],
+							 &_ZDOCS_mod, 1);
 			}
 			if (debug)
 				advise (NULLCP, "effector=%d id=0x%x",
@@ -629,7 +628,7 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 	case VFS_UTF:
 		if ((gd = dup (fd)) == NOTOK || (fp = fdopen (gd, "r")) == NULL) {
 			if (gd != NOTOK)
-				 close (gd);
+				close (gd);
 
 #ifdef	BRIDGE
 			advise (dst, gd != NOTOK ? "fdopen failed" : "unable to dup");
@@ -660,7 +659,7 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 
 	for (;;) {
 		char  *bp,
-				 *ep;
+			  *ep;
 
 		if (!interrupted) {
 			int	    nfds;
@@ -670,7 +669,7 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 			FD_ZERO (&wfds);
 			/* interrupt causes EINTR */
 			if (FSelectMask (ftamfd, &wfds, &nfds, fti) == OK)
-				 xselect (nfds, NULLFD, &wfds, NULLFD, NOTOK);
+				xselect (nfds, NULLFD, &wfds, NULLFD, NOTOK);
 		}
 
 		if (interrupted) {
@@ -689,7 +688,7 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 #ifdef	BRIDGE
 				if (strlen (line) || fgets (line, BUFSIZ, fp)) {
 					if ((int)(strlen(line) + 1) < (ep - bp - 1)) {
-						 strcpy (bp, line);
+						strcpy (bp, line);
 						line[0] = NULL;
 					} else
 						break;
@@ -776,7 +775,7 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 		switch (de2fadu (de, pe != de ? 1 : 0)) {
 		case NOTOK:
 			if (fp)
-				 fclose (fp);
+				fclose (fp);
 			return NOTOK;
 
 		case OK:
@@ -785,18 +784,18 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 				cc += (n - nc), nc = 0;
 			if (hash) {
 				if (hash > 1)
-					 printf ("%d\r", cc);
+					printf ("%d\r", cc);
 				else
 					for (; marks < cc; marks += BUFSIZ)
-						 putchar ('#');
-				 fflush (stdout);
+						putchar ('#');
+				fflush (stdout);
 			}
 			break;
 
 		case DONE:
-			 de2fadu (NULLPE, 0);
+			de2fadu (NULLPE, 0);
 			if (fp)
-				 fclose (fp);
+				fclose (fp);
 			goto done_transfer;
 		}
 	}
@@ -805,7 +804,7 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 		timer (cc, "sent");
 
 	if (fp)
-		 fclose (fp);
+		fclose (fp);
 
 	if (n == NOTOK) {
 		struct FTAMdiagnostic   diags[NFDIAG];
@@ -826,11 +825,11 @@ do_cancel:
 		dp -> ftd_identifier = reason;
 		dp -> ftd_observer = dp -> ftd_source = EREF_IFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		 strcpy (dp -> ftd_data, sys_errname (errno));
+		strcpy (dp -> ftd_data, sys_errname (errno));
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
-		 de2fadu (NULLPE, 0);
+		de2fadu (NULLPE, 0);
 
 		if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags, dp - diags,
 							fti) == NOTOK) {

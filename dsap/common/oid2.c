@@ -51,7 +51,7 @@ struct mac_buf {                        /* for handling macros */
 
 int NumMacro            = 0;
 
-int 
+int
 want_oc_hierarchy (void) {
 	extern IFP oc_load;
 	extern IFP oc_macro_add;
@@ -60,9 +60,8 @@ want_oc_hierarchy (void) {
 	oc_macro_add = add_oc_macro;
 }
 
-int 
-load_obj_hier (char *sep, char *newname)
-{
+int
+load_obj_hier (char *sep, char *newname) {
 	if (sep == 0) {
 		LLOG (log_dsap,LLOG_FATAL,("hierarchy missing %s",newname));
 		return NOTOK;
@@ -76,8 +75,7 @@ load_obj_hier (char *sep, char *newname)
 }
 
 static struct oc_seq *
-oc_seq_merge (struct oc_seq *a, struct oc_seq *b)
-{
+oc_seq_merge (struct oc_seq *a, struct oc_seq *b) {
 	struct oc_seq  *aptr, *bptr, *result, *trail;
 
 	if ( a == NULLOCSEQ )
@@ -137,9 +135,8 @@ oc_seq_merge (struct oc_seq *a, struct oc_seq *b)
 }
 
 
-static 
-get_oc_bits (char *str)
-{
+static
+get_oc_bits (char *str) {
 	char * ptr;
 	char * ptr2;
 	struct oc_seq * oidseq = NULLOCSEQ, *oidseqptr = oidseq;
@@ -261,7 +258,7 @@ char * str;
 
 
 
-void 
+void
 dumpalloid (void) {
 	int i;
 	objectclass      * oc = &ocOIDTable[0];
@@ -269,22 +266,21 @@ dumpalloid (void) {
 	oid_table        * oi = &OIDTable[0];
 
 	for (i=0; i<ocNumEntries; i++,oc++)
-		 printf("\"%s\"\t\t%s\n", oc->oc_ot.ot_name, oc->oc_ot.ot_stroid);
+		printf("\"%s\"\t\t%s\n", oc->oc_ot.ot_name, oc->oc_ot.ot_stroid);
 
 	for (i=0; i<attrNumEntries; i++,at++)
-		 printf("\"%s\"\t\t%s\n", at->oa_ot.ot_name, at->oa_ot.ot_stroid);
+		printf("\"%s\"\t\t%s\n", at->oa_ot.ot_name, at->oa_ot.ot_stroid);
 
 	for (i=0; i<NumEntries; i++,oi++)
-		 printf("\"%s\"\t\t%s\n", oi->ot_name, oi->ot_stroid);
+		printf("\"%s\"\t\t%s\n", oi->ot_name, oi->ot_stroid);
 
 }
 
 
-int 
-add_oc_macro (char *buf, char *ptr)
-{
-	 strcpy(macro[NumMacro].name,buf);
-	 strcpy(macro[NumMacro++].value,ptr);
+int
+add_oc_macro (char *buf, char *ptr) {
+	strcpy(macro[NumMacro].name,buf);
+	strcpy(macro[NumMacro++].value,ptr);
 }
 
 void	table_seq_free (ts)
@@ -299,7 +295,7 @@ table_seq ts;
 
 }
 
-void 
+void
 free_oid_table (void) {
 	int i;
 	objectclass      * oc = &ocOIDTable[0];

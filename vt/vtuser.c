@@ -184,9 +184,8 @@ VT_PROFILE *profile;
 /*		RESULT - SUCCESS or FAILURE				      */
 /******************************************************************************/
 
-int 
-vass_resp (int result)
-{
+int
+vass_resp (int result) {
 	PE	a_resp;
 	char	my_version, my_fu;
 	ASR_MSG ud;
@@ -280,7 +279,7 @@ PE	pe_buf = NULLPE;
 /*     PARAMETERS - none						*/
 /************************************************************************/
 
-int 
+int
 vrelreq (void) {
 	PE  r_req;
 
@@ -297,9 +296,8 @@ vrelreq (void) {
 /*									 */
 /*************************************************************************/
 
-int 
-vrelrsp (int result)
-{
+int
+vrelrsp (int result) {
 
 	int offset = 0;
 	PE  r_rsp, r_result, r_coll;
@@ -331,14 +329,14 @@ vrelrsp (int result)
 }
 
 
-int 
+int
 vrelcnf (void) {
 	if (debug)
 		advise(LLOG_DEBUG, NULLCP,  "Release Confirmed");
 }
 
 
-int 
+int
 vrelind (void) {
 	if (AcFINISHser(sd,pf,aci) == NOTOK)
 		acs_adios (&aci->aci_abort, "A-RELEASE.INDICATION");
@@ -381,9 +379,8 @@ int	cur_emode = NOT_ECHO_NOW; /* echo mode (ECHO_NOW or NOT_ECHO_NOW)*/
 /*		LEN - Number of characters in the string.		 */
 /*************************************************************************/
 
-int 
-vt_text (char *str, int len)
-{
+int
+vt_text (char *str, int len) {
 	TEXT_UPDATE ud;
 
 	if (debug > 6) {
@@ -410,11 +407,10 @@ vt_text (char *str, int len)
 }
 
 
-int 
+int
 send_queue (		/*Build NDQ with update supplied in ud structure*/
-    TEXT_UPDATE ud
-)
-{
+	TEXT_UPDATE ud
+) {
 
 	PE vtsdip;
 
@@ -441,9 +437,8 @@ send_queue (		/*Build NDQ with update supplied in ud structure*/
 		MODE - ECHO_NOW or NOT_ECHO_NOW
 */
 
-int 
-setemode (int mode)
-{
+int
+setemode (int mode) {
 	if (mode != ECHO_NOW && mode != NOT_ECHO_NOW)
 		return(NOTOK);
 	if (cur_emode != mode) {
@@ -479,7 +474,7 @@ struct char_buffer	cbuf = { CBUFSIZE, 0 };
 /************************************************************************/
 
 
-int 
+int
 getch (void) {
 	int		c;
 
@@ -543,7 +538,7 @@ getch (void) {
 }
 
 
-int 
+int
 data_pending (void) {
 	int	result;
 	PE	*peptr = NULLPEP;
@@ -591,7 +586,7 @@ data_pending (void) {
 }
 
 
-int 
+int
 queued (void) {
 	return(cbuf.queued);
 }
@@ -603,9 +598,8 @@ queued (void) {
 /*									 */
 /*	RETURNS - OK on success, NOTOK otherwise			 */
 /*************************************************************************/
-int 
-putch (int c)
-{
+int
+putch (int c) {
 	if (debug > 1) {
 		advise(LLOG_DEBUG, NULLCP,  "in putch, queued is %d, c is %c", cbuf.queued, c);
 		advise(LLOG_DEBUG, NULLCP,  "cbuf.buf is %d, cbuf.head is %d, cbuf.tail is %d", (int)cbuf.buf, (int)cbuf.head, (int)cbuf.tail);
@@ -635,7 +629,7 @@ putch (int c)
 /*			called "p_ondq".				 */
 /*************************************************************************/
 
-int 
+int
 vtsend (void) {
 	if(p_ondq == NULLPE) return;
 	vtdata(p_ondq);
@@ -656,9 +650,8 @@ vtsend (void) {
 /*		NDQ - a presentation element containing an NDQ.		*/
 /************************************************************************/
 
-int 
-vtdata (PE ndq)
-{
+int
+vtdata (PE ndq) {
 	if (ndq == NULLPE)
 		return;
 
@@ -671,9 +664,8 @@ vtdata (PE ndq)
 /*		allowed at this time.					*/
 /************************************************************************/
 
-PE 
-mkdeliver (int ack)
-{
+PE
+mkdeliver (int ack) {
 	PE	p_dlq;
 
 	if (ack != FALSE)
@@ -691,9 +683,8 @@ mkdeliver (int ack)
 /*			event to send it.				  */
 /**************************************************************************/
 
-int 
-vdelreq (int ack)
-{
+int
+vdelreq (int ack) {
 	PE	p_dlq;
 
 	if (ack)
@@ -715,9 +706,8 @@ vdelreq (int ack)
 /*			acknowledgement is requested or not.		  */
 /**************************************************************************/
 
-int 
-vdelind (PE del_pe, int ack)
-{
+int
+vdelind (PE del_pe, int ack) {
 	if (ack) {
 		if (debug)
 			advise(LLOG_DEBUG, NULLCP,  "vdelind with ack requested not implemented!");
@@ -733,25 +723,22 @@ vdelind (PE del_pe, int ack)
 /*				only SEQUENCED is implemented now	*/
 /************************************************************************/
 
-int 
-vdatind (int type, PE pe)
-{
+int
+vdatind (int type, PE pe) {
 	if (type != SEQUENCED)
 		adios(NULLCP, "unimplemented NDQ type %d", type);
 	map(pe);
 }
 
-int 
-vhdatind (PE pe)
-{
+int
+vhdatind (PE pe) {
 
 	advise(LLOG_NOTICE,NULLCP,"vhdatind(): HDQ's not supported\n");
 	pe_free(pe);
 }
 
-int 
-vudatind (PE pe)
-{
+int
+vudatind (PE pe) {
 
 	TEXT_UPDATE ud;
 
@@ -777,7 +764,7 @@ vudatind (PE pe)
 /*	by the association.						     */
 /*****************************************************************************/
 
-int 
+int
 con_req (void) {
 	int	uevent;
 
@@ -815,7 +802,7 @@ con_req (void) {
 
 
 
-int 
+int
 read_asq (	/*Unwrap ASQ PDU.  Use information it contains to fill in
 		  some global values (profile_id,G_Func_Units,vcwa).
 		  Return 0 if ASQ is improperly formatted or missing a
@@ -824,9 +811,8 @@ read_asq (	/*Unwrap ASQ PDU.  Use information it contains to fill in
 		  are handled.  Return PROFILE_NG if profile is not
 		  supported.  Return 1 if ASQ is valid.
 		*/
-    PE pe
-)
-{
+	PE pe
+) {
 
 	int i,n, D;
 	ASQ_MSG ud;
@@ -944,11 +930,10 @@ read_asq (	/*Unwrap ASQ PDU.  Use information it contains to fill in
 	return(1);
 }
 
-int 
+int
 vasscnf (	/*Handle ASR received from Acceptor*/
-    PE pe
-)
-{
+	PE pe
+) {
 
 	ASR_MSG udr;
 	int rep, n;
@@ -1030,9 +1015,8 @@ vasscnf (	/*Handle ASR received from Acceptor*/
 }
 
 
-int 
-asq (PE data)
-{
+int
+asq (PE data) {
 	int	srequirements;
 	struct PSAPctxlist vclist;
 	OID vt_asn;
@@ -1068,7 +1052,7 @@ asq (PE data)
 
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
-		 bzero ((char *) sf, sizeof *sf);
+		bzero ((char *) sf, sizeof *sf);
 	}
 
 	PLOG (vt_log, print_VT_PDUs, data, NULLCP, 0);
@@ -1120,14 +1104,14 @@ asq (PE data)
 #endif
 }
 
-int 
+int
 vt_disconnect (void) {
 	if (AcRelRequest (sd, ACF_NORMAL, NULLPEP, 0, NOTOK, acr, aci)
 			== NOTOK)
 		acs_adios (aca, "A-RELEASE.REQUEST");
 	if(acr->acr_affirmative) {
 		connected = FALSE;
-		 do_event (RLR, acr -> acr_info[0]);
+		do_event (RLR, acr -> acr_info[0]);
 	}
 
 	ACRFREE (acr);
@@ -1156,9 +1140,8 @@ int	result;
 /*    ASS_IND 								 */
 /*************************************************************************/
 
-int 
-ass_ind (int argc, char **argv)
-{
+int
+ass_ind (int argc, char **argv) {
 	struct PSAPctxlist *pl;
 
 
@@ -1186,8 +1169,8 @@ ass_ind (int argc, char **argv)
 			sprintb (ps -> ps_srequirements, RMASK), ps -> ps_isn,
 			ps -> ps_ssdusize);
 
-	 strcpy (peerhost,
-				   na2str (ps -> ps_calling.pa_addr.sa_addr.ta_addrs));
+	strcpy (peerhost,
+			na2str (ps -> ps_calling.pa_addr.sa_addr.ta_addrs));
 
 	sd = acs->acs_sd;
 
@@ -1203,14 +1186,13 @@ ass_ind (int argc, char **argv)
 
 /* ARGSUSED */
 
-int 
-vassind (PE pe)
-{
+int
+vassind (PE pe) {
 	return(vass_resp(SUCCESS));
 }
 
 
-int 
+int
 vbrkreq (void) {
 	PE brk_pe;
 	BRcnt brk;
@@ -1227,7 +1209,7 @@ vbrkreq (void) {
 	do_event(VBRKreq,brk_pe);
 }
 
-int 
+int
 vbrkrsp (void) {
 	PE brk_pe;
 	BRcnt brk;
@@ -1245,9 +1227,8 @@ vbrkrsp (void) {
 
 
 /* ARGSUSED */
-int 
-vbrkind (PE brk_pe)
-{
+int
+vbrkind (PE brk_pe) {
 	flushbufs();
 	vtok = 1; /* got tokens from peer */
 	advise(LLOG_DEBUG, NULLCP,  "Received VT-BREAK");
@@ -1271,9 +1252,8 @@ vbrkind (PE brk_pe)
 }
 
 /*ARGSUSED */
-int 
-vbrkcnf (PE brk_pe)
-{
+int
+vbrkcnf (PE brk_pe) {
 	printf("\r\n[break]\r\n");
 	if(telnet_profile) {
 #ifndef PTYBUG

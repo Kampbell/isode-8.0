@@ -41,9 +41,8 @@ static int  str_get_start ();
 #define	seterr(e,v)		(*result = (e), (v))
 
 
-PE 
-str2pe (char *s, int len, int *advance, int *result)
-{
+PE
+str2pe (char *s, int len, int *advance, int *result) {
 #ifdef	DEBUG
 	int	    n = len;
 #endif
@@ -92,11 +91,10 @@ str2pe (char *s, int len, int *advance, int *result)
 
 /*  */
 
-static int 
-str_get_start (char **sp, int *n, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *plen, int *result)
-{
+static int
+str_get_start (char **sp, int *n, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *plen, int *result) {
 	int i,
-			 len;
+		len;
 	char *s;
 	byte    c,
 			d;
@@ -163,9 +161,8 @@ str_get_start (char **sp, int *n, PElementClass *class, PElementForm *form, PEle
 
 /*  */
 
-static PElementLen 
-str_get_len (char *s, int len, int *result)
-{
+static PElementLen
+str_get_len (char *s, int len, int *result) {
 	char   *sp;
 	PElementClass class;
 	PElementForm form;

@@ -145,8 +145,7 @@ static char *cons_err1[] = {
 /*  */
 
 char *
-TErrString (int code)
-{
+TErrString (int code) {
 	int    fcode;
 	static char buffer[60];
 
@@ -160,7 +159,7 @@ TErrString (int code)
 				code <= R_CU_X25_255)
 			return cons_err1[code - R_CP_OSI_NETWORK_SERVICE_PROBLEM];
 
-		 sprintf (buffer, "unknown CONS error code 0x%x", code);
+		sprintf (buffer, "unknown CONS error code 0x%x", code);
 		return buffer;
 	}
 #endif
@@ -172,6 +171,6 @@ TErrString (int code)
 	} else if (code < disc_err0_cnt)
 		return disc_err0[code];
 
-	 sprintf (buffer, "unknown error code 0x%x", code);
+	sprintf (buffer, "unknown error code 0x%x", code);
 	return buffer;
 }

@@ -45,9 +45,8 @@ static int  de2fadu (PE pe, int concat);
 
 /*    TRANSFER */
 
-int 
-ftam_bulkbeginindication (struct FTAMgroup *ftg)
-{
+int
+ftam_bulkbeginindication (struct FTAMgroup *ftg) {
 	int	    state;
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
@@ -67,7 +66,7 @@ ftam_bulkbeginindication (struct FTAMgroup *ftg)
 #ifndef	BRIDGE
 		unlock ();
 #endif
-		 close (myfd);
+		close (myfd);
 		myfd = NOTOK;
 	}
 
@@ -96,9 +95,8 @@ ftam_bulkbeginindication (struct FTAMgroup *ftg)
 */
 
 
-int 
-ftam_readwriteindication (struct FTAMreadwrite *ftrw)
-{
+int
+ftam_readwriteindication (struct FTAMreadwrite *ftrw) {
 	int	    result;
 	struct FADUidentity *fa = &ftrw -> ftrw_identity;
 	struct FTAMdiagnostic   diags[NFDIAG];
@@ -181,9 +179,9 @@ bad_operation:
 			dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
 #ifdef	BRIDGE
-			 strcpy (dp -> ftd_data, ftp_error);
+			strcpy (dp -> ftd_data, ftp_error);
 #else
-			 strcpy (dp -> ftd_data, sys_errname (errno));
+			strcpy (dp -> ftd_data, sys_errname (errno));
 #endif
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
@@ -248,8 +246,7 @@ do_cancel:
 
 /*  */
 
-static	uxfget ( struct FTAMdiagnostic **diags)
-{
+static	uxfget ( struct FTAMdiagnostic **diags) {
 	int    n;
 	int	    bsize,
 			effector,
@@ -278,7 +275,7 @@ static	uxfget ( struct FTAMdiagnostic **diags)
 		dp -> ftd_identifier = FS_ACC_LCL;
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		 strcpy (dp -> ftd_data, "failed file access on remote host");
+		strcpy (dp -> ftd_data, "failed file access on remote host");
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
@@ -294,12 +291,12 @@ static	uxfget ( struct FTAMdiagnostic **diags)
 		if ((gd = dup (myfd)) == NOTOK
 				|| (fp = fdopen (gd, "r")) == NULL) {
 			if (gd != NOTOK)
-				 close (gd);
+				close (gd);
 			if (myfd != NOTOK) {
 #ifdef	BRIDGE
-				 close (myfd);
+				close (myfd);
 				myfd = NOTOK;
-				 ftp_reply ();
+				ftp_reply ();
 #endif
 			}
 			goto no_mem;
@@ -404,24 +401,24 @@ no_mem:
 		dp -> ftd_identifier = FS_ACC_LCL;
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		 strcpy (dp -> ftd_data, "out of memory");
+		strcpy (dp -> ftd_data, "out of memory");
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
 error_return:
 		;
-		 de2fadu (NULLPE, 0);
+		de2fadu (NULLPE, 0);
 		if (pe)
 			pe_free (pe);
 		if (fp)
-			 fclose (fp);
+			fclose (fp);
 		*diags = dp;
 		return NOTOK;
 	}
 
 	for (;;) {
 		char  *bp,
-				 *ep;
+			  *ep;
 
 		for (ep = (bp = (char *) pe -> pe_prim) + size - (fp ? 2 : 0), nc = 0;
 				bp < ep; ) {
@@ -431,7 +428,7 @@ error_return:
 #ifdef	BRIDGE
 				if (strlen (line) || fgets (line, BUFSIZ, fp)) {
 					if (((int)strlen (line) + 1) < (ep - bp + 1)) {
-						 strcpy (bp, line);
+						strcpy (bp, line);
 						line[0] = NULL;
 					} else
 						break;
@@ -534,7 +531,7 @@ error_return:
 	pe_free (pe);
 
 	if (fp)
-		 fclose (fp);
+		fclose (fp);
 
 	if (n == DONE || cancelled == DONE)
 		return DONE;
@@ -544,13 +541,13 @@ error_return:
 		dp -> ftd_identifier = FS_ACC_LCLDEV;
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		 strcpy (dp -> ftd_data, sys_errname (errno));
+		strcpy (dp -> ftd_data, sys_errname (errno));
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
 		*diags = dp;
 
-		 de2fadu (NULLPE, 0);
+		de2fadu (NULLPE, 0);
 		return NOTOK;
 	}
 
@@ -569,8 +566,7 @@ error_return:
 
 /*  */
 
-static	fdfget ( struct FTAMdiagnostic **diags)
-{
+static	fdfget ( struct FTAMdiagnostic **diags) {
 	int	    names,
 			len,
 			n;
@@ -601,12 +597,12 @@ static	fdfget ( struct FTAMdiagnostic **diags)
 	} else
 #ifdef apollo
 		if (strcmp (myfile, "/") == 0 || strcmp (myfile, "//") == 0) {
-			 sprintf (pp = path, "%s", myfile);
+			sprintf (pp = path, "%s", myfile);
 			pp += (len = strlen (pp));
 		} else
 #endif
 		{
-			 sprintf (pp = path, "%s/", myfile);
+			sprintf (pp = path, "%s/", myfile);
 			pp += (len = strlen (pp));
 		}
 
@@ -623,23 +619,23 @@ no_mem:
 		dp -> ftd_identifier = FS_ACC_LCL;
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		 strcpy (dp -> ftd_data, "out of memory");
+		strcpy (dp -> ftd_data, "out of memory");
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
 error_return:
 		;
-		 de2fadu (NULLPE, 0);
+		de2fadu (NULLPE, 0);
 		if (pe)
 			pe_free (pe);
 #ifdef	BRIDGE
 		if (dd) {
-			 close (dd);
-			 ftp_reply ();
+			close (dd);
+			ftp_reply ();
 		}
 #else
 		if (dd)
-			 closedir (dd);
+			closedir (dd);
 #endif
 		*diags = dp;
 		return NOTOK;
@@ -694,9 +690,9 @@ error_return:
 			continue;
 
 #ifdef	BRIDGE
-		 strcpy (pp, line);
+		strcpy (pp, line);
 #else
-		 strcpy (pp, d -> d_name);
+		strcpy (pp, d -> d_name);
 #endif
 
 #ifndef	BRIDGE
@@ -708,10 +704,10 @@ error_return:
 		bzero ((char *) fa, sizeof *fa);
 		*diags = dp;
 #ifdef	BRIDGE
-		 readattrs (names, fa, vfs[VFS_UTF].vf_oid, NULLPE, path, &st,
-						  diags);
+		readattrs (names, fa, vfs[VFS_UTF].vf_oid, NULLPE, path, &st,
+				   diags);
 #else
-		 readattrs (names, fa, vf -> vf_oid, NULLPE, path, &st, diags);
+		readattrs (names, fa, vf -> vf_oid, NULLPE, path, &st, diags);
 #endif
 		dp = *diags;
 
@@ -728,8 +724,8 @@ error_return:
 			dp -> ftd_identifier = FS_ACC_LCL;
 			dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
-			 sprintf (dp -> ftd_data, "error encoding Datatype1: %s",
-							PY_pepy);
+			sprintf (dp -> ftd_data, "error encoding Datatype1: %s",
+					 PY_pepy);
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
 
@@ -757,23 +753,23 @@ error_return:
 	}
 
 #ifdef	BRIDGE
-	 fclose (df);
-	 close (dd);
-	 ftp_reply ();
+	fclose (df);
+	close (dd);
+	ftp_reply ();
 #else
 	if (errno != 0) {
 		dp -> ftd_type = DIAG_PERM;
 		dp -> ftd_identifier = FS_ACC_LCL;
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		 sprintf (dp -> ftd_data, "%s: %s", myfile, sys_errname (errno));
+		sprintf (dp -> ftd_data, "%s: %s", myfile, sys_errname (errno));
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
 		goto error_return;
 
 	}
-	 closedir (dd);
+	closedir (dd);
 #endif
 
 	if (n == OK)
@@ -794,8 +790,7 @@ error_return:
 
 /*  */
 
-static int  de2fadu (PE pe, int concat)
-{
+static int  de2fadu (PE pe, int concat) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 	struct FTAMabort  *fta = &fti -> fti_abort;
@@ -827,7 +822,7 @@ static int  de2fadu (PE pe, int concat)
 						"de2fadu flushing on %d FADUs, estimated size %d/%d",
 						ninfo, size, fadusize);
 
-			 de2fadu (NULLPE, 1);
+			de2fadu (NULLPE, 1);
 			flush = 1;
 		} else
 			flush = 0;
@@ -885,7 +880,7 @@ struct PSAPdata *px;
 	int	    effector,
 			n;
 	PE     pe,
-			 *pep;
+	*pep;
 	struct FTAMdiagnostic   diags[NFDIAG];
 	struct FTAMdiagnostic *dp = diags;
 	struct FTAMindication   ftis;
@@ -972,7 +967,7 @@ struct PSAPdata *px;
 
 		default:
 			dp -> ftd_identifier = FS_ACC_WRITE;
-			 strcpy (dp -> ftd_data, sys_errname (errno));
+			strcpy (dp -> ftd_data, sys_errname (errno));
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			break;
 		}
@@ -1009,7 +1004,7 @@ struct FTAMdataend *ftda;
 
 #if     !defined(SYS5) || defined(SVR4)
 	if (ftda -> ftda_action == FACTION_SUCCESS)
-		 fsync (myfd);
+		fsync (myfd);
 #endif
 }
 
@@ -1060,11 +1055,11 @@ struct FTAMgroup *ftg;
 
 	if (myfd != NOTOK) {
 #ifdef	BRIDGE
-		 close (myfd);
-		 ftp_reply ();
+		close (myfd);
+		ftp_reply ();
 #else
 		unlock ();
-		 close (myfd);
+		close (myfd);
 #endif
 		myfd = NOTOK;
 	}
@@ -1090,14 +1085,14 @@ char   *action;
 	long    ms;
 	float   bs;
 	struct timeval  stop,
-			td;
+			   td;
 	static struct timeval   start;
 
 	if (cc == 0) {
-		 gettimeofday (&start, (struct timezone *) 0);
+		gettimeofday (&start, (struct timezone *) 0);
 		return;
 	} else
-		 gettimeofday (&stop, (struct timezone  *) 0);
+		gettimeofday (&stop, (struct timezone  *) 0);
 
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
@@ -1109,8 +1104,7 @@ char   *action;
 }
 
 
-static  tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0)
-{
+static  tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0) {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;

@@ -55,20 +55,20 @@ int check_credentials() {
 username_prompt:
 
 	if (!(strcmp(username, "interactive"))) {
-		 sprintf(username, "");
+		sprintf(username, "");
 		username[0] = 0;
-		 printf("%s   %s", connect_idm, please_wait);
-		 fflush(stdout);
+		printf("%s   %s", connect_idm, please_wait);
+		fflush(stdout);
 		status = init_bind_to_ds(&assoc); /* Bind no authentication mode */
 		if (status != OK) {
 			de_exit(-1);
 		}
 		wait_result = wait_bind_to_ds(assoc, TRUE); /* block */
 		if (wait_result != OK) {
-			 printf("\n%s", srvr_unava);
-			 de_exit(-1);
+			printf("\n%s", srvr_unava);
+			de_exit(-1);
 		} else {
-			 printf(done);
+			printf(done);
 		}
 
 		status = get_username();
@@ -77,14 +77,14 @@ username_prompt:
 		}
 		if (!(strcmp(add_entries, yes_string))) {
 			if (tmp_org_found == TRUE) {
-				 de_unbind();
+				de_unbind();
 				pswd_intrctv = TRUE;
 				if (status != OK) {
 					de_exit(-1);
 				}
 				goto prompt_pswd;
 			} else {
-				 de_unbind();
+				de_unbind();
 				pswd_intrctv = FALSE;
 				status = init_bind_to_ds(&assoc);
 				if (status != OK) {
@@ -96,23 +96,23 @@ username_prompt:
 		if (username == quit_String) {
 			de_exit(-1);
 		}
-		 de_unbind();  /* Unbind from no authentication mode */
+		de_unbind();  /* Unbind from no authentication mode */
 	}
 
 prompt_pswd:
 	if (pswd_intrctv == TRUE) {
 		wait_result = NOTOK; /* Enter loop */
 		while (wait_result != OK) {
-			 sprintf(temp2, "%s :  ", ask_password);
-			 sprintf(password, getpass(temp2));
+			sprintf(temp2, "%s :  ", ask_password);
+			sprintf(password, getpass(temp2));
 
 			if (strlen(password) <= 0) {
 				if (pswd_tries < PSWD_TRY_LIMIT) {
-					 printf(pswd_must_enter);
+					printf(pswd_must_enter);
 					pswd_tries ++;
 					goto prompt_pswd;
 				} else {
-					 printf(pswd_lmt_xcd);
+					printf(pswd_lmt_xcd);
 					de_exit(-1);
 				}
 			} else if (!(strcmp(password, "?"))) {
@@ -127,15 +127,15 @@ prompt_pswd:
 			wait_result = wait_bind_to_ds(assoc, TRUE); /* block */
 			if (wait_result == INV_PSWD) {
 				if (pswd_tries < PSWD_TRY_LIMIT) {
-					 printf(pswd_tryagain);
+					printf(pswd_tryagain);
 					pswd_tries ++;
-					 sprintf(password, "interactive");
+					sprintf(password, "interactive");
 				} else {
-					 printf(pswd_lmt_xcd);
+					printf(pswd_lmt_xcd);
 					de_exit(-1);
 				}
 			} else if (wait_result == NOTOK) {
-				 printf("%s   ...%s\n", nobind_user, exiting);
+				printf("%s   ...%s\n", nobind_user, exiting);
 				de_exit(-1);
 			}
 		}
@@ -144,13 +144,13 @@ prompt_pswd:
 		if (status == INV_USERNAME) {
 			if (username_intrctv == TRUE) {
 				if (username_tries >= USERNAME_TRY_LIMIT) {
-					 printf(errmsg_invun);
-					 printf(username_lmt_xcd);
+					printf(errmsg_invun);
+					printf(username_lmt_xcd);
 					de_exit(-1);
 				}
 				username_tries ++;
-				 printf(errmsg_invun);
-				 sprintf(username, "interactive");
+				printf(errmsg_invun);
+				sprintf(username, "interactive");
 				goto username_prompt;
 			}
 		} else if (status != OK) {
@@ -167,18 +167,18 @@ int just_bind() {
 	int status;
 	int wait_result;
 
-	 printf("%s   %s", connect_idm, please_wait);
-	 fflush(stdout);
+	printf("%s   %s", connect_idm, please_wait);
+	fflush(stdout);
 	status = init_bind_to_ds(&assoc); /* Bind no authentication mode */
 	if (status != OK) {
 		de_exit(-1);
 	}
 	wait_result = wait_bind_to_ds(assoc, TRUE); /* block */
 	if (wait_result != OK) {
-		 printf("\n%s", srvr_unava);
+		printf("\n%s", srvr_unava);
 		return NOTOK;
 	} else {
-		 printf(done);
+		printf(done);
 	}
 	return OK;
 }
@@ -229,18 +229,18 @@ int get_username() {
 	orgEntered  = FALSE;
 	tmp_org_found = FALSE;
 
-	 printf(enter_country);
+	printf(enter_country);
 
-	 strcpy(username_save, username);
+	strcpy(username_save, username);
 
 prompt_country:
 	enterString(COUNTRY, co, clp);
 	if (strlen(co) == 0) {
 		if (!(strcmp(default_country, ""))) {
-			 printf("%s %s %s\n", reenter_c, quit_String, to_quit);
+			printf("%s %s %s\n", reenter_c, quit_String, to_quit);
 			goto prompt_country;
 		} else {
-			 strcpy(co, default_country);
+			strcpy(co, default_country);
 		}
 	} else if (!(strcmp(co, quit_String))) {
 		de_prompt_yesno(ask_ifout, confirm_out, no_string);
@@ -253,19 +253,19 @@ prompt_country:
 	}
 
 	if (listCos(co, &clp) != OK) {
-		 searchFail(co);
-		 de_exit(-1);
+		searchFail(co);
+		de_exit(-1);
 	}
 	noCos = listlen(clp);
 	if (noCos <= 0) {
-		 printf("%s `%s' \n\n", no_cMatch, co);
+		printf("%s `%s' \n\n", no_cMatch, co);
 		goto prompt_country;
 	} else if (noCos == 1) {
-		 sprintf(posdit_user, "@%s", clp->name);
+		sprintf(posdit_user, "@%s", clp->name);
 		str = copy_string(lastComponent(clp->name, COUNTRY));
-		 strcpy(default_country, str);
-		 sprintf(full_c, "%s -- %s", default_country, mapCoName(default_country));
-		 printf("\n%s\n", full_c);
+		strcpy(default_country, str);
+		sprintf(full_c, "%s -- %s", default_country, mapCoName(default_country));
+		printf("\n%s\n", full_c);
 		for (at = clp->ats; at != NULLATTR; at = at->attr_link) {
 			if (strcmp(attr2name(at->attr_type, OIDPART), "masterDSA") == 0) {
 				quipuMastersCo = TRUE;
@@ -275,25 +275,25 @@ prompt_country:
 		highNumber = 0;
 		pagerOn(NUMBER_NOT_ALLOWED);
 	} else {
-		 printf(got_match);
-		 printf(type_number);
+		printf(got_match);
+		printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListCos(clp);
 		goto prompt_country;
 	}
 prompt_org:
-	 printf("\n");
+	printf("\n");
 	enterString(ORG, org, olp);
 	if (strlen(org) == 0) {
 		if (!(strcmp(default_organisation, ""))) {
 			if ((strcmp(org_compel, no_string))) {
-				 printf("%s %s %s\n", enter_org, quit_String, to_quit);
+				printf("%s %s %s\n", enter_org, quit_String, to_quit);
 				goto prompt_org;
 			} else {
 				goto prompt_person;
 			}
 		} else {
-			 strcpy(org, default_organisation);
+			strcpy(org, default_organisation);
 		}
 	} else {
 		if (!(strcmp(org, quit_String))) {
@@ -308,38 +308,38 @@ prompt_org:
 		}
 	}
 	if (listOrgs(posdit_user, org, &olp) != OK) {
-		 searchFail(org);
-		 de_exit(-1);
+		searchFail(org);
+		de_exit(-1);
 	}
 	noOrgs = listlen(olp);
 	if (noOrgs <= 0) {
-		 printf("%s `%s' \n\n", no_orgMatch, org);
+		printf("%s `%s' \n\n", no_orgMatch, org);
 		if (!(strcmp(addorg, yes_string))) {
-			 printf("%s   %s", srch_newOrg, please_wait);
-			 fflush(stdout);
-			 sprintf(save_addorg_posdit, "%s", addorg_posdit);
-			 sprintf(addorg_posdit, "%s@%s", addorg_posdit, clp->name);
+			printf("%s   %s", srch_newOrg, please_wait);
+			fflush(stdout);
+			sprintf(save_addorg_posdit, "%s", addorg_posdit);
+			sprintf(addorg_posdit, "%s@%s", addorg_posdit, clp->name);
 			if (listOrgs(addorg_posdit, org, &olp) != OK) {
-				 printf("%s `%s'\n", unbl_newOrgC, full_c);
-				 printf(cntct_hlpdsk);
+				printf("%s `%s'\n", unbl_newOrgC, full_c);
+				printf(cntct_hlpdsk);
 				de_exit(-1);
 			} else {
-				 printf(done);
+				printf(done);
 			}
 			noOrgs = listlen(olp);
 			if ( noOrgs <= 0 ) {
-				 sprintf(addthisorg, "%s`%s'?", ask_ifaddorg, org);
-				 printf("\n%s `%s' \n\n", no_orgMatch, org);
+				sprintf(addthisorg, "%s`%s'?", ask_ifaddorg, org);
+				printf("\n%s `%s' \n\n", no_orgMatch, org);
 				de_prompt_yesno(addthisorg, add_org_ids, no_string);
 				if (!(strcmp(add_org_ids, yes_string))) {
 					displayFile("neworg_confirm", FALSE);
-					 sprintf(posdit, "%s", addorg_posdit);
+					sprintf(posdit, "%s", addorg_posdit);
 prompt_name_org:
-					 sprintf(buffer, newOrgName1);
-					 printf(buffer);
-					 sprintf(buffer, "%s %s %s\n[%s]  : ", newOrgName2,
-								   quit_String, to_quit, org);
-					 printf(buffer);
+					sprintf(buffer, newOrgName1);
+					printf(buffer);
+					sprintf(buffer, "%s %s %s\n[%s]  : ", newOrgName2,
+							quit_String, to_quit, org);
+					printf(buffer);
 					if (gets(cp) == NULLCP) {
 						/* behave as for an interrupt */
 						clearerr(stdin);
@@ -348,22 +348,22 @@ prompt_name_org:
 					if (!(strcmp(cp, quit_String))) {
 						de_exit(-1);
 					} else if (strlen(cp) > 0) {
-						 sprintf(org, "%s", cp);
-						 printf("%s   ", check_notAlrIn);
-						 fflush(stdout);
-						 sprintf(addorg_posdit, "%s@%s", save_addorg_posdit, clp->name);
+						sprintf(org, "%s", cp);
+						printf("%s   ", check_notAlrIn);
+						fflush(stdout);
+						sprintf(addorg_posdit, "%s@%s", save_addorg_posdit, clp->name);
 						if (listOrgs(addorg_posdit, org, &olp) != OK) {
-							 printf("%s `%s'\n", unbl_newOrgC, full_c);
-							 printf(cntct_hlpdsk);
+							printf("%s `%s'\n", unbl_newOrgC, full_c);
+							printf(cntct_hlpdsk);
 							de_exit(-1);
 						} else {
-							 printf(done);
+							printf(done);
 						}
 						noOrgs = listlen(olp);
 						if ( noOrgs <= 0 ) {
 							/* Everything OK */
 						} else {
-							 printf("\n");
+							printf("\n");
 							printListOrgs(org, olp);
 							de_prompt_yesno(ask_ifNotAlrIn, already_in, no_string);
 							if (!strcmp(already_in, no_string)) {
@@ -379,33 +379,33 @@ prompt_name_org:
 					tmp_org = TRUE;
 					de_prompt_yesno(ask_ifaddent, add_entries, yes_string);
 					if (!(strcmp(add_entries, yes_string))) {
-						 sprintf(change_posdit, "%s", no_string);
-						 sprintf(change_posdn, "%s", no_string);
-						 sprintf(username, "%s@cn=%s", posdit, dir_Mngr);
+						sprintf(change_posdit, "%s", no_string);
+						sprintf(change_posdn, "%s", no_string);
+						sprintf(username, "%s@cn=%s", posdit, dir_Mngr);
 						orgEntered = TRUE;
 						return OK;
 					} else {
-						 displayFile("neworg_added", FALSE);
-						 de_exit(-1);
+						displayFile("neworg_added", FALSE);
+						de_exit(-1);
 					}
 				} else {
-					 sprintf(addorg_posdit, "%s", save_addorg_posdit);
+					sprintf(addorg_posdit, "%s", save_addorg_posdit);
 					goto prompt_org;
 				}
 			} else if (noOrgs == 1) {
 				str = copy_string(lastComponent(olp->name, ORG));
-				 sprintf(default_organisation, str);
-				 printf("\n%s\n", default_organisation);
-				 sprintf(posdit_user, "%s", olp->name);
-				 sprintf(org, "%s", str);
+				sprintf(default_organisation, str);
+				printf("\n%s\n", default_organisation);
+				sprintf(posdit_user, "%s", olp->name);
+				sprintf(org, "%s", str);
 				orgEntered = TRUE;
-				 sprintf(posdit, "%s", addorg_posdit);
-				 sprintf(posdit, "%s@o=%s", posdit, str);
-				 sprintf(change_posdit, "%s", no_string);
-				 sprintf(change_posdn, "%s", no_string);
-				 sprintf(search_mgr, "%s", yes_string);
+				sprintf(posdit, "%s", addorg_posdit);
+				sprintf(posdit, "%s@o=%s", posdit, str);
+				sprintf(change_posdit, "%s", no_string);
+				sprintf(change_posdn, "%s", no_string);
+				sprintf(search_mgr, "%s", yes_string);
 				tmp_org = TRUE;
-				 sprintf(add_entries, "%s", yes_string);
+				sprintf(add_entries, "%s", yes_string);
 				highNumber = 0;
 				pagerOn(NUMBER_NOT_ALLOWED);
 				freeOrgs(&olp);
@@ -413,8 +413,8 @@ prompt_name_org:
 				orgEntered = TRUE;
 				goto prompt_person;
 			} else {
-				 printf(got_match);
-				 printf(type_number);
+				printf(got_match);
+				printf(type_number);
 				pagerOn(NUMBER_ALLOWED);
 				printListOrgs(org, olp);
 				goto prompt_org;
@@ -423,16 +423,16 @@ prompt_name_org:
 			goto prompt_org;
 		}
 	} else if (noOrgs == 1) {
-		 sprintf(posdit_user, "@%s", olp->name);
+		sprintf(posdit_user, "@%s", olp->name);
 		str = copy_string(lastComponent(olp->name, ORG));
-		 sprintf(default_organisation, str);
-		 printf("\n%s\n", default_organisation);
+		sprintf(default_organisation, str);
+		printf("\n%s\n", default_organisation);
 		orgEntered = TRUE;
 		highNumber = 0;
 		pagerOn(NUMBER_NOT_ALLOWED);
 	} else {
-		 printf(got_match);
-		 printf(type_number);
+		printf(got_match);
+		printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListOrgs(org, olp);
 		goto prompt_org;
@@ -442,10 +442,10 @@ prompt_name_org:
 	if (!(strcmp(have_department, no_string))) {
 		goto prompt_person;
 	} else if ((strcmp(have_department, yes_string))) {
-		 sprintf(ou, "%s", "*");
+		sprintf(ou, "%s", "*");
 		if (listOUs(posdit_user, ou, &oulp) != OK) {
-			 searchFail(ou);
-			 de_exit(-1);
+			searchFail(ou);
+			de_exit(-1);
 		}
 		highNumber = 0;  /* disable entering a number, without displaying list */
 		noOUs = listlen(oulp);
@@ -453,17 +453,17 @@ prompt_name_org:
 			goto prompt_person;
 		} else {
 			/*             sprintf(have_department, "%s", yes_string); */
-			 sprintf(change_posdit, "%s", yes_string);
+			sprintf(change_posdit, "%s", yes_string);
 		}
 	}
 prompt_ou:
-	 printf("\n");
+	printf("\n");
 	enterString(ORGUNIT, ou, oulp);
 	if (strlen(ou) == 0) {
 		if (!(strcmp(default_department, ""))) {
 			goto prompt_person;
 		} else {
-			 strcpy(ou, default_department);
+			strcpy(ou, default_department);
 		}
 	} else {
 		if (!(strcmp(ou, quit_String))) {
@@ -473,23 +473,23 @@ prompt_ou:
 		}
 	}
 	if (listOUs(posdit_user, ou, &oulp) != OK) {
-		 searchFail(ou);
-		 de_exit(-1);
+		searchFail(ou);
+		de_exit(-1);
 	}
 	noOUs = listlen(oulp);
 	if (noOUs <= 0) {
-		 printf("%s `%s' \n\n", no_ouMatch, ou);
+		printf("%s `%s' \n\n", no_ouMatch, ou);
 		goto prompt_ou;
 	} else if (noOUs == 1) {
-		 sprintf(posdit_user, "@%s", oulp->name);
+		sprintf(posdit_user, "@%s", oulp->name);
 		str = copy_string(lastComponent(oulp->name, ORGUNIT));
-		 strcpy(default_department, str);
-		 printf("\n%s\n", default_department);
+		strcpy(default_department, str);
+		printf("\n%s\n", default_department);
 		highNumber = 0;
 		pagerOn(NUMBER_NOT_ALLOWED);
 	} else {
-		 printf(got_match);
-		 printf(type_number);
+		printf(got_match);
+		printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListOUs(ou, oulp);
 		goto prompt_ou;
@@ -499,25 +499,25 @@ prompt_person:
 	/* Copy to posdit, if not defined */
 
 	if (strlen(posdit) <= 0) {
-		 sprintf(posdit, "%s", posdit_user);
-		 determine_posdit(&objectType);
+		sprintf(posdit, "%s", posdit_user);
+		determine_posdit(&objectType);
 		posdit_oc = objectType;
 	}
 	if (!(strcmp(search_mgr, no_string))) {
 		goto prompt_individual;
 	}
 
-	 sprintf(person, dir_Mngr);
-	 sprintf(tmp_search, "%s@cn=%s", posdit_user,person);
+	sprintf(person, dir_Mngr);
+	sprintf(tmp_search, "%s@cn=%s", posdit_user,person);
 	if (listExactPRRcn(tmp_search, &plp) != OK) {
-		 searchFail(person);
-		 de_exit(-1);
+		searchFail(person);
+		de_exit(-1);
 	}
 	noPersons = listlen(plp);
 	if (noPersons <= 0) {
 		goto prompt_individual;
 	} else if (noPersons == 1) {
-		 sprintf(username, "@%s", plp->name);
+		sprintf(username, "@%s", plp->name);
 		str = copy_string(lastComponent(plp->name, PERSON));
 		free(confirm_out);
 		free(full_c);
@@ -525,15 +525,15 @@ prompt_person:
 		highNumber = 0;
 		if (!(strcmp(just_dn, yes_string))) {
 			dn_file = fopen("/tmp/dn_user", "w");
-			 fprintf(dn_file, username);
-			 de_unbind();
-			 fclose(dn_file);
+			fprintf(dn_file, username);
+			de_unbind();
+			fclose(dn_file);
 			exit(0);
 		}
 		return OK;
 	} else {
-		 printf(got_match);
-		 printf(type_number);
+		printf(got_match);
+		printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListPRRs(person, plp, PERSON, FALSE);
 		goto prompt_person;
@@ -544,10 +544,10 @@ prompt_individual:
 	enterString(USER, person, plp);
 	if (strlen(person) == 0) {
 		if (!(strcmp(default_person, ""))) {
-			 printf("%s %s %s\n", enter_pName, quit_String, to_quit);
+			printf("%s %s %s\n", enter_pName, quit_String, to_quit);
 			goto prompt_individual;
 		} else {
-			 strcpy(person, default_person);
+			strcpy(person, default_person);
 		}
 	} else if (!(strcmp(person, quit_String))) {
 		de_prompt_yesno(ask_ifout, confirm_out, no_string);
@@ -559,41 +559,41 @@ prompt_individual:
 		}
 	}
 	if (orgEntered == FALSE) {
-		 sprintf(tmp_search, "%s@cn=%s", posdit_user,person);
+		sprintf(tmp_search, "%s@cn=%s", posdit_user,person);
 		if (listExactPRRcn(tmp_search, &plp) != OK) {
-			 searchFail(person);
-			 de_exit(-1);
+			searchFail(person);
+			de_exit(-1);
 		}
 	} else {
 		if (listPRRs(posdit_user, person, &plp) != OK) {
-			 searchFail(person);
-			 de_exit(-1);
+			searchFail(person);
+			de_exit(-1);
 		}
 	}
 	noPersons = listlen(plp);
 	if (noPersons <= 0) {
-		 printf("%s `%s' \n\n", no_pMatch, person);
+		printf("%s `%s' \n\n", no_pMatch, person);
 		goto prompt_individual;
 	} else if (noPersons == 1) {
-		 sprintf(username, "@%s", plp->name);
+		sprintf(username, "@%s", plp->name);
 		str = copy_string(lastComponent(plp->name, PERSON));
 		highNumber = 0;
 		if (!(strcmp(just_dn, yes_string))) {
 			dn_file = fopen("/tmp/dn_user", "w");
-			 fprintf(dn_file, username);
-			 de_unbind();
-			 fclose(dn_file);
-			 exit(0);
+			fprintf(dn_file, username);
+			de_unbind();
+			fclose(dn_file);
+			exit(0);
 		}
 	} else {
-		 printf(got_match);
-		 printf(type_number);
+		printf(got_match);
+		printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListPRRs(person, plp, PERSON, FALSE);
 		goto prompt_individual;
 	}
-	 printf(user_identified);
-	 display_posdit(strlen(user_identified), username);
+	printf(user_identified);
+	display_posdit(strlen(user_identified), username);
 	free(confirm_out);
 	free(full_c);
 	free(str);

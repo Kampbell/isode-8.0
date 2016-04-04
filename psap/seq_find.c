@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/seq_find.c,v 9.0 1992/
 
 /*  */
 
-PE 
-seq_find (PE pe, int i)
-{
+PE
+seq_find (PE pe, int i) {
 	PE	    p;
 
 	if (i >= pe -> pe_cardinal)

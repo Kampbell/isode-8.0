@@ -43,19 +43,18 @@ static LLog _pgm_log = {
 LLog *pgm_log = &_pgm_log;
 
 
-void 
-initLog (char *myname)
-{
+void
+initLog (char *myname) {
 	/*    if (isatty (fileno (stderr)))
 	        ll_dbinit (pgm_log, myname);
 	    else */ {
 
 		static char  myfile[BUFSIZ];
 
-		 sprintf (myfile, "%s.log", (strncmp (myname, "ros.", 4)
-										   && strncmp (myname, "lpp.", 4))
-						|| myname[4] == NULL
-						? myname : myname + 4);
+		sprintf (myfile, "%s.log", (strncmp (myname, "ros.", 4)
+									&& strncmp (myname, "lpp.", 4))
+				 || myname[4] == NULL
+				 ? myname : myname + 4);
 		pgm_log -> ll_file = myfile;
 		ll_hdinit (pgm_log, myname);
 	}
@@ -81,9 +80,8 @@ va_dcl {
 #else
 /* VARARGS2 */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -106,9 +104,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-advise (int code, char *what, char *fmt)
-{
+void
+advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
@@ -128,9 +125,8 @@ va_dcl {
 }
 #else
 /* VARARGS2 */
-void 
-ryr_advise (char *what, char *fmt)
-{
+void
+ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

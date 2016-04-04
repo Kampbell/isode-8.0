@@ -36,11 +36,10 @@ static int  stuff ();
 /*  */
 
 struct SSAPref *
-addr2ref (char *addr)
-{
+addr2ref (char *addr) {
 	int     result;
 	long    clock;
-	   PE pe;
+	PE pe;
 	struct tm *tm = NULL;
 	struct UTCtime  uts;
 	struct UTCtime *ut = &uts;
@@ -72,9 +71,8 @@ addr2ref (char *addr)
 
 /*  */
 
-static int 
-stuff (PE pe, char *dbase, u_char *dlen)
-{
+static int
+stuff (PE pe, char *dbase, u_char *dlen) {
 	int     len;
 	char   *base;
 

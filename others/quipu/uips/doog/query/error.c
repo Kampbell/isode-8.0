@@ -96,8 +96,7 @@ QE_error_code code;
  *
  */
 char *
-ds_error_message (struct DSError *error)
-{
+ds_error_message (struct DSError *error) {
 	PS ps;
 	char buffer[LINESIZE];
 	char *str, *message;
@@ -213,7 +212,7 @@ errorList *error_list_ptr;
 		next_errors = errors->next;
 
 		if (errors->ds_message != NULLCP)
-			 free(errors->ds_message);
+			free(errors->ds_message);
 
 		free((char *) errors);
 		errors = next_errors;

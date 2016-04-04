@@ -41,8 +41,7 @@ extern LLog *log_dsap;
 	isdigit((unsigned char) (x)) || x == '\0')
 
 char *
-first_word (char *ptr)
-{
+first_word (char *ptr) {
 	if ( ptr == NULLCP )
 		return NULLCP;
 
@@ -56,8 +55,7 @@ first_word (char *ptr)
 }
 
 char *
-next_word (char *ptr)
-{
+next_word (char *ptr) {
 	if ( ptr == NULLCP )
 		return NULLCP;
 
@@ -77,9 +75,8 @@ next_word (char *ptr)
 	/* NOTREACHED */
 }
 
-int 
-soundex (char *s, char **c)
-{
+int
+soundex (char *s, char **c) {
 	char code, adjacent, ch, *p;
 	int i, cmax;
 
@@ -169,9 +166,8 @@ soundex (char *s, char **c)
 static char	*g_bcode;
 static int	g_bcodelen;
 
-static 
-match_word (char *a)
-{
+static
+match_word (char *a) {
 	char	*as;
 	int	cmp;
 
@@ -186,9 +182,8 @@ match_word (char *a)
 	return(cmp == 0);
 }
 
-int 
-soundex_cmp (char *a, char *b)
-{
+int
+soundex_cmp (char *a, char *b) {
 	char result = FALSE;
 	char * ptr;
 

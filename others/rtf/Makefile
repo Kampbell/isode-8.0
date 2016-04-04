@@ -39,7 +39,7 @@ PEPYPATH=	-DPEPYPATH
 # Programs and Libraries
 ###############################################################################
 
-LIBES	=	$(LIBISODE)
+LIBES	=	$(LIBISODE) -lcrypt
 LLIBS   =	$(TOPDIR)llib-lisode
 
 
@@ -76,6 +76,8 @@ $(SBINDIR)iso.rtf:	xrtfd
 		-@echo ""
 
 rtfd:		xrtfd
+		rm -f rtfd
+		ln xrtfd rtfd
 
 xrtfd:		rtfd.o rtfsbr.o RTF_tables.o
 		$(LDCC) $(LDFLAGS)  -o $@ rtfd.o rtfsbr.o RTF_tables.o \
@@ -102,6 +104,8 @@ $(BINDIR)rtf:	xrtf
 		-@echo ""
 
 rtf:		xrtf
+		rm -f rtf
+		ln xrtf rtf
 
 xrtf:		rtf.o rtfsbr.o RTF_tables.o
 		$(LDCC) $(LDFLAGS) -o $@ rtf.o rtfsbr.o RTF_tables.o \

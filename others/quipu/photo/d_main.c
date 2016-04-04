@@ -37,9 +37,8 @@ int	two_passes = 0;
 
 char   *getenv ();
 
-int 
-main (int argc, char **argv)
-{
+int
+main (int argc, char **argv) {
 	char *data;
 	int   fd;
 	char *file = "<stdin>";
@@ -63,7 +62,7 @@ main (int argc, char **argv)
 
 	data = (char *)malloc ((unsigned int)ALLOCATION_SIZE);
 	if ( !data ) {
-		 fputs ("decode_fax: out of memory\n", stderr);
+		fputs ("decode_fax: out of memory\n", stderr);
 		exit (1);
 	}
 	limit = ALLOCATION_SIZE;
@@ -73,7 +72,7 @@ main (int argc, char **argv)
 		if (size + ALLOCATION_SIZE > limit) {
 			newData = (char *)realloc (data, (unsigned int) (limit + ALLOCATION_SIZE));
 			if ( !newData ) {
-				 fputs ("decode_fax: out of memory\n", stderr);
+				fputs ("decode_fax: out of memory\n", stderr);
 				exit (1);
 			}
 			data = newData;
@@ -89,15 +88,15 @@ main (int argc, char **argv)
 	}
 
 	if (size < 1) {
-		 fprintf (stderr, "%s: is not a fax image\n", file);
+		fprintf (stderr, "%s: is not a fax image\n", file);
 		exit (1);
 	}
 	if (decode_t4 (data, name, (int)size) == -1) {
-		 fprintf (stderr,"\n");
+		fprintf (stderr,"\n");
 		exit (-1);
 	}
 	if (two_passes && decode_t4 (data, name, (int)size) == -1) {
-		 fprintf (stderr,"\n");
+		fprintf (stderr,"\n");
 		exit (-1);
 	}
 	return (0);
@@ -109,7 +108,7 @@ static ps_die (ps, s)
 PS	 ps;
 char   *s;
 {
-	 fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
+	fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
 }
 
@@ -118,6 +117,6 @@ static pe_die (pe, s)
 PE	 pe;
 char   *s;
 {
-	 fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
+	fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
 	exit (1);
 }

@@ -55,9 +55,8 @@ extern unsigned watchdog_delta;
 *  If NOTOK is returned the connection block should be freed,
 *  alerting all the operations requesting it.
 */
-int 
-conn_request (struct connection *cn)
-{
+int
+conn_request (struct connection *cn) {
 	struct DSAPconnect		* dc = &(cn->cn_connect.cc_dc);
 	struct DSAPindication	  di_s;
 	struct DSAPindication	* di = &(di_s);
@@ -166,9 +165,8 @@ conn_request (struct connection *cn)
 * If NOTOK is returned the connection needs to be extracted, alerting any
 * waiting operations in the process.
 */
-int 
-conn_req_aux (struct connection *cn)
-{
+int
+conn_req_aux (struct connection *cn) {
 
 	switch(cn->cn_connect.cc_dc.dc_result) {
 	case DS_RESULT:
@@ -205,10 +203,10 @@ conn_req_aux (struct connection *cn)
 #ifndef NO_STATS
 		{
 			char buf [LINESIZE];
-			 sprintf (buf,"Bound using %s DSP context (%d)",
-							cn->cn_ctx == DS_CTX_QUIPU_DSP ? "QUIPU" :
-							cn->cn_ctx == DS_CTX_INTERNET_DSP ? "Internet" : "X500",
-							cn->cn_ad);
+			sprintf (buf,"Bound using %s DSP context (%d)",
+					 cn->cn_ctx == DS_CTX_QUIPU_DSP ? "QUIPU" :
+					 cn->cn_ctx == DS_CTX_INTERNET_DSP ? "Internet" : "X500",
+					 cn->cn_ad);
 			pslog(log_stat, LLOG_NOTICE, buf, (IFP)dn_print, (caddr_t) cn->cn_dn);
 		}
 #endif

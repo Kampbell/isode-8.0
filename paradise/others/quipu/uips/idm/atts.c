@@ -97,16 +97,16 @@ struct namelist * lp;
 	for (at = lp->ats; at != NULLATTR; at = at->attr_link) {
 		switch (objectType) {
 		case PERSON:
-			 strcpy(padding, "        ");
+			strcpy(padding, "        ");
 			break;
 		case ORGUNIT:
-			 strcpy(padding, "      ");
+			strcpy(padding, "      ");
 			break;
 		case ORG:
-			 strcpy(padding, "    ");
+			strcpy(padding, "    ");
 			break;
 		case COUNTRY:
-			 strcpy(padding, "  ");
+			strcpy(padding, "  ");
 			break;
 		}
 		/*    cp = attr2name(at->attr_type, OIDPART); */
@@ -150,16 +150,16 @@ int * count;
 	for (at = lp->ats; at != NULLATTR; at = at->attr_link) {
 		switch (objectType) {
 		case PERSON:
-			 strcpy(padding, "        ");
+			strcpy(padding, "        ");
 			break;
 		case ORGUNIT:
-			 strcpy(padding, "      ");
+			strcpy(padding, "      ");
 			break;
 		case ORG:
-			 strcpy(padding, "    ");
+			strcpy(padding, "    ");
 			break;
 		case COUNTRY:
-			 strcpy(padding, "  ");
+			strcpy(padding, "  ");
 			break;
 		}
 		/*    cp = attr2name(at->attr_type, OIDPART); */
@@ -197,13 +197,13 @@ int number;
 	for (at = lp->ats; at != NULLATTR; at = at->attr_link) {
 		if (strcmp(attr2name(at->attr_type, OIDPART), DE_MAILBOX) == 0) {
 			cp = val2str(&(at->attr_value->avseq_av));
-			 strcpy(mail, cp);
+			strcpy(mail, cp);
 			free(cp);
 			continue;
 		}
 		if (strcmp(attr2name(at->attr_type, OIDPART), DE_TELEPHONE) == 0) {
 			cp = val2str(&(at->attr_value->avseq_av));
-			 strcpy(phone, cp);
+			strcpy(phone, cp);
 			free(cp);
 			continue;
 		}
@@ -365,7 +365,7 @@ struct postaddr * m;
 {
 	PE ret_pe;
 
-	 encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
+	encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -408,7 +408,7 @@ int format;
 		if (format == READOUT) {
 			if (postal_indent == 0)
 				postal_indent = 2;
-			 sprintf(prefbuff, "\n%s%*s", padding, PADCHARS, "");
+			sprintf(prefbuff, "\n%s%*s", padding, PADCHARS, "");
 			prefix = prefbuff;
 		}
 	}
@@ -443,18 +443,18 @@ char * str;
 	char	* cp, * cp2;
 
 	if ((greyBook == TRUE) && (index(str, '@') != NULLCP)) {
-		 strcpy(workbuf, str);
+		strcpy(workbuf, str);
 		for (cp = workbuf; *cp != '@'; *ptr++ = *cp++) {};
 		*ptr++ = *cp++;
 		*ptr = '\0';
 		while (TRUE) {
 			cp2 = rindex(cp, '.');
 			if (cp2 != NULLCP) {
-				 strcat(buf, cp2 + 1);
-				 strcat(buf, ".");
+				strcat(buf, cp2 + 1);
+				strcat(buf, ".");
 				*cp2 = '\0';
 			} else {
-				 strcat(buf, cp);
+				strcat(buf, cp);
 				break;
 			}
 		}
@@ -488,7 +488,7 @@ int  format;
 		pad = PADCHARS + strlen(padding) + 2;
 		AttrV_print(xps, &(dn->dn_rdn->rdn_av), format);
 		for (eptr = dn->dn_parent; eptr != NULLDN; eptr = eptr->dn_parent) {
-			 sprintf(padstr, ",\n%*s", pad, "");
+			sprintf(padstr, ",\n%*s", pad, "");
 			ps_print(xps, padstr);
 			AttrV_print(xps, &(eptr->dn_rdn->rdn_av), format);
 			pad += 2;
@@ -690,7 +690,7 @@ char  *str;
 {
 	int	    value;
 	char  *ptr,
-			 **ap;
+		  **ap;
 	char   *vec[NVEC + 1];
 	struct fax *f;
 	struct pair *p;
@@ -714,7 +714,7 @@ char  *str;
 	ptr = strdup (ptr);
 
 	bzero ((char *) vec, sizeof vec);
-	 str2vec (ptr, vec);
+	str2vec (ptr, vec);
 
 	for (ap = vec; *ap; ap++) {
 		if (sscanf (*ap, "%d", &value) == 1 && value >= 0)
@@ -768,7 +768,7 @@ struct fax *f;
 
 	f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
 
-	 encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
+	encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
 
 	if (f -> fax_bits)
 		free (f -> fax_bits);

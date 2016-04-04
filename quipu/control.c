@@ -43,9 +43,8 @@ extern LLog * log_stat;
 #endif
 extern void dsa_abort();
 
-int 
-dsa_control (Attr_Sequence as, struct DSError *error, DN dn)
-{
+int
+dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 	char * str;
 	DN dn2;
 	Entry theentry;
@@ -178,9 +177,8 @@ dsa_control (Attr_Sequence as, struct DSError *error, DN dn)
 
 #ifdef QUIPU_CONSOLE
 
-int 
-new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn)
-{
+int
+new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 	struct dsa_control * item ;
 	char * tmp_ptr ;
 	DN dn2;

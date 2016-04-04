@@ -38,11 +38,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/serror.c,v 9.0 1992/
 /*  */
 
 char *
-sys_errname (int no)
-{
+sys_errname (int no) {
 	static char buffer[128];
 
-	strerror_r(no, buffer, sizeof(buffer));	
+	strerror_r(no, buffer, sizeof(buffer));
 
 	return buffer;
 }

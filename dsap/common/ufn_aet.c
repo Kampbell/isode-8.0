@@ -143,8 +143,8 @@ char * context;
 		if (PY_pepy[0]) {
 			char buffer[BUFSIZ];
 
-			 sprintf (buffer, "ufn_match failed: %s", PY_pepy);
-			 strcpy (PY_pepy, buffer);
+			sprintf (buffer, "ufn_match failed: %s", PY_pepy);
+			strcpy (PY_pepy, buffer);
 			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
 		}
 		*result = NULLDNS;

@@ -208,8 +208,8 @@ char  **argv,
 			break;
 
 		default:
-			 tusaplose (td, DR_CONGEST, "unitddata",
-							  "unable to fork ");
+			tusaplose (td, DR_CONGEST, "unitddata",
+					   "unable to fork ");
 
 		}
 	}
@@ -221,9 +221,8 @@ static char buffer1[4096];
 static char buffer2[32768];
 
 
-static int 
-tsapud (int vecp, char **vec)
-{
+static int
+tsapud (int vecp, char **vec) {
 	char    buffer[BUFSIZ];
 	struct isoservent *is;
 	struct tsapblk *tb;
@@ -234,8 +233,8 @@ tsapud (int vecp, char **vec)
 	IFP	    hook;
 
 	/* begin UGLY */
-	 strcpy (buffer1, vec[1]);
-	 strcpy (buffer2, vec[2]);
+	strcpy (buffer1, vec[1]);
+	strcpy (buffer2, vec[2]);
 	/* end UGLY */
 
 	/*  save the datagram in the transport layer for the 1st read */
@@ -259,9 +258,9 @@ tsapud (int vecp, char **vec)
 		if ((is = getisoserventbyselector ("tsap", tud -> tud_called.ta_selector,
 										   tud -> tud_called.ta_selectlen))
 				== NULL) {
-			 sprintf (buffer, "ISO service tsap/%s not found",
-							sel2str (tud -> tud_called.ta_selector,
-									 tud -> tud_called.ta_selectlen, 1));
+			sprintf (buffer, "ISO service tsap/%s not found",
+					 sel2str (tud -> tud_called.ta_selector,
+							  tud -> tud_called.ta_selectlen, 1));
 			goto out;
 		}
 	}
@@ -277,10 +276,10 @@ tsapud (int vecp, char **vec)
 	 *  Now exec the service process.
 	 */
 
-	 execv (*is -> is_vec, is -> is_vec);
+	execv (*is -> is_vec, is -> is_vec);
 
-	 sprintf (buffer, "unable to exec %s: %s",
-					*is -> is_vec, sys_errname (errno));
+	sprintf (buffer, "unable to exec %s: %s",
+			 *is -> is_vec, sys_errname (errno));
 
 out:
 	;
@@ -293,17 +292,16 @@ out:
 
 /*  */
 
-static void 
-ts_advise (struct TSAPdisconnect *td, int code, char *event)
-{
+static void
+ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						TuErrString (td -> td_reason),
-						td -> td_cc, td -> td_cc, td -> td_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 TuErrString (td -> td_reason),
+				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
-		 sprintf (buffer, "[%s]", TuErrString (td -> td_reason));
+		sprintf (buffer, "[%s]", TuErrString (td -> td_reason));
 
 	advise (NULLCP, code, "%s: %s", event, buffer);
 }
@@ -311,9 +309,8 @@ ts_advise (struct TSAPdisconnect *td, int code, char *event)
 
 /*  */
 
-static 
-arginit (char **vec)
-{
+static
+arginit (char **vec) {
 	int	    rflag;
 	char  *ap;
 #ifdef	TCP
@@ -346,7 +343,7 @@ arginit (char **vec)
 
 	rflag = 0;
 
-	 strcpy (myhost, TLocalHostName ());
+	strcpy (myhost, TLocalHostName ());
 
 	bzero ((char *) tas, sizeof tas);
 
@@ -405,10 +402,10 @@ arginit (char **vec)
 
 /*  */
 
-static 
+static
 envinit  {
 	int     i,
-			sd;
+	sd;
 
 	nbits = getdtablesize ();
 
@@ -428,34 +425,34 @@ envinit  {
 			break;
 		}
 
-		 chdir ("/");
+		chdir ("/");
 
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
-			 dup2 (sd, 0),  close (sd);
-		 dup2 (0, 1);
-		 dup2 (0, 2);
+			dup2 (sd, 0),  close (sd);
+		dup2 (0, 1);
+		dup2 (0, 2);
 
 #ifdef	TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
-			 ioctl (sd, TIOCNOTTY, NULLCP);
-			 close (sd);
+			ioctl (sd, TIOCNOTTY, NULLCP);
+			close (sd);
 		}
 #else
 #ifdef	SYS5
-		 setpgrp ();
-		 signal (SIGINT, SIG_IGN);
-		 signal (SIGQUIT, SIG_IGN);
+		setpgrp ();
+		signal (SIGINT, SIG_IGN);
+		signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
 	} else
 		setlog ("tsapud.out");
 
 	for (sd = 3; sd < nbits; sd++)
-		 close (sd);
+		close (sd);
 
-	 signal (SIGPIPE, SIG_IGN);
+	signal (SIGPIPE, SIG_IGN);
 
 	closelog ();
 	openlog (myname, LOG_PID);
@@ -487,9 +484,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -513,9 +509,8 @@ va_dcl {
 }
 
 
-static void 
-_advise (int code, char *what, va_list ap)
-{
+static void
+_advise (int code, char *what, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, ap);
@@ -523,19 +518,18 @@ _advise (int code, char *what, va_list ap)
 	syslog (code, "%s", buffer);
 
 	if (debug) {
-		 fflush (stdout);
+		fflush (stdout);
 
 		fprintf (stderr, "[%d] %s", code, buffer);
-		 fputc ('\n', stderr);
-		 fflush (stderr);
+		fputc ('\n', stderr);
+		fflush (stderr);
 	}
 }
 #else
 /* VARARGS */
 
-void 
-advise (char *what, int code, char *fmt)
-{
+void
+advise (char *what, int code, char *fmt) {
 	advise (what, code, fmt);
 }
 #endif

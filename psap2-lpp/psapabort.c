@@ -63,13 +63,13 @@ struct PSAPindication *pi;
 	smask = sigioblock ();
 
 	if ((pb = findpblk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
 
 	if ((pdu = (struct type_PS_Abort__PDU *) malloc (sizeof *pdu)) == NULL) {
-		 psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
+		psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
 	pdu -> reference = pb -> pb_reliability == LOW_QUALITY ? pb -> pb_reference
@@ -88,12 +88,12 @@ struct PSAPindication *pi;
 		PLOGP (psap2_log,PS_PDUs, pe, "Abort-PDU", 0);
 
 		if ((result = pe2ps (ps = pb -> pb_stream, pe)) == NOTOK)
-			 pslose (pi, ps -> ps_errno);
+			pslose (pi, ps -> ps_errno);
 		else
 			result = OK;
 	} else
-		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
-						 PY_pepy);
+		psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+				  PY_pepy);
 
 	if (pe)
 		pe_free (pe);
@@ -102,7 +102,7 @@ out:
 	;
 	freepblk (pb);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

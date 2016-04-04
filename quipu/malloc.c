@@ -163,9 +163,8 @@ static char * malloc_fname = (char *)0;
 
 #endif	/* QUIPU_MALLOC */
 
-int 
-start_malloc_trace (char *f)
-{
+int
+start_malloc_trace (char *f) {
 #ifdef MALLOCTRACE
 	char * env, *getenv ();
 
@@ -181,18 +180,18 @@ start_malloc_trace (char *f)
 		malloc_started = 1;
 	} else {
 		malloc_file = open (malloc_fname,1);
-		 lseek (malloc_file,0l,2);
+		lseek (malloc_file,0l,2);
 	}
 #else
 	malloc_file = 0;
 #endif
 }
 
-int 
+int
 stop_malloc_trace (void) {
 #ifdef MALLOCTRACE
 	if (malloc_file)
-		 close (malloc_file);
+		close (malloc_file);
 #endif
 	malloc_file = 0;
 }
@@ -200,9 +199,8 @@ stop_malloc_trace (void) {
 #ifdef QUIPU_MALLOC
 #ifdef MALLOCTRACE
 
-static 
-write_string (char *p)
-{
+static
+write_string (char *p) {
 	char *q;
 
 	if (!malloc_file)
@@ -211,12 +209,11 @@ write_string (char *p)
 	q = p;
 	while (*q++)
 		;
-	 write(malloc_file, p, q-p-1);
+	write(malloc_file, p, q-p-1);
 }
 
-static 
-write_addr (char *addr)
-{
+static
+write_addr (char *addr) {
 	char buf[20];
 	static char hex[] = "0123456789abcdef";
 	char *ptr;
@@ -228,7 +225,7 @@ write_addr (char *addr)
 	x = (int) addr;
 
 	if (x == 0) {
-		 write(malloc_file, "0 ",2);
+		write(malloc_file, "0 ",2);
 		return;
 	}
 
@@ -238,14 +235,13 @@ write_addr (char *addr)
 	*ptr = 0;
 
 	while (ptr != buf)
-		 write(malloc_file, --ptr,1);
+		write(malloc_file, --ptr,1);
 
-	 write (malloc_file," ",1);
+	write (malloc_file," ",1);
 }
 
-static 
-write_int (unsigned x)
-{
+static
+write_int (unsigned x) {
 	char buf[20];
 	static char dec[] = "0123456789";
 	char *ptr;
@@ -254,7 +250,7 @@ write_int (unsigned x)
 		return;
 
 	if (x == 0) {
-		 write(malloc_file, "0 ",2);
+		write(malloc_file, "0 ",2);
 		return;
 	}
 
@@ -263,14 +259,13 @@ write_int (unsigned x)
 		*ptr++ = dec[x % 10], x /= 10;
 
 	while (ptr != buf)
-		 write(malloc_file, --ptr,1);
+		write(malloc_file, --ptr,1);
 
-	 write (malloc_file," ",1);
+	write (malloc_file," ",1);
 }
 
-static 
-log_realloc (unsigned oldlen, unsigned newlen, unsigned bsize, char *addr)
-{
+static
+log_realloc (unsigned oldlen, unsigned newlen, unsigned bsize, char *addr) {
 	write_string ("realloc of ");
 	write_int (oldlen);
 	write_string ("at ");
@@ -288,9 +283,8 @@ log_realloc (unsigned oldlen, unsigned newlen, unsigned bsize, char *addr)
 	write_stack("x");
 }
 
-static 
-print_free_list (unsigned heap)
-{
+static
+print_free_list (unsigned heap) {
 	int i;
 	struct freelist * top;
 	struct freelist * ptr;
@@ -374,10 +368,9 @@ new_freelist (void) {
 
 static char *
 big_malloc (
-/* used for mallocs of > MAXSMALL */
-    unsigned realsize
-)
-{
+	/* used for mallocs of > MAXSMALL */
+	unsigned realsize
+) {
 	unsigned blocksize;
 	struct freelist * flist;
 	struct header * head = (struct header *)0;
@@ -421,9 +414,8 @@ big_malloc (
 
 }
 
-static 
-big_free (struct header *ptr)
-{
+static
+big_free (struct header *ptr) {
 	struct freelist *next;
 	struct freehead *x;
 
@@ -449,9 +441,8 @@ big_free (struct header *ptr)
 	x->flist = next;
 }
 
-static 
-add_free (struct header *x)
-{
+static
+add_free (struct header *x) {
 	struct freelist *next, *c;
 	unsigned * p = sizes;
 
@@ -491,8 +482,7 @@ add_free (struct header *x)
 	return_freelist(a); }
 
 static struct header *
-next_free_block (struct header *ptr)
-{
+next_free_block (struct header *ptr) {
 	struct header * next;
 
 	next = (struct header *)((char *)ptr + ptr->smallsize);

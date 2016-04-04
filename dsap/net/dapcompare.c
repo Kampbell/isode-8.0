@@ -31,15 +31,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapcompare.c,v 9.0
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 
-int 
-dap_compare (int ad, int *id, struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result)
-{
+int
+dap_compare (int ad, int *id, struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result) {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
 
 	++(*id);
 
-	 DapCompare (ad, (*id), arg, di, ROS_INTR);
+	DapCompare (ad, (*id), arg, di, ROS_INTR);
 
 	error->dse_type = DSE_NOERROR;
 
@@ -76,9 +75,8 @@ dap_compare (int ad, int *id, struct ds_compare_arg *arg, struct DSError *error,
 	}
 }
 
-int 
-DapCompare (int ad, int id, struct ds_compare_arg *arg, struct DAPindication *di, int asyn)
-{
+int
+DapCompare (int ad, int id, struct ds_compare_arg *arg, struct DAPindication *di, int asyn) {
 	PE                  arg_pe;
 
 	if(encode_DAS_CompareArgument(&arg_pe,1,0,NULLCP,arg) != OK) {

@@ -53,9 +53,8 @@ struct	list_element {
 extern Entry    current_entry;
 static char     new_draft;
 
-int 
-call_modify (int argc, char **argv)
-{
+int
+call_modify (int argc, char **argv) {
 	struct ds_modifyentry_arg mod_arg;
 
 	struct DSError  error;
@@ -94,14 +93,14 @@ call_modify (int argc, char **argv)
 	new_draft = FALSE;
 
 	if (home = getenv ("DISHDRAFT"))
-		 strcpy (fname, home);
+		strcpy (fname, home);
 	else if (dad_flag) {
-		 strcpy (fname, "/tmp/dishXXXXXX");
-		 unlink (mktemp (fname));
+		strcpy (fname, "/tmp/dishXXXXXX");
+		unlink (mktemp (fname));
 	} else if (home = getenv ("HOME"))
-		 sprintf (fname, "%s/.dishdraft", home);
+		sprintf (fname, "%s/.dishdraft", home);
 	else
-		 strcpy (fname, "./.dishdraft");
+		strcpy (fname, "./.dishdraft");
 
 	for (x=1; x<argc; x++) {
 		if (test_arg (argv[x], "-draft",1)) {
@@ -112,7 +111,7 @@ call_modify (int argc, char **argv)
 				Usage (argv[0]);
 				return;
 			}
-			 strcpy (fname, argv[x]);
+			strcpy (fname, argv[x]);
 			shuffle_up (argc--,argv,x--);
 		} else if (test_arg (argv[x], "-newdraft",2)) {
 			new_draft = TRUE;
@@ -131,7 +130,7 @@ call_modify (int argc, char **argv)
 			}
 			l_temp = (struct list_element *) malloc (sizeof(struct list_element)) ;
 			l_temp->mod = (char *) malloc ((unsigned)(strlen(argv[x]) + 1));
-			 strcpy (l_temp->mod, argv[x]) ;
+			strcpy (l_temp->mod, argv[x]) ;
 			l_temp->add = 0 ;
 			l_temp->next = 0 ;
 			if (start == 0) {
@@ -150,7 +149,7 @@ call_modify (int argc, char **argv)
 			}
 			l_temp = (struct list_element *) malloc (sizeof(struct list_element)) ;
 			l_temp->mod = (char *) malloc ((unsigned)(strlen(argv[x]) + 1));
-			 strcpy (l_temp->mod, argv[x]) ;
+			strcpy (l_temp->mod, argv[x]) ;
 			l_temp->add = 1 ;
 			l_temp->next = 0 ;
 			if (start == 0) {
@@ -203,7 +202,7 @@ call_modify (int argc, char **argv)
 		noedit_flag = FALSE;
 	} else {
 		new_draft = TRUE;	/* Ugh ! */
-		 mod_template ("/dev/null",TRUE);
+		mod_template ("/dev/null",TRUE);
 	}
 
 	if (! noedit_flag)
@@ -226,7 +225,7 @@ call_modify (int argc, char **argv)
 	entry_ptr->e_attributes = get_attributes (fd);
 #endif
 
-	 fclose (fd);
+	fclose (fd);
 	if (parse_status != 0)
 		return;
 
@@ -349,8 +348,7 @@ call_modify (int argc, char **argv)
 
 
 struct entrymod *
-ems_append (struct entrymod *a, struct entrymod *b)
-{
+ems_append (struct entrymod *a, struct entrymod *b) {
 	struct entrymod *ptr;
 
 	if ((ptr = a) == NULLMOD)
@@ -434,9 +432,8 @@ AttributeType at;
 	return (em);
 }
 
-int 
-ems_part_free (struct entrymod *emp)
-{
+int
+ems_part_free (struct entrymod *emp) {
 	if(emp == NULLMOD)
 		return;
 	ems_part_free(emp->em_next);
@@ -446,8 +443,7 @@ ems_part_free (struct entrymod *emp)
 static	int	raboof = 0;
 
 static char *
-foobar (char *string)
-{
+foobar (char *string) {
 	DN	    fb;
 	PS	    ps;
 	static char    buffer[BUFSIZ];
@@ -482,9 +478,8 @@ you_lose:
 	return buffer;
 }
 
-int 
-dsa_control (int argc, char **argv)
-{
+int
+dsa_control (int argc, char **argv) {
 	static struct entrymod mod = {
 		EM_ADDATTRIBUTE,
 		NULLATTR,
@@ -511,46 +506,46 @@ dsa_control (int argc, char **argv)
 	if (test_arg (argv[1], "-dump",1))
 		if (argc != 3) goto out;
 		else
-			 sprintf (buffer, "d %s", argv[2]);
+			sprintf (buffer, "d %s", argv[2]);
 	else if (test_arg (argv[1], "-tailor",1))
 		if (argc != 3) goto out;
 		else
-			 sprintf (buffer, "t %s", argv[2]);
+			sprintf (buffer, "t %s", argv[2]);
 	else if (test_arg (argv[1], "-abort",1)) {
-		 strcpy (buffer,"a");
+		strcpy (buffer,"a");
 		argc++;		/* to get through if (argc != 3) */
 		do_unbind = TRUE;
 	} else if (test_arg (argv[1], "-restart",1)) {
-		 strcpy (buffer,"b");
+		strcpy (buffer,"b");
 		argc++;		/* to get through if (argc != 3) */
 		do_unbind = TRUE;
 	} else if (test_arg (argv[1], "-refresh",3))
 		if (argc != 3) goto out;
 		else
-			 sprintf (buffer, "r %s", foobar (argv[2]));
+			sprintf (buffer, "r %s", foobar (argv[2]));
 	else if (test_arg (argv[1], "-resync",2))
 		if (argc != 3) goto out;
 		else
-			 sprintf (buffer, "f %s", foobar (argv[2]));
+			sprintf (buffer, "f %s", foobar (argv[2]));
 	else if (test_arg (argv[1], "-lock",1))
 		if (argc != 3) goto out;
 		else
-			 sprintf (buffer, "l %s", foobar (argv[2]));
+			sprintf (buffer, "l %s", foobar (argv[2]));
 	else if (test_arg (argv[1], "-unlock",1))
 		if (argc != 3) goto out;
 		else
-			 sprintf (buffer, "u %s", foobar (argv[2]));
+			sprintf (buffer, "u %s", foobar (argv[2]));
 	else if (test_arg (argv[1], "-info",1)) {
 		dsa_control_info();
 		return;
 	} else if (test_arg (argv[1], "-slave",1)) {
 		msg = "Scheduled\n";
 		if (argc == 2) {
-			 strcpy (buffer,"s");
+			strcpy (buffer,"s");
 			argc++;		/* to get through if (argc != 3) */
 		} else if (argc != 3) goto out;
 		else
-			 sprintf (buffer, "s %s", foobar (argv[2]));
+			sprintf (buffer, "s %s", foobar (argv[2]));
 	} else
 		argc = 1;	/* to force error */
 
@@ -574,7 +569,7 @@ out:
 
 	if (ds_modifyentry (&mod_arg, &error) != DS_OK) {
 		/* deal with error */
-		 dish_error (OPT, &error);
+		dish_error (OPT, &error);
 	} else {
 		ps_print (RPS, msg);
 	}
@@ -586,7 +581,7 @@ out:
 	/* as_free (mod_arg.mea_changes->em_what); */
 }
 
-int 
+int
 dsa_control_info (void) {
 	struct ds_read_arg read_arg;
 	struct DSError  error;
@@ -603,7 +598,7 @@ dsa_control_info (void) {
 		return;
 
 	if (ds_read (&read_arg, &error, &result) != DS_OK) {
-		 dish_error (OPT, &error);
+		dish_error (OPT, &error);
 		return;
 	}
 
@@ -613,9 +608,8 @@ dsa_control_info (void) {
 		ps_printf (OPT, "No information !!!\n");
 }
 
-int 
-mod_template (char *name, int noedit)
-{
+int
+mod_template (char *name, int noedit) {
 	FILE           *fptr;
 	PS              ps;
 	extern AttributeType at_objectclass;
@@ -625,7 +619,7 @@ mod_template (char *name, int noedit)
 
 	if (! new_draft)
 		if ((fptr = fopen (name, "r")) != NULL) {
-			 fclose (fptr);
+			fclose (fptr);
 			if (!noedit) {
 				if (!yesno ("Use existing draft file ? "))
 					return OK;
@@ -641,7 +635,7 @@ mod_template (char *name, int noedit)
 		ps_printf (OPT, "Can't open template entry %s\n", name);
 		return (-1);
 	}
-	 umask (um);
+	umask (um);
 
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		return (-1);
@@ -662,14 +656,13 @@ mod_template (char *name, int noedit)
 
 	as_free (tas);
 	ps_free (ps);
-	 fclose (fptr);
+	fclose (fptr);
 
 	return (OK);
 }
 
-int 
-build_modify (struct list_element *start, struct ds_modifyentry_arg *mod_arg)
-{
+int
+build_modify (struct list_element *start, struct ds_modifyentry_arg *mod_arg) {
 	struct	list_element	*temp_elem ;
 	struct	entrymod	*emnew ;
 	AttributeType	a_t ;

@@ -34,8 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/sprintaei.c,v 9.0 199
 /*  */
 
 char *
-sprintaei (AEI aei)
-{
+sprintaei (AEI aei) {
 	char *cp;
 	char   *bp;
 	static int    i;
@@ -63,16 +62,16 @@ sprintaei (AEI aei)
 	*cp++ = ',';
 
 	if (aei -> aei_flags & AEI_AE_ID) {
-		 sprintf (cp, "%d", aei -> aei_ae_id);
+		sprintf (cp, "%d", aei -> aei_ae_id);
 		cp += strlen (cp);
 	}
 	*cp++ = ',';
 
 	if (aei -> aei_flags & AEI_AP_ID) {
-		 sprintf (cp, "%d", aei -> aei_ap_id);
+		sprintf (cp, "%d", aei -> aei_ap_id);
 		cp += strlen (cp);
 	}
-	 strcpy (cp, ">");
+	strcpy (cp, ">");
 
 	return bp;
 }

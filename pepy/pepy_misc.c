@@ -151,9 +151,8 @@ int	n;
 
 /*  */
 
-int 
-addtable (char *name, int lt)
-{
+int
+addtable (char *name, int lt) {
 	SYM		sp;
 
 	sp = (SYM)calloc (1, sizeof *sp);
@@ -181,7 +180,7 @@ int	lt;
 		}
 }
 
-int 
+int
 print_expimp()  {
 	SYM		sp;
 	int		ind;
@@ -189,14 +188,14 @@ print_expimp()  {
 	char	*p;
 
 	if (sp = symtab[TBL_EXPORT])
-		 printf ("\nEXPORTS\n");
+		printf ("\nEXPORTS\n");
 
 	for (ind = 0; sp; sp = sp->sym_next) {
 		if (ind == 0) {
 			putchar('\t');
 			ind = 8;
 		}
-		 printf("%s", sp -> sym_name);
+		printf("%s", sp -> sym_name);
 		ind += strlen (sp -> sym_name);
 		if (sp -> sym_next) {
 			putchar (',');
@@ -214,7 +213,7 @@ print_expimp()  {
 	putchar ('\n');
 
 	if (sp = symtab[TBL_IMPORT]) {
-		 printf ("\nIMPORTS\n");
+		printf ("\nIMPORTS\n");
 		p = sp -> sym_module;
 		oid = sp -> sym_oid;
 	}
@@ -223,7 +222,7 @@ print_expimp()  {
 			putchar ('\t');
 			ind = 8;
 		}
-		 printf ("%s", sp -> sym_name);
+		printf ("%s", sp -> sym_name);
 		ind += strlen (sp -> sym_name);
 		if (sp -> sym_next) {
 			if (strcmp (p, sp -> sym_next -> sym_module) == 0) {
@@ -238,25 +237,25 @@ print_expimp()  {
 				}
 			} else {
 				if (ind != 8)
-					 printf ("\n\t\t");
+					printf ("\n\t\t");
 				else	putchar ('\t');
-				 printf ("FROM %s", p);
+				printf ("FROM %s", p);
 				if (oid)
-					 printf (" %s", oidprint (oid));
-				 printf ("\n\t");
+					printf (" %s", oidprint (oid));
+				printf ("\n\t");
 				ind = 8;
 				p = sp -> sym_next -> sym_module;
 				oid = sp -> sym_next -> sym_oid;
 			}
 		} else {
 			if (ind != 8)
-				 printf ("\n\t\t");
+				printf ("\n\t\t");
 			else
 				putchar ('\t');
-			 printf ("FROM %s", p);
+			printf ("FROM %s", p);
 			if (oid)
-				 printf (" %s", oidprint (oid));
-			 printf (";\n");
+				printf (" %s", oidprint (oid));
+			printf (";\n");
 		}
 	}
 }
@@ -282,9 +281,8 @@ YP	yp;
 		}
 }
 
-int 
-importedP (char *name)
-{
+int
+importedP (char *name) {
 	SYM		sp;
 
 	for (sp = symtab[TBL_IMPORT]; sp; sp = sp -> sym_next)
@@ -307,7 +305,7 @@ static struct oidtbl {
 	NULL,
 };
 
-int 
+int
 initoidtbl()  {
 	struct oidtbl *op;
 	OID		oid;
@@ -331,7 +329,7 @@ OID	oid;
 	if (oid == NULLOID)
 		return "";
 
-	 strcpy (buf, "{ ");
+	strcpy (buf, "{ ");
 	cp = buf + strlen(buf);
 
 	i = oid->oid_nelem;
@@ -342,16 +340,16 @@ OID	oid;
 	if (p) {
 		i --;
 		ip ++;
-		 sprintf (cp, "%s ", p);
+		sprintf (cp, "%s ", p);
 		cp += strlen(cp);
 	}
 
 	for (; i > 0; i--) {
-		 sprintf (cp, "%d ", *ip++);
+		sprintf (cp, "%d ", *ip++);
 		cp += strlen (cp);
 	}
 
-	 strcat (cp, " }");
+	strcat (cp, " }");
 	return buf;
 }
 

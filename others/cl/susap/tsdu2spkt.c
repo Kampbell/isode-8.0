@@ -414,9 +414,8 @@ static int pi_length[PI_TABLE_LEN] = {
 
 /*  */
 
-static 
-start_spdu (struct ssapkt *s, struct local_buf *c, int basesize)
-{
+static
+start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
 	if (s -> s_udata)
 		switch (s -> s_code) {
 		case SPDU_DT: 	/* caller responsible for this... */
@@ -495,9 +494,8 @@ start_spdu (struct ssapkt *s, struct local_buf *c, int basesize)
 
 /*  */
 
-static int 
-end_spdu (int code, struct local_buf *c)
-{
+static int
+end_spdu (int code, struct local_buf *c) {
 	if (c -> len) {
 		if (c -> allocli > 254) {
 			if (c -> li < 255) {
@@ -523,27 +521,24 @@ end_spdu (int code, struct local_buf *c)
 
 /*  */
 
-static 
-start_pgi (int code, struct local_buf *c)
-{
+static
+start_pgi (int code, struct local_buf *c) {
 	put2spdu ((int) code, 0, NULLCP, c);
 	if (c -> len)
 		c -> pgi = (c -> ptr - c -> top - 1);
 }
 
 
-static 
-end_pgi (struct local_buf *c)
-{
+static
+end_pgi (struct local_buf *c) {
 	if (c -> len)
 		*(c -> top + c -> pgi) = (c -> len - c -> left) - (c -> pgi + 1);
 }
 
 /*  */
 
-static 
-put2spdu (int code, int li, char *value, struct local_buf *c)
-{
+static
+put2spdu (int code, int li, char *value, struct local_buf *c) {
 	int     cl = li;
 	char   *p1,
 		   *p2;
@@ -595,9 +590,8 @@ put2spdu (int code, int li, char *value, struct local_buf *c)
 
 /*  */
 
-int 
-spkt2tsdu (struct ssapkt *s, char **base, int *len)
-{
+int
+spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 	struct local_buf    c;
 	char    isn[SIZE_CN_ISN + 1];
 
@@ -1053,13 +1047,13 @@ spkt2tsdu (struct ssapkt *s, char **base, int *len)
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			 sprintf (file, ssapfile, getpid ());
+			sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				spkt2text (fp, s, 0);
-				 fclose (fp);
+				fclose (fp);
 			}
 		} else {
-			 fflush (stdout);
+			fflush (stdout);
 			spkt2text (stderr, s, 0);
 		}
 	}
@@ -1098,8 +1092,7 @@ int	n;
     else
 
 static char *
-pullqb (struct qbuf *qb, int n)
-{
+pullqb (struct qbuf *qb, int n) {
 	int    i;
 	int	    once;
 	char  *cp;
@@ -1142,8 +1135,7 @@ pullqb (struct qbuf *qb, int n)
 /*  */
 
 struct ssapkt *
-tsdu2spkt (struct qbuf *qb, int len, int *cc)
-{
+tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 	int    li;
 	int     cat0,
 			nread,
@@ -1835,13 +1827,13 @@ do_pgi:
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			 sprintf (file, ssapfile, getpid ());
+			sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				spkt2text (fp, s, 1);
-				 fclose (fp);
+				fclose (fp);
 			}
 		} else {
-			 fflush (stdout);
+			fflush (stdout);
 			spkt2text (stderr, s, 1);
 		}
 	}
@@ -1855,8 +1847,7 @@ do_pgi:
 /*  */
 
 struct ssapkt *
-udtsdu2spkt (struct qbuf *qb, int len)
-{
+udtsdu2spkt (struct qbuf *qb, int len) {
 	int    li;
 	int     nread,
 			pktlen,
@@ -2023,13 +2014,13 @@ udtsdu2spkt (struct qbuf *qb, int len)
 			char    file[BUFSIZ];
 			FILE   *fp;
 
-			 sprintf (file, ssapfile, getpid ());
+			sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				spkt2text (fp, s, 1);
-				 fclose (fp);
+				fclose (fp);
 			}
 		} else {
-			 fflush (stdout);
+			fflush (stdout);
 			spkt2text (stderr, s, 1);
 		}
 	}
@@ -2061,8 +2052,7 @@ udtsdu2spkt (struct qbuf *qb, int len)
 /*  */
 
 struct ssapkt *
-newspkt (int code)
-{
+newspkt (int code) {
 	struct ssapkt *s;
 
 	s = (struct ssapkt *) calloc (1, sizeof *s);
@@ -2076,11 +2066,10 @@ newspkt (int code)
 }
 
 
-int 
-freespkt (struct ssapkt *s)
-{
+int
+freespkt (struct ssapkt *s) {
 	struct qbuf *qb,
-			*qp;
+			   *qp;
 
 	if (s == NULL)
 		return;

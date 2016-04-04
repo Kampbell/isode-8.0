@@ -68,9 +68,8 @@ static int decimation = 2;
 extern int two_passes;
 
 /* ARGSUSED */
-int 
-photo_start (char *name)
-{
+int
+photo_start (char *name) {
 	x = y = 0;
 	if (passno == 1) {
 		maxx = 0;
@@ -80,9 +79,8 @@ photo_start (char *name)
 }
 
 
-int 
-photo_end (char *name)
-{
+int
+photo_end (char *name) {
 
 	/* Decoding has finished - display the photo */
 	char buff[128];
@@ -95,7 +93,7 @@ photo_end (char *name)
 		/* Initialise a window to recieve a photo of 'name' */
 
 		if (!(dpy= XOpenDisplay((char *) 0))) {
-			 printf ("Cannot open X display");
+			printf ("Cannot open X display");
 			return (-1);
 		}
 		XSetIOErrorHandler(silentExit);
@@ -118,7 +116,7 @@ photo_end (char *name)
 		pixmap = XCreatePixmap(dpy, win,
 							   winW,winH, DefaultDepthOfScreen(scr));
 		if (!pixmap) {
-			 fprintf (stderr,"decode_fax: Pixmap failed");
+			fprintf (stderr,"decode_fax: Pixmap failed");
 			return (-1);
 		}
 
@@ -143,13 +141,13 @@ photo_end (char *name)
 		name = NULL;
 
 	if (name == NULL) {
-		 printf ("(See X window, pid %d)", getpid());
-		 fflush (stdout);
+		printf ("(See X window, pid %d)", getpid());
+		fflush (stdout);
 	}
-	 close (1);
+	close (1);
 
-	 sprintf(buff, name ? "%s" : "%s (%d)",
-				   name ? name : "Photo", getpid());
+	sprintf(buff, name ? "%s" : "%s (%d)",
+			name ? name : "Photo", getpid());
 	XChangeProperty(dpy, win, XA_WM_NAME, XA_STRING, 8,
 					PropModeReplace, buff, strlen(buff));
 	XMapWindow(dpy, win);
@@ -194,15 +192,13 @@ photo_end (char *name)
 	return 0;
 }
 
-int 
-photo_black (int length)
-{
+int
+photo_black (int length) {
 	x += length;
 }
 
-int 
-photo_white (int length)
-{
+int
+photo_white (int length) {
 	int x1;
 	int x2;
 	int y1;

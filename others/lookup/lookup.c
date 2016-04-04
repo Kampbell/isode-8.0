@@ -76,11 +76,10 @@ static struct dispatch dispatches[] = {
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
-	 ryinitiator (argc, argv, myservice, mycontext, mypci,
-						table_PasswordLookup_Operations, dispatches, do_quit);
+int
+main (int argc, char **argv, char **envp) {
+	ryinitiator (argc, argv, myservice, mycontext, mypci,
+				 table_PasswordLookup_Operations, dispatches, do_quit);
 
 	exit (0);			/* NOTREACHED */
 }
@@ -89,9 +88,8 @@ main (int argc, char **argv, char **envp)
 
 /* ARGSUSED */
 
-static int 
-do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserName **arg)
-{
+static int
+do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserName **arg) {
 	char   *cp;
 
 	if ((cp = *args++) == NULL) {
@@ -109,9 +107,8 @@ do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLoo
 
 /* ARGSUSED */
 
-static int 
-do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserID **arg)
-{
+static int
+do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserID **arg) {
 	char   *cp;
 
 	if ((cp = *args++) == NULL) {
@@ -165,7 +162,7 @@ caddr_t *dummy;
 		acs_adios (aca, "A-RELEASE.REQUEST");
 
 	if (!acr -> acr_affirmative) {
-		 AcUAbortRequest (sd, NULLPEP, 0, aci);
+		AcUAbortRequest (sd, NULLPEP, 0, aci);
 		adios (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
 	}
 
@@ -178,9 +175,8 @@ caddr_t *dummy;
 
 /* ARGSUSED */
 
-static int 
-lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *result, struct RoSAPindication *roi)
-{
+static int
+lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *result, struct RoSAPindication *roi) {
 	print_qb (result -> name);
 	putchar (':');
 	print_qb (result -> passwd);
@@ -196,9 +192,8 @@ lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *res
 }
 
 
-static 
-print_qb (struct qbuf *q)
-{
+static
+print_qb (struct qbuf *q) {
 	struct qbuf *p;
 
 	if (q == NULL)

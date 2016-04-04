@@ -68,8 +68,7 @@ static int reason_err8_cnt = sizeof reason_err8 / sizeof reason_err8[0];
 
 
 char *
-SReportString (int code)
-{
+SReportString (int code) {
 	int    fcode;
 	static char buffer[BUFSIZ];
 
@@ -83,31 +82,29 @@ SReportString (int code)
 	} else if (code < reason_err0_cnt)
 		return reason_err0[code];
 
-	 sprintf (buffer, "unknown reason code 0x%x", code);
+	sprintf (buffer, "unknown reason code 0x%x", code);
 	return buffer;
 }
 
 /*  */
 
-void 
-rts_adios (struct RtSAPabort *rta, char *event)
-{
+void
+rts_adios (struct RtSAPabort *rta, char *event) {
 	rts_advise (rta, event);
 
 	_exit (1);
 }
 
 
-void 
-rts_advise (struct RtSAPabort *rta, char *event)
-{
+void
+rts_advise (struct RtSAPabort *rta, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rta -> rta_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),
-						rta -> rta_cc, rta -> rta_cc, rta -> rta_data);
+		sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),
+				 rta -> rta_cc, rta -> rta_cc, rta -> rta_data);
 	else
-		 sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
+		sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
@@ -130,9 +127,8 @@ void	adios (char* what, ...)
 #else
 /* VARARGS */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -152,9 +148,8 @@ void	advise (int code, char* what, ...)
 #else
 /* VARARGS */
 
-void 
-advise (int code, char *what, char *fmt)
-{
+void
+advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
@@ -174,9 +169,8 @@ void	ryr_advise (char* what, ...)
 #else
 /* VARARGS */
 
-void 
-ryr_advise (char *what, char *fmt)
-{
+void
+ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif
@@ -186,9 +180,8 @@ ryr_advise (char *what, char *fmt)
 #ifdef	lint
 /* VARARGS4 */
 
-int 
-rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt)
-{
+int
+rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 	return rtsaplose (rti, reason, what, fmt);
 }
 #endif
@@ -201,20 +194,19 @@ rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt)
 
 
 #ifndef	TMS
-int 
-timer (int cc)
-{
+int
+timer (int cc) {
 	long    ms;
 	float   bs;
 	struct timeval  stop,
-			td;
+			   td;
 	static struct timeval   start;
 
 	if (cc == 0) {
-		 gettimeofday (&start, (struct timezone *) 0);
+		gettimeofday (&start, (struct timezone *) 0);
 		return;
 	} else
-		 gettimeofday (&stop, (struct timezone  *) 0);
+		gettimeofday (&stop, (struct timezone  *) 0);
 
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
@@ -239,9 +231,8 @@ static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
 long	times ();
 
 
-int 
-timer (int cc)
-{
+int
+timer (int cc) {
 	long    ms;
 	float   bs;
 	long    stop,

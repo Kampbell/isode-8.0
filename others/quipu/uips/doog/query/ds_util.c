@@ -312,8 +312,7 @@ Filter *ap_filter_ptr;
  *
  */
 char *
-get_entry_type_name (char *entry_name)
-{
+get_entry_type_name (char *entry_name) {
 	char *start, *end;
 	char *type_name;
 	char save;

@@ -75,9 +75,8 @@ int (*closefn[])() = {
 	close, TDiscFromServer
 };
 
-static int 
-iso_conn (char *server)
-{
+static int
+iso_conn (char *server) {
 	struct TSAPconnect tcs;
 	struct TSAPconnect *tc = &tcs;
 	struct TSAPdisconnect tds;
@@ -178,12 +177,12 @@ iso_conn (char *server)
  * of the form hostname:number.screen ("::" if DECnet) is returned in a result
  * parameter. The screen number to use is also returned.
  */
-int 
+int
 _XConnectDisplay (
-    char *display_name,
-    char *expanded_name,	/* return */
-    char *prop_name,		/* return */
-    int *screen_num		/* return */
+	char *display_name,
+	char *expanded_name,	/* return */
+	char *prop_name,		/* return */
+	int *screen_num		/* return */
 )
 
 {
@@ -227,7 +226,7 @@ _XConnectDisplay (
 	 * NOTE - if DECnet is to be used, the display name is formatted
 	 * as "host::number"
 	 */
-	 strncpy(displaybuf, display_name, sizeof(displaybuf));
+	strncpy(displaybuf, display_name, sizeof(displaybuf));
 	if ((display_ptr = SearchString(displaybuf,':')) == NULL) return (-1);
 #ifdef DNETCONN
 	if (*(display_ptr + 1) == ':') {
@@ -301,7 +300,7 @@ _XConnectDisplay (
 	if (displaybuf[0] == '\0')
 #ifdef DNETCONN
 		if (dnet)
-			 strcpy (displaybuf, "0");
+			strcpy (displaybuf, "0");
 		else
 #endif
 #ifdef UNIXCONN
@@ -318,7 +317,7 @@ _XConnectDisplay (
 			strcpy(displaybuf, name.nodename);
 		}
 #else
-			 gethostname (displaybuf, sizeof(displaybuf));
+			gethostname (displaybuf, sizeof(displaybuf));
 #endif /* hpux */
 #endif /* UNIXCONN else TCPCONN (assumed) */
 
@@ -355,7 +354,7 @@ _XConnectDisplay (
 					(strcmp("unix", displaybuf) == 0)) {
 				/* Connect locally using Unix domain. */
 				unaddr.sun_family = AF_UNIX;
-				 strcpy(unaddr.sun_path, X_UNIX_PATH);
+				strcpy(unaddr.sun_path, X_UNIX_PATH);
 				strcat(unaddr.sun_path, display_ptr);
 				addr = (struct sockaddr *) &unaddr;
 				addrlen = strlen(unaddr.sun_path) + 2;
@@ -432,7 +431,7 @@ _XConnectDisplay (
 
 
 			if (connect(fd, addr, addrlen) == -1) {
-				 close (fd);
+				close (fd);
 				return(-1); 	    /* errno set by system call. */
 			}
 		}
@@ -453,7 +452,7 @@ _XConnectDisplay (
 			ioctl(fd, FIOSNBIO, &arg);
 		}
 #else
-		 fcntl(fd, F_SETFL, FNDELAY);
+		fcntl(fd, F_SETFL, FNDELAY);
 #endif /* FIOSNBIO */
 
 #ifdef ISOCONN
@@ -486,7 +485,7 @@ _XConnectDisplay (
 		for (cp = prop_name; *cp; cp++) *(display_ptr++) = *cp;
 	}
 	*display_ptr = '\0';
-	 strcpy(expanded_name, displaybuf);
+	strcpy(expanded_name, displaybuf);
 	return(fd);
 
 }
@@ -495,14 +494,14 @@ _XConnectDisplay (
  * Disconnect from server.
  */
 
-int 
+int
 _XDisconnectDisplay (int server)
 
 {
 #ifdef ISOCONN
 	CloseToServer(server);
 #else /* ISOCONN */
-	 close(server);
+	close(server);
 #endif /* ISOCONN */
 }
 
@@ -677,7 +676,7 @@ xConnClientPrefix *client;
 			bptr += padlength[auth_strlen & 3];
 		}
 	}
-	 WriteToServer(dpy->fd, buffer, bytes);
+	WriteToServer(dpy->fd, buffer, bytes);
 	return;
 }
 

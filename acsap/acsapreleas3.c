@@ -38,9 +38,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas3.c,v 9.0 
 
 /*    handle P-RELEASE.INDICATION */
 
-int 
-AcFINISHser (int sd, struct PSAPfinish *pf, struct AcSAPindication *aci)
-{
+int
+AcFINISHser (int sd, struct PSAPfinish *pf, struct AcSAPindication *aci) {
 	SBV	    smask;
 	int	    result;
 	PE	    pe;
@@ -109,7 +108,7 @@ out:
 	if (pdu)
 		free_ACS_ACSE__apdu (pdu);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

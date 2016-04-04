@@ -37,9 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/rfatime.c,v 9.0 
 
 
 
-int 
-main (int ac, char **av)
-{
+int
+main (int ac, char **av) {
 
 	struct timeval tv;
 	time_t dt;

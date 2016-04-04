@@ -37,11 +37,11 @@ int position_dit() {
 		dn = NULLDN;
 		dn = str2dn(posdit);
 		if (dn == NULLDN) {
-			 printf(errmsg_invposditconf);
+			printf(errmsg_invposditconf);
 		} else {
-			 printf(curpos_msg);
+			printf(curpos_msg);
 			display_posdit(strlen(curpos_msg), posdit);
-			 determine_posdit(&objectType);
+			determine_posdit(&objectType);
 			posdit_oc = objectType;
 		}
 		de_prompt_yesno(change_pos_msg, change_pos, no_string);
@@ -49,14 +49,14 @@ int position_dit() {
 			free(change_pos);
 			return OK;
 		} else {
-			 printf(enter_new_posdit);
-			 get_posdit();
+			printf(enter_new_posdit);
+			get_posdit();
 			free(change_pos);
 			return OK;
 		}
 	} else {
-		 printf(enter_posdit);
-		 get_posdit();
+		printf(enter_posdit);
+		get_posdit();
 		free(change_pos);
 		return OK;
 	}
@@ -72,7 +72,7 @@ char str[];
 
 	savestr = malloc(LINESIZE);
 
-	 sprintf(savestr, str);
+	sprintf(savestr, str);
 
 	first = TRUE;
 
@@ -81,7 +81,7 @@ char str[];
 	while (*savestr != NULL) {
 		if (first == FALSE) {
 			spaces = length - 1 ;
-			 printf("%*s", spaces, " ");
+			printf("%*s", spaces, " ");
 		}
 		first = FALSE;
 		printLastComponent(INDENTOFF, savestr, 0, FALSE);
@@ -107,16 +107,16 @@ int get_posdit() {
 
 	rdn		= malloc(LINESIZE);
 
-	 strcpy(posdit_save, posdit);
+	strcpy(posdit_save, posdit);
 
 prompt_country:
 	enterString(COUNTRY, co, clp);
 	if (strlen(co) == 0) {
 		if (!(strcmp(default_country, ""))) {
-			 printf("%s %s %s\n", reenter_c, quit_String, to_quit);
+			printf("%s %s %s\n", reenter_c, quit_String, to_quit);
 			goto prompt_country;
 		} else {
-			 strcpy(co, default_country);
+			strcpy(co, default_country);
 		}
 	} else {
 		if (!(strcmp(co, quit_String))) {
@@ -130,33 +130,33 @@ prompt_country:
 					goto prompt_country;
 				}
 			}
-			 strcpy(posdit, posdit_save);
-			 printf(samepos_msg);
-			 display_posdit(strlen(samepos_msg), posdit);
+			strcpy(posdit, posdit_save);
+			printf(samepos_msg);
+			display_posdit(strlen(samepos_msg), posdit);
 			free(rdn);
 			highNumber = 0;
 			pagerOn(NUMBER_NOT_ALLOWED);
 			return OK;
 		} else {
-			 sprintf(default_organisation, "");
+			sprintf(default_organisation, "");
 		}
 	}
 
 	if (listCos(co, &clp) != OK) {
 		searchFail(co);
-		 de_exit(-1);
+		de_exit(-1);
 	}
 	noCos = listlen(clp);
 	if (noCos <= 0) {
-		 printf("%s `%s' \n\n", no_cMatch, co);
+		printf("%s `%s' \n\n", no_cMatch, co);
 		goto prompt_country;
 	} else if (noCos == 1) {
-		 sprintf(posdit, "@%s", clp->name);
+		sprintf(posdit, "@%s", clp->name);
 		rdn = copy_string(lastComponent(clp->name, COUNTRY));
-		 strcpy(default_country, rdn);
+		strcpy(default_country, rdn);
 		full_c	= malloc(LINESIZE);
-		 sprintf(full_c, "%s -- %s", default_country, mapCoName(default_country));
-		 printf("%s\n", full_c);
+		sprintf(full_c, "%s -- %s", default_country, mapCoName(default_country));
+		printf("%s\n", full_c);
 		free(full_c);
 		for (at = clp->ats; at != NULLATTR; at = at->attr_link) {
 			if (strcmp(attr2name(at->attr_type, OIDPART), "masterDSA") == 0) {
@@ -167,28 +167,28 @@ prompt_country:
 		highNumber = 0;
 		pagerOn(NUMBER_NOT_ALLOWED);
 	} else {
-		 printf(got_match);
-		 printf(type_number);
+		printf(got_match);
+		printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListCos(clp);
 		goto prompt_country;
 	}
 prompt_org:
-	 printf("\n");
+	printf("\n");
 	enterString(ORG, org, olp);
 	if (strlen(org) == 0) {
 		if (!(strcmp(default_organisation, ""))) {
 			if ((strcmp(org_compel, no_string))) {
-				 printf("%s %s %s\n", enter_org, quit_String, to_quit);
+				printf("%s %s %s\n", enter_org, quit_String, to_quit);
 				goto prompt_org;
 			} else {
-				 printf(newpos_msg);
-				 display_posdit(strlen(newpos_msg), posdit);
+				printf(newpos_msg);
+				display_posdit(strlen(newpos_msg), posdit);
 				free(rdn);
 				return OK;
 			}
 		} else {
-			 sprintf(org, "%s", default_organisation);
+			sprintf(org, "%s", default_organisation);
 		}
 	} else {
 		if (!(strcmp(org, quit_String))) {
@@ -205,45 +205,45 @@ prompt_org:
 				}
 			}
 			if (strcmp(org_compel, no_string)) {
-				 strcpy(posdit, posdit_save);
-				 printf(samepos_msg);
-				 display_posdit(strlen(samepos_msg), posdit);
+				strcpy(posdit, posdit_save);
+				printf(samepos_msg);
+				display_posdit(strlen(samepos_msg), posdit);
 				free(rdn);
 				return OK;
 			} else {
-				 printf(newpos_msg);
-				 display_posdit(strlen(newpos_msg), posdit);
+				printf(newpos_msg);
+				display_posdit(strlen(newpos_msg), posdit);
 				posdit_oc = COUNTRY;
 				free(rdn);
 				return OK;
 			}
 		} else {
-			 sprintf(default_department, "");
+			sprintf(default_department, "");
 		}
 	}
 	if (listOrgs(posdit, org, &olp) != OK) {
 		searchFail(org);
-		 strcpy(posdit, posdit_save);
-		 printf(samepos_msg);
-		 display_posdit(strlen(samepos_msg), posdit);
+		strcpy(posdit, posdit_save);
+		printf(samepos_msg);
+		display_posdit(strlen(samepos_msg), posdit);
 		free(rdn);
 		return OK;
 	}
 	noOrgs = listlen(olp);
 	if (noOrgs <= 0) {
-		 printf("%s `%s' \n\n", no_orgMatch, org);
+		printf("%s `%s' \n\n", no_orgMatch, org);
 		goto prompt_org;
 	} else if (noOrgs == 1) {
-		 sprintf(posdit, "@%s", olp->name);
+		sprintf(posdit, "@%s", olp->name);
 		rdn = copy_string(lastComponent(olp->name, ORG));
-		 strcpy(default_organisation, rdn);
-		 printf("%s\n", default_organisation);
+		strcpy(default_organisation, rdn);
+		printf("%s\n", default_organisation);
 		highNumber = 0;
 		pagerOn(NUMBER_NOT_ALLOWED);
 		posdit_oc = ORG;
 	} else {
-		 printf(got_match);
-		 printf(type_number);
+		printf(got_match);
+		printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListOrgs(org, olp);
 		goto prompt_org;
@@ -256,45 +256,45 @@ prompt_org:
 		return OK;
 	} else if ((strcmp(have_department, yes_string))) {
 		/* if different from yes (and no) */
-		 sprintf(ou, "%s", "*");
+		sprintf(ou, "%s", "*");
 		if (listOUs(posdit, ou, &oulp) != OK) {
-			 searchFail("departments");
-			 strcpy(posdit, posdit_save);
-			 printf(samepos_msg);
-			 display_posdit(strlen(samepos_msg), posdit);
+			searchFail("departments");
+			strcpy(posdit, posdit_save);
+			printf(samepos_msg);
+			display_posdit(strlen(samepos_msg), posdit);
 			free(rdn);
 			return NOTOK;
 		}
 		highNumber = 0; /* disable entering a number, without displaying it */
 		noOUs = listlen(oulp);
 		if (noOUs <= 0) {
-			 printf(newpos_msg);
-			 display_posdit(strlen(newpos_msg), posdit);
+			printf(newpos_msg);
+			display_posdit(strlen(newpos_msg), posdit);
 			free(rdn);
 			return OK;
 		} else {
-			 sprintf(change_posdit, "%s", yes_string);
+			sprintf(change_posdit, "%s", yes_string);
 		}
 	}
 	highNumber = 0; /* disable entering a number, without displaying it */
 	pagerOn(NUMBER_NOT_ALLOWED);
 prompt_ou:
-	 printf("\n");
+	printf("\n");
 	enterString(ORGUNIT, ou, oulp);
 	if (strlen(ou) == 0) {
 		if (!(strcmp(default_department, ""))) {
-			 printf(newpos_msg);
-			 display_posdit(strlen(newpos_msg), posdit);
+			printf(newpos_msg);
+			display_posdit(strlen(newpos_msg), posdit);
 			free(rdn);
 			return OK;
 		} else {
-			 strcpy(ou, default_department);
+			strcpy(ou, default_department);
 		}
 	} else {
 		if (!(strcmp(ou, quit_String)) ||
 				!(strcmp(ou, "-"))) {
-			 printf(newpos_msg);
-			 display_posdit(strlen(newpos_msg), posdit);
+			printf(newpos_msg);
+			display_posdit(strlen(newpos_msg), posdit);
 			free(rdn);
 			highNumber = 0;
 			pagerOn(NUMBER_NOT_ALLOWED);
@@ -303,32 +303,32 @@ prompt_ou:
 	}
 	if (listOUs(posdit, ou, &oulp) != OK) {
 		searchFail(ou);
-		 strcpy(posdit, posdit_save);
-		 printf(samepos_msg);
-		 display_posdit(strlen(samepos_msg), posdit);
+		strcpy(posdit, posdit_save);
+		printf(samepos_msg);
+		display_posdit(strlen(samepos_msg), posdit);
 		free(rdn);
 		return OK;
 	}
 	noOUs = listlen(oulp);
 	if (noOUs <= 0) {
-		 printf("%s `%s' \n\n", no_ouMatch, ou);
+		printf("%s `%s' \n\n", no_ouMatch, ou);
 		goto prompt_ou;
 	} else if (noOUs == 1) {
-		 sprintf(posdit, "@%s", oulp->name);
+		sprintf(posdit, "@%s", oulp->name);
 		rdn = copy_string(lastComponent(oulp->name, ORGUNIT));
-		 strcpy(default_department, rdn);
-		 printf("%s\n", default_department);
+		strcpy(default_department, rdn);
+		printf("%s\n", default_department);
 		highNumber = 0;
 		pagerOn(NUMBER_NOT_ALLOWED);
 		posdit_oc = ORGUNIT;
 	} else {
-		 printf(got_match);
-		 printf(type_number);
+		printf(got_match);
+		printf(type_number);
 		pagerOn(NUMBER_ALLOWED);
 		printListOUs(ou, oulp);
 		goto prompt_ou;
 	}
-	 printf(newpos_msg);
+	printf(newpos_msg);
 	display_posdit(strlen(newpos_msg), posdit);
 	free(rdn);
 	return OK;
@@ -344,7 +344,7 @@ int * objectType;
 	savestr = malloc(LINESIZE);
 	temprdn = malloc(LINESIZE);
 
-	 sprintf(savestr, posdit);
+	sprintf(savestr, posdit);
 
 	cp = rindex(savestr, '@');
 	cp++;

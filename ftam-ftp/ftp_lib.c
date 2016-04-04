@@ -96,7 +96,7 @@ ftp_quit() {
 
 	if (!connected) return OK;
 	n = command("QUIT");
-	 fclose(cout);
+	fclose(cout);
 	connected = 0;
 	data = -1;
 
@@ -149,7 +149,7 @@ char *filename;
 	if ((fd = recvrequest("NLST",filename)) == NOTOK) return NOTOK;
 	if ((fp = fdopen(fd,"r")) == NULL) {
 		close(fd);
-		 getreply(0);
+		getreply(0);
 		sprintf(ftp_error,"Out of memory");
 		return NOTOK;
 	}

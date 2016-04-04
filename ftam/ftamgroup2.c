@@ -38,30 +38,26 @@ static int frgrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struc
 
 /*    F-{MANAGE,BULK-{BEGIN,END}}.RESPONSE (group) */
 
-int 
-FManageResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
-{
+int
+FManageResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupResponse (sd, ftg, FTI_MANAGEMENT, FSB_INITIALIZED, fti);
 }
 
 
-int 
-FBulkBeginResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
-{
+int
+FBulkBeginResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupResponse (sd, ftg, FTI_BULKBEGIN, FSB_DATAIDLE, fti);
 }
 
 
-int 
-FBulkEndResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
-{
+int
+FBulkEndResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupResponse (sd, ftg, FTI_BULKEND, FSB_INITIALIZED, fti);
 }
 
 /*    F-GROUP.RESPONSE (group) */
 
-static int FGroupResponse (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti)
-{
+static int FGroupResponse (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti) {
 	SBV	    smask;
 	int	    result;
 	struct ftamblk *fsb;
@@ -76,15 +72,14 @@ static int FGroupResponse (int sd, struct FTAMgroup *ftg, int type, int state, s
 	if ((result = frgrpchk (fsb, ftg, type, fti)) != NOTOK)
 		result = FGroupResponseAux (fsb, ftg, state, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int FGroupResponseAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti)
-{
+static int FGroupResponseAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti) {
 	int    i;
 	int     did_loop,
 			npdu,
@@ -99,7 +94,7 @@ static int FGroupResponseAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int st
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
 	struct type_FTAM_PDU **pdup,
-			*pdus[NPDATA];
+			   *pdus[NPDATA];
 
 	bzero ((char *) texts, sizeof texts);
 	bzero ((char *) info, sizeof info);
@@ -138,7 +133,7 @@ out:
 
 	if (result == NOTOK) {
 		if (did_loop)
-			 ps2ftamlose (fsb, fti, "PDataRequest", pa);
+			ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		if (fti -> fti_abort.fta_action == FACTION_PERM)
 			freefsblk (fsb);
 
@@ -167,8 +162,7 @@ out:
 
 /*  */
 
-static int frgrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti)
-{
+static int frgrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti) {
 	if (fsb -> fsb_flags & FSB_INIT)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not responder");
 	switch (fsb -> fsb_state) {
@@ -444,8 +438,7 @@ wrong_state:
 
 /*  */
 
-static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti)
-{
+static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti) {
 	int     flags,
 			i;
 	struct type_FTAM_PDU *pdu;

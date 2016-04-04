@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/set_addon.c,v 9.0 1992
 
 /*  */
 
-int 
-set_addon (PE pe, PE last, PE new)
-{
+int
+set_addon (PE pe, PE last, PE new) {
 	if (pe == NULLPE)
 		return NOTOK;
 	if (last == NULLPE)

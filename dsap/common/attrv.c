@@ -104,9 +104,8 @@ char	multiline;
 	syntax_table[sntx].s_multiline  = multiline;
 }
 
-int 
-set_av_pe_print (int sntx, char *print_pe)
-{
+int
+set_av_pe_print (int sntx, char *print_pe) {
 	if (sntx >= num_syntax)
 		return;
 
@@ -166,17 +165,15 @@ short x;
 }
 
 char *
-syntax2str (int sntx)
-{
+syntax2str (int sntx) {
 	if (sntx >= num_syntax)
 		return NULLCP;
 
 	return (syntax_table[sntx].s_sntx);
 }
 
-short 
-str2syntax (char *str)
-{
+short
+str2syntax (char *str) {
 	sntx_table * ptr;
 	int i;
 
@@ -276,9 +273,8 @@ AttributeValue y;
 	return (OK);
 }
 
-static 
-strip_header (char **str)
-{
+static
+strip_header (char **str) {
 	char * ptr, *save, val;
 	int syntax;
 	static CMD_TABLE cmd_syntax [] = {
@@ -346,7 +342,7 @@ AttributeValue rav;
 	case 1: /* FILE */
 		return (str2file_aux (str,at,rav));
 	case 2: /* ASN */
-		 str2AttrV_aux (str,0,rav);
+		str2AttrV_aux (str,0,rav);
 		if (AttrV_decode (at,rav) == NOTOK) {
 			parse_error ("ASN attribute decode failed",NULLCP);
 			return (NOTOK);

@@ -89,9 +89,8 @@ char   *getenv ();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	char    buffer[BUFSIZ],
 			*vec[NVEC + 1];
 
@@ -116,7 +115,7 @@ main (int argc, char **argv, char **envp)
 		fetch_face (vec[0], vec[1]);
 
 		if (debug)
-			 fflush (stderr);
+			fflush (stderr);
 	}
 
 	return (0);
@@ -124,9 +123,8 @@ main (int argc, char **argv, char **envp)
 
 /*  */
 
-static 
-fetch_face (char *host, char *user)
-{
+static
+fetch_face (char *host, char *user) {
 	if ((myim = fetch_image (user, host)) == NULL && recording)
 		LLOG (pgm_log, LLOG_NOTICE,
 			  ("no image for \"%s\" \"%s\"", user, host));
@@ -137,12 +135,11 @@ fetch_face (char *host, char *user)
 
 /*  */
 
-static int 
-getline (char *buffer)
-{
+static int
+getline (char *buffer) {
 	int    i;
 	char  *cp,
-			 *ep;
+		  *ep;
 	static int  sticky = 0;
 
 	if (sticky) {
@@ -150,12 +147,12 @@ getline (char *buffer)
 		return NOTOK;
 	}
 
-	 printf ("%s> ", myname);
-	 fflush (stdout);
+	printf ("%s> ", myname);
+	fflush (stdout);
 
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
-			 printf ("\n");
+			printf ("\n");
 			if (cp != buffer) {
 				sticky++;
 				break;
@@ -174,12 +171,11 @@ getline (char *buffer)
 
 /*    ARGINIT */
 
-static 
-arginit (char **vec)
-{
+static
+arginit (char **vec) {
 	int	    n;
 	char  *ap,
-			 *cp;
+		  *cp;
 
 	if (myname = rindex (*vec, '/'))
 		myname++;
@@ -252,10 +248,10 @@ arginit (char **vec)
 
 /*  */
 
-static 
+static
 envinit  {
 	int     i,
-			pid;
+	pid;
 
 	if (debug)
 		return;
@@ -276,26 +272,26 @@ envinit  {
 
 /*  */
 
-static 
+static
 display_X  {
 	if (mywindow == NULL) {
 		int	bwidth;
 		char   *opt,
-			   def[BUFSIZ];
+		def[BUFSIZ];
 		XSizeHints hints;
 		XSetWindowAttributes xswattrs;
 		unsigned long xswattrs_mask;
 
 		forepix = XCreateGC (DISP, RootWindow (DISP, SCRN), 0L,
-							 (XGCValues *) NULL);
+		(XGCValues *) NULL);
 		highpix = XCreateGC (DISP, RootWindow (DISP, SCRN), 0L,
-							 (XGCValues *) NULL);
+		(XGCValues *) NULL);
 		XCopyGC (DISP, DefaultGC (DISP, SCRN), (1L<<(GCLastBit+1)) - 1,
-				 forepix);
+		forepix);
 		XCopyGC (DISP, DefaultGC (DISP, SCRN), (1L<<(GCLastBit+1)) - 1,
-				 highpix);
+		highpix);
 		if ((opt = XGetDefault (DISP, myname, "ReverseVideo"))
-				&& strcmp (opt, "on") == 0) {
+		&& strcmp (opt, "on") == 0) {
 			XSetForeground(DISP, forepix, WhitePixel(DISP, SCRN));
 			XSetForeground(DISP, highpix, WhitePixel(DISP, SCRN));
 			backpix = BlackPixel(DISP, SCRN);
@@ -328,13 +324,13 @@ display_X  {
 			myframe.width = DisplayWidth (DISP, SCRN) - bwidth * 2;
 		myframe.x = DisplayWidth (DISP, SCRN) - (myframe.width + bwidth * 2);
 		myframe.y = 0;
-		 sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
-						myframe.x, myframe.y);
+		sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
+				 myframe.x, myframe.y);
 
 		if (debug)
-			 fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
-							myframe.width, myframe.height, myframe.x, myframe.y,
-							myframe.bdrwidth);
+			fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
+					 myframe.width, myframe.height, myframe.x, myframe.y,
+					 myframe.bdrwidth);
 
 		hints.width = myim -> width;
 		hints.height = myim -> height;
@@ -371,14 +367,14 @@ display_X  {
 
 /*  */
 
-static 
+static
 Redisplay  {
 	int     sx,
-			sy,
-			dx,
-			dy;
+	sy,
+	dx,
+	dy;
 	unsigned int    h,
-			 w;
+	w;
 	XImage *image;
 
 	if (myim == NULL) {
@@ -394,16 +390,16 @@ Redisplay  {
 	h = min (myframe.height, myim -> height);
 
 	if (debug) {
-		 fprintf (stderr, "im: %dx%d frame:%dx%d\n",
-						myim -> width, myim -> height, myframe.width, myframe.height);
-		 fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
-						sx, sy, dx, dy, w, h);
+		fprintf (stderr, "im: %dx%d frame:%dx%d\n",
+		myim -> width, myim -> height, myframe.width, myframe.height);
+		fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
+		sx, sy, dx, dy, w, h);
 	}
 
 	image = XCreateImage (DISP, DefaultVisual (DISP, SCRN), 1, XYBitmap, 0,
-						  myim -> data -> qb_forw -> qb_data,
-						  (unsigned int) myim -> width,
-						  (unsigned int) myim -> height, 8, 0);
+	myim -> data -> qb_forw -> qb_data,
+	(unsigned int) myim -> width,
+	(unsigned int) myim -> height, 8, 0);
 	if (image == NULL)
 		adios (NULLCP, "XCreateImage failed");
 	image -> byte_order = image -> bitmap_bit_order = LSBFirst;
@@ -415,7 +411,7 @@ Redisplay  {
 
 /*  */
 
-static int 
+static int
 ALRMser  {
 	if (mywindow && mapped) {
 		if (parent)
@@ -432,9 +428,8 @@ ALRMser  {
 
 /* ARGSUSED */
 
-static int 
-XWINser (int io)
-{
+static int
+XWINser (int io) {
 	int	    ww,
 			wh;
 	XEvent   xevent;
@@ -446,8 +441,8 @@ XWINser (int io)
 		switch (xe -> type) {
 		case Expose:
 			if (debug)
-				 fprintf (stderr, "Expose %d\n",
-								((XExposeEvent *) xe) -> count);
+				fprintf (stderr, "Expose %d\n",
+						 ((XExposeEvent *) xe) -> count);
 			if (myim) {
 				if (((XExposeEvent *) xe) -> count > 0)
 					break;
@@ -465,8 +460,8 @@ unmap:
 
 		case MapNotify:
 			if (debug)
-				 fprintf (stderr, "MapNotify (0x%x)\n",
-								myim);
+				fprintf (stderr, "MapNotify (0x%x)\n",
+						 myim);
 			if (myim) {
 				mapped = 1;
 				Redisplay ();
@@ -476,9 +471,9 @@ unmap:
 
 		case ConfigureNotify:
 			if (debug)
-				 fprintf (stderr, "ConfigureNotify %dx%d\n",
-								((XConfigureEvent *) xe) -> height,
-								((XConfigureEvent *) xe) -> width);
+				fprintf (stderr, "ConfigureNotify %dx%d\n",
+						 ((XConfigureEvent *) xe) -> height,
+						 ((XConfigureEvent *) xe) -> width);
 			if ((wh = ((XConfigureEvent *) xe) -> height) > 0
 					&& (ww = ((XConfigureEvent *) xe) -> width) > 0)
 				myframe.height = wh, myframe.width = ww;
@@ -486,19 +481,19 @@ unmap:
 
 		case UnmapNotify:
 			if (debug)
-				 fprintf (stderr, "UnmapNotify\n");
+				fprintf (stderr, "UnmapNotify\n");
 			mapped = 0;
 			break;
 
 		case ReparentNotify:
 			if (debug)
-				 fprintf (stderr, "ReparentNotify\n");
+				fprintf (stderr, "ReparentNotify\n");
 			parent = 1;
 			break;
 
 		default:
 			if (debug)
-				 fprintf (stderr, "Event %d\n", xe -> type);
+				fprintf (stderr, "Event %d\n", xe -> type);
 			break;
 		}
 	}
@@ -506,9 +501,8 @@ unmap:
 
 /*    SOCKET */
 
-int 
-startsocket (int portno)
-{
+int
+startsocket (int portno) {
 	struct sockaddr_in in_socket;
 	struct sockaddr_in *isock = &in_socket;
 
@@ -525,9 +519,8 @@ startsocket (int portno)
 
 /*  */
 
-int 
-readsocket (char *buffer)
-{
+int
+readsocket (char *buffer) {
 	int     cc;
 
 	for (;;) {
@@ -554,7 +547,7 @@ readsocket (char *buffer)
 				continue;
 
 			if (ppidsw > 0 && kill (ppidsw, 0) == NOTOK) {
-				 close (sd);
+				close (sd);
 				return NOTOK;
 			}
 
@@ -565,7 +558,7 @@ readsocket (char *buffer)
 		}
 
 		if (ppidsw > 0 && kill (ppidsw, 0) == NOTOK) {
-			 close (sd);
+			close (sd);
 			return NOTOK;
 		}
 

@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/test.c,v 9.0 19
 extern int parse_line;
 extern int parse_status;
 
-int 
-main (int argc, char **argv)
-{
+int
+main (int argc, char **argv) {
 	char * buffer;
 	char * getline();
 	int opt;
@@ -79,7 +78,7 @@ main (int argc, char **argv)
 			do_parse (*argv++);
 	} else
 		for (;;) {
-			 fprintf (stderr,"-> ");
+			fprintf (stderr,"-> ");
 
 			if ((buffer = getline(stdin)) == NULLCP)
 				break;
@@ -100,9 +99,8 @@ main (int argc, char **argv)
 
 }
 
-int 
-do_parse (char *str)
-{
+int
+do_parse (char *str) {
 	Attr_Sequence as;
 	Attr_Sequence as2;
 	Attr_Sequence as_combine();
@@ -117,11 +115,11 @@ do_parse (char *str)
 	as = as_cpy (as2);
 
 	if (as == NULLATTR) {
-		 fprintf (stderr,"NULL value\n");
+		fprintf (stderr,"NULL value\n");
 		return;
 	}
 	if (parse_status != 0) {
-		 fprintf (stderr,"parse error - non null as\n");
+		fprintf (stderr,"parse error - non null as\n");
 		return;
 	}
 
@@ -175,11 +173,11 @@ do_parse (char *str)
 	quipu_faststart = FALSE;
 
 	if (as2 == NULLATTR) {
-		 fprintf (stderr,"NULL value from 2nd parse\n");
+		fprintf (stderr,"NULL value from 2nd parse\n");
 		return;
 	}
 	if (parse_status != 0) {
-		 fprintf (stderr,"parse error 2nd time - non null as\n");
+		fprintf (stderr,"parse error 2nd time - non null as\n");
 		return;
 	}
 

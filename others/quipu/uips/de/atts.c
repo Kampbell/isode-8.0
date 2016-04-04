@@ -86,9 +86,8 @@ AttributeValue  av;
 }
 
 
-int 
-printDetails (int objectType, struct namelist *lp)
-{
+int
+printDetails (int objectType, struct namelist *lp) {
 	Attr_Sequence at;
 	AV_Sequence av;
 	char * cp;
@@ -96,16 +95,16 @@ printDetails (int objectType, struct namelist *lp)
 	if (lp->ats == NULLATTR) {
 		switch (objectType) {
 		case PERSON:
-			 strcpy(padding, "        ");
+			strcpy(padding, "        ");
 			break;
 		case ORGUNIT:
-			 strcpy(padding, "      ");
+			strcpy(padding, "      ");
 			break;
 		case ORG:
-			 strcpy(padding, "    ");
+			strcpy(padding, "    ");
 			break;
 		case COUNTRY:
-			 strcpy(padding, "  ");
+			strcpy(padding, "  ");
 			break;
 		}
 		pageprint("%s(Sorry - no details available)\n", padding);
@@ -116,16 +115,16 @@ printDetails (int objectType, struct namelist *lp)
 	for (at = lp->ats; at != NULLATTR; at = at->attr_link) {
 		switch (objectType) {
 		case PERSON:
-			 strcpy(padding, "        ");
+			strcpy(padding, "        ");
 			break;
 		case ORGUNIT:
-			 strcpy(padding, "      ");
+			strcpy(padding, "      ");
 			break;
 		case ORG:
-			 strcpy(padding, "    ");
+			strcpy(padding, "    ");
 			break;
 		case COUNTRY:
-			 strcpy(padding, "  ");
+			strcpy(padding, "  ");
 			break;
 		}
 		pageprint("%s%-*s", padding, PADCHARS,
@@ -141,9 +140,8 @@ printDetails (int objectType, struct namelist *lp)
 	linewrapOff();
 }
 
-int 
-printPersonOneLiner (struct namelist *lp, int number)
-{
+int
+printPersonOneLiner (struct namelist *lp, int number) {
 	Attr_Sequence at;
 	char * cp;
 	char mail[LINESIZE], phone[LINESIZE];
@@ -156,13 +154,13 @@ printPersonOneLiner (struct namelist *lp, int number)
 	for (at = lp->ats; at != NULLATTR; at = at->attr_link) {
 		if (strcmp(attr2name(at->attr_type, OIDPART), DE_MAILBOX) == 0) {
 			cp = val2str(&(at->attr_value->avseq_av));
-			 strcpy(mail, cp);
+			strcpy(mail, cp);
 			free(cp);
 			continue;
 		}
 		if (strcmp(attr2name(at->attr_type, OIDPART), DE_TELEPHONE) == 0) {
 			cp = val2str(&(at->attr_value->avseq_av));
-			 strcpy(phone, cp);
+			strcpy(phone, cp);
 			free(cp);
 			continue;
 		}
@@ -174,9 +172,8 @@ printPersonOneLiner (struct namelist *lp, int number)
 /* actually we only want a special handler for the printing, but static
    declarations in dsap/common/post.c force us to do all this */
 
-static 
-de_addrfree (struct postaddr *addr)
-{
+static
+de_addrfree (struct postaddr *addr) {
 	struct postaddr * next;
 	for (; addr != (struct postaddr *) NULL; addr = next) {
 		next = addr->pa_next;
@@ -185,9 +182,8 @@ de_addrfree (struct postaddr *addr)
 	}
 }
 
-static 
-de_addrcmp (struct postaddr *a, struct postaddr *b)
-{
+static
+de_addrcmp (struct postaddr *a, struct postaddr *b) {
 	int res;
 	for (; (a != (struct postaddr *) NULL) && (b != (struct postaddr *) NULL) ;
 			a = a->pa_next, b=b->pa_next)
@@ -202,8 +198,7 @@ de_addrcmp (struct postaddr *a, struct postaddr *b)
 }
 
 static struct postaddr *
-de_addrcpy (struct postaddr *a)
-{
+de_addrcpy (struct postaddr *a) {
 	struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 
 	c = result; /* to keep lint quiet ! */
@@ -225,8 +220,7 @@ de_addrcpy (struct postaddr *a)
 }
 
 static struct postaddr *
-de_addrparse (char *str)
-{
+de_addrparse (char *str) {
 	struct postaddr * result = (struct postaddr *) NULL;
 	struct postaddr * a, *b;
 	char * ptr;
@@ -324,7 +318,7 @@ struct postaddr * m;
 {
 	PE ret_pe;
 
-	 encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
+	encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -367,7 +361,7 @@ int format;
 		if (format == READOUT) {
 			if (postal_indent == 0)
 				postal_indent = 2;
-			 sprintf(prefbuff, "\n%s%*s", padding, PADCHARS, "");
+			sprintf(prefbuff, "\n%s%*s", padding, PADCHARS, "");
 			prefix = prefbuff;
 		}
 	}
@@ -402,18 +396,18 @@ char * str;
 	char	* cp, * cp2;
 
 	if ((greyBook == TRUE) && (index(str, '@') != NULLCP)) {
-		 strcpy(workbuf, str);
+		strcpy(workbuf, str);
 		for (cp = workbuf; *cp != '@'; *ptr++ = *cp++) {};
 		*ptr++ = *cp++;
 		*ptr = '\0';
 		while (TRUE) {
 			cp2 = rindex(cp, '.');
 			if (cp2 != NULLCP) {
-				 strcat(buf, cp2 + 1);
-				 strcat(buf, ".");
+				strcat(buf, cp2 + 1);
+				strcat(buf, ".");
 				*cp2 = '\0';
 			} else {
-				 strcat(buf, cp);
+				strcat(buf, cp);
 				break;
 			}
 		}
@@ -447,7 +441,7 @@ int  format;
 		pad = PADCHARS + strlen(padding) + 2;
 		AttrV_print(xps, &(dn->dn_rdn->rdn_av), format);
 		for (eptr = dn->dn_parent; eptr != NULLDN; eptr = eptr->dn_parent) {
-			 sprintf(padstr, ",\n%*s", pad, "");
+			sprintf(padstr, ",\n%*s", pad, "");
 			ps_print(xps, padstr);
 			AttrV_print(xps, &(eptr->dn_rdn->rdn_av), format);
 			pad += 2;
@@ -552,9 +546,8 @@ static struct pair pairs[] = {
 };
 
 
-static 
-de_fax_free (struct fax *f)
-{
+static
+de_fax_free (struct fax *f) {
 	free (f -> number);
 
 	if (f -> bits)
@@ -564,8 +557,7 @@ de_fax_free (struct fax *f)
 }
 
 static struct fax *
-de_fax_cpy (struct fax *a)
-{
+de_fax_cpy (struct fax *a) {
 	struct fax *f;
 
 	f = (struct fax *) smalloc (sizeof *f);
@@ -576,9 +568,8 @@ de_fax_cpy (struct fax *a)
 	return f;
 }
 
-static int 
-de_fax_cmp (struct fax *a, struct fax *b)
-{
+static int
+de_fax_cmp (struct fax *a, struct fax *b) {
 	int	    i;
 
 	if (a == (struct fax *) NULL)
@@ -644,11 +635,10 @@ int	format;
 }
 
 static struct fax *
-de_str2fax (char *str)
-{
+de_str2fax (char *str) {
 	int	    value;
 	char  *ptr,
-			 **ap;
+		  **ap;
 	char   *vec[NVEC + 1];
 	struct fax *f;
 	struct pair *p;
@@ -672,7 +662,7 @@ de_str2fax (char *str)
 	ptr = strdup (ptr);
 
 	bzero ((char *) vec, sizeof vec);
-	 str2vec (ptr, vec);
+	str2vec (ptr, vec);
 
 	for (ap = vec; *ap; ap++) {
 		if (sscanf (*ap, "%d", &value) == 1 && value >= 0)
@@ -726,7 +716,7 @@ struct fax *f;
 
 	f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
 
-	 encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
+	encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
 
 	if (f -> fax_bits)
 		free (f -> fax_bits);
@@ -755,29 +745,29 @@ PE	pe;
 }
 
 
-int 
+int
 specialSyntaxHandlers  {
 	AttributeType at;
 
 	set_attribute_syntax(str2syntax("PostalAddress"), (IFP) de_addrenc, (IFP)de_addrdec,
-						 (IFP) de_addrparse, (IFP) de_addrprint, (IFP) de_addrcpy,
-						 (IFP) de_addrcmp, (IFP) de_addrfree, NULLCP, NULLIFP, TRUE);
+	(IFP) de_addrparse, (IFP) de_addrprint, (IFP) de_addrcpy,
+	(IFP) de_addrcmp, (IFP) de_addrfree, NULLCP, NULLIFP, TRUE);
 	set_attribute_syntax(str2syntax("DN"), (IFP) dn_enc, (IFP) dn_dec, (IFP) str2dnX,
-						 de_dn_print, (IFP) dn_cpy, dn_cmp, dn_free,
-						 NULLCP, NULLIFP, TRUE );
+	de_dn_print, (IFP) dn_cpy, dn_cmp, dn_free,
+	NULLCP, NULLIFP, TRUE );
 	set_attribute_syntax(str2syntax("TelephoneNumber"), (IFP) de_strenc,
-						 (IFP) de_prtsdec, (IFP) prtparse, de_phone_print,
-						 (IFP) strdup, telcmp, sfree, NULLCP, soundex_match,
-						 TRUE);
+	(IFP) de_prtsdec, (IFP) prtparse, de_phone_print,
+	(IFP) strdup, telcmp, sfree, NULLCP, soundex_match,
+	TRUE);
 	set_attribute_syntax(str2syntax("FacsimileTelephoneNumber"), (IFP) de_fax_enc,
-						 (IFP) de_fax_dec, (IFP) de_str2fax, de_fax_print,
-						 (IFP) de_fax_cpy, de_fax_cmp, de_fax_free, NULLCP,
-						 NULLIFP, TRUE);
+	(IFP) de_fax_dec, (IFP) de_str2fax, de_fax_print,
+	(IFP) de_fax_cpy, de_fax_cmp, de_fax_free, NULLCP,
+	NULLIFP, TRUE);
 
 	/* modify syntax handler for rfc822 mail attribute
 	   to allow for JNT ordering */
 	at = AttrT_new (DE_MAILBOX);
 	at->oa_syntax = add_attribute_syntax("elecMail", (IFP) de_ia5enc, (IFP) de_ia5sdec,
-										 (IFP) octparse, de_mailprint, (IFP) strdup, lexequ,
-										 sfree, NULLCP, soundex_match, TRUE);
+	(IFP) octparse, de_mailprint, (IFP) strdup, lexequ,
+	sfree, NULLCP, soundex_match, TRUE);
 }

@@ -67,12 +67,12 @@ doUfnSearch() {
 			de_exit(-1);
 
 	if (deLogLevel)
-		 ll_log (de_log, LLOG_NOTICE, NULLCP,
-					   "Search: ufn=%s", qinfo[PERSON].entered);
+		ll_log (de_log, LLOG_NOTICE, NULLCP,
+				"Search: ufn=%s", qinfo[PERSON].entered);
 
 	ufnel = 0;
 	ufnres = NULL;
-	 strcpy(buf, qinfo[PERSON].entered);
+	strcpy(buf, qinfo[PERSON].entered);
 	cp = buf;
 	for (cpp = &ufnargv[0]; ; cpp++) {
 		*cpp = cp;
@@ -106,14 +106,14 @@ doUfnSearch() {
 			resetprint("Couldn't read entry for `%s'\n",
 					   lastComponent(dn2str(dns->dns_dn), PERSON));
 		} else {
-			 printUfnComponents(dn2str(dns->dns_dn));
+			printUfnComponents(dn2str(dns->dns_dn));
 			printDetails(PERSON, qinfo[PERSON].lp);
 			freePRRs(&qinfo[PERSON].lp);
 		}
 		initAlarm();
 	}
 	alarmCleanUp();
-	 strcpy(qinfo[PERSON].defvalue, qinfo[PERSON].entered);
+	strcpy(qinfo[PERSON].defvalue, qinfo[PERSON].entered);
 	return;
 }
 
@@ -160,8 +160,8 @@ char * s;
 		goto validNumber;
 	if ((n = getpnum()) != -1)
 		if (n > i)
-			 fprintf(stderr,
-						   "Invalid number entered (maximum = %d)\n\n", i);
+			fprintf(stderr,
+					"Invalid number entered (maximum = %d)\n\n", i);
 		else
 			goto validNumber;
 

@@ -42,9 +42,8 @@ extern	struct type_Idist_FileSpec *makefs ();
 extern	struct type_Idist_QueryResult *query ();
 extern	struct type_Idist_FileList *do_listcdir ();
 
-int 
-doexec (char *cmd)
-{
+int
+doexec (char *cmd) {
 	int fd[2], status, pid, i;
 	char	buf[BUFSIZ];
 
@@ -55,21 +54,21 @@ doexec (char *cmd)
 		/*
 		 * Return everything the shell commands print.
 		 */
-		 close(0);
-		 close(1);
-		 close(2);
-		 open("/dev/null", 0);
-		 dup(fd[1]);
-		 dup(fd[1]);
-		 close(fd[0]);
-		 close(fd[1]);
-		 execl("/bin/sh", "sh", "-c", cmd, 0);
+		close(0);
+		close(1);
+		close(2);
+		open("/dev/null", 0);
+		dup(fd[1]);
+		dup(fd[1]);
+		close(fd[0]);
+		close(fd[1]);
+		execl("/bin/sh", "sh", "-c", cmd, 0);
 		_exit(127);
 	}
 	if (pid == -1)
 		return NOTOK;
 
-	 close(fd[1]);
+	close(fd[1]);
 
 	while ((i = read(fd[0], buf, sizeof(buf))) > 0) {
 		addtoia5 (buf, i);
@@ -79,14 +78,13 @@ doexec (char *cmd)
 		;
 	if (i == -1)
 		status = -1;
-	 close(fd[0]);
+	close(fd[0]);
 
 	return OK;
 }
 
-int 
-do_symlink (struct type_Idist_FileSpec *fs)
-{
+int
+do_symlink (struct type_Idist_FileSpec *fs) {
 	char	*new, old[BUFSIZ], *linkname;
 	int	i;
 
@@ -95,7 +93,7 @@ do_symlink (struct type_Idist_FileSpec *fs)
 	free (new);
 
 	new = qb2str (fs -> linkname);
-	 strcpy (old, new);
+	strcpy (old, new);
 	free (new);
 
 
@@ -113,11 +111,11 @@ do_symlink (struct type_Idist_FileSpec *fs)
 		if ((i = readlink (target, tbuf, BUFSIZ)) >= 0 &&
 				i == fs -> filesize &&
 				strncmp (old, tbuf, (int) fs -> filesize) == 0) {
-			 unlink (linkname);
+			unlink (linkname);
 			return OK;
 		}
 		if (bit_on (fs -> fileopts, bit_Idist_Options_verify)) {
-			 unlink (linkname);
+			unlink (linkname);
 			note ("need to update: %s", target);
 			return OK;
 		}
@@ -125,7 +123,7 @@ do_symlink (struct type_Idist_FileSpec *fs)
 
 	if (rename (linkname, target) < 0) {
 		nadvise (target, "can't rename %s to", linkname);
-		 unlink (linkname);
+		unlink (linkname);
 		return NOTOK;
 	}
 	if (bit_on (fs -> fileopts, bit_Idist_Options_compare))
@@ -134,21 +132,20 @@ do_symlink (struct type_Idist_FileSpec *fs)
 }
 
 static char *
-cannon (char *name)
-{
+cannon (char *name) {
 	static char	nname[BUFSIZ];
 	char	*cp;
 	extern	char	*tmpname;
 
 	if (catname)
-		 sprintf (tp, "/%s", name);
+		sprintf (tp, "/%s", name);
 	if((cp = rindex (target, '/')) == NULL)
-		 strcpy (nname, tmpname);
+		strcpy (nname, tmpname);
 	else if (cp == target)
-		 sprintf (nname, "/%s", tmpname);
+		sprintf (nname, "/%s", tmpname);
 	else {
 		*cp = '\0';
-		 sprintf (nname, "%s/%s", target, tmpname);
+		sprintf (nname, "%s/%s", target, tmpname);
 		*cp = '/';
 	}
 	return nname;
@@ -157,9 +154,8 @@ cannon (char *name)
 /*
  * Check to see if parent directory exists and create one if not.
  */
-int 
-chkparent (char *name)
-{
+int
+chkparent (char *name) {
 	char *cp;
 	struct stat stb;
 
@@ -181,9 +177,8 @@ chkparent (char *name)
 	return(-1);
 }
 
-int 
-do_rfile (struct type_Idist_FileSpec *fs)
-{
+int
+do_rfile (struct type_Idist_FileSpec *fs) {
 	char	*name, *p;
 
 	p = qb2str (fs -> filename);
@@ -197,14 +192,13 @@ do_rfile (struct type_Idist_FileSpec *fs)
 			return NOTOK;
 		}
 	}
-	 fchmod (fileno (cfile), (int)fs -> filemode);
+	fchmod (fileno (cfile), (int)fs -> filemode);
 
 	return OK;
 }
 
-int 
-do_hardlink (struct type_Idist_FileSpec *fs)
-{
+int
+do_hardlink (struct type_Idist_FileSpec *fs) {
 	char 	*new;
 	char	*cp;
 	char	old[BUFSIZ];
@@ -221,7 +215,7 @@ do_hardlink (struct type_Idist_FileSpec *fs)
 	free (cp);
 
 	if (catname)
-		 sprintf (tp, "/%s", new);
+		sprintf (tp, "/%s", new);
 	free (new);
 
 	if (lstat(target, &stb) == 0) {
@@ -248,9 +242,8 @@ do_hardlink (struct type_Idist_FileSpec *fs)
 	return OK;
 }
 
-int 
-do_direct (struct type_Idist_FileSpec *fs)
-{
+int
+do_direct (struct type_Idist_FileSpec *fs) {
 	char	*cp, *name;
 	struct stat stb;
 
@@ -313,9 +306,8 @@ do_direct (struct type_Idist_FileSpec *fs)
  * Remove a file or directory (recursively) and send back an acknowledge
  * or an error message.
  */
-int 
-i_remove (char *str)
-{
+int
+i_remove (char *str) {
 	DIR *d;
 	struct dirent *dp;
 	struct stat stb;
@@ -354,10 +346,10 @@ i_remove (char *str)
 		if (strcmp(dp->d_name, ".") == 0 ||
 				strcmp(dp->d_name, "..") == 0)
 			continue;
-		 sprintf (buf, "%s/%s", str, dp -> d_name);
+		sprintf (buf, "%s/%s", str, dp -> d_name);
 		result = i_remove(buf) == OK ? result : NOTOK;
 	}
-	 closedir(d);
+	closedir(d);
 	if (rmdir(str) < 0) {
 		nadvise (str, "Can't remove directory", str);
 		return NOTOK;
@@ -367,9 +359,8 @@ i_remove (char *str)
 }
 
 
-int 
-addtoia5 (char *str, int len)
-{
+int
+addtoia5 (char *str, int len) {
 	struct type_Idist_IA5List **ia5p;
 
 	for (ia5p = &ia5list; *ia5p; ia5p = &(*ia5p) -> next)
@@ -379,8 +370,7 @@ addtoia5 (char *str, int len)
 }
 
 struct type_Idist_QueryResult *
-query (char *str)
-{
+query (char *str) {
 	struct type_Idist_QueryResult *qr;
 	struct stat stb;
 
@@ -389,7 +379,7 @@ query (char *str)
 		adios ("memory", "out of");
 
 	if (catname)
-		 sprintf (tp, "/%s", str);
+		sprintf (tp, "/%s", str);
 
 	if (lstat (target, &stb) < 0) {
 		if (errno == ENOENT) {
@@ -422,8 +412,7 @@ query (char *str)
 }
 
 static struct type_Idist_IA5List *
-str2ia5list (char *s, int len)
-{
+str2ia5list (char *s, int len) {
 	struct type_Idist_IA5List *ia5;
 
 	if ((ia5 = (struct type_Idist_IA5List  *) calloc (1, sizeof *ia5))
@@ -439,7 +428,7 @@ str2ia5list (char *s, int len)
 }
 
 struct type_Idist_FileList *
-do_listcdir  {
+	do_listcdir  {
 	DIR	*d;
 	struct dirent *dp;
 	struct type_Idist_FileList *base, **flp;
@@ -458,7 +447,7 @@ do_listcdir  {
 		if (strcmp (dp -> d_name, ".") == 0 ||
 				strcmp (dp -> d_name, "..") == 0)
 			continue;
-		 sprintf (buf, "%s/%s", target, dp -> d_name);
+		sprintf (buf, "%s/%s", target, dp -> d_name);
 		if (lstat (buf, &stb) < 0) {
 			nadvise (buf, "Can't stat");
 			continue;
@@ -482,11 +471,11 @@ do_listcdir  {
 		(*flp) -> next = NULL;
 		flp = &(*flp) -> next;
 	}
-	 closedir (d);
+	closedir (d);
 	return base;
 }
 
-int 
+int
 fixup  {
 	struct timeval tvp[2];
 	char	*new, *p;
@@ -499,11 +488,11 @@ fixup  {
 
 	if (bit_on (cfiletype -> fileopts, bit_Idist_Options_compare)) {
 		if (compare (target, new) == OK) {
-			 unlink (new);
+			unlink (new);
 			return OK;
 		}
 		if (bit_on (cfiletype -> fileopts, bit_Idist_Options_verify)) {
-			 unlink (new);
+			unlink (new);
 			note ("need to update: %s", target);
 			return OK;
 		}
@@ -522,7 +511,7 @@ fixup  {
 	if (chog (new, owner, group, cfiletype -> filemode) < 0) {
 		free (owner);
 		free (group);
-		 unlink (new);
+		unlink (new);
 		return NOTOK;
 	}
 	free (owner);
@@ -539,9 +528,8 @@ fixup  {
 	return OK;
 }
 
-static int 
-compare (char *f1, char *f2)
-{
+static int
+compare (char *f1, char *f2) {
 	FILE	*fp1, *fp2;
 	char	buf1[BUFSIZ], buf2[BUFSIZ];	/* these two had
 						   better be identical */
@@ -553,7 +541,7 @@ compare (char *f1, char *f2)
 	}
 	if ((fp2 = fopen (f2, "r")) == NULL) {
 		nadvise (f2, "Can't reopend file");
-		 fclose (fp1);
+		fclose (fp1);
 		return NOTOK;
 	}
 	for (;;) {
@@ -565,8 +553,8 @@ compare (char *f1, char *f2)
 			break;
 	}
 
-	 fclose (fp1);
-	 fclose (fp2);
+	fclose (fp1);
+	fclose (fp2);
 	return n1 == 0 ? OK : NOTOK;
 }
 
@@ -642,6 +630,6 @@ SFD cleanup () {
 	if (cfiletype) {
 		p = qb2str (cfiletype -> filename);
 		temp = cannon (p);
-		 unlink (temp);
+		unlink (temp);
 	}
 }

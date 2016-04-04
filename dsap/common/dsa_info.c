@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dsa_info.c,v 9.
 #include "quipu/syntaxes.h"
 extern LLog * log_dsap;
 
-static 
-edb_info_free (struct edb_info *edb)
-{
+static
+edb_info_free (struct edb_info *edb) {
 	if (edb == NULLEDB)
 		return;
 
@@ -46,8 +45,7 @@ edb_info_free (struct edb_info *edb)
 }
 
 static struct edb_info *
-edb_info_cpy (struct edb_info *a)
-{
+edb_info_cpy (struct edb_info *a) {
 	struct edb_info * result;
 
 	result = edb_info_alloc ();
@@ -58,9 +56,8 @@ edb_info_cpy (struct edb_info *a)
 	return (result);
 }
 
-static 
-edb_info_cmp (struct edb_info *a, struct edb_info *b)
-{
+static
+edb_info_cmp (struct edb_info *a, struct edb_info *b) {
 	int i;
 
 	if (a == NULLEDB)
@@ -143,8 +140,7 @@ int format;
 
 
 static struct edb_info *
-str2update (char *str)
-{
+str2update (char *str) {
 	char * ptr;
 	char * save,val;
 	struct edb_info * ei;
@@ -232,16 +228,16 @@ struct edb_info * ei;
 {
 	PE ret_pe;
 
-	 encode_Quipu_EDBInfoSyntax (&ret_pe,0,0,NULLCP,ei);
+	encode_Quipu_EDBInfoSyntax (&ret_pe,0,0,NULLCP,ei);
 	return (ret_pe);
 }
 
-int 
+int
 edbinfo_syntax (void) {
-	 add_attribute_syntax ("edbinfo",
-								 (IFP) edb_info_enc,	(IFP) edb_info_decode,
-								 (IFP) str2update,	edb_info_print,
-								 (IFP) edb_info_cpy,	edb_info_cmp,
-								 edb_info_free,		NULLCP,
-								 NULLIFP,		TRUE );
+	add_attribute_syntax ("edbinfo",
+						  (IFP) edb_info_enc,	(IFP) edb_info_decode,
+						  (IFP) str2update,	edb_info_print,
+						  (IFP) edb_info_cpy,	edb_info_cmp,
+						  edb_info_free,		NULLCP,
+						  NULLIFP,		TRUE );
 }

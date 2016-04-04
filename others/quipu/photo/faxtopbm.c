@@ -44,9 +44,8 @@ static	bit	black, white;
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	char   *cp;
 	char   *data;
 	int     fd;
@@ -79,7 +78,7 @@ main (int argc, char **argv, char **envp)
 		} else if (file) {
 usage:
 			;
-			 fprintf (stderr, "usage: faxtopbm [-2d] [file]\n");
+			fprintf (stderr, "usage: faxtopbm [-2d] [file]\n");
 			exit (1);
 		} else {
 			file = cp;
@@ -100,7 +99,7 @@ usage:
 
 	data = (char *)malloc ((unsigned int)ALLOCATION_SIZE);
 	if ( !data ) {
-		 fputs ("faxtopbm: out of memory\n", stderr);
+		fputs ("faxtopbm: out of memory\n", stderr);
 		exit (1);
 	}
 	limit = ALLOCATION_SIZE;
@@ -110,7 +109,7 @@ usage:
 		if (size + ALLOCATION_SIZE > limit) {
 			newData = (char *)realloc (data, (unsigned int)(limit + ALLOCATION_SIZE));
 			if ( !newData ) {
-				 fputs ("faxtopbm: out of memory\n", stderr);
+				fputs ("faxtopbm: out of memory\n", stderr);
 				exit (1);
 			}
 			data = newData;
@@ -126,13 +125,13 @@ usage:
 	}
 
 	if (size < 1) {
-		 fprintf (stderr, "%s: is not a fax image\n", file);
+		fprintf (stderr, "%s: is not a fax image\n", file);
 		exit (1);
 	}
 
 	if (decode_t4 (data, file, (int)size) == -1
 			|| decode_t4 (data, file, (int)size) == -1) {
-		 fprintf (stderr,"\n");
+		fprintf (stderr,"\n");
 		exit (-1);
 	}
 
@@ -147,7 +146,7 @@ static ps_die (ps, s)
 PS	 ps;
 char   *s;
 {
-	 fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
+	fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
 }
 
@@ -156,7 +155,7 @@ static pe_die (pe, s)
 PE	 pe;
 char   *s;
 {
-	 fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
+	fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
 	exit (1);
 }
 
@@ -170,9 +169,8 @@ static	bit    *bitrow, *bP;
 
 /* ARGSUSED */
 
-int 
-photo_start (char *name)
-{
+int
+photo_start (char *name) {
 	if (passno == 1)
 		maxx = 0;
 	x = y = 0;
@@ -183,9 +181,8 @@ photo_start (char *name)
 
 /* ARGSUSED */
 
-int 
-photo_end (char *name)
-{
+int
+photo_end (char *name) {
 	if (passno == 1) {
 		int	i;
 
@@ -210,9 +207,8 @@ photo_end (char *name)
 }
 
 
-int 
-photo_black (int length)
-{
+int
+photo_black (int length) {
 	if (passno == 2) {
 		int	i;
 
@@ -225,9 +221,8 @@ photo_black (int length)
 }
 
 
-int 
-photo_white (int length)
-{
+int
+photo_white (int length) {
 	if (passno == 2)
 		bP += length;
 

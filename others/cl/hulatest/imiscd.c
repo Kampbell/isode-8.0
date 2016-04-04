@@ -93,9 +93,8 @@ char   *ctime ();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, getlocalhost(), myservice, dispatches,
 				 table_IMISC_Operations, NULLIFP, NULLIFP);
 
@@ -106,9 +105,8 @@ main (int argc, char **argv, char **envp)
 
 /* ARGSUSED */
 
-static int 
-op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
-{
+static int
+op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	long    clock;
 	char   *cp;
 	struct tm *tm;
@@ -148,9 +146,8 @@ op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 
 /* ARGSUSED */
 
-static int 
-op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
-{
+static int
+op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	long    clock;
 	char   *cp;
 #if	defined(BSD42) || defined (HPUX)
@@ -208,9 +205,8 @@ op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 
 /* ARGSUSED */
 
-static int 
-op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
-{
+static int
+op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	long	clock;
 	struct type_IMISC_TimeResult trs;
 	struct type_IMISC_TimeResult *tr = &trs;
@@ -252,9 +248,8 @@ op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t 
 
 /* ARGSUSED */
 
-static int 
-op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
-{
+static int
+op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 #ifndef	SYS5
 	int	    ud;
 #endif
@@ -282,7 +277,7 @@ op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, 
 	if ((ud = open ("/etc/utmp", 0)) == NOTOK) {
 		int	result;
 
-		 sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
+		sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
@@ -300,19 +295,19 @@ op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, 
 			continue;
 		if ((dp = ctime (&ut -> ut_time)) == NULL)
 			goto congested;
-		 sprintf (buffer, "%-*.*s %-*.*s %.12s",
-						NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line, dp + 4);
+		sprintf (buffer, "%-*.*s %-*.*s %.12s",
+				 NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line, dp + 4);
 #ifdef	BSD42
 		if (ut -> ut_host[0])
-			 sprintf (buffer + strlen (buffer), "\t(%.*s)",
-							HMAX, ut -> ut_host);
+			sprintf (buffer + strlen (buffer), "\t(%.*s)",
+					 HMAX, ut -> ut_host);
 #endif
 
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
 	}
-	 close (ud);
+	close (ud);
 #else
 	setutent ();
 	while (ut = getutent ()) {
@@ -320,9 +315,9 @@ op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, 
 			continue;
 		if ((dp = ctime (&ut -> ut_time)) == NULL)
 			goto congested;
-		 sprintf (buffer, "%-*.*s %-*.*s %.12s",
-						NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line,
-						dp + 4);
+		sprintf (buffer, "%-*.*s %-*.*s %.12s",
+				 NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line,
+				 dp + 4);
 
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
@@ -353,16 +348,15 @@ congested:
 
 /* ARGSUSED */
 
-static int 
-op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
-{
+static int
+op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	int    i,
-			 j;
+		   j;
 	char  *dp,
-			 *de,
-			 *rs,
-			 *rp,
-			 *re;
+		  *de,
+		  *rs,
+		  *rp,
+		  *re;
 	char    line[LINSIZ + 1],
 			ring[BUFSIZ];
 	struct type_IMISC_IA5List *ia5;
@@ -423,9 +417,8 @@ congested:
 
 /* ARGSUSED */
 
-static int 
-op_pwdGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
-{
+static int
+op_pwdGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	int    i;
 	char    buffer[BUFSIZ];
 	struct type_IMISC_IA5List *ia5;
@@ -573,14 +566,13 @@ static struct web {
 			    return NOTOK;
 
 
-static int 
-pwdgen (char *pw)
-{
+static int
+pwdgen (char *pw) {
 	int    i,
-			 j;
+		   j;
 	char   c,
-			 *f,
-			 *s;
+		   *f,
+		   *s;
 	struct pair   *pair;
 	struct web *web;
 	static int  latch = 0;
@@ -590,14 +582,14 @@ pwdgen (char *pw)
 				  (((unsigned) (strlen (Dx) + strlen (Lx) + strlen (Nx)))))
 				== NULL)
 			return NOTOK;
-		 strcpy (s = Mx, Dx);
+		strcpy (s = Mx, Dx);
 		s += strlen (s);
-		 strcpy (s, Lx);
+		strcpy (s, Lx);
 		s += strlen (s);
-		 strcpy (s, Nx);
+		strcpy (s, Nx);
 		s += strlen (s);
 
-		 srand ((int) time ((long *) 0));
+		srand ((int) time ((long *) 0));
 
 		latch++;
 	}
@@ -648,12 +640,11 @@ static struct obj {
 };
 
 
-static int 
-object (char *pw)
-{
+static int
+object (char *pw) {
 	int    n;
 	char  *f,
-			 *s;
+		  *s;
 	char    buffer[BUFSIZ];
 	struct obj *o;
 
@@ -682,9 +673,8 @@ object (char *pw)
 #endif
 
 
-static int 
-op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
-{
+static int
+op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	int     fd,
 			i,
 			result,
@@ -692,7 +682,7 @@ op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, s
 			vecq,
 			pd[2];
 	char  *bp,
-			 *dp;
+		  *dp;
 	char    buffer[BUFSIZ],
 			data[BUFSIZ],
 			*pgm,
@@ -746,7 +736,7 @@ oops:
 		ia5 = NULL;
 		ia5p = &ia5;
 
-		 sprintf (buffer, "%s: %s", pgm, sys_errname (errno));
+		sprintf (buffer, "%s: %s", pgm, sys_errname (errno));
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
@@ -764,8 +754,8 @@ oops:
 
 	switch (fork ()) {
 	case NOTOK:
-		 close (pd[0]);
-		 close (pd[1]);
+		close (pd[0]);
+		close (pd[1]);
 		result = error_IMISC_unableToFork;
 		goto oops;
 
@@ -773,21 +763,21 @@ oops:
 		closelog ();
 		if ((fd = open ("/dev/null", 2)) != NOTOK) {
 			if (fd != 0)
-				 dup2 (fd, 0),  close (fd);
+				dup2 (fd, 0),  close (fd);
 		}
-		 dup2 (pd[1], 1);
-		 dup2 (pd[1], 2);
-		 close (pd[0]);
-		 close (pd[1]);
+		dup2 (pd[1], 1);
+		dup2 (pd[1], 2);
+		close (pd[0]);
+		close (pd[1]);
 		if (execuid != 0) {
-			 setgid (execgid);
-			 setuid (execuid);
+			setgid (execgid);
+			setuid (execuid);
 		}
 		execvp (pgm, vec);
 		_exit (1);
 
 	default:
-		 close (pd[1]);
+		close (pd[1]);
 		for (vecp = vecq; bp = vec[vecp]; vecp++) {
 			free (bp);
 			vec[vecp] = NULL;
@@ -800,13 +790,13 @@ oops:
 			switch (i = read (pd[0], buffer, sizeof buffer)) {
 			case NOTOK:
 				i = errno;
-				 close (pd[0]);
+				close (pd[0]);
 				errno = i;
 				result = error_IMISC_errorReading;
 				goto oops;
 
 			case OK:
-				 close (pd[0]);
+				close (pd[0]);
 				if (dp != data) {
 					*dp = NULL;
 					if ((*ia5p = str2ia5list (data)) == NULL)
@@ -859,9 +849,8 @@ out:
 
 /* ARGSUSED */
 
-static int 
-op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
-{
+static int
+op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 #ifndef	SYS5
 	int     ud;
 #endif
@@ -910,7 +899,7 @@ op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t i
 	result = error_IMISC_userNotLoggedIn;
 #ifndef	SYS5
 	if ((ud = open ("/etc/utmp", 0)) == NOTOK) {
-		 sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
+		sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
 		if ((ia5 = str2ia5list (buffer)) == NULL)
 			goto congested;
 
@@ -931,7 +920,7 @@ op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t i
 			else
 				result = error_IMISC_unableToOpenFile;
 	}
-	 close (ud);
+	close (ud);
 #else
 	setutent ();
 	while (ut = getutent ()) {
@@ -971,9 +960,8 @@ out:
 
 /*  */
 
-static int 
-do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp)
-{
+static int
+do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	int     i,
 			pid;
 	char   *bp,
@@ -981,9 +969,9 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp)
 	struct stat st;
 	FILE   *fp;
 
-	 strcpy (bp = tty, "/dev/");
+	strcpy (bp = tty, "/dev/");
 	bp += strlen (bp);
-	 strncpy (bp, ut -> ut_line, LMAX);
+	strncpy (bp, ut -> ut_line, LMAX);
 	bp += LMAX;
 	*bp = NULL;
 	if (stat (tty, &st) == NOTOK
@@ -1014,15 +1002,14 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp)
 		fputs (vec[i], fp);
 	}
 	fputs ("\r\n", fp);
-	 fclose (fp);
+	fclose (fp);
 	_exit (0);			/* NOTREACHED */
 }
 
 /*  */
 
-static int 
-op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi)
-{
+static int
+op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	if (rox -> rox_nolinked == 0) {
 		advise (NULLCP, LOG_INFO,
 				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
@@ -1042,9 +1029,8 @@ op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, s
 
 /*    ERROR */
 
-static int 
-error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
-{
+static int
+error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
 
@@ -1053,9 +1039,8 @@ error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindi
 
 /*    U-REJECT */
 
-static int 
-ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
-{
+static int
+ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 
@@ -1065,8 +1050,7 @@ ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *ro
 /*    TYPES */
 
 struct type_IMISC_IA5List *
-str2ia5list (char *s)
-{
+str2ia5list (char *s) {
 	struct type_IMISC_IA5List *ia5;
 
 	if ((ia5 = (struct type_IMISC_IA5List  *) calloc (1, sizeof *ia5)) == NULL)

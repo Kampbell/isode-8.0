@@ -43,9 +43,8 @@ extern  char    fred_flag;
 
 static new_alias ();
 
-int 
-call_ds (int argc, char **argv)
-{
+int
+call_ds (int argc, char **argv) {
 	extern char bound;
 	extern char * myname;
 	extern char * dsa_address;
@@ -127,9 +126,8 @@ call_ds (int argc, char **argv)
 
 /*  */
 
-static 
-new_alias (char *cp)
-{
+static
+new_alias (char *cp) {
 	int	    seqno;
 	DN	    sdn;
 
@@ -205,7 +203,7 @@ struct DSError * error;
 			ufn_dn_print (ps,
 						  error->ERR_REFERRAL.DSE_ref_candidates->cr_name,0);
 			ps_print (ps,"'...\n");
-			 ps_flush (ps);
+			ps_flush (ps);
 		}
 
 		if (referral_bind (ap->ap_address) != 0)

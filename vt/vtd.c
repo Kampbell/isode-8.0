@@ -136,9 +136,8 @@ LLog    _vt_log = {
 };
 LLog   *vt_log = &_vt_log;
 
-int 
-main (int argc, char *argv[])
-{
+int
+main (int argc, char *argv[]) {
 	int f = 0;
 	char *cp = line;
 	char *logname = NULLCP;
@@ -171,7 +170,7 @@ main (int argc, char *argv[])
 			if ((logname = argv[++i]) == NULL || *logname == '-')
 				adios (NULLCP, "usage: %s -F logfile", myname);
 			vt_log -> ll_file = logname;
-			 ll_close (vt_log);
+			ll_close (vt_log);
 			advise(LLOG_DEBUG,NULLCP, "logging to %s",logname);
 		} else
 			adios(NULLCP, "usage: %s [-F logfile] [-d N]",
@@ -284,23 +283,21 @@ gotpty:
 	/*NOTREACHED*/
 }
 
-int 
-fatal (int f, char *msg)
-{
+int
+fatal (int f, char *msg) {
 	char buf[BUFSIZ];
 
-	 sprintf(buf, "%s: %s.\n", myname, msg);
-	 write(f, buf, strlen(buf));
+	sprintf(buf, "%s: %s.\n", myname, msg);
+	write(f, buf, strlen(buf));
 	adios (NULLCP, msg);
 }
 
-int 
-fatalperror (int f, char *msg, int errnum)
-{
+int
+fatalperror (int f, char *msg, int errnum) {
 	char buf[BUFSIZ];
 	extern char *sys_errlist[];
 
-	 sprintf(buf, "%s: %s", msg, sys_errlist[errnum]);
+	sprintf(buf, "%s: %s", msg, sys_errlist[errnum]);
 	fatal(f, buf);
 }
 
@@ -308,7 +305,7 @@ fatalperror (int f, char *msg, int errnum)
  * Main loop.  Select from pty and network.
  */
 
-int 
+int
 vtd (int f, int p) {
 	int on = 1;
 	int	nfds, result;
@@ -336,16 +333,16 @@ vtd (int f, int p) {
 	}
 #endif
 #ifdef	SIGTSTP
-	 signal(SIGTSTP, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
 #endif
 #ifdef	SIGCHLD
-	 signal(SIGCHLD, cleanup);
+	signal(SIGCHLD, cleanup);
 #endif
 	/*
 	 * Show banner that getty never gave.
 	 */
 	myhostname = PLocalHostName ();
-	 sprintf(nfrontp, BANNER, myhostname, "");
+	sprintf(nfrontp, BANNER, myhostname, "");
 	nfrontp += strlen(nfrontp);
 
 #ifdef TERMIOS
@@ -501,7 +498,7 @@ interrupt() {
 #endif
 }
 
-int 
+int
 netflush (void) {
 	char *cp;
 	int n;
@@ -515,9 +512,9 @@ netflush (void) {
 	if ((n = nfrontp - nbackp) > 0) {
 
 		if (debug) {
-			 ll_log (vt_log, LLOG_DEBUG, NULLCP,
-						   ("writing to the net"));
-			 ll_printf (vt_log, "<<");
+			ll_log (vt_log, LLOG_DEBUG, NULLCP,
+					("writing to the net"));
+			ll_printf (vt_log, "<<");
 			for(i=0; i<(nfrontp-nbackp); i++)
 				ll_printf (vt_log, "%02x ",*(nbackp+i));
 			ll_printf (vt_log,  ">>\n");
@@ -562,7 +559,7 @@ netflush (void) {
 						continue;
 					} else /*Preceeding char was CR but not followed by
 				   LF.  Put CR in buffer*/
-						 vt_text(crp,1);
+						vt_text(crp,1);
 					rflag = 0;
 				}
 				if(telnet_profile) {
@@ -627,7 +624,7 @@ netflush (void) {
 		nbackp = nfrontp = netobuf;
 }
 
-SFD 
+SFD
 cleanup (void) {
 	sleep(1);
 	while(getch() > 0);	/*Clean out unread VT-DATA PDU's still held
@@ -670,7 +667,7 @@ rmut() {
 			SCPYN(wtmp.ut_host, "");
 #endif
 			time(&wtmp.ut_time);
-			 write(f, (char *)&wtmp, sizeof (wtmp));
+			write(f, (char *)&wtmp, sizeof (wtmp));
 			found++;
 		}
 		close(f);
@@ -685,7 +682,7 @@ rmut() {
 #endif
 			time(&wtmp.ut_time);
 			lseek(f, (long)0, 2);
-			 write(f, (char *)&wtmp, sizeof (wtmp));
+			write(f, (char *)&wtmp, sizeof (wtmp));
 			close(f);
 		}
 	}
@@ -697,7 +694,7 @@ rmut() {
 }
 
 #else
-int 
+int
 rmut (void) {
 	char *p;
 
@@ -712,7 +709,7 @@ rmut (void) {
 }
 #endif
 
-int 
+int
 bye (void) {
 	if(do_cleaning) {
 		rmut();
@@ -721,7 +718,7 @@ bye (void) {
 	exit(0);
 }
 
-int 
+int
 flushbufs (void) {
 	pcc = 0;
 	pfrontp = pbackp = ptyobuf;
@@ -732,7 +729,7 @@ flushbufs (void) {
 
 /*    ERRORS */
 
-void 
+void
 finalbye (void) {
 	bye ();
 }
@@ -745,7 +742,7 @@ va_dcl {
 
 	va_start (ap);
 
-	 _ll_log (vt_log, LLOG_FATAL, ap);
+	_ll_log (vt_log, LLOG_FATAL, ap);
 
 	va_end (ap);
 
@@ -756,9 +753,8 @@ va_dcl {
 #else
 /* VARARGS2 */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -774,21 +770,20 @@ va_dcl {
 
 	code = va_arg (ap, int);
 
-	 _ll_log (vt_log, code, ap);
+	_ll_log (vt_log, code, ap);
 
 	va_end (ap);
 }
 #else
 /* VARARGS3 */
 
-void 
-advise (int code, char *what, char *fmt)
-{
+void
+advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
 
-int 
+int
 ptyflush (void) {
 	int n;
 
@@ -803,7 +798,7 @@ ptyflush (void) {
 }
 
 #ifdef TERMIOS
-int 
+int
 ptyecho (int on) {
 	struct termios term;
 
@@ -822,9 +817,8 @@ ptyecho (int on) {
 	}
 }
 #else
-int 
-setmode (int on, int off)
-{
+int
+setmode (int on, int off) {
 	struct sgttyb b;
 
 	ptyflush();

@@ -67,9 +67,8 @@ void    print_x25_facilities ();
 
 /* ARGSUSED */
 
-int 
-start_x25_client (struct NSAPaddr *local, int priv)
-{
+int
+start_x25_client (struct NSAPaddr *local, int priv) {
 	int     sd, pgrp;
 
 	if ((sd = socket (AF_CCITT, SOCK_STREAM, 0)) == NOTOK) {
@@ -88,9 +87,8 @@ start_x25_client (struct NSAPaddr *local, int priv)
 
 /*  */
 
-int 
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
-{
+int
+start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	CONN_DB	sbuf;
 	CONN_DB	*sock;
 	int		sd, onoff, pgrp;
@@ -114,7 +112,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 		strcpy (sbuf.addr.x25ifname, "x25_0");
 		if (ioctl (sd, X25_RD_HOSTADR, (char *) &sbuf.addr) == NOTOK) {
 			SLOG (x25_log, LLOG_EXCEPTIONS, "failed", ("X25_RD_HOSTADR"));
-			 close_x25_socket (sd);
+			close_x25_socket (sd);
 			return NOTOK;
 		}
 		sbuf.addr.x25ifname [0] = '\0';
@@ -135,40 +133,40 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 	if (sock->cudf.x25_cud_len)
 		if (ioctl (sd, X25_WR_USER_DATA, &sock->cudf) == -1) {
 			SLOG (x25_log, LLOG_EXCEPTIONS, "failed", ("X25_WR_USER_DATA"));
-			 close_x25_socket (sd);
+			close_x25_socket (sd);
 			return NOTOK;
 		}
 	if (bind (sd, (X25_ADDR *) &sock->addr, sizeof(X25_ADDR)) == NOTOK) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("bind"));
-		 close_x25_socket (sd);
+		close_x25_socket (sd);
 		return NOTOK;
 	}
 
 #ifndef	BSD43
 	if (opt1)
-		 setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
+		setsockopt (sd, SOL_SOCKET, opt1, NULLCP, 0);
 	if (opt2)
-		 setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
+		setsockopt (sd, SOL_SOCKET, opt2, NULLCP, 0);
 #else
 	onoff = 1;
 	if (opt1)
-		 setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
+		setsockopt (sd, SOL_SOCKET, opt1, (char *)&onoff, sizeof onoff);
 	if (opt2)
-		 setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
+		setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
 
 	if (set_x25_facilities(sd, CALLED, "Acceptable") == NOTOK) {
-		 close_x25_socket (sd);
+		close_x25_socket (sd);
 		return NOTOK;
 	}
 
-	 listen (sd, backlog);
+	listen (sd, backlog);
 
 	onoff = 0;
 	if (ioctl (sd, X25_CALL_ACPT_APPROVAL, (char *) &onoff) == NOTOK) {
 		SLOG (x25_log, LLOG_EXCEPTIONS, "failed",
 			  ("X25_CALL_ACPT_APPROVAL"));
-		 close_x25_socket (sd);
+		close_x25_socket (sd);
 		return NOTOK;
 	}
 
@@ -177,9 +175,8 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2)
 
 /*  */
 
-int 
-join_x25_server (int fd, struct NSAPaddr *remote)
-{
+int
+join_x25_server (int fd, struct NSAPaddr *remote) {
 	CONN_DB sbuf;
 	CONN_DB *sock = &sbuf;
 	int nfd;
@@ -203,7 +200,7 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 	}
 #ifdef  DEBUG
 	else if (x25_log -> ll_events & LLOG_DEBUG)
-		 log_x25_facilities(fd, CALLING, "Effective Calling");
+		log_x25_facilities(fd, CALLING, "Effective Calling");
 #endif
 
 	remote = if2gen (remote, sock, ADDR_REMOTE);
@@ -213,9 +210,8 @@ join_x25_server (int fd, struct NSAPaddr *remote)
 
 /*  */
 
-int 
-join_x25_client (int fd, struct NSAPaddr *remote)
-{
+int
+join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB     sbuf;
 	CONN_DB     *sock = &sbuf;
 	int     len = sizeof *sock;
@@ -233,7 +229,7 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 
 #ifdef  DEBUG
 	if (x25_log -> ll_events & LLOG_DEBUG)
-		 log_x25_facilities(fd, CALLED, "Effective Called");
+		log_x25_facilities(fd, CALLED, "Effective Called");
 #endif
 	remote = if2gen (remote, sock, ADDR_REMOTE);
 
@@ -242,9 +238,8 @@ join_x25_client (int fd, struct NSAPaddr *remote)
 
 /*  */
 
-int 
-fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp)
-{
+int
+fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp) {
 	int	i, j;
 	int			returncode = OK;
 
@@ -304,9 +299,8 @@ fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp)
 }
 
 
-void 
-fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt)
-{
+void
+fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt) {
 	int	i;
 
 	memset (ccitt, 0, sizeof (CCITT_FACILITY_DB));
@@ -358,9 +352,8 @@ fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt)
 }
 
 
-int 
-set_x25_facilities (int sd, int coc, char *caption)
-{
+int
+set_x25_facilities (int sd, int coc, char *caption) {
 	FACILITY_DB		facilities;
 	CCITT_FACILITY_DB	ccitt_facilities;
 
@@ -494,9 +487,8 @@ set_x25_facilities (int sd, int coc, char *caption)
 
 /*  */
 
-int 
-log_cause_and_diag (int fd)
-{
+int
+log_cause_and_diag (int fd) {
 	char buf [MAX_EVENT_SIZE];
 	int	buflen;
 	char flags = 0;
@@ -542,17 +534,16 @@ log_cause_and_diag (int fd)
 			close_x25_socket (fd);
 			break;
 		}
-		 elucidate_x25_err (flags, &buf [2]);
+		elucidate_x25_err (flags, &buf [2]);
 	}
 }
 
 
-void 
-sigurg (int sig, int code, struct sigcontext *scp)
-{
+void
+sigurg (int sig, int code, struct sigcontext *scp) {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
-	 signal (SIGURG, sigurg);
+	signal (SIGURG, sigurg);
 	while (fdlp != NULL) {
 		log_cause_and_diag (fdlp->fd);
 		fdlp = fdlp->next;
@@ -565,12 +556,11 @@ sigurg (int sig, int code, struct sigcontext *scp)
 		scp->sc_syscall_action = SIG_RESTART;
 }
 
-void 
-setup_sigurg (int fd)
-{
+void
+setup_sigurg (int fd) {
 	struct fdl_st *fdlp = fdl;
 
-	 signal (SIGURG, sigurg);
+	signal (SIGURG, sigurg);
 	while (fdlp != NULL)
 		if (fdlp->fd == fd)
 			return;
@@ -585,9 +575,8 @@ setup_sigurg (int fd)
 	fdl = fdlp;
 }
 
-void 
-clear_sigurg (int fd)
-{
+void
+clear_sigurg (int fd) {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
 	if ((fdl != NULL) && (fdl->fd == fd)) {
@@ -619,9 +608,8 @@ int fd;
 
 #ifdef  DEBUG
 
-static int 
-log_x25_facilities (int fd, int coc, char *caption)
-{
+static int
+log_x25_facilities (int fd, int coc, char *caption) {
 	FACILITY_DB        hp;
 	CCITT_FACILITY_DB  ccitt;
 
@@ -638,9 +626,8 @@ log_x25_facilities (int fd, int coc, char *caption)
 
 /*  */
 
-static void 
-print_x25_facilities (FACILITY_DB *hp, int coc, char *caption)
-{
+static void
+print_x25_facilities (FACILITY_DB *hp, int coc, char *caption) {
 	int     i, baud;
 
 	DLOG (x25_log, LLOG_DEBUG, ("%s X.25 Facilities:", caption));
@@ -893,13 +880,13 @@ print_send:
 }
 #endif
 #else
-int 
+int
 _hpuxx25_stub2()  {
 	;
 }
 #endif
 #else
-int 
+int
 _hpuxx25_stub()  {
 	;
 }

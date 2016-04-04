@@ -38,9 +38,8 @@ static int RoErrorRequestAux ();
 
 /*    RO-ERROR.REQUEST */
 
-int 
-RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi)
-{
+int
+RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -53,18 +52,17 @@ RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct
 
 	result = RoErrorRequestAux (acb, invokeID, error, params, priority, roi);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi)
-{
+static int
+RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi) {
 	PE	pe,
-			 p;
+	 p;
 
 	if ((acb -> acb_flags & ACB_INIT) && (acb -> acb_flags & ACB_ROS))
 		return rosaplose (roi, ROS_OPERATION, NULLCP, "not responder");
@@ -88,7 +86,7 @@ RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int
 			|| (params && seq_add (p, params, -1) == NOTOK)) {
 		if (pe) {
 			if (params)
-				 pe_extract (pe, params);
+				pe_extract (pe, params);
 			pe_free (pe);
 		}
 		freeacblk (acb);

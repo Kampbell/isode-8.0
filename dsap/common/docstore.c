@@ -61,9 +61,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/docstore.c,v 9.
 #include "quipu/syntaxes.h"
 
 
-static 
-documentStore_free (struct documentStore *a)
-{
+static
+documentStore_free (struct documentStore *a) {
 	if (!a)
 		return;
 
@@ -79,8 +78,7 @@ documentStore_free (struct documentStore *a)
 
 
 static struct documentStore *
-documentStore_cpy (struct documentStore *a)
-{
+documentStore_cpy (struct documentStore *a) {
 	struct documentStore *b;
 
 	b = (struct documentStore *) smalloc (sizeof *b);
@@ -96,9 +94,8 @@ documentStore_cpy (struct documentStore *a)
 }
 
 
-static 
-documentStore_cmp (struct documentStore *a, struct documentStore *b)
-{
+static
+documentStore_cmp (struct documentStore *a, struct documentStore *b) {
 	int	    res;
 
 	if (!a)
@@ -131,8 +128,7 @@ int	format;
 
 
 static struct documentStore *
-str2documentStore (char *str)
-{
+str2documentStore (char *str) {
 	int	    method;
 	char   *d1,
 		   *d2,
@@ -208,7 +204,7 @@ struct documentStore *a;
 {
 	PE	    pe;
 
-	 encode_Thorn_DocumentStoreSyntax (&pe, 0, 0, NULLCP, a);
+	encode_Thorn_DocumentStoreSyntax (&pe, 0, 0, NULLCP, a);
 
 	return pe;
 }
@@ -224,15 +220,15 @@ PE	pe;
 	return a;
 }
 
-int 
+int
 documentStore_syntax (void) {
-	 add_attribute_syntax ("documentStoreSyntax",
-								 (IFP) documentStore_enc,
-								 (IFP) documentStore_dec,
-								 (IFP) str2documentStore,
-								 documentStore_print,
-								 (IFP) documentStore_cpy,
-								 documentStore_cmp,
-								 documentStore_free,
-								 NULLCP, NULLIFP, TRUE);
+	add_attribute_syntax ("documentStoreSyntax",
+						  (IFP) documentStore_enc,
+						  (IFP) documentStore_dec,
+						  (IFP) str2documentStore,
+						  documentStore_print,
+						  (IFP) documentStore_cpy,
+						  documentStore_cmp,
+						  documentStore_free,
+						  NULLCP, NULLIFP, TRUE);
 }

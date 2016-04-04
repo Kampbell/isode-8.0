@@ -48,9 +48,8 @@ static PS ps;
 
 #define EDBLEN	3	/* length of string "EDB" */
 
-int 
-fileexists (char *fname)
-{
+int
+fileexists (char *fname) {
 	struct stat buf;
 
 	if (stat (fname,&buf) != 0) {
@@ -61,9 +60,8 @@ fileexists (char *fname)
 	return TRUE;
 }
 
-static 
-dir_exists (char *fname)
-{
+static
+dir_exists (char *fname) {
 	struct stat buf;
 
 	if (stat (fname,&buf) != 0) {
@@ -81,9 +79,8 @@ dir_exists (char *fname)
 	return FALSE;
 }
 
-static 
-read_mapped_rdn (PS aps, char *name, char *file)
-{
+static
+read_mapped_rdn (PS aps, char *name, char *file) {
 	FILE * mapfp;
 #ifdef	TURBO_DISK
 	char *ptr, *newname, *tmp, *fgetline();
@@ -107,7 +104,7 @@ read_mapped_rdn (PS aps, char *name, char *file)
 	{
 		if ((newname = rindex(ptr,'#')) == NULLCP) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS,("Seperator missing in map file \"%s\", line %d",file,parse_line));
-			 fclose (mapfp);
+			fclose (mapfp);
 			return FALSE;
 		}
 		tmp = newname;
@@ -121,19 +118,18 @@ read_mapped_rdn (PS aps, char *name, char *file)
 			aps->ps_ptr -= i;
 			aps->ps_cnt += i;
 			ps_print (aps,SkipSpace(newname));
-			 fclose (mapfp);
+			fclose (mapfp);
 			return TRUE;
 		}
 	}
 
 	DLOG (log_dsap, LLOG_DEBUG,("%s not found in map file %s",name,file));
-	 fclose (mapfp);
+	fclose (mapfp);
 	return FALSE;
 }
 
-static 
-write_mapped_rdn (PS aps, char *name, char *file)
-{
+static
+write_mapped_rdn (PS aps, char *name, char *file) {
 	FILE * mapfp;
 	char mapname[LINESIZE];
 	char sname[LINESIZE];
@@ -162,8 +158,8 @@ write_mapped_rdn (PS aps, char *name, char *file)
 		if (isascii(*nptr) && (isalnum(*nptr) || *nptr ==  '-'))
 			*mptr++ = *nptr, i++;
 
-	 strcpy (sname,name);
-	 strcpy (mptr,"XXXXXX");
+	strcpy (sname,name);
+	strcpy (mptr,"XXXXXX");
 	i = strlen (name);
 	nptr = (aps->ps_ptr -= i);
 	aps->ps_cnt += i;
@@ -178,19 +174,19 @@ write_mapped_rdn (PS aps, char *name, char *file)
 			*mptr++ = *nptr, i++;
 	*mptr = '\0';
 
-	 strcpy (sname,name);
+	strcpy (sname,name);
 
 	i = strlen (name);
 	aps->ps_ptr -= i;
 	aps->ps_cnt += i;
 	*aps->ps_ptr = 0;
 
-	 sprintf (mapdir, "%s", aps->ps_base);
+	sprintf (mapdir, "%s", aps->ps_base);
 
 	if ((cp = tempnam (mapdir, mapname)) == NULLCP)
 		return FALSE;
 
-	 sprintf (aps->ps_base, "%s", cp);
+	sprintf (aps->ps_base, "%s", cp);
 	free (cp);
 
 	nptr = (aps->ps_base + strlen (mapdir));
@@ -211,7 +207,7 @@ write_mapped_rdn (PS aps, char *name, char *file)
 		int um;
 		um = umask (0177);
 		mapfp = fopen (file,"w");
-		 umask (um);
+		umask (um);
 	}
 
 	if (mapfp == (FILE *)NULL) {
@@ -232,15 +228,14 @@ write_mapped_rdn (PS aps, char *name, char *file)
 	return TRUE;
 }
 
-static 
-rdn2filename (PS aps, RDN rdn, int make)
-{
+static
+rdn2filename (PS aps, RDN rdn, int make) {
 	char *start = aps->ps_ptr;
 	char mapbuf [LINESIZE];
 
 	/* look for EDB.map file */
 	*aps->ps_ptr = 0;
-	 sprintf (mapbuf, "%sEDB.map",aps->ps_base);
+	sprintf (mapbuf, "%sEDB.map",aps->ps_base);
 
 	rdn_print (aps,rdn,DIROUT);
 	*aps->ps_ptr = 0;
@@ -284,9 +279,8 @@ rdn2filename (PS aps, RDN rdn, int make)
 	return NOTOK;
 }
 
-static 
-dn2filename (PS aps, DN dn, int make)
-{
+static
+dn2filename (PS aps, DN dn, int make) {
 	if (treedir != NULLCP) {
 		ps_print (aps,isodefile(treedir,0));
 		if (make) {
@@ -320,8 +314,7 @@ dn2filename (PS aps, DN dn, int make)
 }
 
 char *
-dn2edbfile (DN dn)
-{
+dn2edbfile (DN dn) {
 	PS aps;
 	static char result [LINESIZE];
 
@@ -348,9 +341,8 @@ dn2edbfile (DN dn)
 	return result;
 }
 
-static 
-file_check (int offset, Entry entryptr)
-{
+static
+file_check (int offset, Entry entryptr) {
 	ps->ps_ptr = filename + offset;
 	ps->ps_cnt = LINESIZE - offset;
 
@@ -365,9 +357,8 @@ file_check (int offset, Entry entryptr)
 	return (NOTOK);
 }
 
-static 
-sibling_expected (Entry e)
-{
+static
+sibling_expected (Entry e) {
 	AV_Sequence avs;
 
 	if (e->e_external)
@@ -390,9 +381,8 @@ sibling_expected (Entry e)
 
 static char got_all = TRUE;
 
-static 
-load_a_kid (Entry e, int offset)
-{
+static
+load_a_kid (Entry e, int offset) {
 	static int      entry_load_kids();
 
 	if ((!e->e_external) &&
@@ -436,12 +426,11 @@ load_a_kid (Entry e, int offset)
 }
 
 
-static 
+static
 entry_load_kids (
-    Avlnode *entryptr,	/* in this case, entryptr is really a tree of kids */
-    int offset
-)
-{
+	Avlnode *entryptr,	/* in this case, entryptr is really a tree of kids */
+	int offset
+) {
 	Entry	akid, parent;
 
 	ps->ps_ptr = filename + offset;
@@ -472,25 +461,22 @@ entry_load_kids (
 
 static char got_subtree;
 
-static 
-check_entry_free (Entry e)
-{
+static
+check_entry_free (Entry e) {
 	if (e->e_allchildrenpresent < 2)
 		got_subtree = FALSE;
 	entry_free(e);
 }
 
-int 
-parent_link (Entry e, Entry parent)
-{
+int
+parent_link (Entry e, Entry parent) {
 	e->e_parent = parent;
 	set_inheritance (e);
 	return(OK);
 }
 
-static 
-merge_entry (Entry newentry, Avlnode *oldtree)
-{
+static
+merge_entry (Entry newentry, Avlnode *oldtree) {
 	Entry   p;
 	int     entry_cmp();
 
@@ -502,8 +488,8 @@ merge_entry (Entry newentry, Avlnode *oldtree)
 		newentry->e_allchildrenpresent = p->e_allchildrenpresent;
 		newentry->e_children = p->e_children;
 
-		 avl_apply(newentry->e_children, parent_link, (caddr_t) newentry,
-						 NOTOK, AVL_PREORDER);
+		avl_apply(newentry->e_children, parent_link, (caddr_t) newentry,
+				  NOTOK, AVL_PREORDER);
 
 		if (p->e_edbversion != NULLCP)
 			newentry->e_edbversion = strdup(p->e_edbversion);
@@ -515,9 +501,8 @@ merge_entry (Entry newentry, Avlnode *oldtree)
 	return(OK);
 }
 
-Entry 
-subtree_load (Entry parent, DN dn)
-{
+Entry
+subtree_load (Entry parent, DN dn) {
 	char failed = FALSE;
 	Avlnode	*treetop;
 	Entry	akid;
@@ -541,7 +526,7 @@ subtree_load (Entry parent, DN dn)
 		return (NULLENTRY);
 	}
 
-	 dn2filename (ps,dn,FALSE);
+	dn2filename (ps,dn,FALSE);
 	if (*(ps->ps_ptr - 1) != '/')
 		ps_print (ps,"/EDB");
 	else
@@ -559,8 +544,8 @@ subtree_load (Entry parent, DN dn)
 		 * tree previously loaded.
 		 */
 
-		 avl_apply(treetop, merge_entry, (caddr_t) parent->e_children,
-						 NOTOK, AVL_PREORDER);
+		avl_apply(treetop, merge_entry, (caddr_t) parent->e_children,
+				  NOTOK, AVL_PREORDER);
 
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
 			parent->e_allchildrenpresent = 2;
@@ -568,7 +553,7 @@ subtree_load (Entry parent, DN dn)
 		got_subtree = TRUE;
 
 		/* free the old tree and set got_subtree */
-		 avl_free(parent->e_children, check_entry_free);
+		avl_free(parent->e_children, check_entry_free);
 
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
 			parent->e_allchildrenpresent = 2;
@@ -615,9 +600,8 @@ subtree_load (Entry parent, DN dn)
 
 int	refreshing;
 
-int 
-refresh_from_disk (DN dn)
-{
+int
+refresh_from_disk (DN dn) {
 	Entry child;
 	Entry parent;
 	Entry tmp;

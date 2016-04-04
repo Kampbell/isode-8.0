@@ -207,9 +207,9 @@ char   *community;
 	struct binding **bp;
 	struct binding *bl;
 	struct timeval  tvs,
-			now;
+			   now;
 	OID    a,
-			 b;
+		   b;
 	OID	    arg;
 
 	timeout = 2 * 1000L;
@@ -222,7 +222,7 @@ char   *community;
 
 	totreqs = totretr = totrsps = totdups = 0;
 
-	 gettimeofday (&tvs, (struct timezone *) 0);
+	gettimeofday (&tvs, (struct timezone *) 0);
 	timenow = tvs.tv_sec * 1000L + tvs.tv_usec / 1000L;
 
 	a = oid_copy (arg = vb -> VarBind -> name);
@@ -253,7 +253,7 @@ char   *community;
 		for (t = THead -> t_forw; t != THead; t = u) {
 			struct binding **bz;
 			struct type_SNMP_VarBindList *vp,
-					*vb2;
+					   *vb2;
 			struct OIDentifier oids;
 
 			u = t -> t_forw;
@@ -266,7 +266,7 @@ char   *community;
 					>= 0) {
 				char buffer[BUFSIZ];
 
-				 strcpy (buffer, oid2ode (t -> t_arg));
+				strcpy (buffer, oid2ode (t -> t_arg));
 				advise (NULLCP,
 						"agent botched get-next (%s -> %s), thread dead",
 						buffer, oid2ode (b));
@@ -367,7 +367,7 @@ losing:
 			free_thread (t);
 	}
 
-	 gettimeofday (&now, (struct timezone *) 0);
+	gettimeofday (&now, (struct timezone *) 0);
 	now.tv_sec -= tvs.tv_sec;
 	if ((now.tv_usec -= tvs.tv_usec) < 0)
 		now.tv_sec--, now.tv_usec += 1000000;
@@ -408,9 +408,9 @@ PS	ps;
 	struct type_SNMP_PDU *parm;
 	struct invocation *i;
 	struct request *r,
-			*u;
+			   *u;
 	struct thread  *t,
-			*s;
+			   *s;
 	PE	    pe;
 
 	FD_ZERO (&rfds);
@@ -458,7 +458,7 @@ PS	ps;
 
 	case OK:
 	default:
-		 gettimeofday (&tvs, (struct timezone *) 0);
+		gettimeofday (&tvs, (struct timezone *) 0);
 		timenow = tvs.tv_sec * 1000L + tvs.tv_usec / 1000L;
 
 		if (n == OK)
@@ -483,8 +483,8 @@ oops:
 		}
 		if (watch) {
 			fprintf (stdout, "read PDU\n");
-			 print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
-			 fflush (stdout);
+			print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
+			fflush (stdout);
 		}
 		totrsps++;
 		if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
@@ -576,9 +576,9 @@ invalid_index:
 				{
 					int    j;
 					struct bound  *b,
-							**bp;
+							   **bp;
 					struct type_SNMP_VarBindList  *v,
-							**vp;
+							   **vp;
 
 					bp = &r -> r_bounds;
 					vp = &r -> r_msg -> data -> un.get__request
@@ -736,8 +736,8 @@ outta_time:
 		}
 		if (watch) {
 			fprintf (stdout, "retry ID %d\n", i -> i_rid);
-			 print_SNMP_Message (i -> i_pe, 1, NULLIP, NULLVP, NULLCP);
-			 fflush (stdout);
+			print_SNMP_Message (i -> i_pe, 1, NULLIP, NULLVP, NULLCP);
+			fflush (stdout);
 		} else if (debug)
 			fprintf (stderr,
 					 "retry ID %d, time now %u, waiting %u, timeout %u\n",
@@ -763,7 +763,7 @@ int	partial;
 {
 	int	    i;
 	struct binding *bv,
-			*bz;
+			   *bz;
 
 	if (partial)
 		printf ("partial results only...\n");
@@ -783,7 +783,7 @@ int	partial;
 
 	for (bv = bl; bv; bv = bz) {
 		struct binding *bp,
-				*bq;
+				   *bq;
 
 		bz = bv -> b_next;
 
@@ -1009,8 +1009,8 @@ int	next;
 	}
 	if (watch) {
 		fprintf (stdout, "write PDU\n");
-		 print_SNMP_Message (t -> t_pe, 1, NULLIP, NULLVP, NULLCP);
-		 fflush (stdout);
+		print_SNMP_Message (t -> t_pe, 1, NULLIP, NULLVP, NULLCP);
+		fflush (stdout);
 	}
 	totreqs++;
 
@@ -1036,9 +1036,9 @@ char   *community;
 	struct binding **bp;
 	struct binding *bl;
 	struct timeval  tvs,
-			now;
+			   now;
 	OID    a,
-			 b;
+		   b;
 	OID	    arg;
 
 	timeout = 2 * 1000L;
@@ -1053,7 +1053,7 @@ char   *community;
 
 	totreqs = totretr = totrsps = totdups = 0;
 
-	 gettimeofday (&tvs, (struct timezone *) 0);
+	gettimeofday (&tvs, (struct timezone *) 0);
 	timenow = tvs.tv_sec * 1000L + tvs.tv_usec / 1000L;
 
 	a = oid_copy (arg = vb -> VarBind -> name);
@@ -1082,10 +1082,10 @@ char   *community;
 
 		for (r = RHead -> r_forw; r != RHead; r = u) {
 			struct bound  *br,
-					*bz,
-					**bb;
+					   *bz,
+					   **bb;
 			struct type_SNMP_VarBindList  *vr,
-					**vv;
+					   **vv;
 
 			u = r -> r_forw;
 			if (r -> r_info < 1)
@@ -1096,7 +1096,7 @@ char   *community;
 			evalreq = 0;
 			while (br = *bb) {
 				struct binding *bv,
-						*bv2;
+						   *bv2;
 				struct OIDentifier oids;
 
 				if ((vr = *vv) == NULL) {
@@ -1117,7 +1117,7 @@ char   *community;
 				if (oid_cmp (br -> r_arg, b = vr -> VarBind -> name) >= 0) {
 					char    buffer[BUFSIZ];
 
-					 strcpy (buffer, oid2ode (br -> r_arg));
+					strcpy (buffer, oid2ode (br -> r_arg));
 					advise (NULLCP,
 							"agent botched get-next (%s -> %s), continuing",
 							oid2ode (b));
@@ -1194,7 +1194,7 @@ losing:
 			free_request (r);
 	}
 
-	 gettimeofday (&now, (struct timezone *) 0);
+	gettimeofday (&now, (struct timezone *) 0);
 	now.tv_sec -= tvs.tv_sec;
 	if ((now.tv_usec -= tvs.tv_usec) < 0)
 		now.tv_sec--, now.tv_usec += 1000000;
@@ -1259,7 +1259,7 @@ char   *community;
 
 		for (t = THead -> t_forw; t != THead; t = u) {
 			struct binding  *bv,
-					**bz;
+					   **bz;
 			struct type_SNMP_VarBindList *vp;
 
 			u = t -> t_forw;
@@ -1343,7 +1343,7 @@ static	free_request (r)
 struct request *r;
 {
 	struct bound *bp,
-			*bq;
+			   *bq;
 
 	currequests--;
 
@@ -1439,18 +1439,18 @@ char   *community;
 int	onemore;
 {
 	int    nbound,
-			 nrequest,
-			 tbound;
+		   nrequest,
+		   tbound;
 	int	    new,
 			wen;
 	struct request *r;
 	struct request *u;
 	struct bound  *bn,
-			*bz,
-			**bp;
+			   *bz,
+			   **bp;
 	struct bound *b;
 	struct type_SNMP_VarBindList  *vz,
-			**vp;
+			   **vp;
 	struct type_SNMP_VarBindList *v;
 
 	bp = &b, b = NULL;
@@ -1491,7 +1491,7 @@ int	onemore;
 			&& onemore)
 		new = 1;
 	for (; new-- > 0; nrequest++)
-		 new_request (community);
+		new_request (community);
 	if ((new = nrequest * boundlimit) > (wen = nbound << 1))
 		new = wen;
 
@@ -1595,8 +1595,8 @@ send_them:
 		}
 		if (watch) {
 			fprintf (stdout, "write PDU\n");
-			 print_SNMP_Message (r -> r_pe, 1, NULLIP, NULLVP, NULLCP);
-			 fflush (stdout);
+			print_SNMP_Message (r -> r_pe, 1, NULLIP, NULLVP, NULLCP);
+			fflush (stdout);
 		}
 		totreqs++;
 
@@ -1621,7 +1621,7 @@ OID	a,
 	if (oid_cmp (a, b) >= 0) {
 		char    buffer[BUFSIZ];
 
-		 strcpy (buffer, sprintoid (a));
+		strcpy (buffer, sprintoid (a));
 		adios (NULLCP, "oid_median(%s <= %s)", buffer, sprintoid (b));
 	}
 
@@ -1678,7 +1678,7 @@ testc:
 losing:
 		;
 		if (debug) {
-			 strcpy (buffer, sprintoid (a));
+			strcpy (buffer, sprintoid (a));
 			fprintf (stderr, "oid_median(%s, %s) fails",
 					 buffer, sprintoid (b));
 		}
@@ -1688,8 +1688,8 @@ losing:
 		char    buf1[BUFSIZ],
 				buf2[BUFSIZ];
 
-		 strcpy (buf1, sprintoid (a));
-		 strcpy (buf2, sprintoid (b));
+		strcpy (buf1, sprintoid (a));
+		strcpy (buf2, sprintoid (b));
 		adios (NULLCP, "oid_median(%s, %s) -> %s loses(1)",
 			   buf1, buf2, sprintoid (c));
 	}
@@ -1697,8 +1697,8 @@ losing:
 		char    buf1[BUFSIZ],
 				buf2[BUFSIZ];
 
-		 strcpy (buf1, sprintoid (a));
-		 strcpy (buf2, sprintoid (b));
+		strcpy (buf1, sprintoid (a));
+		strcpy (buf2, sprintoid (b));
 		adios (NULLCP, "oid_median(%s, %s) -> %s loses(2)",
 			   buf1, buf2, sprintoid (c));
 	}

@@ -50,14 +50,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sstr2arg.c,v 9.0 199
 
 
 
-int 
+int
 sstr2arg (
-    char *srcptr,  /* source data */
-    int maxpf,              /* maximum number of permitted fields */
-    char *argv[],           /* where to put the pointers */
-    char *dlmstr           /* Delimiting character */
-)
-{
+	char *srcptr,  /* source data */
+	int maxpf,              /* maximum number of permitted fields */
+	char *argv[],           /* where to put the pointers */
+	char *dlmstr           /* Delimiting character */
+) {
 	char gotquote;		/* currently parsing quoted string */
 	int ind;
 	char *destptr;

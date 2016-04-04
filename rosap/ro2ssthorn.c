@@ -33,17 +33,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssthorn.c,v 9.0 19
 
 /*  */
 
-static PE 
-qb2Rpe (struct qbuf *qb, int len, int *result)
-{
+static PE
+qb2Rpe (struct qbuf *qb, int len, int *result) {
 	return qb2pe (qb, len, 2, result);
 }
 
 /*    modify underling service */
 
-int 
-RoSetThorn (int sd, struct RoSAPindication *roi)
-{
+int
+RoSetThorn (int sd, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk   *acb;
@@ -53,7 +51,7 @@ RoSetThorn (int sd, struct RoSAPindication *roi)
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
@@ -66,7 +64,7 @@ RoSetThorn (int sd, struct RoSAPindication *roi)
 							"not an association descriptor for ROS");
 
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

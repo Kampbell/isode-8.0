@@ -39,9 +39,8 @@ static int  RoInvokeRequestAux ();
 
 /*    RO-INVOKE.REQUEST */
 
-int 
-RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
-{
+int
+RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -64,16 +63,15 @@ RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID
 	result = RoInvokeRequestAux (acb, op, class, args, invokeID, linkedID,
 								 priority, roi);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-RoInvokeRequestAux (struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
-{
+static int
+RoInvokeRequestAux (struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {
 	PE	pe;
 
 	struct type_ROS_ROSEapdus	papdu;

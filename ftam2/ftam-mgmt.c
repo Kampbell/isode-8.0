@@ -35,15 +35,14 @@ static int makedir (char *dir, int multi);
 
 /*  */
 
-int f_mv (char **vec)
-{
+int f_mv (char **vec) {
 #ifdef	BRIDGE
 	char *src;
 #else
 	int	sglobbed;
 	char  *bp,
-			 **gp,
-			 **src;
+		  **gp,
+		  **src;
 	char   *freedst = NULL,
 			buffer[BUFSIZ];
 #endif
@@ -120,16 +119,16 @@ int f_mv (char **vec)
 				break;
 #ifdef apollo
 			if (*dst == '/')
-				 sprintf (bp = buffer, "%s", dst);
+				sprintf (bp = buffer, "%s", dst);
 			else
 #endif
-				 sprintf (bp = buffer, "%s/", dst);
+				sprintf (bp = buffer, "%s/", dst);
 			bp += strlen (bp);
 			if (dst = rindex (*src, '/'))
 				dst++;
 			if (dst == NULL || *dst == NULL)
 				dst = *src;
-			 strcpy (bp, dst);
+			strcpy (bp, dst);
 			dst = buffer;
 
 			switch (ask ("mv %s %s", *src, dst)) {
@@ -149,7 +148,7 @@ int f_mv (char **vec)
 			break;
 		}
 
-		 mv (*src, dst, 0);
+		mv (*src, dst, 0);
 		goto out;
 	}
 
@@ -161,10 +160,10 @@ int f_mv (char **vec)
 	case RFS_UNIX:
 #ifdef apollo
 		if (*dst == '/')
-			 sprintf (bp = buffer, "%s", dst);
+			sprintf (bp = buffer, "%s", dst);
 		else
 #endif
-			 sprintf (bp = buffer, "%s/", dst);
+			sprintf (bp = buffer, "%s/", dst);
 		bp += strlen (bp);
 		break;
 
@@ -188,7 +187,7 @@ int f_mv (char **vec)
 		default:
 			dst = *gp;
 		}
-		 strcpy (bp, dst);
+		strcpy (bp, dst);
 		dst = str2file (buffer);
 
 		if (sglobbed) {
@@ -208,7 +207,7 @@ int f_mv (char **vec)
 				advise (NULLCP, "mv %s %s", *gp, dst);
 		}
 
-		 mv (*gp, dst, 1);
+		mv (*gp, dst, 1);
 
 		if (ftamfd == NOTOK)
 			break;
@@ -230,8 +229,7 @@ out:
 
 /*  */
 
-static int mv (char *src, char *dst, int multi)
-{
+static int mv (char *src, char *dst, int multi) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
@@ -280,7 +278,7 @@ static int mv (char *src, char *dst, int multi)
 		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		if (multi && ftse -> ftse_state != FSTATE_SUCCESS)
-			 printf ("%s\n", src);
+			printf ("%s\n", src);
 		ftam_diag (ftse -> ftse_diags, ftse -> ftse_ndiag, 1,
 				   ftse -> ftse_action);
 		if (ftse -> ftse_state != FSTATE_SUCCESS)
@@ -313,9 +311,8 @@ you_lose:
 
 /*  */
 
-int 
-f_rm (char **vec)
-{
+int
+f_rm (char **vec) {
 #ifndef	BRIDGE
 	int     multi;
 	char    buffer[BUFSIZ];
@@ -352,7 +349,7 @@ f_rm (char **vec)
 					goto out;
 				}
 
-			 rm (*gp, multi);
+			rm (*gp, multi);
 
 			if (ftamfd == NOTOK)
 				break;
@@ -369,8 +366,7 @@ out:
 
 /*  */
 
-static int rm (char *file, int multi)
-{
+static int rm (char *file, int multi) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
@@ -408,7 +404,7 @@ static int rm (char *file, int multi)
 		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		if (multi && ftse -> ftse_state != FSTATE_SUCCESS)
-			 printf ("%s\n", file);
+			printf ("%s\n", file);
 		ftam_diag (ftse -> ftse_diags, ftse -> ftse_ndiag, 1,
 				   ftse -> ftse_action);
 		if (ftse -> ftse_state != FSTATE_SUCCESS)
@@ -435,9 +431,8 @@ you_lose:
 /*  */
 
 #ifndef	BRIDGE
-int 
-f_chgrp (char **vec)
-{
+int
+f_chgrp (char **vec) {
 	int     multi;
 	char    group[8 + 1];
 	char    buffer[BUFSIZ];
@@ -452,7 +447,7 @@ f_chgrp (char **vec)
 			return OK;
 	}
 
-	 strcpy (group, vec[0]);
+	strcpy (group, vec[0]);
 
 	if (*++vec == NULL) {
 		if (getftamline ("file: ", buffer) == NOTOK || str2vec (buffer, vec) < 1)
@@ -478,7 +473,7 @@ f_chgrp (char **vec)
 					goto out;
 				}
 
-			 chgrp (group, *gp, multi);
+			chgrp (group, *gp, multi);
 
 			if (ftamfd == NOTOK)
 				break;
@@ -494,8 +489,7 @@ out:
 
 /*  */
 
-static int chgrp (char *group, char *file, int multi)
-{
+static int chgrp (char *group, char *file, int multi) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
@@ -543,7 +537,7 @@ static int chgrp (char *group, char *file, int multi)
 		struct FTAMselect *ftse = &ftg -> ftg_select;
 
 		if (multi && ftse -> ftse_state != FSTATE_SUCCESS)
-			 printf ("%s\n", file);
+			printf ("%s\n", file);
 		ftam_diag (ftse -> ftse_diags, ftse -> ftse_ndiag, 1,
 				   ftse -> ftse_action);
 		if (ftse -> ftse_state != FSTATE_SUCCESS)
@@ -577,9 +571,8 @@ you_lose:
 
 /*  */
 
-int 
-f_mkdir (char **vec)
-{
+int
+f_mkdir (char **vec) {
 #ifndef	BRIDGE
 	int	    multi;
 	char  *dir;
@@ -594,7 +587,7 @@ f_mkdir (char **vec)
 				|| str2vec (buffer, vec) < 1)
 			return OK;
 
-		 makedir (str2file (*vec), 0);
+		makedir (str2file (*vec), 0);
 #endif
 	}
 #ifdef	BRIDGE
@@ -604,7 +597,7 @@ f_mkdir (char **vec)
 		multi = vec[1] ? 1 : 0;
 
 		while (dir = *vec++)
-			 makedir (str2file (dir), multi);
+			makedir (str2file (dir), multi);
 	}
 
 	return OK;
@@ -613,8 +606,7 @@ f_mkdir (char **vec)
 
 /*  */
 
-static int makedir (char *dir, int multi)
-{
+static int makedir (char *dir, int multi) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
@@ -672,7 +664,7 @@ static int makedir (char *dir, int multi)
 		struct FTAMcreate *ftce = &ftg -> ftg_create;
 
 		if (multi && ftce -> ftce_state != FSTATE_SUCCESS)
-			 printf ("%s\n", dir);
+			printf ("%s\n", dir);
 		ftam_diag (ftce -> ftce_diags, ftce -> ftce_ndiag, 1,
 				   ftce -> ftce_action);
 		if (ftce -> ftce_state != FSTATE_SUCCESS)

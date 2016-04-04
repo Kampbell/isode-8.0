@@ -120,7 +120,7 @@ int	ftamfd;
 
 		if (vf -> vf_flags & VF_OK) {
 			if (vf -> vf_peek)
-				 (*vf -> vf_peek) (vf, fd, file, st, ftamfd);
+				(*vf -> vf_peek) (vf, fd, file, st, ftamfd);
 			return vf;
 		}
 	}
@@ -153,8 +153,8 @@ char   *data;
 			& opt_DOCS_FTAM__3__Parameters_string__significanz)
 			&& p3 -> string__significanz
 			== int_DOCS_string__significanz_fixed) {
-		 strcpy (data,
-					   "filestore does not support fixed-length strings");
+		strcpy (data,
+				"filestore does not support fixed-length strings");
 		return NOTOK;
 	}
 
@@ -183,9 +183,9 @@ char   *data;
 		break;
 
 	default:
-		 sprintf (data,
-						"filestore does not support strings of universal class number %d",
-						p1 -> universal__class__number);
+		sprintf (data,
+				 "filestore does not support strings of universal class number %d",
+				 p1 -> universal__class__number);
 		return NOTOK;
 	}
 
@@ -202,8 +202,8 @@ char   *data;
 			& opt_DOCS_FTAM__1__Parameters_string__significance)
 			&& p1 -> string__significance
 			== int_DOCS_string__significance_fixed) {
-		 strcpy (data,
-					   "filestore does not support fixed-length strings");
+		strcpy (data,
+				"filestore does not support fixed-length strings");
 		return NOTOK;
 	}
 
@@ -226,8 +226,8 @@ int	ftamfd;
 	struct type_DOCS_FTAM__3__Parameters *p3 = &p3s;
 
 	if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
-		 fre_obj (vf -> vf_parameter,
-						_ZDOCS_mod.md_dtab[vf -> vf_number], &_ZDOCS_mod, 1);
+		fre_obj (vf -> vf_parameter,
+				 _ZDOCS_mod.md_dtab[vf -> vf_number], &_ZDOCS_mod, 1);
 
 	vf -> vf_parameter = (caddr_t) p3, vf -> vf_flags &= ~VF_PARM;
 
@@ -285,8 +285,8 @@ int	ftamfd;
 	struct type_DOCS_FTAM__1__Parameters *p1 = &p1s;
 
 	if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
-		 fre_obj (vf -> vf_parameter,
-						_ZDOCS_mod.md_dtab[vf -> vf_number], &_ZDOCS_mod, 1);
+		fre_obj (vf -> vf_parameter,
+				 _ZDOCS_mod.md_dtab[vf -> vf_number], &_ZDOCS_mod, 1);
 
 	vf -> vf_parameter = (caddr_t) p1, vf -> vf_flags &= ~VF_PARM;
 
@@ -330,7 +330,7 @@ int	ftamfd;
 
 	if (fd != NOTOK) {
 		pos = lseek (gd, 0L, L_INCR);
-		 lseek (gd, 0L, L_SET);
+		lseek (gd, 0L, L_SET);
 	}
 #ifndef	MAXBSIZE
 	n = read (gd, buffer, sizeof buffer);
@@ -340,10 +340,10 @@ int	ftamfd;
 	n = read (gd, buffer, n);
 #endif
 	if (fd != NOTOK && pos != -1L)
-		 lseek (gd, pos, L_SET);
+		lseek (gd, pos, L_SET);
 
 	if (fd == NOTOK)
-		 close (gd);
+		close (gd);
 
 	for (cp = buffer + n - 1; cp >= buffer; cp--)
 		if (!isIA5 (*cp))
@@ -369,8 +369,8 @@ int	ftamfd;
 	struct FTAMindication ftis;
 
 	if (vf -> vf_parameter && (vf -> vf_flags & VF_PARM))
-		 fre_obj (vf -> vf_parameter,
-						_ZDOCS_mod.md_dtab[vf -> vf_number], &_ZDOCS_mod, 1);
+		fre_obj (vf -> vf_parameter,
+				 _ZDOCS_mod.md_dtab[vf -> vf_number], &_ZDOCS_mod, 1);
 
 	vf -> vf_parameter = NULLCP, vf -> vf_flags &= ~VF_PARM;
 
@@ -391,14 +391,13 @@ int	ftamfd;
  */
 
 
-int 
-de2fd (int fd, PE pe, int text, int effector)
-{
+int
+de2fd (int fd, PE pe, int text, int effector) {
 	int    i,
-			 n;
+		   n;
 	char  *bp,
-			 *cp,
-			 *ep;
+		  *cp,
+		  *ep;
 	PE	    p;
 
 	if (pe -> pe_form == PE_FORM_CONS) {
@@ -500,11 +499,10 @@ outside:
 #define	NPWD	(sizeof PWD - 1)
 
 
-int 
-compath (char *f)
-{
+int
+compath (char *f) {
 	char  *cp,
-			 *dp;
+		  *dp;
 
 	if (*f != '/')
 		return;
@@ -526,7 +524,7 @@ compath (char *f)
 #endif
 				for (dp = cp; *dp == '/'; dp++)
 					continue;
-				 strcpy (cp--, dp);
+				strcpy (cp--, dp);
 				continue;
 
 			case '.':
@@ -551,12 +549,12 @@ compath (char *f)
 							break;
 					if (dp <= f)
 						dp = f;
-					 strcpy (dp, cp + NPWD - 1);
+					strcpy (dp, cp + NPWD - 1);
 					cp = dp;
 					continue;
 				}
 				if (strncmp (cp, CWD, NCWD) == 0) {
-					 strcpy (cp - 1, cp + NCWD - 1);
+					strcpy (cp - 1, cp + NCWD - 1);
 					cp--;
 					continue;
 				}

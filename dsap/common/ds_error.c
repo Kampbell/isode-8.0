@@ -207,9 +207,8 @@ struct DSError *err;
 }
 
 
-int 
-log_ds_error (struct DSError *err)
-{
+int
+log_ds_error (struct DSError *err) {
 	struct DSE_at_problem *at_prob;
 
 	switch (err->dse_type) {
@@ -288,9 +287,8 @@ log_ds_error (struct DSError *err)
 }
 
 
-int 
-ds_error_free (struct DSError *err)
-{
+int
+ds_error_free (struct DSError *err) {
 	struct DSE_at_problem *at_prob;
 
 	if ((struct DSError *)0 == err)
@@ -377,8 +375,7 @@ struct ds_bind_error *err;
 static PS ps = NULLPS;
 
 char *
-print_bind_error (struct ds_bind_error *err, int mode)
-{
+print_bind_error (struct ds_bind_error *err, int mode) {
 	char       *cp;
 
 	if (ps == NULL

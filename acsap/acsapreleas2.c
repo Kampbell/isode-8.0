@@ -36,9 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas2.c,v 9.0 
 
 /*    A-RELEASE.RESPONSE */
 
-int 
-AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAPindication *aci)
-{
+int
+AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAPindication *aci) {
 	SBV	    smask;
 	int     code,
 			result;
@@ -91,7 +90,7 @@ AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAP
 	pe = NULLPE;
 	if ((pdu = (struct type_ACS_RLRE__apdu *) calloc (1, sizeof *pdu))
 			== NULL) {
-		 acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+		acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	pdu -> optionals |= opt_ACS_RLRE__apdu_reason;
@@ -108,8 +107,8 @@ AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAP
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		 acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
-						  PY_pepy);
+		acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+				   PY_pepy);
 		goto out2;
 	}
 	pe -> pe_context = acb -> acb_id;
@@ -117,7 +116,7 @@ AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAP
 	PLOGP (acsap_log,ACS_ACSE__apdu, pe, "RLRE-apdu", 0);
 
 	if ((result = PRelResponse (acb -> acb_fd, code, &pe, 1, &pis)) == NOTOK) {
-		 ps2acslose (acb, aci, "PRelResponse", pa);
+		ps2acslose (acb, aci, "PRelResponse", pa);
 		if (PC_FATAL (pa -> pa_reason))
 			goto out2;
 		else
@@ -142,7 +141,7 @@ out1:
 	if (pdu)
 		free_ACS_RLRE__apdu (pdu);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

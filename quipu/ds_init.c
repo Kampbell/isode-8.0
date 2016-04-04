@@ -57,7 +57,7 @@ time_t	timenow;
 
 static set_context ();
 
-int 
+int
 dsa_init (void) {
 	Attr_Sequence as, get_cacheEDB();
 	AttributeType manager;
@@ -178,7 +178,7 @@ dsa_init (void) {
 		if ((newentry = make_path (dsainfo->edb_name)) == NULLENTRY)
 			continue;
 
-		 subtree_load (newentry,dsainfo->edb_name);
+		subtree_load (newentry,dsainfo->edb_name);
 		if (parse_status != 0)
 			loadstate = FALSE;
 	}
@@ -192,7 +192,7 @@ dsa_init (void) {
 
 	/* Load cached EDB files - if any */
 	if ((as = get_cacheEDB()) != NULLATTR) {
-		 time (&timenow);
+		time (&timenow);
 
 		for (avs = as -> attr_value; avs != NULLAV; avs = avs -> avseq_next) {
 			if ((newentry = make_path ((DN)avs->avseq_av.av_struct)) == NULLENTRY)
@@ -212,9 +212,8 @@ dsa_init (void) {
 
 }
 
-static Entry 
-load_dsa_cache_entry (DN dn)
-{
+static Entry
+load_dsa_cache_entry (DN dn) {
 	DN ptr,trail = NULLDN;
 	Entry newentry, res;
 	DN tmp;
@@ -244,7 +243,7 @@ load_dsa_cache_entry (DN dn)
 		if ((newentry = make_path (tmp)) == NULLENTRY)
 			parse_error ("Make_path failed",NULLCP);
 		else
-			 subtree_load (newentry,tmp);
+			subtree_load (newentry,tmp);
 
 		trail->dn_parent = tmp2;
 
@@ -264,9 +263,8 @@ load_dsa_cache_entry (DN dn)
 	return res;
 }
 
-static 
-set_context (Entry eptr)
-{
+static
+set_context (Entry eptr) {
 	AttributeType at;
 	AttributeValue av;
 	AV_Sequence avs;

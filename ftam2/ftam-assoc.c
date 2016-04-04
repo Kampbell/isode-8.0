@@ -34,9 +34,8 @@ static struct PSAPaddr vfs_bound;
 
 /*  */
 
-int 
-f_open (char **vec)
-{
+int
+f_open (char **vec) {
 	int    i;
 	int     manage;
 	char    passwd[BUFSIZ];
@@ -75,7 +74,7 @@ f_open (char **vec)
 #else
 		if (user == NULL)
 			user = strdup (myuser ? myuser : "");
-		 sprintf (prompt, "user (%s:%s): ", host, user);
+		sprintf (prompt, "user (%s:%s): ", host, user);
 		if (getftamline (prompt, buffer) == NOTOK)
 			return OK;
 		if (str2vec (buffer, vec) < 1)
@@ -113,13 +112,13 @@ f_open (char **vec)
 	if (strcmp (user, "ANON") && !*++vec)
 		return NOTOK;
 	else
-		 strcpy (passwd, *vec ? strdup(*vec) : "");
+		strcpy (passwd, *vec ? strdup(*vec) : "");
 #else
 	if (strcmp (user, "ANON")) {
-		 sprintf (prompt, "password (%s:%s): ", host, user);
-		 strcpy (passwd, getpassword (prompt));
+		sprintf (prompt, "password (%s:%s): ", host, user);
+		strcpy (passwd, getpassword (prompt));
 	} else
-		 strcpy (passwd, myuser ? myuser : "");
+		strcpy (passwd, myuser ? myuser : "");
 #endif
 
 #ifdef	BRIDGE
@@ -134,8 +133,8 @@ f_open (char **vec)
 		if (once_only)
 			set_lookup_dase (1), once_only = 0;
 #endif
-		 sprintf (prompt, "DN-password (%s): ", userdn);
-		 strcpy (buffer, getpassword (prompt));
+		sprintf (prompt, "DN-password (%s): ", userdn);
+		strcpy (buffer, getpassword (prompt));
 	} else
 		buffer[0] = NULL;
 
@@ -174,8 +173,8 @@ f_open (char **vec)
 
 #ifndef	BRIDGE
 	if (verbose) {
-		 fprintf (stderr, "%s... ", host);
-		 fflush (stderr);
+		fprintf (stderr, "%s... ", host);
+		fflush (stderr);
 	}
 #endif
 	if (FInitializeRequest (NULLOID, NULLAEI, aei, NULLPA, pa, manage, ftam_class,
@@ -186,7 +185,7 @@ f_open (char **vec)
 			== NOTOK) {
 #ifndef	BRIDGE
 		if (verbose)
-			 fprintf (stderr, "loses big\n");
+			fprintf (stderr, "loses big\n");
 #endif
 		ftam_advise (&fti -> fti_abort, "F-INITIALIZE.REQUEST");
 
@@ -197,7 +196,7 @@ f_open (char **vec)
 	case FSTATE_SUCCESS:
 #ifndef	BRIDGE
 		if (verbose)
-			 fprintf (stderr, "connected\n");
+			fprintf (stderr, "connected\n");
 #endif
 #ifdef	DEBUG
 		if (debug)
@@ -273,8 +272,8 @@ f_open (char **vec)
 
 		for (vf = vfs; vf -> vf_entry; vf++)    /* prime the pump */
 			if (vf -> vf_peek)
-				 (*vf -> vf_peek) (vf, NOTOK, NULLCP,
-										 (struct stat *) 0, ftamfd);
+				(*vf -> vf_peek) (vf, NOTOK, NULLCP,
+								  (struct stat *) 0, ftamfd);
 
 		if ((fadusize = ftc -> ftc_ssdusize) < 0)
 			fadusize = 0;
@@ -283,7 +282,7 @@ f_open (char **vec)
 	default:
 #ifndef	BRIDGE
 		if (verbose)
-			 fprintf (stderr, "failed\n");
+			fprintf (stderr, "failed\n");
 #endif
 		break;
 	}
@@ -297,7 +296,7 @@ f_open (char **vec)
 		vec[0] = "sd";
 		vec[1] = NULLCP;
 
-		 f_cd (vec);
+		f_cd (vec);
 	}
 
 	return (ftamfd != NOTOK ? OK : NOTOK);
@@ -323,8 +322,8 @@ char  **vec;
 	if (FTerminateRequest (ftamfd, NULLPE, ftr, fti) == NOTOK) {
 		ftam_advise (&fti -> fti_abort, "F-TERMINATE.REQUEST");
 
-		 FUAbortRequest (ftamfd, FACTION_PERM,
-							   (struct FTAMdiagnostic *) 0, 0, &ftis);
+		FUAbortRequest (ftamfd, FACTION_PERM,
+						(struct FTAMdiagnostic *) 0, 0, &ftis);
 		ftamfd = NOTOK;
 
 		return NOTOK;
@@ -349,7 +348,7 @@ int	f_quit (vec)
 char  **vec;
 {
 	if (ftamfd != NOTOK)
-		 f_close (vec);
+		f_close (vec);
 
 	return DONE;
 }
@@ -368,65 +367,65 @@ char  **vec;
 	int	    hit;
 	struct vfsmap *vf;
 
-	 printf ("associated with virtual filestore on \"%s\"\n  at %s\n",
-				   host, pa2str (&vfs_bound));
-	 printf ("  as user \"%s\"", user);
+	printf ("associated with virtual filestore on \"%s\"\n  at %s\n",
+			host, pa2str (&vfs_bound));
+	printf ("  as user \"%s\"", user);
 	if (account)
-		 printf (" using account \"%s\"", account);
-	 printf ("\n");
+		printf (" using account \"%s\"", account);
+	printf ("\n");
 
-	 printf ("application-context: %s\nservice class: ", oid2ode (context));
+	printf ("application-context: %s\nservice class: ", oid2ode (context));
 	switch (ftam_class) {
 	case FCLASS_TRANSFER:
-		 printf ("transfer");
+		printf ("transfer");
 		break;
 
 	case FCLASS_ACCESS:
-		 printf ("access");
+		printf ("access");
 		break;
 
 	case FCLASS_MANAGE:
-		 printf ("management");
+		printf ("management");
 		break;
 
 	case FCLASS_TM:
-		 printf ("transfer-and-management");
+		printf ("transfer-and-management");
 		break;
 
 	case FCLASS_UNCONS:
-		 printf ("unconstrained");
+		printf ("unconstrained");
 		break;
 
 	default:
-		 printf ("%d", ftam_class);
+		printf ("%d", ftam_class);
 	}
-	 printf (", ftam-QoS: ");
+	printf (", ftam-QoS: ");
 	switch (fqos) {
 	case FQOS_NORECOVERY:
-		 printf ("no-recovery");
+		printf ("no-recovery");
 		break;
 
 	default:
-		 printf ("class-%d-recovery", fqos);
+		printf ("class-%d-recovery", fqos);
 		break;
 	}
 
-	 printf ("\nfunctional units: %s\n", sprintb (units, UMASK));
+	printf ("\nfunctional units: %s\n", sprintb (units, UMASK));
 
-	 printf ("attribute groups: %s\n", sprintb (attrs, AMASK));
+	printf ("attribute groups: %s\n", sprintb (attrs, AMASK));
 
-	 printf ("document types:");
+	printf ("document types:");
 	hit = 0;
 	for (vf = vfs; vf -> vf_entry; vf++)
 		if (vf -> vf_oid && (vf -> vf_flags & VF_OK)) {
-			 printf ("\n  %-16.16s %s (%s)", sprintoid (vf -> vf_oid),
-						   vf -> vf_text, vf -> vf_entry);
+			printf ("\n  %-16.16s %s (%s)", sprintoid (vf -> vf_oid),
+					vf -> vf_text, vf -> vf_entry);
 			hit = 1;
 		}
 	if (!hit)
-		 printf (" none negotiated!");
+		printf (" none negotiated!");
 
-	 printf ("\nestimated integral FADU size: %d\n", fadusize);
+	printf ("\nestimated integral FADU size: %d\n", fadusize);
 
 	return OK;
 }

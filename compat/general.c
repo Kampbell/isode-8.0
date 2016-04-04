@@ -57,7 +57,7 @@ struct qelem {
 
 insque (elem, pred)
 struct qelem   *elem,
-		*pred;
+		   *pred;
 {
 	if (pred -> q_forw)
 		pred -> q_forw -> q_back = elem;
@@ -88,14 +88,14 @@ struct qelem   *elem;
 
 int     dup2 (d1, d2)
 int    d1,
-		 d2;
+	   d2;
 {
 	int     d;
 
 	if (d1 == d2)
 		return OK;
 
-	 close (d2);
+	close (d2);
 #ifdef	F_DUPFD
 	if ((d = fcntl (d1, F_DUPFD, d2)) == NOTOK)
 		return NOTOK;
@@ -124,7 +124,7 @@ int	d1,
 
 	result = dup2_aux (d1, d2);
 
-	 close (fd);
+	close (fd);
 
 	return result;
 }

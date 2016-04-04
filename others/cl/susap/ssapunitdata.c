@@ -103,7 +103,7 @@ int	TUNITDATAser ();
  ****************************************************************
  */
 
-int 
+int
 SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct QOStype *qos, struct SSAPindication *si)
 
 {
@@ -174,7 +174,7 @@ SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct Q
 									  NULLCP,
 									  SuErrString(UDERR_NO_MEMORY));
 			} else {
-				 sigsetmask (smask);
+				sigsetmask (smask);
 				return susaplose (si,
 								  SC_PARAMETER,
 								  NULLCP,
@@ -270,7 +270,7 @@ SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct Q
  ****************************************************************
  */
 
-int 
+int
 SUnitDataUnbind (int sd, struct SSAPindication *si)
 
 {
@@ -328,7 +328,7 @@ SUnitDataUnbind (int sd, struct SSAPindication *si)
  ****************************************************************
  */
 
-int 
+int
 SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 
 {
@@ -366,7 +366,7 @@ SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 
 		if ((sb = findsublk (sd)) == NULL) {
 
-			 sigsetmask (smask);
+			sigsetmask (smask);
 			return susaplose (si,
 							  SC_PARAMETER,
 							  NULLCP,
@@ -405,7 +405,7 @@ SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
  ****************************************************************
  */
 
-int 
+int
 SUnitDataRequest (struct SSAPaddr *calling, struct SSAPaddr *called, char *data, int cc, struct QOStype *qos, struct SSAPindication *si)
 
 
@@ -466,7 +466,7 @@ SUnitDataRequest (struct SSAPaddr *calling, struct SSAPaddr *called, char *data,
  ****************************************************************
  */
 
-int 
+int
 SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 
 {
@@ -623,7 +623,7 @@ SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 	*  Restore the mask.
 	*/
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	if (result == NOTOK)
 		return NOTOK;
@@ -658,7 +658,7 @@ SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
  ****************************************************************
  */
 
-int 
+int
 SUnitDataWriteV (int sd, struct udvec *uv, int si)
 
 
@@ -862,7 +862,7 @@ SUnitDataWriteV (int sd, struct udvec *uv, int si)
 	*  Restore the mask.
 	*/
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	if (result == NOTOK)
 		return NOTOK;
@@ -891,7 +891,7 @@ SUnitDataWriteV (int sd, struct udvec *uv, int si)
  ****************************************************************
  */
 
-int 
+int
 SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *si)
 
 {
@@ -931,7 +931,7 @@ SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *
 	 *  Restore the mask.
 	 */
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	/*
 	 *  Return the result.
@@ -961,7 +961,7 @@ SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *
  ****************************************************************
  */
 
-static int 
+static int
 SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int secs, struct SSAPindication *si, int async, struct TSAPunitdata *tud)
 
 
@@ -1133,7 +1133,7 @@ struct SSAPindication *si;
 	sb -> sb_ReleaseIndication = finish;
 	sb -> sb_AbortIndication = abort;
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return OK;
 }
@@ -1244,9 +1244,8 @@ sb2udspkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPu
  ****************************************************************
  */
 
-static int 
-TUNITDATAser (int sd, int tud)
-{
+static int
+TUNITDATAser (int sd, int tud) {
 	IFP	    abort;
 	struct ssapblk *sb;
 	struct SSAPdata sxs;

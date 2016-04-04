@@ -11,9 +11,8 @@
 extern void	exit();
 extern int	strcmp();
 
-int 
-main (int argc, char **argv)
-{
+int
+main (int argc, char **argv) {
 	DIR		*dirp;
 	struct dirent	*dp;
 	int			nerrs = 0;	/* total not found */
@@ -26,8 +25,8 @@ main (int argc, char **argv)
 	if (argc == 1) {
 		while (dp = readdir (dirp))
 			printf ("ino=%d len=%d name=\"%s\"\n",
-						  dp -> d_ino, strlen (dp -> d_name), dp -> d_name);
-		 closedir (dirp);
+					dp -> d_ino, strlen (dp -> d_name), dp -> d_name);
+		closedir (dirp);
 		exit (0);
 	}
 

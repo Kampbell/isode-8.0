@@ -310,7 +310,7 @@ char *name;
 		}
 		reply(425, "Can't build data connection: %s.",
 			  sys_errlist[errno]);
-		 close(data);
+		close(data);
 		data = -1;
 		return (NOTOK);
 	}
@@ -510,7 +510,7 @@ struct sockaddr_in *sin;
 	} else
 #endif
 		strncpy(remotehost, inet_ntoa(sin->sin_addr),
-					  sizeof (remotehost));
+				sizeof (remotehost));
 	t = time((time_t*)0);
 	if (!logging)
 		return;
@@ -599,7 +599,7 @@ int status;
 	/* f_close performs the logout sequence and receives charging
 	     * information
 	     */
-	 f_close(vec);
+	f_close(vec);
 	if (status>=0)
 		reply(221,"Logged off. %s",ftam_error);
 	/* beware of flushing buffers after a SIGPIPE */

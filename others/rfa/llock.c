@@ -57,15 +57,14 @@ int interactive = 1;
 int retcode;
 
 
-int 
+int
 cleanup  {}
 
 /*--------------------------------------------------------------*/
 /*  errMsg                                                      */
 /*--------------------------------------------------------------*/
 char *
-errMsg (int type)
-{
+errMsg (int type) {
 	if(type == NOTOK)
 		return rfaErrStr;
 	else
@@ -75,9 +74,8 @@ errMsg (int type)
 /*--------------------------------------------------------------*/
 /*  getLocalFileRfaInfo						*/
 /*--------------------------------------------------------------*/
-int 
-getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int reg)
-{
+int
+getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int reg) {
 	int rc;
 
 
@@ -125,9 +123,8 @@ getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int r
 /*--------------------------------------------------------------*/
 /*  unlockFile							*/
 /*--------------------------------------------------------------*/
-int 
-do_lunlock (char *fn)
-{
+int
+do_lunlock (char *fn) {
 	int rc;
 	struct RfaInfo *rfalist, *rfa;
 
@@ -164,9 +161,8 @@ do_lunlock (char *fn)
 /*--------------------------------------------------------------*/
 /*  lockFile							*/
 /*--------------------------------------------------------------*/
-int 
-do_llock (char *fn)
-{
+int
+do_llock (char *fn) {
 	int res, rc;
 	struct RfaInfo *rfalist, *rfa;
 
@@ -202,9 +198,8 @@ do_llock (char *fn)
 }
 
 
-int 
-main (int ac, char **av)
-{
+int
+main (int ac, char **av) {
 	char c, *cwd, buf[BUFSIZ];
 	char *cmd=NULL;
 	int rc;

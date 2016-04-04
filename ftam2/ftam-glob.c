@@ -105,15 +105,14 @@ static int matchrdir (char *pattern);
 static int (*matchdir) () = matchldir;
 
 
-static char ** glob (char *v)
-{
+static char ** glob (char *v) {
 	char agpath[BUFSIZ];
 	char *agargv[GAVSIZ];
 	char *vv[2];
 	vv[0] = malloc ((unsigned) (strlen (v) + 1));
 	if (vv[0] == (char *)0)
 		fatal("out of memory");
-	 strcpy (vv[0], v);
+	strcpy (vv[0], v);
 	v = vv[0];
 	vv[1] = 0;
 	gflag = 0;
@@ -137,8 +136,7 @@ static char ** glob (char *v)
 		return (gargv = copyblk(gargv));
 }
 
-static ginit (char **agargv)
-{
+static ginit (char **agargv) {
 
 	agargv[0] = 0;
 	gargv = agargv;
@@ -147,8 +145,7 @@ static ginit (char **agargv)
 	gnleft = NCARGS - 4;
 }
 
-static collect (char *as)
-{
+static collect (char *as) {
 	if (eq(as, "{") || eq(as, "{}")) {
 		Gcat(as, "");
 		sort();
@@ -156,8 +153,7 @@ static collect (char *as)
 		acollect(as);
 }
 
-static acollect (char *as)
-{
+static acollect (char *as) {
 	int ogargc = gargc;
 
 	gpathp = gpath;
@@ -183,11 +179,10 @@ static sort (void) {
 	sortbas = Gvp;
 }
 
-static expand (char *as)
-{
+static expand (char *as) {
 	char *cs,
-			 *sgpathp,
-			 *oldcs;
+		 *sgpathp,
+		 *oldcs;
 	char   *csstr;
 	struct stat stb;
 
@@ -202,9 +197,9 @@ static expand (char *as)
 				*gpathp = 0;
 				if ((*gethdir) (gpath + 1))
 					globerr = "Unknown user name after ~";
-				 strcpy(gpath, gpath + 1);
+				strcpy(gpath, gpath + 1);
 			} else
-				 strcpy(gpath, home);
+				strcpy(gpath, home);
 			gpathp = strend(gpath);
 		}
 	}
@@ -227,7 +222,7 @@ static expand (char *as)
 		cs++, gpathp++;
 	*gpathp = 0;
 	if (*oldcs == '{') {
-		 execbrc(cs, ((char *)0));
+		execbrc(cs, ((char *)0));
 		return;
 	}
 	(*matchdir) (cs);
@@ -239,14 +234,13 @@ endit:
 		free (csstr);
 }
 
-static matchldir (char *pattern)
-{
+static matchldir (char *pattern) {
 	char	pat[MAXPATHLEN];
 	struct stat stb;
 	struct dirent *dp;
 	DIR *dirp;
 
-	 strcpy (pat, pattern);
+	strcpy (pat, pattern);
 
 	dirp = opendir(*gpath ? gpath : ".");
 	if (dirp == NULL) {
@@ -270,17 +264,16 @@ static matchldir (char *pattern)
 	}
 	if (errno)
 		globerr = "corrupted directory";
-	 closedir(dirp);
+	closedir(dirp);
 	return;
 
 patherr1:
-	 closedir(dirp);
+	closedir(dirp);
 patherr2:
 	globerr = "Bad directory components";
 }
 
-static execbrc (char *p, char *s)
-{
+static execbrc (char *p, char *s) {
 	char restbuf[BUFSIZ + 2];
 	char *pe, *pm, *pl;
 	int brclev = 0;
@@ -329,8 +322,8 @@ pend:
 doit:
 			savec = *pm;
 			*pm = 0;
-			 strcpy(lm, pl);
-			 strcat(restbuf, pe + 1);
+			strcpy(lm, pl);
+			strcat(restbuf, pe + 1);
 			*pm = savec;
 			if (s == 0) {
 				sgpathp = gpathp;
@@ -357,8 +350,7 @@ doit:
 	return (0);
 }
 
-static match (char *s, char *p)
-{
+static match (char *s, char *p) {
 	int c;
 	char *sentp;
 	char sglobbed = globbed;
@@ -373,8 +365,7 @@ static match (char *s, char *p)
 	return (c);
 }
 
-static amatch (char *s, char *p)
-{
+static amatch (char *s, char *p) {
 	int scc;
 	int ok, lc;
 	char *sgpathp;
@@ -460,13 +451,11 @@ slash:
 	}
 }
 
-static chkldir ( char   *path, struct stat *st)
-{
+static chkldir ( char   *path, struct stat *st) {
 	return (stat (path, st) == 0 && (st -> st_mode & S_IFMT) == S_IFDIR);
 }
 
-static Gmatch (char *s, char *p)
-{
+static Gmatch (char *s, char *p) {
 	int scc;
 	int ok, lc;
 	int c, cc;
@@ -522,8 +511,7 @@ static Gmatch (char *s, char *p)
 	}
 }
 
-static Gcat (char *s1, char *s2)
-{
+static Gcat (char *s1, char *s2) {
 	int len = strlen(s1) + strlen(s2) + 1;
 
 	if (len >= gnleft || gargc >= GAVSIZ - 1)
@@ -536,8 +524,7 @@ static Gcat (char *s1, char *s2)
 	}
 }
 
-static addpath (int c)
-{
+static addpath (int c) {
 
 	if (gpathp >= lastgpathp)
 		globerr = "Pathname too long";
@@ -547,8 +534,7 @@ static addpath (int c)
 	}
 }
 
-static rscan (char **t, int (*f)(char))
-{
+static rscan (char **t, int (*f)(char)) {
 	char *p, c;
 
 	while (p = *t++) {
@@ -563,8 +549,7 @@ static rscan (char **t, int (*f)(char))
 }
 
 #ifdef	notdef
-static scan (char **t, int (*f)(void))
-{
+static scan (char **t, int (*f)(void)) {
 	char *p, c;
 
 	while (p = *t++)
@@ -573,8 +558,7 @@ static scan (char **t, int (*f)(void))
 }
 #endif
 
-static tglob (int c)
-{
+static tglob (int c) {
 
 	if (any(c, globchars))
 		gflag |= c == '{' ? 2 : 1;
@@ -582,36 +566,31 @@ static tglob (int c)
 }
 
 #ifdef	notdef
-static trim (int c)
-{
+static trim (int c) {
 
 	return (c & TRIM);
 }
 #endif
 
-static letter (int c)
-{
+static letter (int c) {
 
 	return (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_');
 }
 
-static digit (int c)
-{
+static digit (int c) {
 
 	return (c >= '0' && c <= '9');
 }
 
-static any (int c, char *s)
-{
+static any (int c, char *s) {
 
 	while (*s)
 		if (*s++ == c)
 			return(1);
 	return(0);
 }
-int 
-blklen (char **av)
-{
+int
+blklen (char **av) {
 	int i = 0;
 
 	while (*av++)
@@ -620,8 +599,7 @@ blklen (char **av)
 }
 
 char **
-blkcpy (char **oav, char **bv)
-{
+blkcpy (char **oav, char **bv) {
 	char **av = oav;
 
 	while (*av++ = *bv++)
@@ -629,9 +607,8 @@ blkcpy (char **oav, char **bv)
 	return (oav);
 }
 
-int 
-blkfree (char **av0)
-{
+int
+blkfree (char **av0) {
 	char **av = av0;
 
 	while (*av)
@@ -639,29 +616,26 @@ blkfree (char **av0)
 	free((char *)av0);
 }
 
-static char * strspl (char *cp, char *dp)
-{
+static char * strspl (char *cp, char *dp) {
 	char *ep = malloc((unsigned)(strlen(cp) + strlen(dp) + 1));
 
 	if (ep == (char *)0)
 		fatal("out of memory");
-	 strcpy(ep, cp);
-	 strcat(ep, dp);
+	strcpy(ep, cp);
+	strcat(ep, dp);
 	return (ep);
 }
 
-static char ** copyblk (char **v)
-{
+static char ** copyblk (char **v) {
 	char **nv = (char **)malloc((unsigned)((blklen(v) + 1) *
-										 sizeof(char **)));
+										   sizeof(char **)));
 	if (nv == (char **)0)
 		fatal("out of memory");
 
 	return (blkcpy(nv, v));
 }
 
-static char * strend (char *cp)
-{
+static char * strend (char *cp) {
 
 	while (*cp)
 		cp++;
@@ -673,13 +647,12 @@ static char * strend (char *cp)
  * user whose home directory is sought is currently.
  * We write the home directory of the user back there.
  */
-static getldir (char *hdir)
-{
+static getldir (char *hdir) {
 	struct passwd *pp = getpwnam(hdir);
 
 	if (pp == 0)
 		return (1);
-	 strcpy(hdir, pp->pw_dir);
+	strcpy(hdir, pp->pw_dir);
 	return (0);
 }
 
@@ -694,8 +667,7 @@ static OID   matchoid;
 
 /*  */
 
-char * xglob1val (char *v, int remote)
-{
+char * xglob1val (char *v, int remote) {
 	char **gp;
 	char   *cp,
 		   *gb[2];
@@ -720,12 +692,11 @@ char * xglob1val (char *v, int remote)
 
 /*  */
 
-char ** xglob (char **v, int remote)
-{
+char ** xglob (char **v, int remote) {
 	int    i;
 	char  *cp,
-			 **gp,
-			 **vp;
+		  **gp,
+		  **vp;
 	char   *loses;
 
 	xglobbed = 0;
@@ -737,7 +708,7 @@ char ** xglob (char **v, int remote)
 			cp = remote ? str2file (*gp) : *gp;
 			if ((dp = malloc ((unsigned) (strlen (cp) + 1))) == NULLCP)
 				fatal ("out of memory");
-			 strcpy (dp, cp);
+			strcpy (dp, cp);
 			*gp = dp;
 		}
 
@@ -778,7 +749,7 @@ char ** xglob (char **v, int remote)
 		if (vp) {
 			int    j;
 			char **xp,
-					 **yp;
+				 **yp;
 
 			if ((j = blklen (gp)) > 1)
 				xglobbed++;
@@ -810,15 +781,14 @@ char ** xglob (char **v, int remote)
 
 	if (vp && debug)
 		for (gp = vp; *gp; gp++)
-			 printf ("%d: \"%s\"\n", gp - vp, *gp);
+			printf ("%d: \"%s\"\n", gp - vp, *gp);
 
 	return vp;
 }
 
 /*  */
 
-static matchrdir (char *pattern)
-{
+static matchrdir (char *pattern) {
 	char  *cp;
 	char    cwd[MAXPATHLEN],
 			pat[MAXPATHLEN];
@@ -826,7 +796,7 @@ static matchrdir (char *pattern)
 	struct FADUidentity *faduid = &faduids;
 	struct filent *fi, *gi;
 
-	 strcpy (pat, pattern);
+	strcpy (pat, pattern);
 
 	switch (isdir (gpath, cwd, 1)) {
 	case NOTOK:
@@ -837,7 +807,7 @@ static matchrdir (char *pattern)
 
 	default:
 		if (cwd[0] == NULL)
-			 strcpy (cwd, gpath);
+			strcpy (cwd, gpath);
 		cp = cwd + strlen (cwd) - 1;
 		if (*cp == '/')
 			*cp = NULL;
@@ -852,11 +822,11 @@ static matchrdir (char *pattern)
 	faduid -> fa_type = FA_FIRSTLAST;
 	faduid -> fa_firstlast = FA_FIRST;
 
-	 fdffnx (NOTOK, (struct PSAPdata *) 0, 1);
-	 getvf (cp, NULLCP, faduid, &vfs[VFS_FDF], fdffnx);
+	fdffnx (NOTOK, (struct PSAPdata *) 0, 1);
+	getvf (cp, NULLCP, faduid, &vfs[VFS_FDF], fdffnx);
 
 	fi = gi = filents, filents = NULL;
-	 fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
+	fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
 
 	{
 		int len = strlen (cp);
@@ -875,40 +845,36 @@ static matchrdir (char *pattern)
 	}
 
 	filents = gi;
-	 fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
+	fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
 }
 
 /*  */
 
 /* ARGSUSED */
 
-static	chkrdir ( char   *path, struct stat *st)
-{
+static	chkrdir ( char   *path, struct stat *st) {
 	return (oid_cmp (vfs[VFS_FDF].vf_oid, matchoid) == 0);
 }
 
 /*  */
 
-static getrdir (char *hdir)
-{
+static getrdir (char *hdir) {
 	char    buffer[BUFSIZ];
 
-	 sprintf (buffer, "~%s", hdir);
+	sprintf (buffer, "~%s", hdir);
 
 	return (isdir (buffer, hdir, 1) != DONE);
 }
 
 /*  */
 
-static int fatal (char *s)
-{
+static int fatal (char *s) {
 	adios (NULLCP, "%s", s);
 }
 
 /*  */
 
-int f_echo (char **vec)
-{
+int f_echo (char **vec) {
 	char  **gb,
 		  **gp,
 		  *gs;
@@ -919,11 +885,11 @@ int f_echo (char **vec)
 		for (cp = ""; *gp; gp++, cp = " ") {
 			gs = rindex (*gp, '/');
 			if (gs == NULL)
-				 printf ("%s%s", cp, *gp);
+				printf ("%s%s", cp, *gp);
 			else
-				 printf ("%s%s", cp, ++gs);
+				printf ("%s%s", cp, ++gs);
 		}
-		 printf ("\n");
+		printf ("\n");
 
 		blkfree (gb);
 	}

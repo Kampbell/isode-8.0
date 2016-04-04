@@ -37,9 +37,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/unbi
 
 #include "internet.h"
 
-int 
-main (int argc, char *argv[])
-{
+int
+main (int argc, char *argv[]) {
 	int 			sd,res,status;
 	struct sockaddr_in	sin_buf;
 	struct sockaddr_in	* sin = &sin_buf;
@@ -55,34 +54,34 @@ main (int argc, char *argv[])
 		exit (-21);
 
 	if (join_tcp_server (sd, sin) == NOTOK) {
-		 fprintf (stderr,"No connection and no cache !!!\n");
-		 close_tcp_socket (sd);
+		fprintf (stderr,"No connection and no cache !!!\n");
+		close_tcp_socket (sd);
 		exit (0);
 	}
 
 	if ((ptr = rindex (argv[0], '/')) == NULLCP)
-		 strcpy (buffer,argv[0]);
+		strcpy (buffer,argv[0]);
 	else
-		 strcpy (buffer,++ptr);
+		strcpy (buffer,++ptr);
 
 	argc--,argv++;
 
 	while (argc--) {
-		 strcat (buffer, " \"");
-		 strcat (buffer, *argv++);
-		 strcat (buffer, "\"");
+		strcat (buffer, " \"");
+		strcat (buffer, *argv++);
+		strcat (buffer, "\"");
 	}
-	 strcat (buffer, "\n");
+	strcat (buffer, "\n");
 
 	if (send(sd, buffer, strlen(buffer), 0) == -1) {
 		perror("send");
-		 close_tcp_socket (sd);
+		close_tcp_socket (sd);
 		exit (-25);
 	}
 
 	if ((res = recv(sd, buffer, BUFSIZ-1, 0)) == -1) {
 		perror ("recv");
-		 close_tcp_socket (sd);
+		close_tcp_socket (sd);
 		exit (-26);
 	}
 	*(buffer + res) = 0;
@@ -90,18 +89,18 @@ main (int argc, char *argv[])
 	if (*buffer == '2') {
 		status = 1;
 		if (res > 1)
-			 write (2,&buffer[1],--res);
+			write (2,&buffer[1],--res);
 		while ( (res = recv(sd, buffer, BUFSIZ, 0)) > 0)
-			 write (2,buffer,res);
+			write (2,buffer,res);
 	} else if (*buffer == '1') {
 		status = 0;
 		if (res > 1)
-			 write (1,&buffer[1],--res);
+			write (1,&buffer[1],--res);
 		while ( (res = recv(sd, buffer, BUFSIZ, 0)) > 0)
-			 write (1,buffer,res);
+			write (1,buffer,res);
 	}
 
-	 close_tcp_socket (sd);
+	close_tcp_socket (sd);
 
 	exit (status);
 
@@ -119,9 +118,8 @@ main (int argc, char *argv[])
 char retfile [LINESIZE];
 int fd;
 
-int 
-main (int argc, char **argv)
-{
+int
+main (int argc, char **argv) {
 	int res;
 	char buffer [BUFSIZ];
 	char sendfile [LINESIZE];
@@ -130,63 +128,63 @@ main (int argc, char **argv)
 	void pipe_quit ();
 	char * getenv(), *sprintf();
 
-	 umask(0);
-	 sprintf (retfile,"/tmp/dish%d",getpid());
+	umask(0);
+	sprintf (retfile,"/tmp/dish%d",getpid());
 	if ( (ptr = getenv ("DISHPROC")) == NULLCP ) {
-		 sprintf (sendfile, "/tmp/dish-%d", getppid ());
-		 setenv ("DISHPROC", sendfile);
+		sprintf (sendfile, "/tmp/dish-%d", getppid ());
+		setenv ("DISHPROC", sendfile);
 	} else
-		 strcpy (sendfile, ptr);
+		strcpy (sendfile, ptr);
 
 	setbuf (stdout,NULLCP);
 	setbuf (stderr,NULLCP);
 
 	if (mknod (retfile,S_IFIFO|0660,0) == -1) {
-		 fprintf (stderr,"Can't create result file %s\n",retfile);
+		fprintf (stderr,"Can't create result file %s\n",retfile);
 		exit (-5);
 	}
 
 	for (i=1; i<=15; i++)
-		 signal(i,pipe_quit);
+		signal(i,pipe_quit);
 
 	if ((fd = open (sendfile,O_WRONLY|O_NDELAY)) == -1) {
-		 fprintf (stderr,"No connection and no cache !!!\n");
-		 unlink (retfile);
+		fprintf (stderr,"No connection and no cache !!!\n");
+		unlink (retfile);
 		exit (0);
 	}
 
 	argc--;
 	if ((ptr = rindex (argv[0],'/')) == NULLCP)
-		 sprintf (buffer,"%s:%s",retfile,argv[0]);
+		sprintf (buffer,"%s:%s",retfile,argv[0]);
 	else
-		 sprintf (buffer,"%s:%s",retfile,++ptr);
+		sprintf (buffer,"%s:%s",retfile,++ptr);
 	*argv++;
 
 	while (argc--) {
-		 strcat (buffer," ");
-		 strcat (buffer,*argv++);
+		strcat (buffer," ");
+		strcat (buffer,*argv++);
 	}
 
 	if (( res =write (fd, buffer,strlen (buffer))) == -1) {
-		 fprintf (stderr,"Write failed\n");
-		 close (fd);
-		 unlink (retfile);
+		fprintf (stderr,"Write failed\n");
+		close (fd);
+		unlink (retfile);
 		exit (-2);
 	}
-	 close (fd);
+	close (fd);
 
 
 	/* get results */
 	if (( fd = open (retfile,O_RDONLY)) < 0) {
-		 fprintf (stderr,"Can't read results\n");
-		 unlink (retfile);
+		fprintf (stderr,"Can't read results\n");
+		unlink (retfile);
 		exit (-3);
 	}
 
 	if (( res = read (fd,buffer,BUFSIZ)) == -1) {
-		 fprintf (stderr,"Read failed (%d)\n",errno);
-		 unlink (retfile);
-		 close (fd);
+		fprintf (stderr,"Read failed (%d)\n",errno);
+		unlink (retfile);
+		close (fd);
 		exit (-4);
 	}
 
@@ -197,18 +195,17 @@ main (int argc, char **argv)
 	else if (*buffer == '1')
 		fputs (&buffer[1], stdout);
 
-	 close (fd);
-	 unlink (retfile);
+	close (fd);
+	unlink (retfile);
 
 	if (*buffer == '2')
 		exit (-1);
 }
 
-void 
-pipe_quit (int sig)
-{
-	 unlink (retfile);
-	 fprintf (stderr,"(signal %d) exiting...\n",sig);
+void
+pipe_quit (int sig) {
+	unlink (retfile);
+	fprintf (stderr,"(signal %d) exiting...\n",sig);
 	exit (0);
 }
 

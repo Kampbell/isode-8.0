@@ -51,29 +51,29 @@ char	**argv;
 	dnbuf[0] = '\0';
 
 	while ((p = index(dn, '/')) != NULL) {
-		 strncpy(mapfile, argv[argc - 1], dn - argv[argc - 1]);
+		strncpy(mapfile, argv[argc - 1], dn - argv[argc - 1]);
 		mapfile[dn - argv[argc - 1]] = '\0';
-		 strcat(mapfile, "EDB.map");
+		strcat(mapfile, "EDB.map");
 		mapped = 0;
 		if ((map = fopen(mapfile, "r")) != NULL) {
 			while (fgets(mapbuf, BUFSIZ, map) != NULL)
 				if ((mp = index(mapbuf, '#')) != NULL) {
 					*mp++ = '\0';
 					if (!strncmp(mp, dn, p - dn)) {
-						 strcat(dnbuf, mapbuf);
+						strcat(dnbuf, mapbuf);
 						mapped++;
 						break;
 					}
 				}
-			 fclose(map);
+			fclose(map);
 		}
 		if (!mapped)
-			 strncat(dnbuf, dn, p - dn);
-		 strcat(dnbuf, "@");
+			strncat(dnbuf, dn, p - dn);
+		strcat(dnbuf, "@");
 		dn = p + 1;
 	}
 	if (strlen(dnbuf) == 0)
-		 strcpy(dnbuf, "root@");
+		strcpy(dnbuf, "root@");
 	p = rindex(dnbuf, '@');
 	*p = '\0';
 	puts(dnbuf);

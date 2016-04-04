@@ -38,9 +38,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/uvec2ps.c,v 9.0 1992/0
 
 /*  */
 
-static int 
-uvec_write (PS ps, PElementData data, PElementLen n, int in_line)
-{
+static int
+uvec_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	struct udvec *uv;
 
 	if (in_line && n < PSDU_MAGIC)
@@ -97,9 +96,8 @@ uvec_write (PS ps, PElementData data, PElementLen n, int in_line)
 }
 
 
-static int 
-uvec_flush (PS ps)
-{
+static int
+uvec_flush (PS ps) {
 	if (ps -> ps_cur) {
 		if (ps -> ps_cur -> uv_base)
 			ps -> ps_cur++;
@@ -114,9 +112,8 @@ uvec_flush (PS ps)
 }
 
 
-static int 
-uvec_close (PS ps)
-{
+static int
+uvec_close (PS ps) {
 	struct udvec *uv;
 
 	if (ps -> ps_head) {
@@ -134,9 +131,8 @@ uvec_close (PS ps)
 
 /*  */
 
-int 
-uvec_open (PS ps)
-{
+int
+uvec_open (PS ps) {
 	ps -> ps_writeP = uvec_write;
 	ps -> ps_flushP = uvec_flush;
 	ps -> ps_closeP = uvec_close;
@@ -145,9 +141,8 @@ uvec_open (PS ps)
 }
 
 
-int 
-uvec_setup (PS ps, int len)
-{
+int
+uvec_setup (PS ps, int len) {
 	struct udvec *uv;
 
 	ps -> ps_elems = NPSUV;
@@ -170,9 +165,8 @@ uvec_setup (PS ps, int len)
 
 /*  */
 
-int 
-ps_get_plen (PE pe)
-{
+int
+ps_get_plen (PE pe) {
 	PElementLen len;
 	PE	    p;
 

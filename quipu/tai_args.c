@@ -42,9 +42,8 @@ static char        *usage = "[-t <tailor>] [-c <dsa name>] [-T <oidtable>] [-D <
 
 extern LLog * log_dsap;
 
-int 
-dsa_tai_args (int *acptr, char ***avptr)
-{
+int
+dsa_tai_args (int *acptr, char ***avptr) {
 	char ** av;
 	char *cp;
 	int cnt;

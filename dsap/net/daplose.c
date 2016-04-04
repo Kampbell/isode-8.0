@@ -40,11 +40,10 @@ static int  _dapreject ();
 /*  */
 
 #ifndef	lint
-int	daplose (struct DAPindication *di, ...)
-{
+int	daplose (struct DAPindication *di, ...) {
 	int	    reason,
-	result;
-	
+			result;
+
 	va_list ap;
 
 	va_start (ap, di);
@@ -60,9 +59,8 @@ int	daplose (struct DAPindication *di, ...)
 #else
 /* VARARGS4 */
 
-int 
-daplose (struct DAPindication *di, int reason, char *what, char *fmt)
-{
+int
+daplose (struct DAPindication *di, int reason, char *what, char *fmt) {
 	return daplose (di, reason, what, fmt);
 }
 #endif
@@ -70,13 +68,12 @@ daplose (struct DAPindication *di, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _daplose (  /* what, fmt, args ... */
-    struct DAPindication *di,
-    int reason,
-    va_list ap
-)
-{
+	struct DAPindication *di,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct DAPabort	* da;
@@ -98,12 +95,11 @@ _daplose (  /* what, fmt, args ... */
 #endif
 
 #ifndef	lint
-int	dapreject (struct DAPindication *di, ...)
-{
+int	dapreject (struct DAPindication *di, ...) {
 	int	    reason,
-	id,
-	result;
-	
+			id,
+			result;
+
 	va_list ap;
 
 	va_start (ap, di);
@@ -120,9 +116,8 @@ int	dapreject (struct DAPindication *di, ...)
 #else
 /* VARARGS4 */
 
-int 
-dapreject (struct DAPindication *di, int reason, int id, char *what, char *fmt)
-{
+int
+dapreject (struct DAPindication *di, int reason, int id, char *what, char *fmt) {
 	return dapreject (di, reason, id, what, fmt);
 }
 #endif
@@ -130,14 +125,13 @@ dapreject (struct DAPindication *di, int reason, int id, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _dapreject (  /* what, fmt, args ... */
-    struct DAPindication *di,
-    int reason,
-    int id,
-    va_list ap
-)
-{
+	struct DAPindication *di,
+	int reason,
+	int id,
+	va_list ap
+) {
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct DAPpreject	* dp;

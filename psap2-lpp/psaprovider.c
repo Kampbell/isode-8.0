@@ -68,7 +68,7 @@ struct PSAPindication *pi;
 	if ((result = PDataRequestAux (pb, data[0], pi)) == NOTOK)
 		freepblk (pb);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
@@ -118,12 +118,12 @@ struct PSAPindication *pi;
 		PLOGP (psap2_log,PS_PDUs, pe, cp, 0);
 
 		if ((result = pe2ps (ps = pb -> pb_stream, pe)) == NOTOK)
-			 pslose (pi, ps -> ps_errno);
+			pslose (pi, ps -> ps_errno);
 		else
 			result = OK;
 	} else
-		 psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
-						 PY_pepy);
+		psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
+				  PY_pepy);
 
 	if (pe)
 		pe_free (pe);
@@ -182,7 +182,7 @@ struct PSAPindication *pi;
 	if (result == NOTOK && pa -> pa_reason != PC_TIMER)
 		freepblk (pb);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
@@ -217,8 +217,8 @@ struct PSAPindication *pi;
 		if (pb -> pb_reliability == LOW_QUALITY)
 			goto bad_ref2;
 
-		 ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
-						 "error decoding PDU: %s", PY_pepy);
+		ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
+				  "error decoding PDU: %s", PY_pepy);
 		goto out;
 	}
 
@@ -226,14 +226,14 @@ struct PSAPindication *pi;
 	case type_PS_PDUs_releaseRequest: {
 		struct PSAPfinish *pf = &pi -> pi_finish;
 		struct type_PS_ReleaseRequest__PDU *rr =
-					pdu -> un.releaseRequest;
+				pdu -> un.releaseRequest;
 
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, (pref = rr -> reference))) {
 bad_ref1:
 			;
-			 ppktlose (pb, pi, PC_SESSION, pref, NULLCP,
-							 "reference mismatch");
+			ppktlose (pb, pi, PC_SESSION, pref, NULLCP,
+					  "reference mismatch");
 bad_ref2:
 			;
 			if (pdu)
@@ -320,7 +320,7 @@ bad_ref2:
 
 	case type_PS_PDUs_cL__userData: {
 		struct type_PS_CL__UserData__PDU *cl =
-					pdu -> un.cL__userData;
+				pdu -> un.cL__userData;
 
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, (pref = cl -> reference)))
@@ -416,7 +416,7 @@ struct psapblk *pb;
 		return;
 
 	if (pb -> pb_fd != NOTOK && pb -> pb_closefnx)
-		 (*pb -> pb_closefnx) (pb -> pb_fd);
+		(*pb -> pb_closefnx) (pb -> pb_fd);
 
 	if (pb -> pb_retry)
 		pe_free (pb -> pb_retry);
@@ -471,7 +471,7 @@ int sd;
 
 int	refcmp (ref1, ref2)
 struct type_PS_SessionConnectionIdentifier *ref1,
-		*ref2;
+		   *ref2;
 {
 	if (ref1 == NULLRF)
 		return (ref2 != NULLRF);
@@ -493,15 +493,15 @@ struct type_PS_SessionConnectionIdentifier *ref1,
 
 static int  qb_cmp (qb1, qb2)
 struct qbuf *qb1,
-		*qb2;
+		   *qb2;
 {
 	int    i,
-			 len1,
-			 len2;
+		   len1,
+		   len2;
 	char  *cp1,
-			 *cp2;
+		  *cp2;
 	struct qbuf *qp1,
-			*qp2;
+			   *qp2;
 
 	if (qb1 == NULL)
 		return (qb2 != NULL);

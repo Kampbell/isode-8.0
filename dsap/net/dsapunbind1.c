@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind1.c,v 9.
 
 /* ARGSUSED */
 
-int 
-DUnBindRequest (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di)
-{
+int
+DUnBindRequest (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di) {
 	int			  result;
 	struct AcSAPrelease	  acr_s;
 	struct AcSAPrelease	* acr = &(acr_s);
@@ -64,9 +63,8 @@ DUnBindRequest (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication 
 
 /* ARGSUSED */
 
-int 
-DUnBindRetry (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di)
-{
+int
+DUnBindRetry (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di) {
 	int			  result;
 	struct AcSAPrelease	  acr_s;
 	struct AcSAPrelease	* acr = &(acr_s);

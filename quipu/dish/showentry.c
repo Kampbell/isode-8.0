@@ -54,9 +54,8 @@ extern char	fred_subdisplay;
 
 extern LLog    *log_dua;
 
-int 
-call_showentry (int argc, char **argv)
-{
+int
+call_showentry (int argc, char **argv) {
 	Attr_Sequence   eptr;
 	char           *vect[2];
 	int             x;
@@ -139,7 +138,7 @@ call_showentry (int argc, char **argv)
 		return;
 	}
 	if (full_edb_flag) {
-		 mod_template(temp_file_name,0);
+		mod_template(temp_file_name,0);
 		return;
 	}
 
@@ -163,7 +162,7 @@ call_showentry (int argc, char **argv)
 			dn_free (new_dn);
 		}
 
-		 showfred (current_dn, fred_long, fred_subdisplay);
+		showfred (current_dn, fred_long, fred_subdisplay);
 	} else {
 		if (name_flag) {
 			dn_print (RPS,dn,EDBOUT);

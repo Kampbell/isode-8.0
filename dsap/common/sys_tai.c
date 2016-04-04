@@ -97,9 +97,8 @@ static CMD_TABLE chtab[] = {
  * do system wide initialisations
  */
 
-int 
-dsap_tai (int argc, char **argv)
-{
+int
+dsap_tai (int argc, char **argv) {
 	char    *arg, *term;
 	extern char * getenv ();
 	short str2syntax ();
@@ -149,8 +148,8 @@ dsap_tai (int argc, char **argv)
 				set_av_pe_print (str2syntax("photo"),strdup(argv[2]));
 			else {
 				char proc [LINESIZE];
-				 strcpy (proc,isodefile("g3fax/", 1));
-				 strcat (proc,argv[2]);
+				strcpy (proc,isodefile("g3fax/", 1));
+				strcat (proc,argv[2]);
 				set_av_pe_print (str2syntax("photo"),strdup(proc));
 			}
 		}
@@ -162,8 +161,8 @@ dsap_tai (int argc, char **argv)
 				set_av_pe_print (str2syntax("jpeg"),strdup(argv[2]));
 			else {
 				char proc [LINESIZE];
-				 strcpy (proc,isodefile("g3fax/", 1));
-				 strcat (proc,argv[2]);
+				strcpy (proc,isodefile("g3fax/", 1));
+				strcat (proc,argv[2]);
 				set_av_pe_print (str2syntax("jpeg"),strdup(proc));
 			}
 		}
@@ -190,7 +189,7 @@ dsap_tai (int argc, char **argv)
 			LLOG (log_dsap,LLOG_EXCEPTIONS,(
 					  "Invalid isode option in quiputailor"));
 		else
-			 isodesetvar(arg,strdup(argv[2]),0);
+			isodesetvar(arg,strdup(argv[2]),0);
 		break;
 	case CH_SET:
 		DLOG (log_dsap,LLOG_DEBUG,( "ch_set =%s", arg));

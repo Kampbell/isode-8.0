@@ -31,15 +31,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapaddent.c,v 9.0 
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 
-int 
-dap_addentry (int ad, int *id, struct ds_addentry_arg *arg, struct DSError *error)
-{
+int
+dap_addentry (int ad, int *id, struct ds_addentry_arg *arg, struct DSError *error) {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
 
 	++(*id);
 
-	 DapAddEntry (ad, (*id), arg, di, ROS_INTR);
+	DapAddEntry (ad, (*id), arg, di, ROS_INTR);
 
 	error->dse_type = DSE_NOERROR;
 
@@ -72,9 +71,8 @@ dap_addentry (int ad, int *id, struct ds_addentry_arg *arg, struct DSError *erro
 	}
 }
 
-int 
-DapAddEntry (int ad, int id, struct ds_addentry_arg *arg, struct DAPindication *di, int asyn)
-{
+int
+DapAddEntry (int ad, int id, struct ds_addentry_arg *arg, struct DAPindication *di, int asyn) {
 	PE                  arg_pe;
 
 	if(encode_DAS_AddEntryArgument(&arg_pe,1,0,NULLCP,arg) != OK) {

@@ -57,15 +57,14 @@ struct pair fconctl_pairs [] = {
 /*  */
 
 struct type_FTAM_Concurrency__Control *
-conctl2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti)
-{
+conctl2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	struct type_FTAM_Concurrency__Control *fpm;
 
 	if ((fpm = (struct type_FTAM_Concurrency__Control *)
 			   calloc (1, sizeof *fpm)) == NULL) {
 no_mem:
 		;
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		if (fpm)
 			free_FTAM_Concurrency__Control (fpm);
 		return NULL;
@@ -96,9 +95,8 @@ no_mem:
 
 /* ARGSUSED */
 
-int 
-fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti)
-{
+int
+fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	FCINIT (fc);
 
 #define	dolock(s,t) \
@@ -121,14 +119,13 @@ fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, str
 /*  */
 
 struct type_FTAM_Concurrency__Access *
-conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti)
-{
+conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	struct type_FTAM_Concurrency__Access *fpm;
 	int key;
 
 	if ((fpm = (struct type_FTAM_Concurrency__Access *)
 			   calloc (1, sizeof *fpm)) == NULL) {
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		if (fpm)
 			free_FTAM_Concurrency__Access (fpm);
 		return NULL;
@@ -154,9 +151,8 @@ conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindicati
 }
 
 
-int 
-fpm2conacc (struct ftamblk *fsb, struct type_FTAM_Concurrency__Access *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti)
-{
+int
+fpm2conacc (struct ftamblk *fsb, struct type_FTAM_Concurrency__Access *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	int	    key;
 
 	FCINIT (fc);

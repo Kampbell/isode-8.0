@@ -68,7 +68,7 @@ DN *nameptr;
 
 	if (sp != (struct security_parms *) 0) {
 		if (sp->sp_time != NULLCP) {
-			 time(&time_now);
+			time(&time_now);
 			time_then = gtime(ut2tm(str2utct(sp->sp_time, strlen(sp->sp_time))));
 			delta = time_now - time_then;
 		} else

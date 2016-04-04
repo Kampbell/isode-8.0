@@ -32,12 +32,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/states5.c,v 9.0 1992/06/
 	      "undefined state/event: sector is 5, state is %s, event is %d", \
 	       s1, e1)
 
-int 
+int
 s5_400B (			/* sector 5, state 400B	*/
-    int event,
-    PE pe
-)
-{
+	int event,
+	PE pe
+) {
 	switch (event) {
 	case DLQ:
 		return(a5_35(pe));
@@ -71,61 +70,53 @@ s5_400B (			/* sector 5, state 400B	*/
 }
 
 /* ARGSUSED */
-int 
-s5_402B (int event, PE pe)
-{
+int
+s5_402B (int event, PE pe) {
 	undefined ("402B", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
-int 
-s5_420B (int event, PE pe)
-{
+int
+s5_420B (int event, PE pe) {
 	undefined ("420B", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
-int 
+int
 s5_422B (			/* sector 5, state 422B	*/
-    int event,
-    PE pe
-)
-{
+	int event,
+	PE pe
+) {
 	undefined ("422B", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
-int 
-s5_40N (int event, PE pe)
-{
+int
+s5_40N (int event, PE pe) {
 	undefined ("40N", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
-int 
-s5_40T (int event, PE pe)
-{
+int
+s5_40T (int event, PE pe) {
 	undefined ("40T", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
-int 
-s5_42T (int event, PE pe)
-{
+int
+s5_42T (int event, PE pe) {
 	undefined ("42T", event); /* NOTREACHED */
 }
 
 /* ARGSUSED */
-int 
-s5_42N (int event, PE pe)
-{
+int
+s5_42N (int event, PE pe) {
 	undefined ("42N", event); /* NOTREACHED */
 }
 
 
-int 
-s5_61 (int event, PE pe)
-{
+int
+s5_61 (int event, PE pe) {
 	switch (event) {
 	case BKR:
 		return(a5_31(pe));
@@ -133,9 +124,8 @@ s5_61 (int event, PE pe)
 		undefined ("61", event); /* NOTREACHED */
 	}
 }
-int 
-s5_62 (int event, PE pe)
-{
+int
+s5_62 (int event, PE pe) {
 	switch (event) {
 	case VBRKrsp:
 		return(a5_6(pe));

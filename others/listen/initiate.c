@@ -36,9 +36,8 @@ static char *mycontext = "isode listen demo";
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	struct SSAPaddr *sz;
 	struct SSAPconnect scs;
 	struct SSAPconnect *sc = &scs;

@@ -44,7 +44,7 @@ char	**argv;
 	char		*TidyString();
 
 	if ( argc < 2 || argc > 3 ) {
-		 fprintf(stderr, "usage: %s [-v] edbfile\n", argv[0]);
+		fprintf(stderr, "usage: %s [-v] edbfile\n", argv[0]);
 		return(1);
 	}
 
@@ -58,36 +58,36 @@ char	**argv;
 			verbose += 2;
 			filearg++;
 		} else
-			 fprintf(stderr, "invalid flag ignored: %s\n", argv[1]);
+			fprintf(stderr, "invalid flag ignored: %s\n", argv[1]);
 
 	if ( (fp = fopen(argv[filearg], "r")) == NULL ) {
 		perror(argv[filearg]);
 		return(1);
 	}
 
-	 strcpy(gfname, argv[filearg]);
-	 strcat(gfname, ".gdbm");
+	strcpy(gfname, argv[filearg]);
+	strcat(gfname, ".gdbm");
 	if ( (db = gdbm_open(gfname, 0, GDBM_NEWDB, 00664, 0)) == NULL ) {
-		 fprintf(stderr, "could not open %s\n", gfname);
+		fprintf(stderr, "could not open %s\n", gfname);
 		return(1);
 	}
 
 	if ( fgets(type, sizeof(type), fp) == NULL ) {
-		 fprintf(stderr, "File is empty!\n");
+		fprintf(stderr, "File is empty!\n");
 		return(1);
 	}
 	if ( fgets(version, sizeof(version), fp) == NULL ) {
-		 fprintf(stderr, "No version specified!\n");
+		fprintf(stderr, "No version specified!\n");
 		return(1);
 	}
-	 sprintf(buf, "%s%s", type, version);
+	sprintf(buf, "%s%s", type, version);
 	key.dptr = "HEADER";
 	key.dsize = sizeof("HEADER");
 	content.dptr = buf;
 	content.dsize = strlen(buf) + 1;
 	if ( verbose > 0 )  printf("HEADER: (%s)\n", content.dptr);
 	if ( gdbm_store(db, key, content, GDBM_INSERT) != 0 ) {
-		 fprintf(stderr, "could not gdbm_store header");
+		fprintf(stderr, "could not gdbm_store header");
 		return(1);
 	}
 
@@ -98,14 +98,14 @@ char	**argv;
 			if ( *buf !=  '#' && *buf != '\n' ) break;
 		if ( rc == NULL ) break;
 
-		 strcpy(kbuf, buf);
+		strcpy(kbuf, buf);
 		kbuf[strlen(kbuf)-1] = '\0';
 		key.dptr = TidyString(kbuf);
 		key.dsize = strlen(kbuf) + 1;
 
 		if ( verbose > 0 )  printf("key (%s)\n", key.dptr);
 
-		 sprintf(buf, "%s\n", kbuf);
+		sprintf(buf, "%s\n", kbuf);
 		len = strlen(bp);
 		bp += len;
 		buflen -= len;
@@ -124,14 +124,14 @@ char	**argv;
 		content.dsize = strlen(buf) + 1;
 		if ( verbose > 1 )  printf("content (%s)\n", content.dptr);
 		if ( gdbm_store(db, key, content, GDBM_INSERT) != 0 ) {
-			 fprintf(stderr, "error: gdbm_store\n");
+			fprintf(stderr, "error: gdbm_store\n");
 			return(1);
 		}
 		free(content.dptr);
 		free(key.dptr);
 	}
 
-	 gdbm_close(db);
+	gdbm_close(db);
 	return(0);
 }
 

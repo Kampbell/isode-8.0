@@ -37,11 +37,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/time2str.c,v 9.0 1992/
 /*  */
 
 char *
-time2str (UTC u, int generalized)
-{
+time2str (UTC u, int generalized) {
 	int    hours,
-			 mins,
-			 zone;
+		   mins,
+		   zone;
 	char  *bp;
 	static char buffer[BUFSIZ];
 
@@ -51,22 +50,22 @@ time2str (UTC u, int generalized)
 	bp = buffer;
 
 	if (generalized)
-		 sprintf (bp, "%04d", YEAR (u -> ut_year));
+		sprintf (bp, "%04d", YEAR (u -> ut_year));
 	else
-		 sprintf (bp, "%02d", UNYEAR (u -> ut_year));
+		sprintf (bp, "%02d", UNYEAR (u -> ut_year));
 	bp += strlen (bp);
 
-	 sprintf (bp, "%02d%02d%02d%02d", u -> ut_mon, u -> ut_mday,
-					u -> ut_hour, u -> ut_min);
+	sprintf (bp, "%02d%02d%02d%02d", u -> ut_mon, u -> ut_mday,
+			 u -> ut_hour, u -> ut_min);
 	bp += strlen (bp);
 
 	if (u -> ut_flags & UT_SEC
 			|| (generalized && (u -> ut_flags & UT_USEC))) {
-		 sprintf (bp, "%02d", u -> ut_sec);
+		sprintf (bp, "%02d", u -> ut_sec);
 		bp += strlen (bp);
 	}
 	if (generalized && (u -> ut_flags & UT_USEC)) {
-		 sprintf (bp, ".%06d", u -> ut_usec);
+		sprintf (bp, ".%06d", u -> ut_usec);
 		bp += strlen (bp);
 	}
 
@@ -78,8 +77,8 @@ time2str (UTC u, int generalized)
 				mins = (-zone) % 60, hours = (-zone) / 60;
 			else
 				mins = zone % 60, hours = zone / 60;
-			 sprintf (bp, "%c%02d%02d", zone < 0 ? '-' : '+',
-							hours, mins);
+			sprintf (bp, "%c%02d%02d", zone < 0 ? '-' : '+',
+					 hours, mins);
 			bp += strlen (bp);
 		}
 

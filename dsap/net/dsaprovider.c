@@ -51,7 +51,7 @@ struct RoNOTindication	* rni;
 			   rni->rni_cc, rni->rni_data));
 #endif
 
-	 sprintf (cp = buffer, " (Error in RO-BIND)");
+	sprintf (cp = buffer, " (Error in RO-BIND)");
 
 	if (rni->rni_cc > 0)
 		return (dsaplose (di, DA_RO_BIND, NULLCP, "%*.*s%s",
@@ -62,9 +62,8 @@ struct RoNOTindication	* rni;
 
 /*    ROS interface */
 
-int 
-ros2dsaplose (struct DSAPindication *di, char *event, struct RoSAPpreject *rop)
-{
+int
+ros2dsaplose (struct DSAPindication *di, char *event, struct RoSAPpreject *rop) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 
@@ -75,7 +74,7 @@ ros2dsaplose (struct DSAPindication *di, char *event, struct RoSAPpreject *rop)
 				event, AcErrString (rop->rop_reason), rop->rop_cc,
 				rop->rop_cc, rop->rop_data));
 	*/
-	 sprintf (cp = buffer, " (Error in ROS)");
+	sprintf (cp = buffer, " (Error in ROS)");
 
 	if (rop->rop_cc > 0)
 		return (dsaplose (di, DA_ROS, NULLCP, "%*.*s%s",
@@ -84,13 +83,12 @@ ros2dsaplose (struct DSAPindication *di, char *event, struct RoSAPpreject *rop)
 		return (dsaplose (di, DA_ROS, NULLCP, "%s", cp));
 }
 
-int 
-ros2dsapreject (struct DSAPindication *di, char *event, struct RoSAPureject *rou)
-{
+int
+ros2dsapreject (struct DSAPindication *di, char *event, struct RoSAPureject *rou) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 
-	 sprintf (cp = buffer, " (Reject at ROS)");
+	sprintf (cp = buffer, " (Reject at ROS)");
 
 	if (rou->rou_noid)
 		return (dsapreject (di, DA_ROS, -1, NULLCP, " no op id, reason: %d%s", rou->rou_reason, cp));

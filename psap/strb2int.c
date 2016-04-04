@@ -31,14 +31,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/strb2int.c,v 9.0 1992/
 #include "psap.h"
 
 
-int 
-strb2int (char *cp, int len)
-{
+int
+strb2int (char *cp, int len) {
 	int    i,
-			 j,
-			 bit,
-			 mask,
-			 n;
+		   j,
+		   bit,
+		   mask,
+		   n;
 
 	n = 0;
 	for (bit = (*cp & 0xff), i = 0, mask = 1 << (j = 7); i < len; i++) {

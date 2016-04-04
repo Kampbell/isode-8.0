@@ -59,8 +59,7 @@ extern char * aix_x25_linkname;
  */
 /* ARGSUSED */
 CONN_DB *
-gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context)
-{
+gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 	int     dtelen;
 	char    dte[NSAP_DTELEN + 1];
 #ifdef CAMTEC_CCL
@@ -447,8 +446,7 @@ gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context)
  */
 /* ARGSUSED */
 struct NSAPaddr *
-if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context)
-{
+if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 	int     dtelen;
 	char    dte[NSAP_DTELEN + 1];
 #ifdef CAMTEC_CCL
@@ -722,9 +720,8 @@ if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context)
 extern unsigned char isode_x25_err[2];
 extern char isode_x25_errflag;		/* From asprintf.c ! */
 
-int 
-elucidate_x25_err (int flags, unsigned char *pkt)
-{
+int
+elucidate_x25_err (int flags, unsigned char *pkt) {
 	char * cp;
 
 	isode_x25_err[0] = pkt[0];
@@ -1565,6 +1562,6 @@ struct NSAPaddr *nsap;
 #endif
 #endif
 #else
-int 
+int
 _x25addr_stub()  {}
 #endif

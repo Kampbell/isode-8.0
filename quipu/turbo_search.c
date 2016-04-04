@@ -62,9 +62,8 @@ static void		subtree_refer();
 Attr_Sequence	eis_select();
 EntryInfo	*filterentry();
 
-int 
-optimized_filter (Filter f)
-{
+int
+optimized_filter (Filter f) {
 	struct filter_item	*fi;
 
 	switch ( f->flt_type ) {
@@ -108,9 +107,8 @@ optimized_filter (Filter f)
 }
 
 /* ARGSUSED */
-static 
-apply_sacl (EntryInfo **list, Entry e, struct search_kid_arg *ska)
-{
+static
+apply_sacl (EntryInfo **list, Entry e, struct search_kid_arg *ska) {
 	EntryInfo	*p, *prev, *next;
 	int		saclerror = 0;
 
@@ -152,9 +150,8 @@ apply_sacl (EntryInfo **list, Entry e, struct search_kid_arg *ska)
  * turbo_sibling_search - search a sibling index
  */
 
-int 
-turbo_sibling_search (Entry e, struct search_kid_arg *ska)
-{
+int
+turbo_sibling_search (Entry e, struct search_kid_arg *ska) {
 	EntryInfo		*list;
 	Entry			*tmp;
 	DN			dn;
@@ -202,7 +199,7 @@ turbo_sibling_search (Entry e, struct search_kid_arg *ska)
 	if ( ska->ska_arg->sra_searchaliases && pindex->i_nonlocalaliases
 			!= (Entry *) 0 ) {
 		for ( tmp = pindex->i_nonlocalaliases; *tmp; tmp++ )
-			 do_alias( ska->ska_arg, *tmp, ska->ska_local );
+			do_alias( ska->ska_arg, *tmp, ska->ska_local );
 	}
 }
 
@@ -210,9 +207,8 @@ turbo_sibling_search (Entry e, struct search_kid_arg *ska)
  * turbo_subtree_search - search a subtree index
  */
 
-int 
-turbo_subtree_search (Entry e, struct search_kid_arg *ska)
-{
+int
+turbo_subtree_search (Entry e, struct search_kid_arg *ska) {
 	EntryInfo	*list;
 	Entry		*tmp;
 	DN		dn;
@@ -265,8 +261,8 @@ turbo_subtree_search (Entry e, struct search_kid_arg *ska)
 			i = th_prefix( (*ska->ska_local)->st_originalbase,
 						   (*tmp)->e_alias );
 			if ( i > 0 ) {
-				 do_alias( ska->ska_arg, *tmp,
-								 ska->ska_local );
+				do_alias( ska->ska_arg, *tmp,
+						  ska->ska_local );
 			}
 		}
 	}
@@ -321,9 +317,8 @@ int			toplevel;
 	/* NOT REACHED */
 }
 
-static 
-eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel)
-{
+static
+eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel) {
 	int		cmp;
 	EntryInfo	*eitmp;
 
@@ -372,9 +367,8 @@ eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel)
 	return( OK );
 }
 
-static 
-entry_collect (Index_node *node, EntryInfo **eilist)
-{
+static
+entry_collect (Index_node *node, EntryInfo **eilist) {
 	int		i;
 	EntryInfo	*ei;
 	int		saclerror;
@@ -407,9 +401,8 @@ entry_collect (Index_node *node, EntryInfo **eilist)
 	return( OK );
 }
 
-static 
-build_indexnode (Index_node *node, Index_node *bignode)
-{
+static
+build_indexnode (Index_node *node, Index_node *bignode) {
 	int	i, j;
 	int	low, mid, high;
 	int	dup;
@@ -537,7 +530,7 @@ int			toplevel;
 			break;
 
 		g_toplevel = toplevel;
-		 entry_collect( node, &eilist );
+		entry_collect( node, &eilist );
 		break;
 
 	case FILTERITEM_APPROX:
@@ -566,9 +559,9 @@ int			toplevel;
 
 		node = new_indexnode();
 		g_stopearly = 0;
-		 avl_prefixapply(pindex[i].i_sroot,
-							   (caddr_t) small, build_indexnode, (caddr_t) node,
-							   index_soundex_prefix, (caddr_t)strlen(small), NOTOK);
+		avl_prefixapply(pindex[i].i_sroot,
+						(caddr_t) small, build_indexnode, (caddr_t) node,
+						index_soundex_prefix, (caddr_t)strlen(small), NOTOK);
 #else
 		node = (Index_node *) avl_find( pindex[ i ].i_sroot,
 										(caddr_t) small, index_soundex_cmp );
@@ -586,7 +579,7 @@ int			toplevel;
 		 */
 
 		g_toplevel = toplevel;
-		 entry_collect(node, &eilist);
+		entry_collect(node, &eilist);
 
 #ifdef SOUNDEX_PREFIX
 		free((char *) node->in_entries);
@@ -642,18 +635,18 @@ int			toplevel;
 		g_count = size * g_size_normalizer;
 		if (case_exact_match(f->UNSUB.fi_sub_type->oa_syntax)) {
 			if (phoneflag)
-				 avl_prefixapply(theindex, thestring,
-									   build_indexnode, (caddr_t) node,
-									   substring_prefix_tel_cmp, (caddr_t)len,
-									   NOTOK);
+				avl_prefixapply(theindex, thestring,
+								build_indexnode, (caddr_t) node,
+								substring_prefix_tel_cmp, (caddr_t)len,
+								NOTOK);
 			else
-				 avl_prefixapply(theindex, thestring,
-									   build_indexnode, (caddr_t) node,
-									   substring_prefix_cmp, (caddr_t)len, NOTOK);
+				avl_prefixapply(theindex, thestring,
+								build_indexnode, (caddr_t) node,
+								substring_prefix_cmp, (caddr_t)len, NOTOK);
 		} else {
-			 avl_prefixapply(theindex, thestring,
-								   build_indexnode, (caddr_t) node,
-								   substring_prefix_case_cmp, (caddr_t)len, NOTOK);
+			avl_prefixapply(theindex, thestring,
+							build_indexnode, (caddr_t) node,
+							substring_prefix_case_cmp, (caddr_t)len, NOTOK);
 		}
 
 		if (node->in_num == 0) {
@@ -662,7 +655,7 @@ int			toplevel;
 		}
 
 		g_toplevel = (toplevel == 1); /* > 1 => or search */
-		 entry_collect(node, &eilist);
+		entry_collect(node, &eilist);
 
 		free((char *) node->in_entries);
 		free((char *) node);
@@ -671,8 +664,8 @@ int			toplevel;
 
 	case FILTERITEM_PRESENT:
 		g_toplevel = toplevel;
-		 avl_apply( pindex[ i ].i_root, entry_collect,
-						  (caddr_t) &eilist, NOTOK, AVL_INORDER );
+		avl_apply( pindex[ i ].i_root, entry_collect,
+				   (caddr_t) &eilist, NOTOK, AVL_INORDER );
 		break;
 
 	default:	/* handle other cases some day */
@@ -741,8 +734,7 @@ int			toplevel;
 }
 
 static EntryInfo *
-eis_union (EntryInfo *a, EntryInfo *b, int toplevel)
-{
+eis_union (EntryInfo *a, EntryInfo *b, int toplevel) {
 	EntryInfo	*result, *rtail;
 	EntryInfo	*next;
 
@@ -801,7 +793,7 @@ eis_union (EntryInfo *a, EntryInfo *b, int toplevel)
 	while (b != NULLENTRYINFO) {
 		next = b->ent_next;
 		b->ent_next = NULLENTRYINFO;
-		 eis_merge(b, &result, toplevel);
+		eis_merge(b, &result, toplevel);
 		b = next;
 
 		if (toplevel && size <= 0)

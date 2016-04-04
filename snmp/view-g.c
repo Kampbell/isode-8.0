@@ -460,7 +460,7 @@ int	isnext;
 
 static int  view_compar (a, b)
 struct view **a,
-		**b;
+		   **b;
 {
 	return elem_cmp ((*a) -> v_instance, (*a) -> v_insize,
 					 (*b) -> v_instance, (*b) -> v_insize);
@@ -468,7 +468,7 @@ struct view **a,
 
 static int  comm_compar (a, b)
 struct community **a,
-		**b;
+		   **b;
 {
 	return elem_cmp ((*a) -> c_instance, (*a) -> c_insize,
 					 (*b) -> c_instance, (*b) -> c_insize);
@@ -476,7 +476,7 @@ struct community **a,
 
 static int  trap_compar (a, b)
 struct trap **a,
-		**b;
+		   **b;
 {
 	return elem_cmp ((*a) -> t_instance, (*a) -> t_insize,
 					 (*b) -> t_instance, (*b) -> t_insize);
@@ -518,7 +518,7 @@ init_view () {
 			adios (NULLCP, "you lose");
 	}
 
-	 strcpy (buffer, "defViewTrapDest.0");
+	strcpy (buffer, "defViewTrapDest.0");
 	if ((trapview = text2oid (buffer)) == NULLOID)
 		adios (NULLCP, "unknown OID \"defViewTrapDest.0\" for traps");
 	trapview -> oid_nelem--;
@@ -591,7 +591,7 @@ fin_view () {
 		vec[1] = "public";
 		vec[2] = NULL;
 
-		 f_community (vec);
+		f_community (vec);
 	}
 
 	for (c = CHead -> c_forw; c != CHead; c = c -> c_forw) {
@@ -611,8 +611,8 @@ fin_view () {
 		i++;
 	if (i > 0) {
 		struct view **base,
-				**bp,
-				**ep;
+				   **bp,
+				   **ep;
 
 		if ((base = (struct view **) malloc ((unsigned) (i * sizeof *base)))
 				== NULL)
@@ -655,8 +655,8 @@ fin_view () {
 	if (i > 0) {
 		int	j;
 		struct community **base,
-				**bp,
-				**ep;
+				   **bp,
+				   **ep;
 
 		if ((base = (struct community **)
 					malloc ((unsigned) (i * sizeof *base))) == NULL)
@@ -664,7 +664,7 @@ fin_view () {
 		ep = base;
 		for (c = CHead -> c_forw; c != CHead; c = c -> c_forw) {
 			char *cp,
-					 *dp;
+				 *dp;
 			unsigned int *ip;
 
 			switch (c -> c_addr.na_stack) {
@@ -699,8 +699,8 @@ fin_view () {
 			*ip++ = j;
 			switch (c -> c_addr.na_stack) {
 			case NA_TCP:
-				 sscanf (c -> c_addr.na_domain, "%u.%u.%u.%u",
-							   ip, ip + 1, ip + 2, ip + 3);
+				sscanf (c -> c_addr.na_domain, "%u.%u.%u.%u",
+						ip, ip + 1, ip + 2, ip + 3);
 				break;
 
 			case NA_X25:
@@ -742,8 +742,8 @@ stuff_it:
 		i++;
 	if (i > 0) {
 		struct trap **base,
-				**bp,
-				**ep;
+				   **bp,
+				   **ep;
 
 		if ((base = (struct trap **) malloc ((unsigned) (i * sizeof *base)))
 				== NULL)
@@ -806,7 +806,7 @@ char  **vec;
 	} else {
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
-		 strcpy (na -> na_domain, "0.0.0.0");
+		strcpy (na -> na_domain, "0.0.0.0");
 	}
 
 	if (*vec) {
@@ -829,7 +829,7 @@ char  **vec;
 	if (*vec) {
 		char    buffer[BUFSIZ];
 
-		 strcpy (buffer, *vec);
+		strcpy (buffer, *vec);
 		if ((c -> c_vu = text2oid (buffer)) == NULLOID) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 			goto you_lose;
@@ -862,7 +862,7 @@ char  **vec;
 	char    buffer[BUFSIZ];
 	struct community *c;
 	struct view *v,
-			*u;
+			   *u;
 	struct NSAPaddr *na;
 
 	if ((v = (struct view *) calloc (1, sizeof *v)) == NULL)
@@ -873,7 +873,7 @@ char  **vec;
 	c -> c_permission = OT_YYY;
 	vec++;
 
-	 strcpy (buffer, *vec);
+	strcpy (buffer, *vec);
 	if ((v -> v_name = text2oid (buffer)) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 		goto you_lose;
@@ -983,7 +983,7 @@ char  **vec;
 		OID	name;
 		struct view *u;
 
-		 strcpy (buffer, *vec);
+		strcpy (buffer, *vec);
 		if ((name = text2oid (buffer)) == NULL) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 			goto you_lose;
@@ -1033,10 +1033,10 @@ char  **vec;
 {
 	char    buffer[BUFSIZ];
 	struct subtree *s,
-			*x,
-			*y;
+			   *x,
+			   *y;
 	struct view *v,
-			*u;
+			   *u;
 
 	if (viewmask == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
@@ -1050,7 +1050,7 @@ char  **vec;
 	v -> v_subtree.s_forw = v -> v_subtree.s_back = s;
 	vec++;
 
-	 strcpy (buffer, *vec);
+	strcpy (buffer, *vec);
 	if ((v -> v_name = text2oid (buffer)) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 		goto you_lose;
@@ -1069,7 +1069,7 @@ char  **vec;
 		struct subtree *z;
 		OID	name;
 
-		 strcpy (buffer, *vec);
+		strcpy (buffer, *vec);
 		if ((name = text2oid (buffer)) == NULLOID) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 			goto you_lose;
@@ -1077,7 +1077,7 @@ char  **vec;
 
 		for (x = s -> s_forw; x != s; x = y) {
 			int    i,
-					 j;
+				   j;
 			y = x -> s_forw;
 
 			if (bcmp ((char *) x -> s_subtree -> oid_elements,
@@ -1155,8 +1155,8 @@ int	proxy;
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
 		inaddr_copy (hp, &sin);
-		 strncpy (na -> na_domain, inet_ntoa (sin.sin_addr),
-						sizeof na -> na_domain - 1);
+		strncpy (na -> na_domain, inet_ntoa (sin.sin_addr),
+				 sizeof na -> na_domain - 1);
 	} else
 #endif
 		if ((ta = str2taddr (s)) && ta -> ta_naddr > 0) {

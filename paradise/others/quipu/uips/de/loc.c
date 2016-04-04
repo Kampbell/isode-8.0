@@ -85,9 +85,9 @@ struct query * a, * b;
 {
 	struct namelist * lp, ** slp;
 
-	 strcpy(a->defvalue, b->defvalue);
-	 strcpy(a->entered, b->entered);
-	 strcpy(a->displayed, b->displayed);
+	strcpy(a->defvalue, b->defvalue);
+	strcpy(a->entered, b->entered);
+	strcpy(a->displayed, b->displayed);
 	a->listlen = 0;
 	slp = &a->lp;
 	for (lp = b->lp; lp != NULLLIST; lp = lp->next) {

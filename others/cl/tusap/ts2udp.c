@@ -88,7 +88,7 @@ static struct udpconn *peers = NULL;
  **********************************************************
  */
 
-int 
+int
 udpinit (struct tsapblk *tb)
 
 {
@@ -134,16 +134,16 @@ udpinit (struct tsapblk *tb)
  **********************************************************
  */
 
-int 
+int
 udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, int option, struct TSAPdisconnect *td)
 
 {
 
 	int     fd;
 	struct sockaddr_in  lo_socket,
-			in_socket;
+			   in_socket;
 	struct sockaddr_in *lsock = &lo_socket,
-										 *isock = &in_socket;
+							*isock = &in_socket;
 	struct hostent *hp;
 	struct servent *sp;
 
@@ -246,9 +246,9 @@ udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, i
 		if ((hp = gethostbystring (remote -> na_domain)) == NULL)
 			tusaplose (td, DR_ADDRESS, NULLCP, TuErrString(UDERR_RHOST_UNKNOWN));
 
-		 strncpy (remote -> na_domain,
-						hp -> h_name,
-						sizeof remote -> na_domain);
+		strncpy (remote -> na_domain,
+				 hp -> h_name,
+				 sizeof remote -> na_domain);
 
 		isock -> sin_family = hp -> h_addrtype;
 
@@ -288,7 +288,7 @@ udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, i
 
 #ifdef EXOS
 
-int 
+int
 udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 
 {
@@ -474,7 +474,7 @@ udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
  **********************************************************
  */
 
-int 
+int
 udp_join_server (int sd, struct sockaddr_in *sock, int opt1, int opt2)
 
 {
@@ -510,7 +510,7 @@ udp_join_server (int sd, struct sockaddr_in *sock, int opt1, int opt2)
 			 */
 			return OK;
 		default:
-			 udp_close (sd);
+			udp_close (sd);
 			return NOTOK;
 		}
 	}
@@ -535,7 +535,7 @@ udp_join_server (int sd, struct sockaddr_in *sock, int opt1, int opt2)
  **********************************************************
  */
 
-int 
+int
 join_udp_aux (int fd, struct sockaddr_in *sock, int newfd)
 
 {
@@ -600,7 +600,7 @@ join_udp_aux (int fd, struct sockaddr_in *sock, int newfd)
  **********************************************************
  */
 
-int 
+int
 udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *fromsock, struct TSAPdisconnect *td)
 
 
@@ -739,7 +739,7 @@ udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *fromsock,
  **********************************************************
  */
 
-int 
+int
 udp_write_socket (int fd, char *data, int cc, struct TSAPdisconnect *td)
 
 {
@@ -787,13 +787,12 @@ udp_write_socket (int fd, char *data, int cc, struct TSAPdisconnect *td)
 
 /*  */
 
-int 
-udp_close (int fd)
-{
+int
+udp_close (int fd) {
 	struct qbuf *qb,
-			*qp;
+			   *qp;
 	struct udpconn *up,
-			*vp;
+			   *vp;
 
 #ifdef HULADEBUG
 	printf ("\n          close socket: %d", fd);
@@ -869,7 +868,7 @@ int	secs;
 			jfds;
 	struct qbuf *qb;
 	struct udpconn *up,
-			*vp;
+			   *vp;
 	struct udpconn *wp;
 	struct sockaddr_in *sock;
 	char   *recvptr;

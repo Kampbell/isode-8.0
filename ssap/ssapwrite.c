@@ -32,12 +32,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapwrite.c,v 9.0 1992
 
 /*  */
 
-int 
-SWriteRequestAux (struct ssapblk *sb, int code, char *data, int cc, int type, long ssn, int settings, struct SSAPactid *id, struct SSAPactid *oid, struct SSAPref *ref, struct SSAPindication *si)
-{
+int
+SWriteRequestAux (struct ssapblk *sb, int code, char *data, int cc, int type, long ssn, int settings, struct SSAPactid *id, struct SSAPactid *oid, struct SSAPref *ref, struct SSAPindication *si) {
 	int     result;
 	struct ssapkt *s,
-			*p;
+			   *p;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect *td = &tds;
 	struct udvec    uvs[3];
@@ -102,14 +101,14 @@ send_pr:
 		return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 
 	if (spkt2tsdu (s, &uv -> uv_base, &uv -> uv_len) == NOTOK) {
-		 ssaplose (si, s -> s_errno, NULLCP, NULLCP);
+		ssaplose (si, s -> s_errno, NULLCP, NULLCP);
 		goto out1;
 	}
 	freespkt (s);
 	uv++;
 
 	if ((s = newspkt (code)) == NULL) {
-		 ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
+		ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	switch (code) {
@@ -206,7 +205,7 @@ send_pr:
 	s -> s_udata = NULL, s -> s_ulen = 0;
 
 	if (result == NOTOK) {
-		 ssaplose (si, s -> s_errno, NULLCP, NULLCP);
+		ssaplose (si, s -> s_errno, NULLCP, NULLCP);
 		goto out3;
 	}
 	freespkt (s);
@@ -215,7 +214,7 @@ send_pr:
 	uv -> uv_base = NULL;
 
 	if ((result = TWriteRequest (sb -> sb_fd, uvs, td)) == NOTOK)
-		 ts2sslose (si, "TWriteRequest", td);
+		ts2sslose (si, "TWriteRequest", td);
 
 	free (uvs[0].uv_base);
 	free (uvs[1].uv_base);

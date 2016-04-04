@@ -57,15 +57,14 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int	    guest,
 			sd,
 			result,
 			turn;
 	char *cp,
-			 *user;
+		 *user;
 	struct passwd *pw;
 	struct RtSAPstart   rtss;
 	struct RtSAPstart *rts = &rtss;
@@ -173,13 +172,13 @@ no_dice:
 		goto no_dice;
 	}
 
-	 setgid (pw -> pw_gid);
+	setgid (pw -> pw_gid);
 #ifndef	SYS5
-	 initgroups (pw -> pw_name, pw -> pw_gid);
+	initgroups (pw -> pw_name, pw -> pw_gid);
 #endif
-	 setuid (pw -> pw_uid);
+	setuid (pw -> pw_uid);
 
-	 umask (0022);
+	umask (0022);
 
 	if (turn == RTS_RESPONDER) {
 		if ((fd = open (cp, O_RDONLY, 0x00)) == NOTOK) {
@@ -209,7 +208,7 @@ no_dice:
 		else
 			timer (nbytes);
 
-		 close (fd);
+		close (fd);
 	} else if (RtSetUpTrans (sd, uptrans, rti) == NOTOK)
 		rts_adios (rta, "set UpTrans upcall");
 
@@ -293,7 +292,7 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 	int    cc;
 	int	    n;
 	char *dp,
-			 *ep;
+		 *ep;
 	static int bsize;
 	static char *bp = NULL;
 

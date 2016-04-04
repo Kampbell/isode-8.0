@@ -195,7 +195,7 @@ extern int GiveUp();
 
 static struct sockaddr_un unsock;
 
-static int 
+static int
 open_unix_socket  {
 	int oldUmask;
 	int request;
@@ -227,7 +227,7 @@ open_unix_socket  {
  *    with TCP-IP with LSB first.
  *****************/
 
-void 
+void
 CreateWellKnownSockets  {
 	int		request, i;
 	int		whichbyte;	    /* used to figure out whether this is
@@ -324,7 +324,7 @@ CreateWellKnownSockets  {
 #endif /* hpux */
 #ifdef SO_LINGER
 		if(setsockopt (request, SOL_SOCKET, SO_LINGER,
-					   (char *)linger, sizeof(linger)))
+		(char *)linger, sizeof(linger)))
 			Notice ("Setting TCP SO_LINGER\n");
 #endif /* SO_LINGER */
 		if (listen (request, 5))
@@ -420,7 +420,7 @@ CreateWellKnownSockets  {
 	}
 }
 
-void 
+void
 ResetWellKnownSockets  {
 #ifdef UNIXCONN
 	if (unixDomainConnection != -1) {
@@ -430,11 +430,11 @@ ResetWellKnownSockets  {
 		struct stat	statb;
 
 		if (stat (unsock.sun_path, &statb) == -1 ||
-				(statb.st_mode & S_IFMT) != S_IFSOCK) {
+		(statb.st_mode & S_IFMT) != S_IFSOCK) {
 			ErrorF ("Unix domain socket %s trashed, recreating\n",
-					unsock.sun_path);
-			 unlink (unsock.sun_path);
-			 close (unixDomainConnection);
+			unsock.sun_path);
+			unlink (unsock.sun_path);
+			close (unixDomainConnection);
 			WellKnownConnections &= ~(1L << unixDomainConnection);
 			unixDomainConnection = open_unix_socket ();
 			if (unixDomainConnection != -1)
@@ -451,9 +451,8 @@ ResetWellKnownSockets  {
  * data, size = buffer
  * nonblock = NOTOK, blocks, OK, non blocks
  */
-int 
-TReadFromClient (int client, char *data, int size, int nonblock)
-{
+int
+TReadFromClient (int client, char *data, int size, int nonblock) {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
 	int ret;
@@ -557,7 +556,7 @@ TReadFromClient (int client, char *data, int size, int nonblock)
  */
 
 jmp_buf	env;
-void 
+void
 TimeOut  {
 	longjmp(env, 1);
 }
@@ -611,9 +610,8 @@ int charsWanted;
 /*
  * Who's calling us?
  */
-int 
-getISOpeername (int conn, struct TSAPaddr *from, int *alen)
-{
+int
+getISOpeername (int conn, struct TSAPaddr *from, int *alen) {
 	struct TSAPdisconnect td;
 	if (TGetAddresses (conn, from, NULLTA, &td) == NOTOK) {
 		Error(TErrString(td.td_reason));
@@ -642,13 +640,12 @@ getISOpeername (int conn, struct TSAPaddr *from, int *alen)
  *
  *****************************************************************/
 
-int 
+int
 ClientAuthorized (
-    long conn,
-    int *pswapped,
-    char **reason   /* if authorization fails, put reason in here */
-)
-{
+	long conn,
+	int *pswapped,
+	char **reason   /* if authorization fails, put reason in here */
+) {
 	short slen;
 	union {
 		struct sockaddr sa;

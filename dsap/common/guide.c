@@ -56,9 +56,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/guide.c,v 9.0 1
 
 static free_CriteriaItem ();
 
-static 
-Criteria_free (struct Criteria *arg)
-{
+static
+Criteria_free (struct Criteria *arg) {
 	struct Criteria *parm = arg;
 
 	if (parm == NULL)
@@ -101,9 +100,8 @@ Criteria_free (struct Criteria *arg)
 	free ((char *) arg);
 }
 
-static 
-free_CriteriaItem (struct CriteriaItem *arg)
-{
+static
+free_CriteriaItem (struct CriteriaItem *arg) {
 	struct CriteriaItem *parm = arg;
 
 	if (parm == NULL)
@@ -113,9 +111,8 @@ free_CriteriaItem (struct CriteriaItem *arg)
 }
 
 
-static 
-guidefree (struct Guide *arg)
-{
+static
+guidefree (struct Guide *arg) {
 	if (arg == NULL)
 		return;
 
@@ -129,8 +126,7 @@ guidefree (struct Guide *arg)
 }
 
 static struct CriteriaItem *
-CriteriaItem_cpy (struct CriteriaItem *arg)
-{
+CriteriaItem_cpy (struct CriteriaItem *arg) {
 	struct CriteriaItem *parm = arg;
 	struct CriteriaItem *res;
 
@@ -147,8 +143,7 @@ CriteriaItem_cpy (struct CriteriaItem *arg)
 
 
 static struct Criteria *
-Criteria_cpy (struct Criteria *a)
-{
+Criteria_cpy (struct Criteria *a) {
 	struct Criteria *b;
 
 	if (a == NULL)
@@ -196,8 +191,7 @@ Criteria_cpy (struct Criteria *a)
 }
 
 static struct Guide *
-guidecpy (struct Guide *a)
-{
+guidecpy (struct Guide *a) {
 	struct Guide * b;
 
 	b = (struct Guide * ) smalloc (sizeof(struct Guide));
@@ -226,8 +220,7 @@ static CMD_TABLE guide_tab [] = {
 };
 
 static struct CriteriaItem *
-CriteriaItem_parse (char *str)
-{
+CriteriaItem_parse (char *str) {
 	struct CriteriaItem * res;
 	char * ptr;
 	if ((str == NULLCP) || (*str == 0))
@@ -260,9 +253,8 @@ CriteriaItem_parse (char *str)
 
 
 
-static 
-getop (char *str, char *ch)
-{
+static
+getop (char *str, char *ch) {
 	int             i,
 					bracket = 0;
 
@@ -285,8 +277,7 @@ getop (char *str, char *ch)
 
 
 static struct Criteria *
-Criteria_parse (char *str)
-{
+Criteria_parse (char *str) {
 	int             gotit,
 					bracketed;
 	char            ch,
@@ -371,8 +362,7 @@ Criteria_parse (char *str)
 }
 
 static struct Guide *
-guideparse (char *str)
-{
+guideparse (char *str) {
 	char *ptr;
 	struct Guide * res;
 
@@ -411,8 +401,7 @@ static CMD_TABLE subset_tab[] = {
 };
 
 static struct Guide *
-nadfparse (char *str)
-{
+nadfparse (char *str) {
 	char   *ptr1,
 		   *ptr2;
 	struct Guide *res;
@@ -547,7 +536,7 @@ struct Guide * m;
 {
 	PE ret_pe;
 
-	 encode_SA_Guide (&ret_pe,0,0,NULLCP,m);
+	encode_SA_Guide (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -569,7 +558,7 @@ struct Guide * m;
 {
 	PE ret_pe;
 
-	 encode_SA_NadfGuide (&ret_pe,0,0,NULLCP,m);
+	encode_SA_NadfGuide (&ret_pe,0,0,NULLCP,m);
 
 	return (ret_pe);
 }
@@ -585,9 +574,8 @@ PE pe;
 	return (m);
 }
 
-static 
-criteriaItem_cmp (struct CriteriaItem *a, struct CriteriaItem *b)
-{
+static
+criteriaItem_cmp (struct CriteriaItem *a, struct CriteriaItem *b) {
 
 	if (a == NULL)
 		return (b==NULL ? 0 : -1);
@@ -600,9 +588,8 @@ criteriaItem_cmp (struct CriteriaItem *a, struct CriteriaItem *b)
 	return (AttrT_cmp (a->attrib,b->attrib));
 }
 
-static 
-criteria_cmp (struct Criteria *a, struct Criteria *b)
-{
+static
+criteria_cmp (struct Criteria *a, struct Criteria *b) {
 	int result;
 
 	if (a==NULL)
@@ -650,9 +637,8 @@ criteria_cmp (struct Criteria *a, struct Criteria *b)
 	return (result);
 }
 
-static 
-guidecmp (struct Guide *a, struct Guide *b)
-{
+static
+guidecmp (struct Guide *a, struct Guide *b) {
 	int i;
 	if (a == (struct Guide *)NULL)
 		if (b == (struct Guide *)NULL)
@@ -674,21 +660,21 @@ guidecmp (struct Guide *a, struct Guide *b)
 	return (i);
 }
 
-int 
+int
 guide_syntax (void) {
-	 add_attribute_syntax ("Guide",
-								 (IFP) guideenc,	(IFP) guidedec,
-								 (IFP) guideparse,guideprint,
-								 (IFP) guidecpy,	guidecmp,
-								 guidefree,	NULLCP,
-								 NULLIFP,	TRUE);
+	add_attribute_syntax ("Guide",
+						  (IFP) guideenc,	(IFP) guidedec,
+						  (IFP) guideparse,guideprint,
+						  (IFP) guidecpy,	guidecmp,
+						  guidefree,	NULLCP,
+						  NULLIFP,	TRUE);
 
-	 add_attribute_syntax ("NadfGuide",
-								 (IFP) nadfenc,	(IFP) nadfdec,
-								 (IFP) nadfparse,guideprint,
-								 (IFP) guidecpy,	guidecmp,
-								 guidefree,	NULLCP,
-								 NULLIFP,	TRUE);
+	add_attribute_syntax ("NadfGuide",
+						  (IFP) nadfenc,	(IFP) nadfdec,
+						  (IFP) nadfparse,guideprint,
+						  (IFP) guidecpy,	guidecmp,
+						  guidefree,	NULLCP,
+						  NULLIFP,	TRUE);
 
 }
 

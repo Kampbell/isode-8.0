@@ -83,9 +83,8 @@ static int  EACCESS ( char   *file, int	mode);
 
 /*    SELECTION REGIME */
 
-int 
-ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm)
-{
+int
+ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
 	int     action,
 			state;
 
@@ -114,7 +113,7 @@ ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm)
 			dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
 			if (errno) {
-				 strcpy (dp -> ftd_data, sys_errname (errno));
+				strcpy (dp -> ftd_data, sys_errname (errno));
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 			} else
 				dp -> ftd_cc = 0;
@@ -287,9 +286,9 @@ done_select:
 					&& oid_cmp (vf -> vf_oid, fa -> fa_contents) == 0)
 				break;
 		if (!vf -> vf_entry) {
-			 sprintf (dp -> ftd_data,
-							"invalid contents-type %s",
-							sprintoid (fa -> fa_contents));
+			sprintf (dp -> ftd_data,
+					 "invalid contents-type %s",
+					 sprintoid (fa -> fa_contents));
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp -> ftd_type = DIAG_PERM;
 			dp -> ftd_identifier = FS_SEL_ATRVALUE;
@@ -417,9 +416,9 @@ bad_override:
 				dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
 #ifdef	BRIDGE
-				 strcpy (dp -> ftd_data, ftp_error);
+				strcpy (dp -> ftd_data, ftp_error);
 #else
-				 strcpy (dp -> ftd_data, sys_errname (errno));
+				strcpy (dp -> ftd_data, sys_errname (errno));
 #endif
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				dp++;
@@ -454,7 +453,7 @@ bad_open:
 					dp -> ftd_identifier = FS_SEL_CREATE;
 					dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 					dp -> ftd_delay = DIAG_NODELAY;
-					 strcpy (dp -> ftd_data, sys_errname (errno));
+					strcpy (dp -> ftd_data, sys_errname (errno));
 					dp -> ftd_cc = strlen (dp -> ftd_data);
 					dp++;
 
@@ -488,9 +487,9 @@ bad_open:
 		}
 
 		ftce -> ftce_action = FACTION_SUCCESS;
-		 readattrs (FA_FILENAME | FA_ACTIONS | FA_CONTENTS,
-						  &ftce -> ftce_attrs, fa -> fa_contents,
-						  fa -> fa_parameter, myfile, &myst, &dp);
+		readattrs (FA_FILENAME | FA_ACTIONS | FA_CONTENTS,
+				   &ftce -> ftce_attrs, fa -> fa_contents,
+				   fa -> fa_parameter, myfile, &myst, &dp);
 		if (fa -> fa_present & FA_ACTIONS)
 			ftce -> ftce_attrs.fa_permitted &= fa -> fa_permitted;
 		ftce -> ftce_ndiag = dp - ftce -> ftce_diags;
@@ -565,7 +564,7 @@ unavailable:
 				dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
 				if (errno) {
-					 strcpy (dp -> ftd_data, sys_errname (errno));
+					strcpy (dp -> ftd_data, sys_errname (errno));
 					dp -> ftd_cc = strlen (dp -> ftd_data);
 				} else
 					dp -> ftd_cc = 0;
@@ -620,8 +619,8 @@ find_myvfs:
 					== NULL) {
 no_ascertain:
 				;
-				 strcpy (dp -> ftd_data,
-							   "unable to ascertain contents-type");
+				strcpy (dp -> ftd_data,
+						"unable to ascertain contents-type");
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				dp -> ftd_type = DIAG_PERM;
 				dp -> ftd_identifier = FS_ACC_LCL;
@@ -707,17 +706,17 @@ bad_param:
 
 		if (ftop -> ftop_parameter) {
 			if (myvf -> vf_number < 0) {
-				 sprintf (dp -> ftd_data,
-								"unexpected document type parameter");
+				sprintf (dp -> ftd_data,
+						 "unexpected document type parameter");
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				goto bad_param;
 			}
 			myparam = NULL;
 			if (dec_f (myvf -> vf_number, &_ZDOCS_mod, ftop -> ftop_parameter,
 					   1, NULLIP, NULLVP, &myparam) == NOTOK) {
-				 sprintf (dp -> ftd_data,
-								"unable to parse document type parameter: %s",
-								PY_pepy);
+				sprintf (dp -> ftd_data,
+						 "unable to parse document type parameter: %s",
+						 PY_pepy);
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				goto bad_param;
 			}
@@ -726,8 +725,8 @@ bad_param:
 					== NOTOK)
 				goto bad_param;
 		} else if (myvf -> vf_mandatory > 0) {
-			 strcpy (dp -> ftd_data,
-						   "mandatory document type parameter missing");
+			strcpy (dp -> ftd_data,
+					"mandatory document type parameter missing");
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			goto bad_param;
 		}
@@ -781,17 +780,17 @@ done_open:
 			&& (ftm -> ftg_close.ftcl_action == FACTION_SUCCESS)) {
 		if (myfd != NOTOK) {
 #ifdef	BRIDGE
-			 close (myfd);
-			 ftp_reply ();
+			close (myfd);
+			ftp_reply ();
 #else
 			unlock ();
-			 close (myfd);
+			close (myfd);
 #endif
 			myfd = NOTOK;
 		}
 		if (myvf && myparam) {
-			 fre_obj (myparam, _ZDOCS_mod.md_dtab[myvf -> vf_number],
-							&_ZDOCS_mod, 1);
+			fre_obj (myparam, _ZDOCS_mod.md_dtab[myvf -> vf_number],
+					 &_ZDOCS_mod, 1);
 			myparam = NULL;
 		}
 	}
@@ -823,9 +822,9 @@ done_open:
 				dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
 #ifdef	BRIDGE
-				 strcpy (dp -> ftd_data, ftp_error);
+				strcpy (dp -> ftd_data, ftp_error);
 #else
-				 strcpy (dp -> ftd_data, sys_errname (errno));
+				strcpy (dp -> ftd_data, sys_errname (errno));
 #endif
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 				dp++;
@@ -845,8 +844,7 @@ done_open:
 /* ARGSUSED */
 #endif
 
-static int  chkaccess (int fd, int request, struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags)
-{
+static int  chkaccess (int fd, int request, struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags) {
 	int     result;
 #ifndef	BRIDGE
 	char  *cp;
@@ -948,7 +946,7 @@ bad_concur:
 					dp -> ftd_identifier = FS_ACC_CONAVAIL;
 					dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 					dp -> ftd_delay = DIAG_NODELAY;
-					 strcpy (dp -> ftd_data, sys_errname (errno));
+					strcpy (dp -> ftd_data, sys_errname (errno));
 					dp -> ftd_cc = strlen (dp -> ftd_data);
 					dp++;
 
@@ -966,8 +964,7 @@ bad_concur:
 
 /*  */
 
-static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, struct FTAMdiagnostic **diags)
-{
+static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, struct FTAMdiagnostic **diags) {
 	int     id,
 			result;
 	char   *file;
@@ -997,13 +994,13 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 			dp -> ftd_identifier = id;
 			dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
-			 strcpy (dp -> ftd_data, "00 bad filename");
+			strcpy (dp -> ftd_data, "00 bad filename");
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
 
 			result = NOTOK;
 		} else
-			 strcpy (mvfile, file);
+			strcpy (mvfile, file);
 	}
 
 #ifndef	BRIDGE
@@ -1013,7 +1010,7 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 			dp -> ftd_identifier = id;
 			dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
-			 strcpy (dp -> ftd_data, "02 bad storage account");
+			strcpy (dp -> ftd_data, "02 bad storage account");
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp++;
 
@@ -1026,7 +1023,7 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 		dp -> ftd_identifier = id;
 		dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
-		 strcpy (dp -> ftd_data, "13bad filesize");
+		strcpy (dp -> ftd_data, "13bad filesize");
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		dp++;
 
@@ -1123,8 +1120,8 @@ struct FTAMdiagnostic **diags;
 							dp -> ftd_data);
 					goto bad_param;
 				}
-				 fre_obj (p, _ZDOCS_mod.md_dtab[vf -> vf_number],
-								&_ZDOCS_mod, 1);
+				fre_obj (p, _ZDOCS_mod.md_dtab[vf -> vf_number],
+						 &_ZDOCS_mod, 1);
 				fa -> fa_parameter = parameter;
 			}
 bad_param:
@@ -1244,8 +1241,7 @@ bad_param:
 
 /*  */
 
-static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags)
-{
+static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags) {
 #ifndef	BRIDGE
 	int     gid,
 			result;
@@ -1262,7 +1258,7 @@ static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiag
 			== NOTOK) {
 bad_system:
 		;
-		 strcpy (dp -> ftd_data, sys_errname (errno));
+		strcpy (dp -> ftd_data, sys_errname (errno));
 		dp -> ftd_cc = strlen (dp -> ftd_data);
 		goto no_change;
 	}
@@ -1277,17 +1273,17 @@ bad_system:
 	if ((present & FA_ACCOUNT) && (int)strlen (fa -> fa_account) > 1)
 		if ((gid = findgid (fa -> fa_account)) != NOTOK) {
 #ifndef	SYS5
-			 seteuid (0);
+			seteuid (0);
 			result = myfd != NOTOK ? fchown (myfd, -1, gid)
 					 : chown (myfile, -1, gid);
-			 seteuid (myuid);
+			seteuid (myuid);
 #else
 			result = chgrp (myfile, gid);
 #endif
 
 			if (result == NOTOK) {
-				 sprintf (dp -> ftd_data, "%s: %s", fa -> fa_account,
-								sys_errname (errno));
+				sprintf (dp -> ftd_data, "%s: %s", fa -> fa_account,
+						 sys_errname (errno));
 				dp -> ftd_cc = strlen (dp -> ftd_data);
 
 no_change:
@@ -1309,13 +1305,13 @@ no_change:
 	if (present & FA_FILENAME) {
 #ifdef	BRIDGE
 		if (ftp_rename (myfile, mvfile) == NOTOK) {
-			 sprintf (dp -> ftd_data, "%s: %s", fa -> fa_files[0],
-							ftp_error);
+			sprintf (dp -> ftd_data, "%s: %s", fa -> fa_files[0],
+					 ftp_error);
 #else
 		if (stat (mvfile, &n1) == 0) {  /*file exists*/
 			advise (LLOG_NOTICE, NULLCP, "file %s already exists",mvfile);
-			 sprintf (dp->ftd_data, "File \"%s\" already exists",
-							fa -> fa_files[0]);
+			sprintf (dp->ftd_data, "File \"%s\" already exists",
+					 fa -> fa_files[0]);
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			dp -> ftd_type = DIAG_PERM;
 			dp -> ftd_identifier = FS_MGT_CHANGE;
@@ -1328,8 +1324,8 @@ no_change:
 		} else if (rename (myfile, mvfile) == NOTOK) {
 			/* on EXDEV could do gonzo
 								   copy, but why bother? */
-			 sprintf (dp -> ftd_data, "%s: %s", fa -> fa_files[0],
-							sys_errname (errno));
+			sprintf (dp -> ftd_data, "%s: %s", fa -> fa_files[0],
+					 sys_errname (errno));
 #endif
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 #ifndef	BRIDGE
@@ -1356,12 +1352,11 @@ no_change:
 
 /*  */
 
-static char *getfile (char*file)
-{
+static char *getfile (char*file) {
 	char  *bp;
 #ifndef	BRIDGE
 	char  *cp,
-			 *pp;
+		  *pp;
 	struct passwd *pw;
 #endif
 	static int  i = 0;
@@ -1376,7 +1371,7 @@ static char *getfile (char*file)
 		if ((int)strlen (file) >= MAXPATHLEN)
 			goto trunc;
 
-		 strcpy (bp, file);
+		strcpy (bp, file);
 		break;
 
 	case '~':
@@ -1395,7 +1390,7 @@ static char *getfile (char*file)
 		if ((int)strlen (pp) + 1 + (cp ? (int)strlen (cp) : 0) >= MAXPATHLEN)
 			goto trunc;
 
-		 sprintf (bp, "%s/%s", pp, cp ? cp + 1 : "");
+		sprintf (bp, "%s/%s", pp, cp ? cp + 1 : "");
 		if (cp)
 			*cp = '/';
 		break;
@@ -1404,7 +1399,7 @@ static char *getfile (char*file)
 		if ((int)strlen (file) + myhomelen + 1 >= MAXPATHLEN)
 			goto trunc;
 
-		 sprintf (bp, "%s/%s", myhome, file);
+		sprintf (bp, "%s/%s", myhome, file);
 		break;
 	}
 
@@ -1414,7 +1409,7 @@ static char *getfile (char*file)
 	if (strncmp (bp, myhome, myhomelen - 1) == 0)
 		switch (bp[myhomelen - 1]) {
 		case 0:
-			 strcpy (bp, ".");
+			strcpy (bp, ".");
 			break;
 
 		case '/':
@@ -1433,7 +1428,7 @@ trunc:
 	errno = 0;
 	return NULLCP;
 #else
-	 strcpy (bp, file);
+	strcpy (bp, file);
 	return bp;
 #endif
 }
@@ -1445,8 +1440,7 @@ trunc:
    Apollo suggested these algorithms as they work better with distributed
    /etc/passwd and /etc/group files */
 
-static char *getuser (int uid)
-{
+static char *getuser (int uid) {
 	static struct passwd *pw = NULL;
 
 	if (pw == NULL || pw -> pw_uid != uid)
@@ -1456,8 +1450,7 @@ static char *getuser (int uid)
 
 /*  */
 
-static char *getgroup (int gid)
-{
+static char *getgroup (int gid) {
 	struct group *gr;
 	static int	my_gid = -1;
 	static char my_name[NMAX + 1];
@@ -1467,7 +1460,7 @@ static char *getgroup (int gid)
 			return NULL;
 
 		my_gid = gr -> gr_gid;
-		 strcpy (my_name, gr -> gr_name);
+		strcpy (my_name, gr -> gr_name);
 	}
 
 	return my_name;
@@ -1501,7 +1494,7 @@ char   *group;
 			return NOTOK;
 #endif
 
-		 strcpy (my_name, gr -> gr_name);
+		strcpy (my_name, gr -> gr_name);
 		my_gid = gr -> gr_gid;
 	}
 
@@ -1513,17 +1506,16 @@ char   *group;
 
 #ifndef	SYS5
 #ifndef	BRIDGE
-static int  EACCESS ( char   *file, int	mode)
-{
+static int  EACCESS ( char   *file, int	mode) {
 	int	    result;
 
-	 seteuid (0);
-	 setreuid (myuid);
+	seteuid (0);
+	setreuid (myuid);
 
 	result = access (file, mode);
 
-	 setreuid (0);
-	 seteuid (myuid);
+	setreuid (0);
+	seteuid (myuid);
 
 	return result;
 }
@@ -1532,15 +1524,14 @@ static int  EACCESS ( char   *file, int	mode)
 
 /*  */
 
-static int  chgrp ( char   *file, int	gid)
-{
+static int  chgrp ( char   *file, int	gid) {
 	int     i,
 			pid,
 			status;
 	char    group[10];
 	struct stat st;
 
-	 sprintf (group, "%d", gid);
+	sprintf (group, "%d", gid);
 
 	switch (pid = fork ()) {
 	case NOTOK:
@@ -1568,8 +1559,7 @@ static int  chgrp ( char   *file, int	gid)
 
 /*  */
 
-static int  mkdir ( char   *dir, int	mode)
-{
+static int  mkdir ( char   *dir, int	mode) {
 	int     i,
 			pid,
 			status;
@@ -1580,7 +1570,7 @@ static int  mkdir ( char   *dir, int	mode)
 		return NOTOK;
 
 	case OK:
-		 umask (~mode);
+		umask (~mode);
 		execl ("/bin/mkdir", "mkdir", dir, NULLCP);
 		execl ("/usr/bin/mkdir", "mkdir", dir, NULLCP);
 		execl ("/etc/mkdir", "mkdir", dir, NULLCP);
@@ -1603,8 +1593,7 @@ static int  mkdir ( char   *dir, int	mode)
 
 /*  */
 
-static int  rmdir (char* dir)
-{
+static int  rmdir (char* dir) {
 	int     i,
 			pid,
 			status;
@@ -1635,8 +1624,7 @@ static int  rmdir (char* dir)
 
 /*  */
 
-static int  truncate ( char   *file, int	length)
-{
+static int  truncate ( char   *file, int	length) {
 	int	    fd;
 
 	if (length != 0) {		/* XXX: too much work to get right */
@@ -1647,15 +1635,14 @@ static int  truncate ( char   *file, int	length)
 	if ((fd = open (file, O_WRONLY | O_TRUNC)) == NOTOK)
 		return NOTOK;
 
-	 close (fd);
+	close (fd);
 	return OK;
 }
 
 
 /* ARGSUSED */
 
-int	ftruncate (int fd, int length)	/* works only 'cause we're lucky */
-{
+int	ftruncate (int fd, int length) {	/* works only 'cause we're lucky */
 	return truncate (myfile, length);
 }
 #endif
@@ -1666,15 +1653,14 @@ int	ftruncate (int fd, int length)	/* works only 'cause we're lucky */
 #include <syscall.h>
 
 
-static int  unlink (char* file)
-{
+static int  unlink (char* file) {
 	if (debug) {
 		int     i,
 				b;
 
 again:
 		;
-		 fprintf (stderr, "unlink(\"%s\")? y, w, l: ", file);
+		fprintf (stderr, "unlink(\"%s\")? y, w, l: ", file);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1699,15 +1685,14 @@ again:
 }
 
 
-static int  rmdir (char* dir)
-{
+static int  rmdir (char* dir) {
 	if (debug) {
 		int     i,
 				b;
 
 again:
 		;
-		 fprintf (stderr, "rmdir(\"%s\")? y, w, l: ", dir);
+		fprintf (stderr, "rmdir(\"%s\")? y, w, l: ", dir);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1734,16 +1719,15 @@ again:
 
 /* VARARGS2 */
 
-static int  open (char* file, int flags, int mode)
-{
+static int  open (char* file, int flags, int mode) {
 	if (debug) {
 		int     i,
 				b;
 
 again:
 		;
-		 fprintf (stderr, "open(\"%s\",0x%x,0%o)? y, l: ", file, flags,
-						(flags & O_CREAT) ? mode : 0);
+		fprintf (stderr, "open(\"%s\",0x%x,0%o)? y, l: ", file, flags,
+				 (flags & O_CREAT) ? mode : 0);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1765,15 +1749,14 @@ again:
 }
 
 
-static int  mkdir (char* dir, iint mode)
-{
+static int  mkdir (char* dir, iint mode) {
 	if (debug) {
 		int     i,
 				b;
 
 again:
 		;
-		 fprintf (stderr, "mkdir(\"%s\",0%o)? y, w, l: ", dir, mode);
+		fprintf (stderr, "mkdir(\"%s\",0%o)? y, w, l: ", dir, mode);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1798,15 +1781,14 @@ again:
 }
 
 
-static int  chown (char* file, int uid, int gid)
-{
+static int  chown (char* file, int uid, int gid) {
 	if (debug) {
 		int     i,
 				b;
 
 again:
 		;
-		 fprintf (stderr, "chown(\"%s\",%d,%d)? y, w, l: ", file, uid, gid);
+		fprintf (stderr, "chown(\"%s\",%d,%d)? y, w, l: ", file, uid, gid);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1831,15 +1813,14 @@ again:
 }
 
 
-static int  fchown (int fd, int uid, int gid)
-{
+static int  fchown (int fd, int uid, int gid) {
 	if (debug) {
 		int     i,
 				b;
 
 again:
 		;
-		 fprintf (stderr, "fchown(%d,%d,%d)? y, w, l: ", fd, uid, gid);
+		fprintf (stderr, "fchown(%d,%d,%d)? y, w, l: ", fd, uid, gid);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1874,7 +1855,7 @@ int     length;
 
 again:
 		;
-		 fprintf (stderr, "truncate(\"%s\",%d)? y, w, l: ", file, length);
+		fprintf (stderr, "truncate(\"%s\",%d)? y, w, l: ", file, length);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1909,7 +1890,7 @@ char   *new;
 
 again:
 		;
-		 fprintf (stderr, "rename(\"%s\",\"%s\")? y, w, l: ", old, new);
+		fprintf (stderr, "rename(\"%s\",\"%s\")? y, w, l: ", old, new);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)
@@ -1944,7 +1925,7 @@ int	fd,
 
 again:
 		;
-		 fprintf (stderr, "flock(%d,0x%x)? y, w, l: ", fd, operation);
+		fprintf (stderr, "flock(%d,0x%x)? y, w, l: ", fd, operation);
 
 		i = b = getchar ();
 		while (b != '\n' && b != EOF)

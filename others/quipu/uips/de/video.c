@@ -56,7 +56,7 @@ int output();
 void turnInverseVideoOn();
 void soundBell();
 
-void 
+void
 initVideo  {
 	char * cp;
 
@@ -65,12 +65,11 @@ initVideo  {
 	if (cp == (char *)NULL)
 		cp = "network";
 	cp = checkSetTerm(cp, "network");
-	 strcpy(term, cp);
+	strcpy(term, cp);
 }
 
 char *
-checkSetTerm (char *termtype, char *defterm)
-{
+checkSetTerm (char *termtype, char *defterm) {
 	char * cp;
 	char buf[1024];
 	int n, ret;
@@ -83,16 +82,16 @@ checkSetTerm (char *termtype, char *defterm)
 			}
 
 			displayHelp("termtypes");
-			 strcpy(termtype, defterm);
+			strcpy(termtype, defterm);
 		} else {
 			ret = tgetent(bp, termtype);
 			if (ret == 1)
 				break; /* got a valid terminal type */
-			 fprintf(stdout, "\nDon't know anything about your terminal type (%s).\n", termtype);
-			 fprintf(stdout, "If your terminal type is unknown to the system, pressing <CR> for\n");
-			 fprintf(stdout, "terminal type will accept a default terminal type (assumes 24 line screen).\n");
+			fprintf(stdout, "\nDon't know anything about your terminal type (%s).\n", termtype);
+			fprintf(stdout, "If your terminal type is unknown to the system, pressing <CR> for\n");
+			fprintf(stdout, "terminal type will accept a default terminal type (assumes 24 line screen).\n");
 		}
-		 fprintf(stdout, "\nEnter your terminal type (or l or L to list possible terminal types): ");
+		fprintf(stdout, "\nEnter your terminal type (or l or L to list possible terminal types): ");
 		if (gets(buf) == NULLCP) {
 			clearerr(stdin);
 			return defterm;
@@ -114,10 +113,10 @@ checkSetTerm (char *termtype, char *defterm)
 		lines = LINES;
 	if (wanAccess == TRUE)
 		if (lines > 24) {
-			 fprintf(stdout, "\nYour terminal size is set to %d lines.\n", lines);
-			 fprintf(stdout, "If that seems OK, press <CR>, otherwise enter the correct number (24 is normal).\n");
+			fprintf(stdout, "\nYour terminal size is set to %d lines.\n", lines);
+			fprintf(stdout, "If that seems OK, press <CR>, otherwise enter the correct number (24 is normal).\n");
 			for (;;) {
-				 fprintf(stdout, "Length of screen in lines: ");
+				fprintf(stdout, "Length of screen in lines: ");
 				if (gets(buf) == NULLCP)
 					clearerr(stdin);
 				else if (strlen(buf) != 0) {
@@ -143,21 +142,20 @@ checkSetTerm (char *termtype, char *defterm)
 	return termtype;
 }
 
-void 
+void
 soundBell  {
 	if (bellCode != NULLCP)
 		tputs(bellCode, 1, output);
 	else
-		 putchar(7);
+		putchar(7);
 }
 
-int 
-output (int c)
-{
-	 putchar(c);
+int
+output (int c) {
+	putchar(c);
 }
 
-void 
+void
 turnInverseVideoOn  {
 	if ((revVideoOn == (char *)NULL) || (resetVideo == (char *)NULL))
 		inverseVideo = FALSE;
@@ -165,22 +163,21 @@ turnInverseVideoOn  {
 		inverseVideo = TRUE;
 }
 
-void 
+void
 turnInverseVideoOff  {
 	inverseVideo = FALSE;
 }
 
-int 
-writeInverse (char *str)
-{
+int
+writeInverse (char *str) {
 	if (inverseVideo == TRUE)
 		tputs(revVideoOn, 1, output);
-	 fputs(str, stdout);
+	fputs(str, stdout);
 	if (inverseVideo == TRUE)
 		tputs(resetVideo, 1, output);
 }
 
-int 
+int
 clearLine  {
 	int i;
 
@@ -190,8 +187,8 @@ clearLine  {
 			tputs(clLine, 1, output);
 		else
 			for (i = 1; i < 80; i++)
-				 putchar(' ');
+				putchar(' ');
 		tputs(startLine, 1, output);
 	} else
-		 putchar('\n');
+		putchar('\n');
 }

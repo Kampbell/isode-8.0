@@ -1,8 +1,7 @@
 #include "util.h"
 
-int 
-issubstr (char *str, char *substr)
-{
+int
+issubstr (char *str, char *substr) {
 	char *sptr;
 	char c;
 	int substrlen = strlen(substr);
@@ -25,9 +24,8 @@ issubstr (char *str, char *substr)
 	}
 }
 
-int 
-indexstring (char *string, char *substring)
-{
+int
+indexstring (char *string, char *substring) {
 	char *sub, *str;
 	char c, s;
 	int indx = 0;

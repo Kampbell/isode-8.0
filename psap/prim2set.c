@@ -32,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2set.c,v 9.0 1992/
 
 /*  */
 
-PE 
-prim2set (PE pe)
-{
+PE
+prim2set (PE pe) {
 	int    i;
 	PE	    p;
 

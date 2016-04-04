@@ -39,9 +39,8 @@ static int  SActIntrResponseAux ();
 static int  SGControlRequestAux ();
 static int  SActStartRequestAux ();
 
-int 
-SGControlRequest (int sd, struct SSAPindication *si)
-{
+int
+SGControlRequest (int sd, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -52,16 +51,15 @@ SGControlRequest (int sd, struct SSAPindication *si)
 
 	result = SGControlRequestAux (sb, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SGControlRequestAux (struct ssapblk *sb, struct SSAPindication *si)
-{
+static int
+SGControlRequestAux (struct ssapblk *sb, struct SSAPindication *si) {
 	int     result;
 	struct ssapkt *s;
 
@@ -87,9 +85,8 @@ SGControlRequestAux (struct ssapblk *sb, struct SSAPindication *si)
 
 /*    S-ACTIVITY-START.REQUEST */
 
-int 
-SActStartRequest (int sd, struct SSAPactid *id, char *data, int cc, struct SSAPindication *si)
-{
+int
+SActStartRequest (int sd, struct SSAPactid *id, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -105,16 +102,15 @@ SActStartRequest (int sd, struct SSAPactid *id, char *data, int cc, struct SSAPi
 
 	result = SActStartRequestAux (sb, id, data, cc, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SActStartRequestAux (struct ssapblk *sb, struct SSAPactid *id, char *data, int cc, struct SSAPindication *si)
-{
+static int
+SActStartRequestAux (struct ssapblk *sb, struct SSAPactid *id, char *data, int cc, struct SSAPindication *si) {
 	int result;
 
 	if (SDoActivityAux (sb, si, 1, 0) == NOTOK)
@@ -133,9 +129,8 @@ SActStartRequestAux (struct ssapblk *sb, struct SSAPactid *id, char *data, int c
 
 /*    S-ACTIVITY-RESUME.REQUEST */
 
-int 
-SActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, char *data, int cc, struct SSAPindication *si)
-{
+int
+SActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -160,16 +155,15 @@ SActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn
 
 	result = SActResumeRequestAux (sb, id, oid, ssn, ref, data, cc, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SActResumeRequestAux (struct ssapblk *sb, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, char *data, int cc, struct SSAPindication *si)
-{
+static int
+SActResumeRequestAux (struct ssapblk *sb, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, char *data, int cc, struct SSAPindication *si) {
 	int	    result;
 
 	if (SDoActivityAux (sb, si, 1, 0) == NOTOK)
@@ -189,9 +183,8 @@ SActResumeRequestAux (struct ssapblk *sb, struct SSAPactid *id, struct SSAPactid
 
 /*    S-ACTIVITY-INTERRUPT.REQUEST */
 
-int 
-SActIntrRequest (int sd, int reason, struct SSAPindication *si)
-{
+int
+SActIntrRequest (int sd, int reason, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -210,16 +203,15 @@ SActIntrRequest (int sd, int reason, struct SSAPindication *si)
 
 	result = SActIntrRequestAux (sb, reason, SPDU_AI, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SActIntrRequestAux (struct ssapblk *sb, int reason, int type, struct SSAPindication *si)
-{
+static int
+SActIntrRequestAux (struct ssapblk *sb, int reason, int type, struct SSAPindication *si) {
 	int	    result;
 
 	if (!(sb -> sb_requirements & SR_ACTIVITY))
@@ -251,9 +243,8 @@ SActIntrRequestAux (struct ssapblk *sb, int reason, int type, struct SSAPindicat
 
 /*    S-ACTIVITY-INTERRUPT.RESPONSE */
 
-int 
-SActIntrResponse (int sd, struct SSAPindication *si)
-{
+int
+SActIntrResponse (int sd, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -266,16 +257,15 @@ SActIntrResponse (int sd, struct SSAPindication *si)
 
 	result = SActIntrResponseAux (sb, SPDU_AIA, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-SActIntrResponseAux (struct ssapblk *sb, int type, struct SSAPindication *si)
-{
+static int
+SActIntrResponseAux (struct ssapblk *sb, int type, struct SSAPindication *si) {
 	int	    result;
 
 	if (!(sb -> sb_requirements & SR_ACTIVITY))
@@ -301,9 +291,8 @@ SActIntrResponseAux (struct ssapblk *sb, int type, struct SSAPindication *si)
 
 /*    S-ACTIVITY-DISCARD.REQUEST */
 
-int 
-SActDiscRequest (int sd, int reason, struct SSAPindication *si)
-{
+int
+SActDiscRequest (int sd, int reason, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -322,16 +311,15 @@ SActDiscRequest (int sd, int reason, struct SSAPindication *si)
 
 	result = SActIntrRequestAux (sb, reason, SPDU_AD, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    S-ACTIVITY-DISCARD.RESPONSE */
 
-int 
-SActDiscResponse (int sd, struct SSAPindication *si)
-{
+int
+SActDiscResponse (int sd, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -344,16 +332,15 @@ SActDiscResponse (int sd, struct SSAPindication *si)
 
 	result = SActIntrResponseAux (sb, SPDU_ADA, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    S-ACTIVITY-END.REQUEST */
 
-int 
-SActEndRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si)
-{
+int
+SActEndRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -368,16 +355,15 @@ SActEndRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si
 
 	result = SMajSyncRequestAux (sb, ssn, data, cc, 0, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    S-ACTIVITY-END.RESPONSE */
 
-int 
-SActEndResponse (int sd, char *data, int cc, struct SSAPindication *si)
-{
+int
+SActEndResponse (int sd, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -391,7 +377,7 @@ SActEndResponse (int sd, char *data, int cc, struct SSAPindication *si)
 
 	result = SMajSyncResponseAux (sb, data, cc, si);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

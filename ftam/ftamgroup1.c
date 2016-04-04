@@ -38,30 +38,26 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 
 /*    F-{MANAGE,BULK-{BEGIN,END}}.REQUEST (group) */
 
-int 
-FManageRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
-{
+int
+FManageRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_MANAGEMENT, FSB_MANAGEMENT, fti);
 }
 
 
-int 
-FBulkBeginRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
-{
+int
+FBulkBeginRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_BULKBEGIN, FSB_BULKBEGIN, fti);
 }
 
 
-int 
-FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
-{
+int
+FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_BULKEND, FSB_BULKEND, fti);
 }
 
 /*    F-GROUP.REQUEST (group) */
 
-static int FGroupRequest (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti)
-{
+static int FGroupRequest (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti) {
 	SBV	    smask;
 	int	    result;
 	struct ftamblk *fsb;
@@ -76,15 +72,14 @@ static int FGroupRequest (int sd, struct FTAMgroup *ftg, int type, int state, st
 	if ((result = figrpchk (fsb, ftg, type, fti)) != NOTOK)
 		result = FGroupRequestAux (fsb, ftg, state, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti)
-{
+static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti) {
 	int    i;
 	int     did_loop,
 			npdu,
@@ -98,7 +93,7 @@ static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int sta
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
 	struct type_FTAM_PDU **pdup,
-			*pdus[NPDATA];
+			   *pdus[NPDATA];
 
 	bzero ((char *) texts, sizeof texts);
 	bzero ((char *) info, sizeof info);
@@ -138,7 +133,7 @@ out:
 
 	if (result == NOTOK) {
 		if (did_loop)
-			 ps2ftamlose (fsb, fti, "PDataRequest", pa);
+			ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		if (fti -> fti_abort.fta_action == FACTION_PERM)
 			freefsblk (fsb);
 
@@ -153,8 +148,7 @@ out:
 
 /*  */
 
-static int figrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti)
-{
+static int figrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti) {
 	int     i,
 			request;
 	struct FTAMpasswords  *fp;
@@ -453,8 +447,7 @@ finish_create:
 
 /*  */
 
-static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti)
-{
+static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti) {
 	int     i;
 	struct type_FTAM_PDU *pdu;
 

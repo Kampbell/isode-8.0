@@ -53,9 +53,8 @@ extern	IFP	set_check_fd ();
 
 /* */
 
-static int 
-fdx_prime (PS ps, int waiting)
-{
+static int
+fdx_prime (PS ps, int waiting) {
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
 	struct ps_inout *pi = &pt -> ps_input;
 
@@ -66,9 +65,8 @@ fdx_prime (PS ps, int waiting)
 
 /* ARGSUSED */
 
-static int 
-fdx_read (PS ps, PElementData data, PElementLen n, int in_line)
-{
+static int
+fdx_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    cc;
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
 	struct ps_inout *pi = &pt -> ps_input;
@@ -99,9 +97,8 @@ fdx_read (PS ps, PElementData data, PElementLen n, int in_line)
 
 /* ARGSUSED */
 
-static int 
-fdx_write (PS ps, PElementData data, PElementLen n, int in_line)
-{
+static int
+fdx_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    cc;
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
 	struct ps_inout *po = &pt -> ps_output;
@@ -164,7 +161,7 @@ PS	ps;
 	if (pt -> ps_output.pio_base)
 		free (pt -> ps_output.pio_base);
 
-	 set_check_fd (pt -> ps_fd, NULLIFP, NULLCP);
+	set_check_fd (pt -> ps_fd, NULLIFP, NULLCP);
 
 	free ((char *) pt);
 
@@ -222,7 +219,7 @@ int	fd;
 	pt -> ps_output.pio_bufsiz = pt -> ps_output.pio_cnt = pz;
 	pt -> ps_output.pio_ptr = pt -> ps_output.pio_base;
 
-	 set_check_fd (fd, fdx_check, (caddr_t) ps);
+	set_check_fd (fd, fdx_check, (caddr_t) ps);
 
 	return OK;
 }

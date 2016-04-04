@@ -73,7 +73,7 @@ char *x;
 
 	/* Should switch to pepsy -> need to use qbufs! */
 
-	 build_UNIV_UTCTime (&ret_pe,0,0,x,NULL);
+	build_UNIV_UTCTime (&ret_pe,0,0,x,NULL);
 	return (ret_pe);
 }
 
@@ -104,9 +104,8 @@ int format;
 }
 
 
-static 
-utccmp (char *a, char *b)
-{
+static
+utccmp (char *a, char *b) {
 	long    a_time,
 			mdiff;
 	UTC	    ut;
@@ -123,13 +122,13 @@ utccmp (char *a, char *b)
 }
 
 
-int 
+int
 time_syntax (void) {
-	 add_attribute_syntax ("UTCTime",
-								 (IFP) timeenc,	(IFP) timedec,
-								 (IFP) strdup,	utcprint,
-								 (IFP) strdup,	utccmp,
-								 sfree,		NULLCP,
-								 NULLIFP,	FALSE);
+	add_attribute_syntax ("UTCTime",
+						  (IFP) timeenc,	(IFP) timedec,
+						  (IFP) strdup,	utcprint,
+						  (IFP) strdup,	utccmp,
+						  sfree,		NULLCP,
+						  NULLIFP,	FALSE);
 }
 

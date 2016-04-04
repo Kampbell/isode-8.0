@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapstate.c,v 9.0 1992
 
 /*  */
 
-int 
-TSaveState (int sd, char **vec, struct TSAPdisconnect *td)
-{
+int
+TSaveState (int sd, char **vec, struct TSAPdisconnect *td) {
 	SBV     smask;
 	struct tsapblk *tb;
 	static char buffer[sizeof *tb * 2 + 1];
@@ -47,7 +46,7 @@ TSaveState (int sd, char **vec, struct TSAPdisconnect *td)
 	tsapPsig (tb, sd);
 
 	if (tb -> tb_len > 0) {
-		 sigiomask (smask);
+		sigiomask (smask);
 
 		return tsaplose (td, DR_WAITING, NULLCP, NULLCP);
 	}
@@ -60,16 +59,15 @@ TSaveState (int sd, char **vec, struct TSAPdisconnect *td)
 
 	freetblk (tb);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return OK;
 }
 
 /*  */
 
-int 
-TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td)
-{
+int
+TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	struct tsapblk  tbs;
 	struct tsapblk *tb;
 
@@ -80,12 +78,12 @@ TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td)
 		return tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 
 	if (implode ((u_char *) &tbs, buffer, strlen (buffer)) != sizeof tbs) {
-		 tsaplose (td, DR_PARAMETER, NULLCP, "bad state vector");
+		tsaplose (td, DR_PARAMETER, NULLCP, "bad state vector");
 		goto out1;
 	}
 
 	if (findtblk (tbs.tb_fd)) {
-		 tsaplose (td, DR_PARAMETER, NULLCP, "transport descriptor active");
+		tsaplose (td, DR_PARAMETER, NULLCP, "transport descriptor active");
 		goto out1;
 	}
 	tb -> tb_fd = tbs.tb_fd;
@@ -98,24 +96,24 @@ TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td)
 	switch (tb -> tb_flags & (TB_TP0 | TB_TP4)) {
 #ifdef	TCP
 	case TB_TCP:
-		 TTService (tb);
+		TTService (tb);
 		break;
 #endif
 
 #ifdef	X25
 	case TB_X25:
-		 XTService (tb);
+		XTService (tb);
 		break;
 #endif
 
 #ifdef	TP4
 	case TB_TP4:
-		 tp4init (tb);
+		tp4init (tb);
 		break;
 #endif
 
 	default:
-		 tsaplose (td, DR_PARAMETER, NULLCP, "network type not set");
+		tsaplose (td, DR_PARAMETER, NULLCP, "network type not set");
 		tb -> tb_fd = NOTOK;
 		goto out1;
 	}

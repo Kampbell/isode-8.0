@@ -58,16 +58,15 @@ int	dmsize[] = {
 
 /*  */
 
-long 
-gtime (struct tm *tm)
-{
+long
+gtime (struct tm *tm) {
 	int    i,
-			 sec,
-			 mins,
-			 hour,
-			 mday,
-			 mon,
-			 year;
+		   sec,
+		   mins,
+		   hour,
+		   mday,
+		   mon,
+		   year;
 	long   result;
 #ifdef	notdef
 	long    local;
@@ -99,7 +98,7 @@ gtime (struct tm *tm)
 	result = 60 * result + sec;
 
 #ifdef	notdef
-	 ftime (&tb);
+	ftime (&tb);
 	result += 60 * tb.timezone;
 	local = result;
 	if ((tm = localtime (&local)) && tm -> tm_isdst)

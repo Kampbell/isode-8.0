@@ -89,11 +89,11 @@ IFP	start,
 	else {
 		static char  myfile[BUFSIZ];
 
-		 sprintf (myfile, "%s.log",
-						(strncmp (myname, "ros.", 4)
-						 && strncmp (myname, "lpp.", 4))
-						|| myname[4] == NULL
-						? myname : myname + 4);
+		sprintf (myfile, "%s.log",
+				 (strncmp (myname, "ros.", 4)
+				  && strncmp (myname, "lpp.", 4))
+				 || myname[4] == NULL
+				 ? myname : myname + 4);
 		pgm_log -> ll_file = myfile;
 		ll_hdinit (pgm_log, myname);
 	}
@@ -127,9 +127,8 @@ IFP	start,
 
 /*  */
 
-static int 
-ros_init (int vecp, char **vec)
-{
+static int
+ros_init (int vecp, char **vec) {
 	int	    reply,
 			result,
 			sd;
@@ -183,9 +182,8 @@ ros_init (int vecp, char **vec)
 
 /*  */
 
-static int 
-ros_work (int fd)
-{
+static int
+ros_work (int fd) {
 	int	    result;
 	caddr_t out;
 	struct AcSAPindication  acis;
@@ -201,8 +199,8 @@ ros_work (int fd)
 		if (stopfnx)
 			(*stopfnx) (fd, (struct AcSAPfinish *) 0);
 	case DONE:
-		 AcUAbortRequest (fd, NULLPEP, 0, &acis);
-		 RyLose (fd, roi);
+		AcUAbortRequest (fd, NULLPEP, 0, &acis);
+		RyLose (fd, roi);
 		return NOTOK;
 	}
 
@@ -224,9 +222,8 @@ ros_work (int fd)
 
 /*  */
 
-static int 
-ros_indication (int sd, struct RoSAPindication *roi)
-{
+static int
+ros_indication (int sd, struct RoSAPindication *roi) {
 	int	    reply,
 			result;
 
@@ -291,9 +288,8 @@ ros_indication (int sd, struct RoSAPindication *roi)
 
 /*  */
 
-static int 
-ros_lose (struct TSAPdisconnect *td)
-{
+static int
+ros_lose (struct TSAPdisconnect *td) {
 	if (td -> td_cc > 0)
 		adios (NULLCP, "TNetAccept: [%s] %*.*s",
 			   TErrString (td -> td_reason), td -> td_cc, td -> td_cc,
@@ -304,42 +300,39 @@ ros_lose (struct TSAPdisconnect *td)
 
 /*    ERRORS */
 
-void 
-ros_adios (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	longjmp (toplevel, NOTOK);
 }
 
 
-void 
-ros_advise (struct RoSAPpreject *rop, char *event)
-{
+void
+ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
-						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
+		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
+				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
-		 sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
+		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
 /*  */
 
-void 
-acs_advise (struct AcSAPabort *aca, char *event)
-{
+void
+acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
-		 sprintf (buffer, "[%s] %*.*s",
-						AcErrString (aca -> aca_reason),
-						aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
+		sprintf (buffer, "[%s] %*.*s",
+				 AcErrString (aca -> aca_reason),
+				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
-		 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
+		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
@@ -363,9 +356,8 @@ va_dcl {
 #else
 /* VARARGS2 */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -388,9 +380,8 @@ va_dcl {
 #else
 /* VARARGS3 */
 
-void 
-advise (int code, char *what, char *fmt)
-{
+void
+advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
@@ -410,9 +401,8 @@ va_dcl {
 #else
 /* VARARGS2 */
 
-void 
-ryr_advise (char *what, char *fmt)
-{
+void
+ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

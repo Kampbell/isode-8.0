@@ -34,7 +34,7 @@ int n;
 u_char *d;
 {
 	int    c,
-			 i;
+		   i;
 
 	for (i = 0; *s && n-- > 0; i++) {
 		if ((c = *s++) >= 'a' && c <= 'f')

@@ -400,7 +400,7 @@ QCardinal *id_ptr;
 	struct DSError *ds_error = &error->de_err;
 
 	if ((task_rec = _get_task_of_id(task_id)) == NULLDsTask) {
-		 get_log_error_type(ds_error, task_id);
+		get_log_error_type(ds_error, task_id);
 		return RQ_processing;
 	}
 

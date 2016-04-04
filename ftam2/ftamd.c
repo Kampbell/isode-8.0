@@ -48,9 +48,8 @@ char   *myname = "ftamd";
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	int     result;
 	char   *ap;
 	struct FTAMstart    ftss;
@@ -123,7 +122,7 @@ main (int argc, char **argv, char **envp)
 				case 'd':
 					debug++;
 					ll_dbinit (ftam_log, myname);
-					 FHookRequest (fts -> fts_sd, FTraceHook, fti);
+					FHookRequest (fts -> fts_sd, FTraceHook, fti);
 					break;
 
 				default:
@@ -151,16 +150,15 @@ main (int argc, char **argv, char **envp)
 
 /*  */
 
-void 
-ftam_adios (struct FTAMabort *fta, char *event)
-{
+void
+ftam_adios (struct FTAMabort *fta, char *event) {
 	struct FTAMindication   ftis;
 
 	ftam_advise (fta, event);
 
 	if (fta -> fta_action != FACTION_PERM && ftamfd != NOTOK)
-		 FUAbortRequest (ftamfd, FACTION_PERM,
-							   (struct FTAMdiagnostic *) 0, 0, &ftis);
+		FUAbortRequest (ftamfd, FACTION_PERM,
+						(struct FTAMdiagnostic *) 0, 0, &ftis);
 
 	closewtmp ();
 
@@ -168,9 +166,8 @@ ftam_adios (struct FTAMabort *fta, char *event)
 }
 
 
-void 
-ftam_advise (struct FTAMabort *fta, char *event)
-{
+void
+ftam_advise (struct FTAMabort *fta, char *event) {
 	advise (LLOG_NOTICE, NULLCP, "%s: failed", event);
 	ftam_diag (fta -> fta_diags, fta -> fta_ndiag);
 
@@ -188,9 +185,8 @@ static char *entity[] = {
 };
 
 
-void 
-ftam_diag (struct FTAMdiagnostic diag[], int ndiag)
-{
+void
+ftam_diag (struct FTAMdiagnostic diag[], int ndiag) {
 	int    i;
 	char  *cp;
 	char    buffer[BUFSIZ];
@@ -198,40 +194,40 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag)
 
 	for (dp = diag, i = ndiag - 1; i >= 0; dp++, i--) {
 		cp = buffer;
-		 sprintf (cp, "%s", FErrString (dp -> ftd_identifier));
+		sprintf (cp, "%s", FErrString (dp -> ftd_identifier));
 
 		if (dp -> ftd_cc > 0) {
 			cp += strlen (cp);
-			 sprintf (cp, ": %*.*s", dp -> ftd_cc, dp -> ftd_cc,
-							dp -> ftd_data);
+			sprintf (cp, ": %*.*s", dp -> ftd_cc, dp -> ftd_cc,
+					 dp -> ftd_data);
 		}
 
 		advise (LLOG_NOTICE, NULLCP, "%s", buffer);
 
 		cp = buffer;
-		 sprintf (cp, "    type ");
+		sprintf (cp, "    type ");
 		cp += strlen (cp);
 
 		switch (dp -> ftd_type) {
 		case DIAG_INFORM:
-			 sprintf (cp, "informative");
+			sprintf (cp, "informative");
 			break;
 
 		case DIAG_TRANS:
-			 sprintf (cp, "transient");
+			sprintf (cp, "transient");
 			break;
 
 		case DIAG_PERM:
-			 sprintf (cp, "permanent");
+			sprintf (cp, "permanent");
 			break;
 
 		default:
-			 sprintf (cp, "%d", dp -> ftd_type);
+			sprintf (cp, "%d", dp -> ftd_type);
 			break;
 		}
 		cp += strlen (cp);
 
-		 sprintf (cp, ", observer ");
+		sprintf (cp, ", observer ");
 		cp += strlen (cp);
 
 		switch (dp -> ftd_observer) {
@@ -239,16 +235,16 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag)
 		case EREF_IFPM:
 		case EREF_RFPM:
 		case EREF_RFSU:
-			 sprintf (cp, "%s", entity[dp -> ftd_observer]);
+			sprintf (cp, "%s", entity[dp -> ftd_observer]);
 			break;
 
 		default:
-			 sprintf (cp, "%d", dp -> ftd_observer);
+			sprintf (cp, "%d", dp -> ftd_observer);
 			break;
 		}
 		cp += strlen (cp);
 
-		 sprintf (cp, ", source ");
+		sprintf (cp, ", source ");
 		cp += strlen (cp);
 
 		switch (dp -> ftd_source) {
@@ -258,17 +254,17 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag)
 		case EREF_SERV:
 		case EREF_RFPM:
 		case EREF_RFSU:
-			 sprintf (cp, "%s", entity[dp -> ftd_source]);
+			sprintf (cp, "%s", entity[dp -> ftd_source]);
 			break;
 
 		default:
-			 sprintf (cp, "%d", dp -> ftd_source);
+			sprintf (cp, "%d", dp -> ftd_source);
 			break;
 		}
 
 		if (dp -> ftd_delay != DIAG_NODELAY) {
 			cp += strlen (cp);
-			 sprintf (cp, ", suggested-delay %d", dp -> ftd_delay);
+			sprintf (cp, ", suggested-delay %d", dp -> ftd_delay);
 		}
 
 		advise (LLOG_NOTICE, NULLCP, "%s", buffer);
@@ -278,19 +274,18 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag)
 /*  */
 
 #ifndef	lint
-void	adios (char* what, ...)
-{
+void	adios (char* what, ...) {
 	struct FTAMindication   ftis;
 	va_list ap;
 
 	va_start (ap, what);
 
-	 _ll_log (ftam_log, LLOG_FATAL, what, ap);
+	_ll_log (ftam_log, LLOG_FATAL, what, ap);
 
 	va_end (ap);
 
 	if (ftamfd != NOTOK)
-		 FUAbortRequest (ftamfd, FACTION_PERM, (struct FTAMdiagnostic *) 0, 0, &ftis);
+		FUAbortRequest (ftamfd, FACTION_PERM, (struct FTAMdiagnostic *) 0, 0, &ftis);
 
 	closewtmp ();
 
@@ -299,33 +294,30 @@ void	adios (char* what, ...)
 #else
 /* VARARGS */
 
-void 
-adios (char *what, char *fmt)
-{
+void
+adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 
 #ifndef	lint
-void	advise (int code, ...)
-{
+void	advise (int code, ...) {
 	char* what;
 	va_list ap;
 
 	va_start (ap, code);
 	what = va_arg(ap, char*);
 
-	 _ll_log (ftam_log, code, what, ap);
+	_ll_log (ftam_log, code, what, ap);
 
 	va_end (ap);
 }
 #else
 /* VARARGS */
 
-void 
-advise (int code, char *what, char *fmt)
-{
+void
+advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

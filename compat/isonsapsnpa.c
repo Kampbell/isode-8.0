@@ -50,9 +50,8 @@ static CMD_TABLE tbl_communities[] = {
 
 /*  */
 
-int 
-setisonsapsnpa (int f)
-{
+int
+setisonsapsnpa (int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isonsapsnpa, 0), "r");
 	else
@@ -63,10 +62,10 @@ setisonsapsnpa (int f)
 }
 
 
-int 
+int
 endisonsapsnpa()  {
 	if (servf && !stayopen) {
-		 fclose (servf);
+		fclose (servf);
 		servf = NULL;
 	}
 
@@ -130,7 +129,7 @@ getisonsapsnpa()  {
 			is -> is_stack = nsap_default_stack;
 
 		if (vecp > 2 && strcmp(vec[2],"-") != 0)
-			 strncpy (is -> is_class, vec[2], sizeof (is -> is_class));
+			strncpy (is -> is_class, vec[2], sizeof (is -> is_class));
 		else is -> is_class[0] = '\0';
 
 		return is;
@@ -140,8 +139,7 @@ getisonsapsnpa()  {
 }
 
 struct NSAPaddr *
-getisosnpa (struct NSAPaddr *nsap)
-{
+getisosnpa (struct NSAPaddr *nsap) {
 	struct NSAPinfo *is;
 	int best = -1;
 	static struct NSAPinfo nss;
@@ -150,7 +148,7 @@ getisosnpa (struct NSAPaddr *nsap)
 	if (nsap -> na_stack != NA_NSAP)
 		return NULLNA;
 
-	 setisonsapsnpa (0);
+	setisonsapsnpa (0);
 
 	while (is = getisonsapsnpa ()) {
 		if (is -> is_nsap.na_stack == NOTOK || is -> is_plen < best)
@@ -161,7 +159,7 @@ getisosnpa (struct NSAPaddr *nsap)
 			*ns = *is; /* struct copy */
 		}
 	}
-	 endisonsapsnpa ();
+	endisonsapsnpa ();
 
 	if (best >= 0)
 		return &ns -> is_nsap;
@@ -169,8 +167,7 @@ getisosnpa (struct NSAPaddr *nsap)
 }
 
 struct NSAPinfo *
-getnsapinfo (struct NSAPaddr *nsap)
-{
+getnsapinfo (struct NSAPaddr *nsap) {
 	struct NSAPinfo *is;
 	int best = -1;
 	static struct NSAPinfo nss;
@@ -179,7 +176,7 @@ getnsapinfo (struct NSAPaddr *nsap)
 	if (nsap -> na_stack != NA_NSAP)
 		return NULLNI;
 
-	 setisonsapsnpa (0);
+	setisonsapsnpa (0);
 
 	while (is = getisonsapsnpa ()) {
 		if (is -> is_plen < best)
@@ -191,7 +188,7 @@ getnsapinfo (struct NSAPaddr *nsap)
 			*ns = *is; /* struct copy */
 		}
 	}
-	 endisonsapsnpa ();
+	endisonsapsnpa ();
 
 	if (best >= 0)
 		return ns;

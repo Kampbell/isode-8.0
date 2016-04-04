@@ -65,9 +65,8 @@ int fd;
 
 /*    N-CONNECT.REQUEST */
 
-int 
-x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async)
-{
+int
+x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async) {
 	int    fd;
 	int     onoff;
 
@@ -87,13 +86,13 @@ x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, st
 #endif
 #endif
 		{
-			 tsaplose (td, DR_CONGEST, "ioctl", "async on");
-			 close_x25_socket (fd);
+			tsaplose (td, DR_CONGEST, "ioctl", "async on");
+			close_x25_socket (fd);
 			return NOTOK;
 		}
 	}
 	tb -> tb_fd = fd;
-	 XTService (tb);
+	XTService (tb);
 
 	if (join_x25_server (fd, remote) == NOTOK) {
 		if (async)
@@ -104,9 +103,9 @@ x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, st
 							calloc ((unsigned) getdtablesize (),
 									sizeof *peers);
 					if (peers == NULL) {
-						 tsaplose (td, DR_CONGEST, NULLCP,
-										 "out of memory");
-						 close_x25_socket (fd);
+						tsaplose (td, DR_CONGEST, NULLCP,
+								  "out of memory");
+						close_x25_socket (fd);
 						return (tb -> tb_fd = NOTOK);
 					}
 
@@ -116,9 +115,9 @@ x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, st
 						&& (peers[fd] = (struct NSAPaddr *)
 										malloc (sizeof **peers))
 						== NULL) {
-					 tsaplose (td, DR_CONGEST, NULLCP,
-									 "out of memory");
-					 close_x25_socket (fd);
+					tsaplose (td, DR_CONGEST, NULLCP,
+							  "out of memory");
+					close_x25_socket (fd);
 					return (tb -> tb_fd = NOTOK);
 				}
 				*(peers[fd]) = *remote;	/* struct copy */
@@ -132,10 +131,10 @@ x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, st
 				break;
 			}
 
-		 tsaplose (td, DR_REFUSED, "connection", "unable to establish");
+		tsaplose (td, DR_REFUSED, "connection", "unable to establish");
 		LLOG (x25_log, LLOG_NOTICE,
 			  ("connection to %s failed", na2str (remote)));
-		 close_x25_socket (fd);
+		close_x25_socket (fd);
 		return (tb -> tb_fd = NOTOK);
 	}
 done:
@@ -150,12 +149,12 @@ done:
 #endif
 #endif
 		{
-			 tsaplose (td, DR_CONGEST, "ioctl", "async off");
-			 close_x25_socket (fd);
+			tsaplose (td, DR_CONGEST, "ioctl", "async off");
+			close_x25_socket (fd);
 			return NOTOK;
 		}
 
-	 XTService (tb);      /* in case pktsize changed... */
+	XTService (tb);      /* in case pktsize changed... */
 	LLOG (x25_log, LLOG_NOTICE,
 		  ("connection %d to %s", fd, na2str (remote)));
 
@@ -166,9 +165,8 @@ done:
 
 /*  */
 
-static int 
-x25retry (struct tsapblk *tb, struct TSAPdisconnect *td)
-{
+static int
+x25retry (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int     onoff;
 	int     fd = tb -> tb_fd;
 	fd_set  mask;
@@ -202,9 +200,9 @@ x25retry (struct tsapblk *tb, struct TSAPdisconnect *td)
 			break;
 		}
 
-		 tsaplose (td, DR_REFUSED, "connection", "unable to establish");
+		tsaplose (td, DR_REFUSED, "connection", "unable to establish");
 		FD_CLR (fd, &inprogress);
-		 close_x25_socket (fd);
+		close_x25_socket (fd);
 		LLOG (x25_log, LLOG_NOTICE,
 			  ("connection to %s failed", na2str (remote)));
 		return (tb -> tb_fd = NOTOK);
@@ -214,15 +212,15 @@ done:
 
 
 #ifdef	FIONBIO
-	 ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
+	ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
 #else
 #ifdef	O_NDELAY
-	 fcntl (fd, F_SETFL, 0x00);
+	fcntl (fd, F_SETFL, 0x00);
 #endif
 #endif
 	FD_CLR (fd, &inprogress);
 
-	 XTService (tb);      /* in case pktsize changed... */
+	XTService (tb);      /* in case pktsize changed... */
 	LLOG (x25_log, LLOG_NOTICE,
 		  ("connection %d to %s", fd, na2str (remote)));
 
@@ -236,9 +234,8 @@ static char *np;
 static int  bl;
 
 
-static int 
-x25init (int fd, struct tsapkt *t)
-{
+static int
+x25init (int fd, struct tsapkt *t) {
 	int    cc;
 
 	/* XXX: cc should be set to the maximum acceptable NSDU length.
@@ -252,7 +249,7 @@ x25init (int fd, struct tsapkt *t)
 	case NOTOK:
 #ifdef  SUN_X25
 		if (compat_log -> ll_events & LLOG_EXCEPTIONS)
-			 log_cause_and_diag(fd);
+			log_cause_and_diag(fd);
 #endif
 		return DR_NETWORK;
 
@@ -278,9 +275,8 @@ x25init (int fd, struct tsapkt *t)
 
 /* ARGSUSED */
 
-static int 
-read_nsdu_buffer (int fd, char *buffer, int cc)
-{
+static int
+read_nsdu_buffer (int fd, char *buffer, int cc) {
 	if (cc > bl)
 		cc = bl;
 
@@ -297,8 +293,7 @@ read_nsdu_buffer (int fd, char *buffer, int cc)
 /* ARGSUSED */
 
 char *
-x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconnect *td)
-{
+x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
 	char tbuf1[NASIZE*2+1], tbuf2[NASIZE*2+1];
 #ifdef ULTRIX_X25_DEMSA
@@ -311,25 +306,25 @@ x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconne
 
 	switch (loc -> na_stack) {
 	case NA_NSAP:
-		 explode (tbuf1, (u_char *)loc -> na_address, loc -> na_addrlen);
-		 explode (tbuf2, (u_char *)rem -> na_address, rem -> na_addrlen);
+		explode (tbuf1, (u_char *)loc -> na_address, loc -> na_addrlen);
+		explode (tbuf2, (u_char *)rem -> na_address, rem -> na_addrlen);
 #ifdef ULTRIX_X25_DEMSA
-		 sprintf (buffer, "%c%d %d %s %s", NT_X2584,
-						fd, vci, tbuf1, tbuf2);
+		sprintf (buffer, "%c%d %d %s %s", NT_X2584,
+				 fd, vci, tbuf1, tbuf2);
 #else
-		 sprintf (buffer, "%c%d %s %s", NT_X2584,
-						fd, tbuf1, tbuf2);
+		sprintf (buffer, "%c%d %s %s", NT_X2584,
+				 fd, tbuf1, tbuf2);
 #endif
 		break;
 	case NA_X25:
 #ifdef ULTRIX_X25_DEMSA
-		 sprintf (buffer, "%c%d %d %*s %*s",
-						NT_X25, fd, vci, loc->na_dtelen, loc->na_dte,
-						rem -> na_dtelen, rem -> na_dte);
+		sprintf (buffer, "%c%d %d %*s %*s",
+				 NT_X25, fd, vci, loc->na_dtelen, loc->na_dte,
+				 rem -> na_dtelen, rem -> na_dte);
 #else
-		 sprintf (buffer, "%c%d %*s %*s",
-						NT_X25, fd, loc->na_dtelen, loc->na_dte,
-						rem -> na_dtelen, rem -> na_dte);
+		sprintf (buffer, "%c%d %*s %*s",
+				 NT_X25, fd, loc->na_dtelen, loc->na_dte,
+				 rem -> na_dtelen, rem -> na_dte);
 #endif
 		break;
 	default:
@@ -339,9 +334,8 @@ x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconne
 }
 
 
-int 
-x25restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
-{
+int
+x25restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int     fd;
 	char    dte1[NASIZE + 1],
 			dte2[NASIZE + 1];
@@ -382,7 +376,7 @@ x25restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 	na -> na_dtelen = strlen (na -> na_dte);
 
 	tb -> tb_fd = fd;
-	 XTService (tb);
+	XTService (tb);
 
 	ta = &tb -> tb_initiating;
 	ta -> ta_present = 1;
@@ -393,16 +387,15 @@ x25restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 	na -> na_dtelen = strlen (na -> na_dte);
 
 #ifdef  SUN_X25
-	 set_x25_facilities (tb -> tb_fd, -1, "Negotiated");
+	set_x25_facilities (tb -> tb_fd, -1, "Negotiated");
 #endif
 
 	return OK;
 }
 
 #ifdef AEF_NSAP
-int 
-x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
-{
+int
+x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int     fd;
 	char    dte1[NASIZE*2 + 1],
 			dte2[NASIZE*2 + 1];
@@ -421,7 +414,7 @@ x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 	na->na_addrlen = implode ((u_char *)na->na_address, dte1, strlen(dte1));
 
 	tb -> tb_fd = fd;
-	 XTService (tb);
+	XTService (tb);
 
 	ta = &tb -> tb_initiating;
 	ta -> ta_present = 1;
@@ -431,7 +424,7 @@ x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 	na -> na_addrlen = implode ((u_char *)na -> na_address, dte2, strlen(dte2));
 
 #ifdef  SUN_X25
-	 set_x25_facilities (tb -> tb_fd, -1, "Negotiated");
+	set_x25_facilities (tb -> tb_fd, -1, "Negotiated");
 #endif
 
 	return OK;
@@ -440,9 +433,8 @@ x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 
 /*  */
 
-int 
-XTService (struct tsapblk *tb)
-{
+int
+XTService (struct tsapblk *tb) {
 #ifndef	UBC_X25
 	int     maxnsdu = MAXNSDU;
 #else
@@ -471,8 +463,8 @@ XTService (struct tsapblk *tb)
 	tp0init (tb);
 }
 #else
-int 
-_ts2x25_stub(){
+int
+_ts2x25_stub() {
 	;
 }
 #endif

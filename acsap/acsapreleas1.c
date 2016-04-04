@@ -38,9 +38,8 @@ static int  AcRelRetryRequestAux ();
 
 /*    A-RELEASE.REQUEST */
 
-int 
-AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
-{
+int
+AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;
@@ -76,7 +75,7 @@ AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrel
 
 	if ((rlrq = (struct type_ACS_RLRQ__apdu *) calloc (1, sizeof *rlrq))
 			== NULL) {
-		 acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+		acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 		goto out2;
 	}
 	rlrq -> optionals |= opt_ACS_RLRQ__apdu_reason;
@@ -93,8 +92,8 @@ AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrel
 	rlrq = NULL;
 
 	if (result == NOTOK) {
-		 acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
-						  PY_pepy);
+		acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
+				   PY_pepy);
 		goto out2;
 	}
 	acb -> acb_retry -> pe_context = acb -> acb_id;
@@ -117,16 +116,15 @@ out2:
 
 out1:
 	;
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*    A-RELEASE-RETRY.REQUEST (pseudo) */
 
-int 
-AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
-{
+int
+AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;
@@ -144,16 +142,15 @@ AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindic
 	else
 		result = AcRelRetryRequestAux (acb, secs, acr, aci);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int 
-AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci)
-{
+static int
+AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {
 	int	    result;
 	char   *id = acb -> acb_flags & ACB_RELEASE ? "PRelRetryRequest"
 				 : "PRelRequest";
@@ -178,14 +175,14 @@ AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, 
 		}
 
 		if (pa -> pa_peer) {
-			 AcABORTser (acb -> acb_fd, pa, aci);
+			AcABORTser (acb -> acb_fd, pa, aci);
 			goto out1;
 		}
 		if (PC_FATAL (pa -> pa_reason)) {
-			 ps2acslose (acb, aci, id, pa);
+			ps2acslose (acb, aci, id, pa);
 			goto out2;
 		} else {
-			 ps2acslose (NULLACB, aci, id, pa);
+			ps2acslose (NULLACB, aci, id, pa);
 			goto out1;
 		}
 	}
@@ -210,13 +207,13 @@ AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, 
 	pe = pr -> pr_info[0] = NULLPE;
 
 	if (result == NOTOK) {
-		 acpktlose (acb, aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
+		acpktlose (acb, aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto out3;
 	}
 
 	if (pdu -> offset != type_ACS_ACSE__apdu_rlre) {
-		 acpktlose (acb, aci, ACS_PROTOCOL, NULLCP,
-						  "unexpected PDU %d on P-RELEASE", pdu -> offset);
+		acpktlose (acb, aci, ACS_PROTOCOL, NULLCP,
+				   "unexpected PDU %d on P-RELEASE", pdu -> offset);
 		goto out3;
 	}
 

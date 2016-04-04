@@ -49,9 +49,8 @@ static struct isoentity ies;
 
 /*  */
 
-int 
-setisoentity (int f)
-{
+int
+setisoentity (int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isoentities, 0), "r");
 	else
@@ -62,10 +61,10 @@ setisoentity (int f)
 }
 
 
-int 
+int
 endisoentity()  {
 	if (servf && !stayopen) {
-		 fclose (servf);
+		fclose (servf);
 		servf = NULL;
 	}
 
@@ -91,11 +90,10 @@ getisoentity()  {
 
 /*  */
 
-int 
-_startisoentity (char *descriptor)
-{
+int
+_startisoentity (char *descriptor) {
 	char  *cp,
-			 *dp;
+		  *dp;
 	char   *ep;
 
 	ep = (dp = buffer) + sizeof buffer;
@@ -122,7 +120,7 @@ _startisoentity (char *descriptor)
 			continue;
 		}
 
-		 sprintf (descriptor, "%s-%s", vec[0], vec[1]);
+		sprintf (descriptor, "%s-%s", vec[0], vec[1]);
 
 		return OK;
 	}
@@ -132,9 +130,8 @@ _startisoentity (char *descriptor)
 
 /*  */
 
-int 
-_stopisoentity (char *descriptor, struct isoentity *iep)
-{
+int
+_stopisoentity (char *descriptor, struct isoentity *iep) {
 	int    i;
 	struct isoentity  *ie = &ies;
 	OID		oid = &ie -> ie_identifier;
@@ -170,17 +167,16 @@ _stopisoentity (char *descriptor, struct isoentity *iep)
 
 /*  */
 
-int 
-_printent (struct isoentity *ie)
-{
+int
+_printent (struct isoentity *ie) {
 	LLOG (addr_log, LLOG_DEBUG,
 		  ("Entity:  %s (%s)", ie -> ie_descriptor,
 		   oid2ode (&ie -> ie_identifier)));
 
-	 ll_printf (addr_log, "Address: %s\n",
-					  paddr2str (&ie -> ie_addr, NULLNA));
+	ll_printf (addr_log, "Address: %s\n",
+			   paddr2str (&ie -> ie_addr, NULLNA));
 
-	 ll_printf (addr_log, "///////\n");
+	ll_printf (addr_log, "///////\n");
 
-	 ll_sync (addr_log);
+	ll_sync (addr_log);
 }

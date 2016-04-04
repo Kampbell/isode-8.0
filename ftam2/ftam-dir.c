@@ -41,8 +41,7 @@ int	fdffnx ();
 /*  */
 
 #ifndef	BRIDGE
-int f_lcd (char **vec)
-{
+int f_lcd (char **vec) {
 	char   *cp,
 		   cwd[MAXPATHLEN];
 
@@ -59,9 +58,9 @@ int f_lcd (char **vec)
 
 		if (getcwd (cwd, MAXPATHLEN) && strcmp (cp, cwd))
 #ifdef	apollo
-			 printf ("/%s\n", lcwd = strdup (cwd));	/* network root */
+			printf ("/%s\n", lcwd = strdup (cwd));	/* network root */
 #else
-			 printf ("%s\n", lcwd = strdup (cwd));
+			printf ("%s\n", lcwd = strdup (cwd));
 #endif
 		else
 			lcwd = cp, cp = NULL;
@@ -76,9 +75,8 @@ int f_lcd (char **vec)
 
 /*  */
 
-int 
-f_cd (char **vec)
-{
+int
+f_cd (char **vec) {
 	int	    silent;
 	char   *cp,
 		   cwd[MAXPATHLEN];
@@ -128,9 +126,8 @@ f_cd (char **vec)
 
 /*  */
 
-int 
-isdir (char *dir, char *dp, int silent)
-{
+int
+isdir (char *dir, char *dp, int silent) {
 	int	    result;
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
@@ -203,7 +200,7 @@ isdir (char *dir, char *dp, int silent)
 			fa -> fa_present = 0;
 
 		if ((fa -> fa_present & FA_FILENAME) && fa -> fa_nfile == 1 && dp)
-			 strcpy (dp, fa -> fa_files[0]);
+			strcpy (dp, fa -> fa_files[0]);
 
 		if (fa -> fa_present & FA_CONTENTS)
 			if (oid_cmp (vf -> vf_oid, fa -> fa_contents)) {
@@ -237,26 +234,25 @@ you_lose:
 
 /* ARGSUSED */
 
-int 
-f_pwd (char **vec)
-{
+int
+f_pwd (char **vec) {
 #ifndef	BRIDGE
 	char    cwd[MAXPATHLEN];
 
 	if (lcwd == NULL)
 		lcwd = strdup (getcwd (cwd, MAXPATHLEN) ? cwd : ".");
 #ifdef	apollo
-	 printf ("local directory: /%s\n", lcwd);	/* network root */
+	printf ("local directory: /%s\n", lcwd);	/* network root */
 #else
-	 printf ("local directory: %s\n", lcwd);
+	printf ("local directory: %s\n", lcwd);
 #endif
 #endif
 
 	if (rcwd)
 #ifndef	BRIDGE
-		 printf ("virtual filestore directory: %s\n", rcwd);
+		printf ("virtual filestore directory: %s\n", rcwd);
 #else
-		 sprintf (ftam_error, "virtual filestore directory: %s\n", rcwd);
+		sprintf (ftam_error, "virtual filestore directory: %s\n", rcwd);
 #endif
 
 	return OK;
@@ -265,8 +261,7 @@ f_pwd (char **vec)
 /*  */
 
 char *
-str2file (char *s)
-{
+str2file (char *s) {
 	char  *bp;
 	static int  i = 0;
 	static char buffer1[BUFSIZ],
@@ -284,10 +279,10 @@ str2file (char *s)
 
 #ifdef apollo
 		if (strcmp (rcwd, "/") == 0 || strcmp (rcwd, "//") == 0)
-			 sprintf (bp, "%s%s", rcwd, s);
+			sprintf (bp, "%s%s", rcwd, s);
 		else
 #endif
-			 sprintf (bp, "%s/%s", rcwd, s);
+			sprintf (bp, "%s/%s", rcwd, s);
 		break;
 
 #ifdef	BRIDGE

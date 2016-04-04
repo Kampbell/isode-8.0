@@ -35,9 +35,8 @@ extern  char    *dsatailfile;
 extern  LLog    *log_dsap;
 
 
-int 
-dsa_tai_init (char *name)
-{
+int
+dsa_tai_init (char *name) {
 	FILE    *fp;
 	char    buf[BUFSIZ];
 	char   *cp;
@@ -55,15 +54,14 @@ dsa_tai_init (char *name)
 			if (dsa_tai_string (buf) == NOTOK)
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("tai_string failed %s",buf));
 
-	 fclose(fp);
+	fclose(fp);
 	isodexport(NULLCP);
 	return OK;
 }
 
 
-int 
-dsa_tai_string (char *str)
-{
+int
+dsa_tai_string (char *str) {
 	char    *args[MAXTAIARGS];
 	char    *p;
 	int     ac;

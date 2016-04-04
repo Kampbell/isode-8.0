@@ -32,14 +32,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb_pullup.c,v 9.0 1992
 
 /*  */
 
-int 
-qb_pullup (struct qbuf *qb)
-{
+int
+qb_pullup (struct qbuf *qb) {
 	int    len;
 	char  *d;
 	struct qbuf  *p,
-			*qp,
-			*qpp;
+			   *qp,
+			   *qpp;
 
 	len = 0;
 #ifdef	notdef		/* want null-termination... */

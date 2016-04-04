@@ -56,14 +56,13 @@ static int pe_maxerror = sizeof pe_errorlist / sizeof pe_errorlist[0];
 /*  */
 
 char *
-pe_error (int c)
-{
+pe_error (int c) {
 	char  *bp;
 	static char buffer[30];
 
 	if (c < pe_maxerror && (bp = pe_errorlist[c]))
 		return bp;
 
-	 sprintf (buffer, "Error %d", c);
+	sprintf (buffer, "Error %d", c);
 	return buffer;
 }

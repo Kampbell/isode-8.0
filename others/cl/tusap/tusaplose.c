@@ -42,9 +42,8 @@ va_dcl {
 #else
 /* VARARGS */
 
-int 
-tusaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt)
-{
+int
+tusaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 	return tusaplose (td, reason, what, fmt);
 }
 #endif
@@ -52,13 +51,12 @@ tusaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _tusaplose (	/* what, fmt, args ... */
-    struct TSAPdisconnect *td,
-    int reason,
-    va_list ap
-)
-{
+	struct TSAPdisconnect *td,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char    buffer[BUFSIZ];
 

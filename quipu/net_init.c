@@ -60,9 +60,8 @@ extern  struct PSAPaddr		* dsaladdr;
 extern	struct PSAPaddr		* psap_cpy();
 int	max_conns;
 
-static int 
-TMagic (int *vecp, char **vec, struct TSAPdisconnect *td)
-{
+static int
+TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
 	int	    sd;
 	struct TSAPstart tss;
 	struct TSAPstart  *ts = &tss;
@@ -82,7 +81,7 @@ TMagic (int *vecp, char **vec, struct TSAPdisconnect *td)
 	return OK;
 }
 
-int 
+int
 net_init (void) {
 	int	    ntries,
 			ontty;
@@ -175,19 +174,19 @@ net_init (void) {
 			   paddr2str (dsaladdr, NULLNA)));
 		if (td -> td_cc > 0) {
 			if (ontty)
-				 fprintf (stderr,
-								"TNetListen: [%s] %*.*s\nAddress: %s\n",
-								TErrString (td -> td_reason), td -> td_cc,
-								td -> td_cc, td -> td_data,
-								paddr2str (dsaladdr, NULLNA));
+				fprintf (stderr,
+						 "TNetListen: [%s] %*.*s\nAddress: %s\n",
+						 TErrString (td -> td_reason), td -> td_cc,
+						 td -> td_cc, td -> td_data,
+						 paddr2str (dsaladdr, NULLNA));
 			LLOG (log_dsap, LLOG_FATAL,
 				  ("TNetListen: [%s] %*.*s", TErrString (td -> td_reason),
 				   td -> td_cc, td -> td_cc, td -> td_data));
 		} else {
 			if (ontty)
-				 fprintf (stderr, "TNetListen: [%s]\nAddress: %s\n",
-								TErrString (td -> td_reason),
-								paddr2str (dsaladdr, NULLNA));
+				fprintf (stderr, "TNetListen: [%s]\nAddress: %s\n",
+						 TErrString (td -> td_reason),
+						 paddr2str (dsaladdr, NULLNA));
 			LLOG (log_dsap, LLOG_FATAL,
 				  ("TNetListen: [%s]", TErrString (td -> td_reason)));
 		}

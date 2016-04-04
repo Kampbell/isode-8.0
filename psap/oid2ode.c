@@ -49,8 +49,8 @@ int	quoted;
 	addr_log -> ll_events = events;
 
 	if (io) {
-		 sprintf (buffer, quoted ? "\"%s\"" : "%s",
-						io -> io_descriptor);
+		sprintf (buffer, quoted ? "\"%s\"" : "%s",
+				 io -> io_descriptor);
 		return buffer;
 	}
 

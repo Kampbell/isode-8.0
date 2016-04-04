@@ -36,12 +36,11 @@ static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int obs
 /*  */
 
 #ifndef	lint
-int	fpktlose (struct ftamblk *fsb, ...)
-{
+int	fpktlose (struct ftamblk *fsb, ...) {
 	int     observer,
-	reason,
-	result,
-	source;
+			reason,
+			result,
+			source;
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti;
 	va_list	ap;
@@ -63,18 +62,17 @@ int	fpktlose (struct ftamblk *fsb, ...)
 	if (fsb -> fsb_fd == NOTOK)
 		return result;
 
-	 FAbortRequestAux (fsb, type_FTAM_PDU_f__p__abort__request,
-	FACTION_PERM, fti -> fti_abort.fta_diags, 1,
-	&ftis);
+	FAbortRequestAux (fsb, type_FTAM_PDU_f__p__abort__request,
+					  FACTION_PERM, fti -> fti_abort.fta_diags, 1,
+					  &ftis);
 
 	return result;
 }
 #else
 /* VARARGS5 */
 
-int 
-fpktlose (struct ftamblk *fsb, struct FTAMindication *fti, int reason, char *what, char *fmt)
-{
+int
+fpktlose (struct ftamblk *fsb, struct FTAMindication *fti, int reason, char *what, char *fmt) {
 	return fpktlose (fsb, fti, reason, what, fmt);
 }
 #endif
@@ -82,12 +80,11 @@ fpktlose (struct ftamblk *fsb, struct FTAMindication *fti, int reason, char *wha
 /*  */
 
 #ifndef	lint
-int	ftamlose (struct FTAMindication *fti, ...)
-{
+int	ftamlose (struct FTAMindication *fti, ...) {
 	int     fatal,
-	reason,
-	result;
-	
+			reason,
+			result;
+
 	va_list	ap;
 
 	va_start (ap, fti);
@@ -104,9 +101,8 @@ int	ftamlose (struct FTAMindication *fti, ...)
 #else
 /* VARARGS4 */
 
-int 
-ftamlose (struct FTAMindication *fti, int reason, int fatal, char *what, char *fmt)
-{
+int
+ftamlose (struct FTAMindication *fti, int reason, int fatal, char *what, char *fmt) {
 	return ftamlose (fti, reason, fatal, what, fmt);
 }
 #endif
@@ -114,14 +110,13 @@ ftamlose (struct FTAMindication *fti, int reason, int fatal, char *what, char *f
 /*  */
 
 #ifndef	lint
-int	ftamoops (struct FTAMindication *fti, ...)
-{
+int	ftamoops (struct FTAMindication *fti, ...) {
 	int	    reason,
-	result,
-	fatal,
-	observer,
-	source;
-	
+			result,
+			fatal,
+			observer,
+			source;
+
 	va_list ap;
 
 	va_start (ap, fti);
@@ -139,8 +134,7 @@ int	ftamoops (struct FTAMindication *fti, ...)
 }
 
 
-static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, va_list ap)
-{
+static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, va_list ap) {
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct FTAMabort  *fta;
@@ -173,9 +167,8 @@ static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int obs
 #else
 /* VARARGS7 */
 
-int 
-ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, char *what, char *fmt)
-{
+int
+ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, char *what, char *fmt) {
 	return ftamoops (fti, reason, fatal, observer, source, what, fmt);
 }
 #endif

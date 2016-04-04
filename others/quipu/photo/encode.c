@@ -139,7 +139,7 @@ encode_t4 (int k_param, char *inbuf, int eolnskip)
 		/* skip any extra eoln bit in orig data */
 
 		for (j = 0; j < eolnskip; j++)
-			 get_bit (&code_line);
+			get_bit (&code_line);
 
 	}
 

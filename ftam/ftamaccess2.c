@@ -35,16 +35,15 @@ static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUident
 
 /*    F-{LOCATE,ERASE}.RESPONSE */
 
-int 
+int
 FAccessResponse (
-    int sd,
-    int action,
-    struct FADUidentity *identity,	/* F-LOCATE.RESPONSE only */
-    struct FTAMdiagnostic diag[],
-    int ndiag,
-    struct FTAMindication *fti
-)
-{
+	int sd,
+	int action,
+	struct FADUidentity *identity,	/* F-LOCATE.RESPONSE only */
+	struct FTAMdiagnostic diag[],
+	int ndiag,
+	struct FTAMindication *fti
+) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -68,15 +67,14 @@ FAccessResponse (
 
 	result = FAccessResponseAux (fsb, action, identity, diag, ndiag, fti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }
 
 /*  */
 
-static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti)
-{
+static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;
@@ -106,7 +104,7 @@ static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUident
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 out:
 		;
 		if (pe)
@@ -156,8 +154,8 @@ out:
 	}
 
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
-		 ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
-						 "error encoding PDU: %s", PY_pepy);
+		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
 
@@ -175,7 +173,7 @@ out:
 	pdu = NULL;
 
 	if (result == NOTOK) {
-		 ps2ftamlose (fsb, fti, "PDataRequest", pa);
+		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
 

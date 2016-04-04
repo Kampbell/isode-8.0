@@ -87,9 +87,8 @@ static int pl_read ();
 
 /*  */
 
-PE 
-pl2pe (PS ps)
-{
+PE
+pl2pe (PS ps) {
 	struct PList    pls;
 	PL	    pl = &pls;
 
@@ -106,9 +105,8 @@ pl2pe (PS ps)
 
 /*  */
 
-static PE 
-pl2pe_aux (PS ps, PL pl)
-{
+static PE
+pl2pe_aux (PS ps, PL pl) {
 	PElementClass   class;
 	PElementID	    id;
 	PE	    pe;
@@ -150,9 +148,8 @@ you_lose:
 
 /*  */
 
-static int 
-pl_read_class (PS ps, PL pl, PElementClass *class)
-{
+static int
+pl_read_class (PS ps, PL pl, PElementClass *class) {
 	int    i;
 
 	if (pl_read_lex (ps, pl) == NOTOK)
@@ -169,9 +166,8 @@ pl_read_class (PS ps, PL pl, PElementClass *class)
 
 /*  */
 
-static int 
-pl_read_id (PS ps, PL pl, int class, PElementID *id)
-{
+static int
+pl_read_id (PS ps, PL pl, int class, PElementID *id) {
 	int    i;
 	char **list;
 
@@ -211,9 +207,8 @@ pl_read_id (PS ps, PL pl, int class, PElementID *id)
 
 /*  */
 
-static int 
-pl_read_name (char *name, char **list, int n)
-{
+static int
+pl_read_name (char *name, char **list, int n) {
 	int    i;
 	char  *bp;
 
@@ -226,11 +221,10 @@ pl_read_name (char *name, char **list, int n)
 
 /*  */
 
-static int 
-pl_read_cons (PS ps, PL pl, PE *pe)
-{
+static int
+pl_read_cons (PS ps, PL pl, PE *pe) {
 	PE	    p,
-			 q;
+	 q;
 
 	if ((p = pl2pe_aux (ps, pl)) == NULLPE)
 		return NOTOK;
@@ -256,14 +250,13 @@ pl_read_cons (PS ps, PL pl, PE *pe)
 
 /*  */
 
-static int 
-pl_read_prim (PS ps, PL pl, PE pe)
-{
+static int
+pl_read_prim (PS ps, PL pl, PE pe) {
 	int    i,
-			 len,
-			 n;
+		   len,
+		   n;
 	PElementData dp,
-			 ep;
+				 ep;
 
 	if ((len = pl -> pl_num) == 0)
 		goto out;
@@ -296,34 +289,33 @@ out:
 /*  */
 
 #ifdef	XXX
-static int 
-pl_read_lex (PS ps, PL pl)
-{
+static int
+pl_read_lex (PS ps, PL pl) {
 	int     i = pl_read_lex_aux (ps, pl);
 
-	 fprintf (stderr, "pl_read_lex returns ");
+	fprintf (stderr, "pl_read_lex returns ");
 	if (i == NOTOK) {
-		 fprintf (stderr, "NOTOK [%s]\n", ps_error (ps -> ps_errno));
+		fprintf (stderr, "NOTOK [%s]\n", ps_error (ps -> ps_errno));
 		return NOTOK;
 	}
 	switch (pl -> pl_code) {
 	case PL_CODE_LPAR:
-		 fprintf (stderr, "LPAR");
+		fprintf (stderr, "LPAR");
 		break;
 	case PL_CODE_RPAR:
-		 fprintf (stderr, "RPAR");
+		fprintf (stderr, "RPAR");
 		break;
 	case PL_CODE_NAME:
-		 fprintf (stderr, "NAME \"%s\"", pl -> pl_name);
+		fprintf (stderr, "NAME \"%s\"", pl -> pl_name);
 		break;
 	case PL_CODE_NUM:
-		 fprintf (stderr, "NUM 0x%x", pl -> pl_num);
+		fprintf (stderr, "NUM 0x%x", pl -> pl_num);
 		break;
 	default:
-		 fprintf (stderr, "code %d", pl -> pl_code);
+		fprintf (stderr, "code %d", pl -> pl_code);
 		break;
 	}
-	 fprintf (stderr, "\n");
+	fprintf (stderr, "\n");
 	if (pl -> pl_code == PL_CODE_RPAR)
 		sleep(1);
 
@@ -340,7 +332,7 @@ PS	ps;
 PL	pl;
 {
 	int    base,
-			 n;
+		   n;
 	char  *bp;
 	byte    c;
 
@@ -449,9 +441,8 @@ PL	pl;
 
 /*  */
 
-static int 
-pl_read (PS ps, byte *c)
-{
+static int
+pl_read (PS ps, byte *c) {
 	if (ps -> ps_scratch) {
 		*c = ps -> ps_scratch;
 		ps -> ps_scratch = 0;

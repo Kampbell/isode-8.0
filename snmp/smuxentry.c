@@ -62,7 +62,7 @@ int	f;
 
 int	endsmuxEntry () {
 	if (servf && !stayopen) {
-		 fclose (servf);
+		fclose (servf);
 		servf = NULL;
 	}
 
@@ -116,11 +116,11 @@ char   *name;
 {
 	struct smuxEntry *se;
 
-	 setsmuxEntry (0);
+	setsmuxEntry (0);
 	while (se = getsmuxEntry ())
 		if (strcmp (name, se -> se_name) == 0)
 			break;
-	 endsmuxEntry ();
+	endsmuxEntry ();
 
 	return se;
 }
@@ -132,7 +132,7 @@ OID	identity;
 {
 	struct smuxEntry *se;
 
-	 setsmuxEntry (0);
+	setsmuxEntry (0);
 
 	/* Compare only the portion of the object identifier that is given in
 	   the entry read from the smux.peers file, allowing a SMUX sub-agent
@@ -146,7 +146,7 @@ OID	identity;
 							 se -> se_identity.oid_nelem) == 0)
 			break;
 
-	 endsmuxEntry ();
+	endsmuxEntry ();
 
 	return se;
 }

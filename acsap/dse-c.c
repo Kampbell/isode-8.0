@@ -44,9 +44,8 @@ static int  gstring ();
 
 /*  */
 
-int 
-build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm)
-{
+int
+build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm) {
 	int	    result;
 	struct PSAPaddr *pa = (struct PSAPaddr *) parm;
 	struct type_DSE_PSAPaddr *dse;
@@ -64,15 +63,14 @@ build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm)
 /*  */
 
 static struct type_DSE_PSAPaddr *
-psap2dse (struct PSAPaddr *pa)
-{
+psap2dse (struct PSAPaddr *pa) {
 	int    n;
 	struct type_DSE_PSAPaddr *dse;
 	struct SSAPaddr *sa = &pa -> pa_addr;
 	struct TSAPaddr *ta = &sa -> sa_addr;
 	struct NSAPaddr *na;
 	struct member_DSE_0  *nDSE,
-			**oDSE;
+			   **oDSE;
 
 	if ((dse = (struct type_DSE_PSAPaddr *) calloc (1, sizeof *dse)) == NULL) {
 		advise (NULLCP, "psap2dse: out of memory");
@@ -116,9 +114,8 @@ losing:
 
 /*  */
 
-int 
-parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm)
-{
+int
+parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm) {
 	int	    result;
 	struct PSAPaddr *pa = (struct PSAPaddr *) parm;
 	struct type_DSE_PSAPaddr *dse;
@@ -135,9 +132,8 @@ parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm)
 
 /*  */
 
-static int 
-dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa)
-{
+static int
+dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
 	struct SSAPaddr *sa = &pa -> pa_addr;
 	struct TSAPaddr *ta = &sa -> sa_addr;
 	struct member_DSE_0 *nDSE;
@@ -174,9 +170,8 @@ dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa)
 
 /*  */
 
-static int 
-gstring (char *buf, int buflen, struct qbuf *qb, char *w)
-{
+static int
+gstring (char *buf, int buflen, struct qbuf *qb, char *w) {
 	char   *p;
 
 	if (qb == NULL || qb -> qb_len <= 0)

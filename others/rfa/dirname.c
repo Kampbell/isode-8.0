@@ -45,8 +45,7 @@ extern char *realpath();
 int commandMode = 0;
 
 char *
-basename (char *fn)
-{
+basename (char *fn) {
 	char *f;
 
 	if (f = rindex(fn,'/'))
@@ -57,8 +56,7 @@ basename (char *fn)
 
 
 char *
-dirname (char *fn)
-{
+dirname (char *fn) {
 	static char buf[MAXPATHLEN];
 	char *f;
 
@@ -73,14 +71,12 @@ dirname (char *fn)
 
 
 char *
-makeFN (char *fn)
-{
+makeFN (char *fn) {
 	return makeFN2("", fn);
 }
 
 char *
-makeFN2 (char *dir, char *fn)
-{
+makeFN2 (char *dir, char *fn) {
 	char *s = p;
 
 	strcpy(s,fsBase);
@@ -105,8 +101,7 @@ makeFN2 (char *dir, char *fn)
 
 
 char *
-getRelativeFN (char *fn)
-{
+getRelativeFN (char *fn) {
 	if (strncmp(fsBase, fn, strlen(fsBase)))
 		return NULL;
 	return fn + strlen(fsBase);
@@ -114,8 +109,7 @@ getRelativeFN (char *fn)
 
 
 char *
-expandSymLinks (char *path)
-{
+expandSymLinks (char *path) {
 	static char exp[MAXPATHLEN];
 	char *r;
 
@@ -135,8 +129,7 @@ expandSymLinks (char *path)
 
 
 char *
-realPath3 (char *dir, char *path1, char *path2)
-{
+realPath3 (char *dir, char *path1, char *path2) {
 	char *s, *s1, *rp;
 	static char realp[MAXPATHLEN];
 	char givenp[MAXPATHLEN];
@@ -187,8 +180,7 @@ realPath3 (char *dir, char *path1, char *path2)
 
 
 char *
-realPath (char *dir, char *path)
-{
+realPath (char *dir, char *path) {
 	return realPath3("", dir, path);
 }
 
@@ -197,8 +189,7 @@ realPath (char *dir, char *path)
 /*  getRfaContext						*/
 /*--------------------------------------------------------------*/
 char *
-getRfaContext (char *cwd, char *fn)
-{
+getRfaContext (char *cwd, char *fn) {
 	char *rp;
 	char buf[MAXPATHLEN];
 

@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapasync.c,v 9.0 19
 
 /*    define vectors for INDICATION events */
 
-int 
-RtSetIndications (int sd, IFP indication, struct RtSAPindication *rti)
-{
+int
+RtSetIndications (int sd, IFP indication, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -47,14 +46,14 @@ RtSetIndications (int sd, IFP indication, struct RtSAPindication *rti)
 	rtsapPsig (acb, sd);
 
 	if (acb -> acb_flags & ACB_PLEASE) {
-		 sigiomask (smask);
+		sigiomask (smask);
 
 		return rtsaplose (rti, RTS_WAITING, NULLCP, NULLCP);
 	}
 
 	result = (*acb -> acb_rtsetindications) (acb, indication, rti);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

@@ -33,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapresync1.c,v 9.0 1
 
 /*    P-RESYNCHRONIZE.REQUEST */
 
-int 
-PReSyncRequest (int sd, int type, long ssn, int settings, PE *data, int ndata, struct PSAPindication *pi)
-{
+int
+PReSyncRequest (int sd, int type, long ssn, int settings, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;
@@ -59,9 +58,9 @@ PReSyncRequest (int sd, int type, long ssn, int settings, PE *data, int ndata, s
 	if ((result = SReSyncRequest (sd, type, ssn, settings, base, len, &sis))
 			== NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
-			 ss2pslose (pb, pi, "SReSyncRequest", sa);
+			ss2pslose (pb, pi, "SReSyncRequest", sa);
 		else {
-			 ss2pslose (NULLPB, pi, "SReSyncRequest", sa);
+			ss2pslose (NULLPB, pi, "SReSyncRequest", sa);
 			goto out1;
 		}
 
@@ -78,7 +77,7 @@ out1:
 	else if (base)
 		free (base);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

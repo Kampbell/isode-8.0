@@ -48,7 +48,7 @@ char *str;
 
 	cp = index(str, ':');
 	if (cp == NULLCP) {
-		 fprintf(stderr, "log an error message about parsing of phone numbermappings...\n");
+		fprintf(stderr, "log an error message about parsing of phone numbermappings...\n");
 		return;
 	}
 	*cp = '\0';
@@ -82,8 +82,8 @@ char * from;
 
 	for (mplp = mapphonelp; mplp != NULLPHLIST; mplp = mplp->next)
 		if (strncmp(from, mplp->mapfrom, strlen(mplp->mapfrom)) == 0) {
-			 strcpy(tophone, mplp->mapto);
-			 strcat(tophone, from + strlen(mplp->mapfrom));
+			strcpy(tophone, mplp->mapto);
+			strcat(tophone, from + strlen(mplp->mapfrom));
 			return tophone;
 		}
 	return from;

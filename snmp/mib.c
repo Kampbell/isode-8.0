@@ -224,7 +224,7 @@ struct nlist *n;
 {
 	if (n == NULL) {
 		if (wd != NOTOK)
-			 close (wd), wd = NOTOK;
+			close (wd), wd = NOTOK;
 
 		return OK;
 	}

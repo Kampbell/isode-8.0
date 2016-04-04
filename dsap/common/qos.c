@@ -45,9 +45,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/qos.c,v 9.0 199
 
 static int  CMD_SRCH ();
 
-static 
-dsaQoS_free (struct dsaQoS *a)
-{
+static
+dsaQoS_free (struct dsaQoS *a) {
 	if (!a)
 		return;
 
@@ -58,8 +57,7 @@ dsaQoS_free (struct dsaQoS *a)
 }
 
 static struct dsaQoS *
-dsaQoS_cpy (struct dsaQoS *a)
-{
+dsaQoS_cpy (struct dsaQoS *a) {
 	struct dsaQoS *b;
 
 	b = (struct dsaQoS *) smalloc (sizeof *b);
@@ -72,9 +70,8 @@ dsaQoS_cpy (struct dsaQoS *a)
 	return b;
 }
 
-static 
-dsaQoS_cmp (struct dsaQoS *a, struct dsaQoS *b)
-{
+static
+dsaQoS_cmp (struct dsaQoS *a, struct dsaQoS *b) {
 	int	    res;
 
 	if (!a)
@@ -114,8 +111,7 @@ int	format;
 }
 
 static struct dsaQoS *
-str2dsaQoS (char *str)
-{
+str2dsaQoS (char *str) {
 	int	    quality;
 	char   *ptr;
 	struct dsaQoS *a;
@@ -146,7 +142,7 @@ struct dsaQoS *a;
 {
 	PE	    pe;
 
-	 encode_Thorn_DSAQualitySyntax (&pe, 0, 0, NULLCP, a);
+	encode_Thorn_DSAQualitySyntax (&pe, 0, 0, NULLCP, a);
 
 	return pe;
 }
@@ -162,20 +158,18 @@ PE	pe;
 	return a;
 }
 
-static 
-attrQoS_free (struct attrQoS *a)
-{
+static
+attrQoS_free (struct attrQoS *a) {
 	if (!a)
 		return;
 
 	free ((char *) a);
 }
 
-static 
-ditQoS_free (struct ditQoS *a)
-{
+static
+ditQoS_free (struct ditQoS *a) {
 	struct attrsQoS *p,
-			*q;
+			   *q;
 
 	if (!a)
 		return;
@@ -198,8 +192,7 @@ ditQoS_free (struct ditQoS *a)
 }
 
 static struct attrQoS *
-attrQoS_cpy (struct attrQoS *a)
-{
+attrQoS_cpy (struct attrQoS *a) {
 	struct attrQoS *b;
 
 	b = (struct attrQoS *) smalloc (sizeof *b);
@@ -209,12 +202,11 @@ attrQoS_cpy (struct attrQoS *a)
 }
 
 static struct ditQoS *
-ditQoS_cpy (struct ditQoS *a)
-{
+ditQoS_cpy (struct ditQoS *a) {
 	struct ditQoS *b;
 	struct attrsQoS  *p,
-			**q,
-			*r;
+			   **q,
+			   *r;
 
 	b = (struct ditQoS *) smalloc (sizeof *b);
 	bzero ((char *) b, sizeof *b);
@@ -238,9 +230,8 @@ ditQoS_cpy (struct ditQoS *a)
 	return b;
 }
 
-static 
-attrQoS_cmp (struct attrQoS *a, struct attrQoS *b)
-{
+static
+attrQoS_cmp (struct attrQoS *a, struct attrQoS *b) {
 	int	    res;
 
 	if (!a)
@@ -255,12 +246,11 @@ attrQoS_cmp (struct attrQoS *a, struct attrQoS *b)
 	return 0;
 }
 
-static 
-ditQoS_cmp (struct ditQoS *a, struct ditQoS *b)
-{
+static
+ditQoS_cmp (struct ditQoS *a, struct ditQoS *b) {
 	int	    res;
 	struct attrsQoS *p,
-			*r;
+			   *r;
 
 	if (!a)
 		return (b ? (-1) : 0);
@@ -358,8 +348,7 @@ int	format;
 }
 
 static struct attrQoS *
-str2attrQoS (char *str)
-{
+str2attrQoS (char *str) {
 	int	    level,
 			completeness;
 	char   *ptr;
@@ -393,13 +382,12 @@ str2attrQoS (char *str)
 
 
 static struct ditQoS *
-str2ditQoS (char *str)
-{
+str2ditQoS (char *str) {
 	char   *ptr,
 		   *qtr;
 	struct ditQoS *a;
 	struct attrsQoS  *p,
-			**q;
+			   **q;
 
 	a = (struct ditQoS *) smalloc (sizeof *a);
 	bzero ((char *) a, sizeof *a);
@@ -498,7 +486,7 @@ struct ditQoS *a;
 {
 	PE	    pe;
 
-	 encode_Thorn_DataQualitySyntax (&pe, 0, 0, NULLCP, a);
+	encode_Thorn_DataQualitySyntax (&pe, 0, 0, NULLCP, a);
 
 	return pe;
 }
@@ -514,26 +502,26 @@ PE	pe;
 	return a;
 }
 
-int 
+int
 QoS_syntax (void) {
-	 add_attribute_syntax ("DSAQualitySyntax",
-								 (IFP) dsaQoS_enc,
-								 (IFP) dsaQoS_dec,
-								 (IFP) str2dsaQoS,
-								 dsaQoS_print,
-								 (IFP) dsaQoS_cpy,
-								 dsaQoS_cmp,
-								 dsaQoS_free,
-								 NULLCP, NULLIFP, TRUE);
-	 add_attribute_syntax ("DataQualitySyntax",
-								 (IFP) ditQoS_enc,
-								 (IFP) ditQoS_dec,
-								 (IFP) str2ditQoS,
-								 ditQoS_print,
-								 (IFP) ditQoS_cpy,
-								 ditQoS_cmp,
-								 ditQoS_free,
-								 NULLCP, NULLIFP, TRUE);
+	add_attribute_syntax ("DSAQualitySyntax",
+						  (IFP) dsaQoS_enc,
+						  (IFP) dsaQoS_dec,
+						  (IFP) str2dsaQoS,
+						  dsaQoS_print,
+						  (IFP) dsaQoS_cpy,
+						  dsaQoS_cmp,
+						  dsaQoS_free,
+						  NULLCP, NULLIFP, TRUE);
+	add_attribute_syntax ("DataQualitySyntax",
+						  (IFP) ditQoS_enc,
+						  (IFP) ditQoS_dec,
+						  (IFP) str2ditQoS,
+						  ditQoS_print,
+						  (IFP) ditQoS_cpy,
+						  ditQoS_cmp,
+						  ditQoS_free,
+						  NULLCP, NULLIFP, TRUE);
 }
 
 

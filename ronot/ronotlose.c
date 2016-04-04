@@ -40,10 +40,9 @@ static int  _ronotlose ();
 /*  */
 
 #ifndef	lint
-int	ronotlose (struct RoNOTindication*rni, ...)
-{
+int	ronotlose (struct RoNOTindication*rni, ...) {
 	int	    reason,
-	result;
+			result;
 	va_list ap;
 
 	va_start (ap, rni);
@@ -59,9 +58,8 @@ int	ronotlose (struct RoNOTindication*rni, ...)
 #else
 /* VARARGS4 */
 
-int 
-ronotlose (struct RoNOTindication *rni, int reason, char *what, char *fmt)
-{
+int
+ronotlose (struct RoNOTindication *rni, int reason, char *what, char *fmt) {
 	return ronotlose (rni, reason, what, fmt);
 }
 #endif
@@ -69,13 +67,12 @@ ronotlose (struct RoNOTindication *rni, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _ronotlose (  /* what, fmt, args ... */
-    struct RoNOTindication *rni,
-    int reason,
-    va_list ap
-)
-{
+	struct RoNOTindication *rni,
+	int reason,
+	va_list ap
+) {
 	char  *bp;
 	char  *what;
 	char  *fmt;
@@ -97,9 +94,8 @@ _ronotlose (  /* what, fmt, args ... */
 
 /*    ACSAP interface */
 
-int 
-acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *aca)
-{
+int
+acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *aca) {
 
 	char	* cp;
 

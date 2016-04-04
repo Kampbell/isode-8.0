@@ -36,9 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/checkacl.c,v 9.0 1992
 extern int 	selector_rank[];
 extern LLog	*log_dsap;
 
-static 
-common_prefix_len (char *a, char *b)
-{
+static
+common_prefix_len (char *a, char *b) {
 	int	i;
 
 	for ( i = 0; *a && *a++ == *b++; i++ )
@@ -54,9 +53,8 @@ common_prefix_len (char *a, char *b)
  * This information is used later when checking search acls.
  */
 
-int 
-ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr)
-{
+int
+ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 	Ftypelist	new, tmp;
 	int		i, plen;
 
@@ -141,9 +139,8 @@ ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr)
 	return;
 }
 
-int 
-ftype_free (Ftypelist ft)
-{
+int
+ftype_free (Ftypelist ft) {
 	Ftypelist	next = ft;
 
 	for ( ; next != NULLFTL; ft = next ) {
@@ -154,17 +151,15 @@ ftype_free (Ftypelist ft)
 	}
 }
 
-int 
-rc_free (struct result_count *rc)
-{
+int
+rc_free (struct result_count *rc) {
 	if ( rc->rc_types != NULLTYPEDATA )
 		free( (char *) rc->rc_types );
 	free( (char *) rc );
 }
 
-static 
-oid_in_seq (AttributeType at, struct oid_seq *seq)
-{
+static
+oid_in_seq (AttributeType at, struct oid_seq *seq) {
 	for ( ; seq != NULLOIDSEQ; seq = seq->oid_next ) {
 		if ( oid_cmp( at->oa_ot.ot_oid, seq->oid_oid ) == 0 ) {
 			return( 1 );
@@ -177,9 +172,8 @@ oid_in_seq (AttributeType at, struct oid_seq *seq)
 	return( 0 );
 }
 
-static 
-sacl_match (DN binddn, DN selfdn, Saclinfo s)
-{
+static
+sacl_match (DN binddn, DN selfdn, Saclinfo s) {
 	switch ( s->sac_selector ) {
 	case ACL_ENTRY:
 		if ( selfdn != NULLDN && dn_cmp( binddn, selfdn ) == OK )
@@ -208,9 +202,8 @@ sacl_match (DN binddn, DN selfdn, Saclinfo s)
 	return( 0 );
 }
 
-static 
-check_base_sacl (DN binddn, DN selfdn, Entry e, struct ds_search_task *local, int authtype)
-{
+static
+check_base_sacl (DN binddn, DN selfdn, Entry e, struct ds_search_task *local, int authtype) {
 	AV_Sequence		avs;
 	Ftypelist		ft;
 	Saclinfo		s, save;
@@ -287,8 +280,7 @@ check_base_sacl (DN binddn, DN selfdn, Entry e, struct ds_search_task *local, in
 }
 
 static struct result_count *
-make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local)
-{
+make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local) {
 	struct result_count	*rc;
 	AV_Sequence		avs;
 	Ftypelist		ft;
@@ -296,7 +288,7 @@ make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local)
 	Typedata		td;
 
 	rc = (struct result_count *) smalloc( sizeof(struct result_count) );
-	 bzero( (char *) rc, sizeof(struct result_count) );
+	bzero( (char *) rc, sizeof(struct result_count) );
 	rc->rc_base = e;
 
 	save = NULLSACL;
@@ -383,15 +375,13 @@ static int srch2sacl_scope[] = {
 	SACL_SUBTREE		/* SRA_WHOLESUBTREE	*/
 };
 
-static 
-entry_rc_cmp (Entry e, struct result_count *rc)
-{
+static
+entry_rc_cmp (Entry e, struct result_count *rc) {
 	return( e < rc->rc_base ? -1 : e > rc->rc_base ? 1 : 0 );
 }
 
-static 
-rc_cmp (struct result_count *a, struct result_count *b)
-{
+static
+rc_cmp (struct result_count *a, struct result_count *b) {
 	return( a->rc_base < b->rc_base ? -1
 			: a->rc_base > b->rc_base ? 1 : 0 );
 }
@@ -406,9 +396,8 @@ rc_cmp (struct result_count *a, struct result_count *b)
  * search.
  */
 
-int 
-check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_search_task *local, int *saclerror, int authtype)
-{
+int
+check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_search_task *local, int *saclerror, int authtype) {
 	struct result_count	*rc;
 	Typedata		td;
 	Ftypelist		ft;
@@ -426,8 +415,8 @@ check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_searc
 		/* no running total - make one, possibly a dummy */
 		rc = make_rc( binddn, selfdn, ancestor, scope, local );
 
-		 avl_insert( (Avlnode **)&local->st_sacls, (caddr_t) rc,
-						   rc_cmp, avl_dup_error );
+		avl_insert( (Avlnode **)&local->st_sacls, (caddr_t) rc,
+					rc_cmp, avl_dup_error );
 	}
 
 	rc->rc_count++;
@@ -477,9 +466,8 @@ check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_searc
  * up to and including the base node of the search.
  */
 
-int 
-check_ancestor_sacls (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local, int authtype, int *saclerror)
-{
+int
+check_ancestor_sacls (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local, int authtype, int *saclerror) {
 	Entry			stop, ancestor;
 	extern Entry		database_root;
 
@@ -524,15 +512,14 @@ check_ancestor_sacls (DN binddn, DN selfdn, Entry e, int scope, struct ds_search
 	return( OK );
 }
 
-int 
+int
 check_lacl (
-    DN binddn,		/* the dn requesting access 		  */
-    DN selfdn,		/* the dn of the entry containing the acl */
-    AV_Sequence avs,		/* the acl protecting the entry 	  */
-    int scope,		/* scope of acl's we want		  */
-    int *sizelimit	/* size limit on acl we found		  */
-)
-{
+	DN binddn,		/* the dn requesting access 		  */
+	DN selfdn,		/* the dn of the entry containing the acl */
+	AV_Sequence avs,		/* the acl protecting the entry 	  */
+	int scope,		/* scope of acl's we want		  */
+	int *sizelimit	/* size limit on acl we found		  */
+) {
 	Listacl		save, tmp, l;
 	AV_Sequence	av;
 

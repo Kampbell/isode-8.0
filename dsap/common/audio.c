@@ -77,7 +77,7 @@ int format;
 
 	if (format != READOUT) {
 		for (p = qb -> qb_forw; p != qb; p = p -> qb_forw)
-			 ps_write (ps,(PElementData)p->qb_data,p->qb_len);
+			ps_write (ps,(PElementData)p->qb_data,p->qb_len);
 		return;
 	}
 
@@ -94,44 +94,44 @@ int format;
 	switch (childpid = fork()) {
 
 	case -1:
-		 close (pd[1]);
-		 close (pd[0]);
-		 signal (SIGPIPE, pstat);
+		close (pd[1]);
+		close (pd[0]);
+		signal (SIGPIPE, pstat);
 		ps_print (ps,"ERROR: could not fork");
 		return;
 
 	case 0:
-		 signal (SIGPIPE, pstat);
+		signal (SIGPIPE, pstat);
 
 		if (dup2(pd[0], 0) == -1)
 			_exit (-1);
-		 close (pd[0]);
-		 close (pd[1]);
+		close (pd[0]);
+		close (pd[1]);
 
-		 sprintf (execvector,"%splay",BINPATH);
+		sprintf (execvector,"%splay",BINPATH);
 
-		 execl (execvector,execvector,NULLCP);
+		execl (execvector,execvector,NULLCP);
 
 		while (read (0, buffer, sizeof buffer) > 0)
 			continue;
-		 printf ("ERROR: can't execute '%s'",execvector);
+		printf ("ERROR: can't execute '%s'",execvector);
 
-		 fflush (stdout);
+		fflush (stdout);
 		/* safety catch */
 		_exit (-1);
 	/* NOTREACHED */
 
 	default:
-		 close (pd[0]);
+		close (pd[0]);
 		for (p = qb -> qb_forw; p != qb; p = p -> qb_forw) {
 			if (write (pd[1],p->qb_data,p->qb_len) != p->qb_len) {
-				 close (pd[1]);
-				 signal (SIGPIPE, pstat);
+				close (pd[1]);
+				signal (SIGPIPE, pstat);
 				ps_print (ps,"ERROR: write error");
 				return;
 			}
 		}
-		 close (pd[1]);
+		close (pd[1]);
 		ps_printf (ps,"%splay invoked",BINPATH);
 
 #ifdef SVR4
@@ -143,7 +143,7 @@ int format;
 
 			continue;
 
-		 signal (SIGPIPE, pstat);
+		signal (SIGPIPE, pstat);
 
 		return;
 	}
@@ -151,21 +151,20 @@ int format;
 }
 
 static struct qbuf *
-audio_parse (char *str)
-{
+audio_parse (char *str) {
 	if (file_attr_length)
 		return str2qb (str, file_attr_length, 1);
 	else
 		return str2qb (str, strlen (str), 1);
 }
 
-int 
+int
 audio_syntax (void) {
-	 add_attribute_syntax ("audio",
-								 (IFP)r_octenc,		(IFP) r_octsdec,
-								 (IFP)audio_parse,	audio_print,
-								 (IFP)qb_cpy,		qb_cmp,
-								 qb_free,		NULLCP,
-								 NULLIFP,		TRUE);
+	add_attribute_syntax ("audio",
+						  (IFP)r_octenc,		(IFP) r_octsdec,
+						  (IFP)audio_parse,	audio_print,
+						  (IFP)qb_cpy,		qb_cmp,
+						  qb_free,		NULLCP,
+						  NULLIFP,		TRUE);
 
 }

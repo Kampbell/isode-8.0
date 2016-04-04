@@ -80,8 +80,7 @@ int * x,format;
 #define enumprint intprint
 
 static int *
-intdup (int *x)
-{
+intdup (int *x) {
 	int *y;
 
 	y = (int *) smalloc (sizeof (int));
@@ -91,23 +90,20 @@ intdup (int *x)
 }
 #define enumdup intdup
 
-static 
-intcmp (int *x, int *y)
-{
+static
+intcmp (int *x, int *y) {
 	return ( *x == *y ? 0 : (*x > *y ? 1 : -1) );
 }
 #define enumcmp intcmp
 
-static 
-intfree (int *x)
-{
+static
+intfree (int *x) {
 	free ((char *) x);
 }
 #define enumfree intfree
 
 static int *
-intparse (char *str)
-{
+intparse (char *str) {
 	int atoi();
 	int * x;
 
@@ -118,19 +114,19 @@ intparse (char *str)
 }
 #define enumparse intparse
 
-int 
+int
 integer_syntax (void) {
-	 add_attribute_syntax ("integer",
-								 (IFP) intenc,	(IFP) intdec,
-								 (IFP) intparse,	intprint,
-								 (IFP) intdup,	intcmp,
-								 intfree,	NULLCP,
-								 NULLIFP,	FALSE);
+	add_attribute_syntax ("integer",
+						  (IFP) intenc,	(IFP) intdec,
+						  (IFP) intparse,	intprint,
+						  (IFP) intdup,	intcmp,
+						  intfree,	NULLCP,
+						  NULLIFP,	FALSE);
 
-	 add_attribute_syntax("enumerated",
-								(IFP) enumenc, 	(IFP)enumdec,
-								(IFP) enumparse,	enumprint,
-								(IFP) enumdup,	enumcmp,
-								enumfree,		NULLCP,
-								NULLIFP,		FALSE);
+	add_attribute_syntax("enumerated",
+						 (IFP) enumenc, 	(IFP)enumdec,
+						 (IFP) enumparse,	enumprint,
+						 (IFP) enumdup,	enumcmp,
+						 enumfree,		NULLCP,
+						 NULLIFP,		FALSE);
 }

@@ -40,9 +40,8 @@ struct PSAPaddr   dsa_bound;
 
 static char * qlocalhost = "DAP";	/* DAP bind speed up */
 
-int 
-ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result)
-{
+int
+ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result) {
 	/* reverse compatability for bind */
 	arg->dba_auth_type = DBA_AUTH_SIMPLE;
 	arg->dba_time1 = NULLCP;
@@ -51,9 +50,8 @@ ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_ar
 	return (secure_ds_bind (arg,error,result));
 }
 
-int 
-secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result)
-{
+int
+secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result) {
 	struct PSAPaddr             *addr;
 
 	if (!dsa_address || ((addr = str2paddr (dsa_address)) == NULLPA)) {
@@ -62,11 +60,11 @@ secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_
 		error->dbe_value = DSE_SV_INVALIDREFERENCE;
 		if (dsa_address) {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("invalid name %s",dsa_address));
-			 sprintf (error->dbe_data,"invalid name %s",dsa_address);
+			sprintf (error->dbe_data,"invalid name %s",dsa_address);
 			error->dbe_cc = strlen (error->dbe_data);
 		} else {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("NULL address"));
-			 sprintf (error->dbe_data,"NULL address");
+			sprintf (error->dbe_data,"NULL address");
 			error->dbe_cc = strlen (error->dbe_data);
 		}
 		return (DS_ERROR_LOCAL);
@@ -75,9 +73,8 @@ secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_
 	return(dap_bind(&(dsap_ad), arg, error, result, addr));
 }
 
-int 
-dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result, struct PSAPaddr *addr)
-{
+int
+dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result, struct PSAPaddr *addr) {
 	int				  ret;
 	struct DAPconnect         dc_s;
 	struct DAPconnect         *dc = &dc_s;
@@ -165,7 +162,7 @@ int			  async;
 		dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 		dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 		dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-		 sprintf (dc->dc_un.dc_bind_err.dbe_data,"acse pci version 1 OID not found");
+		sprintf (dc->dc_un.dc_bind_err.dbe_data,"acse pci version 1 OID not found");
 		dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 
 		return (NOTOK);
@@ -193,7 +190,7 @@ int			  async;
 		dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 		dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 		dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-		 sprintf (dc->dc_un.dc_bind_err.dbe_data,"encoding bind args failed");
+		sprintf (dc->dc_un.dc_bind_err.dbe_data,"encoding bind args failed");
 		dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 
 		return (daplose (di, DA_ARG_ENC, NULLCP, "DAP BIND REQUEST"));
@@ -235,9 +232,8 @@ int			  async;
 	return (result);
 }
 
-int 
-DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, struct DAPconnect *dc, struct DAPindication *di, int async)
-{
+int
+DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, struct DAPconnect *dc, struct DAPindication *di, int async) {
 	struct SSAPref		  sf_s;
 	struct SSAPref		* sf = &(sf_s);
 	struct QOStype		  qos;
@@ -247,10 +243,10 @@ DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, st
 
 	if ((sf = addr2ref (qlocalhost)) == NULL) {
 		sf = &sf_s;
-		 bzero ((char *) sf, sizeof *sf);
+		bzero ((char *) sf, sizeof *sf);
 	}
 
-	 bzero ((char *) &qos, sizeof qos);
+	bzero ((char *) &qos, sizeof qos);
 	qos.qos_sversion = NOTOK;	/* Negotiate highest session */
 	qos.qos_maxtime = NOTOK;	/* No time out specified */
 
@@ -259,9 +255,8 @@ DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, st
 							   bindarg, &qos, dc, di, async));
 }
 
-int 
-DapAsynBindRetry (int sd, int do_next_nsap, struct DAPconnect *dc, struct DAPindication *di)
-{
+int
+DapAsynBindRetry (int sd, int do_next_nsap, struct DAPconnect *dc, struct DAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -282,9 +277,8 @@ DapAsynBindRetry (int sd, int do_next_nsap, struct DAPconnect *dc, struct DAPind
 	return (result);
 }
 
-int 
-DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOTindication *rni)
-{
+int
+DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOTindication *rni) {
 	struct ds_bind_arg  * bind_res;
 	struct ds_bind_error        * bind_err;
 
@@ -300,7 +294,7 @@ DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOTindi
 				dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 				dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 				dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-				 sprintf (dc->dc_un.dc_bind_err.dbe_data,"decoding bind result failed");
+				sprintf (dc->dc_un.dc_bind_err.dbe_data,"decoding bind result failed");
 				dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 				dc->dc_result = DC_REJECT;
 				return (NOTOK);
@@ -313,7 +307,7 @@ DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOTindi
 			dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 			dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 			dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-			 sprintf (dc->dc_un.dc_bind_err.dbe_data,"bind result missing");
+			sprintf (dc->dc_un.dc_bind_err.dbe_data,"bind result missing");
 			dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 			dc->dc_result = DC_REJECT;
 			return (NOTOK);
@@ -333,7 +327,7 @@ DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOTindi
 				dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 				dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 				dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-				 sprintf (dc->dc_un.dc_bind_err.dbe_data,"decoding bind error failed");
+				sprintf (dc->dc_un.dc_bind_err.dbe_data,"decoding bind error failed");
 				dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 				LLOG(log_dsap, LLOG_EXCEPTIONS, ("Unable to decode DirectoryBindError"));
 				dc->dc_result = DC_REJECT;
@@ -346,7 +340,7 @@ DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOTindi
 			dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 			dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 			dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
-			 sprintf (dc->dc_un.dc_bind_err.dbe_data,"no bind error");
+			sprintf (dc->dc_un.dc_bind_err.dbe_data,"no bind error");
 			dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("No DirectoryBindError"));
 			dc->dc_result = DC_REJECT;

@@ -38,14 +38,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2str.c,v 9.0 1992/
    does NOT reflect this. */
 
 char *
-prim2str (PE pe, int *len)
-{
+prim2str (PE pe, int *len) {
 	int    i,
-			 k;
+		   k;
 	int     j;
 	char  *dp,
-			 *ep,
-			 *fp;
+		  *ep,
+		  *fp;
 	PElementClass class;
 	PElementID id;
 	PE	    p;

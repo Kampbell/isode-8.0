@@ -44,9 +44,8 @@ struct {
 } help_info[MAXARG];
 int num_help = 0;
 
-int 
-add_dish_help (char *command, char *args, int serv, int other, char *use)
-{
+int
+add_dish_help (char *command, char *args, int serv, int other, char *use) {
 	help_info[num_help].command = command;
 	help_info[num_help].args = args;
 	help_info[num_help].serv = serv;
@@ -55,7 +54,7 @@ add_dish_help (char *command, char *args, int serv, int other, char *use)
 	num_help++;
 }
 
-int 
+int
 dish_help_init (void) {
 	add_dish_help (
 		"dish",		"[-pipe] [-noconnect] [-user <name>]\n[-password [<password>]] [-call <dsa name>] [-fast]\n[-simple] [-protected] [-strong] [-noauthentication]", FALSE, FALSE,
@@ -107,9 +106,8 @@ dish_help_init (void) {
 		"control the operation of the DSA (managers only)," );
 }
 
-int 
-Usage (char *rtn)
-{
+int
+Usage (char *rtn) {
 	extern DN       dn,
 		   savename;
 	int             i;
@@ -134,9 +132,8 @@ Usage (char *rtn)
 	ps_print (OPT, "Usage...\n");
 }
 
-int 
-help_arg (char *rtn)
-{
+int
+help_arg (char *rtn) {
 	int             i;
 
 	for (i = 0; help_info[i].command != 0; i++)
@@ -163,7 +160,7 @@ char x;
 	ps_print (aps,"\n[-[no]types <attribute-type> *] [-[no]all]\n[-[no]value] [-[no]show] \n[-[no]key] [-edb]\n[-proc <syntax> <process>]");
 }
 
-int 
+int
 print_service (void) {
 	ps_print (RPS,"[-sequence <name>] [-nosequence]\n");
 	ps_print (RPS,"[-[no]preferchain] [-[no]chaining]\n");
@@ -176,7 +173,7 @@ print_service (void) {
 
 }
 
-int 
+int
 call_help (void) {
 	int             i;
 

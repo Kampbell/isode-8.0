@@ -39,8 +39,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/asprintf.c,v 9.0 199
 
 /*  */
 
-void	asprintf (char*bp, char*what, char*fmt, ...)		/* fmt, args, ... */
-{
+void	asprintf (char*bp, char*what, char*fmt, ...) {	/* fmt, args, ... */
 	va_list ap;
 	va_start(ap, fmt);
 	_asprintf (bp, what, fmt, ap);
@@ -52,8 +51,7 @@ unsigned char isode_x25_err[2];
 char isode_x25_errflag = 0;
 #endif
 
-void	_asprintf (char*bp, char*what, char* fmt, va_list ap)	/* fmt, args, ... */
-{
+void	_asprintf (char*bp, char*what, char* fmt, va_list ap) {	/* fmt, args, ... */
 	int    eindex;
 	eindex = errno;
 
@@ -79,7 +77,7 @@ void	_asprintf (char*bp, char*what, char* fmt, va_list ap)	/* fmt, args, ... */
 		_doprnt (fmt, ap, &iob);
 		putc (NULL, &iob);
 #else
-		 vsprintf (bp, fmt, ap);
+		vsprintf (bp, fmt, ap);
 #endif
 		bp += strlen (bp);
 
@@ -87,15 +85,15 @@ void	_asprintf (char*bp, char*what, char* fmt, va_list ap)	/* fmt, args, ... */
 
 	if (what) {
 		if (*what) {
-			 sprintf (bp, " %s: ", what);
+			sprintf (bp, " %s: ", what);
 			bp += strlen (bp);
 		}
-		 strcpy (bp, sys_errname (eindex));
+		strcpy (bp, sys_errname (eindex));
 		bp += strlen (bp);
 
 #ifdef X25
 		if (isode_x25_errflag) {
-			 sprintf (bp, " (%02x %02x)",isode_x25_err[0],isode_x25_err[1]);
+			sprintf (bp, " (%02x %02x)",isode_x25_err[0],isode_x25_err[1]);
 			bp += strlen (bp);
 		}
 #endif

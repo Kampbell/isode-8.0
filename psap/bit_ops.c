@@ -46,9 +46,8 @@ static PE	ffb_pe ();
 
 /*  */
 
-int 
-bit_on (PE pe, int i)
-{
+int
+bit_on (PE pe, int i) {
 	int	    mask;
 	PElementData bp;
 
@@ -62,9 +61,8 @@ bit_on (PE pe, int i)
 
 /*  */
 
-int 
-bit_off (PE pe, int i)
-{
+int
+bit_off (PE pe, int i) {
 	int	    mask;
 	PElementData bp;
 
@@ -78,9 +76,8 @@ bit_off (PE pe, int i)
 
 /*  */
 
-int 
-bit_test (PE pe, int i)
-{
+int
+bit_test (PE pe, int i) {
 	int	    mask;
 	PElementData bp;
 
@@ -92,16 +89,15 @@ bit_test (PE pe, int i)
 
 /*  */
 
-static PElementData 
-ffb (PE pe, int n, int *mask, int xtnd)
-{
+static PElementData
+ffb (PE pe, int n, int *mask, int xtnd) {
 	int    len,
-			 i;
+		   i;
 	int     j;
 	PElementData bp;
 	PE    *p,
-			 q,
-			 r;
+	q,
+	r;
 
 	i = (j = n) / 8 + 1;
 	if ((bp = ffb_aux (pe, &j, mask)) != NULLPED || !xtnd)
@@ -153,11 +149,10 @@ ffb (PE pe, int n, int *mask, int xtnd)
 
 /*  */
 
-static PElementData 
-ffb_aux (PE pe, int *n, int *mask)
-{
+static PElementData
+ffb_aux (PE pe, int *n, int *mask) {
 	int    i,
-			 nbits;
+		   nbits;
 	PElementData bp;
 	PE	    p;
 
@@ -182,11 +177,10 @@ ffb_aux (PE pe, int *n, int *mask)
 
 /*  */
 
-static PE 
-ffb_pe (PE pe)
-{
+static PE
+ffb_pe (PE pe) {
 	PE	    p,
-			 q;
+	 q;
 
 	for (p = pe -> pe_cons, q = NULLPE; p; q = p, p = p -> pe_next)
 		continue;

@@ -112,7 +112,7 @@ char full;
 			if (isalpha(*nptr))
 				*mptr++ = *nptr, i++;
 
-		 strcpy (mptr,"XXXXXX");
+		strcpy (mptr,"XXXXXX");
 		if (path != NULLCP)
 			fs->fs_name = mktemp(strdup (_isodefile(path,nbuf)));
 		else
@@ -183,20 +183,20 @@ int format;
 
 		um = umask (0177);
 		if ((fptr = fopen (fs->fs_name,"w")) != NULL) {
-			 umask (um);
+			umask (um);
 			if ((fps = ps_alloc (std_open)) == NULLPS) {
-				 fclose (fptr);
+				fclose (fptr);
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("Could not alloc PS file '%s'",fs->fs_name));
 				return;
 			}
 			if ((std_setup (fps,fptr)) == NOTOK) {
-				 fclose (fptr);
+				fclose (fptr);
 				ps_free (fps);
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("Could not open PS file '%s'",fs->fs_name));
 				return;
 			}
 		} else {
-			 umask (um);
+			umask (um);
 			LLOG ( log_dsap,LLOG_EXCEPTIONS,("Could not open attribute file '%s'",fs->fs_name));
 			return;
 		}
@@ -205,7 +205,7 @@ int format;
 			AttrV_free (fs->fs_attr);
 			fs->fs_attr = NULLAttrV;
 		}
-		 fclose (fptr);
+		fclose (fptr);
 		ps_free (fps);
 		fs->fs_mode |= FS_CREATE;
 
@@ -239,16 +239,16 @@ char *where;
 				if (fs->fs_name != NULLCP || fs->fs_attr == NULLAttrV)
 					continue ;
 
-				 sprintf (buffer,"%s%D_%s",where,loopcount++,
-								as -> attr_type -> oa_ot.ot_name);
+				sprintf (buffer,"%s%D_%s",where,loopcount++,
+						 as -> attr_type -> oa_ot.ot_name);
 
 				fs->fs_name = strdup(buffer);
 
 				um = umask (0177);
 				if ((fptr = fopen (fs->fs_name,"w")) != NULL) {
-					 umask (um);
+					umask (um);
 					if ((fps = ps_alloc (std_open)) == NULLPS) {
-						 fclose (fptr);
+						fclose (fptr);
 						LLOG (log_dsap,LLOG_EXCEPTIONS,
 							  ("Could not alloc PS file (tmp) '%s'",
 							   fs->fs_name));
@@ -257,7 +257,7 @@ char *where;
 						return;
 					}
 					if ((std_setup (fps,fptr)) == NOTOK) {
-						 fclose (fptr);
+						fclose (fptr);
 						ps_free (fps);
 						LLOG (log_dsap,LLOG_EXCEPTIONS,
 							  ("Could not open PS file (tmp2) '%s'",
@@ -267,7 +267,7 @@ char *where;
 						return;
 					}
 				} else {
-					 umask (um);
+					umask (um);
 					LLOG ( log_dsap,LLOG_EXCEPTIONS,
 						   ("Could not open attribute file (tmp) '%s'",
 							fs->fs_name));
@@ -282,7 +282,7 @@ char *where;
 				AttrV_free (fs->fs_attr);
 				fs->fs_attr = NULLAttrV;
 
-				 fclose (fptr);
+				fclose (fptr);
 				ps_free (fps);
 
 				DLOG (log_dsap,LLOG_DEBUG,

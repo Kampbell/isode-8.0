@@ -53,8 +53,7 @@ char	*uname, *group, *name, *lname;
 }
 
 struct type_Idist_Options *
-makeopts (int opts)
-{
+makeopts (int opts) {
 	struct type_Idist_Options *rdo;
 
 	rdo = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_BITS);
@@ -75,8 +74,7 @@ makeopts (int opts)
 }
 
 struct type_Idist_FileType *
-makeftype (int type)
-{
+makeftype (int type) {
 	struct type_Idist_FileType *ft;
 
 	if ((ft = (struct type_Idist_FileType *) malloc (sizeof *ft)) == NULL)
@@ -102,8 +100,7 @@ makeftype (int type)
 }
 
 struct type_Idist_FileTime *
-makefmtime (long mtime)
-{
+makefmtime (long mtime) {
 	struct type_Idist_FileTime *fm;
 
 	if ((fm = (struct type_Idist_FileTime *) malloc (sizeof *fm)) == NULL)
@@ -113,9 +110,8 @@ makefmtime (long mtime)
 	return fm;
 }
 
-long 
-convtime (struct type_Idist_FileTime *fm)
-{
+long
+convtime (struct type_Idist_FileTime *fm) {
 	return fm -> parm - 2208988800L;
 }
 
@@ -125,13 +121,12 @@ convtime (struct type_Idist_FileTime *fm)
  * part corresponding to `file'.
  */
 char *
-exptilde (char buf[], char *file)
-{
+exptilde (char buf[], char *file) {
 	char *s1, *s2, *s3;
 	extern char homedir[];
 
 	if (*file != '~') {
-		 strcpy(buf, file);
+		strcpy(buf, file);
 		return(buf);
 	}
 	if (*++file == '\0') {

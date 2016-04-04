@@ -109,7 +109,7 @@ char	Password[LINESIZE] ;
 char	Local[LINESIZE] ;
 char	filterstring[LINESIZE] ;
 
-int 
+int
 main  {
 	struct  passwd  *pw_entry ;
 	struct  passwd  *getpwuid() ;
@@ -134,11 +134,11 @@ main  {
 
 	vecptr = (char **) malloc(100) ;
 	vecptr[0] = malloc (LINESIZE) ;
-	 strcpy(vecptr[0], "showentry") ;
-	 strcpy(pass1, "x") ;
-	 strcpy(pass2, "y") ;
+	strcpy(vecptr[0], "showentry") ;
+	strcpy(pass1, "x") ;
+	strcpy(pass2, "y") ;
 	tmpdraft = malloc (LINESIZE) ;
-	 strcpy(tmpdraft, "/tmp/dish-") ;
+	strcpy(tmpdraft, "/tmp/dish-") ;
 
 	if ((opt = ps_alloc (std_open)) == NULLPS)
 		fatal (-62, "ps_alloc failed");
@@ -148,7 +148,7 @@ main  {
 		fatal (-64, "ps_alloc 2 failed");
 	if (std_setup (rps, stdout) == NOTOK)
 		fatal (-65, "std_setup 2 failed");
-	 strcpy(filterstring, "userid=") ;
+	strcpy(filterstring, "userid=") ;
 
 	/* Sort out files, userids etc. */
 	uid=getuid() ;
@@ -156,31 +156,31 @@ main  {
 		ps_printf(rps, "Who are you? (no name for your uid number)\n") ;
 		exit(1) ;
 	}
-	 strcpy(user_name, pw_entry->pw_name) ;
-	 strcat(tmpdraft, user_name) ;
+	strcpy(user_name, pw_entry->pw_name) ;
+	strcat(tmpdraft, user_name) ;
 
 	if (getenv("HOME") == 0) {
 		ps_printf(rps, "No home directory?!!") ;
-		 strcpy(home_dir, pw_entry->pw_dir) ;
+		strcpy(home_dir, pw_entry->pw_dir) ;
 	} else {
-		 strcpy(home_dir, getenv("HOME")) ;
+		strcpy(home_dir, getenv("HOME")) ;
 	}
 
-	 strcpy(quipurc_file, home_dir) ;
-	 strcat(quipurc_file, "/.quipurc") ;
+	strcpy(quipurc_file, home_dir) ;
+	strcat(quipurc_file, "/.quipurc") ;
 
-	 strcpy(tailor_file, isodefile ("dishinit", 1));
+	strcpy(tailor_file, isodefile ("dishinit", 1));
 
 	Manager[0] = 0;
 	Password[0] = 0;
 	Local[0] = 0;
 
-	 stat(tailor_file, &buf) ;
+	stat(tailor_file, &buf) ;
 #ifndef HPUX
-	 seteuid(buf.st_uid) ;	/* set effective to enable */
+	seteuid(buf.st_uid) ;	/* set effective to enable */
 	/* us to read protected file */
 #else
-	 setresuid(-1, buf.st_uid, -1) ; /* set effective to enable */
+	setresuid(-1, buf.st_uid, -1) ; /* set effective to enable */
 	/* us to read protected file */
 #endif
 
@@ -207,17 +207,17 @@ main  {
 		part2 = TidyString (part2);
 
 		if (lexequ(part1, "manager") == 0) {
-			 strcpy(Manager, part2) ;
+			strcpy(Manager, part2) ;
 		} else if (lexequ(part1, "password") == 0) {
-			 strcpy(Password, part2) ;
+			strcpy(Password, part2) ;
 		} else if (lexequ(part1, "local") == 0) {
-			 strcpy(Local, part2) ;
+			strcpy(Local, part2) ;
 		} else {
 			ps_printf(rps, "Error in tailor. What's a %s?\n", part1) ;
 		}
 
 	}
-	 setuid(uid) ;			/* Restore Userid to original user. */
+	setuid(uid) ;			/* Restore Userid to original user. */
 
 	/* create ~/.quipurc file. NB this does eradicate anything in there.
 	 * 			   (Theoretically nothing.)
@@ -241,7 +241,7 @@ main  {
 		ps_printf(rps, "Can't open ~/.quipurc. Aborting..\n") ;
 		exit(1) ;
 	}
-	 umask(um) ;
+	umask(um) ;
 
 	if ((fileps = ps_alloc(std_open)) == NULLPS) {
 		fatal (-66, "ps_alloc 2 failed");
@@ -255,7 +255,7 @@ main  {
 	quipu_syntaxes() ;		/* set up the needed function pointers */
 	dsap_init(&i, &vecptr) ;
 
-	 strcpy(bindarg.dba_passwd, Password) ;
+	strcpy(bindarg.dba_passwd, Password) ;
 	bindarg.dba_version = DBA_VERSION_V1988;
 	bindarg.dba_passwd_len = strlen(bindarg.dba_passwd) ;
 
@@ -303,7 +303,7 @@ main  {
 		exit(1) ;
 	}
 
-	 strcat(filterstring, user_name) ;
+	strcat(filterstring, user_name) ;
 
 	search_arg.sra_filter->flt_un.flt_un_item.fi_type = FILTERITEM_EQUALITY ;
 
@@ -400,8 +400,8 @@ main  {
 			while( strcmp(pass1, pass2)) {
 				ps_printf(opt, "You need a password...\n") ;
 				ps_printf(opt, "(do not use your UNIX system password)\n") ;
-				 strcpy(pass1, getpassword("Enter Password: ")) ;
-				 strcpy(pass2, getpassword("Re-enter password: ")) ;
+				strcpy(pass1, getpassword("Enter Password: ")) ;
+				strcpy(pass2, getpassword("Re-enter password: ")) ;
 				if (strcmp(pass1, pass2)) {
 					ps_printf(opt, "\nMismatch - Try again.\n") ;
 				}
@@ -413,12 +413,12 @@ main  {
 				ps_print(rps, "Can't open draft file... Abort.\n") ;
 				exit(1) ;
 			}
-			 umask(um) ;
+			umask(um) ;
 
-			 fprintf(fp_draft, "UserPassword = %s\n", pass1) ;
-			 fprintf(fp_draft, "acl = self # write # attributes # acl $ userPassword\n") ;
-			 fprintf(fp_draft, "acl = others # compare # attributes # acl $ userPassword\n\n") ;
-			 fclose(fp_draft) ;
+			fprintf(fp_draft, "UserPassword = %s\n", pass1) ;
+			fprintf(fp_draft, "acl = self # write # attributes # acl $ userPassword\n") ;
+			fprintf(fp_draft, "acl = others # compare # attributes # acl $ userPassword\n\n") ;
+			fclose(fp_draft) ;
 
 			if ((fp_draft = fopen (tmpdraft, "r")) == NULL) {
 				ps_printf (opt, "Can't open draft entry %s\n", tmpdraft);
@@ -432,7 +432,7 @@ main  {
 			entry_ptr->e_attributes = get_attributes (fp_draft);
 #endif
 
-			 fclose (fp_draft);
+			fclose (fp_draft);
 
 			mod_arg.mea_common = ca; /* struct copy */
 			mod_arg.mea_object = dn;
@@ -489,11 +489,11 @@ main  {
 	}
 
 	while(fgets(Read_in_Stuff, LINESIZE, fp_tailor) != 0) {
-		 fputs(Read_in_Stuff, fp_quipurc) ;
+		fputs(Read_in_Stuff, fp_quipurc) ;
 	}
 
-	 fclose(fp_quipurc) ;
-	 fclose(fp_tailor) ;
+	fclose(fp_quipurc) ;
+	fclose(fp_tailor) ;
 
 	/*	 fprintf(fp_quipurc, "dsap: local_dit \"%s\"\n", Local) ;
 		 fprintf(fp_quipurc, "notype: acl\n") ;
@@ -504,21 +504,21 @@ main  {
 		 fprintf(fp_quipurc, "cache_time: 30\n") ;
 		 fprintf(fp_quipurc, "connect_time: 2\n") ;
 	 */
-	 ds_unbind() ;
-	 unlink(tmpdraft) ;
+	ds_unbind() ;
+	unlink(tmpdraft) ;
 
 	return(0);
 }
 
-void 
+void
 advise  {
 }
 
-void 
+void
 set_sequence  {
 }
 
-void 
+void
 unset_sequence  {
 }
 
@@ -570,8 +570,7 @@ int y;
 }
 
 struct entrymod *
-ems_append (struct entrymod *a, struct entrymod *b)
-{
+ems_append (struct entrymod *a, struct entrymod *b) {
 	struct entrymod *ptr;
 
 	if ((ptr = a) == NULLMOD)
@@ -641,9 +640,8 @@ AttributeType ent_mod_at;
 	return (em);
 }
 
-int 
-ems_part_free (struct entrymod *emp)
-{
+int
+ems_part_free (struct entrymod *emp) {
 	if(emp == NULLMOD)
 		return;
 	ems_part_free(emp->em_next);

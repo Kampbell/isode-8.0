@@ -36,9 +36,8 @@ extern LLog * log_dsap;
 extern int local_master_size;
 extern int entry_cmp();
 
-int 
-do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype)
-{
+int
+do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype) {
 	Entry  entryptr, delent = NULLENTRY;
 	char * new_version ();
 	int retval;
@@ -137,7 +136,7 @@ do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN bin
 		turbo_index_delete(entryptr);
 #endif
 		/* removed node in core */
-		 avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr,entry_cmp);
+		avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr,entry_cmp);
 		entryptr->e_parent->e_allchildrenpresent = 2 ;
 
 		if (entryptr->e_parent->e_edbversion)
@@ -163,7 +162,7 @@ do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN bin
 				fatal(-33, "SPT: ds_modify: 1 creating new NLN out failed.\n") ;
 			}
 			if (write_edb(empty_entry, filename) != OK) {
-				 unlink (filename);
+				unlink (filename);
 				fatal(-33, "SPT: ds_modify: 2 writing new NLN out failed.\n") ;
 			}
 
@@ -180,7 +179,7 @@ do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN bin
 		/* delete index references to this node */
 		turbo_index_delete(entryptr);
 #endif
-		 avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr,entry_cmp);
+		avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr,entry_cmp);
 	}
 
 	if (entryptr->e_parent->e_edbversion)

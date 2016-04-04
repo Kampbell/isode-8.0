@@ -33,14 +33,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mapatt
 extern struct mapnamelist * mapnamelp;
 static struct mapnamelist * taillp;
 
-void 
-addToAttList (char *str)
-{
+void
+addToAttList (char *str) {
 	char * cp;
 
 	cp = index(str, ' ');
 	if (cp == NULLCP) {
-		 fprintf(stderr, "log an error message about parsing of attribute name mappings...\n");
+		fprintf(stderr, "log an error message about parsing of attribute name mappings...\n");
 		return;
 	}
 	*cp = '\0';
@@ -48,9 +47,8 @@ addToAttList (char *str)
 	addAttNode(str, cp);
 }
 
-void 
-addAttNode (char *tablename, char *nicename)
-{
+void
+addAttNode (char *tablename, char *nicename) {
 	struct mapnamelist * mnlp;
 
 	mnlp = mapname_alloc();
@@ -65,8 +63,7 @@ addAttNode (char *tablename, char *nicename)
 }
 
 char *
-mapAttName (char *tablename)
-{
+mapAttName (char *tablename) {
 	struct mapnamelist * mnlp;
 
 	for (mnlp = mapnamelp; mnlp != NULLMNLIST; mnlp = mnlp->next)

@@ -36,9 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaprovider.c,v 9.0 
 
 /*    PSAP interface */
 
-int 
-ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, struct PSAPabort *pa)
-{
+int
+ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, struct PSAPabort *pa) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -76,8 +75,8 @@ ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, stru
 		break;
 
 	default:
-		 sprintf (cp = buffer, " (%s at presentation)",
-						PErrString (pa -> pa_reason));
+		sprintf (cp = buffer, " (%s at presentation)",
+				 PErrString (pa -> pa_reason));
 	case PC_SESSION:
 		reason = ACS_PRESENTATION;
 		break;
@@ -109,12 +108,11 @@ ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, stru
 /* ARGSUSED */
 
 struct type_ACS_Association__information *
-info2apdu (struct assocblk *acb, struct AcSAPindication *aci, PE *data, int ndata)
-{
+info2apdu (struct assocblk *acb, struct AcSAPindication *aci, PE *data, int ndata) {
 	PE	    pe;
 	struct type_ACS_Association__information *info;
 	struct type_ACS_Association__information **pp,
-			*p;
+			   *p;
 	struct type_UNIV_EXTERNAL *q;
 
 	for (pp = &info; ndata-- > 0; pp = &p -> next) {
@@ -143,7 +141,7 @@ out:
 	;
 	free_ACS_Association__information (info);
 
-	 acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
+	acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 
 	return NULL;
 }
@@ -152,9 +150,8 @@ out:
 
 /* ARGSUSED */
 
-int 
-apdu2info (struct assocblk *acb, struct AcSAPindication *aci, struct type_ACS_Association__information *info, PE *data, int *ndata)
-{
+int
+apdu2info (struct assocblk *acb, struct AcSAPindication *aci, struct type_ACS_Association__information *info, PE *data, int *ndata) {
 	int    i;
 	PE	    pe;
 	struct type_UNIV_EXTERNAL *q;

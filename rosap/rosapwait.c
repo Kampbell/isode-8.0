@@ -36,9 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapwait.c,v 9.0 199
 
 /*    RO-WAIT.REQUEST (pseudo) */
 
-int 
-RoWaitRequest (int sd, int secs, struct RoSAPindication *roi)
-{
+int
+RoWaitRequest (int sd, int secs, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -51,7 +50,7 @@ RoWaitRequest (int sd, int secs, struct RoSAPindication *roi)
 
 	result =  (*acb -> acb_rowaitrequest) (acb, NULLIP, secs, roi);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

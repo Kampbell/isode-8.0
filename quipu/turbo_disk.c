@@ -80,11 +80,11 @@ int	backup;
 	if ( create ) {
 		if ( backup ) {
 			/* first make a backup of the old one */
-			 unlink(bakname);
+			unlink(bakname);
 			if ( link(turbo_gfname, bakname) != 0 )
 				LLOG (log_dsap, LLOG_EXCEPTIONS,
 					  ("turbo: could not make backup"));
-			 unlink(turbo_gfname);
+			unlink(turbo_gfname);
 		}
 
 		/* then open the new one */
@@ -164,9 +164,8 @@ GDBM_FILE	db;
  * via avl_apply, calling turbo_write_entry to write each entry
  */
 
-int 
-turbo_writeall (Entry e)
-{
+int
+turbo_writeall (Entry e) {
 	GDBM_FILE	db, turbo_open();
 	int		save_heap;
 	Entry		akid;
@@ -183,7 +182,7 @@ turbo_writeall (Entry e)
 
 	akid = (Entry) avl_getone(e->e_children);
 	if (turbo_write_header(db, e, akid ? akid->e_data : e->e_data) != OK) {
-		 gdbm_close(db);
+		gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
 		return(NOTOK);
@@ -191,13 +190,13 @@ turbo_writeall (Entry e)
 
 	if (avl_apply(e->e_children, turbo_write_entry, (caddr_t) db, NOTOK,
 				  AVL_PREORDER) != AVL_NOMORE) {
-		 gdbm_close(db);
+		gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
 		return(NOTOK);
 	}
 
-	 gdbm_close(db);
+	gdbm_close(db);
 	mem_heap = save_heap;
 	parse_file = NULLCP;
 	return(OK);
@@ -210,9 +209,8 @@ turbo_writeall (Entry e)
  * written with a call to turbo_write_entry.
  */
 
-int 
-turbo_write (Entry e)
-{
+int
+turbo_write (Entry e) {
 	GDBM_FILE	db, turbo_open();
 	int		save_heap;
 
@@ -227,20 +225,20 @@ turbo_write (Entry e)
 	}
 
 	if ( turbo_write_header(db, e->e_parent, e->e_data) != OK ) {
-		 gdbm_close(db);
+		gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
 		return(NOTOK);
 	}
 
 	if ( turbo_write_entry(e, db) != OK ) {
-		 gdbm_close(db);
+		gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
 		return(NOTOK);
 	}
 
-	 gdbm_close(db);
+	gdbm_close(db);
 	mem_heap = save_heap;
 	parse_file = NULLCP;
 	return(OK);
@@ -251,9 +249,8 @@ turbo_write (Entry e)
  * edb dbm file.
  */
 
-int 
-turbo_delete (Entry e)
-{
+int
+turbo_delete (Entry e) {
 	static char	deletekey[256];
 	int		rc;
 	GDBM_FILE	db, turbo_open();
@@ -272,7 +269,7 @@ turbo_delete (Entry e)
 	}
 
 	if ( turbo_write_header(db, e->e_parent, e->e_data) != OK ) {
-		 gdbm_close(db);
+		gdbm_close(db);
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
@@ -299,13 +296,13 @@ turbo_delete (Entry e)
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
 			  ("turbo: gdbm_delete %d gdbm_errno %d", rc, gdbm_errno));
 		ps_free(ps);
-		 gdbm_close(db);
+		gdbm_close(db);
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
 
 	ps_free(ps);
-	 gdbm_close(db);
+	gdbm_close(db);
 	mem_heap = save_heap;
 	return(OK);
 }
@@ -348,7 +345,7 @@ Entry		parent;
 	else
 		version = new_version();
 
-	 sprintf(hbuf, "%s\n%s\n", type, version);
+	sprintf(hbuf, "%s\n%s\n", type, version);
 
 	newheader.dptr = hbuf;
 	newheader.dsize = strlen(newheader.dptr) + 1;
@@ -366,6 +363,6 @@ Entry		parent;
 
 #else
 
-int 
+int
 turbo_delete_dummy (void) {}
 #endif

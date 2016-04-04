@@ -36,9 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapservice.c,v 9.0 
 
 /*    bind underlying service */
 
-int 
-RoSetService (int sd, IFP bfunc, struct RoSAPindication *roi)
-{
+int
+RoSetService (int sd, IFP bfunc, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -49,14 +48,14 @@ RoSetService (int sd, IFP bfunc, struct RoSAPindication *roi)
 	smask = sigioblock ();
 
 	if ((acb = findacblk (sd)) == NULL) {
-		 sigiomask (smask);
+		sigiomask (smask);
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "invalid association descriptor");
 	}
 
 	result = (*bfunc) (acb, roi);
 
-	 sigiomask (smask);
+	sigiomask (smask);
 
 	return result;
 }

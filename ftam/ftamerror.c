@@ -228,8 +228,7 @@ static int diag_rvy_cnt = sizeof diag_rvy / sizeof diag_rvy[0];
 /*  */
 
 char *
-FErrString (int code)
-{
+FErrString (int code) {
 	int    offset;
 	char    buffer[BUFSIZ];
 
@@ -271,6 +270,6 @@ FErrString (int code)
 		break;
 	}
 
-	 sprintf (buffer, "unknown error code %d", code);
+	sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }

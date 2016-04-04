@@ -56,7 +56,7 @@ static struct sockaddr_in *peers = NULL;
 int	tcpopen (pb, calling, called, pi, async)
 struct psapblk *pb;
 struct NSAPaddr *calling,
-		*called;
+		   *called;
 struct PSAPindication *pi;
 int	async;
 {
@@ -65,9 +65,9 @@ int	async;
 	int	    onoff;
 #endif
 	struct sockaddr_in  lo_socket,
-			in_socket;
+			   in_socket;
 	struct sockaddr_in *lsock = &lo_socket,
-										 *isock = &in_socket;
+							*isock = &in_socket;
 	struct hostent *hp;
 
 #ifndef	FIONBIO
@@ -88,15 +88,15 @@ int	async;
 		return psaplose (pi, PC_ADDRESS, NULLCP, "%s: unknown host",
 						 called -> na_domain);
 #ifdef	notanymore
-	 strncpy (called -> na_domain, hp -> h_name,
-					sizeof called -> na_domain);
+	strncpy (called -> na_domain, hp -> h_name,
+			 sizeof called -> na_domain);
 #endif
 
 	isock -> sin_family = hp -> h_addrtype;
 	inaddr_copy (hp, isock);
 
 #ifndef	notanymore
-	 strcpy (called -> na_domain, inet_ntoa (isock -> sin_addr));
+	strcpy (called -> na_domain, inet_ntoa (isock -> sin_addr));
 #endif
 
 	if (calling && calling -> na_domain[0]) {
@@ -119,7 +119,7 @@ int	async;
 
 #ifdef	FIONBIO
 	if (async)
-		 ioctl (fd, FIONBIO, (onoff = 1, (char *) &onoff));
+		ioctl (fd, FIONBIO, (onoff = 1, (char *) &onoff));
 #endif
 	PTservice (pb, fd);
 
@@ -133,9 +133,9 @@ int	async;
 							calloc ((unsigned) getdtablesize (),
 									sizeof *peers);
 					if (peers == NULL) {
-						 psaplose (pi, PC_CONGEST, NULLCP,
-										 "out of memory");
-						 close_tcp_socket (fd);
+						psaplose (pi, PC_CONGEST, NULLCP,
+								  "out of memory");
+						close_tcp_socket (fd);
 						return (pb -> pb_fd = NOTOK);
 					}
 
@@ -153,8 +153,8 @@ int	async;
 			}
 #endif
 
-		 psaplose (pi, PC_REFUSED, "connection", "unable to establish");
-		 close_tcp_socket (fd);
+		psaplose (pi, PC_REFUSED, "connection", "unable to establish");
+		close_tcp_socket (fd);
 		return (pb -> pb_fd = NOTOK);
 	}
 #ifdef	FIONBIO
@@ -162,11 +162,11 @@ done:
 	;
 
 	if (async)
-		 ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
+		ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
 #endif
 
 	if (tcpready (pb, pi) == NOTOK) {
-		 close_tcp_socket (fd);
+		close_tcp_socket (fd);
 		pb -> pb_fd = NOTOK;
 	}
 
@@ -185,7 +185,7 @@ struct TSAPdisconnect *td;
 {
 	static char	buffer[BUFSIZ];
 
-	 sprintf (buffer, "%c%d %s %s", PT_TCP, fd, cp1, cp2);
+	sprintf (buffer, "%c%d %s %s", PT_TCP, fd, cp1, cp2);
 
 	return buffer;
 }
@@ -214,7 +214,7 @@ struct PSAPindication *pi;
 		*cp++ = NULL;
 		na -> na_port = htons ((u_short) atoi (cp));
 	}
-	 strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
+	strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
 
 	PTservice (pb, fd);
 
@@ -226,7 +226,7 @@ struct PSAPindication *pi;
 		*cp++ = NULL;
 		na -> na_port = htons ((u_short) atoi (cp));
 	}
-	 strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
+	strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
 
 	if ((pb -> pb_stream = ps_alloc (fdx_open)) == NULLPS
 			|| fdx_setup (pb -> pb_stream, pb -> pb_fd) == NOTOK)
@@ -276,19 +276,19 @@ struct PSAPindication *pi;
 			break;
 		}
 
-		 psaplose (pi, PC_REFUSED, "connection", "unable to establish");
+		psaplose (pi, PC_REFUSED, "connection", "unable to establish");
 		FD_CLR (fd, &inprogress);
-		 close_tcp_socket (fd);
+		close_tcp_socket (fd);
 		return (pb -> pb_fd = NOTOK);
 	}
 done:
 	;
 
-	 ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
+	ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
 	FD_CLR (fd, &inprogress);
 
 	if (tcpready (pb, pi) == NOTOK) {
-		 close_tcp_socket (fd);
+		close_tcp_socket (fd);
 		return (pb -> pb_fd = NOTOK);
 	}
 

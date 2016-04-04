@@ -40,11 +40,10 @@ static int  _dsapreject ();
 /*  */
 
 #ifndef	lint
-int	dsaplose (struct DSAPindication *di, ...)
-{
+int	dsaplose (struct DSAPindication *di, ...) {
 	int	    reason,
-	result;
-	
+			result;
+
 	va_list ap;
 
 	va_start (ap, di);
@@ -60,9 +59,8 @@ int	dsaplose (struct DSAPindication *di, ...)
 #else
 /* VARARGS4 */
 
-int 
-dsaplose (struct DSAPindication *di, int reason, char *what, char *fmt)
-{
+int
+dsaplose (struct DSAPindication *di, int reason, char *what, char *fmt) {
 	return dsaplose (di, reason, what, fmt);
 }
 #endif
@@ -70,8 +68,7 @@ dsaplose (struct DSAPindication *di, int reason, char *what, char *fmt)
 /*  */
 
 #ifndef	lint
-static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap)/* what, fmt, args ... */
-{
+static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap) { /* what, fmt, args ... */
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct DSAPabort	* da;
@@ -93,12 +90,11 @@ static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap)/* wha
 #endif
 
 #ifndef	lint
-int	dsapreject (struct DSAPindication *di, ...)
-{
+int	dsapreject (struct DSAPindication *di, ...) {
 	int	    reason,
-	id,
-	result;
-	
+			id,
+			result;
+
 	va_list ap;
 
 	va_start (ap, di);
@@ -115,9 +111,8 @@ int	dsapreject (struct DSAPindication *di, ...)
 #else
 /* VARARGS4 */
 
-int 
-dsapreject (struct DSAPindication *di, int reason, int id, char *what, char *fmt)
-{
+int
+dsapreject (struct DSAPindication *di, int reason, int id, char *what, char *fmt) {
 	return dsapreject (di, reason, id, what, fmt);
 }
 #endif
@@ -125,14 +120,13 @@ dsapreject (struct DSAPindication *di, int reason, int id, char *what, char *fmt
 /*  */
 
 #ifndef	lint
-static int 
+static int
 _dsapreject (  /* what, fmt, args ... */
-    struct DSAPindication *di,
-    int reason,
-    int id,
-    va_list ap
-)
-{
+	struct DSAPindication *di,
+	int reason,
+	int id,
+	va_list ap
+) {
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct DSAPpreject	* dp;

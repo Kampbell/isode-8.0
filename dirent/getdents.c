@@ -138,11 +138,10 @@ extern int	errno;
 	Thanks to Richard Todd for pointing this out.
 */
 
-static int 
+static int
 NameLen (				/* return # chars in embedded name */
-    char name[]		/* -> name embedded in struct direct */
-)
-{
+	char name[]		/* -> name embedded in struct direct */
+) {
 	char	*s;		/* -> name[.] */
 	char	*stop = &name[DIRSIZ];	/* -> past end of name field */
 
@@ -168,23 +167,21 @@ static enum	{ maybe, no, yes }	state = maybe;
 /* does _getdents() work? */
 
 /*ARGSUSED*/
-static void 
+static void
 sig_catch (
-    int sig			/* must be SIGSYS */
-)
-{
+	int sig			/* must be SIGSYS */
+) {
 	state = no;			/* attempted _getdents() faulted */
 }
 #endif
 
-int 
+int
 getdents (		/* returns # bytes read;
 					   0 on EOF, -1 on error */
-    int fildes,	/* directory file descriptor */
-    char *buf,	/* where to put the (struct dirent)s */
-    unsigned nbyte	/* size of buf[] */
-)
-{
+	int fildes,	/* directory file descriptor */
+	char *buf,	/* where to put the (struct dirent)s */
+	unsigned nbyte	/* size of buf[] */
+) {
 	int			serrno;	/* entry errno */
 	off_t			offset;	/* initial directory file offset */
 	struct stat		statb;	/* fstat() info */
@@ -284,11 +281,11 @@ getdents (		/* returns # bytes read;
 				bp->d_reclen = reclen;
 				strncpy( bp->d_name, dp->d_name,
 #ifdef UFS
-							   DIRSIZ );
+						 DIRSIZ );
 				/* be sure d_name is NULL-terminated */
 				bp->d_name[DIRSIZ] = NULL;
 #else
-							   reclen - DIRENTBASESIZ );
+						 reclen - DIRENTBASESIZ );
 				/* adds NUL padding */
 #endif
 
@@ -308,6 +305,6 @@ getdents (		/* returns # bytes read;
 	return (char *)bp - buf;	/* return # bytes read */
 }
 #else
-int 
+int
 _getdents_stub()  {}
 #endif

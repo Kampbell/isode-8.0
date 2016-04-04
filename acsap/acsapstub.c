@@ -45,9 +45,8 @@ static struct isoentity ies;
 
 /*  */
 
-AEI 
-str2aei_stub (char *designator, char *qualifier)
-{
+AEI
+str2aei_stub (char *designator, char *qualifier) {
 #ifdef	LPP
 	int    n;
 	int	    tcp_port,
@@ -114,9 +113,9 @@ str2aei_stub (char *designator, char *qualifier)
 				char **ap;
 #endif
 
-				 bcopy ((char *) hp -> h_addr, (char *) &h_in_addr,
-							  sizeof (struct in_addr));
-				 strcpy (na -> na_domain, inet_ntoa (h_in_addr));
+				bcopy ((char *) hp -> h_addr, (char *) &h_in_addr,
+					   sizeof (struct in_addr));
+				strcpy (na -> na_domain, inet_ntoa (h_in_addr));
 #ifdef	h_addr
 				for (ap = hp -> h_addr_list + 1; *ap; ap++) {
 					ta -> ta_naddr++, na++;
@@ -127,15 +126,15 @@ str2aei_stub (char *designator, char *qualifier)
 					bzero ((char *) na, sizeof *na);
 					na -> na_stack = NA_TCP;
 					na -> na_community = ts_comm_tcp_default;
-					 strcpy (na -> na_domain,
-								   inet_ntoa (*(struct in_addr *) *ap));
+					strcpy (na -> na_domain,
+							inet_ntoa (*(struct in_addr *) *ap));
 				}
 #endif
 			} else
 				/* hostname not in /etc/hosts or NIS */
 				return (NULLAEI);
 		} else {
-			 strcpy (na -> na_dte, designator);
+			strcpy (na -> na_dte, designator);
 			na -> na_dtelen = strlen (na -> na_dte);
 #ifdef	BRIDGE_X25
 			na -> na_stack = bridgediscrim (na) ? NA_BRG : NA_X25;
@@ -177,13 +176,13 @@ str2aei_stub (char *designator, char *qualifier)
 						&& (ta = &ie -> ie_addr.pa_addr.sa_addr) -> ta_naddr
 						< NTADDR) {
 					struct NSAPaddr *ua =
-								ta -> ta_addrs + ta -> ta_naddr++;
+							ta -> ta_addrs + ta -> ta_naddr++;
 
 					bzero ((char *) ua, sizeof *ua);
 					ua -> na_stack = NA_TCP;
 					ua -> na_community = ts_comm_tcp_default;
-					 strncpy (ua -> na_domain, na -> na_domain,
-									sizeof ua -> na_domain);
+					strncpy (ua -> na_domain, na -> na_domain,
+							 sizeof ua -> na_domain);
 					ua -> na_port = (u_short) udp_port;
 					ua -> na_tset = NA_TSET_UDP;
 				}
@@ -209,9 +208,8 @@ static unsigned int elements[NELEM + 1];
 static char objent[BUFSIZ];
 
 
-static int 
-lpp_aet (char *designator, char *qualifier, struct isoentity *ie)
-{
+static int
+lpp_aet (char *designator, char *qualifier, struct isoentity *ie) {
 	int    nelem;
 	int	    tcp_port,
 			udp_port;
@@ -237,15 +235,15 @@ lpp_aet (char *designator, char *qualifier, struct isoentity *ie)
 
 	oid -> oid_elements = elements;
 	oid -> oid_nelem = nelem;
-	 sprintf (ie -> ie_descriptor = objent, "%s-%s", designator,
-					qualifier);
+	sprintf (ie -> ie_descriptor = objent, "%s-%s", designator,
+			 qualifier);
 
-	 bzero ((char *) pa, sizeof *pa);
+	bzero ((char *) pa, sizeof *pa);
 	na = ta -> ta_addrs;
 	if (tcp_port) {
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
-		 strncpy (na -> na_domain, designator, sizeof na -> na_domain);
+		strncpy (na -> na_domain, designator, sizeof na -> na_domain);
 		na -> na_port = (u_short) tcp_port;
 		na -> na_tset = NA_TSET_TCP;
 		na++;
@@ -253,7 +251,7 @@ lpp_aet (char *designator, char *qualifier, struct isoentity *ie)
 	if (udp_port) {
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
-		 strncpy (na -> na_domain, designator, sizeof na -> na_domain);
+		strncpy (na -> na_domain, designator, sizeof na -> na_domain);
 		na -> na_port = (u_short) udp_port;
 		na -> na_tset = NA_TSET_UDP;
 		na++;
@@ -267,8 +265,7 @@ lpp_aet (char *designator, char *qualifier, struct isoentity *ie)
 /*  */
 
 struct PSAPaddr *
-aei2addr_stub (AEI aei)
-{
+aei2addr_stub (AEI aei) {
 	struct isoentity  *ie = &ies;
 	struct PSAPaddr   *pa;
 
@@ -292,9 +289,8 @@ aei2addr_stub (AEI aei)
 #ifdef	LPP
 /* ARGSUSED */
 
-AEI 
-str2aei_dse (char *designator, char *qualifier, char *context, int interactive)
-{
+AEI
+str2aei_dse (char *designator, char *qualifier, char *context, int interactive) {
 	SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
 		  ("DSE lookup not supported for LPP"));
 	return NULLAEI;
@@ -304,8 +300,7 @@ str2aei_dse (char *designator, char *qualifier, char *context, int interactive)
 /* ARGSUSED */
 
 struct PSAPaddr *
-aei2addr_dse (AEI aei)
-{
+aei2addr_dse (AEI aei) {
 	SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
 		  ("DSE lookup not supported for LPP"));
 

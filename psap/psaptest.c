@@ -42,9 +42,8 @@ static ps_die ();
 
 /* ARGSUSED */
 
-int 
-main (int argc, char **argv, char **envp)
-{
+int
+main (int argc, char **argv, char **envp) {
 	char   *cp;
 	PE pe;
 	PS ps;
@@ -53,12 +52,12 @@ main (int argc, char **argv, char **envp)
 	if (argc != 1) {
 usage:
 		;
-		 fprintf (stderr, "usage: psaptest [ps2pl | ps2ps | pl2pl | pl2ps]\n");
+		fprintf (stderr, "usage: psaptest [ps2pl | ps2ps | pl2pl | pl2ps]\n");
 		exit (1);
 	}
 
 	if (strcmp (*argv, "version") == 0) {
-		 printf ("%s\n", psapversion);
+		printf ("%s\n", psapversion);
 		exit (0);
 	}
 
@@ -75,7 +74,7 @@ usage:
 				== NULLPE) {
 no_pe:
 			;
-			 fprintf (stderr, "pe_alloc: you lose\n");
+			fprintf (stderr, "pe_alloc: you lose\n");
 			exit (1);
 		}
 		pep = &pe -> pe_cons;
@@ -126,10 +125,10 @@ no_pe:
 
 		while (fgets (buffer, sizeof buffer, stdin)) {
 			if (*buffer == ' ')
-				 strncpy (packet, buffer + 1, i = strlen (buffer) - 2);
+				strncpy (packet, buffer + 1, i = strlen (buffer) - 2);
 			else
 				i = implode ((u_char *) packet, buffer, strlen (buffer) - 1);
-			 fwrite (packet, sizeof *packet, i, stdout);
+			fwrite (packet, sizeof *packet, i, stdout);
 		}
 
 		exit (0);
@@ -148,7 +147,7 @@ no_pe:
 
 	for (;;) {
 		if ((ps = ps_alloc (std_open)) == NULLPS) {
-			 fprintf (stderr, "ps_alloc(stdin): you lose\n");
+			fprintf (stderr, "ps_alloc(stdin): you lose\n");
 			exit (1);
 		}
 		if (std_setup (ps, stdin) == NOTOK)
@@ -179,7 +178,7 @@ no_pe:
 doit:
 		;
 		if ((ps = ps_alloc (std_open)) == NULLPS) {
-			 fprintf (stderr, "ps_alloc(stdout): you lose\n");
+			fprintf (stderr, "ps_alloc(stdout): you lose\n");
 			exit (1);
 		}
 		if (std_setup (ps, stdout) == NOTOK)
@@ -206,9 +205,8 @@ doit:
 
 /*    ERRORS */
 
-static 
-ps_die (PS ps, char *s)
-{
-	 fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
+static
+ps_die (PS ps, char *s) {
+	fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
 }

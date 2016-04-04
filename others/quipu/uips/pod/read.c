@@ -77,7 +77,7 @@ Attr_Sequence get_sorted_attrs(entry_attrs, wanted_attrs)
 Attr_Sequence entry_attrs, wanted_attrs;
 {
 	Attr_Sequence curr_ent_attr, curr_found,
-			 curr_wanted, attrs_found, next;
+				  curr_wanted, attrs_found, next;
 
 	attrs_found = NULLATTR;
 	curr_wanted = wanted_attrs;
@@ -241,9 +241,8 @@ Attr_Sequence attrs_to_read;
 	}
 }
 
-int 
-read_print (int (*func), caddr_t ptr)
-{
+int
+read_print (int (*func), caddr_t ptr) {
 	PS ps;
 	char *str;
 
@@ -284,7 +283,7 @@ int format;
 
 		two_passes = 0;
 
-		 pe2ps(sps, picture);
+		pe2ps(sps, picture);
 		if (decode_t4(sps->ps_base, "photo", sps->ps_ptr - sps->ps_base ) == -1)
 			goto out;
 
@@ -300,9 +299,8 @@ out:
 	}
 }
 
-int 
-entry2str (caddr_t ptr, char *cptr, int size)
-{
+int
+entry2str (caddr_t ptr, char *cptr, int size) {
 	PS ps;
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) return ;
@@ -314,9 +312,8 @@ entry2str (caddr_t ptr, char *cptr, int size)
 	ps_free(ps);
 }
 
-void 
-rfc2greybook (char *string)
-{
+void
+rfc2greybook (char *string) {
 	char reversed[STRINGLEN];
 	char *part;
 
@@ -331,16 +328,16 @@ rfc2greybook (char *string)
 		if (*part == '.') {
 			if (reversed[0] != '\0')  strcat(reversed, ".");
 			part++;
-			 strcat(reversed, part);
+			strcat(reversed, part);
 			*--part = '\0';
 			--part;
 		} else {
 			part++;
-			 strcat(reversed, ".");
-			 strcat(reversed, part);
+			strcat(reversed, ".");
+			strcat(reversed, part);
 			*part = '\0';
 			/*       while (!isspace(*part)) --part; */
-			 strcat(string, reversed);
+			strcat(string, reversed);
 			return;
 		}
 	}

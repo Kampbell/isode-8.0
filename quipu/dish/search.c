@@ -61,9 +61,8 @@ char		allow_move = TRUE;
 
 int		csr_compar ();
 
-int 
-call_search (int argc, char **argv)
-{
+int
+call_search (int argc, char **argv) {
 	PS	aps;
 	struct ds_search_arg search_arg;
 	struct DSError  error;
@@ -270,7 +269,7 @@ call_search (int argc, char **argv)
 					&& rps -> ps_byteno == 0
 					&& opt -> ps_byteno == 0
 					&& fdx_reset (opt) == OK)   /* MAJOR HACK */
-				 (*opt -> ps_writeP) (opt, "3", 1, 0);
+				(*opt -> ps_writeP) (opt, "3", 1, 0);
 #endif
 			ps_printf (OPT,"Multiple hits...\n");
 		}
@@ -308,7 +307,7 @@ call_search (int argc, char **argv)
 						  **ep;
 
 				ps_printf (RPS, "%d matches found.\n", i);
-				 ps_flush (RPS);
+				ps_flush (RPS);
 
 				if (base = (EntryInfo **) malloc ((unsigned)
 												  (i * sizeof *base))) {
@@ -337,7 +336,7 @@ call_search (int argc, char **argv)
 			for (ptr = result.CSR_entries;
 					ptr;
 					ptr = ptr -> ent_next)
-				 add_sequence (ptr -> ent_dn);
+				add_sequence (ptr -> ent_dn);
 			set_sequence ("default");
 			for (i = 0, ptr = result.CSR_entries;
 					ptr;
@@ -347,7 +346,7 @@ call_search (int argc, char **argv)
 						ps_print (RPS, "-------\n");
 					else if (nchild)
 						ps_print (RPS, "\n");
-					 ps_flush (RPS);
+					ps_flush (RPS);
 				}
 
 				nchild = showfred (ptr -> ent_dn, fred_long,

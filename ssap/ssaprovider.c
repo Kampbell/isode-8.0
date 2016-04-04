@@ -254,13 +254,11 @@ SReadRequest (int sd, struct SSAPdata *sx, int secs, struct SSAPindication *si) 
 	}
 	if (!(sb -> sb_flags & SB_CONN)) {
 		sigiomask (smask);
-		return ssaplose (si, SC_PARAMETER, NULLCP,
-						 "session descriptor not connected");
+		return ssaplose (si, SC_PARAMETER, NULLCP, "session descriptor not connected");
 	}
 	if (sb -> sb_flags & SB_FINN) {
 		sigiomask (smask);
-		return ssaplose (si, SC_OPERATION, NULLCP,
-						 "session descriptor finishing");
+		return ssaplose (si, SC_OPERATION, NULLCP, "session descriptor finishing");
 	}
 
 	result = SReadRequestAux (sb, sx, secs, si, 0, NULLTX);
@@ -330,8 +328,7 @@ SReadRequestAux (struct ssapblk *sb, struct SSAPdata *sx, int secs, struct SSAPi
 				default:
 drop_it:
 					;
-					SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP,
-						  ("discarding 0x%x SPDU", s -> s_code));
+					SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP, ("discarding 0x%x SPDU", s -> s_code));
 					freespkt (s);
 					goto spin;
 				}
@@ -469,9 +466,7 @@ drop_it:
 
 		/* allows AB SPDUs to have 512, not 9, octets (which is fine by me) */
 		if (s -> s_ulen > CN_SIZE && sb -> sb_version < SB_VRSN2) {
-			spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-					  "too much user data (%d) in SPDU 0x%x",
-					  s -> s_ulen, s -> s_code);
+			spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "too much user data (%d) in SPDU 0x%x", s -> s_ulen, s -> s_code);
 			goto out;
 		}
 
@@ -479,9 +474,7 @@ drop_it:
 				&& (s -> s_code != SPDU_DT || (s -> s_mask & SMASK_SPDU_GT))
 				&& s -> s_code != SPDU_TD) {
 			if (sb -> sb_version < SB_VRSN2) {
-				spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-						  "unexpected segmentation for SPDU 0x%x",
-						  s -> s_code);
+				spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "unexpected segmentation for SPDU 0x%x", s-> s_code);
 				goto out;
 			}
 
@@ -624,8 +617,7 @@ invalid:
 #undef	dotoken
 				}
 				if (tokens && !(sb -> sb_requirements & SR_TOKENS)) {
-					spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
-							  "GT SPDU not available");
+					spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,  "GT SPDU not available");
 					break;
 				}
 				freespkt (s);
@@ -759,8 +751,7 @@ invalid:
 #undef	dotoken
 			freespkt (s);
 			if ((s = newspkt (SPDU_GTA)) == NULL) {
-				spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP,
-						  "out of memory");
+				spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP,  "out of memory");
 				break;
 			}
 			if (spkt2sd (s, sb -> sb_fd, 0, si) == NOTOK)

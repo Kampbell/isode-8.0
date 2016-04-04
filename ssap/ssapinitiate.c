@@ -141,16 +141,14 @@ SConnRequestAux (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr 
 	if (calling) {
 		if (calling -> sa_selectlen > 0) {
 			s -> s_mask |= SMASK_CN_CALLING;
-			bcopy (calling -> sa_selector, s -> s_calling,
-				   s -> s_callinglen = calling -> sa_selectlen);
+			bcopy (calling -> sa_selector, s -> s_calling, s -> s_callinglen = calling -> sa_selectlen);
 		}
 		sb -> sb_initiating = *calling;	/* struct copy */
 	}
 
 	if (called -> sa_selectlen > 0) {
 		s -> s_mask |= SMASK_CN_CALLED;
-		bcopy (called -> sa_selector, s -> s_called,
-			   s -> s_calledlen = called -> sa_selectlen);
+		bcopy (called -> sa_selector, s -> s_called, s -> s_calledlen = called -> sa_selectlen);
 	}
 	sb -> sb_responding = *called;	/* struct copy */
 
@@ -160,10 +158,8 @@ SConnRequestAux (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr 
 		sb -> sb_flags |= SB_ASYNC_CONN;
 
 	if ((result = TAsynConnRequest (calling ? &calling -> sa_addr : NULLTA,
-									&called -> sa_addr,
-									(qos ? qos -> qos_extended : 0)
-									|| ((requirements & SR_EXPEDITED) ? 1 : 0),
-									NULLCP, 0, qos, tc, td, async)) == NOTOK) {
+			&called -> sa_addr, (qos ? qos -> qos_extended : 0) || ((requirements & SR_EXPEDITED) ? 1 : 0),
+			NULLCP, 0, qos, tc, td, async)) == NOTOK) {
 		ts2sslose (si, "TAsynConnRequest", td);
 
 		bzero ((char *) sc, sizeof *sc);
@@ -178,11 +174,19 @@ SConnRequestAux (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr 
 	if (qos && qos -> qos_sversion < 0) {
 		sb -> sb_version = SB_VRSN1;
 		sb -> sb_vrsnmask = SB_ALLVRSNS;
-	} else
-		sb -> sb_vrsnmask = 1 << (sb -> sb_version =
-									  (cc > SS_SIZE
-									   || (qos && qos -> qos_sversion > 1))
-									  ? SB_VRSN2 : SB_VRSN1);
+	} else {
+//
+//		should propose both versions
+//		sb -> sb_vrsnmask = 1 << (sb -> sb_version = (cc > SS_SIZE || (qos && qos -> qos_sversion > 1)) ? SB_VRSN2 : SB_VRSN1);
+//
+		sb -> sb_version = SB_VRSN1;
+		sb -> sb_vrsnmask = SB_ALLVRSNS;
+		if (cc > SS_SIZE || qos && qos -> qos_sversion > 1) {
+			sb->sb_version = SB_VRSN2;
+			sb -> sb_vrsnmask = 1 << SB_VRSN2;
+		}
+		
+	}
 
 	s -> s_mask |= SMASK_CN_REF | SMASK_CN_OPT | SMASK_CN_VRSN;
 	s -> s_cn_reference = *ref;	/* struct copy */
@@ -393,8 +397,7 @@ SAsynRetryAux1 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *
 	else
 		sb -> sb_requirements &= ~SR_EXPEDITED;
 	if (sb -> sb_version < SB_VRSN2)		/* XXX */
-		sb -> sb_tsdu_us = sb -> sb_tsdu_them =
-							   GET_TSDU_SIZE (tc -> tc_tsdusize);
+		sb -> sb_tsdu_us = sb -> sb_tsdu_them = GET_TSDU_SIZE (tc -> tc_tsdusize);
 
 	if (sb -> sb_tsdu_us || sb -> sb_tsdu_them) {
 		s -> s_mask |= SMASK_CN_TSDU;

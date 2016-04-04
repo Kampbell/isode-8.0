@@ -238,8 +238,8 @@ struct isoentity *getisoentity ();
 AEI	oid2aei ();
 #endif
 
+struct isoservent;
 
-/* old-style */
 struct PSAPaddr *is2paddr (char *host, char *service, struct isoservent *is);	/* service entry to PSAPaddr */
 struct SSAPaddr *is2saddr (char *host, char *service, struct isoservent *is);	/* service entry to SSAPaddr */
 struct TSAPaddr *is2taddr (char *host, char *service, struct isoservent *is);	/* service entry to TSAPaddr */

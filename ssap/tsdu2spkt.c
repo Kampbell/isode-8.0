@@ -81,7 +81,7 @@ static int si_table[] = {
 	PMASK_ENCLOSE				/* 0x01: SPDU_GT & SPDU_DT */
 	| PMASK_TOKEN
 	| PMASK_UDATA,
-	PMASK_TOKEN					/* 0x02: SPDU_PT */
+	PMASK_TOKEN				/* 0x02: SPDU_PT */
 	| PMASK_ENCLOSE
 	| PMASK_UDATA,
 	PMASK_NOTSUPPORTED,			/* 0x03 */

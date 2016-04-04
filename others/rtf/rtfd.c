@@ -50,7 +50,8 @@ static int    fd;
 static int    nbytes;
 static char  *destination;
 
-int	downtrans (), uptrans ();
+static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti);
+static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti);
 
 /*    MAIN */
 
@@ -287,8 +288,7 @@ no_dice:
 
 /* ARGSUSED */
 
-static int 
-downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti)
+static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti)
 {
 	int    cc;
 	int	    n;
@@ -357,11 +357,7 @@ downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct R
 
 /* ARGSUSED */
 
-static int  uptrans (sd, type, addr, rti)
-int	sd;
-int	type;
-caddr_t	addr;
-struct RtSAPindication *rti;
+static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 {
 	switch (type) {
 	case SI_DATA: {
@@ -452,10 +448,10 @@ struct RtSAPindication *rti;
 	return OK;
 }
 
+#ifdef notdef
 /*  */
 
-static 
-remove (char *file)
+static remove (char *file)
 {
 	struct stat st;
 
@@ -464,3 +460,4 @@ remove (char *file)
 			&& unlink (file) == NOTOK)
 		advise (LLOG_EXCEPTIONS, file, "unable to unlink");
 }
+#endif

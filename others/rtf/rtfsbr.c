@@ -26,10 +26,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rtf/RCS/rtfsbr.c,v 9.0 1
 
 
 #include "rtf.h"
-#include <varargs.h>
+#include <stdarg.h>
 #if	defined(SYS5) && !defined(HPUX)
 #include <sys/times.h>
 #define	TMS
+#else
+static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
 #endif
 
 /*    DATA */
@@ -113,13 +115,13 @@ rts_advise (struct RtSAPabort *rta, char *event)
 /*  */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char* what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, ap);
 
 	va_end (ap);
 
@@ -137,16 +139,13 @@ adios (char *what, char *fmt)
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char* what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, ap);
 
 	va_end (ap);
 }
@@ -162,13 +161,13 @@ advise (int code, char *what, char *fmt)
 
 
 #ifndef	lint
-void	ryr_advise (va_alist)
-va_dcl {
+void	ryr_advise (char* what, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, what);
 
-	_ll_log (pgm_log, LLOG_NOTICE, ap);
+	_ll_log (pgm_log, LLOG_NOTICE, what, ap);
 
 	va_end (ap);
 }
@@ -227,8 +226,7 @@ timer (int cc)
 }
 
 
-static 
-tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
+static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
 {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;

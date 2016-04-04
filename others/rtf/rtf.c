@@ -46,7 +46,9 @@ static int   turn = NOTOK;
 static int   fd;
 static int   nbytes;
 
-int	downtrans (), uptrans ();
+static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti);
+static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti);
+static arginit (char **vec);
 
 
 char   *getenv ();
@@ -216,8 +218,7 @@ main (int argc, char **argv, char **envp)
 
 /* ARGSUSED */
 
-static int 
-downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti)
+static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti)
 {
 	int    cc;
 	int	    n;
@@ -285,11 +286,7 @@ downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct R
 
 /* ARGSUSED */
 
-static int  uptrans (sd, type, addr, rti)
-int	sd;
-int	type;
-caddr_t	addr;
-struct RtSAPindication *rti;
+static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 {
 	switch (type) {
 	case SI_DATA: {
@@ -385,8 +382,7 @@ struct RtSAPindication *rti;
 
 /*  */
 
-static 
-arginit (char **vec)
+static arginit (char **vec)
 {
 	char *ap;
 	char    prompt[BUFSIZ];

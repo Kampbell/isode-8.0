@@ -31,7 +31,7 @@ READ THIS
 
 SYNOPSIS
      `% cd isode-8.0`  
-     `% cp config/linux h/config.h`  
+     `% cp config/linux.h h/config.h`  
      `% cp config/linux.make config/CONFIG.make`  
      `% cp config/*.local support/`  
      `% ./make everything`  

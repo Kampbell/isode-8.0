@@ -31,7 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/util.c,v 9.0 19
 #include "quipu/commonarg.h"
 #include "quipu/malloc.h"
 #include "tsap.h"
-#include <varargs.h>
+#include <stdarg.h>
 
 extern LLog * log_dsap;
 extern char dsa_mode;
@@ -211,15 +211,13 @@ PElementID id;
 }
 
 #ifndef lint
-ps_printf (va_alist)
-va_dcl {
-	PS ps;
+ps_printf (PS ps, ...)
+ {
 	extern int std_flush ();
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, ps);
 
-	ps = va_arg (ap, PS);
 
 #ifdef VSPRINTF
 
